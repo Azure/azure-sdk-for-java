@@ -58,11 +58,9 @@ public final class AmqpAnnotatedMessage {
         AmqpBodyType bodyType = message.getBody().getBodyType();
         switch (bodyType) {
             case DATA:
-                amqpMessageBody = new AmqpDataBody((AmqpDataBody) message.getBody());
+                amqpMessageBody = AmqpMessageBody.fromData(message.getBody().getData());
                 break;
             case SEQUENCE:
-                amqpMessageBody = new AmqpSequenceBody(((AmqpSequenceBody) message.getBody()).getSequence());
-                break;
             case VALUE:
                 throw logger.logExceptionAsError(new UnsupportedOperationException("Body type not supported yet "
                     + bodyType.toString()));
@@ -78,6 +76,7 @@ public final class AmqpAnnotatedMessage {
         header = new AmqpMessageHeader(message.getHeader());
         properties = new AmqpMessageProperties(message.getProperties());
     }
+
 
     /**
      * Gets the {@link Map} of application properties.

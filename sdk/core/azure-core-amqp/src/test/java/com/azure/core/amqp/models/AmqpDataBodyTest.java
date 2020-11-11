@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * Test for {@link AmqpDataBody}.
+ * Test for {@link AmqpMessageBody}.
  */
 public class AmqpDataBodyTest {
 
@@ -29,7 +29,7 @@ public class AmqpDataBodyTest {
         expectedDataList.add("some data 2".getBytes());
 
         // Act
-        final AmqpDataBody actual = new AmqpDataBody(expectedDataList);
+        final AmqpMessageBody actual = AmqpMessageBody.fromData(expectedDataList);
 
         // Assert
         assertEquals(AmqpBodyType.DATA, actual.getBodyType());
@@ -41,7 +41,7 @@ public class AmqpDataBodyTest {
     }
 
     /**
-     * Verifies {@link AmqpDataBody} constructor for null values.
+     * Verifies {@link AmqpMessageBody} constructor for null values.
      */
     @Test
     public void constructorNullValidValues() {
@@ -49,6 +49,6 @@ public class AmqpDataBodyTest {
         final List<byte[]> listBinaryData = null;
 
         // Act & Assert
-        Assertions.assertThrows(NullPointerException.class, () -> new AmqpDataBody(listBinaryData));
+        Assertions.assertThrows(NullPointerException.class, () -> AmqpMessageBody.fromData(listBinaryData));
     }
 }

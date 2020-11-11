@@ -39,8 +39,8 @@ public class AmqpAnnotatedMessageTest {
         List<byte[]> expectedBinaryData = new ArrayList<>();
         expectedBinaryData.add(CONTENTS_BYTES);
 
-        final AmqpDataBody amqpDataBody = new AmqpDataBody(expectedBinaryData);
-        final AmqpAnnotatedMessage expected = new AmqpAnnotatedMessage(amqpDataBody);
+        final AmqpMessageBody amqpMessageBody = AmqpMessageBody.fromData(expectedBinaryData);
+        final AmqpAnnotatedMessage expected = new AmqpAnnotatedMessage(amqpMessageBody);
         final Map<String, Object> expectedMessageAnnotations = expected.getMessageAnnotations();
         expectedMessageAnnotations.put("ma-1", "ma-value1");
 
@@ -57,10 +57,10 @@ public class AmqpAnnotatedMessageTest {
         expectedMessageProperties.setGroupSequence(2L);
         expectedMessageProperties.setContentEncoding("content-enc");
         expectedMessageProperties.setReplyToGroupId("a");
-        expectedMessageProperties.setReplyTo("b");
-        expectedMessageProperties.setCorrelationId("c");
+        expectedMessageProperties.setReplyTo(new AmqpAddress("b"));
+        expectedMessageProperties.setCorrelationId(new AmqpMessageId("c"));
         expectedMessageProperties.setSubject("d");
-        expectedMessageProperties.setMessageId("id");
+        expectedMessageProperties.setMessageId(new AmqpMessageId("id"));
 
         final AmqpMessageHeader expectedMessageHeader = expected.getHeader();
         expectedMessageHeader.setDeliveryCount(5L);
@@ -113,10 +113,10 @@ public class AmqpAnnotatedMessageTest {
     public void constructorValidValues() {
         // Arrange
         final List<byte[]> expectedBinaryData = Collections.singletonList(CONTENTS_BYTES);
-        final AmqpDataBody amqpDataBody = new AmqpDataBody(expectedBinaryData);
+        final AmqpMessageBody amqpMessageBody = AmqpMessageBody.fromData(expectedBinaryData);
 
         // Act
-        final AmqpAnnotatedMessage actual = new AmqpAnnotatedMessage(amqpDataBody);
+        final AmqpAnnotatedMessage actual = new AmqpAnnotatedMessage(amqpMessageBody);
 
         // Assert
         assertMessageCreation(AmqpBodyType.DATA, expectedBinaryData.size(), actual);
@@ -129,8 +129,8 @@ public class AmqpAnnotatedMessageTest {
     public void constructorAmqpValidValues() {
         // Arrange
         final List<byte[]> expectedBinaryData = Collections.singletonList(CONTENTS_BYTES);
-        final AmqpDataBody amqpDataBody = new AmqpDataBody(expectedBinaryData);
-        final AmqpAnnotatedMessage expected = new AmqpAnnotatedMessage(amqpDataBody);
+        final AmqpMessageBody amqpMessageBody = AmqpMessageBody.fromData(expectedBinaryData);
+        final AmqpAnnotatedMessage expected = new AmqpAnnotatedMessage(amqpMessageBody);
 
         // Act
         final AmqpAnnotatedMessage actual = new AmqpAnnotatedMessage(expected);
@@ -145,7 +145,7 @@ public class AmqpAnnotatedMessageTest {
     @Test
     public void constructorNullValidValues() {
         // Arrange
-        final AmqpDataBody body = null;
+        final AmqpMessageBody body = null;
 
         // Act & Assert
         Assertions.assertThrows(NullPointerException.class, () -> new AmqpAnnotatedMessage(body));
@@ -170,7 +170,7 @@ public class AmqpAnnotatedMessageTest {
         final AmqpBodyType actualType = actual.getBody().getBodyType();
         switch (actualType) {
             case DATA:
-                List<byte[]> actualData = ((AmqpDataBody) actual.getBody()).getData().stream().collect(Collectors.toList());
+                List<byte[]> actualData = actual.getBody().getData().stream().collect(Collectors.toList());
                 assertEquals(expectedMessageSize, actualData.size());
                 assertArrayEquals(expectedbody, actualData.get(0));
                 break;

@@ -3,9 +3,11 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.amqp.models.AmqpAddress;
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
-import com.azure.core.amqp.models.AmqpDataBody;
+import com.azure.core.amqp.models.AmqpMessageBody;
 import com.azure.core.amqp.models.AmqpMessageHeader;
+import com.azure.core.amqp.models.AmqpMessageId;
 import com.azure.core.amqp.models.AmqpMessageProperties;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
@@ -1013,13 +1015,13 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         final String messageId = UUID.randomUUID().toString();
         final AmqpAnnotatedMessage expectedAmqpProperties = new AmqpAnnotatedMessage(
-            new AmqpDataBody(Collections.singletonList(CONTENTS_BYTES)));
+            new AmqpMessageBody.fromData(CONTENTS_BYTES));
         expectedAmqpProperties.getProperties().setSubject(subject);
         expectedAmqpProperties.getProperties().setReplyToGroupId("r-gid");
-        expectedAmqpProperties.getProperties().setReplyTo("reply-to");
+        expectedAmqpProperties.getProperties().setReplyTo(new AmqpAddress("reply-to"));
         expectedAmqpProperties.getProperties().setContentType("content-type");
-        expectedAmqpProperties.getProperties().setCorrelationId("correlation-id");
-        expectedAmqpProperties.getProperties().setTo("to");
+        expectedAmqpProperties.getProperties().setCorrelationId(new AmqpMessageId("correlation-id"));
+        expectedAmqpProperties.getProperties().setTo(new AmqpAddress("to"));
         expectedAmqpProperties.getProperties().setAbsoluteExpiryTime(OffsetDateTime.now().plusSeconds(60));
         expectedAmqpProperties.getProperties().setUserId("user-id-1".getBytes());
         expectedAmqpProperties.getProperties().setContentEncoding("string");
