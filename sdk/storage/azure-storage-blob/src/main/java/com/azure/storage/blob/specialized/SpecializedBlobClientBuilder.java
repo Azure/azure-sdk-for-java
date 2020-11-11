@@ -7,6 +7,7 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.Configuration;
@@ -62,6 +63,7 @@ public final class SpecializedBlobClientBuilder {
     private String containerName;
     private String blobName;
     private String snapshot;
+    private String versionId;
 
     private CpkInfo customerProvidedKey;
     private EncryptionScope encryptionScope;
@@ -70,7 +72,8 @@ public final class SpecializedBlobClientBuilder {
     private SasTokenCredential sasTokenCredential;
 
     private HttpClient httpClient;
-    private final List<HttpPipelinePolicy> additionalPolicies = new ArrayList<>();
+    private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
+    private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
     private HttpLogOptions logOptions = getDefaultHttpLogOptions();;
     private RequestRetryOptions retryOptions = new RequestRetryOptions();
     private HttpPipeline httpPipeline;
@@ -103,7 +106,7 @@ public final class SpecializedBlobClientBuilder {
         String containerName = getContainerName();
 
         return new AppendBlobAsyncClient(getHttpPipeline(), getUrl(containerName), getServiceVersion(),
-            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope);
+            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope, versionId);
     }
 
     /**
@@ -134,7 +137,7 @@ public final class SpecializedBlobClientBuilder {
         String containerName = getContainerName();
 
         return new BlockBlobAsyncClient(getHttpPipeline(), getUrl(containerName), getServiceVersion(),
-            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope);
+            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope, versionId);
     }
 
     /**
@@ -164,7 +167,7 @@ public final class SpecializedBlobClientBuilder {
         String containerName = getContainerName();
 
         return new PageBlobAsyncClient(getHttpPipeline(), getUrl(containerName), getServiceVersion(),
-            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope);
+            accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope, versionId);
     }
 
     /*
@@ -196,7 +199,7 @@ public final class SpecializedBlobClientBuilder {
     private HttpPipeline getHttpPipeline() {
         return (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             storageSharedKeyCredential, tokenCredential, sasTokenCredential, endpoint, retryOptions, logOptions,
-            httpClient, additionalPolicies, configuration, logger);
+            httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
     }
 
     private BlobServiceVersion getServiceVersion() {
@@ -218,6 +221,7 @@ public final class SpecializedBlobClientBuilder {
         endpoint(blobClient.getBlobUrl());
         serviceVersion(blobClient.getServiceVersion());
         this.snapshot = blobClient.getSnapshotId();
+        this.versionId = blobClient.getVersionId();
         this.customerProvidedKey = blobClient.getCustomerProvidedKey();
         if (blobClient.getEncryptionScope() != null) {
             this.encryptionScope = new EncryptionScope().setEncryptionScope(blobClient.getEncryptionScope());
@@ -236,6 +240,7 @@ public final class SpecializedBlobClientBuilder {
         endpoint(blobAsyncClient.getBlobUrl());
         serviceVersion(blobAsyncClient.getServiceVersion());
         this.snapshot = blobAsyncClient.getSnapshotId();
+        this.versionId = blobAsyncClient.getVersionId();
         this.customerProvidedKey = blobAsyncClient.getCustomerProvidedKey();
         if (blobAsyncClient.getEncryptionScope() != null) {
             this.encryptionScope = new EncryptionScope().setEncryptionScope(blobAsyncClient.getEncryptionScope());
@@ -301,6 +306,7 @@ public final class SpecializedBlobClientBuilder {
             this.containerName = parts.getBlobContainerName();
             this.blobName = Utility.urlEncode(parts.getBlobName());
             this.snapshot = parts.getSnapshot();
+            this.versionId = parts.getVersionId();
 
             String sasToken = parts.getCommonSasQueryParameters().encode();
             if (!CoreUtils.isNullOrEmpty(sasToken)) {
@@ -477,6 +483,17 @@ public final class SpecializedBlobClientBuilder {
     }
 
     /**
+     * Sets the version identifier of the blob.
+     *
+     * @param versionId Version identifier for the blob, pass {@code null} to interact with the latest blob version.
+     * @return the updated SpecializedBlobClientBuilder object
+     */
+    public SpecializedBlobClientBuilder versionId(String versionId) {
+        this.versionId = versionId;
+        return this;
+    }
+
+    /**
      * Sets the {@link HttpClient} to use for sending a receiving requests to and from the service.
      *
      * @param httpClient HttpClient to use for requests.
@@ -500,7 +517,12 @@ public final class SpecializedBlobClientBuilder {
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      */
     public SpecializedBlobClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
-        this.additionalPolicies.add(Objects.requireNonNull(pipelinePolicy, "'pipelinePolicy' cannot be null"));
+        Objects.requireNonNull(pipelinePolicy, "'pipelinePolicy' cannot be null");
+        if (pipelinePolicy.getPipelinePosition() == HttpPipelinePosition.PER_CALL) {
+            perCallPolicies.add(pipelinePolicy);
+        } else {
+            perRetryPolicies.add(pipelinePolicy);
+        }
         return this;
     }
 

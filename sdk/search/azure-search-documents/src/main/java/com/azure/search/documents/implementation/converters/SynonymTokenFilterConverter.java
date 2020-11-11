@@ -5,9 +5,6 @@ package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.indexes.models.SynonymTokenFilter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * A converter between {@link com.azure.search.documents.indexes.implementation.models.SynonymTokenFilter} and
  * {@link SynonymTokenFilter}.
@@ -21,18 +18,10 @@ public final class SynonymTokenFilterConverter {
         if (obj == null) {
             return null;
         }
-        SynonymTokenFilter synonymTokenFilter = new SynonymTokenFilter();
-
-        String name = obj.getName();
-        synonymTokenFilter.setName(name);
+        SynonymTokenFilter synonymTokenFilter = new SynonymTokenFilter(obj.getName(), obj.getSynonyms());
 
         Boolean expand = obj.isExpand();
         synonymTokenFilter.setExpand(expand);
-
-        if (obj.getSynonyms() != null) {
-            List<String> synonyms = new ArrayList<>(obj.getSynonyms());
-            synonymTokenFilter.setSynonyms(synonyms);
-        }
 
         Boolean ignoreCase = obj.isIgnoreCase();
         synonymTokenFilter.setCaseIgnored(ignoreCase);
@@ -48,21 +37,15 @@ public final class SynonymTokenFilterConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.SynonymTokenFilter synonymTokenFilter =
-            new com.azure.search.documents.indexes.implementation.models.SynonymTokenFilter();
-
-        String name = obj.getName();
-        synonymTokenFilter.setName(name);
+            new com.azure.search.documents.indexes.implementation.models.SynonymTokenFilter(obj.getName(),
+                obj.getSynonyms());
 
         Boolean expand = obj.getExpand();
         synonymTokenFilter.setExpand(expand);
 
-        if (obj.getSynonyms() != null) {
-            List<String> synonyms = new ArrayList<>(obj.getSynonyms());
-            synonymTokenFilter.setSynonyms(synonyms);
-        }
-
         Boolean ignoreCase = obj.isCaseIgnored();
         synonymTokenFilter.setIgnoreCase(ignoreCase);
+
         return synonymTokenFilter;
     }
 

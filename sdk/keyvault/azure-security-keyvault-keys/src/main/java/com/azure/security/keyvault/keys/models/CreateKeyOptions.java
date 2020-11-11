@@ -15,11 +15,20 @@ import java.util.Map;
  */
 @Fluent
 public class CreateKeyOptions {
+    /**
+     * The key name.
+     */
+    private final String name;
 
     /**
-     * Determines whether the object is enabled.
+     * The type of the key.
      */
-    private Boolean enabled;
+    private KeyType keyType;
+
+    /**
+     * The key operations.
+     */
+    private List<KeyOperation> keyOperations;
 
     /**
      * Not before date in UTC.
@@ -37,21 +46,9 @@ public class CreateKeyOptions {
     private Map<String, String> tags;
 
     /**
-     * The type of the key.
+     * Determines whether the object is enabled.
      */
-    KeyType keyType;
-
-    /**
-     * The key operations.
-     */
-    List<KeyOperation> keyOperations;
-
-    /**
-     * The key name.
-     */
-    String name;
-
-    CreateKeyOptions() { }
+    private Boolean enabled;
 
     /**
      * Creates instance of KeyCreateOptions with {@code name} as key name and {@code keyType} as type of the key.
@@ -90,6 +87,10 @@ public class CreateKeyOptions {
      */
     public KeyType getKeyType() {
         return this.keyType;
+    }
+
+    void setKeyType(KeyType keyType) {
+        this.keyType = keyType;
     }
 
     /**

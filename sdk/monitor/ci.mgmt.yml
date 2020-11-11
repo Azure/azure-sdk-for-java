@@ -1,9 +1,4 @@
-resources:
-  repositories:
-    - repository: azure-sdk-build-tools
-      type: git
-      name: internal/azure-sdk-build-tools
-
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
 trigger:
   branches:
     include:
@@ -14,6 +9,8 @@ trigger:
   paths:
     include:
       - sdk/monitor/
+    exclude:
+      - sdk/monitor/microsoft-opentelemetry-exporter-azuremonitor
 
 pr:
   branches:
@@ -25,6 +22,8 @@ pr:
   paths:
     include:
       - sdk/monitor/
+    exclude:
+      - sdk/monitor/microsoft-opentelemetry-exporter-azuremonitor
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

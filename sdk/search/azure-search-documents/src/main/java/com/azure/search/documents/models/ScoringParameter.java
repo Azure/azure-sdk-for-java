@@ -59,16 +59,16 @@ public final class ScoringParameter {
         // Deep clone the values.
         this.values = new ArrayList<>(values);
     }
-
-    /**
-     * Initializes a new instance of the ScoringParameter class with the given name and GeographyPoint value.
-     *
-     * @param name Name of the scoring parameter.
-     * @param value Value of the scoring parameter.
-     */
-    public ScoringParameter(String name, GeoPoint value) {
-        this(name, toLonLatStrings(value));
-    }
+//
+//    /**
+//     * Initializes a new instance of the ScoringParameter class with the given name and GeographyPoint value.
+//     *
+//     * @param name Name of the scoring parameter.
+//     * @param value Value of the scoring parameter.
+//     */
+//    public ScoringParameter(String name, PointGeometry value) {
+//        this(name, toLonLatStrings(value));
+//    }
 
     /**
      * Gets the name of the scoring parameter.
@@ -88,10 +88,11 @@ public final class ScoringParameter {
         return new ArrayList<>(values);
     }
 
-    private static List<String> toLonLatStrings(GeoPoint point) {
-        Objects.requireNonNull(point);
-        return Arrays.asList(String.valueOf(point.getLongitude()), String.valueOf(point.getLatitude()));
-    }
+//    private static List<String> toLonLatStrings(PointGeometry point) {
+//        Objects.requireNonNull(point);
+//        return Arrays.asList(String.valueOf(point.getPosition().getLongitude()),
+//            String.valueOf(point.getPosition().getLatitude()));
+//    }
 
     /**
      * Covert {@link ScoringParameter} to string.

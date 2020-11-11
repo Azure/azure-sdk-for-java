@@ -7,20 +7,21 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * Ranking function based on the Okapi BM25 similarity algorithm. BM25 is a
- * TF-IDF-like algorithm that includes length normalization (controlled by the
- * 'b' parameter) as well as term frequency saturation (controlled by the 'k1'
+ * Ranking function based on the Okapi BM25 similarity algorithm. BM25 is a TF-IDF-like algorithm that includes length
+ * normalization (controlled by the 'b' parameter) as well as term frequency saturation (controlled by the 'k1'
  * parameter).
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.BM25Similarity")
+@JsonFlatten
 @Fluent
-public final class BM25Similarity extends Similarity {
+public class BM25Similarity extends Similarity {
     /*
      * This property controls the scaling function between the term frequency
      * of each matching terms and the final relevance score of a document-query
@@ -40,10 +41,9 @@ public final class BM25Similarity extends Similarity {
     private Double b;
 
     /**
-     * Get the k1 property: This property controls the scaling function between
-     * the term frequency of each matching terms and the final relevance score
-     * of a document-query pair. By default, a value of 1.2 is used. A value of
-     * 0.0 means the score does not scale with an increase in term frequency.
+     * Get the k1 property: This property controls the scaling function between the term frequency of each matching
+     * terms and the final relevance score of a document-query pair. By default, a value of 1.2 is used. A value of 0.0
+     * means the score does not scale with an increase in term frequency.
      *
      * @return the k1 value.
      */
@@ -52,10 +52,9 @@ public final class BM25Similarity extends Similarity {
     }
 
     /**
-     * Set the k1 property: This property controls the scaling function between
-     * the term frequency of each matching terms and the final relevance score
-     * of a document-query pair. By default, a value of 1.2 is used. A value of
-     * 0.0 means the score does not scale with an increase in term frequency.
+     * Set the k1 property: This property controls the scaling function between the term frequency of each matching
+     * terms and the final relevance score of a document-query pair. By default, a value of 1.2 is used. A value of 0.0
+     * means the score does not scale with an increase in term frequency.
      *
      * @param k1 the k1 value to set.
      * @return the BM25Similarity object itself.
@@ -66,10 +65,9 @@ public final class BM25Similarity extends Similarity {
     }
 
     /**
-     * Get the b property: This property controls how the length of a document
-     * affects the relevance score. By default, a value of 0.75 is used. A
-     * value of 0.0 means no length normalization is applied, while a value of
-     * 1.0 means the score is fully normalized by the length of the document.
+     * Get the b property: This property controls how the length of a document affects the relevance score. By default,
+     * a value of 0.75 is used. A value of 0.0 means no length normalization is applied, while a value of 1.0 means the
+     * score is fully normalized by the length of the document.
      *
      * @return the b value.
      */
@@ -78,10 +76,9 @@ public final class BM25Similarity extends Similarity {
     }
 
     /**
-     * Set the b property: This property controls how the length of a document
-     * affects the relevance score. By default, a value of 0.75 is used. A
-     * value of 0.0 means no length normalization is applied, while a value of
-     * 1.0 means the score is fully normalized by the length of the document.
+     * Set the b property: This property controls how the length of a document affects the relevance score. By default,
+     * a value of 0.75 is used. A value of 0.0 means no length normalization is applied, while a value of 1.0 means the
+     * score is fully normalized by the length of the document.
      *
      * @param b the b value to set.
      * @return the BM25Similarity object itself.

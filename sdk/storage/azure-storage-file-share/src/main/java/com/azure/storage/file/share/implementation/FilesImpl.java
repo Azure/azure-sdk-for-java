@@ -94,6 +94,7 @@ public final class FilesImpl {
 
         @Head("{shareName}/{filePath}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ShareStorageException.class)
         Mono<FilesGetPropertiesResponse> getProperties(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-lease-id") String leaseId, Context context);
 
         @Delete("{shareName}/{filePath}")
@@ -124,7 +125,7 @@ public final class FilesImpl {
         @Get("{shareName}/{filePath}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ShareStorageException.class)
-        Mono<FilesGetRangeListResponse> getRangeList(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-range") String range, @HeaderParam("x-ms-lease-id") String leaseId, @QueryParam("comp") String comp, Context context);
+        Mono<FilesGetRangeListResponse> getRangeList(@PathParam("shareName") String shareName, @PathParam("filePath") String filePath, @HostParam("url") String url, @QueryParam("sharesnapshot") String sharesnapshot, @QueryParam("prevsharesnapshot") String prevsharesnapshot, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-range") String range, @HeaderParam("x-ms-lease-id") String leaseId, @QueryParam("comp") String comp, Context context);
 
         @Put("{shareName}/{filePath}")
         @ExpectedResponses({202})
@@ -172,7 +173,7 @@ public final class FilesImpl {
      *
      * @param shareName The name of the target share.
      * @param filePath The path of the target file.
-     * @param fileContentLength Specifies the maximum size for the file, up to 1 TB.
+     * @param fileContentLength Specifies the maximum size for the file, up to 4 TB.
      * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
@@ -202,7 +203,7 @@ public final class FilesImpl {
      *
      * @param shareName The name of the target share.
      * @param filePath The path of the target file.
-     * @param fileContentLength Specifies the maximum size for the file, up to 1 TB.
+     * @param fileContentLength Specifies the maximum size for the file, up to 4 TB.
      * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
@@ -580,11 +581,12 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FilesGetRangeListResponse> getRangeListWithRestResponseAsync(String shareName, String filePath, Context context) {
         final String sharesnapshot = null;
+        final String prevsharesnapshot = null;
         final Integer timeout = null;
         final String range = null;
         final String leaseId = null;
         final String comp = "rangelist";
-        return service.getRangeList(shareName, filePath, this.client.getUrl(), sharesnapshot, timeout, this.client.getVersion(), range, leaseId, comp, context);
+        return service.getRangeList(shareName, filePath, this.client.getUrl(), sharesnapshot, prevsharesnapshot, timeout, this.client.getVersion(), range, leaseId, comp, context);
     }
 
     /**
@@ -593,6 +595,7 @@ public final class FilesImpl {
      * @param shareName The name of the target share.
      * @param filePath The path of the target file.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
+     * @param prevsharesnapshot The previous snapshot parameter is an opaque DateTime value that, when present, specifies the previous snapshot.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting Timeouts for File Service Operations.&lt;/a&gt;.
      * @param range Specifies the range of bytes over which to list ranges, inclusively.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
@@ -601,9 +604,9 @@ public final class FilesImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FilesGetRangeListResponse> getRangeListWithRestResponseAsync(String shareName, String filePath, String sharesnapshot, Integer timeout, String range, String leaseId, Context context) {
+    public Mono<FilesGetRangeListResponse> getRangeListWithRestResponseAsync(String shareName, String filePath, String sharesnapshot, String prevsharesnapshot, Integer timeout, String range, String leaseId, Context context) {
         final String comp = "rangelist";
-        return service.getRangeList(shareName, filePath, this.client.getUrl(), sharesnapshot, timeout, this.client.getVersion(), range, leaseId, comp, context);
+        return service.getRangeList(shareName, filePath, this.client.getUrl(), sharesnapshot, prevsharesnapshot, timeout, this.client.getVersion(), range, leaseId, comp, context);
     }
 
     /**
@@ -758,7 +761,7 @@ public final class FilesImpl {
      *
      * @param shareName The name of the target share.
      * @param filePath The path of the target file.
-     * @param handleId Specifies handle ID opened on the file or directory to be closed. Asterix (‘*’) is a wildcard that specifies all handles.
+     * @param handleId Specifies handle ID opened on the file or directory to be closed. Asterisk (‘*’) is a wildcard that specifies all handles.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
@@ -777,7 +780,7 @@ public final class FilesImpl {
      *
      * @param shareName The name of the target share.
      * @param filePath The path of the target file.
-     * @param handleId Specifies handle ID opened on the file or directory to be closed. Asterix (‘*’) is a wildcard that specifies all handles.
+     * @param handleId Specifies handle ID opened on the file or directory to be closed. Asterisk (‘*’) is a wildcard that specifies all handles.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting Timeouts for File Service Operations.&lt;/a&gt;.
      * @param marker A string value that identifies the portion of the list to be returned with the next list operation. The operation returns a marker value within the response body if the list returned was not complete. The marker value may then be used in a subsequent call to request the next set of list items. The marker value is opaque to the client.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.

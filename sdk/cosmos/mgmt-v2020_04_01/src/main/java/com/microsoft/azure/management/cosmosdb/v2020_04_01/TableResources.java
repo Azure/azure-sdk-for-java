@@ -78,4 +78,26 @@ public interface TableResources {
      */
     Observable<ThroughputSettingsGetResults> updateTableThroughputAsync(String resourceGroupName, String accountName, String tableName, ThroughputSettingsUpdateParameters updateThroughputParameters);
 
+    /**
+     * Migrate an Azure Cosmos DB Table from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<ThroughputSettingsGetResults> migrateTableToAutoscaleAsync(String resourceGroupName, String accountName, String tableName);
+
+    /**
+     * Migrate an Azure Cosmos DB Table from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<ThroughputSettingsGetResults> migrateTableToManualThroughputAsync(String resourceGroupName, String accountName, String tableName);
+
 }

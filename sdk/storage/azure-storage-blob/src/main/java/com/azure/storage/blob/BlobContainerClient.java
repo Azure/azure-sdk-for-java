@@ -65,11 +65,10 @@ public final class BlobContainerClient {
 
     /**
      * Initializes a new BlobClient object by concatenating blobName to the end of ContainerAsyncClient's URL. The new
-     * BlobClient uses the same request policy pipeline as the ContainerAsyncClient. To change the pipeline, create the
-     * BlobClient and then call its WithPipeline method passing in the desired pipeline object. Or, call this package's
-     * getBlobAsyncClient instead of calling this object's getBlobAsyncClient method.
+     * BlobClient uses the same request policy pipeline as the ContainerAsyncClient.
      *
-     * @param blobName A {@code String} representing the name of the blob.
+     * @param blobName A {@code String} representing the name of the blob. If the blob name contains special characters,
+     *  pass in the url encoded version of the blob name.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -82,20 +81,32 @@ public final class BlobContainerClient {
 
     /**
      * Initializes a new BlobClient object by concatenating blobName to the end of ContainerAsyncClient's URL. The new
-     * BlobClient uses the same request policy pipeline as the ContainerAsyncClient. To change the pipeline, create the
-     * BlobClient and then call its WithPipeline method passing in the desired pipeline object. Or, call this package's
-     * getBlobAsyncClient instead of calling this object's getBlobAsyncClient method.
+     * BlobClient uses the same request policy pipeline as the ContainerAsyncClient.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobContainerClient.getBlobClient#String-String}
      *
-     * @param blobName A {@code String} representing the name of the blob.
+     * @param blobName A {@code String} representing the name of the blob. If the blob name contains special characters,
+     * pass in the url encoded version of the blob name.
      * @param snapshot the snapshot identifier for the blob.
      * @return A new {@link BlobClient} object which references the blob with the specified name in this container.
      */
     public BlobClient getBlobClient(String blobName, String snapshot) {
         return new BlobClient(client.getBlobAsyncClient(blobName, snapshot));
+    }
+
+    /**
+     * Initializes a new BlobClient object by concatenating blobName to the end of ContainerAsyncClient's URL. The new
+     * BlobClient uses the same request policy pipeline as the ContainerAsyncClient.
+     *
+     * @param blobName A {@code String} representing the name of the blob. If the blob name contains special characters,
+     * pass in the url encoded version of the blob name.
+     * @param versionId the version identifier for the blob, pass {@code null} to interact with the latest blob version.
+     * @return A new {@link BlobClient} object which references the blob with the specified name in this container.
+     */
+    public BlobClient getBlobVersionClient(String blobName, String versionId) {
+        return new BlobClient(client.getBlobVersionAsyncClient(blobName, versionId));
     }
 
     /**

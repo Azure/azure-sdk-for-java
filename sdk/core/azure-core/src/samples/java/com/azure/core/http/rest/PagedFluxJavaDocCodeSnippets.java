@@ -3,6 +3,9 @@
 
 package com.azure.core.http.rest;
 
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpRequest;
 import com.azure.core.util.paging.PageRetriever;
 import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
@@ -10,9 +13,12 @@ import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Code snippets for {@link PagedFlux}
@@ -28,9 +34,9 @@ public final class PagedFluxJavaDocCodeSnippets {
         // Subscribe to process one item at a time
         pagedFlux
             .log()
-            .subscribe(item -> System.out.println("Processing item " + item),
-                error -> System.err.println("Error occurred " + error),
-                () -> System.out.println("Completed processing."));
+            .subscribe(item -> System.out.println("Processing item with value: " + item),
+                error -> System.err.println("An error occurred: " + error),
+                () -> System.out.println("Processing complete."));
         // END: com.azure.core.http.rest.pagedflux.items
 
         // BEGIN: com.azure.core.http.rest.pagedflux.pages
@@ -38,9 +44,10 @@ public final class PagedFluxJavaDocCodeSnippets {
         pagedFlux
             .byPage()
             .log()
-            .subscribe(page -> System.out.println("Processing page containing " + page.getItems()),
-                error -> System.err.println("Error occurred " + error),
-                () -> System.out.println("Completed processing."));
+            .subscribe(page -> System.out.printf("Processing page containing item values: %s%n",
+                page.getElements().stream().map(String::valueOf).collect(Collectors.joining(", "))),
+                error -> System.err.println("An error occurred: " + error),
+                () -> System.out.println("Processing complete."));
         // END: com.azure.core.http.rest.pagedflux.pages
 
         // BEGIN: com.azure.core.http.rest.pagedflux.pagesWithContinuationToken
@@ -52,14 +59,16 @@ public final class PagedFluxJavaDocCodeSnippets {
             .log()
             .doOnSubscribe(ignored -> System.out.println(
                 "Subscribed to paged flux processing pages starting from: " + continuationToken))
-            .subscribe(page -> System.out.println("Processing page containing " + page.getItems()),
-                error -> System.err.println("Error occurred " + error),
-                () -> System.out.println("Completed processing."));
+            .subscribe(page -> System.out.printf("Processing page containing item values: %s%n",
+                page.getElements().stream().map(String::valueOf).collect(Collectors.joining(", "))),
+                error -> System.err.println("An error occurred: " + error),
+                () -> System.out.println("Processing complete."));
         // END: com.azure.core.http.rest.pagedflux.pagesWithContinuationToken
     }
 
     /**
      * Code snippets for creating an instance of {@link PagedFlux}
+     *
      * @return An instance of {@link PagedFlux}
      */
     public PagedFlux<Integer> createAnInstance() {
@@ -98,9 +107,10 @@ public final class PagedFluxJavaDocCodeSnippets {
             .log()
             .doOnSubscribe(ignoredVal -> System.out.println(
                 "Subscribed to paged flux processing pages starting from first page"))
-            .subscribe(page -> System.out.println("Processing page containing " + page.getItems()),
-                error -> System.err.println("Error occurred " + error),
-                () -> System.out.println("Completed processing."));
+            .subscribe(page -> System.out.printf("Processing page containing item values: %s%n",
+                page.getElements().stream().map(String::valueOf).collect(Collectors.joining(", "))),
+                error -> System.err.println("An error occurred: " + error),
+                () -> System.out.println("Processing complete."));
         // END: com.azure.core.http.rest.pagedflux.bypage
 
         // BEGIN: com.azure.core.http.rest.pagedflux.bypage#String
@@ -110,9 +120,10 @@ public final class PagedFluxJavaDocCodeSnippets {
             .log()
             .doOnSubscribe(ignoredVal -> System.out.println(
                 "Subscribed to paged flux processing page starting from " + continuationToken))
-            .subscribe(page -> System.out.println("Processing page containing " + page.getItems()),
-                error -> System.err.println("Error occurred " + error),
-                () -> System.out.println("Completed processing."));
+            .subscribe(page -> System.out.printf("Processing page containing item values: %s%n",
+                page.getElements().stream().map(String::valueOf).collect(Collectors.joining(", "))),
+                error -> System.err.println("An error occurred: " + error),
+                () -> System.out.println("Processing complete."));
         // END: com.azure.core.http.rest.pagedflux.bypage#String
     }
 
@@ -132,20 +143,20 @@ public final class PagedFluxJavaDocCodeSnippets {
 
             @Override
             protected void hookOnNext(Integer value) {
-                System.out.println("Processing item " + value);
+                System.out.println("Processing item with value: " + value);
             }
 
             @Override
             protected void hookOnComplete() {
-                System.out.println("Completed processing");
+                System.out.println("Processing complete.");
             }
         });
         // END: com.azure.core.http.rest.pagedflux.subscribe
     }
 
     /**
-     * Code snippets for using {@link PagedFlux#create(Supplier)}
-     * to create a PagedFlux by applying decoration on another PagedFlux.
+     * Code snippets for using {@link PagedFlux#create(Supplier)} to create a PagedFlux by applying decoration on
+     * another PagedFlux.
      */
     public void pagedFluxFromPagedFlux() {
         // BEGIN: com.azure.core.http.rest.pagedflux.create.decoration
@@ -156,41 +167,31 @@ public final class PagedFluxJavaDocCodeSnippets {
         // PagedResponse<Integer> to PagedResponse<String> mapper
         final Function<PagedResponse<Integer>, PagedResponse<String>> responseMapper
             = intResponse -> new PagedResponseBase<Void, String>(intResponse.getRequest(),
-                intResponse.getStatusCode(),
-                intResponse.getHeaders(),
-                intResponse.getValue()
-                    .stream()
-                    .map(intValue -> Integer.toString(intValue)).collect(Collectors.toList()),
-                intResponse.getContinuationToken(),
-                null);
+            intResponse.getStatusCode(),
+            intResponse.getHeaders(),
+            intResponse.getValue()
+                .stream()
+                .map(intValue -> Integer.toString(intValue)).collect(Collectors.toList()),
+            intResponse.getContinuationToken(),
+            null);
 
-        final Supplier<PageRetriever<String, PagedResponse<String>>> provider
-            = new Supplier<PageRetriever<String, PagedResponse<String>>>() {
-                @Override
-                public PageRetriever<String, PagedResponse<String>> get() {
-                    return (continuationToken, pageSize) -> {
-                        Flux<PagedResponse<Integer>> flux = (continuationToken == null)
-                            ? intPagedFlux.byPage()
-                            : intPagedFlux.byPage(continuationToken);
-                        return flux.map(responseMapper);
-                    };
-                }
+        final Supplier<PageRetriever<String, PagedResponse<String>>> provider = () ->
+            (continuationToken, pageSize) -> {
+                Flux<PagedResponse<Integer>> flux = (continuationToken == null)
+                    ? intPagedFlux.byPage()
+                    : intPagedFlux.byPage(continuationToken);
+                return flux.map(responseMapper);
             };
         PagedFlux<String> strPagedFlux = PagedFlux.create(provider);
 
         // Create a PagedFlux from a PagedFlux with all exceptions mapped to a specific exception.
         final PagedFlux<Integer> pagedFlux = createAnInstance();
-        final Supplier<PageRetriever<String, PagedResponse<Integer>>> eprovider
-            = new Supplier<PageRetriever<String, PagedResponse<Integer>>>() {
-                @Override
-                public PageRetriever<String, PagedResponse<Integer>> get() {
-                    return (continuationToken, pageSize) -> {
-                        Flux<PagedResponse<Integer>> flux = (continuationToken == null)
-                            ? pagedFlux.byPage()
-                            : pagedFlux.byPage(continuationToken);
-                        return flux.onErrorMap(t -> new PaginationException(t));
-                    };
-                }
+        final Supplier<PageRetriever<String, PagedResponse<Integer>>> eprovider = () ->
+            (continuationToken, pageSize) -> {
+                Flux<PagedResponse<Integer>> flux = (continuationToken == null)
+                    ? pagedFlux.byPage()
+                    : pagedFlux.byPage(continuationToken);
+                return flux.onErrorMap(PaginationException::new);
             };
         final PagedFlux<Integer> exceptionMappedPagedFlux = PagedFlux.create(eprovider);
         // END: com.azure.core.http.rest.pagedflux.create.decoration
@@ -202,29 +203,54 @@ public final class PagedFluxJavaDocCodeSnippets {
      * @return A continuation token
      */
     private String getContinuationToken() {
-        return null;
+        return UUID.randomUUID().toString();
     }
 
     /**
-     * Implementation not provided
+     * Retrieves the next page from a paged API.
      *
      * @param continuationToken Token to fetch the next page
      * @return A {@link Mono} of {@link PagedResponse} containing items of type {@code Integer}
      */
     private Mono<PagedResponse<Integer>> getNextPage(String continuationToken) {
-        return null;
+        return getPage(continuationToken);
     }
 
     /**
-     * Implementation not provided
+     * Retrieves the initial page from a paged API.
      *
      * @return A {@link Mono} of {@link PagedResponse} containing items of type {@code Integer}
      */
     private Mono<PagedResponse<Integer>> getFirstPage() {
-        return null;
+        return getPage(null);
     }
 
-    class PaginationException extends RuntimeException {
+    /**
+     * Retrieves a page from a paged API.
+     *
+     * @param continuationToken Token to fetch the next page, if {@code null} the first page is retrieved.
+     * @return A {@link Mono} of {@link PagedResponse} containing items of type {@code Integer}
+     */
+    private Mono<PagedResponse<Integer>> getPage(String continuationToken) {
+        // Given this isn't calling an actual API we will arbitrarily generate a continuation token or end paging.
+        boolean lastPage = Math.random() > 0.5;
+
+        // If it is the last page there should be no additional continuation tokens returned.
+        String nextContinuationToken = lastPage ? null : UUID.randomUUID().toString();
+
+        // Arbitrarily begin the next page of integers.
+        int elementCount = (int) Math.ceil(Math.random() * 15);
+        List<Integer> elements = IntStream.range(elementCount, elementCount + elementCount)
+            .map(val -> (int) (Math.random() * val))
+            .boxed()
+            .collect(Collectors.toList());
+
+        // This is a rough approximation of a service response.
+        return Mono.just(new PagedResponseBase<Void, Integer>(new HttpRequest(HttpMethod.GET, "https://requestUrl.com"),
+            200, new HttpHeaders(), elements, nextContinuationToken, null));
+    }
+
+    static class PaginationException extends RuntimeException {
         PaginationException(Throwable ex) {
             super(ex);
         }

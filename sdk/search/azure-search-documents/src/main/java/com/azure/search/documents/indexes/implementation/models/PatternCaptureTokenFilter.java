@@ -7,19 +7,22 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /**
- * Uses Java regexes to emit multiple tokens - one for each capture group in
- * one or more patterns. This token filter is implemented using Apache Lucene.
+ * Uses Java regexes to emit multiple tokens - one for each capture group in one or more patterns. This token filter is
+ * implemented using Apache Lucene.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.PatternCaptureTokenFilter")
+@JsonFlatten
 @Fluent
-public final class PatternCaptureTokenFilter extends TokenFilter {
+public class PatternCaptureTokenFilter extends TokenFilter {
     /*
      * A list of patterns to match against each token.
      */
@@ -34,8 +37,21 @@ public final class PatternCaptureTokenFilter extends TokenFilter {
     private Boolean preserveOriginal;
 
     /**
-     * Get the patterns property: A list of patterns to match against each
-     * token.
+     * Creates an instance of PatternCaptureTokenFilter class.
+     *
+     * @param name the name value to set.
+     * @param patterns the patterns value to set.
+     */
+    @JsonCreator
+    public PatternCaptureTokenFilter(
+            @JsonProperty(value = "name", required = true) String name,
+            @JsonProperty(value = "patterns", required = true) List<String> patterns) {
+        super(name);
+        this.patterns = patterns;
+    }
+
+    /**
+     * Get the patterns property: A list of patterns to match against each token.
      *
      * @return the patterns value.
      */
@@ -44,20 +60,8 @@ public final class PatternCaptureTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the patterns property: A list of patterns to match against each
-     * token.
-     *
-     * @param patterns the patterns value to set.
-     * @return the PatternCaptureTokenFilter object itself.
-     */
-    public PatternCaptureTokenFilter setPatterns(List<String> patterns) {
-        this.patterns = patterns;
-        return this;
-    }
-
-    /**
-     * Get the preserveOriginal property: A value indicating whether to return
-     * the original token even if one of the patterns matches. Default is true.
+     * Get the preserveOriginal property: A value indicating whether to return the original token even if one of the
+     * patterns matches. Default is true.
      *
      * @return the preserveOriginal value.
      */
@@ -66,8 +70,8 @@ public final class PatternCaptureTokenFilter extends TokenFilter {
     }
 
     /**
-     * Set the preserveOriginal property: A value indicating whether to return
-     * the original token even if one of the patterns matches. Default is true.
+     * Set the preserveOriginal property: A value indicating whether to return the original token even if one of the
+     * patterns matches. Default is true.
      *
      * @param preserveOriginal the preserveOriginal value to set.
      * @return the PatternCaptureTokenFilter object itself.

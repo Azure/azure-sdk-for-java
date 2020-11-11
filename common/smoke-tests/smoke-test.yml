@@ -11,61 +11,68 @@ jobs:
       matrix:
         Java 8 Windows (AzureCloud):
           ProfileFlag: ''
-          JavaVersion: '1.8'
+          JavaTestVersion: '1.8'
           OSVmImage: windows-2019
           SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
           ArmTemplateParameters: $(azureCloudArmParameters)
         Java LTS Windows (AzureCloud):
           ProfileFlag: '-Pjava-lts'
-          JavaVersion: '1.11'
+          JavaTestVersion: '1.11'
           OSVmImage: windows-2019
           SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
           ArmTemplateParameters: $(azureCloudArmParameters)
         Java 8 Linux (AzureCloud):
           ProfileFlag: ''
-          JavaVersion: '1.8'
+          JavaTestVersion: '1.8'
           OSVmImage: ubuntu-18.04
           SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
           ArmTemplateParameters: $(azureCloudArmParameters)
         Java LTS Linux (AzureCloud):
           ProfileFlag: '-Pjava-lts'
-          JavaVersion: '1.11'
+          JavaTestVersion: '1.11'
           OSVmImage: ubuntu-18.04
           SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
           ArmTemplateParameters: $(azureCloudArmParameters)
+        Java LTS Linux (AzureCloud Canary):
+          ProfileFlag: '-Pjava-lts'
+          JavaTestVersion: '1.11'
+          OSVmImage: ubuntu-18.04
+          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)
+          ArmTemplateParameters: $(azureCloudArmParameters)
+          Location: 'eastus2euap'
         Java 8 MacOS (AzureCloud):
           ProfileFlag: ''
-          JavaVersion: '1.8'
+          JavaTestVersion: '1.8'
           OSVmImage: macOS-10.15
           SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
           ArmTemplateParameters: $(azureCloudArmParameters)
         Java LTS MacOS (AzureCloud):
           ProfileFlag: '-Pjava-lts'
-          JavaVersion: '1.11'
+          JavaTestVersion: '1.11'
           OSVmImage: macOS-10.15
           SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
           ArmTemplateParameters: $(azureCloudArmParameters)
         Java 8 Windows (AzureUSGovernment):
           ProfileFlag: ''
-          JavaVersion: '1.8'
+          JavaTestVersion: '1.8'
           OSVmImage: windows-2019
           SubscriptionConfiguration: $(sub-config-gov-test-resources)
           ArmTemplateParameters: $(azureUSGovernmentArmParameters)
         Java LTS Windows (AzureUSGovernment):
           ProfileFlag: '-Pjava-lts'
-          JavaVersion: '1.11'
+          JavaTestVersion: '1.11'
           OSVmImage: windows-2019
           SubscriptionConfiguration: $(sub-config-gov-test-resources)
           ArmTemplateParameters: $(azureUSGovernmentArmParameters)
         Java 8 Windows (AzureChinaCloud):
           ProfileFlag: ''
-          JavaVersion: '1.8'
+          JavaTestVersion: '1.8'
           OSVmImage: windows-2019
           SubscriptionConfiguration: $(sub-config-cn-test-resources)
           ArmTemplateParameters: $(azureChinaCloudArmParameters)
         Java LTS Windows (AzureChinaCloud):
           ProfileFlag: '-Pjava-lts'
-          JavaVersion: '1.11'
+          JavaTestVersion: '1.11'
           OSVmImage: windows-2019
           SubscriptionConfiguration: $(sub-config-cn-test-resources)
           ArmTemplateParameters: $(azureChinaCloudArmParameters)
@@ -87,7 +94,7 @@ jobs:
           goals: 'versions:use-latest-versions'
           options: '$(DefaultOptions) $(ProfileFlag) --no-transfer-progress -DskipTests "-Dincludes=com.azure:*"'
           javaHomeOption: 'JDKVersion'
-          jdkVersionOption: $(JavaVersion)
+          jdkVersionOption: $(JavaTestVersion)
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
 
@@ -113,7 +120,7 @@ jobs:
           goals: 'dependency:tree'
           options: '$(DefaultOptions) $(ProfileFlag) --no-transfer-progress -DskipTests'
           javaHomeOption: 'JDKVersion'
-          jdkVersionOption: $(JavaVersion)
+          jdkVersionOption: $(JavaTestVersion)
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
 
@@ -124,7 +131,7 @@ jobs:
           goals: 'package'
           options: '$(DefaultOptions) $(ProfileFlag) --no-transfer-progress -DskipTests'
           javaHomeOption: 'JDKVersion'
-          jdkVersionOption: $(JavaVersion)
+          jdkVersionOption: $(JavaTestVersion)
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
 
@@ -141,7 +148,7 @@ jobs:
           goals: 'exec:java'
           options: '$(DefaultOptions) $(ProfileFlag) -Dexec.mainClass="com.azure.App"'
           javaHomeOption: 'JDKVersion'
-          jdkVersionOption: $(JavaVersion)
+          jdkVersionOption: $(JavaTestVersion)
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
         env:

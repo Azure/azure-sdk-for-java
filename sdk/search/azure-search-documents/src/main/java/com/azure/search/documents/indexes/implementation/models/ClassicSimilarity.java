@@ -6,18 +6,18 @@
 
 package com.azure.search.documents.indexes.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * Legacy similarity algorithm which uses the Lucene TFIDFSimilarity
- * implementation of TF-IDF. This variation of TF-IDF introduces static
- * document length normalization as well as coordinating factors that penalize
- * documents that only partially match the searched queries.
+ * Legacy similarity algorithm which uses the Lucene TFIDFSimilarity implementation of TF-IDF. This variation of TF-IDF
+ * introduces static document length normalization as well as coordinating factors that penalize documents that only
+ * partially match the searched queries.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.ClassicSimilarity")
-@Fluent
-public final class ClassicSimilarity extends Similarity {
-}
+@JsonFlatten
+@Immutable
+public class ClassicSimilarity extends Similarity {}

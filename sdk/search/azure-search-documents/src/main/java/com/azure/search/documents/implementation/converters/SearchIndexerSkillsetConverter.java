@@ -8,6 +8,7 @@ import com.azure.search.documents.indexes.models.SearchIndexerSkill;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -23,16 +24,10 @@ public final class SearchIndexerSkillsetConverter {
         if (obj == null) {
             return null;
         }
-        SearchIndexerSkillset searchIndexerSkillset = new SearchIndexerSkillset();
 
-        if (obj.getSkills() != null) {
-            List<SearchIndexerSkill> skills =
-                obj.getSkills().stream().map(SearchIndexerSkillConverter::map).collect(Collectors.toList());
-            searchIndexerSkillset.setSkills(skills);
-        }
-
-        String name = obj.getName();
-        searchIndexerSkillset.setName(name);
+        List<SearchIndexerSkill> skills = obj.getSkills() == null ? null
+            : obj.getSkills().stream().map(SearchIndexerSkillConverter::map).collect(Collectors.toList());
+        SearchIndexerSkillset searchIndexerSkillset = new SearchIndexerSkillset(obj.getName(), skills);
 
         if (obj.getCognitiveServicesAccount() != null) {
             CognitiveServicesAccount cognitiveServicesAccount =
@@ -40,11 +35,13 @@ public final class SearchIndexerSkillsetConverter {
             searchIndexerSkillset.setCognitiveServicesAccount(cognitiveServicesAccount);
         }
 
-        String description = obj.getDescription();
-        searchIndexerSkillset.setDescription(description);
+        searchIndexerSkillset.setDescription(obj.getDescription());
+        searchIndexerSkillset.setETag(obj.getETag());
 
-        String eTag = obj.getETag();
-        searchIndexerSkillset.setETag(eTag);
+        if (obj.getEncryptionKey() != null) {
+            searchIndexerSkillset.setEncryptionKey(SearchResourceEncryptionKeyConverter.map(obj.getEncryptionKey()));
+        }
+
         return searchIndexerSkillset;
     }
 
@@ -56,17 +53,14 @@ public final class SearchIndexerSkillsetConverter {
         if (obj == null) {
             return null;
         }
+        Objects.requireNonNull(obj.getName(), "The SearchIndexerSkillset name cannot be null");
+        List<com.azure.search.documents.indexes.implementation.models.SearchIndexerSkill> skills =
+            obj.getSkills() == null ? null
+                : obj.getSkills().stream().map(SearchIndexerSkillConverter::map).collect(Collectors.toList());
         com.azure.search.documents.indexes.implementation.models.SearchIndexerSkillset searchIndexerSkillset =
-            new com.azure.search.documents.indexes.implementation.models.SearchIndexerSkillset();
-
-        if (obj.getSkills() != null) {
-            List<com.azure.search.documents.indexes.implementation.models.SearchIndexerSkill> skills =
-                obj.getSkills().stream().map(SearchIndexerSkillConverter::map).collect(Collectors.toList());
-            searchIndexerSkillset.setSkills(skills);
-        }
-
-        String name = obj.getName();
-        searchIndexerSkillset.setName(name);
+            new com.azure.search.documents.indexes.implementation.models.SearchIndexerSkillset()
+                .setName(obj.getName())
+                .setSkills(skills);
 
         if (obj.getCognitiveServicesAccount() != null) {
             com.azure.search.documents.indexes.implementation.models.CognitiveServicesAccount cognitiveServicesAccount =
@@ -74,11 +68,13 @@ public final class SearchIndexerSkillsetConverter {
             searchIndexerSkillset.setCognitiveServicesAccount(cognitiveServicesAccount);
         }
 
-        String description = obj.getDescription();
-        searchIndexerSkillset.setDescription(description);
+        searchIndexerSkillset.setDescription(obj.getDescription());
+        searchIndexerSkillset.setETag(obj.getETag());
 
-        String eTag = obj.getETag();
-        searchIndexerSkillset.setETag(eTag);
+        if (obj.getEncryptionKey() != null) {
+            searchIndexerSkillset.setEncryptionKey(SearchResourceEncryptionKeyConverter.map(obj.getEncryptionKey()));
+        }
+
         return searchIndexerSkillset;
     }
 

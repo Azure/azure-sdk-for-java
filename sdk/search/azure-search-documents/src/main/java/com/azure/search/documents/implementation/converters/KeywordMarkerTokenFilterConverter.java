@@ -21,15 +21,9 @@ public final class KeywordMarkerTokenFilterConverter {
         if (obj == null) {
             return null;
         }
-        KeywordMarkerTokenFilter keywordMarkerTokenFilter = new KeywordMarkerTokenFilter();
 
-        String name = obj.getName();
-        keywordMarkerTokenFilter.setName(name);
-
-        if (obj.getKeywords() != null) {
-            List<String> keywords = new ArrayList<>(obj.getKeywords());
-            keywordMarkerTokenFilter.setKeywords(keywords);
-        }
+        List<String> keywords = new ArrayList<>(obj.getKeywords());
+        KeywordMarkerTokenFilter keywordMarkerTokenFilter = new KeywordMarkerTokenFilter(obj.getName(), keywords);
 
         Boolean ignoreCase = obj.isIgnoreCase();
         keywordMarkerTokenFilter.setCaseIgnored(ignoreCase);
@@ -44,19 +38,15 @@ public final class KeywordMarkerTokenFilterConverter {
         if (obj == null) {
             return null;
         }
+
+        List<String> keywords = new ArrayList<>(obj.getKeywords());
         com.azure.search.documents.indexes.implementation.models.KeywordMarkerTokenFilter keywordMarkerTokenFilter =
-            new com.azure.search.documents.indexes.implementation.models.KeywordMarkerTokenFilter();
-
-        String name = obj.getName();
-        keywordMarkerTokenFilter.setName(name);
-
-        if (obj.getKeywords() != null) {
-            List<String> keywords = new ArrayList<>(obj.getKeywords());
-            keywordMarkerTokenFilter.setKeywords(keywords);
-        }
+            new com.azure.search.documents.indexes.implementation.models.KeywordMarkerTokenFilter(obj.getName(),
+                keywords);
 
         Boolean ignoreCase = obj.isCaseIgnored();
         keywordMarkerTokenFilter.setIgnoreCase(ignoreCase);
+
         return keywordMarkerTokenFilter;
     }
 

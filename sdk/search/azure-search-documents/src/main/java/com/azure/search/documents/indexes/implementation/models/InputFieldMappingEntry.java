@@ -7,12 +7,11 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Input field mapping for a skill.
- */
+/** Input field mapping for a skill. */
 @Fluent
 public final class InputFieldMappingEntry {
     /*
@@ -40,23 +39,22 @@ public final class InputFieldMappingEntry {
     private List<InputFieldMappingEntry> inputs;
 
     /**
+     * Creates an instance of InputFieldMappingEntry class.
+     *
+     * @param name the name value to set.
+     */
+    @JsonCreator
+    public InputFieldMappingEntry(@JsonProperty(value = "name", required = true) String name) {
+        this.name = name;
+    }
+
+    /**
      * Get the name property: The name of the input.
      *
      * @return the name value.
      */
     public String getName() {
         return this.name;
-    }
-
-    /**
-     * Set the name property: The name of the input.
-     *
-     * @param name the name value to set.
-     * @return the InputFieldMappingEntry object itself.
-     */
-    public InputFieldMappingEntry setName(String name) {
-        this.name = name;
-        return this;
     }
 
     /**
@@ -80,8 +78,7 @@ public final class InputFieldMappingEntry {
     }
 
     /**
-     * Get the sourceContext property: The source context used for selecting
-     * recursive inputs.
+     * Get the sourceContext property: The source context used for selecting recursive inputs.
      *
      * @return the sourceContext value.
      */
@@ -90,8 +87,7 @@ public final class InputFieldMappingEntry {
     }
 
     /**
-     * Set the sourceContext property: The source context used for selecting
-     * recursive inputs.
+     * Set the sourceContext property: The source context used for selecting recursive inputs.
      *
      * @param sourceContext the sourceContext value to set.
      * @return the InputFieldMappingEntry object itself.
@@ -102,8 +98,7 @@ public final class InputFieldMappingEntry {
     }
 
     /**
-     * Get the inputs property: The recursive inputs used when creating a
-     * complex type.
+     * Get the inputs property: The recursive inputs used when creating a complex type.
      *
      * @return the inputs value.
      */
@@ -112,8 +107,7 @@ public final class InputFieldMappingEntry {
     }
 
     /**
-     * Set the inputs property: The recursive inputs used when creating a
-     * complex type.
+     * Set the inputs property: The recursive inputs used when creating a complex type.
      *
      * @param inputs the inputs value to set.
      * @return the InputFieldMappingEntry object itself.

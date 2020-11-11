@@ -8,11 +8,13 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.implementation.AuthenticationRecord;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.MsalAuthenticationAccount;
 import com.azure.identity.implementation.MsalToken;
+import com.azure.identity.implementation.util.LoggingUtil;
 import reactor.core.publisher.Mono;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -74,7 +76,9 @@ public class DeviceCodeCredential implements TokenCredential {
                 }
                 return identityClient.authenticateWithDeviceCode(request, challengeConsumer);
             }))
-            .map(this::updateCache);
+            .map(this::updateCache)
+            .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
+            .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
     }
 
     /**
@@ -88,9 +92,9 @@ public class DeviceCodeCredential implements TokenCredential {
      *
      * @return The {@link AuthenticationRecord} which can be used to silently authenticate the account
      * on future execution if persistent caching was enabled via
-     * {@link DeviceCodeCredentialBuilder#enablePersistentCache(boolean)} when credential was instantiated.
+     * {@link DeviceCodeCredentialBuilder#enablePersistentCache()} when credential was instantiated.
      */
-    public Mono<AuthenticationRecord> authenticate(TokenRequestContext request) {
+    Mono<AuthenticationRecord> authenticate(TokenRequestContext request) {
         return Mono.defer(() -> identityClient.authenticateWithDeviceCode(request, challengeConsumer))
                        .map(this::updateCache)
                        .map(msalToken -> cachedToken.get().getAuthenticationRecord());
@@ -105,10 +109,10 @@ public class DeviceCodeCredential implements TokenCredential {
      *
      * @return The {@link AuthenticationRecord} which can be used to silently authenticate the account
      * on future execution if persistent caching was enabled via
-     * {@link DeviceCodeCredentialBuilder#enablePersistentCache(boolean)} when credential was instantiated.
+     * {@link DeviceCodeCredentialBuilder#enablePersistentCache()} when credential was instantiated.
      */
-    public Mono<AuthenticationRecord> authenticate() {
-        String defaultScope = KnownAuthorityHosts.getDefaultScope(authorityHost);
+    Mono<AuthenticationRecord> authenticate() {
+        String defaultScope = AzureAuthorityHosts.getDefaultScope(authorityHost);
         if (defaultScope == null) {
             return Mono.error(logger.logExceptionAsError(new CredentialUnavailableException("Authenticating in this "
                                                     + "environment requires specifying a TokenRequestContext.")));
@@ -116,11 +120,12 @@ public class DeviceCodeCredential implements TokenCredential {
         return authenticate(new TokenRequestContext().addScopes(defaultScope));
     }
 
-    private MsalToken updateCache(MsalToken msalToken) {
+    private AccessToken updateCache(MsalToken msalToken) {
         cachedToken.set(
                 new MsalAuthenticationAccount(
-                        new AuthenticationRecord(msalToken.getAuthenticationResult(),
-                                identityClient.getTenantId())));
+                    new AuthenticationRecord(msalToken.getAuthenticationResult(),
+                                identityClient.getTenantId(), identityClient.getClientId()),
+                    msalToken.getAccount().getTenantProfiles()));
         return msalToken;
     }
 }

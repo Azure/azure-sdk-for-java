@@ -33,23 +33,27 @@ public final class PatternReplaceTokenFilter extends TokenFilter {
     private String replacement;
 
     /**
+     * Constructor of {@link PatternReplaceTokenFilter}.
+     *
+     * @param name The name of the token filter. It must only contain letters, digits,
+     * spaces, dashes or underscores, can only start and end with alphanumeric
+     * characters, and is limited to 128 characters.
+     * @param pattern A regular expression pattern.
+     * @param replacement The replacement text.
+     */
+    public PatternReplaceTokenFilter(String name, String pattern, String replacement) {
+        super(name);
+        this.pattern = pattern;
+        this.replacement = replacement;
+    }
+
+    /**
      * Get the pattern property: A regular expression pattern.
      *
      * @return the pattern value.
      */
     public String getPattern() {
         return this.pattern;
-    }
-
-    /**
-     * Set the pattern property: A regular expression pattern.
-     *
-     * @param pattern the pattern value to set.
-     * @return the PatternReplaceTokenFilter object itself.
-     */
-    public PatternReplaceTokenFilter setPattern(String pattern) {
-        this.pattern = pattern;
-        return this;
     }
 
     /**
@@ -61,14 +65,4 @@ public final class PatternReplaceTokenFilter extends TokenFilter {
         return this.replacement;
     }
 
-    /**
-     * Set the replacement property: The replacement text.
-     *
-     * @param replacement the replacement value to set.
-     * @return the PatternReplaceTokenFilter object itself.
-     */
-    public PatternReplaceTokenFilter setReplacement(String replacement) {
-        this.replacement = replacement;
-        return this;
-    }
 }

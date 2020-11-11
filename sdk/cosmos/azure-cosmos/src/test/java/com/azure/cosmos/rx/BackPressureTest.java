@@ -8,16 +8,16 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.models.CosmosContainerProperties;
-import com.azure.cosmos.models.CosmosContainerRequestOptions;
-import com.azure.cosmos.util.CosmosPagedFlux;
-import com.azure.cosmos.implementation.CosmosItemProperties;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.Offer;
 import com.azure.cosmos.implementation.RxDocumentClientUnderTest;
 import com.azure.cosmos.implementation.TestUtils;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import io.reactivex.subscribers.TestSubscriber;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -41,7 +41,7 @@ public class BackPressureTest extends TestSuiteBase {
 
     private CosmosAsyncDatabase createdDatabase;
     private CosmosAsyncContainer createdCollection;
-    private List<CosmosItemProperties> createdDocuments;
+    private List<InternalObjectNode> createdDocuments;
 
     private CosmosAsyncClient client;
 
@@ -59,7 +59,9 @@ public class BackPressureTest extends TestSuiteBase {
         return collectionDefinition;
     }
 
-    @Factory(dataProvider = "simpleClientBuildersWithDirect")
+    // RxDocumentClientUnderTest spy used in this test only has support for GW request capturing
+    // So only running the test against GW is relevant
+    @Factory(dataProvider = "simpleClientBuilderGatewaySession")
     public BackPressureTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
@@ -68,16 +70,16 @@ public class BackPressureTest extends TestSuiteBase {
     public void readFeedPages() throws Exception {
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
-        CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection
-            .queryItems("SELECT * FROM r", options, CosmosItemProperties.class);
+        CosmosPagedFlux<InternalObjectNode> queryObservable = createdCollection
+            .queryItems("SELECT * FROM r", options, InternalObjectNode.class);
 
         RxDocumentClientUnderTest rxClient = (RxDocumentClientUnderTest) CosmosBridgeInternal.getAsyncDocumentClient(client);
         AtomicInteger valueCount = new AtomicInteger();
         rxClient.httpRequests.clear();
 
-        TestSubscriber<FeedResponse<CosmosItemProperties>> subscriber = new TestSubscriber<FeedResponse<CosmosItemProperties>>(1);
-        queryObservable.byPage(1).doOnNext(cosmosItemPropertiesFeedResponse -> {
-            if (!cosmosItemPropertiesFeedResponse.getResults().isEmpty()) {
+        TestSubscriber<FeedResponse<InternalObjectNode>> subscriber = new TestSubscriber<FeedResponse<InternalObjectNode>>(1);
+        queryObservable.byPage(1).doOnNext(feedResponse -> {
+            if (!feedResponse.getResults().isEmpty()) {
                 valueCount.incrementAndGet();
             }
         }).publishOn(Schedulers.elastic(), 1).subscribe(subscriber);
@@ -113,15 +115,15 @@ public class BackPressureTest extends TestSuiteBase {
     public void readFeedItems() throws Exception {
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
-        CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection
-            .queryItems("SELECT * FROM r", options, CosmosItemProperties.class);
+        CosmosPagedFlux<InternalObjectNode> queryObservable = createdCollection
+            .queryItems("SELECT * FROM r", options, InternalObjectNode.class);
 
         RxDocumentClientUnderTest rxClient = (RxDocumentClientUnderTest) CosmosBridgeInternal.getAsyncDocumentClient(client);
         AtomicInteger valueCount = new AtomicInteger();
         rxClient.httpRequests.clear();
 
-        TestSubscriber<CosmosItemProperties> subscriber = new TestSubscriber<>(1);
-        queryObservable.doOnNext(cosmosItemPropertiesFeedResponse -> {
+        TestSubscriber<InternalObjectNode> subscriber = new TestSubscriber<>(1);
+        queryObservable.doOnNext(feedResponse -> {
             valueCount.incrementAndGet();
         }).publishOn(Schedulers.elastic(), 1).subscribe(subscriber);
 
@@ -156,16 +158,16 @@ public class BackPressureTest extends TestSuiteBase {
     public void queryPages() throws Exception {
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
-        CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems("SELECT * from r", options, CosmosItemProperties.class);
+        CosmosPagedFlux<InternalObjectNode> queryObservable = createdCollection.queryItems("SELECT * from r", options, InternalObjectNode.class);
 
         RxDocumentClientUnderTest rxClient = (RxDocumentClientUnderTest)CosmosBridgeInternal.getAsyncDocumentClient(client);
         rxClient.httpRequests.clear();
 
-        TestSubscriber<FeedResponse<CosmosItemProperties>> subscriber = new TestSubscriber<FeedResponse<CosmosItemProperties>>(1);
+        TestSubscriber<FeedResponse<InternalObjectNode>> subscriber = new TestSubscriber<FeedResponse<InternalObjectNode>>(1);
         AtomicInteger valueCount = new AtomicInteger();
 
-        queryObservable.byPage(1).doOnNext(cosmosItemPropertiesFeedResponse -> {
-            if (!cosmosItemPropertiesFeedResponse.getResults().isEmpty()) {
+        queryObservable.byPage(1).doOnNext(feedResponse -> {
+            if (!feedResponse.getResults().isEmpty()) {
                 valueCount.incrementAndGet();
             }
         }).publishOn(Schedulers.elastic(), 1).subscribe(subscriber);
@@ -201,15 +203,15 @@ public class BackPressureTest extends TestSuiteBase {
     public void queryItems() throws Exception {
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
-        CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems("SELECT * from r", options, CosmosItemProperties.class);
+        CosmosPagedFlux<InternalObjectNode> queryObservable = createdCollection.queryItems("SELECT * from r", options, InternalObjectNode.class);
 
         RxDocumentClientUnderTest rxClient = (RxDocumentClientUnderTest)CosmosBridgeInternal.getAsyncDocumentClient(client);
         rxClient.httpRequests.clear();
 
-        TestSubscriber<CosmosItemProperties> subscriber = new TestSubscriber<>(1);
+        TestSubscriber<InternalObjectNode> subscriber = new TestSubscriber<>(1);
         AtomicInteger valueCount = new AtomicInteger();
 
-        queryObservable.doOnNext(cosmosItemProperties -> {
+        queryObservable.doOnNext(internalObjectNode -> {
             valueCount.incrementAndGet();
         }).publishOn(Schedulers.elastic(), 1).subscribe(subscriber);
 
@@ -259,10 +261,10 @@ public class BackPressureTest extends TestSuiteBase {
                     createdCollection.read().block().getProperties().getResourceId())
                         , null).take(1).map(FeedResponse::getResults).single().block().get(0);
         offer.setThroughput(6000);
-        offer = rxClient.replaceOffer(offer).single().block().getResource();
+        offer = rxClient.replaceOffer(offer).block().getResource();
         assertThat(offer.getThroughput()).isEqualTo(6000);
 
-        ArrayList<CosmosItemProperties> docDefList = new ArrayList<>();
+        ArrayList<InternalObjectNode> docDefList = new ArrayList<>();
         for(int i = 0; i < 1000; i++) {
             docDefList.add(getDocumentDefinition(i));
         }
@@ -277,7 +279,7 @@ public class BackPressureTest extends TestSuiteBase {
         // ensure collection is cached
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
-        createdCollection.queryItems("SELECT * from r", options, CosmosItemProperties.class).byPage().blockFirst();
+        createdCollection.queryItems("SELECT * from r", options, InternalObjectNode.class).byPage().blockFirst();
     }
 
     @AfterClass(groups = { "long" }, timeOut = 2 * SHUTDOWN_TIMEOUT, alwaysRun = true)
@@ -286,9 +288,9 @@ public class BackPressureTest extends TestSuiteBase {
         safeClose(client);
     }
 
-    private static CosmosItemProperties getDocumentDefinition(int cnt) {
+    private static InternalObjectNode getDocumentDefinition(int cnt) {
         String uuid = UUID.randomUUID().toString();
-        CosmosItemProperties doc = new CosmosItemProperties(String.format("{ "
+        InternalObjectNode doc = new InternalObjectNode(String.format("{ "
                 + "\"id\": \"%s\", "
                 + "\"prop\" : %d, "
                 + "\"mypk\": \"%s\", "

@@ -3,13 +3,11 @@
 package com.azure.core.test;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.implementation.http.HttpClientProviders;
+import com.azure.core.http.HttpClientProvider;
 import com.azure.core.test.utils.TestResourceNamer;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import java.util.Arrays;
-import java.util.stream.Stream;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -17,10 +15,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.UncheckedIOException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Locale;
+import java.util.ServiceLoader;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * Base class for running live and playback tests using {@link InterceptorManager}.
@@ -33,6 +38,8 @@ public abstract class TestBase implements BeforeEachCallback {
     public static final String AZURE_TEST_HTTP_CLIENTS_VALUE_NETTY = "NettyAsyncHttpClient";
     public static final String AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL = "ALL";
 
+    private static final Pattern TEST_ITERATION_PATTERN = Pattern.compile("test-template-invocation:#(\\d+)");
+
     private static TestMode testMode;
 
     private final ClientLogger logger = new ClientLogger(TestBase.class);
@@ -42,6 +49,9 @@ public abstract class TestBase implements BeforeEachCallback {
     protected TestContextManager testContextManager;
 
     private ExtensionContext extensionContext;
+
+    @RegisterExtension
+    final TestIterationContext testIterationContext = new TestIterationContext();
 
     /**
      * Before tests are executed, determines the test mode by reading the {@link TestBase#AZURE_TEST_MODE} environment
@@ -66,6 +76,9 @@ public abstract class TestBase implements BeforeEachCallback {
     @BeforeEach
     public void setupTest(TestInfo testInfo) {
         this.testContextManager = new TestContextManager(testInfo.getTestMethod().get(), testMode);
+        if (testIterationContext != null) {
+            testContextManager.setTestIteration(testIterationContext.testIteration);
+        }
         logger.info("Test Mode: {}, Name: {}", testMode, testContextManager.getTestName());
 
         try {
@@ -81,6 +94,7 @@ public abstract class TestBase implements BeforeEachCallback {
 
     /**
      * Disposes of {@link InterceptorManager} and its inheriting class' resources.
+     *
      * @param testInfo the injected testInfo
      */
     @AfterEach
@@ -103,11 +117,11 @@ public abstract class TestBase implements BeforeEachCallback {
     /**
      * Gets the name of the current test being run.
      *
+     * @return The name of the current test.
      * @deprecated This method is deprecated as JUnit 5 provides a simpler mechanism to get the test method name through
      * {@link TestInfo}. Keeping this for backward compatability of other client libraries that still override this
      * method. This method can be deleted when all client libraries remove this method. See {@link
      * #setupTest(TestInfo)}.
-     * @return The name of the current test.
      */
     @Deprecated
     protected String getTestName() {
@@ -137,12 +151,16 @@ public abstract class TestBase implements BeforeEachCallback {
      * @return A list of {@link HttpClient HttpClients} to be tested.
      */
     public static Stream<HttpClient> getHttpClients() {
-        if (testMode == TestMode.PLAYBACK) {
-            // Call to @MethodSource method happens @BeforeEach call, so the interceptorManager is
-            // not yet initialized. So, playbackClient will not be available until later.
-            return Stream.of(new HttpClient[]{null});
-        }
-        return HttpClientProviders.getAllHttpClients().stream().filter(TestBase::shouldClientBeTested);
+        /*
+         * In PLAYBACK mode PlaybackClient is used, so there is no need to load HttpClient instances from the classpath.
+         * In LIVE or RECORD mode load all HttpClient instances and let the test run determine which HttpClient
+         * implementation it will use.
+         */
+        return (testMode == TestMode.PLAYBACK)
+            ? Stream.of(new HttpClient[]{null})
+            : StreamSupport.stream(ServiceLoader.load(HttpClientProvider.class).spliterator(), false)
+                .map(HttpClientProvider::createInstance)
+                .filter(TestBase::shouldClientBeTested);
     }
 
     /**
@@ -207,6 +225,18 @@ public abstract class TestBase implements BeforeEachCallback {
             Thread.sleep(millis);
         } catch (InterruptedException ex) {
             throw logger.logExceptionAsWarning(new IllegalStateException(ex));
+        }
+    }
+
+    private static final class TestIterationContext implements BeforeEachCallback {
+        Integer testIteration;
+
+        @Override
+        public void beforeEach(ExtensionContext extensionContext) {
+            Matcher matcher = TEST_ITERATION_PATTERN.matcher(extensionContext.getUniqueId());
+            if (matcher.find()) {
+                testIteration = Integer.valueOf(matcher.group(1));
+            }
         }
     }
 }

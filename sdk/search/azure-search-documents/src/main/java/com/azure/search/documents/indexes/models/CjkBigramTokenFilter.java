@@ -4,9 +4,13 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -31,6 +35,18 @@ public final class CjkBigramTokenFilter extends TokenFilter {
     private Boolean outputUnigrams;
 
     /**
+     * Constructor of {@link CjkBigramTokenFilter}.
+     *
+     * @param name The name of the token filter. It must only contain letters, digits,
+     * spaces, dashes or underscores, can only start and end with alphanumeric
+     * characters, and is limited to 128 characters.
+     */
+    @JsonCreator
+    public CjkBigramTokenFilter(@JsonProperty(value = "name") String name) {
+        super(name);
+    }
+
+    /**
      * Get the ignoreScripts property: The scripts to ignore.
      *
      * @return the ignoreScripts value.
@@ -45,6 +61,18 @@ public final class CjkBigramTokenFilter extends TokenFilter {
      * @param ignoreScripts the ignoreScripts value to set.
      * @return the CjkBigramTokenFilter object itself.
      */
+    public CjkBigramTokenFilter setIgnoreScripts(CjkBigramTokenFilterScripts... ignoreScripts) {
+        this.ignoreScripts = (ignoreScripts == null) ? null : Arrays.asList(ignoreScripts);
+        return this;
+    }
+
+    /**
+     * Set the ignoreScripts property: The scripts to ignore.
+     *
+     * @param ignoreScripts the ignoreScripts value to set.
+     * @return the CjkBigramTokenFilter object itself.
+     */
+    @JsonSetter
     public CjkBigramTokenFilter setIgnoreScripts(List<CjkBigramTokenFilterScripts> ignoreScripts) {
         this.ignoreScripts = ignoreScripts;
         return this;

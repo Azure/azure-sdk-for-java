@@ -8,7 +8,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.RxDocumentClientUnderTest;
 import com.azure.cosmos.implementation.TestUtils;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -47,7 +47,7 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
     private int numberOfDocs = 1000;
     private CosmosAsyncDatabase createdDatabase;
     private CosmosAsyncContainer createdCollection;
-    private List<CosmosItemProperties> createdDocuments;
+    private List<InternalObjectNode> createdDocuments;
 
     private CosmosAsyncClient client;
     private int numberOfPartitions;
@@ -76,7 +76,9 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
         return collectionDefinition;
     }
 
-    @Factory(dataProvider = "simpleClientBuildersWithDirect")
+    // RxDocumentClientUnderTest spy used in this test only has support for GW request capturing
+    // So only running the test against GW is relevant
+    @Factory(dataProvider = "simpleClientBuilderGatewaySession")
     public BackPressureCrossPartitionTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
@@ -84,7 +86,7 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
     private void warmUp() {
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         // ensure collection is cached
-        createdCollection.queryItems("SELECT * FROM r", options, CosmosItemProperties.class).byPage().blockFirst();
+        createdCollection.queryItems("SELECT * FROM r", options, InternalObjectNode.class).byPage().blockFirst();
     }
 
     @DataProvider(name = "queryProvider")
@@ -104,13 +106,13 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
     public void queryPages(String query, int maxItemCount, int maxExpectedBufferedCountForBackPressure, int expectedNumberOfResults) throws Exception {
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setMaxDegreeOfParallelism(2);
-        CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
+        CosmosPagedFlux<InternalObjectNode> queryObservable = createdCollection.queryItems(query, options, InternalObjectNode.class);
 
         RxDocumentClientUnderTest rxClient = (RxDocumentClientUnderTest) CosmosBridgeInternal.getAsyncDocumentClient(client);
         rxClient.httpRequests.clear();
 
         log.info("instantiating subscriber ...");
-        TestSubscriber<FeedResponse<CosmosItemProperties>> subscriber = new TestSubscriber<>(1);
+        TestSubscriber<FeedResponse<InternalObjectNode>> subscriber = new TestSubscriber<>(1);
         queryObservable.byPage(maxItemCount).publishOn(Schedulers.elastic(), 1).subscribe(subscriber);
         int sleepTimeInMillis = 10000;
         int i = 0;
@@ -148,13 +150,13 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
     public void queryItems(String query, int maxItemCount, int maxExpectedBufferedCountForBackPressure, int expectedNumberOfResults) throws Exception {
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setMaxDegreeOfParallelism(2);
-        CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
+        CosmosPagedFlux<InternalObjectNode> queryObservable = createdCollection.queryItems(query, options, InternalObjectNode.class);
 
         RxDocumentClientUnderTest rxClient = (RxDocumentClientUnderTest) CosmosBridgeInternal.getAsyncDocumentClient(client);
         rxClient.httpRequests.clear();
 
         log.info("instantiating subscriber ...");
-        TestSubscriber<CosmosItemProperties> subscriber = new TestSubscriber<>(1);
+        TestSubscriber<InternalObjectNode> subscriber = new TestSubscriber<>(1);
         queryObservable.publishOn(Schedulers.elastic(), 1).subscribe(subscriber);
         int sleepTimeInMillis = 10000;
         int i = 0;
@@ -195,7 +197,7 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
         createdDatabase = getSharedCosmosDatabase(client);
         createdCollection = createCollection(createdDatabase, getCollectionDefinition(), options, 20000);
 
-        ArrayList<CosmosItemProperties> docDefList = new ArrayList<>();
+        ArrayList<InternalObjectNode> docDefList = new ArrayList<>();
         for(int i = 0; i < numberOfDocs; i++) {
             docDefList.add(getDocumentDefinition(i));
         }
@@ -217,9 +219,9 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
         safeClose(client);
     }
 
-    private static CosmosItemProperties getDocumentDefinition(int cnt) {
+    private static InternalObjectNode getDocumentDefinition(int cnt) {
         String uuid = UUID.randomUUID().toString();
-        CosmosItemProperties doc = new CosmosItemProperties(String.format("{ "
+        InternalObjectNode doc = new InternalObjectNode(String.format("{ "
             + "\"id\": \"%s\", "
             + "\"prop\" : %d, "
             + "\"mypk\": \"%s\", "

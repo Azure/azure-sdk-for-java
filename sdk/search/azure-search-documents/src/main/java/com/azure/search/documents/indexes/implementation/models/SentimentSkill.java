@@ -7,31 +7,42 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
+import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
+import com.azure.search.documents.indexes.models.SentimentSkillLanguage;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
-/**
- * Text analytics positive-negative sentiment analysis, scored as a floating
- * point value in a range of zero to 1.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
+/** Text analytics positive-negative sentiment analysis, scored as a floating point value in a range of zero to 1. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Skills.Text.SentimentSkill")
+@JsonFlatten
 @Fluent
-public final class SentimentSkill extends SearchIndexerSkill {
+public class SentimentSkill extends SearchIndexerSkill {
     /*
-     * A value indicating which language code to use. Default is en. Possible
-     * values include: 'da', 'nl', 'en', 'fi', 'fr', 'de', 'el', 'it', 'no',
-     * 'pl', 'pt-PT', 'ru', 'es', 'sv', 'tr'
+     * A value indicating which language code to use. Default is en.
      */
     @JsonProperty(value = "defaultLanguageCode")
     private SentimentSkillLanguage defaultLanguageCode;
 
     /**
-     * Get the defaultLanguageCode property: A value indicating which language
-     * code to use. Default is en. Possible values include: 'da', 'nl', 'en',
-     * 'fi', 'fr', 'de', 'el', 'it', 'no', 'pl', 'pt-PT', 'ru', 'es', 'sv',
-     * 'tr'.
+     * Creates an instance of SentimentSkill class.
+     *
+     * @param inputs the inputs value to set.
+     * @param outputs the outputs value to set.
+     */
+    @JsonCreator
+    public SentimentSkill(
+            @JsonProperty(value = "inputs", required = true) List<InputFieldMappingEntry> inputs,
+            @JsonProperty(value = "outputs", required = true) List<OutputFieldMappingEntry> outputs) {
+        super(inputs, outputs);
+    }
+
+    /**
+     * Get the defaultLanguageCode property: A value indicating which language code to use. Default is en.
      *
      * @return the defaultLanguageCode value.
      */
@@ -40,10 +51,7 @@ public final class SentimentSkill extends SearchIndexerSkill {
     }
 
     /**
-     * Set the defaultLanguageCode property: A value indicating which language
-     * code to use. Default is en. Possible values include: 'da', 'nl', 'en',
-     * 'fi', 'fr', 'de', 'el', 'it', 'no', 'pl', 'pt-PT', 'ru', 'es', 'sv',
-     * 'tr'.
+     * Set the defaultLanguageCode property: A value indicating which language code to use. Default is en.
      *
      * @param defaultLanguageCode the defaultLanguageCode value to set.
      * @return the SentimentSkill object itself.

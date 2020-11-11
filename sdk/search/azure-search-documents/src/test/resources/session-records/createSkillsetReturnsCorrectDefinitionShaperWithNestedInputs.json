@@ -1,50 +1,52 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/skillsets?api-version=2019-05-06-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/skillsets?api-version=2020-06-30",
     "Headers" : {
-      "x-ms-client-request-id" : "aaf75049-23d9-4c5f-9958-ae9b92fa3458",
-      "Content-Type" : "application/json; charset=utf-8"
+      "x-ms-client-request-id" : "826e7fa3-ec5e-4704-969d-cb5dfc2f5344",
+      "Content-Type" : "application/json"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "aaf75049-23d9-4c5f-9958-ae9b92fa3458",
+      "request-id" : "826e7fa3-ec5e-4704-969d-cb5dfc2f5344",
       "StatusCode" : "201",
-      "Date" : "Mon, 11 May 2020 18:10:00 GMT",
+      "Date" : "Thu, 25 Jun 2020 17:09:49 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "aaf75049-23d9-4c5f-9958-ae9b92fa3458",
-      "ETag" : "W/\"0x8D7F5D685BB98CA\"",
-      "elapsed-time" : "124",
+      "client-request-id" : "826e7fa3-ec5e-4704-969d-cb5dfc2f5344",
+      "ETag" : "W/\"0x8D8192A91D75825\"",
+      "elapsed-time" : "82",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "709",
-      "Body" : "{\"@odata.context\":\"https://alzimmer-search.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7F5D685BB98CA\\\"\",\"name\":\"nested-skillset-with-sharperskill513944675e\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Util.ShaperSkill\",\"name\":\"myshaper\",\"description\":\"Tested Shaper skill\",\"context\":\"/document\",\"inputs\":[{\"name\":\"doc\",\"source\":null,\"sourceContext\":\"/document\",\"inputs\":[{\"name\":\"text\",\"source\":\"/document/content\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"images\",\"source\":\"/document/normalized_images/*\",\"sourceContext\":null,\"inputs\":[]}]}],\"outputs\":[{\"name\":\"output\",\"targetName\":\"myOutput\"}]}],\"cognitiveServices\":null,\"knowledgeStore\":null}",
+      "Content-Length" : "727",
+      "Body" : "{\"@odata.context\":\"https://sizhu-search.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D8192A91D75825\\\"\",\"name\":\"nested-skillset-with-sharperskill641588e84f\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Util.ShaperSkill\",\"name\":\"myshaper\",\"description\":\"Tested Shaper skill\",\"context\":\"/document\",\"inputs\":[{\"name\":\"doc\",\"source\":null,\"sourceContext\":\"/document\",\"inputs\":[{\"name\":\"text\",\"source\":\"/document/content\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"images\",\"source\":\"/document/normalized_images/*\",\"sourceContext\":null,\"inputs\":[]}]}],\"outputs\":[{\"name\":\"output\",\"targetName\":\"myOutput\"}]}],\"cognitiveServices\":null,\"knowledgeStore\":null,\"encryptionKey\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "x-ms-client-request-id" : "826e7fa3-ec5e-4704-969d-cb5dfc2f5344",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://alzimmer-search.search.windows.net/skillsets('nested-skillset-with-sharperskill513944675e')?api-version=2019-05-06-Preview"
+      "Location" : "https://sizhu-search.search.windows.net/skillsets('nested-skillset-with-sharperskill641588e84f')?api-version=2020-06-30"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.search.windows.net/skillsets('nested-skillset-with-sharperskill513944675e')?api-version=2019-05-06-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/skillsets('nested-skillset-with-sharperskill641588e84f')?api-version=2020-06-30",
     "Headers" : {
-      "x-ms-client-request-id" : "986a10f4-567a-4f38-bd59-150c1d4b245c"
+      "x-ms-client-request-id" : "b2a4c943-52d0-4d18-bfc6-f6def57eb6aa"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "986a10f4-567a-4f38-bd59-150c1d4b245c",
-      "elapsed-time" : "46",
+      "client-request-id" : "b2a4c943-52d0-4d18-bfc6-f6def57eb6aa",
+      "elapsed-time" : "63",
       "Expires" : "-1",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "986a10f4-567a-4f38-bd59-150c1d4b245c",
+      "request-id" : "b2a4c943-52d0-4d18-bfc6-f6def57eb6aa",
       "StatusCode" : "204",
-      "Date" : "Mon, 11 May 2020 18:10:00 GMT"
+      "Date" : "Thu, 25 Jun 2020 17:09:49 GMT",
+      "x-ms-client-request-id" : "b2a4c943-52d0-4d18-bfc6-f6def57eb6aa"
     },
     "Exception" : null
   } ],
-  "variables" : [ "nested-skillset-with-sharperskill513944675e" ]
+  "variables" : [ "nested-skillset-with-sharperskill641588e84f" ]
 }

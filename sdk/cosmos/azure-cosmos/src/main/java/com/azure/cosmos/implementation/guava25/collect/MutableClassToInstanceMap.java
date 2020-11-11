@@ -139,7 +139,7 @@ public final class MutableClassToInstanceMap<B> extends ForwardingMap<Class<? ex
   public void putAll(Map<? extends Class<? extends B>, ? extends B> map) {
     Map<Class<? extends B>, B> copy = new LinkedHashMap<>(map);
     for (Entry<? extends Class<? extends B>, B> entry : copy.entrySet()) {
-      cast(entry.getKey(), entry.getValue());
+		cast((Class<?>) entry.getKey(), entry.getValue());
     }
     super.putAll(copy);
   }

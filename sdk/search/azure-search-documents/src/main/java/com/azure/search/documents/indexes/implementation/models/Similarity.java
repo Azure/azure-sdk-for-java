@@ -6,23 +6,27 @@
 
 package com.azure.search.documents.indexes.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * Base type for similarity algorithms. Similarity algorithms are used to
- * calculate scores that tie queries to documents. The higher the score, the
- * more relevant the document is to that specific query. Those scores are used
- * to rank the search results.
+ * Base type for similarity algorithms. Similarity algorithms are used to calculate scores that tie queries to
+ * documents. The higher the score, the more relevant the document is to that specific query. Those scores are used to
+ * rank the search results.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type", defaultImpl = Similarity.class)
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "@odata\\.type",
+        defaultImpl = Similarity.class)
 @JsonTypeName("Similarity")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.ClassicSimilarity", value = ClassicSimilarity.class),
     @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.BM25Similarity", value = BM25Similarity.class)
 })
-@Fluent
-public class Similarity {
-}
+@JsonFlatten
+@Immutable
+public class Similarity {}

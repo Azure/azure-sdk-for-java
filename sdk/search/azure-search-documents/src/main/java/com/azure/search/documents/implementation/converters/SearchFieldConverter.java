@@ -4,9 +4,7 @@
 package com.azure.search.documents.implementation.converters;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.SearchField;
-import com.azure.search.documents.indexes.models.SearchFieldDataType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +24,8 @@ public final class SearchFieldConverter {
         if (obj == null) {
             return null;
         }
-        SearchField searchField = new SearchField();
+
+        SearchField searchField = new SearchField(obj.getName(), obj.getType());
 
         Boolean filterable = obj.isFilterable();
         searchField.setFilterable(filterable);
@@ -37,30 +36,20 @@ public final class SearchFieldConverter {
         Boolean sortable = obj.isSortable();
         searchField.setSortable(sortable);
 
-        if (obj.getType() != null) {
-            SearchFieldDataType type = SearchFieldDataTypeConverter.map(obj.getType());
-            searchField.setType(type);
-        }
-
         Boolean searchable = obj.isSearchable();
         searchField.setSearchable(searchable);
 
         if (obj.getAnalyzer() != null) {
-            LexicalAnalyzerName analyzer = LexicalAnalyzerNameConverter.map(obj.getAnalyzer());
-            searchField.setAnalyzerName(analyzer);
+            searchField.setAnalyzerName(obj.getAnalyzer());
         }
 
         if (obj.getSearchAnalyzer() != null) {
-            LexicalAnalyzerName searchAnalyzer = LexicalAnalyzerNameConverter.map(obj.getSearchAnalyzer());
-            searchField.setSearchAnalyzerName(searchAnalyzer);
+            searchField.setSearchAnalyzerName(obj.getSearchAnalyzer());
         }
 
-        String name = obj.getName();
-        searchField.setName(name);
 
         if (obj.getIndexAnalyzer() != null) {
-            LexicalAnalyzerName indexAnalyzer = LexicalAnalyzerNameConverter.map(obj.getIndexAnalyzer());
-            searchField.setIndexAnalyzerName(indexAnalyzer);
+            searchField.setIndexAnalyzerName(obj.getIndexAnalyzer());
         }
 
         Boolean facetable = obj.isFacetable();
@@ -89,8 +78,9 @@ public final class SearchFieldConverter {
         if (obj == null) {
             return null;
         }
+
         com.azure.search.documents.indexes.implementation.models.SearchField searchField =
-            new com.azure.search.documents.indexes.implementation.models.SearchField();
+            new com.azure.search.documents.indexes.implementation.models.SearchField(obj.getName(), obj.getType());
 
         Boolean filterable = obj.isFilterable();
         searchField.setFilterable(filterable);
@@ -101,34 +91,19 @@ public final class SearchFieldConverter {
         Boolean sortable = obj.isSortable();
         searchField.setSortable(sortable);
 
-        if (obj.getType() != null) {
-            com.azure.search.documents.indexes.implementation.models.SearchFieldDataType type =
-                SearchFieldDataTypeConverter.map(obj.getType());
-            searchField.setType(type);
-        }
-
         Boolean searchable = obj.isSearchable();
         searchField.setSearchable(searchable);
 
         if (obj.getAnalyzerName() != null) {
-            com.azure.search.documents.indexes.implementation.models.LexicalAnalyzerName analyzer =
-                LexicalAnalyzerNameConverter.map(obj.getAnalyzerName());
-            searchField.setAnalyzer(analyzer);
+            searchField.setAnalyzer(obj.getAnalyzerName());
         }
 
         if (obj.getSearchAnalyzerName() != null) {
-            com.azure.search.documents.indexes.implementation.models.LexicalAnalyzerName searchAnalyzer =
-                LexicalAnalyzerNameConverter.map(obj.getSearchAnalyzerName());
-            searchField.setSearchAnalyzer(searchAnalyzer);
+            searchField.setSearchAnalyzer(obj.getSearchAnalyzerName());
         }
 
-        String name = obj.getName();
-        searchField.setName(name);
-
         if (obj.getIndexAnalyzerName() != null) {
-            com.azure.search.documents.indexes.implementation.models.LexicalAnalyzerName indexAnalyzer =
-                LexicalAnalyzerNameConverter.map(obj.getIndexAnalyzerName());
-            searchField.setIndexAnalyzer(indexAnalyzer);
+            searchField.setIndexAnalyzer(obj.getIndexAnalyzerName());
         }
 
         Boolean facetable = obj.isFacetable();
@@ -147,6 +122,7 @@ public final class SearchFieldConverter {
 
         Boolean key = obj.isKey();
         searchField.setKey(key);
+
         return searchField;
     }
 

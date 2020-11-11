@@ -4,6 +4,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -46,23 +47,34 @@ public final class SynonymMap {
     private String eTag;
 
     /**
+     * Constructor of {@link SynonymMap}.
+     * @param name The name of the synonym map.
+     */
+    public SynonymMap(String name) {
+        this.name = name;
+    }
+
+    /**
+     * Constructor of {@link SynonymMap}.
+     * @param name The name of the synonym map.
+     * @param synonyms A series of synonym rules in the specified synonym map format. The rules
+     * must be separated by newlines.
+     */
+    @JsonCreator
+    public SynonymMap(
+        @JsonProperty(value = "name") String name,
+        @JsonProperty(value = "synonyms") String synonyms) {
+        this.name = name;
+        this.synonyms = synonyms;
+    }
+
+    /**
      * Get the name property: The name of the synonym map.
      *
      * @return the name value.
      */
     public String getName() {
         return this.name;
-    }
-
-    /**
-     * Set the name property: The name of the synonym map.
-     *
-     * @param name the name value to set.
-     * @return the SynonymMap object itself.
-     */
-    public SynonymMap setName(String name) {
-        this.name = name;
-        return this;
     }
 
     /**

@@ -9,9 +9,7 @@ package com.azure.search.documents.indexes.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Represents credentials that can be used to connect to a datasource.
- */
+/** Represents credentials that can be used to connect to a datasource. */
 @Fluent
 public final class DataSourceCredentials {
     /*
@@ -21,8 +19,7 @@ public final class DataSourceCredentials {
     private String connectionString;
 
     /**
-     * Get the connectionString property: The connection string for the
-     * datasource.
+     * Get the connectionString property: The connection string for the datasource.
      *
      * @return the connectionString value.
      */
@@ -31,8 +28,7 @@ public final class DataSourceCredentials {
     }
 
     /**
-     * Set the connectionString property: The connection string for the
-     * datasource.
+     * Set the connectionString property: The connection string for the datasource.
      *
      * @param connectionString the connectionString value to set.
      * @return the DataSourceCredentials object itself.

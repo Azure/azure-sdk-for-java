@@ -16,6 +16,7 @@ import java.security.cert.CertificateExpiredException;
 import java.security.cert.X509Certificate;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.List;
 
 @RunWith(PowerMockRunner.class)
 public class CertificateUtilTests {
@@ -24,9 +25,19 @@ public class CertificateUtilTests {
     public void testPublicKey() throws Exception {
         String pemPath = getPath("certificate.pem");
         byte[] pemCertificateBytes = Files.readAllBytes(Paths.get(pemPath));
-        X509Certificate x509Certificate = CertificateUtil.publicKeyFromPem(pemCertificateBytes);
-        x509Certificate.checkValidity(Date.valueOf(LocalDate.of(2025, 12, 25)));
+        List<X509Certificate> x509CertificateList = CertificateUtil.publicKeyFromPem(pemCertificateBytes);
+        x509CertificateList.get(0).checkValidity(Date.valueOf(LocalDate.of(2025, 12, 25)));
     }
+
+    @Test(expected = CertificateExpiredException.class)
+    public void testPublicKeyChain() throws Exception {
+        String pemPath = getPath("cert-chain.pem");
+        byte[] pemCertificateBytes = Files.readAllBytes(Paths.get(pemPath));
+        List<X509Certificate> x509CertificateList = CertificateUtil.publicKeyFromPem(pemCertificateBytes);
+        Assert.assertEquals(2, x509CertificateList.size());
+        x509CertificateList.get(0).checkValidity(Date.valueOf(LocalDate.of(4025, 12, 25)));
+    }
+
 
     @Test
     public void testPrivateKey() throws Exception {

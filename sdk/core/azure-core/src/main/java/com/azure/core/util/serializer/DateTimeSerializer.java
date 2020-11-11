@@ -18,16 +18,19 @@ import java.time.format.DateTimeFormatter;
  * Custom serializer for serializing {@link OffsetDateTime} object into ISO8601 formats.
  */
 final class DateTimeSerializer extends JsonSerializer<OffsetDateTime> {
+    private static final SimpleModule MODULE;
+
+    static {
+        MODULE = new SimpleModule().addSerializer(OffsetDateTime.class, new DateTimeSerializer());
+    }
+
     /**
-     * Gets a module wrapping this serializer as an adapter for the Jackson
-     * ObjectMapper.
+     * Gets a module wrapping this serializer as an adapter for the Jackson ObjectMapper.
      *
      * @return a simple module to be plugged onto Jackson ObjectMapper.
      */
     public static SimpleModule getModule() {
-        SimpleModule module = new SimpleModule();
-        module.addSerializer(OffsetDateTime.class, new DateTimeSerializer());
-        return module;
+        return MODULE;
     }
 
     @Override
@@ -41,6 +44,7 @@ final class DateTimeSerializer extends JsonSerializer<OffsetDateTime> {
 
     /**
      * Convert the provided OffsetDateTime to its String representation.
+     *
      * @param offsetDateTime The OffsetDateTime to convert.
      * @return The String representation of the provided offsetDateTime.
      */

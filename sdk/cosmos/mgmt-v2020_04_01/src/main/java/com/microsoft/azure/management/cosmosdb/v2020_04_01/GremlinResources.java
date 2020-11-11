@@ -87,6 +87,28 @@ public interface GremlinResources {
     Observable<ThroughputSettingsGetResults> updateGremlinDatabaseThroughputAsync(String resourceGroupName, String accountName, String databaseName, ThroughputSettingsUpdateParameters updateThroughputParameters);
 
     /**
+     * Migrate an Azure Cosmos DB Gremlin database from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<ThroughputSettingsGetResults> migrateGremlinDatabaseToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName);
+
+    /**
+     * Migrate an Azure Cosmos DB Gremlin database from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<ThroughputSettingsGetResults> migrateGremlinDatabaseToManualThroughputAsync(String resourceGroupName, String accountName, String databaseName);
+
+    /**
      * Gets the Gremlin graph throughput under an existing Azure Cosmos DB database account with the provided name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -110,6 +132,30 @@ public interface GremlinResources {
      * @return the observable for the request
      */
     Observable<ThroughputSettingsGetResults> updateGremlinGraphThroughputAsync(String resourceGroupName, String accountName, String databaseName, String graphName, ThroughputSettingsUpdateParameters updateThroughputParameters);
+
+    /**
+     * Migrate an Azure Cosmos DB Gremlin graph from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param graphName Cosmos DB graph name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<ThroughputSettingsGetResults> migrateGremlinGraphToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName, String graphName);
+
+    /**
+     * Migrate an Azure Cosmos DB Gremlin graph from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param graphName Cosmos DB graph name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<ThroughputSettingsGetResults> migrateGremlinGraphToManualThroughputAsync(String resourceGroupName, String accountName, String databaseName, String graphName);
 
     /**
      * Gets the Gremlin graph under an existing Azure Cosmos DB database account.

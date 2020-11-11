@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.indexes.models.PhoneticEncoder;
 import com.azure.search.documents.indexes.models.PhoneticTokenFilter;
 
 /**
@@ -19,17 +18,13 @@ public final class PhoneticTokenFilterConverter {
         if (obj == null) {
             return null;
         }
-        PhoneticTokenFilter phoneticTokenFilter = new PhoneticTokenFilter();
-
-        String name = obj.getName();
-        phoneticTokenFilter.setName(name);
+        PhoneticTokenFilter phoneticTokenFilter = new PhoneticTokenFilter(obj.getName());
 
         Boolean replaceOriginalTokens = obj.isReplaceOriginalTokens();
         phoneticTokenFilter.setOriginalTokensReplaced(replaceOriginalTokens);
 
         if (obj.getEncoder() != null) {
-            PhoneticEncoder encoder = PhoneticEncoderConverter.map(obj.getEncoder());
-            phoneticTokenFilter.setEncoder(encoder);
+            phoneticTokenFilter.setEncoder(obj.getEncoder());
         }
         return phoneticTokenFilter;
     }
@@ -43,19 +38,15 @@ public final class PhoneticTokenFilterConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.PhoneticTokenFilter phoneticTokenFilter =
-            new com.azure.search.documents.indexes.implementation.models.PhoneticTokenFilter();
-
-        String name = obj.getName();
-        phoneticTokenFilter.setName(name);
+            new com.azure.search.documents.indexes.implementation.models.PhoneticTokenFilter(obj.getName());
 
         Boolean replaceOriginalTokens = obj.areOriginalTokensReplaced();
         phoneticTokenFilter.setReplaceOriginalTokens(replaceOriginalTokens);
 
         if (obj.getEncoder() != null) {
-            com.azure.search.documents.indexes.implementation.models.PhoneticEncoder encoder =
-                PhoneticEncoderConverter.map(obj.getEncoder());
-            phoneticTokenFilter.setEncoder(encoder);
+            phoneticTokenFilter.setEncoder(obj.getEncoder());
         }
+
         return phoneticTokenFilter;
     }
 

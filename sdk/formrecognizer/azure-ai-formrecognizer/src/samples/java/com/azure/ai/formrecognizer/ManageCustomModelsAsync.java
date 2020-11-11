@@ -39,29 +39,32 @@ public class ManageCustomModelsAsync {
         client.listCustomModels().subscribe(customFormModelInfo -> {
             String createdModelId = customFormModelInfo.getModelId();
             System.out.printf("Model Id: %s%n", createdModelId);
+            if (customFormModelInfo.getCustomModelProperties() != null) {
+                System.out.printf("Is it a composed model? : %s%n", customFormModelInfo.getCustomModelProperties().isComposed());
+            }
             // get custom model info
             modelId.set(createdModelId);
             client.getCustomModel(customFormModelInfo.getModelId()).subscribe(customModel -> {
                 System.out.printf("Model Id: %s%n", customModel.getModelId());
                 System.out.printf("Model Status: %s%n", customModel.getModelStatus());
-                System.out.printf("Created on: %s%n", customModel.getRequestedOn());
-                System.out.printf("Updated on: %s%n", customModel.getCompletedOn());
+                System.out.printf("Training started on: %s%n", customModel.getTrainingStartedOn());
+                System.out.printf("Training completed on: %s%n", customModel.getTrainingCompletedOn());
                 customModel.getSubmodels().forEach(customFormSubmodel -> {
                     System.out.printf("Custom Model Form type: %s%n", customFormSubmodel.getFormType());
                     System.out.printf("Custom Model Accuracy: %.2f%n", customFormSubmodel.getAccuracy());
-                    if (customFormSubmodel.getFieldMap() != null) {
-                        customFormSubmodel.getFieldMap().forEach((fieldText, customFormModelField) -> {
+                    if (customFormSubmodel.getFields() != null) {
+                        customFormSubmodel.getFields().forEach((fieldText, customFormModelField) -> {
                             System.out.printf("Field Text: %s%n", fieldText);
                             System.out.printf("Field Accuracy: %.2f%n", customFormModelField.getAccuracy());
                         });
                     }
-
                 });
             });
         });
 
         // Delete Custom Model
-        System.out.printf("Deleted model with model Id: %s%n", modelId.get(), client.deleteModelWithResponse(modelId.get()));
+        client.deleteModel(modelId.get());
+        System.out.printf("Deleted model with model Id: %s%n", modelId.get());
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
         // the thread so the program does not end before the send operation is complete. Using .block() instead of

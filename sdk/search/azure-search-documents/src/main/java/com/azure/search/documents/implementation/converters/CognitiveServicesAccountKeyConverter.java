@@ -18,13 +18,11 @@ public final class CognitiveServicesAccountKeyConverter {
         if (obj == null) {
             return null;
         }
-        CognitiveServicesAccountKey cognitiveServicesAccountKey = new CognitiveServicesAccountKey();
+        CognitiveServicesAccountKey cognitiveServicesAccountKey = new CognitiveServicesAccountKey(obj.getKey());
 
         String description = obj.getDescription();
         cognitiveServicesAccountKey.setDescription(description);
 
-        String key = obj.getKey();
-        cognitiveServicesAccountKey.setKey(key);
         return cognitiveServicesAccountKey;
     }
 
@@ -37,13 +35,11 @@ public final class CognitiveServicesAccountKeyConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.CognitiveServicesAccountKey cognitiveServicesAccountKey =
-            new com.azure.search.documents.indexes.implementation.models.CognitiveServicesAccountKey();
+            new com.azure.search.documents.indexes.implementation.models.CognitiveServicesAccountKey(obj.getKey());
 
         String description = obj.getDescription();
         cognitiveServicesAccountKey.setDescription(description);
 
-        String key = obj.getKey();
-        cognitiveServicesAccountKey.setKey(key);
         return cognitiveServicesAccountKey;
     }
 

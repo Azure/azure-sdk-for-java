@@ -92,7 +92,11 @@ class AppImpl extends GroupableResourceCoreImpl<App, AppInner, AppImpl, IoTCentr
 
     @Override
     public AppImpl withSku(AppSkuInfo sku) {
-        this.inner().withSku(sku);
+        if (isInCreateMode()) {
+            this.inner().withSku(sku);
+        } else {
+            this.updateParameter.withSku(sku);
+        }
         return this;
     }
 

@@ -4,6 +4,8 @@
 package com.azure.identity;
 
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.identity.implementation.util.IdentityConstants;
+import com.azure.identity.implementation.AuthenticationRecord;
 import com.azure.identity.implementation.util.ValidationUtil;
 
 import java.util.HashMap;
@@ -14,43 +16,47 @@ import java.util.HashMap;
  * @see InteractiveBrowserCredential
  */
 public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBase<InteractiveBrowserCredentialBuilder> {
-    private int port;
+    private Integer port;
     private boolean automaticAuthentication = true;
+    private String redirectUrl;
+    String clientId = IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID;
 
     /**
      * Sets the port for the local HTTP server, for which {@code http://localhost:{port}} must be
      * registered as a valid reply URL on the application.
      *
+     * @deprecated Configure the redirect URL as {@code http://localhost:{port}} via
+     * {@link InteractiveBrowserCredentialBuilder#redirectUrl(String)} instead.
+     *
      * @param port the port on which the credential will listen for the browser authentication result
      * @return the InteractiveBrowserCredentialBuilder itself
      */
+    @Deprecated
     public InteractiveBrowserCredentialBuilder port(int port) {
         this.port = port;
         return this;
     }
 
     /**
-     * Sets whether to use an unprotected file specified by <code>cacheFileLocation()</code> instead of
-     * Gnome keyring on Linux. This is false by default.
+     * Allows to use an unprotected file specified by <code>cacheFileLocation()</code> instead of
+     * Gnome keyring on Linux. This is restricted by default.
      *
-     * @param allowUnencryptedCache whether to use an unprotected file for cache storage.
-     *
-     * @return An updated instance of this builder with the unprotected token cache setting set as specified.
+     * @return An updated instance of this builder.
      */
-    public InteractiveBrowserCredentialBuilder allowUnencryptedCache(boolean allowUnencryptedCache) {
-        this.identityClientOptions.allowUnencryptedCache(allowUnencryptedCache);
+    InteractiveBrowserCredentialBuilder allowUnencryptedCache() {
+        this.identityClientOptions.setAllowUnencryptedCache(true);
         return this;
     }
 
     /**
-     * Sets whether to enable using the shared token cache. This is disabled by default.
-     *
-     * @param enabled whether to enabled using the shared token cache.
+     * Enables the shared token cache which is disabled by default. If enabled, the credential will store tokens
+     * in a cache persisted to the machine, protected to the current user, which can be shared by other credentials
+     * and processes.
      *
      * @return An updated instance of this builder with if the shared token cache enabled specified.
      */
-    public InteractiveBrowserCredentialBuilder enablePersistentCache(boolean enabled) {
-        this.identityClientOptions.enablePersistentCache(enabled);
+    InteractiveBrowserCredentialBuilder enablePersistentCache() {
+        this.identityClientOptions.enablePersistentCache();
         return this;
     }
 
@@ -62,8 +68,23 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
      *
      * @return An updated instance of this builder with the configured authentication record.
      */
-    public InteractiveBrowserCredentialBuilder authenticationRecord(AuthenticationRecord authenticationRecord) {
+    InteractiveBrowserCredentialBuilder authenticationRecord(AuthenticationRecord authenticationRecord) {
         this.identityClientOptions.setAuthenticationRecord(authenticationRecord);
+        return this;
+    }
+
+
+    /**
+     * Sets the Redirect URL where STS will callback the application with the security code. It is required if a custom
+     * client id is specified via {@link InteractiveBrowserCredentialBuilder#clientId(String)} and must match the
+     * redirect URL specified during the application registration.
+     *
+     * @param redirectUrl the redirect URL to listen on and receive security code.
+     *
+     * @return An updated instance of this builder with the configured redirect URL.
+     */
+    public InteractiveBrowserCredentialBuilder redirectUrl(String redirectUrl) {
+        this.redirectUrl = redirectUrl;
         return this;
     }
 
@@ -77,11 +98,10 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
      *
      * @return An updated instance of this builder with automatic authentication disabled.
      */
-    public InteractiveBrowserCredentialBuilder disableAutomaticAuthentication() {
+    InteractiveBrowserCredentialBuilder disableAutomaticAuthentication() {
         this.automaticAuthentication = false;
         return this;
     }
-
 
     /**
      * Creates a new {@link InteractiveBrowserCredential} with the current configurations.
@@ -89,11 +109,11 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
      * @return a {@link InteractiveBrowserCredential} with the current configurations.
      */
     public InteractiveBrowserCredential build() {
+        ValidationUtil.validateInteractiveBrowserRedirectUrlSetup(getClass().getSimpleName(), port, redirectUrl);
         ValidationUtil.validate(getClass().getSimpleName(), new HashMap<String, Object>() {{
                 put("clientId", clientId);
-                put("port", port);
             }});
-        return new InteractiveBrowserCredential(clientId, tenantId, port, automaticAuthentication,
-                identityClientOptions);
+        return new InteractiveBrowserCredential(clientId, tenantId, port, redirectUrl, automaticAuthentication,
+            identityClientOptions);
     }
 }

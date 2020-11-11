@@ -16,6 +16,9 @@ import com.azure.identity.EnvironmentCredentialBuilder
 import com.azure.storage.blob.BlobServiceAsyncClient
 import com.azure.storage.blob.BlobServiceClient
 import com.azure.storage.blob.BlobServiceClientBuilder
+import com.azure.storage.blob.specialized.BlobClientBase
+import com.azure.storage.blob.specialized.BlobLeaseClient
+import com.azure.storage.blob.specialized.BlobLeaseClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import spock.lang.Requires
 import spock.lang.Shared
@@ -45,6 +48,10 @@ class APISpec extends Specification {
 
     static int defaultDataSize = defaultData.remaining()
 
+    static final String receivedLeaseID = "received"
+
+    static final String garbageLeaseID = UUID.randomUUID().toString()
+
     // Prefixes for blobs and containers
     String containerPrefix = "jtc" // java test container
 
@@ -54,12 +61,15 @@ class APISpec extends Specification {
 
     static def AZURE_TEST_MODE = "AZURE_TEST_MODE"
     static def PRIMARY_STORAGE = "PRIMARY_STORAGE_"
+    static def VERSIONED_STORAGE = "VERSIONED_STORAGE_"
 
     protected static StorageSharedKeyCredential primaryCredential
+    static StorageSharedKeyCredential versionedCredential
     static TestMode testMode
 
     BlobServiceClient primaryBlobServiceClient
     BlobServiceAsyncClient primaryBlobServiceAsyncClient
+    BlobServiceClient versionedBlobServiceClient
 
     private InterceptorManager interceptorManager
     private boolean recordLiveMode
@@ -69,6 +79,7 @@ class APISpec extends Specification {
     def setupSpec() {
         testMode = setupTestMode()
         primaryCredential = getCredential(PRIMARY_STORAGE)
+        versionedCredential = getCredential(VERSIONED_STORAGE)
     }
 
     def setup() {
@@ -88,6 +99,7 @@ class APISpec extends Specification {
 
         primaryBlobServiceClient = setClient(primaryCredential)
         primaryBlobServiceAsyncClient = getServiceAsyncClient(primaryCredential)
+        versionedBlobServiceClient = setClient(versionedCredential)
     }
 
     def cleanup() {
@@ -219,5 +231,42 @@ class APISpec extends Specification {
 
     private String generateResourceName(String prefix, int entityNo) {
         return resourceNamer.randomName(prefix + testName + entityNo, 63)
+    }
+
+    /**
+     * This helper method will acquire a lease on a blob to prepare for testing lease Id. We want to test
+     * against a valid lease in both the success and failure cases to guarantee that the results actually indicate
+     * proper setting of the header. If we pass null, though, we don't want to acquire a lease, as that will interfere
+     * with other AC tests.
+     *
+     * @param bc
+     *      The blob on which to acquire a lease.
+     * @param leaseID
+     *      The signalID. Values should only ever be {@code receivedLeaseID}, {@code garbageLeaseID}, or {@code null}.
+     * @return
+     * The actual lease Id of the blob if recievedLeaseID is passed, otherwise whatever was passed will be
+     * returned.
+     */
+    def setupBlobLeaseCondition(BlobClientBase bc, String leaseID) {
+        String responseLeaseId = null
+        if (leaseID == receivedLeaseID || leaseID == garbageLeaseID) {
+            responseLeaseId = createLeaseClient(bc).acquireLease(-1)
+        }
+        if (leaseID == receivedLeaseID) {
+            return responseLeaseId
+        } else {
+            return leaseID
+        }
+    }
+
+    static BlobLeaseClient createLeaseClient(BlobClientBase blobClient) {
+        return createLeaseClient(blobClient, null)
+    }
+
+    static BlobLeaseClient createLeaseClient(BlobClientBase blobClient, String leaseId) {
+        return new BlobLeaseClientBuilder()
+            .blobClient(blobClient)
+            .leaseId(leaseId)
+            .buildClient()
     }
 }

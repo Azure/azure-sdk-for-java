@@ -14,6 +14,7 @@ import com.azure.security.keyvault.secrets.models.DeletedSecret;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
 
+import java.time.Duration;
 import java.time.OffsetDateTime;
 
 /**
@@ -25,6 +26,21 @@ public final class SecretClientJavaDocCodeSnippets {
     private String key2 = "key2";
     private String value1 = "val1";
     private String value2 = "val2";
+
+    /**
+     * Implementation for sync SecretClient
+     * @return sync SecretClient
+     */
+    private SecretClient getSecretClient() {
+        // BEGIN: com.azure.security.keyvault.secretclient.sync.construct
+        SecretClient secretClient = new SecretClientBuilder()
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .vaultUrl("https://myvault.vault.azure.net/")
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .buildClient();
+        // END: com.azure.security.keyvault.secretclient.sync.construct
+        return secretClient;
+    }
 
     /**
      * Method to insert code snippets for {@link SecretClient#getSecret(String, String)}
@@ -132,26 +148,43 @@ public final class SecretClientJavaDocCodeSnippets {
     }
 
     /**
-     * Method to insert code snippets for {@link SecretClient#beginDeleteSecret(String)}
-     * @throws InterruptedException when the thread is interrupted in sleep mode.
+     * Method to insert code snippets for {@link SecretClient#beginDeleteSecret(String)} and
+     * {@link SecretClient#beginDeleteSecret(String, Duration)}
      */
-    public void deleteSecretCodeSnippets() throws InterruptedException {
+    public void deleteSecretCodeSnippets() {
         SecretClient secretClient = getSecretClient();
-        // BEGIN: com.azure.security.keyvault.secretclient.deleteSecret#string
-        SyncPoller<DeletedSecret, Void> deletedSecretPoller = secretClient.beginDeleteSecret("secretName");
+        // BEGIN: com.azure.security.keyvault.secretclient.deleteSecret#String
+        SyncPoller<DeletedSecret, Void> deleteSecretPoller = secretClient.beginDeleteSecret("secretName");
+
+        // Deleted Secret is accessible as soon as polling begins.
+        PollResponse<DeletedSecret> deleteSecretPollResponse = deleteSecretPoller.poll();
+
+        // Deletion date only works for a SoftDelete-enabled Key Vault.
+        System.out.println("Deleted Date  %s" + deleteSecretPollResponse.getValue()
+            .getDeletedOn().toString());
+        System.out.printf("Deleted Secret's Recovery Id %s", deleteSecretPollResponse.getValue()
+            .getRecoveryId());
+
+        // Secret is being deleted on server.
+        deleteSecretPoller.waitForCompletion();
+        // END: com.azure.security.keyvault.secretclient.deleteSecret#String
+
+        // BEGIN: com.azure.security.keyvault.secretclient.deleteSecret#String-Duration
+        SyncPoller<DeletedSecret, Void> deletedSecretPoller = secretClient.beginDeleteSecret("secretName",
+            Duration.ofSeconds(1));
 
         // Deleted Secret is accessible as soon as polling begins.
         PollResponse<DeletedSecret> deletedSecretPollResponse = deletedSecretPoller.poll();
 
         // Deletion date only works for a SoftDelete-enabled Key Vault.
         System.out.println("Deleted Date  %s" + deletedSecretPollResponse.getValue()
-                .getDeletedOn().toString());
+            .getDeletedOn().toString());
         System.out.printf("Deleted Secret's Recovery Id %s", deletedSecretPollResponse.getValue()
-                .getRecoveryId());
+            .getRecoveryId());
 
         // Secret is being deleted on server.
         deletedSecretPoller.waitForCompletion();
-        // END: com.azure.security.keyvault.secretclient.deleteSecret#string
+        // END: com.azure.security.keyvault.secretclient.deleteSecret#String-Duration
     }
 
     /**
@@ -201,12 +234,12 @@ public final class SecretClientJavaDocCodeSnippets {
     }
 
     /**
-     * Method to insert code snippets for {@link SecretClient#beginRecoverDeletedSecret(String)}
-     * @throws InterruptedException when the thread is interrupted in sleep mode.
+     * Method to insert code snippets for {@link SecretClient#beginRecoverDeletedSecret(String)} and
+     * {@link SecretClient#beginRecoverDeletedSecret(String, Duration)}.
      */
-    public void recoverDeletedSecretCodeSnippets() throws InterruptedException {
+    public void recoverDeletedSecretCodeSnippets() {
         SecretClient secretClient = getSecretClient();
-        // BEGIN: com.azure.security.keyvault.secretclient.recoverDeletedSecret#string
+        // BEGIN: com.azure.security.keyvault.secretclient.recoverDeletedSecret#String
         SyncPoller<KeyVaultSecret, Void> recoverSecretPoller =
             secretClient.beginRecoverDeletedSecret("deletedSecretName");
 
@@ -217,7 +250,20 @@ public final class SecretClientJavaDocCodeSnippets {
 
         // Key is being recovered on server.
         recoverSecretPoller.waitForCompletion();
-        // END: com.azure.security.keyvault.secretclient.recoverDeletedSecret#string
+        // END: com.azure.security.keyvault.secretclient.recoverDeletedSecret#String
+
+        // BEGIN: com.azure.security.keyvault.secretclient.recoverDeletedSecret#String-Duration
+        SyncPoller<KeyVaultSecret, Void> recoverDeletedSecretPoller =
+            secretClient.beginRecoverDeletedSecret("deletedSecretName", Duration.ofSeconds(1));
+
+        // Deleted Secret can be accessed as soon as polling is in progress.
+        PollResponse<KeyVaultSecret> recoveredDeletedSecretPollResponse = recoverDeletedSecretPoller.poll();
+        System.out.println("Recovered Key Name %s" + recoveredDeletedSecretPollResponse.getValue().getName());
+        System.out.printf("Recovered Key's Id %s", recoveredDeletedSecretPollResponse.getValue().getId());
+
+        // Key is being recovered on server.
+        recoverDeletedSecretPoller.waitForCompletion();
+        // END: com.azure.security.keyvault.secretclient.recoverDeletedSecret#String-Duration
     }
 
     /**
@@ -368,29 +414,5 @@ public final class SecretClientJavaDocCodeSnippets {
                         });
                     });
         // END: com.azure.security.keyvault.secretclient.listSecretVersions#string-Context-iterableByPage
-    }
-
-    /**
-     * Implementation for sync SecretClient
-     *
-     * @return sync SecretClient
-     */
-    private SecretClient getSyncSecretClientCodeSnippets() {
-
-        // BEGIN: com.azure.security.keyvault.secretclient.sync.construct
-        SecretClient secretClient = new SecretClientBuilder()
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .vaultUrl("https://myvault.vault.azure.net/")
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .buildClient();
-        // END: com.azure.security.keyvault.secretclient.sync.construct
-        return secretClient;
-    }
-
-    /**
-     * Implementation not provided for this method
-     */
-    private SecretClient getSecretClient() {
-        return new SecretClient(null);
     }
 }

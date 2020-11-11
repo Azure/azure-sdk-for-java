@@ -7,9 +7,9 @@ import com.azure.search.documents.indexes.implementation.models.DataSourceCreden
 import com.azure.search.documents.indexes.implementation.models.SearchIndexerDataSource;
 import com.azure.search.documents.indexes.models.DataChangeDetectionPolicy;
 import com.azure.search.documents.indexes.models.DataDeletionDetectionPolicy;
-import com.azure.search.documents.indexes.models.SearchIndexerDataContainer;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
-import com.azure.search.documents.indexes.models.SearchIndexerDataSourceType;
+
+import java.util.Objects;
 
 /**
  * A converter between {@link SearchIndexerDataSource} and
@@ -24,27 +24,20 @@ public final class SearchIndexerDataSourceConverter {
         if (obj == null) {
             return null;
         }
-        SearchIndexerDataSourceConnection searchIndexerDataSourceConnection = new SearchIndexerDataSourceConnection();
 
-        if (obj.getContainer() != null) {
-            SearchIndexerDataContainer container = SearchIndexerDataContainerConverter.map(obj.getContainer());
-            searchIndexerDataSourceConnection.setContainer(container);
-        }
+        String connectionString = obj.getCredentials() == null ? null
+            : obj.getCredentials().getConnectionString();
+        SearchIndexerDataSourceConnection searchIndexerDataSourceConnection = new SearchIndexerDataSourceConnection(
+            obj.getName(), obj.getType(), connectionString, obj.getContainer());
+
 
         if (obj.getDataChangeDetectionPolicy() != null) {
             DataChangeDetectionPolicy dataChangeDetectionPolicy =
                 DataChangeDetectionPolicyConverter.map(obj.getDataChangeDetectionPolicy());
             searchIndexerDataSourceConnection.setDataChangeDetectionPolicy(dataChangeDetectionPolicy);
         }
-        if (obj.getCredentials() != null) {
-            searchIndexerDataSourceConnection.setConnectionString(obj.getCredentials().getConnectionString());
-        }
 
-        String name = obj.getName();
-        searchIndexerDataSourceConnection.setName(name);
-
-        String description = obj.getDescription();
-        searchIndexerDataSourceConnection.setDescription(description);
+        searchIndexerDataSourceConnection.setDescription(obj.getDescription());
 
         if (obj.getDataDeletionDetectionPolicy() != null) {
             DataDeletionDetectionPolicy dataDeletionDetectionPolicy =
@@ -52,13 +45,13 @@ public final class SearchIndexerDataSourceConverter {
             searchIndexerDataSourceConnection.setDataDeletionDetectionPolicy(dataDeletionDetectionPolicy);
         }
 
-        String eTag = obj.getETag();
-        searchIndexerDataSourceConnection.setETag(eTag);
+        searchIndexerDataSourceConnection.setETag(obj.getETag());
 
-        if (obj.getType() != null) {
-            SearchIndexerDataSourceType type = SearchIndexerDataSourceTypeConverter.map(obj.getType());
-            searchIndexerDataSourceConnection.setType(type);
+        if (obj.getEncryptionKey() != null) {
+            searchIndexerDataSourceConnection
+                .setEncryptionKey(SearchResourceEncryptionKeyConverter.map(obj.getEncryptionKey()));
         }
+
         return searchIndexerDataSourceConnection;
     }
 
@@ -70,14 +63,15 @@ public final class SearchIndexerDataSourceConverter {
         if (obj == null) {
             return null;
         }
-        SearchIndexerDataSource searchIndexerDataSource =
-            new SearchIndexerDataSource();
+        Objects.requireNonNull(obj.getName(), "The SearchIndexerDataSourceConnection name cannot be null");
 
-        if (obj.getContainer() != null) {
-            com.azure.search.documents.indexes.implementation.models.SearchIndexerDataContainer container =
-                SearchIndexerDataContainerConverter.map(obj.getContainer());
-            searchIndexerDataSource.setContainer(container);
-        }
+        DataSourceCredentials credentials = new DataSourceCredentials();
+        credentials.setConnectionString(obj.getConnectionString());
+        SearchIndexerDataSource searchIndexerDataSource = new SearchIndexerDataSource()
+            .setName(obj.getName())
+            .setType(obj.getType())
+            .setCredentials(credentials)
+            .setContainer(obj.getContainer());
 
         if (obj.getDataChangeDetectionPolicy() != null) {
             com.azure.search.documents.indexes.implementation.models.DataChangeDetectionPolicy
@@ -85,15 +79,7 @@ public final class SearchIndexerDataSourceConverter {
             searchIndexerDataSource.setDataChangeDetectionPolicy(dataChangeDetectionPolicy);
         }
 
-        DataSourceCredentials credentials = new DataSourceCredentials();
-        credentials.setConnectionString(obj.getConnectionString());
-        searchIndexerDataSource.setCredentials(credentials);
-
-        String name = obj.getName();
-        searchIndexerDataSource.setName(name);
-
-        String description = obj.getDescription();
-        searchIndexerDataSource.setDescription(description);
+        searchIndexerDataSource.setDescription(obj.getDescription());
 
         if (obj.getDataDeletionDetectionPolicy() != null) {
             com.azure.search.documents.indexes.implementation.models.DataDeletionDetectionPolicy dataDeletionDetectionPolicy
@@ -101,14 +87,12 @@ public final class SearchIndexerDataSourceConverter {
             searchIndexerDataSource.setDataDeletionDetectionPolicy(dataDeletionDetectionPolicy);
         }
 
-        String eTag = obj.getETag();
-        searchIndexerDataSource.setETag(eTag);
+        searchIndexerDataSource.setETag(obj.getETag());
 
-        if (obj.getType() != null) {
-            com.azure.search.documents.indexes.implementation.models.SearchIndexerDataSourceType type =
-                SearchIndexerDataSourceTypeConverter.map(obj.getType());
-            searchIndexerDataSource.setType(type);
+        if (obj.getEncryptionKey() != null) {
+            searchIndexerDataSource.setEncryptionKey(SearchResourceEncryptionKeyConverter.map(obj.getEncryptionKey()));
         }
+
         return searchIndexerDataSource;
     }
 

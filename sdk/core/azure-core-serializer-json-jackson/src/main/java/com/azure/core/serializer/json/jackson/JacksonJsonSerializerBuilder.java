@@ -3,12 +3,24 @@
 
 package com.azure.core.serializer.json.jackson;
 
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Fluent builder class that configures and instantiates instances of {@link JacksonJsonSerializer}.
  */
-public class JacksonJsonSerializerBuilder {
+public final class JacksonJsonSerializerBuilder {
+    /*
+     * The ObjectMapper used by JacksonAdapter uses inclusion scopes and null handling that differs from the default
+     * Jackson uses. This configuration is reset here by mutating the inclusion scope and null handling to use the
+     * default Jackson values so that JacksonJsonSerializer has less friction when this default is used.
+     */
+    private static final ObjectMapper DEFAULT_MAPPER = new JacksonAdapter().serializer()
+        .setSerializationInclusion(JsonInclude.Include.USE_DEFAULTS)
+        .setDefaultVisibility(JsonAutoDetect.Value.defaultVisibility());
+
     private ObjectMapper objectMapper;
 
     /**
@@ -18,14 +30,15 @@ public class JacksonJsonSerializerBuilder {
      */
     public JacksonJsonSerializer build() {
         return (objectMapper == null)
-            ? new JacksonJsonSerializer(new ObjectMapper())
+            ? new JacksonJsonSerializer(DEFAULT_MAPPER)
             : new JacksonJsonSerializer(objectMapper);
     }
 
     /**
      * Sets the {@link ObjectMapper} that will be used during serialization.
      * <p>
-     * If this is set to {@code null} the default {@link ObjectMapper} will be used.
+     * If this is set to {@code null} {@link JacksonAdapter#serializer()} with default visibility and non-null inclusion
+     * will be used as the default.
      *
      * @param objectMapper {@link ObjectMapper} that will be used during serialization.
      * @return The updated JacksonJsonSerializerBuilder class.

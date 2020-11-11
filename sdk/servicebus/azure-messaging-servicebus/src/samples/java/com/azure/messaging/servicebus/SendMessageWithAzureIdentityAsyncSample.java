@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.experimental.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.util.UUID;
@@ -23,7 +24,7 @@ public class SendMessageWithAzureIdentityAsyncSample {
      * @throws InterruptedException If the program is unable to sleep while waiting for the operations to complete.
      */
     public static void main(String[] args) throws InterruptedException {
-        ServiceBusMessage guestCheckInEvent = new ServiceBusMessage("Microsoft HQ is at Redmond.".getBytes(UTF_8))
+        ServiceBusMessage guestCheckInEvent = new ServiceBusMessage(BinaryData.fromBytes("Microsoft HQ is at Redmond.".getBytes(UTF_8)))
             .setMessageId(UUID.randomUUID().toString());
 
         // DefaultAzureCredential checks multiple locations for credentials and determines the best one to use.
@@ -47,7 +48,7 @@ public class SendMessageWithAzureIdentityAsyncSample {
             .queueName("<<queue-name>>")
             .buildAsyncClient();
 
-        sender.send(guestCheckInEvent)
+        sender.sendMessage(guestCheckInEvent)
             .subscribe(
                 unused -> System.out.println("Sent."),
                 error -> System.err.println("Error occurred while publishing message: " + error),

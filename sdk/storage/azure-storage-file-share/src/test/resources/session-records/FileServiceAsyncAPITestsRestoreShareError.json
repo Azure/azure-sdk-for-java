@@ -1,0 +1,26 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://kasobolcanarytest.file.core.windows.net/jtsfileserviceasyncapitestsrestoreshareerror020071187352?restype=share&comp=undelete",
+    "Headers" : {
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.5.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "648ce689-5151-4a66-83e7-f4c6018f9629"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-12-12",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareNotFound",
+      "retry-after" : "0",
+      "Content-Length" : "217",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "3f032257-301a-00e9-806a-29306b000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:3f032257-301a-00e9-806a-29306b000000\nTime:2020-05-13T21:05:36.0204000Z</Message></Error>",
+      "Date" : "Wed, 13 May 2020 21:05:35 GMT",
+      "x-ms-client-request-id" : "648ce689-5151-4a66-83e7-f4c6018f9629",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "fileserviceasyncapitestsrestoreshareerror766164e0398c", "jtsfileserviceasyncapitestsrestoreshareerror020071187352" ]
+}

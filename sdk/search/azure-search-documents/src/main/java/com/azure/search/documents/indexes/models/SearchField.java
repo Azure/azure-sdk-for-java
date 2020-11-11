@@ -4,8 +4,12 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
+
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -221,6 +225,22 @@ public final class SearchField {
     private Boolean hidden;
 
     /**
+     * Constructor of {@link SearchField}.
+     * @param name The name of the field, which must be unique within the fields collection
+     * of the index or parent field.
+     * @param type The data type of the field. Possible values include: 'String', 'Int32',
+     * 'Int64', 'Double', 'Boolean', 'DateTimeOffset', 'GeographyPoint',
+     * 'Complex'
+     */
+    @JsonCreator
+    public SearchField(
+        @JsonProperty(value = "name", required = true) String name,
+        @JsonProperty(value = "type", required = true) SearchFieldDataType type) {
+        this.name = name;
+        this.type = type;
+    }
+
+    /**
      * Get the name property: The name of the field, which must be unique
      * within the fields collection of the index or parent field.
      *
@@ -228,18 +248,6 @@ public final class SearchField {
      */
     public String getName() {
         return this.name;
-    }
-
-    /**
-     * Set the name property: The name of the field, which must be unique
-     * within the fields collection of the index or parent field.
-     *
-     * @param name the name value to set.
-     * @return the SearchField object itself.
-     */
-    public SearchField setName(String name) {
-        this.name = name;
-        return this;
     }
 
     /**
@@ -251,19 +259,6 @@ public final class SearchField {
      */
     public SearchFieldDataType getType() {
         return this.type;
-    }
-
-    /**
-     * Set the type property: The data type of the field. Possible values
-     * include: 'String', 'Int32', 'Int64', 'Double', 'Boolean',
-     * 'DateTimeOffset', 'GeographyPoint', 'Complex'.
-     *
-     * @param type the type value to set.
-     * @return the SearchField object itself.
-     */
-    public SearchField setType(SearchFieldDataType type) {
-        this.type = type;
-        return this;
     }
 
     /**
@@ -691,6 +686,24 @@ public final class SearchField {
      * @param synonymMapNames the synonymMap names to set.
      * @return the SearchField object itself.
      */
+    public SearchField setSynonymMapNames(String... synonymMapNames) {
+        this.synonymMapNames = (synonymMapNames == null) ? null : Arrays.asList(synonymMapNames);
+        return this;
+    }
+
+    /**
+     * Set the synonymMaps property: A list of the names of synonym maps to
+     * associate with this field. This option can be used only with searchable
+     * fields. Currently only one synonym map per field is supported. Assigning
+     * a synonym map to a field ensures that query terms targeting that field
+     * are expanded at query-time using the rules in the synonym map. This
+     * attribute can be changed on existing fields. Must be null or an empty
+     * collection for complex fields.
+     *
+     * @param synonymMapNames the synonymMap names to set.
+     * @return the SearchField object itself.
+     */
+    @JsonSetter
     public SearchField setSynonymMapNames(List<String> synonymMapNames) {
         this.synonymMapNames = synonymMapNames;
         return this;
@@ -715,6 +728,20 @@ public final class SearchField {
      * @param fields the fields value to set.
      * @return the SearchField object itself.
      */
+    public SearchField setFields(SearchField... fields) {
+        this.fields = (fields == null) ? null : Arrays.asList(fields);
+        return this;
+    }
+
+    /**
+     * Set the fields property: A list of sub-fields if this is a field of type
+     * Edm.ComplexType or Collection(Edm.ComplexType). Must be null or empty
+     * for simple fields.
+     *
+     * @param fields the fields value to set.
+     * @return the SearchField object itself.
+     */
+    @JsonSetter
     public SearchField setFields(List<SearchField> fields) {
         this.fields = fields;
         return this;

@@ -3,7 +3,7 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
+import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexBatchBase;
 
@@ -22,32 +22,26 @@ public final class IndexBatchBaseConverter {
         if (obj == null) {
             return null;
         }
-        IndexBatchBase<T> indexBatchBase = new IndexBatchBase<T>();
 
-        if (obj.getActions() != null) {
-            List<IndexAction<T>> actions =
-                obj.getActions().stream().map(IndexActionConverter::<T>map).collect(Collectors.toList());
-            PrivateFieldAccessHelper.set(indexBatchBase, "actions", actions);
-        }
-        return indexBatchBase;
+        List<IndexAction<T>> actions = obj.getActions() == null ? null
+            : obj.getActions().stream().map(IndexActionConverter::<T>map).collect(Collectors.toList());
+        return new IndexBatchBase<T>(actions);
     }
 
     /**
      * Maps from {@link IndexBatchBase} to {@link com.azure.search.documents.implementation.models.IndexBatch}.
      */
-    public static <T> com.azure.search.documents.implementation.models.IndexBatch map(IndexBatchBase<T> obj) {
+    public static <T> com.azure.search.documents.implementation.models.IndexBatch map(IndexBatchBase<T> obj,
+        ObjectSerializer jsonSerializer) {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.implementation.models.IndexBatch indexBatch =
-            new com.azure.search.documents.implementation.models.IndexBatch();
 
-        if (obj.getActions() != null) {
-            List<com.azure.search.documents.implementation.models.IndexAction> actions =
-                obj.getActions().stream().map(IndexActionConverter::map).collect(Collectors.toList());
-            PrivateFieldAccessHelper.set(indexBatch, "actions", actions);
-        }
-        return indexBatch;
+        List<com.azure.search.documents.implementation.models.IndexAction> actions = obj.getActions() == null ? null
+            : obj.getActions().stream().map(indexAction -> IndexActionConverter.map(indexAction, jsonSerializer))
+                .collect(Collectors.toList());
+
+        return new com.azure.search.documents.implementation.models.IndexBatch(actions);
     }
 
     private IndexBatchBaseConverter() {

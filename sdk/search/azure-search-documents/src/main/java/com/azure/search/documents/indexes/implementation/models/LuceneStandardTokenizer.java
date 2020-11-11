@@ -7,18 +7,18 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * Breaks text following the Unicode Text Segmentation rules. This tokenizer is
- * implemented using Apache Lucene.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
+/** Breaks text following the Unicode Text Segmentation rules. This tokenizer is implemented using Apache Lucene. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.StandardTokenizer")
+@JsonFlatten
 @Fluent
-public final class LuceneStandardTokenizer extends LexicalTokenizer {
+public class LuceneStandardTokenizer extends LexicalTokenizer {
     /*
      * The maximum token length. Default is 255. Tokens longer than the maximum
      * length are split.
@@ -27,8 +27,18 @@ public final class LuceneStandardTokenizer extends LexicalTokenizer {
     private Integer maxTokenLength;
 
     /**
-     * Get the maxTokenLength property: The maximum token length. Default is
-     * 255. Tokens longer than the maximum length are split.
+     * Creates an instance of LuceneStandardTokenizer class.
+     *
+     * @param name the name value to set.
+     */
+    @JsonCreator
+    public LuceneStandardTokenizer(@JsonProperty(value = "name", required = true) String name) {
+        super(name);
+    }
+
+    /**
+     * Get the maxTokenLength property: The maximum token length. Default is 255. Tokens longer than the maximum length
+     * are split.
      *
      * @return the maxTokenLength value.
      */
@@ -37,8 +47,8 @@ public final class LuceneStandardTokenizer extends LexicalTokenizer {
     }
 
     /**
-     * Set the maxTokenLength property: The maximum token length. Default is
-     * 255. Tokens longer than the maximum length are split.
+     * Set the maxTokenLength property: The maximum token length. Default is 255. Tokens longer than the maximum length
+     * are split.
      *
      * @param maxTokenLength the maxTokenLength value to set.
      * @return the LuceneStandardTokenizer object itself.

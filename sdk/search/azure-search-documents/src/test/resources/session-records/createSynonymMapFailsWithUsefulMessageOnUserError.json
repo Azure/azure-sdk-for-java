@@ -1,30 +1,32 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/synonymmaps?api-version=2019-05-06-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/synonymmaps?api-version=2020-06-30",
     "Headers" : {
-      "x-ms-client-request-id" : "40e2c130-ae67-4923-8539-8546fb4b2fb0",
-      "Content-Type" : "application/json; charset=utf-8"
+      "User-Agent" : "azsdk-java-azure-search-documents/1.0.0-beta.5 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9d0aca1a-0ad3-4ce9-a212-a71905484548",
+      "Content-Type" : "application/json"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "40e2c130-ae67-4923-8539-8546fb4b2fb0",
+      "request-id" : "9d0aca1a-0ad3-4ce9-a212-a71905484548",
       "StatusCode" : "400",
-      "Date" : "Mon, 11 May 2020 18:11:59 GMT",
+      "Date" : "Thu, 25 Jun 2020 17:11:00 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "40e2c130-ae67-4923-8539-8546fb4b2fb0",
+      "client-request-id" : "9d0aca1a-0ad3-4ce9-a212-a71905484548",
       "elapsed-time" : "7",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "139",
       "Body" : "{\"error\":{\"code\":\"\",\"message\":\"Syntax error in line 1: 'a => b => c'. Only one explicit mapping (=>) can be specified in a synonym rule.\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "x-ms-client-request-id" : "9d0aca1a-0ad3-4ce9-a212-a71905484548",
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   } ],
-  "variables" : [ "test-synonym63465fa70fa1" ]
+  "variables" : [ "test-synonym23741f791b08" ]
 }

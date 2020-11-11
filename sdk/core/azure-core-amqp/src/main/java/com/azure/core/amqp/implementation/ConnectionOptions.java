@@ -8,6 +8,8 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.util.ClientOptions;
+import org.apache.qpid.proton.engine.SslDomain;
 import reactor.core.scheduler.Scheduler;
 
 import java.util.Objects;
@@ -24,10 +26,14 @@ public class ConnectionOptions {
     private final Scheduler scheduler;
     private final String fullyQualifiedNamespace;
     private final CbsAuthorizationType authorizationType;
+    private final ClientOptions clientOptions;
+    private final SslDomain.VerifyMode verifyMode;
 
     public ConnectionOptions(String fullyQualifiedNamespace, TokenCredential tokenCredential,
             CbsAuthorizationType authorizationType, AmqpTransportType transport, AmqpRetryOptions retryOptions,
-            ProxyOptions proxyOptions, Scheduler scheduler) {
+            ProxyOptions proxyOptions, Scheduler scheduler, ClientOptions clientOptions,
+            SslDomain.VerifyMode verifyMode) {
+
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' is required.");
         this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' is required.");
@@ -36,22 +42,20 @@ public class ConnectionOptions {
         this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' is required.");
         this.proxyOptions = Objects.requireNonNull(proxyOptions, "'proxyConfiguration' is required.");
         this.scheduler = Objects.requireNonNull(scheduler, "'scheduler' is required.");
-    }
-
-    public String getFullyQualifiedNamespace() {
-        return fullyQualifiedNamespace;
-    }
-
-    public TokenCredential getTokenCredential() {
-        return tokenCredential;
+        this.clientOptions = Objects.requireNonNull(clientOptions, "'clientOptions' is required.");
+        this.verifyMode = Objects.requireNonNull(verifyMode, "'verifyMode' is required.");
     }
 
     public CbsAuthorizationType getAuthorizationType() {
         return authorizationType;
     }
 
-    public AmqpTransportType getTransportType() {
-        return transport;
+    public ClientOptions getClientOptions() {
+        return clientOptions;
+    }
+
+    public String getFullyQualifiedNamespace() {
+        return fullyQualifiedNamespace;
     }
 
     public AmqpRetryOptions getRetry() {
@@ -64,5 +68,17 @@ public class ConnectionOptions {
 
     public Scheduler getScheduler() {
         return scheduler;
+    }
+
+    public SslDomain.VerifyMode getSslVerifyMode() {
+        return verifyMode;
+    }
+
+    public TokenCredential getTokenCredential() {
+        return tokenCredential;
+    }
+
+    public AmqpTransportType getTransportType() {
+        return transport;
     }
 }

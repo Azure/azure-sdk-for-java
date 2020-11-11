@@ -4,6 +4,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -31,6 +32,20 @@ public final class MagnitudeScoringParameters {
     private Boolean shouldBoostBeyondRangeByConstant;
 
     /**
+     * Constructor of {@link MagnitudeScoringParameters}.
+     *
+     * @param boostingRangeStart The field value at which boosting starts.
+     * @param boostingRangeEnd The field value at which boosting ends.
+     */
+    @JsonCreator
+    public MagnitudeScoringParameters(
+        @JsonProperty(value = "boostingRangeStart", required = true) double boostingRangeStart,
+        @JsonProperty(value = "boostingRangeEnd", required = true) double boostingRangeEnd) {
+        this.boostingRangeStart = boostingRangeStart;
+        this.boostingRangeEnd = boostingRangeEnd;
+    }
+
+    /**
      * Get the boostingRangeStart property: The field value at which boosting
      * starts.
      *
@@ -41,18 +56,6 @@ public final class MagnitudeScoringParameters {
     }
 
     /**
-     * Set the boostingRangeStart property: The field value at which boosting
-     * starts.
-     *
-     * @param boostingRangeStart the boostingRangeStart value to set.
-     * @return the MagnitudeScoringParameters object itself.
-     */
-    public MagnitudeScoringParameters setBoostingRangeStart(double boostingRangeStart) {
-        this.boostingRangeStart = boostingRangeStart;
-        return this;
-    }
-
-    /**
      * Get the boostingRangeEnd property: The field value at which boosting
      * ends.
      *
@@ -60,18 +63,6 @@ public final class MagnitudeScoringParameters {
      */
     public double getBoostingRangeEnd() {
         return this.boostingRangeEnd;
-    }
-
-    /**
-     * Set the boostingRangeEnd property: The field value at which boosting
-     * ends.
-     *
-     * @param boostingRangeEnd the boostingRangeEnd value to set.
-     * @return the MagnitudeScoringParameters object itself.
-     */
-    public MagnitudeScoringParameters setBoostingRangeEnd(double boostingRangeEnd) {
-        this.boostingRangeEnd = boostingRangeEnd;
-        return this;
     }
 
     /**

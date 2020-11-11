@@ -7,13 +7,13 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
+import com.azure.search.documents.indexes.models.SearchFieldDataType;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Represents a field in an index definition, which describes the name, data
- * type, and search behavior of a field.
- */
+/** Represents a field in an index definition, which describes the name, data type, and search behavior of a field. */
 @Fluent
 public final class SearchField {
     /*
@@ -24,9 +24,7 @@ public final class SearchField {
     private String name;
 
     /*
-     * The data type of the field. Possible values include: 'String', 'Int32',
-     * 'Int64', 'Double', 'Boolean', 'DateTimeOffset', 'GeographyPoint',
-     * 'Complex'
+     * The data type of the field.
      */
     @JsonProperty(value = "type", required = true)
     private SearchFieldDataType type;
@@ -118,27 +116,7 @@ public final class SearchField {
      * The name of the analyzer to use for the field. This option can be used
      * only with searchable fields and it can't be set together with either
      * searchAnalyzer or indexAnalyzer. Once the analyzer is chosen, it cannot
-     * be changed for the field. Must be null for complex fields. Possible
-     * values include: 'ArMicrosoft', 'ArLucene', 'HyLucene', 'BnMicrosoft',
-     * 'EuLucene', 'BgMicrosoft', 'BgLucene', 'CaMicrosoft', 'CaLucene',
-     * 'ZhHansMicrosoft', 'ZhHansLucene', 'ZhHantMicrosoft', 'ZhHantLucene',
-     * 'HrMicrosoft', 'CsMicrosoft', 'CsLucene', 'DaMicrosoft', 'DaLucene',
-     * 'NlMicrosoft', 'NlLucene', 'EnMicrosoft', 'EnLucene', 'EtMicrosoft',
-     * 'FiMicrosoft', 'FiLucene', 'FrMicrosoft', 'FrLucene', 'GlLucene',
-     * 'DeMicrosoft', 'DeLucene', 'ElMicrosoft', 'ElLucene', 'GuMicrosoft',
-     * 'HeMicrosoft', 'HiMicrosoft', 'HiLucene', 'HuMicrosoft', 'HuLucene',
-     * 'IsMicrosoft', 'IdMicrosoft', 'IdLucene', 'GaLucene', 'ItMicrosoft',
-     * 'ItLucene', 'JaMicrosoft', 'JaLucene', 'KnMicrosoft', 'KoMicrosoft',
-     * 'KoLucene', 'LvMicrosoft', 'LvLucene', 'LtMicrosoft', 'MlMicrosoft',
-     * 'MsMicrosoft', 'MrMicrosoft', 'NbMicrosoft', 'NoLucene', 'FaLucene',
-     * 'PlMicrosoft', 'PlLucene', 'PtBrMicrosoft', 'PtBrLucene',
-     * 'PtPtMicrosoft', 'PtPtLucene', 'PaMicrosoft', 'RoMicrosoft', 'RoLucene',
-     * 'RuMicrosoft', 'RuLucene', 'SrCyrillicMicrosoft', 'SrLatinMicrosoft',
-     * 'SkMicrosoft', 'SlMicrosoft', 'EsMicrosoft', 'EsLucene', 'SvMicrosoft',
-     * 'SvLucene', 'TaMicrosoft', 'TeMicrosoft', 'ThMicrosoft', 'ThLucene',
-     * 'TrMicrosoft', 'TrLucene', 'UkMicrosoft', 'UrMicrosoft', 'ViMicrosoft',
-     * 'StandardLucene', 'StandardAsciiFoldingLucene', 'Keyword', 'Pattern',
-     * 'Simple', 'Stop', 'Whitespace'
+     * be changed for the field. Must be null for complex fields.
      */
     @JsonProperty(value = "analyzer")
     private LexicalAnalyzerName analyzer;
@@ -150,26 +128,6 @@ public final class SearchField {
      * This property cannot be set to the name of a language analyzer; use the
      * analyzer property instead if you need a language analyzer. This analyzer
      * can be updated on an existing field. Must be null for complex fields.
-     * Possible values include: 'ArMicrosoft', 'ArLucene', 'HyLucene',
-     * 'BnMicrosoft', 'EuLucene', 'BgMicrosoft', 'BgLucene', 'CaMicrosoft',
-     * 'CaLucene', 'ZhHansMicrosoft', 'ZhHansLucene', 'ZhHantMicrosoft',
-     * 'ZhHantLucene', 'HrMicrosoft', 'CsMicrosoft', 'CsLucene', 'DaMicrosoft',
-     * 'DaLucene', 'NlMicrosoft', 'NlLucene', 'EnMicrosoft', 'EnLucene',
-     * 'EtMicrosoft', 'FiMicrosoft', 'FiLucene', 'FrMicrosoft', 'FrLucene',
-     * 'GlLucene', 'DeMicrosoft', 'DeLucene', 'ElMicrosoft', 'ElLucene',
-     * 'GuMicrosoft', 'HeMicrosoft', 'HiMicrosoft', 'HiLucene', 'HuMicrosoft',
-     * 'HuLucene', 'IsMicrosoft', 'IdMicrosoft', 'IdLucene', 'GaLucene',
-     * 'ItMicrosoft', 'ItLucene', 'JaMicrosoft', 'JaLucene', 'KnMicrosoft',
-     * 'KoMicrosoft', 'KoLucene', 'LvMicrosoft', 'LvLucene', 'LtMicrosoft',
-     * 'MlMicrosoft', 'MsMicrosoft', 'MrMicrosoft', 'NbMicrosoft', 'NoLucene',
-     * 'FaLucene', 'PlMicrosoft', 'PlLucene', 'PtBrMicrosoft', 'PtBrLucene',
-     * 'PtPtMicrosoft', 'PtPtLucene', 'PaMicrosoft', 'RoMicrosoft', 'RoLucene',
-     * 'RuMicrosoft', 'RuLucene', 'SrCyrillicMicrosoft', 'SrLatinMicrosoft',
-     * 'SkMicrosoft', 'SlMicrosoft', 'EsMicrosoft', 'EsLucene', 'SvMicrosoft',
-     * 'SvLucene', 'TaMicrosoft', 'TeMicrosoft', 'ThMicrosoft', 'ThLucene',
-     * 'TrMicrosoft', 'TrLucene', 'UkMicrosoft', 'UrMicrosoft', 'ViMicrosoft',
-     * 'StandardLucene', 'StandardAsciiFoldingLucene', 'Keyword', 'Pattern',
-     * 'Simple', 'Stop', 'Whitespace'
      */
     @JsonProperty(value = "searchAnalyzer")
     private LexicalAnalyzerName searchAnalyzer;
@@ -181,27 +139,7 @@ public final class SearchField {
      * option.  This property cannot be set to the name of a language analyzer;
      * use the analyzer property instead if you need a language analyzer. Once
      * the analyzer is chosen, it cannot be changed for the field. Must be null
-     * for complex fields. Possible values include: 'ArMicrosoft', 'ArLucene',
-     * 'HyLucene', 'BnMicrosoft', 'EuLucene', 'BgMicrosoft', 'BgLucene',
-     * 'CaMicrosoft', 'CaLucene', 'ZhHansMicrosoft', 'ZhHansLucene',
-     * 'ZhHantMicrosoft', 'ZhHantLucene', 'HrMicrosoft', 'CsMicrosoft',
-     * 'CsLucene', 'DaMicrosoft', 'DaLucene', 'NlMicrosoft', 'NlLucene',
-     * 'EnMicrosoft', 'EnLucene', 'EtMicrosoft', 'FiMicrosoft', 'FiLucene',
-     * 'FrMicrosoft', 'FrLucene', 'GlLucene', 'DeMicrosoft', 'DeLucene',
-     * 'ElMicrosoft', 'ElLucene', 'GuMicrosoft', 'HeMicrosoft', 'HiMicrosoft',
-     * 'HiLucene', 'HuMicrosoft', 'HuLucene', 'IsMicrosoft', 'IdMicrosoft',
-     * 'IdLucene', 'GaLucene', 'ItMicrosoft', 'ItLucene', 'JaMicrosoft',
-     * 'JaLucene', 'KnMicrosoft', 'KoMicrosoft', 'KoLucene', 'LvMicrosoft',
-     * 'LvLucene', 'LtMicrosoft', 'MlMicrosoft', 'MsMicrosoft', 'MrMicrosoft',
-     * 'NbMicrosoft', 'NoLucene', 'FaLucene', 'PlMicrosoft', 'PlLucene',
-     * 'PtBrMicrosoft', 'PtBrLucene', 'PtPtMicrosoft', 'PtPtLucene',
-     * 'PaMicrosoft', 'RoMicrosoft', 'RoLucene', 'RuMicrosoft', 'RuLucene',
-     * 'SrCyrillicMicrosoft', 'SrLatinMicrosoft', 'SkMicrosoft', 'SlMicrosoft',
-     * 'EsMicrosoft', 'EsLucene', 'SvMicrosoft', 'SvLucene', 'TaMicrosoft',
-     * 'TeMicrosoft', 'ThMicrosoft', 'ThLucene', 'TrMicrosoft', 'TrLucene',
-     * 'UkMicrosoft', 'UrMicrosoft', 'ViMicrosoft', 'StandardLucene',
-     * 'StandardAsciiFoldingLucene', 'Keyword', 'Pattern', 'Simple', 'Stop',
-     * 'Whitespace'
+     * for complex fields.
      */
     @JsonProperty(value = "indexAnalyzer")
     private LexicalAnalyzerName indexAnalyzer;
@@ -225,8 +163,22 @@ public final class SearchField {
     private List<SearchField> fields;
 
     /**
-     * Get the name property: The name of the field, which must be unique
-     * within the fields collection of the index or parent field.
+     * Creates an instance of SearchField class.
+     *
+     * @param name the name value to set.
+     * @param type the type value to set.
+     */
+    @JsonCreator
+    public SearchField(
+            @JsonProperty(value = "name", required = true) String name,
+            @JsonProperty(value = "type", required = true) SearchFieldDataType type) {
+        this.name = name;
+        this.type = type;
+    }
+
+    /**
+     * Get the name property: The name of the field, which must be unique within the fields collection of the index or
+     * parent field.
      *
      * @return the name value.
      */
@@ -235,21 +187,7 @@ public final class SearchField {
     }
 
     /**
-     * Set the name property: The name of the field, which must be unique
-     * within the fields collection of the index or parent field.
-     *
-     * @param name the name value to set.
-     * @return the SearchField object itself.
-     */
-    public SearchField setName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    /**
-     * Get the type property: The data type of the field. Possible values
-     * include: 'String', 'Int32', 'Int64', 'Double', 'Boolean',
-     * 'DateTimeOffset', 'GeographyPoint', 'Complex'.
+     * Get the type property: The data type of the field.
      *
      * @return the type value.
      */
@@ -258,25 +196,10 @@ public final class SearchField {
     }
 
     /**
-     * Set the type property: The data type of the field. Possible values
-     * include: 'String', 'Int32', 'Int64', 'Double', 'Boolean',
-     * 'DateTimeOffset', 'GeographyPoint', 'Complex'.
-     *
-     * @param type the type value to set.
-     * @return the SearchField object itself.
-     */
-    public SearchField setType(SearchFieldDataType type) {
-        this.type = type;
-        return this;
-    }
-
-    /**
-     * Get the key property: A value indicating whether the field uniquely
-     * identifies documents in the index. Exactly one top-level field in each
-     * index must be chosen as the key field and it must be of type Edm.String.
-     * Key fields can be used to look up documents directly and update or
-     * delete specific documents. Default is false for simple fields and null
-     * for complex fields.
+     * Get the key property: A value indicating whether the field uniquely identifies documents in the index. Exactly
+     * one top-level field in each index must be chosen as the key field and it must be of type Edm.String. Key fields
+     * can be used to look up documents directly and update or delete specific documents. Default is false for simple
+     * fields and null for complex fields.
      *
      * @return the key value.
      */
@@ -285,12 +208,10 @@ public final class SearchField {
     }
 
     /**
-     * Set the key property: A value indicating whether the field uniquely
-     * identifies documents in the index. Exactly one top-level field in each
-     * index must be chosen as the key field and it must be of type Edm.String.
-     * Key fields can be used to look up documents directly and update or
-     * delete specific documents. Default is false for simple fields and null
-     * for complex fields.
+     * Set the key property: A value indicating whether the field uniquely identifies documents in the index. Exactly
+     * one top-level field in each index must be chosen as the key field and it must be of type Edm.String. Key fields
+     * can be used to look up documents directly and update or delete specific documents. Default is false for simple
+     * fields and null for complex fields.
      *
      * @param key the key value to set.
      * @return the SearchField object itself.
@@ -301,14 +222,11 @@ public final class SearchField {
     }
 
     /**
-     * Get the retrievable property: A value indicating whether the field can
-     * be returned in a search result. You can disable this option if you want
-     * to use a field (for example, margin) as a filter, sorting, or scoring
-     * mechanism but do not want the field to be visible to the end user. This
-     * property must be true for key fields, and it must be null for complex
-     * fields. This property can be changed on existing fields. Enabling this
-     * property does not cause any increase in index storage requirements.
-     * Default is true for simple fields and null for complex fields.
+     * Get the retrievable property: A value indicating whether the field can be returned in a search result. You can
+     * disable this option if you want to use a field (for example, margin) as a filter, sorting, or scoring mechanism
+     * but do not want the field to be visible to the end user. This property must be true for key fields, and it must
+     * be null for complex fields. This property can be changed on existing fields. Enabling this property does not
+     * cause any increase in index storage requirements. Default is true for simple fields and null for complex fields.
      *
      * @return the retrievable value.
      */
@@ -317,14 +235,11 @@ public final class SearchField {
     }
 
     /**
-     * Set the retrievable property: A value indicating whether the field can
-     * be returned in a search result. You can disable this option if you want
-     * to use a field (for example, margin) as a filter, sorting, or scoring
-     * mechanism but do not want the field to be visible to the end user. This
-     * property must be true for key fields, and it must be null for complex
-     * fields. This property can be changed on existing fields. Enabling this
-     * property does not cause any increase in index storage requirements.
-     * Default is true for simple fields and null for complex fields.
+     * Set the retrievable property: A value indicating whether the field can be returned in a search result. You can
+     * disable this option if you want to use a field (for example, margin) as a filter, sorting, or scoring mechanism
+     * but do not want the field to be visible to the end user. This property must be true for key fields, and it must
+     * be null for complex fields. This property can be changed on existing fields. Enabling this property does not
+     * cause any increase in index storage requirements. Default is true for simple fields and null for complex fields.
      *
      * @param retrievable the retrievable value to set.
      * @return the SearchField object itself.
@@ -335,19 +250,14 @@ public final class SearchField {
     }
 
     /**
-     * Get the searchable property: A value indicating whether the field is
-     * full-text searchable. This means it will undergo analysis such as
-     * word-breaking during indexing. If you set a searchable field to a value
-     * like "sunny day", internally it will be split into the individual tokens
-     * "sunny" and "day". This enables full-text searches for these terms.
-     * Fields of type Edm.String or Collection(Edm.String) are searchable by
-     * default. This property must be false for simple fields of other
-     * non-string data types, and it must be null for complex fields. Note:
-     * searchable fields consume extra space in your index since Azure
-     * Cognitive Search will store an additional tokenized version of the field
-     * value for full-text searches. If you want to save space in your index
-     * and you don't need a field to be included in searches, set searchable to
-     * false.
+     * Get the searchable property: A value indicating whether the field is full-text searchable. This means it will
+     * undergo analysis such as word-breaking during indexing. If you set a searchable field to a value like "sunny
+     * day", internally it will be split into the individual tokens "sunny" and "day". This enables full-text searches
+     * for these terms. Fields of type Edm.String or Collection(Edm.String) are searchable by default. This property
+     * must be false for simple fields of other non-string data types, and it must be null for complex fields. Note:
+     * searchable fields consume extra space in your index since Azure Cognitive Search will store an additional
+     * tokenized version of the field value for full-text searches. If you want to save space in your index and you
+     * don't need a field to be included in searches, set searchable to false.
      *
      * @return the searchable value.
      */
@@ -356,19 +266,14 @@ public final class SearchField {
     }
 
     /**
-     * Set the searchable property: A value indicating whether the field is
-     * full-text searchable. This means it will undergo analysis such as
-     * word-breaking during indexing. If you set a searchable field to a value
-     * like "sunny day", internally it will be split into the individual tokens
-     * "sunny" and "day". This enables full-text searches for these terms.
-     * Fields of type Edm.String or Collection(Edm.String) are searchable by
-     * default. This property must be false for simple fields of other
-     * non-string data types, and it must be null for complex fields. Note:
-     * searchable fields consume extra space in your index since Azure
-     * Cognitive Search will store an additional tokenized version of the field
-     * value for full-text searches. If you want to save space in your index
-     * and you don't need a field to be included in searches, set searchable to
-     * false.
+     * Set the searchable property: A value indicating whether the field is full-text searchable. This means it will
+     * undergo analysis such as word-breaking during indexing. If you set a searchable field to a value like "sunny
+     * day", internally it will be split into the individual tokens "sunny" and "day". This enables full-text searches
+     * for these terms. Fields of type Edm.String or Collection(Edm.String) are searchable by default. This property
+     * must be false for simple fields of other non-string data types, and it must be null for complex fields. Note:
+     * searchable fields consume extra space in your index since Azure Cognitive Search will store an additional
+     * tokenized version of the field value for full-text searches. If you want to save space in your index and you
+     * don't need a field to be included in searches, set searchable to false.
      *
      * @param searchable the searchable value to set.
      * @return the SearchField object itself.
@@ -379,14 +284,12 @@ public final class SearchField {
     }
 
     /**
-     * Get the filterable property: A value indicating whether to enable the
-     * field to be referenced in $filter queries. filterable differs from
-     * searchable in how strings are handled. Fields of type Edm.String or
-     * Collection(Edm.String) that are filterable do not undergo word-breaking,
-     * so comparisons are for exact matches only. For example, if you set such
-     * a field f to "sunny day", $filter=f eq 'sunny' will find no matches, but
-     * $filter=f eq 'sunny day' will. This property must be null for complex
-     * fields. Default is true for simple fields and null for complex fields.
+     * Get the filterable property: A value indicating whether to enable the field to be referenced in $filter queries.
+     * filterable differs from searchable in how strings are handled. Fields of type Edm.String or
+     * Collection(Edm.String) that are filterable do not undergo word-breaking, so comparisons are for exact matches
+     * only. For example, if you set such a field f to "sunny day", $filter=f eq 'sunny' will find no matches, but
+     * $filter=f eq 'sunny day' will. This property must be null for complex fields. Default is true for simple fields
+     * and null for complex fields.
      *
      * @return the filterable value.
      */
@@ -395,14 +298,12 @@ public final class SearchField {
     }
 
     /**
-     * Set the filterable property: A value indicating whether to enable the
-     * field to be referenced in $filter queries. filterable differs from
-     * searchable in how strings are handled. Fields of type Edm.String or
-     * Collection(Edm.String) that are filterable do not undergo word-breaking,
-     * so comparisons are for exact matches only. For example, if you set such
-     * a field f to "sunny day", $filter=f eq 'sunny' will find no matches, but
-     * $filter=f eq 'sunny day' will. This property must be null for complex
-     * fields. Default is true for simple fields and null for complex fields.
+     * Set the filterable property: A value indicating whether to enable the field to be referenced in $filter queries.
+     * filterable differs from searchable in how strings are handled. Fields of type Edm.String or
+     * Collection(Edm.String) that are filterable do not undergo word-breaking, so comparisons are for exact matches
+     * only. For example, if you set such a field f to "sunny day", $filter=f eq 'sunny' will find no matches, but
+     * $filter=f eq 'sunny day' will. This property must be null for complex fields. Default is true for simple fields
+     * and null for complex fields.
      *
      * @param filterable the filterable value to set.
      * @return the SearchField object itself.
@@ -413,19 +314,14 @@ public final class SearchField {
     }
 
     /**
-     * Get the sortable property: A value indicating whether to enable the
-     * field to be referenced in $orderby expressions. By default Azure
-     * Cognitive Search sorts results by score, but in many experiences users
-     * will want to sort by fields in the documents. A simple field can be
-     * sortable only if it is single-valued (it has a single value in the scope
-     * of the parent document). Simple collection fields cannot be sortable,
-     * since they are multi-valued. Simple sub-fields of complex collections
-     * are also multi-valued, and therefore cannot be sortable. This is true
-     * whether it's an immediate parent field, or an ancestor field, that's the
-     * complex collection. Complex fields cannot be sortable and the sortable
-     * property must be null for such fields. The default for sortable is true
-     * for single-valued simple fields, false for multi-valued simple fields,
-     * and null for complex fields.
+     * Get the sortable property: A value indicating whether to enable the field to be referenced in $orderby
+     * expressions. By default Azure Cognitive Search sorts results by score, but in many experiences users will want to
+     * sort by fields in the documents. A simple field can be sortable only if it is single-valued (it has a single
+     * value in the scope of the parent document). Simple collection fields cannot be sortable, since they are
+     * multi-valued. Simple sub-fields of complex collections are also multi-valued, and therefore cannot be sortable.
+     * This is true whether it's an immediate parent field, or an ancestor field, that's the complex collection. Complex
+     * fields cannot be sortable and the sortable property must be null for such fields. The default for sortable is
+     * true for single-valued simple fields, false for multi-valued simple fields, and null for complex fields.
      *
      * @return the sortable value.
      */
@@ -434,19 +330,14 @@ public final class SearchField {
     }
 
     /**
-     * Set the sortable property: A value indicating whether to enable the
-     * field to be referenced in $orderby expressions. By default Azure
-     * Cognitive Search sorts results by score, but in many experiences users
-     * will want to sort by fields in the documents. A simple field can be
-     * sortable only if it is single-valued (it has a single value in the scope
-     * of the parent document). Simple collection fields cannot be sortable,
-     * since they are multi-valued. Simple sub-fields of complex collections
-     * are also multi-valued, and therefore cannot be sortable. This is true
-     * whether it's an immediate parent field, or an ancestor field, that's the
-     * complex collection. Complex fields cannot be sortable and the sortable
-     * property must be null for such fields. The default for sortable is true
-     * for single-valued simple fields, false for multi-valued simple fields,
-     * and null for complex fields.
+     * Set the sortable property: A value indicating whether to enable the field to be referenced in $orderby
+     * expressions. By default Azure Cognitive Search sorts results by score, but in many experiences users will want to
+     * sort by fields in the documents. A simple field can be sortable only if it is single-valued (it has a single
+     * value in the scope of the parent document). Simple collection fields cannot be sortable, since they are
+     * multi-valued. Simple sub-fields of complex collections are also multi-valued, and therefore cannot be sortable.
+     * This is true whether it's an immediate parent field, or an ancestor field, that's the complex collection. Complex
+     * fields cannot be sortable and the sortable property must be null for such fields. The default for sortable is
+     * true for single-valued simple fields, false for multi-valued simple fields, and null for complex fields.
      *
      * @param sortable the sortable value to set.
      * @return the SearchField object itself.
@@ -457,14 +348,11 @@ public final class SearchField {
     }
 
     /**
-     * Get the facetable property: A value indicating whether to enable the
-     * field to be referenced in facet queries. Typically used in a
-     * presentation of search results that includes hit count by category (for
-     * example, search for digital cameras and see hits by brand, by
-     * megapixels, by price, and so on). This property must be null for complex
-     * fields. Fields of type Edm.GeographyPoint or
-     * Collection(Edm.GeographyPoint) cannot be facetable. Default is true for
-     * all other simple fields.
+     * Get the facetable property: A value indicating whether to enable the field to be referenced in facet queries.
+     * Typically used in a presentation of search results that includes hit count by category (for example, search for
+     * digital cameras and see hits by brand, by megapixels, by price, and so on). This property must be null for
+     * complex fields. Fields of type Edm.GeographyPoint or Collection(Edm.GeographyPoint) cannot be facetable. Default
+     * is true for all other simple fields.
      *
      * @return the facetable value.
      */
@@ -473,14 +361,11 @@ public final class SearchField {
     }
 
     /**
-     * Set the facetable property: A value indicating whether to enable the
-     * field to be referenced in facet queries. Typically used in a
-     * presentation of search results that includes hit count by category (for
-     * example, search for digital cameras and see hits by brand, by
-     * megapixels, by price, and so on). This property must be null for complex
-     * fields. Fields of type Edm.GeographyPoint or
-     * Collection(Edm.GeographyPoint) cannot be facetable. Default is true for
-     * all other simple fields.
+     * Set the facetable property: A value indicating whether to enable the field to be referenced in facet queries.
+     * Typically used in a presentation of search results that includes hit count by category (for example, search for
+     * digital cameras and see hits by brand, by megapixels, by price, and so on). This property must be null for
+     * complex fields. Fields of type Edm.GeographyPoint or Collection(Edm.GeographyPoint) cannot be facetable. Default
+     * is true for all other simple fields.
      *
      * @param facetable the facetable value to set.
      * @return the SearchField object itself.
@@ -491,31 +376,9 @@ public final class SearchField {
     }
 
     /**
-     * Get the analyzer property: The name of the analyzer to use for the
-     * field. This option can be used only with searchable fields and it can't
-     * be set together with either searchAnalyzer or indexAnalyzer. Once the
-     * analyzer is chosen, it cannot be changed for the field. Must be null for
-     * complex fields. Possible values include: 'ArMicrosoft', 'ArLucene',
-     * 'HyLucene', 'BnMicrosoft', 'EuLucene', 'BgMicrosoft', 'BgLucene',
-     * 'CaMicrosoft', 'CaLucene', 'ZhHansMicrosoft', 'ZhHansLucene',
-     * 'ZhHantMicrosoft', 'ZhHantLucene', 'HrMicrosoft', 'CsMicrosoft',
-     * 'CsLucene', 'DaMicrosoft', 'DaLucene', 'NlMicrosoft', 'NlLucene',
-     * 'EnMicrosoft', 'EnLucene', 'EtMicrosoft', 'FiMicrosoft', 'FiLucene',
-     * 'FrMicrosoft', 'FrLucene', 'GlLucene', 'DeMicrosoft', 'DeLucene',
-     * 'ElMicrosoft', 'ElLucene', 'GuMicrosoft', 'HeMicrosoft', 'HiMicrosoft',
-     * 'HiLucene', 'HuMicrosoft', 'HuLucene', 'IsMicrosoft', 'IdMicrosoft',
-     * 'IdLucene', 'GaLucene', 'ItMicrosoft', 'ItLucene', 'JaMicrosoft',
-     * 'JaLucene', 'KnMicrosoft', 'KoMicrosoft', 'KoLucene', 'LvMicrosoft',
-     * 'LvLucene', 'LtMicrosoft', 'MlMicrosoft', 'MsMicrosoft', 'MrMicrosoft',
-     * 'NbMicrosoft', 'NoLucene', 'FaLucene', 'PlMicrosoft', 'PlLucene',
-     * 'PtBrMicrosoft', 'PtBrLucene', 'PtPtMicrosoft', 'PtPtLucene',
-     * 'PaMicrosoft', 'RoMicrosoft', 'RoLucene', 'RuMicrosoft', 'RuLucene',
-     * 'SrCyrillicMicrosoft', 'SrLatinMicrosoft', 'SkMicrosoft', 'SlMicrosoft',
-     * 'EsMicrosoft', 'EsLucene', 'SvMicrosoft', 'SvLucene', 'TaMicrosoft',
-     * 'TeMicrosoft', 'ThMicrosoft', 'ThLucene', 'TrMicrosoft', 'TrLucene',
-     * 'UkMicrosoft', 'UrMicrosoft', 'ViMicrosoft', 'StandardLucene',
-     * 'StandardAsciiFoldingLucene', 'Keyword', 'Pattern', 'Simple', 'Stop',
-     * 'Whitespace'.
+     * Get the analyzer property: The name of the analyzer to use for the field. This option can be used only with
+     * searchable fields and it can't be set together with either searchAnalyzer or indexAnalyzer. Once the analyzer is
+     * chosen, it cannot be changed for the field. Must be null for complex fields.
      *
      * @return the analyzer value.
      */
@@ -524,31 +387,9 @@ public final class SearchField {
     }
 
     /**
-     * Set the analyzer property: The name of the analyzer to use for the
-     * field. This option can be used only with searchable fields and it can't
-     * be set together with either searchAnalyzer or indexAnalyzer. Once the
-     * analyzer is chosen, it cannot be changed for the field. Must be null for
-     * complex fields. Possible values include: 'ArMicrosoft', 'ArLucene',
-     * 'HyLucene', 'BnMicrosoft', 'EuLucene', 'BgMicrosoft', 'BgLucene',
-     * 'CaMicrosoft', 'CaLucene', 'ZhHansMicrosoft', 'ZhHansLucene',
-     * 'ZhHantMicrosoft', 'ZhHantLucene', 'HrMicrosoft', 'CsMicrosoft',
-     * 'CsLucene', 'DaMicrosoft', 'DaLucene', 'NlMicrosoft', 'NlLucene',
-     * 'EnMicrosoft', 'EnLucene', 'EtMicrosoft', 'FiMicrosoft', 'FiLucene',
-     * 'FrMicrosoft', 'FrLucene', 'GlLucene', 'DeMicrosoft', 'DeLucene',
-     * 'ElMicrosoft', 'ElLucene', 'GuMicrosoft', 'HeMicrosoft', 'HiMicrosoft',
-     * 'HiLucene', 'HuMicrosoft', 'HuLucene', 'IsMicrosoft', 'IdMicrosoft',
-     * 'IdLucene', 'GaLucene', 'ItMicrosoft', 'ItLucene', 'JaMicrosoft',
-     * 'JaLucene', 'KnMicrosoft', 'KoMicrosoft', 'KoLucene', 'LvMicrosoft',
-     * 'LvLucene', 'LtMicrosoft', 'MlMicrosoft', 'MsMicrosoft', 'MrMicrosoft',
-     * 'NbMicrosoft', 'NoLucene', 'FaLucene', 'PlMicrosoft', 'PlLucene',
-     * 'PtBrMicrosoft', 'PtBrLucene', 'PtPtMicrosoft', 'PtPtLucene',
-     * 'PaMicrosoft', 'RoMicrosoft', 'RoLucene', 'RuMicrosoft', 'RuLucene',
-     * 'SrCyrillicMicrosoft', 'SrLatinMicrosoft', 'SkMicrosoft', 'SlMicrosoft',
-     * 'EsMicrosoft', 'EsLucene', 'SvMicrosoft', 'SvLucene', 'TaMicrosoft',
-     * 'TeMicrosoft', 'ThMicrosoft', 'ThLucene', 'TrMicrosoft', 'TrLucene',
-     * 'UkMicrosoft', 'UrMicrosoft', 'ViMicrosoft', 'StandardLucene',
-     * 'StandardAsciiFoldingLucene', 'Keyword', 'Pattern', 'Simple', 'Stop',
-     * 'Whitespace'.
+     * Set the analyzer property: The name of the analyzer to use for the field. This option can be used only with
+     * searchable fields and it can't be set together with either searchAnalyzer or indexAnalyzer. Once the analyzer is
+     * chosen, it cannot be changed for the field. Must be null for complex fields.
      *
      * @param analyzer the analyzer value to set.
      * @return the SearchField object itself.
@@ -559,33 +400,11 @@ public final class SearchField {
     }
 
     /**
-     * Get the searchAnalyzer property: The name of the analyzer used at search
-     * time for the field. This option can be used only with searchable fields.
-     * It must be set together with indexAnalyzer and it cannot be set together
-     * with the analyzer option. This property cannot be set to the name of a
-     * language analyzer; use the analyzer property instead if you need a
-     * language analyzer. This analyzer can be updated on an existing field.
-     * Must be null for complex fields. Possible values include: 'ArMicrosoft',
-     * 'ArLucene', 'HyLucene', 'BnMicrosoft', 'EuLucene', 'BgMicrosoft',
-     * 'BgLucene', 'CaMicrosoft', 'CaLucene', 'ZhHansMicrosoft',
-     * 'ZhHansLucene', 'ZhHantMicrosoft', 'ZhHantLucene', 'HrMicrosoft',
-     * 'CsMicrosoft', 'CsLucene', 'DaMicrosoft', 'DaLucene', 'NlMicrosoft',
-     * 'NlLucene', 'EnMicrosoft', 'EnLucene', 'EtMicrosoft', 'FiMicrosoft',
-     * 'FiLucene', 'FrMicrosoft', 'FrLucene', 'GlLucene', 'DeMicrosoft',
-     * 'DeLucene', 'ElMicrosoft', 'ElLucene', 'GuMicrosoft', 'HeMicrosoft',
-     * 'HiMicrosoft', 'HiLucene', 'HuMicrosoft', 'HuLucene', 'IsMicrosoft',
-     * 'IdMicrosoft', 'IdLucene', 'GaLucene', 'ItMicrosoft', 'ItLucene',
-     * 'JaMicrosoft', 'JaLucene', 'KnMicrosoft', 'KoMicrosoft', 'KoLucene',
-     * 'LvMicrosoft', 'LvLucene', 'LtMicrosoft', 'MlMicrosoft', 'MsMicrosoft',
-     * 'MrMicrosoft', 'NbMicrosoft', 'NoLucene', 'FaLucene', 'PlMicrosoft',
-     * 'PlLucene', 'PtBrMicrosoft', 'PtBrLucene', 'PtPtMicrosoft',
-     * 'PtPtLucene', 'PaMicrosoft', 'RoMicrosoft', 'RoLucene', 'RuMicrosoft',
-     * 'RuLucene', 'SrCyrillicMicrosoft', 'SrLatinMicrosoft', 'SkMicrosoft',
-     * 'SlMicrosoft', 'EsMicrosoft', 'EsLucene', 'SvMicrosoft', 'SvLucene',
-     * 'TaMicrosoft', 'TeMicrosoft', 'ThMicrosoft', 'ThLucene', 'TrMicrosoft',
-     * 'TrLucene', 'UkMicrosoft', 'UrMicrosoft', 'ViMicrosoft',
-     * 'StandardLucene', 'StandardAsciiFoldingLucene', 'Keyword', 'Pattern',
-     * 'Simple', 'Stop', 'Whitespace'.
+     * Get the searchAnalyzer property: The name of the analyzer used at search time for the field. This option can be
+     * used only with searchable fields. It must be set together with indexAnalyzer and it cannot be set together with
+     * the analyzer option. This property cannot be set to the name of a language analyzer; use the analyzer property
+     * instead if you need a language analyzer. This analyzer can be updated on an existing field. Must be null for
+     * complex fields.
      *
      * @return the searchAnalyzer value.
      */
@@ -594,33 +413,11 @@ public final class SearchField {
     }
 
     /**
-     * Set the searchAnalyzer property: The name of the analyzer used at search
-     * time for the field. This option can be used only with searchable fields.
-     * It must be set together with indexAnalyzer and it cannot be set together
-     * with the analyzer option. This property cannot be set to the name of a
-     * language analyzer; use the analyzer property instead if you need a
-     * language analyzer. This analyzer can be updated on an existing field.
-     * Must be null for complex fields. Possible values include: 'ArMicrosoft',
-     * 'ArLucene', 'HyLucene', 'BnMicrosoft', 'EuLucene', 'BgMicrosoft',
-     * 'BgLucene', 'CaMicrosoft', 'CaLucene', 'ZhHansMicrosoft',
-     * 'ZhHansLucene', 'ZhHantMicrosoft', 'ZhHantLucene', 'HrMicrosoft',
-     * 'CsMicrosoft', 'CsLucene', 'DaMicrosoft', 'DaLucene', 'NlMicrosoft',
-     * 'NlLucene', 'EnMicrosoft', 'EnLucene', 'EtMicrosoft', 'FiMicrosoft',
-     * 'FiLucene', 'FrMicrosoft', 'FrLucene', 'GlLucene', 'DeMicrosoft',
-     * 'DeLucene', 'ElMicrosoft', 'ElLucene', 'GuMicrosoft', 'HeMicrosoft',
-     * 'HiMicrosoft', 'HiLucene', 'HuMicrosoft', 'HuLucene', 'IsMicrosoft',
-     * 'IdMicrosoft', 'IdLucene', 'GaLucene', 'ItMicrosoft', 'ItLucene',
-     * 'JaMicrosoft', 'JaLucene', 'KnMicrosoft', 'KoMicrosoft', 'KoLucene',
-     * 'LvMicrosoft', 'LvLucene', 'LtMicrosoft', 'MlMicrosoft', 'MsMicrosoft',
-     * 'MrMicrosoft', 'NbMicrosoft', 'NoLucene', 'FaLucene', 'PlMicrosoft',
-     * 'PlLucene', 'PtBrMicrosoft', 'PtBrLucene', 'PtPtMicrosoft',
-     * 'PtPtLucene', 'PaMicrosoft', 'RoMicrosoft', 'RoLucene', 'RuMicrosoft',
-     * 'RuLucene', 'SrCyrillicMicrosoft', 'SrLatinMicrosoft', 'SkMicrosoft',
-     * 'SlMicrosoft', 'EsMicrosoft', 'EsLucene', 'SvMicrosoft', 'SvLucene',
-     * 'TaMicrosoft', 'TeMicrosoft', 'ThMicrosoft', 'ThLucene', 'TrMicrosoft',
-     * 'TrLucene', 'UkMicrosoft', 'UrMicrosoft', 'ViMicrosoft',
-     * 'StandardLucene', 'StandardAsciiFoldingLucene', 'Keyword', 'Pattern',
-     * 'Simple', 'Stop', 'Whitespace'.
+     * Set the searchAnalyzer property: The name of the analyzer used at search time for the field. This option can be
+     * used only with searchable fields. It must be set together with indexAnalyzer and it cannot be set together with
+     * the analyzer option. This property cannot be set to the name of a language analyzer; use the analyzer property
+     * instead if you need a language analyzer. This analyzer can be updated on an existing field. Must be null for
+     * complex fields.
      *
      * @param searchAnalyzer the searchAnalyzer value to set.
      * @return the SearchField object itself.
@@ -631,33 +428,11 @@ public final class SearchField {
     }
 
     /**
-     * Get the indexAnalyzer property: The name of the analyzer used at
-     * indexing time for the field. This option can be used only with
-     * searchable fields. It must be set together with searchAnalyzer and it
-     * cannot be set together with the analyzer option.  This property cannot
-     * be set to the name of a language analyzer; use the analyzer property
-     * instead if you need a language analyzer. Once the analyzer is chosen, it
-     * cannot be changed for the field. Must be null for complex fields.
-     * Possible values include: 'ArMicrosoft', 'ArLucene', 'HyLucene',
-     * 'BnMicrosoft', 'EuLucene', 'BgMicrosoft', 'BgLucene', 'CaMicrosoft',
-     * 'CaLucene', 'ZhHansMicrosoft', 'ZhHansLucene', 'ZhHantMicrosoft',
-     * 'ZhHantLucene', 'HrMicrosoft', 'CsMicrosoft', 'CsLucene', 'DaMicrosoft',
-     * 'DaLucene', 'NlMicrosoft', 'NlLucene', 'EnMicrosoft', 'EnLucene',
-     * 'EtMicrosoft', 'FiMicrosoft', 'FiLucene', 'FrMicrosoft', 'FrLucene',
-     * 'GlLucene', 'DeMicrosoft', 'DeLucene', 'ElMicrosoft', 'ElLucene',
-     * 'GuMicrosoft', 'HeMicrosoft', 'HiMicrosoft', 'HiLucene', 'HuMicrosoft',
-     * 'HuLucene', 'IsMicrosoft', 'IdMicrosoft', 'IdLucene', 'GaLucene',
-     * 'ItMicrosoft', 'ItLucene', 'JaMicrosoft', 'JaLucene', 'KnMicrosoft',
-     * 'KoMicrosoft', 'KoLucene', 'LvMicrosoft', 'LvLucene', 'LtMicrosoft',
-     * 'MlMicrosoft', 'MsMicrosoft', 'MrMicrosoft', 'NbMicrosoft', 'NoLucene',
-     * 'FaLucene', 'PlMicrosoft', 'PlLucene', 'PtBrMicrosoft', 'PtBrLucene',
-     * 'PtPtMicrosoft', 'PtPtLucene', 'PaMicrosoft', 'RoMicrosoft', 'RoLucene',
-     * 'RuMicrosoft', 'RuLucene', 'SrCyrillicMicrosoft', 'SrLatinMicrosoft',
-     * 'SkMicrosoft', 'SlMicrosoft', 'EsMicrosoft', 'EsLucene', 'SvMicrosoft',
-     * 'SvLucene', 'TaMicrosoft', 'TeMicrosoft', 'ThMicrosoft', 'ThLucene',
-     * 'TrMicrosoft', 'TrLucene', 'UkMicrosoft', 'UrMicrosoft', 'ViMicrosoft',
-     * 'StandardLucene', 'StandardAsciiFoldingLucene', 'Keyword', 'Pattern',
-     * 'Simple', 'Stop', 'Whitespace'.
+     * Get the indexAnalyzer property: The name of the analyzer used at indexing time for the field. This option can be
+     * used only with searchable fields. It must be set together with searchAnalyzer and it cannot be set together with
+     * the analyzer option. This property cannot be set to the name of a language analyzer; use the analyzer property
+     * instead if you need a language analyzer. Once the analyzer is chosen, it cannot be changed for the field. Must be
+     * null for complex fields.
      *
      * @return the indexAnalyzer value.
      */
@@ -666,33 +441,11 @@ public final class SearchField {
     }
 
     /**
-     * Set the indexAnalyzer property: The name of the analyzer used at
-     * indexing time for the field. This option can be used only with
-     * searchable fields. It must be set together with searchAnalyzer and it
-     * cannot be set together with the analyzer option.  This property cannot
-     * be set to the name of a language analyzer; use the analyzer property
-     * instead if you need a language analyzer. Once the analyzer is chosen, it
-     * cannot be changed for the field. Must be null for complex fields.
-     * Possible values include: 'ArMicrosoft', 'ArLucene', 'HyLucene',
-     * 'BnMicrosoft', 'EuLucene', 'BgMicrosoft', 'BgLucene', 'CaMicrosoft',
-     * 'CaLucene', 'ZhHansMicrosoft', 'ZhHansLucene', 'ZhHantMicrosoft',
-     * 'ZhHantLucene', 'HrMicrosoft', 'CsMicrosoft', 'CsLucene', 'DaMicrosoft',
-     * 'DaLucene', 'NlMicrosoft', 'NlLucene', 'EnMicrosoft', 'EnLucene',
-     * 'EtMicrosoft', 'FiMicrosoft', 'FiLucene', 'FrMicrosoft', 'FrLucene',
-     * 'GlLucene', 'DeMicrosoft', 'DeLucene', 'ElMicrosoft', 'ElLucene',
-     * 'GuMicrosoft', 'HeMicrosoft', 'HiMicrosoft', 'HiLucene', 'HuMicrosoft',
-     * 'HuLucene', 'IsMicrosoft', 'IdMicrosoft', 'IdLucene', 'GaLucene',
-     * 'ItMicrosoft', 'ItLucene', 'JaMicrosoft', 'JaLucene', 'KnMicrosoft',
-     * 'KoMicrosoft', 'KoLucene', 'LvMicrosoft', 'LvLucene', 'LtMicrosoft',
-     * 'MlMicrosoft', 'MsMicrosoft', 'MrMicrosoft', 'NbMicrosoft', 'NoLucene',
-     * 'FaLucene', 'PlMicrosoft', 'PlLucene', 'PtBrMicrosoft', 'PtBrLucene',
-     * 'PtPtMicrosoft', 'PtPtLucene', 'PaMicrosoft', 'RoMicrosoft', 'RoLucene',
-     * 'RuMicrosoft', 'RuLucene', 'SrCyrillicMicrosoft', 'SrLatinMicrosoft',
-     * 'SkMicrosoft', 'SlMicrosoft', 'EsMicrosoft', 'EsLucene', 'SvMicrosoft',
-     * 'SvLucene', 'TaMicrosoft', 'TeMicrosoft', 'ThMicrosoft', 'ThLucene',
-     * 'TrMicrosoft', 'TrLucene', 'UkMicrosoft', 'UrMicrosoft', 'ViMicrosoft',
-     * 'StandardLucene', 'StandardAsciiFoldingLucene', 'Keyword', 'Pattern',
-     * 'Simple', 'Stop', 'Whitespace'.
+     * Set the indexAnalyzer property: The name of the analyzer used at indexing time for the field. This option can be
+     * used only with searchable fields. It must be set together with searchAnalyzer and it cannot be set together with
+     * the analyzer option. This property cannot be set to the name of a language analyzer; use the analyzer property
+     * instead if you need a language analyzer. Once the analyzer is chosen, it cannot be changed for the field. Must be
+     * null for complex fields.
      *
      * @param indexAnalyzer the indexAnalyzer value to set.
      * @return the SearchField object itself.
@@ -703,13 +456,11 @@ public final class SearchField {
     }
 
     /**
-     * Get the synonymMaps property: A list of the names of synonym maps to
-     * associate with this field. This option can be used only with searchable
-     * fields. Currently only one synonym map per field is supported. Assigning
-     * a synonym map to a field ensures that query terms targeting that field
-     * are expanded at query-time using the rules in the synonym map. This
-     * attribute can be changed on existing fields. Must be null or an empty
-     * collection for complex fields.
+     * Get the synonymMaps property: A list of the names of synonym maps to associate with this field. This option can
+     * be used only with searchable fields. Currently only one synonym map per field is supported. Assigning a synonym
+     * map to a field ensures that query terms targeting that field are expanded at query-time using the rules in the
+     * synonym map. This attribute can be changed on existing fields. Must be null or an empty collection for complex
+     * fields.
      *
      * @return the synonymMaps value.
      */
@@ -718,13 +469,11 @@ public final class SearchField {
     }
 
     /**
-     * Set the synonymMaps property: A list of the names of synonym maps to
-     * associate with this field. This option can be used only with searchable
-     * fields. Currently only one synonym map per field is supported. Assigning
-     * a synonym map to a field ensures that query terms targeting that field
-     * are expanded at query-time using the rules in the synonym map. This
-     * attribute can be changed on existing fields. Must be null or an empty
-     * collection for complex fields.
+     * Set the synonymMaps property: A list of the names of synonym maps to associate with this field. This option can
+     * be used only with searchable fields. Currently only one synonym map per field is supported. Assigning a synonym
+     * map to a field ensures that query terms targeting that field are expanded at query-time using the rules in the
+     * synonym map. This attribute can be changed on existing fields. Must be null or an empty collection for complex
+     * fields.
      *
      * @param synonymMaps the synonymMaps value to set.
      * @return the SearchField object itself.
@@ -735,9 +484,8 @@ public final class SearchField {
     }
 
     /**
-     * Get the fields property: A list of sub-fields if this is a field of type
-     * Edm.ComplexType or Collection(Edm.ComplexType). Must be null or empty
-     * for simple fields.
+     * Get the fields property: A list of sub-fields if this is a field of type Edm.ComplexType or
+     * Collection(Edm.ComplexType). Must be null or empty for simple fields.
      *
      * @return the fields value.
      */
@@ -746,9 +494,8 @@ public final class SearchField {
     }
 
     /**
-     * Set the fields property: A list of sub-fields if this is a field of type
-     * Edm.ComplexType or Collection(Edm.ComplexType). Must be null or empty
-     * for simple fields.
+     * Set the fields property: A list of sub-fields if this is a field of type Edm.ComplexType or
+     * Collection(Edm.ComplexType). Must be null or empty for simple fields.
      *
      * @param fields the fields value to set.
      * @return the SearchField object itself.

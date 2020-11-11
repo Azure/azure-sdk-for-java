@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed;
 
-import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -189,7 +189,7 @@ public class ServiceItemLease implements Lease {
         return this.getETag();
     }
 
-    public static ServiceItemLease fromDocument(CosmosItemProperties document) {
+    public static ServiceItemLease fromDocument(InternalObjectNode document) {
         ServiceItemLease lease = new ServiceItemLease()
             .withId(document.getId())
             .withETag(document.getETag())

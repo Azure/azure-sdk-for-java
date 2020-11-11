@@ -21,13 +21,13 @@
 # Use case: increment the version of a given artifact in the approprate version_[client|data|management].txt file
 #
 #    python eng/versioning/set_versions.py --bt [client|data|management] --increment-version --artifact-id <artifactId>
-# For example: To update increment the version of azure-core
+# For example: To increment the version of azure-core
 #    python eng/versioning/set_versions.py --bt client --iv --ar azure-core
 #
 # Use case: verify the version of a given artifact in the approprate version_[client|data|management].txt file
 #
 #    python eng/versioning/set_versions.py --bt [client|data|management] --verify-version --artifact-id <artifactId>
-# For example: To update increment the version of azure-core
+# For example: To verify the version of azure-core
 #    python eng/versioning/set_versions.py --bt client --vv --ar azure-core
 #
 # The script must be run at the root of azure-sdk-for-java.
@@ -54,7 +54,7 @@ prerelease_regex_named = re.compile(prerelease_version_regex_with_name)
 prerelease_data_regex = re.compile(prerelease_data_version_regex)
 
 # Update packages (excluding unreleased dependencies and packages which already
-# have a dev version set) to use a "zero dev version" (e.g. dev.20201225.0).
+# have a dev version set) to use a "zero dev version" (e.g. alpha.20201225.0).
 # This ensures that packages built in pipelines who have unreleased dependencies
 # that are built in other pipelines can successfully fall back to a source build
 # of the unreleased dependency package in the monorepo if the unreleased
@@ -67,8 +67,8 @@ def set_dev_zero_version(build_type, build_qualifier):
     version_file = os.path.normpath('eng/versioning/version_' + build_type.name + '.txt')
     print('version_file=' + version_file)
 
-    # Assuming a build qualifier of the form: "dev.20200204.123"
-    # Converts "dev.20200204.123" -> "dev.20200204.0"
+    # Assuming a build qualifier of the form: "alpha.20200204.123"
+    # Converts "alpha.20200204.123" -> "alpha.20200204.0"
     zero_qualifier = build_qualifier[:build_qualifier.rfind('.') + 1] + '0'
 
     newlines = []
@@ -99,8 +99,10 @@ def set_dev_zero_version(build_type, build_qualifier):
                 set_both = module.current == module.dependency
 
                 if '-' in module.current:
-                    module.current += "." + zero_qualifier
+                    # if the module is 1.2.3-beta.x, strip off everything after the '-' and add the qualifier
+                    module.current = module.current[:module.current.rfind('-') + 1] + zero_qualifier
                 else:
+                    # if the module is a GA version 1.2.3, add '-' and the qualifier
                     module.current += '-' + zero_qualifier
                 # The resulting version must be a valid SemVer
                 match = version_regex_named.match(module.current)
@@ -153,7 +155,8 @@ def update_versions_file_for_nightly_devops(build_type, build_qualifier, artifac
                         if module.current == module.dependency:
                             set_both = True
                         if '-' in module.current:
-                            module.current += "." + build_qualifier
+                            # if the module is 1.2.3-beta.x, strip off everything after the '-' and add the qualifier
+                            module.current = module.current[:module.current.rfind('-') + 1] + build_qualifier
                         else:
                             module.current += '-' + build_qualifier
                         match = version_regex_named.match(module.current)
@@ -171,16 +174,20 @@ def update_versions_file_for_nightly_devops(build_type, build_qualifier, artifac
                 # changes in the case where a dependency version has already
                 # been modified.
                 elif (module.name.startswith('unreleased_') or module.name.startswith('beta_'))  and not module.dependency.startswith('['):
-                    # Assuming a build qualifier of the form: "dev.20200204.1"
-                    # Converts "dev.20200204.1" -> "dev.20200204."
+                    # Assuming a build qualifier of the form: "alpha.20200204.1"
+                    # Converts "alpha.20200204.1" -> "alpha.20200204."
                     unreleased_build_qualifier = build_qualifier[:build_qualifier.rfind('.') + 1]
 
                     if '-' in module.dependency:
-                        module_current_version = f'{module.dependency}.{unreleased_build_qualifier}'
+                        # if the module is 1.2.3-beta.x, strip off everything after the '-' and add the qualifier
+                        module.dependency = module.dependency[:module.dependency.rfind('-') + 1] + unreleased_build_qualifier
                     else:
-                        module_current_version = f'{module.dependency}-{unreleased_build_qualifier}'
+                        module.dependency += '-' + unreleased_build_qualifier
 
-                    module.dependency = f'[{module_current_version},]'
+                    # The final unreleased dependency version needs to be of the form
+                    # [1.0.0-alpha.YYYYMMDD.,] <-- note the ., this is the version range for Maven
+                    module.dependency = '[{},]'.format(module.dependency)
+
                     print(f'updating unreleased/beta dependency {module.name} to use dependency version range: "{module.dependency}"')
 
                 version_map[module.name] = module
@@ -203,6 +210,9 @@ def prep_version_file_for_source_testing(build_type):
     print('version_file=' + version_file)
     file_changed = False
 
+    # The version map is needed to get the 'current' version of any beta dependencies
+    # in order to update the beta_ version in the From Source runs
+    version_map = {}
     newlines = []
     with open(version_file, encoding='utf-8') as f:
         for raw_line in f:
@@ -214,12 +224,27 @@ def prep_version_file_for_source_testing(build_type):
                 if hasattr(module, 'current') and not module.current == module.dependency:
                     module.dependency = module.current
                     file_changed = True
+                # In order to ensure that the From Source runs are effectively testing everything
+                # together using the latest source built libraries, ensure that the beta_ dependency's
+                # version is set
+                elif module.name.startswith('beta_'):
+                    tempName = module.name[len('beta_'):]
+                    if tempName in version_map:
+                        # beta_ tags only have a dependency version, set that to
+                        # the current version of the non-beta dependency
+                        module.dependency = version_map[tempName].current
+                        file_changed = True
+                    else:
+                        # if the beta_ dependency doesn't have a non-beta entry in the version file then this is an error
+                        raise ValueError('prep_version_file_for_source_testing: beta library ({}) does not have a non-beta entry {} in version file {}'.format(module.name, tempName, version_file))
+
+                version_map[module.name] = module
                 newlines.append(module.string_for_version_file())
 
     with open(version_file, 'w', encoding='utf-8') as f:
         for line in newlines:
             f.write(line)
-    
+
     return file_changed
 
 # given a build type, artifact id and group id, set the dependency version to the
@@ -270,11 +295,24 @@ def increment_library_version(build_type, artifact_id, group_id):
                         minor = int(vmatch.group('minor'))
                         minor += 1
                         new_version = '{}.{}.{}-beta.1'.format(vmatch.group('major'), minor, 0)
-                    # The dependency version only needs to be updated it if is different from the current version. 
+                    # The dependency version only needs to be updated it if is different from the current version.
                     # This would be the case where a library hasn't been released yet and has been released (either GA or preview)
                     if (module.dependency != module.current):
-                        print('library_to_update {}, previous dependency version={}, new dependency version={}'.format(library_to_update, module.dependency, module.current))
-                        module.dependency = module.current
+                        vDepMatch = version_regex_named.match(module.dependency)
+                        # If the dependency version is a beta then just set it to whatever the current
+                        # version is
+                        if (vDepMatch.group('prerelease') is not None):
+                            print('library_to_update {}, previous dependency version={}, new dependency version={}'.format(library_to_update, module.dependency, module.current))
+                            module.dependency = module.current
+                        # else, the dependency version isn't a pre-release version
+                        else:
+                            # if the dependency version isn't a beta and the current version is, don't
+                            # update the dependency version
+                            if (vmatch.group('prerelease') is not None):
+                                print('library_to_update {}, has a GA dependency version {} and a beta current version {}. The dependency version will be kept at the GA version. '.format(library_to_update, module.dependency, module.current))
+                            else:
+                                print('library_to_update {}, has both GA dependency {} and current {} versions. The dependency will be updated to {}. '.format(library_to_update, module.dependency, module.current, module.current))
+                                module.dependency = module.current
                     print('library_to_update {}, previous current version={}, new current version={}'.format(library_to_update, module.current, new_version))
                     module.current = new_version
                 newlines.append(module.string_for_version_file())
@@ -343,7 +381,7 @@ def verify_current_version_of_artifact(build_type, artifact_id, group_id):
                         raise ValueError('library ({}) version ({}) in version file ({}) does not match the version constructed from the semver pieces ({})'.format(library_to_update, module.current, version_file, temp_ver))
 
                     print('The version {} for {} looks good!'.format(module.current, module.name))
-                    
+
 
     if not artifact_found:
        raise ValueError('library ({}) was not found in version file {}'.format(library_to_update, version_file))
@@ -391,7 +429,7 @@ def main():
     # if the file changed flag is set, which only happens through a call to prep_version_file_for_source_testing,
     # then exit with a unique code that allows us to know that something changed.
     if (file_changed):
-        sys.exit(5678)
+        print('##vso[task.setvariable variable=ShouldRunSourceTests]true')
 
 if __name__ == '__main__':
     main()

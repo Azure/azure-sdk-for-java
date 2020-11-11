@@ -1,6 +1,12 @@
 trigger: none
-pr: none
 
+pr:
+  branches:
+    include:
+      - master
+  paths:
+    include:
+      - eng/pipelines/aggregate-reports.yml
 
 jobs:
   - job: Generate
@@ -10,6 +16,12 @@ jobs:
     pool:
       vmImage: 'ubuntu-18.04'
     steps:
+
+    - template: ../common/pipelines/templates/steps/verify-links.yml
+      parameters:
+        Directory: ""
+        CheckLinkGuidance: $true
+        
     - task: Maven@3
       displayName: 'Generate Reports'
       inputs:
@@ -17,7 +29,7 @@ jobs:
         options: '$(DefaultOptions) -Dinclude-non-shipping-modules -Ddependency-checker -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl com.azure:jacoco-test-coverage -am'
         mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
         javaHomeOption: 'JDKVersion'
-        jdkVersionOption: '1.11'
+        jdkVersionOption: $(JavaBuildVersion)
         jdkArchitectureOption: 'x64'
         publishJUnitResults: false
         goals: 'clean verify site:site site:stage'
@@ -26,7 +38,7 @@ jobs:
       condition: succeededOrFailed()
       inputs:
         mergeTestResults: true
-        testRunTitle: 'Linux on Java 1.11'
+        testRunTitle: 'Linux on Java $(JavaBuildVersion)'
 
     # Azure DevOps only seems to respect the last code coverage result published, so only do this for Linux + Java LTS.
     # Code coverage reporting is setup only for Track 2 modules.
@@ -51,10 +63,10 @@ jobs:
 
     - pwsh: |
         Copy-Item eng/jacoco-test-coverage/target/staging $(Build.ArtifactStagingDirectory) -Recurse
-        Copy-Item eng/jacoco-test-coverage/target/dependency-whitelist.json $(Build.ArtifactStagingDirectory)\staging
+        Copy-Item eng/jacoco-test-coverage/target/dependency-allowlist.json $(Build.ArtifactStagingDirectory)/staging
         Copy-Item eng/code-quality-reports/src/main/resources/index.html $(Build.ArtifactStagingDirectory)
-        Copy-Item eng/code-quality-reports/src/main/resources/dependency-whitelist.html $(Build.ArtifactStagingDirectory)/staging
-        
+        Copy-Item eng/code-quality-reports/src/main/resources/dependency-allowlist.html $(Build.ArtifactStagingDirectory)/staging
+
         # What is this?
         # copy output/pom.client.html (Join-Path $(Build.ArtifactStagingDirectory) "staging")
 
@@ -66,3 +78,10 @@ jobs:
       condition: succeededOrFailed()
       displayName: 'Publish Report Artifacts'
       artifact: reports
+
+    - task: PowerShell@2
+      displayName: "Verify Repository Resource Refs"
+      inputs:
+        pwsh: true
+        workingDirectory: $(Build.SourcesDirectory)
+        filePath: eng/common/scripts/Verify-Resource-Ref.ps1

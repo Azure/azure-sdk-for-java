@@ -616,6 +616,19 @@ public class SynapseManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The PrivateLinkHubsInner object to access its operations.
+     */
+    private PrivateLinkHubsInner privateLinkHubs;
+
+    /**
+     * Gets the PrivateLinkHubsInner object to access its operations.
+     * @return the PrivateLinkHubsInner object.
+     */
+    public PrivateLinkHubsInner privateLinkHubs() {
+        return this.privateLinkHubs;
+    }
+
+    /**
      * Initializes an instance of SynapseManagementClient client.
      *
      * @param credentials the management credentials for Azure
@@ -687,6 +700,7 @@ public class SynapseManagementClientImpl extends AzureServiceClient {
         this.integrationRuntimeStatusOperations = new IntegrationRuntimeStatusOperationsInner(restClient().retrofit(), this);
         this.privateLinkResources = new PrivateLinkResourcesInner(restClient().retrofit(), this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsInner(restClient().retrofit(), this);
+        this.privateLinkHubs = new PrivateLinkHubsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 

@@ -21,14 +21,10 @@ public final class ElisionTokenFilterConverter {
         if (obj == null) {
             return null;
         }
-        ElisionTokenFilter elisionTokenFilter = new ElisionTokenFilter();
-
-        String name = obj.getName();
-        elisionTokenFilter.setName(name);
+        ElisionTokenFilter elisionTokenFilter = new ElisionTokenFilter(obj.getName());
 
         if (obj.getArticles() != null) {
-            List<String> articles = new ArrayList<>(obj.getArticles());
-            elisionTokenFilter.setArticles(articles);
+            elisionTokenFilter.setArticles(obj.getArticles());
         }
         return elisionTokenFilter;
     }
@@ -42,15 +38,13 @@ public final class ElisionTokenFilterConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.ElisionTokenFilter elisionTokenFilter =
-            new com.azure.search.documents.indexes.implementation.models.ElisionTokenFilter();
-
-        String name = obj.getName();
-        elisionTokenFilter.setName(name);
+            new com.azure.search.documents.indexes.implementation.models.ElisionTokenFilter(obj.getName());
 
         if (obj.getArticles() != null) {
             List<String> articles = new ArrayList<>(obj.getArticles());
             elisionTokenFilter.setArticles(articles);
         }
+
         return elisionTokenFilter;
     }
 

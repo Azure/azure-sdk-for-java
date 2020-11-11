@@ -6,19 +6,24 @@
 
 package com.azure.search.documents.indexes.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * Base type for data deletion detection policies.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type", defaultImpl = DataDeletionDetectionPolicy.class)
+/** Base type for data deletion detection policies. */
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "@odata\\.type",
+        defaultImpl = DataDeletionDetectionPolicy.class)
 @JsonTypeName("DataDeletionDetectionPolicy")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.SoftDeleteColumnDeletionDetectionPolicy", value = SoftDeleteColumnDeletionDetectionPolicy.class)
+    @JsonSubTypes.Type(
+            name = "#Microsoft.Azure.Search.SoftDeleteColumnDeletionDetectionPolicy",
+            value = SoftDeleteColumnDeletionDetectionPolicy.class)
 })
-@Fluent
-public class DataDeletionDetectionPolicy {
-}
+@JsonFlatten
+@Immutable
+public class DataDeletionDetectionPolicy {}

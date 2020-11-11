@@ -10,7 +10,7 @@ This package supports client side encryption for blob storage.
 
 ### Prerequisites
 
--  Java Development Kit (JDK) with version 8 or above
+- [Java Development Kit (JDK)][jdk] with version 8 or above
 - [Azure Subscription][azure_subscription]
 - [Create Storage Account][storage_account]
 
@@ -21,15 +21,15 @@ This package supports client side encryption for blob storage.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-blob-cryptography</artifactId>
-  <version>12.6.2</version>
+  <version>12.9.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 
 ### Create a Storage Account
-To create a Storage Account you can use the Azure Portal or [Azure CLI][storage_account_create_cli].
+To create a Storage Account you can use the [Azure Portal][storage_account_create_portal] or [Azure CLI][storage_account_create_cli].
 
-```Powershell
+```bash
 az storage account create \
     --resource-group <resource-group-name> \
     --name <storage-account-name> \
@@ -45,49 +45,53 @@ To make this possible you'll need the Account SAS (shared access signature) stri
 
 - **SAS Token**
 
-a. Use the [Azure CLI][azure_cli] snippet below to get the SAS token from the Storage account.
+a. Use the Azure CLI snippet below to get the SAS token from the Storage Account.
 
-```Powershell
-az storage blob generate-sas
-    --name {queue name}
-    --expiry {date/time to expire SAS token}
-    --permission {permission to grant}
-    --connection-string {connection string of the storage account}
-    --services {storage services the SAS allows}
+```bash
+az storage blob generate-sas \
+    --account-name {Storage Account name} \
+    --container-name {container name} \
+    --name {blob name} \
+    --permissions {permissions to grant} \
+    --expiry {datetime to expire the SAS token} \
+    --services {storage services the SAS allows} \
     --resource-types {resource types the SAS allows}
 ```
 
-```Powershell
+Example:
+
+```bash
 CONNECTION_STRING=<connection-string>
 
-az storage blob generate-sas
-    --name javasdksas
-    --expiry 2019-06-05
-    --permission rpau
-    --connection-string $CONNECTION_STRING
+az storage blob generate-sas \
+    --account-name MyStorageAccount \
+    --container-name MyContainer \
+    --name MyBlob \
+    --permissions racdw \
+    --expiry 2020-06-15
 ```
 
 b. Alternatively, get the Account SAS Token from the Azure Portal.
 
-```
-Go to your storage account -> Shared access signature -> Click on Generate SAS and connection string (after setup)
-```
+1. Go to your Storage Account
+2. Select `Shared access signature` from the menu on the left
+3. Click on `Generate SAS and connection string` (after setup)
 
-- **Shared Key Credential**
+##### **Shared Key Credential**
 
-a. Use account name and account key. Account name is your storage account name.
+a. Use Account name and Account key. Account name is your Storage Account name.
 
-```
-// Here is where we get the key
-Go to your storage account -> Access keys -> Key 1/ Key 2 -> Key
-```
+1. Go to your Storage Account
+2. Select `Access keys` from the menu on the left
+3. Under `key1`/`key2` copy the contents of the `Key` field
 
-b. Use the connection string
+or
 
-```
-// Here is where we get the key
-Go to your storage account -> Access Keys -> Keys 1/ Key 2 -> Connection string
-```
+b. Use the connection string.
+
+1. Go to your Storage Account
+2. Select `Access keys` from the menu on the left
+3. Under `key1`/`key2` copy the contents of the `Connection string` field
 
 ## Key concepts
 
@@ -129,3 +133,10 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the Code of Conduct FAQ or contact opencode@microsoft.com with any additional questions or comments.
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-blob-cryptography%2FREADME.png)
+
+[jdk]: https://docs.microsoft.com/java/azure/jdk/
+[azure_subscription]: https://azure.microsoft.com/free/
+[storage_account]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
+[storage_account_create_cli]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-cli
+[storage_account_create_portal]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
+[sas_token]: https://docs.microsoft.com/azure/storage/common/storage-dotnet-shared-access-signature-part-1

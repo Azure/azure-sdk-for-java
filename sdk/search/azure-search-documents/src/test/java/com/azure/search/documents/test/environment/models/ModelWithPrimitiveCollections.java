@@ -2,11 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.test.environment.models;
 
-import com.azure.search.documents.models.GeoPoint;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.OffsetDateTime;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ModelWithPrimitiveCollections {
 
     @JsonProperty(value = "Key")
@@ -27,8 +28,8 @@ public class ModelWithPrimitiveCollections {
     @JsonProperty(value = "Longs")
     private Long[] longs;
 
-    @JsonProperty(value = "Points")
-    private GeoPoint[] points;
+//    @JsonProperty(value = "Points")
+//    private PointGeometry[] points;
 
     @JsonProperty(value = "Strings")
     private String[] strings;
@@ -87,14 +88,14 @@ public class ModelWithPrimitiveCollections {
         return longs;
     }
 
-    public ModelWithPrimitiveCollections points(GeoPoint[] points) {
-        this.points = points;
-        return this;
-    }
-
-    public GeoPoint[] points() {
-        return points;
-    }
+//    public ModelWithPrimitiveCollections points(PointGeometry[] points) {
+//        this.points = points;
+//        return this;
+//    }
+//
+//    public PointGeometry[] points() {
+//        return points;
+//    }
 
     public ModelWithPrimitiveCollections strings(String[] strings) {
         this.strings = strings;

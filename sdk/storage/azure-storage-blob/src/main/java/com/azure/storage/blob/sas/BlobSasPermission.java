@@ -25,6 +25,16 @@ public final class BlobSasPermission {
 
     private boolean deletePermission;
 
+    private boolean deleteVersionPermission;
+
+    private boolean tagsPermission;
+
+    private boolean listPermission;
+
+    private boolean movePermission;
+
+    private boolean executePermission;
+
     /**
      * Initializes a {@code BlobSasPermission} object with all fields set to false.
      */
@@ -37,7 +47,8 @@ public final class BlobSasPermission {
      *
      * @param permString A {@code String} which represents the {@code BlobSasPermission}.
      * @return A {@code BlobSasPermission} generated from the given {@code String}.
-     * @throws IllegalArgumentException If {@code permString} contains a character other than r, a, c, w, or d.
+     * @throws IllegalArgumentException If {@code permString} contains a character other than r, a, c, w, d, x, l, t,
+     * m, or e.
      */
     public static BlobSasPermission parse(String permString) {
         BlobSasPermission permissions = new BlobSasPermission();
@@ -59,6 +70,21 @@ public final class BlobSasPermission {
                     break;
                 case 'd':
                     permissions.deletePermission = true;
+                    break;
+                case 'x':
+                    permissions.deleteVersionPermission = true;
+                    break;
+                case 't':
+                    permissions.tagsPermission = true;
+                    break;
+                case 'l':
+                    permissions.listPermission = true;
+                    break;
+                case 'm':
+                    permissions.movePermission = true;
+                    break;
+                case 'e':
+                    permissions.executePermission = true;
                     break;
                 default:
                     throw new IllegalArgumentException(
@@ -160,6 +186,97 @@ public final class BlobSasPermission {
     }
 
     /**
+     * @return the delete version permission status.
+     */
+    public boolean hasDeleteVersionPermission() {
+        return deleteVersionPermission;
+    }
+
+    /**
+     * Sets the delete version permission status.
+     *
+     * @param hasDeleteVersionPermission Permission status to set
+     * @return the updated BlobSasPermission object.
+     */
+    public BlobSasPermission setDeleteVersionPermission(boolean hasDeleteVersionPermission) {
+        this.deleteVersionPermission = hasDeleteVersionPermission;
+        return this;
+    }
+
+    /**
+     * @return the tags permission status.
+     */
+    public boolean hasTagsPermission() {
+        return tagsPermission;
+    }
+
+    /**
+     * Sets the tags permission status.
+     *
+     * @param tagsPermission Permission status to set
+     * @return the updated BlobSasPermission object.
+     */
+    public BlobSasPermission setTagsPermission(boolean tagsPermission) {
+        this.tagsPermission = tagsPermission;
+        return this;
+    }
+
+    /**
+     * @return the list permission status.
+     */
+    public boolean hasListPermission() {
+        return listPermission;
+    }
+
+    /**
+     * Sets the list permission status.
+     *
+     * @param hasListPermission Permission status to set
+     * @return the updated BlobSasPermission object.
+     */
+    public BlobSasPermission setListPermission(boolean hasListPermission) {
+        this.listPermission = hasListPermission;
+        return this;
+    }
+
+    /**
+     * @return the move permission status.
+     */
+    public boolean hasMovePermission() {
+        return movePermission;
+    }
+
+    /**
+     * Sets the move permission status.
+     *
+     * @param hasMovePermission Permission status to set
+     * @return the updated BlobSasPermission object.
+     */
+    public BlobSasPermission setMovePermission(boolean hasMovePermission) {
+        this.movePermission = hasMovePermission;
+        return this;
+    }
+
+    /**
+     * @return the execute permission status.
+     */
+    public boolean hasExecutePermission() {
+        return executePermission;
+    }
+
+    /**
+     * Sets the execute permission status.
+     *
+     * @param hasExecutePermission Permission status to set
+     * @return the updated BlobSasPermission object.
+     */
+    public BlobSasPermission setExecutePermission(boolean hasExecutePermission) {
+        this.executePermission = hasExecutePermission;
+        return this;
+    }
+
+
+    /**
      * Converts the given permissions to a {@code String}. Using this method will guarantee the permissions are in an
      * order accepted by the service.
      *
@@ -190,6 +307,26 @@ public final class BlobSasPermission {
 
         if (this.deletePermission) {
             builder.append('d');
+        }
+
+        if (this.deleteVersionPermission) {
+            builder.append('x');
+        }
+
+        if (this.listPermission) {
+            builder.append('l');
+        }
+
+        if (this.tagsPermission) {
+            builder.append('t');
+        }
+
+        if (this.movePermission) {
+            builder.append('m');
+        }
+
+        if (this.executePermission) {
+            builder.append('e');
         }
 
         return builder.toString();

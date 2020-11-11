@@ -11,7 +11,7 @@ import com.azure.core.http.rest.ResponseBase;
 /**
  * Contains all response data for the update operation.
  */
-public final class PathsUpdateResponse extends ResponseBase<PathUpdateHeaders, Void> {
+public final class PathsUpdateResponse extends ResponseBase<PathUpdateHeaders, SetAccessControlRecursiveResponse> {
     /**
      * Creates an instance of PathsUpdateResponse.
      *
@@ -21,7 +21,15 @@ public final class PathsUpdateResponse extends ResponseBase<PathUpdateHeaders, V
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public PathsUpdateResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, PathUpdateHeaders headers) {
+    public PathsUpdateResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, SetAccessControlRecursiveResponse value, PathUpdateHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
+    }
+
+    /**
+     * @return the deserialized response body.
+     */
+    @Override
+    public SetAccessControlRecursiveResponse getValue() {
+        return super.getValue();
     }
 }

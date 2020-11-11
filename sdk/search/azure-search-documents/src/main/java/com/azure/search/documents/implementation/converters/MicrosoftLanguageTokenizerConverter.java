@@ -4,7 +4,6 @@
 package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.indexes.models.MicrosoftLanguageTokenizer;
-import com.azure.search.documents.indexes.models.MicrosoftTokenizerLanguage;
 
 /**
  * A converter between {@link com.azure.search.documents.indexes.implementation.models.MicrosoftLanguageTokenizer} and
@@ -19,17 +18,13 @@ public final class MicrosoftLanguageTokenizerConverter {
         if (obj == null) {
             return null;
         }
-        MicrosoftLanguageTokenizer microsoftLanguageTokenizer = new MicrosoftLanguageTokenizer();
-
-        String name = obj.getName();
-        microsoftLanguageTokenizer.setName(name);
+        MicrosoftLanguageTokenizer microsoftLanguageTokenizer = new MicrosoftLanguageTokenizer(obj.getName());
 
         Integer maxTokenLength = obj.getMaxTokenLength();
         microsoftLanguageTokenizer.setMaxTokenLength(maxTokenLength);
 
         if (obj.getLanguage() != null) {
-            MicrosoftTokenizerLanguage language = MicrosoftTokenizerLanguageConverter.map(obj.getLanguage());
-            microsoftLanguageTokenizer.setLanguage(language);
+            microsoftLanguageTokenizer.setLanguage(obj.getLanguage());
         }
 
         Boolean isSearchTokenizer = obj.isSearchTokenizer();
@@ -46,18 +41,13 @@ public final class MicrosoftLanguageTokenizerConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.MicrosoftLanguageTokenizer microsoftLanguageTokenizer =
-            new com.azure.search.documents.indexes.implementation.models.MicrosoftLanguageTokenizer();
-
-        String name = obj.getName();
-        microsoftLanguageTokenizer.setName(name);
+            new com.azure.search.documents.indexes.implementation.models.MicrosoftLanguageTokenizer(obj.getName());
 
         Integer maxTokenLength = obj.getMaxTokenLength();
         microsoftLanguageTokenizer.setMaxTokenLength(maxTokenLength);
 
         if (obj.getLanguage() != null) {
-            com.azure.search.documents.indexes.implementation.models.MicrosoftTokenizerLanguage language =
-                MicrosoftTokenizerLanguageConverter.map(obj.getLanguage());
-            microsoftLanguageTokenizer.setLanguage(language);
+            microsoftLanguageTokenizer.setLanguage(obj.getLanguage());
         }
 
         Boolean isSearchTokenizer = obj.isSearchTokenizer();

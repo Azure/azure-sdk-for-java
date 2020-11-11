@@ -415,8 +415,7 @@ public class PathsHelper {
             // even number, assume it is individual resource
             if (isResourceType(segments[segments.length - 2])) {
                 pathInfo.resourcePath = segments[segments.length - 2];
-                pathInfo.resourceIdOrFullName = StringEscapeUtils.unescapeJava(StringUtils.removeEnd(
-                        StringUtils.removeStart(resourceUrl, Paths.ROOT), Paths.ROOT));
+                pathInfo.resourceIdOrFullName = unescapeJavaAndTrim(resourceUrl);
                 return true;
             }
         } else {
@@ -425,8 +424,7 @@ public class PathsHelper {
                     pathInfo.isFeed = true;
                     pathInfo.resourcePath = segments[segments.length - 1];
                     String resourceIdOrFullName = resourceUrl.substring(0, StringUtils.removeEnd(resourceUrl,Paths.ROOT).lastIndexOf(Paths.ROOT));
-                    pathInfo.resourceIdOrFullName = StringEscapeUtils.unescapeJava(StringUtils.removeEnd(
-                            StringUtils.removeStart(resourceIdOrFullName, Paths.ROOT), Paths.ROOT));
+                    pathInfo.resourceIdOrFullName = unescapeJavaAndTrim(resourceIdOrFullName);
                     return true;
                 }
         }
@@ -441,22 +439,59 @@ public class PathsHelper {
         if (segments.length % 2 == 0) {
             // even number, assume it is individual resource
             if (isResourceType(segments[segments.length - 2])) {
-                return new PathInfo(false, segments[segments.length - 2],
-                        StringEscapeUtils.unescapeJava(StringUtils.strip(resourceUrl, Paths.ROOT)), true);
+                return new PathInfo(false,
+                                    segments[segments.length - 2],
+                                    unescapeJavaAndTrim(resourceUrl),
+                         true);
             }
         } else {
             // odd number, assume it is feed request
             if (isResourceType(segments[segments.length - 1])) {
-                return new PathInfo(true, segments[segments.length - 1],
-                        StringEscapeUtils.unescapeJava(StringUtils.strip(
-                                resourceUrl.substring(0,
-                                        StringUtils.removeEnd(resourceUrl, Paths.ROOT).lastIndexOf(Paths.ROOT)),
-                                Paths.ROOT)),
-                        true);
+                return new PathInfo(true,
+                                    segments[segments.length - 1],
+                                    unescapeJavaAndTrim(
+                                        resourceUrl.substring(0,
+                                                StringUtils.removeEnd(resourceUrl, Paths.ROOT).lastIndexOf(Paths.ROOT))),
+                         true);
             }
         }
 
         return null;
+    }
+
+    public static String unescapeJavaAndTrim(String resourceUrl) {
+        if (resourceUrl == null) {
+            return null;
+        }
+
+        int startInclusiveIndex = 0;
+
+        while (startInclusiveIndex < resourceUrl.length() && resourceUrl.charAt(startInclusiveIndex) == Paths.ROOT_CHAR) {
+            startInclusiveIndex++;
+        }
+
+        if (startInclusiveIndex == resourceUrl.length()) {
+            return "";
+        }
+
+        int endExclusiveIndex = resourceUrl.length();
+        while (endExclusiveIndex > startInclusiveIndex && resourceUrl.charAt(endExclusiveIndex - 1) == Paths.ROOT_CHAR) {
+            endExclusiveIndex--;
+        }
+
+        for (int startLoopIndex = startInclusiveIndex; startLoopIndex < endExclusiveIndex; startLoopIndex++) {
+            if (resourceUrl.charAt(startLoopIndex)== Paths.ESCAPE_CHAR) {
+                // Found an escape character lets run the StringEscapeUtils.unescapeJava
+                return StringEscapeUtils.unescapeJava(StringUtils.strip(resourceUrl, Paths.ROOT));
+            }
+        }
+
+        // No escape character found
+        if (startInclusiveIndex == 0 && endExclusiveIndex == resourceUrl.length()) {
+            return resourceUrl;
+        }
+
+        return resourceUrl.substring(startInclusiveIndex, endExclusiveIndex);
     }
 
     private static boolean isResourceType(String resourcePathSegment) {

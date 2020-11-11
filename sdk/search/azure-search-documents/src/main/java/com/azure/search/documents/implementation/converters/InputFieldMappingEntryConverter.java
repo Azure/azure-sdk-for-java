@@ -21,16 +21,13 @@ public final class InputFieldMappingEntryConverter {
         if (obj == null) {
             return null;
         }
-        InputFieldMappingEntry inputFieldMappingEntry = new InputFieldMappingEntry();
+        InputFieldMappingEntry inputFieldMappingEntry = new InputFieldMappingEntry(obj.getName());
 
         if (obj.getInputs() != null) {
             List<InputFieldMappingEntry> inputs =
                 obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
             inputFieldMappingEntry.setInputs(inputs);
         }
-
-        String name = obj.getName();
-        inputFieldMappingEntry.setName(name);
 
         String source = obj.getSource();
         inputFieldMappingEntry.setSource(source);
@@ -49,7 +46,7 @@ public final class InputFieldMappingEntryConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.InputFieldMappingEntry inputFieldMappingEntry =
-            new com.azure.search.documents.indexes.implementation.models.InputFieldMappingEntry();
+            new com.azure.search.documents.indexes.implementation.models.InputFieldMappingEntry(obj.getName());
 
         if (obj.getInputs() != null) {
             List<com.azure.search.documents.indexes.implementation.models.InputFieldMappingEntry> inputs =
@@ -57,14 +54,12 @@ public final class InputFieldMappingEntryConverter {
             inputFieldMappingEntry.setInputs(inputs);
         }
 
-        String name = obj.getName();
-        inputFieldMappingEntry.setName(name);
-
         String source = obj.getSource();
         inputFieldMappingEntry.setSource(source);
 
         String sourceContext = obj.getSourceContext();
         inputFieldMappingEntry.setSourceContext(sourceContext);
+
         return inputFieldMappingEntry;
     }
 

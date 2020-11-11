@@ -5,8 +5,6 @@ package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
 import com.azure.search.documents.indexes.models.OcrSkill;
-import com.azure.search.documents.indexes.models.OcrSkillLanguage;
-import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,19 +20,10 @@ public final class OcrSkillConverter {
         if (obj == null) {
             return null;
         }
-        OcrSkill ocrSkill = new OcrSkill();
 
-        if (obj.getOutputs() != null) {
-            List<OutputFieldMappingEntry> outputs =
-                obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            ocrSkill.setOutputs(outputs);
-        }
-
-        if (obj.getInputs() != null) {
-            List<InputFieldMappingEntry> inputs =
-                obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            ocrSkill.setInputs(inputs);
-        }
+        List<InputFieldMappingEntry> inputs = obj.getInputs() == null ? null
+            : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
+        OcrSkill ocrSkill = new OcrSkill(inputs, obj.getOutputs());
 
         String name = obj.getName();
         ocrSkill.setName(name);
@@ -47,8 +36,7 @@ public final class OcrSkillConverter {
 
 
         if (obj.getDefaultLanguageCode() != null) {
-            OcrSkillLanguage defaultLanguageCode = OcrSkillLanguageConverter.map(obj.getDefaultLanguageCode());
-            ocrSkill.setDefaultLanguageCode(defaultLanguageCode);
+            ocrSkill.setDefaultLanguageCode(obj.getDefaultLanguageCode());
         }
 
         Boolean shouldDetectOrientation = obj.isShouldDetectOrientation();
@@ -63,20 +51,12 @@ public final class OcrSkillConverter {
         if (obj == null) {
             return null;
         }
+
+        List<com.azure.search.documents.indexes.implementation.models.InputFieldMappingEntry> inputs =
+            obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
+
         com.azure.search.documents.indexes.implementation.models.OcrSkill ocrSkill =
-            new com.azure.search.documents.indexes.implementation.models.OcrSkill();
-
-        if (obj.getOutputs() != null) {
-            List<com.azure.search.documents.indexes.implementation.models.OutputFieldMappingEntry> outputs =
-                obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            ocrSkill.setOutputs(outputs);
-        }
-
-        if (obj.getInputs() != null) {
-            List<com.azure.search.documents.indexes.implementation.models.InputFieldMappingEntry> inputs =
-                obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            ocrSkill.setInputs(inputs);
-        }
+            new com.azure.search.documents.indexes.implementation.models.OcrSkill(inputs, obj.getOutputs());
 
         String name = obj.getName();
         ocrSkill.setName(name);
@@ -88,13 +68,12 @@ public final class OcrSkillConverter {
         ocrSkill.setDescription(description);
 
         if (obj.getDefaultLanguageCode() != null) {
-            com.azure.search.documents.indexes.implementation.models.OcrSkillLanguage defaultLanguageCode =
-                OcrSkillLanguageConverter.map(obj.getDefaultLanguageCode());
-            ocrSkill.setDefaultLanguageCode(defaultLanguageCode);
+            ocrSkill.setDefaultLanguageCode(obj.getDefaultLanguageCode());
         }
 
         Boolean shouldDetectOrientation = obj.setShouldDetectOrientation();
         ocrSkill.setShouldDetectOrientation(shouldDetectOrientation);
+
         return ocrSkill;
     }
 

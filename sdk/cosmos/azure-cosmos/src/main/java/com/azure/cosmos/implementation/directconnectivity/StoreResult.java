@@ -5,10 +5,10 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ISessionToken;
+import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.RequestChargeTracker;
 import com.azure.cosmos.implementation.Strings;
@@ -181,7 +181,8 @@ public class StoreResult {
                 subStatusCode = storeResult.exception.getSubStatusCode();
             }
             jsonGenerator.writeStartObject();
-            jsonGenerator.writeObjectField("storePhysicalAddress", storeResult.storePhysicalAddress);
+            jsonGenerator.writeObjectField("storePhysicalAddress", storeResult.storePhysicalAddress == null ? null :
+                storeResult.storePhysicalAddress.getURIAsString());
             jsonGenerator.writeNumberField("lsn", storeResult.lsn);
             jsonGenerator.writeNumberField("globalCommittedLsn", storeResult.globalCommittedLSN);
             jsonGenerator.writeStringField("partitionKeyRangeId", storeResult.partitionKeyRangeId);
@@ -195,7 +196,24 @@ public class StoreResult {
             jsonGenerator.writeNumberField("itemLSN", storeResult.itemLSN);
             jsonGenerator.writeStringField("sessionToken", (storeResult.sessionToken != null ? storeResult.sessionToken.convertToString() : null));
             jsonGenerator.writeStringField("exception", BridgeInternal.getInnerErrorMessage(storeResult.exception));
-            jsonGenerator.writeObjectField("transportRequestTimeline", storeResult.storeResponse != null ? storeResult.storeResponse.getRequestTimeline() : null);
+            jsonGenerator.writeObjectField("transportRequestTimeline", storeResult.storeResponse != null ?
+                storeResult.storeResponse.getRequestTimeline() :
+                storeResult.exception != null ? BridgeInternal.getRequestTimeline(storeResult.exception) : null);
+            jsonGenerator.writeObjectField("rntbdRequestLengthInBytes", storeResult.storeResponse != null ?
+                storeResult.storeResponse.getRntbdRequestLength() : BridgeInternal.getRntbdRequestLength(storeResult.exception));
+            jsonGenerator.writeObjectField("rntbdResponseLengthInBytes", storeResult.storeResponse != null ?
+                storeResult.storeResponse.getRntbdResponseLength() : BridgeInternal.getRntbdResponseLength(storeResult.exception));
+            jsonGenerator.writeObjectField("requestPayloadLengthInBytes", storeResult.storeResponse != null ?
+                storeResult.storeResponse.getRequestPayloadLength() :  BridgeInternal.getRequestBodyLength(storeResult.exception));
+            jsonGenerator.writeObjectField("responsePayloadLengthInBytes", storeResult.storeResponse != null ?
+                storeResult.storeResponse.getResponseBodyLength() : null);
+            jsonGenerator.writeObjectField("channelTaskQueueSize", storeResult.storeResponse != null ? storeResult.storeResponse.getRntbdChannelTaskQueueSize() :
+                BridgeInternal.getChannelTaskQueueSize(storeResult.exception));
+            jsonGenerator.writeObjectField("pendingRequestsCount", storeResult.storeResponse != null ? storeResult.storeResponse.getPendingRequestQueueSize() :
+                BridgeInternal.getRntbdPendingRequestQueueSize(storeResult.exception));
+            jsonGenerator.writeObjectField("serviceEndpointStatistics", storeResult.storeResponse != null ? storeResult.storeResponse.getEndpointStsts() :
+                storeResult.exception != null ? BridgeInternal.getServiceEndpointStatistics(storeResult.exception) : null);
+
             jsonGenerator.writeEndObject();
         }
     }

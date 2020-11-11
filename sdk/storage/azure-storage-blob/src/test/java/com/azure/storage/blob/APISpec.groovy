@@ -8,6 +8,7 @@ import com.azure.core.http.HttpHeaders
 import com.azure.core.http.HttpMethod
 import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
+import com.azure.core.http.HttpPipelinePosition
 import com.azure.core.http.HttpRequest
 import com.azure.core.http.HttpResponse
 import com.azure.core.http.ProxyOptions
@@ -28,10 +29,12 @@ import com.azure.storage.blob.models.BlobServiceProperties
 import com.azure.storage.blob.models.CopyStatusType
 import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.ListBlobContainersOptions
+import com.azure.storage.blob.options.BlobBreakLeaseOptions
 import com.azure.storage.blob.specialized.BlobAsyncClientBase
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.BlobLeaseClient
 import com.azure.storage.blob.specialized.BlobLeaseClientBuilder
+import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.policy.RequestRetryOptions
@@ -46,8 +49,12 @@ import spock.lang.Timeout
 import java.nio.ByteBuffer
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
+import java.time.Duration
 import java.time.OffsetDateTime
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeUnit
+import java.util.function.BiFunction
+import java.util.function.Function
 import java.util.function.Supplier
 
 @Timeout(value = 5, unit = TimeUnit.MINUTES)
@@ -121,12 +128,14 @@ class APISpec extends Specification {
     /* Unignore any managed disk tests if a managed disk account is available to be tested. They are difficult to
      acquire so we do not run them in the nightly live run tests. */
     static def MANAGED_DISK_STORAGE = "MANAGED_DISK_STORAGE_"
+    static def VERSIONED_STORAGE = "VERSIONED_STORAGE_"
 
     protected static StorageSharedKeyCredential primaryCredential
     static StorageSharedKeyCredential alternateCredential
     static StorageSharedKeyCredential blobCredential
     static StorageSharedKeyCredential premiumCredential
     static StorageSharedKeyCredential managedDiskCredential
+    static StorageSharedKeyCredential versionedCredential
     static TestMode testMode
 
     BlobServiceClient primaryBlobServiceClient
@@ -135,6 +144,7 @@ class APISpec extends Specification {
     BlobServiceClient blobServiceClient
     BlobServiceClient premiumBlobServiceClient
     BlobServiceClient managedDiskServiceClient
+    BlobServiceClient versionedBlobServiceClient
 
     InterceptorManager interceptorManager
     boolean recordLiveMode
@@ -149,6 +159,7 @@ class APISpec extends Specification {
         blobCredential = getCredential(BLOB_STORAGE)
         premiumCredential = getCredential(PREMIUM_STORAGE)
         managedDiskCredential = getCredential(MANAGED_DISK_STORAGE)
+        versionedCredential = getCredential(VERSIONED_STORAGE)
         // The property is to limit flapMap buffer size of concurrency
         // in case the upload or download open too many connections.
         System.setProperty("reactor.bufferSize.x", "16")
@@ -177,6 +188,7 @@ class APISpec extends Specification {
         blobServiceClient = setClient(blobCredential)
         premiumBlobServiceClient = setClient(premiumCredential)
         managedDiskServiceClient = setClient(managedDiskCredential)
+        versionedBlobServiceClient = setClient(versionedCredential)
 
         containerName = generateContainerName()
         cc = primaryBlobServiceClient.getBlobContainerClient(containerName)
@@ -195,7 +207,7 @@ class APISpec extends Specification {
             def containerClient = primaryBlobServiceClient.getBlobContainerClient(container.getName())
 
             if (container.getProperties().getLeaseState() == LeaseStateType.LEASED) {
-                createLeaseClient(containerClient).breakLeaseWithResponse(0, null, null, null)
+                createLeaseClient(containerClient).breakLeaseWithResponse(new BlobBreakLeaseOptions().setBreakPeriod(Duration.ofSeconds(0)), null, null)
             }
 
             containerClient.delete()
@@ -224,6 +236,10 @@ class APISpec extends Specification {
 
     static boolean liveMode() {
         return setupTestMode() == TestMode.LIVE
+    }
+
+    static boolean playbackMode() {
+        return setupTestMode() == TestMode.PLAYBACK
     }
 
     private StorageSharedKeyCredential getCredential(String accountType) {
@@ -322,6 +338,36 @@ class APISpec extends Specification {
         return builder
     }
 
+    /**
+     * Some tests require extra configuration for retries when writing.
+     *
+     * It is possible that tests which upload a reasonable amount of data with tight resource limits may cause the
+     * service to silently close a connection without returning a response due to high read latency (the resource
+     * constraints cause a latency between sending the headers and writing the body often due to waiting for buffer pool
+     * buffers). Without configuring a retry timeout, the operation will hang indefinitely. This is always something
+     * that must be configured by the customer.
+     *
+     * Typically this needs to be configured in retries so that we can retry the individual block writes rather than
+     * the overall operation.
+     *
+     * According to the following link, writes can take up to 10 minutes per MB before the service times out. In this
+     * case, most of our instrumentation (e.g. CI pipelines) will timeout and fail anyway, so we don't want to wait that
+     * long. The value is going to be a best guess and should be played with to allow test passes to succeed
+     *
+     * https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-blob-service-operations
+     *
+     * @param perRequestDataSize The amount of data expected to go out in each request. Will be used to calculate a
+     * timeout value--about 20s/MB. Won't be less than 1 minute.
+     */
+    BlobServiceAsyncClient getPrimaryServiceClientForWrites(long perRequestDataSize) {
+        int retryTimeout = Math.toIntExact((long) (perRequestDataSize / Constants.MB) * 20)
+        retryTimeout = Math.max(60, retryTimeout)
+        return getServiceClientBuilder(primaryCredential,
+            String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
+        .retryOptions(new RequestRetryOptions(null, null, retryTimeout, null, null, null))
+            .buildAsyncClient()
+    }
+
     BlobContainerClient getContainerClient(String sasToken, String endpoint) {
         getContainerClientBuilder(endpoint).sasToken(sasToken).buildClient()
     }
@@ -385,6 +431,22 @@ class APISpec extends Specification {
         return builder.credential(credential).buildClient()
     }
 
+    BlobAsyncClient getBlobAsyncClient(StorageSharedKeyCredential credential, String endpoint, HttpPipelinePolicy... policies) {
+        BlobClientBuilder builder = new BlobClientBuilder()
+            .endpoint(endpoint)
+            .httpClient(getHttpClient())
+
+        for (HttpPipelinePolicy policy : policies) {
+            builder.addPolicy(policy)
+        }
+
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+
+        return builder.credential(credential).buildAsyncClient()
+    }
+
     BlobClient getBlobClient(StorageSharedKeyCredential credential, String endpoint, String blobName) {
         BlobClientBuilder builder = new BlobClientBuilder()
             .endpoint(endpoint)
@@ -413,6 +475,24 @@ class APISpec extends Specification {
 
         return builder.buildClient()
     }
+
+    SpecializedBlobClientBuilder getSpecializedBuilder(StorageSharedKeyCredential credential, String endpoint, HttpPipelinePolicy... policies) {
+
+        SpecializedBlobClientBuilder builder = new SpecializedBlobClientBuilder()
+            .endpoint(endpoint)
+            .httpClient(getHttpClient())
+
+        for (HttpPipelinePolicy policy : policies) {
+            builder.addPolicy(policy)
+        }
+
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+
+        return builder.credential(credential)
+    }
+
 
     HttpClient getHttpClient() {
         NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder()
@@ -526,23 +606,28 @@ class APISpec extends Specification {
      */
     def compareFiles(File file1, File file2, long offset, long count) {
         def pos = 0L
-        def readBuffer = 8 * Constants.KB
+        def defaultBufferSize = 128 * Constants.KB
         def stream1 = new FileInputStream(file1)
         stream1.skip(offset)
         def stream2 = new FileInputStream(file2)
 
         try {
+            // If the amount we are going to read is smaller than the default buffer size use that instead.
+            def bufferSize = (int) Math.min(defaultBufferSize, count)
+
             while (pos < count) {
-                def bufferSize = (int) Math.min(readBuffer, count - pos)
-                def buffer1 = new byte[bufferSize]
-                def buffer2 = new byte[bufferSize]
+                // Number of bytes we expect to read.
+                def expectedReadCount = (int) Math.min(bufferSize, count - pos)
+                def buffer1 = new byte[expectedReadCount]
+                def buffer2 = new byte[expectedReadCount]
 
                 def readCount1 = stream1.read(buffer1)
                 def readCount2 = stream2.read(buffer2)
 
-                assert readCount1 == readCount2 && buffer1 == buffer2
+                // Use Arrays.equals as it is more optimized than Groovy/Spock's '==' for arrays.
+                assert readCount1 == readCount2 && Arrays.equals(buffer1, buffer2)
 
-                pos += bufferSize
+                pos += expectedReadCount
             }
 
             def verificationRead = stream2.read()
@@ -819,6 +904,59 @@ class APISpec extends Specification {
         @Override
         Mono<String> getBodyAsString(Charset charset) {
             return Mono.error(new IOException())
+        }
+    }
+
+    /**
+     * Injects one retry-able IOException failure per url.
+     */
+    class TransientFailureInjectingHttpPipelinePolicy implements HttpPipelinePolicy {
+
+        private ConcurrentHashMap<String, Boolean> failureTracker = new ConcurrentHashMap<>();
+
+        @Override
+        Mono<HttpResponse> process(HttpPipelineCallContext httpPipelineCallContext, HttpPipelineNextPolicy httpPipelineNextPolicy) {
+            def request = httpPipelineCallContext.httpRequest
+            def key = request.url.toString()
+            // Make sure that failure happens once per url.
+            if (failureTracker.get(key, false)) {
+                return httpPipelineNextPolicy.process()
+            } else {
+                failureTracker.put(key, true)
+                return request.getBody().flatMap {
+                    byteBuffer ->
+                        // Read a byte from each buffer to simulate that failure occurred in the middle of transfer.
+                        byteBuffer.get()
+                        return Flux.just(byteBuffer)
+                }.reduce( 0L, {
+                    // Reduce in order to force processing of all buffers.
+                    a, byteBuffer ->
+                        return a + byteBuffer.remaining()
+                    } as BiFunction<Long, ByteBuffer, Long>
+                ).flatMap ({
+                    aLong ->
+                        // Throw retry-able error.
+                        return Mono.error(new IOException("KABOOM!"))
+                } as Function<Long, Mono<HttpResponse>>)
+            }
+        }
+    }
+
+    def getPollingDuration(long liveTestDurationInMillis) {
+        return (testMode == TestMode.PLAYBACK) ? Duration.ofMillis(10) : Duration.ofMillis(liveTestDurationInMillis)
+    }
+
+    def getPerCallVersionPolicy() {
+        return new HttpPipelinePolicy() {
+            @Override
+            Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+                context.getHttpRequest().setHeader("x-ms-version","2017-11-09")
+                return next.process()
+            }
+            @Override
+            HttpPipelinePosition getPipelinePosition() {
+                return HttpPipelinePosition.PER_CALL
+            }
         }
     }
 }

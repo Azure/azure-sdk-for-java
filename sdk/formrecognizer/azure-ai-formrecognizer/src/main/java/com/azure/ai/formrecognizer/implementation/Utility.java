@@ -4,15 +4,25 @@
 package com.azure.ai.formrecognizer.implementation;
 
 import com.azure.ai.formrecognizer.implementation.models.ContentType;
+import com.azure.ai.formrecognizer.implementation.models.ErrorResponseException;
+import com.azure.ai.formrecognizer.models.FormRecognizerErrorInformation;
+import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.PollingContext;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.util.function.BiConsumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
+
+import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * Utility method class.
@@ -21,6 +31,8 @@ public final class Utility {
     private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
     // using 4K as default buffer size: https://stackoverflow.com/a/237495/1473510
     private static final int BYTE_BUFFER_CHUNK_SIZE = 4096;
+    // default time interval for polling
+    public static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(5);
 
     private Utility() {
     }
@@ -186,5 +198,37 @@ public final class Utility {
             this.readBytes = cnt;
             return this;
         }
+    }
+
+    /**
+     * Mapping a {@link ErrorResponseException} to {@link HttpResponseException} if exist. Otherwise, return
+     * original {@link Throwable}.
+     *
+     * @param throwable A {@link Throwable}.
+     * @return A {@link HttpResponseException} or the original throwable type.
+     */
+    public static Throwable mapToHttpResponseExceptionIfExist(Throwable throwable) {
+        if (throwable instanceof ErrorResponseException) {
+            ErrorResponseException errorResponseException = (ErrorResponseException) throwable;
+            return new HttpResponseException(errorResponseException.getMessage(), errorResponseException.getResponse(),
+                new FormRecognizerErrorInformation(errorResponseException.getValue().getError().getCode(),
+                    errorResponseException.getValue().getError().getMessage()));
+        }
+        return throwable;
+    }
+
+    /*
+     * Poller's ACTIVATION operation that takes URL as input.
+     */
+    public static Function<PollingContext<FormRecognizerOperationResult>, Mono<FormRecognizerOperationResult>>
+        urlActivationOperation(
+        Supplier<Mono<FormRecognizerOperationResult>> activationOperation, ClientLogger logger) {
+        return pollingContext -> {
+            try {
+                return activationOperation.get().onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
+            } catch (RuntimeException ex) {
+                return monoError(logger, ex);
+            }
+        };
     }
 }

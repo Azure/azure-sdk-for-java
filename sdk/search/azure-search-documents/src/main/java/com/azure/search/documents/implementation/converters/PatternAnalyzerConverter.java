@@ -23,10 +23,7 @@ public final class PatternAnalyzerConverter {
         if (obj == null) {
             return null;
         }
-        PatternAnalyzer patternAnalyzer = new PatternAnalyzer();
-
-        String name = obj.getName();
-        patternAnalyzer.setName(name);
+        PatternAnalyzer patternAnalyzer = new PatternAnalyzer(obj.getName());
 
         Boolean lowerCaseTerms = obj.isLowerCaseTerms();
         patternAnalyzer.setLowerCaseTerms(lowerCaseTerms);
@@ -35,14 +32,13 @@ public final class PatternAnalyzerConverter {
         patternAnalyzer.setPattern(pattern);
 
         if (obj.getFlags() != null) {
-            List<RegexFlags> regexFlags =
-                Arrays.stream(obj.getFlags().toString().split("\\|")).map(RegexFlags::fromString).collect(Collectors.toList());
-            patternAnalyzer.setFlags(regexFlags);
+            patternAnalyzer.setFlags(Arrays.stream(obj.getFlags().toString().split("\\|"))
+                .map(RegexFlags::fromString)
+                .collect(Collectors.toList()));
         }
 
         if (obj.getStopwords() != null) {
-            List<String> stopwords = new ArrayList<>(obj.getStopwords());
-            patternAnalyzer.setStopwords(stopwords);
+            patternAnalyzer.setStopwords(obj.getStopwords());
         }
         return patternAnalyzer;
     }
@@ -55,10 +51,7 @@ public final class PatternAnalyzerConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.PatternAnalyzer patternAnalyzer =
-            new com.azure.search.documents.indexes.implementation.models.PatternAnalyzer();
-
-        String name = obj.getName();
-        patternAnalyzer.setName(name);
+            new com.azure.search.documents.indexes.implementation.models.PatternAnalyzer(obj.getName());
 
         Boolean lowerCaseTerms = obj.areLowerCaseTerms();
         patternAnalyzer.setLowerCaseTerms(lowerCaseTerms);
@@ -68,13 +61,14 @@ public final class PatternAnalyzerConverter {
 
         if (obj.getFlags() != null) {
             String flattenFlags = obj.getFlags().stream().map(RegexFlags::toString).collect(Collectors.joining("|"));
-            patternAnalyzer.setFlags(com.azure.search.documents.indexes.implementation.models.RegexFlags.fromString(flattenFlags));
+            patternAnalyzer.setFlags(RegexFlags.fromString(flattenFlags));
         }
 
         if (obj.getStopwords() != null) {
             List<String> stopwords = new ArrayList<>(obj.getStopwords());
             patternAnalyzer.setStopwords(stopwords);
         }
+
         return patternAnalyzer;
     }
 

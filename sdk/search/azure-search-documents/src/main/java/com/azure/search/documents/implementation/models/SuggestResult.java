@@ -7,47 +7,39 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.HashMap;
 import java.util.Map;
 
-/**
- * A result containing a document found by a suggestion query, plus associated
- * metadata.
- */
+/** A result containing a document found by a suggestion query, plus associated metadata. */
 @Fluent
 public final class SuggestResult {
-    /*
-     * Unmatched properties from the message are deserialized this collection
-     */
-    @JsonProperty(value = "")
-    private Map<String, Object> additionalProperties;
-
     /*
      * The text of the suggestion result.
      */
     @JsonProperty(value = "@search.text", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String text;
 
-    /**
-     * Get the additionalProperties property: Unmatched properties from the
-     * message are deserialized this collection.
-     *
-     * @return the additionalProperties value.
+    /*
+     * A result containing a document found by a suggestion query, plus
+     * associated metadata.
      */
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
+    @JsonIgnore private Map<String, Object> additionalProperties;
 
     /**
-     * Set the additionalProperties property: Unmatched properties from the
-     * message are deserialized this collection.
+     * Creates an instance of SuggestResult class.
      *
-     * @param additionalProperties the additionalProperties value to set.
-     * @return the SuggestResult object itself.
+     * @param text the text value to set.
      */
-    public SuggestResult setAdditionalProperties(Map<String, Object> additionalProperties) {
-        this.additionalProperties = additionalProperties;
-        return this;
+    @JsonCreator
+    public SuggestResult(
+            @JsonProperty(value = "@search.text", required = true, access = JsonProperty.Access.WRITE_ONLY)
+                    String text) {
+        this.text = text;
     }
 
     /**
@@ -57,5 +49,36 @@ public final class SuggestResult {
      */
     public String getText() {
         return this.text;
+    }
+
+    /**
+     * Get the additionalProperties property: A result containing a document found by a suggestion query, plus
+     * associated metadata.
+     *
+     * @return the additionalProperties value.
+     */
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
+    /**
+     * Set the additionalProperties property: A result containing a document found by a suggestion query, plus
+     * associated metadata.
+     *
+     * @param additionalProperties the additionalProperties value to set.
+     * @return the SuggestResult object itself.
+     */
+    public SuggestResult setAdditionalProperties(Map<String, Object> additionalProperties) {
+        this.additionalProperties = additionalProperties;
+        return this;
+    }
+
+    @JsonAnySetter
+    void setAdditionalProperties(String key, Object value) {
+        if (additionalProperties == null) {
+            additionalProperties = new HashMap<>();
+        }
+        additionalProperties.put(key, value);
     }
 }

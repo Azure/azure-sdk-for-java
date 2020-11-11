@@ -4,6 +4,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -45,6 +46,19 @@ public abstract class ScoringFunction {
     private ScoringFunctionInterpolation interpolation;
 
     /**
+     * Constructor of {@link ScoringFunction}.
+     * @param fieldName The name of the field used as input to the scoring function.
+     * @param boost A multiplier for the raw score. Must be a positive number not equal to 1.0.
+     */
+    @JsonCreator
+    public ScoringFunction(
+        @JsonProperty(value = "fieldName") String fieldName,
+        @JsonProperty(value = "boost") double boost) {
+        this.fieldName = fieldName;
+        this.boost = boost;
+    }
+
+    /**
      * Get the fieldName property: The name of the field used as input to the
      * scoring function.
      *
@@ -55,18 +69,6 @@ public abstract class ScoringFunction {
     }
 
     /**
-     * Set the fieldName property: The name of the field used as input to the
-     * scoring function.
-     *
-     * @param fieldName the fieldName value to set.
-     * @return the ScoringFunction object itself.
-     */
-    public ScoringFunction setFieldName(String fieldName) {
-        this.fieldName = fieldName;
-        return this;
-    }
-
-    /**
      * Get the boost property: A multiplier for the raw score. Must be a
      * positive number not equal to 1.0.
      *
@@ -74,18 +76,6 @@ public abstract class ScoringFunction {
      */
     public double getBoost() {
         return this.boost;
-    }
-
-    /**
-     * Set the boost property: A multiplier for the raw score. Must be a
-     * positive number not equal to 1.0.
-     *
-     * @param boost the boost value to set.
-     * @return the ScoringFunction object itself.
-     */
-    public ScoringFunction setBoost(double boost) {
-        this.boost = boost;
-        return this;
     }
 
     /**

@@ -18,8 +18,10 @@ import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.annotation.ServiceClientProtocol;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.AzureException;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -29,7 +31,7 @@ import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubReactorAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubSharedKeyCredential;
-import java.util.regex.Pattern;
+import org.apache.qpid.proton.engine.SslDomain;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
@@ -42,6 +44,7 @@ import java.util.Objects;
 import java.util.ServiceLoader;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Pattern;
 
 /**
  * This class provides a fluent builder API to aid the instantiation of {@link EventHubProducerAsyncClient}, {@link
@@ -92,11 +95,15 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @see EventHubConsumerClient
  */
 @ServiceClientBuilder(serviceClients = {EventHubProducerAsyncClient.class, EventHubProducerClient.class,
-    EventHubConsumerAsyncClient.class, EventHubConsumerClient.class})
+    EventHubConsumerAsyncClient.class, EventHubConsumerClient.class}, protocol = ServiceClientProtocol.AMQP)
 public class EventHubClientBuilder {
 
     // Default number of events to fetch when creating the consumer.
     static final int DEFAULT_PREFETCH_COUNT = 500;
+
+    // Default number of events to fetch for a sync client. The sync client operates in "pull" mode.
+    // So, limit the prefetch to just 1 by default.
+    static final int DEFAULT_PREFETCH_COUNT_FOR_SYNC_CLIENT = 1;
 
     /**
      * The name of the default consumer group in the Event Hubs service.
@@ -134,7 +141,9 @@ public class EventHubClientBuilder {
     private String eventHubName;
     private String consumerGroup;
     private EventHubConnectionProcessor eventHubConnectionProcessor;
-    private int prefetchCount;
+    private Integer prefetchCount;
+    private ClientOptions clientOptions;
+    private SslDomain.VerifyMode verifyMode;
 
     /**
      * Keeps track of the open clients that were created from this builder when there is a shared connection.
@@ -148,7 +157,6 @@ public class EventHubClientBuilder {
      */
     public EventHubClientBuilder() {
         transport = AmqpTransportType.AMQP;
-        prefetchCount = DEFAULT_PREFETCH_COUNT;
     }
 
     /**
@@ -175,11 +183,31 @@ public class EventHubClientBuilder {
      *     connection string.
      */
     public EventHubClientBuilder connectionString(String connectionString) {
-        final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
-        final TokenCredential tokenCredential = new EventHubSharedKeyCredential(properties.getSharedAccessKeyName(),
-            properties.getSharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
-
+        ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
+        TokenCredential tokenCredential = getTokenCredential(properties);
         return credential(properties.getEndpoint().getHost(), properties.getEntityPath(), tokenCredential);
+    }
+
+    private TokenCredential getTokenCredential(ConnectionStringProperties properties) {
+        TokenCredential tokenCredential;
+        if (properties.getSharedAccessSignature() == null) {
+            tokenCredential = new EventHubSharedKeyCredential(properties.getSharedAccessKeyName(),
+                properties.getSharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
+        } else {
+            tokenCredential = new EventHubSharedKeyCredential(properties.getSharedAccessSignature());
+        }
+        return tokenCredential;
+    }
+
+    /**
+     * Sets the client options.
+     *
+     * @param clientOptions The client options.
+     * @return The updated {@link EventHubClientBuilder} object.
+     */
+    public EventHubClientBuilder clientOptions(ClientOptions clientOptions) {
+        this.clientOptions = clientOptions;
+        return this;
     }
 
     /**
@@ -210,8 +238,7 @@ public class EventHubClientBuilder {
         }
 
         final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
-        final TokenCredential tokenCredential = new EventHubSharedKeyCredential(properties.getSharedAccessKeyName(),
-            properties.getSharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
+        TokenCredential tokenCredential = getTokenCredential(properties);
 
         if (!CoreUtils.isNullOrEmpty(properties.getEntityPath())
             && !eventHubName.equals(properties.getEntityPath())) {
@@ -374,6 +401,17 @@ public class EventHubClientBuilder {
     }
 
     /**
+     * Package-private method that sets the verify mode for this connection.
+     *
+     * @param verifyMode The verification mode.
+     * @return The updated {@link EventHubClientBuilder} object.
+     */
+    EventHubClientBuilder verifyMode(SslDomain.VerifyMode verifyMode) {
+        this.verifyMode = verifyMode;
+        return this;
+    }
+
+    /**
      * Creates a new {@link EventHubConsumerAsyncClient} based on the options set on this builder. Every time {@code
      * buildAsyncConsumer()} is invoked, a new instance of {@link EventHubConsumerAsyncClient} is created.
      *
@@ -465,6 +503,10 @@ public class EventHubClientBuilder {
             scheduler = Schedulers.elastic();
         }
 
+        if (prefetchCount == null) {
+            prefetchCount = DEFAULT_PREFETCH_COUNT;
+        }
+
         final MessageSerializer messageSerializer = new EventHubMessageSerializer();
 
         final EventHubConnectionProcessor processor;
@@ -514,6 +556,10 @@ public class EventHubClientBuilder {
      *     specified but the transport type is not {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}.
      */
     EventHubClient buildClient() {
+        if (prefetchCount == null) {
+            // For sync clients, do not prefetch eagerly as the client can "pull" as many events as required.
+            prefetchCount = DEFAULT_PREFETCH_COUNT_FOR_SYNC_CLIENT;
+        }
         final EventHubAsyncClient client = buildAsyncClient();
 
         return new EventHubClient(client, retryOptions);
@@ -611,8 +657,13 @@ public class EventHubClientBuilder {
             ? CbsAuthorizationType.SHARED_ACCESS_SIGNATURE
             : CbsAuthorizationType.JSON_WEB_TOKEN;
 
+        final ClientOptions options = clientOptions != null ? clientOptions : new ClientOptions();
+        final SslDomain.VerifyMode verificationMode = verifyMode != null
+            ? verifyMode
+            : SslDomain.VerifyMode.VERIFY_PEER_NAME;
+
         return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType, transport, retryOptions,
-            proxyOptions, scheduler);
+            proxyOptions, scheduler, options, verificationMode);
     }
 
     private ProxyOptions getDefaultProxyConfiguration(Configuration configuration) {
@@ -648,5 +699,4 @@ public class EventHubClientBuilder {
                 coreProxyOptions.getAddress()), coreProxyOptions.getUsername(), coreProxyOptions.getPassword());
         }
     }
-
 }

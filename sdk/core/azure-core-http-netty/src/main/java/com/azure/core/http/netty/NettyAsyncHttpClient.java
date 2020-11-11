@@ -9,31 +9,24 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.ProxyOptions;
-import com.azure.core.http.netty.implementation.HttpProxyExceptionHandler;
 import com.azure.core.util.CoreUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.EventLoopGroup;
 import io.netty.handler.codec.http.HttpMethod;
-import io.netty.handler.proxy.ProxyHandler;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.netty.ByteBufFlux;
 import reactor.netty.Connection;
 import reactor.netty.NettyOutbound;
-import reactor.netty.NettyPipeline;
-import reactor.netty.channel.BootstrapHandlers;
 import reactor.netty.http.client.HttpClientRequest;
 import reactor.netty.http.client.HttpClientResponse;
-import reactor.netty.tcp.TcpClient;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.Objects;
 import java.util.function.BiFunction;
-import java.util.function.Supplier;
-import java.util.regex.Pattern;
 
 /**
  * This class provides a Netty-based implementation for the {@link HttpClient} interface. Creating an instance of this
@@ -46,11 +39,6 @@ import java.util.regex.Pattern;
  * @see NettyAsyncHttpClientBuilder
  */
 class NettyAsyncHttpClient implements HttpClient {
-    private static final Pattern CHARSET_PATTERN = Pattern.compile("charset=(\\S+)\\b", Pattern.CASE_INSENSITIVE);
-
-    private final EventLoopGroup eventLoopGroup;
-    private final Supplier<ProxyHandler> proxyHandlerSupplier;
-    private final Pattern nonProxyHostsPattern;
     private final boolean disableBufferCopy;
 
     final reactor.netty.http.client.HttpClient nettyClient;
@@ -59,25 +47,17 @@ class NettyAsyncHttpClient implements HttpClient {
      * Creates default NettyAsyncHttpClient.
      */
     NettyAsyncHttpClient() {
-        this(reactor.netty.http.client.HttpClient.create(), null, null, null, false);
+        this(reactor.netty.http.client.HttpClient.create(), false);
     }
 
     /**
      * Creates NettyAsyncHttpClient with provided http client.
      *
      * @param nettyClient the reactor-netty http client
-     * @param eventLoopGroup {@link EventLoopGroup} that processes requests.
-     * @param proxyHandlerSupplier Supplier that returns the {@link ProxyHandler} that connects to the configured
-     * proxy.
+     * @param disableBufferCopy Determines whether deep cloning of response buffers should be disabled.
      */
-    NettyAsyncHttpClient(reactor.netty.http.client.HttpClient nettyClient, EventLoopGroup eventLoopGroup,
-        Supplier<ProxyHandler> proxyHandlerSupplier, String nonProxyHosts, boolean disableBufferCopy) {
+    NettyAsyncHttpClient(reactor.netty.http.client.HttpClient nettyClient, boolean disableBufferCopy) {
         this.nettyClient = nettyClient;
-        this.eventLoopGroup = eventLoopGroup;
-        this.proxyHandlerSupplier = proxyHandlerSupplier;
-        this.nonProxyHostsPattern = (nonProxyHosts == null)
-            ? null
-            : Pattern.compile(nonProxyHosts, Pattern.CASE_INSENSITIVE);
         this.disableBufferCopy = disableBufferCopy;
     }
 
@@ -90,39 +70,11 @@ class NettyAsyncHttpClient implements HttpClient {
         Objects.requireNonNull(request.getUrl(), "'request.getUrl()' cannot be null.");
         Objects.requireNonNull(request.getUrl().getProtocol(), "'request.getUrl().getProtocol()' cannot be null.");
         return nettyClient
-            .tcpConfiguration(tcpClient -> configureTcpClient(tcpClient, request.getUrl().getHost()))
             .request(HttpMethod.valueOf(request.getHttpMethod().toString()))
             .uri(request.getUrl().toString())
             .send(bodySendDelegate(request))
             .responseConnection(responseDelegate(request, disableBufferCopy))
             .single();
-    }
-
-    /*
-     * Configures the underlying TcpClient that sends the request.
-     */
-    private TcpClient configureTcpClient(TcpClient tcpClient, String host) {
-        if (eventLoopGroup != null) {
-            tcpClient = tcpClient.runOn(eventLoopGroup);
-        }
-
-        // Validate that the request should be proxied.
-        if (nonProxyHostsPattern == null || !nonProxyHostsPattern.matcher(host).matches()) {
-            ProxyHandler proxyHandler = (proxyHandlerSupplier == null) ? null : proxyHandlerSupplier.get();
-            if (proxyHandler != null) {
-                /*
-                 * Configure the request Channel to be initialized with a ProxyHandler. The ProxyHandler is the first
-                 * operation in the pipeline as it needs to handle sending a CONNECT request to the proxy before any
-                 * request data is sent.
-                 */
-                tcpClient = tcpClient.bootstrap(bootstrap -> BootstrapHandlers
-                    .updateConfiguration(bootstrap, NettyPipeline.ProxyHandler, (connectionObserver, channel) ->
-                        channel.pipeline().addFirst(NettyPipeline.ProxyHandler, proxyHandler)
-                            .addLast("azure.proxy.exceptionHandler", new HttpProxyExceptionHandler())));
-            }
-        }
-
-        return tcpClient;
     }
 
     /**

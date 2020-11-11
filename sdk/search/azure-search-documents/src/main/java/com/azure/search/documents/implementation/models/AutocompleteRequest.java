@@ -7,11 +7,11 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.search.documents.models.AutocompleteMode;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Parameters for fuzzy matching, and other autocomplete query behaviors.
- */
+/** Parameters for fuzzy matching, and other autocomplete query behaviors. */
 @Fluent
 public final class AutocompleteRequest {
     /*
@@ -23,8 +23,7 @@ public final class AutocompleteRequest {
     /*
      * Specifies the mode for Autocomplete. The default is 'oneTerm'. Use
      * 'twoTerms' to get shingles and 'oneTermWithContext' to use the current
-     * context while producing auto-completed terms. Possible values include:
-     * 'OneTerm', 'TwoTerms', 'OneTermWithContext'
+     * context while producing auto-completed terms.
      */
     @JsonProperty(value = "autocompleteMode")
     private AutocompleteMode autocompleteMode;
@@ -93,8 +92,21 @@ public final class AutocompleteRequest {
     private Integer top;
 
     /**
-     * Get the searchText property: The search text on which to base
-     * autocomplete results.
+     * Creates an instance of AutocompleteRequest class.
+     *
+     * @param searchText the searchText value to set.
+     * @param suggesterName the suggesterName value to set.
+     */
+    @JsonCreator
+    public AutocompleteRequest(
+            @JsonProperty(value = "search", required = true) String searchText,
+            @JsonProperty(value = "suggesterName", required = true) String suggesterName) {
+        this.searchText = searchText;
+        this.suggesterName = suggesterName;
+    }
+
+    /**
+     * Get the searchText property: The search text on which to base autocomplete results.
      *
      * @return the searchText value.
      */
@@ -103,23 +115,8 @@ public final class AutocompleteRequest {
     }
 
     /**
-     * Set the searchText property: The search text on which to base
-     * autocomplete results.
-     *
-     * @param searchText the searchText value to set.
-     * @return the AutocompleteRequest object itself.
-     */
-    public AutocompleteRequest setSearchText(String searchText) {
-        this.searchText = searchText;
-        return this;
-    }
-
-    /**
-     * Get the autocompleteMode property: Specifies the mode for Autocomplete.
-     * The default is 'oneTerm'. Use 'twoTerms' to get shingles and
-     * 'oneTermWithContext' to use the current context while producing
-     * auto-completed terms. Possible values include: 'OneTerm', 'TwoTerms',
-     * 'OneTermWithContext'.
+     * Get the autocompleteMode property: Specifies the mode for Autocomplete. The default is 'oneTerm'. Use 'twoTerms'
+     * to get shingles and 'oneTermWithContext' to use the current context while producing auto-completed terms.
      *
      * @return the autocompleteMode value.
      */
@@ -128,11 +125,8 @@ public final class AutocompleteRequest {
     }
 
     /**
-     * Set the autocompleteMode property: Specifies the mode for Autocomplete.
-     * The default is 'oneTerm'. Use 'twoTerms' to get shingles and
-     * 'oneTermWithContext' to use the current context while producing
-     * auto-completed terms. Possible values include: 'OneTerm', 'TwoTerms',
-     * 'OneTermWithContext'.
+     * Set the autocompleteMode property: Specifies the mode for Autocomplete. The default is 'oneTerm'. Use 'twoTerms'
+     * to get shingles and 'oneTermWithContext' to use the current context while producing auto-completed terms.
      *
      * @param autocompleteMode the autocompleteMode value to set.
      * @return the AutocompleteRequest object itself.
@@ -143,8 +137,8 @@ public final class AutocompleteRequest {
     }
 
     /**
-     * Get the filter property: An OData expression that filters the documents
-     * used to produce completed terms for the Autocomplete result.
+     * Get the filter property: An OData expression that filters the documents used to produce completed terms for the
+     * Autocomplete result.
      *
      * @return the filter value.
      */
@@ -153,8 +147,8 @@ public final class AutocompleteRequest {
     }
 
     /**
-     * Set the filter property: An OData expression that filters the documents
-     * used to produce completed terms for the Autocomplete result.
+     * Set the filter property: An OData expression that filters the documents used to produce completed terms for the
+     * Autocomplete result.
      *
      * @param filter the filter value to set.
      * @return the AutocompleteRequest object itself.
@@ -165,12 +159,10 @@ public final class AutocompleteRequest {
     }
 
     /**
-     * Get the useFuzzyMatching property: A value indicating whether to use
-     * fuzzy matching for the autocomplete query. Default is false. When set to
-     * true, the query will autocomplete terms even if there's a substituted or
-     * missing character in the search text. While this provides a better
-     * experience in some scenarios, it comes at a performance cost as fuzzy
-     * autocomplete queries are slower and consume more resources.
+     * Get the useFuzzyMatching property: A value indicating whether to use fuzzy matching for the autocomplete query.
+     * Default is false. When set to true, the query will autocomplete terms even if there's a substituted or missing
+     * character in the search text. While this provides a better experience in some scenarios, it comes at a
+     * performance cost as fuzzy autocomplete queries are slower and consume more resources.
      *
      * @return the useFuzzyMatching value.
      */
@@ -179,12 +171,10 @@ public final class AutocompleteRequest {
     }
 
     /**
-     * Set the useFuzzyMatching property: A value indicating whether to use
-     * fuzzy matching for the autocomplete query. Default is false. When set to
-     * true, the query will autocomplete terms even if there's a substituted or
-     * missing character in the search text. While this provides a better
-     * experience in some scenarios, it comes at a performance cost as fuzzy
-     * autocomplete queries are slower and consume more resources.
+     * Set the useFuzzyMatching property: A value indicating whether to use fuzzy matching for the autocomplete query.
+     * Default is false. When set to true, the query will autocomplete terms even if there's a substituted or missing
+     * character in the search text. While this provides a better experience in some scenarios, it comes at a
+     * performance cost as fuzzy autocomplete queries are slower and consume more resources.
      *
      * @param useFuzzyMatching the useFuzzyMatching value to set.
      * @return the AutocompleteRequest object itself.
@@ -195,9 +185,8 @@ public final class AutocompleteRequest {
     }
 
     /**
-     * Get the highlightPostTag property: A string tag that is appended to hit
-     * highlights. Must be set with highlightPreTag. If omitted, hit
-     * highlighting is disabled.
+     * Get the highlightPostTag property: A string tag that is appended to hit highlights. Must be set with
+     * highlightPreTag. If omitted, hit highlighting is disabled.
      *
      * @return the highlightPostTag value.
      */
@@ -206,9 +195,8 @@ public final class AutocompleteRequest {
     }
 
     /**
-     * Set the highlightPostTag property: A string tag that is appended to hit
-     * highlights. Must be set with highlightPreTag. If omitted, hit
-     * highlighting is disabled.
+     * Set the highlightPostTag property: A string tag that is appended to hit highlights. Must be set with
+     * highlightPreTag. If omitted, hit highlighting is disabled.
      *
      * @param highlightPostTag the highlightPostTag value to set.
      * @return the AutocompleteRequest object itself.
@@ -219,9 +207,8 @@ public final class AutocompleteRequest {
     }
 
     /**
-     * Get the highlightPreTag property: A string tag that is prepended to hit
-     * highlights. Must be set with highlightPostTag. If omitted, hit
-     * highlighting is disabled.
+     * Get the highlightPreTag property: A string tag that is prepended to hit highlights. Must be set with
+     * highlightPostTag. If omitted, hit highlighting is disabled.
      *
      * @return the highlightPreTag value.
      */
@@ -230,9 +217,8 @@ public final class AutocompleteRequest {
     }
 
     /**
-     * Set the highlightPreTag property: A string tag that is prepended to hit
-     * highlights. Must be set with highlightPostTag. If omitted, hit
-     * highlighting is disabled.
+     * Set the highlightPreTag property: A string tag that is prepended to hit highlights. Must be set with
+     * highlightPostTag. If omitted, hit highlighting is disabled.
      *
      * @param highlightPreTag the highlightPreTag value to set.
      * @return the AutocompleteRequest object itself.
@@ -243,11 +229,9 @@ public final class AutocompleteRequest {
     }
 
     /**
-     * Get the minimumCoverage property: A number between 0 and 100 indicating
-     * the percentage of the index that must be covered by an autocomplete
-     * query in order for the query to be reported as a success. This parameter
-     * can be useful for ensuring search availability even for services with
-     * only one replica. The default is 80.
+     * Get the minimumCoverage property: A number between 0 and 100 indicating the percentage of the index that must be
+     * covered by an autocomplete query in order for the query to be reported as a success. This parameter can be useful
+     * for ensuring search availability even for services with only one replica. The default is 80.
      *
      * @return the minimumCoverage value.
      */
@@ -256,11 +240,9 @@ public final class AutocompleteRequest {
     }
 
     /**
-     * Set the minimumCoverage property: A number between 0 and 100 indicating
-     * the percentage of the index that must be covered by an autocomplete
-     * query in order for the query to be reported as a success. This parameter
-     * can be useful for ensuring search availability even for services with
-     * only one replica. The default is 80.
+     * Set the minimumCoverage property: A number between 0 and 100 indicating the percentage of the index that must be
+     * covered by an autocomplete query in order for the query to be reported as a success. This parameter can be useful
+     * for ensuring search availability even for services with only one replica. The default is 80.
      *
      * @param minimumCoverage the minimumCoverage value to set.
      * @return the AutocompleteRequest object itself.
@@ -271,9 +253,8 @@ public final class AutocompleteRequest {
     }
 
     /**
-     * Get the searchFields property: The comma-separated list of field names
-     * to consider when querying for auto-completed terms. Target fields must
-     * be included in the specified suggester.
+     * Get the searchFields property: The comma-separated list of field names to consider when querying for
+     * auto-completed terms. Target fields must be included in the specified suggester.
      *
      * @return the searchFields value.
      */
@@ -282,9 +263,8 @@ public final class AutocompleteRequest {
     }
 
     /**
-     * Set the searchFields property: The comma-separated list of field names
-     * to consider when querying for auto-completed terms. Target fields must
-     * be included in the specified suggester.
+     * Set the searchFields property: The comma-separated list of field names to consider when querying for
+     * auto-completed terms. Target fields must be included in the specified suggester.
      *
      * @param searchFields the searchFields value to set.
      * @return the AutocompleteRequest object itself.
@@ -295,8 +275,8 @@ public final class AutocompleteRequest {
     }
 
     /**
-     * Get the suggesterName property: The name of the suggester as specified
-     * in the suggesters collection that's part of the index definition.
+     * Get the suggesterName property: The name of the suggester as specified in the suggesters collection that's part
+     * of the index definition.
      *
      * @return the suggesterName value.
      */
@@ -305,20 +285,8 @@ public final class AutocompleteRequest {
     }
 
     /**
-     * Set the suggesterName property: The name of the suggester as specified
-     * in the suggesters collection that's part of the index definition.
-     *
-     * @param suggesterName the suggesterName value to set.
-     * @return the AutocompleteRequest object itself.
-     */
-    public AutocompleteRequest setSuggesterName(String suggesterName) {
-        this.suggesterName = suggesterName;
-        return this;
-    }
-
-    /**
-     * Get the top property: The number of auto-completed terms to retrieve.
-     * This must be a value between 1 and 100. The default is 5.
+     * Get the top property: The number of auto-completed terms to retrieve. This must be a value between 1 and 100. The
+     * default is 5.
      *
      * @return the top value.
      */
@@ -327,8 +295,8 @@ public final class AutocompleteRequest {
     }
 
     /**
-     * Set the top property: The number of auto-completed terms to retrieve.
-     * This must be a value between 1 and 100. The default is 5.
+     * Set the top property: The number of auto-completed terms to retrieve. This must be a value between 1 and 100. The
+     * default is 5.
      *
      * @param top the top value to set.
      * @return the AutocompleteRequest object itself.

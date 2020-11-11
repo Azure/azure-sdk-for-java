@@ -31,7 +31,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.DirectProcessor;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.ReplayProcessor;
 import reactor.test.StepVerifier;
@@ -113,7 +112,7 @@ class RequestResponseChannelTest {
         when(session.sender(LINK_NAME + ":sender")).thenReturn(sender);
         when(session.receiver(LINK_NAME + ":receiver")).thenReturn(receiver);
 
-        when(handlerProvider.createReceiveLinkHandler(CONNECTION_ID, NAMESPACE, LINK_NAME, ENTITY_PATH))
+        when(handlerProvider.createReceiveLinkHandler(eq(CONNECTION_ID), eq(NAMESPACE), eq(LINK_NAME), eq(ENTITY_PATH)))
             .thenReturn(receiveLinkHandler);
         when(handlerProvider.createSendLinkHandler(CONNECTION_ID, NAMESPACE, LINK_NAME, ENTITY_PATH))
             .thenReturn(sendLinkHandler);
@@ -121,11 +120,9 @@ class RequestResponseChannelTest {
         FluxSink<EndpointState> sink1 = endpointStateReplayProcessor.sink();
         sink1.next(EndpointState.ACTIVE);
         when(receiveLinkHandler.getEndpointStates()).thenReturn(endpointStateReplayProcessor);
-        when(receiveLinkHandler.getErrors()).thenReturn(Flux.never());
         when(receiveLinkHandler.getDeliveredMessages()).thenReturn(deliveryProcessor);
 
         when(sendLinkHandler.getEndpointStates()).thenReturn(endpointStateReplayProcessor);
-        when(sendLinkHandler.getErrors()).thenReturn(Flux.never());
     }
 
     @AfterEach
@@ -251,7 +248,7 @@ class RequestResponseChannelTest {
         final int encodedSize = 143;
         when(serializer.getSize(message)).thenReturn(150);
         when(message.encode(any(), eq(0), anyInt())).thenReturn(encodedSize);
-
+        when(message.getCorrelationId()).thenReturn(messageId);
         // Creating delivery for sending.
         final Delivery deliveryToSend = mock(Delivery.class);
         doNothing().when(deliveryToSend).setMessageFormat(anyInt());
@@ -311,6 +308,7 @@ class RequestResponseChannelTest {
         final int encodedSize = 143;
         when(serializer.getSize(message)).thenReturn(150);
         when(message.encode(any(), eq(0), anyInt())).thenReturn(encodedSize);
+        when(message.getCorrelationId()).thenReturn(messageId);
 
         // Creating delivery for sending.
         final Delivery deliveryToSend = mock(Delivery.class);

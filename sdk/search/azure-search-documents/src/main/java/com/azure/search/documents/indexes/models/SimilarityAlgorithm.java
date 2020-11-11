@@ -22,5 +22,5 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.BM25Similarity", value = BM25SimilarityAlgorithm.class)
 })
 @Fluent
-public class SimilarityAlgorithm {
+public abstract class SimilarityAlgorithm {
 }

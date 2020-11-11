@@ -8,16 +8,15 @@ import org.apache.qpid.proton.engine.EndpointState;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.ReplayProcessor;
-import reactor.core.publisher.UnicastProcessor;
 
 import java.io.Closeable;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public abstract class Handler extends BaseHandler implements Closeable {
+    private final AtomicBoolean isTerminal = new AtomicBoolean();
     private final ReplayProcessor<EndpointState> endpointStateProcessor =
         ReplayProcessor.cacheLastOrDefault(EndpointState.UNINITIALIZED);
-    private final UnicastProcessor<Throwable> errorContextProcessor = UnicastProcessor.create();
     private final FluxSink<EndpointState> endpointSink = endpointStateProcessor.sink();
-    private final FluxSink<Throwable> errorSink = errorContextProcessor.sink();
     private final String connectionId;
     private final String hostname;
 
@@ -38,25 +37,26 @@ public abstract class Handler extends BaseHandler implements Closeable {
         return endpointStateProcessor.distinct();
     }
 
-    public Flux<Throwable> getErrors() {
-        return errorContextProcessor;
-    }
-
     void onNext(EndpointState state) {
         endpointSink.next(state);
-
-        if (state == EndpointState.CLOSED) {
-            endpointSink.complete();
-        }
     }
 
-    void onNext(Throwable context) {
-        errorSink.next(context);
+    void onError(Throwable error) {
+        if (isTerminal.getAndSet(true)) {
+            return;
+        }
+
+        endpointSink.next(EndpointState.CLOSED);
+        endpointSink.error(error);
     }
 
     @Override
     public void close() {
+        if (isTerminal.getAndSet(true)) {
+            return;
+        }
+
+        endpointSink.next(EndpointState.CLOSED);
         endpointSink.complete();
-        errorSink.complete();
     }
 }

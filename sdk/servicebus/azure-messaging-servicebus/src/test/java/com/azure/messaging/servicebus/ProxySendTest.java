@@ -90,13 +90,13 @@ public class ProxySendTest extends IntegrationTestBase {
 
         try {
             // Act & Assert
-            StepVerifier.create(sender.createBatch()
+            StepVerifier.create(sender.createMessageBatch()
                 .flatMap(batch -> {
                     for (int i = 0; i < messages.size(); i++) {
-                        Assertions.assertTrue(batch.tryAdd(messages.get(i)), "Unable to add message: " + i);
+                        Assertions.assertTrue(batch.tryAddMessage(messages.get(i)), "Unable to add message: " + i);
                     }
 
-                    return sender.send(batch);
+                    return sender.sendMessages(batch);
                 }))
                 .verifyComplete();
         } finally {

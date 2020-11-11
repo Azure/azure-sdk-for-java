@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
+import java.util.List;
+
 /**
  * A skill that uses text analytics for key phrase extraction.
  */
@@ -29,6 +31,18 @@ public final class KeyPhraseExtractionSkill extends SearchIndexerSkill {
      */
     @JsonProperty(value = "maxKeyPhraseCount")
     private Integer maxKeyPhraseCount;
+
+    /**
+     * Constructor of {@link KeyPhraseExtractionSkill}.
+     *
+     * @param inputs Inputs of the skills could be a column in the source data set, or the
+     * output of an upstream skill.
+     * @param outputs The output of a skill is either a field in a search index, or a value
+     * that can be consumed as an input by another skill.
+     */
+    public KeyPhraseExtractionSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs) {
+        super(inputs, outputs);
+    }
 
     /**
      * Get the defaultLanguageCode property: A value indicating which language

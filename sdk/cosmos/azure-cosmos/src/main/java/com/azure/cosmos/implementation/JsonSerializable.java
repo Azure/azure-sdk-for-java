@@ -37,6 +37,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Represents a base resource that can be serialized to JSON in the Azure Cosmos DB database service.
@@ -152,6 +153,15 @@ public class JsonSerializable {
     @SuppressWarnings("unchecked")
     public Map<String, Object> getMap() {
         return getMapper().convertValue(this.propertyBag, HashMap.class);
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> Map<String, T> getMap(String propertyKey) {
+        if (this.propertyBag.has(propertyKey)) {
+            Object value = this.get(propertyKey);
+            return (Map<String, T>) getMapper().convertValue(value, HashMap.class);
+        }
+        return null;
     }
 
     /**
@@ -393,7 +403,7 @@ public class JsonSerializable {
     // Implicit or explicit cast to T is done only after checking values are assignable from Class<T>.
     public <T> List<T> getList(String propertyName, Class<T> c, boolean... convertFromCamelCase) {
         if (this.propertyBag.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
-            ArrayNode jsonArray = (ArrayNode) this.propertyBag.get(propertyName);
+            JsonNode jsonArray = this.propertyBag.get(propertyName);
             ArrayList<T> result = new ArrayList<T>();
 
             boolean isBaseClass = false;
@@ -570,6 +580,11 @@ public class JsonSerializable {
         return Utils.serializeJsonToByteBuffer(getMapper(), propertyBag);
     }
 
+    public ByteBuffer serializeJsonToByteBuffer(ObjectMapper objectMapper) {
+        this.populatePropertyBag();
+        return Utils.serializeJsonToByteBuffer(objectMapper, propertyBag);
+    }
+
     private String toJson(Object object) {
         try {
             return getMapper().writeValueAsString(object);
@@ -599,10 +614,10 @@ public class JsonSerializable {
     @SuppressWarnings("unchecked")
     // Implicit or explicit cast to T is done after checking values are assignable from Class<T>.
     public <T> T toObject(Class<T> c) {
-        // TODO: We have to remove this if we do not want to support CosmosItemProperties anymore, and change all the
+        // TODO: We have to remove this if we do not want to support InternalObjectNode anymore, and change all the
         //  tests accordingly
-        if (CosmosItemProperties.class.isAssignableFrom(c)) {
-            return (T) new CosmosItemProperties(this.propertyBag);
+        if (InternalObjectNode.class.isAssignableFrom(c)) {
+            return (T) new InternalObjectNode(this.propertyBag);
         }
         if (JsonSerializable.class.isAssignableFrom(c)
             || String.class.isAssignableFrom(c)
@@ -692,5 +707,22 @@ public class JsonSerializable {
             || SqlQuerySpec.class.equals(c)
             || UniqueKey.class.equals(c)
             || UniqueKeyPolicy.class.equals(c);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        JsonSerializable that = (JsonSerializable) o;
+        return Objects.equals(propertyBag, that.propertyBag);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(propertyBag);
     }
 }

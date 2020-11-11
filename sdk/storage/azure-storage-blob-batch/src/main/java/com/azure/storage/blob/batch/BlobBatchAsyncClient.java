@@ -185,7 +185,6 @@ public final class BlobBatchAsyncClient {
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
-        //return batchingHelper(blobUrls, (batch, blobUrl) -> batch.setTier(blobUrl, accessTier));
     }
 
     PagedFlux<Response<Void>> setBlobsAccessTierWithTimeout(List<String> blobUrls, AccessTier accessTier,

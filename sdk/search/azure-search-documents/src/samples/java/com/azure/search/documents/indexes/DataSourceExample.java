@@ -80,11 +80,7 @@ public class DataSourceExample {
     private static SearchIndexerDataSourceConnection createSampleDatasource(SearchIndexerDataSourceType type,
         String connectionString, SearchIndexerDataContainer container,
         DataChangeDetectionPolicy dataChangeDetectionPolicy) {
-        return new SearchIndexerDataSourceConnection()
-            .setName(generateDataSourceName())
-            .setType(type)
-            .setConnectionString(connectionString)
-            .setContainer(container)
+        return new SearchIndexerDataSourceConnection(generateDataSourceName(), type, connectionString, container)
             .setDataChangeDetectionPolicy(dataChangeDetectionPolicy);
     }
 
@@ -110,8 +106,7 @@ public class DataSourceExample {
             client,
             SearchIndexerDataSourceType.AZURE_TABLE,
             TABLE_STORAGE_CONNECTION_STRING,
-            new SearchIndexerDataContainer()
-                .setName("testtable") // Replace your table name here
+            new SearchIndexerDataContainer("testtable") // Replace your table name here
                 .setQuery("PartitionKey eq 'test'"), // Add your query here or remove this if you don't need one
             null
         );
@@ -122,10 +117,9 @@ public class DataSourceExample {
             client,
             SearchIndexerDataSourceType.COSMOS_DB,
             COSMOS_CONNECTION_STRING,
-            new SearchIndexerDataContainer()
-                .setName("testcollection") // Replace your collection name here
+            new SearchIndexerDataContainer("testcollection") // Replace your collection name here
                 .setQuery(null), // Add your query here or remove this if you don't need one
-            new HighWaterMarkChangeDetectionPolicy().setHighWaterMarkColumnName("_ts")
+            new HighWaterMarkChangeDetectionPolicy("_ts")
         );
     }
 
@@ -134,8 +128,7 @@ public class DataSourceExample {
             client,
             SearchIndexerDataSourceType.AZURE_BLOB,
             BLOB_STORAGE_CONNECTION_STRING,
-            new SearchIndexerDataContainer()
-                .setName("testcontainer") // Replace your container name here
+            new SearchIndexerDataContainer("testcontainer") // Replace your container name here
                 .setQuery("testfolder"), // Add your folder here or remove this if you want to index all folders within the container
             null
         );
@@ -146,8 +139,7 @@ public class DataSourceExample {
             client,
             SearchIndexerDataSourceType.AZURE_SQL,
             SQL_CONNECTION_STRING,
-            new SearchIndexerDataContainer()
-                .setName("testtable"),  // Replace your table or view name here
+            new SearchIndexerDataContainer("testtable"),  // Replace your table or view name here
             null); // Or new SqlIntegratedChangeTrackingPolicy() if your database has change tracking enabled
     }
 

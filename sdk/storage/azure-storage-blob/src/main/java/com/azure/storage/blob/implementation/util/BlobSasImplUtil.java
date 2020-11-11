@@ -5,11 +5,11 @@ package com.azure.storage.blob.implementation.util;
 
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.blob.sas.BlobContainerSasPermission;
 import com.azure.storage.blob.sas.BlobSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
+import com.azure.storage.blob.sas.BlobSasServiceVersion;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -39,6 +39,11 @@ public class BlobSasImplUtil {
     private static final String SAS_BLOB_SNAPSHOT_CONSTANT = "bs";
 
     /**
+     * The SAS blob version constant.
+     */
+    private static final String SAS_BLOB_VERSION_CONSTANT = "bv";
+
+    /**
      * The SAS blob container constant.
      */
     private static final String SAS_CONTAINER_CONSTANT = "c";
@@ -65,6 +70,8 @@ public class BlobSasImplUtil {
 
     private String snapshotId;
 
+    private String versionId;
+
     private String identifier;
 
     private String cacheControl;
@@ -77,6 +84,10 @@ public class BlobSasImplUtil {
 
     private String contentType;
 
+    private String authorizedAadObjectId;
+
+    private String correlationId;
+
     /**
      * Creates a new {@link BlobSasImplUtil} with the specified parameters
      *
@@ -84,7 +95,7 @@ public class BlobSasImplUtil {
      * @param containerName The container name
      */
     public BlobSasImplUtil(BlobServiceSasSignatureValues sasValues, String containerName) {
-        this(sasValues, containerName, null, null);
+        this(sasValues, containerName, null, null, null);
     }
 
     /**
@@ -94,11 +105,16 @@ public class BlobSasImplUtil {
      * @param containerName The container name
      * @param blobName The blob name
      * @param snapshotId The snapshot id
+     * @param versionId The version id
      */
     public BlobSasImplUtil(BlobServiceSasSignatureValues sasValues, String containerName, String blobName,
-        String snapshotId) {
+        String snapshotId, String versionId) {
         Objects.requireNonNull(sasValues);
-        this.version = sasValues.getVersion();
+        if (snapshotId != null && versionId != null) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("'snapshot' and 'versionId' cannot be used at the same time."));
+        }
+        this.version = null; /* Setting this to null forces the latest service version - see ensureState. */
         this.protocol = sasValues.getProtocol();
         this.startTime = sasValues.getStartTime();
         this.expiryTime = sasValues.getExpiryTime();
@@ -107,12 +123,15 @@ public class BlobSasImplUtil {
         this.containerName = containerName;
         this.blobName = blobName;
         this.snapshotId = snapshotId;
+        this.versionId = versionId;
         this.identifier = sasValues.getIdentifier();
         this.cacheControl = sasValues.getCacheControl();
         this.contentDisposition = sasValues.getContentDisposition();
         this.contentEncoding = sasValues.getContentEncoding();
         this.contentLanguage = sasValues.getContentLanguage();
         this.contentType = sasValues.getContentType();
+        this.authorizedAadObjectId = sasValues.getPreauthorizedAgentObjectId();
+        this.correlationId = sasValues.getCorrelationId();
     }
 
     /**
@@ -186,6 +205,10 @@ public class BlobSasImplUtil {
                 userDelegationKey.getSignedService());
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_VERSION,
                 userDelegationKey.getSignedVersion());
+
+            /* Only parameters relevant for user delegation SAS. */
+            tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_PREAUTHORIZED_AGENT_OBJECT_ID, this.authorizedAadObjectId);
+            tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CORRELATION_ID, this.correlationId);
         }
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_RESOURCE, this.resource);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_PERMISSIONS, this.permissions);
@@ -208,8 +231,9 @@ public class BlobSasImplUtil {
      * 3. Resource name is chosen by:
      *    a. If "BlobName" is _not_ set, it is a container resource.
      *    b. Otherwise, if "SnapshotId" is set, it is a blob snapshot resource.
-     *    c. Otherwise, it is a blob resource.
-     * 4. Reparse permissions depending on what the resource is. If it is an unrecognised resource, do nothing.
+     *    c. Otherwise, if "VersionId" is set, it is a blob version resource.
+     *    d. Otherwise, it is a blob resource.
+     * 4. Reparse permissions depending on what the resource is. If it is an unrecognized resource, do nothing.
      *
      * Taken from:
      * https://github.com/Azure/azure-storage-blob-go/blob/master/azblob/sas_service.go#L33
@@ -217,7 +241,7 @@ public class BlobSasImplUtil {
      */
     private void ensureState() {
         if (version == null) {
-            version = BlobServiceVersion.getLatest().getVersion();
+            version = BlobSasServiceVersion.getLatest().getVersion();
         }
 
         if (identifier == null) {
@@ -231,6 +255,8 @@ public class BlobSasImplUtil {
             resource = SAS_CONTAINER_CONSTANT;
         } else if (snapshotId != null) {
             resource = SAS_BLOB_SNAPSHOT_CONSTANT;
+        } else if (versionId != null) {
+            resource = SAS_BLOB_VERSION_CONSTANT;
         } else {
             resource = SAS_BLOB_CONSTANT;
         }
@@ -239,6 +265,7 @@ public class BlobSasImplUtil {
             switch (resource) {
                 case SAS_BLOB_CONSTANT:
                 case SAS_BLOB_SNAPSHOT_CONSTANT:
+                case SAS_BLOB_VERSION_CONSTANT:
                     permissions = BlobSasPermission.parse(permissions).toString();
                     break;
                 case SAS_CONTAINER_CONSTANT:
@@ -264,6 +291,7 @@ public class BlobSasImplUtil {
     }
 
     private String stringToSign(String canonicalName) {
+        String versionSegment = this.snapshotId == null ? this.versionId : this.snapshotId;
         return String.join("\n",
             this.permissions == null ? "" : permissions,
             this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
@@ -274,7 +302,7 @@ public class BlobSasImplUtil {
             this.protocol == null ? "" : this.protocol.toString(),
             version,
             resource,
-            this.snapshotId == null ? "" : this.snapshotId,
+            versionSegment == null ? "" : versionSegment,
             this.cacheControl == null ? "" : this.cacheControl,
             this.contentDisposition == null ? "" : this.contentDisposition,
             this.contentEncoding == null ? "" : this.contentEncoding,
@@ -284,6 +312,7 @@ public class BlobSasImplUtil {
     }
 
     private String stringToSign(final UserDelegationKey key, String canonicalName) {
+        String versionSegment = this.snapshotId == null ? this.versionId : this.snapshotId;
         return String.join("\n",
             this.permissions == null ? "" : this.permissions,
             this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
@@ -295,11 +324,14 @@ public class BlobSasImplUtil {
             key.getSignedExpiry() == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(key.getSignedExpiry()),
             key.getSignedService() == null ? "" : key.getSignedService(),
             key.getSignedVersion() == null ? "" : key.getSignedVersion(),
+            this.authorizedAadObjectId == null ? "" : this.authorizedAadObjectId,
+            "", /* suoid - empty since this applies to HNS only accounts. */
+            this.correlationId == null ? "" : this.correlationId,
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),
             this.protocol == null ? "" : this.protocol.toString(),
             version,
             resource,
-            this.snapshotId == null ? "" : this.snapshotId,
+            versionSegment == null ? "" : versionSegment,
             this.cacheControl == null ? "" : this.cacheControl,
             this.contentDisposition == null ? "" : this.contentDisposition,
             this.contentEncoding == null ? "" : this.contentEncoding,

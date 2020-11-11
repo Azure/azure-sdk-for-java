@@ -5,8 +5,11 @@ package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -49,6 +52,17 @@ public final class EntityRecognitionSkill extends SearchIndexerSkill {
     private Double minimumPrecision;
 
     /**
+     * Constructor of {@link SearchIndexerSkill}.
+     *
+     * @param inputs Inputs of the skills could be a column in the source data set, or the
+     * output of an upstream skill.
+     * @param outputs The output of a skill is either a field in a search index, or a value
+     */
+    public EntityRecognitionSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs) {
+        super(inputs, outputs);
+    }
+
+    /**
      * Get the categories property: A list of entity categories that should be
      * extracted.
      *
@@ -65,6 +79,19 @@ public final class EntityRecognitionSkill extends SearchIndexerSkill {
      * @param categories the categories value to set.
      * @return the EntityRecognitionSkill object itself.
      */
+    public EntityRecognitionSkill setCategories(EntityCategory... categories) {
+        this.categories = (categories == null) ? null : Arrays.asList(categories);
+        return this;
+    }
+
+    /**
+     * Set the categories property: A list of entity categories that should be
+     * extracted.
+     *
+     * @param categories the categories value to set.
+     * @return the EntityRecognitionSkill object itself.
+     */
+    @JsonSetter
     public EntityRecognitionSkill setCategories(List<EntityCategory> categories) {
         this.categories = categories;
         return this;

@@ -4,8 +4,6 @@
 package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.indexes.models.FreshnessScoringFunction;
-import com.azure.search.documents.indexes.models.FreshnessScoringParameters;
-import com.azure.search.documents.indexes.models.ScoringFunctionInterpolation;
 
 /**
  * A converter between {@link com.azure.search.documents.indexes.implementation.models.FreshnessScoringFunction} and
@@ -20,24 +18,14 @@ public final class FreshnessScoringFunctionConverter {
         if (obj == null) {
             return null;
         }
-        FreshnessScoringFunction freshnessScoringFunction = new FreshnessScoringFunction();
+
+        FreshnessScoringFunction freshnessScoringFunction = new FreshnessScoringFunction(obj.getFieldName(),
+            obj.getBoost(), obj.getParameters());
 
         if (obj.getInterpolation() != null) {
-            ScoringFunctionInterpolation interpolation =
-                ScoringFunctionInterpolationConverter.map(obj.getInterpolation());
-            freshnessScoringFunction.setInterpolation(interpolation);
+            freshnessScoringFunction.setInterpolation(obj.getInterpolation());
         }
 
-        String fieldName = obj.getFieldName();
-        freshnessScoringFunction.setFieldName(fieldName);
-
-        double boost = obj.getBoost();
-        freshnessScoringFunction.setBoost(boost);
-
-        if (obj.getParameters() != null) {
-            FreshnessScoringParameters parameters = FreshnessScoringParametersConverter.map(obj.getParameters());
-            freshnessScoringFunction.setParameters(parameters);
-        }
         return freshnessScoringFunction;
     }
 
@@ -49,26 +37,15 @@ public final class FreshnessScoringFunctionConverter {
         if (obj == null) {
             return null;
         }
+
         com.azure.search.documents.indexes.implementation.models.FreshnessScoringFunction freshnessScoringFunction =
-            new com.azure.search.documents.indexes.implementation.models.FreshnessScoringFunction();
+            new com.azure.search.documents.indexes.implementation.models.FreshnessScoringFunction(
+                obj.getFieldName(), obj.getBoost(), obj.getParameters());
 
         if (obj.getInterpolation() != null) {
-            com.azure.search.documents.indexes.implementation.models.ScoringFunctionInterpolation interpolation =
-                ScoringFunctionInterpolationConverter.map(obj.getInterpolation());
-            freshnessScoringFunction.setInterpolation(interpolation);
+            freshnessScoringFunction.setInterpolation(obj.getInterpolation());
         }
 
-        String fieldName = obj.getFieldName();
-        freshnessScoringFunction.setFieldName(fieldName);
-
-        double boost = obj.getBoost();
-        freshnessScoringFunction.setBoost(boost);
-
-        if (obj.getParameters() != null) {
-            com.azure.search.documents.indexes.implementation.models.FreshnessScoringParameters parameters =
-                FreshnessScoringParametersConverter.map(obj.getParameters());
-            freshnessScoringFunction.setParameters(parameters);
-        }
         return freshnessScoringFunction;
     }
 

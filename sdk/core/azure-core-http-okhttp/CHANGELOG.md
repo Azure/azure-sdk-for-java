@@ -1,11 +1,40 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.4.0-beta.1 (Unreleased)
 
+
+## 1.3.3 (2020-10-29)
+
+### Dependency updates
+
+- Updated `azure-core` to `1.10.0`.
+
+## 1.3.2 (2020-10-01)
+
+- Updated `azure-core` version.
+
+## 1.3.1 (2020-09-08)
+
+- Updated `azure-core` version to pickup bug fix.
+
+## 1.3.0 (2020-09-03)
+
+- Updated `okhttp` dependency from `4.2.2` to `4.8.1`.
+- Fixed bug where `Configuration` proxy would lead to a `NullPointerException` when set.
+- Added request timeout configuration.
+- Changed default connect timeout from 60 seconds to 10 and default read timeout from 120 seconds to 60 seconds.
+
+## 1.2.5 (2020-08-07)
+
+- Updated `azure-core` dependency.
+
+## 1.2.4 (2020-07-02)
+
+- Updated `azure-core` dependency.
 
 ## 1.2.3 (2020-06-08)
 
-- Updated Azure Core dependency.
+- Updated `azure-core` dependency.
 
 ## 1.2.2 (2020-05-04)
 
@@ -17,7 +46,7 @@
 
 ## 1.2.0 (2020-03-06)
 
-- Updated to latest version of Azure Core.
+- Updated `azure-core` dependency.
 
 ## 1.2.0-beta.1 (2020-02-11)
 
@@ -26,7 +55,8 @@
 - Removed setting 'Content-Type' to 'application/octet-stream' when null.
 
 ## 1.1.0 (2020-01-07)
-- Updated version of dependent libraries.
+
+- Updated versions of dependent libraries.
 
 ## Version 1.0.0 (2019-10-29)
 This package's

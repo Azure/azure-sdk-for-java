@@ -23,6 +23,18 @@ public final class FreshnessScoringFunction extends ScoringFunction {
     private FreshnessScoringParameters parameters;
 
     /**
+     * Constructor of {@link ScoringFunction}.
+     *
+     * @param fieldName The name of the field used as input to the scoring function.
+     * @param boost A multiplier for the raw score. Must be a positive number not equal to 1.0.
+     * @param parameters Parameter values for the freshness scoring function.
+     */
+    public FreshnessScoringFunction(String fieldName, double boost, FreshnessScoringParameters parameters) {
+        super(fieldName, boost);
+        this.parameters = parameters;
+    }
+
+    /**
      * Get the parameters property: Parameter values for the freshness scoring
      * function.
      *
@@ -32,15 +44,4 @@ public final class FreshnessScoringFunction extends ScoringFunction {
         return this.parameters;
     }
 
-    /**
-     * Set the parameters property: Parameter values for the freshness scoring
-     * function.
-     *
-     * @param parameters the parameters value to set.
-     * @return the FreshnessScoringFunction object itself.
-     */
-    public FreshnessScoringFunction setParameters(FreshnessScoringParameters parameters) {
-        this.parameters = parameters;
-        return this;
-    }
 }

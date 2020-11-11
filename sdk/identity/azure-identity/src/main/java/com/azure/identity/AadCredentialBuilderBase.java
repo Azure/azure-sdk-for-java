@@ -3,6 +3,8 @@
 
 package com.azure.identity;
 
+import com.azure.identity.implementation.util.ValidationUtil;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 
@@ -21,6 +23,7 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
      */
     @SuppressWarnings("unchecked")
     public T authorityHost(String authorityHost) {
+        ValidationUtil.validateAuthHost(getClass().getSimpleName(), authorityHost);
         this.identityClientOptions.setAuthorityHost(authorityHost);
         return (T) this;
     }
@@ -45,6 +48,7 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
      */
     @SuppressWarnings("unchecked")
     public T tenantId(String tenantId) {
+        ValidationUtil.validateTenantIdCharacterRange(getClass().getSimpleName(), tenantId);
         this.tenantId = tenantId;
         return (T) this;
     }

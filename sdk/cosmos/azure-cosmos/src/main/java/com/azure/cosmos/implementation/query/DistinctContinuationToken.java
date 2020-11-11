@@ -4,9 +4,12 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.routing.UInt128;
 import com.azure.cosmos.implementation.JsonSerializable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.nio.ByteBuffer;
 
 public class DistinctContinuationToken extends JsonSerializable {
 
@@ -15,7 +18,7 @@ public class DistinctContinuationToken extends JsonSerializable {
 
     private static final Logger logger = LoggerFactory.getLogger(TakeContinuationToken.class);
 
-    public DistinctContinuationToken(String lastHash, String sourceToken) {
+    public DistinctContinuationToken(UInt128 lastHash, String sourceToken) {
         this.setLastHash(lastHash);
         this.setSourceToken(sourceToken);
     }
@@ -24,8 +27,9 @@ public class DistinctContinuationToken extends JsonSerializable {
         super(serializedDistinctContinuationToken);
     }
 
-    public static boolean tryParse(String serializedDistinctContinuationToken,
-                                   Utils.ValueHolder<DistinctContinuationToken> outDistinctContinuationToken) {
+    public static boolean tryParse(
+        String serializedDistinctContinuationToken,
+        Utils.ValueHolder<DistinctContinuationToken> outDistinctContinuationToken) {
 
         boolean parsed;
         try {
@@ -60,8 +64,12 @@ public class DistinctContinuationToken extends JsonSerializable {
         BridgeInternal.setProperty(this, SOURCE_TOKEN_PROPERTY_NAME, sourceToken);
     }
 
-    String getLastHash() {
-        return super.getString(LAST_HASH_PROPERTY_NAME);
+    UInt128 getLastHash() {
+        ByteBuffer byteBuffer = super.getObject(LAST_HASH_PROPERTY_NAME, ByteBuffer.class);
+        if (byteBuffer != null) {
+            return new UInt128(byteBuffer);
+        }
+        return null;
     }
 
     /**
@@ -69,8 +77,12 @@ public class DistinctContinuationToken extends JsonSerializable {
      *
      * @param lastHash Value to set for property 'lastHash'.
      */
-    public void setLastHash(String lastHash) {
-        BridgeInternal.setProperty(this, LAST_HASH_PROPERTY_NAME, lastHash);
+    public void setLastHash(UInt128 lastHash) {
+        if (lastHash != null) {
+            BridgeInternal.setProperty(this, LAST_HASH_PROPERTY_NAME, lastHash.toByteBuffer());
+        } else {
+            this.set(LAST_HASH_PROPERTY_NAME, null);
+        }
     }
 
 }

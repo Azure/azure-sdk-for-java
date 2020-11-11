@@ -31,7 +31,6 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -99,7 +98,6 @@ public final class FormRecognizerClientBuilder {
     private FormRecognizerServiceVersion version;
 
     static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
-    static final Duration DEFAULT_DURATION = Duration.ofSeconds(5);
     /**
      * The constructor with defaults.
      */
@@ -123,7 +121,7 @@ public final class FormRecognizerClientBuilder {
      * <p>
      * If {@link #pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
      * {@link #endpoint(String) endpoint} are used to create the {@link FormRecognizerClient client}. All other builder
-     * settings are ignored
+     * settings are ignored.
      * </p>
      *
      * @return A FormRecognizerClient with the options set from the builder.
@@ -241,7 +239,7 @@ public final class FormRecognizerClientBuilder {
      * @param apiKeyCredential {@link AzureKeyCredential} API key credential
      *
      * @return The updated FormRecognizerClientBuilder object.
-     * @throws NullPointerException If {@code apiKeyCredential} is {@code null}
+     * @throws NullPointerException If {@code apiKeyCredential} is null.
      */
     public FormRecognizerClientBuilder credential(AzureKeyCredential apiKeyCredential) {
         this.credential = Objects.requireNonNull(apiKeyCredential, "'apiKeyCredential' cannot be null.");
@@ -281,7 +279,7 @@ public final class FormRecognizerClientBuilder {
      * @param policy The retry policy for service requests.
      *
      * @return The updated FormRecognizerClientBuilder object.
-     * @throws NullPointerException If {@code policy} is {@code null}.
+     * @throws NullPointerException If {@code policy} is null.
      */
     public FormRecognizerClientBuilder addPolicy(HttpPipelinePolicy policy) {
         policies.add(Objects.requireNonNull(policy, "'policy' cannot be null."));
@@ -330,7 +328,7 @@ public final class FormRecognizerClientBuilder {
      * The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
      * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
      *
-     * @param configuration The configuration store used to
+     * @param configuration The configuration store used to.
      *
      * @return The updated FormRecognizerClientBuilder object.
      */

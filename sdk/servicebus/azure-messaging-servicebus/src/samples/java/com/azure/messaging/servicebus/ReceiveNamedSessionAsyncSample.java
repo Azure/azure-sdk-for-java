@@ -33,37 +33,33 @@ public class ReceiveNamedSessionAsyncSample {
         // Create a receiver.
         // "<<queue-name>>" will be the name of the Service Bus session-enabled queue instance you created inside the
         // Service Bus namespace.
-        ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
+        ServiceBusSessionReceiverAsyncClient sessionReceiver = new ServiceBusClientBuilder()
             .connectionString(connectionString)
             .sessionReceiver()
-            .sessionId("greetings")
             .receiveMode(ReceiveMode.PEEK_LOCK)
             .queueName("<<queue-name>>")
             .buildAsyncClient();
 
-        Disposable subscription = receiver.receive()
-            .flatMap(context -> {
-                if (context.hasError()) {
-                    System.out.printf("An error occurred in session %s. Error: %s%n",
-                        context.getSessionId(), context.getThrowable());
-                    return Mono.empty();
-                }
+        Mono<ServiceBusReceiverAsyncClient> receiverMono = sessionReceiver.acceptSession("greetings");
+        Disposable subscription = receiverMono.flatMapMany(receiver -> receiver.receiveMessages()
+            .flatMap(message -> {
 
-                System.out.println("Processing message from session: " + context.getSessionId());
+                System.out.println("Processing message from session: " + message.getSessionId());
 
                 // Process message then complete it.
-                return receiver.complete(context.getMessage());
-            })
+                //return receiver.complete(context.getMessage());
+                return Mono.empty();
+            }))
             .subscribe(aVoid -> {
             }, error -> System.err.println("Error occurred: " + error));
 
         // Subscribe is not a blocking call so we sleep here so the program does not end.
-        TimeUnit.SECONDS.sleep(60);
+        TimeUnit.SECONDS.sleep(10);
 
         // Disposing of the subscription will cancel the receive() operation.
         subscription.dispose();
 
         // Close the receiver.
-        receiver.close();
+        sessionReceiver.close();
     }
 }

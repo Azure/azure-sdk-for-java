@@ -19,14 +19,10 @@ public final class StopAnalyzerConverter {
         if (obj == null) {
             return null;
         }
-        StopAnalyzer stopAnalyzer = new StopAnalyzer();
-
-        String name = obj.getName();
-        stopAnalyzer.setName(name);
+        StopAnalyzer stopAnalyzer = new StopAnalyzer(obj.getName());
 
         if (obj.getStopwords() != null) {
-            List<String> stopwords = new ArrayList<>(obj.getStopwords());
-            stopAnalyzer.setStopwords(stopwords);
+            stopAnalyzer.setStopwords(obj.getStopwords());
         }
         return stopAnalyzer;
     }
@@ -39,15 +35,13 @@ public final class StopAnalyzerConverter {
             return null;
         }
         com.azure.search.documents.indexes.implementation.models.StopAnalyzer stopAnalyzer =
-            new com.azure.search.documents.indexes.implementation.models.StopAnalyzer();
-
-        String name = obj.getName();
-        stopAnalyzer.setName(name);
+            new com.azure.search.documents.indexes.implementation.models.StopAnalyzer(obj.getName());
 
         if (obj.getStopwords() != null) {
             List<String> stopwords = new ArrayList<>(obj.getStopwords());
             stopAnalyzer.setStopwords(stopwords);
         }
+
         return stopAnalyzer;
     }
 

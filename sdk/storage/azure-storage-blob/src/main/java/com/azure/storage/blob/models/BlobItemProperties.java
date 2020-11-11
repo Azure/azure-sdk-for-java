@@ -6,7 +6,6 @@ package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -17,17 +16,18 @@ import java.time.OffsetDateTime;
 @JacksonXmlRootElement(localName = "Properties")
 @Fluent
 public final class BlobItemProperties {
+
     /*
      * The creationTime property.
      */
     @JsonProperty(value = "Creation-Time")
-    private DateTimeRfc1123 creationTime;
+    private OffsetDateTime creationTime;
 
     /*
      * The lastModified property.
      */
     @JsonProperty(value = "Last-Modified", required = true)
-    private DateTimeRfc1123 lastModified;
+    private OffsetDateTime lastModified;
 
     /*
      * The eTag property.
@@ -136,7 +136,7 @@ public final class BlobItemProperties {
      * The copyCompletionTime property.
      */
     @JsonProperty(value = "CopyCompletionTime")
-    private DateTimeRfc1123 copyCompletionTime;
+    private OffsetDateTime copyCompletionTime;
 
     /*
      * The copyStatusDescription property.
@@ -166,7 +166,7 @@ public final class BlobItemProperties {
      * The deletedTime property.
      */
     @JsonProperty(value = "DeletedTime")
-    private DateTimeRfc1123 deletedTime;
+    private OffsetDateTime deletedTime;
 
     /*
      * The remainingRetentionDays property.
@@ -210,7 +210,32 @@ public final class BlobItemProperties {
      * The accessTierChangeTime property.
      */
     @JsonProperty(value = "AccessTierChangeTime")
-    private DateTimeRfc1123 accessTierChangeTime;
+    private OffsetDateTime accessTierChangeTime;
+
+    /*
+     * The tagCount property.
+     */
+    @JsonProperty(value = "TagCount")
+    private Integer tagCount;
+
+    /*
+     * Possible values include: 'High', 'Standard'
+     */
+    @JsonProperty(value = "RehydratePriority")
+    private RehydratePriority rehydratePriority;
+
+    /*
+     * The sealed property. Whether or not the blob is sealed  (marked as read only).
+     * This is only returned for Append blobs.
+     */
+    @JsonProperty(value = "Sealed")
+    private Boolean sealed;
+
+    /*
+     * The lastAccessedTime property.
+     */
+    @JsonProperty(value = "LastAccessTime")
+    private OffsetDateTime lastAccessedTime;
 
     /**
      * Get the creationTime property: The creationTime property.
@@ -218,10 +243,7 @@ public final class BlobItemProperties {
      * @return the creationTime value.
      */
     public OffsetDateTime getCreationTime() {
-        if (this.creationTime == null) {
-            return null;
-        }
-        return this.creationTime.getDateTime();
+        return this.creationTime;
     }
 
     /**
@@ -231,11 +253,7 @@ public final class BlobItemProperties {
      * @return the BlobItemProperties object itself.
      */
     public BlobItemProperties setCreationTime(OffsetDateTime creationTime) {
-        if (creationTime == null) {
-            this.creationTime = null;
-        } else {
-            this.creationTime = new DateTimeRfc1123(creationTime);
-        }
+        this.creationTime = creationTime;
         return this;
     }
 
@@ -245,10 +263,7 @@ public final class BlobItemProperties {
      * @return the lastModified value.
      */
     public OffsetDateTime getLastModified() {
-        if (this.lastModified == null) {
-            return null;
-        }
-        return this.lastModified.getDateTime();
+        return this.lastModified;
     }
 
     /**
@@ -258,11 +273,7 @@ public final class BlobItemProperties {
      * @return the BlobItemProperties object itself.
      */
     public BlobItemProperties setLastModified(OffsetDateTime lastModified) {
-        if (lastModified == null) {
-            this.lastModified = null;
-        } else {
-            this.lastModified = new DateTimeRfc1123(lastModified);
-        }
+        this.lastModified = lastModified;
         return this;
     }
 
@@ -622,10 +633,7 @@ public final class BlobItemProperties {
      * @return the copyCompletionTime value.
      */
     public OffsetDateTime getCopyCompletionTime() {
-        if (this.copyCompletionTime == null) {
-            return null;
-        }
-        return this.copyCompletionTime.getDateTime();
+        return this.copyCompletionTime;
     }
 
     /**
@@ -635,11 +643,7 @@ public final class BlobItemProperties {
      * @return the BlobItemProperties object itself.
      */
     public BlobItemProperties setCopyCompletionTime(OffsetDateTime copyCompletionTime) {
-        if (copyCompletionTime == null) {
-            this.copyCompletionTime = null;
-        } else {
-            this.copyCompletionTime = new DateTimeRfc1123(copyCompletionTime);
-        }
+        this.copyCompletionTime = copyCompletionTime;
         return this;
     }
 
@@ -731,10 +735,7 @@ public final class BlobItemProperties {
      * @return the deletedTime value.
      */
     public OffsetDateTime getDeletedTime() {
-        if (this.deletedTime == null) {
-            return null;
-        }
-        return this.deletedTime.getDateTime();
+        return this.deletedTime;
     }
 
     /**
@@ -744,11 +745,7 @@ public final class BlobItemProperties {
      * @return the BlobItemProperties object itself.
      */
     public BlobItemProperties setDeletedTime(OffsetDateTime deletedTime) {
-        if (deletedTime == null) {
-            this.deletedTime = null;
-        } else {
-            this.deletedTime = new DateTimeRfc1123(deletedTime);
-        }
+        this.deletedTime = deletedTime;
         return this;
     }
 
@@ -892,10 +889,7 @@ public final class BlobItemProperties {
      * @return the accessTierChangeTime value.
      */
     public OffsetDateTime getAccessTierChangeTime() {
-        if (this.accessTierChangeTime == null) {
-            return null;
-        }
-        return this.accessTierChangeTime.getDateTime();
+        return this.accessTierChangeTime;
     }
 
     /**
@@ -906,11 +900,89 @@ public final class BlobItemProperties {
      * @return the BlobItemProperties object itself.
      */
     public BlobItemProperties setAccessTierChangeTime(OffsetDateTime accessTierChangeTime) {
-        if (accessTierChangeTime == null) {
-            this.accessTierChangeTime = null;
-        } else {
-            this.accessTierChangeTime = new DateTimeRfc1123(accessTierChangeTime);
-        }
+        this.accessTierChangeTime = accessTierChangeTime;
+        return this;
+    }
+
+    /**
+     * Get the tagCount property: The tagCount property.
+     *
+     * @return the tagCount value.
+     */
+    public Integer getTagCount() {
+        return this.tagCount;
+    }
+
+    /**
+     * Set the tagCount property: The tagCount property.
+     *
+     * @param tagCount the tagCount value to set.
+     * @return the BlobItemProperties object itself.
+     */
+    public BlobItemProperties setTagCount(Integer tagCount) {
+        this.tagCount = tagCount;
+        return this;
+    }
+
+    /**
+     * Get the rehydratePriority property: Possible values include: 'High',
+     * 'Standard'.
+     *
+     * @return the rehydratePriority value.
+     */
+    public RehydratePriority getRehydratePriority() {
+        return this.rehydratePriority;
+    }
+
+    /**
+     * Set the rehydratePriority property: Possible values include: 'High',
+     * 'Standard'.
+     *
+     * @param rehydratePriority the rehydratePriority value to set.
+     * @return the BlobItemProperties object itself.
+     */
+    public BlobItemProperties setRehydratePriority(RehydratePriority rehydratePriority) {
+        this.rehydratePriority = rehydratePriority;
+        return this;
+    }
+
+    /**
+     * Get the sealed property: The sealed property.
+     *
+     * @return Whether or not the blob is sealed  (marked as read only). This is only applicable for Append blobs.
+     */
+    public Boolean isSealed() {
+        return this.sealed;
+    }
+
+    /**
+     * Set the sealed property: The sealed property.
+     *
+     * @param sealed Whether or not the blob is sealed  (marked as read only). This is only applicable for Append blobs.
+     * @return the BlobItemProperties object itself.
+     */
+    public BlobItemProperties setSealed(Boolean sealed) {
+        this.sealed = sealed;
+        return this;
+    }
+
+    /**
+     * Get the lastAccessedTime property: The lastAccessedTime property.
+     *
+     * @return the lastAccessedTime value.
+     */
+    public OffsetDateTime getLastAccessedTime() {
+        return this.lastAccessedTime;
+    }
+
+    /**
+     * Set the lastAccessedTime property: The lastAccessedTime property.
+     *
+     * @param lastAccessedTime the lastAccessedTime value to set.
+     * @return the BlobItemProperties object itself.
+     */
+    public BlobItemProperties setLastAccessedTime(OffsetDateTime lastAccessedTime) {
+        this.lastAccessedTime = lastAccessedTime;
         return this;
     }
 }

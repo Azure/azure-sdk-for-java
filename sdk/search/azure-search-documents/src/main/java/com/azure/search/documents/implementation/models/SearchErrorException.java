@@ -9,9 +9,7 @@ package com.azure.search.documents.implementation.models;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 
-/**
- * Exception thrown for an invalid response with SearchError information.
- */
+/** Exception thrown for an invalid response with SearchError information. */
 public final class SearchErrorException extends HttpResponseException {
     /**
      * Initializes a new instance of the SearchErrorException class.

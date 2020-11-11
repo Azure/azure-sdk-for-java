@@ -7,18 +7,18 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * Defines a data change detection policy that captures changes based on the
- * value of a high water mark column.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
+/** Defines a data change detection policy that captures changes based on the value of a high water mark column. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.HighWaterMarkChangeDetectionPolicy")
+@JsonFlatten
 @Fluent
-public final class HighWaterMarkChangeDetectionPolicy extends DataChangeDetectionPolicy {
+public class HighWaterMarkChangeDetectionPolicy extends DataChangeDetectionPolicy {
     /*
      * The name of the high water mark column.
      */
@@ -26,24 +26,22 @@ public final class HighWaterMarkChangeDetectionPolicy extends DataChangeDetectio
     private String highWaterMarkColumnName;
 
     /**
-     * Get the highWaterMarkColumnName property: The name of the high water
-     * mark column.
+     * Creates an instance of HighWaterMarkChangeDetectionPolicy class.
+     *
+     * @param highWaterMarkColumnName the highWaterMarkColumnName value to set.
+     */
+    @JsonCreator
+    public HighWaterMarkChangeDetectionPolicy(
+            @JsonProperty(value = "highWaterMarkColumnName", required = true) String highWaterMarkColumnName) {
+        this.highWaterMarkColumnName = highWaterMarkColumnName;
+    }
+
+    /**
+     * Get the highWaterMarkColumnName property: The name of the high water mark column.
      *
      * @return the highWaterMarkColumnName value.
      */
     public String getHighWaterMarkColumnName() {
         return this.highWaterMarkColumnName;
-    }
-
-    /**
-     * Set the highWaterMarkColumnName property: The name of the high water
-     * mark column.
-     *
-     * @param highWaterMarkColumnName the highWaterMarkColumnName value to set.
-     * @return the HighWaterMarkChangeDetectionPolicy object itself.
-     */
-    public HighWaterMarkChangeDetectionPolicy setHighWaterMarkColumnName(String highWaterMarkColumnName) {
-        this.highWaterMarkColumnName = highWaterMarkColumnName;
-        return this;
     }
 }

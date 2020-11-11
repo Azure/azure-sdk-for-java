@@ -28,6 +28,20 @@ public final class StemmerOverrideTokenFilter extends TokenFilter {
     private List<String> rules;
 
     /**
+     * Constructor of {@link StemmerOverrideTokenFilter}.
+     *
+     * @param name The name of the token filter. It must only contain letters, digits,
+     * spaces, dashes or underscores, can only start and end with alphanumeric
+     * characters, and is limited to 128 characters.
+     * @param rules A list of stemming rules in the following format: "word =%3E stem", for
+     * example: "ran =%3E run".
+     */
+    public StemmerOverrideTokenFilter(String name, List<String> rules) {
+        super(name);
+        this.rules = rules;
+    }
+
+    /**
      * Get the rules property: A list of stemming rules in the following
      * format: "word =&gt; stem", for example: "ran =&gt; run".
      *
@@ -37,15 +51,4 @@ public final class StemmerOverrideTokenFilter extends TokenFilter {
         return this.rules;
     }
 
-    /**
-     * Set the rules property: A list of stemming rules in the following
-     * format: "word =&gt; stem", for example: "ran =&gt; run".
-     *
-     * @param rules the rules value to set.
-     * @return the StemmerOverrideTokenFilter object itself.
-     */
-    public StemmerOverrideTokenFilter setRules(List<String> rules) {
-        this.rules = rules;
-        return this;
-    }
 }

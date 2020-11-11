@@ -1,7 +1,41 @@
 # Release History
 
-## 1.6.0-beta.1 (Unreleased)
+## 1.7.0-beta.1 (Unreleased)
 
+
+## 1.6.3 (2020-10-29)
+
+### Dependency updates
+
+- Updated `azure-core` to `1.10.0`.
+
+## 1.6.2 (2020-10-01)
+
+- Updated `azure-core` version.
+
+## 1.6.1 (2020-09-08)
+
+- Updated `azure-core` version to pickup bug fix.
+
+## 1.6.0 (2020-09-03)
+
+- Added new APIs to configure request write timeout, response timeout, and response body read timeout.
+- Changed default timeouts from infinite to 60 seconds.
+- Updated `reactor-core` version to `3.3.9.RELEASE`.
+- Updated `reactor-netty` version to `0.9.11.RELEASE`.
+
+## 1.5.4 (2020-08-07)
+
+- Updated `reactor-core` version to `3.3.8.RELEASE`.
+- Updated `reactor-netty` version to `0.9.10.RELEASE`.
+- Updated `netty` version to `4.1.51.Final`.
+- Updated `netty-tcnative` version to `2.0.31.Final`.
+- Fixed a bug where connections weren't being re-used when using a proxy which lead to a new TCP and SSL session for each request.
+- Fixed a bug where a non-shareable proxy handler could be added twice into a `ChannelPipeline`.
+
+## 1.5.3 (2020-07-02)
+
+- Updated Azure Core dependency.
 
 ## 1.5.2 (2020-06-08)
 

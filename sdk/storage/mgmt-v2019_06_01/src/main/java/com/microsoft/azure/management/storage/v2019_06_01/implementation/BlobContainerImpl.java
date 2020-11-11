@@ -11,8 +11,8 @@ package com.microsoft.azure.management.storage.v2019_06_01.implementation;
 import com.microsoft.azure.management.storage.v2019_06_01.BlobContainer;
 import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
-import com.microsoft.azure.management.storage.v2019_06_01.PublicAccess;
 import org.joda.time.DateTime;
+import com.microsoft.azure.management.storage.v2019_06_01.PublicAccess;
 import com.microsoft.azure.management.storage.v2019_06_01.LeaseStatus;
 import com.microsoft.azure.management.storage.v2019_06_01.LeaseState;
 import com.microsoft.azure.management.storage.v2019_06_01.LeaseDuration;
@@ -80,6 +80,16 @@ class BlobContainerImpl extends CreatableUpdatableImpl<BlobContainer, BlobContai
     @Override
     public String defaultEncryptionScope() {
         return this.inner().defaultEncryptionScope();
+    }
+
+    @Override
+    public Boolean deleted() {
+        return this.inner().deleted();
+    }
+
+    @Override
+    public DateTime deletedTime() {
+        return this.inner().deletedTime();
     }
 
     @Override
@@ -153,8 +163,18 @@ class BlobContainerImpl extends CreatableUpdatableImpl<BlobContainer, BlobContai
     }
 
     @Override
+    public Integer remainingRetentionDays() {
+        return this.inner().remainingRetentionDays();
+    }
+
+    @Override
     public String type() {
         return this.inner().type();
+    }
+
+    @Override
+    public String version() {
+        return this.inner().version();
     }
 
     @Override

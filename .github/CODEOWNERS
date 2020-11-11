@@ -6,33 +6,98 @@
 ###########
 
 # Catch all
-/sdk/                                               @joshfree @jonathangiles @srnagar @hemanttanwar @anuchandy
+/sdk/                                               @joshfree @srnagar @hemanttanwar @anuchandy @conniey @jianghaolu @bsiegel
 
 # BOM
+# PRLabel: %Azure.Core
 /sdk/boms/azure-sdk-bom/                            @alzimmermsft @jonathangiles @srnagar @hemanttanwar @anuchandy
+# PRLabel: %azure-spring
+/sdk/boms/azure-spring-boot-bom/                    @saragluna @yiliuTo @chenrujun @backwind1233 @jialindai
 
+####
 # Service teams
-/sdk/appconfiguration/                              @mssfang @alzimmermsft @conniey @sima-zhu
+####
+# PRLabel: %App Configuration
+/sdk/appconfiguration/                              @mssfang @alzimmermsft
+# PRLabel: %azure-spring
+/sdk/appconfiguration/azure-spring-cloud-*/         @mrm9084 @saragluna @yiliuTo @chenrujun @backwind1233 @jialindai @zhenlan
+
+# PRLabel: %Batch
 /sdk/batch/                                         @xingwu1 @bgklein @matthchr
+
+# PRLabel: %Communication
+/sdk/communication/                                 @RezaJooyandeh @JianpingChen @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
+
+# PRLabel: %Azure.Core
 /sdk/core/                                          @alzimmermsft @jianghaolu @srnagar @hemanttanwar @anuchandy
+
+# PRLabel: %Azure.Core
 /sdk/core/azure-core-tracing-opentelemetry/         @samvaity @alzimmermsft
-/sdk/cosmos/                                        @moderakh @kushagraThapar @David-Noble-at-work @kirankumarkolli @mbhaskar
-/sdk/eventhubs/                                     @conniey @srnagar @mssfang
-/sdk/formrecognizer/                                @samvaity @mssfang @sima-zhu
+
+# PRLabel: %Cosmos
+/sdk/cosmos/                                        @moderakh @kushagraThapar @FabianMeiswinkel @kirankumarkolli @mbhaskar @simplynaveen20 @xinlian12 @milismsft
+# PRLabel: %azure-spring
+/sdk/cosmos/azure-spring-data-cosmos/               @kushagraThapar @saragluna @yiliuTo @chenrujun @backwind1233 @jialindai @mbhaskar
+# PRLabel: %azure-spring
+/sdk/cosmos/azure-spring-data-cosmos-test/          @kushagraThapar @saragluna @yiliuTo @chenrujun @backwind1233 @jialindai @mbhaskar
+
+# PRLabel: %DigitalTwins
+/sdk/digitaltwins/                                  @drwill-ms @timtay-microsoft @abhipsaMisra @vinagesh @azabbasi @bikamani @barustum
+
+# PRLabel: %Event Grid
+/sdk/eventgrid/                                     @srnagar @yijunxiems
+
+# PRLabel: %Event Hubs
+/sdk/eventhubs/                                     @conniey @srnagar @mssfang @yijunxiems
+
+# PRLabel: %Cognitive - Form Recognizer
+/sdk/formrecognizer/                                @samvaity @mssfang
+
+# PRLabel: %Cognitive - Metrics Advisor
+/sdk/metricsadvisor/                                @samvaity @anuchandy
+
+# PRLabel: %Azure.Identity
 /sdk/identity/                                      @schaabs @g2vinay @jianghaolu
+
+# PRLabel: %KeyVault
 /sdk/keyvault/                                      @g2vinay @vcolin7 @samvaity
-/sdk/search/                                        @alzimmermsft @sima-zhu @mssfang @samvaity @conniey
-/sdk/servicebus/                                    @yvgopal @nemakam @hemanttanwar @conniey
-/sdk/storage/                                       @amishra-dev @rickle-msft @jaschrep-msft @gapra-msft @alzimmermsft @sima-zhu
-/sdk/textanalytics/                                 @samvaity @mssfang @sima-zhu
-/sdk/spring/                                        @saragluna @yiliuTo @chenrujun @jialindai
+# PRLabel: %azure-spring
+/sdk/keyvault/azure-security-keyvault-jca           @saragluna @yiliuTo @chenrujun @backwind1233 @jialindai @mnriem
+
+/sdk/loganalytics/microsoft-azure-loganalytics/     @divya-jay @geneh @alongafni
+
+# PRLabel: %Schema Registry
+/sdk/schemaregistry/                                @arerlend @sjkwak
+
+# PRLabel: %Search
+/sdk/search/                                        @alzimmermsft @mssfang @samvaity @conniey
+
+# PRLabel: %Service Bus
+/sdk/servicebus/                                    @yvgopal @nemakam @hemanttanwar @conniey @yijunxiems
+
+# PRLabel: %Storage
+/sdk/storage/                                       @amishra-dev @rickle-msft @jaschrep-msft @gapra-msft @alzimmermsft @kasobol-msft
+
+# PRLabel: %EngSys
+/sdk/template/                                      @Azure/azure-sdk-eng
+
+# PRLabel: %Cognitive - Text Analytics
+/sdk/textanalytics/                                 @samvaity @mssfang
+
+# PRLabel: %azure-spring
+/sdk/spring/                                        @saragluna @yiliuTo @chenrujun @backwind1233 @jialindai
+# PRLabel: %azure-spring
+/sdk/spring/azure-spring-boot-starter-keyvault-certificates    @saragluna @yiliuTo @chenrujun @backwind1233 @jialindai @mnriem
+# PRLabel: %azure-spring
+/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates          @saragluna @yiliuTo @chenrujun @backwind1233 @jialindai @mnriem
 
 # end to end tests
+# PRLabel: %Azure.Identity
 /sdk/e2e/                                           @jianghaolu @g2vinay
 /common/smoke-tests/                                @joshfree @jonathangiles @alzimmermsft @g2vinay @conniey @srnagar
 
 # Management Plane
-/sdk/management/                                    @ChenTanyi @weidongxu-microsoft @yungezz @xccc-msft
+/sdk/resourcemanager/                               @ChenTanyi @weidongxu-microsoft @yungezz @xccc-msft
 /sdk/**/mgmt*/                                      @ChenTanyi @weidongxu-microsoft @yungezz @xccc-msft
 
 ###########
@@ -42,7 +107,8 @@
 /eng/code-quality-reports/                          @mssfang @JonathanGiles
 /eng/jacoco-test-coverage/                          @srnagar @JonathanGiles
 /eng/spotbugs-aggregate-report/                     @srnagar @JonathanGiles
-/parent/                                            @JimSuplizio
+/eng/versioning/                                    @JimSuplizio @mitchdenny @danieljurek @alzimmermsft @samvaity
+/parent/                                            @JimSuplizio @alzimmermsft
 
 /**/tests.yml                                       @danieljurek
 /**/ci.yml                                          @mitchdenny

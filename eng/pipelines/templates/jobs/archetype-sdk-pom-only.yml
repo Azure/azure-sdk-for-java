@@ -17,7 +17,6 @@ jobs:
       matrix:
         Client Libraries:
           ArtifactName: 'packages'
-          JavaVersion: '1.11'
 
     steps:
       - script: |
@@ -30,7 +29,7 @@ jobs:
         inputs:
           versionSpec: '3.6'
 
-      - template: tools/daily-dev-build-variable/daily-dev-build-variable.yml@azure-sdk-tools
+      - template: /eng/common/pipelines/templates/steps/daily-dev-build-variable.yml
 
       - script: |
           pip install setuptools wheel
@@ -44,7 +43,7 @@ jobs:
       #       approach here around getting this dependency installed whilst targetting
       #       the parent POMs via the root aggregeate (given they aren't listed)
       #       anywhere in the depedency graph.
-      #       
+      #
       #       The answer might be to finally strip out the <module /> references from
       #       the parent POMs (something we want to do anyway) and then add them to
       #       the graph so that we can build off the root POM targetting the parent
@@ -59,7 +58,7 @@ jobs:
           options: '-pl com.azure:sdk-build-tools -am'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
-          jdkVersionOption: $(JavaVersion)
+          jdkVersionOption: $(JavaBuildVersion)
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
 
@@ -69,12 +68,23 @@ jobs:
           inputs:
             mavenPomFile: sdk/${{parameters.ServiceDirectory}}/${{artifact.name}}/pom.xml
             goals: 'deploy'
-            options: '-pl ${{artifact.groupId}}:${{artifact.name}} -DaltDeploymentRepository=id::default::file://$(Build.ArtifactStagingDirectory) -Dgpg.skip'
+            options: '-pl ${{artifact.groupId}}:${{artifact.name}} -DaltDeploymentRepository=id::default::file://$(System.DefaultWorkingDirectory)/build -Ddependency-checker -Dgpg.skip'
             mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
             javaHomeOption: 'JDKVersion'
-            jdkVersionOption: $(JavaVersion)
+            jdkVersionOption: $(JavaBuildVersion)
             jdkArchitectureOption: 'x64'
             publishJUnitResults: false
+
+      - task: PowerShell@2
+        displayName: 'Copy artifacts to staging'
+        inputs:
+          pwsh: true
+          workingDirectory: $(Agent.BuildDirectory)
+          filePath: eng/scripts/Stage-MavenPackageArtifacts.ps1
+          arguments: >
+            -SourceDirectory $(System.DefaultWorkingDirectory)/build
+            -TargetDirectory $(Build.ArtifactStagingDirectory)
+            -InformationAction Continue
 
       - publish: $(Build.ArtifactStagingDirectory)
         displayName: 'Publish Artifacts $(ArtifactName)'

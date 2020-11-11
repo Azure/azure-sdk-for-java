@@ -4,6 +4,7 @@
 package com.azure.core.http.netty;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.ProxyOptions;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -73,7 +74,7 @@ public class NettyAsyncHttpClientBuilderJavaDocCodeSnippets {
      * Code snippet to demonstrate the use of a Netty based http client that disables buffer copy.
      */
     public void disabledBufferCopyClientSample() {
-        HttpRequest httpRequest = null;
+        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost");
         // BEGIN: com.azure.core.http.netty.disabled-buffer-copy
         HttpClient client = new NettyAsyncHttpClientBuilder()
             .port(8080)

@@ -9,6 +9,7 @@
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
 import java.util.UUID;
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -45,6 +46,12 @@ public class EntityLabel {
      */
     @JsonProperty(value = "roleId")
     private UUID roleId;
+
+    /**
+     * The children property.
+     */
+    @JsonProperty(value = "children")
+    private List<EntityLabel> children;
 
     /**
      * Get the entityName value.
@@ -143,6 +150,26 @@ public class EntityLabel {
      */
     public EntityLabel withRoleId(UUID roleId) {
         this.roleId = roleId;
+        return this;
+    }
+
+    /**
+     * Get the children value.
+     *
+     * @return the children value
+     */
+    public List<EntityLabel> children() {
+        return this.children;
+    }
+
+    /**
+     * Set the children value.
+     *
+     * @param children the children value to set
+     * @return the EntityLabel object itself.
+     */
+    public EntityLabel withChildren(List<EntityLabel> children) {
+        this.children = children;
         return this;
     }
 

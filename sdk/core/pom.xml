@@ -11,9 +11,13 @@
   <modules>
     <module>azure-core</module>
     <module>azure-core-amqp</module>
+    <module>azure-core-amqp-experimental</module>
+    <module>azure-core-experimental</module>
     <module>azure-core-http-jdk-httpclient</module>
     <module>azure-core-http-netty</module>
     <module>azure-core-http-okhttp</module>
+    <module>azure-core-management</module>
+    <module>azure-core-serializer-avro-apache</module>
     <module>azure-core-serializer-json-gson</module>
     <module>azure-core-serializer-json-jackson</module>
     <module>azure-core-test</module>

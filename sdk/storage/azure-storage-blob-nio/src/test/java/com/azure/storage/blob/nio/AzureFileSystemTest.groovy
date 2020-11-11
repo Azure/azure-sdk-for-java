@@ -216,8 +216,8 @@ class AzureFileSystemTest extends APISpec {
         where:
         view           | supports
         "basic"        | true
-        "user"         | true
-        "azureStorage" | true
+        "azureBasic"   | true
+        "azureBlob"    | true
         "posix"        | false
     }
 

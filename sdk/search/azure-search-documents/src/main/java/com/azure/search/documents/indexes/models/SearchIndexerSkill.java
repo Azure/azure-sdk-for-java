@@ -4,6 +4,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -69,6 +70,22 @@ public abstract class SearchIndexerSkill {
      */
     @JsonProperty(value = "outputs", required = true)
     private List<OutputFieldMappingEntry> outputs;
+
+    /**
+     * Constructor of {@link SearchIndexerSkill}.
+     *
+     * @param inputs Inputs of the skills could be a column in the source data set, or the
+     * output of an upstream skill.
+     * @param outputs The output of a skill is either a field in a search index, or a value
+     * that can be consumed as an input by another skill.
+     */
+    @JsonCreator
+    public SearchIndexerSkill(
+        @JsonProperty(value = "inputs") List<InputFieldMappingEntry> inputs,
+        @JsonProperty(value = "outputs") List<OutputFieldMappingEntry> outputs) {
+        this.inputs = inputs;
+        this.outputs = outputs;
+    }
 
     /**
      * Get the name property: The name of the skill which uniquely identifies
@@ -153,18 +170,6 @@ public abstract class SearchIndexerSkill {
     }
 
     /**
-     * Set the inputs property: Inputs of the skills could be a column in the
-     * source data set, or the output of an upstream skill.
-     *
-     * @param inputs the inputs value to set.
-     * @return the SearchIndexerSkill object itself.
-     */
-    public SearchIndexerSkill setInputs(List<InputFieldMappingEntry> inputs) {
-        this.inputs = inputs;
-        return this;
-    }
-
-    /**
      * Get the outputs property: The output of a skill is either a field in a
      * search index, or a value that can be consumed as an input by another
      * skill.
@@ -173,18 +178,5 @@ public abstract class SearchIndexerSkill {
      */
     public List<OutputFieldMappingEntry> getOutputs() {
         return this.outputs;
-    }
-
-    /**
-     * Set the outputs property: The output of a skill is either a field in a
-     * search index, or a value that can be consumed as an input by another
-     * skill.
-     *
-     * @param outputs the outputs value to set.
-     * @return the SearchIndexerSkill object itself.
-     */
-    public SearchIndexerSkill setOutputs(List<OutputFieldMappingEntry> outputs) {
-        this.outputs = outputs;
-        return this;
     }
 }

@@ -6,7 +6,7 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.models.CosmosItemResponse;
-import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -85,12 +85,12 @@ public class LogLevelTest extends TestSuiteBase {
 
         CosmosAsyncClient client = getClientBuilder().buildAsyncClient();
         try {
-            CosmosItemProperties docDefinition = getDocumentDefinition();
-            Mono<CosmosItemResponse<CosmosItemProperties>> createObservable = createdCollection.createItem(docDefinition,
+            InternalObjectNode docDefinition = getDocumentDefinition();
+            Mono<CosmosItemResponse<InternalObjectNode>> createObservable = createdCollection.createItem(docDefinition,
                     new CosmosItemRequestOptions());
 
             CosmosItemResponseValidator validator =
-                new CosmosItemResponseValidator.Builder<CosmosItemResponse<CosmosItemProperties>>()
+                new CosmosItemResponseValidator.Builder<CosmosItemResponse<InternalObjectNode>>()
                     .withId(docDefinition.getId())
                     .build();
             validateItemSuccess(createObservable, validator);
@@ -115,11 +115,11 @@ public class LogLevelTest extends TestSuiteBase {
 
         CosmosAsyncClient client = getClientBuilder().buildAsyncClient();
         try {
-            CosmosItemProperties docDefinition = getDocumentDefinition();
-            Mono<CosmosItemResponse<CosmosItemProperties>> createObservable = createdCollection.createItem(docDefinition,
+            InternalObjectNode docDefinition = getDocumentDefinition();
+            Mono<CosmosItemResponse<InternalObjectNode>> createObservable = createdCollection.createItem(docDefinition,
                     new CosmosItemRequestOptions());
             CosmosItemResponseValidator validator =
-                new CosmosItemResponseValidator.Builder<CosmosItemResponse<CosmosItemProperties>>()
+                new CosmosItemResponseValidator.Builder<CosmosItemResponse<InternalObjectNode>>()
                     .withId(docDefinition.getId())
                     .build();
             validateItemSuccess(createObservable, validator);
@@ -147,11 +147,11 @@ public class LogLevelTest extends TestSuiteBase {
 
         CosmosAsyncClient client = getClientBuilder().buildAsyncClient();
         try {
-            CosmosItemProperties docDefinition = getDocumentDefinition();
-            Mono<CosmosItemResponse<CosmosItemProperties>> createObservable = createdCollection.createItem(docDefinition,
+            InternalObjectNode docDefinition = getDocumentDefinition();
+            Mono<CosmosItemResponse<InternalObjectNode>> createObservable = createdCollection.createItem(docDefinition,
                     new CosmosItemRequestOptions());
             CosmosItemResponseValidator validator =
-                new CosmosItemResponseValidator.Builder<CosmosItemResponse<CosmosItemProperties>>()
+                new CosmosItemResponseValidator.Builder<CosmosItemResponse<InternalObjectNode>>()
                     .withId(docDefinition.getId())
                     .build();
             validateItemSuccess(createObservable, validator);
@@ -177,11 +177,11 @@ public class LogLevelTest extends TestSuiteBase {
 
         CosmosAsyncClient client = getClientBuilder().buildAsyncClient();
         try {
-            CosmosItemProperties docDefinition = getDocumentDefinition();
-            Mono<CosmosItemResponse<CosmosItemProperties>> createObservable = createdCollection.createItem(docDefinition,
+            InternalObjectNode docDefinition = getDocumentDefinition();
+            Mono<CosmosItemResponse<InternalObjectNode>> createObservable = createdCollection.createItem(docDefinition,
                     new CosmosItemRequestOptions());
             CosmosItemResponseValidator validator =
-                new CosmosItemResponseValidator.Builder<CosmosItemResponse<CosmosItemProperties>>()
+                new CosmosItemResponseValidator.Builder<CosmosItemResponse<InternalObjectNode>>()
                     .withId(docDefinition.getId())
                     .build();
             validateItemSuccess(createObservable, validator);
@@ -224,11 +224,11 @@ public class LogLevelTest extends TestSuiteBase {
 
         CosmosAsyncClient client = getClientBuilder().buildAsyncClient();
         try {
-            CosmosItemProperties docDefinition = getDocumentDefinition();
-            Mono<CosmosItemResponse<CosmosItemProperties>> createObservable = createdCollection.createItem(docDefinition,
+            InternalObjectNode docDefinition = getDocumentDefinition();
+            Mono<CosmosItemResponse<InternalObjectNode>> createObservable = createdCollection.createItem(docDefinition,
                     new CosmosItemRequestOptions());
             CosmosItemResponseValidator validator =
-                new CosmosItemResponseValidator.Builder<CosmosItemResponse<CosmosItemProperties>>()
+                new CosmosItemResponseValidator.Builder<CosmosItemResponse<InternalObjectNode>>()
                     .withId(docDefinition.getId())
                     .build();
             validateItemSuccess(createObservable, validator);
@@ -255,11 +255,11 @@ public class LogLevelTest extends TestSuiteBase {
 
         CosmosAsyncClient client = getClientBuilder().buildAsyncClient();
         try {
-            CosmosItemProperties docDefinition = getDocumentDefinition();
-            Mono<CosmosItemResponse<CosmosItemProperties>> createObservable = createdCollection.createItem(docDefinition,
+            InternalObjectNode docDefinition = getDocumentDefinition();
+            Mono<CosmosItemResponse<InternalObjectNode>> createObservable = createdCollection.createItem(docDefinition,
                     new CosmosItemRequestOptions());
             CosmosItemResponseValidator validator =
-                new CosmosItemResponseValidator.Builder<CosmosItemResponse<CosmosItemProperties>>()
+                new CosmosItemResponseValidator.Builder<CosmosItemResponse<InternalObjectNode>>()
                     .withId(docDefinition.getId())
                     .build();
             validateItemSuccess(createObservable, validator);
@@ -286,11 +286,11 @@ public class LogLevelTest extends TestSuiteBase {
 
         CosmosAsyncClient client = getClientBuilder().buildAsyncClient();
         try {
-            CosmosItemProperties docDefinition = getDocumentDefinition();
-            Mono<CosmosItemResponse<CosmosItemProperties>> createObservable = createdCollection.createItem(docDefinition,
+            InternalObjectNode docDefinition = getDocumentDefinition();
+            Mono<CosmosItemResponse<InternalObjectNode>> createObservable = createdCollection.createItem(docDefinition,
                     new CosmosItemRequestOptions());
             CosmosItemResponseValidator validator =
-                new CosmosItemResponseValidator.Builder<CosmosItemResponse<CosmosItemProperties>>()
+                new CosmosItemResponseValidator.Builder<CosmosItemResponse<InternalObjectNode>>()
                     .withId(docDefinition.getId())
                     .build();
             validateItemSuccess(createObservable, validator);
@@ -301,9 +301,9 @@ public class LogLevelTest extends TestSuiteBase {
         }
     }
 
-    private CosmosItemProperties getDocumentDefinition() {
+    private InternalObjectNode getDocumentDefinition() {
         String uuid = UUID.randomUUID().toString();
-        CosmosItemProperties doc = new CosmosItemProperties(
+        InternalObjectNode doc = new InternalObjectNode(
                 String.format("{ " + "\"id\": \"%s\", " + "\"mypk\": \"%s\", "
                         + "\"sgmts\": [[6519456, 1471916863], [2498434, 1455671440]]" + "}", uuid, uuid));
         return doc;

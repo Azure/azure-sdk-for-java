@@ -226,11 +226,6 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
                 .switchIfEmpty(Mono.error(new IllegalStateException("PollOperation returned Mono.empty().")))
                 .repeat()
                 .takeUntil(currentPollResponse -> currentPollResponse.getStatus().isComplete())
-                .onErrorResume(throwable -> {
-                    logger.warning("Received an error from pollOperation. Any error from pollOperation "
-                        + "will be ignored and polling will be continued. Error:" + throwable.getMessage());
-                    return Mono.empty();
-                })
                 .concatMap(currentPollResponse -> {
                     cxt.setLatestResponse(currentPollResponse);
                     return Mono.just(new AsyncPollResponse<>(cxt,

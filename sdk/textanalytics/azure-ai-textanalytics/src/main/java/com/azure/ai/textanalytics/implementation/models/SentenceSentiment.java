@@ -6,16 +6,15 @@ package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
-/**
- * The SentenceSentiment model.
- */
+/** The SentenceSentiment model. */
 @Fluent
 public final class SentenceSentiment {
     /*
      * The sentence text.
      */
-    @JsonProperty(value = "text")
+    @JsonProperty(value = "text", required = true)
     private String text;
 
     /*
@@ -38,14 +37,26 @@ public final class SentenceSentiment {
     private int offset;
 
     /*
-     * The length of the sentence by Unicode standard.
+     * The length of the sentence.
      */
     @JsonProperty(value = "length", required = true)
     private int length;
 
+    /*
+     * The array of aspect object for the sentence.
+     */
+    @JsonProperty(value = "aspects")
+    private List<SentenceAspect> aspects;
+
+    /*
+     * The array of opinion object for the sentence.
+     */
+    @JsonProperty(value = "opinions")
+    private List<SentenceOpinion> opinions;
+
     /**
      * Get the text property: The sentence text.
-     * 
+     *
      * @return the text value.
      */
     public String getText() {
@@ -54,7 +65,7 @@ public final class SentenceSentiment {
 
     /**
      * Set the text property: The sentence text.
-     * 
+     *
      * @param text the text value to set.
      * @return the SentenceSentiment object itself.
      */
@@ -65,7 +76,7 @@ public final class SentenceSentiment {
 
     /**
      * Get the sentiment property: The predicted Sentiment for the sentence.
-     * 
+     *
      * @return the sentiment value.
      */
     public SentenceSentimentValue getSentiment() {
@@ -74,7 +85,7 @@ public final class SentenceSentiment {
 
     /**
      * Set the sentiment property: The predicted Sentiment for the sentence.
-     * 
+     *
      * @param sentiment the sentiment value to set.
      * @return the SentenceSentiment object itself.
      */
@@ -84,9 +95,9 @@ public final class SentenceSentiment {
     }
 
     /**
-     * Get the confidenceScores property: The sentiment confidence score
-     * between 0 and 1 for the sentence for all classes.
-     * 
+     * Get the confidenceScores property: The sentiment confidence score between 0 and 1 for the sentence for all
+     * classes.
+     *
      * @return the confidenceScores value.
      */
     public SentimentConfidenceScorePerLabel getConfidenceScores() {
@@ -94,9 +105,9 @@ public final class SentenceSentiment {
     }
 
     /**
-     * Set the confidenceScores property: The sentiment confidence score
-     * between 0 and 1 for the sentence for all classes.
-     * 
+     * Set the confidenceScores property: The sentiment confidence score between 0 and 1 for the sentence for all
+     * classes.
+     *
      * @param confidenceScores the confidenceScores value to set.
      * @return the SentenceSentiment object itself.
      */
@@ -106,9 +117,8 @@ public final class SentenceSentiment {
     }
 
     /**
-     * Get the offset property: The sentence offset from the start of the
-     * document.
-     * 
+     * Get the offset property: The sentence offset from the start of the document.
+     *
      * @return the offset value.
      */
     public int getOffset() {
@@ -116,9 +126,8 @@ public final class SentenceSentiment {
     }
 
     /**
-     * Set the offset property: The sentence offset from the start of the
-     * document.
-     * 
+     * Set the offset property: The sentence offset from the start of the document.
+     *
      * @param offset the offset value to set.
      * @return the SentenceSentiment object itself.
      */
@@ -128,8 +137,8 @@ public final class SentenceSentiment {
     }
 
     /**
-     * Get the length property: The length of the sentence by Unicode standard.
-     * 
+     * Get the length property: The length of the sentence.
+     *
      * @return the length value.
      */
     public int getLength() {
@@ -137,13 +146,53 @@ public final class SentenceSentiment {
     }
 
     /**
-     * Set the length property: The length of the sentence by Unicode standard.
-     * 
+     * Set the length property: The length of the sentence.
+     *
      * @param length the length value to set.
      * @return the SentenceSentiment object itself.
      */
     public SentenceSentiment setLength(int length) {
         this.length = length;
+        return this;
+    }
+
+    /**
+     * Get the aspects property: The array of aspect object for the sentence.
+     *
+     * @return the aspects value.
+     */
+    public List<SentenceAspect> getAspects() {
+        return this.aspects;
+    }
+
+    /**
+     * Set the aspects property: The array of aspect object for the sentence.
+     *
+     * @param aspects the aspects value to set.
+     * @return the SentenceSentiment object itself.
+     */
+    public SentenceSentiment setAspects(List<SentenceAspect> aspects) {
+        this.aspects = aspects;
+        return this;
+    }
+
+    /**
+     * Get the opinions property: The array of opinion object for the sentence.
+     *
+     * @return the opinions value.
+     */
+    public List<SentenceOpinion> getOpinions() {
+        return this.opinions;
+    }
+
+    /**
+     * Set the opinions property: The array of opinion object for the sentence.
+     *
+     * @param opinions the opinions value to set.
+     * @return the SentenceSentiment object itself.
+     */
+    public SentenceSentiment setOpinions(List<SentenceOpinion> opinions) {
+        this.opinions = opinions;
         return this;
     }
 }

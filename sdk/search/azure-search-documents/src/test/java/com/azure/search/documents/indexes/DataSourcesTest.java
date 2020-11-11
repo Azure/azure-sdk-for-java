@@ -18,11 +18,8 @@ public class DataSourcesTest {
     @Test
     public void canCreateSqlDataSource() {
         // check utility method with minimal overloads
-        SearchIndexerDataSourceConnection expected = new SearchIndexerDataSourceConnection()
-            .setName("sql")
-            .setType(SearchIndexerDataSourceType.AZURE_SQL)
-            .setConnectionString("connectionString")
-            .setContainer(new SearchIndexerDataContainer().setName("table"));
+        SearchIndexerDataSourceConnection expected = new SearchIndexerDataSourceConnection("sql",
+            SearchIndexerDataSourceType.AZURE_SQL, "connectionString", new SearchIndexerDataContainer("table"));
         SearchIndexerDataSourceConnection actual = SearchIndexerDataSources.createFromAzureSql(
             "sql", "connectionString", "table");
 
@@ -32,12 +29,9 @@ public class DataSourcesTest {
     @Test
     public void canCreateStorageBlobDataSource() {
         // check utility method with minimal overloads
-        SearchIndexerDataSourceConnection expected = new SearchIndexerDataSourceConnection()
-            .setName("storageBlob")
-            .setType(SearchIndexerDataSourceType.AZURE_BLOB)
-            .setConnectionString("connectionString")
-            .setContainer(new SearchIndexerDataContainer()
-                .setName("container"));
+        SearchIndexerDataSourceConnection expected = new SearchIndexerDataSourceConnection("storageBlob",
+            SearchIndexerDataSourceType.AZURE_BLOB, "connectionString",
+            new SearchIndexerDataContainer("container"));
         SearchIndexerDataSourceConnection actual = SearchIndexerDataSources.createFromAzureBlobStorage(
             "storageBlob", "connectionString", "container");
 
@@ -47,12 +41,9 @@ public class DataSourcesTest {
     @Test
     public void canCreateStorageTableDataSource() {
         // check utility method with minimal overloads
-        SearchIndexerDataSourceConnection expected = new SearchIndexerDataSourceConnection()
-            .setName("storageTable")
-            .setType(SearchIndexerDataSourceType.AZURE_TABLE)
-            .setConnectionString("connectionString")
-            .setContainer(new SearchIndexerDataContainer()
-            .setName("table"));
+        SearchIndexerDataSourceConnection expected = new SearchIndexerDataSourceConnection("storageTable",
+            SearchIndexerDataSourceType.AZURE_TABLE, "connectionString",
+            new SearchIndexerDataContainer("table"));
         SearchIndexerDataSourceConnection actual = SearchIndexerDataSources.createFromAzureTableStorage(
             "storageTable", "connectionString", "table");
 
@@ -62,12 +53,9 @@ public class DataSourcesTest {
     @Test
     public void canCreateCosmosDataSource() {
         // check utility method overloads
-        SearchIndexerDataSourceConnection expected = new SearchIndexerDataSourceConnection()
-            .setName("cosmos")
-            .setType(SearchIndexerDataSourceType.COSMOS_DB)
-            .setConnectionString("connectionString")
-            .setContainer(new SearchIndexerDataContainer()
-                .setName("collection"));
+        SearchIndexerDataSourceConnection expected = new SearchIndexerDataSourceConnection("cosmos",
+            SearchIndexerDataSourceType.COSMOS_DB, "connectionString",
+            new SearchIndexerDataContainer("collection"));
 
         SearchIndexerDataSourceConnection actual = SearchIndexerDataSources.createFromCosmos("cosmos", "connectionString", "collection", false);
 
@@ -77,13 +65,9 @@ public class DataSourcesTest {
     @Test
     public void canCreateCosmosDataSourceWithMinimalOverload() {
         // check utility method with minimal overloads
-        SearchIndexerDataSourceConnection expected = new SearchIndexerDataSourceConnection()
-            .setName("cosmos")
-            .setType(SearchIndexerDataSourceType.COSMOS_DB)
-            .setConnectionString("connectionString")
-            .setContainer(new SearchIndexerDataContainer()
-                .setName("collection"))
-            .setDataChangeDetectionPolicy(new HighWaterMarkChangeDetectionPolicy().setHighWaterMarkColumnName("_ts"));
+        SearchIndexerDataSourceConnection expected = new SearchIndexerDataSourceConnection("cosmos",
+            SearchIndexerDataSourceType.COSMOS_DB, "connectionString", new SearchIndexerDataContainer("collection"))
+            .setDataChangeDetectionPolicy(new HighWaterMarkChangeDetectionPolicy("_ts"));
 
         SearchIndexerDataSourceConnection actual = SearchIndexerDataSources.createFromCosmos("cosmos",
             "connectionString", "collection");

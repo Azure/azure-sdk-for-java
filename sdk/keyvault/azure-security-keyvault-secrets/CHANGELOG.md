@@ -1,7 +1,38 @@
 # Release History
 
-## 4.2.0-beta.4 (Unreleased)
+## 4.3.0-beta.3 (Unreleased)
 
+
+## 4.3.0-beta.2 (2020-10-09)
+
+### New Features
+- Added `KeyVaultSecretIdentifier`. Use its [`parse`](https://github.com/Azure/azure-sdk-for-java/blob/ff52067a3772a430e5913b898f2806078aec8ef2/sdk/keyvault/azure-security-keyvault-secrets/src/main/java/com/azure/security/keyvault/secrets/models/KeyVaultSecretIdentifier.java#L79) method to parse the different elements of a given secret identifier.
+- Added API overloads that allow for passing specific polling intervals for long-running operations:
+    - `SecretAsyncClient`
+        - `beginDeleteSecret(String, Duration)`
+        - `beginRecoverDeletedSecret(String, Duration)`
+    - `SecretClient`
+        - `beginDeleteSecret(String, Duration)`
+        - `beginRecoverDeletedSecret(String, Duration)`
+- Added support for `com.azure.core.util.ClientOptions` in client builders.
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.9.0`
+- Upgraded `azure-core-http-netty` dependency to `1.6.2`
+- Upgraded `azure-core-http-okhttp` dependency to `1.3.2`
+- Upgraded `azure-core-test` dependency to `1.5.0`
+- Upgraded `azure-identity` dependency to `1.1.3`
+
+## 4.3.0-beta.1 (2020-09-11)
+- Updated versions for azure-core and azure-identity.
+
+## 4.2.0 (2020-08-12)
+- Added support for service version `7.1`.
+- Added `retryPolicy` setter in `SecretClientBuilder`.
+- Added `recoverableDays` property to `SecretProperties`.
+
+## 4.2.0-beta.4 (2020-07-08)
+- Updated versions for azure-core, azure-identity.
 
 ## 4.2.0-beta.3 (2020-06-10)
 - Updated version for azure-core, azure-identity and external dependencies.
@@ -53,7 +84,7 @@ For details on the Azure SDK for Java (September 2019 Preview) release refer to 
 For details on the Azure SDK for Java (August 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview3-java).
 
 ## 4.0.0-preview.2 (2019-08-06)
-For details on the Azure SDK for Java (August 2019 Preview) release refer to the [release announcement](https://aka.ms/azure-sdk-preview2-java).
+For details on the Azure SDK for Java (August 2019 Preview) release refer to the [release announcement](https://azure.github.io/azure-sdk/releases/2019-08-06/java.html).
 
 - Added support for HTTP challenge based authentication, allowing clients to interact with vaults in sovereign clouds.
 - Combined SecretClientBuilder, SecretAsyncClientBuilder into SecretClientBuilder. Methods to create both sync and async clients type were added.
@@ -66,9 +97,9 @@ For details on the Azure SDK for Java (July 2019 Preview) release, you can refer
 
 This library is not a direct replacement for secrets management operations from [microsoft-azure-keyvault](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/keyvault/microsoft-azure-keyvault). Applications using that library would require code changes to use `azure-keyvault-secrets`.
 This package's
-[documentation](https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/README.md)
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-keyvault-secrets_4.0.0-preview.1/keyvault/client/secrets/README.md)
 and
-[samples](https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/src/samples/java)
+[samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-keyvault-secrets_4.0.0-preview.1/keyvault/client/secrets/src/samples/java)
 demonstrate the new API.
 
 
@@ -81,7 +112,7 @@ only)
 - Reactive streams support using [Project Reactor](https://projectreactor.io/).
 - Authentication using `azure-identity` credentials
   - see this package's
-  [documentation](https://github.com/Azure/azure-sdk-for-java/tree/master/keyvault/client/secrets/README.md)
+  [documentation](https://github.com/Azure/azure-sdk-for-java/blob/azure-keyvault-secrets_4.0.0-preview.1/keyvault/client/secrets/README.md)
   , and the
   [Azure Identity documentation](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/identity/azure-identity/README.md)
   for more information

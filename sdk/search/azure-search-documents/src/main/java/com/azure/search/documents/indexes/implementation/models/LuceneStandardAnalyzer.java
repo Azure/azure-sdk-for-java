@@ -7,19 +7,19 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/**
- * Standard Apache Lucene analyzer; Composed of the standard tokenizer,
- * lowercase filter and stop filter.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
+/** Standard Apache Lucene analyzer; Composed of the standard tokenizer, lowercase filter and stop filter. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.StandardAnalyzer")
+@JsonFlatten
 @Fluent
-public final class LuceneStandardAnalyzer extends LexicalAnalyzer {
+public class LuceneStandardAnalyzer extends LexicalAnalyzer {
     /*
      * The maximum token length. Default is 255. Tokens longer than the maximum
      * length are split. The maximum token length that can be used is 300
@@ -35,9 +35,18 @@ public final class LuceneStandardAnalyzer extends LexicalAnalyzer {
     private List<String> stopwords;
 
     /**
-     * Get the maxTokenLength property: The maximum token length. Default is
-     * 255. Tokens longer than the maximum length are split. The maximum token
-     * length that can be used is 300 characters.
+     * Creates an instance of LuceneStandardAnalyzer class.
+     *
+     * @param name the name value to set.
+     */
+    @JsonCreator
+    public LuceneStandardAnalyzer(@JsonProperty(value = "name", required = true) String name) {
+        super(name);
+    }
+
+    /**
+     * Get the maxTokenLength property: The maximum token length. Default is 255. Tokens longer than the maximum length
+     * are split. The maximum token length that can be used is 300 characters.
      *
      * @return the maxTokenLength value.
      */
@@ -46,9 +55,8 @@ public final class LuceneStandardAnalyzer extends LexicalAnalyzer {
     }
 
     /**
-     * Set the maxTokenLength property: The maximum token length. Default is
-     * 255. Tokens longer than the maximum length are split. The maximum token
-     * length that can be used is 300 characters.
+     * Set the maxTokenLength property: The maximum token length. Default is 255. Tokens longer than the maximum length
+     * are split. The maximum token length that can be used is 300 characters.
      *
      * @param maxTokenLength the maxTokenLength value to set.
      * @return the LuceneStandardAnalyzer object itself.

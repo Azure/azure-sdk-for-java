@@ -1,0 +1,21 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.servicebus.windows.net/17d2b79d41?enrich=true&api-version=2017-04",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-messaging-servicebus/7.0.0-beta.4 (11.0.5; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Strict-Transport-Security" : "max-age=31536000",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "<feed xmlns=\"http://www.w3.org/2005/Atom\"><title type=\"text\">Publicly Listed Services</title><subtitle type=\"text\">This is the list of publicly-listed services currently available.</subtitle><id>uuid:b2a5260d-7d50-405b-9cc5-d5e365e93c0b;id=4486</id><updated>2020-07-02T22:49:08Z</updated><generator>Service Bus 1.1</generator></feed>",
+      "Date" : "Thu, 02 Jul 2020 22:49:07 GMT",
+      "Content-Type" : "application/atom+xml;type=feed;charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "17d2b79d41" ]
+}

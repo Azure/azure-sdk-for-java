@@ -7,13 +7,13 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.search.documents.indexes.models.ScoringFunctionAggregation;
+import com.azure.search.documents.indexes.models.TextWeights;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Defines parameters for a search index that influence scoring in search
- * queries.
- */
+/** Defines parameters for a search index that influence scoring in search queries. */
 @Fluent
 public final class ScoringProfile {
     /*
@@ -38,11 +38,20 @@ public final class ScoringProfile {
     /*
      * A value indicating how the results of individual scoring functions
      * should be combined. Defaults to "Sum". Ignored if there are no scoring
-     * functions. Possible values include: 'Sum', 'Average', 'Minimum',
-     * 'Maximum', 'FirstMatching'
+     * functions.
      */
     @JsonProperty(value = "functionAggregation")
     private ScoringFunctionAggregation functionAggregation;
+
+    /**
+     * Creates an instance of ScoringProfile class.
+     *
+     * @param name the name value to set.
+     */
+    @JsonCreator
+    public ScoringProfile(@JsonProperty(value = "name", required = true) String name) {
+        this.name = name;
+    }
 
     /**
      * Get the name property: The name of the scoring profile.
@@ -54,19 +63,7 @@ public final class ScoringProfile {
     }
 
     /**
-     * Set the name property: The name of the scoring profile.
-     *
-     * @param name the name value to set.
-     * @return the ScoringProfile object itself.
-     */
-    public ScoringProfile setName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    /**
-     * Get the textWeights property: Parameters that boost scoring based on
-     * text matches in certain index fields.
+     * Get the textWeights property: Parameters that boost scoring based on text matches in certain index fields.
      *
      * @return the textWeights value.
      */
@@ -75,8 +72,7 @@ public final class ScoringProfile {
     }
 
     /**
-     * Set the textWeights property: Parameters that boost scoring based on
-     * text matches in certain index fields.
+     * Set the textWeights property: Parameters that boost scoring based on text matches in certain index fields.
      *
      * @param textWeights the textWeights value to set.
      * @return the ScoringProfile object itself.
@@ -87,8 +83,7 @@ public final class ScoringProfile {
     }
 
     /**
-     * Get the functions property: The collection of functions that influence
-     * the scoring of documents.
+     * Get the functions property: The collection of functions that influence the scoring of documents.
      *
      * @return the functions value.
      */
@@ -97,8 +92,7 @@ public final class ScoringProfile {
     }
 
     /**
-     * Set the functions property: The collection of functions that influence
-     * the scoring of documents.
+     * Set the functions property: The collection of functions that influence the scoring of documents.
      *
      * @param functions the functions value to set.
      * @return the ScoringProfile object itself.
@@ -109,10 +103,8 @@ public final class ScoringProfile {
     }
 
     /**
-     * Get the functionAggregation property: A value indicating how the results
-     * of individual scoring functions should be combined. Defaults to "Sum".
-     * Ignored if there are no scoring functions. Possible values include:
-     * 'Sum', 'Average', 'Minimum', 'Maximum', 'FirstMatching'.
+     * Get the functionAggregation property: A value indicating how the results of individual scoring functions should
+     * be combined. Defaults to "Sum". Ignored if there are no scoring functions.
      *
      * @return the functionAggregation value.
      */
@@ -121,10 +113,8 @@ public final class ScoringProfile {
     }
 
     /**
-     * Set the functionAggregation property: A value indicating how the results
-     * of individual scoring functions should be combined. Defaults to "Sum".
-     * Ignored if there are no scoring functions. Possible values include:
-     * 'Sum', 'Average', 'Minimum', 'Maximum', 'FirstMatching'.
+     * Set the functionAggregation property: A value indicating how the results of individual scoring functions should
+     * be combined. Defaults to "Sum". Ignored if there are no scoring functions.
      *
      * @param functionAggregation the functionAggregation value to set.
      * @return the ScoringProfile object itself.

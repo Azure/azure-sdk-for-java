@@ -5,6 +5,7 @@ package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Immutable;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -31,46 +32,46 @@ public final class FormTable {
     /*
      * The 1 based page number.
      */
-    private final Integer pageNumber;
+    private final int pageNumber;
 
     /**
      * Constructs a FormTable object.
      *
-     * @param rowCount Number of rows.
-     * @param columnCount Number of columns.
-     * @param cells ist of cells contained in the table.
+     * @param rowCount the number of rows in the table.
+     * @param columnCount the number of columns in the table.
+     * @param cells the list of cells contained in the table.
      * @param pageNumber the 1-based page number in the input document.
      */
     public FormTable(final int rowCount, final int columnCount, final List<FormTableCell> cells,
-        final Integer pageNumber) {
+        final int pageNumber) {
         this.rowCount = rowCount;
         this.columnCount = columnCount;
-        this.cells = cells;
+        this.cells = cells == null ? null : Collections.unmodifiableList(cells);
         this.pageNumber = pageNumber;
     }
 
     /**
-     * Get the rows property: Number of rows.
+     * Get the number of rows in the table.
      *
-     * @return the rows value.
+     * @return the number of rows in the table.
      */
     public int getRowCount() {
         return this.rowCount;
     }
 
     /**
-     * Get the columns property: Number of columns.
+     * Get the number of columns in the table.
      *
-     * @return the columns value.
+     * @return the number of columns in the table.
      */
     public int getColumnCount() {
         return this.columnCount;
     }
 
     /**
-     * Get the cells property: List of cells contained in the table.
+     * Get the list of cells contained in the table.
      *
-     * @return the cells value.
+     * @return the unmodifiable list of cells in the table.
      */
     public List<FormTableCell> getCells() {
         return this.cells;
@@ -79,9 +80,9 @@ public final class FormTable {
     /**
      * Get the 1-based page number in the input document.
      *
-     * @return the page number value.
+     * @return the 1-based page number in the input document.
      */
-    public Integer getPageNumber() {
+    public int getPageNumber() {
         return this.pageNumber;
     }
 }

@@ -233,6 +233,11 @@ public final class BlobErrorCode extends ExpandableStringEnum<BlobErrorCode> {
     public static final BlobErrorCode BLOB_ALREADY_EXISTS = fromString("BlobAlreadyExists");
 
     /**
+     * Static value BlobImmutableDueToPolicy for BlobErrorCode.
+     */
+    public static final BlobErrorCode BLOB_IMMUTABLE_DUE_TO_POLICY = fromString("BlobImmutableDueToPolicy");
+
+    /**
      * Static value BlobNotFound for BlobErrorCode.
      */
     public static final BlobErrorCode BLOB_NOT_FOUND = fromString("BlobNotFound");

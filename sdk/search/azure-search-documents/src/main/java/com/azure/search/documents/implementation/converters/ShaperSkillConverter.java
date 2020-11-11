@@ -4,7 +4,6 @@
 package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
-import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
 import com.azure.search.documents.indexes.models.ShaperSkill;
 
 import java.util.List;
@@ -21,19 +20,11 @@ public final class ShaperSkillConverter {
         if (obj == null) {
             return null;
         }
-        ShaperSkill shaperSkill = new ShaperSkill();
 
-        if (obj.getOutputs() != null) {
-            List<OutputFieldMappingEntry> outputs =
-                obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            shaperSkill.setOutputs(outputs);
-        }
+        List<InputFieldMappingEntry> inputs = obj.getInputs() == null ? null
+            : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
 
-        if (obj.getInputs() != null) {
-            List<InputFieldMappingEntry> inputs =
-                obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            shaperSkill.setInputs(inputs);
-        }
+        ShaperSkill shaperSkill = new ShaperSkill(inputs, obj.getOutputs());
 
         String name = obj.getName();
         shaperSkill.setName(name);
@@ -53,20 +44,13 @@ public final class ShaperSkillConverter {
         if (obj == null) {
             return null;
         }
+
+        List<com.azure.search.documents.indexes.implementation.models.InputFieldMappingEntry> inputs =
+            obj.getOutputs() == null ? null
+                : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
         com.azure.search.documents.indexes.implementation.models.ShaperSkill shaperSkill =
-            new com.azure.search.documents.indexes.implementation.models.ShaperSkill();
+            new com.azure.search.documents.indexes.implementation.models.ShaperSkill(inputs, obj.getOutputs());
 
-        if (obj.getOutputs() != null) {
-            List<com.azure.search.documents.indexes.implementation.models.OutputFieldMappingEntry> outputs =
-                obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            shaperSkill.setOutputs(outputs);
-        }
-
-        if (obj.getInputs() != null) {
-            List<com.azure.search.documents.indexes.implementation.models.InputFieldMappingEntry> inputs =
-                obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            shaperSkill.setInputs(inputs);
-        }
 
         String name = obj.getName();
         shaperSkill.setName(name);
@@ -76,6 +60,7 @@ public final class ShaperSkillConverter {
 
         String description = obj.getDescription();
         shaperSkill.setDescription(description);
+
         return shaperSkill;
     }
 

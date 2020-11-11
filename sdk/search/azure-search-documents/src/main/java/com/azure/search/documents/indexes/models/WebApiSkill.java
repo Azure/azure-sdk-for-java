@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.Duration;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -55,23 +56,26 @@ public final class WebApiSkill extends SearchIndexerSkill {
     private Integer degreeOfParallelism;
 
     /**
+     * Constructor of {@link SearchIndexerSkill}.
+     *
+     * @param inputs Inputs of the skills could be a column in the source data set, or the
+     * output of an upstream skill.
+     * @param outputs The output of a skill is either a field in a search index, or a value
+     * that can be consumed as an input by another skill.
+     * @param uri The url for the Web API.
+     */
+    public WebApiSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs, String uri) {
+        super(inputs, outputs);
+        this.uri = uri;
+    }
+
+    /**
      * Get the uri property: The url for the Web API.
      *
      * @return the uri value.
      */
     public String getUri() {
         return this.uri;
-    }
-
-    /**
-     * Set the uri property: The url for the Web API.
-     *
-     * @param uri the uri value to set.
-     * @return the WebApiSkill object itself.
-     */
-    public WebApiSkill setUri(String uri) {
-        this.uri = uri;
-        return this;
     }
 
     /**

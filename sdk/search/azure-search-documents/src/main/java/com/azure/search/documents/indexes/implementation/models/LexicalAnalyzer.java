@@ -7,15 +7,19 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * Base type for analyzers.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type", defaultImpl = LexicalAnalyzer.class)
+/** Base type for analyzers. */
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "@odata\\.type",
+        defaultImpl = LexicalAnalyzer.class)
 @JsonTypeName("LexicalAnalyzer")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.CustomAnalyzer", value = CustomAnalyzer.class),
@@ -23,6 +27,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.StandardAnalyzer", value = LuceneStandardAnalyzer.class),
     @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.StopAnalyzer", value = StopAnalyzer.class)
 })
+@JsonFlatten
 @Fluent
 public class LexicalAnalyzer {
     /*
@@ -34,26 +39,22 @@ public class LexicalAnalyzer {
     private String name;
 
     /**
-     * Get the name property: The name of the analyzer. It must only contain
-     * letters, digits, spaces, dashes or underscores, can only start and end
-     * with alphanumeric characters, and is limited to 128 characters.
+     * Creates an instance of LexicalAnalyzer class.
+     *
+     * @param name the name value to set.
+     */
+    @JsonCreator
+    public LexicalAnalyzer(@JsonProperty(value = "name", required = true) String name) {
+        this.name = name;
+    }
+
+    /**
+     * Get the name property: The name of the analyzer. It must only contain letters, digits, spaces, dashes or
+     * underscores, can only start and end with alphanumeric characters, and is limited to 128 characters.
      *
      * @return the name value.
      */
     public String getName() {
         return this.name;
-    }
-
-    /**
-     * Set the name property: The name of the analyzer. It must only contain
-     * letters, digits, spaces, dashes or underscores, can only start and end
-     * with alphanumeric characters, and is limited to 128 characters.
-     *
-     * @param name the name value to set.
-     * @return the LexicalAnalyzer object itself.
-     */
-    public LexicalAnalyzer setName(String name) {
-        this.name = name;
-        return this;
     }
 }

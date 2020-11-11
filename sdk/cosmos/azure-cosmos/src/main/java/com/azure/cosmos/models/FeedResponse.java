@@ -37,6 +37,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
     private final static String defaultPartition = "0";
     private final CosmosDiagnostics cosmosDiagnostics;
     private QueryInfo queryInfo;
+    private QueryInfo.QueryPlanDiagnosticsContext queryPlanDiagnosticsContext;
 
     FeedResponse(List<T> results, Map<String, String> headers) {
         this(results, headers, false, false, new ConcurrentHashMap<>());
@@ -414,4 +415,12 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         return this.queryInfo;
     }
 
+    QueryInfo.QueryPlanDiagnosticsContext getQueryPlanDiagnosticsContext() {
+        return queryPlanDiagnosticsContext;
+    }
+
+    void setQueryPlanDiagnosticsContext(QueryInfo.QueryPlanDiagnosticsContext queryPlanDiagnosticsContext) {
+        this.queryPlanDiagnosticsContext = queryPlanDiagnosticsContext;
+        BridgeInternal.setQueryPlanDiagnosticsContext(cosmosDiagnostics, queryPlanDiagnosticsContext);
+    }
 }

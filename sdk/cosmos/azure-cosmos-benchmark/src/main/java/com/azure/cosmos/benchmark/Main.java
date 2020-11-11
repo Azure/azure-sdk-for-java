@@ -3,11 +3,13 @@
 
 package com.azure.cosmos.benchmark;
 
+import com.azure.cosmos.benchmark.ctl.AsyncCtlWorkload;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.azure.cosmos.benchmark.Configuration.Operation.CtlWorkload;
 import static com.azure.cosmos.benchmark.Configuration.Operation.ReadThroughputWithMultipleClients;
 
 public class Main {
@@ -34,7 +36,10 @@ public class Main {
             } else {
                 if(cfg.getOperationType().equals(ReadThroughputWithMultipleClients)) {
                     asyncMultiClientBenchmark(cfg);
-                } else {
+                } else if(cfg.getOperationType().equals(CtlWorkload)) {
+                    asyncCtlWorkload(cfg);
+                }
+                else {
                     asyncBenchmark(cfg);
                 }
             }
@@ -57,6 +62,16 @@ public class Main {
                         "for write latency and write throughput operations");
                 }
         }
+
+        switch (cfg.getOperationType()) {
+            case ReadLatency:
+            case ReadThroughput:
+                break;
+            default:
+                if (cfg.getSparsityWaitTime() != null) {
+                    throw new IllegalArgumentException("sparsityWaitTime is not supported for " + cfg.getOperationType());
+                }
+        }
     }
 
     private static void syncBenchmark(Configuration cfg) throws Exception {
@@ -67,6 +82,11 @@ public class Main {
                 case ReadThroughput:
                 case ReadLatency:
                     benchmark = new SyncReadBenchmark(cfg);
+                    break;
+
+                case WriteLatency:
+                case WriteThroughput:
+                    benchmark = new SyncWriteBenchmark(cfg);
                     break;
 
                 default:
@@ -105,6 +125,7 @@ public class Main {
                 case QueryTopOrderby:
                 case QueryAggregateTopOrderby:
                 case QueryInClauseParallel:
+                case ReadAllItemsOfLogicalPartition:
                     benchmark = new AsyncQueryBenchmark(cfg);
                     break;
 
@@ -138,6 +159,20 @@ public class Main {
         AsynReadWithMultipleClients<?> benchmark = null;
         try {
             benchmark = new AsynReadWithMultipleClients<>(cfg);
+            LOGGER.info("Starting {}", cfg.getOperationType());
+            benchmark.run();
+        } finally {
+            if (benchmark != null) {
+                benchmark.shutdown();
+            }
+        }
+    }
+
+    private static void asyncCtlWorkload(Configuration cfg) throws Exception {
+        LOGGER.info("Async ctl workload");
+        AsyncCtlWorkload benchmark = null;
+        try {
+            benchmark = new AsyncCtlWorkload(cfg);
             LOGGER.info("Starting {}", cfg.getOperationType());
             benchmark.run();
         } finally {

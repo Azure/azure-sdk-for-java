@@ -31,6 +31,19 @@ public final class PatternCaptureTokenFilter extends TokenFilter {
     private Boolean preserveOriginal;
 
     /**
+     * Constructor of {@link PatternCaptureTokenFilter}.
+     *
+     * @param name The name of the token filter. It must only contain letters, digits,
+     * spaces, dashes or underscores, can only start and end with alphanumeric
+     * characters, and is limited to 128 characters.
+     * @param patterns A list of patterns to match against each token.
+     */
+    public PatternCaptureTokenFilter(String name, List<String> patterns) {
+        super(name);
+        this.patterns = patterns;
+    }
+
+    /**
      * Get the patterns property: A list of patterns to match against each
      * token.
      *
@@ -38,18 +51,6 @@ public final class PatternCaptureTokenFilter extends TokenFilter {
      */
     public List<String> getPatterns() {
         return this.patterns;
-    }
-
-    /**
-     * Set the patterns property: A list of patterns to match against each
-     * token.
-     *
-     * @param patterns the patterns value to set.
-     * @return the PatternCaptureTokenFilter object itself.
-     */
-    public PatternCaptureTokenFilter setPatterns(List<String> patterns) {
-        this.patterns = patterns;
-        return this;
     }
 
     /**

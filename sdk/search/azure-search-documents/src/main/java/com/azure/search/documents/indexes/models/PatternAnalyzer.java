@@ -5,9 +5,11 @@ package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -42,6 +44,17 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
      */
     @JsonProperty(value = "stopwords")
     private List<String> stopwords;
+
+    /**
+     * Constructor of {@link PatternAnalyzer}.
+     *
+     * @param name The name of the analyzer. It must only contain letters, digits, spaces,
+     * dashes or underscores, can only start and end with alphanumeric
+     * characters, and is limited to 128 characters.
+     */
+    public PatternAnalyzer(String name) {
+        super(name);
+    }
 
     /**
      * Get the lowerCaseTerms property: A value indicating whether terms should
@@ -104,6 +117,18 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
      * @param flags the flags value to set.
      * @return the PatternAnalyzer object itself.
      */
+    public PatternAnalyzer setFlags(RegexFlags... flags) {
+        this.flags = (flags == null) ? null : Arrays.asList(flags);
+        return this;
+    }
+
+    /**
+     * Set the flags property: Regular expression flags.
+     *
+     * @param flags the flags value to set.
+     * @return the PatternAnalyzer object itself.
+     */
+    @JsonSetter
     public PatternAnalyzer setFlags(List<RegexFlags> flags) {
         this.flags = flags;
         return this;
@@ -124,6 +149,18 @@ public final class PatternAnalyzer extends LexicalAnalyzer {
      * @param stopwords the stopwords value to set.
      * @return the PatternAnalyzer object itself.
      */
+    public PatternAnalyzer setStopwords(String... stopwords) {
+        this.stopwords = (stopwords == null) ? null : Arrays.asList(stopwords);
+        return this;
+    }
+
+    /**
+     * Set the stopwords property: A list of stopwords.
+     *
+     * @param stopwords the stopwords value to set.
+     * @return the PatternAnalyzer object itself.
+     */
+    @JsonSetter
     public PatternAnalyzer setStopwords(List<String> stopwords) {
         this.stopwords = stopwords;
         return this;

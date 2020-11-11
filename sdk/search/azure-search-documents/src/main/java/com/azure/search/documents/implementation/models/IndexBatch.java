@@ -7,12 +7,11 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Contains a batch of document write actions to send to the index.
- */
+/** Contains a batch of document write actions to send to the index. */
 @Fluent
 public final class IndexBatch {
     /*
@@ -22,22 +21,21 @@ public final class IndexBatch {
     private List<IndexAction> actions;
 
     /**
+     * Creates an instance of IndexBatch class.
+     *
+     * @param actions the actions value to set.
+     */
+    @JsonCreator
+    public IndexBatch(@JsonProperty(value = "value", required = true) List<IndexAction> actions) {
+        this.actions = actions;
+    }
+
+    /**
      * Get the actions property: The actions in the batch.
      *
      * @return the actions value.
      */
     public List<IndexAction> getActions() {
         return this.actions;
-    }
-
-    /**
-     * Set the actions property: The actions in the batch.
-     *
-     * @param actions the actions value to set.
-     * @return the IndexBatch object itself.
-     */
-    public IndexBatch setActions(List<IndexAction> actions) {
-        this.actions = actions;
-        return this;
     }
 }

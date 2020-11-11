@@ -4,10 +4,7 @@
 package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
-import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
 import com.azure.search.documents.indexes.models.SplitSkill;
-import com.azure.search.documents.indexes.models.SplitSkillLanguage;
-import com.azure.search.documents.indexes.models.TextSplitMode;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,19 +20,10 @@ public final class SplitSkillConverter {
         if (obj == null) {
             return null;
         }
-        SplitSkill splitSkill = new SplitSkill();
 
-        if (obj.getOutputs() != null) {
-            List<OutputFieldMappingEntry> outputs =
-                obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            splitSkill.setOutputs(outputs);
-        }
-
-        if (obj.getInputs() != null) {
-            List<InputFieldMappingEntry> inputs =
-                obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            splitSkill.setInputs(inputs);
-        }
+        List<InputFieldMappingEntry> inputs = obj.getInputs() == null ? null
+            : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
+        SplitSkill splitSkill = new SplitSkill(inputs, obj.getOutputs());
 
         String name = obj.getName();
         splitSkill.setName(name);
@@ -50,13 +38,11 @@ public final class SplitSkillConverter {
         splitSkill.setMaximumPageLength(maximumPageLength);
 
         if (obj.getTextSplitMode() != null) {
-            TextSplitMode textSplitMode = TextSplitModeConverter.map(obj.getTextSplitMode());
-            splitSkill.setTextSplitMode(textSplitMode);
+            splitSkill.setTextSplitMode(obj.getTextSplitMode());
         }
 
         if (obj.getDefaultLanguageCode() != null) {
-            SplitSkillLanguage defaultLanguageCode = SplitSkillLanguageConverter.map(obj.getDefaultLanguageCode());
-            splitSkill.setDefaultLanguageCode(defaultLanguageCode);
+            splitSkill.setDefaultLanguageCode(obj.getDefaultLanguageCode());
         }
         return splitSkill;
     }
@@ -68,20 +54,13 @@ public final class SplitSkillConverter {
         if (obj == null) {
             return null;
         }
+
+        List<com.azure.search.documents.indexes.implementation.models.InputFieldMappingEntry> inputs =
+            obj.getOutputs() == null ? null
+                : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
+
         com.azure.search.documents.indexes.implementation.models.SplitSkill splitSkill =
-            new com.azure.search.documents.indexes.implementation.models.SplitSkill();
-
-        if (obj.getOutputs() != null) {
-            List<com.azure.search.documents.indexes.implementation.models.OutputFieldMappingEntry> outputs =
-                obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            splitSkill.setOutputs(outputs);
-        }
-
-        if (obj.getInputs() != null) {
-            List<com.azure.search.documents.indexes.implementation.models.InputFieldMappingEntry> inputs =
-                obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-            splitSkill.setInputs(inputs);
-        }
+            new com.azure.search.documents.indexes.implementation.models.SplitSkill(inputs, obj.getOutputs());
 
         String name = obj.getName();
         splitSkill.setName(name);
@@ -96,16 +75,13 @@ public final class SplitSkillConverter {
         splitSkill.setMaximumPageLength(maximumPageLength);
 
         if (obj.getTextSplitMode() != null) {
-            com.azure.search.documents.indexes.implementation.models.TextSplitMode textSplitMode =
-                TextSplitModeConverter.map(obj.getTextSplitMode());
-            splitSkill.setTextSplitMode(textSplitMode);
+            splitSkill.setTextSplitMode(obj.getTextSplitMode());
         }
 
         if (obj.getDefaultLanguageCode() != null) {
-            com.azure.search.documents.indexes.implementation.models.SplitSkillLanguage defaultLanguageCode =
-                SplitSkillLanguageConverter.map(obj.getDefaultLanguageCode());
-            splitSkill.setDefaultLanguageCode(defaultLanguageCode);
+            splitSkill.setDefaultLanguageCode(obj.getDefaultLanguageCode());
         }
+
         return splitSkill;
     }
 

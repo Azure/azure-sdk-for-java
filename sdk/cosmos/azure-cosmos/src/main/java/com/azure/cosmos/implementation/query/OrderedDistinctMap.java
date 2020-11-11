@@ -2,30 +2,36 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.query;
 
-import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.Resource;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.routing.UInt128;
 
-import java.security.NoSuchAlgorithmException;
+import java.io.IOException;
 
 public class OrderedDistinctMap extends DistinctMap {
-    private volatile String lastHash;
+    private volatile UInt128 lastHash;
 
-    public OrderedDistinctMap(String lastHash) {
+    public OrderedDistinctMap(UInt128 lastHash) {
         this.lastHash = lastHash;
     }
 
     @Override
-    public boolean add(Resource resource, Utils.ValueHolder<String> outHash) {
+    public boolean add(Object resource, Utils.ValueHolder<UInt128> outHash) {
         try {
-            outHash.v = getHash(resource);
+            if (resource instanceof Resource) {
+                // We do this to ensure the property order in document should not effect the hash
+                resource = getSortedJsonStringValueFromResource((Resource)resource);
+            }
+            outHash.v = DistinctHash.getHash(resource);
             // value should be true if hashes are not equal
-            final boolean value = !StringUtils.equals(lastHash, outHash.v);
+            boolean value = true;
+            if (lastHash != null) {
+                value = !(outHash.v.equals(lastHash));
+            }
             lastHash = outHash.v;
             return value;
-        } catch (JsonProcessingException | NoSuchAlgorithmException e) {
-            throw new IllegalStateException(e);
+        } catch (IOException e) {
+            throw new IllegalStateException("Failed to add value to distinct map", e);
         }
     }
 }

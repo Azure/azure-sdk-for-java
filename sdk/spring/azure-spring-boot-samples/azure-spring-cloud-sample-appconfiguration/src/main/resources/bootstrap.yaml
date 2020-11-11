@@ -1,0 +1,8 @@
+# Use default application name and no profile configured
+# Keys starting with /application/ will be matched
+spring:
+  cloud:
+    azure:
+      appconfiguration:
+        stores:
+          - connection-string: ${CONFIG_STORE_CONNECTION_STRING}

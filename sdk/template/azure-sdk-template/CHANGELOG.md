@@ -1,6 +1,47 @@
 # Release History
 
-## 1.0.4-beta.20 (Unreleased)
+## 1.2.1-beta.16 (2020-10-16)
+
+- Demo for training
+
+## 1.2.1-beta.3 (Unreleased)
+
+
+## 1.2.1-beta.2 (2020-09-04)
+- Test release tag replacement 
+
+## 1.2.1-beta.1 (2020-08-27)
+- Test alpha and beta qualifiers 
+
+## 1.1.0 (2020-07-29)
+- Test Java Release Pipeline on a non-beta version (normal docs, normal sources)
+
+## 1.1.0-beta.2 (2020-07-29)
+- Test Java Release Pipeline (normal docs, normal sources)
+
+## 1.1.0-beta.1 (2020-07-29)
+- Test Java Release Pipeline (normal docs, normal sources)
+
+## 1.0.5 (2020-07-17)
+- Test Java Release Pipeline on a non-beta version (normal docs, normal sources)
+
+## 1.0.4-beta.25 (2020-07-15)
+- Test Java Release Pipeline (normal docs, normal sources)
+
+## 1.0.4-beta.24 (2020-07-13)
+- Test Java Release Pipeline (normal docs, normal sources)
+
+## 1.0.4-beta.23 (2020-07-13)
+- Test Java Release Pipeline (normal docs, normal sources)
+
+## 1.0.4-beta.22 (2020-07-13)
+- Test Java Release Pipeline (normal docs, normal sources)
+
+## 1.0.4-beta.21 (2020-07-13)
+- Test Java Release Pipeline (normal docs, normal sources)
+
+## 1.0.4-beta.20 (2020-07-13)
+- Test Java Release Pipeline (normal docs, normal sources)
 
 ## 1.0.4-beta.19 (2020-05-20)
 - Test Java Release Pipeline (normal docs, normal sources)

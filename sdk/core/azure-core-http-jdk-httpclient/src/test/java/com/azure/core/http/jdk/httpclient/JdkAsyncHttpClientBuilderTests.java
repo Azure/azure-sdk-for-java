@@ -11,7 +11,13 @@ import com.azure.core.util.Configuration;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
+import java.util.Arrays;
+import java.util.Properties;
+import java.util.Set;
+import java.util.TreeSet;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledForJreRange;
+import org.junit.jupiter.api.condition.JRE;
 import reactor.test.StepVerifier;
 
 import java.net.InetSocketAddress;
@@ -20,12 +26,17 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 /**
  * Tests {@link JdkAsyncHttpClientBuilder}.
  */
+@DisabledForJreRange(max = JRE.JAVA_11)
 public class JdkAsyncHttpClientBuilderTests {
     /**
      * Tests that an {@link JdkAsyncHttpClient} is able to be built from an existing
@@ -231,4 +242,104 @@ public class JdkAsyncHttpClientBuilderTests {
             }
         }
     }
+
+    @Test
+    void testDefaultRestrictedHeaders() {
+        JdkAsyncHttpClientBuilder jdkAsyncHttpClientBuilder = spy(new JdkAsyncHttpClientBuilder());
+        when(jdkAsyncHttpClientBuilder.getNetworkProperties()).thenReturn(new Properties());
+
+        validateRestrictedHeaders(jdkAsyncHttpClientBuilder, JdkAsyncHttpClientBuilder.DEFAULT_RESTRICTED_HEADERS, 5);
+    }
+
+    @Test
+    void testAllowedHeadersFromNetworkProperties() {
+        JdkAsyncHttpClientBuilder jdkAsyncHttpClientBuilder = spy(new JdkAsyncHttpClientBuilder());
+        Properties properties = new Properties();
+        properties.put("jdk.httpclient.allowRestrictedHeaders", "content-length, upgrade");
+        when(jdkAsyncHttpClientBuilder.getNetworkProperties()).thenReturn(properties);
+
+        Set<String> expectedRestrictedHeaders = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+        expectedRestrictedHeaders.addAll(JdkAsyncHttpClientBuilder.DEFAULT_RESTRICTED_HEADERS);
+        expectedRestrictedHeaders.removeAll(Arrays.asList("content-length", "upgrade"));
+
+        validateRestrictedHeaders(jdkAsyncHttpClientBuilder, expectedRestrictedHeaders, 3);
+    }
+
+    @Test
+    void testAllowedHeadersFromConfiguration() {
+        Configuration configuration = Configuration.getGlobalConfiguration();
+        configuration.put("jdk.httpclient.allowRestrictedHeaders", "content-length, upgrade");
+
+        JdkAsyncHttpClientBuilder jdkAsyncHttpClientBuilder = spy(
+            new JdkAsyncHttpClientBuilder().configuration(configuration));
+
+        Properties properties = new Properties();
+        when(jdkAsyncHttpClientBuilder.getNetworkProperties()).thenReturn(properties);
+
+        Set<String> expectedRestrictedHeaders = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+        expectedRestrictedHeaders.addAll(JdkAsyncHttpClientBuilder.DEFAULT_RESTRICTED_HEADERS);
+        expectedRestrictedHeaders.removeAll(Arrays.asList("content-length", "upgrade"));
+
+        validateRestrictedHeaders(jdkAsyncHttpClientBuilder, expectedRestrictedHeaders, 3);
+    }
+
+    @Test
+    void testAllowedHeadersFromBoth() {
+        Configuration configuration = Configuration.getGlobalConfiguration();
+        configuration.put("jdk.httpclient.allowRestrictedHeaders", "content-length, upgrade");
+
+        JdkAsyncHttpClientBuilder jdkAsyncHttpClientBuilder = spy(
+            new JdkAsyncHttpClientBuilder().configuration(configuration));
+
+        Properties properties = new Properties();
+        properties.put("jdk.httpclient.allowRestrictedHeaders", "host, connection, upgrade");
+        when(jdkAsyncHttpClientBuilder.getNetworkProperties()).thenReturn(properties);
+
+        Set<String> expectedRestrictedHeaders = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+        expectedRestrictedHeaders.addAll(JdkAsyncHttpClientBuilder.DEFAULT_RESTRICTED_HEADERS);
+        expectedRestrictedHeaders.removeAll(Arrays.asList("content-length", "host", "connection", "upgrade"));
+
+        validateRestrictedHeaders(jdkAsyncHttpClientBuilder, expectedRestrictedHeaders, 1);
+    }
+
+    @Test
+    void testAllowedHeadersFromSystemProperties() {
+        System.setProperty("jdk.httpclient.allowRestrictedHeaders", "content-length, upgrade");
+
+        JdkAsyncHttpClientBuilder jdkAsyncHttpClientBuilder = spy(new JdkAsyncHttpClientBuilder());
+        Properties properties = new Properties();
+        when(jdkAsyncHttpClientBuilder.getNetworkProperties()).thenReturn(properties);
+
+        Set<String> expectedRestrictedHeaders = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+        expectedRestrictedHeaders.addAll(JdkAsyncHttpClientBuilder.DEFAULT_RESTRICTED_HEADERS);
+        expectedRestrictedHeaders.removeAll(Arrays.asList("content-length", "upgrade"));
+
+        validateRestrictedHeaders(jdkAsyncHttpClientBuilder, expectedRestrictedHeaders, 3);
+    }
+
+    @Test
+    void testCaseInsensitivity() {
+        System.setProperty("jdk.httpclient.allowRestrictedHeaders", "content-LENGTH");
+
+        JdkAsyncHttpClientBuilder jdkAsyncHttpClientBuilder = spy(new JdkAsyncHttpClientBuilder());
+        Properties properties = new Properties();
+        when(jdkAsyncHttpClientBuilder.getNetworkProperties()).thenReturn(properties);
+
+        Set<String> restrictedHeaders = jdkAsyncHttpClientBuilder.getRestrictedHeaders();
+        assertTrue(restrictedHeaders.contains("Connection"), "connection header is missing");
+        assertTrue(restrictedHeaders.contains("connection"), "connection header is missing");
+        assertTrue(restrictedHeaders.contains("CONNECTION"), "connection header is missing");
+
+        assertFalse(restrictedHeaders.contains("Content-Length"), "content-length not removed");
+        assertFalse(restrictedHeaders.contains("content-length"), "content-length not removed");
+        assertFalse(restrictedHeaders.contains("CONTENT-length"), "content-length not removed");
+    }
+
+    private void validateRestrictedHeaders(JdkAsyncHttpClientBuilder jdkAsyncHttpClientBuilder,
+        Set<String> expectedRestrictedHeaders, int expectedRestrictedHeadersSize) {
+        Set<String> restrictedHeaders = jdkAsyncHttpClientBuilder.getRestrictedHeaders();
+        assertEquals(expectedRestrictedHeadersSize, restrictedHeaders.size());
+        assertEquals(expectedRestrictedHeaders, restrictedHeaders);
+    }
+
 }

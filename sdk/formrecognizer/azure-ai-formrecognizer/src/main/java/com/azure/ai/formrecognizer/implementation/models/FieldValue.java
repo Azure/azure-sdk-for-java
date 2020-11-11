@@ -68,6 +68,12 @@ public final class FieldValue {
     private Map<String, FieldValue> valueObject;
 
     /*
+     * Selection mark value.
+     */
+    @JsonProperty(value = "valueSelectionMark")
+    private FieldValueSelectionMark valueSelectionMark;
+
+    /*
      * Text content of the extracted field.
      */
     @JsonProperty(value = "text")
@@ -275,6 +281,26 @@ public final class FieldValue {
      */
     public FieldValue setValueObject(Map<String, FieldValue> valueObject) {
         this.valueObject = valueObject;
+        return this;
+    }
+
+    /**
+     * Get the valueSelectionMark property: Selection mark value.
+     *
+     * @return the valueSelectionMark value.
+     */
+    public FieldValueSelectionMark getValueSelectionMark() {
+        return this.valueSelectionMark;
+    }
+
+    /**
+     * Set the valueSelectionMark property: Selection mark value.
+     *
+     * @param valueSelectionMark the valueSelectionMark value to set.
+     * @return the FieldValue object itself.
+     */
+    public FieldValue setValueSelectionMark(FieldValueSelectionMark valueSelectionMark) {
+        this.valueSelectionMark = valueSelectionMark;
         return this;
     }
 

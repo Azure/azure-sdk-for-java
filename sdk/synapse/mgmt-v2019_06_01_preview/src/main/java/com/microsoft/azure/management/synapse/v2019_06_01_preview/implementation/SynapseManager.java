@@ -53,6 +53,7 @@ import com.microsoft.azure.management.synapse.v2019_06_01_preview.IntegrationRun
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.IntegrationRuntimeStatusOperations;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.PrivateLinkResources;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.PrivateEndpointConnections;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.PrivateLinkHubs;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -97,6 +98,7 @@ public final class SynapseManager extends ManagerCore<SynapseManager, SynapseMan
     private IntegrationRuntimeStatusOperations integrationRuntimeStatusOperations;
     private PrivateLinkResources privateLinkResources;
     private PrivateEndpointConnections privateEndpointConnections;
+    private PrivateLinkHubs privateLinkHubs;
     /**
     * Get a Configurable instance that can be used to create SynapseManager with optional configuration.
     *
@@ -512,6 +514,16 @@ public final class SynapseManager extends ManagerCore<SynapseManager, SynapseMan
             this.privateEndpointConnections = new PrivateEndpointConnectionsImpl(this);
         }
         return this.privateEndpointConnections;
+    }
+
+    /**
+     * @return Entry point to manage PrivateLinkHubs.
+     */
+    public PrivateLinkHubs privateLinkHubs() {
+        if (this.privateLinkHubs == null) {
+            this.privateLinkHubs = new PrivateLinkHubsImpl(this);
+        }
+        return this.privateLinkHubs;
     }
 
     /**

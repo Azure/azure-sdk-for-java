@@ -32,10 +32,10 @@ public class PeekMessageAsyncSample {
             .queueName("<<queue-name>>")
             .buildAsyncClient();
 
-        receiver.peek().subscribe(
+        receiver.peekMessage().subscribe(
             message -> {
                 System.out.println("Received Message Id: " + message.getMessageId());
-                System.out.println("Received Message: " + new String(message.getBody()));
+                System.out.println("Received Message: " + message.getBody().toString());
             },
             error -> System.err.println("Error occurred while receiving message: " + error),
             () -> System.out.println("Receiving complete."));

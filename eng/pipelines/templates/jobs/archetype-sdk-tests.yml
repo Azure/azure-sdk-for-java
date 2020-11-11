@@ -7,53 +7,52 @@ parameters:
   Matrix:
     Linux - Java 8 (AzureCloud):
       OSVmImage: 'ubuntu-18.04'
-      JavaVersion: '1.8'
+      JavaTestVersion: '1.8'
       DisplayName: 'Linux - Java 8'
-      SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
       AZURE_TEST_HTTP_CLIENTS: netty
     macOS - Java 8 (AzureCloud):
       OSVmImage: 'macOS-10.15'
-      JavaVersion: '1.8'
+      JavaTestVersion: '1.8'
       DisplayName: 'macOS - Java 8'
-      SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
       AZURE_TEST_HTTP_CLIENTS: okhttp
     Windows - Java 8 (AzureCloud):
       OSVmImage: 'windows-2019'
-      JavaVersion: '1.8'
+      JavaTestVersion: '1.8'
       DisplayName: 'Windows - Java 8'
-      SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
       AZURE_TEST_HTTP_CLIENTS: netty
     Linux - Java 11 (AzureCloud):
       OSVmImage: 'ubuntu-18.04'
-      JavaVersion: '1.11'
+      JavaTestVersion: '1.11'
       DisplayName: 'Linux - Java 11'
-      SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
       AZURE_TEST_HTTP_CLIENTS: okhttp
     macOS - Java 11 (AzureCloud):
       OSVmImage: 'macOS-10.15'
-      JavaVersion: '1.11'
+      JavaTestVersion: '1.11'
       DisplayName: 'macOS - Java 11'
-      SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
       AZURE_TEST_HTTP_CLIENTS: netty
     Windows - Java 11 (AzureCloud):
       OSVmImage: 'windows-2019'
-      JavaVersion: '1.11'
+      JavaTestVersion: '1.11'
       DisplayName: 'Windows - Java 11'
-      SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
       AZURE_TEST_HTTP_CLIENTS: okhttp
   PreRunSteps: []
   PostRunSteps: []
   TestName: LiveTest
+  TestCanary: false
   TimeoutInMinutes: 60
   TestStepMavenInputs:
-    options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -pl $(ProjectList)'
+    options: '$(DefaultOptions) -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -DtrimStackTrace=false -pl $(ProjectList)'
     mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
     javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '$(JavaVersion)'
+    jdkVersionOption: '$(JavaTestVersion)'
     jdkArchitectureOption: 'x64'
     publishJUnitResults: false
-    goals: 'test'
+    goals: 'verify'
   TestResultsFiles: ''
+  SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+  ResourceGroupLocationCanary: "centraluseuap"
+  ArmTemplateParameters: '@{}'
+  Location: ''
 
 jobs:
   - job: ${{ parameters.TestName }}
@@ -63,10 +62,23 @@ jobs:
       - template: ../variables/globals.yml
       # Default $(SubscriptionConfiguration) if the matrix does not specify a $(SubscriptionConfiguration)
       - name: SubscriptionConfiguration
-        value: $(sub-config-azure-cloud-test-resources)
+        value: ${{ parameters.SubscriptionConfiguration }}
+      - name: ArmTemplateParameters
+        value: ${{ parameters.ArmTemplateParameters }}
+      - name: Location
+        value: ${{ parameters.Location }}
 
     strategy:
-      matrix: ${{ parameters.Matrix }}
+      matrix:
+        ${{ insert }}: ${{ parameters.Matrix }}
+        ${{ if eq(parameters.TestCanary, 'true') }}:
+          Linux - Java 11 (AzureCloudCanary):
+            OSVmImage: 'ubuntu-18.04'
+            JavaTestVersion: '1.11'
+            DisplayName: 'Linux - Java 11'
+            SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)
+            Location: ${{ parameters.ResourceGroupLocationCanary }}
+            AZURE_TEST_HTTP_CLIENTS: netty
       maxParallel: ${{ parameters.MaxParallel }}
 
     pool:
@@ -82,6 +94,8 @@ jobs:
           parameters:
             ServiceDirectory: '${{ parameters.ServiceDirectory }}'
             SubscriptionConfiguration: $(SubscriptionConfiguration)
+            ArmTemplateParameters: $(ArmTemplateParameters)
+            Location: $(Location)
 
       - ${{ parameters.PreRunSteps }}
 
@@ -91,19 +105,19 @@ jobs:
           AdditionalModules: ${{parameters.AdditionalModules}}
 
       - task: Maven@3
-        displayName: 'Build and Install'
+        displayName: 'Build and Install, JDK Version: $(JavaBuildVersion)'
         inputs:
           mavenPomFile: pom.xml
           goals: 'install'
           options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.11'
+          jdkVersionOption: $(JavaBuildVersion)
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
 
       - task: Maven@3
-        displayName: $(DisplayName)
+        displayName: 'Run tests: $(DisplayName)'
         inputs:
           mavenPomFile: pom.xml
           ${{ insert }}: ${{ parameters.TestStepMavenInputs }}
@@ -117,6 +131,7 @@ jobs:
             ServiceDirectory: '${{ parameters.ServiceDirectory }}'
             SubscriptionConfiguration: $(SubscriptionConfiguration)
 
+      - template: ../steps/upload-repository-on-failure.yml
 
       - task: PublishTestResults@2
         condition: always()

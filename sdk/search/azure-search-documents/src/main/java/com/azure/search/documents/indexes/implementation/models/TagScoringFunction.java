@@ -7,14 +7,13 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.search.documents.indexes.models.TagScoringParameters;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * Defines a function that boosts scores of documents with string values
- * matching a given list of tags.
- */
+/** Defines a function that boosts scores of documents with string values matching a given list of tags. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("tag")
 @Fluent
@@ -26,24 +25,27 @@ public final class TagScoringFunction extends ScoringFunction {
     private TagScoringParameters parameters;
 
     /**
-     * Get the parameters property: Parameter values for the tag scoring
-     * function.
+     * Creates an instance of TagScoringFunction class.
+     *
+     * @param fieldName the fieldName value to set.
+     * @param boost the boost value to set.
+     * @param parameters the parameters value to set.
+     */
+    @JsonCreator
+    public TagScoringFunction(
+            @JsonProperty(value = "fieldName", required = true) String fieldName,
+            @JsonProperty(value = "boost", required = true) double boost,
+            @JsonProperty(value = "tag", required = true) TagScoringParameters parameters) {
+        super(fieldName, boost);
+        this.parameters = parameters;
+    }
+
+    /**
+     * Get the parameters property: Parameter values for the tag scoring function.
      *
      * @return the parameters value.
      */
     public TagScoringParameters getParameters() {
         return this.parameters;
-    }
-
-    /**
-     * Set the parameters property: Parameter values for the tag scoring
-     * function.
-     *
-     * @param parameters the parameters value to set.
-     * @return the TagScoringFunction object itself.
-     */
-    public TagScoringFunction setParameters(TagScoringParameters parameters) {
-        this.parameters = parameters;
-        return this;
     }
 }

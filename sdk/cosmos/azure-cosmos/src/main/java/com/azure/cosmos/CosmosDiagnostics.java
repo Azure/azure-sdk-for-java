@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.Utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -18,13 +19,13 @@ public final class CosmosDiagnostics {
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosDiagnostics.class);
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-    private static final String USER_AGENT = Utils.getUserAgent();
-
     private ClientSideRequestStatistics clientSideRequestStatistics;
     private FeedResponseDiagnostics feedResponseDiagnostics;
 
-    CosmosDiagnostics() {
-        this.clientSideRequestStatistics = new ClientSideRequestStatistics();
+    static final String USER_AGENT = Utils.getUserAgent();
+
+    CosmosDiagnostics(DiagnosticsClientContext diagnosticsClientContext) {
+        this.clientSideRequestStatistics = new ClientSideRequestStatistics(diagnosticsClientContext);
     }
 
     CosmosDiagnostics(FeedResponseDiagnostics feedResponseDiagnostics) {
@@ -48,8 +49,8 @@ public final class CosmosDiagnostics {
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("userAgent=").append(USER_AGENT).append(System.lineSeparator());
         if (this.feedResponseDiagnostics != null) {
+            stringBuilder.append("userAgent=").append(USER_AGENT).append(System.lineSeparator());
             stringBuilder.append(feedResponseDiagnostics);
         } else {
             try {
@@ -74,5 +75,9 @@ public final class CosmosDiagnostics {
         }
 
         return this.clientSideRequestStatistics.getDuration();
+    }
+
+    FeedResponseDiagnostics getFeedResponseDiagnostics() {
+        return feedResponseDiagnostics;
     }
 }

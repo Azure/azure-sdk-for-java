@@ -1,0 +1,29 @@
+[
+  {
+    "topic": "/subscriptions/{subscription id}/resourceGroups/amsResourceGroup/providers/Microsoft.Media/mediaservices/amsaccount",
+    "subject": "transforms/VideoAnalyzerTransform/jobs/{job id}",
+    "eventType": "Microsoft.Maps.GeofenceResult",
+    "eventTime": "2018-04-20T21:26:13.8978772Z",
+    "id": "<id>",
+    "data": {
+      "expiredGeofenceGeometryId": [
+        "id1",
+        "id2"
+      ],
+      "geometries": [
+        {
+          "deviceId": "id1",
+          "distance": 1.0,
+          "geometryId": "gid1",
+          "nearestLat": 72.4,
+          "nearestLon": 100.4,
+          "udId": "id22"
+        }
+      ],
+      "invalidPeriodGeofenceGeometryId": null,
+      "isEventPublished": true
+    },
+    "dataVersion": "1.0",
+    "metadataVersion": "1"
+  }
+]

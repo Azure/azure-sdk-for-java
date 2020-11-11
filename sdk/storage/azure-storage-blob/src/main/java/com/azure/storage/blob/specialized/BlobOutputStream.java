@@ -9,8 +9,10 @@ import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.options.BlockBlobOutputStreamOptions;
 import com.azure.storage.blob.models.PageBlobRequestConditions;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.ParallelTransferOptions;
@@ -72,10 +74,26 @@ public abstract class BlobOutputStream extends StorageOutputStream {
      */
     public static BlobOutputStream blockBlobOutputStream(final BlobAsyncClient client,
         final ParallelTransferOptions parallelTransferOptions, final BlobHttpHeaders headers,
-        final Map<String, String> metadata, final AccessTier tier, final BlobRequestConditions requestConditions,
-        Context context) {
-        return new BlockBlobOutputStream(client, parallelTransferOptions, headers, metadata, tier, requestConditions,
+        final Map<String, String> metadata, final AccessTier tier,
+        final BlobRequestConditions requestConditions, Context context) {
+        return blockBlobOutputStream(client, new BlockBlobOutputStreamOptions()
+                .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
+                .setTier(tier).setRequestConditions(requestConditions),
             context);
+    }
+
+    /**
+     * Creates a block blob output stream from a BlobAsyncClient
+     * @param client {@link BlobAsyncClient} The blob client.
+     * @param options {@link BlockBlobOutputStreamOptions}
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return {@link BlobOutputStream} associated with the blob.
+     */
+    public static BlobOutputStream blockBlobOutputStream(final BlobAsyncClient client,
+        BlockBlobOutputStreamOptions options, Context context) {
+        options = options == null ? new BlockBlobOutputStreamOptions() : options;
+        return new BlockBlobOutputStream(client, options.getParallelTransferOptions(), options.getHeaders(),
+            options.getMetadata(), options.getTags(), options.getTier(), options.getRequestConditions(), context);
     }
 
     static BlobOutputStream pageBlobOutputStream(final PageBlobAsyncClient client, final PageRange pageRange,
@@ -186,9 +204,9 @@ public abstract class BlobOutputStream extends StorageOutputStream {
 
         private BlockBlobOutputStream(final BlobAsyncClient client,
             final ParallelTransferOptions parallelTransferOptions, final BlobHttpHeaders headers,
-            final Map<String, String> metadata, final AccessTier tier, final BlobRequestConditions requestConditions,
-            Context context) {
-            super(BlockBlobClient.MAX_STAGE_BLOCK_BYTES);
+            final Map<String, String> metadata, Map<String, String> tags, final AccessTier tier,
+            final BlobRequestConditions requestConditions, Context context) {
+            super(Integer.MAX_VALUE); // writeThreshold is effectively not used by BlockBlobOutputStream.
             // There is a bug in reactor core that does not handle converting Context.NONE to a reactor context.
             context = context == null || context.equals(Context.NONE) ? null : context;
 
@@ -202,10 +220,16 @@ public abstract class BlobOutputStream extends StorageOutputStream {
              subscribe. */
             fbb.subscribe();
 
-            client.uploadWithResponse(fbb, parallelTransferOptions, headers, metadata, tier, requestConditions)
+            client.uploadWithResponse(new BlobParallelUploadOptions(fbb).
+                setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
+                .setTags(tags).setTier(tier).setRequestConditions(requestConditions))
                 // This allows the operation to continue while maintaining the error that occurred.
-                .onErrorResume(BlobStorageException.class, e -> {
-                    this.lastError = new IOException(e);
+                .onErrorResume(e -> {
+                    if (e instanceof IOException) {
+                        this.lastError = (IOException) e;
+                    } else {
+                        this.lastError = new IOException(e);
+                    }
                     return Mono.empty();
                 })
                 .doOnTerminate(() -> {
@@ -242,6 +266,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
 
         @Override
         protected void writeInternal(final byte[] data, int offset, int length) {
+            this.checkStreamState();
             sink.next(ByteBuffer.wrap(data, offset, length));
         }
 

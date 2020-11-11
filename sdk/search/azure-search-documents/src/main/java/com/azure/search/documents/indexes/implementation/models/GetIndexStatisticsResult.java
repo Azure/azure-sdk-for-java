@@ -6,14 +6,14 @@
 
 package com.azure.search.documents.indexes.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Statistics for a given index. Statistics are collected periodically and are
- * not guaranteed to always be up-to-date.
+ * Statistics for a given index. Statistics are collected periodically and are not guaranteed to always be up-to-date.
  */
-@Fluent
+@Immutable
 public final class GetIndexStatisticsResult {
     /*
      * The number of documents in the index.
@@ -28,6 +28,22 @@ public final class GetIndexStatisticsResult {
     private long storageSize;
 
     /**
+     * Creates an instance of GetIndexStatisticsResult class.
+     *
+     * @param documentCount the documentCount value to set.
+     * @param storageSize the storageSize value to set.
+     */
+    @JsonCreator
+    public GetIndexStatisticsResult(
+            @JsonProperty(value = "documentCount", required = true, access = JsonProperty.Access.WRITE_ONLY)
+                    long documentCount,
+            @JsonProperty(value = "storageSize", required = true, access = JsonProperty.Access.WRITE_ONLY)
+                    long storageSize) {
+        this.documentCount = documentCount;
+        this.storageSize = storageSize;
+    }
+
+    /**
      * Get the documentCount property: The number of documents in the index.
      *
      * @return the documentCount value.
@@ -37,8 +53,7 @@ public final class GetIndexStatisticsResult {
     }
 
     /**
-     * Get the storageSize property: The amount of storage in bytes consumed by
-     * the index.
+     * Get the storageSize property: The amount of storage in bytes consumed by the index.
      *
      * @return the storageSize value.
      */

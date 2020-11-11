@@ -7,10 +7,16 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -77,6 +83,65 @@ public class JacksonAdapterTests {
 
         public String getValue() {
             return value;
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("deserializeJsonSupplier")
+    public void deserializeJson(String json, OffsetDateTime expected) throws IOException {
+        DateTimeWrapper wrapper = JacksonAdapter.createDefaultSerializerAdapter()
+            .deserialize(json, DateTimeWrapper.class, SerializerEncoding.JSON);
+
+        assertEquals(expected, wrapper.getOffsetDateTime());
+    }
+
+    private static Stream<Arguments> deserializeJsonSupplier() {
+        final String jsonFormat = "{\"OffsetDateTime\":\"%s\"}";
+        OffsetDateTime minValue = OffsetDateTime.of(1, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
+        OffsetDateTime unixEpoch = OffsetDateTime.of(1970, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
+
+        return Stream.of(
+            Arguments.of(String.format(jsonFormat, "0001-01-01T00:00:00"), minValue),
+            Arguments.of(String.format(jsonFormat, "0001-01-01T00:00:00Z"), minValue),
+            Arguments.of(String.format(jsonFormat, "1970-01-01T00:00:00"), unixEpoch),
+            Arguments.of(String.format(jsonFormat, "1970-01-01T00:00:00Z"), unixEpoch)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("deserializeXmlSupplier")
+    public void deserializeXml(String xml, OffsetDateTime expected) throws IOException {
+        DateTimeWrapper wrapper = JacksonAdapter.createDefaultSerializerAdapter()
+            .deserialize(xml, DateTimeWrapper.class, SerializerEncoding.XML);
+
+        assertEquals(expected, wrapper.getOffsetDateTime());
+    }
+
+    private static Stream<Arguments> deserializeXmlSupplier() {
+        final String xmlFormat = "<Wrapper><OffsetDateTime>%s</OffsetDateTime></Wrapper>";
+        OffsetDateTime minValue = OffsetDateTime.of(1, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
+        OffsetDateTime unixEpoch = OffsetDateTime.of(1970, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
+
+        return Stream.of(
+            Arguments.of(String.format(xmlFormat, "0001-01-01T00:00:00"), minValue),
+            Arguments.of(String.format(xmlFormat, "0001-01-01T00:00:00Z"), minValue),
+            Arguments.of(String.format(xmlFormat, "1970-01-01T00:00:00"), unixEpoch),
+            Arguments.of(String.format(xmlFormat, "1970-01-01T00:00:00Z"), unixEpoch)
+        );
+    }
+
+    @JacksonXmlRootElement(localName = "Wrapper")
+    private static class DateTimeWrapper {
+        @JsonProperty(value = "OffsetDateTime", required = true)
+        private OffsetDateTime offsetDateTime;
+
+        public DateTimeWrapper setOffsetDateTime(OffsetDateTime offsetDateTime) {
+            this.offsetDateTime = offsetDateTime;
+            return this;
+        }
+
+        public OffsetDateTime getOffsetDateTime() {
+            return offsetDateTime;
         }
     }
 }

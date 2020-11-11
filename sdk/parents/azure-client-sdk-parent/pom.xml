@@ -388,6 +388,29 @@
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
         <version>3.0.0</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>attach-artifacts</id>
+            <phase>package</phase>
+            <goals>
+              <goal>attach-artifact</goal>
+            </goals>
+            <configuration>
+              <artifacts>
+                <artifact>
+                  <file>${basedir}/README.md</file>
+                  <type>md</type>
+                  <classifier>readme</classifier>
+                </artifact>
+                <artifact>
+                  <file>${basedir}/CHANGELOG.md</file>
+                  <type>md</type>
+                  <classifier>changelog</classifier>
+                </artifact>
+              </artifacts>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
 
       <!-- Checks public surface area for breaking changes. -->
@@ -427,33 +450,6 @@
       </plugin>
 
       <plugin>
-        <groupId>net.jonathangiles.tools</groupId>
-        <artifactId>whitelistgenerator-maven-plugin</artifactId>
-        <version>1.0.1</version> <!-- {x-version-update;net.jonathangiles.tools:whitelistgenerator-maven-plugin;external_dependency} -->
-        <executions>
-          <execution>
-            <id>generateWhitelistReport</id>
-            <phase>package</phase>
-            <goals>
-              <goal>report</goal>
-            </goals>
-            <configuration>
-              <baseDir>.</baseDir>
-              <reportFile>target/dependency-whitelist.json</reportFile>
-              <ignoredGA>
-                <param>com.azure:azure-cosmos-examples</param>
-                <param>com.azure:azure-cosmos-benchmark</param>
-                <param>com.azure:azure-core-test</param>
-                <param>com.azure:azure-e2e</param>
-                <param>com.azure:azure-storage-perf</param>
-                <param>com.azure:perf-test-core</param>
-              </ignoredGA>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-
-      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
         <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
@@ -474,8 +470,10 @@
                 <exclude>*:*:*:*:compile</exclude>
                 <exclude>*:*:*:*:provided</exclude>
               </excludes>
-              <includes>
+              <includes combine.children="append">
                 <include>com.azure:*</include>
+                <include>com.azure.resourcemanager:*</include>
+                <include>com.azure.spring:*</include>
 
                 <!-- Used by many libraries to bring in annotations used by Reactor -->
                 <include>com.google.code.findbugs:jsr305:[3.0.2]</include> <!-- {x-include-update;com.google.code.findbugs:jsr305;external_dependency} -->
@@ -494,11 +492,6 @@
             This rule is used to enforce that all modules depend on the same version of particular dependencies or
             plugins.
             -->
-            <requireSameVersions>
-              <dependencies>
-                <dependency>com.azure.*</dependency>
-              </dependencies>
-            </requireSameVersions>
           </rules>
           <fail>true</fail>
         </configuration>
@@ -530,10 +523,12 @@
             <excludePackageNames>
               *.impl*:
               *.implementation*:
+              *.samples:
               com.azure.tools.checkstyle*:
               com.azure.core.test*:
               com.azure.endtoend*:
               com.azure.perf*
+              com.azure.storage.internal.avro*
             </excludePackageNames>
             <!-- CosmosSkip - This is temporary, BridgeInternal gets converted to implementation -->
             <sourceFileExcludes>
@@ -546,16 +541,20 @@
               <group>
                 <title>Azure Core</title>
                 <packages>
-                  com.azure.core:com.azure.core.annotation:com.azure.core.credentials:com.azure.core.exception:com.azure.core.http*:com.azure.core.configuration:com.azure.core.util*:com.azure.core.credential:com.azure.core.cryptography
+                  com.azure.core:com.azure.core.annotation:com.azure.core.credential:com.azure.core.cryptography:com.azure.core.exception:com.azure.core.http*:com.azure.core.models*:com.azure.core.util*
                 </packages>
               </group>
               <group>
                 <title>Azure Core - AMQP</title>
-                <packages>com.azure.core.amqp*</packages>
+                <packages>com.azure.core.amqp:com.azure.core.amqp.exception*:com.azure.core.amqp.models*</packages>
               </group>
               <group>
-                <title>Azure Core - Authentication</title>
-                <packages>com.azure.core.auth*</packages>
+                <title>Azure Core - AMQP Experimental</title>
+                <packages>com.azure.core.amqp.experimental*</packages>
+              </group>
+              <group>
+                <title>Azure Core - Experimental</title>
+                <packages>com.azure.core.experimental*</packages>
               </group>
               <group>
                 <title>Azure Core - HTTP - Netty</title>
@@ -570,12 +569,32 @@
                 <packages>com.azure.core.management*</packages>
               </group>
               <group>
+                <title>Azure Core - Serializer - Avro - Apache</title>
+                <packages>com.azure.core.serializer.avro.apache*</packages>
+              </group>
+              <group>
+                <title>Azure Core - Serializer - Avro - Jackson</title>
+                <packages>com.azure.core.serializer.avro.jackson*</packages>
+              </group>
+              <group>
                 <title>Azure Core - Serializer - JSON - Gson</title>
                 <packages>com.azure.core.serializer.json.gson*</packages>
               </group>
               <group>
                 <title>Azure Core - Serializer - JSON - Jackson</title>
                 <packages>com.azure.core.serializer.json.jackson*</packages>
+              </group>
+              <group>
+                <title>Azure Core - Test</title>
+                <packages>com.azure.core.test*</packages>
+              </group>
+              <group>
+                <title>Azure Core - Tracing - OpenTelemetry</title>
+                <packages>com.azure.core.tracing.opentelemetry*</packages>
+              </group>
+              <group>
+                <title>Azure Anomaly Detector</title>
+                <packages>com.azure.ai.anomalydetector*</packages>
               </group>
               <group>
                 <title>Azure App Configuration</title>
@@ -590,6 +609,10 @@
                 <packages>com.azure.messaging.eventhubs*</packages>
               </group>
               <group>
+                <title>Azure Digital Twins</title>
+                <packages>com.azure.digitaltwins.core*</packages>
+              </group>
+              <group>
                 <title>Azure Form Recognizer</title>
                 <packages>com.azure.ai.formrecognizer*</packages>
               </group>
@@ -602,8 +625,8 @@
                 <packages>com.azure.security.keyvault*</packages>
               </group>
               <group>
-                <title>Azure Search</title>
-                <packages>com.azure.search*</packages>
+                <title>Azure Search Documents</title>
+                <packages>com.azure.search.documents*</packages>
               </group>
               <group>
                 <title>Azure Service Bus</title>
@@ -622,6 +645,10 @@
                 <packages>com.azure.storage.blob.batch*</packages>
               </group>
               <group>
+                <title>Azure Storage Blob - Changefeed</title>
+                <packages>com.azure.storage.blob.changefeed*</packages>
+              </group>
+              <group>
                 <title>Azure Storage Blobs - Cryptography</title>
                 <packages>com.azure.storage.blob.cryptography*</packages>
               </group>
@@ -630,8 +657,8 @@
                 <packages>com.azure.storage.blob.nio*</packages>
               </group>
               <group>
-                <title>Azure Storage - Files</title>
-                <packages>com.azure.storage.file*</packages>
+                <title>Azure Storage Files - Share</title>
+                <packages>com.azure.storage.file.share*</packages>
               </group>
               <group>
                 <title>Azure Storage Files - Data Lake</title>
@@ -642,13 +669,12 @@
                 <packages>com.azure.storage.queue*</packages>
               </group>
               <group>
-                <title>Azure Telemetry</title>
-                <title>Azure Telemetry - OpenTelemetry</title>
-                <packages>com.azure.core.tracing*</packages>
-              </group>
-              <group>
                 <title>Azure Text Analytics</title>
                 <packages>com.azure.ai.textanalytics*</packages>
+              </group>
+              <group>
+                <title>Azure Resource Manager</title>
+                <packages>com.azure.resourcemanager*</packages>
               </group>
             </groups>
             <links>
@@ -675,7 +701,6 @@
             <quiet>true</quiet>
           </configuration>
         </plugin>
-
         <plugin>
           <groupId>com.github.spotbugs</groupId>
           <artifactId>spotbugs-maven-plugin</artifactId>
@@ -819,9 +844,12 @@
                 -snippetpath ${project.basedir}/sdk/core/azure-core/src/samples/java
                 -snippetpath ${project.basedir}/sdk/core/azure-core-http-netty/src/samples/java
                 -snippetpath ${project.basedir}/sdk/core/azure-core-http-okhttp/src/samples/java
+                -snippetpath ${project.basedir}/sdk/core/azure-core-serializer-avro-apache/src/samples/java
+                -snippetpath ${project.basedir}/sdk/core/azure-core-serializer-avro-jackson/src/samples/java
                 -snippetpath ${project.basedir}/sdk/core/azure-core-serializer-json-gson/src/samples/java
                 -snippetpath ${project.basedir}/sdk/core/azure-core-serializer-json-jackson/src/samples/java
                 -snippetpath ${project.basedir}/sdk/cosmos/azure-cosmos/src/samples/java
+                -snippetpath ${project.basedir}/sdk/core/azure-digitaltwins-core/src/samples/java
                 -snippetpath ${project.basedir}/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java
                 -snippetpath ${project.basedir}/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-certificates/src/samples/java
@@ -830,6 +858,7 @@
                 -snippetpath ${project.basedir}/sdk/servicebus/azure-messaging-servicebus/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob-batch/src/samples/java
+                -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob-changefeed/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-blob-cryptography/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-common/src/samples/java
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-file-datalake/src/samples/java
@@ -1064,63 +1093,6 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
-              <argLine>
-                <!-- KeyVault tests fail without these exports. -->
-                --add-exports com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
-                --add-exports com.azure.core/com.azure.core.implementation.serializer.jackson=ALL-UNNAMED
-                --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
-                --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
-
-                <!-- Needed for JUnit offline instrumentation -->
-                --add-reads com.azure.core=ALL-UNNAMED
-                --add-reads com.azure.core.test=ALL-UNNAMED
-                --add-reads com.azure.core.amqp=ALL-UNNAMED
-
-                <!-- JUnit5 and Mockito use reflection to create objects. -->
-                --add-opens com.azure.core/com.azure.core=ALL-UNNAMED
-                --add-opens com.azure.core/com.azure.core.http.rest=ALL-UNNAMED
-                --add-opens com.azure.core/com.azure.core.util.logging=ALL-UNNAMED
-                --add-opens com.azure.core/com.azure.core.util.polling=ALL-UNNAMED
-                --add-opens com.azure.core/com.azure.core.util.serializer=ALL-UNNAMED
-                --add-opens com.azure.core/com.azure.core.http=ALL-UNNAMED
-                --add-opens com.azure.core/com.azure.core.http.policy=ALL-UNNAMED
-                --add-opens com.azure.core/com.azure.core.http.rest=ALL-UNNAMED
-                --add-opens com.azure.core/com.azure.core.util=ALL-UNNAMED
-                --add-opens com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
-                --add-opens com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
-                --add-opens com.azure.ai.formrecognizer/com.azure.ai.formrecognizer=ALL-UNNAMED
-                --add-opens com.azure.ai.textanalytics/com.azure.ai.textanalytics=ALL-UNNAMED
-                --add-opens com.azure.ai.textanalytics/com.azure.ai.textanalytics.implementation.models=com.azure.core
-                --add-opens com.azure.data.appconfiguration/com.azure.data.appconfiguration=ALL-UNNAMED
-                --add-opens com.azure.security.keyvault.certificates/com.azure.security.keyvault.certificates=ALL-UNNAMED
-                --add-opens com.azure.security.keyvault.secrets/com.azure.security.keyvault.secrets=ALL-UNNAMED
-                --add-opens com.azure.security.keyvault.keys/com.azure.security.keyvault.keys.cryptography=ALL-UNNAMED
-                --add-opens com.azure.security.keyvault.keys/com.azure.security.keyvault.keys=ALL-UNNAMED
-
-                <!-- Cosmos module need this -->
-                --add-opens com.azure.cosmos/com.azure.cosmos=ALL-UNNAMED
-                --add-opens com.azure.cosmos/com.azure.cosmos.implementation=ALL-UNNAMED
-                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.caches=ALL-UNNAMED
-                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.http=ALL-UNNAMED
-                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.directconnectivity=ALL-UNNAMED
-                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.query=ALL-UNNAMED
-                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.routing=ALL-UNNAMED
-                --add-opens com.azure.cosmos/com.azure.cosmos.models=ALL-UNNAMED
-                --add-opens com.azure.cosmos/com.azure.cosmos.rx=ALL-UNNAMED
-                --add-opens com.azure.cosmos/com.azure.cosmos.rx.proxy=ALL-UNNAMED
-
-                <!-- AMQP tests fail without this. ArgumentCaptor requires reflection. -->
-                --add-opens com.azure.core.amqp/com.azure.core.amqp.implementation=ALL-UNNAMED
-                --add-opens com.azure.core.amqp/com.azure.core.amqp.implementation.handler=ALL-UNNAMED
-
-                <!-- Checkpoint store tests fail without this -->
-                --add-opens com.azure.messaging.eventhubs.checkpointstore.blob/com.azure.messaging.eventhubs.checkpointstore.blob=ALL-UNNAMED
-                --add-reads com.azure.messaging.eventhubs=ALL-UNNAMED
-
-                <!-- Azure-core needs to open the test entities to Jackson for unit tests to operate -->
-                --add-opens com.azure.core/com.azure.core.implementation.entities=com.fasterxml.jackson.databind
-                --add-opens com.azure.core/com.azure.core.implementation.entities=ALL-UNNAMED
-              </argLine>
               <systemPropertyVariables>
                 <jacoco-agent.destfile>${project.build.directory}/jacoco.exec</jacoco-agent.destfile>
               </systemPropertyVariables>
@@ -1221,76 +1193,6 @@
                     <argument>${project.basedir}</argument>
                   </arguments>
                 </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
-      <id>changelog</id>
-      <activation>
-        <file>
-          <exists>${basedir}/CHANGELOG.md</exists>
-        </file>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-antrun-plugin</artifactId>
-            <version>1.8</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
-            <executions>
-              <execution>
-                <id>copy-changelog</id>
-                <phase>package</phase>
-                <configuration>
-                  <target>
-                    <echo>Copying ${project.basedir}/CHANGELOG.md to
-                      ${packageOutputDirectory}/${project.build.finalName}-changelog.md
-                    </echo>
-                    <copy file="${project.basedir}/CHANGELOG.md" tofile="${packageOutputDirectory}/${project.build.finalName}-changelog.md"/>
-                  </target>
-                </configuration>
-                <goals>
-                  <goal>run</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
-      <id>readme</id>
-      <activation>
-        <file>
-          <exists>${basedir}/README.md</exists>
-        </file>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-antrun-plugin</artifactId>
-            <version>1.8</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
-            <executions>
-              <execution>
-                <id>copy-readme</id>
-                <phase>package</phase>
-                <configuration>
-                  <target>
-                    <echo>Copying ${project.basedir}/README.md to
-                      ${packageOutputDirectory}/${project.build.finalName}-readme.md
-                    </echo>
-                    <copy file="${project.basedir}/README.md" tofile="${packageOutputDirectory}/${project.build.finalName}-readme.md"/>
-                  </target>
-                </configuration>
-                <goals>
-                  <goal>run</goal>
-                </goals>
               </execution>
             </executions>
           </plugin>
@@ -1472,6 +1374,31 @@
               </execution>
             </executions>
           </plugin>
+          <plugin>
+            <groupId>net.jonathangiles.tools</groupId>
+            <artifactId>whitelistgenerator-maven-plugin</artifactId>
+            <version>1.0.2</version> <!-- {x-version-update;net.jonathangiles.tools:whitelistgenerator-maven-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>generateAllowlistReport</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>report</goal>
+                </goals>
+                <configuration>
+                  <baseDir>.</baseDir>
+                  <reportFile>target/dependency-allowlist.json</reportFile>
+                  <ignoredGA>
+                    <param>com.azure:azure-cosmos-benchmark</param>
+                    <param>com.azure:azure-core-test</param>
+                    <param>com.azure:azure-e2e</param>
+                    <param>com.azure:azure-storage-perf</param>
+                    <param>com.azure:perf-test-core</param>
+                  </ignoredGA>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
         </plugins>
       </build>
     </profile>
@@ -1493,7 +1420,204 @@
               <systemPropertyVariables>
                 <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
                 <junit.jupiter.execution.parallel.mode.default>concurrent</junit.jupiter.execution.parallel.mode.default>
-                <junit.jupiter.execution.parallel.mode.classes.default>concurrent</junit.jupiter.execution.parallel.mode.classes.default>
+              </systemPropertyVariables>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>parallel-test-playback-no-azure-test-mode-env</id>
+      <activation>
+        <property>
+          <name>!env.AZURE_TEST_MODE</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+              <systemPropertyVariables>
+                <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
+                <junit.jupiter.execution.parallel.mode.default>concurrent</junit.jupiter.execution.parallel.mode.default>
+              </systemPropertyVariables>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>parallel-test-playback-azure-test-mode-playback-env</id>
+      <activation>
+        <property>
+          <name>env.AZURE_TEST_MODE</name>
+          <value>PLAYBACK</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+              <systemPropertyVariables>
+                <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
+                <junit.jupiter.execution.parallel.mode.default>concurrent</junit.jupiter.execution.parallel.mode.default>
+              </systemPropertyVariables>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>parallel-test-playback-no-azure-test-mode-prop</id>
+      <activation>
+        <property>
+          <name>AZURE_TEST_MODE</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+              <systemPropertyVariables>
+                <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
+                <junit.jupiter.execution.parallel.mode.default>concurrent</junit.jupiter.execution.parallel.mode.default>
+              </systemPropertyVariables>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>parallel-test-playback-azure-test-mode-playback-prop</id>
+      <activation>
+        <property>
+          <name>AZURE_TEST_MODE</name>
+          <value>PLAYBACK</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+              <systemPropertyVariables>
+                <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
+                <junit.jupiter.execution.parallel.mode.default>concurrent</junit.jupiter.execution.parallel.mode.default>
+              </systemPropertyVariables>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>sequential-test-azure-test-mode-live-env</id>
+      <activation>
+        <property>
+          <name>env.AZURE_TEST_MODE</name>
+          <value>LIVE</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+              <systemPropertyVariables>
+                <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
+                <junit.jupiter.execution.parallel.mode.default>concurrent</junit.jupiter.execution.parallel.mode.default>
+              </systemPropertyVariables>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>sequential-test-azure-test-mode-record-env</id>
+      <activation>
+        <property>
+          <name>env.AZURE_TEST_MODE</name>
+          <value>RECORD</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+              <systemPropertyVariables>
+                <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
+                <junit.jupiter.execution.parallel.mode.default>concurrent</junit.jupiter.execution.parallel.mode.default>
+              </systemPropertyVariables>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>sequential-test-azure-test-mode-live-prop</id>
+      <activation>
+        <property>
+          <name>AZURE_TEST_MODE</name>
+          <value>LIVE</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+              <systemPropertyVariables>
+                <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
+                <junit.jupiter.execution.parallel.mode.default>concurrent</junit.jupiter.execution.parallel.mode.default>
+              </systemPropertyVariables>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>sequential-test-azure-test-mode-record-prop</id>
+      <activation>
+        <property>
+          <name>AZURE_TEST_MODE</name>
+          <value>RECORD</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+              <systemPropertyVariables>
+                <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
+                <junit.jupiter.execution.parallel.mode.default>concurrent</junit.jupiter.execution.parallel.mode.default>
               </systemPropertyVariables>
             </configuration>
           </plugin>

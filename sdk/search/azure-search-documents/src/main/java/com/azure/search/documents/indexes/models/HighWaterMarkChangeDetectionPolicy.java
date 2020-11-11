@@ -4,6 +4,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -23,6 +24,17 @@ public final class HighWaterMarkChangeDetectionPolicy extends DataChangeDetectio
     private String highWaterMarkColumnName;
 
     /**
+     * Constructor of {@link HighWaterMarkChangeDetectionPolicy}.
+     *
+     * @param highWaterMarkColumnName The name of the high water mark column.
+     */
+    @JsonCreator
+    public HighWaterMarkChangeDetectionPolicy(
+        @JsonProperty(value = "highWaterMarkColumnName") String highWaterMarkColumnName) {
+        this.highWaterMarkColumnName = highWaterMarkColumnName;
+    }
+
+    /**
      * Get the highWaterMarkColumnName property: The name of the high water
      * mark column.
      *
@@ -32,15 +44,4 @@ public final class HighWaterMarkChangeDetectionPolicy extends DataChangeDetectio
         return this.highWaterMarkColumnName;
     }
 
-    /**
-     * Set the highWaterMarkColumnName property: The name of the high water
-     * mark column.
-     *
-     * @param highWaterMarkColumnName the highWaterMarkColumnName value to set.
-     * @return the HighWaterMarkChangeDetectionPolicy object itself.
-     */
-    public HighWaterMarkChangeDetectionPolicy setHighWaterMarkColumnName(String highWaterMarkColumnName) {
-        this.highWaterMarkColumnName = highWaterMarkColumnName;
-        return this;
-    }
 }

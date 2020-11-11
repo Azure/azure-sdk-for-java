@@ -4,12 +4,17 @@
 package com.azure.storage.blob.options;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.Context;
+import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.common.implementation.StorageImplUtils;
+import reactor.core.publisher.Flux;
 
 import java.io.InputStream;
+import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.Map;
 
@@ -18,25 +23,57 @@ import java.util.Map;
  */
 @Fluent
 public class BlobParallelUploadOptions {
+    private final Flux<ByteBuffer> dataFlux;
     private final InputStream dataStream;
     private final long length;
     private ParallelTransferOptions parallelTransferOptions;
     private BlobHttpHeaders headers;
     private Map<String, String> metadata;
+    private Map<String, String> tags;
     private AccessTier tier;
     private BlobRequestConditions requestConditions;
+    private boolean computeMd5;
     private Duration timeout;
+
+    /**
+     * Constructs a new {@code BlobParallelUploadOptions}.
+     *
+     * @param dataFlux The data to write to the blob. Unlike other upload methods, this method does not require that
+     * the {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is not
+     * expected to produce the same values across subscriptions.
+     */
+    public BlobParallelUploadOptions(Flux<ByteBuffer> dataFlux) {
+        StorageImplUtils.assertNotNull("dataFlux", dataFlux);
+        this.dataFlux = dataFlux;
+        this.dataStream = null;
+        this.length = -1;
+    }
 
     /**
      * Constructs a new {@code BlobParalleUploadOptions}.
      *
-     * @param dataStream The data to write to the blob.
+     * @param dataStream The data to write to the blob. The data must be markable. This is in order to support retries.
+     * If the data is not markable, consider opening a {@link com.azure.storage.blob.specialized.BlobOutputStream} and
+     * writing to the returned stream. Alternatively, consider wrapping your data source in a
+     * {@link java.io.BufferedInputStream} to add mark support.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data provided in the {@link InputStream}.
      */
     public BlobParallelUploadOptions(InputStream dataStream, long length) {
+        StorageImplUtils.assertNotNull("dataStream", length);
+        StorageImplUtils.assertInBounds("length", length, 0, Long.MAX_VALUE);
         this.dataStream = dataStream;
         this.length = length;
+        this.dataFlux = null;
+    }
+
+    /**
+     * Gets the data source.
+     *
+     * @return The data to write to the blob.
+     */
+    public Flux<ByteBuffer> getDataFlux() {
+        return this.dataFlux;
     }
 
     /**
@@ -119,6 +156,26 @@ public class BlobParallelUploadOptions {
     }
 
     /**
+     * Get the tags.
+     *
+     * @return The tags to associate with the blob.
+     */
+    public Map<String, String> getTags() {
+        return tags;
+    }
+
+    /**
+     * Set the tags.
+     *
+     * @param tags The tags to associate with the blob.
+     * @return The updated options.
+     */
+    public BlobParallelUploadOptions setTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
+    }
+
+    /**
      * Gets the {@link AccessTier}.
      *
      * @return {@link AccessTier}
@@ -159,10 +216,33 @@ public class BlobParallelUploadOptions {
     }
 
     /**
+     * @return Whether or not the library should calculate the md5 and send it for the service to verify.
+     */
+    public boolean isComputeMd5() {
+        return computeMd5;
+    }
+
+    /**
+     * Sets the computeMd5 property.
+     *
+     * @param computeMd5 Whether or not the library should calculate the md5 and send it for the service to
+     * verify.
+     * @return The updated options.
+     */
+    public BlobParallelUploadOptions setComputeMd5(boolean computeMd5) {
+        this.computeMd5 = computeMd5;
+        return this;
+    }
+
+    /**
      * Gets the timeout.
      *
      * @return An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     *
+     * @deprecated Use {@link BlobClient#uploadWithResponse(BlobParallelUploadOptions, Duration, Context)} to
+     * specify timeout.
      */
+    @Deprecated
     public Duration getTimeout() {
         return this.timeout;
     }
@@ -171,8 +251,12 @@ public class BlobParallelUploadOptions {
      * Sets the timeout.
      *
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @return The updated options.
+     * @return The updated options
+     *
+     * @deprecated Use {@link BlobClient#uploadWithResponse(BlobParallelUploadOptions, Duration, Context)} to
+     * specify timeout.
      */
+    @Deprecated
     public BlobParallelUploadOptions setTimeout(Duration timeout) {
         this.timeout = timeout;
         return this;

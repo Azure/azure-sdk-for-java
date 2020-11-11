@@ -7,21 +7,28 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * Base type for describing any cognitive service resource attached to a
- * skillset.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type", defaultImpl = CognitiveServicesAccount.class)
+/** Base type for describing any cognitive service resource attached to a skillset. */
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "@odata\\.type",
+        defaultImpl = CognitiveServicesAccount.class)
 @JsonTypeName("CognitiveServicesAccount")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.DefaultCognitiveServices", value = DefaultCognitiveServicesAccount.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.CognitiveServicesByKey", value = CognitiveServicesAccountKey.class)
+    @JsonSubTypes.Type(
+            name = "#Microsoft.Azure.Search.DefaultCognitiveServices",
+            value = DefaultCognitiveServicesAccount.class),
+    @JsonSubTypes.Type(
+            name = "#Microsoft.Azure.Search.CognitiveServicesByKey",
+            value = CognitiveServicesAccountKey.class)
 })
+@JsonFlatten
 @Fluent
 public class CognitiveServicesAccount {
     /*
@@ -31,8 +38,7 @@ public class CognitiveServicesAccount {
     private String description;
 
     /**
-     * Get the description property: Description of the cognitive service
-     * resource attached to a skillset.
+     * Get the description property: Description of the cognitive service resource attached to a skillset.
      *
      * @return the description value.
      */
@@ -41,8 +47,7 @@ public class CognitiveServicesAccount {
     }
 
     /**
-     * Set the description property: Description of the cognitive service
-     * resource attached to a skillset.
+     * Set the description property: Description of the cognitive service resource attached to a skillset.
      *
      * @param description the description value to set.
      * @return the CognitiveServicesAccount object itself.

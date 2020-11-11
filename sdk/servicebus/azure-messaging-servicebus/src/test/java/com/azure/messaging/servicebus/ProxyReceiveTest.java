@@ -99,17 +99,17 @@ public class ProxyReceiveTest extends IntegrationTestBase {
 
         // Act & Assert
         try {
-            StepVerifier.create(sender.createBatch()
+            StepVerifier.create(sender.createMessageBatch()
                 .flatMap(batch -> {
                     for (int i = 0; i < messages.size(); i++) {
-                        Assertions.assertTrue(batch.tryAdd(messages.get(i)), "Unable to add message: " + i);
+                        Assertions.assertTrue(batch.tryAddMessage(messages.get(i)), "Unable to add message: " + i);
                     }
 
-                    return sender.send(batch);
+                    return sender.sendMessages(batch);
                 }))
                 .verifyComplete();
 
-            StepVerifier.create(receiver.receive().take(NUMBER_OF_EVENTS))
+            StepVerifier.create(receiver.receiveMessages().take(NUMBER_OF_EVENTS))
                 .expectNextCount(NUMBER_OF_EVENTS)
                 .expectComplete()
                 .verify(TIMEOUT);

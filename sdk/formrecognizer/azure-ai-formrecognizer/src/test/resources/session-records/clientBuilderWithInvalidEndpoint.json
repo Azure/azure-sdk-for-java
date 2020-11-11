@@ -1,0 +1,56 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.azure.com/formrecognizer/v2.1-preview.1//layout/analyze",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.1 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b9bfce0e-e34a-43e2-89da-7b92bd500aa3",
+      "Content-Type" : "application/json"
+    },
+    "Response" : null,
+    "Exception" : {
+      "ClassName" : "java.net.UnknownHostException",
+      "ErrorMessage" : "notreal.azure.com"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.azure.com/formrecognizer/v2.1-preview.1//layout/analyze",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.1 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b9bfce0e-e34a-43e2-89da-7b92bd500aa3",
+      "Content-Type" : "application/json"
+    },
+    "Response" : null,
+    "Exception" : {
+      "ClassName" : "java.net.UnknownHostException",
+      "ErrorMessage" : "notreal.azure.com"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.azure.com/formrecognizer/v2.1-preview.1//layout/analyze",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.1 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b9bfce0e-e34a-43e2-89da-7b92bd500aa3",
+      "Content-Type" : "application/json"
+    },
+    "Response" : null,
+    "Exception" : {
+      "ClassName" : "java.net.UnknownHostException",
+      "ErrorMessage" : "notreal.azure.com"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.azure.com/formrecognizer/v2.1-preview.1//layout/analyze",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.1 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b9bfce0e-e34a-43e2-89da-7b92bd500aa3",
+      "Content-Type" : "application/json"
+    },
+    "Response" : null,
+    "Exception" : {
+      "ClassName" : "java.net.UnknownHostException",
+      "ErrorMessage" : "No such host is known (notreal.azure.com)"
+    }
+  } ],
+  "variables" : [ ]
+}

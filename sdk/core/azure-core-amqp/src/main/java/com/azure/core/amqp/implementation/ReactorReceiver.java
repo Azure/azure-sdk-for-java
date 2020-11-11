@@ -7,14 +7,14 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
+import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.Delivery;
+import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.Disposable;
-import reactor.core.Disposables;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.ReplayProcessor;
 
 import java.io.IOException;
@@ -36,13 +36,11 @@ public class ReactorReceiver implements AmqpReceiveLink {
     private final ReceiveLinkHandler handler;
     private final TokenManager tokenManager;
     private final ReactorDispatcher dispatcher;
-    private final Disposable.Composite subscriptions;
+    private final Disposable subscriptions;
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final EmitterProcessor<Message> messagesProcessor;
     private final ClientLogger logger = new ClientLogger(ReactorReceiver.class);
-    private final ReplayProcessor<AmqpEndpointState> endpointStates =
-        ReplayProcessor.cacheLastOrDefault(AmqpEndpointState.UNINITIALIZED);
-    private FluxSink<AmqpEndpointState> endpointStateSink = endpointStates.sink(FluxSink.OverflowStrategy.BUFFER);
+    private final ReplayProcessor<AmqpEndpointState> endpointStates;
 
     private final AtomicReference<Supplier<Integer>> creditSupplier = new AtomicReference<>();
 
@@ -54,9 +52,9 @@ public class ReactorReceiver implements AmqpReceiveLink {
         this.tokenManager = tokenManager;
         this.dispatcher = dispatcher;
         this.messagesProcessor = this.handler.getDeliveredMessages()
-            .map(delivery -> decodeDelivery(delivery))
+            .map(this::decodeDelivery)
             .doOnNext(next -> {
-                if (receiver.getRemoteCredit() == 0) {
+                if (receiver.getRemoteCredit() == 0 && !isDisposed.get()) {
                     final Supplier<Integer> supplier = creditSupplier.get();
                     if (supplier == null) {
                         return;
@@ -69,43 +67,28 @@ public class ReactorReceiver implements AmqpReceiveLink {
                 }
             })
             .subscribeWith(EmitterProcessor.create());
+        this.endpointStates = this.handler.getEndpointStates()
+            .map(state -> {
+                logger.verbose("connectionId[{}], path[{}], linkName[{}]: State {}", handler.getConnectionId(),
+                    entityPath, getLinkName(), state);
+                return AmqpEndpointStateUtil.getConnectionState(state);
+            })
+            .subscribeWith(ReplayProcessor.cacheLastOrDefault(AmqpEndpointState.UNINITIALIZED));
 
-        this.subscriptions = Disposables.composite(
-            this.handler.getEndpointStates().subscribe(
-                state -> {
-                    logger.verbose("Connection state: {}", state);
-                    endpointStateSink.next(AmqpEndpointStateUtil.getConnectionState(state));
-                }, error -> {
-                    logger.error("connectionId[{}] linkName[{}] entityPath[{}] Error occurred in connection.",
-                        handler.getConnectionId(), receiver.getName(), entityPath, error);
-                    endpointStateSink.error(error);
-                    dispose();
-                }, () -> {
-                    endpointStateSink.next(AmqpEndpointState.CLOSED);
-                    dispose();
-                }),
-
-            this.handler.getErrors().subscribe(error -> {
-                logger.error("connectionId[{}] linkName[{}] entityPath[{}] Error occurred in link.",
-                    handler.getConnectionId(), receiver.getName(), entityPath, error);
-                endpointStateSink.error(error);
-                dispose();
-            }),
-
-            this.tokenManager.getAuthorizationResults().subscribe(
-                response -> {
-                    logger.verbose("Token refreshed: {}", response);
-                    hasAuthorized.set(true);
-                }, error -> {
-                    logger.info("connectionId[{}], path[{}], linkName[{}] - tokenRenewalFailure[{}]",
-                        handler.getConnectionId(), this.entityPath, getLinkName(), error.getMessage());
-                    hasAuthorized.set(false);
-                }, () -> hasAuthorized.set(false)));
+        this.subscriptions = this.tokenManager.getAuthorizationResults().subscribe(
+            response -> {
+                logger.verbose("Token refreshed: {}", response);
+                hasAuthorized.set(true);
+            }, error -> {
+                logger.info("connectionId[{}], path[{}], linkName[{}] - tokenRenewalFailure[{}]",
+                    handler.getConnectionId(), this.entityPath, getLinkName(), error.getMessage());
+                hasAuthorized.set(false);
+            }, () -> hasAuthorized.set(false));
     }
 
     @Override
     public Flux<AmqpEndpointState> getEndpointStates() {
-        return endpointStates;
+        return endpointStates.distinct();
     }
 
     @Override
@@ -115,10 +98,12 @@ public class ReactorReceiver implements AmqpReceiveLink {
 
     @Override
     public void addCredits(int credits) {
-        try {
-            dispatcher.invoke(() -> receiver.flow(credits));
-        } catch (IOException e) {
-            logger.warning("Unable to schedule work to add more credits.", e);
+        if (!isDisposed.get()) {
+            try {
+                dispatcher.invoke(() -> receiver.flow(credits));
+            } catch (IOException e) {
+                logger.warning("Unable to schedule work to add more credits.", e);
+            }
         }
     }
 
@@ -160,7 +145,6 @@ public class ReactorReceiver implements AmqpReceiveLink {
         }
 
         subscriptions.dispose();
-        endpointStateSink.complete();
         messagesProcessor.onComplete();
         tokenManager.close();
         receiver.close();
@@ -174,6 +158,41 @@ public class ReactorReceiver implements AmqpReceiveLink {
             logger.warning("Could not schedule disposing of receiver on ReactorDispatcher.", e);
             handler.close();
         }
+    }
+
+    /**
+     * Disposes of the sender when an exception is encountered.
+     *
+     * @param condition Error condition associated with close operation.
+     */
+    void dispose(ErrorCondition condition) {
+        if (isDisposed.getAndSet(true)) {
+            return;
+        }
+
+        logger.verbose("connectionId[{}], path[{}], linkName[{}]: setting error condition {}",
+            handler.getConnectionId(), entityPath, getLinkName(), condition);
+
+        if (receiver.getLocalState() != EndpointState.CLOSED) {
+            receiver.close();
+
+            if (receiver.getCondition() == null) {
+                receiver.setCondition(condition);
+            }
+        }
+
+        try {
+            dispatcher.invoke(() -> {
+                receiver.free();
+                handler.close();
+            });
+        } catch (IOException e) {
+            logger.warning("Could not schedule disposing of receiver on ReactorDispatcher.", e);
+            handler.close();
+        }
+
+        messagesProcessor.onComplete();
+        tokenManager.close();
     }
 
     protected Message decodeDelivery(Delivery delivery) {

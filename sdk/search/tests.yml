@@ -4,8 +4,8 @@ jobs:
   - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: search
-      Timeout: 120
-      MaxParallel: 2
+      Timeout: 60
+      MaxParallel: 6
       EnvVars:
         AZURE_TEST_MODE: LIVE
       Artifacts:

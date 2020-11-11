@@ -39,13 +39,12 @@ public class ReceiveMessageAsyncSample {
             .queueName("<<queue-name>>")
             .buildAsyncClient();
 
-        Disposable subscription = receiver.receive()
-            .flatMap(context -> {
-                ServiceBusReceivedMessage message = context.getMessage();
+        Disposable subscription = receiver.receiveMessages()
+            .flatMap(message -> {
 
                 // process message
                 System.out.println("Received Message Id: " + message.getMessageId());
-                System.out.println("Received Message: " + new String(message.getBody()));
+                System.out.println("Received Message: " + message.getBody().toString());
 
                 boolean isSuccessfullyProcessed = processMessage(message);
 

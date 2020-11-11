@@ -164,9 +164,10 @@ public class IndexBatchExceptionTests {
     public Object getValueFromDocHelper(IndexAction<SearchDocument> action) {
         if (action.getDocument() != null) {
             return action.getDocument().get(KEY_FIELD_NAME);
-        } else if (action.getParamMap() != null) {
-            return action.getParamMap().get(KEY_FIELD_NAME);
         }
+//        else if (action.getParamMap() != null) {
+//            return action.getParamMap().get(KEY_FIELD_NAME);
+//        }
         return null;
     }
 

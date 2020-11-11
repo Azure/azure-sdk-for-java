@@ -7,21 +7,23 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /**
- * A character filter that applies mappings defined with the mappings option.
- * Matching is greedy (longest pattern matching at a given point wins).
- * Replacement is allowed to be the empty string. This character filter is
- * implemented using Apache Lucene.
+ * A character filter that applies mappings defined with the mappings option. Matching is greedy (longest pattern
+ * matching at a given point wins). Replacement is allowed to be the empty string. This character filter is implemented
+ * using Apache Lucene.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.MappingCharFilter")
+@JsonFlatten
 @Fluent
-public final class MappingCharFilter extends CharFilter {
+public class MappingCharFilter extends CharFilter {
     /*
      * A list of mappings of the following format: "a=>b" (all occurrences of
      * the character "a" will be replaced with character "b").
@@ -30,26 +32,26 @@ public final class MappingCharFilter extends CharFilter {
     private List<String> mappings;
 
     /**
-     * Get the mappings property: A list of mappings of the following format:
-     * "a=&gt;b" (all occurrences of the character "a" will be replaced with
-     * character "b").
+     * Creates an instance of MappingCharFilter class.
+     *
+     * @param name the name value to set.
+     * @param mappings the mappings value to set.
+     */
+    @JsonCreator
+    public MappingCharFilter(
+            @JsonProperty(value = "name", required = true) String name,
+            @JsonProperty(value = "mappings", required = true) List<String> mappings) {
+        super(name);
+        this.mappings = mappings;
+    }
+
+    /**
+     * Get the mappings property: A list of mappings of the following format: "a=&gt;b" (all occurrences of the
+     * character "a" will be replaced with character "b").
      *
      * @return the mappings value.
      */
     public List<String> getMappings() {
         return this.mappings;
-    }
-
-    /**
-     * Set the mappings property: A list of mappings of the following format:
-     * "a=&gt;b" (all occurrences of the character "a" will be replaced with
-     * character "b").
-     *
-     * @param mappings the mappings value to set.
-     * @return the MappingCharFilter object itself.
-     */
-    public MappingCharFilter setMappings(List<String> mappings) {
-        this.mappings = mappings;
-        return this;
     }
 }
