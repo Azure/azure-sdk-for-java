@@ -1,3 +1,5 @@
+Azure Template Client library for Java
+
 # README.md template
 
 Use the guidelines in each section of this template to ensure consistency and readability of your README. The README resides in your package's GitHub repository at the root of its directory within the repo. It's also used as the package distribution page (NuGet, PyPi, npm, etc.) and as a Quickstart on docs.microsoft.com. 
