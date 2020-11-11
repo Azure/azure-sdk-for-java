@@ -9,8 +9,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.signalr.implementation.client.AzureWebSocketServiceRestAPI;
-import com.azure.messaging.signalr.implementation.client.WebSocketConnectionApis;
+import com.azure.messaging.signalr.implementation.WebSocketConnectionApisImpl;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -37,13 +36,13 @@ import static com.azure.messaging.signalr.SignalRAsyncClient.configureTracing;
  */
 @ServiceClient(
     builder = SignalRClientBuilder.class,
-    isAsync = true
-//    serviceInterfaces = WebSocketConnectionApisService.class // TODO (jgiles) private interface, can't set it
+    isAsync = true,
+    serviceInterfaces = WebSocketConnectionApisImpl.WebSocketConnectionApisService.class
 )
 public final class SignalRGroupAsyncClient {
     private final ClientLogger logger = new ClientLogger(SignalRGroupAsyncClient.class);
 
-    private final WebSocketConnectionApis api;
+    private final WebSocketConnectionApisImpl webSocketApis;
 
     // The name of the hub this group belongs to.
     private final String hub;
@@ -52,8 +51,8 @@ public final class SignalRGroupAsyncClient {
     private final String group;
 
     // Package-private (instantiated through SignalRAsyncClient)
-    SignalRGroupAsyncClient(final AzureWebSocketServiceRestAPI innerClient, final String hub, final String group) {
-        this.api = innerClient.getWebSocketConnectionApis();
+    SignalRGroupAsyncClient(final WebSocketConnectionApisImpl webSocketApis, final String hub, final String group) {
+        this.webSocketApis = webSocketApis;
         this.hub = hub;
         this.group = group;
     }
@@ -116,8 +115,9 @@ public final class SignalRGroupAsyncClient {
                                    Context context) {
         context = configureTracing(context);
         return (hub == null
-                ? api.postDefaultHubGroupBroadcastWithResponseAsync(group, message, excludedConnectionIds, context)
-                : api.postGroupBroadcastWithResponseAsync(hub, group, message, excludedConnectionIds, context))
+                ? webSocketApis.defaultHubGroupBroadcastWithResponseAsync(
+                    group, message, excludedConnectionIds, context)
+                : webSocketApis.groupBroadcastWithResponseAsync(hub, group, message, excludedConnectionIds, context))
            .doOnSubscribe(ignoredValue -> logger.info("Broadcasting message '{}'", message))
            .doOnSuccess(response ->
                             logger.info("Broadcasted message: '{}', response: {}", message, response.getValue()))
@@ -183,9 +183,9 @@ public final class SignalRGroupAsyncClient {
         final Flux<ByteBuffer> byteFlux = Flux.just(ByteBuffer.wrap(message));
         context = configureTracing(context);
         return (hub == null
-                ? api.postDefaultHubGroupBroadcastWithResponseAsync(
+                ? webSocketApis.defaultHubGroupBroadcastWithResponseAsync(
                     group, byteFlux, message.length, excludedConnectionIds, context)
-                : api.postGroupBroadcastWithResponseAsync(
+                : webSocketApis.groupBroadcastWithResponseAsync(
                     hub, group, byteFlux, message.length, excludedConnectionIds, context))
            .doOnSubscribe(ignoredValue -> logger.info("Broadcasting binary message"))
            .doOnSuccess(response -> logger.info("Broadcasted binary message, response: {}", response.getValue()))
@@ -239,8 +239,8 @@ public final class SignalRGroupAsyncClient {
 
         context = configureTracing(context);
         return (hub == null
-                ? api.putAddUserToDefaultHubGroupWithResponseAsync(group, userId, ttl, context)
-                : api.putAddUserToGroupWithResponseAsync(hub, group, userId, ttl, context))
+                ? webSocketApis.addUserToDefaultHubGroupWithResponseAsync(group, userId, ttl, context)
+                : webSocketApis.addUserToGroupWithResponseAsync(hub, group, userId, ttl, context))
            .doOnSubscribe(ignoredValue -> logger.info("Adding user '{}'", userId))
            .doOnSuccess(response -> logger.info("Added user '{}', response: {}", userId, response.getValue()))
            .doOnError(error -> logger.warning("Failed to add user '{}', response: {}", userId, error));
@@ -262,8 +262,8 @@ public final class SignalRGroupAsyncClient {
     Mono<Response<Void>> removeUserWithResponse(final String userId, Context context) {
         context = configureTracing(context);
         return (hub == null
-                ? api.deleteRemoveUserFromDefaultHubGroupWithResponseAsync(group, userId, context)
-                : api.deleteRemoveUserFromGroupWithResponseAsync(hub, group, userId, context))
+                ? webSocketApis.removeUserFromDefaultHubGroupWithResponseAsync(group, userId, context)
+                : webSocketApis.removeUserFromGroupWithResponseAsync(hub, group, userId, context))
            .doOnSubscribe(ignoredValue -> logger.info("Removing user '{}'", userId))
            .doOnSuccess(response -> logger.info("Removed user '{}', response: {}", userId, response.getValue()))
            .doOnError(error -> logger.warning("Failed to remove user '{}', response: {}", userId, error));
@@ -296,8 +296,8 @@ public final class SignalRGroupAsyncClient {
     Mono<Response<Boolean>> userExistsWithResponse(final String userId, Context context) {
         context = configureTracing(context);
         return (hub == null
-                ? api.headCheckUserExistenceInDefaultHubGroupWithResponseAsync(group, userId, context)
-                : api.headCheckUserExistenceInGroupWithResponseAsync(hub, group, userId, context))
+                ? webSocketApis.checkUserExistenceInDefaultHubGroupWithResponseAsync(group, userId, context)
+                : webSocketApis.checkUserExistenceInGroupWithResponseAsync(hub, group, userId, context))
            .doOnSubscribe(ignoredValue -> logger.info("Checking if user '{}' exists", userId))
            .doOnSuccess(response -> logger.info("Checked if user '{}' exists, response: {}",
                userId, response.getValue()))
@@ -320,8 +320,8 @@ public final class SignalRGroupAsyncClient {
     Mono<Response<Void>> addConnectionWithResponse(final String connectionId, Context context) {
         context = configureTracing(context);
         return (hub == null
-                ? api.putAddConnectionToDefaultHubGroupWithResponseAsync(group, connectionId, context)
-                : api.putAddConnectionToGroupWithResponseAsync(hub, group, connectionId, context))
+                ? webSocketApis.addConnectionToDefaultHubGroupWithResponseAsync(group, connectionId, context)
+                : webSocketApis.addConnectionToGroupWithResponseAsync(hub, group, connectionId, context))
            .doOnSubscribe(ignoredValue -> logger.info("Adding connection '{}'", connectionId))
            .doOnSuccess(response -> logger.info("Added connection '{}', response: {}",
                connectionId, response.getValue()))
@@ -344,8 +344,8 @@ public final class SignalRGroupAsyncClient {
     Mono<Response<Void>> removeConnectionWithResponse(final String connectionId, Context context) {
         context = configureTracing(context);
         return (hub == null
-                ? api.deleteRemoveConnectionFromDefaultHubGroupWithResponseAsync(group, connectionId, context)
-                : api.deleteRemoveConnectionFromGroupWithResponseAsync(hub, group, connectionId, context))
+                ? webSocketApis.removeConnectionFromDefaultHubGroupWithResponseAsync(group, connectionId, context)
+                : webSocketApis.removeConnectionFromGroupWithResponseAsync(hub, group, connectionId, context))
            .doOnSubscribe(ignoredValue -> logger.info("Removing connection '{}'", connectionId))
            .doOnSuccess(response -> logger.info("Removed connection '{}', response: {}",
                connectionId, response.getValue()))

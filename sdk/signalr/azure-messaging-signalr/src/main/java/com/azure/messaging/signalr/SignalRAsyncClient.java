@@ -9,8 +9,8 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.signalr.implementation.client.AzureWebSocketServiceRestAPI;
-import com.azure.messaging.signalr.implementation.client.WebSocketConnectionApis;
+import com.azure.messaging.signalr.implementation.HealthApisImpl;
+import com.azure.messaging.signalr.implementation.WebSocketConnectionApisImpl;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -56,16 +56,16 @@ import static com.azure.core.util.FluxUtil.withContext;
  */
 @ServiceClient(
     builder = SignalRClientBuilder.class,
-    isAsync = true
-//    serviceInterfaces = WebSocketConnectionApisService.class // TODO (jgiles) private interface, can't set it
+    isAsync = true,
+    serviceInterfaces = WebSocketConnectionApisImpl.WebSocketConnectionApisService.class
 )
 public final class SignalRAsyncClient {
     static final String SIGNALR_TRACING_NAMESPACE_VALUE = "Microsoft.SignalRService";
 
     private final ClientLogger logger = new ClientLogger(SignalRAsyncClient.class);
 
-    private final AzureWebSocketServiceRestAPI innerClient;
-    private final WebSocketConnectionApis api;
+    private final WebSocketConnectionApisImpl webSocketApis;
+    private final HealthApisImpl healthApis;
 
     // The name of the hub this client is connected to
     private final String hub;
@@ -74,11 +74,12 @@ public final class SignalRAsyncClient {
     private final SignalRServiceVersion serviceVersion;
 
     // package-private (instantiated through builder)
-    SignalRAsyncClient(final AzureWebSocketServiceRestAPI innerClient,
+    SignalRAsyncClient(final WebSocketConnectionApisImpl webSocketApis,
+                       final HealthApisImpl healthApis,
                        final String hub,
                        final SignalRServiceVersion serviceVersion) {
-        this.innerClient = innerClient;
-        this.api = innerClient.getWebSocketConnectionApis();
+        this.webSocketApis = webSocketApis;
+        this.healthApis = healthApis;
         this.hub = hub;
         this.serviceVersion = serviceVersion;
     }
@@ -98,7 +99,7 @@ public final class SignalRAsyncClient {
      * @return A new client for connecting to a specified SignalR group.
      */
     public SignalRGroupAsyncClient getGroupAsyncClient(final String group) {
-        return new SignalRGroupAsyncClient(innerClient, hub, group);
+        return new SignalRGroupAsyncClient(webSocketApis, hub, group);
     }
 
     /**
@@ -109,8 +110,8 @@ public final class SignalRAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SignalRHubStatus> getStatus() {
-        return withContext(context -> innerClient.getHealthApis()
-                   .headIndexWithResponseAsync(context)// TODO (jgiles) we should introduce a withResponse overload
+        return withContext(context -> healthApis
+                   .getHealthStatusWithResponseAsync(context)// TODO (jgiles) we should introduce a withResponse overload
                    .map(SignalRHubStatus::new));
     }
 
@@ -170,8 +171,8 @@ public final class SignalRAsyncClient {
     Mono<Response<Void>> sendToAll(final String message, final List<String> excludedUsers, Context context) {
         context = configureTracing(context);
         return (hub == null
-                    ? api.postDefaultHubBroadcastWithResponseAsync(message, excludedUsers, context)
-                    : api.postBroadcastWithResponseAsync(hub, message, excludedUsers, context))
+                    ? webSocketApis.defaultHubBroadcastWithResponseAsync(message, excludedUsers, context)
+                    : webSocketApis.broadcastWithResponseAsync(hub, message, excludedUsers, context))
            .doOnSubscribe(ignoredValue -> logger.info("Broadcasting message '{}'", message))
            .doOnSuccess(response -> logger.info("Broadcasted message: '{}', response: {}",
                message, response.getValue()))
@@ -238,8 +239,8 @@ public final class SignalRAsyncClient {
         context = configureTracing(context);
 
         return (hub == null
-                ? api.postDefaultHubBroadcastWithResponseAsync(byteFlux, message.length, excludedConnectionIds, context)
-                : api.postBroadcastWithResponseAsync(hub, byteFlux, message.length, excludedConnectionIds, context))
+                ? webSocketApis.defaultHubBroadcastWithResponseAsync(byteFlux, message.length, excludedConnectionIds, context)
+                : webSocketApis.broadcastWithResponseAsync(hub, byteFlux, message.length, excludedConnectionIds, context))
            .doOnSubscribe(ignoredValue -> logger.info("Broadcasting binary data"))
            .doOnSuccess(response -> logger.info("Broadcasted binary data, response: {}", response.getValue()))
            .doOnError(error -> logger.warning("Failed to broadcast binary data, response: {}", error));
@@ -262,8 +263,8 @@ public final class SignalRAsyncClient {
     Mono<Response<Void>> sendToUser(final String userId, final String message, Context context) {
         context = configureTracing(context);
         return (hub == null
-                ? api.postSendToDefaultHubUserWithResponseAsync(userId, message, context)
-                : api.postSendToUserWithResponseAsync(hub, userId, message, context))
+                ? webSocketApis.sendToDefaultHubUserWithResponseAsync(userId, message, context)
+                : webSocketApis.sendToUserWithResponseAsync(hub, userId, message, context))
            .doOnSubscribe(ignoredValue -> logger.info("Sending to user '{}' message: '{}'", userId, message))
            .doOnSuccess(response -> logger.info("Sent to user '{}' message: '{}', response: {}",
                userId, message, response.getValue()))
@@ -289,8 +290,8 @@ public final class SignalRAsyncClient {
         final Flux<ByteBuffer> byteFlux = Flux.just(ByteBuffer.wrap(message));
         context = configureTracing(context);
         return (hub == null
-                ? api.postSendToDefaultHubUserWithResponseAsync(userId, byteFlux, message.length, context)
-                : api.postSendToUserWithResponseAsync(hub, userId, byteFlux, message.length, context))
+                ? webSocketApis.sendToDefaultHubUserWithResponseAsync(userId, byteFlux, message.length, context)
+                : webSocketApis.sendToUserWithResponseAsync(hub, userId, byteFlux, message.length, context))
            .doOnSubscribe(ignoredValue -> logger.info("Sending binary data to user"))
            .doOnSuccess(response -> logger.info("Sent binary data to user, response: {}", response.getValue()))
            .doOnError(error -> logger.warning("Failed to send binary data to user, response: {}", error));
@@ -313,8 +314,8 @@ public final class SignalRAsyncClient {
     Mono<Response<Void>> sendToConnection(final String connectionId, final String message, Context context) {
         context = configureTracing(context);
         return (hub == null
-                ? api.postSendToDefaultHubConnectionWithResponseAsync(connectionId, message, context)
-                : api.postSendToConnectionWithResponseAsync(hub, connectionId, message, context))
+                ? webSocketApis.sendToDefaultHubConnectionWithResponseAsync(connectionId, message, context)
+                : webSocketApis.sendToConnectionWithResponseAsync(hub, connectionId, message, context))
            .doOnSubscribe(ignoredValue ->
                logger.info("Sending to connection '{}' message: '{}'", connectionId, message))
            .doOnSuccess(response ->
@@ -345,8 +346,8 @@ public final class SignalRAsyncClient {
         final Flux<ByteBuffer> byteFlux = Flux.just(ByteBuffer.wrap(message));
         context = configureTracing(context);
         return (hub == null
-                ? api.postSendToDefaultHubConnectionWithResponseAsync(connectionId, byteFlux, message.length, context)
-                : api.postSendToConnectionWithResponseAsync(hub, connectionId, byteFlux, message.length, context))
+                ? webSocketApis.sendToDefaultHubConnectionWithResponseAsync(connectionId, byteFlux, message.length, context)
+                : webSocketApis.sendToConnectionWithResponseAsync(hub, connectionId, byteFlux, message.length, context))
            .doOnSubscribe(ignoredValue -> logger.info("Sending binary message to connection"))
            .doOnSuccess(response -> logger.info("Sent binary message to connection, response: {}", response.getValue()))
            .doOnError(error -> logger.warning("Failed to send binary message to connection, response: {}", error));
@@ -368,8 +369,8 @@ public final class SignalRAsyncClient {
     Mono<Response<Void>> removeUserFromAllGroups(final String userId, Context context) {
         context = configureTracing(context);
         return (hub == null
-                ? api.deleteRemoveUserFromAllDefaultHubGroupsWithResponseAsync(userId, context)
-                : api.deleteRemoveUserFromAllGroupsWithResponseAsync(hub, userId, context))
+                ? webSocketApis.removeUserFromAllDefaultHubGroupsWithResponseAsync(userId, context)
+                : webSocketApis.removeUserFromAllGroupsWithResponseAsync(hub, userId, context))
            .doOnSubscribe(ignoredValue -> logger.info("Removing user '{}' from all groups"))
            .doOnSuccess(response -> logger.info("Removed user '{}' from all groups, response: {}", response.getValue()))
            .doOnError(error -> logger.warning("Failed to remove user '{}' from all groups, response: {}", error));
@@ -403,8 +404,8 @@ public final class SignalRAsyncClient {
     Mono<Response<Boolean>> userExistsWithResponse(final String userId, Context context) {
         context = configureTracing(context);
         return (hub == null
-                ? api.headCheckDefaultHubUserExistenceWithResponseAsync(userId, context)
-                : api.headCheckUserExistenceWithResponseAsync(hub, userId, context))
+                ? webSocketApis.checkDefaultHubUserExistenceWithResponseAsync(userId, context)
+                : webSocketApis.checkUserExistenceWithResponseAsync(hub, userId, context))
            .doOnSubscribe(ignoredValue -> logger.info("Checking if user '{}' exists", userId))
            .doOnSuccess(response -> logger.info("Checked if user '{}' exists, response: {}",
                userId, response.getValue()))
@@ -439,8 +440,8 @@ public final class SignalRAsyncClient {
     Mono<Response<Boolean>> groupExistsWithResponse(final String group, Context context) {
         context = configureTracing(context);
         return (hub == null
-                ? api.headCheckDefaultHubUserExistenceWithResponseAsync(group, context)
-                : api.headCheckUserExistenceWithResponseAsync(hub, group, context))
+                ? webSocketApis.checkDefaultHubUserExistenceWithResponseAsync(group, context)
+                : webSocketApis.checkUserExistenceWithResponseAsync(hub, group, context))
            .doOnSubscribe(ignoredValue -> logger.info("Checking if group '{}' exists", group))
            .doOnSuccess(response -> logger.info("Checked if group '{}' exists, response: {}",
                group, response.getValue()))
@@ -478,8 +479,8 @@ public final class SignalRAsyncClient {
                                                      Context context) {
         context = configureTracing(context);
         return (hub == null
-                ? api.deleteCloseDefaultHubClientConnectionWithResponseAsync(connectionId, reason, context)
-                : api.deleteCloseClientConnectionWithResponseAsync(hub, connectionId, reason, context))
+                ? webSocketApis.closeDefaultHubClientConnectionWithResponseAsync(connectionId, reason, context)
+                : webSocketApis.closeClientConnectionWithResponseAsync(hub, connectionId, reason, context))
            .doOnSubscribe(ignoredValue -> logger.info("Closing connection {}", connectionId))
            .doOnSuccess(response -> logger.info("Closed connection {}, response: {}",
                connectionId, response.getValue()))
@@ -514,8 +515,8 @@ public final class SignalRAsyncClient {
     Mono<Response<Boolean>> connectionExistsWithResponse(final String connectionId, Context context) {
         context = configureTracing(context);
         return (hub == null
-                ? api.headCheckDefaultHubConnectionExistenceWithResponseAsync(connectionId, context)
-                : api.headCheckConnectionExistenceWithResponseAsync(hub, connectionId, context))
+                ? webSocketApis.checkDefaultHubConnectionExistenceWithResponseAsync(connectionId, context)
+                : webSocketApis.checkConnectionExistenceWithResponseAsync(hub, connectionId, context))
            .doOnSubscribe(ignoredValue -> logger.info("Checking if connection '{}' exists", connectionId))
            .doOnSuccess(response -> logger.info("Checked if connection '{}' exists, response: {}",
                connectionId, response.getValue()))

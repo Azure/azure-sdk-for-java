@@ -18,7 +18,8 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.signalr.implementation.client.AzureWebSocketServiceRestAPIBuilder;
+import com.azure.messaging.signalr.implementation.AzureWebSocketServiceRestAPIImpl;
+import com.azure.messaging.signalr.implementation.AzureWebSocketServiceRestAPIImplBuilder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -80,6 +81,7 @@ public final class SignalRClientBuilder {
     private Configuration configuration;
     private SignalRServiceVersion version;
     private String hub;
+    private String group;
 
     /**
      * Creates a new builder instance with all values set to their default value.
@@ -141,6 +143,19 @@ public final class SignalRClientBuilder {
     public SignalRClientBuilder hub(final String hub) {
         Objects.requireNonNull(hub, "'hub' cannot be null.");
         this.hub = hub;
+        return this;
+    }
+
+    /**
+     * Target group name, which should start with alphabetic characters and only contain alpha-numeric characters or
+     * underscore.
+     *
+     * @param group Target group name, which should start with alphabetic characters and only contain alpha-numeric
+     * characters or underscore.
+     * @return The updated SignalRClientBuilder object.
+     */
+    public SignalRClientBuilder group(final String group) {
+        this.group = group;
         return this;
     }
 
@@ -265,7 +280,7 @@ public final class SignalRClientBuilder {
             }
         }
 
-        final AzureWebSocketServiceRestAPIBuilder innerBuilder = new AzureWebSocketServiceRestAPIBuilder();
+        final AzureWebSocketServiceRestAPIImplBuilder innerBuilder = new AzureWebSocketServiceRestAPIImplBuilder();
 
         if (endpoint == null || endpoint.isEmpty()) {
             logger.logThrowableAsError(
@@ -279,7 +294,7 @@ public final class SignalRClientBuilder {
 
         if (pipeline != null) {
             innerBuilder.pipeline(pipeline);
-            return new SignalRAsyncClient(innerBuilder.buildClient(), hub, serviceVersion);
+            return buildAsyncClient(innerBuilder, hub, serviceVersion);
         }
 
         if (credential == null) {
@@ -310,7 +325,18 @@ public final class SignalRClientBuilder {
                                   .policies(policies.toArray(new HttpPipelinePolicy[0]))
                                   .httpClient(httpClient)
                                   .build());
-        return new SignalRAsyncClient(innerBuilder.buildClient(), hub, serviceVersion);
+        return buildAsyncClient(innerBuilder, hub, serviceVersion);
+    }
+
+    private SignalRAsyncClient buildAsyncClient(final AzureWebSocketServiceRestAPIImplBuilder innerBuilder,
+                                     final String hub,
+                                     final SignalRServiceVersion serviceVersion) {
+        final AzureWebSocketServiceRestAPIImpl client = innerBuilder.buildClient();
+        return new SignalRAsyncClient(
+            client.getWebSocketConnectionApis(),
+            client.getHealthApis(),
+            hub,
+            serviceVersion);
     }
 
     /**
@@ -320,6 +346,22 @@ public final class SignalRClientBuilder {
      */
     public SignalRClient buildClient() {
         return new SignalRClient(buildAsyncClient());
+    }
+
+    public SignalRGroupClient buildGroupClient() {
+        if (group == null || group.isEmpty()) {
+            throw logger.logExceptionAsError(new IllegalStateException(
+                    "To build a group client, the 'group' builder property must be non-null and non-empty"));
+        }
+        return buildClient().getGroupClient(group);
+    }
+
+    public SignalRGroupAsyncClient buildGroupAsyncClient() {
+        if (group == null || group.isEmpty()) {
+            throw logger.logExceptionAsError(new IllegalStateException(
+                "To build a group client, the 'group' builder property must be non-null and non-empty"));
+        }
+        return buildAsyncClient().getGroupAsyncClient(group);
     }
 
     private Map<String, String> parseConnectionString(final String cs) {
