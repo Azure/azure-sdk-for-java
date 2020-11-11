@@ -4,8 +4,6 @@
 package com.microsoft.azure.servicebus.perf;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.microsoft.azure.servicebus.perf.core.ServiceBusStressOptions;
-import com.microsoft.azure.servicebus.perf.core.ServiceTest;
 import com.microsoft.azure.servicebus.IMessage;
 import com.microsoft.azure.servicebus.Message;
 import com.microsoft.azure.servicebus.ReceiveMode;

@@ -3,42 +3,31 @@
 
 package com.azure.messaging.servicebus.perf;
 
-import com.azure.core.amqp.AmqpRetryOptions;
-import com.azure.core.amqp.AmqpTransportType;
-import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
-import com.azure.messaging.servicebus.ServiceBusReceiverAsyncClient;
-import com.azure.messaging.servicebus.ServiceBusReceiverClient;
-import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
-import com.azure.messaging.servicebus.ServiceBusSenderClient;
-import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
+import com.azure.messaging.servicebus.models.ReceiveMode;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.perf.test.core.PerfStressTest;
-
-import java.time.Duration;
 
 /**
  * Base class for performance test.
  * @param <TOptions> for performance configuration.
  */
 abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStressTest<TOptions> {
-    private final ClientLogger logger = new ClientLogger(ServiceTest.class);
-    protected static final String CONTENTS = "Track 2 AMQP message - Perf Test";
-    protected static final int TOTAL_MESSAGE_MULTIPLIER = 300;
+    static final String CONTENTS = "Performance Test";
+    static final int TOTAL_MESSAGE_MULTIPLIER = 300;
 
-    private static final String AZURE_SERVICEBUS_CONNECTION_STRING = "AZURE_SERVICEBUS_CONNECTION_STRING";
+    private static final String AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING =
+        "AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING";
     private static final String AZURE_SERVICEBUS_QUEUE_NAME = "AZURE_SERVICEBUS_QUEUE_NAME";
-    private static final String AZURE_SERVICEBUS_TOPIC_NAME = "AZURE_SERVICEBUS_TOPIC_NAME";
-    private static final String AZURE_SERVICEBUS_SUBSCRIPTION_NAME = "AZURE_SERVICEBUS_SUBSCRIPTION_NAME";
 
-    final ServiceBusReceiverClient receiver;
-    final ServiceBusReceiverAsyncClient receiverAsync;
-    final ServiceBusSenderClient sender;
-    final ServiceBusSenderAsyncClient senderAsync;
+    private final ServiceBusClientBuilder builder;
+    private final String queueName;
+    private final ReceiveMode receiveMode;
 
     /**
+     * Creates a new instance of the service bus stress test.
      *
      * @param options to configure.
      * @param receiveMode to receive messages.
@@ -46,38 +35,39 @@ abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStres
      */
     ServiceTest(TOptions options, ServiceBusReceiveMode receiveMode) {
         super(options);
-        String connectionString = System.getenv(AZURE_SERVICEBUS_CONNECTION_STRING);
+        final ClientLogger logger = new ClientLogger(ServiceTest.class);
+
+        final String connectionString = System.getenv(AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING);
         if (CoreUtils.isNullOrEmpty(connectionString)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Environment variable "
-                + AZURE_SERVICEBUS_CONNECTION_STRING + " must be set."));
+                + AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING + " must be set."));
         }
 
-        String queueName = System.getenv(AZURE_SERVICEBUS_QUEUE_NAME);
+        final String queueName = System.getenv(AZURE_SERVICEBUS_QUEUE_NAME);
         if (CoreUtils.isNullOrEmpty(queueName)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Environment variable "
                 + AZURE_SERVICEBUS_QUEUE_NAME + " must be set."));
         }
 
-        // Setup the service client
-        final ServiceBusClientBuilder baseBuilder = new ServiceBusClientBuilder()
-            .proxyOptions(ProxyOptions.SYSTEM_DEFAULTS)
-            .retryOptions(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(60)))
-            .transportType(AmqpTransportType.AMQP)
-            .connectionString(connectionString);
+        this.receiveMode = receiveMode;
+        this.builder = new ServiceBusClientBuilder().connectionString(connectionString);
+        this.queueName = queueName;
+    }
 
-        ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = baseBuilder
-            .receiver()
-            .receiveMode(receiveMode)
-            .queueName(queueName);
+    /**
+     * Gets the builder.
+     *
+     * @return Gets the builder.
+     */
+    ServiceBusClientBuilder getBuilder() {
+        return builder;
+    }
 
-        ServiceBusClientBuilder.ServiceBusSenderClientBuilder senderBuilder = baseBuilder
-            .sender()
-            .queueName(queueName);
+    String getQueueName() {
+        return queueName;
+    }
 
-        receiver = receiverBuilder.buildClient();
-        receiverAsync = receiverBuilder.buildAsyncClient();
-
-        sender = senderBuilder.buildClient();
-        senderAsync = senderBuilder.buildAsyncClient();
+    ReceiveMode getReceiveMode() {
+        return receiveMode;
     }
 }

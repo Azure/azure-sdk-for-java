@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.microsoft.azure.servicebus.perf.core;
+package com.microsoft.azure.servicebus.perf;
 
 import com.azure.perf.test.core.PerfStressOptions;
 import com.beust.jcommander.Parameter;

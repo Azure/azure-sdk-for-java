@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.microsoft.azure.servicebus.perf.core;
+package com.microsoft.azure.servicebus.perf;
 
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -20,47 +20,56 @@ import java.util.concurrent.ExecutionException;
  * Base class for performance etest.
  * @param <TOptions> for performance configuration.
  */
-public abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStressTest<TOptions> {
-    private final ClientLogger logger = new ClientLogger(ServiceTest.class);
-    private static final String AZURE_SERVICE_BUS_CONNECTION_STRING = "AZURE_SERVICE_BUS_CONNECTION_STRING";
+abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStressTest<TOptions> {
+    static final String CONTENTS = "Performance Test";
+    static final int TOTAL_MESSAGE_MULTIPLIER = 300;
+
+    private static final String AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING =
+        "AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING";
     private static final String AZURE_SERVICEBUS_QUEUE_NAME = "AZURE_SERVICEBUS_QUEUE_NAME";
-    protected static final String CONTENTS = "T1-Perf Test";
-    protected static final int TOTAL_MESSAGE_MULTIPLIER = 300;
 
-    private final MessagingFactory factory;
-
-    protected IMessageSender sender;
-    protected IMessageReceiver receiver;
+    private final IMessageSender sender;
+    private final IMessageReceiver receiver;
 
     /**
+     * Creates a new instance of the service bus stress test.
      *
      * @param options to configure.
      * @param receiveMode to receive messages.
      * @throws IllegalArgumentException for environment variable not being available.
      */
-    public ServiceTest(TOptions options, ReceiveMode receiveMode) {
+    ServiceTest(TOptions options, ReceiveMode receiveMode) {
         super(options);
-        String connectionString = System.getenv(AZURE_SERVICE_BUS_CONNECTION_STRING);
+        final ClientLogger logger = new ClientLogger(ServiceTest.class);
+
+        final String connectionString = System.getenv(AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING);
         if (CoreUtils.isNullOrEmpty(connectionString)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Environment variable "
-                + AZURE_SERVICE_BUS_CONNECTION_STRING + " must be set."));
+                + AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING + " must be set."));
         }
-        logger.verbose("connectionString : {}", connectionString);
 
-        String queueName = System.getenv(AZURE_SERVICEBUS_QUEUE_NAME);
+        final String queueName = System.getenv(AZURE_SERVICEBUS_QUEUE_NAME);
         if (CoreUtils.isNullOrEmpty(queueName)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Environment variable "
                 + AZURE_SERVICEBUS_QUEUE_NAME + " must be set."));
         }
-        logger.verbose("queueName : {}", queueName);
 
         // Setup the service client
         try {
-            this.factory = MessagingFactory.createFromConnectionString(connectionString);
+            final MessagingFactory factory = MessagingFactory.createFromConnectionString(connectionString);
+
             this.sender = ClientFactory.createMessageSenderFromEntityPath(factory, queueName);
             this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, queueName, receiveMode);
         } catch (ServiceBusException | InterruptedException | ExecutionException e) {
             throw logger.logExceptionAsWarning(new RuntimeException(e));
         }
+    }
+
+    public IMessageSender getSender() {
+        return sender;
+    }
+
+    public IMessageReceiver getReceiver() {
+        return receiver;
     }
 }
