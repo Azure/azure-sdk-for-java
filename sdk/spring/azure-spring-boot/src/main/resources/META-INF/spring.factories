@@ -10,4 +10,5 @@ com.azure.spring.autoconfigure.storage.StorageAutoConfiguration,\
 com.azure.spring.autoconfigure.cosmos.CosmosHealthConfiguration,\
 com.azure.spring.autoconfigure.storage.StorageHealthConfiguration,\
 com.azure.spring.keyvault.KeyVaultHealthConfiguration,\
+com.azure.spring.autoconfigure.aad.AADAuthenticationFilterAutoConfiguration \
 com.azure.spring.aad.implementation.AzureActiveDirectoryAutoConfiguration
