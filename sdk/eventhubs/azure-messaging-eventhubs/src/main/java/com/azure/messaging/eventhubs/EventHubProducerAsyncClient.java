@@ -329,70 +329,6 @@ public class EventHubProducerAsyncClient implements Closeable {
                 }));
     }
 
-    /**
-     * Creates an {@link ObjectBatch} that can fit as many serialized objects as events as the transport allows.
-     * @param objectType type of object in the batch
-     * @param <T> object type
-     *
-     * @return A new {@link ObjectBatch} that can fit as many serialized objects as events as the transport allows.
-     */
-    public <T> Mono<ObjectBatch<T>> createBatch(Class<T> objectType) {
-        return createBatch(objectType, DEFAULT_BATCH_OPTIONS);
-    }
-
-    /**
-     * Creates an {@link ObjectBatch} configured with the options specified.
-     *
-     * @param objectType type of object in the batch
-     * @param <T> object type
-     * @param options A set of options used to configure the {@link ObjectBatch}.
-     * @return A new {@link ObjectBatch} that can fit as many events as the transport allows.
-     * @throws NullPointerException if {@code options} is null.
-     */
-    public <T> Mono<ObjectBatch<T>> createBatch(Class<T> objectType, CreateBatchOptions options) {
-        if (objectType == null) {
-            return monoError(logger, new IllegalArgumentException("'objectType' cannot be null."));
-        }
-        if (serializer == null) {
-            return monoError(logger,
-                new NullPointerException("No serializer set for performing object serialization for ObjectBatch."));
-        }
-        if (options == null) {
-            return monoError(logger, new NullPointerException("'options' cannot be null."));
-        }
-
-        Mono<ObjectBatch<T>> optionsError = validateBatchOptions(options);
-        if (optionsError != null) {
-            return optionsError;
-        }
-
-        final String partitionKey = options.getPartitionKey();
-        final String partitionId = options.getPartitionId();
-        final int batchMaxSize = options.getMaximumSizeInBytes();
-
-        return getSendLink(partitionId)
-            .flatMap(link -> link.getLinkSize()
-                .flatMap(size -> {
-                    final int maximumLinkSize = size > 0
-                        ? size
-                        : MAX_MESSAGE_LENGTH_BYTES;
-
-                    if (batchMaxSize > maximumLinkSize) {
-                        return monoError(logger,
-                            new IllegalArgumentException(String.format(Locale.US,
-                                "BatchOptions.maximumSizeInBytes (%s bytes) is larger than the link size (%s bytes).",
-                                batchMaxSize, maximumLinkSize)));
-                    }
-
-                    final int batchSize = batchMaxSize > 0
-                        ? batchMaxSize
-                        : maximumLinkSize;
-
-                    return Mono.just(new ObjectBatch<>(batchSize, partitionId, partitionKey, objectType,
-                        link::getErrorContext, tracerProvider, serializer,
-                        link.getEntityPath(), link.getHostname()));
-                }));
-    }
 
     /**
      * Sends a single event to the associated Event Hub. If the size of the single event exceeds the maximum size
@@ -533,20 +469,6 @@ public class EventHubProducerAsyncClient implements Closeable {
     }
 
     /**
-     * Sends the object batch to the associated Event Hub.
-     *
-     * @param objectBatch The batch to send to the service.
-     * @param <T> object type
-     * @return A {@link Mono} that completes when the batch is pushed to the service.
-     * @throws NullPointerException if {@code objectBatch} is {@code null}.
-     * @see EventHubProducerAsyncClient#createBatch(Class)
-     * @see EventHubProducerAsyncClient#createBatch(Class, CreateBatchOptions)
-     */
-    public <T> Mono<Void> send(ObjectBatch<T> objectBatch) {
-        return this.sendInternal(objectBatch);
-    }
-
-    /**
      * Sends the event data batch to the associated Event Hub.
      *
      * @param batch The batch to send to the service.
@@ -567,7 +489,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      * @return A {@link Mono} that completes when the batch is pushed to the service.
      * @throws NullPointerException if {@code batch} is {@code null}.
      */
-    private Mono<Void> sendInternal(EventDataBatchBase batch) {
+    private Mono<Void> sendInternal(EventDataBatch batch) {
         if (batch == null) {
             return monoError(logger, new NullPointerException("'batch' cannot be null."));
         } else if (batch.getEvents().isEmpty()) {

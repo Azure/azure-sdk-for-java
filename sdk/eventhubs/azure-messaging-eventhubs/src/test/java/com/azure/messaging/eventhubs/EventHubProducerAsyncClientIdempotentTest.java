@@ -15,6 +15,8 @@ import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.experimental.util.BinaryData;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
@@ -24,6 +26,7 @@ import com.azure.messaging.eventhubs.implementation.PartitionPublishingState;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.apache.qpid.proton.amqp.Symbol;
+import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -104,6 +107,7 @@ class EventHubProducerAsyncClientIdempotentTest {
 
     private PartitionPublishingProperties partition0InitialState;
     private Map<String, PartitionPublishingProperties> initialStates = new HashMap<>();
+    private ObjectSerializer objectSerializer;
 
     @BeforeAll
     static void beforeAll() {
@@ -122,7 +126,7 @@ class EventHubProducerAsyncClientIdempotentTest {
         tracerProvider = new TracerProvider(Collections.emptyList());
         connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS, retryOptions,
-            ProxyOptions.SYSTEM_DEFAULTS, testScheduler);
+            ProxyOptions.SYSTEM_DEFAULTS, testScheduler, new ClientOptions(), SslDomain.VerifyMode.VERIFY_PEER);
 
         when(connection.getEndpointStates()).thenReturn(endpointProcessor);
         endpointSink.next(AmqpEndpointState.ACTIVE);
@@ -137,7 +141,7 @@ class EventHubProducerAsyncClientIdempotentTest {
 
         Map<String, PartitionPublishingState> internalStates = new HashMap<>();
         initialStates.forEach((k, v) -> internalStates.put(k, new PartitionPublishingState(v)));
-        ObjectSerializer objectSerializer = new ObjectSerializer() {
+        objectSerializer = new ObjectSerializer() {
             private Object o = new Object();
             @Override
             public <T> T deserialize(InputStream inputStream, TypeReference<T> typeReference) {
@@ -414,19 +418,21 @@ class EventHubProducerAsyncClientIdempotentTest {
 
     @Test
     void sendObjectBatch() {
-        ObjectBatch<Object> objectBatch = producer.createBatch(Object.class,
-            new CreateBatchOptions().setPartitionId(PARTITION_0)).block();
-        objectBatch.tryAdd(new Object());
-        objectBatch.tryAdd(new Object());
-        StepVerifier.create(producer.send(objectBatch))
+
+        EventDataBatch eventDataBatch = producer.createBatch(new CreateBatchOptions().setPartitionId(PARTITION_0))
+            .block();
+
+        eventDataBatch.tryAdd(new EventData(BinaryData.fromObject(new Object(), objectSerializer)));
+        eventDataBatch.tryAdd(new EventData(BinaryData.fromObject(new Object(), objectSerializer)));
+        StepVerifier.create(producer.send(eventDataBatch))
             .verifyComplete();
-        assertEquals(objectBatch.getStartingPublishedSequenceNumber(), PRODUCER_SEQ_NUMBER);
+        assertEquals(eventDataBatch.getStartingPublishedSequenceNumber(), PRODUCER_SEQ_NUMBER);
 
         StepVerifier.create(producer.getPartitionPublishingProperties(PARTITION_0))
             .assertNext(properties -> {
                 assertEquals(properties.getOwnerLevel(), PRODUCER_OWNER_LEVEL);
                 assertEquals(properties.getProducerGroupId(), PRODUCER_GROUP_ID);
-                assertEquals(properties.getSequenceNumber(), PRODUCER_SEQ_NUMBER + objectBatch.getCount());
+                assertEquals(properties.getSequenceNumber(), PRODUCER_SEQ_NUMBER + eventDataBatch.getCount());
             }).verifyComplete();
     }
 }
