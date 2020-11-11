@@ -1,5 +1,8 @@
 # Release History
 
+## 1.7.0-beta.3 (Unreleased)
+
+
 ## 1.7.0-beta.2 (2020-11-10)
 ### New Features
 - Optionally enable idempotency of a send link to send AMQP messages with producer group id, producer owner level and 
