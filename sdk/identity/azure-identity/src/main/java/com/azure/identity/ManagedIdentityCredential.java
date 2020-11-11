@@ -41,23 +41,16 @@ public final class ManagedIdentityCredential implements TokenCredential {
 
         if (configuration.contains(Configuration.PROPERTY_MSI_ENDPOINT)) {
             managedIdentityServiceCredential = new AppServiceMsiCredential(clientId, identityClient);
-            System.out.println("MSI activated");
         } else if (configuration.contains(Configuration.PROPERTY_IDENTITY_ENDPOINT)) {
-            System.out.println("IDENTITY activated");
             if (configuration.contains(Configuration.PROPERTY_IDENTITY_HEADER)) {
-                System.out.println("IDENTITY HEADER activated");
-                if (configuration.contains(PROPERTY_IDENTITY_SERVER_THUMBPRINT)) {
-                    System.out.println("IDENTITY SERVER THUMBPRINT activated");
+                if (configuration.get(PROPERTY_IDENTITY_SERVER_THUMBPRINT) != null) {
                     managedIdentityServiceCredential = new ServiceFabricMsiCredential(clientId, identityClient);
                 } else {
-                    System.out.println("IDENTITY SERVER THUMBPRINT ELSE VM activated");
                     managedIdentityServiceCredential = new VirtualMachineMsiCredential(clientId, identityClient);
                 }
-            } else if (configuration.contains(PROPERTY_IMDS_ENDPOINT)) {
-                System.out.println("IMDS ARC activated");
+            } else if (configuration.get(PROPERTY_IMDS_ENDPOINT) != null) {
                 managedIdentityServiceCredential = new ArcIdentityCredential(clientId, identityClient);
             } else {
-                System.out.println("VM activated");
                 managedIdentityServiceCredential = new VirtualMachineMsiCredential(clientId, identityClient);
             }
         } else {

@@ -24,7 +24,7 @@ public class ReadmeSamples {
      */
     public void createExporter() {
         AzureMonitorExporter azureMonitorExporter = new AzureMonitorExporterBuilder()
-            .instrumentationKey("{instrumentation-key}")
+            .connectionString("{connection-string}")
             .buildExporter();
     }
 
@@ -33,7 +33,7 @@ public class ReadmeSamples {
      */
     public void exportSpanData() {
         AzureMonitorExporter azureMonitorExporter = new AzureMonitorExporterBuilder()
-            .instrumentationKey("{instrumentation-key}")
+            .connectionString("{connection-string}")
             .buildExporter();
 
         CompletableResultCode resultCode = azureMonitorExporter.export(getSpanDataCollection());
