@@ -59,8 +59,8 @@ Guidelines][SDK_README_CONTRIBUTING] for more information.
 [SDK_README_GETTING_STARTED]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/README.md#getting-started
 [SDK_README_TROUBLESHOOTING]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/README.md#troubleshooting
 [SDK_README_KEY_CONCEPTS]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/README.md#key-concepts
-[SDK_README_DEPENDENCY]: ../../README.md#include-the-package
-[SDK_README_NEXT_STEPS]: ../../README.md#next-steps
+[SDK_README_DEPENDENCY]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/README.md#include-the-package
+[SDK_README_NEXT_STEPS]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/README.md#next-steps
 [java_fr_ref_docs]: https://aka.ms/azsdk-java-formrecognizer-ref-docs
 
 [authentication_sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/Authentication.java
