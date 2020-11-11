@@ -16,7 +16,6 @@ import reactor.core.publisher.Mono;
  */
 @Immutable
 class AppServiceMsiCredential extends ManagedIdentityServiceCredential {
-
     private final String msiEndpoint;
     private final String msiSecret;
     private final ClientLogger logger = new ClientLogger(AppServiceMsiCredential.class);
