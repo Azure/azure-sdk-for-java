@@ -53,42 +53,6 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
     }
 
     /**
-     * Tests that a backup operation can be obtained by using its {@code jobId}.
-     */
-    @SuppressWarnings("ConstantConditions")
-    @ParameterizedTest(name = DISPLAY_NAME)
-    @MethodSource("com.azure.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
-    public void getBackupStatus(HttpClient httpClient) {
-        if (getTestMode() != TestMode.PLAYBACK) {
-            // Currently there is no Managed HSM environment for pipeline testing.
-            // TODO: Remove once there is a proper cloud environment available.
-            return;
-        }
-
-        asyncClient = getClientBuilder(httpClient, false).buildAsyncClient();
-
-        PollerFlux<KeyVaultBackupOperation, String> backupPollerFlux =
-            asyncClient.beginBackup(blobStorageUrl, sasToken);
-        String jobId = backupPollerFlux.blockFirst().getValue().getJobId();
-
-        PollerFlux<KeyVaultBackupOperation, String> backupStatusPollerFlux = asyncClient.beginBackup(jobId);
-
-        AsyncPollResponse<KeyVaultBackupOperation, String> backupPollResponse = backupPollerFlux.blockLast();
-        AsyncPollResponse<KeyVaultBackupOperation, String> backupStatusPollResponse =
-            backupStatusPollerFlux.blockLast();
-
-        KeyVaultBackupOperation backupOperation = backupPollResponse.getValue();
-        KeyVaultBackupOperation backupStatusOperation = backupStatusPollResponse.getValue();
-
-        String backupBlobUri = backupPollResponse.getFinalResult().block();
-        String backupStatusBlobUri = backupStatusPollResponse.getFinalResult().block();
-
-        assertEquals(backupBlobUri, backupStatusBlobUri);
-        assertEquals(backupOperation.getStartTime(), backupStatusOperation.getStartTime());
-        assertEquals(backupOperation.getEndTime(), backupStatusOperation.getEndTime());
-    }
-
-    /**
      * Tests that a Key Vault can be restored from a backup.
      */
     @SuppressWarnings("ConstantConditions")
@@ -114,45 +78,6 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
             asyncClient.beginRestore(backupFolderUrl, sasToken).blockLast();
 
         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, restorePollResponse.getStatus());
-    }
-
-    /**
-     * Tests that a restore operation can be obtained by using its {@code jobId}.
-     */
-    @SuppressWarnings("ConstantConditions")
-    @ParameterizedTest(name = DISPLAY_NAME)
-    @MethodSource("com.azure.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
-    public void getRestoreStatus(HttpClient httpClient) {
-        if (getTestMode() != TestMode.PLAYBACK) {
-            // Currently there is no Managed HSM environment for pipeline testing.
-            // TODO: Remove once there is a proper cloud environment available.
-            return;
-        }
-
-        asyncClient = getClientBuilder(httpClient, false).buildAsyncClient();
-
-        // Create a backup
-        AsyncPollResponse<KeyVaultBackupOperation, String> backupPollResponse =
-            asyncClient.beginBackup(blobStorageUrl, sasToken).blockLast();
-
-        // Restore the backup
-        String backupFolderUrl = backupPollResponse.getFinalResult().block();
-        PollerFlux<KeyVaultRestoreOperation, Void> restorePollerFlux =
-            asyncClient.beginRestore(backupFolderUrl, sasToken);
-
-        // Get job status via its ID
-        String jobId = restorePollerFlux.blockFirst().getValue().getJobId();
-        PollerFlux<KeyVaultRestoreOperation, Void> restoreStatusPollerFlux = asyncClient.beginRestore(jobId);
-
-        AsyncPollResponse<KeyVaultRestoreOperation, Void> restorePollResponse = restorePollerFlux.blockLast();
-        AsyncPollResponse<KeyVaultRestoreOperation, Void> restoreStatusPollResponse =
-            restoreStatusPollerFlux.blockLast();
-
-        KeyVaultRestoreOperation backupOperation = restorePollResponse.getValue();
-        KeyVaultRestoreOperation backupStatusOperation = restoreStatusPollResponse.getValue();
-
-        assertEquals(backupOperation.getStartTime(), backupStatusOperation.getStartTime());
-        assertEquals(backupOperation.getEndTime(), backupStatusOperation.getEndTime());
     }
 
     /**
