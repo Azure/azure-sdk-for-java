@@ -9,8 +9,10 @@ import static com.azure.core.amqp.AmqpMessageConstant.VIA_PARTITION_KEY_ANNOTATI
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseUtils;
+import com.azure.core.amqp.models.AmqpAddress;
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.amqp.models.AmqpMessageHeader;
+import com.azure.core.amqp.models.AmqpMessageId;
 import com.azure.core.amqp.models.AmqpMessageProperties;
 import com.azure.core.experimental.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
@@ -387,21 +389,27 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         // Properties
         final AmqpMessageProperties brokeredProperties = brokeredAmqpAnnotatedMessage.getProperties();
         brokeredProperties.setReplyToGroupId(amqpMessage.getReplyToGroupId());
-        brokeredProperties.setReplyTo(amqpMessage.getReplyTo());
+        final String replyTo = amqpMessage.getReplyTo();
+        if (replyTo != null) {
+            brokeredProperties.setReplyTo(new AmqpAddress(amqpMessage.getReplyTo()));
+        }
         final Object messageId = amqpMessage.getMessageId();
         if (messageId != null) {
-            brokeredProperties.setMessageId(messageId.toString());
+            brokeredProperties.setMessageId(new AmqpMessageId(messageId.toString()));
         }
 
         brokeredProperties.setContentType(amqpMessage.getContentType());
         final Object correlationId = amqpMessage.getCorrelationId();
         if (correlationId != null) {
-            brokeredProperties.setCorrelationId(correlationId.toString());
+            brokeredProperties.setCorrelationId(new AmqpMessageId(correlationId.toString()));
         }
 
         final Properties amqpProperties = amqpMessage.getProperties();
         if (amqpProperties != null) {
-            brokeredProperties.setTo(amqpProperties.getTo());
+            final String to = amqpProperties.getTo();
+            if (to != null) {
+                brokeredProperties.setTo(new AmqpAddress(amqpProperties.getTo()));
+            }
 
             if (amqpProperties.getAbsoluteExpiryTime() != null) {
                 brokeredProperties.setAbsoluteExpiryTime(amqpProperties.getAbsoluteExpiryTime().toInstant()

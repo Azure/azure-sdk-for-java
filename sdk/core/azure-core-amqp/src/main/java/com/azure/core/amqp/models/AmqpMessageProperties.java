@@ -21,14 +21,14 @@ public class AmqpMessageProperties {
     private OffsetDateTime absoluteExpiryTime;
     private String contentEncoding;
     private String contentType;
-    private String correlationId;
+    private AmqpMessageId correlationId;
     private OffsetDateTime creationTime;
     private String groupId;
     private Long groupSequence;
-    private String messageId;
+    private AmqpMessageId messageId;
     private String replyToGroupId;
-    private String replyTo;
-    private String to;
+    private AmqpAddress replyTo;
+    private AmqpAddress to;
     private String subject;
     private byte[] userId;
 
@@ -124,7 +124,7 @@ public class AmqpMessageProperties {
      *
      * @return the {@code correlationId} value.
      */
-    public String getCorrelationId() {
+    public AmqpMessageId getCorrelationId() {
         return correlationId;
     }
 
@@ -135,7 +135,7 @@ public class AmqpMessageProperties {
      *
      * @return updated {@link AmqpMessageProperties} object.
      */
-    public AmqpMessageProperties setCorrelationId(String correlationId) {
+    public AmqpMessageProperties setCorrelationId(AmqpMessageId correlationId) {
         this.correlationId = correlationId;
         return this;
     }
@@ -208,7 +208,7 @@ public class AmqpMessageProperties {
      *
      * @return the {@code messageId} value.
      */
-    public String getMessageId() {
+    public AmqpMessageId getMessageId() {
         return messageId;
     }
 
@@ -219,7 +219,7 @@ public class AmqpMessageProperties {
      *
      * @return updated {@link AmqpMessageProperties} object.
      */
-    public AmqpMessageProperties setMessageId(String messageId) {
+    public AmqpMessageProperties setMessageId(AmqpMessageId messageId) {
         this.messageId = messageId;
         return this;
     }
@@ -229,7 +229,7 @@ public class AmqpMessageProperties {
      *
      * @return The {@code replyTo} value.
      */
-    public String getReplyTo() {
+    public AmqpAddress getReplyTo() {
         return replyTo;
     }
 
@@ -240,7 +240,7 @@ public class AmqpMessageProperties {
      *
      * @return updated {@link AmqpMessageProperties} object.
      */
-    public AmqpMessageProperties setReplyTo(String replyTo) {
+    public AmqpMessageProperties setReplyTo(AmqpAddress replyTo) {
         this.replyTo = replyTo;
         return this;
     }
@@ -292,7 +292,7 @@ public class AmqpMessageProperties {
      *
      * @return the {@code to} value.
      */
-    public String getTo() {
+    public AmqpAddress getTo() {
         return to;
     }
 
@@ -303,7 +303,7 @@ public class AmqpMessageProperties {
      *
      * @return updated {@link AmqpMessageProperties} object.
      */
-    public AmqpMessageProperties setTo(String to) {
+    public AmqpMessageProperties setTo(AmqpAddress to) {
         this.to = to;
         return this;
     }

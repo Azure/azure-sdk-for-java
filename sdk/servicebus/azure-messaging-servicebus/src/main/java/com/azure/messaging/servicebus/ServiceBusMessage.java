@@ -4,9 +4,11 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpMessageConstant;
+import com.azure.core.amqp.models.AmqpAddress;
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.amqp.models.AmqpBodyType;
-import com.azure.core.amqp.models.AmqpDataBody;
+import com.azure.core.amqp.models.AmqpMessageBody;
+import com.azure.core.amqp.models.AmqpMessageId;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.experimental.util.BinaryData;
@@ -14,7 +16,6 @@ import com.azure.core.experimental.util.BinaryData;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -93,8 +94,7 @@ public class ServiceBusMessage {
     public ServiceBusMessage(BinaryData body) {
         Objects.requireNonNull(body, "'body' cannot be null.");
         this.context = Context.NONE;
-        this.amqpAnnotatedMessage = new AmqpAnnotatedMessage(
-            new AmqpDataBody(Collections.singletonList(body.toBytes())));
+        this.amqpAnnotatedMessage = new AmqpAnnotatedMessage(AmqpMessageBody.fromData(body.toBytes()));
     }
 
     /**
@@ -161,8 +161,7 @@ public class ServiceBusMessage {
         final AmqpBodyType type = amqpAnnotatedMessage.getBody().getBodyType();
         switch (type) {
             case DATA:
-                Optional<byte[]> byteArrayData = ((AmqpDataBody) amqpAnnotatedMessage.getBody()).getData().stream()
-                    .findFirst();
+                Optional<byte[]> byteArrayData = amqpAnnotatedMessage.getBody().getData().stream().findFirst();
                 final byte[] bytes;
 
                 if (byteArrayData.isPresent()) {
@@ -215,7 +214,12 @@ public class ServiceBusMessage {
      *     Routing and Correlation</a>
      */
     public String getCorrelationId() {
-        return amqpAnnotatedMessage.getProperties().getCorrelationId();
+        String correlationId = null;
+        AmqpMessageId amqpCorrelationId = amqpAnnotatedMessage.getProperties().getCorrelationId();
+        if (amqpCorrelationId != null) {
+            correlationId = amqpCorrelationId.toString();
+        }
+        return correlationId;
     }
 
     /**
@@ -227,7 +231,11 @@ public class ServiceBusMessage {
      * @see #getCorrelationId()
      */
     public ServiceBusMessage setCorrelationId(String correlationId) {
-        amqpAnnotatedMessage.getProperties().setCorrelationId(correlationId);
+        AmqpMessageId id = null;
+        if (correlationId != null) {
+            id = new AmqpMessageId(correlationId);
+        }
+        amqpAnnotatedMessage.getProperties().setCorrelationId(id);
         return this;
     }
 
@@ -256,7 +264,12 @@ public class ServiceBusMessage {
      * @return Id of the {@link ServiceBusMessage}.
      */
     public String getMessageId() {
-        return amqpAnnotatedMessage.getProperties().getMessageId();
+        String messageId = null;
+        AmqpMessageId amqpMessageId = amqpAnnotatedMessage.getProperties().getMessageId();
+        if (amqpMessageId != null) {
+            messageId = amqpMessageId.toString();
+        }
+        return messageId;
     }
 
     /**
@@ -267,7 +280,11 @@ public class ServiceBusMessage {
      * @return The updated {@link ServiceBusMessage}.
      */
     public ServiceBusMessage setMessageId(String messageId) {
-        amqpAnnotatedMessage.getProperties().setMessageId(messageId);
+        AmqpMessageId id = null;
+        if (messageId != null) {
+            id = new AmqpMessageId(messageId);
+        }
+        amqpAnnotatedMessage.getProperties().setMessageId(id);
         return this;
     }
 
@@ -313,7 +330,12 @@ public class ServiceBusMessage {
      *     Routing and Correlation</a>
      */
     public String getReplyTo() {
-        return amqpAnnotatedMessage.getProperties().getReplyTo();
+        String replyTo = null;
+        AmqpAddress amqpAddress = amqpAnnotatedMessage.getProperties().getReplyTo();
+        if (amqpAddress != null) {
+            replyTo = amqpAddress.toString();
+        }
+        return replyTo;
     }
 
     /**
@@ -325,7 +347,11 @@ public class ServiceBusMessage {
      * @see #getReplyTo()
      */
     public ServiceBusMessage setReplyTo(String replyTo) {
-        amqpAnnotatedMessage.getProperties().setReplyTo(replyTo);
+        AmqpAddress replyToAddress = null;
+        if (replyTo != null) {
+            replyToAddress = new AmqpAddress(replyTo);
+        }
+        amqpAnnotatedMessage.getProperties().setReplyTo(replyToAddress);
         return this;
     }
 
@@ -335,7 +361,12 @@ public class ServiceBusMessage {
      * @return "To" property value of this message
      */
     public String getTo() {
-        return amqpAnnotatedMessage.getProperties().getTo();
+        String to = null;
+        AmqpAddress amqpAddress = amqpAnnotatedMessage.getProperties().getTo();
+        if (amqpAddress != null) {
+            to = amqpAddress.toString();
+        }
+        return to;
     }
 
     /**
@@ -351,7 +382,11 @@ public class ServiceBusMessage {
      * @return The updated {@link ServiceBusMessage}.
      */
     public ServiceBusMessage setTo(String to) {
-        amqpAnnotatedMessage.getProperties().setTo(to);
+        AmqpAddress toAddress = null;
+        if (to != null) {
+            toAddress = new AmqpAddress(to);
+        }
+        amqpAnnotatedMessage.getProperties().setTo(toAddress);
         return this;
     }
 
