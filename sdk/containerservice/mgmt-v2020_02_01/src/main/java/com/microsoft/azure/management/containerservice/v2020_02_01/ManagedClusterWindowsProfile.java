@@ -15,19 +15,34 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ManagedClusterWindowsProfile {
     /**
-     * The administrator username to use for Windows VMs.
+     * Specifies the name of the administrator account. &lt;br&gt;&lt;br&gt;
+     * **restriction:** Cannot end in "." &lt;br&gt;&lt;br&gt; **Disallowed
+     * values:** "administrator", "admin", "user", "user1", "test", "user2",
+     * "test1", "user3", "admin1", "1", "123", "a", "actuser", "adm", "admin2",
+     * "aspnet", "backup", "console", "david", "guest", "john", "owner",
+     * "root", "server", "sql", "support", "support_388945a0", "sys", "test2",
+     * "test3", "user4", "user5". &lt;br&gt;&lt;br&gt; **Minimum-length:** 1
+     * character &lt;br&gt;&lt;br&gt; **Max-length:** 20 characters.
      */
     @JsonProperty(value = "adminUsername", required = true)
     private String adminUsername;
 
     /**
-     * The administrator password to use for Windows VMs.
+     * Specifies the password of the administrator account.
+     * &lt;br&gt;&lt;br&gt; **Minimum-length:** 8 characters
+     * &lt;br&gt;&lt;br&gt; **Max-length:** 123 characters &lt;br&gt;&lt;br&gt;
+     * **Complexity requirements:** 3 out of 4 conditions below need to be
+     * fulfilled &lt;br&gt; Has lower characters &lt;br&gt;Has upper characters
+     * &lt;br&gt; Has a digit &lt;br&gt; Has a special character (Regex match
+     * [\W_]) &lt;br&gt;&lt;br&gt; **Disallowed values:** "abc@123",
+     * "P@$$w0rd", "P@ssw0rd", "P@ssword123", "Pa$$word", "pass@word1",
+     * "Password!", "Password1", "Password22", "iloveyou!".
      */
     @JsonProperty(value = "adminPassword")
     private String adminPassword;
 
     /**
-     * Get the administrator username to use for Windows VMs.
+     * Get specifies the name of the administrator account. &lt;br&gt;&lt;br&gt; **restriction:** Cannot end in "." &lt;br&gt;&lt;br&gt; **Disallowed values:** "administrator", "admin", "user", "user1", "test", "user2", "test1", "user3", "admin1", "1", "123", "a", "actuser", "adm", "admin2", "aspnet", "backup", "console", "david", "guest", "john", "owner", "root", "server", "sql", "support", "support_388945a0", "sys", "test2", "test3", "user4", "user5". &lt;br&gt;&lt;br&gt; **Minimum-length:** 1 character &lt;br&gt;&lt;br&gt; **Max-length:** 20 characters.
      *
      * @return the adminUsername value
      */
@@ -36,7 +51,7 @@ public class ManagedClusterWindowsProfile {
     }
 
     /**
-     * Set the administrator username to use for Windows VMs.
+     * Set specifies the name of the administrator account. &lt;br&gt;&lt;br&gt; **restriction:** Cannot end in "." &lt;br&gt;&lt;br&gt; **Disallowed values:** "administrator", "admin", "user", "user1", "test", "user2", "test1", "user3", "admin1", "1", "123", "a", "actuser", "adm", "admin2", "aspnet", "backup", "console", "david", "guest", "john", "owner", "root", "server", "sql", "support", "support_388945a0", "sys", "test2", "test3", "user4", "user5". &lt;br&gt;&lt;br&gt; **Minimum-length:** 1 character &lt;br&gt;&lt;br&gt; **Max-length:** 20 characters.
      *
      * @param adminUsername the adminUsername value to set
      * @return the ManagedClusterWindowsProfile object itself.
@@ -47,7 +62,7 @@ public class ManagedClusterWindowsProfile {
     }
 
     /**
-     * Get the administrator password to use for Windows VMs.
+     * Get specifies the password of the administrator account. &lt;br&gt;&lt;br&gt; **Minimum-length:** 8 characters &lt;br&gt;&lt;br&gt; **Max-length:** 123 characters &lt;br&gt;&lt;br&gt; **Complexity requirements:** 3 out of 4 conditions below need to be fulfilled &lt;br&gt; Has lower characters &lt;br&gt;Has upper characters &lt;br&gt; Has a digit &lt;br&gt; Has a special character (Regex match [\W_]) &lt;br&gt;&lt;br&gt; **Disallowed values:** "abc@123", "P@$$w0rd", "P@ssw0rd", "P@ssword123", "Pa$$word", "pass@word1", "Password!", "Password1", "Password22", "iloveyou!".
      *
      * @return the adminPassword value
      */
@@ -56,7 +71,7 @@ public class ManagedClusterWindowsProfile {
     }
 
     /**
-     * Set the administrator password to use for Windows VMs.
+     * Set specifies the password of the administrator account. &lt;br&gt;&lt;br&gt; **Minimum-length:** 8 characters &lt;br&gt;&lt;br&gt; **Max-length:** 123 characters &lt;br&gt;&lt;br&gt; **Complexity requirements:** 3 out of 4 conditions below need to be fulfilled &lt;br&gt; Has lower characters &lt;br&gt;Has upper characters &lt;br&gt; Has a digit &lt;br&gt; Has a special character (Regex match [\W_]) &lt;br&gt;&lt;br&gt; **Disallowed values:** "abc@123", "P@$$w0rd", "P@ssw0rd", "P@ssword123", "Pa$$word", "pass@word1", "Password!", "Password1", "Password22", "iloveyou!".
      *
      * @param adminPassword the adminPassword value to set
      * @return the ManagedClusterWindowsProfile object itself.
