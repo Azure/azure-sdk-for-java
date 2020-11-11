@@ -16,7 +16,6 @@ import com.azure.communication.administration.models.PhoneNumberRelease;
 import com.azure.communication.administration.models.PhonePlan;
 import com.azure.communication.administration.models.PhonePlanGroup;
 import com.azure.communication.administration.models.PstnConfiguration;
-import com.azure.communication.administration.models.ReleaseResponse;
 import com.azure.communication.administration.models.UpdateNumberCapabilitiesResponse;
 import com.azure.communication.administration.models.PhoneNumberSearch;
 import com.azure.communication.administration.models.UpdatePhoneNumberCapabilitiesResponse;
@@ -368,30 +367,6 @@ public final class PhoneNumberClient {
     }
 
     /**
-     * Creates a release for the given phone numbers.
-     *
-     * @param phoneNumbers {@link List} of {@link PhoneNumber} objects with the phone numbers.
-     * @return A {@link ReleaseResponse} representing the release.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ReleaseResponse releasePhoneNumbers(List<PhoneNumber> phoneNumbers) {
-        return phoneNumberAsyncClient.releasePhoneNumbers(phoneNumbers).block();
-    }
-
-    /**
-     * Creates a release for the given phone numbers.
-     *
-     * @param phoneNumbers {@link List} of {@link PhoneNumber} objects with the phone numbers.
-     * @param context A {@link Context} representing the request context.
-     * @return A {@link Response} whose {@link Response#getValue()} value returns
-     * a {@link ReleaseResponse} representing the release.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ReleaseResponse> releasePhoneNumbersWithResponse(List<PhoneNumber> phoneNumbers, Context context) {
-        return phoneNumberAsyncClient.releasePhoneNumbersWithResponse(phoneNumbers, context).block();
-    }
-
-    /**
      * Gets the list of all releases
      *
      * @return A {@link PagedIterable} of {@link PhoneNumberEntity} instances representing releases.
@@ -531,5 +506,20 @@ public final class PhoneNumberClient {
     public SyncPoller<Void, Void> beginPurchaseSearch(
         String searchId, Duration pollInterval) {
         return phoneNumberAsyncClient.beginPurchaseSearch(searchId, pollInterval).getSyncPoller();
+    }
+
+ /**
+     * Releases the given phone numbers.
+     * This function returns a Long Running Operation poller
+     * 
+     * @param phoneNumbers A list of {@link PhoneNumber} with the desired numbers to release
+     * @param pollInterval The time our long running operation will keep on polling 
+     * until it gets a result from the server
+     * @return A {@link SyncPoller} object with the search result
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<PhoneNumberRelease, PhoneNumberRelease> beginReleasePhoneNumbers(
+        List<PhoneNumber> phoneNumbers, Duration pollInterval) {
+        return phoneNumberAsyncClient.beginReleasePhoneNumbers(phoneNumbers, pollInterval).getSyncPoller();
     }
 }

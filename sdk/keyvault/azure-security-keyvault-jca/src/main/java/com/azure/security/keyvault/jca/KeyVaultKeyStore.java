@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -33,7 +34,7 @@ import static java.util.logging.Level.WARNING;
 /**
  * The Azure Key Vault implementation of the KeyStoreSpi.
  */
-public class KeyVaultKeyStore extends KeyStoreSpi {
+public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     /**
      * Stores the logger.
@@ -72,8 +73,9 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
      * The constructor uses System.getProperty for
      * <code>azure.keyvault.uri</code>, <code>azure.keyvault.tenantId</code>,
      * <code>azure.keyvault.clientId</code>,
-     * <code>azure.keyvault.clientSecret</code> to initialize the keyvault
-     * client.
+     * <code>azure.keyvault.clientSecret</code> and
+     * <code>azure.keyvault.userAssignedIdentity</code> to initialize the
+     * keyvault client.
      * </p>
      */
     public KeyVaultKeyStore() {
@@ -82,7 +84,12 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
         String tenantId = System.getProperty("azure.keyvault.tenantId");
         String clientId = System.getProperty("azure.keyvault.clientId");
         String clientSecret = System.getProperty("azure.keyvault.clientSecret");
-        keyVaultClient = new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret);
+        String managedIdentity = System.getProperty("azure.keyvault.managedIdentity");
+        if (clientId != null) {
+            keyVaultClient = new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret);
+        } else {
+            keyVaultClient = new KeyVaultClient(keyVaultUri, managedIdentity);
+        }
     }
 
     @Override
@@ -155,7 +162,7 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
 
     @Override
     public Date engineGetCreationDate(String alias) {
-        return creationDate;
+        return new Date(creationDate.getTime());
     }
 
     @Override
@@ -197,11 +204,20 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
     public void engineLoad(KeyStore.LoadStoreParameter param) {
         if (param instanceof KeyVaultLoadStoreParameter) {
             KeyVaultLoadStoreParameter parameter = (KeyVaultLoadStoreParameter) param;
-            keyVaultClient = new KeyVaultClient(
-                    parameter.getUri(),
-                    parameter.getTenantId(),
-                    parameter.getClientId(),
-                    parameter.getClientSecret());
+            if (parameter.getClientId() != null) {
+                keyVaultClient = new KeyVaultClient(
+                        parameter.getUri(),
+                        parameter.getTenantId(),
+                        parameter.getClientId(),
+                        parameter.getClientSecret());
+            } else if (parameter.getUserAssignedIdentity() != null) {
+                keyVaultClient = new KeyVaultClient(
+                        parameter.getUri(),
+                        parameter.getUserAssignedIdentity()
+                );
+            } else {
+                keyVaultClient = new KeyVaultClient(parameter.getUri());
+            }
         }
         sideLoad();
     }
@@ -259,7 +275,7 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
         List<String> filenames = new ArrayList<>();
         try (InputStream in = getClass().getResourceAsStream(path)) {
             if (in != null) {
-                try (BufferedReader br = new BufferedReader(new InputStreamReader(in))) {
+                try (BufferedReader br = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8))) {
                     String resource;
                     while ((resource = br.readLine()) != null) {
                         filenames.add(resource);

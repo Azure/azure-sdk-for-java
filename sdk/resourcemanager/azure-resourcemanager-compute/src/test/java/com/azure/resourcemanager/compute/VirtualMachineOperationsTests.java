@@ -161,7 +161,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withAdminUsername("Foo12")
             .withAdminPassword(password())
             .withUnmanagedDisks()
-            .withSize(VirtualMachineSizeTypes.STANDARD_D3)
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .withOSDiskName("javatest")
             .withLicenseType("Windows_Server")
@@ -210,7 +210,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withAdminUsername("Foo12")
             .withAdminPassword(password())
             .withUnmanagedDisks()
-            .withSize(VirtualMachineSizeTypes.STANDARD_D3)
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .withOSDiskName("javatest")
             .withLicenseType("Windows_Server")
@@ -280,7 +280,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withAdminUsername("Foo12")
             .withAdminPassword(password())
             .withUnmanagedDisks()
-            .withSize(VirtualMachineSizeTypes.STANDARD_A2)
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .withOSDiskName("javatest")
             .withLowPriority(VirtualMachineEvictionPolicyTypes.DEALLOCATE)
@@ -395,7 +395,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withAdminUsername("Foo12")
             .withAdminPassword(password())
             .withUnmanagedDisks()
-            .withSize(VirtualMachineSizeTypes.STANDARD_DS3_V2)
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .withOSDiskName("javatest")
             .withLicenseType("Windows_Server")
@@ -490,7 +490,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withAdminUsername("Foo12")
             .withAdminPassword(password())
             .withUnmanagedDisks()
-            .withSize(VirtualMachineSizeTypes.STANDARD_DS3_V2)
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .withOSDiskName("javatest")
             .withLicenseType("Windows_Server")
@@ -705,7 +705,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .withLun(3)
                 .storeAt(storageAccount.name(), "diskvhds", "datadisk2vhd.vhd")
                 .attach()
-                .withSize(VirtualMachineSizeTypes.STANDARD_DS2_V2)
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .create();
 
@@ -742,7 +742,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .withRootPassword(password())
                 .withUnmanagedDisks()
                 .withExistingUnmanagedDataDisk(storageAccount.name(), "diskvhds", "datadisk1vhd.vhd")
-                .withSize(VirtualMachineSizeTypes.STANDARD_DS2_V2)
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .create();
         // Gets the vm
         //
@@ -790,7 +790,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("firstuser")
                 .withRootPassword("afh123RVS!")
-                .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .create();
 
         // checking to see if withTag correctly update
@@ -845,7 +845,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withRootUsername("firstuser")
             .withRootPassword("afh123RVS!")
             .withSpotPriority(VirtualMachineEvictionPolicyTypes.DEALLOCATE)
-            .withSize(VirtualMachineSizeTypes.STANDARD_D2_V3)
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
             .create();
 
         Assertions.assertNotNull(virtualMachine.osDiskStorageAccountType());

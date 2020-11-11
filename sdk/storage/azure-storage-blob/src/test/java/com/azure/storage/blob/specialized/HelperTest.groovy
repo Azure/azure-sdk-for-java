@@ -134,7 +134,7 @@ class HelperTest extends APISpec {
         def data = getRandomByteArray(1024)
 
         when:
-        def flux = Utility.convertStreamToByteBuffer(new ByteArrayInputStream(data), 1024, 1024)
+        def flux = Utility.convertStreamToByteBuffer(new ByteArrayInputStream(data), 1024, 1024, true)
 
         then:
         StepVerifier.create(flux)

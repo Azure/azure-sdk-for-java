@@ -93,7 +93,7 @@ public abstract class MetricFeedback {
     }
 
     /**
-     * Get the dimensionFilter.
+     * Get the series keys value for the feedback.
      *
      * @return the dimensionFilter value.
      */
@@ -104,7 +104,7 @@ public abstract class MetricFeedback {
     /**
      * Set the series keys value for the feedback.
      *
-     * @param dimensionFilter the dimensionFilter value.
+     * @param dimensionFilter the dimensionFilter value to set.
      *
      * @return the MetricFeedback object itself.
      */

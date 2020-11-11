@@ -4,7 +4,8 @@
 package com.azure.core.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.Option;
+import com.azure.core.implementation.Option;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -13,7 +14,8 @@ import java.util.Optional;
  * Represents a JSON Patch operation.
  */
 @Immutable
-public final class JsonPatchOperation {
+@JsonSerialize(using = JsonPatchOperationSerializer.class)
+final class JsonPatchOperation {
     private final JsonPatchOperationKind op;
     private final String from;
     private final String path;
@@ -42,7 +44,7 @@ public final class JsonPatchOperation {
      *
      * @return The kind of operation.
      */
-    public JsonPatchOperationKind getOp() {
+    JsonPatchOperationKind getOp() {
         return op;
     }
 
@@ -51,7 +53,7 @@ public final class JsonPatchOperation {
      *
      * @return The operation from target path.
      */
-    public String getFrom() {
+    String getFrom() {
         return from;
     }
 
@@ -60,7 +62,7 @@ public final class JsonPatchOperation {
      *
      * @return The operation target path.
      */
-    public String getPath() {
+    String getPath() {
         return path;
     }
 
@@ -71,7 +73,7 @@ public final class JsonPatchOperation {
      *
      * @return The operation value.
      */
-    public Option<String> getValue() {
+    Option<String> getValue() {
         return value;
     }
 

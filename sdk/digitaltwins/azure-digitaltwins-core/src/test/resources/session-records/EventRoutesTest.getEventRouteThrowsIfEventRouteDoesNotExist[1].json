@@ -4,7 +4,7 @@
     "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/eventroutes?api-version=2020-10-31",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.0.0 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "1a09676d-eb08-41e6-b106-1e2c37635ac2"
+      "x-ms-client-request-id" : "772c1347-b41e-4d77-a939-b4070ba68f14"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
@@ -12,16 +12,16 @@
       "Content-Length" : "28",
       "StatusCode" : "200",
       "Body" : "{\"value\":[],\"nextLink\":null}",
-      "Date" : "Mon, 26 Oct 2020 18:32:15 GMT",
+      "Date" : "Fri, 30 Oct 2020 16:34:48 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/eventroutes/3db80c29-ed07-4d1c-95ac-5b5636d4fedd?api-version=2020-10-31",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/eventroutes/01c69f52-28b9-4456-b212-4dfb833d1690?api-version=2020-10-31",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.0.0 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "3907c61d-2a92-4fb1-a33e-78853d5baa7d"
+      "x-ms-client-request-id" : "8e58ae64-d50b-47ff-b5cc-1ca7c702ccc2"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
@@ -29,10 +29,10 @@
       "Content-Length" : "222",
       "StatusCode" : "404",
       "Body" : "{\"error\":{\"code\":\"EventRouteNotFound\",\"message\":\"There is no route available that matches the provided input. Check for all valid event routes by calling EventRoute_List. See Swagger example (http://aka.ms/RouteSwSmpl).\"}}",
-      "Date" : "Mon, 26 Oct 2020 18:32:14 GMT",
+      "Date" : "Fri, 30 Oct 2020 16:34:48 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   } ],
-  "variables" : [ "3db80c29-ed07-4d1c-95ac-5b5636d4fedd" ]
+  "variables" : [ "01c69f52-28b9-4456-b212-4dfb833d1690" ]
 }
