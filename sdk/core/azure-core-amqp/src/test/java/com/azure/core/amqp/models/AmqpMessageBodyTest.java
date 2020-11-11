@@ -26,7 +26,6 @@ public class AmqpMessageBodyTest {
         // Arrange
         final List<byte[]> expectedDataList = new ArrayList<>();
         expectedDataList.add("some data 1".getBytes());
-        expectedDataList.add("some data 2".getBytes());
 
         // Act
         final AmqpMessageBody actual = AmqpMessageBody.fromData(expectedDataList);
@@ -50,5 +49,19 @@ public class AmqpMessageBodyTest {
 
         // Act & Assert
         Assertions.assertThrows(NullPointerException.class, () -> AmqpMessageBody.fromData(listBinaryData));
+    }
+
+    /**
+     * Verifies that only one byte array is alllowed in {@link AmqpMessageBody}.
+     */
+    @Test
+    public void constructorSupportOneByteArray() {
+        // Arrange
+        final List<byte[]> expectedDataList = new ArrayList<>();
+        expectedDataList.add("some data 1".getBytes());
+        expectedDataList.add("some data 2".getBytes());
+
+        // Act & Assert
+        Assertions.assertThrows(IllegalArgumentException.class, () -> AmqpMessageBody.fromData(expectedDataList));
     }
 }
