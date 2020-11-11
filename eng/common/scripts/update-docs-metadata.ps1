@@ -123,7 +123,6 @@ if ($pkgs) {
       try {
         Push-Location $DocRepoLocation
         Set-Content -Path $readmeLocation -Value $adjustedContent -Force
-
         Write-Host "Updated readme for $readmeName."
       } catch {
         Write-Host $_

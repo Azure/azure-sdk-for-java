@@ -126,6 +126,7 @@ jobs:
           arguments: >
             -SourceDirectory $(System.DefaultWorkingDirectory)/build
             -TargetDirectory $(Build.ArtifactStagingDirectory)
+            -ServiceDirectory '$(Build.SourceDirectory)/sdk/${{parameters.ServiceDirectory}}'
             -InformationAction Continue
 
       - publish: $(Build.ArtifactStagingDirectory)

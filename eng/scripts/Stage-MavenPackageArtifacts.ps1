@@ -1,12 +1,14 @@
 param(
   [Parameter(Mandatory=$true)][string]$SourceDirectory,
-  [Parameter(Mandatory=$true)][string]$TargetDirectory
+  [Parameter(Mandatory=$true)][string]$TargetDirectory,
+  [Parameter(Mandatory=$true)][string]$ServiceDirectory
 )
 
 $ErrorActionPreference = "Stop"
 
 Write-Host "Source Directory is: $SourceDirectory"
 Write-host "Target Directory is: $TargetDirectory"
+Write-host "Service Directory is: $ServiceDirectory"
 
 . $PSScriptRoot\MavenPackaging.ps1
 
@@ -24,4 +26,9 @@ foreach ($packageDetail in $packageDetails) {
   foreach ($associatedArtifact in $packageDetail.AssociatedArtifacts) {
     Copy-Item -Path $associatedArtifact.File -Destination $artifactIdDirectory
   }
+}
+
+# Copy service directory level readme.
+if (Test-Path '$ServiceDirectory/README.md') {
+  Copy-Item -Path '$ServiceDirectory/README.md' -Destination $TargetDirectory
 }
