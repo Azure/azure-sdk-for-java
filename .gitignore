@@ -87,3 +87,6 @@ venv
 # NetBeans
 nbproject
 nb-configuration.xml
+
+# Scala Stylecheck
+scalastyle-output.xml
