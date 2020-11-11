@@ -89,13 +89,18 @@ public class ManagementChannel implements ServiceBusManagementNode {
      */
     @Override
     public Mono<Void> cancelScheduledMessages(Iterable<Long> sequenceNumbers, String associatedLinkName) {
+        final List<Long> numbers = new ArrayList<>();
+        sequenceNumbers.forEach(s -> numbers.add(s));
+
+        if (numbers.isEmpty()) {
+            return Mono.empty();
+        }
+
         return isAuthorized(ManagementConstants.OPERATION_CANCEL_SCHEDULED_MESSAGE)
             .then(createChannel.flatMap(channel -> {
                 final Message requestMessage = createManagementMessage(
                     ManagementConstants.OPERATION_CANCEL_SCHEDULED_MESSAGE, associatedLinkName);
 
-                final List<Long> numbers = new ArrayList<>();
-                sequenceNumbers.forEach(s -> numbers.add(s));
                 final Long[] longs = numbers.toArray(new Long[0]);
                 requestMessage.setBody(new AmqpValue(Collections.singletonMap(ManagementConstants.SEQUENCE_NUMBERS,
                     longs)));

@@ -456,6 +456,13 @@ class ManagementChannelTests {
             .verifyError(NullPointerException.class);
     }
 
+    @Test
+    void cancelScheduledMessagesWithEmptyIterable() {
+        // Arrange, act, assert
+        StepVerifier.create(managementChannel.cancelScheduledMessages(new ArrayList<>(), null))
+                .verifyComplete();
+    }
+
     private static Stream<Arguments> updateDisposition() {
         return Stream.of(Arguments.of(
             "", "test-link-name",
