@@ -1,6 +1,8 @@
 # Release History
 
 ## 12.0.0-beta.4 (2020-11-11)
+### Dependency updates
+
 - Updated blob dependency to 12.9.0
 
 ## 12.0.0-beta.3 (2020-10-01)
