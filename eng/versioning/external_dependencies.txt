@@ -281,15 +281,15 @@ cosmos_org.mpierce.metrics.reservoir:hdrhistogram-metrics-reservoir;1.1.0
 
 ## Cosmos Spark connector under sdk\cosmos\azure-cosmos-spark_3-0_2-12\pom.xml
 # Cosmos Spark connector runtime dependencies - provided by Spark runtime/host
-cosmos-spark_org.apache.spark:spark-sql_2.12;3.0.1
-cosmos-spark_org.scala-lang:scala-library;2.12.10
+cosmos_org.apache.spark:spark-sql_2.12;3.0.1
+cosmos_org.scala-lang:scala-library;2.12.10
 
 # Cosmos Spark connector tests only
-cosmos-spark_org.scalatest:scalatest_2.12;3.2.2
+cosmos_org.scalatest:scalatest_2.12;3.2.2
 
 # Maven Tools for Cosmos Spark connector only
-cosmos-spark_net.alchim31.maven:scala-maven-plugin;4.4.0
-cosmos-spark_org.scalastyle:scalastyle-maven-plugin;1.0.0
+cosmos_net.alchim31.maven:scala-maven-plugin;4.4.0
+cosmos_org.scalastyle:scalastyle-maven-plugin;1.0.0
 
 # sdk\core\azure-core-serializer-avro-jackson\pom.xml
 # This dependency is needed since Jackson Avro uses an older dependency on Apache Avro which is another library.
