@@ -93,7 +93,7 @@ public final class ManageAvailabilitySet {
                     .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
                     .withAdminUsername(userName)
                     .withAdminPassword(password)
-                    .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                     .withExistingAvailabilitySet(availSet1)
                     .create();
 
@@ -116,7 +116,7 @@ public final class ManageAvailabilitySet {
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                     .withRootUsername(userName)
                     .withRootPassword(password)
-                    .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                     .withExistingAvailabilitySet(availSet1)
                     .create();
 

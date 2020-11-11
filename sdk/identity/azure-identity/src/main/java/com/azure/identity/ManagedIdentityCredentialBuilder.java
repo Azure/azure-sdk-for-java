@@ -3,8 +3,6 @@
 
 package com.azure.identity;
 
-import com.azure.identity.implementation.util.ValidationUtil;
-
 /**
  * Fluent credential builder for instantiating a {@link ManagedIdentityCredential}.
  *
@@ -20,7 +18,6 @@ public class ManagedIdentityCredentialBuilder extends CredentialBuilderBase<Mana
      * @return the ManagedIdentityCredentialBuilder itself
      */
     public ManagedIdentityCredentialBuilder clientId(String clientId) {
-        ValidationUtil.validateClientIdCharacterRange(getClass().getSimpleName(), clientId);
         this.clientId = clientId;
         return this;
     }

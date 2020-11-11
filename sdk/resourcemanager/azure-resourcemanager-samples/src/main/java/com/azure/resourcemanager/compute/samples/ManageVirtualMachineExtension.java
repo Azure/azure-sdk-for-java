@@ -114,7 +114,7 @@ public final class ManageVirtualMachineExtension {
                     .withLatestLinuxImage("Canonical", "UbuntuServer", "14.04.4-LTS")
                     .withRootUsername(firstLinuxUserName)
                     .withRootPassword(firstLinuxUserPassword)
-                    .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                     .create();
 
             System.out.println("Created a Linux VM with" + linuxVM.id());
@@ -212,7 +212,7 @@ public final class ManageVirtualMachineExtension {
                     .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
                     .withAdminUsername(firstWindowsUserName)
                     .withAdminPassword(firstWindowsUserPassword)
-                    .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                     .defineNewExtension(windowsCustomScriptExtensionName)
                         .withPublisher(windowsCustomScriptExtensionPublisherName)
                         .withType(windowsCustomScriptExtensionTypeName)

@@ -38,7 +38,6 @@
     <packageOutputDirectory>${project.build.directory}</packageOutputDirectory>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <azure.spring.boot.integration.version>${project.version}</azure.spring.boot.integration.version>
-    <azure.spring.boot.storage.integration.version>1.2.8</azure.spring.boot.storage.integration.version>
   </properties>
 
   <issueManagement>
@@ -53,7 +52,6 @@
         <artifactId>azure-spring-data-cosmos</artifactId>
         <version>3.0.0-beta.1</version>
       </dependency>
-
 
       <!-- Azure Dependencies Bom -->
       <dependency>
@@ -81,7 +79,6 @@
         <artifactId>azure-spring-boot-starter-cosmos</artifactId>
         <version>${azure.spring.boot.integration.version}</version>
       </dependency>
-
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter-keyvault-secrets</artifactId>
@@ -94,8 +91,8 @@
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
-        <artifactId>azure-spring-starter-storage</artifactId>
-        <version>${azure.spring.boot.storage.integration.version}</version>
+        <artifactId>azure-spring-boot-starter-storage</artifactId>
+        <version>${azure.spring.boot.integration.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

@@ -39,7 +39,7 @@ public abstract class MetricEnrichedSeriesDataTestBase extends MetricsAdvisorCli
         Assertions.assertNotNull(enrichedSeriesKey);
         Assertions.assertTrue(GetEnrichedSeriesDataInput.INSTANCE.seriesKey.equals(enrichedSeriesKey));
         // Fixed test data has exactly 27 data points in the time range.
-        List<OffsetDateTime> timestamps = enrichedSeriesData.getTimestampList();
+        List<OffsetDateTime> timestamps = enrichedSeriesData.getTimestamps();
         Assertions.assertEquals(30, timestamps.size());
         // Ensure the received data points are in requested range.
         for (OffsetDateTime timestamp : timestamps) {

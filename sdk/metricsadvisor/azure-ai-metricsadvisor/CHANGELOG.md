@@ -1,7 +1,22 @@
 # Release History
 
-## 1.0.0-beta.2 (Unreleased)
+## 1.0.0-beta.2 (2020-11-10)
 
+### Breaking changes
+- Updated `createdDataFeed` method to take one `DataFeed` object.
+- Renamed `listValuesOfDimensionWithAnomalies` method to `listDimensionValuesWithAnomalies`.
+- Renamed model `ListValuesOfDimensionWithAnomaliesOptions` method to `ListDimensionValuesWithAnomaliesOptions`.
+- Renamed properties `viewers` , `admins` and their accessors to `viewerEmails` and `adminEmails` respectively on
+`DataFeedOptions` model.
+- Renamed model `DataSourceMissingDataPointFillType` to `DataFeedMissingDataPointFillType`.
+- Renamed properties on `MetricEnrichedSeriesData` and `MetricSeriesData` model.
+- Renamed method `setSeverity` to `setSeverityRangeCondition` on `MetricAnomalyAlertConditions` model.
+- Renamed property `confidenceScore` to `contributionScore` and its accessors on `IncidentRootCause` model.
+- Removed model `ListMetricSeriesData` as top and skip parameters are not valid for this API.
+- Moved `startTime` and `endTime` to positional arguments on several methods as they are required.
+- Renamed Data feed ingestion granularity type to `"PerMinute"` and `"PerSecond"` instead of `"Minutely"` and `"Secondly"`.
+- Renamed Feedback api's from `createMetricFeedback`, `getMetricFeedback` and `listMetricFeedbacks` 
+to `addFeedback`, `getFeedback` and `listFeedback` respectively.
 
 ## 1.0.0-beta.1 (2020-10-07)
 Version 1.0.0-beta.1 is a preview of our efforts in creating a Azure Metrics Advisor client library that is developer-friendly

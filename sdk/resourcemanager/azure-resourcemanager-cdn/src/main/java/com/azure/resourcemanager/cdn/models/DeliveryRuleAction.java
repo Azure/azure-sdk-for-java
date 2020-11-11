@@ -18,7 +18,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     property = "name",
     defaultImpl = DeliveryRuleAction.class)
 @JsonTypeName("DeliveryRuleAction")
-@JsonSubTypes({@JsonSubTypes.Type(name = "CacheExpiration", value = DeliveryRuleCacheExpirationAction.class)})
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "UrlRedirect", value = UrlRedirectAction.class),
+    @JsonSubTypes.Type(name = "UrlSigning", value = UrlSigningAction.class),
+    @JsonSubTypes.Type(name = "UrlRewrite", value = UrlRewriteAction.class),
+    @JsonSubTypes.Type(name = "ModifyRequestHeader", value = DeliveryRuleRequestHeaderAction.class),
+    @JsonSubTypes.Type(name = "ModifyResponseHeader", value = DeliveryRuleResponseHeaderAction.class),
+    @JsonSubTypes.Type(name = "CacheExpiration", value = DeliveryRuleCacheExpirationAction.class),
+    @JsonSubTypes.Type(name = "CacheKeyQueryString", value = DeliveryRuleCacheKeyQueryStringAction.class)
+})
 @Immutable
 public class DeliveryRuleAction {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DeliveryRuleAction.class);

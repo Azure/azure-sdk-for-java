@@ -19,8 +19,20 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     defaultImpl = DeliveryRuleCondition.class)
 @JsonTypeName("DeliveryRuleCondition")
 @JsonSubTypes({
+    @JsonSubTypes.Type(name = "RemoteAddress", value = DeliveryRuleRemoteAddressCondition.class),
+    @JsonSubTypes.Type(name = "RequestMethod", value = DeliveryRuleRequestMethodCondition.class),
+    @JsonSubTypes.Type(name = "QueryString", value = DeliveryRuleQueryStringCondition.class),
+    @JsonSubTypes.Type(name = "PostArgs", value = DeliveryRulePostArgsCondition.class),
+    @JsonSubTypes.Type(name = "RequestUri", value = DeliveryRuleRequestUriCondition.class),
+    @JsonSubTypes.Type(name = "RequestHeader", value = DeliveryRuleRequestHeaderCondition.class),
+    @JsonSubTypes.Type(name = "RequestBody", value = DeliveryRuleRequestBodyCondition.class),
+    @JsonSubTypes.Type(name = "RequestScheme", value = DeliveryRuleRequestSchemeCondition.class),
     @JsonSubTypes.Type(name = "UrlPath", value = DeliveryRuleUrlPathCondition.class),
-    @JsonSubTypes.Type(name = "UrlFileExtension", value = DeliveryRuleUrlFileExtensionCondition.class)
+    @JsonSubTypes.Type(name = "UrlFileExtension", value = DeliveryRuleUrlFileExtensionCondition.class),
+    @JsonSubTypes.Type(name = "UrlFileName", value = DeliveryRuleUrlFileNameCondition.class),
+    @JsonSubTypes.Type(name = "HttpVersion", value = DeliveryRuleHttpVersionCondition.class),
+    @JsonSubTypes.Type(name = "Cookies", value = DeliveryRuleCookiesCondition.class),
+    @JsonSubTypes.Type(name = "IsDevice", value = DeliveryRuleIsDeviceCondition.class)
 })
 @Immutable
 public class DeliveryRuleCondition {
