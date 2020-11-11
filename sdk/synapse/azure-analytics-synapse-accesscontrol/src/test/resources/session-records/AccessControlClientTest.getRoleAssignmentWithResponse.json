@@ -1,0 +1,404 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.dev.azuresynapse.net/rbac/roleAssignments?api-version=2020-02-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-analytics-synapse-accesscontrol/1.0.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9edd277c-3e5d-4340-83ef-22ff4da9d679"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "3681",
+      "StatusCode" : "200",
+      "x-ms-continuation" : "",
+      "x-ms-request-id" : "a03ba804-b81e-40bb-8df3-f22980fb063e",
+      "Body" : "[{\"id\":\"6e4bf58a-b8e1-4cc3-bbf9-d73143322b78-8f51e348-1fa6-4194-8d13-8e0368e3298a\",\"roleId\":\"6e4bf58a-b8e1-4cc3-bbf9-d73143322b78\",\"principalId\":\"8f51e348-1fa6-4194-8d13-8e0368e3298a\"},{\"id\":\"6e4bf58a-b8e1-4cc3-bbf9-d73143322b78-f63e7747-5fce-43a9-bd12-fb382caa5b7e\",\"roleId\":\"6e4bf58a-b8e1-4cc3-bbf9-d73143322b78\",\"principalId\":\"f63e7747-5fce-43a9-bd12-fb382caa5b7e\"},{\"id\":\"6e4bf58a-b8e1-4cc3-bbf9-d73143322b78-6ece8f98-43d0-41c6-bb9a-7a0172e5a645\",\"roleId\":\"6e4bf58a-b8e1-4cc3-bbf9-d73143322b78\",\"principalId\":\"6ece8f98-43d0-41c6-bb9a-7a0172e5a645\"},{\"id\":\"6e4bf58a-b8e1-4cc3-bbf9-d73143322b78-ca728363-7297-4e35-a9c3-c6400837883e\",\"roleId\":\"6e4bf58a-b8e1-4cc3-bbf9-d73143322b78\",\"principalId\":\"ca728363-7297-4e35-a9c3-c6400837883e\"},{\"id\":\"6e4bf58a-b8e1-4cc3-bbf9-d73143322b78-ed3c5c21-4f5d-4476-b9f6-f0c4bb404e1a\",\"roleId\":\"6e4bf58a-b8e1-4cc3-bbf9-d73143322b78\",\"principalId\":\"ed3c5c21-4f5d-4476-b9f6-f0c4bb404e1a\"},{\"id\":\"6e4bf58a-b8e1-4cc3-bbf9-d73143322b78-b71a874a-f1a8-4811-b06d-6748316e45a7\",\"roleId\":\"6e4bf58a-b8e1-4cc3-bbf9-d73143322b78\",\"principalId\":\"b71a874a-f1a8-4811-b06d-6748316e45a7\"},{\"id\":\"c3a6d2f1-a26f-4810-9b0f-591308d5cbf1-b71a874a-f1a8-4811-b06d-6748316e45a7\",\"roleId\":\"c3a6d2f1-a26f-4810-9b0f-591308d5cbf1\",\"principalId\":\"b71a874a-f1a8-4811-b06d-6748316e45a7\"},{\"id\":\"7af0c69a-a548-47d6-aea3-d00e69bd83aa-b71a874a-f1a8-4811-b06d-6748316e45a7\",\"roleId\":\"7af0c69a-a548-47d6-aea3-d00e69bd83aa\",\"principalId\":\"b71a874a-f1a8-4811-b06d-6748316e45a7\"},{\"id\":\"c3a6d2f1-a26f-4810-9b0f-591308d5cbf1-e3688378-4440-43dc-9c10-8b8250fbd549\",\"roleId\":\"c3a6d2f1-a26f-4810-9b0f-591308d5cbf1\",\"principalId\":\"e3688378-4440-43dc-9c10-8b8250fbd549\"},{\"id\":\"c3a6d2f1-a26f-4810-9b0f-591308d5cbf1-ca728363-7297-4e35-a9c3-c6400837883e\",\"roleId\":\"c3a6d2f1-a26f-4810-9b0f-591308d5cbf1\",\"principalId\":\"ca728363-7297-4e35-a9c3-c6400837883e\"},{\"id\":\"7af0c69a-a548-47d6-aea3-d00e69bd83aa-ca728363-7297-4e35-a9c3-c6400837883e\",\"roleId\":\"7af0c69a-a548-47d6-aea3-d00e69bd83aa\",\"principalId\":\"ca728363-7297-4e35-a9c3-c6400837883e\"},{\"id\":\"7af0c69a-a548-47d6-aea3-d00e69bd83aa-e3688378-4440-43dc-9c10-8b8250fbd549\",\"roleId\":\"7af0c69a-a548-47d6-aea3-d00e69bd83aa\",\"principalId\":\"e3688378-4440-43dc-9c10-8b8250fbd549\"},{\"id\":\"6e4bf58a-b8e1-4cc3-bbf9-d73143322b78-e3688378-4440-43dc-9c10-8b8250fbd549\",\"roleId\":\"6e4bf58a-b8e1-4cc3-bbf9-d73143322b78\",\"principalId\":\"e3688378-4440-43dc-9c10-8b8250fbd549\"},{\"id\":\"7af0c69a-a548-47d6-aea3-d00e69bd83aa-3e537dfe-8cfd-4b17-b9e3-ae366f099311\",\"roleId\":\"7af0c69a-a548-47d6-aea3-d00e69bd83aa\",\"principalId\":\"3e537dfe-8cfd-4b17-b9e3-ae366f099311\"},{\"id\":\"7af0c69a-a548-47d6-aea3-d00e69bd83aa-1424271a-af44-4fb2-9c34-4da0cd9e2055\",\"roleId\":\"7af0c69a-a548-47d6-aea3-d00e69bd83aa\",\"principalId\":\"1424271a-af44-4fb2-9c34-4da0cd9e2055\"},{\"id\":\"6e4bf58a-b8e1-4cc3-bbf9-d73143322b78-4d54f02c-07b8-48aa-8d8f-b9a5104eb419\",\"roleId\":\"6e4bf58a-b8e1-4cc3-bbf9-d73143322b78\",\"principalId\":\"4d54f02c-07b8-48aa-8d8f-b9a5104eb419\"},{\"id\":\"6e4bf58a-b8e1-4cc3-bbf9-d73143322b78-66a1901a-ffb3-4f46-bec6-79a421f50c4b\",\"roleId\":\"6e4bf58a-b8e1-4cc3-bbf9-d73143322b78\",\"principalId\":\"66a1901a-ffb3-4f46-bec6-79a421f50c4b\"},{\"id\":\"c3a6d2f1-a26f-4810-9b0f-591308d5cbf1-164eb094-74a5-4af7-993a-4ebbd40d8763\",\"roleId\":\"c3a6d2f1-a26f-4810-9b0f-591308d5cbf1\",\"principalId\":\"164eb094-74a5-4af7-993a-4ebbd40d8763\"},{\"id\":\"6e4bf58a-b8e1-4cc3-bbf9-d73143322b78-164eb094-74a5-4af7-993a-4ebbd40d8763\",\"roleId\":\"6e4bf58a-b8e1-4cc3-bbf9-d73143322b78\",\"principalId\":\"164eb094-74a5-4af7-993a-4ebbd40d8763\"},{\"id\":\"7af0c69a-a548-47d6-aea3-d00e69bd83aa-164eb094-74a5-4af7-993a-4ebbd40d8763\",\"roleId\":\"7af0c69a-a548-47d6-aea3-d00e69bd83aa\",\"principalId\":\"164eb094-74a5-4af7-993a-4ebbd40d8763\"}]",
+      "Date" : "Tue, 20 Oct 2020 09:16:15 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.dev.azuresynapse.net/rbac/roleAssignments/6e4bf58a-b8e1-4cc3-bbf9-d73143322b78-8f51e348-1fa6-4194-8d13-8e0368e3298a?api-version=2020-02-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-analytics-synapse-accesscontrol/1.0.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7d290d91-f82d-46c7-9bc4-fa4fbbe559ca"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "183",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "6c504a50-ea84-4c8f-94e6-439331500a35",
+      "Body" : "{\"id\":\"6e4bf58a-b8e1-4cc3-bbf9-d73143322b78-8f51e348-1fa6-4194-8d13-8e0368e3298a\",\"roleId\":\"6e4bf58a-b8e1-4cc3-bbf9-d73143322b78\",\"principalId\":\"8f51e348-1fa6-4194-8d13-8e0368e3298a\"}",
+      "Date" : "Tue, 20 Oct 2020 09:16:15 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.dev.azuresynapse.net/rbac/roleAssignments/6e4bf58a-b8e1-4cc3-bbf9-d73143322b78-f63e7747-5fce-43a9-bd12-fb382caa5b7e?api-version=2020-02-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-analytics-synapse-accesscontrol/1.0.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "94f9b80c-383b-4fa7-b49c-a4d80825454d"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "183",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "a82878a5-0bc2-47ae-bb62-deaffda6bc0c",
+      "Body" : "{\"id\":\"6e4bf58a-b8e1-4cc3-bbf9-d73143322b78-f63e7747-5fce-43a9-bd12-fb382caa5b7e\",\"roleId\":\"6e4bf58a-b8e1-4cc3-bbf9-d73143322b78\",\"principalId\":\"f63e7747-5fce-43a9-bd12-fb382caa5b7e\"}",
+      "Date" : "Tue, 20 Oct 2020 09:16:15 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.dev.azuresynapse.net/rbac/roleAssignments/6e4bf58a-b8e1-4cc3-bbf9-d73143322b78-6ece8f98-43d0-41c6-bb9a-7a0172e5a645?api-version=2020-02-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-analytics-synapse-accesscontrol/1.0.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "da7a2a4d-1054-4a25-af7a-a9286fab2ccc"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "183",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "281d6644-5083-41fa-b364-39abc835b643",
+      "Body" : "{\"id\":\"6e4bf58a-b8e1-4cc3-bbf9-d73143322b78-6ece8f98-43d0-41c6-bb9a-7a0172e5a645\",\"roleId\":\"6e4bf58a-b8e1-4cc3-bbf9-d73143322b78\",\"principalId\":\"6ece8f98-43d0-41c6-bb9a-7a0172e5a645\"}",
+      "Date" : "Tue, 20 Oct 2020 09:16:15 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.dev.azuresynapse.net/rbac/roleAssignments/6e4bf58a-b8e1-4cc3-bbf9-d73143322b78-ca728363-7297-4e35-a9c3-c6400837883e?api-version=2020-02-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-analytics-synapse-accesscontrol/1.0.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7a622cd6-bd13-446b-ae49-d57958eca9b9"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "183",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "bce8d5bb-b0c8-4cf0-8371-29e9ee66e594",
+      "Body" : "{\"id\":\"6e4bf58a-b8e1-4cc3-bbf9-d73143322b78-ca728363-7297-4e35-a9c3-c6400837883e\",\"roleId\":\"6e4bf58a-b8e1-4cc3-bbf9-d73143322b78\",\"principalId\":\"ca728363-7297-4e35-a9c3-c6400837883e\"}",
+      "Date" : "Tue, 20 Oct 2020 09:16:15 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.dev.azuresynapse.net/rbac/roleAssignments/6e4bf58a-b8e1-4cc3-bbf9-d73143322b78-ed3c5c21-4f5d-4476-b9f6-f0c4bb404e1a?api-version=2020-02-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-analytics-synapse-accesscontrol/1.0.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a4c86f71-4220-4d1c-a6cf-8d19d88730a4"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "183",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "03ba6fff-027c-4714-825a-9f9ff693eff8",
+      "Body" : "{\"id\":\"6e4bf58a-b8e1-4cc3-bbf9-d73143322b78-ed3c5c21-4f5d-4476-b9f6-f0c4bb404e1a\",\"roleId\":\"6e4bf58a-b8e1-4cc3-bbf9-d73143322b78\",\"principalId\":\"ed3c5c21-4f5d-4476-b9f6-f0c4bb404e1a\"}",
+      "Date" : "Tue, 20 Oct 2020 09:16:15 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.dev.azuresynapse.net/rbac/roleAssignments/6e4bf58a-b8e1-4cc3-bbf9-d73143322b78-b71a874a-f1a8-4811-b06d-6748316e45a7?api-version=2020-02-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-analytics-synapse-accesscontrol/1.0.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2fb6f08d-4f12-4d7e-8b80-9f8ca36d9ec1"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "183",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "d8e1abac-1294-423e-8e8c-2fe921f99ada",
+      "Body" : "{\"id\":\"6e4bf58a-b8e1-4cc3-bbf9-d73143322b78-b71a874a-f1a8-4811-b06d-6748316e45a7\",\"roleId\":\"6e4bf58a-b8e1-4cc3-bbf9-d73143322b78\",\"principalId\":\"b71a874a-f1a8-4811-b06d-6748316e45a7\"}",
+      "Date" : "Tue, 20 Oct 2020 09:16:15 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.dev.azuresynapse.net/rbac/roleAssignments/c3a6d2f1-a26f-4810-9b0f-591308d5cbf1-b71a874a-f1a8-4811-b06d-6748316e45a7?api-version=2020-02-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-analytics-synapse-accesscontrol/1.0.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "aa2254e8-6ea4-43d4-871c-ff120fa0a997"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "183",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "33a688f6-a231-4843-aeb4-dfb1deaeda06",
+      "Body" : "{\"id\":\"c3a6d2f1-a26f-4810-9b0f-591308d5cbf1-b71a874a-f1a8-4811-b06d-6748316e45a7\",\"roleId\":\"c3a6d2f1-a26f-4810-9b0f-591308d5cbf1\",\"principalId\":\"b71a874a-f1a8-4811-b06d-6748316e45a7\"}",
+      "Date" : "Tue, 20 Oct 2020 09:16:15 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.dev.azuresynapse.net/rbac/roleAssignments/7af0c69a-a548-47d6-aea3-d00e69bd83aa-b71a874a-f1a8-4811-b06d-6748316e45a7?api-version=2020-02-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-analytics-synapse-accesscontrol/1.0.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b38a8bc0-4cc5-4ebc-ab8e-962c1b14c078"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "183",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "d73f7605-2a07-4af1-a49d-7668dd18a53b",
+      "Body" : "{\"id\":\"7af0c69a-a548-47d6-aea3-d00e69bd83aa-b71a874a-f1a8-4811-b06d-6748316e45a7\",\"roleId\":\"7af0c69a-a548-47d6-aea3-d00e69bd83aa\",\"principalId\":\"b71a874a-f1a8-4811-b06d-6748316e45a7\"}",
+      "Date" : "Tue, 20 Oct 2020 09:16:16 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.dev.azuresynapse.net/rbac/roleAssignments/c3a6d2f1-a26f-4810-9b0f-591308d5cbf1-e3688378-4440-43dc-9c10-8b8250fbd549?api-version=2020-02-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-analytics-synapse-accesscontrol/1.0.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0f126468-6429-4f02-b106-d5aec8871cce"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "183",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "58428000-b5e2-4abf-9ea5-4c8816ab87db",
+      "Body" : "{\"id\":\"c3a6d2f1-a26f-4810-9b0f-591308d5cbf1-e3688378-4440-43dc-9c10-8b8250fbd549\",\"roleId\":\"c3a6d2f1-a26f-4810-9b0f-591308d5cbf1\",\"principalId\":\"e3688378-4440-43dc-9c10-8b8250fbd549\"}",
+      "Date" : "Tue, 20 Oct 2020 09:16:16 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.dev.azuresynapse.net/rbac/roleAssignments/c3a6d2f1-a26f-4810-9b0f-591308d5cbf1-ca728363-7297-4e35-a9c3-c6400837883e?api-version=2020-02-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-analytics-synapse-accesscontrol/1.0.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d88bb306-41d9-4e67-9372-9503c29cbc0b"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "183",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "64106c2c-ab23-425c-a689-9f8d5545f47f",
+      "Body" : "{\"id\":\"c3a6d2f1-a26f-4810-9b0f-591308d5cbf1-ca728363-7297-4e35-a9c3-c6400837883e\",\"roleId\":\"c3a6d2f1-a26f-4810-9b0f-591308d5cbf1\",\"principalId\":\"ca728363-7297-4e35-a9c3-c6400837883e\"}",
+      "Date" : "Tue, 20 Oct 2020 09:16:16 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.dev.azuresynapse.net/rbac/roleAssignments/7af0c69a-a548-47d6-aea3-d00e69bd83aa-ca728363-7297-4e35-a9c3-c6400837883e?api-version=2020-02-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-analytics-synapse-accesscontrol/1.0.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "3725515c-a89d-411e-920b-12c219d905f9"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "183",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "1e48b66f-9ca7-47d5-bd53-5151aab1b7ba",
+      "Body" : "{\"id\":\"7af0c69a-a548-47d6-aea3-d00e69bd83aa-ca728363-7297-4e35-a9c3-c6400837883e\",\"roleId\":\"7af0c69a-a548-47d6-aea3-d00e69bd83aa\",\"principalId\":\"ca728363-7297-4e35-a9c3-c6400837883e\"}",
+      "Date" : "Tue, 20 Oct 2020 09:16:16 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.dev.azuresynapse.net/rbac/roleAssignments/7af0c69a-a548-47d6-aea3-d00e69bd83aa-e3688378-4440-43dc-9c10-8b8250fbd549?api-version=2020-02-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-analytics-synapse-accesscontrol/1.0.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "3b59ad42-3f9b-41f2-821c-0f3985baa993"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "183",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "5fc50455-1d97-449e-bfb0-246be4ae9258",
+      "Body" : "{\"id\":\"7af0c69a-a548-47d6-aea3-d00e69bd83aa-e3688378-4440-43dc-9c10-8b8250fbd549\",\"roleId\":\"7af0c69a-a548-47d6-aea3-d00e69bd83aa\",\"principalId\":\"e3688378-4440-43dc-9c10-8b8250fbd549\"}",
+      "Date" : "Tue, 20 Oct 2020 09:16:16 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.dev.azuresynapse.net/rbac/roleAssignments/6e4bf58a-b8e1-4cc3-bbf9-d73143322b78-e3688378-4440-43dc-9c10-8b8250fbd549?api-version=2020-02-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-analytics-synapse-accesscontrol/1.0.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d64b48d2-bf6f-411f-ad52-5194c7be2176"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "183",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "ad12cb1f-2485-4374-abe6-4b9b9503cc52",
+      "Body" : "{\"id\":\"6e4bf58a-b8e1-4cc3-bbf9-d73143322b78-e3688378-4440-43dc-9c10-8b8250fbd549\",\"roleId\":\"6e4bf58a-b8e1-4cc3-bbf9-d73143322b78\",\"principalId\":\"e3688378-4440-43dc-9c10-8b8250fbd549\"}",
+      "Date" : "Tue, 20 Oct 2020 09:16:16 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.dev.azuresynapse.net/rbac/roleAssignments/7af0c69a-a548-47d6-aea3-d00e69bd83aa-3e537dfe-8cfd-4b17-b9e3-ae366f099311?api-version=2020-02-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-analytics-synapse-accesscontrol/1.0.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b96f7333-572b-4f75-bbef-65e277e50ea0"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "183",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "e3f2d108-c5c4-4a48-ba22-9adb3e2dda5d",
+      "Body" : "{\"id\":\"7af0c69a-a548-47d6-aea3-d00e69bd83aa-3e537dfe-8cfd-4b17-b9e3-ae366f099311\",\"roleId\":\"7af0c69a-a548-47d6-aea3-d00e69bd83aa\",\"principalId\":\"3e537dfe-8cfd-4b17-b9e3-ae366f099311\"}",
+      "Date" : "Tue, 20 Oct 2020 09:16:16 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.dev.azuresynapse.net/rbac/roleAssignments/7af0c69a-a548-47d6-aea3-d00e69bd83aa-1424271a-af44-4fb2-9c34-4da0cd9e2055?api-version=2020-02-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-analytics-synapse-accesscontrol/1.0.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "bcdb076a-1391-4e97-93a1-7173b6dfb3c5"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "183",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "13d8ebb3-8451-4331-8d9e-f21ff4480c68",
+      "Body" : "{\"id\":\"7af0c69a-a548-47d6-aea3-d00e69bd83aa-1424271a-af44-4fb2-9c34-4da0cd9e2055\",\"roleId\":\"7af0c69a-a548-47d6-aea3-d00e69bd83aa\",\"principalId\":\"1424271a-af44-4fb2-9c34-4da0cd9e2055\"}",
+      "Date" : "Tue, 20 Oct 2020 09:16:16 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.dev.azuresynapse.net/rbac/roleAssignments/6e4bf58a-b8e1-4cc3-bbf9-d73143322b78-4d54f02c-07b8-48aa-8d8f-b9a5104eb419?api-version=2020-02-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-analytics-synapse-accesscontrol/1.0.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d4c99f38-5bf8-4047-89f5-9040983fc8b0"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "183",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "45f0d038-ac52-4966-9b0b-380fc21df54f",
+      "Body" : "{\"id\":\"6e4bf58a-b8e1-4cc3-bbf9-d73143322b78-4d54f02c-07b8-48aa-8d8f-b9a5104eb419\",\"roleId\":\"6e4bf58a-b8e1-4cc3-bbf9-d73143322b78\",\"principalId\":\"4d54f02c-07b8-48aa-8d8f-b9a5104eb419\"}",
+      "Date" : "Tue, 20 Oct 2020 09:16:16 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.dev.azuresynapse.net/rbac/roleAssignments/6e4bf58a-b8e1-4cc3-bbf9-d73143322b78-66a1901a-ffb3-4f46-bec6-79a421f50c4b?api-version=2020-02-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-analytics-synapse-accesscontrol/1.0.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7cd102a2-5ccf-4eeb-99c3-df80331d76bf"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "183",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "0358a3a8-849b-4d83-920b-ac3a4ac22789",
+      "Body" : "{\"id\":\"6e4bf58a-b8e1-4cc3-bbf9-d73143322b78-66a1901a-ffb3-4f46-bec6-79a421f50c4b\",\"roleId\":\"6e4bf58a-b8e1-4cc3-bbf9-d73143322b78\",\"principalId\":\"66a1901a-ffb3-4f46-bec6-79a421f50c4b\"}",
+      "Date" : "Tue, 20 Oct 2020 09:16:16 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.dev.azuresynapse.net/rbac/roleAssignments/c3a6d2f1-a26f-4810-9b0f-591308d5cbf1-164eb094-74a5-4af7-993a-4ebbd40d8763?api-version=2020-02-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-analytics-synapse-accesscontrol/1.0.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "301bf5e4-c363-4b84-a60b-2090f4e76afc"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "183",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "704845dc-b8ed-4f31-ac85-b57225fe774d",
+      "Body" : "{\"id\":\"c3a6d2f1-a26f-4810-9b0f-591308d5cbf1-164eb094-74a5-4af7-993a-4ebbd40d8763\",\"roleId\":\"c3a6d2f1-a26f-4810-9b0f-591308d5cbf1\",\"principalId\":\"164eb094-74a5-4af7-993a-4ebbd40d8763\"}",
+      "Date" : "Tue, 20 Oct 2020 09:16:17 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.dev.azuresynapse.net/rbac/roleAssignments/6e4bf58a-b8e1-4cc3-bbf9-d73143322b78-164eb094-74a5-4af7-993a-4ebbd40d8763?api-version=2020-02-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-analytics-synapse-accesscontrol/1.0.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "14d20e81-51a2-42f3-aa64-b08e4e77ed59"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "183",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "78870488-0c2c-4123-ac1a-1305c8391ca6",
+      "Body" : "{\"id\":\"6e4bf58a-b8e1-4cc3-bbf9-d73143322b78-164eb094-74a5-4af7-993a-4ebbd40d8763\",\"roleId\":\"6e4bf58a-b8e1-4cc3-bbf9-d73143322b78\",\"principalId\":\"164eb094-74a5-4af7-993a-4ebbd40d8763\"}",
+      "Date" : "Tue, 20 Oct 2020 09:16:17 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.dev.azuresynapse.net/rbac/roleAssignments/7af0c69a-a548-47d6-aea3-d00e69bd83aa-164eb094-74a5-4af7-993a-4ebbd40d8763?api-version=2020-02-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-analytics-synapse-accesscontrol/1.0.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "fcb0e8fb-aef7-4048-a59d-261fd2ff9680"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "183",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "eac2304d-44d1-423f-ad2c-cb216b553cf1",
+      "Body" : "{\"id\":\"7af0c69a-a548-47d6-aea3-d00e69bd83aa-164eb094-74a5-4af7-993a-4ebbd40d8763\",\"roleId\":\"7af0c69a-a548-47d6-aea3-d00e69bd83aa\",\"principalId\":\"164eb094-74a5-4af7-993a-4ebbd40d8763\"}",
+      "Date" : "Tue, 20 Oct 2020 09:16:17 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

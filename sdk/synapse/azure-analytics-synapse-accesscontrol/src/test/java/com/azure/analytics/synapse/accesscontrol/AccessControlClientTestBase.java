@@ -3,8 +3,12 @@
 
 package com.azure.analytics.synapse.accesscontrol;
 
+import com.azure.analytics.synapse.accesscontrol.models.ErrorContractException;
+import com.azure.analytics.synapse.accesscontrol.models.RoleAssignmentDetails;
+import com.azure.analytics.synapse.accesscontrol.models.RoleAssignmentOptions;
 import com.azure.analytics.synapse.accesscontrol.models.SynapseRole;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -16,10 +20,12 @@ import com.azure.core.util.CoreUtils;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import org.junit.jupiter.api.Test;
 
+import java.net.HttpURLConnection;
 import java.util.*;
 import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public abstract class AccessControlClientTestBase extends TestBase {
 
@@ -94,12 +100,107 @@ public abstract class AccessControlClientTestBase extends TestBase {
         return Objects.requireNonNull(client);
     }
 
+    AccessControlClientBuilder getAccessControlClientBuilder(HttpPipeline httpPipeline) {
+        return new AccessControlClientBuilder()
+            .endpoint(getEndpoint())
+            .pipeline(httpPipeline);
+    }
+
+    public void sleepInRecordMode(long millis) {
+        if (interceptorManager.isPlaybackMode()) {
+            return;
+        }
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    static void assertRestException(Runnable exceptionThrower, Class<? extends HttpResponseException> expectedExceptionType, int expectedStatusCode) {
+        try {
+            exceptionThrower.run();
+            fail();
+        } catch (Throwable ex) {
+            assertRestException(ex, expectedExceptionType, expectedStatusCode);
+        }
+    }
+
+    static void assertRestException(Throwable exception, Class<? extends HttpResponseException> expectedExceptionType, int expectedStatusCode) {
+        assertEquals(expectedExceptionType, exception.getClass());
+        assertEquals(expectedStatusCode, ((HttpResponseException) exception).getResponse().getStatusCode());
+    }
+
+    /**
+     * Helper method to verify that a command throws an IllegalArgumentException.
+     *
+     * @param exceptionThrower Command that should throw the exception
+     */
+    static <T> void assertRunnableThrowsException(Runnable exceptionThrower, Class<T> exception) {
+        try {
+            exceptionThrower.run();
+            fail();
+        } catch (Exception ex) {
+            assertEquals(exception, ex.getClass());
+        }
+    }
+
     @Test
     public abstract void getRoleDefinitions();
+
+    @Test
+    public abstract void getRoleAssignment();
+
+    @Test
+    public abstract void createAndDeleteRoleAssignment();
+
+    @Test
+    public abstract void getCallerRoleAssignments();
+
+    @Test
+    public abstract void getRoleDefinitionsWithResponse();
+
+    //@Test
+    //public abstract void getRoleAssignmentWithResponse();
+
+    //@Test
+    //public abstract void createAndDeleteRoleAssignmentWithResponse();
+
+    //@Test
+    //public abstract void getCallerRoleAssignmentsWithResponse();
+
+    @Test
+    public abstract void setRoleAssignmentEmptyRoleId();
+
+    @Test
+    public abstract void setNullRoleAssignment();
+
+    @Test
+    public abstract void getRoleAssignmentNotFound();
+
+    @Test
+    public abstract void deleteRoleAssignmentNotFound();
 
     void validateRoleDefinitions(SynapseRole expectedRole, SynapseRole actualRole) {
         assertEquals(expectedRole.getName(), actualRole.getName());
         assertEquals(expectedRole.getId(), actualRole.getId());
         assertEquals(expectedRole.isBuiltIn(), actualRole.isBuiltIn());
+    }
+
+    void validateRoleAssignments(
+        RoleAssignmentDetails expectedRoleAssignment,
+        RoleAssignmentDetails actualRoleAssignment
+    ) {
+        assertEquals(expectedRoleAssignment.getId(), actualRoleAssignment.getId());
+        assertEquals(expectedRoleAssignment.getPrincipalId(), actualRoleAssignment.getPrincipalId());
+        assertEquals(expectedRoleAssignment.getRoleId(), actualRoleAssignment.getRoleId());
+    }
+
+    void validateRoleAssignments(
+        RoleAssignmentOptions expected,
+        RoleAssignmentDetails actual
+    ) {
+        assertEquals(expected.getPrincipalId(), actual.getPrincipalId());
+        assertEquals(expected.getRoleId(), actual.getRoleId());
     }
 }
