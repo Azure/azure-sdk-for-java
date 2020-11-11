@@ -1,4 +1,4 @@
-Azure Template Client library for Java
+* Azure Template client library for Java
 
 # README.md template
 
