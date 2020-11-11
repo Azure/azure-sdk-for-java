@@ -85,10 +85,9 @@ public class ConnectionStateListenerTest {
             logger.info("expected failed request with reason {}", e);
         }
         finally {
+            TcpServerFactory.shutdownRntbdServer(server);
             Mockito.verify(addressResolver, Mockito.times(times)).updateAddresses(Mockito.any(), Mockito.any());
         }
-
-        TcpServerFactory.shutdownRntbdServer(server);
     }
 
     private Document getDocumentDefinition() {
