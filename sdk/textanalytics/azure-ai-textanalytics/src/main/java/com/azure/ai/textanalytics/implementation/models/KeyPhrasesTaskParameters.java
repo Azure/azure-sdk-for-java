@@ -7,9 +7,7 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The KeyPhrasesTaskParameters model.
- */
+/** The KeyPhrasesTaskParameters model. */
 @Fluent
 public final class KeyPhrasesTaskParameters {
     /*
@@ -20,7 +18,7 @@ public final class KeyPhrasesTaskParameters {
 
     /**
      * Get the modelVersion property: The model-version property.
-     * 
+     *
      * @return the modelVersion value.
      */
     public String getModelVersion() {
@@ -29,7 +27,7 @@ public final class KeyPhrasesTaskParameters {
 
     /**
      * Set the modelVersion property: The model-version property.
-     * 
+     *
      * @param modelVersion the modelVersion value to set.
      * @return the KeyPhrasesTaskParameters object itself.
      */

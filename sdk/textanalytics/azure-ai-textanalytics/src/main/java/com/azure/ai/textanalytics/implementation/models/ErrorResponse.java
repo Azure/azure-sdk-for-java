@@ -7,9 +7,7 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ErrorResponse model.
- */
+/** The ErrorResponse model. */
 @Fluent
 public final class ErrorResponse {
     /*
@@ -20,7 +18,7 @@ public final class ErrorResponse {
 
     /**
      * Get the error property: Document Error.
-     * 
+     *
      * @return the error value.
      */
     public TextAnalyticsError getError() {
@@ -29,7 +27,7 @@ public final class ErrorResponse {
 
     /**
      * Set the error property: Document Error.
-     * 
+     *
      * @param error the error value to set.
      * @return the ErrorResponse object itself.
      */

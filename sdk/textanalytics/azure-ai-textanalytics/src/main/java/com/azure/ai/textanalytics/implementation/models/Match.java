@@ -7,9 +7,7 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The Match model.
- */
+/** The Match model. */
 @Fluent
 public final class Match {
     /*
@@ -38,10 +36,9 @@ public final class Match {
     private int length;
 
     /**
-     * Get the confidenceScore property: If a well-known item is recognized, a
-     * decimal number denoting the confidence level between 0 and 1 will be
-     * returned.
-     * 
+     * Get the confidenceScore property: If a well-known item is recognized, a decimal number denoting the confidence
+     * level between 0 and 1 will be returned.
+     *
      * @return the confidenceScore value.
      */
     public double getConfidenceScore() {
@@ -49,10 +46,9 @@ public final class Match {
     }
 
     /**
-     * Set the confidenceScore property: If a well-known item is recognized, a
-     * decimal number denoting the confidence level between 0 and 1 will be
-     * returned.
-     * 
+     * Set the confidenceScore property: If a well-known item is recognized, a decimal number denoting the confidence
+     * level between 0 and 1 will be returned.
+     *
      * @param confidenceScore the confidenceScore value to set.
      * @return the Match object itself.
      */
@@ -63,7 +59,7 @@ public final class Match {
 
     /**
      * Get the text property: Entity text as appears in the request.
-     * 
+     *
      * @return the text value.
      */
     public String getText() {
@@ -72,7 +68,7 @@ public final class Match {
 
     /**
      * Set the text property: Entity text as appears in the request.
-     * 
+     *
      * @param text the text value to set.
      * @return the Match object itself.
      */
@@ -83,7 +79,7 @@ public final class Match {
 
     /**
      * Get the offset property: Start position for the entity match text.
-     * 
+     *
      * @return the offset value.
      */
     public int getOffset() {
@@ -92,7 +88,7 @@ public final class Match {
 
     /**
      * Set the offset property: Start position for the entity match text.
-     * 
+     *
      * @param offset the offset value to set.
      * @return the Match object itself.
      */
@@ -103,7 +99,7 @@ public final class Match {
 
     /**
      * Get the length property: Length for the entity match text.
-     * 
+     *
      * @return the length value.
      */
     public int getLength() {
@@ -112,7 +108,7 @@ public final class Match {
 
     /**
      * Set the length property: Length for the entity match text.
-     * 
+     *
      * @param length the length value to set.
      * @return the Match object itself.
      */

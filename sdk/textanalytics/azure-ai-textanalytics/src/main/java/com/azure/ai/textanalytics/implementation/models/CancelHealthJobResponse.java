@@ -8,9 +8,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
-/**
- * Contains all response data for the cancelHealthJob operation.
- */
+/** Contains all response data for the cancelHealthJob operation. */
 public final class CancelHealthJobResponse extends ResponseBase<CancelHealthJobHeaders, Void> {
     /**
      * Creates an instance of CancelHealthJobResponse.
@@ -21,8 +19,8 @@ public final class CancelHealthJobResponse extends ResponseBase<CancelHealthJobH
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public CancelHealthJobResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value,
-        CancelHealthJobHeaders headers) {
+    public CancelHealthJobResponse(
+            HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, CancelHealthJobHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

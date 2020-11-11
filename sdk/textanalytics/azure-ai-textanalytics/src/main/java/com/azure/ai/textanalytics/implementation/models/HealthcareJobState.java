@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The HealthcareJobState model.
- */
+/** The HealthcareJobState model. */
 @Fluent
 public final class HealthcareJobState extends JobMetadata {
     /*
@@ -33,7 +31,7 @@ public final class HealthcareJobState extends JobMetadata {
 
     /**
      * Get the results property: The results property.
-     * 
+     *
      * @return the results value.
      */
     public HealthcareResult getResults() {
@@ -42,7 +40,7 @@ public final class HealthcareJobState extends JobMetadata {
 
     /**
      * Set the results property: The results property.
-     * 
+     *
      * @param results the results value to set.
      * @return the HealthcareJobState object itself.
      */
@@ -53,7 +51,7 @@ public final class HealthcareJobState extends JobMetadata {
 
     /**
      * Get the errors property: The errors property.
-     * 
+     *
      * @return the errors value.
      */
     public List<TextAnalyticsError> getErrors() {
@@ -62,7 +60,7 @@ public final class HealthcareJobState extends JobMetadata {
 
     /**
      * Set the errors property: The errors property.
-     * 
+     *
      * @param errors the errors value to set.
      * @return the HealthcareJobState object itself.
      */
@@ -73,7 +71,7 @@ public final class HealthcareJobState extends JobMetadata {
 
     /**
      * Get the nextLink property: The @nextLink property.
-     * 
+     *
      * @return the nextLink value.
      */
     public String getNextLink() {
@@ -82,7 +80,7 @@ public final class HealthcareJobState extends JobMetadata {
 
     /**
      * Set the nextLink property: The @nextLink property.
-     * 
+     *
      * @param nextLink the nextLink value to set.
      * @return the HealthcareJobState object itself.
      */

@@ -60,8 +60,7 @@ public final class TextAnalyticsClientBuilder {
             this.pipeline = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(),
                 new CookiePolicy()).build();
         }
-        TextAnalyticsClientImpl client = new TextAnalyticsClientImpl(pipeline);
-        client.setEndpoint(this.endpoint);
+        TextAnalyticsClientImpl client = new TextAnalyticsClientImpl(pipeline, endpoint);
         return client;
     }
 }

@@ -229,6 +229,20 @@ final class TestUtils {
     }
 
     /**
+     * Helper method to get the expected Categorized entity result for PII document input.
+     */
+    static List<CategorizedEntity> getCategorizedEntitiesForPiiInput() {
+        return asList(
+            new CategorizedEntity("Microsoft", EntityCategory.ORGANIZATION, null, 0.0, 0),
+            new CategorizedEntity("employee", EntityCategory.PERSON_TYPE, null, 0.0, 10),
+            new CategorizedEntity("859", EntityCategory.QUANTITY, "Number", 0.0, 28),
+            new CategorizedEntity("98", EntityCategory.QUANTITY, "Number", 0.0, 32),
+            new CategorizedEntity("0987", EntityCategory.QUANTITY, "Number", 0.0, 35),
+            new CategorizedEntity("API", EntityCategory.SKILL, null, 0.0, 61)
+        );
+    }
+
+    /**
      * Helper method to get the expected Batch Categorized Entities
      */
     static RecognizeEntitiesResult getExpectedBatchCategorizedEntities1() {
@@ -450,25 +464,29 @@ final class TestUtils {
     /**
      * Helper method that get a multiple-pages (healthcareTaskResult) list.
      */
-    static List<HealthcareTaskResult> getExpectedHealthcareTaskResultListForMultiplePages() {
+    static List<HealthcareTaskResult> getExpectedHealthcareTaskResultListForMultiplePages(int startIndex,
+        int firstPage, int secondPage) {
         List<RecognizeHealthcareEntitiesResult> healthcareEntitiesResults1 = new ArrayList<>();
         // First Page
-        int i = 0;
-        for (; i < 20; i++) {
+        int i = startIndex;
+        for (; i < startIndex + firstPage; i++) {
             healthcareEntitiesResults1.add(getRecognizeHealthcareEntitiesResult1(Integer.toString(i)));
         }
         // Second Page
         List<RecognizeHealthcareEntitiesResult> healthcareEntitiesResults2 = new ArrayList<>();
-        for (; i < 22; i++) {
+        for (; i < startIndex + firstPage + secondPage; i++) {
             healthcareEntitiesResults2.add(getRecognizeHealthcareEntitiesResult1(Integer.toString(i)));
         }
 
-        return asList(
-            getExpectedHealthcareTaskResult(getExpectedBatchHealthcareEntitiesWithPageSize(
-                22, healthcareEntitiesResults1)),
-            getExpectedHealthcareTaskResult(getExpectedBatchHealthcareEntitiesWithPageSize(
-                22, healthcareEntitiesResults2))
-        );
+        List<HealthcareTaskResult> result = new ArrayList<>();
+        result.add(getExpectedHealthcareTaskResult(getExpectedBatchHealthcareEntitiesWithPageSize(
+            firstPage, healthcareEntitiesResults1)));
+        if (secondPage != 0) {
+            result.add(getExpectedHealthcareTaskResult(getExpectedBatchHealthcareEntitiesWithPageSize(
+                secondPage, healthcareEntitiesResults2)));
+        }
+
+        return result;
     }
 
     /**
@@ -667,80 +685,163 @@ final class TestUtils {
         return healthcareEntitiesResult;
     }
 
-    static AnalyzeTasksResult getExpectedAnalyzeTasksResult() {
+    /**
+     * RecognizeEntitiesResultCollection result for
+     * "I had a wonderful trip to Seattle last week."
+     * "Microsoft employee with ssn 859-98-0987 is using our awesome API's."
+     */
+    static RecognizeEntitiesResultCollection getRecognizeEntitiesResultCollection() {
         // Categorized Entities
-        IterableStream<CategorizedEntity> categorizedEntityList1 = new IterableStream<>(getCategorizedEntitiesList1());
+        // TODO: [Service-bugs] after service fixes the null statistics, then use the values and turn on includeStatics.
         //TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics(44, 1);
-        RecognizeEntitiesResult recognizeEntitiesResult1 = new RecognizeEntitiesResult("0", null,
-            null, new CategorizedEntityCollection(categorizedEntityList1, null));
-        IterableStream<CategorizedEntity> categorizedEntityList2 = new IterableStream<>(
-            asList(
-                new CategorizedEntity("Microsoft", EntityCategory.ORGANIZATION, null, 0.0, 0),
-                new CategorizedEntity("employee", EntityCategory.PERSON_TYPE, null, 0.0, 10),
-                new CategorizedEntity("859", EntityCategory.QUANTITY, "Number", 0.0, 28),
-                new CategorizedEntity("98", EntityCategory.QUANTITY, "Number", 0.0, 32),
-                new CategorizedEntity("0987", EntityCategory.QUANTITY, "Number", 0.0, 35),
-                new CategorizedEntity("API", EntityCategory.SKILL, null, 0.0, 61)
-            )
-        );
         //TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics(44, 1);
-        RecognizeEntitiesResult recognizeEntitiesResult2 = new RecognizeEntitiesResult("1", null,
-            null, new CategorizedEntityCollection(categorizedEntityList2, null));
-
-        RecognizeEntitiesResultCollection recognizeEntitiesResults = new RecognizeEntitiesResultCollection(
-            asList(recognizeEntitiesResult1, recognizeEntitiesResult2),
-            "2020-04-01", null
+        return new RecognizeEntitiesResultCollection(
+            asList(new RecognizeEntitiesResult("0", null, null,
+                    new CategorizedEntityCollection(new IterableStream<>(getCategorizedEntitiesList1()), null)),
+                new RecognizeEntitiesResult("1", null, null,
+                    new CategorizedEntityCollection(new IterableStream<>(getCategorizedEntitiesForPiiInput()), null))
+            ), "2020-04-01", null);
             //new TextDocumentBatchStatistics(2, 2, 0, 2)
-        );
+    }
 
+    /**
+     * RecognizePiiEntitiesResultCollection result for
+     * "I had a wonderful trip to Seattle last week."
+     * "Microsoft employee with ssn 859-98-0987 is using our awesome API's."
+     */
+    static RecognizePiiEntitiesResultCollection getRecognizePiiEntitiesResultCollection() {
         // PII
-        PiiEntityCollection piiEntityCollection1 = new PiiEntityCollection(new IterableStream<>(new ArrayList<>()),
-            "I had a wonderful trip to Seattle last week.", null);
-        PiiEntityCollection piiEntityCollection2 = new PiiEntityCollection(new IterableStream<>(getPiiEntitiesList1()),
-            "********* employee with ssn *********** is using our awesome API's.", null);
+        // TODO: [Service-bugs] after service fixes the null statistics, then use the values and turn on includeStatics.
         //TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics(67, 1);
         //TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics(67, 1);
-        RecognizePiiEntitiesResult recognizePiiEntitiesResult1 =
-            new RecognizePiiEntitiesResult("0", null, null, piiEntityCollection1);
-        RecognizePiiEntitiesResult recognizePiiEntitiesResult2 =
-            new RecognizePiiEntitiesResult("1", null, null, piiEntityCollection2);
-
-        RecognizePiiEntitiesResultCollection recognizePiiEntitiesResults = new RecognizePiiEntitiesResultCollection(
-            asList(recognizePiiEntitiesResult1, recognizePiiEntitiesResult2),
-            "2020-07-01",
-            new TextDocumentBatchStatistics(2, 2, 0, 2)
+        return new RecognizePiiEntitiesResultCollection(
+            asList(
+                new RecognizePiiEntitiesResult("0", null, null,
+                new PiiEntityCollection(new IterableStream<>(new ArrayList<>()),
+                    "I had a wonderful trip to Seattle last week.", null)),
+                new RecognizePiiEntitiesResult("1", null, null,
+                    new PiiEntityCollection(new IterableStream<>(getPiiEntitiesList1()),
+                        "********* employee with ssn *********** is using our awesome API's.", null))),
+            "2020-07-01", new TextDocumentBatchStatistics(2, 2, 0, 2)
         );
+    }
 
+    /**
+     * ExtractKeyPhrasesResultCollection result for
+     * "I had a wonderful trip to Seattle last week."
+     * "Microsoft employee with ssn 859-98-0987 is using our awesome API's."
+     */
+    static ExtractKeyPhrasesResultCollection getExtractKeyPhrasesResultCollection() {
         // Key Phrases
-
+        // TODO: [Service-bugs] after service fixes the null statistics, then use the values and turn on includeStatics.
         //TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics(49, 1);
         //TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics(21, 1);
+        return new ExtractKeyPhrasesResultCollection(
+            asList(new ExtractKeyPhraseResult("0", null,
+                null, new KeyPhrasesCollection(new IterableStream<>(asList("wonderful trip", "Seattle", "week")), null)),
+                new ExtractKeyPhraseResult("1", null,
+                    null, new KeyPhrasesCollection(new IterableStream<>(asList("Microsoft employee", "ssn", "awesome API's")), null))),
+            "2020-07-01",
+            new TextDocumentBatchStatistics(2, 2, 0, 2));
+    }
 
-        ExtractKeyPhraseResult extractKeyPhraseResult1 = new ExtractKeyPhraseResult("0", null,
-            null, new KeyPhrasesCollection(new IterableStream<>(asList("wonderful trip", "Seattle", "week")), null));
-        ExtractKeyPhraseResult extractKeyPhraseResult2 = new ExtractKeyPhraseResult("1", null,
-            null, new KeyPhrasesCollection(new IterableStream<>(asList("Microsoft employee", "ssn", "awesome API's")), null));
-
-        TextDocumentBatchStatistics textDocumentBatchStatistics = new TextDocumentBatchStatistics(2, 2, 0, 2);
-        List<ExtractKeyPhraseResult> extractKeyPhraseResultList = asList(extractKeyPhraseResult1, extractKeyPhraseResult2);
-
-        ExtractKeyPhrasesResultCollection extractKeyPhraseResults = new ExtractKeyPhrasesResultCollection(
-            extractKeyPhraseResultList, "2020-07-01", null);
-
+    /**
+     * Helper method that get the expected AnalyzeTasksResult result.
+     */
+    static AnalyzeTasksResult getExpectedAnalyzeTasksResult(
+        List<RecognizeEntitiesResultCollection> recognizeEntitiesResults,
+        List<RecognizePiiEntitiesResultCollection> recognizePiiEntitiesResults,
+        List<ExtractKeyPhrasesResultCollection> extractKeyPhraseResults) {
+        // Analyze Tasks result
         final AnalyzeTasksResult analyzeTasksResult = new AnalyzeTasksResult(
             null, null, null, null, "Test1", null);
-        AnalyzeTasksResultPropertiesHelper.setStatistics(analyzeTasksResult, textDocumentBatchStatistics);
+        AnalyzeTasksResultPropertiesHelper.setStatistics(analyzeTasksResult,
+            new TextDocumentBatchStatistics(1, 1, 0, 1));
         AnalyzeTasksResultPropertiesHelper.setCompleted(analyzeTasksResult, 3);
         AnalyzeTasksResultPropertiesHelper.setFailed(analyzeTasksResult, 0);
         AnalyzeTasksResultPropertiesHelper.setInProgress(analyzeTasksResult, 0);
         AnalyzeTasksResultPropertiesHelper.setTotal(analyzeTasksResult, 3);
-        AnalyzeTasksResultPropertiesHelper.setEntityRecognitionTasks(analyzeTasksResult,
-            asList(recognizeEntitiesResults));
-        AnalyzeTasksResultPropertiesHelper.setEntityRecognitionPiiTasks(analyzeTasksResult,
-            asList(recognizePiiEntitiesResults));
-        AnalyzeTasksResultPropertiesHelper.setKeyPhraseExtractionTasks(analyzeTasksResult,
-            asList(extractKeyPhraseResults));
+        AnalyzeTasksResultPropertiesHelper.setEntityRecognitionTasks(analyzeTasksResult, recognizeEntitiesResults);
+        AnalyzeTasksResultPropertiesHelper.setEntityRecognitionPiiTasks(analyzeTasksResult, recognizePiiEntitiesResults);
+        AnalyzeTasksResultPropertiesHelper.setKeyPhraseExtractionTasks(analyzeTasksResult, extractKeyPhraseResults);
         return analyzeTasksResult;
+    }
+
+    /**
+     * ExtractKeyPhrasesResultCollection result for
+     * "Microsoft employee with ssn 859-98-0987 is using our awesome API's."
+     */
+    static RecognizeEntitiesResultCollection getRecognizeEntitiesResultCollectionForPagination(int startIndex,
+        int documentCount) {
+        // Categorized Entities
+        //TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics(44, 1);
+        List<RecognizeEntitiesResult> recognizeEntitiesResults = new ArrayList<>();
+        for (int i = startIndex; i < startIndex + documentCount; i++) {
+            recognizeEntitiesResults.add(new RecognizeEntitiesResult(Integer.toString(i), null, null,
+                new CategorizedEntityCollection(new IterableStream<>(getCategorizedEntitiesForPiiInput()), null)));
+        }
+        return new RecognizeEntitiesResultCollection(recognizeEntitiesResults, "2020-04-01",
+            new TextDocumentBatchStatistics(documentCount, documentCount, 0, documentCount));
+    }
+
+    /**
+     * ExtractKeyPhrasesResultCollection result for
+     * "Microsoft employee with ssn 859-98-0987 is using our awesome API's."
+     */
+    static RecognizePiiEntitiesResultCollection getRecognizePiiEntitiesResultCollectionForPagination(int startIndex,
+        int documentCount) {
+        // PII
+        //TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics(67, 1);
+        List<RecognizePiiEntitiesResult> recognizePiiEntitiesResults = new ArrayList<>();
+        for (int i = startIndex; i < startIndex + documentCount; i++) {
+            recognizePiiEntitiesResults.add(new RecognizePiiEntitiesResult(Integer.toString(i), null, null,
+                new PiiEntityCollection(new IterableStream<>(getPiiEntitiesList1()),
+                    "********* employee with ssn *********** is using our awesome API's.", null)));
+        }
+        return new RecognizePiiEntitiesResultCollection(recognizePiiEntitiesResults, "2020-07-01",
+            new TextDocumentBatchStatistics(documentCount, documentCount, 0, documentCount)
+        );
+    }
+
+    /**
+     * ExtractKeyPhrasesResultCollection result for
+     * "Microsoft employee with ssn 859-98-0987 is using our awesome API's."
+     */
+    static ExtractKeyPhrasesResultCollection getExtractKeyPhrasesResultCollectionForPagination(int startIndex,
+        int documentCount) {
+        // Key Phrases
+        //TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics(49, 1);
+        List<ExtractKeyPhraseResult> extractKeyPhraseResults = new ArrayList<>();
+        for (int i = startIndex; i < startIndex + documentCount; i++) {
+            extractKeyPhraseResults.add(new ExtractKeyPhraseResult(Integer.toString(i), null, null,
+                new KeyPhrasesCollection(new IterableStream<>(asList("Microsoft employee", "ssn", "awesome API's")),
+                    null)));
+        }
+        return new ExtractKeyPhrasesResultCollection(extractKeyPhraseResults, "2020-07-01",
+            new TextDocumentBatchStatistics(documentCount, documentCount, 0, documentCount));
+    }
+
+    /**
+     * Helper method that get a multiple-pages (AnalyzeTasksResult) list.
+     */
+    static List<AnalyzeTasksResult> getExpectedAnalyzeTaskResultListForMultiplePages(int startIndex,
+        int firstPage, int secondPage) {
+        List<AnalyzeTasksResult> analyzeTasksResults = new ArrayList<>();
+        // First Page
+        analyzeTasksResults.add(getExpectedAnalyzeTasksResult(
+            asList(getRecognizeEntitiesResultCollectionForPagination(startIndex, firstPage)),
+            asList(getRecognizePiiEntitiesResultCollectionForPagination(startIndex, firstPage)),
+            asList(getExtractKeyPhrasesResultCollectionForPagination(startIndex, firstPage))
+        ));
+
+        // Second Page
+        startIndex += firstPage;
+        analyzeTasksResults.add(getExpectedAnalyzeTasksResult(
+            asList(getRecognizeEntitiesResultCollectionForPagination(startIndex, secondPage)),
+            asList(getRecognizePiiEntitiesResultCollectionForPagination(startIndex, secondPage)),
+            asList(getExtractKeyPhrasesResultCollectionForPagination(startIndex, secondPage))
+        ));
+        return analyzeTasksResults;
     }
 
     /**

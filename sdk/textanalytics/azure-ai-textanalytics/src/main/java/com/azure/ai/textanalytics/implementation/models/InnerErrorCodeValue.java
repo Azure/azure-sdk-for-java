@@ -8,58 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for InnerErrorCodeValue.
- */
+/** Defines values for InnerErrorCodeValue. */
 public final class InnerErrorCodeValue extends ExpandableStringEnum<InnerErrorCodeValue> {
-    /**
-     * Static value InvalidParameterValue for InnerErrorCodeValue.
-     */
+    /** Static value InvalidParameterValue for InnerErrorCodeValue. */
     public static final InnerErrorCodeValue INVALID_PARAMETER_VALUE = fromString("InvalidParameterValue");
 
-    /**
-     * Static value InvalidRequestBodyFormat for InnerErrorCodeValue.
-     */
+    /** Static value InvalidRequestBodyFormat for InnerErrorCodeValue. */
     public static final InnerErrorCodeValue INVALID_REQUEST_BODY_FORMAT = fromString("InvalidRequestBodyFormat");
 
-    /**
-     * Static value EmptyRequest for InnerErrorCodeValue.
-     */
+    /** Static value EmptyRequest for InnerErrorCodeValue. */
     public static final InnerErrorCodeValue EMPTY_REQUEST = fromString("EmptyRequest");
 
-    /**
-     * Static value MissingInputRecords for InnerErrorCodeValue.
-     */
+    /** Static value MissingInputRecords for InnerErrorCodeValue. */
     public static final InnerErrorCodeValue MISSING_INPUT_RECORDS = fromString("MissingInputRecords");
 
-    /**
-     * Static value InvalidDocument for InnerErrorCodeValue.
-     */
+    /** Static value InvalidDocument for InnerErrorCodeValue. */
     public static final InnerErrorCodeValue INVALID_DOCUMENT = fromString("InvalidDocument");
 
-    /**
-     * Static value ModelVersionIncorrect for InnerErrorCodeValue.
-     */
+    /** Static value ModelVersionIncorrect for InnerErrorCodeValue. */
     public static final InnerErrorCodeValue MODEL_VERSION_INCORRECT = fromString("ModelVersionIncorrect");
 
-    /**
-     * Static value InvalidDocumentBatch for InnerErrorCodeValue.
-     */
+    /** Static value InvalidDocumentBatch for InnerErrorCodeValue. */
     public static final InnerErrorCodeValue INVALID_DOCUMENT_BATCH = fromString("InvalidDocumentBatch");
 
-    /**
-     * Static value UnsupportedLanguageCode for InnerErrorCodeValue.
-     */
+    /** Static value UnsupportedLanguageCode for InnerErrorCodeValue. */
     public static final InnerErrorCodeValue UNSUPPORTED_LANGUAGE_CODE = fromString("UnsupportedLanguageCode");
 
-    /**
-     * Static value InvalidCountryHint for InnerErrorCodeValue.
-     */
+    /** Static value InvalidCountryHint for InnerErrorCodeValue. */
     public static final InnerErrorCodeValue INVALID_COUNTRY_HINT = fromString("InvalidCountryHint");
 
     /**
      * Creates or finds a InnerErrorCodeValue from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding InnerErrorCodeValue.
      */
@@ -68,9 +48,7 @@ public final class InnerErrorCodeValue extends ExpandableStringEnum<InnerErrorCo
         return fromString(name, InnerErrorCodeValue.class);
     }
 
-    /**
-     * @return known InnerErrorCodeValue values.
-     */
+    /** @return known InnerErrorCodeValue values. */
     public static Collection<InnerErrorCodeValue> values() {
         return values(InnerErrorCodeValue.class);
     }

@@ -46,6 +46,7 @@ import static com.azure.ai.textanalytics.TestUtils.SENTIMENT_OFFSET_INPUT;
 import static com.azure.ai.textanalytics.TestUtils.getCategorizedEntitiesList1;
 import static com.azure.ai.textanalytics.TestUtils.getDetectedLanguageEnglish;
 import static com.azure.ai.textanalytics.TestUtils.getDetectedLanguageSpanish;
+import static com.azure.ai.textanalytics.TestUtils.getExpectedAnalyzeTaskResultListForMultiplePages;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedAnalyzeTasksResult;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchCategorizedEntities;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchDetectedLanguages;
@@ -57,13 +58,17 @@ import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchTextSentiment
 import static com.azure.ai.textanalytics.TestUtils.getExpectedDocumentSentiment;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedHealthcareTaskResultListForMultiplePages;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedHealthcareTaskResultListForSinglePage;
+import static com.azure.ai.textanalytics.TestUtils.getExtractKeyPhrasesResultCollection;
 import static com.azure.ai.textanalytics.TestUtils.getLinkedEntitiesList1;
 import static com.azure.ai.textanalytics.TestUtils.getPiiEntitiesList1;
+import static com.azure.ai.textanalytics.TestUtils.getRecognizeEntitiesResultCollection;
+import static com.azure.ai.textanalytics.TestUtils.getRecognizePiiEntitiesResultCollection;
 import static com.azure.ai.textanalytics.TestUtils.getUnknownDetectedLanguage;
 import static com.azure.ai.textanalytics.models.TextAnalyticsErrorCode.INVALID_COUNTRY_HINT;
 import static com.azure.ai.textanalytics.models.TextAnalyticsErrorCode.INVALID_DOCUMENT;
 import static com.azure.ai.textanalytics.models.TextAnalyticsErrorCode.INVALID_DOCUMENT_BATCH;
 import static com.azure.ai.textanalytics.models.WarningCode.LONG_WORDS_IN_DOCUMENT;
+import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -1555,8 +1560,37 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             PagedIterable<HealthcareTaskResult> healthcareTaskResults = syncPoller.getFinalResult();
             validateHealthcareTaskResult(
                 options.isIncludeStatistics(),
-                getExpectedHealthcareTaskResultListForMultiplePages(),
+                getExpectedHealthcareTaskResultListForMultiplePages(0, 10, 0),
                 healthcareTaskResults.stream().collect(Collectors.toList()));
+        }, 10);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void healthcareLroPaginationWithTopAndSkip(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsClient(httpClient, serviceVersion);
+        healthcareLroPaginationRunner((documents, options) -> {
+            SyncPoller<TextAnalyticsOperationResult, PagedIterable<HealthcareTaskResult>>
+                syncPoller = client.beginAnalyzeHealthcare(documents, options.setSkip(2).setTop(4), Context.NONE);
+            syncPoller.waitForCompletion();
+            PagedIterable<HealthcareTaskResult> healthcareEntitiesResultCollectionPagedFlux
+                = syncPoller.getFinalResult();
+            validateHealthcareTaskResult(
+                options.isIncludeStatistics(),
+                // Skip = 2, top = 4, so the first page is 4 items, second page is the remaining 3 items.
+                getExpectedHealthcareTaskResultListForMultiplePages(2, 4, 3),
+                healthcareEntitiesResultCollectionPagedFlux.stream().collect(Collectors.toList()));
+        }, 9);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void healthcareLroEmptyInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsClient(httpClient, serviceVersion);
+        emptyListRunner((documents, errorMessage) -> {
+            final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+                () -> client.beginAnalyzeHealthcare(documents, null, Context.NONE).getFinalResult());
+            assertEquals(errorMessage, exception.getMessage());
         });
     }
 
@@ -1588,8 +1622,54 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             syncPoller.waitForCompletion();
             PagedIterable<AnalyzeTasksResult> result = syncPoller.getFinalResult();
             validateAnalyzeTasksResultList(options.isIncludeStatistics(),
-                Arrays.asList(getExpectedAnalyzeTasksResult()),
+                Arrays.asList(getExpectedAnalyzeTasksResult(
+                    asList(getRecognizeEntitiesResultCollection()),
+                    asList(getRecognizePiiEntitiesResultCollection()),
+                    asList(getExtractKeyPhrasesResultCollection()))),
                 result.stream().collect(Collectors.toList()));
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeTasksPagination(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsClient(httpClient, serviceVersion);
+        analyzeTasksPaginationRunner(documents -> (jobManifestTasks, options) -> {
+            SyncPoller<TextAnalyticsOperationResult, PagedIterable<AnalyzeTasksResult>>
+                syncPoller = client.beginAnalyze(documents, "Test1", jobManifestTasks, options, Context.NONE);
+            syncPoller.waitForCompletion();
+            PagedIterable<AnalyzeTasksResult> result = syncPoller.getFinalResult();
+            validateAnalyzeTasksResultList(options.isIncludeStatistics(),
+                getExpectedAnalyzeTaskResultListForMultiplePages(0, 20, 2),
+                result.stream().collect(Collectors.toList()));
+        }, 22);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeTasksPaginationWithTopAndSkip(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsClient(httpClient, serviceVersion);
+        analyzeTasksPaginationRunner(documents -> (jobManifestTasks, options) -> {
+            SyncPoller<TextAnalyticsOperationResult, PagedIterable<AnalyzeTasksResult>>
+                syncPoller = client.beginAnalyze(documents, "Test1", jobManifestTasks,
+                options.setSkip(3).setTop(10), Context.NONE);
+            syncPoller.waitForCompletion();
+            PagedIterable<AnalyzeTasksResult> result = syncPoller.getFinalResult();
+            validateAnalyzeTasksResultList(options.isIncludeStatistics(),
+                getExpectedAnalyzeTaskResultListForMultiplePages(3, 10, 9),
+                result.stream().collect(Collectors.toList()));
+        }, 22);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeTasksEmptyInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsClient(httpClient, serviceVersion);
+        emptyListRunner((documents, errorMessage) -> {
+            final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+                () -> client.beginAnalyze(documents, "Test1", null, null, Context.NONE)
+                    .getFinalResult());
+            assertEquals(errorMessage, exception.getMessage());
         });
     }
 }

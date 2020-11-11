@@ -215,8 +215,8 @@ class AnalyzeSentimentAsyncClient {
         }
         return service.sentimentWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-            context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE),
-            modelVersion, includeStatistics, includeOpinionMining, StringIndexType.UTF16CODE_UNIT
+            modelVersion, includeStatistics, includeOpinionMining, StringIndexType.UTF16CODE_UNIT,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE)
             )
             .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", documents.toString()))
             .doOnSuccess(response -> logger.info("Analyzed sentiment for a batch of documents - {}", response))

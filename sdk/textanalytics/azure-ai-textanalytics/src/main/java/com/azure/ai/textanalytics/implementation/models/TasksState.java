@@ -7,9 +7,7 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The TasksState model.
- */
+/** The TasksState model. */
 @Fluent
 public class TasksState {
     /*
@@ -20,7 +18,7 @@ public class TasksState {
 
     /**
      * Get the tasks property: The tasks property.
-     * 
+     *
      * @return the tasks value.
      */
     public TasksStateTasks getTasks() {
@@ -29,7 +27,7 @@ public class TasksState {
 
     /**
      * Set the tasks property: The tasks property.
-     * 
+     *
      * @param tasks the tasks value to set.
      * @return the TasksState object itself.
      */

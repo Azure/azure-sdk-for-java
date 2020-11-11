@@ -7,9 +7,7 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The Pagination model.
- */
+/** The Pagination model. */
 @Fluent
 public class Pagination {
     /*
@@ -20,7 +18,7 @@ public class Pagination {
 
     /**
      * Get the nextLink property: The @nextLink property.
-     * 
+     *
      * @return the nextLink value.
      */
     public String getNextLink() {
@@ -29,7 +27,7 @@ public class Pagination {
 
     /**
      * Set the nextLink property: The @nextLink property.
-     * 
+     *
      * @param nextLink the nextLink value to set.
      * @return the Pagination object itself.
      */

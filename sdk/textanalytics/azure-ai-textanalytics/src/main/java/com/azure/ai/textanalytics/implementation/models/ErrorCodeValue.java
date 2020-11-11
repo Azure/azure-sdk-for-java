@@ -7,38 +7,24 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for ErrorCodeValue.
- */
+/** Defines values for ErrorCodeValue. */
 public enum ErrorCodeValue {
-    /**
-     * Enum value InvalidRequest.
-     */
+    /** Enum value InvalidRequest. */
     INVALID_REQUEST("InvalidRequest"),
 
-    /**
-     * Enum value InvalidArgument.
-     */
+    /** Enum value InvalidArgument. */
     INVALID_ARGUMENT("InvalidArgument"),
 
-    /**
-     * Enum value InternalServerError.
-     */
+    /** Enum value InternalServerError. */
     INTERNAL_SERVER_ERROR("InternalServerError"),
 
-    /**
-     * Enum value ServiceUnavailable.
-     */
+    /** Enum value ServiceUnavailable. */
     SERVICE_UNAVAILABLE("ServiceUnavailable"),
 
-    /**
-     * Enum value NotFound.
-     */
+    /** Enum value NotFound. */
     NOT_FOUND("NotFound");
 
-    /**
-     * The actual serialized value for a ErrorCodeValue instance.
-     */
+    /** The actual serialized value for a ErrorCodeValue instance. */
     private final String value;
 
     ErrorCodeValue(String value) {
@@ -47,7 +33,7 @@ public enum ErrorCodeValue {
 
     /**
      * Parses a serialized value to a ErrorCodeValue instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed ErrorCodeValue object, or null if unable to parse.
      */

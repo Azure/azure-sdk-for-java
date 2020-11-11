@@ -39,7 +39,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -87,12 +86,13 @@ class AnalyzeTasksAsyncClient {
                 .setTasks(toJobManifestTasks(jobManifestTasks));
             analyzeBatchInput.setDisplayName(displayName);
             final Boolean finalIncludeStatistics = options == null ? null : options.isIncludeStatistics();
-
+            final Integer finalTop = options == null ? null : options.getTop();
+            final Integer finalSkip = options == null ? null : options.getSkip();
             return new PollerFlux<>(
                 DEFAULT_POLL_DURATION,
                 activationOperation(
-                    service.analyzeWithResponseAsync(
-                        context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE), analyzeBatchInput)
+                    service.analyzeWithResponseAsync(analyzeBatchInput,
+                        context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
                         .map(analyzeResponse -> {
                             final TextAnalyticsOperationResult textAnalyticsOperationResult =
                                 new TextAnalyticsOperationResult();
@@ -100,13 +100,11 @@ class AnalyzeTasksAsyncClient {
                                 parseModelId(analyzeResponse.getDeserializedHeaders().getOperationLocation()));
                             return textAnalyticsOperationResult;
                         })),
-                pollingOperation(resultID -> service.analyzeStatusWithResponseAsync(resultID, context,
-                    options == null ? null : options.isIncludeStatistics(), null, null)),
+                pollingOperation(resultID -> service.analyzeStatusWithResponseAsync(resultID,
+                    finalIncludeStatistics, finalTop, finalSkip, context)),
                 (activationResponse, pollingContext) -> null,
                 fetchingOperation(resultId -> Mono.just(getAnalyzeOperationFluxPage(
-                    resultId,
-                    finalIncludeStatistics == null ? false : finalIncludeStatistics,
-                    context)))
+                    resultId, finalTop, finalSkip, finalIncludeStatistics, context)))
             );
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
@@ -123,12 +121,13 @@ class AnalyzeTasksAsyncClient {
                 .setTasks(toJobManifestTasks(jobManifestTasks));
             analyzeBatchInput.setDisplayName(displayName);
             final Boolean finalIncludeStatistics = options == null ? null : options.isIncludeStatistics();
-
+            final Integer finalTop = options == null ? null : options.getTop();
+            final Integer finalSkip = options == null ? null : options.getSkip();
             return new PollerFlux<>(
                 DEFAULT_POLL_DURATION,
                 activationOperation(
-                    service.analyzeWithResponseAsync(
-                        context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE), analyzeBatchInput)
+                    service.analyzeWithResponseAsync(analyzeBatchInput,
+                        context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
                         .map(analyzeResponse -> {
                             final TextAnalyticsOperationResult textAnalyticsOperationResult =
                                 new TextAnalyticsOperationResult();
@@ -136,13 +135,11 @@ class AnalyzeTasksAsyncClient {
                                 parseModelId(analyzeResponse.getDeserializedHeaders().getOperationLocation()));
                             return textAnalyticsOperationResult;
                         })),
-                pollingOperation(resultID -> service.analyzeStatusWithResponseAsync(resultID, context,
-                    options == null ? null : options.isIncludeStatistics(), null, null)),
+                pollingOperation(resultID -> service.analyzeStatusWithResponseAsync(resultID,
+                    options == null ? null : options.isIncludeStatistics(), null, null, context)),
                 (activationResponse, pollingContext) -> null,
                 fetchingOperationIterable(resultId -> Mono.just(new PagedIterable<>(getAnalyzeOperationFluxPage(
-                    resultId,
-                    finalIncludeStatistics == null ? false : finalIncludeStatistics,
-                    context))))
+                    resultId, finalTop, finalSkip, finalIncludeStatistics, context))))
             );
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
@@ -221,7 +218,7 @@ class AnalyzeTasksAsyncClient {
     }
 
     private Function<PollingContext<TextAnalyticsOperationResult>, Mono<PollResponse<TextAnalyticsOperationResult>>>
-        pollingOperation(Function<String, Mono<SimpleResponse<AnalyzeJobState>>> pollingFunction) {
+        pollingOperation(Function<String, Mono<Response<AnalyzeJobState>>> pollingFunction) {
         return pollingContext -> {
             try {
                 final PollResponse<TextAnalyticsOperationResult> operationResultPollResponse =
@@ -263,23 +260,24 @@ class AnalyzeTasksAsyncClient {
         };
     }
 
-    PagedFlux<AnalyzeTasksResult> getAnalyzeOperationFluxPage(String jobID, boolean showStats, Context context) {
+    PagedFlux<AnalyzeTasksResult> getAnalyzeOperationFluxPage(String jobID, Integer top, Integer skip,
+        Boolean showStats, Context context) {
         return new PagedFlux<>(
-            () -> getPage(null, jobID, showStats, context),
-            continuationToken -> getPage(continuationToken, jobID, showStats, context));
+            () -> getPage(null, jobID, top, skip, showStats, context),
+            continuationToken -> getPage(continuationToken, jobID, top, skip, showStats, context));
     }
 
-    Mono<PagedResponse<AnalyzeTasksResult>> getPage(String continuationToken, String jobID,
-        boolean showStats, Context context) {
+    Mono<PagedResponse<AnalyzeTasksResult>> getPage(String continuationToken, String jobID, Integer top, Integer skip,
+        Boolean showStats, Context context) {
         if (continuationToken != null) {
             final Map<String, Integer> continuationTokenMap = parseNextLink(continuationToken);
             final Integer topValue = continuationTokenMap.getOrDefault("$top", null);
             final Integer skipValue = continuationTokenMap.getOrDefault("$skip", null);
-            return service.analyzeStatusWithResponseAsync(jobID, context, showStats, topValue, skipValue)
+            return service.analyzeStatusWithResponseAsync(jobID, showStats, topValue, skipValue, context)
                 .map(this::toAnalyzeTasksPagedResponse)
                 .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
         } else {
-            return service.analyzeStatusWithResponseAsync(jobID, context, showStats, null, null)
+            return service.analyzeStatusWithResponseAsync(jobID, showStats, top, skip, context)
                 .map(this::toAnalyzeTasksPagedResponse)
                 .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
         }

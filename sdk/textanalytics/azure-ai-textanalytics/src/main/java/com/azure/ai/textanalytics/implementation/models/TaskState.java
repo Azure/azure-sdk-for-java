@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/**
- * The TaskState model.
- */
+/** The TaskState model. */
 @Fluent
 public class TaskState {
     /*
@@ -33,7 +31,7 @@ public class TaskState {
 
     /**
      * Get the lastUpdateDateTime property: The lastUpdateDateTime property.
-     * 
+     *
      * @return the lastUpdateDateTime value.
      */
     public OffsetDateTime getLastUpdateDateTime() {
@@ -42,7 +40,7 @@ public class TaskState {
 
     /**
      * Set the lastUpdateDateTime property: The lastUpdateDateTime property.
-     * 
+     *
      * @param lastUpdateDateTime the lastUpdateDateTime value to set.
      * @return the TaskState object itself.
      */
@@ -53,7 +51,7 @@ public class TaskState {
 
     /**
      * Get the name property: The name property.
-     * 
+     *
      * @return the name value.
      */
     public String getName() {
@@ -62,7 +60,7 @@ public class TaskState {
 
     /**
      * Set the name property: The name property.
-     * 
+     *
      * @param name the name value to set.
      * @return the TaskState object itself.
      */
@@ -73,7 +71,7 @@ public class TaskState {
 
     /**
      * Get the status property: The status property.
-     * 
+     *
      * @return the status value.
      */
     public State getStatus() {
@@ -82,7 +80,7 @@ public class TaskState {
 
     /**
      * Set the status property: The status property.
-     * 
+     *
      * @param status the status value to set.
      * @return the TaskState object itself.
      */
