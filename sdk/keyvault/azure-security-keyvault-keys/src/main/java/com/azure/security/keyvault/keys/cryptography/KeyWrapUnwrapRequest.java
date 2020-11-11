@@ -25,24 +25,6 @@ class KeyWrapUnwrapRequest {
     private Base64Url value;
 
     /**
-     * Initialization vector for symmetric algorithms.
-     */
-    @JsonProperty(value = "iv")
-    private byte[] initializationVector;
-
-    /**
-     * Additional data to authenticate but not encrypt/decrypt when using authenticated crypto algorithms.
-     */
-    @JsonProperty(value = "aad")
-    private byte[] additionalAuthenticatedData;
-
-    /**
-     * The tag to authenticate when performing decryption with an authenticated algorithm.
-     */
-    @JsonProperty(value = "tag")
-    private byte[] tag;
-
-    /**
      * Get the algorithm value.
      *
      * @return the algorithm value
@@ -86,66 +68,6 @@ class KeyWrapUnwrapRequest {
         } else {
             this.value = Base64Url.encode(value);
         }
-        return this;
-    }
-
-    /**
-     * Get the initialization vector to be used in the cryptographic operation using a symmetric algorithm.
-     *
-     * @return The initialization vector.
-     */
-    public byte[] getInitializationVector() {
-        return initializationVector;
-    }
-
-    /**
-     * Set the initialization vector to be used in the cryptographic operation using a symmetric algorithm.
-     *
-     * @param initializationVector The initialization vector to set.
-     * @return The updated {@link KeyWrapUnwrapRequest} object.
-     */
-    public KeyWrapUnwrapRequest setInitializationVector(byte[] initializationVector) {
-        this.initializationVector = initializationVector;
-        return this;
-    }
-
-    /**
-     * Get additional data to authenticate but not encrypt/decrypt when using authenticated crypto algorithms.
-     *
-     * @return The additional authenticated data.
-     */
-    public byte[] getAdditionalAuthenticatedData() {
-        return additionalAuthenticatedData;
-    }
-
-    /**
-     * Set additional data to authenticate but not encrypt/decrypt when using authenticated crypto algorithms.
-     *
-     * @param additionalAuthenticatedData The additional authenticated data.
-     * @return The updated {@link KeyWrapUnwrapRequest} object.
-     */
-    public KeyWrapUnwrapRequest setAdditionalAuthenticatedData(byte[] additionalAuthenticatedData) {
-        this.additionalAuthenticatedData = additionalAuthenticatedData;
-        return this;
-    }
-
-    /**
-     * Get the tag to authenticate when performing decryption with an authenticated algorithm.
-     *
-     * @return The tag.
-     */
-    public byte[] getTag() {
-        return tag;
-    }
-
-    /**
-     * Set the tag to authenticate when performing decryption with an authenticated algorithm.
-     *
-     * @param tag The tag to set.
-     * @return The updated {@link KeyWrapUnwrapRequest} object.
-     */
-    public KeyWrapUnwrapRequest setTag(byte[] tag) {
-        this.tag = tag;
         return this;
     }
 }

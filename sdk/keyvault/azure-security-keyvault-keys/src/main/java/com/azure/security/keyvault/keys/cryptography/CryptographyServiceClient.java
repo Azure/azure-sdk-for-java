@@ -125,20 +125,20 @@ class CryptographyServiceClient {
         return mapper.readValue(jsonString, JsonWebKey.class);
     }
 
-    Mono<EncryptResult> encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, CryptographyOptions options,
+    Mono<EncryptResult> encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, EncryptOptions options,
                                 Context context) {
-        byte[] initializationVector = null;
+        byte[] iv = null;
         byte[] authenticatedData = null;
 
         if (options != null) {
-            initializationVector = options.getInitializationVector();
+            iv = options.getIv();
             authenticatedData = options.getAdditionalAuthenticatedData();
         }
 
         KeyOperationParameters parameters = new KeyOperationParameters()
             .setAlgorithm(algorithm)
             .setValue(plaintext)
-            .setInitializationVector(initializationVector)
+            .setIv(iv)
             .setAdditionalAuthenticatedData(authenticatedData);
         context = context == null ? Context.NONE : context;
 
@@ -153,24 +153,24 @@ class CryptographyServiceClient {
                 Mono.just(new EncryptResult(keyOperationResultResponse.getValue().getResult(), algorithm, keyId)));
     }
 
-    Mono<DecryptResult> decrypt(EncryptionAlgorithm algorithm, byte[] cipherText, CryptographyOptions options,
+    Mono<DecryptResult> decrypt(EncryptionAlgorithm algorithm, byte[] cipherText, DecryptOptions options,
                                 Context context) {
-        byte[] initializationVector = null;
-        byte[] authenticatedData = null;
-        byte[] tag = null;
+        byte[] iv = null;
+        byte[] additionalAuthenticatedData = null;
+        byte[] authenticationTag = null;
 
         if (options != null) {
-            initializationVector = options.getInitializationVector();
-            authenticatedData = options.getAdditionalAuthenticatedData();
-            tag = options.getTag();
+            iv = options.getIv();
+            additionalAuthenticatedData = options.getAdditionalAuthenticatedData();
+            authenticationTag = options.getAuthenticationTag();
         }
 
         KeyOperationParameters parameters = new KeyOperationParameters()
             .setAlgorithm(algorithm)
             .setValue(cipherText)
-            .setInitializationVector(initializationVector)
-            .setAdditionalAuthenticatedData(authenticatedData)
-            .setTag(tag);
+            .setIv(iv)
+            .setAdditionalAuthenticatedData(additionalAuthenticatedData)
+            .setAuthenticationTag(authenticationTag);
         context = context == null ? Context.NONE : context;
 
         return service.decrypt(vaultUrl, keyName, version, apiVersion, ACCEPT_LANGUAGE, parameters,
@@ -212,20 +212,10 @@ class CryptographyServiceClient {
                 Mono.just(new VerifyResult(response.getValue().getValue(), algorithm, keyId)));
     }
 
-    Mono<WrapResult> wrapKey(KeyWrapAlgorithm algorithm, byte[] key, CryptographyOptions options, Context context) {
-        byte[] initializationVector = null;
-        byte[] authenticatedData = null;
-
-        if (options != null) {
-            initializationVector = options.getInitializationVector();
-            authenticatedData = options.getAdditionalAuthenticatedData();
-        }
-
+    Mono<WrapResult> wrapKey(KeyWrapAlgorithm algorithm, byte[] key, Context context) {
         KeyWrapUnwrapRequest parameters = new KeyWrapUnwrapRequest()
             .setAlgorithm(algorithm)
-            .setValue(key)
-            .setInitializationVector(initializationVector)
-            .setAdditionalAuthenticatedData(authenticatedData);
+            .setValue(key);
         context = context == null ? Context.NONE : context;
 
         return service.wrapKey(vaultUrl, keyName, version, apiVersion, ACCEPT_LANGUAGE, parameters,
@@ -239,21 +229,11 @@ class CryptographyServiceClient {
                 Mono.just(new WrapResult(keyOperationResultResponse.getValue().getResult(), algorithm, keyId)));
     }
 
-    Mono<UnwrapResult> unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey, CryptographyOptions options,
-                                 Context context) {
-        byte[] initializationVector = null;
-        byte[] authenticatedData = null;
-
-        if (options != null) {
-            initializationVector = options.getInitializationVector();
-            authenticatedData = options.getAdditionalAuthenticatedData();
-        }
+    Mono<UnwrapResult> unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context) {
 
         KeyWrapUnwrapRequest parameters = new KeyWrapUnwrapRequest()
             .setAlgorithm(algorithm)
-            .setValue(encryptedKey)
-            .setInitializationVector(initializationVector)
-            .setAdditionalAuthenticatedData(authenticatedData);
+            .setValue(encryptedKey);
         context = context == null ? Context.NONE : context;
 
         return service.unwrapKey(vaultUrl, keyName, version, apiVersion, ACCEPT_LANGUAGE, parameters,

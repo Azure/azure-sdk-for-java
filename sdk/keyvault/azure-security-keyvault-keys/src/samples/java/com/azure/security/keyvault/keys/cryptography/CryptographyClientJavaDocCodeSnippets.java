@@ -71,7 +71,7 @@ public final class CryptographyClientJavaDocCodeSnippets {
     /**
      * Generates a code sample for using {@link CryptographyClient#encrypt(EncryptionAlgorithm, byte[])},
      * {@link CryptographyClient#encrypt(EncryptionAlgorithm, byte[], Context)} and
-     * {@link CryptographyClient#encrypt(EncryptionAlgorithm, byte[], CryptographyOptions, Context)}.
+     * {@link CryptographyClient#encrypt(EncryptionAlgorithm, byte[], EncryptOptions, Context)}.
      */
     public void encrypt() {
         CryptographyClient cryptographyClient = createClient();
@@ -99,37 +99,30 @@ public final class CryptographyClientJavaDocCodeSnippets {
             encryptionResult.getCipherText().length, encryptionResult.getAlgorithm().toString());
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptionAlgorithm-byte-Context
 
-        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptionAlgorithm-byte-CryptographyOptions-Context
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptionAlgorithm-byte-EncryptOptions-Context
         byte[] myPlainText = new byte[100];
 
         new Random(0x1234567L).nextBytes(myPlainText);
 
         byte[] iv = {
             (byte) 0x1a, (byte) 0xf3, (byte) 0x8c, (byte) 0x2d, (byte) 0xc2, (byte) 0xb9, (byte) 0x6f, (byte) 0xfd,
-            (byte) 0xd8, (byte) 0x66, (byte) 0x94, (byte) 0x09, (byte) 0x23, (byte) 0x41, (byte) 0xbc, (byte) 0x04};
-        byte[] authData = {
-            (byte) 0x54, (byte) 0x68, (byte) 0x65, (byte) 0x20, (byte) 0x73, (byte) 0x65, (byte) 0x63, (byte) 0x6f,
-            (byte) 0x6e, (byte) 0x64, (byte) 0x20, (byte) 0x70, (byte) 0x72, (byte) 0x69, (byte) 0x6e, (byte) 0x63,
-            (byte) 0x69, (byte) 0x70, (byte) 0x6c, (byte) 0x65, (byte) 0x20, (byte) 0x6f, (byte) 0x66, (byte) 0x20,
-            (byte) 0x41, (byte) 0x75, (byte) 0x67, (byte) 0x75, (byte) 0x73, (byte) 0x74, (byte) 0x65, (byte) 0x20,
-            (byte) 0x4b, (byte) 0x65, (byte) 0x72, (byte) 0x63, (byte) 0x6b, (byte) 0x68, (byte) 0x6f, (byte) 0x66,
-            (byte) 0x66, (byte) 0x73
+            (byte) 0xd8, (byte) 0x66, (byte) 0x94, (byte) 0x09, (byte) 0x23, (byte) 0x41, (byte) 0xbc, (byte) 0x04
         };
 
-        CryptographyOptions cryptographyOptions = new CryptographyOptions(iv, authData, null);
+        EncryptOptions encryptOptions = new AesCbcEncryptOptions(iv);
 
-        EncryptResult encryptedResult = cryptographyClient.encrypt(EncryptionAlgorithm.RSA_OAEP, myPlainText,
-            cryptographyOptions, new Context(key1, value1));
+        EncryptResult encryptedResult = cryptographyClient.encrypt(EncryptionAlgorithm.A128CBC, myPlainText,
+            encryptOptions, new Context(key1, value1));
 
         System.out.printf("Received encrypted content of length %d with algorithm %s \n",
             encryptedResult.getCipherText().length, encryptedResult.getAlgorithm().toString());
-        // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptionAlgorithm-byte-CryptographyOptions-Context
+        // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptionAlgorithm-byte-EncryptOptions-Context
     }
 
     /**
      * Generates a code sample for using {@link CryptographyClient#decrypt(EncryptionAlgorithm, byte[])},
      * {@link CryptographyClient#decrypt(EncryptionAlgorithm, byte[], Context)} and
-     * {@link CryptographyClient#decrypt(EncryptionAlgorithm, byte[], CryptographyOptions, Context)}.
+     * {@link CryptographyClient#decrypt(EncryptionAlgorithm, byte[], DecryptOptions, Context)}.
      */
     public void decrypt() {
         CryptographyClient cryptographyClient = createClient();
@@ -155,31 +148,23 @@ public final class CryptographyClientJavaDocCodeSnippets {
         System.out.printf("Received decrypted content of length %d\n", decryptionResult.getPlainText().length);
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#EncryptionAlgorithm-byte-Context
 
-        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#EncryptionAlgorithm-byte-CryptographyOptions-Context
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#EncryptionAlgorithm-byte-DecryptOptions-Context
         byte[] myCipherText = new byte[100];
 
         new Random(0x1234567L).nextBytes(myCipherText);
 
         byte[] iv = {
             (byte) 0x1a, (byte) 0xf3, (byte) 0x8c, (byte) 0x2d, (byte) 0xc2, (byte) 0xb9, (byte) 0x6f, (byte) 0xfd,
-            (byte) 0xd8, (byte) 0x66, (byte) 0x94, (byte) 0x09, (byte) 0x23, (byte) 0x41, (byte) 0xbc, (byte) 0x04};
-        byte[] authData = {
-            (byte) 0x54, (byte) 0x68, (byte) 0x65, (byte) 0x20, (byte) 0x73, (byte) 0x65, (byte) 0x63, (byte) 0x6f,
-            (byte) 0x6e, (byte) 0x64, (byte) 0x20, (byte) 0x70, (byte) 0x72, (byte) 0x69, (byte) 0x6e, (byte) 0x63,
-            (byte) 0x69, (byte) 0x70, (byte) 0x6c, (byte) 0x65, (byte) 0x20, (byte) 0x6f, (byte) 0x66, (byte) 0x20,
-            (byte) 0x41, (byte) 0x75, (byte) 0x67, (byte) 0x75, (byte) 0x73, (byte) 0x74, (byte) 0x65, (byte) 0x20,
-            (byte) 0x4b, (byte) 0x65, (byte) 0x72, (byte) 0x63, (byte) 0x6b, (byte) 0x68, (byte) 0x6f, (byte) 0x66,
-            (byte) 0x66, (byte) 0x73
+            (byte) 0xd8, (byte) 0x66, (byte) 0x94, (byte) 0x09, (byte) 0x23, (byte) 0x41, (byte) 0xbc, (byte) 0x04
         };
-        byte[] tag = "This is my authentication tag".getBytes();
 
-        CryptographyOptions cryptographyOptions = new CryptographyOptions(iv, authData, tag);
+        DecryptOptions decryptOptions = new AesCbcDecryptOptions(iv);
 
-        DecryptResult decryptedResult = cryptographyClient.decrypt(EncryptionAlgorithm.RSA_OAEP, myCipherText,
-            cryptographyOptions, new Context(key1, value1));
+        DecryptResult decryptedResult = cryptographyClient.decrypt(EncryptionAlgorithm.A128CBC, myCipherText,
+            decryptOptions, new Context(key1, value1));
 
         System.out.printf("Received decrypted content of length %d\n", decryptedResult.getPlainText().length);
-        // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#EncryptionAlgorithm-byte-CryptographyOptions-Context
+        // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#EncryptionAlgorithm-byte-DecryptOptions-Context
     }
 
     /**
@@ -263,10 +248,8 @@ public final class CryptographyClientJavaDocCodeSnippets {
     /**
      * Generates a code sample for using {@link CryptographyClient#wrapKey(KeyWrapAlgorithm, byte[])},
      * {@link CryptographyClient#wrapKey(KeyWrapAlgorithm, byte[], Context)},
-     * {@link CryptographyClient#wrapKey(KeyWrapAlgorithm, byte[], CryptographyOptions, Context)},
-     * {@link CryptographyClient#unwrapKey(KeyWrapAlgorithm, byte[])},
-     * {@link CryptographyClient#unwrapKey(KeyWrapAlgorithm, byte[], Context)} and
-     * {@link CryptographyClient#unwrapKey(KeyWrapAlgorithm, byte[], CryptographyOptions, Context)}.
+     * {@link CryptographyClient#unwrapKey(KeyWrapAlgorithm, byte[])} and
+     * {@link CryptographyClient#unwrapKey(KeyWrapAlgorithm, byte[], Context)}.
      */
     public void wrapKeyUnwrapKey() {
         CryptographyClient cryptographyClient = createClient();
@@ -294,32 +277,6 @@ public final class CryptographyClientJavaDocCodeSnippets {
             keyWrapResponse.getAlgorithm().toString());
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.wrapKey#KeyWrapAlgorithm-byte-Context
 
-        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.wrapKey#KeyWrapAlgorithm-byte-CryptographyOptions-Context
-        byte[] keyToWrap = new byte[100];
-
-        new Random(0x1234567L).nextBytes(keyToWrap);
-
-        byte[] iv = {
-            (byte) 0x1a, (byte) 0xf3, (byte) 0x8c, (byte) 0x2d, (byte) 0xc2, (byte) 0xb9, (byte) 0x6f, (byte) 0xfd,
-            (byte) 0xd8, (byte) 0x66, (byte) 0x94, (byte) 0x09, (byte) 0x23, (byte) 0x41, (byte) 0xbc, (byte) 0x04};
-        byte[] authData = {
-            (byte) 0x54, (byte) 0x68, (byte) 0x65, (byte) 0x20, (byte) 0x73, (byte) 0x65, (byte) 0x63, (byte) 0x6f,
-            (byte) 0x6e, (byte) 0x64, (byte) 0x20, (byte) 0x70, (byte) 0x72, (byte) 0x69, (byte) 0x6e, (byte) 0x63,
-            (byte) 0x69, (byte) 0x70, (byte) 0x6c, (byte) 0x65, (byte) 0x20, (byte) 0x6f, (byte) 0x66, (byte) 0x20,
-            (byte) 0x41, (byte) 0x75, (byte) 0x67, (byte) 0x75, (byte) 0x73, (byte) 0x74, (byte) 0x65, (byte) 0x20,
-            (byte) 0x4b, (byte) 0x65, (byte) 0x72, (byte) 0x63, (byte) 0x6b, (byte) 0x68, (byte) 0x6f, (byte) 0x66,
-            (byte) 0x66, (byte) 0x73
-        };
-
-        CryptographyOptions cryptographyOptions = new CryptographyOptions(iv, authData, null);
-
-        WrapResult wrapKeyResult = cryptographyClient.wrapKey(KeyWrapAlgorithm.RSA_OAEP, keyToWrap, cryptographyOptions,
-            new Context(key1, value1));
-
-        System.out.printf("Received encrypted key of length %d with algorithm %s", wrapKeyResult.getEncryptedKey().length,
-            wrapKeyResult.getAlgorithm().toString());
-        // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.wrapKey#KeyWrapAlgorithm-byte-CryptographyOptions-Context
-
         // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.unwrapKey#KeyWrapAlgorithm-byte
         byte[] wrappedKey = new byte[100];
 
@@ -340,31 +297,6 @@ public final class CryptographyClientJavaDocCodeSnippets {
 
         System.out.printf("Received key of length %d", keyUnwrapResponse.getKey().length);
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.unwrapKey#KeyWrapAlgorithm-byte-Context
-
-        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.unwrapKey#KeyWrapAlgorithm-byte-CryptographyOptions-Context
-        byte[] keyToUnwrap = new byte[100];
-
-        new Random(0x1234567L).nextBytes(keyToUnwrap);
-
-        byte[] initializationVector = {
-            (byte) 0x1a, (byte) 0xf3, (byte) 0x8c, (byte) 0x2d, (byte) 0xc2, (byte) 0xb9, (byte) 0x6f, (byte) 0xfd,
-            (byte) 0xd8, (byte) 0x66, (byte) 0x94, (byte) 0x09, (byte) 0x23, (byte) 0x41, (byte) 0xbc, (byte) 0x04};
-        byte[] authenticationData = {
-            (byte) 0x54, (byte) 0x68, (byte) 0x65, (byte) 0x20, (byte) 0x73, (byte) 0x65, (byte) 0x63, (byte) 0x6f,
-            (byte) 0x6e, (byte) 0x64, (byte) 0x20, (byte) 0x70, (byte) 0x72, (byte) 0x69, (byte) 0x6e, (byte) 0x63,
-            (byte) 0x69, (byte) 0x70, (byte) 0x6c, (byte) 0x65, (byte) 0x20, (byte) 0x6f, (byte) 0x66, (byte) 0x20,
-            (byte) 0x41, (byte) 0x75, (byte) 0x67, (byte) 0x75, (byte) 0x73, (byte) 0x74, (byte) 0x65, (byte) 0x20,
-            (byte) 0x4b, (byte) 0x65, (byte) 0x72, (byte) 0x63, (byte) 0x6b, (byte) 0x68, (byte) 0x6f, (byte) 0x66,
-            (byte) 0x66, (byte) 0x73
-        };
-
-        CryptographyOptions options = new CryptographyOptions(initializationVector, authenticationData, null);
-
-        UnwrapResult unwrappedKey = cryptographyClient.unwrapKey(KeyWrapAlgorithm.RSA_OAEP, keyToUnwrap, options,
-            new Context(key2, value2));
-
-        System.out.printf("Received key of length %d", unwrappedKey.getKey().length);
-        // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.unwrapKey#KeyWrapAlgorithm-byte-CryptographyOptions-Context
     }
 
     /**

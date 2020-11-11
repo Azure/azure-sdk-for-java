@@ -172,7 +172,7 @@ public class CryptographyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Encrypts the content. Subscribes to the call asynchronously and prints out the encrypted content details when
      * a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptionAlgorithm-byte-CryptographyOptions-Context}
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptionAlgorithm-byte-EncryptOptions-Context}
      *
      * @param algorithm The algorithm to be used for encryption.
      * @param plaintext The content to be encrypted.
@@ -184,7 +184,7 @@ public class CryptographyClient {
      * @throws UnsupportedOperationException If the encrypt operation is not supported or configured on the key.
      * @throws NullPointerException If {@code algorithm} or {@code plainText} are {@code null}.
      */
-    public EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, CryptographyOptions options,
+    public EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, EncryptOptions options,
                                  Context context) {
         return client.encrypt(algorithm, plaintext, options, context).block();
     }
@@ -282,7 +282,7 @@ public class CryptographyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Decrypts the encrypted content. Subscribes to the call asynchronously and prints out the decrypted content
      * details when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#EncryptionAlgorithm-byte-CryptographyOptions-Context}
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#EncryptionAlgorithm-byte-DecryptOptions-Context}
      *
      * @param algorithm The algorithm to be used for decryption.
      * @param cipherText The content to be decrypted.
@@ -293,7 +293,7 @@ public class CryptographyClient {
      * @throws UnsupportedOperationException If the decrypt operation is not supported or configured on the key.
      * @throws NullPointerException If {@code algorithm} or {@code cipherText} are {@code null}.
      */
-    public DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] cipherText, CryptographyOptions options,
+    public DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] cipherText, DecryptOptions options,
                                  Context context) {
         return client.decrypt(algorithm, cipherText, options, context).block();
     }
@@ -474,38 +474,7 @@ public class CryptographyClient {
      * @throws NullPointerException If {@code algorithm} or {@code key} are {@code null}.
      */
     public WrapResult wrapKey(KeyWrapAlgorithm algorithm, byte[] key, Context context) {
-        return wrapKey(algorithm, key, null, context);
-    }
-
-    /**
-     * Wraps a symmetric key using the configured key. The wrap operation supports wrapping a symmetric key with both
-     * symmetric and asymmetric keys. This operation requires the keys/wrapKey permission.
-     *
-     * <p>The {@link KeyWrapAlgorithm wrap algorithm} indicates the type of algorithm to use for wrapping the specified
-     * key content. Possible values for asymmetric keys include:
-     * {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP RSA_OAEP} and
-     * {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
-     *
-     * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128KW A128KW},
-     * {@link EncryptionAlgorithm#A192KW A192KW} and {@link EncryptionAlgorithm#A256KW A256KW}.</p>
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Wraps the key content. Subscribes to the call asynchronously and prints out the wrapped key details when a
-     * response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.wrapKey#KeyWrapAlgorithm-byte-CryptographyOptions-Context}
-     *
-     * @param algorithm The encryption algorithm to use for wrapping the key.
-     * @param key The key content to be wrapped.
-     * @param options Optional parameters for the wrap operation.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return The {@link WrapResult} whose {@link WrapResult#getEncryptedKey() encrypted key} contains the wrapped
-     * key result.
-     * @throws ResourceNotFoundException If the key cannot be found for encryption.
-     * @throws UnsupportedOperationException If the wrap operation is not supported or configured on the key.
-     * @throws NullPointerException If {@code algorithm} or {@code key} are {@code null}.
-     */
-    public WrapResult wrapKey(KeyWrapAlgorithm algorithm, byte[] key, CryptographyOptions options, Context context) {
-        return client.wrapKey(algorithm, key, options, context).block();
+        return client.wrapKey(algorithm, key, context).block();
     }
 
     /**
@@ -564,39 +533,7 @@ public class CryptographyClient {
      * @throws NullPointerException If {@code algorithm} or {@code encryptedKey} are {@code null}.
      */
     public UnwrapResult unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context) {
-        return unwrapKey(algorithm, encryptedKey, null, context);
-    }
-
-    /**
-     * Unwraps a symmetric key using the configured key that was initially used for wrapping that key. This operation is
-     * the reverse of the wrap operation. The unwrap operation supports asymmetric and symmetric keys to unwrap. This
-     * operation requires the keys/unwrapKey permission.
-     *
-     * <p>The {@link KeyWrapAlgorithm wrap algorithm} indicates the type of algorithm to use for wrapping the specified
-     * key content. Possible values for asymmetric keys include:
-     * {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP RSA_OAEP} and
-     * {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
-     *
-     * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128KW A128KW},
-     * {@link EncryptionAlgorithm#A192KW A192KW} and {@link EncryptionAlgorithm#A256KW A256KW}.</p>
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Unwraps the key content. Subscribes to the call asynchronously and prints out the unwrapped key details when a
-     * response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.unwrapKey#KeyWrapAlgorithm-byte-CryptographyOptions-Context}
-     *
-     * @param algorithm The encryption algorithm to use for wrapping the key.
-     * @param encryptedKey The encrypted key content to unwrap.
-     * @param options Optional parameters for the unwrap operation.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return The unwrapped key content.
-     * @throws ResourceNotFoundException If the key cannot be found for wrap operation.
-     * @throws UnsupportedOperationException If the unwrap operation is not supported or configured on the key.
-     * @throws NullPointerException If {@code algorithm} or {@code encryptedKey} are {@code null}.
-     */
-    public UnwrapResult unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey, CryptographyOptions options,
-                                  Context context) {
-        return client.unwrapKey(algorithm, encryptedKey, options, context).block();
+        return client.unwrapKey(algorithm, encryptedKey, context).block();
     }
 
     /**

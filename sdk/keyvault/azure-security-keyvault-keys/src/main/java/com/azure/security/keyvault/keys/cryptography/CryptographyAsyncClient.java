@@ -196,7 +196,7 @@ public class CryptographyAsyncClient {
      * portion of the key is used for encryption. This operation requires the keys/encrypt permission.
      *
      * <p>The {@link EncryptionAlgorithm encryption algorithm} indicates the type of algorithm to use for encrypting the
-     * specified {@code plaintext}. Possible values for assymetric keys include:
+     * specified {@code plaintext}. Possible values for asymmetric keys include:
      * {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP RSA_OAEP} and
      * {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
      *
@@ -233,7 +233,7 @@ public class CryptographyAsyncClient {
      * portion of the key is used for encryption. This operation requires the keys/encrypt permission.
      *
      * <p>The {@link EncryptionAlgorithm encryption algorithm} indicates the type of algorithm to use for encrypting the
-     * specified {@code plaintext}. Possible values for assymetric keys include:
+     * specified {@code plaintext}. Possible values for asymmetric keys include:
      * {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP RSA_OAEP} and
      * {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
      *
@@ -248,7 +248,7 @@ public class CryptographyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Encrypts the content. Subscribes to the call asynchronously and prints out the encrypted content details when
      * a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.encrypt#EncryptionAlgorithm-byte-CryptographyOptions}
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.encrypt#EncryptionAlgorithm-byte-EncryptOptions}
      *
      * @param algorithm The algorithm to be used for encryption.
      * @param plaintext The content to be encrypted.
@@ -260,7 +260,7 @@ public class CryptographyAsyncClient {
      * @throws NullPointerException If {@code algorithm} or {@code plainText} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EncryptResult> encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, CryptographyOptions options) {
+    public Mono<EncryptResult> encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, EncryptOptions options) {
         try {
             return withContext(context -> encrypt(algorithm, plaintext, options, context));
         } catch (RuntimeException ex) {
@@ -269,7 +269,7 @@ public class CryptographyAsyncClient {
     }
 
 
-    Mono<EncryptResult> encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, CryptographyOptions options,
+    Mono<EncryptResult> encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, EncryptOptions options,
                                 Context context) {
         Objects.requireNonNull(algorithm, "Encryption algorithm cannot be null.");
         Objects.requireNonNull(plaintext, "Plain text content to be encrypted cannot be null.");
@@ -295,7 +295,7 @@ public class CryptographyAsyncClient {
      * keys/decrypt permission.
      *
      * <p>The {@link EncryptionAlgorithm encryption algorithm} indicates the type of algorithm to use for decrypting the
-     * specified encrypted content. Possible values for assymetric keys include:
+     * specified encrypted content. Possible values for asymmetric keys include:
      * {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP RSA_OAEP} and {@link
      * EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
      *
@@ -331,7 +331,7 @@ public class CryptographyAsyncClient {
      * keys/decrypt permission.
      *
      * <p>The {@link EncryptionAlgorithm encryption algorithm} indicates the type of algorithm to use for decrypting the
-     * specified encrypted content. Possible values for assymetric keys include:
+     * specified encrypted content. Possible values for asymmetric keys include:
      * {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP RSA_OAEP} and {@link
      * EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
      *
@@ -346,7 +346,7 @@ public class CryptographyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Decrypts the encrypted content. Subscribes to the call asynchronously and prints out the decrypted content
      * details when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.decrypt#EncryptionAlgorithm-byte-CryptographyOptions}
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.decrypt#EncryptionAlgorithm-byte-DecryptOptions}
      *
      * @param algorithm The algorithm to be used for decryption.
      * @param cipherText The content to be decrypted.
@@ -357,7 +357,7 @@ public class CryptographyAsyncClient {
      * @throws NullPointerException If {@code algorithm} or {@code cipherText} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DecryptResult> decrypt(EncryptionAlgorithm algorithm, byte[] cipherText, CryptographyOptions options) {
+    public Mono<DecryptResult> decrypt(EncryptionAlgorithm algorithm, byte[] cipherText, DecryptOptions options) {
         try {
             return withContext(context -> decrypt(algorithm, cipherText, options, context));
         } catch (RuntimeException ex) {
@@ -365,7 +365,7 @@ public class CryptographyAsyncClient {
         }
     }
 
-    Mono<DecryptResult> decrypt(EncryptionAlgorithm algorithm, byte[] cipherText, CryptographyOptions options,
+    Mono<DecryptResult> decrypt(EncryptionAlgorithm algorithm, byte[] cipherText, DecryptOptions options,
                                 Context context) {
         Objects.requireNonNull(algorithm, "Encryption algorithm cannot be null.");
         Objects.requireNonNull(cipherText, "Cipher text content to be decrypted cannot be null.");
@@ -513,51 +513,20 @@ public class CryptographyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<WrapResult> wrapKey(KeyWrapAlgorithm algorithm, byte[] key) {
-        return wrapKey(algorithm, key, null);
-    }
-
-    /**
-     * Wraps a symmetric key using the configured key. The wrap operation supports wrapping a symmetric key with both
-     * symmetric and asymmetric keys. This operation requires the keys/wrapKey permission.
-     *
-     * <p>The {@link KeyWrapAlgorithm wrap algorithm} indicates the type of algorithm to use for wrapping the specified
-     * key content. Possible values include:
-     * {@link KeyWrapAlgorithm#RSA1_5 RSA1_5}, {@link KeyWrapAlgorithm#RSA_OAEP RSA_OAEP} and {@link
-     * KeyWrapAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
-     *
-     * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128KW A128KW},
-     * {@link EncryptionAlgorithm#A192KW A192KW} and {@link EncryptionAlgorithm#A256KW A256KW}.</p>
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Wraps the key content. Subscribes to the call asynchronously and prints out the wrapped key details when a
-     * response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.wrapKey#KeyWrapAlgorithm-byte-CryptographyOptions}
-     *
-     * @param algorithm The encryption algorithm to use for wrapping the key.
-     * @param key The key content to be wrapped.
-     * @param options Optional parameters for the wrap operation.
-     * @return A {@link Mono} containing a {@link WrapResult} whose {@link WrapResult#getEncryptedKey() encrypted key}
-     * contains the wrapped key result.
-     * @throws ResourceNotFoundException If the key cannot be found for wrap operation.
-     * @throws UnsupportedOperationException If the wrap operation is not supported or configured on the key.
-     * @throws NullPointerException If {@code algorithm} or {@code key} are {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<WrapResult> wrapKey(KeyWrapAlgorithm algorithm, byte[] key, CryptographyOptions options) {
         try {
-            return withContext(context -> wrapKey(algorithm, key, options, context));
+            return withContext(context -> wrapKey(algorithm, key, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<WrapResult> wrapKey(KeyWrapAlgorithm algorithm, byte[] key, CryptographyOptions options, Context context) {
+    Mono<WrapResult> wrapKey(KeyWrapAlgorithm algorithm, byte[] key, Context context) {
         Objects.requireNonNull(algorithm, "Key Wrap algorithm cannot be null.");
         Objects.requireNonNull(key, "Key content to be wrapped cannot be null.");
 
         return ensureValidKeyAvailable().flatMap(available -> {
             if (!available) {
-                return cryptographyServiceClient.wrapKey(algorithm, key, options, context);
+                return cryptographyServiceClient.wrapKey(algorithm, key, context);
             }
 
             if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.WRAP_KEY)) {
@@ -565,7 +534,7 @@ public class CryptographyAsyncClient {
                     "Wrap Key Operation is not allowed for key with id %s", this.key.getId()))));
             }
 
-            return localKeyCryptographyClient.wrapKeyAsync(algorithm, key, options, context, this.key);
+            return localKeyCryptographyClient.wrapKeyAsync(algorithm, key, context, this.key);
         });
     }
 
@@ -596,52 +565,20 @@ public class CryptographyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UnwrapResult> unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey) {
-        return unwrapKey(algorithm, encryptedKey, null);
-    }
-
-    /**
-     * Unwraps a symmetric key using the configured key that was initially used for wrapping that key. This operation is
-     * the reverse of the wrap operation. The unwrap operation supports asymmetric and symmetric keys to unwrap. This
-     * operation requires the keys/unwrapKey permission.
-     *
-     * <p>The {@link KeyWrapAlgorithm wrap algorithm} indicates the type of algorithm to use for unwrapping the
-     * specified encrypted key content. Possible values for asymmetric keys include:
-     * {@link KeyWrapAlgorithm#RSA1_5 RSA1_5}, {@link KeyWrapAlgorithm#RSA_OAEP RSA_OAEP} and {@link
-     * KeyWrapAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
-     *
-     * Possible values for symmetric keys include: {@link KeyWrapAlgorithm#A128KW A128KW},
-     * {@link KeyWrapAlgorithm#A192KW A192KW} and {@link KeyWrapAlgorithm#A256KW A256KW}.</p>
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Unwraps the key content. Subscribes to the call asynchronously and prints out the unwrapped key details when a
-     * response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.unwrapKey#KeyWrapAlgorithm-byte-CryptographyOptions}
-     *
-     * @param algorithm The encryption algorithm to use for wrapping the key.
-     * @param encryptedKey The encrypted key content to unwrap.
-     * @param options Optional parameters for the unwrap operation.
-     * @return A {@link Mono} containing a the unwrapped key content.
-     * @throws ResourceNotFoundException If the key cannot be found for wrap operation.
-     * @throws UnsupportedOperationException If the unwrap operation is not supported or configured on the key.
-     * @throws NullPointerException If {@code algorithm} or {@code encryptedKey} are {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UnwrapResult> unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey, CryptographyOptions options) {
         try {
-            return withContext(context -> unwrapKey(algorithm, encryptedKey, options, context));
+            return withContext(context -> unwrapKey(algorithm, encryptedKey, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<UnwrapResult> unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey, CryptographyOptions options,
-                                 Context context) {
+    Mono<UnwrapResult> unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context) {
         Objects.requireNonNull(algorithm, "Key Wrap algorithm cannot be null.");
         Objects.requireNonNull(encryptedKey, "Encrypted key content to be unwrapped cannot be null.");
 
         return ensureValidKeyAvailable().flatMap(available -> {
             if (!available) {
-                return cryptographyServiceClient.unwrapKey(algorithm, encryptedKey, options, context);
+                return cryptographyServiceClient.unwrapKey(algorithm, encryptedKey, context);
             }
 
             if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.UNWRAP_KEY)) {
@@ -649,7 +586,7 @@ public class CryptographyAsyncClient {
                     "Unwrap Key Operation is not allowed for key with id %s", this.key.getId()))));
             }
 
-            return localKeyCryptographyClient.unwrapKeyAsync(algorithm, encryptedKey, options, context, key);
+            return localKeyCryptographyClient.unwrapKeyAsync(algorithm, encryptedKey, context, key);
         });
     }
 

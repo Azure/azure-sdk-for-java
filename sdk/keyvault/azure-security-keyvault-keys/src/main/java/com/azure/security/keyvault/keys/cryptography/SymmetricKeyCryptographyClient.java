@@ -18,6 +18,7 @@ import com.azure.security.keyvault.keys.models.JsonWebKey;
 import reactor.core.publisher.Mono;
 
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 
 class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
     private final ClientLogger logger = new ClientLogger(SymmetricKeyCryptographyClient.class);
@@ -46,7 +47,7 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
     }
 
     @Override
-    Mono<EncryptResult> encryptAsync(EncryptionAlgorithm algorithm, byte[] plaintext, CryptographyOptions options,
+    Mono<EncryptResult> encryptAsync(EncryptionAlgorithm algorithm, byte[] plaintext, EncryptOptions options,
                                      Context context, JsonWebKey jsonWebKey) {
         this.key = getKey(jsonWebKey);
 
@@ -66,15 +67,28 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
         ICryptoTransform transform;
 
         byte[] iv = null;
-        byte[] authData = null;
+        byte[] additionalAuthenticatedData = null;
 
         if (options != null) {
-            iv = options.getInitializationVector();
-            authData = options.getAdditionalAuthenticatedData();
+            iv = options.getIv();
+            additionalAuthenticatedData = options.getAdditionalAuthenticatedData();
+        }
+
+        if (iv == null) {
+            if (algorithm == EncryptionAlgorithm.A128GCM || algorithm == EncryptionAlgorithm.A192GCM
+                || algorithm == EncryptionAlgorithm.A256GCM) {
+
+                iv = generateRandomIvForGcm();
+            } else if (algorithm == EncryptionAlgorithm.A128CBC || algorithm == EncryptionAlgorithm.A192CBC
+                || algorithm == EncryptionAlgorithm.A256CBC || algorithm == EncryptionAlgorithm.A128CBCPAD
+                || algorithm == EncryptionAlgorithm.A192CBCPAD || algorithm == EncryptionAlgorithm.A256CBCPAD) {
+
+                iv = generateRandomIvForCbc();
+            }
         }
 
         try {
-            transform = symmetricEncryptionAlgorithm.createEncryptor(this.key, iv, authData, null);
+            transform = symmetricEncryptionAlgorithm.createEncryptor(this.key, iv, additionalAuthenticatedData, null);
         } catch (Exception e) {
             return Mono.error(e);
         }
@@ -91,7 +105,7 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
     }
 
     @Override
-    Mono<DecryptResult> decryptAsync(EncryptionAlgorithm algorithm, byte[] cipherText, CryptographyOptions options,
+    Mono<DecryptResult> decryptAsync(EncryptionAlgorithm algorithm, byte[] cipherText, DecryptOptions options,
                                      Context context, JsonWebKey jsonWebKey) {
         this.key = getKey(jsonWebKey);
 
@@ -111,17 +125,30 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
         ICryptoTransform transform;
 
         byte[] iv = null;
-        byte[] authData = null;
-        byte[] tag = null;
+        byte[] additionalAuthenticatedData = null;
+        byte[] authenticationTag = null;
 
         if (options != null) {
-            iv = options.getInitializationVector();
-            authData = options.getAdditionalAuthenticatedData();
-            tag = options.getTag();
+            iv = options.getIv();
+            additionalAuthenticatedData = options.getAdditionalAuthenticatedData();
+            authenticationTag = options.getAuthenticationTag();
+        }
+
+        if (iv == null) {
+            if (algorithm == EncryptionAlgorithm.A128GCM || algorithm == EncryptionAlgorithm.A192GCM
+                || algorithm == EncryptionAlgorithm.A256GCM) {
+
+                iv = generateRandomIvForGcm();
+            } else if (algorithm == EncryptionAlgorithm.A128CBC || algorithm == EncryptionAlgorithm.A192CBC
+                || algorithm == EncryptionAlgorithm.A256CBC || algorithm == EncryptionAlgorithm.A128CBCPAD
+                || algorithm == EncryptionAlgorithm.A192CBCPAD || algorithm == EncryptionAlgorithm.A256CBCPAD) {
+
+                iv = generateRandomIvForCbc();
+            }
         }
 
         try {
-            transform = symmetricEncryptionAlgorithm.createDecryptor(this.key, iv, authData, tag);
+            transform = symmetricEncryptionAlgorithm.createDecryptor(this.key, iv, additionalAuthenticatedData, authenticationTag);
         } catch (Exception e) {
             return Mono.error(e);
         }
@@ -149,8 +176,7 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
     }
 
     @Override
-    Mono<WrapResult> wrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] key, CryptographyOptions options, Context context,
-                                  JsonWebKey jsonWebKey) {
+    Mono<WrapResult> wrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] key, Context context, JsonWebKey jsonWebKey) {
         this.key = getKey(jsonWebKey);
 
         if (key == null || key.length == 0) {
@@ -168,10 +194,8 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         ICryptoTransform transform;
 
-        byte[] iv = options == null ? null : options.getInitializationVector();
-
         try {
-            transform = localKeyWrapAlgorithm.createEncryptor(this.key, iv, null);
+            transform = localKeyWrapAlgorithm.createEncryptor(this.key, null, null);
         } catch (Exception e) {
             return Mono.error(e);
         }
@@ -188,8 +212,7 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
     }
 
     @Override
-    Mono<UnwrapResult> unwrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] encryptedKey, CryptographyOptions options,
-                                      Context context, JsonWebKey jsonWebKey) {
+    Mono<UnwrapResult> unwrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context, JsonWebKey jsonWebKey) {
         this.key = getKey(jsonWebKey);
 
         Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm.toString());
@@ -202,10 +225,8 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         ICryptoTransform transform;
 
-        byte[] iv = options == null ? null : options.getInitializationVector();
-
         try {
-            transform = localKeyWrapAlgorithm.createDecryptor(this.key, iv, null);
+            transform = localKeyWrapAlgorithm.createDecryptor(this.key, null, null);
         } catch (Exception e) {
             return Mono.error(e);
         }
@@ -230,5 +251,28 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
     Mono<VerifyResult> verifyDataAsync(SignatureAlgorithm algorithm, byte[] data, byte[] signature, Context context,
                                        JsonWebKey key) {
         return verifyAsync(algorithm, data, signature, context, key);
+    }
+
+    private byte[] generateRandomIvForCbc() {
+        return generateRandomIv(16);
+    }
+
+    private byte[] generateRandomIvForGcm() {
+        return generateRandomIv(12);
+    }
+
+    private byte[] generateRandomIv(int ivSize) {
+        byte[] iv = new byte[0];
+        SecureRandom randomSecureRandom;
+
+        try {
+            randomSecureRandom = SecureRandom.getInstance("SHA1PRNG");
+            iv = new byte[ivSize];
+            randomSecureRandom.nextBytes(iv);
+        } catch (NoSuchAlgorithmException e) {
+            logger.logThrowableAsError(e);
+        }
+
+        return iv;
     }
 }

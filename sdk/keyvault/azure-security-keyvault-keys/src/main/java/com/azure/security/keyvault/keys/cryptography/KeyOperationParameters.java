@@ -28,7 +28,7 @@ class KeyOperationParameters {
      * Initialization vector for symmetric algorithms.
      */
     @JsonProperty(value = "iv")
-    private byte[] initializationVector;
+    private byte[] iv;
 
     /**
      * Additional data to authenticate but not encrypt/decrypt when using authenticated crypto algorithms.
@@ -40,7 +40,7 @@ class KeyOperationParameters {
      * The tag to authenticate when performing decryption with an authenticated algorithm.
      */
     @JsonProperty(value = "tag")
-    private byte[] tag;
+    private byte[] authenticationTag;
 
     /**
      * Get the algorithm value.
@@ -94,18 +94,18 @@ class KeyOperationParameters {
      *
      * @return The initialization vector.
      */
-    public byte[] getInitializationVector() {
-        return initializationVector;
+    public byte[] getIv() {
+        return iv;
     }
 
     /**
      * Set the initialization vector to be used in the cryptographic operation using a symmetric algorithm.
      *
-     * @param initializationVector The initialization vector to set.
+     * @param iv The initialization vector to set.
      * @return The updated {@link KeyOperationParameters} object.
      */
-    public KeyOperationParameters setInitializationVector(byte[] initializationVector) {
-        this.initializationVector = initializationVector;
+    public KeyOperationParameters setIv(byte[] iv) {
+        this.iv = iv;
         return this;
     }
 
@@ -132,20 +132,20 @@ class KeyOperationParameters {
     /**
      * Get the tag to authenticate when performing decryption with an authenticated algorithm.
      *
-     * @return The tag.
+     * @return The authentication tag.
      */
-    public byte[] getTag() {
-        return tag;
+    public byte[] getAuthenticationTag() {
+        return authenticationTag;
     }
 
     /**
      * Set the tag to authenticate when performing decryption with an authenticated algorithm.
      *
-     * @param tag The tag to set.
+     * @param authenticationTag The tag to set.
      * @return The updated {@link KeyOperationParameters} object.
      */
-    public KeyOperationParameters setTag(byte[] tag) {
-        this.tag = tag;
+    public KeyOperationParameters setAuthenticationTag(byte[] authenticationTag) {
+        this.authenticationTag = authenticationTag;
         return this;
     }
 }

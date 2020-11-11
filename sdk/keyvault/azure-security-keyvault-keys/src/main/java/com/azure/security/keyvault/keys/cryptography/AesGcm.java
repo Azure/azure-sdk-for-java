@@ -7,15 +7,18 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
 import java.util.Arrays;
+import java.util.Objects;
 
 abstract class AesGcm extends SymmetricEncryptionAlgorithm {
+    static final int DEFAULT_TAG_LENGTH = 96;
+
     final int keySizeInBytes;
     final int keySize;
 
@@ -29,17 +32,19 @@ abstract class AesGcm extends SymmetricEncryptionAlgorithm {
     static class AesGcmEncryptor implements ICryptoTransform {
         private final Cipher cipher;
 
-        AesGcmEncryptor(byte[] key, byte[] iv, Provider provider) throws NoSuchAlgorithmException,
-            NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
+        AesGcmEncryptor(byte[] key, byte[] iv, byte[] authenticationData, Provider provider)
+            throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
+            InvalidAlgorithmParameterException {
 
             // Create the cipher using the Provider if specified
             if (provider == null) {
-                cipher = Cipher.getInstance("AES/CBC/NoPadding");
+                cipher = Cipher.getInstance("AES/GCM/NoPadding");
             } else {
-                cipher = Cipher.getInstance("AES/CBC/NoPadding", provider);
+                cipher = Cipher.getInstance("AES/GCM/NoPadding", provider);
             }
 
-            cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key, "AES"), new IvParameterSpec(iv));
+            cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key, "AES"),
+                new GCMParameterSpec(DEFAULT_TAG_LENGTH, iv));
         }
 
         @Override
@@ -51,8 +56,9 @@ abstract class AesGcm extends SymmetricEncryptionAlgorithm {
     static class AesGcmDecryptor implements ICryptoTransform {
         private final Cipher cipher;
 
-        AesGcmDecryptor(byte[] key, byte[] iv, Provider provider) throws NoSuchAlgorithmException,
-            NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
+        AesGcmDecryptor(byte[] key, byte[] iv, byte[] authenticationData, byte[] authenticationTag, Provider provider)
+            throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
+            InvalidAlgorithmParameterException {
 
             // Create the cipher using the Provider if specified
             if (provider == null) {
@@ -61,7 +67,11 @@ abstract class AesGcm extends SymmetricEncryptionAlgorithm {
                 cipher = Cipher.getInstance("AES/GCM/NoPadding", provider);
             }
 
-            cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key, "AES"), new IvParameterSpec(iv));
+
+            Objects.requireNonNull(authenticationTag, "'authenticationTag' cannot be null");
+
+            cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key, "AES"),
+                new GCMParameterSpec(authenticationTag.length << 3, iv));
         }
 
         @Override
@@ -87,7 +97,7 @@ abstract class AesGcm extends SymmetricEncryptionAlgorithm {
             throw new InvalidKeyException("key must be at least " + keySize + " bits in length");
         }
 
-        return new AesGcmEncryptor(Arrays.copyOfRange(key, 0, keySizeInBytes), iv, provider);
+        return new AesGcmEncryptor(Arrays.copyOfRange(key, 0, keySizeInBytes), iv, authenticationData, provider);
     }
 
     @Override
@@ -108,6 +118,7 @@ abstract class AesGcm extends SymmetricEncryptionAlgorithm {
             throw new InvalidKeyException("key must be at least " + keySize + " bits in length");
         }
 
-        return new AesGcmDecryptor(Arrays.copyOfRange(key, 0, keySizeInBytes), iv, provider);
+        return new AesGcmDecryptor(Arrays.copyOfRange(key, 0, keySizeInBytes), iv, authenticationData,
+            authenticationTag, provider);
     }
 }

@@ -28,21 +28,21 @@ abstract class LocalKeyCryptographyClient {
     }
 
     abstract Mono<EncryptResult> encryptAsync(EncryptionAlgorithm algorithm, byte[] plaintext,
-                                              CryptographyOptions options, Context context, JsonWebKey jsonWebKey);
+                                              EncryptOptions options, Context context, JsonWebKey jsonWebKey);
 
     abstract Mono<DecryptResult> decryptAsync(EncryptionAlgorithm algorithm, byte[] cipherText,
-                                              CryptographyOptions options, Context context, JsonWebKey jsonWebKey);
+                                              DecryptOptions options, Context context, JsonWebKey jsonWebKey);
 
     abstract Mono<SignResult> signAsync(SignatureAlgorithm algorithm, byte[] digest, Context context, JsonWebKey key);
 
     abstract Mono<VerifyResult> verifyAsync(SignatureAlgorithm algorithm, byte[] digest, byte[] signature,
                                             Context context, JsonWebKey key);
 
-    abstract Mono<WrapResult> wrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] key, CryptographyOptions options,
-                                           Context context, JsonWebKey jsonWebKey);
+    abstract Mono<WrapResult> wrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] key, Context context,
+                                           JsonWebKey jsonWebKey);
 
-    abstract Mono<UnwrapResult> unwrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] encryptedKey,
-                                               CryptographyOptions options, Context context, JsonWebKey jsonWebKey);
+    abstract Mono<UnwrapResult> unwrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context,
+                                               JsonWebKey jsonWebKey);
 
     abstract Mono<SignResult> signDataAsync(SignatureAlgorithm algorithm, byte[] data, Context context, JsonWebKey key);
 

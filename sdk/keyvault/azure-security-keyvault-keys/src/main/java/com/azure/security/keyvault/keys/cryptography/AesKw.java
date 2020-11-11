@@ -134,7 +134,7 @@ abstract class AesKw extends LocalKeyWrapAlgorithm {
 
         if (iv != null) {
             // iv length must be 64 bits
-            if (iv.length != 8) {
+            if (iv.length != BLOCK_SIZE_IN_BITS >> 3) {
                 throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
                     "iv length must be %s bits", BLOCK_SIZE_IN_BITS)));
             }
@@ -188,7 +188,7 @@ abstract class AesKw extends LocalKeyWrapAlgorithm {
 
         if (iv != null) {
             // iv length must be 64 bits
-            if (iv.length != 8) {
+            if (iv.length != BLOCK_SIZE_IN_BITS >> 3) {
                 throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
                     "iv length must be %s bits", BLOCK_SIZE_IN_BITS)));
             }

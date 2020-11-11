@@ -5,8 +5,15 @@ package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.test.TestBase;
+import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
+import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
+import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
+import com.azure.security.keyvault.keys.models.JsonWebKey;
+import com.azure.security.keyvault.keys.models.KeyOperation;
 import org.junit.jupiter.api.Test;
 
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
 import java.math.BigInteger;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.KeyFactory;
@@ -15,11 +22,14 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.KeySpec;
 import java.security.spec.RSAPrivateCrtKeySpec;
 import java.security.spec.RSAPublicKeySpec;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -32,6 +42,12 @@ public abstract class LocalCryptographyClientTestBase extends TestBase {
     void beforeTestSetup() {
     }
 
+    static LocalCryptographyClient initializeCryptographyClient(JsonWebKey key) {
+        return new LocalCryptographyClientBuilder()
+            .key(key)
+            .buildClient();
+    }
+
     @Test
     public abstract void encryptDecryptRsa() throws Exception;
 
@@ -40,6 +56,33 @@ public abstract class LocalCryptographyClientTestBase extends TestBase {
 
         testRunner.accept(getWellKnownKey());
     }
+
+    @Test
+    public abstract void encryptDecryptLocalAes128Cbc() throws Exception;
+
+    @Test
+    public abstract void encryptDecryptLocalAes192Cbc() throws Exception;
+
+    @Test
+    public abstract void encryptDecryptLocalAes256Cbc() throws Exception;
+
+    @Test
+    public abstract void encryptDecryptLocalAes128CbcPad() throws Exception;
+
+    @Test
+    public abstract void encryptDecryptLocalAes192CbcPad() throws Exception;
+
+    @Test
+    public abstract void encryptDecryptLocalAes256CbcPad() throws Exception;
+
+    @Test
+    public abstract void encryptDecryptLocalAes128Gcm() throws Exception;
+
+    @Test
+    public abstract void encryptDecryptLocalAes192Gcm() throws Exception;
+
+    @Test
+    public abstract void encryptDecryptLocalAes256Gcm() throws Exception;
 
     @Test
     public abstract void signVerifyEc() throws NoSuchAlgorithmException, InvalidAlgorithmParameterException;
@@ -63,6 +106,52 @@ public abstract class LocalCryptographyClientTestBase extends TestBase {
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
 
         return new KeyPair(keyFactory.generatePublic(publicKeySpec), keyFactory.generatePrivate(privateKeySpec));
+    }
+
+    static void encryptDecryptAesCbc(int keySize, EncryptionAlgorithm algorithm) throws NoSuchAlgorithmException {
+        byte[] plaintext = "My16BitPlaintext".getBytes();
+        byte[] iv = "My16BytesTestIv.".getBytes();
+        LocalCryptographyClient localCryptographyClient = initializeCryptographyClient(getTestJsonWebKey(keySize));
+        EncryptOptions encryptOptions = new AesCbcEncryptOptions(iv);
+        EncryptResult encryptResult =
+            localCryptographyClient.encrypt(algorithm, plaintext, encryptOptions);
+        DecryptOptions decryptOptions = new AesCbcDecryptOptions(iv);
+        DecryptResult decryptResult =
+            localCryptographyClient.decrypt(algorithm, encryptResult.getCipherText(), decryptOptions);
+
+        assertArrayEquals(plaintext, decryptResult.getPlainText());
+    }
+
+    static void encryptDecryptAesGcm(int keySize, EncryptionAlgorithm algorithm) throws NoSuchAlgorithmException {
+        byte[] plaintext = "My16BitPlaintext".getBytes();
+        byte[] iv = "My12BytesIv.".getBytes();
+        LocalCryptographyClient localCryptographyClient = initializeCryptographyClient(getTestJsonWebKey(keySize));
+        EncryptOptions encryptOptions = new AesGcmEncryptOptions(iv, null);
+        EncryptResult encryptResult =
+            localCryptographyClient.encrypt(algorithm, plaintext, encryptOptions);
+        byte[] authenticationTag = new byte[12];
+
+        System.arraycopy(encryptResult.getCipherText(), 0, authenticationTag, 0, authenticationTag.length);
+
+        DecryptOptions decryptOptions = new AesGcmDecryptOptions(iv, null, authenticationTag);
+        DecryptResult decryptResult =
+            localCryptographyClient.decrypt(algorithm, encryptResult.getCipherText(), decryptOptions);
+
+        assertArrayEquals(plaintext, decryptResult.getPlainText());
+    }
+
+    private static JsonWebKey getTestJsonWebKey(int keySize) throws NoSuchAlgorithmException {
+        KeyGenerator keyGen = KeyGenerator.getInstance("AES");
+
+        keyGen.init(keySize);
+
+        SecretKey secretKey = keyGen.generateKey();
+
+        List<KeyOperation> keyOperations = new ArrayList<>();
+        keyOperations.add(KeyOperation.ENCRYPT);
+        keyOperations.add(KeyOperation.DECRYPT);
+
+        return JsonWebKey.fromAes(secretKey, keyOperations).setId("testKey");
     }
 
     String generateResourceId(String suffix) {

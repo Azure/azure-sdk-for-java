@@ -16,9 +16,19 @@ import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyCurveName;
 
-import java.security.*;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+import java.security.Provider;
+import java.security.Security;
 import java.security.spec.ECGenParameterSpec;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -103,12 +113,12 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
                 new Random(0x1234567L).nextBytes(plainText);
                 byte[] encryptedKey = cryptoClient.wrapKey(algorithm, plainText).getEncryptedKey();
                 byte[] decryptedKey =
-                    serviceClient.unwrapKey(algorithm, encryptedKey, null, Context.NONE).block().getKey();
+                    serviceClient.unwrapKey(algorithm, encryptedKey, Context.NONE).block().getKey();
 
                 assertArrayEquals(decryptedKey, plainText);
 
                 encryptedKey =
-                    serviceClient.wrapKey(algorithm, plainText, null, Context.NONE).block().getEncryptedKey();
+                    serviceClient.wrapKey(algorithm, plainText, Context.NONE).block().getEncryptedKey();
                 decryptedKey = cryptoClient.unwrapKey(algorithm, encryptedKey).getKey();
 
                 assertArrayEquals(decryptedKey, plainText);
