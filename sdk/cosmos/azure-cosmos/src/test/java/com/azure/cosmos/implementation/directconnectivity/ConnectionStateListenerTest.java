@@ -86,8 +86,9 @@ public class ConnectionStateListenerTest {
         }
         finally {
             TcpServerFactory.shutdownRntbdServer(server);
-            Mockito.verify(addressResolver, Mockito.times(times)).updateAddresses(Mockito.any(), Mockito.any());
         }
+
+        Mockito.verify(addressResolver, Mockito.times(times)).updateAddresses(Mockito.any(), Mockito.any());
     }
 
     private Document getDocumentDefinition() {
