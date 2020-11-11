@@ -199,6 +199,7 @@ public class AppAutoConfigTest {
         result.property("azure.activedirectory.tenant-id", "fake-tenant-id");
         result.property("azure.activedirectory.client-id", "fake-client-id");
         result.property("azure.activedirectory.client-secret", "fake-client-secret");
+        result.property("azure.activedirectory.user-group.allowed-groups", "group1");
         return result;
     }
 

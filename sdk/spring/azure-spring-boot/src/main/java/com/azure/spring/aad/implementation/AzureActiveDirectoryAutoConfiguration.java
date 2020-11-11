@@ -3,31 +3,62 @@
 
 package com.azure.spring.aad.implementation;
 
+import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
+import com.azure.spring.autoconfigure.aad.AADOAuth2UserService;
+import com.azure.spring.autoconfigure.aad.ServiceEndpointsProperties;
+import com.azure.spring.telemetry.TelemetrySender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.util.ClassUtils;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static com.azure.spring.telemetry.TelemetryData.SERVICE_NAME;
+import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName;
 
 @Configuration
+@ConditionalOnResource(resources = "classpath:aad.enable.config")
 @ConditionalOnClass(ClientRegistrationRepository.class)
-@EnableConfigurationProperties(AzureActiveDirectoryProperties.class)
+@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
+@ConditionalOnProperty(prefix = "azure.activedirectory", value = {"client-id", "client-secret", "tenant-id"})
+@PropertySource(value = "classpath:service-endpoints.properties")
+@EnableConfigurationProperties({ AADAuthenticationProperties.class, ServiceEndpointsProperties.class })
 public class AzureActiveDirectoryAutoConfiguration {
 
     private static final String DEFAULT_CLIENT = "azure";
 
     @Autowired
-    private AzureActiveDirectoryProperties azureActiveDirectoryProperties;
+    private AADAuthenticationProperties aadAuthenticationProperties;
+    @Autowired
+    private ServiceEndpointsProperties serviceEndpointsProperties;
+
+    @Bean
+    @ConditionalOnProperty(prefix = "azure.activedirectory.user-group", value = "allowed-groups")
+    public OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService() {
+        return new AADOAuth2UserService(aadAuthenticationProperties, serviceEndpointsProperties);
+    }
 
     @Bean
     @ConditionalOnMissingBean({ ClientRegistrationRepository.class, AzureClientRegistrationRepository.class })
@@ -47,8 +78,8 @@ public class AzureActiveDirectoryAutoConfiguration {
 
     private String[] allScopes() {
         List<String> result = openidScopes();
-        for (AuthorizationProperties authz : azureActiveDirectoryProperties.getAuthorization().values()) {
-            result.addAll(authz.scopes());
+        for (AuthorizationProperties properties : aadAuthenticationProperties.getAuthorization().values()) {
+            result.addAll(properties.scopes());
         }
         return result.toArray(new String[0]);
     }
@@ -56,7 +87,7 @@ public class AzureActiveDirectoryAutoConfiguration {
     private String[] defaultScopes() {
         List<String> result = openidScopes();
         AuthorizationProperties authorizationProperties =
-            azureActiveDirectoryProperties.getAuthorization().get(DEFAULT_CLIENT);
+            aadAuthenticationProperties.getAuthorization().get(DEFAULT_CLIENT);
         if (authorizationProperties != null) {
             result.addAll(authorizationProperties.scopes());
         }
@@ -67,7 +98,7 @@ public class AzureActiveDirectoryAutoConfiguration {
         List<String> result = new ArrayList<>();
         result.add("openid");
         result.add("profile");
-        if (!azureActiveDirectoryProperties.getAuthorization().isEmpty()) {
+        if (!aadAuthenticationProperties.getAuthorization().isEmpty()) {
             result.add("offline_access");
         }
         return result;
@@ -75,12 +106,12 @@ public class AzureActiveDirectoryAutoConfiguration {
 
     private List<ClientRegistration> createClientRegistrations() {
         List<ClientRegistration> result = new ArrayList<>();
-        for (String name : azureActiveDirectoryProperties.getAuthorization().keySet()) {
+        for (String name : aadAuthenticationProperties.getAuthorization().keySet()) {
             if (DEFAULT_CLIENT.equals(name)) {
                 continue;
             }
             AuthorizationProperties authorizationProperties =
-                azureActiveDirectoryProperties.getAuthorization().get(name);
+                aadAuthenticationProperties.getAuthorization().get(name);
             result.add(toClientRegistration(name, authorizationProperties));
         }
         return result;
@@ -93,13 +124,13 @@ public class AzureActiveDirectoryAutoConfiguration {
     }
 
     private ClientRegistration.Builder toClientRegistrationBuilder(String registrationId) {
-        IdentityEndpoints endpoints = new IdentityEndpoints(azureActiveDirectoryProperties.getUri());
-        String tenantId = azureActiveDirectoryProperties.getTenantId();
+        IdentityEndpoints endpoints = new IdentityEndpoints(aadAuthenticationProperties.getUri());
+        String tenantId = aadAuthenticationProperties.getTenantId();
         return ClientRegistration.withRegistrationId(registrationId)
                                  .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                                  .redirectUriTemplate("{baseUrl}/login/oauth2/code/{registrationId}")
-                                 .clientId(azureActiveDirectoryProperties.getClientId())
-                                 .clientSecret(azureActiveDirectoryProperties.getClientSecret())
+                                 .clientId(aadAuthenticationProperties.getClientId())
+                                 .clientSecret(aadAuthenticationProperties.getClientSecret())
                                  .authorizationUri(endpoints.authorizationEndpoint(tenantId))
                                  .tokenUri(endpoints.tokenEndpoint(tenantId))
                                  .jwkSetUri(endpoints.jwkSetEndpoint(tenantId));
@@ -113,12 +144,23 @@ public class AzureActiveDirectoryAutoConfiguration {
 
     @Configuration
     @ConditionalOnMissingBean(WebSecurityConfigurerAdapter.class)
+    @EnableWebSecurity
     public static class DefaultAzureOAuth2WebSecurityConfigurerAdapter extends AzureOAuth2WebSecurityConfigurerAdapter {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             super.configure(http);
             http.authorizeRequests().anyRequest().authenticated();
+        }
+    }
+
+    @PostConstruct
+    private void sendTelemetry() {
+        if (aadAuthenticationProperties.isAllowTelemetry()) {
+            final Map<String, String> events = new HashMap<>();
+            final TelemetrySender sender = new TelemetrySender();
+            events.put(SERVICE_NAME, getClassPackageSimpleName(AzureActiveDirectoryAutoConfiguration.class));
+            sender.send(ClassUtils.getUserClass(getClass()).getSimpleName(), events);
         }
     }
 }

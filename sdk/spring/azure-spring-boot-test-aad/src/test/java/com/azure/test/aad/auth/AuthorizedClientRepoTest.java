@@ -58,6 +58,7 @@ public class AuthorizedClientRepoTest {
         result.property("azure.activedirectory.tenant-id", "fake-tenant-id");
         result.property("azure.activedirectory.client-id", "fake-client-id");
         result.property("azure.activedirectory.client-secret", "fake-client-secret");
+        result.property("azure.activedirectory.user-group.allowed-groups", "group1");
         result.property("azure.activedirectory.authorization.graph.scope", "Calendars.Read");
         return result;
     }
