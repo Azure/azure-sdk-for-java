@@ -19,8 +19,8 @@ public class ManagedClusterAgentPoolProfileProperties {
      * Number of agents (VMs) to host docker containers. Allowed values must be
      * in the range of 1 to 100 (inclusive). The default value is 1.
      */
-    @JsonProperty(value = "count", required = true)
-    private int count;
+    @JsonProperty(value = "count")
+    private Integer count;
 
     /**
      * Size of agent VMs. Possible values include: 'Standard_A1',
@@ -76,7 +76,7 @@ public class ManagedClusterAgentPoolProfileProperties {
      * 'Standard_ND24s', 'Standard_ND6s', 'Standard_NV12', 'Standard_NV24',
      * 'Standard_NV6'.
      */
-    @JsonProperty(value = "vmSize", required = true)
+    @JsonProperty(value = "vmSize")
     private ContainerServiceVMSizeTypes vmSize;
 
     /**
@@ -184,7 +184,7 @@ public class ManagedClusterAgentPoolProfileProperties {
      *
      * @return the count value
      */
-    public int count() {
+    public Integer count() {
         return this.count;
     }
 
@@ -194,7 +194,7 @@ public class ManagedClusterAgentPoolProfileProperties {
      * @param count the count value to set
      * @return the ManagedClusterAgentPoolProfileProperties object itself.
      */
-    public ManagedClusterAgentPoolProfileProperties withCount(int count) {
+    public ManagedClusterAgentPoolProfileProperties withCount(Integer count) {
         this.count = count;
         return this;
     }
