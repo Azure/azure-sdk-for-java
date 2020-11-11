@@ -1,6 +1,6 @@
 # Release History
 
-## 12.7.0-beta.2 (Unreleased)
+## 12.7.0 (2020-11-11)
 - Added support to specify whether or not a pipeline policy should be added per call or per retry.
 - Fixed a bug that would cause a NPE when visibilityTimeout was set to null in QueueClient.updateMessage
 
