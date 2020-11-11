@@ -1,11 +1,12 @@
 param (
     # The root repo we scaned with.
-    [string[]] $RootRepo = "./",
-    [string] $targetBranch = ${env:SYSTEM_PULLREQUEST_TARGETBRANCH}
+    [string[]] $RootRepo = '$PSScriptRoot/../../..',
+    # The target branch to compare with.
+    [string] $targetBranch = "origin/${env:SYSTEM_PULLREQUEST_TARGETBRANCH}"
 )
-$deletedFiles = (git diff origin/$targetBranch HEAD --name-only --diff-filter=D)
-$renamedFiles = (git diff origin/$targetBranch HEAD --diff-filter=R)
-$changedMarkdowns = (git diff origin/$targetBranch HEAD --name-only -- '*.md')
+$deletedFiles = (git diff $targetBranch HEAD --name-only --diff-filter=D)
+$renamedFiles = (git diff $targetBranch HEAD --diff-filter=R)
+$changedMarkdowns = (git diff $targetBranch HEAD --name-only -- '*.md')
 
 $beforeRenameFiles = @()
 # Retrieve the renamed from files.
@@ -17,7 +18,7 @@ foreach($file in $renamedFiles) {
 # A combined list of deleted and renamed files.
 $relativePathLinks = ($deletedFiles + $beforeRenameFiles)
 # Removed the deleted markdowns. 
-$changedMarkdowns = $changedMarkdowns | Where-Object { $relativePathLinks -notcontains $_ }
+$changedMarkdowns = $changedMarkdowns | Where-Object { $deletedFiles -notcontains $_ }
 # Scan all markdowns and find if it contains the deleted or renamed files.
 $markdownContainLinks = @()
 $allMarkdownFiles = Get-ChildItem -Path $RootRepo -Recurse -Include *.md
@@ -39,7 +40,7 @@ $markdownContainLinks += $adjustedReadmes
 # Get rid of any duplicated ones.
 $allMarkdowns = [string[]]($markdownContainLinks | Sort-Object | Get-Unique)
 
-Write-Host "Here are all markdown files need to scan against:"
+Write-Host "Here are all markdown files we need to check based on the changed files:"
 foreach ($file in $allMarkdowns) {
     Write-Host "    $file"
 }

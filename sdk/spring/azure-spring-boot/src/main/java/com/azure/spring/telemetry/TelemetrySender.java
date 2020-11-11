@@ -3,7 +3,7 @@
 
 package com.azure.spring.telemetry;
 
-import com.azure.spring.support.GetHashMac;
+import com.azure.spring.utils.GetHashMac;
 import com.azure.spring.utils.PropertyLoader;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

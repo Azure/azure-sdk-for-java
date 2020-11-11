@@ -47,7 +47,7 @@ public class QueryDTO {
     private Boolean isTest;
 
     /**
-     * Threshold for answers returned based on score.
+     * Minimum threshold score for answers.
      */
     @JsonProperty(value = "scoreThreshold")
     private Double scoreThreshold;
@@ -65,10 +65,23 @@ public class QueryDTO {
     private String rankerType;
 
     /**
-     * Find only answers that contain these metadata.
+     * Find QnAs that are associated with the given list of metadata.
      */
     @JsonProperty(value = "strictFilters")
     private List<MetadataDTO> strictFilters;
+
+    /**
+     * Optional field. Set to 'OR' for using OR operation for strict filters.
+     * Possible values include: 'AND', 'OR'.
+     */
+    @JsonProperty(value = "strictFiltersCompoundOperationType")
+    private StrictFiltersCompoundOperationType strictFiltersCompoundOperationType;
+
+    /**
+     * To configure Answer span prediction feature.
+     */
+    @JsonProperty(value = "answerSpanRequest")
+    private QueryDTOAnswerSpanRequest answerSpanRequest;
 
     /**
      * Get the qnaId value.
@@ -247,6 +260,46 @@ public class QueryDTO {
      */
     public QueryDTO withStrictFilters(List<MetadataDTO> strictFilters) {
         this.strictFilters = strictFilters;
+        return this;
+    }
+
+    /**
+     * Get the strictFiltersCompoundOperationType value.
+     *
+     * @return the strictFiltersCompoundOperationType value
+     */
+    public StrictFiltersCompoundOperationType strictFiltersCompoundOperationType() {
+        return this.strictFiltersCompoundOperationType;
+    }
+
+    /**
+     * Set the strictFiltersCompoundOperationType value.
+     *
+     * @param strictFiltersCompoundOperationType the strictFiltersCompoundOperationType value to set
+     * @return the QueryDTO object itself.
+     */
+    public QueryDTO withStrictFiltersCompoundOperationType(StrictFiltersCompoundOperationType strictFiltersCompoundOperationType) {
+        this.strictFiltersCompoundOperationType = strictFiltersCompoundOperationType;
+        return this;
+    }
+
+    /**
+     * Get the answerSpanRequest value.
+     *
+     * @return the answerSpanRequest value
+     */
+    public QueryDTOAnswerSpanRequest answerSpanRequest() {
+        return this.answerSpanRequest;
+    }
+
+    /**
+     * Set the answerSpanRequest value.
+     *
+     * @param answerSpanRequest the answerSpanRequest value to set
+     * @return the QueryDTO object itself.
+     */
+    public QueryDTO withAnswerSpanRequest(QueryDTOAnswerSpanRequest answerSpanRequest) {
+        this.answerSpanRequest = answerSpanRequest;
         return this;
     }
 
