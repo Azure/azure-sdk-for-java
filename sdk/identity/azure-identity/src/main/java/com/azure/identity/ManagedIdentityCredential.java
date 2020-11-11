@@ -38,20 +38,21 @@ public final class ManagedIdentityCredential implements TokenCredential {
             .identityClientOptions(identityClientOptions)
             .build();
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
-        if (configuration.contains(Configuration.PROPERTY_IDENTITY_ENDPOINT)) {
+
+        if (configuration.contains(Configuration.PROPERTY_MSI_ENDPOINT)) {
+            managedIdentityServiceCredential = new AppServiceMsiCredential(clientId, identityClient);
+        } else if (configuration.contains(Configuration.PROPERTY_IDENTITY_ENDPOINT)) {
             if (configuration.contains(Configuration.PROPERTY_IDENTITY_HEADER)) {
-                if (configuration.contains(PROPERTY_IDENTITY_SERVER_THUMBPRINT)) {
+                if (configuration.get(PROPERTY_IDENTITY_SERVER_THUMBPRINT) != null) {
                     managedIdentityServiceCredential = new ServiceFabricMsiCredential(clientId, identityClient);
                 } else {
                     managedIdentityServiceCredential = new VirtualMachineMsiCredential(clientId, identityClient);
                 }
-            } else if (configuration.contains(PROPERTY_IMDS_ENDPOINT)) {
+            } else if (configuration.get(PROPERTY_IMDS_ENDPOINT) != null) {
                 managedIdentityServiceCredential = new ArcIdentityCredential(clientId, identityClient);
             } else {
                 managedIdentityServiceCredential = new VirtualMachineMsiCredential(clientId, identityClient);
             }
-        } else if (configuration.contains(Configuration.PROPERTY_MSI_ENDPOINT)) {
-            managedIdentityServiceCredential = new AppServiceMsiCredential(clientId, identityClient);
         } else {
             managedIdentityServiceCredential = new VirtualMachineMsiCredential(clientId, identityClient);
         }

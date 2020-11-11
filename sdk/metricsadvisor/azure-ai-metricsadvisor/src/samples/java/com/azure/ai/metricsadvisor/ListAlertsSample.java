@@ -8,6 +8,7 @@ import com.azure.ai.metricsadvisor.models.AnomalyAlert;
 import com.azure.ai.metricsadvisor.models.ListAlertOptions;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.Context;
 
 import java.time.OffsetDateTime;
 
@@ -38,7 +39,8 @@ public class ListAlertsSample {
             .setAlertQueryTimeMode(timeMode)
             .setTop(10);
 
-        PagedIterable<AnomalyAlert> alertsIterable = advisorClient.listAlerts(alertConfigurationId, startTime, endTime);
+        PagedIterable<AnomalyAlert> alertsIterable = advisorClient.listAlerts(alertConfigurationId, startTime, endTime,
+            options, Context.NONE);
         for (AnomalyAlert anomalyAlert : alertsIterable) {
             System.out.printf("Anomaly Alert Id: %s%n", anomalyAlert.getId());
             System.out.printf("Created Time: %s%n", anomalyAlert.getCreatedTime());

@@ -1,8 +1,9 @@
 # Release History
 
-## 12.3.0-beta.2 (Unreleased)
+## 12.3.0 (2020-11-11)
 - Added support to specify whether or not a pipeline policy should be added per call or per retry.
 - Modified DataLakeAclChangeFailedException to extend AzureException
+- Fixed a bug where the endpoint would be improperly converted if the account name contained the word dfs.
 
 ## 12.3.0-beta.1 (2020-10-01)
 - Added support for the 2020-02-10 service version.
