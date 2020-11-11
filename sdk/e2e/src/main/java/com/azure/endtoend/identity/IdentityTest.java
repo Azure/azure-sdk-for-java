@@ -20,19 +20,23 @@ public class IdentityTest {
      * @throws IllegalStateException if AZURE_IDENTITY_TEST_PLATFORM is not set to "user" or "system"
      */
     public static void main(String[] args) throws IllegalStateException {
-        String platform = CONFIGURATION.get(AZURE_IDENTITY_TEST_PLATFORM, "").toLowerCase(Locale.ENGLISH);
-        switch (platform) {
-            case "webjobs":
-                WebJobsIdentityTest webJobsIdentityTest  = new WebJobsIdentityTest();
-                webJobsIdentityTest.run();
-                break;
-            case "multitenant":
-                MultiTenantTest multiTenantTest  = new MultiTenantTest();
-                multiTenantTest.run();
-                break;
-            default:
-                ManagedIdentityCredentialTest managedIdentityCredentialTest = new ManagedIdentityCredentialTest();
-                managedIdentityCredentialTest.run();
+        try {
+            String platform = CONFIGURATION.get(AZURE_IDENTITY_TEST_PLATFORM, "").toLowerCase(Locale.ENGLISH);
+            switch (platform) {
+                case "webjobs":
+                    WebJobsIdentityTest webJobsIdentityTest = new WebJobsIdentityTest();
+                    webJobsIdentityTest.run();
+                    break;
+                case "multitenant":
+                    MultiTenantTest multiTenantTest = new MultiTenantTest();
+                    multiTenantTest.run();
+                    break;
+                default:
+                    ManagedIdentityCredentialTest managedIdentityCredentialTest = new ManagedIdentityCredentialTest();
+                    managedIdentityCredentialTest.run();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
