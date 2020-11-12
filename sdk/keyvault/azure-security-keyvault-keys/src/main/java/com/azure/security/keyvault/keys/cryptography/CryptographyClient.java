@@ -18,6 +18,8 @@ import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.SignResult;
 import com.azure.security.keyvault.keys.cryptography.models.VerifyResult;
 import com.azure.security.keyvault.keys.cryptography.models.WrapResult;
+import com.azure.security.keyvault.keys.cryptography.options.DecryptOptions;
+import com.azure.security.keyvault.keys.cryptography.options.EncryptOptions;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 
 
@@ -111,7 +113,7 @@ public class CryptographyClient {
      * @throws NullPointerException If {@code algorithm} or {@code plainText} are {@code null}.
      */
     public EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, Context context) {
-        return encrypt(new EncryptOptions(algorithm, plaintext), context);
+        return encrypt(EncryptOptions.createOptions(algorithm, plaintext), context);
     }
 
     /**
@@ -219,7 +221,7 @@ public class CryptographyClient {
      * @throws NullPointerException If {@code algorithm} or {@code cipherText} are {@code null}.
      */
     public DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] cipherText, Context context) {
-        return decrypt(new DecryptOptions(algorithm, cipherText), context);
+        return decrypt(DecryptOptions.createOptions(algorithm, cipherText), context);
     }
 
     /**
@@ -254,7 +256,7 @@ public class CryptographyClient {
      * @throws NullPointerException If {@code algorithm} or {@code cipherText} are {@code null}.
      */
     public DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] cipherText) {
-        return decrypt(new DecryptOptions(algorithm, cipherText), Context.NONE);
+        return decrypt(DecryptOptions.createOptions(algorithm, cipherText), Context.NONE);
     }
 
     /**

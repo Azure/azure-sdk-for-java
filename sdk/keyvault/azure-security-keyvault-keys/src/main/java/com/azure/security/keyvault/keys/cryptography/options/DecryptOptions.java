@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.security.keyvault.keys.cryptography;
+package com.azure.security.keyvault.keys.cryptography.options;
 
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 
@@ -35,6 +35,17 @@ public class DecryptOptions {
      * The tag to authenticate when performing decryption with an authenticated algorithm.
      */
     byte[] authenticationTag;
+
+    /**
+     * Factory method to create an instance of {@link DecryptOptions} with the given parameters.
+     *
+     * @param algorithm The algorithm to be used for decryption.
+     * @param ciphertext The content to be decrypted.
+     * @return The {@link DecryptOptions}.
+     */
+    public static DecryptOptions createOptions(EncryptionAlgorithm algorithm, byte[] ciphertext) {
+        return new DecryptOptions(algorithm, ciphertext);
+    }
 
     /**
      * Factory method to create an instance of {@link AesCbcDecryptOptions} with the given parameters.

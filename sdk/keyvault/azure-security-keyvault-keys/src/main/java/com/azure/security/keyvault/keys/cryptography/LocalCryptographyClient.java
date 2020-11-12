@@ -12,6 +12,8 @@ import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.UnwrapResult;
 import com.azure.security.keyvault.keys.cryptography.models.VerifyResult;
 import com.azure.security.keyvault.keys.cryptography.models.WrapResult;
+import com.azure.security.keyvault.keys.cryptography.options.DecryptOptions;
+import com.azure.security.keyvault.keys.cryptography.options.EncryptOptions;
 
 
 /**

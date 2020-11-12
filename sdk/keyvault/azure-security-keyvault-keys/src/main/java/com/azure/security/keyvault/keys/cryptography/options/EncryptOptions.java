@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.security.keyvault.keys.cryptography;
+package com.azure.security.keyvault.keys.cryptography.options;
 
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 
@@ -30,6 +30,17 @@ public class EncryptOptions {
      * Get additional data to authenticate when performing encryption with an authenticated algorithm.
      */
     byte[] additionalAuthenticatedData;
+
+    /**
+     * Factory method to create an instance of {@link EncryptOptions} with the given parameters.
+     *
+     * @param algorithm The algorithm to be used for encryption.
+     * @param plaintext The content to be encryption.
+     * @return The {@link EncryptOptions}.
+     */
+    public static EncryptOptions createOptions(EncryptionAlgorithm algorithm, byte[] plaintext) {
+        return new EncryptOptions(algorithm, plaintext);
+    }
 
     /**
      * Factory method to create an instance of {@link AesCbcEncryptOptions} with the given parameters.
