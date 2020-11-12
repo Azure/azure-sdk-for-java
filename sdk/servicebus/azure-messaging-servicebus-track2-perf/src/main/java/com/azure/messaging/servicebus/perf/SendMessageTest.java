@@ -29,12 +29,12 @@ public class SendMessageTest extends ServiceTest<ServiceBusStressOptions> {
 
         getLogger().info("Sending 1 message to '{}'.", queueName);
 
-        message = getMessages(1).get(0);
-        sender = getBuilder()
+        this.message = getMessages(1).get(0);
+        this.sender = getBuilder()
             .sender()
             .queueName(queueName)
             .buildClient();
-        senderAsync = getBuilder()
+        this.senderAsync = getBuilder()
             .sender()
             .queueName(queueName)
             .buildAsyncClient();
