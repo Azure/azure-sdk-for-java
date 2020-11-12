@@ -13,8 +13,6 @@ import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.UnwrapResult;
 import com.azure.security.keyvault.keys.cryptography.models.VerifyResult;
 import com.azure.security.keyvault.keys.cryptography.models.WrapResult;
-import com.azure.security.keyvault.keys.cryptography.options.DecryptOptions;
-import com.azure.security.keyvault.keys.cryptography.options.EncryptOptions;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 
 import java.security.MessageDigest;
@@ -67,8 +65,7 @@ public final class LocalCryptographyClientJavaDocCodeSnippets {
             (byte) 0x1a, (byte) 0xf3, (byte) 0x8c, (byte) 0x2d, (byte) 0xc2, (byte) 0xb9, (byte) 0x6f, (byte) 0xfd,
             (byte) 0xd8, (byte) 0x66, (byte) 0x94, (byte) 0x09, (byte) 0x23, (byte) 0x41, (byte) 0xbc, (byte) 0x04
         };
-        EncryptOptions encryptOptions = EncryptOptions.createAesCbcOptions(EncryptionAlgorithm.RSA_OAEP, plainTextBytes)
-            .setIv(iv);
+        EncryptOptions encryptOptions = EncryptOptions.createAes128CbcOptions(plainTextBytes, iv);
         EncryptResult encryptedResult = cryptographyClient.encrypt(encryptOptions);
 
         System.out.printf("Received encrypted content of length %d with algorithm %s \n",
@@ -96,8 +93,7 @@ public final class LocalCryptographyClientJavaDocCodeSnippets {
             (byte) 0x1a, (byte) 0xf3, (byte) 0x8c, (byte) 0x2d, (byte) 0xc2, (byte) 0xb9, (byte) 0x6f, (byte) 0xfd,
             (byte) 0xd8, (byte) 0x66, (byte) 0x94, (byte) 0x09, (byte) 0x23, (byte) 0x41, (byte) 0xbc, (byte) 0x04
         };
-        DecryptOptions decryptOptions = DecryptOptions.createAesCbcOptions(EncryptionAlgorithm.A128CBC, encryptedBytes)
-            .setIv(iv);
+        DecryptOptions decryptOptions = DecryptOptions.createAes128CbcOptions(encryptedBytes, iv);
         DecryptResult decryptedResult = cryptographyClient.decrypt(decryptOptions);
 
         System.out.printf("Received decrypted content of length %d\n", decryptedResult.getPlainText().length);

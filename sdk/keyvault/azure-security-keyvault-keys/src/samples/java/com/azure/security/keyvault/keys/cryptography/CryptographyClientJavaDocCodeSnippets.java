@@ -16,8 +16,6 @@ import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.SignResult;
 import com.azure.security.keyvault.keys.cryptography.models.VerifyResult;
 import com.azure.security.keyvault.keys.cryptography.models.WrapResult;
-import com.azure.security.keyvault.keys.cryptography.options.DecryptOptions;
-import com.azure.security.keyvault.keys.cryptography.options.EncryptOptions;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 
 import java.security.MessageDigest;
@@ -110,10 +108,7 @@ public final class CryptographyClientJavaDocCodeSnippets {
             (byte) 0x1a, (byte) 0xf3, (byte) 0x8c, (byte) 0x2d, (byte) 0xc2, (byte) 0xb9, (byte) 0x6f, (byte) 0xfd,
             (byte) 0xd8, (byte) 0x66, (byte) 0x94, (byte) 0x09, (byte) 0x23, (byte) 0x41, (byte) 0xbc, (byte) 0x04
         };
-
-        EncryptOptions encryptOptions = EncryptOptions.createAesCbcOptions(EncryptionAlgorithm.A128CBC, myPlainText)
-            .setIv(iv);
-
+        EncryptOptions encryptOptions = EncryptOptions.createAes128CbcOptions(myPlainText, iv);
         EncryptResult encryptedResult = cryptographyClient.encrypt(encryptOptions, new Context(key1, value1));
 
         System.out.printf("Received encrypted content of length %d with algorithm %s \n",
@@ -159,10 +154,7 @@ public final class CryptographyClientJavaDocCodeSnippets {
             (byte) 0x1a, (byte) 0xf3, (byte) 0x8c, (byte) 0x2d, (byte) 0xc2, (byte) 0xb9, (byte) 0x6f, (byte) 0xfd,
             (byte) 0xd8, (byte) 0x66, (byte) 0x94, (byte) 0x09, (byte) 0x23, (byte) 0x41, (byte) 0xbc, (byte) 0x04
         };
-
-        DecryptOptions decryptOptions = DecryptOptions.createAesCbcOptions(EncryptionAlgorithm.A128CBC, myCipherText)
-            .setIv(iv);
-
+        DecryptOptions decryptOptions = DecryptOptions.createAes128CbcOptions(myCipherText, iv);
         DecryptResult decryptedResult = cryptographyClient.decrypt(decryptOptions, new Context(key1, value1));
 
         System.out.printf("Received decrypted content of length %d\n", decryptedResult.getPlainText().length);

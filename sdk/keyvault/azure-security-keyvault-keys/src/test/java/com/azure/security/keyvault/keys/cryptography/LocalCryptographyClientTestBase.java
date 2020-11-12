@@ -8,8 +8,6 @@ import com.azure.core.test.TestBase;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
-import com.azure.security.keyvault.keys.cryptography.options.DecryptOptions;
-import com.azure.security.keyvault.keys.cryptography.options.EncryptOptions;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyOperation;
 import org.junit.jupiter.api.Test;
@@ -114,11 +112,10 @@ public abstract class LocalCryptographyClientTestBase extends TestBase {
         byte[] plaintext = "My16BitPlaintext".getBytes();
         byte[] iv = "My16BytesTestIv.".getBytes();
         LocalCryptographyClient localCryptographyClient = initializeCryptographyClient(getTestJsonWebKey(keySize));
-        EncryptOptions encryptOptions = EncryptOptions.createAesCbcOptions(algorithm, plaintext).setIv(iv);
+        EncryptOptions encryptOptions = EncryptOptions.createAes128CbcOptions(plaintext, iv);
         EncryptResult encryptResult =
             localCryptographyClient.encrypt(encryptOptions);
-        DecryptOptions decryptOptions = DecryptOptions.createAesCbcOptions(algorithm, encryptResult.getCipherText())
-            .setIv(iv);
+        DecryptOptions decryptOptions = DecryptOptions.createAes128CbcOptions(encryptResult.getCipherText(), iv);
         DecryptResult decryptResult =
             localCryptographyClient.decrypt(decryptOptions);
 
@@ -129,15 +126,15 @@ public abstract class LocalCryptographyClientTestBase extends TestBase {
         byte[] plaintext = "My16BitPlaintext".getBytes();
         byte[] iv = "My12BytesIv.".getBytes();
         LocalCryptographyClient localCryptographyClient = initializeCryptographyClient(getTestJsonWebKey(keySize));
-        EncryptOptions encryptOptions = EncryptOptions.createAesGcmOptions(algorithm, plaintext, iv);
+        EncryptOptions encryptOptions = EncryptOptions.createAes128GcmOptions(plaintext, iv);
         EncryptResult encryptResult =
             localCryptographyClient.encrypt(encryptOptions);
         byte[] authenticationTag = new byte[12];
 
         System.arraycopy(encryptResult.getCipherText(), 0, authenticationTag, 0, authenticationTag.length);
 
-        DecryptOptions decryptOptions = DecryptOptions.createAesGcmOptions(algorithm, encryptResult.getCipherText(), iv)
-            .setAuthenticationTag(authenticationTag);
+        DecryptOptions decryptOptions = DecryptOptions.createAes128GcmOptions(encryptResult.getCipherText(), iv,
+            authenticationTag);
         DecryptResult decryptResult =
             localCryptographyClient.decrypt(decryptOptions);
 

@@ -7,8 +7,6 @@ import com.azure.security.keyvault.keys.KeyAsyncClient;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
-import com.azure.security.keyvault.keys.cryptography.options.DecryptOptions;
-import com.azure.security.keyvault.keys.cryptography.options.EncryptOptions;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 
 import java.security.MessageDigest;
@@ -64,8 +62,7 @@ public final class LocalCryptographyAsyncClientJavaDocCodeSnippets {
             (byte) 0x1a, (byte) 0xf3, (byte) 0x8c, (byte) 0x2d, (byte) 0xc2, (byte) 0xb9, (byte) 0x6f, (byte) 0xfd,
             (byte) 0xd8, (byte) 0x66, (byte) 0x94, (byte) 0x09, (byte) 0x23, (byte) 0x41, (byte) 0xbc, (byte) 0x04
         };
-        EncryptOptions encryptOptions = EncryptOptions.createAesCbcOptions(EncryptionAlgorithm.A128CBC, plainTextBytes)
-            .setIv(iv);
+        EncryptOptions encryptOptions = EncryptOptions.createAes128CbcOptions(plainTextBytes, iv);
 
         cryptographyAsyncClient.encrypt(encryptOptions)
             .subscriberContext(reactor.util.context.Context.of(key1, value1, key2, value2))
@@ -97,8 +94,7 @@ public final class LocalCryptographyAsyncClientJavaDocCodeSnippets {
             (byte) 0x1a, (byte) 0xf3, (byte) 0x8c, (byte) 0x2d, (byte) 0xc2, (byte) 0xb9, (byte) 0x6f, (byte) 0xfd,
             (byte) 0xd8, (byte) 0x66, (byte) 0x94, (byte) 0x09, (byte) 0x23, (byte) 0x41, (byte) 0xbc, (byte) 0x04
         };
-        DecryptOptions decryptOptions = DecryptOptions.createAesCbcOptions(EncryptionAlgorithm.A128CBC, plainTextBytes)
-            .setIv(iv);
+        DecryptOptions decryptOptions = DecryptOptions.createAes128CbcOptions(plainTextBytes, iv);
 
         cryptographyAsyncClient.decrypt(decryptOptions)
             .subscriberContext(reactor.util.context.Context.of(key1, value1, key2, value2))

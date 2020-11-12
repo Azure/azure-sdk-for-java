@@ -12,8 +12,6 @@ import com.azure.security.keyvault.keys.KeyServiceVersion;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
-import com.azure.security.keyvault.keys.cryptography.options.DecryptOptions;
-import com.azure.security.keyvault.keys.cryptography.options.EncryptOptions;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyCurveName;
@@ -83,13 +81,13 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
                 byte[] plainText = new byte[100];
                 new Random(0x1234567L).nextBytes(plainText);
                 byte[] cipherText = cryptoClient.encrypt(algorithm, plainText).getCipherText();
-                byte[] decryptedText = serviceClient.decrypt(DecryptOptions.createOptions(algorithm, cipherText),
-                    Context.NONE).block().getPlainText();
+                byte[] decryptedText = serviceClient.decrypt(new DecryptOptions(algorithm, cipherText, null, null,
+                    null), Context.NONE).block().getPlainText();
 
                 assertArrayEquals(decryptedText, plainText);
 
-                cipherText = serviceClient.encrypt(EncryptOptions.createOptions(algorithm, plainText),
-                    Context.NONE).block().getCipherText();
+                cipherText = serviceClient.encrypt(new EncryptOptions(algorithm, plainText, null, null), Context.NONE)
+                    .block().getCipherText();
                 decryptedText = cryptoClient.decrypt(algorithm, cipherText).getPlainText();
 
                 assertArrayEquals(decryptedText, plainText);

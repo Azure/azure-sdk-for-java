@@ -2418,8 +2418,8 @@
   <!-- Service accepts null byte arrays as input parameters -->
   <Match>
       <Or>
-          <Class name="com.azure.security.keyvault.keys.cryptography.options.DecryptOptions" />
-          <Class name="com.azure.security.keyvault.keys.cryptography.options.EncryptOptions" />
+          <Class name="com.azure.security.keyvault.keys.cryptography.DecryptOptions" />
+          <Class name="com.azure.security.keyvault.keys.cryptography.EncryptOptions" />
       </Or>
       <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS" />
   </Match>

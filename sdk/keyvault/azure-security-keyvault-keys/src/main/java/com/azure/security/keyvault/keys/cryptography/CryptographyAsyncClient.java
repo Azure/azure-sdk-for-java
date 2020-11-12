@@ -23,8 +23,6 @@ import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.SignResult;
 import com.azure.security.keyvault.keys.cryptography.models.VerifyResult;
 import com.azure.security.keyvault.keys.cryptography.models.WrapResult;
-import com.azure.security.keyvault.keys.cryptography.options.DecryptOptions;
-import com.azure.security.keyvault.keys.cryptography.options.EncryptOptions;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyOperation;
@@ -225,7 +223,7 @@ public class CryptographyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EncryptResult> encrypt(EncryptionAlgorithm algorithm, byte[] plaintext) {
-        return encrypt(EncryptOptions.createOptions(algorithm, plaintext), null);
+        return encrypt(new EncryptOptions(algorithm, plaintext, null, null), null);
     }
 
     /**
@@ -317,7 +315,7 @@ public class CryptographyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DecryptResult> decrypt(EncryptionAlgorithm algorithm, byte[] cipherText) {
-        return decrypt(DecryptOptions.createOptions(algorithm, cipherText));
+        return decrypt(new DecryptOptions(algorithm, cipherText, null, null, null));
     }
 
     /**
