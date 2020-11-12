@@ -4,29 +4,40 @@
 package com.microsoft.azure.servicebus.perf;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.microsoft.azure.servicebus.Message;
-import com.microsoft.azure.servicebus.ReceiveMode;
+import com.microsoft.azure.servicebus.ClientFactory;
+import com.microsoft.azure.servicebus.IMessage;
+import com.microsoft.azure.servicebus.IMessageSender;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 import reactor.core.publisher.Mono;
 
-import java.util.UUID;
-
 /**
- * Performance test.
+ * Performance test that sends a single message using both the async and synchronous methods.
  */
 public class SendMessageTest extends ServiceTest<ServiceBusStressOptions> {
-    private final ClientLogger logger = new ClientLogger(SendMessageTest.class);
-    private final Message message;
+    private final IMessage message;
+    private final IMessageSender sender;
 
     /**
-     * Creates test object
+     * Instantiates an instance of the test class.
+     *
      * @param options to set performance test options.
+     *
+     * @throws RuntimeException if the messaging entity cannot be created.
      */
     public SendMessageTest(ServiceBusStressOptions options) {
-        super(options, ReceiveMode.PEEKLOCK);
-        String messageId = UUID.randomUUID().toString();
-        message = new Message(CONTENTS);
-        message.setMessageId(messageId);
+        super(options, new ClientLogger(SendMessageTest.class));
+
+        final String queueName = getQueueName();
+
+        getLogger().info("Sending 1 message to '{}'.", queueName);
+
+        this.message = getMessages(1).get(0);
+
+        try {
+            this.sender = ClientFactory.createMessageSenderFromEntityPath(getMessagingFactory(), queueName);
+        } catch (ServiceBusException | InterruptedException e) {
+            throw getLogger().logExceptionAsError(new RuntimeException("Unable to create sender.", e));
+        }
     }
 
     @Override
@@ -34,12 +45,17 @@ public class SendMessageTest extends ServiceTest<ServiceBusStressOptions> {
         try {
             sender.send(message);
         } catch (InterruptedException | ServiceBusException e) {
-            throw logger.logExceptionAsWarning(new RuntimeException(e));
+            throw getLogger().logExceptionAsWarning(new RuntimeException("Unable to send message synchronously.", e));
         }
     }
 
     @Override
     public Mono<Void> runAsync() {
         return Mono.fromFuture(sender.sendAsync(message));
+    }
+
+    @Override
+    public Mono<Void> cleanupAsync() {
+        return Mono.fromFuture(getMessagingFactory().closeAsync());
     }
 }

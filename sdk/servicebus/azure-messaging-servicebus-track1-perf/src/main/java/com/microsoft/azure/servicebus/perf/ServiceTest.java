@@ -7,6 +7,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.perf.test.core.PerfStressTest;
+import com.microsoft.azure.servicebus.IMessage;
 import com.microsoft.azure.servicebus.Message;
 import com.microsoft.azure.servicebus.primitives.MessagingFactory;
 
@@ -40,7 +41,7 @@ abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStres
      * @throws IllegalArgumentException for environment variable not being available.
      * @throws RuntimeException if the {@link MessagingFactory} cannot be created.
      */
-    ServiceTest(ClientLogger logger, TOptions options) {
+    ServiceTest(TOptions options, ClientLogger logger) {
         super(options);
         this.logger = logger;
 
@@ -97,7 +98,7 @@ abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStres
      *
      * @return A list of {@link Message messages}.
      */
-    List<Message> getMessages(int count) {
+    List<IMessage> getMessages(int count) {
         return IntStream.range(0, count)
             .mapToObj(index -> {
                 final Message message = new Message(CONTENTS);
