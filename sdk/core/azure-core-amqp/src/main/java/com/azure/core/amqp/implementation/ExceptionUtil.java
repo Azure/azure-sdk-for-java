@@ -70,8 +70,6 @@ public final class ExceptionUtil {
             case ENTITY_ALREADY_EXISTS:
             case MESSAGE_NOT_FOUND:
             case SESSION_NOT_FOUND:
-            case PRODUCER_EPOCH_STOLEN:
-            case OUT_OF_ORDER_SEQUENCE:
                 isTransient = false;
                 break;
             case NOT_IMPLEMENTED:

@@ -80,12 +80,6 @@ public interface AmqpSendLink extends AmqpLink {
     Mono<Integer> getLinkSize();
 
     /**
-     * Gets the properties of the send link returned from the service.
-     * @return A Mono that completes and returns the properties of the send link.
-     */
-    Mono<Map<Symbol, Object>> getRemoteProperties();
-
-    /**
      * Gets the context for this AMQP send link.
      */
     AmqpErrorContext getErrorContext();

@@ -278,15 +278,6 @@ class ReactorSender implements AmqpSendLink {
     }
 
     @Override
-    public Mono<Map<Symbol, Object>> getRemoteProperties() {
-        return RetryUtil.withRetry(
-            getEndpointStates()
-                .takeUntil(state -> state == AmqpEndpointState.ACTIVE)
-                .then(Mono.fromCallable(sender::getRemoteProperties)),
-            timeout, retry);
-    }
-
-    @Override
     public boolean isDisposed() {
         return isDisposed.get();
     }

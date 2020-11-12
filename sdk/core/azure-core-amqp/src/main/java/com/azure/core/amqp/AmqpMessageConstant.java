@@ -123,22 +123,7 @@ public enum AmqpMessageConstant {
     /**
      * The identifier for deadletter reason.
      */
-    DEAD_LETTER_REASON_ANNOTATION_NAME("DeadLetterReason"),
-
-    /**
-     * The published sequence number when a message was sent from an idempotent producer.
-     */
-    PRODUCER_SEQUENCE_NUMBER_ANNOTATION_NAME("com.microsoft:producer-sequence-number"),
-
-    /**
-     * The published epoch when a message was sent from an idempotent producer.
-     */
-    PRODUCER_EPOCH_ANNOTATION_NAME("com.microsoft:producer-epoch"),
-
-    /**
-     * The published producer id when a message was sent from an idempotent producer.
-     */
-    PRODUCER_ID_ANNOTATION_NAME("com.microsoft:producer-id");
+    DEAD_LETTER_REASON_ANNOTATION_NAME("DeadLetterReason");
 
     private static final Map<String, AmqpMessageConstant> RESERVED_CONSTANTS_MAP = new HashMap<>();
     private final String constant;
