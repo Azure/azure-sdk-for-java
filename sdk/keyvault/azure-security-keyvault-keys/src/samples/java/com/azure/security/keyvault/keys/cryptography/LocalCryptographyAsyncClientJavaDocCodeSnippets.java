@@ -55,21 +55,22 @@ public final class LocalCryptographyAsyncClientJavaDocCodeSnippets {
                     encryptResult.getCipherText().length, encryptResult.getAlgorithm().toString()));
         // END: com.azure.security.keyvault.keys.cryptography.LocalCryptographyAsyncClient.encrypt#EncryptionAlgorithm-byte
 
-        // BEGIN: com.azure.security.keyvault.keys.cryptography.LocalCryptographyAsyncClient.encrypt#EncryptionAlgorithm-byte-EncryptOptions
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.LocalCryptographyAsyncClient.encrypt#EncryptOptions
         byte[] plainTextBytes = new byte[100];
         new Random(0x1234567L).nextBytes(plainTextBytes);
         byte[] iv = {
             (byte) 0x1a, (byte) 0xf3, (byte) 0x8c, (byte) 0x2d, (byte) 0xc2, (byte) 0xb9, (byte) 0x6f, (byte) 0xfd,
             (byte) 0xd8, (byte) 0x66, (byte) 0x94, (byte) 0x09, (byte) 0x23, (byte) 0x41, (byte) 0xbc, (byte) 0x04
         };
-        EncryptOptions encryptOptions = new AesCbcEncryptOptions(iv);
+        EncryptOptions encryptOptions = EncryptOptions.createAesCbcOptions(EncryptionAlgorithm.A128CBC, plainTextBytes)
+            .setIv(iv);
 
-        cryptographyAsyncClient.encrypt(EncryptionAlgorithm.A128CBC, plainTextBytes, encryptOptions)
+        cryptographyAsyncClient.encrypt(encryptOptions)
             .subscriberContext(reactor.util.context.Context.of(key1, value1, key2, value2))
             .subscribe(encryptResult ->
                 System.out.printf("Received encrypted content of length %d with algorithm %s \n",
                     encryptResult.getCipherText().length, encryptResult.getAlgorithm().toString()));
-        // END: com.azure.security.keyvault.keys.cryptography.LocalCryptographyAsyncClient.encrypt#EncryptionAlgorithm-byte-EncryptOptions
+        // END: com.azure.security.keyvault.keys.cryptography.LocalCryptographyAsyncClient.encrypt#EncryptOptions
     }
 
     /**
@@ -87,20 +88,21 @@ public final class LocalCryptographyAsyncClientJavaDocCodeSnippets {
                 System.out.printf("Received decrypted content of length %d\n", decryptResult.getPlainText().length));
         // END: com.azure.security.keyvault.keys.cryptography.LocalCryptographyAsyncClient.decrypt#EncryptionAlgorithm-byte
 
-        // BEGIN: com.azure.security.keyvault.keys.cryptography.LocalCryptographyAsyncClient.decrypt#EncryptionAlgorithm-byte-DecryptOptions
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.LocalCryptographyAsyncClient.decrypt#DecryptOptions
         byte[] plainTextBytes = new byte[100];
         new Random(0x1234567L).nextBytes(plainTextBytes);
         byte[] iv = {
             (byte) 0x1a, (byte) 0xf3, (byte) 0x8c, (byte) 0x2d, (byte) 0xc2, (byte) 0xb9, (byte) 0x6f, (byte) 0xfd,
             (byte) 0xd8, (byte) 0x66, (byte) 0x94, (byte) 0x09, (byte) 0x23, (byte) 0x41, (byte) 0xbc, (byte) 0x04
         };
-        DecryptOptions decryptOptions = new AesCbcDecryptOptions(iv);
+        DecryptOptions decryptOptions = DecryptOptions.createAesCbcOptions(EncryptionAlgorithm.A128CBC, plainTextBytes)
+            .setIv(iv);
 
-        cryptographyAsyncClient.decrypt(EncryptionAlgorithm.A128CBC, plainTextBytes, decryptOptions)
+        cryptographyAsyncClient.decrypt(decryptOptions)
             .subscriberContext(reactor.util.context.Context.of(key1, value1, key2, value2))
             .subscribe(decryptResult ->
                 System.out.printf("Received decrypted content of length %d\n", decryptResult.getPlainText().length));
-        // END: com.azure.security.keyvault.keys.cryptography.LocalCryptographyAsyncClient.decrypt#EncryptionAlgorithm-byte-DecryptOptions
+        // END: com.azure.security.keyvault.keys.cryptography.LocalCryptographyAsyncClient.decrypt#DecryptOptions
     }
 
     /**

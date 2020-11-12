@@ -98,18 +98,16 @@ public class LocalCryptographyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Encrypts the content. Subscribes to the call asynchronously and prints out the encrypted content details when
      * a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.LocalCryptographyAsyncClient.encrypt#EncryptionAlgorithm-byte-EncryptOptions}
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.LocalCryptographyAsyncClient.encrypt#EncryptOptions}
      *
-     * @param algorithm The algorithm to be used for encryption.
-     * @param options Optional parameters for the encryption operation.
-     * @param plaintext The content to be encrypted.
+     * @param encryptOptions The parameters to use in the encryption operation.
      * @return A {@link Mono} containing a {@link EncryptResult} whose {@link EncryptResult#getCipherText() cipher text}
      * contains the encrypted content.
      * @throws UnsupportedOperationException if the encrypt operation is not supported or configured on the key.
      * @throws NullPointerException if {@code algorithm} or  {@code plainText} is null.
      */
-    public Mono<EncryptResult> encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, EncryptOptions options) {
-        return cryptographyAsyncClient.encrypt(algorithm, plaintext, options);
+    public Mono<EncryptResult> encrypt(EncryptOptions encryptOptions) {
+        return cryptographyAsyncClient.encrypt(encryptOptions);
     }
 
     /**
@@ -168,17 +166,15 @@ public class LocalCryptographyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Decrypts the encrypted content. Subscribes to the call asynchronously and prints out the decrypted content
      * details when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.LocalCryptographyAsyncClient.decrypt#EncryptionAlgorithm-byte-DecryptOptions}
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.LocalCryptographyAsyncClient.decrypt#DecryptOptions}
      *
-     * @param algorithm The algorithm to be used for decryption.
-     * @param options Optional parameters for the decryption operation.
-     * @param cipherText The content to be decrypted.
+     * @param decryptOptions The parameters to use in the decryption operation.
      * @return A {@link Mono} containing the decrypted blob.
      * @throws UnsupportedOperationException if the decrypt operation is not supported or configured on the key.
      * @throws NullPointerException if {@code algorithm} or {@code cipherText} is null.
      */
-    public Mono<DecryptResult> decrypt(EncryptionAlgorithm algorithm, byte[] cipherText, DecryptOptions options) {
-        return cryptographyAsyncClient.decrypt(algorithm, cipherText, options);
+    public Mono<DecryptResult> decrypt(DecryptOptions decryptOptions) {
+        return cryptographyAsyncClient.decrypt(decryptOptions);
     }
 
 

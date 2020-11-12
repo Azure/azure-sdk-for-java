@@ -19,6 +19,7 @@ import reactor.core.publisher.Mono;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.Objects;
 
 class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
     private final ClientLogger logger = new ClientLogger(SymmetricKeyCryptographyClient.class);
@@ -47,8 +48,11 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
     }
 
     @Override
-    Mono<EncryptResult> encryptAsync(EncryptionAlgorithm algorithm, byte[] plaintext, EncryptOptions options,
-                                     Context context, JsonWebKey jsonWebKey) {
+    Mono<EncryptResult> encryptAsync(EncryptOptions encryptOptions, Context context, JsonWebKey jsonWebKey) {
+        Objects.requireNonNull(encryptOptions, "'encryptOptions' cannot be null.");
+        Objects.requireNonNull(encryptOptions.getAlgorithm(), "Encryption algorithm cannot be null.");
+        Objects.requireNonNull(encryptOptions.plainText, "Plain text content to be encrypted cannot be null.");
+
         this.key = getKey(jsonWebKey);
 
         if (key == null || key.length == 0) {
@@ -56,6 +60,7 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
         }
 
         // Interpret the algorithm
+        EncryptionAlgorithm algorithm = encryptOptions.getAlgorithm();
         Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm.toString());
 
         if (!(baseAlgorithm instanceof SymmetricEncryptionAlgorithm)) {
@@ -66,13 +71,8 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         ICryptoTransform transform;
 
-        byte[] iv = null;
-        byte[] additionalAuthenticatedData = null;
-
-        if (options != null) {
-            iv = options.getIv();
-            additionalAuthenticatedData = options.getAdditionalAuthenticatedData();
-        }
+        byte[] iv = encryptOptions.getIv();
+        byte[] additionalAuthenticatedData = encryptOptions.getAdditionalAuthenticatedData();
 
         if (iv == null) {
             if (algorithm == EncryptionAlgorithm.A128GCM || algorithm == EncryptionAlgorithm.A192GCM
@@ -96,7 +96,7 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
         byte[] encrypted;
 
         try {
-            encrypted = transform.doFinal(plaintext);
+            encrypted = transform.doFinal(encryptOptions.getPlainText());
         } catch (Exception e) {
             return Mono.error(e);
         }
@@ -105,8 +105,11 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
     }
 
     @Override
-    Mono<DecryptResult> decryptAsync(EncryptionAlgorithm algorithm, byte[] cipherText, DecryptOptions options,
-                                     Context context, JsonWebKey jsonWebKey) {
+    Mono<DecryptResult> decryptAsync(DecryptOptions decryptOptions, Context context, JsonWebKey jsonWebKey) {
+        Objects.requireNonNull(decryptOptions, "'decryptOptions' cannot be null.");
+        Objects.requireNonNull(decryptOptions.getAlgorithm(), "Encryption algorithm cannot be null.");
+        Objects.requireNonNull(decryptOptions.getCipherText(), "Cipher text content to be decrypted cannot be null.");
+
         this.key = getKey(jsonWebKey);
 
         if (key == null || key.length == 0) {
@@ -114,6 +117,7 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
         }
 
         // Interpret the algorithm
+        EncryptionAlgorithm algorithm = decryptOptions.getAlgorithm();
         Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm.toString());
 
         if (!(baseAlgorithm instanceof SymmetricEncryptionAlgorithm)) {
@@ -124,15 +128,9 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         ICryptoTransform transform;
 
-        byte[] iv = null;
-        byte[] additionalAuthenticatedData = null;
-        byte[] authenticationTag = null;
-
-        if (options != null) {
-            iv = options.getIv();
-            additionalAuthenticatedData = options.getAdditionalAuthenticatedData();
-            authenticationTag = options.getAuthenticationTag();
-        }
+        byte[] iv = decryptOptions.getIv();
+        byte[] additionalAuthenticatedData = decryptOptions.getAdditionalAuthenticatedData();
+        byte[] authenticationTag = decryptOptions.getAuthenticationTag();
 
         if (iv == null) {
             if (algorithm == EncryptionAlgorithm.A128GCM || algorithm == EncryptionAlgorithm.A192GCM
@@ -156,7 +154,7 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
         byte[] decrypted;
 
         try {
-            decrypted = transform.doFinal(cipherText);
+            decrypted = transform.doFinal(decryptOptions.getCipherText());
         } catch (Exception e) {
             return Mono.error(e);
         }

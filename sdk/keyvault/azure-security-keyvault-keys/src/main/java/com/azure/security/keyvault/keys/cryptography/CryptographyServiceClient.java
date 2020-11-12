@@ -125,19 +125,17 @@ class CryptographyServiceClient {
         return mapper.readValue(jsonString, JsonWebKey.class);
     }
 
-    Mono<EncryptResult> encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, EncryptOptions options,
-                                Context context) {
-        byte[] iv = null;
-        byte[] authenticatedData = null;
+    Mono<EncryptResult> encrypt(EncryptOptions encryptOptions, Context context) {
+        Objects.requireNonNull(encryptOptions, "'encryptOptions' cannot be null.");
+        Objects.requireNonNull(encryptOptions.getAlgorithm(), "Encryption algorithm cannot be null.");
+        Objects.requireNonNull(encryptOptions.getPlainText(), "Plain text content to be encrypted cannot be null.");
 
-        if (options != null) {
-            iv = options.getIv();
-            authenticatedData = options.getAdditionalAuthenticatedData();
-        }
-
+        EncryptionAlgorithm algorithm = encryptOptions.getAlgorithm();
+        byte[] iv = encryptOptions.getIv();
+        byte[] authenticatedData = encryptOptions.getAdditionalAuthenticatedData();
         KeyOperationParameters parameters = new KeyOperationParameters()
             .setAlgorithm(algorithm)
-            .setValue(plaintext)
+            .setValue(encryptOptions.getPlainText())
             .setIv(iv)
             .setAdditionalAuthenticatedData(authenticatedData);
         context = context == null ? Context.NONE : context;
@@ -153,21 +151,18 @@ class CryptographyServiceClient {
                 Mono.just(new EncryptResult(keyOperationResultResponse.getValue().getResult(), algorithm, keyId)));
     }
 
-    Mono<DecryptResult> decrypt(EncryptionAlgorithm algorithm, byte[] cipherText, DecryptOptions options,
-                                Context context) {
-        byte[] iv = null;
-        byte[] additionalAuthenticatedData = null;
-        byte[] authenticationTag = null;
+    Mono<DecryptResult> decrypt(DecryptOptions decryptOptions, Context context) {
+        Objects.requireNonNull(decryptOptions, "'decryptOptions' cannot be null.");
+        Objects.requireNonNull(decryptOptions.getAlgorithm(), "Encryption algorithm cannot be null.");
+        Objects.requireNonNull(decryptOptions.getCipherText(), "Cipher text content to be decrypted cannot be null.");
 
-        if (options != null) {
-            iv = options.getIv();
-            additionalAuthenticatedData = options.getAdditionalAuthenticatedData();
-            authenticationTag = options.getAuthenticationTag();
-        }
-
+        EncryptionAlgorithm algorithm = decryptOptions.getAlgorithm();
+        byte[] iv = decryptOptions.getIv();
+        byte[] additionalAuthenticatedData = decryptOptions.getAdditionalAuthenticatedData();
+        byte[] authenticationTag = decryptOptions.getAuthenticationTag();
         KeyOperationParameters parameters = new KeyOperationParameters()
             .setAlgorithm(algorithm)
-            .setValue(cipherText)
+            .setValue(decryptOptions.getCipherText())
             .setIv(iv)
             .setAdditionalAuthenticatedData(additionalAuthenticatedData)
             .setAuthenticationTag(authenticationTag);

@@ -111,7 +111,7 @@ public class CryptographyClient {
      * @throws NullPointerException If {@code algorithm} or {@code plainText} are {@code null}.
      */
     public EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, Context context) {
-        return encrypt(algorithm, plaintext, null, context);
+        return encrypt(new EncryptOptions(algorithm, plaintext), context);
     }
 
     /**
@@ -172,11 +172,9 @@ public class CryptographyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Encrypts the content. Subscribes to the call asynchronously and prints out the encrypted content details when
      * a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptionAlgorithm-byte-EncryptOptions-Context}
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptOptions-Context}
      *
-     * @param algorithm The algorithm to be used for encryption.
-     * @param plaintext The content to be encrypted.
-     * @param options Optional parameters for the encryption operation.
+     * @param encryptOptions The parameters to use in the encryption operation.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The {@link EncryptResult} whose {@link EncryptResult#getCipherText() cipher text} contains the encrypted
      * content.
@@ -184,9 +182,8 @@ public class CryptographyClient {
      * @throws UnsupportedOperationException If the encrypt operation is not supported or configured on the key.
      * @throws NullPointerException If {@code algorithm} or {@code plainText} are {@code null}.
      */
-    public EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, EncryptOptions options,
-                                 Context context) {
-        return client.encrypt(algorithm, plaintext, options, context).block();
+    public EncryptResult encrypt(EncryptOptions encryptOptions, Context context) {
+        return client.encrypt(encryptOptions, context).block();
     }
 
     /**
@@ -222,7 +219,7 @@ public class CryptographyClient {
      * @throws NullPointerException If {@code algorithm} or {@code cipherText} are {@code null}.
      */
     public DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] cipherText, Context context) {
-        return decrypt(algorithm, cipherText, null, context);
+        return decrypt(new DecryptOptions(algorithm, cipherText), context);
     }
 
     /**
@@ -257,7 +254,7 @@ public class CryptographyClient {
      * @throws NullPointerException If {@code algorithm} or {@code cipherText} are {@code null}.
      */
     public DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] cipherText) {
-        return decrypt(algorithm, cipherText, Context.NONE);
+        return decrypt(new DecryptOptions(algorithm, cipherText), Context.NONE);
     }
 
     /**
@@ -282,20 +279,17 @@ public class CryptographyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Decrypts the encrypted content. Subscribes to the call asynchronously and prints out the decrypted content
      * details when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#EncryptionAlgorithm-byte-DecryptOptions-Context}
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#DecryptOptions-Context}
      *
-     * @param algorithm The algorithm to be used for decryption.
-     * @param cipherText The content to be decrypted.
-     * @param options Optional parameters for the decryption operation.
+     * @param decryptOptions The parameters to use in the decryption operation.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The decrypted blob.
      * @throws ResourceNotFoundException If the key cannot be found for encryption.
      * @throws UnsupportedOperationException If the decrypt operation is not supported or configured on the key.
      * @throws NullPointerException If {@code algorithm} or {@code cipherText} are {@code null}.
      */
-    public DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] cipherText, DecryptOptions options,
-                                 Context context) {
-        return client.decrypt(algorithm, cipherText, options, context).block();
+    public DecryptResult decrypt(DecryptOptions decryptOptions, Context context) {
+        return client.decrypt(decryptOptions, context).block();
     }
 
     /**

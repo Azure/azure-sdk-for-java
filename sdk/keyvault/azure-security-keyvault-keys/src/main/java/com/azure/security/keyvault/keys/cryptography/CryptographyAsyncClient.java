@@ -223,7 +223,7 @@ public class CryptographyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EncryptResult> encrypt(EncryptionAlgorithm algorithm, byte[] plaintext) {
-        return encrypt(algorithm, plaintext, null);
+        return encrypt(new EncryptOptions(algorithm, plaintext), null);
     }
 
     /**
@@ -248,11 +248,9 @@ public class CryptographyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Encrypts the content. Subscribes to the call asynchronously and prints out the encrypted content details when
      * a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.encrypt#EncryptionAlgorithm-byte-EncryptOptions}
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.encrypt#EncryptOptions}
      *
-     * @param algorithm The algorithm to be used for encryption.
-     * @param plaintext The content to be encrypted.
-     * @param options Optional parameters for the encryption operation.
+     * @param encryptOptions The parameters to use in the encryption operation.
      * @return A {@link Mono} containing a {@link EncryptResult} whose {@link EncryptResult#getCipherText() cipher text}
      * contains the encrypted content.
      * @throws ResourceNotFoundException If the key cannot be found for encryption.
@@ -260,23 +258,19 @@ public class CryptographyAsyncClient {
      * @throws NullPointerException If {@code algorithm} or {@code plainText} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EncryptResult> encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, EncryptOptions options) {
+    public Mono<EncryptResult> encrypt(EncryptOptions encryptOptions) {
         try {
-            return withContext(context -> encrypt(algorithm, plaintext, options, context));
+            return withContext(context -> encrypt(encryptOptions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
 
-    Mono<EncryptResult> encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, EncryptOptions options,
-                                Context context) {
-        Objects.requireNonNull(algorithm, "Encryption algorithm cannot be null.");
-        Objects.requireNonNull(plaintext, "Plain text content to be encrypted cannot be null.");
-
+    Mono<EncryptResult> encrypt(EncryptOptions encryptOptions, Context context) {
         return ensureValidKeyAvailable().flatMap(available -> {
             if (!available) {
-                return cryptographyServiceClient.encrypt(algorithm, plaintext, options, context);
+                return cryptographyServiceClient.encrypt(encryptOptions, context);
             }
 
             if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.ENCRYPT)) {
@@ -284,7 +278,7 @@ public class CryptographyAsyncClient {
                     "Encrypt Operation is missing permission/not supported for key with id %s", key.getId()))));
             }
 
-            return localKeyCryptographyClient.encryptAsync(algorithm, plaintext, options, context, key);
+            return localKeyCryptographyClient.encryptAsync(encryptOptions, context, key);
         });
     }
 
@@ -321,7 +315,7 @@ public class CryptographyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DecryptResult> decrypt(EncryptionAlgorithm algorithm, byte[] cipherText) {
-        return decrypt(algorithm, cipherText, null);
+        return decrypt(new DecryptOptions(algorithm, cipherText));
     }
 
     /**
@@ -346,33 +340,27 @@ public class CryptographyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Decrypts the encrypted content. Subscribes to the call asynchronously and prints out the decrypted content
      * details when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.decrypt#EncryptionAlgorithm-byte-DecryptOptions}
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.decrypt#DecryptOptions}
      *
-     * @param algorithm The algorithm to be used for decryption.
-     * @param cipherText The content to be decrypted.
-     * @param options Optional parameters for the decryption operation.
+     * @param decryptOptions The parameters to use in the decryption operation.
      * @return A {@link Mono} containing the decrypted blob.
      * @throws ResourceNotFoundException If the key cannot be found for decryption.
      * @throws UnsupportedOperationException If the decrypt operation is not supported or configured on the key.
      * @throws NullPointerException If {@code algorithm} or {@code cipherText} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DecryptResult> decrypt(EncryptionAlgorithm algorithm, byte[] cipherText, DecryptOptions options) {
+    public Mono<DecryptResult> decrypt(DecryptOptions decryptOptions) {
         try {
-            return withContext(context -> decrypt(algorithm, cipherText, options, context));
+            return withContext(context -> decrypt(decryptOptions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<DecryptResult> decrypt(EncryptionAlgorithm algorithm, byte[] cipherText, DecryptOptions options,
-                                Context context) {
-        Objects.requireNonNull(algorithm, "Encryption algorithm cannot be null.");
-        Objects.requireNonNull(cipherText, "Cipher text content to be decrypted cannot be null.");
-
+    Mono<DecryptResult> decrypt(DecryptOptions decryptOptions, Context context) {
         return ensureValidKeyAvailable().flatMap(available -> {
             if (!available) {
-                return cryptographyServiceClient.decrypt(algorithm, cipherText, options, context);
+                return cryptographyServiceClient.decrypt(decryptOptions, context);
             }
 
             if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.DECRYPT)) {
@@ -380,7 +368,7 @@ public class CryptographyAsyncClient {
                     "Decrypt Operation is not allowed for key with id %s", key.getId()))));
             }
 
-            return localKeyCryptographyClient.decryptAsync(algorithm, cipherText, options, context, key);
+            return localKeyCryptographyClient.decryptAsync(decryptOptions, context, key);
         });
     }
 

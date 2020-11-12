@@ -94,18 +94,16 @@ public class LocalCryptographyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Encrypts the content. Subscribes to the call asynchronously and prints out the encrypted content details when
      * a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.LocalCryptographyClient.encrypt#EncryptionAlgorithm-byte-EncryptOptions}
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.LocalCryptographyClient.encrypt#EncryptOptions}
      *
-     * @param algorithm The algorithm to be used for encryption.
-     * @param options Optional parameters for the encryption operation.
-     * @param plaintext The content to be encrypted.
+     * @param encryptOptions The parameters to use in the encryption operation.
      * @return The {@link EncryptResult} whose {@link EncryptResult#getCipherText() cipher text} contains the encrypted
      *     content.
      * @throws UnsupportedOperationException if the encrypt operation is not supported or configured on the key.
      * @throws NullPointerException if {@code algorithm} or  {@code plainText} is null.
      */
-    public EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, EncryptOptions options) {
-        return client.encrypt(algorithm, plaintext, options).block();
+    public EncryptResult encrypt(EncryptOptions encryptOptions) {
+        return client.encrypt(encryptOptions).block();
     }
 
     /**
@@ -164,17 +162,15 @@ public class LocalCryptographyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Decrypts the encrypted content. Subscribes to the call asynchronously and prints out the decrypted content
      * details when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.LocalCryptographyClient.decrypt#EncryptionAlgorithm-byte-DecryptOptions}
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.LocalCryptographyClient.decrypt#DecryptOptions}
      *
-     * @param algorithm The algorithm to be used for decryption.
-     * @param options Optional parameters for the decryption operation.
-     * @param cipherText The content to be decrypted.
+     * @param decryptOptions The parameters to use in the decryption operation.
      * @return The decrypted blob.
      * @throws UnsupportedOperationException if the decrypt operation is not supported or configured on the key.
      * @throws NullPointerException if {@code algorithm} or {@code cipherText} is null.
      */
-    public DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] cipherText, DecryptOptions options) {
-        return client.decrypt(algorithm, cipherText, options).block();
+    public DecryptResult decrypt(DecryptOptions decryptOptions) {
+        return client.decrypt(decryptOptions).block();
     }
 
     /**

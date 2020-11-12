@@ -71,7 +71,7 @@ public final class CryptographyClientJavaDocCodeSnippets {
     /**
      * Generates a code sample for using {@link CryptographyClient#encrypt(EncryptionAlgorithm, byte[])},
      * {@link CryptographyClient#encrypt(EncryptionAlgorithm, byte[], Context)} and
-     * {@link CryptographyClient#encrypt(EncryptionAlgorithm, byte[], EncryptOptions, Context)}.
+     * {@link CryptographyClient#encrypt(EncryptOptions, Context)}.
      */
     public void encrypt() {
         CryptographyClient cryptographyClient = createClient();
@@ -99,7 +99,7 @@ public final class CryptographyClientJavaDocCodeSnippets {
             encryptionResult.getCipherText().length, encryptionResult.getAlgorithm().toString());
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptionAlgorithm-byte-Context
 
-        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptionAlgorithm-byte-EncryptOptions-Context
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptOptions-Context
         byte[] myPlainText = new byte[100];
 
         new Random(0x1234567L).nextBytes(myPlainText);
@@ -109,20 +109,20 @@ public final class CryptographyClientJavaDocCodeSnippets {
             (byte) 0xd8, (byte) 0x66, (byte) 0x94, (byte) 0x09, (byte) 0x23, (byte) 0x41, (byte) 0xbc, (byte) 0x04
         };
 
-        EncryptOptions encryptOptions = new AesCbcEncryptOptions(iv);
+        EncryptOptions encryptOptions = EncryptOptions.createAesCbcOptions(EncryptionAlgorithm.A128CBC, myPlainText)
+            .setIv(iv);
 
-        EncryptResult encryptedResult = cryptographyClient.encrypt(EncryptionAlgorithm.A128CBC, myPlainText,
-            encryptOptions, new Context(key1, value1));
+        EncryptResult encryptedResult = cryptographyClient.encrypt(encryptOptions, new Context(key1, value1));
 
         System.out.printf("Received encrypted content of length %d with algorithm %s \n",
             encryptedResult.getCipherText().length, encryptedResult.getAlgorithm().toString());
-        // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptionAlgorithm-byte-EncryptOptions-Context
+        // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptOptions-Context
     }
 
     /**
      * Generates a code sample for using {@link CryptographyClient#decrypt(EncryptionAlgorithm, byte[])},
      * {@link CryptographyClient#decrypt(EncryptionAlgorithm, byte[], Context)} and
-     * {@link CryptographyClient#decrypt(EncryptionAlgorithm, byte[], DecryptOptions, Context)}.
+     * {@link CryptographyClient#decrypt(DecryptOptions, Context)}.
      */
     public void decrypt() {
         CryptographyClient cryptographyClient = createClient();
@@ -148,7 +148,7 @@ public final class CryptographyClientJavaDocCodeSnippets {
         System.out.printf("Received decrypted content of length %d\n", decryptionResult.getPlainText().length);
         // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#EncryptionAlgorithm-byte-Context
 
-        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#EncryptionAlgorithm-byte-DecryptOptions-Context
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#DecryptOptions-Context
         byte[] myCipherText = new byte[100];
 
         new Random(0x1234567L).nextBytes(myCipherText);
@@ -158,13 +158,13 @@ public final class CryptographyClientJavaDocCodeSnippets {
             (byte) 0xd8, (byte) 0x66, (byte) 0x94, (byte) 0x09, (byte) 0x23, (byte) 0x41, (byte) 0xbc, (byte) 0x04
         };
 
-        DecryptOptions decryptOptions = new AesCbcDecryptOptions(iv);
+        DecryptOptions decryptOptions = DecryptOptions.createAesCbcOptions(EncryptionAlgorithm.A128CBC, myCipherText)
+            .setIv(iv);
 
-        DecryptResult decryptedResult = cryptographyClient.decrypt(EncryptionAlgorithm.A128CBC, myCipherText,
-            decryptOptions, new Context(key1, value1));
+        DecryptResult decryptedResult = cryptographyClient.decrypt(decryptOptions, new Context(key1, value1));
 
         System.out.printf("Received decrypted content of length %d\n", decryptedResult.getPlainText().length);
-        // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#EncryptionAlgorithm-byte-DecryptOptions-Context
+        // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#DecryptOptions-Context
     }
 
     /**

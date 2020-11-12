@@ -112,12 +112,13 @@ public abstract class LocalCryptographyClientTestBase extends TestBase {
         byte[] plaintext = "My16BitPlaintext".getBytes();
         byte[] iv = "My16BytesTestIv.".getBytes();
         LocalCryptographyClient localCryptographyClient = initializeCryptographyClient(getTestJsonWebKey(keySize));
-        EncryptOptions encryptOptions = new AesCbcEncryptOptions(iv);
+        EncryptOptions encryptOptions = EncryptOptions.createAesCbcOptions(algorithm, plaintext).setIv(iv);
         EncryptResult encryptResult =
-            localCryptographyClient.encrypt(algorithm, plaintext, encryptOptions);
-        DecryptOptions decryptOptions = new AesCbcDecryptOptions(iv);
+            localCryptographyClient.encrypt(encryptOptions);
+        DecryptOptions decryptOptions = DecryptOptions.createAesCbcOptions(algorithm, encryptResult.getCipherText())
+            .setIv(iv);
         DecryptResult decryptResult =
-            localCryptographyClient.decrypt(algorithm, encryptResult.getCipherText(), decryptOptions);
+            localCryptographyClient.decrypt(decryptOptions);
 
         assertArrayEquals(plaintext, decryptResult.getPlainText());
     }
@@ -126,16 +127,17 @@ public abstract class LocalCryptographyClientTestBase extends TestBase {
         byte[] plaintext = "My16BitPlaintext".getBytes();
         byte[] iv = "My12BytesIv.".getBytes();
         LocalCryptographyClient localCryptographyClient = initializeCryptographyClient(getTestJsonWebKey(keySize));
-        EncryptOptions encryptOptions = new AesGcmEncryptOptions(iv, null);
+        EncryptOptions encryptOptions = EncryptOptions.createAesGcmOptions(algorithm, plaintext, iv);
         EncryptResult encryptResult =
-            localCryptographyClient.encrypt(algorithm, plaintext, encryptOptions);
+            localCryptographyClient.encrypt(encryptOptions);
         byte[] authenticationTag = new byte[12];
 
         System.arraycopy(encryptResult.getCipherText(), 0, authenticationTag, 0, authenticationTag.length);
 
-        DecryptOptions decryptOptions = new AesGcmDecryptOptions(iv, null, authenticationTag);
+        DecryptOptions decryptOptions = DecryptOptions.createAesGcmOptions(algorithm, encryptResult.getCipherText(), iv)
+            .setAuthenticationTag(authenticationTag);
         DecryptResult decryptResult =
-            localCryptographyClient.decrypt(algorithm, encryptResult.getCipherText(), decryptOptions);
+            localCryptographyClient.decrypt(decryptOptions);
 
         assertArrayEquals(plaintext, decryptResult.getPlainText());
     }

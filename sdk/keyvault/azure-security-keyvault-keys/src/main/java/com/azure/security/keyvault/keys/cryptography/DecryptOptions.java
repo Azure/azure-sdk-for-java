@@ -3,59 +3,96 @@
 
 package com.azure.security.keyvault.keys.cryptography;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
+
+import java.util.Objects;
 
 /**
  * A class containing various configuration parameters that can be applied when performing decryption operations.
  */
 public class DecryptOptions {
     /**
+     * The algorithm to be used for decryption.
+     */
+    final EncryptionAlgorithm algorithm;
+
+    /**
+     * The content to be decrypted.
+     */
+    final byte[] cipherText;
+
+    /**
      * Initialization vector to be used in the decryption operation using a symmetric algorithm.
      */
-    @JsonProperty(value = "iv")
-    private final byte[] iv;
+    byte[] iv;
 
     /**
      * Get additional data to authenticate when performing decryption with an authenticated algorithm.
      */
-    @JsonProperty(value = "aad")
-    private final byte[] additionalAuthenticatedData;
+    byte[] additionalAuthenticatedData;
 
     /**
      * The tag to authenticate when performing decryption with an authenticated algorithm.
      */
-    @JsonProperty(value = "tag")
-    private final byte[] authenticationTag;
+    byte[] authenticationTag;
+
+    /**
+     * Factory method to create an instance of {@link AesCbcDecryptOptions} with the given parameters.
+     *
+     * @param algorithm The algorithm to be used for decryption.
+     * @param ciphertext The content to be decrypted.
+     * @return The {@link AesCbcDecryptOptions}.
+     */
+    public static AesCbcDecryptOptions createAesCbcOptions(EncryptionAlgorithm algorithm, byte[] ciphertext) {
+        return new AesCbcDecryptOptions(algorithm, ciphertext);
+    }
+
+    /**
+     * Factory method to create an instance of {@link AesGcmDecryptOptions} with the given parameters.
+     *
+     * @param algorithm The algorithm to be used for decryption.
+     * @param ciphertext The content to be decrypted.
+     * @param iv Initialization vector for the decryption operation.
+     * @return The {@link AesGcmDecryptOptions}.
+     */
+    public static AesGcmDecryptOptions createAesGcmOptions(EncryptionAlgorithm algorithm, byte[] ciphertext, byte[] iv) {
+        return new AesGcmDecryptOptions(algorithm, ciphertext, iv);
+    }
 
     /**
      * Creates an instance of {@link DecryptOptions} with the given parameters.
      *
-     * @param iv Initialization vector for symmetric algorithms.
-     * @param additionalAuthenticatedData Additional data to authenticate but not encrypt/decrypt when using
-     * authenticated crypto algorithms.
-     * @param authenticationTag The tag to authenticate when performing decryption with an authenticated algorithm.
+     * @param algorithm The algorithm to be used for decryption.
+     * @param cipherText The content to be decrypted.
      */
-    public DecryptOptions(byte[] iv, byte[] additionalAuthenticatedData, byte[] authenticationTag) {
-        if (iv == null) {
-            this.iv = null;
-        } else {
-            this.iv = new byte[iv.length];
-            System.arraycopy(iv, 0, this.iv, 0, iv.length);
-        }
+    DecryptOptions(EncryptionAlgorithm algorithm, byte[] cipherText) {
+        Objects.requireNonNull(algorithm, "'algorithm cannot be null'");
+        Objects.requireNonNull(cipherText, "'ciphertext' cannot be null");
 
-        if (additionalAuthenticatedData == null) {
-            this.additionalAuthenticatedData = null;
-        } else {
-            this.additionalAuthenticatedData = new byte[additionalAuthenticatedData.length];
-            System.arraycopy(additionalAuthenticatedData, 0, this.additionalAuthenticatedData, 0,
-                additionalAuthenticatedData.length);
-        }
+        this.algorithm = algorithm;
+        this.cipherText = new byte[cipherText.length];
+        System.arraycopy(cipherText, 0, this.cipherText, 0, cipherText.length);
+    }
 
-        if (authenticationTag == null) {
-            this.authenticationTag = null;
+    /**
+     * The algorithm to be used for encryption.
+     *
+     * @return The algorithm to be used for encryption.
+     */
+    public EncryptionAlgorithm getAlgorithm() {
+        return algorithm;
+    }
+
+    /**
+     * Get the content to be encrypted.
+     *
+     * @return The content to be encrypted.
+     */
+    public byte[] getCipherText() {
+        if (cipherText == null) {
+            return null;
         } else {
-            this.authenticationTag = new byte[authenticationTag.length];
-            System.arraycopy(authenticationTag, 0, this.authenticationTag, 0, authenticationTag.length);
+            return cipherText.clone();
         }
     }
 
