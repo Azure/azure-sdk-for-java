@@ -5,24 +5,24 @@ package com.azure.spring.aad.implementation;
 
 import com.nimbusds.oauth2.sdk.util.StringUtils;
 
-public class IdentityEndpoints {
+public class AuthorizationServerEndpoints {
 
-    private static final String IDENTITY_PLATFORM = "https://login.microsoftonline.com/";
+    private static final String DEFAULT_AUTHORIZATION_SERVER_URI = "https://login.microsoftonline.com/";
     private static final String AUTHORIZATION_ENDPOINT = "/oauth2/v2.0/authorize";
     private static final String TOKEN_ENDPOINT = "/oauth2/v2.0/token";
     private static final String JWK_SET_ENDPOINT = "/discovery/v2.0/keys";
 
     private final String baseUri;
 
-    public IdentityEndpoints() {
-        this(IDENTITY_PLATFORM);
+    public AuthorizationServerEndpoints() {
+        this(DEFAULT_AUTHORIZATION_SERVER_URI);
     }
 
-    public IdentityEndpoints(String baseUri) {
-        if (StringUtils.isBlank(baseUri)) {
-            baseUri = IDENTITY_PLATFORM;
+    public AuthorizationServerEndpoints(String authorizationServerUri) {
+        if (StringUtils.isBlank(authorizationServerUri)) {
+            authorizationServerUri = DEFAULT_AUTHORIZATION_SERVER_URI;
         }
-        this.baseUri = addSlash(baseUri);
+        this.baseUri = addSlash(authorizationServerUri);
     }
 
     private String addSlash(String uri) {

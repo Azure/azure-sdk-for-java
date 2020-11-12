@@ -36,7 +36,7 @@ public class AADAuthenticationProperties {
     private static final String GROUP_RELATIONSHIP_DIRECT = "direct";
     private static final String GROUP_RELATIONSHIP_TRANSITIVE = "transitive";
 
-    private String uri;
+    private String authorizationServerUri;
 
     private Map<String, AuthorizationProperties> authorization = new HashMap<>();
 
@@ -269,12 +269,12 @@ public class AADAuthenticationProperties {
         }
     }
 
-    public void setUri(String uri) {
-        this.uri = uri;
+    public void setAuthorizationServerUri(String authorizationServerUri) {
+        this.authorizationServerUri = authorizationServerUri;
     }
 
-    public String getUri() {
-        return uri;
+    public String getAuthorizationServerUri() {
+        return authorizationServerUri;
     }
 
     public void setAuthorization(Map<String, AuthorizationProperties> authorization) {
