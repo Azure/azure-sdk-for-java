@@ -93,6 +93,7 @@ public final class AmqpAnnotatedMessage {
      * <b>Client should test for {@link AmqpBodyType} before calling corresponding get method on {@link AmqpMessageBody}
      * <p><strong>How to check for {@link AmqpBodyType}</strong></p>
      * {@codesnippet com.azure.core.amqp.models.AmqpBodyType.checkBodyType}
+     *
      * @return the {@link AmqpMessageBody} object.
      */
     public AmqpMessageBody getBody() {
