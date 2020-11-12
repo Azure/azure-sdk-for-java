@@ -59,6 +59,12 @@ class KeyVaultClient extends DelegateRestClient {
     private final String keyVaultUrl;
 
     /**
+     * Stores the AAD authentication URL (or null to default to Azure Public
+     * Cloud).
+     */
+    private String aadAuthenticationUrl;
+
+    /**
      * Stores the tenant ID.
      */
     private String tenantId;
@@ -113,12 +119,15 @@ class KeyVaultClient extends DelegateRestClient {
      * Constructor.
      *
      * @param keyVaultUri the Azure Key Vault URI.
+     * @param aadAuthenticationUrl the Azure AD authentication URL.
      * @param tenantId the tenant ID.
      * @param clientId the client ID.
      * @param clientSecret the client secret.
      */
-    KeyVaultClient(final String keyVaultUri, final String tenantId, final String clientId, final String clientSecret) {
+    KeyVaultClient(final String keyVaultUri, final String aadAuthenticationUrl,
+            final String tenantId, final String clientId, final String clientSecret) {
         this(keyVaultUri);
+        this.aadAuthenticationUrl = aadAuthenticationUrl;
         this.tenantId = tenantId;
         this.clientId = clientId;
         this.clientSecret = clientSecret;
@@ -141,7 +150,7 @@ class KeyVaultClient extends DelegateRestClient {
             }
 
             if (tenantId != null && clientId != null && clientSecret != null) {
-                accessToken = authClient.getAccessToken(resource, tenantId, clientId, clientSecret);
+                accessToken = authClient.getAccessToken(resource, aadAuthenticationUrl, tenantId, clientId, clientSecret);
             } else {
                 accessToken = authClient.getAccessToken(resource, managedIdentity);
             }
@@ -295,10 +304,9 @@ class KeyVaultClient extends DelegateRestClient {
      * @throws IOException when an I/O error occurs.
      * @throws NoSuchAlgorithmException when algorithm is unavailable.
      * @throws InvalidKeySpecException when the private key cannot be generated.
-     */
+     * */
     private PrivateKey createPrivateKeyFromPem(String pemString) 
             throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
-        
         StringBuilder builder = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new StringReader(pemString))) {
             String line = reader.readLine();
