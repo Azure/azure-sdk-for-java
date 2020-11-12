@@ -1,23 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.azure-api.net/text/analytics/v3.1-preview.2//keyPhrases",
+    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/text/analytics/v3.0//keyPhrases",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "d929f1cd-82ca-4cbe-bacf-db946576faf3",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/1.0.0-beta.5 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "6070fa8f-51ce-4ee1-8262-bb1413d91844",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "7",
+      "x-envoy-upstream-service-time" : "4",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
       "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=1",
-      "apim-request-id" : "b281a64d-aa17-4a6d-9aec-8fa724587130",
+      "apim-request-id" : "8d61f6e0-6f52-4d7a-a157-c8380bf2b60d",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"Thisisaveryveryverylongtextwhichgoesonforalongtimeandwhichalmost\"],\"warnings\":[{\"code\":\"LongWordsInDocument\",\"message\":\"The document contains very long words (longer than 64 characters). These words will be truncated and may result in unreliable model predictions.\"}]}],\"errors\":[],\"modelVersion\":\"2020-07-01\"}",
-      "Date" : "Tue, 01 Sep 2020 06:14:53 GMT",
+      "Body" : "{\"documents\":[{\"id\":\"0\",\"keyPhrases\":[\"Thisisaveryveryverylongtextwhichgoesonforalongtimeandwhichalmost\"],\"warnings\":[{\"code\":\"LongWordsInDocument\",\"message\":\"The document contains very long words (longer than 64 characters). These words will be truncated and may result in unreliable model predictions.\"}]}],\"errors\":[],\"modelVersion\":\"2019-10-01\"}",
+      "Date" : "Thu, 07 May 2020 02:48:54 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

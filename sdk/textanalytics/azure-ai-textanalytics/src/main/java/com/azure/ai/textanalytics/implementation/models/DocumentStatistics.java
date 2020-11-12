@@ -7,7 +7,9 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DocumentStatistics model. */
+/**
+ * The DocumentStatistics model.
+ */
 @Fluent
 public final class DocumentStatistics {
     /*
@@ -23,8 +25,9 @@ public final class DocumentStatistics {
     private int transactionsCount;
 
     /**
-     * Get the charactersCount property: Number of text elements recognized in the document.
-     *
+     * Get the charactersCount property: Number of text elements recognized in
+     * the document.
+     * 
      * @return the charactersCount value.
      */
     public int getCharactersCount() {
@@ -32,8 +35,9 @@ public final class DocumentStatistics {
     }
 
     /**
-     * Set the charactersCount property: Number of text elements recognized in the document.
-     *
+     * Set the charactersCount property: Number of text elements recognized in
+     * the document.
+     * 
      * @param charactersCount the charactersCount value to set.
      * @return the DocumentStatistics object itself.
      */
@@ -43,8 +47,9 @@ public final class DocumentStatistics {
     }
 
     /**
-     * Get the transactionsCount property: Number of transactions for the document.
-     *
+     * Get the transactionsCount property: Number of transactions for the
+     * document.
+     * 
      * @return the transactionsCount value.
      */
     public int getTransactionsCount() {
@@ -52,8 +57,9 @@ public final class DocumentStatistics {
     }
 
     /**
-     * Set the transactionsCount property: Number of transactions for the document.
-     *
+     * Set the transactionsCount property: Number of transactions for the
+     * document.
+     * 
      * @param transactionsCount the transactionsCount value to set.
      * @return the DocumentStatistics object itself.
      */

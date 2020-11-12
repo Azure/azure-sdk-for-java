@@ -7,7 +7,9 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DetectedLanguage model. */
+/**
+ * The DetectedLanguage model.
+ */
 @Fluent
 public final class DetectedLanguage {
     /*
@@ -31,8 +33,9 @@ public final class DetectedLanguage {
     private double confidenceScore;
 
     /**
-     * Get the name property: Long name of a detected language (e.g. English, French).
-     *
+     * Get the name property: Long name of a detected language (e.g. English,
+     * French).
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -40,8 +43,9 @@ public final class DetectedLanguage {
     }
 
     /**
-     * Set the name property: Long name of a detected language (e.g. English, French).
-     *
+     * Set the name property: Long name of a detected language (e.g. English,
+     * French).
+     * 
      * @param name the name value to set.
      * @return the DetectedLanguage object itself.
      */
@@ -51,9 +55,9 @@ public final class DetectedLanguage {
     }
 
     /**
-     * Get the iso6391Name property: A two letter representation of the detected language according to the ISO 639-1
-     * standard (e.g. en, fr).
-     *
+     * Get the iso6391Name property: A two letter representation of the
+     * detected language according to the ISO 639-1 standard (e.g. en, fr).
+     * 
      * @return the iso6391Name value.
      */
     public String getIso6391Name() {
@@ -61,9 +65,9 @@ public final class DetectedLanguage {
     }
 
     /**
-     * Set the iso6391Name property: A two letter representation of the detected language according to the ISO 639-1
-     * standard (e.g. en, fr).
-     *
+     * Set the iso6391Name property: A two letter representation of the
+     * detected language according to the ISO 639-1 standard (e.g. en, fr).
+     * 
      * @param iso6391Name the iso6391Name value to set.
      * @return the DetectedLanguage object itself.
      */
@@ -73,9 +77,10 @@ public final class DetectedLanguage {
     }
 
     /**
-     * Get the confidenceScore property: A confidence score between 0 and 1. Scores close to 1 indicate 100% certainty
-     * that the identified language is true.
-     *
+     * Get the confidenceScore property: A confidence score between 0 and 1.
+     * Scores close to 1 indicate 100% certainty that the identified language
+     * is true.
+     * 
      * @return the confidenceScore value.
      */
     public double getConfidenceScore() {
@@ -83,9 +88,10 @@ public final class DetectedLanguage {
     }
 
     /**
-     * Set the confidenceScore property: A confidence score between 0 and 1. Scores close to 1 indicate 100% certainty
-     * that the identified language is true.
-     *
+     * Set the confidenceScore property: A confidence score between 0 and 1.
+     * Scores close to 1 indicate 100% certainty that the identified language
+     * is true.
+     * 
      * @param confidenceScore the confidenceScore value to set.
      * @return the DetectedLanguage object itself.
      */

@@ -4,31 +4,52 @@
 
 package com.azure.ai.textanalytics.implementation.models;
 
-import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import java.util.Collection;
+import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for WarningCodeValue. */
-public final class WarningCodeValue extends ExpandableStringEnum<WarningCodeValue> {
-    /** Static value LongWordsInDocument for WarningCodeValue. */
-    public static final WarningCodeValue LONG_WORDS_IN_DOCUMENT = fromString("LongWordsInDocument");
-
-    /** Static value DocumentTruncated for WarningCodeValue. */
-    public static final WarningCodeValue DOCUMENT_TRUNCATED = fromString("DocumentTruncated");
+/**
+ * Defines values for WarningCodeValue.
+ */
+public enum WarningCodeValue {
+    /**
+     * Enum value LongWordsInDocument.
+     */
+    LONG_WORDS_IN_DOCUMENT("LongWordsInDocument"),
 
     /**
-     * Creates or finds a WarningCodeValue from its string representation.
-     *
-     * @param name a name to look for.
-     * @return the corresponding WarningCodeValue.
+     * Enum value DocumentTruncated.
      */
-    @JsonCreator
-    public static WarningCodeValue fromString(String name) {
-        return fromString(name, WarningCodeValue.class);
+    DOCUMENT_TRUNCATED("DocumentTruncated");
+
+    /**
+     * The actual serialized value for a WarningCodeValue instance.
+     */
+    private final String value;
+
+    WarningCodeValue(String value) {
+        this.value = value;
     }
 
-    /** @return known WarningCodeValue values. */
-    public static Collection<WarningCodeValue> values() {
-        return values(WarningCodeValue.class);
+    /**
+     * Parses a serialized value to a WarningCodeValue instance.
+     * 
+     * @param value the serialized value to parse.
+     * @return the parsed WarningCodeValue object, or null if unable to parse.
+     */
+    @JsonCreator
+    public static WarningCodeValue fromString(String value) {
+        WarningCodeValue[] items = WarningCodeValue.values();
+        for (WarningCodeValue item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return this.value;
     }
 }

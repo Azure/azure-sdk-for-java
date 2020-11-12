@@ -29,9 +29,6 @@ public final class DetectLanguageResult extends TextAnalyticsResult {
      * Get the detected primary language.
      *
      * @return The detected language.
-     *
-     * @throws TextAnalyticsException if result has {@code isError} equals to true and when a non-error property
-     * was accessed.
      */
     public DetectedLanguage getPrimaryLanguage() {
         throwExceptionIfError();

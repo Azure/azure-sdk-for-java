@@ -10,11 +10,25 @@ import com.azure.core.annotation.Immutable;
  */
 @Immutable
 public final class CategorizedEntity {
+    /*
+     * CategorizedEntity text as appears in the request.
+     */
     private final String text;
+
+    /*
+     * CategorizedEntity category, such as Person/Location/Org/SSN etc
+     */
     private final EntityCategory category;
+
+    /*
+     * CategorizedEntity sub category, such as Age/Year/TimeRange etc
+     */
     private final String subcategory;
+
+    /*
+     * Confidence score between 0 and 1 of the extracted entity.
+     */
     private final double confidenceScore;
-    private final int offset;
 
     /**
      * Creates a {@link CategorizedEntity} model that describes entity.
@@ -22,34 +36,13 @@ public final class CategorizedEntity {
      * @param text The entity text as appears in the request.
      * @param category The entity category, such as Person/Location/Org/SSN etc.
      * @param subcategory The entity subcategory, such as Age/Year/TimeRange etc.
-     * @param confidenceScore If a well-known item is recognized, a decimal number denoting the confidence level
-     * between 0 and 1 will be returned.
+     * @param confidenceScore A confidence score between 0 and 1 of the extracted entity.
      */
     public CategorizedEntity(String text, EntityCategory category, String subcategory, double confidenceScore) {
         this.text = text;
         this.category = category;
         this.subcategory = subcategory;
         this.confidenceScore = confidenceScore;
-        this.offset = 0;
-    }
-
-    /**
-     * Creates a {@link CategorizedEntity} model that describes entity.
-     *
-     * @param text The entity text as appears in the request.
-     * @param category The entity category, such as Person/Location/Org/SSN etc.
-     * @param subcategory The entity subcategory, such as Age/Year/TimeRange etc.
-     * @param confidenceScore If a well-known item is recognized, a decimal number denoting the confidence level
-     * between 0 and 1 will be returned.
-     * @param offset The start position for the entity text.
-     */
-    public CategorizedEntity(String text, EntityCategory category, String subcategory, double confidenceScore,
-        int offset) {
-        this.text = text;
-        this.category = category;
-        this.subcategory = subcategory;
-        this.confidenceScore = confidenceScore;
-        this.offset = offset;
     }
 
     /**
@@ -80,21 +73,11 @@ public final class CategorizedEntity {
     }
 
     /**
-     * Get the score property: If a well-known item is recognized, a decimal
-     * number denoting the confidence level between 0 and 1 will be returned.
+     * Get the score property: Confidence score between 0 and 1 of the extracted entity.
      *
      * @return The score value.
      */
     public double getConfidenceScore() {
         return this.confidenceScore;
-    }
-
-    /**
-     * Get the offset of entity text. The start position for the entity text in a document.
-     *
-     * @return The offset of entity text.
-     */
-    public int getOffset() {
-        return offset;
     }
 }

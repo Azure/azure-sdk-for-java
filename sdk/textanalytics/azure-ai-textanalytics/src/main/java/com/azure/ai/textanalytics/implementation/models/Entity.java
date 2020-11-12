@@ -7,7 +7,9 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Entity model. */
+/**
+ * The Entity model.
+ */
 @Fluent
 public final class Entity {
     /*
@@ -29,13 +31,13 @@ public final class Entity {
     private String subcategory;
 
     /*
-     * Start position for the entity text.
+     * Start position (in Unicode characters) for the entity text.
      */
     @JsonProperty(value = "offset", required = true)
     private int offset;
 
     /*
-     * Length for the entity text.
+     * Length (in Unicode characters) for the entity text.
      */
     @JsonProperty(value = "length", required = true)
     private int length;
@@ -48,7 +50,7 @@ public final class Entity {
 
     /**
      * Get the text property: Entity text as appears in the request.
-     *
+     * 
      * @return the text value.
      */
     public String getText() {
@@ -57,7 +59,7 @@ public final class Entity {
 
     /**
      * Set the text property: Entity text as appears in the request.
-     *
+     * 
      * @param text the text value to set.
      * @return the Entity object itself.
      */
@@ -67,8 +69,9 @@ public final class Entity {
     }
 
     /**
-     * Get the category property: Entity type, such as Person/Location/Org/SSN etc.
-     *
+     * Get the category property: Entity type, such as Person/Location/Org/SSN
+     * etc.
+     * 
      * @return the category value.
      */
     public String getCategory() {
@@ -76,8 +79,9 @@ public final class Entity {
     }
 
     /**
-     * Set the category property: Entity type, such as Person/Location/Org/SSN etc.
-     *
+     * Set the category property: Entity type, such as Person/Location/Org/SSN
+     * etc.
+     * 
      * @param category the category value to set.
      * @return the Entity object itself.
      */
@@ -87,8 +91,9 @@ public final class Entity {
     }
 
     /**
-     * Get the subcategory property: Entity sub type, such as Age/Year/TimeRange etc.
-     *
+     * Get the subcategory property: Entity sub type, such as
+     * Age/Year/TimeRange etc.
+     * 
      * @return the subcategory value.
      */
     public String getSubcategory() {
@@ -96,8 +101,9 @@ public final class Entity {
     }
 
     /**
-     * Set the subcategory property: Entity sub type, such as Age/Year/TimeRange etc.
-     *
+     * Set the subcategory property: Entity sub type, such as
+     * Age/Year/TimeRange etc.
+     * 
      * @param subcategory the subcategory value to set.
      * @return the Entity object itself.
      */
@@ -107,8 +113,9 @@ public final class Entity {
     }
 
     /**
-     * Get the offset property: Start position for the entity text.
-     *
+     * Get the offset property: Start position (in Unicode characters) for the
+     * entity text.
+     * 
      * @return the offset value.
      */
     public int getOffset() {
@@ -116,8 +123,9 @@ public final class Entity {
     }
 
     /**
-     * Set the offset property: Start position for the entity text.
-     *
+     * Set the offset property: Start position (in Unicode characters) for the
+     * entity text.
+     * 
      * @param offset the offset value to set.
      * @return the Entity object itself.
      */
@@ -127,8 +135,9 @@ public final class Entity {
     }
 
     /**
-     * Get the length property: Length for the entity text.
-     *
+     * Get the length property: Length (in Unicode characters) for the entity
+     * text.
+     * 
      * @return the length value.
      */
     public int getLength() {
@@ -136,8 +145,9 @@ public final class Entity {
     }
 
     /**
-     * Set the length property: Length for the entity text.
-     *
+     * Set the length property: Length (in Unicode characters) for the entity
+     * text.
+     * 
      * @param length the length value to set.
      * @return the Entity object itself.
      */
@@ -147,8 +157,9 @@ public final class Entity {
     }
 
     /**
-     * Get the confidenceScore property: Confidence score between 0 and 1 of the extracted entity.
-     *
+     * Get the confidenceScore property: Confidence score between 0 and 1 of
+     * the extracted entity.
+     * 
      * @return the confidenceScore value.
      */
     public double getConfidenceScore() {
@@ -156,8 +167,9 @@ public final class Entity {
     }
 
     /**
-     * Set the confidenceScore property: Confidence score between 0 and 1 of the extracted entity.
-     *
+     * Set the confidenceScore property: Confidence score between 0 and 1 of
+     * the extracted entity.
+     * 
      * @param confidenceScore the confidenceScore value to set.
      * @return the Entity object itself.
      */

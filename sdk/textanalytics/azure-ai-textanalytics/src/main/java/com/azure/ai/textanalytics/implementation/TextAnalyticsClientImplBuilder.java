@@ -11,18 +11,18 @@ import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 
-/** A builder for creating a new instance of the TextAnalyticsClient type. */
-@ServiceClientBuilder(serviceClients = {TextAnalyticsClientImpl.class})
+/**
+ * A builder for creating a new instance of the TextAnalyticsClient type.
+ */
+@ServiceClientBuilder(serviceClients = TextAnalyticsClientImpl.class)
 public final class TextAnalyticsClientImplBuilder {
     /*
-     * Supported Cognitive Services endpoints (protocol and hostname, for
-     * example: https://westus.api.cognitive.microsoft.com).
+     * Supported Cognitive Services endpoints (protocol and hostname, for example: https://westus.api.cognitive.microsoft.com).
      */
     private String endpoint;
 
     /**
-     * Sets Supported Cognitive Services endpoints (protocol and hostname, for example:
-     * https://westus.api.cognitive.microsoft.com).
+     * Sets Supported Cognitive Services endpoints (protocol and hostname, for example: https://westus.api.cognitive.microsoft.com).
      *
      * @param endpoint the endpoint value.
      * @return the TextAnalyticsClientImplBuilder.
@@ -53,14 +53,14 @@ public final class TextAnalyticsClientImplBuilder {
      *
      * @return an instance of TextAnalyticsClientImpl.
      */
-    public TextAnalyticsClientImpl buildClient() {
+    public TextAnalyticsClientImpl build() {
         if (pipeline == null) {
-            this.pipeline =
-                    new HttpPipelineBuilder()
-                            .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
-                            .build();
+            this.pipeline = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build();
         }
-        TextAnalyticsClientImpl client = new TextAnalyticsClientImpl(pipeline, endpoint);
+        TextAnalyticsClientImpl client = new TextAnalyticsClientImpl(pipeline);
+        if (this.endpoint != null) {
+            client.setEndpoint(this.endpoint);
+        }
         return client;
     }
 }
