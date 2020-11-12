@@ -3,24 +3,17 @@
 package com.azure.cosmos.spark
 
 import java.sql.{Date, Timestamp}
-import java.util
 
-import com.azure.cosmos
-import com.azure.cosmos.spark.CosmosLoggingTrait
+import com.fasterxml.jackson.databind.node.{ArrayNode, ObjectNode}
 import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
-import com.fasterxml.jackson.databind.node.{ArrayNode, NullNode, ObjectNode}
-import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.Row
-import org.apache.spark.sql.catalyst.expressions.GenericRowWithSchema
 import org.apache.spark.sql.catalyst.expressions.UnsafeMapData
 import org.apache.spark.sql.types.{BinaryType, BooleanType, DataType, DateType, DecimalType, DoubleType, FloatType, IntegerType, LongType, _}
-//import org.json.{JSONArray, JSONObject}
 import org.apache.spark.sql.catalyst.InternalRow
 import org.apache.spark.sql.catalyst.util.ArrayData
 import org.apache.spark.unsafe.types.UTF8String
 
 import scala.collection.JavaConverters._
-import scala.collection.immutable.HashMap
 import scala.collection.mutable.ListBuffer
 
 /**
@@ -148,7 +141,7 @@ object CosmosRowConverter
     // Otherwise, the data will be converted into String.
     // TODO: moderakh new JSONArray(internalData)
     val arrayNode = objectMapper.createArrayNode()
-    arrayNode.addAll(internalData)
+    arrayNode
   }
 
   private def arrayDataTypeToJsonArray(elementType: DataType, data: ArrayData, isInternalRow: Boolean): ArrayNode = {
@@ -161,7 +154,8 @@ object CosmosRowConverter
     // When constructing the JSONArray, the internalData should contain JSON-compatible objects in order for the schema to be mantained.
     // Otherwise, the data will be converted into String.
     val arrayNode = objectMapper.createArrayNode()
-    arrayNode.addAll(listBuffer.toList.asJava)
+    // TODO: moderakh new JSONArray(listBuffer)
+    arrayNode
   }
 
   private def rowTyperouterToJsonArray(element: Any, schema: StructType) = element match {

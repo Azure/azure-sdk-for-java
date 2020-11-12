@@ -1,1 +1,1 @@
-com.azure.cosmos.spark.CosmosDataSource
+com.azure.cosmos.spark.CosmosItemsDataSource

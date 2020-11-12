@@ -10,7 +10,7 @@ import org.apache.spark.sql.sources.DataSourceRegister
 import org.apache.spark.sql.types.StructType
 import org.apache.spark.sql.util.CaseInsensitiveStringMap
 
-class CosmosDataSource extends DataSourceRegister with TableProvider with CosmosLoggingTrait {
+class CosmosItemsDataSource extends DataSourceRegister with TableProvider with CosmosLoggingTrait {
   logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
   override def inferSchema(caseInsensitiveStringMap: CaseInsensitiveStringMap): StructType = {
@@ -19,7 +19,7 @@ class CosmosDataSource extends DataSourceRegister with TableProvider with Cosmos
       caseInsensitiveStringMap.asCaseSensitiveMap()).schema()
   }
 
-  override def shortName(): String = "cosmos.write"
+  override def shortName(): String = "cosmos.items"
 
   override def getTable(structType: StructType, transforms: Array[Transform], map: util.Map[String, String]): Table = {
     // getTable - This is used for loading table with user specified schema and other transformations.
