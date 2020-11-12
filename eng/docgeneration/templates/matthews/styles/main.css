@@ -256,7 +256,10 @@ article h4 {
   color: #ecdbff;
 }
 .versionarrow {
-  margin: 1.5em;
+  margin-left: 1em;
+  margin-top: -1.5em;
+  margin-bottom: -1em;
+  padding: 1em;
 }
 
 .versionarrow::before {

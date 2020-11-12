@@ -78,29 +78,22 @@ function httpGetAsync(targetUrl, callback) {
     xmlHttp.send(null);
 }
 
+function httpGetLatestAsync(targetUrl, latestVersions, packageName) {
+    httpGetAsync(targetUrl, function (responseText) {
+        if (responseText) {
+            version = responseText.match(/[^\r\n]+/g)
+            $(latestVersions).append('<li><a href="' + getPackageUrl(SELECTED_LANGUAGE, packageName, version) + '" target="_blank">' + version + '</a></li>')
+        }             
+    })
+}
+
 function populateIndexList(selector, packageName) {
     var url = "https://azuresdkdocs.blob.core.windows.net/$web/" + SELECTED_LANGUAGE + "/" + packageName + "/versioning/versions"
     var latestGAUrl = "https://azuresdkdocs.blob.core.windows.net/$web/" + SELECTED_LANGUAGE + "/" + packageName + "/versioning/latest-ga"
     var latestPreviewUrl = "https://azuresdkdocs.blob.core.windows.net/$web/" + SELECTED_LANGUAGE + "/" + packageName + "/versioning/latest-preview"
     var latestVersions = document.createElement("ul")
-    httpGetAsync(latestGAUrl, function (responseText) {
-        if (responseText) {
-            version = responseText.match(/[^\r\n]+/g)
-            $(latestVersions).append('<li><a href="' + getPackageUrl(SELECTED_LANGUAGE, packageName, version) + '" target="_blank">' + 'Latest GA Version: ' + version + '</a></li>')
-        }
-        else {
-            $(latestVersions).append('<li>No latest GA versions found.</li>')
-        }                
-    })
-    httpGetAsync(latestPreviewUrl, function (responseText) {
-        if (responseText) {
-            version = responseText.match(/[^\r\n]+/g)
-            $(latestVersions).append('<li><a href="' + getPackageUrl(SELECTED_LANGUAGE, packageName, version) + '" target="_blank">' + 'Latest Preview Version: ' + version + '</a></li>')
-        }
-        else {
-            $(latestVersions).append('<li>No latest Preview versions found.</li>')
-        }                
-    })
+    httpGetLatestAsync(latestGAUrl, latestVersions, packageName)
+    httpGetLatestAsync(latestPreviewUrl, latestVersions, packageName)
     var publishedVersions = $('<ul style="display: none;"></ul>')
     var collapsible = $('<div class="versionarrow">&nbsp;&nbsp;&nbsp;Other versions</div>')
 
