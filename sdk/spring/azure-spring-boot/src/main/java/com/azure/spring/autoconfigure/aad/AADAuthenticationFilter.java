@@ -42,7 +42,7 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
     private static final String CURRENT_USER_PRINCIPAL = "CURRENT_USER_PRINCIPAL";
 
     private final UserPrincipalManager userPrincipalManager;
-    private final GraphMsalClient graphMsalClient;
+    private final GraphOboClient graphOboClient;
 
     public AADAuthenticationFilter(AADAuthenticationProperties aadAuthenticationProperties,
                                    ServiceEndpointsProperties serviceEndpointsProperties,
@@ -80,7 +80,7 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
                                    ServiceEndpointsProperties serviceEndpointsProperties,
                                    UserPrincipalManager userPrincipalManager) {
         this.userPrincipalManager = userPrincipalManager;
-        this.graphMsalClient = new GraphMsalClient(
+        this.graphOboClient = new GraphOboClient(
             aadAuthenticationProperties,
             serviceEndpointsProperties
         );
@@ -111,16 +111,16 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
             ) {
                 userPrincipal = userPrincipalManager.buildUserPrincipal(aadIssuedBearerToken);
                 String tenantId = userPrincipal.getClaim(AADTokenClaim.TID).toString();
-                String accessTokenForGraphApi = graphMsalClient
+                String accessTokenForGraphApi = graphOboClient
                     .acquireTokenForGraphApi(aadIssuedBearerToken, tenantId)
                     .accessToken();
-                userPrincipal.setGroups(graphMsalClient.getGroups(accessTokenForGraphApi));
+                userPrincipal.setGroups(graphOboClient.getGroups(accessTokenForGraphApi));
                 httpSession.setAttribute(CURRENT_USER_PRINCIPAL, userPrincipal);
             }
             final Authentication authentication = new PreAuthenticatedAuthenticationToken(
                 userPrincipal,
                 null,
-                graphMsalClient.toGrantedAuthoritySet(userPrincipal.getGroups())
+                graphOboClient.toGrantedAuthoritySet(userPrincipal.getGroups())
             );
             LOGGER.info("Request token verification success. {}", authentication);
             SecurityContextHolder.getContext().setAuthentication(authentication);
