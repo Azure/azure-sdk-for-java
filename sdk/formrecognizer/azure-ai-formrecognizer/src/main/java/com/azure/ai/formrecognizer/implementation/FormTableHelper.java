@@ -30,12 +30,6 @@ public final class FormTableHelper {
         accessor = formTableAccessor;
     }
 
-    /**
-     * The private setter to set the appearance property
-     * via {@link FormLineHelper.FormLineAccessor}.
-     *
-     * @param boundingBox the appearance text line.
-     */
     public static void setBoundingBox(FormTable formTable, FieldBoundingBox boundingBox) {
         accessor.setBoundingBox(formTable, boundingBox);
     }

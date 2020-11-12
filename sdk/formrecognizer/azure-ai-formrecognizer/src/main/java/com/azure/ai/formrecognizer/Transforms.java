@@ -3,11 +3,13 @@
 
 package com.azure.ai.formrecognizer;
 
+import com.azure.ai.formrecognizer.implementation.AppearanceHelper;
 import com.azure.ai.formrecognizer.implementation.FormLineHelper;
 import com.azure.ai.formrecognizer.implementation.FormPageHelper;
 import com.azure.ai.formrecognizer.implementation.FormSelectionMarkHelper;
 import com.azure.ai.formrecognizer.implementation.FormTableHelper;
 import com.azure.ai.formrecognizer.implementation.RecognizedFormHelper;
+import com.azure.ai.formrecognizer.implementation.StyleHelper;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.implementation.models.DocumentResult;
 import com.azure.ai.formrecognizer.implementation.models.FieldValue;
@@ -18,6 +20,7 @@ import com.azure.ai.formrecognizer.implementation.models.ReadResult;
 import com.azure.ai.formrecognizer.implementation.models.SelectionMarkState;
 import com.azure.ai.formrecognizer.implementation.models.TextLine;
 import com.azure.ai.formrecognizer.implementation.models.TextWord;
+import com.azure.ai.formrecognizer.models.Appearance;
 import com.azure.ai.formrecognizer.models.FieldBoundingBox;
 import com.azure.ai.formrecognizer.models.FieldData;
 import com.azure.ai.formrecognizer.models.FieldValueType;
@@ -33,6 +36,8 @@ import com.azure.ai.formrecognizer.models.FormWord;
 import com.azure.ai.formrecognizer.models.LengthUnit;
 import com.azure.ai.formrecognizer.models.Point;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
+import com.azure.ai.formrecognizer.models.Style;
+import com.azure.ai.formrecognizer.models.TextStyle;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -261,10 +266,31 @@ final class Transforms {
                     readResultItem.getPage(),
                     toWords(textLine.getWords(), readResultItem.getPage()));
 
-                FormLineHelper.setAppearance(formLine, textLine.getAppearance());
+                FormLineHelper.setAppearance(formLine, getAppearance(textLine));
                 return formLine;
             })
             .collect(Collectors.toList());
+    }
+
+    /**
+     * Private method to get the appearance from the service side text line object.
+     * @param textLine The service side text line object.
+     * @return the custom type Appearance model.
+     */
+    private static Appearance getAppearance(TextLine textLine) {
+        Style style = new Style();
+        if (textLine.getAppearance() != null) {
+            if (textLine.getAppearance().getStyle() != null) {
+                if (textLine.getAppearance().getStyle().getName() != null) {
+                    StyleHelper.setName(style,
+                        TextStyle.fromString(textLine.getAppearance().getStyle().getName().toString()));
+                }
+                StyleHelper.setConfidence(style, textLine.getAppearance().getStyle().getConfidence());
+            }
+        }
+        Appearance appearance = new Appearance();
+        AppearanceHelper.setStyle(appearance, style);
+        return appearance;
     }
 
     /**
@@ -556,7 +582,7 @@ final class Transforms {
                 TextLine textLine = readResults.get(readResultIndex).getLines().get(lineIndex);
                 FormLine lineElement = new FormLine(textLine.getText(), toBoundingBox(textLine.getBoundingBox()),
                     readResultIndex + 1, toWords(textLine.getWords(), readResultIndex + 1));
-                FormLineHelper.setAppearance(lineElement, textLine.getAppearance());
+                FormLineHelper.setAppearance(lineElement, getAppearance(textLine));
                 formElementList.add(lineElement);
             }
         });

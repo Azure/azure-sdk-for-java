@@ -32,5 +32,5 @@ add-context-parameter: true
 models-subpackage: implementation.models
 context-client-method-parameter: true
 custom-types-subpackage: models
-custom-types: LengthUnit,Appearance,Style,TextStyle
+custom-types: LengthUnit,TextStyle
 ```
