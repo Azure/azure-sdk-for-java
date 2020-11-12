@@ -197,11 +197,6 @@ class ServiceBusMessageSerializer implements MessageSerializer {
                 brokeredMessage.getPartitionKey());
         }
 
-        final String viaPartitionKey = brokeredMessage.getViaPartitionKey();
-        if (viaPartitionKey != null && !viaPartitionKey.isEmpty()) {
-            messageAnnotationsMap.put(Symbol.valueOf(VIA_PARTITION_KEY_ANNOTATION_NAME.getValue()), viaPartitionKey);
-        }
-
         amqpMessage.setMessageAnnotations(new MessageAnnotations(messageAnnotationsMap));
 
         // Set Delivery Annotations.

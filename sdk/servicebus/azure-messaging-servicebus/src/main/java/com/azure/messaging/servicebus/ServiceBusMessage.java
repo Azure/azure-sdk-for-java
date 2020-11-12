@@ -460,34 +460,6 @@ public class ServiceBusMessage {
     }
 
     /**
-     * Gets the partition key for sending a message to a entity via another partitioned transfer entity.
-     *
-     * If a message is sent via a transfer queue in the scope of a transaction, this value selects the transfer queue
-     * partition: This is functionally equivalent to {@link #getPartitionKey()} and ensures that messages are kept
-     * together and in order as they are transferred.
-     *
-     * @return partition key on the via queue.
-     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-transactions#transfers-and-send-via">Transfers
-     *     and Send Via</a>
-     */
-    public String getViaPartitionKey() {
-        return (String) amqpAnnotatedMessage.getMessageAnnotations().get(VIA_PARTITION_KEY_ANNOTATION_NAME.getValue());
-    }
-
-    /**
-     * Sets a via-partition key for sending a message to a destination entity via another partitioned entity
-     *
-     * @param viaPartitionKey via-partition key of this message
-     *
-     * @return The updated {@link ServiceBusMessage}.
-     * @see #getViaPartitionKey()
-     */
-    public ServiceBusMessage setViaPartitionKey(String viaPartitionKey) {
-        amqpAnnotatedMessage.getMessageAnnotations().put(VIA_PARTITION_KEY_ANNOTATION_NAME.getValue(), viaPartitionKey);
-        return this;
-    }
-
-    /**
      * Gets the session id of the message.
      *
      * @return Session Id of the {@link ServiceBusMessage}.
