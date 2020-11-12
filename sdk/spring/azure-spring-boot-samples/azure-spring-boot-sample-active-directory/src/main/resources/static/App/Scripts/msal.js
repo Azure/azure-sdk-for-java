@@ -1,3958 +1,7582 @@
-/*! msal v0.2.1 2018-08-14 */
-
+/*! @azure/msal-browser v2.1.0 2020-08-25 */
 'use strict';
-(function webpackUniversalModuleDefinition(root, factory) {
-	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory();
-	else if(typeof define === 'function' && define.amd)
-		define("Msal", [], factory);
-	else if(typeof exports === 'object')
-		exports["Msal"] = factory();
-	else
-		root["Msal"] = factory();
-})(this, function() {
-return /******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
-/******/
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
-/******/ 			return installedModules[moduleId].exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			i: moduleId,
-/******/ 			l: false,
-/******/ 			exports: {}
-/******/ 		};
-/******/
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
-/******/ 		// Flag the module as loaded
-/******/ 		module.l = true;
-/******/
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/
-/******/
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-/******/
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// define getter function for harmony exports
-/******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, {
-/******/ 				configurable: false,
-/******/ 				enumerable: true,
-/******/ 				get: getter
-/******/ 			});
-/******/ 		}
-/******/ 	};
-/******/
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__webpack_require__.n = function(module) {
-/******/ 		var getter = module && module.__esModule ?
-/******/ 			function getDefault() { return module['default']; } :
-/******/ 			function getModuleExports() { return module; };
-/******/ 		__webpack_require__.d(getter, 'a', getter);
-/******/ 		return getter;
-/******/ 	};
-/******/
-/******/ 	// Object.prototype.hasOwnProperty.call
-/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
-/******/
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 10);
-/******/ })
-/************************************************************************/
-/******/ ([
-/* 0 */
-/***/ (function(module, exports, __webpack_require__) {
+(function (global, factory) {
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+        typeof define === 'function' && define.amd ? define(['exports'], factory) :
+            (global = global || self, factory(global.msal = {}));
+}(this, (function (exports) { 'use strict';
 
-"use strict";
+    /*! *****************************************************************************
+    Copyright (c) Microsoft Corporation. All rights reserved.
+    Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+    this file except in compliance with the License. You may obtain a copy of the
+    License at http://www.apache.org/licenses/LICENSE-2.0
 
-/**
- * Copyright (c) Microsoft Corporation
- *  All Rights Reserved
- *  MIT License
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this
- * software and associated documentation files (the 'Software'), to deal in the Software
- * without restriction, including without limitation the rights to use, copy, modify,
- * merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to the following
- * conditions:
- *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
- * OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
- * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT
- * OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-/*
- * @hidden
- */
-var Utils = /** @class */ (function () {
-    function Utils() {
+    THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
+    WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
+    MERCHANTABLITY OR NON-INFRINGEMENT.
+
+    See the Apache Version 2.0 License for specific language governing permissions
+    and limitations under the License.
+    ***************************************************************************** */
+    /* global Reflect, Promise */
+
+    var extendStatics = function(d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+
+    function __extends(d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     }
-    Utils.compareObjects = function (u1, u2) {
-        if (!u1 || !u2) {
-            return false;
-        }
-        if (u1.userIdentifier && u2.userIdentifier) {
-            if (u1.userIdentifier === u2.userIdentifier) {
-                return true;
+
+    var __assign = function() {
+        __assign = Object.assign || function __assign(t) {
+            for (var s, i = 1, n = arguments.length; i < n; i++) {
+                s = arguments[i];
+                for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
             }
-        }
-        return false;
-    };
-    Utils.expiresIn = function (expires) {
-        // if AAD did not send "expires_in" property, use default expiration of 3599 seconds, for some reason AAD sends 3599 as "expires_in" value instead of 3600
-        if (!expires) {
-            expires = "3599";
-        }
-        return this.now() + parseInt(expires, 10);
-    };
-    Utils.now = function () {
-        return Math.round(new Date().getTime() / 1000.0);
-    };
-    Utils.isEmpty = function (str) {
-        return (typeof str === "undefined" || !str || 0 === str.length);
-    };
-    Utils.extractIdToken = function (encodedIdToken) {
-        // id token will be decoded to get the username
-        var decodedToken = this.decodeJwt(encodedIdToken);
-        if (!decodedToken) {
-            return null;
-        }
-        try {
-            var base64IdToken = decodedToken.JWSPayload;
-            var base64Decoded = this.base64DecodeStringUrlSafe(base64IdToken);
-            if (!base64Decoded) {
-                //this._requestContext.logger.info("The returned id_token could not be base64 url safe decoded.");
-                return null;
-            }
-            // ECMA script has JSON built-in support
-            return JSON.parse(base64Decoded);
-        }
-        catch (err) {
-            //this._requestContext.logger.error("The returned id_token could not be decoded" + err);
-        }
-        return null;
-    };
-    Utils.base64EncodeStringUrlSafe = function (input) {
-        // html5 should support atob function for decoding
-        if (window.btoa) {
-            return window.btoa(input);
-        }
-        else {
-            return this.encode(input);
-        }
-    };
-    Utils.base64DecodeStringUrlSafe = function (base64IdToken) {
-        // html5 should support atob function for decoding
-        base64IdToken = base64IdToken.replace(/-/g, "+").replace(/_/g, "/");
-        if (window.atob) {
-            return decodeURIComponent(encodeURIComponent(window.atob(base64IdToken))); // jshint ignore:line
-        }
-        else {
-            return decodeURIComponent(encodeURIComponent(this.decode(base64IdToken)));
-        }
-    };
-    Utils.encode = function (input) {
-        var keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
-        var output = "";
-        var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
-        var i = 0;
-        input = this.utf8Encode(input);
-        while (i < input.length) {
-            chr1 = input.charCodeAt(i++);
-            chr2 = input.charCodeAt(i++);
-            chr3 = input.charCodeAt(i++);
-            enc1 = chr1 >> 2;
-            enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
-            enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
-            enc4 = chr3 & 63;
-            if (isNaN(chr2)) {
-                enc3 = enc4 = 64;
-            }
-            else if (isNaN(chr3)) {
-                enc4 = 64;
-            }
-            output = output + keyStr.charAt(enc1) + keyStr.charAt(enc2) + keyStr.charAt(enc3) + keyStr.charAt(enc4);
-        }
-        return output.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
-    };
-    Utils.utf8Encode = function (input) {
-        input = input.replace(/\r\n/g, "\n");
-        var utftext = "";
-        for (var n = 0; n < input.length; n++) {
-            var c = input.charCodeAt(n);
-            if (c < 128) {
-                utftext += String.fromCharCode(c);
-            }
-            else if ((c > 127) && (c < 2048)) {
-                utftext += String.fromCharCode((c >> 6) | 192);
-                utftext += String.fromCharCode((c & 63) | 128);
-            }
-            else {
-                utftext += String.fromCharCode((c >> 12) | 224);
-                utftext += String.fromCharCode(((c >> 6) & 63) | 128);
-                utftext += String.fromCharCode((c & 63) | 128);
-            }
-        }
-        return utftext;
-    };
-    Utils.decode = function (base64IdToken) {
-        var codes = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
-        base64IdToken = String(base64IdToken).replace(/=+$/, "");
-        var length = base64IdToken.length;
-        if (length % 4 === 1) {
-            throw new Error("The token to be decoded is not correctly encoded.");
-        }
-        var h1, h2, h3, h4, bits, c1, c2, c3, decoded = "";
-        for (var i = 0; i < length; i += 4) {
-            //Every 4 base64 encoded character will be converted to 3 byte string, which is 24 bits
-            // then 6 bits per base64 encoded character
-            h1 = codes.indexOf(base64IdToken.charAt(i));
-            h2 = codes.indexOf(base64IdToken.charAt(i + 1));
-            h3 = codes.indexOf(base64IdToken.charAt(i + 2));
-            h4 = codes.indexOf(base64IdToken.charAt(i + 3));
-            // For padding, if last two are "="
-            if (i + 2 === length - 1) {
-                bits = h1 << 18 | h2 << 12 | h3 << 6;
-                c1 = bits >> 16 & 255;
-                c2 = bits >> 8 & 255;
-                decoded += String.fromCharCode(c1, c2);
-                break;
-            }
-            // if last one is "="
-            else if (i + 1 === length - 1) {
-                bits = h1 << 18 | h2 << 12;
-                c1 = bits >> 16 & 255;
-                decoded += String.fromCharCode(c1);
-                break;
-            }
-            bits = h1 << 18 | h2 << 12 | h3 << 6 | h4;
-            // then convert to 3 byte chars
-            c1 = bits >> 16 & 255;
-            c2 = bits >> 8 & 255;
-            c3 = bits & 255;
-            decoded += String.fromCharCode(c1, c2, c3);
-        }
-        return decoded;
-    };
-    Utils.decodeJwt = function (jwtToken) {
-        if (this.isEmpty(jwtToken)) {
-            return null;
-        }
-        var idTokenPartsRegex = /^([^\.\s]*)\.([^\.\s]+)\.([^\.\s]*)$/;
-        var matches = idTokenPartsRegex.exec(jwtToken);
-        if (!matches || matches.length < 4) {
-            //this._requestContext.logger.warn("The returned id_token is not parseable.");
-            return null;
-        }
-        var crackedToken = {
-            header: matches[1],
-            JWSPayload: matches[2],
-            JWSSig: matches[3]
+            return t;
         };
-        return crackedToken;
+        return __assign.apply(this, arguments);
     };
-    Utils.deserialize = function (query) {
-        var match; // Regex for replacing addition symbol with a space
-        var pl = /\+/g;
-        var search = /([^&=]+)=([^&]*)/g;
-        var decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); };
-        var obj = {};
-        match = search.exec(query);
-        while (match) {
-            obj[decode(match[1])] = decode(match[2]);
+
+    function __awaiter(thisArg, _arguments, P, generator) {
+        return new (P || (P = Promise))(function (resolve, reject) {
+            function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+            function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+            function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+            step((generator = generator.apply(thisArg, _arguments || [])).next());
+        });
+    }
+
+    function __generator(thisArg, body) {
+        var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+        return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+        function verb(n) { return function (v) { return step([n, v]); }; }
+        function step(op) {
+            if (f) throw new TypeError("Generator is already executing.");
+            while (_) try {
+                if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+                if (y = 0, t) op = [op[0] & 2, t.value];
+                switch (op[0]) {
+                    case 0: case 1: t = op; break;
+                    case 4: _.label++; return { value: op[1], done: false };
+                    case 5: _.label++; y = op[1]; op = [0]; continue;
+                    case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                    default:
+                        if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                        if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                        if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                        if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                        if (t[2]) _.ops.pop();
+                        _.trys.pop(); continue;
+                }
+                op = body.call(thisArg, _);
+            } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+            if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+        }
+    }
+
+    function __spreadArrays() {
+        for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+        for (var r = Array(s), k = 0, i = 0; i < il; i++)
+            for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+                r[k] = a[j];
+        return r;
+    }
+
+    /*! @azure/msal-common v1.2.0 2020-08-25 */
+    /*! *****************************************************************************
+    Copyright (c) Microsoft Corporation. All rights reserved.
+    Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+    this file except in compliance with the License. You may obtain a copy of the
+    License at http://www.apache.org/licenses/LICENSE-2.0
+
+    THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
+    WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
+    MERCHANTABLITY OR NON-INFRINGEMENT.
+
+    See the Apache Version 2.0 License for specific language governing permissions
+    and limitations under the License.
+    ***************************************************************************** */
+    /* global Reflect, Promise */
+
+    var extendStatics$1 = function(d, b) {
+        extendStatics$1 = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics$1(d, b);
+    };
+
+    function __extends$1(d, b) {
+        extendStatics$1(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    }
+
+    var __assign$1 = function() {
+        __assign$1 = Object.assign || function __assign(t) {
+            for (var s, i = 1, n = arguments.length; i < n; i++) {
+                s = arguments[i];
+                for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+            }
+            return t;
+        };
+        return __assign$1.apply(this, arguments);
+    };
+
+    function __awaiter$1(thisArg, _arguments, P, generator) {
+        return new (P || (P = Promise))(function (resolve, reject) {
+            function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+            function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+            function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+            step((generator = generator.apply(thisArg, _arguments || [])).next());
+        });
+    }
+
+    function __generator$1(thisArg, body) {
+        var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+        return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+        function verb(n) { return function (v) { return step([n, v]); }; }
+        function step(op) {
+            if (f) throw new TypeError("Generator is already executing.");
+            while (_) try {
+                if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+                if (y = 0, t) op = [op[0] & 2, t.value];
+                switch (op[0]) {
+                    case 0: case 1: t = op; break;
+                    case 4: _.label++; return { value: op[1], done: false };
+                    case 5: _.label++; y = op[1]; op = [0]; continue;
+                    case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                    default:
+                        if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                        if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                        if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                        if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                        if (t[2]) _.ops.pop();
+                        _.trys.pop(); continue;
+                }
+                op = body.call(thisArg, _);
+            } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+            if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+        }
+    }
+
+    function __spreadArrays$1() {
+        for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+        for (var r = Array(s), k = 0, i = 0; i < il; i++)
+            for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+                r[k] = a[j];
+        return r;
+    }
+
+    /*
+     * Copyright (c) Microsoft Corporation. All rights reserved.
+     * Licensed under the MIT License.
+     */
+    /**
+     * AuthErrorMessage class containing string constants used by error codes and messages.
+     */
+    var AuthErrorMessage = {
+        unexpectedError: {
+            code: "unexpected_error",
+            desc: "Unexpected error in authentication."
+        }
+    };
+    /**
+     * General error class thrown by the MSAL.js library.
+     */
+    var AuthError = /** @class */ (function (_super) {
+        __extends$1(AuthError, _super);
+        function AuthError(errorCode, errorMessage) {
+            var _this = this;
+            var errorString = errorMessage ? errorCode + ": " + errorMessage : errorCode;
+            _this = _super.call(this, errorString) || this;
+            Object.setPrototypeOf(_this, AuthError.prototype);
+            _this.errorCode = errorCode;
+            _this.errorMessage = errorMessage;
+            _this.name = "AuthError";
+            return _this;
+        }
+        /**
+         * Creates an error that is thrown when something unexpected happens in the library.
+         * @param errDesc
+         */
+        AuthError.createUnexpectedError = function (errDesc) {
+            return new AuthError(AuthErrorMessage.unexpectedError.code, AuthErrorMessage.unexpectedError.desc + ": " + errDesc);
+        };
+        return AuthError;
+    }(Error));
+
+    var name = "@azure/msal-common";
+    var author = {
+        name: "Microsoft",
+        email: "nugetaad@microsoft.com",
+        url: "https://www.microsoft.com"
+    };
+    var license = "MIT";
+    var repository = {
+        type: "git",
+        url: "https://github.com/AzureAD/microsoft-authentication-library-for-js.git"
+    };
+    var version = "1.2.0";
+    var description = "Microsoft Authentication Library for js";
+    var keywords = [
+        "implicit",
+        "authorization code",
+        "PKCE",
+        "js",
+        "AAD",
+        "msal",
+        "oauth"
+    ];
+    var main = "./dist/index.js";
+    var module = "./dist/index.es.js";
+    var types = "./dist/src/index.d.ts";
+    var browserslist = [
+        "last 1 version",
+        "> 1%",
+        "maintained node versions",
+        "not dead"
+    ];
+    var engines = {
+        node: ">=0.8.0"
+    };
+    var directories = {
+        test: "test"
+    };
+    var files = [
+        "dist"
+    ];
+    var scripts = {
+        clean: "shx rm -rf dist lib",
+        "clean:coverage": "rimraf ../../.nyc_output/*",
+        doc: "npm run doc:generate && npm run doc:deploy",
+        "doc:generate": "typedoc --mode modules --excludePrivate --excludeProtected --excludeNotExported --out ./ref ./src/ --gitRevision dev",
+        "doc:deploy": "gh-pages -d ref -a -e ref/msal-common",
+        lint: "eslint src --ext .ts",
+        test: "mocha",
+        "test:coverage": "nyc --reporter=text mocha --exit",
+        "test:coverage:only": "npm run clean:coverage && npm run test:coverage",
+        "build:modules": "rollup -c",
+        "build:modules:watch": "rollup -cw",
+        build: "npm run clean && npm run lint && npm run build:modules",
+        prepack: "npm run build"
+    };
+    var devDependencies = {
+        "@babel/core": "^7.7.2",
+        "@babel/plugin-proposal-class-properties": "^7.7.0",
+        "@babel/plugin-proposal-object-rest-spread": "^7.6.2",
+        "@babel/polyfill": "^7.7.0",
+        "@babel/preset-env": "^7.7.1",
+        "@babel/preset-typescript": "^7.7.2",
+        "@babel/register": "^7.7.0",
+        "@istanbuljs/nyc-config-babel": "^2.1.1",
+        "@rollup/plugin-json": "^4.0.0",
+        "@types/chai": "^4.2.5",
+        "@types/chai-as-promised": "^7.1.2",
+        "@types/debug": "^4.1.5",
+        "@types/mocha": "^5.2.7",
+        "@types/sinon": "^7.5.0",
+        "@typescript-eslint/eslint-plugin": "^2.4.0",
+        "@typescript-eslint/eslint-plugin-tslint": "^2.4.0",
+        "@typescript-eslint/parser": "^2.4.0",
+        "babel-plugin-istanbul": "^5.2.0",
+        beachball: "^1.32.2",
+        chai: "^4.2.0",
+        "chai-as-promised": "^7.1.1",
+        eslint: "^6.5.1",
+        "gh-pages": "^3.1.0",
+        husky: "^3.0.9",
+        mocha: "^6.2.2",
+        nyc: "^14.1.1",
+        rimraf: "^3.0.2",
+        rollup: "^1.24.0",
+        "rollup-plugin-typescript2": "^0.24.3",
+        "rollup-plugin-uglify": "^6.0.4",
+        shx: "^0.3.2",
+        sinon: "^7.5.0",
+        tslib: "^1.10.0",
+        tslint: "^5.20.0",
+        typedoc: "^0.17.8",
+        typescript: "^3.7.5"
+    };
+    var dependencies = {
+        debug: "^4.1.1"
+    };
+    var pkg = {
+        name: name,
+        author: author,
+        license: license,
+        repository: repository,
+        version: version,
+        description: description,
+        keywords: keywords,
+        main: main,
+        module: module,
+        types: types,
+        browserslist: browserslist,
+        engines: engines,
+        directories: directories,
+        files: files,
+        scripts: scripts,
+        devDependencies: devDependencies,
+        dependencies: dependencies
+    };
+
+    /**
+     * ClientAuthErrorMessage class containing string constants used by error codes and messages.
+     */
+    var ClientAuthErrorMessage = {
+        clientInfoDecodingError: {
+            code: "client_info_decoding_error",
+            desc: "The client info could not be parsed/decoded correctly. Please review the trace to determine the root cause."
+        },
+        clientInfoEmptyError: {
+            code: "client_info_empty_error",
+            desc: "The client info was empty. Please review the trace to determine the root cause."
+        },
+        idTokenParsingError: {
+            code: "id_token_parsing_error",
+            desc: "ID token cannot be parsed. Please review stack trace to determine root cause."
+        },
+        nullOrEmptyIdToken: {
+            code: "null_or_empty_id_token",
+            desc: "The idToken is null or empty. Please review the trace to determine the root cause."
+        },
+        endpointResolutionError: {
+            code: "endpoints_resolution_error",
+            desc: "Error: could not resolve endpoints. Please check network and try again."
+        },
+        invalidAuthorityType: {
+            code: "invalid_authority_type",
+            desc: "The given authority is not a valid type of authority supported by MSAL. Please review the trace to determine the root cause."
+        },
+        hashNotDeserialized: {
+            code: "hash_not_deserialized",
+            desc: "The hash parameters could not be deserialized. Please review the trace to determine the root cause."
+        },
+        blankGuidGenerated: {
+            code: "blank_guid_generated",
+            desc: "The guid generated was blank. Please review the trace to determine the root cause."
+        },
+        invalidStateError: {
+            code: "invalid_state",
+            desc: "State was not the expected format. Please check the logs to determine whether the request was sent using ProtocolUtils.setRequestState()."
+        },
+        stateMismatchError: {
+            code: "state_mismatch",
+            desc: "State mismatch error. Please check your network. Continued requests may cause cache overflow."
+        },
+        nonceMismatchError: {
+            code: "nonce_mismatch",
+            desc: "Nonce mismatch error. This may be caused by a race condition in concurrent requests."
+        },
+        accountMismatchError: {
+            code: "account_mismatch",
+            desc: "The cached account and account which made the token request do not match."
+        },
+        invalidIdToken: {
+            code: "invalid_id_token",
+            desc: "Invalid ID token format."
+        },
+        noTokensFoundError: {
+            code: "no_tokens_found",
+            desc: "No tokens were found for the given scopes, and no authorization code was passed to acquireToken. You must retrieve an authorization code before making a call to acquireToken()."
+        },
+        cacheParseError: {
+            code: "cache_parse_error",
+            desc: "Could not parse cache key."
+        },
+        userLoginRequiredError: {
+            code: "user_login_error",
+            desc: "User login is required."
+        },
+        multipleMatchingTokens: {
+            code: "multiple_matching_tokens",
+            desc: "The cache contains multiple tokens satisfying the requirements. " +
+                "Call AcquireToken again providing more requirements such as authority or account."
+        },
+        multipleMatchingAccounts: {
+            code: "multiple_matching_accounts",
+            desc: "The cache contains multiple accounts satisfying the given parameters. Please pass more info to obtain the correct account"
+        },
+        tokenRequestCannotBeMade: {
+            code: "request_cannot_be_made",
+            desc: "Token request cannot be made without authorization code or refresh token."
+        },
+        appendEmptyScopeError: {
+            code: "cannot_append_empty_scope",
+            desc: "Cannot append null or empty scope to ScopeSet. Please check the stack trace for more info."
+        },
+        removeEmptyScopeError: {
+            code: "cannot_remove_empty_scope",
+            desc: "Cannot remove null or empty scope from ScopeSet. Please check the stack trace for more info."
+        },
+        appendScopeSetError: {
+            code: "cannot_append_scopeset",
+            desc: "Cannot append ScopeSet due to error."
+        },
+        emptyInputScopeSetError: {
+            code: "empty_input_scopeset",
+            desc: "Empty input ScopeSet cannot be processed."
+        },
+        DeviceCodePollingCancelled: {
+            code: "device_code_polling_cancelled",
+            desc: "Caller has cancelled token endpoint polling during device code flow by setting DeviceCodeRequest.cancel = true."
+        },
+        DeviceCodeExpired: {
+            code: "device_code_expired",
+            desc: "Device code is expired."
+        },
+        NoAccountInSilentRequest: {
+            code: "no_account_in_silent_request",
+            desc: "Please pass an account object, silent flow is not supported without account information"
+        },
+        invalidCacheRecord: {
+            code: "invalid_cache_record",
+            desc: "Cache record object was null or undefined."
+        },
+        invalidCacheEnvironment: {
+            code: "invalid_cache_environment",
+            desc: "Invalid environment when attempting to create cache entry"
+        },
+        noAccountFound: {
+            code: "no_account_found",
+            desc: "No account found in cache for given key."
+        },
+        CachePluginError: {
+            code: "no cache plugin set on CacheManager",
+            desc: "ICachePlugin needs to be set before using readFromStorage or writeFromStorage"
+        },
+        noCryptoObj: {
+            code: "no_crypto_object",
+            desc: "No crypto object detected. This is required for the following operation: "
+        },
+        invalidCacheType: {
+            code: "invalid_cache_type",
+            desc: "Invalid cache type"
+        },
+        unexpectedAccountType: {
+            code: "unexpected_account_type",
+            desc: "Unexpected account type."
+        },
+        unexpectedCredentialType: {
+            code: "unexpected_credential_type",
+            desc: "Unexpected credential type."
+        },
+        invalidAssertion: {
+            code: "invalid_assertion",
+            desc: "Client assertion must meet requirements described in https://tools.ietf.org/html/rfc7515"
+        },
+        invalidClientCredential: {
+            code: "invalid_client_credential",
+            desc: "Client credential (secret, certificate, or assertion) must not be empty when creating a confidential client. An application should at most have one credential"
+        }
+    };
+    /**
+     * Error thrown when there is an error in the client code running on the browser.
+     */
+    var ClientAuthError = /** @class */ (function (_super) {
+        __extends$1(ClientAuthError, _super);
+        function ClientAuthError(errorCode, errorMessage) {
+            var _this = _super.call(this, errorCode, errorMessage) || this;
+            _this.name = "ClientAuthError";
+            Object.setPrototypeOf(_this, ClientAuthError.prototype);
+            return _this;
+        }
+        /**
+         * Creates an error thrown when client info object doesn't decode correctly.
+         * @param caughtError
+         */
+        ClientAuthError.createClientInfoDecodingError = function (caughtError) {
+            return new ClientAuthError(ClientAuthErrorMessage.clientInfoDecodingError.code, ClientAuthErrorMessage.clientInfoDecodingError.desc + " Failed with error: " + caughtError);
+        };
+        /**
+         * Creates an error thrown if the client info is empty.
+         * @param rawClientInfo
+         */
+        ClientAuthError.createClientInfoEmptyError = function (rawClientInfo) {
+            return new ClientAuthError(ClientAuthErrorMessage.clientInfoEmptyError.code, ClientAuthErrorMessage.clientInfoEmptyError.desc + " Given Object: " + rawClientInfo);
+        };
+        /**
+         * Creates an error thrown when the id token extraction errors out.
+         * @param err
+         */
+        ClientAuthError.createIdTokenParsingError = function (caughtExtractionError) {
+            return new ClientAuthError(ClientAuthErrorMessage.idTokenParsingError.code, ClientAuthErrorMessage.idTokenParsingError.desc + " Failed with error: " + caughtExtractionError);
+        };
+        /**
+         * Creates an error thrown when the id token string is null or empty.
+         * @param invalidRawTokenString
+         */
+        ClientAuthError.createIdTokenNullOrEmptyError = function (invalidRawTokenString) {
+            return new ClientAuthError(ClientAuthErrorMessage.nullOrEmptyIdToken.code, ClientAuthErrorMessage.nullOrEmptyIdToken.desc + " Raw ID Token Value: " + invalidRawTokenString);
+        };
+        /**
+         * Creates an error thrown when the endpoint discovery doesn't complete correctly.
+         */
+        ClientAuthError.createEndpointDiscoveryIncompleteError = function (errDetail) {
+            return new ClientAuthError(ClientAuthErrorMessage.endpointResolutionError.code, ClientAuthErrorMessage.endpointResolutionError.desc + " Detail: " + errDetail);
+        };
+        /**
+         * Creates an error thrown if authority type is not valid.
+         * @param invalidAuthorityError
+         */
+        ClientAuthError.createInvalidAuthorityTypeError = function (givenUrl) {
+            return new ClientAuthError(ClientAuthErrorMessage.invalidAuthorityType.code, ClientAuthErrorMessage.invalidAuthorityType.desc + " Given Url: " + givenUrl);
+        };
+        /**
+         * Creates an error thrown when the hash cannot be deserialized.
+         * @param invalidAuthorityError
+         */
+        ClientAuthError.createHashNotDeserializedError = function (hashParamObj) {
+            return new ClientAuthError(ClientAuthErrorMessage.hashNotDeserialized.code, ClientAuthErrorMessage.hashNotDeserialized.desc + " Given Object: " + hashParamObj);
+        };
+        /**
+         * Creates an error thrown when the state cannot be parsed.
+         * @param invalidState
+         */
+        ClientAuthError.createInvalidStateError = function (invalidState, errorString) {
+            return new ClientAuthError(ClientAuthErrorMessage.invalidStateError.code, ClientAuthErrorMessage.invalidStateError.desc + " Invalid State: " + invalidState + ", Root Err: " + errorString);
+        };
+        /**
+         * Creates an error thrown when two states do not match.
+         */
+        ClientAuthError.createStateMismatchError = function () {
+            return new ClientAuthError(ClientAuthErrorMessage.stateMismatchError.code, ClientAuthErrorMessage.stateMismatchError.desc);
+        };
+        /**
+         * Creates an error thrown when the nonce does not match.
+         */
+        ClientAuthError.createNonceMismatchError = function () {
+            return new ClientAuthError(ClientAuthErrorMessage.nonceMismatchError.code, ClientAuthErrorMessage.nonceMismatchError.desc);
+        };
+        /**
+         * Creates an error thrown when the cached account and response account do not match.
+         */
+        ClientAuthError.createAccountMismatchError = function () {
+            return new ClientAuthError(ClientAuthErrorMessage.accountMismatchError.code, ClientAuthErrorMessage.accountMismatchError.desc);
+        };
+        /**
+         * Throws error if idToken is not correctly formed
+         * @param idToken
+         */
+        ClientAuthError.createInvalidIdTokenError = function (idToken) {
+            return new ClientAuthError(ClientAuthErrorMessage.invalidIdToken.code, ClientAuthErrorMessage.invalidIdToken.desc + " Given token: " + JSON.stringify(idToken));
+        };
+        /**
+         * Creates an error thrown when the authorization code required for a token request is null or empty.
+         */
+        ClientAuthError.createNoTokensFoundError = function () {
+            return new ClientAuthError(ClientAuthErrorMessage.noTokensFoundError.code, ClientAuthErrorMessage.noTokensFoundError.desc);
+        };
+        /**
+         * Creates an error in cache parsing.
+         */
+        ClientAuthError.createCacheParseError = function (cacheKey) {
+            return new ClientAuthError(ClientAuthErrorMessage.cacheParseError.code, ClientAuthErrorMessage.cacheParseError.desc + " Cache key: " + cacheKey);
+        };
+        /**
+         * Throws error when renewing token without login.
+         */
+        ClientAuthError.createUserLoginRequiredError = function () {
+            return new ClientAuthError(ClientAuthErrorMessage.userLoginRequiredError.code, ClientAuthErrorMessage.userLoginRequiredError.desc);
+        };
+        /**
+         * Throws error when multiple tokens are in cache for the given scope.
+         * @param scope
+         */
+        ClientAuthError.createMultipleMatchingTokensInCacheError = function (scope) {
+            return new ClientAuthError(ClientAuthErrorMessage.multipleMatchingTokens.code, "Cache error for scope " + scope + ": " + ClientAuthErrorMessage.multipleMatchingTokens.desc + ".");
+        };
+        /**
+         * Throws error when multiple tokens are in cache for the given scope.
+         * @param scope
+         */
+        ClientAuthError.createMultipleMatchingAccountsInCacheError = function () {
+            return new ClientAuthError(ClientAuthErrorMessage.multipleMatchingAccounts.code, ClientAuthErrorMessage.multipleMatchingAccounts.desc);
+        };
+        /**
+         * Throws error when no auth code or refresh token is given to ServerTokenRequestParameters.
+         */
+        ClientAuthError.createTokenRequestCannotBeMadeError = function () {
+            return new ClientAuthError(ClientAuthErrorMessage.tokenRequestCannotBeMade.code, ClientAuthErrorMessage.tokenRequestCannotBeMade.desc);
+        };
+        /**
+         * Throws error when attempting to append a null, undefined or empty scope to a set
+         * @param givenScope
+         */
+        ClientAuthError.createAppendEmptyScopeToSetError = function (givenScope) {
+            return new ClientAuthError(ClientAuthErrorMessage.appendEmptyScopeError.code, ClientAuthErrorMessage.appendEmptyScopeError.desc + " Given Scope: " + givenScope);
+        };
+        /**
+         * Throws error when attempting to append a null, undefined or empty scope to a set
+         * @param givenScope
+         */
+        ClientAuthError.createRemoveEmptyScopeFromSetError = function (givenScope) {
+            return new ClientAuthError(ClientAuthErrorMessage.removeEmptyScopeError.code, ClientAuthErrorMessage.removeEmptyScopeError.desc + " Given Scope: " + givenScope);
+        };
+        /**
+         * Throws error when attempting to append null or empty ScopeSet.
+         * @param appendError
+         */
+        ClientAuthError.createAppendScopeSetError = function (appendError) {
+            return new ClientAuthError(ClientAuthErrorMessage.appendScopeSetError.code, ClientAuthErrorMessage.appendScopeSetError.desc + " Detail Error: " + appendError);
+        };
+        /**
+         * Throws error if ScopeSet is null or undefined.
+         * @param givenScopeSet
+         */
+        ClientAuthError.createEmptyInputScopeSetError = function (givenScopeSet) {
+            return new ClientAuthError(ClientAuthErrorMessage.emptyInputScopeSetError.code, ClientAuthErrorMessage.emptyInputScopeSetError.desc + " Given ScopeSet: " + givenScopeSet);
+        };
+        /**
+         * Throws error if user sets CancellationToken.cancel = true during polling of token endpoint during device code flow
+         */
+        ClientAuthError.createDeviceCodeCancelledError = function () {
+            return new ClientAuthError(ClientAuthErrorMessage.DeviceCodePollingCancelled.code, "" + ClientAuthErrorMessage.DeviceCodePollingCancelled.desc);
+        };
+        /**
+         * Throws error if device code is expired
+         */
+        ClientAuthError.createDeviceCodeExpiredError = function () {
+            return new ClientAuthError(ClientAuthErrorMessage.DeviceCodeExpired.code, "" + ClientAuthErrorMessage.DeviceCodeExpired.desc);
+        };
+        /**
+         * Throws error when silent requests are made without an account object
+         */
+        ClientAuthError.createNoAccountInSilentRequestError = function () {
+            return new ClientAuthError(ClientAuthErrorMessage.NoAccountInSilentRequest.code, "" + ClientAuthErrorMessage.NoAccountInSilentRequest.desc);
+        };
+        /**
+         * Throws error when cache record is null or undefined.
+         */
+        ClientAuthError.createNullOrUndefinedCacheRecord = function () {
+            return new ClientAuthError(ClientAuthErrorMessage.invalidCacheRecord.code, ClientAuthErrorMessage.invalidCacheRecord.desc);
+        };
+        /**
+         * Throws error when provided environment is not part of the CloudDiscoveryMetadata object
+         */
+        ClientAuthError.createInvalidCacheEnvironmentError = function () {
+            return new ClientAuthError(ClientAuthErrorMessage.invalidCacheEnvironment.code, ClientAuthErrorMessage.invalidCacheEnvironment.desc);
+        };
+        /**
+         * Throws error when account is not found in cache.
+         */
+        ClientAuthError.createNoAccountFoundError = function () {
+            return new ClientAuthError(ClientAuthErrorMessage.noAccountFound.code, ClientAuthErrorMessage.noAccountFound.desc);
+        };
+        /**
+         * Throws error if ICachePlugin not set on CacheManager.
+         */
+        ClientAuthError.createCachePluginError = function () {
+            return new ClientAuthError(ClientAuthErrorMessage.CachePluginError.code, "" + ClientAuthErrorMessage.CachePluginError.desc);
+        };
+        /**
+         * Throws error if crypto object not found.
+         * @param operationName
+         */
+        ClientAuthError.createNoCryptoObjectError = function (operationName) {
+            return new ClientAuthError(ClientAuthErrorMessage.noCryptoObj.code, "" + ClientAuthErrorMessage.noCryptoObj.desc + operationName);
+        };
+        /**
+         * Throws error if cache type is invalid.
+         */
+        ClientAuthError.createInvalidCacheTypeError = function () {
+            return new ClientAuthError(ClientAuthErrorMessage.invalidCacheType.code, "" + ClientAuthErrorMessage.invalidCacheType.desc);
+        };
+        /**
+         * Throws error if unexpected account type.
+         */
+        ClientAuthError.createUnexpectedAccountTypeError = function () {
+            return new ClientAuthError(ClientAuthErrorMessage.unexpectedAccountType.code, "" + ClientAuthErrorMessage.unexpectedAccountType.desc);
+        };
+        /**
+         * Throws error if unexpected credential type.
+         */
+        ClientAuthError.createUnexpectedCredentialTypeError = function () {
+            return new ClientAuthError(ClientAuthErrorMessage.unexpectedCredentialType.code, "" + ClientAuthErrorMessage.unexpectedCredentialType.desc);
+        };
+        /**
+         * Throws error if client assertion is not valid.
+         */
+        ClientAuthError.createInvalidAssertionError = function () {
+            return new ClientAuthError(ClientAuthErrorMessage.invalidAssertion.code, "" + ClientAuthErrorMessage.invalidAssertion.desc);
+        };
+        /**
+         * Throws error if client assertion is not valid.
+         */
+        ClientAuthError.createInvalidCredentialError = function () {
+            return new ClientAuthError(ClientAuthErrorMessage.invalidClientCredential.code, "" + ClientAuthErrorMessage.invalidClientCredential.desc);
+        };
+        return ClientAuthError;
+    }(AuthError));
+
+    /**
+     * @hidden
+     */
+    var StringUtils = /** @class */ (function () {
+        function StringUtils() {
+        }
+        /**
+         * decode a JWT
+         *
+         * @param jwtToken
+         */
+        StringUtils.decodeJwt = function (jwtToken) {
+            if (StringUtils.isEmpty(jwtToken)) {
+                throw ClientAuthError.createIdTokenNullOrEmptyError(jwtToken);
+            }
+            var idTokenPartsRegex = /^([^\.\s]*)\.([^\.\s]+)\.([^\.\s]*)$/;
+            var matches = idTokenPartsRegex.exec(jwtToken);
+            if (!matches || matches.length < 4) {
+                throw ClientAuthError.createIdTokenParsingError("Given token is malformed: " + JSON.stringify(jwtToken));
+            }
+            var crackedToken = {
+                header: matches[1],
+                JWSPayload: matches[2],
+                JWSSig: matches[3]
+            };
+            return crackedToken;
+        };
+        /**
+         * Check if a string is empty.
+         *
+         * @param str
+         */
+        StringUtils.isEmpty = function (str) {
+            return (typeof str === "undefined" || !str || 0 === str.length);
+        };
+        StringUtils.startsWith = function (str, search) {
+            return str.indexOf(search) === 0;
+        };
+        StringUtils.endsWith = function (str, search) {
+            return (str.length >= search.length) && (str.lastIndexOf(search) === (str.length - search.length));
+        };
+        /**
+         * Parses string into an object.
+         *
+         * @param query
+         */
+        StringUtils.queryStringToObject = function (query) {
+            var match; // Regex for replacing addition symbol with a space
+            var pl = /\+/g;
+            var search = /([^&=]+)=([^&]*)/g;
+            var decode = function (s) { return decodeURIComponent(decodeURIComponent(s.replace(pl, " "))); };
+            var obj = {};
             match = search.exec(query);
-        }
-        return obj;
-    };
-    Utils.isIntersectingScopes = function (cachedScopes, scopes) {
-        cachedScopes = this.convertToLowerCase(cachedScopes);
-        for (var i = 0; i < scopes.length; i++) {
-            if (cachedScopes.indexOf(scopes[i].toLowerCase()) > -1) {
-                return true;
+            while (match) {
+                obj[decode(match[1])] = decode(match[2]);
+                match = search.exec(query);
             }
-        }
-        return false;
-    };
-    Utils.containsScope = function (cachedScopes, scopes) {
-        cachedScopes = this.convertToLowerCase(cachedScopes);
-        return scopes.every(function (value) { return cachedScopes.indexOf(value.toString().toLowerCase()) >= 0; });
-    };
-    Utils.convertToLowerCase = function (scopes) {
-        return scopes.map(function (scope) { return scope.toLowerCase(); });
-    };
-    Utils.removeElement = function (scopes, scope) {
-        return scopes.filter(function (value) { return value !== scope; });
-    };
-    Utils.decimalToHex = function (num) {
-        var hex = num.toString(16);
-        while (hex.length < 2) {
-            hex = "0" + hex;
-        }
-        return hex;
-    };
-    Utils.getLibraryVersion = function () {
-        return "0.2.1";
-    };
-    /*
-      * Given a url like https://a:b/common/d?e=f#g, and a tenantId, returns https://a:b/tenantId/d
-      * @param href The url
-      * @param tenantId The tenant id to replace
-      */
-    Utils.replaceFirstPath = function (href, tenantId) {
-        var match = href.match(/^(https?\:)\/\/(([^:\/?#] *)(?:\:([0-9]+))?)([\/]{0,1}[^?#] *)(\?[^#] *|)(#. *|)$/);
-        if (match) {
-            var urlObject = Utils.GetUrlComponents(href);
-            var pathArray = urlObject.PathSegments;
-            pathArray.shift();
-            if (pathArray[0] && pathArray[0] === "common" || pathArray[0] === "organizations") {
-                pathArray[0] = tenantId;
-                href = urlObject.Protocol + "//" + urlObject.HostNameAndPort + "/" + pathArray.join("/");
-            }
-        }
-        return href;
-    };
-    Utils.createNewGuid = function () {
-        // RFC4122: The version 4 UUID is meant for generating UUIDs from truly-random or
-        // pseudo-random numbers.
-        // The algorithm is as follows:
-        //     Set the two most significant bits (bits 6 and 7) of the
-        //        clock_seq_hi_and_reserved to zero and one, respectively.
-        //     Set the four most significant bits (bits 12 through 15) of the
-        //        time_hi_and_version field to the 4-bit version number from
-        //        Section 4.1.3. Version4
-        //     Set all the other bits to randomly (or pseudo-randomly) chosen
-        //     values.
-        // UUID                   = time-low "-" time-mid "-"time-high-and-version "-"clock-seq-reserved and low(2hexOctet)"-" node
-        // time-low               = 4hexOctet
-        // time-mid               = 2hexOctet
-        // time-high-and-version  = 2hexOctet
-        // clock-seq-and-reserved = hexOctet:
-        // clock-seq-low          = hexOctet
-        // node                   = 6hexOctet
-        // Format: xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx
-        // y could be 1000, 1001, 1010, 1011 since most significant two bits needs to be 10
-        // y values are 8, 9, A, B
-        var cryptoObj = window.crypto; // for IE 11
-        if (cryptoObj && cryptoObj.getRandomValues) {
-            var buffer = new Uint8Array(16);
-            cryptoObj.getRandomValues(buffer);
-            //buffer[6] and buffer[7] represents the time_hi_and_version field. We will set the four most significant bits (4 through 7) of buffer[6] to represent decimal number 4 (UUID version number).
-            buffer[6] |= 0x40; //buffer[6] | 01000000 will set the 6 bit to 1.
-            buffer[6] &= 0x4f; //buffer[6] & 01001111 will set the 4, 5, and 7 bit to 0 such that bits 4-7 == 0100 = "4".
-            //buffer[8] represents the clock_seq_hi_and_reserved field. We will set the two most significant bits (6 and 7) of the clock_seq_hi_and_reserved to zero and one, respectively.
-            buffer[8] |= 0x80; //buffer[8] | 10000000 will set the 7 bit to 1.
-            buffer[8] &= 0xbf; //buffer[8] & 10111111 will set the 6 bit to 0.
-            return Utils.decimalToHex(buffer[0]) + Utils.decimalToHex(buffer[1])
-                + Utils.decimalToHex(buffer[2]) + Utils.decimalToHex(buffer[3])
-                + "-" + Utils.decimalToHex(buffer[4]) + Utils.decimalToHex(buffer[5])
-                + "-" + Utils.decimalToHex(buffer[6]) + Utils.decimalToHex(buffer[7])
-                + "-" + Utils.decimalToHex(buffer[8]) + Utils.decimalToHex(buffer[9])
-                + "-" + Utils.decimalToHex(buffer[10]) + Utils.decimalToHex(buffer[11])
-                + Utils.decimalToHex(buffer[12]) + Utils.decimalToHex(buffer[13])
-                + Utils.decimalToHex(buffer[14]) + Utils.decimalToHex(buffer[15]);
-        }
-        else {
-            var guidHolder = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx";
-            var hex = "0123456789abcdef";
-            var r = 0;
-            var guidResponse = "";
-            for (var i = 0; i < 36; i++) {
-                if (guidHolder[i] !== "-" && guidHolder[i] !== "4") {
-                    // each x and y needs to be random
-                    r = Math.random() * 16 | 0;
-                }
-                if (guidHolder[i] === "x") {
-                    guidResponse += hex[r];
-                }
-                else if (guidHolder[i] === "y") {
-                    // clock-seq-and-reserved first hex is filtered and remaining hex values are random
-                    r &= 0x3; // bit and with 0011 to set pos 2 to zero ?0??
-                    r |= 0x8; // set pos 3 to 1 as 1???
-                    guidResponse += hex[r];
-                }
-                else {
-                    guidResponse += guidHolder[i];
-                }
-            }
-            return guidResponse;
-        }
-    };
-    /*
-     * Parses out the components from a url string.
-     * @returns An object with the various components. Please cache this value insted of calling this multiple times on the same url.
-     */
-    Utils.GetUrlComponents = function (url) {
-        if (!url) {
-            throw "Url required";
-        }
-        // https://gist.github.com/curtisz/11139b2cfcaef4a261e0
-        var regEx = RegExp("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?");
-        var match = url.match(regEx);
-        if (!match || match.length < 6) {
-            throw "Valid url required";
-        }
-        var urlComponents = {
-            Protocol: match[1],
-            HostNameAndPort: match[4],
-            AbsolutePath: match[5]
+            return obj;
         };
-        var pathSegments = urlComponents.AbsolutePath.split("/");
-        pathSegments = pathSegments.filter(function (val) { return val && val.length > 0; }); // remove empty elements
-        urlComponents.PathSegments = pathSegments;
-        return urlComponents;
-    };
-    /*
-     * Given a url or path, append a trailing slash if one doesnt exist
-     */
-    Utils.CanonicalizeUri = function (url) {
-        if (url) {
-            url = url.toLowerCase();
-        }
-        if (url && !Utils.endsWith(url, "/")) {
-            url += "/";
-        }
-        return url;
-    };
-    /*
-      * Checks to see if the url ends with the suffix
-      * Required because we are compiling for es5 instead of es6
-      * @param url
-      * @param str
-      */
-    Utils.endsWith = function (url, suffix) {
-        if (!url || !suffix) {
-            return false;
-        }
-        return url.indexOf(suffix, url.length - suffix.length) !== -1;
-    };
-    return Utils;
-}());
-exports.Utils = Utils;
-
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var Utils_1 = __webpack_require__(0);
-var ErrorMessage_1 = __webpack_require__(5);
-var XHRClient_1 = __webpack_require__(9);
-/**
- * Copyright (c) Microsoft Corporation
- *  All Rights Reserved
- *  MIT License
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this
- * software and associated documentation files (the 'Software'), to deal in the Software
- * without restriction, including without limitation the rights to use, copy, modify,
- * merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to the following
- * conditions:
- *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
- * OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
- * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT
- * OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
-/*
- * @hidden
- */
-var AuthorityType;
-(function (AuthorityType) {
-    AuthorityType[AuthorityType["Aad"] = 0] = "Aad";
-    AuthorityType[AuthorityType["Adfs"] = 1] = "Adfs";
-    AuthorityType[AuthorityType["B2C"] = 2] = "B2C";
-})(AuthorityType = exports.AuthorityType || (exports.AuthorityType = {}));
-/*
- * @hidden
- */
-var Authority = /** @class */ (function () {
-    function Authority(authority, validateAuthority) {
-        this.IsValidationEnabled = validateAuthority;
-        this.CanonicalAuthority = authority;
-        this.validateAsUri();
-    }
-    Object.defineProperty(Authority.prototype, "Tenant", {
-        get: function () {
-            return this.CanonicalAuthorityUrlComponents.PathSegments[0];
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Authority.prototype, "AuthorizationEndpoint", {
-        get: function () {
-            this.validateResolved();
-            return this.tenantDiscoveryResponse.AuthorizationEndpoint.replace("{tenant}", this.Tenant);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Authority.prototype, "EndSessionEndpoint", {
-        get: function () {
-            this.validateResolved();
-            return this.tenantDiscoveryResponse.EndSessionEndpoint.replace("{tenant}", this.Tenant);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Authority.prototype, "SelfSignedJwtAudience", {
-        get: function () {
-            this.validateResolved();
-            return this.tenantDiscoveryResponse.Issuer.replace("{tenant}", this.Tenant);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Authority.prototype.validateResolved = function () {
-        if (!this.tenantDiscoveryResponse) {
-            throw "Please call ResolveEndpointsAsync first";
-        }
-    };
-    Object.defineProperty(Authority.prototype, "CanonicalAuthority", {
-        /*
-         * A URL that is the authority set by the developer
+        /**
+         * Trims entries in an array.
+         *
+         * @param arr
          */
-        get: function () {
-            return this.canonicalAuthority;
-        },
-        set: function (url) {
-            this.canonicalAuthority = Utils_1.Utils.CanonicalizeUri(url);
-            this.canonicalAuthorityUrlComponents = null;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Authority.prototype, "CanonicalAuthorityUrlComponents", {
-        get: function () {
-            if (!this.canonicalAuthorityUrlComponents) {
-                this.canonicalAuthorityUrlComponents = Utils_1.Utils.GetUrlComponents(this.CanonicalAuthority);
+        StringUtils.trimArrayEntries = function (arr) {
+            return arr.map(function (entry) { return entry.trim(); });
+        };
+        /**
+         * Removes empty strings from array
+         * @param arr
+         */
+        StringUtils.removeEmptyStringsFromArray = function (arr) {
+            return arr.filter(function (entry) {
+                return !StringUtils.isEmpty(entry);
+            });
+        };
+        return StringUtils;
+    }());
+
+    /*
+     * Copyright (c) Microsoft Corporation. All rights reserved.
+     * Licensed under the MIT License.
+     */
+    /**
+     * Log message level.
+     */
+
+    (function (LogLevel) {
+        LogLevel[LogLevel["Error"] = 0] = "Error";
+        LogLevel[LogLevel["Warning"] = 1] = "Warning";
+        LogLevel[LogLevel["Info"] = 2] = "Info";
+        LogLevel[LogLevel["Verbose"] = 3] = "Verbose";
+    })(exports.LogLevel || (exports.LogLevel = {}));
+    /**
+     * Class which facilitates logging of messages to a specific place.
+     */
+    var Logger = /** @class */ (function () {
+        function Logger(loggerOptions) {
+            // Current log level, defaults to info.
+            this.level = exports.LogLevel.Info;
+            if (loggerOptions) {
+                this.localCallback = loggerOptions.loggerCallback;
+                this.piiLoggingEnabled = loggerOptions.piiLoggingEnabled;
+                this.level = loggerOptions.logLevel;
             }
-            return this.canonicalAuthorityUrlComponents;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Authority.prototype, "DefaultOpenIdConfigurationEndpoint", {
-        /*
-         * // http://openid.net/specs/openid-connect-discovery-1_0.html#ProviderMetadata
+        }
+        /**
+         * Log message with required options.
          */
-        get: function () {
-            return this.CanonicalAuthority + "v2.0/.well-known/openid-configuration";
-        },
-        enumerable: true,
-        configurable: true
-    });
+        Logger.prototype.logMessage = function (logMessage, options) {
+            if ((options.logLevel > this.level) || (!this.piiLoggingEnabled && options.containsPii)) {
+                return;
+            }
+            var timestamp = new Date().toUTCString();
+            var logHeader = StringUtils.isEmpty(this.correlationId) ? "[" + timestamp + "] : " : "[" + timestamp + "] : [" + this.correlationId + "]";
+            var log = logHeader + " : " + pkg.version + " : " + exports.LogLevel[options.logLevel] + " - " + logMessage;
+            // debug(`msal:${LogLevel[options.logLevel]}${options.containsPii ? "-Pii": ""}${options.context ? `:${options.context}` : ""}`)(logMessage);
+            this.executeCallback(options.logLevel, log, options.containsPii);
+        };
+        /**
+         * Execute callback with message.
+         */
+        Logger.prototype.executeCallback = function (level, message, containsPii) {
+            if (this.localCallback) {
+                this.localCallback(level, message, containsPii);
+            }
+        };
+        /**
+         * Logs error messages.
+         */
+        Logger.prototype.error = function (message, correlationId) {
+            this.logMessage(message, {
+                logLevel: exports.LogLevel.Error,
+                containsPii: false,
+                correlationId: correlationId || ""
+            });
+        };
+        /**
+         * Logs error messages with PII.
+         */
+        Logger.prototype.errorPii = function (message, correlationId) {
+            this.logMessage(message, {
+                logLevel: exports.LogLevel.Error,
+                containsPii: true,
+                correlationId: correlationId || ""
+            });
+        };
+        /**
+         * Logs warning messages.
+         */
+        Logger.prototype.warning = function (message, correlationId) {
+            this.logMessage(message, {
+                logLevel: exports.LogLevel.Warning,
+                containsPii: false,
+                correlationId: correlationId || ""
+            });
+        };
+        /**
+         * Logs warning messages with PII.
+         */
+        Logger.prototype.warningPii = function (message, correlationId) {
+            this.logMessage(message, {
+                logLevel: exports.LogLevel.Warning,
+                containsPii: true,
+                correlationId: correlationId || ""
+            });
+        };
+        /**
+         * Logs info messages.
+         */
+        Logger.prototype.info = function (message, correlationId) {
+            this.logMessage(message, {
+                logLevel: exports.LogLevel.Info,
+                containsPii: false,
+                correlationId: correlationId || ""
+            });
+        };
+        /**
+         * Logs info messages with PII.
+         */
+        Logger.prototype.infoPii = function (message, correlationId) {
+            this.logMessage(message, {
+                logLevel: exports.LogLevel.Info,
+                containsPii: true,
+                correlationId: correlationId || ""
+            });
+        };
+        /**
+         * Logs verbose messages.
+         */
+        Logger.prototype.verbose = function (message, correlationId) {
+            this.logMessage(message, {
+                logLevel: exports.LogLevel.Verbose,
+                containsPii: false,
+                correlationId: correlationId || ""
+            });
+        };
+        /**
+         * Logs verbose messages with PII.
+         */
+        Logger.prototype.verbosePii = function (message, correlationId) {
+            this.logMessage(message, {
+                logLevel: exports.LogLevel.Verbose,
+                containsPii: true,
+                correlationId: correlationId || ""
+            });
+        };
+        /**
+         * Returns whether PII Logging is enabled or not.
+         */
+        Logger.prototype.isPiiLoggingEnabled = function () {
+            return this.piiLoggingEnabled || false;
+        };
+        return Logger;
+    }());
+
     /*
-     * Given a string, validate that it is of the form https://domain/path
+     * Copyright (c) Microsoft Corporation. All rights reserved.
+     * Licensed under the MIT License.
      */
-    Authority.prototype.validateAsUri = function () {
-        var components;
+    var Constants = {
+        LIBRARY_NAME: "MSAL.JS",
+        SKU: "msal.js.common",
+        // Prefix for all library cache entries
+        CACHE_PREFIX: "msal",
+        // default authority
+        DEFAULT_AUTHORITY: "https://login.microsoftonline.com/common/",
+        DEFAULT_AUTHORITY_HOST: "login.microsoftonline.com",
+        // ADFS String
+        ADFS: "adfs",
+        // Default AAD Instance Discovery Endpoint
+        AAD_INSTANCE_DISCOVERY_ENDPT: "https://login.microsoftonline.com/common/discovery/instance?api-version=1.1&authorization_endpoint=",
+        // Resource delimiter - used for certain cache entries
+        RESOURCE_DELIM: "|",
+        // Placeholder for non-existent account ids/objects
+        NO_ACCOUNT: "NO_ACCOUNT",
+        // Claims
+        CLAIMS: "claims",
+        // Consumer UTID
+        CONSUMER_UTID: "9188040d-6c67-4c5b-b112-36a304b66dad",
+        // Default scopes
+        OPENID_SCOPE: "openid",
+        PROFILE_SCOPE: "profile",
+        OFFLINE_ACCESS_SCOPE: "offline_access",
+        // Default response type for authorization code flow
+        CODE_RESPONSE_TYPE: "code",
+        CODE_GRANT_TYPE: "authorization_code",
+        RT_GRANT_TYPE: "refresh_token",
+        FRAGMENT_RESPONSE_MODE: "fragment",
+        S256_CODE_CHALLENGE_METHOD: "S256",
+        URL_FORM_CONTENT_TYPE: "application/x-www-form-urlencoded;charset=utf-8",
+        AUTHORIZATION_PENDING: "authorization_pending",
+        NOT_DEFINED: "not_defined"
+    };
+    /**
+     * Request header names
+     */
+    var HeaderNames;
+    (function (HeaderNames) {
+        HeaderNames["CONTENT_TYPE"] = "Content-Type";
+        HeaderNames["X_CLIENT_CURR_TELEM"] = "x-client-current-telemetry";
+        HeaderNames["X_CLIENT_LAST_TELEM"] = "x-client-last-telemetry";
+    })(HeaderNames || (HeaderNames = {}));
+    /**
+     * Persistent cache keys MSAL which stay while user is logged in.
+     */
+    var PersistentCacheKeys;
+    (function (PersistentCacheKeys) {
+        PersistentCacheKeys["ID_TOKEN"] = "idtoken";
+        PersistentCacheKeys["CLIENT_INFO"] = "client.info";
+        PersistentCacheKeys["ADAL_ID_TOKEN"] = "adal.idtoken";
+        PersistentCacheKeys["ERROR"] = "error";
+        PersistentCacheKeys["ERROR_DESC"] = "error.description";
+    })(PersistentCacheKeys || (PersistentCacheKeys = {}));
+    /**
+     * String constants related to AAD Authority
+     */
+    var AADAuthorityConstants;
+    (function (AADAuthorityConstants) {
+        AADAuthorityConstants["COMMON"] = "common";
+        AADAuthorityConstants["ORGANIZATIONS"] = "organizations";
+        AADAuthorityConstants["CONSUMERS"] = "consumers";
+    })(AADAuthorityConstants || (AADAuthorityConstants = {}));
+    /**
+     * Keys in the hashParams sent by AAD Server
+     */
+    var AADServerParamKeys;
+    (function (AADServerParamKeys) {
+        AADServerParamKeys["CLIENT_ID"] = "client_id";
+        AADServerParamKeys["REDIRECT_URI"] = "redirect_uri";
+        AADServerParamKeys["RESPONSE_TYPE"] = "response_type";
+        AADServerParamKeys["RESPONSE_MODE"] = "response_mode";
+        AADServerParamKeys["GRANT_TYPE"] = "grant_type";
+        AADServerParamKeys["CLAIMS"] = "claims";
+        AADServerParamKeys["SCOPE"] = "scope";
+        AADServerParamKeys["ERROR"] = "error";
+        AADServerParamKeys["ERROR_DESCRIPTION"] = "error_description";
+        AADServerParamKeys["ACCESS_TOKEN"] = "access_token";
+        AADServerParamKeys["ID_TOKEN"] = "id_token";
+        AADServerParamKeys["REFRESH_TOKEN"] = "refresh_token";
+        AADServerParamKeys["EXPIRES_IN"] = "expires_in";
+        AADServerParamKeys["STATE"] = "state";
+        AADServerParamKeys["NONCE"] = "nonce";
+        AADServerParamKeys["PROMPT"] = "prompt";
+        AADServerParamKeys["SESSION_STATE"] = "session_state";
+        AADServerParamKeys["CLIENT_INFO"] = "client_info";
+        AADServerParamKeys["CODE"] = "code";
+        AADServerParamKeys["CODE_CHALLENGE"] = "code_challenge";
+        AADServerParamKeys["CODE_CHALLENGE_METHOD"] = "code_challenge_method";
+        AADServerParamKeys["CODE_VERIFIER"] = "code_verifier";
+        AADServerParamKeys["CLIENT_REQUEST_ID"] = "client-request-id";
+        AADServerParamKeys["X_CLIENT_SKU"] = "x-client-SKU";
+        AADServerParamKeys["X_CLIENT_VER"] = "x-client-VER";
+        AADServerParamKeys["X_CLIENT_OS"] = "x-client-OS";
+        AADServerParamKeys["X_CLIENT_CPU"] = "x-client-CPU";
+        AADServerParamKeys["POST_LOGOUT_URI"] = "post_logout_redirect_uri";
+        AADServerParamKeys["DEVICE_CODE"] = "device_code";
+        AADServerParamKeys["CLIENT_SECRET"] = "client_secret";
+        AADServerParamKeys["CLIENT_ASSERTION"] = "client_assertion";
+        AADServerParamKeys["CLIENT_ASSERTION_TYPE"] = "client_assertion_type";
+    })(AADServerParamKeys || (AADServerParamKeys = {}));
+    /**
+     * IdToken claim string constants
+     */
+    var IdTokenClaimName;
+    (function (IdTokenClaimName) {
+        IdTokenClaimName["ISSUER"] = "iss";
+        IdTokenClaimName["OBJID"] = "oid";
+        IdTokenClaimName["SUBJECT"] = "sub";
+        IdTokenClaimName["TENANTID"] = "tid";
+        IdTokenClaimName["VERSION"] = "ver";
+        IdTokenClaimName["PREF_USERNAME"] = "preferred_username";
+        IdTokenClaimName["NAME"] = "name";
+        IdTokenClaimName["NONCE"] = "nonce";
+        IdTokenClaimName["EXPIRATION"] = "exp";
+        IdTokenClaimName["HOME_OBJID"] = "home_oid";
+        IdTokenClaimName["SESSIONID"] = "sid";
+        IdTokenClaimName["CLOUD_INSTANCE_HOSTNAME"] = "cloud_instance_host_name";
+    })(IdTokenClaimName || (IdTokenClaimName = {}));
+    var ClaimsRequestKeys;
+    (function (ClaimsRequestKeys) {
+        ClaimsRequestKeys["ACCESS_TOKEN"] = "access_token";
+        ClaimsRequestKeys["XMS_CC"] = "xms_cc";
+    })(ClaimsRequestKeys || (ClaimsRequestKeys = {}));
+    /**
+     * we considered making this "enum" in the request instead of string, however it looks like the allowed list of
+     * prompt values kept changing over past couple of years. There are some undocumented prompt values for some
+     * internal partners too, hence the choice of generic "string" type instead of the "enum"
+     */
+    var PromptValue = {
+        LOGIN: "login",
+        SELECT_ACCOUNT: "select_account",
+        CONSENT: "consent",
+        NONE: "none",
+    };
+    /**
+     * SSO Types - generated to populate hints
+     */
+    var SSOTypes;
+    (function (SSOTypes) {
+        SSOTypes["ACCOUNT"] = "account";
+        SSOTypes["SID"] = "sid";
+        SSOTypes["LOGIN_HINT"] = "login_hint";
+        SSOTypes["ID_TOKEN"] = "id_token";
+        SSOTypes["DOMAIN_HINT"] = "domain_hint";
+        SSOTypes["ORGANIZATIONS"] = "organizations";
+        SSOTypes["CONSUMERS"] = "consumers";
+        SSOTypes["ACCOUNT_ID"] = "accountIdentifier";
+        SSOTypes["HOMEACCOUNT_ID"] = "homeAccountIdentifier";
+    })(SSOTypes || (SSOTypes = {}));
+    /**
+     * Disallowed extra query parameters.
+     */
+    var BlacklistedEQParams = [
+        SSOTypes.SID,
+        SSOTypes.LOGIN_HINT
+    ];
+    /**
+     * allowed values for codeVerifier
+     */
+    var CodeChallengeMethodValues = {
+        PLAIN: "plain",
+        S256: "S256"
+    };
+    /**
+     * allowed values for response_mode
+     */
+    var ResponseMode;
+    (function (ResponseMode) {
+        ResponseMode["QUERY"] = "query";
+        ResponseMode["FRAGMENT"] = "fragment";
+        ResponseMode["FORM_POST"] = "form_post";
+    })(ResponseMode || (ResponseMode = {}));
+    /**
+     * allowed grant_type
+     */
+    var GrantType;
+    (function (GrantType) {
+        GrantType["IMPLICIT_GRANT"] = "implicit";
+        GrantType["AUTHORIZATION_CODE_GRANT"] = "authorization_code";
+        GrantType["CLIENT_CREDENTIALS_GRANT"] = "client_credentials";
+        GrantType["RESOURCE_OWNER_PASSWORD_GRANT"] = "password";
+        GrantType["REFRESH_TOKEN_GRANT"] = "refresh_token";
+        GrantType["DEVICE_CODE_GRANT"] = "device_code";
+    })(GrantType || (GrantType = {}));
+    /**
+     * Account types in Cache
+     */
+    var CacheAccountType;
+    (function (CacheAccountType) {
+        CacheAccountType["MSSTS_ACCOUNT_TYPE"] = "MSSTS";
+        CacheAccountType["ADFS_ACCOUNT_TYPE"] = "ADFS";
+        CacheAccountType["MSAV1_ACCOUNT_TYPE"] = "MSA";
+        CacheAccountType["GENERIC_ACCOUNT_TYPE"] = "Generic"; // NTLM, Kerberos, FBA, Basic etc
+    })(CacheAccountType || (CacheAccountType = {}));
+    /**
+     * Separators used in cache
+     */
+    var Separators;
+    (function (Separators) {
+        Separators["CACHE_KEY_SEPARATOR"] = "-";
+        Separators["CLIENT_INFO_SEPARATOR"] = ".";
+    })(Separators || (Separators = {}));
+    /**
+     * Credentail Type stored in the cache
+     */
+    var CredentialType;
+    (function (CredentialType) {
+        CredentialType["ID_TOKEN"] = "IdToken";
+        CredentialType["ACCESS_TOKEN"] = "AccessToken";
+        CredentialType["REFRESH_TOKEN"] = "RefreshToken";
+    })(CredentialType || (CredentialType = {}));
+    /**
+     * Credentail Type stored in the cache
+     */
+    var CacheSchemaType;
+    (function (CacheSchemaType) {
+        CacheSchemaType["ACCOUNT"] = "Account";
+        CacheSchemaType["CREDENTIAL"] = "Credential";
+        CacheSchemaType["APP_METADATA"] = "AppMetadata";
+        CacheSchemaType["TEMPORARY"] = "TempCache";
+        CacheSchemaType["TELEMETRY"] = "Telemetry";
+    })(CacheSchemaType || (CacheSchemaType = {}));
+    /**
+     * Combine all cache types
+     */
+    var CacheType;
+    (function (CacheType) {
+        CacheType[CacheType["ADFS"] = 1001] = "ADFS";
+        CacheType[CacheType["MSA"] = 1002] = "MSA";
+        CacheType[CacheType["MSSTS"] = 1003] = "MSSTS";
+        CacheType[CacheType["GENERIC"] = 1004] = "GENERIC";
+        CacheType[CacheType["ACCESS_TOKEN"] = 2001] = "ACCESS_TOKEN";
+        CacheType[CacheType["REFRESH_TOKEN"] = 2002] = "REFRESH_TOKEN";
+        CacheType[CacheType["ID_TOKEN"] = 2003] = "ID_TOKEN";
+        CacheType[CacheType["APP_METADATA"] = 3001] = "APP_METADATA";
+    })(CacheType || (CacheType = {}));
+    /**
+     * More Cache related constants
+     */
+    var APP_METADATA = "appmetadata";
+    var ClientInfo = "client_info";
+    var SERVER_TELEM_CONSTANTS = {
+        SCHEMA_VERSION: 2,
+        FAILURE_LIMIT: 3,
+        CACHE_KEY: "server-telemetry",
+        CATEGORY_SEPARATOR: "|",
+        VALUE_SEPARATOR: ","
+    };
+
+    /*
+     * Copyright (c) Microsoft Corporation. All rights reserved.
+     * Licensed under the MIT License.
+     */
+    /**
+     * Base type for credentials to be stored in the cache: eg: ACCESS_TOKEN, ID_TOKEN etc
+     *
+     * Key:Value Schema:
+     *
+     * Key: <home_account_id*>-<environment>-<credential_type>-<client_id>-<realm*>-<target*>
+     *
+     * Value Schema:
+     * {
+     *      homeAccountId: home account identifier for the auth scheme,
+     *      environment: entity that issued the token, represented as a full host
+     *      credentialType: Type of credential as a string, can be one of the following: RefreshToken, AccessToken, IdToken, Password, Cookie, Certificate, Other
+     *      clientId: client ID of the application
+     *      secret: Actual credential as a string
+     *      familyId: Family ID identifier, usually only used for refresh tokens
+     *      realm: Full tenant or organizational identifier that the account belongs to
+     *      target: Permissions that are included in the token, or for refresh tokens, the resource identifier.
+     * }
+     */
+    var CredentialEntity = /** @class */ (function () {
+        function CredentialEntity() {
+        }
+        /**
+         * Generate Account Id key component as per the schema: <home_account_id>-<environment>
+         */
+        CredentialEntity.prototype.generateAccountId = function () {
+            return CredentialEntity.generateAccountIdForCacheKey(this.homeAccountId, this.environment);
+        };
+        /**
+         * Generate Credential Id key component as per the schema: <credential_type>-<client_id>-<realm>
+         */
+        CredentialEntity.prototype.generateCredentialId = function () {
+            return CredentialEntity.generateCredentialIdForCacheKey(this.credentialType, this.clientId, this.realm, this.familyId);
+        };
+        /**
+         * Generate target key component as per schema: <target>
+         */
+        CredentialEntity.prototype.generateTarget = function () {
+            return CredentialEntity.generateTargetForCacheKey(this.target);
+        };
+        /**
+         * generates credential key
+         */
+        CredentialEntity.prototype.generateCredentialKey = function () {
+            return CredentialEntity.generateCredentialCacheKey(this.homeAccountId, this.environment, this.credentialType, this.clientId, this.realm, this.target, this.familyId);
+        };
+        /**
+         * returns the type of the cache (in this case credential)
+         */
+        CredentialEntity.prototype.generateType = function () {
+            switch (this.credentialType) {
+                case CredentialType.ID_TOKEN:
+                    return CacheType.ID_TOKEN;
+                case CredentialType.ACCESS_TOKEN:
+                    return CacheType.ACCESS_TOKEN;
+                case CredentialType.REFRESH_TOKEN:
+                    return CacheType.REFRESH_TOKEN;
+                default: {
+                    throw ClientAuthError.createUnexpectedCredentialTypeError();
+                }
+            }
+        };
+        /**
+         * helper function to return `CredentialType`
+         * @param key
+         */
+        CredentialEntity.getCredentialType = function (key) {
+            if (key.indexOf(CredentialType.ACCESS_TOKEN.toLowerCase()) !== -1) {
+                return CredentialType.ACCESS_TOKEN;
+            }
+            else if (key.indexOf(CredentialType.ID_TOKEN.toLowerCase()) !== -1) {
+                return CredentialType.ID_TOKEN;
+            }
+            else if (key.indexOf(CredentialType.REFRESH_TOKEN.toLowerCase()) !== -1) {
+                return CredentialType.REFRESH_TOKEN;
+            }
+            return Constants.NOT_DEFINED;
+        };
+        /**
+         * generates credential key
+         */
+        CredentialEntity.generateCredentialCacheKey = function (homeAccountId, environment, credentialType, clientId, realm, target, familyId) {
+            var credentialKey = [
+                this.generateAccountIdForCacheKey(homeAccountId, environment),
+                this.generateCredentialIdForCacheKey(credentialType, clientId, realm, familyId),
+                this.generateTargetForCacheKey(target),
+            ];
+            return credentialKey.join(Separators.CACHE_KEY_SEPARATOR).toLowerCase();
+        };
+        /**
+         * generates Account Id for keys
+         * @param homeAccountId
+         * @param environment
+         */
+        CredentialEntity.generateAccountIdForCacheKey = function (homeAccountId, environment) {
+            var accountId = [homeAccountId, environment];
+            return accountId.join(Separators.CACHE_KEY_SEPARATOR).toLowerCase();
+        };
+        /**
+         * Generates Credential Id for keys
+         * @param credentialType
+         * @param realm
+         * @param clientId
+         * @param familyId
+         */
+        CredentialEntity.generateCredentialIdForCacheKey = function (credentialType, clientId, realm, familyId) {
+            var clientOrFamilyId = credentialType === CredentialType.REFRESH_TOKEN
+                ? familyId || clientId
+                : clientId;
+            var credentialId = [
+                credentialType,
+                clientOrFamilyId,
+                realm || "",
+            ];
+            return credentialId.join(Separators.CACHE_KEY_SEPARATOR).toLowerCase();
+        };
+        /**
+         * Generate target key component as per schema: <target>
+         */
+        CredentialEntity.generateTargetForCacheKey = function (scopes) {
+            return (scopes || "").toLowerCase();
+        };
+        return CredentialEntity;
+    }());
+
+    /**
+     * ClientConfigurationErrorMessage class containing string constants used by error codes and messages.
+     */
+    var ClientConfigurationErrorMessage = {
+        redirectUriNotSet: {
+            code: "redirect_uri_empty",
+            desc: "A redirect URI is required for all calls, and none has been set."
+        },
+        postLogoutUriNotSet: {
+            code: "post_logout_uri_empty",
+            desc: "A post logout redirect has not been set."
+        },
+        claimsRequestParsingError: {
+            code: "claims_request_parsing_error",
+            desc: "Could not parse the given claims request object."
+        },
+        authorityUriInsecure: {
+            code: "authority_uri_insecure",
+            desc: "Authority URIs must use https.  Please see here for valid authority configuration options: https://docs.microsoft.com/en-us/azure/active-directory/develop/msal-js-initializing-client-applications#configuration-options"
+        },
+        urlParseError: {
+            code: "url_parse_error",
+            desc: "URL could not be parsed into appropriate segments."
+        },
+        urlEmptyError: {
+            code: "empty_url_error",
+            desc: "URL was empty or null."
+        },
+        emptyScopesError: {
+            code: "empty_input_scopes_error",
+            desc: "Scopes cannot be passed as null, undefined or empty array because they are required to obtain an access token."
+        },
+        nonArrayScopesError: {
+            code: "nonarray_input_scopes_error",
+            desc: "Scopes cannot be passed as non-array."
+        },
+        clientIdSingleScopeError: {
+            code: "clientid_input_scopes_error",
+            desc: "Client ID can only be provided as a single scope."
+        },
+        invalidPrompt: {
+            code: "invalid_prompt_value",
+            desc: "Supported prompt values are 'login', 'select_account', 'consent' and 'none'.  Please see here for valid configuration options: https://docs.microsoft.com/en-us/azure/active-directory/develop/msal-js-initializing-client-applications#configuration-options",
+        },
+        invalidClaimsRequest: {
+            code: "invalid_claims",
+            desc: "Given claims parameter must be a stringified JSON object."
+        },
+        tokenRequestEmptyError: {
+            code: "token_request_empty",
+            desc: "Token request was empty and not found in cache."
+        },
+        logoutRequestEmptyError: {
+            code: "logout_request_empty",
+            desc: "The logout request was null or undefined."
+        },
+        invalidCodeChallengeMethod: {
+            code: "invalid_code_challenge_method",
+            desc: "code_challenge_method passed is invalid. Valid values are \"plain\" and \"S256\"."
+        },
+        invalidCodeChallengeParams: {
+            code: "pkce_params_missing",
+            desc: "Both params: code_challenge and code_challenge_method are to be passed if to be sent in the request"
+        },
+        knownAuthoritiesAndCloudDiscoveryMetadata: {
+            code: "invalid_known_authorities",
+            desc: "knownAuthorities and cloudDiscoveryMetadata cannot both be provided. Please provide cloudDiscoveryMetadata object for AAD, knownAuthorities otherwise."
+        },
+        invalidCloudDiscoveryMetadata: {
+            code: "invalid_cloud_discovery_metadata",
+            desc: "Invalid cloudDiscoveryMetadata provided. Must be a JSON object containing tenant_discovery_endpoint and metadata fields"
+        },
+        untrustedAuthority: {
+            code: "untrusted_authority",
+            desc: "The provided authority is not a trusted authority. Please include this authority in the knownAuthorities config parameter."
+        }
+    };
+    /**
+     * Error thrown when there is an error in configuration of the MSAL.js library.
+     */
+    var ClientConfigurationError = /** @class */ (function (_super) {
+        __extends$1(ClientConfigurationError, _super);
+        function ClientConfigurationError(errorCode, errorMessage) {
+            var _this = _super.call(this, errorCode, errorMessage) || this;
+            _this.name = "ClientConfigurationError";
+            Object.setPrototypeOf(_this, ClientConfigurationError.prototype);
+            return _this;
+        }
+        /**
+         * Creates an error thrown when the redirect uri is empty (not set by caller)
+         */
+        ClientConfigurationError.createRedirectUriEmptyError = function () {
+            return new ClientConfigurationError(ClientConfigurationErrorMessage.redirectUriNotSet.code, ClientConfigurationErrorMessage.redirectUriNotSet.desc);
+        };
+        /**
+         * Creates an error thrown when the post-logout redirect uri is empty (not set by caller)
+         */
+        ClientConfigurationError.createPostLogoutRedirectUriEmptyError = function () {
+            return new ClientConfigurationError(ClientConfigurationErrorMessage.postLogoutUriNotSet.code, ClientConfigurationErrorMessage.postLogoutUriNotSet.desc);
+        };
+        /**
+         * Creates an error thrown when the claims request could not be successfully parsed
+         */
+        ClientConfigurationError.createClaimsRequestParsingError = function (claimsRequestParseError) {
+            return new ClientConfigurationError(ClientConfigurationErrorMessage.claimsRequestParsingError.code, ClientConfigurationErrorMessage.claimsRequestParsingError.desc + " Given value: " + claimsRequestParseError);
+        };
+        /**
+         * Creates an error thrown if authority uri is given an insecure protocol.
+         * @param urlString
+         */
+        ClientConfigurationError.createInsecureAuthorityUriError = function (urlString) {
+            return new ClientConfigurationError(ClientConfigurationErrorMessage.authorityUriInsecure.code, ClientConfigurationErrorMessage.authorityUriInsecure.desc + " Given URI: " + urlString);
+        };
+        /**
+         * Creates an error thrown if URL string does not parse into separate segments.
+         * @param urlString
+         */
+        ClientConfigurationError.createUrlParseError = function (urlParseError) {
+            return new ClientConfigurationError(ClientConfigurationErrorMessage.urlParseError.code, ClientConfigurationErrorMessage.urlParseError.desc + " Given Error: " + urlParseError);
+        };
+        /**
+         * Creates an error thrown if URL string is empty or null.
+         * @param urlString
+         */
+        ClientConfigurationError.createUrlEmptyError = function () {
+            return new ClientConfigurationError(ClientConfigurationErrorMessage.urlEmptyError.code, ClientConfigurationErrorMessage.urlEmptyError.desc);
+        };
+        /**
+         * Error thrown when scopes are not an array
+         * @param inputScopes
+         */
+        ClientConfigurationError.createScopesNonArrayError = function (inputScopes) {
+            return new ClientConfigurationError(ClientConfigurationErrorMessage.nonArrayScopesError.code, ClientConfigurationErrorMessage.nonArrayScopesError.desc + " Given Scopes: " + inputScopes);
+        };
+        /**
+         * Error thrown when scopes are empty.
+         * @param scopesValue
+         */
+        ClientConfigurationError.createEmptyScopesArrayError = function (inputScopes) {
+            return new ClientConfigurationError(ClientConfigurationErrorMessage.emptyScopesError.code, ClientConfigurationErrorMessage.emptyScopesError.desc + " Given Scopes: " + inputScopes);
+        };
+        /**
+         * Error thrown when client id scope is not provided as single scope.
+         * @param inputScopes
+         */
+        ClientConfigurationError.createClientIdSingleScopeError = function (inputScopes) {
+            return new ClientConfigurationError(ClientConfigurationErrorMessage.clientIdSingleScopeError.code, ClientConfigurationErrorMessage.clientIdSingleScopeError.desc + " Given Scopes: " + inputScopes);
+        };
+        /**
+         * Error thrown when prompt is not an allowed type.
+         * @param promptValue
+         */
+        ClientConfigurationError.createInvalidPromptError = function (promptValue) {
+            return new ClientConfigurationError(ClientConfigurationErrorMessage.invalidPrompt.code, ClientConfigurationErrorMessage.invalidPrompt.desc + " Given value: " + promptValue);
+        };
+        /**
+         * Creates error thrown when claims parameter is not a stringified JSON object
+         */
+        ClientConfigurationError.createInvalidClaimsRequestError = function () {
+            return new ClientConfigurationError(ClientConfigurationErrorMessage.invalidClaimsRequest.code, ClientConfigurationErrorMessage.invalidClaimsRequest.desc);
+        };
+        /**
+         * Throws error when token request is empty and nothing cached in storage.
+         */
+        ClientConfigurationError.createEmptyLogoutRequestError = function () {
+            return new ClientConfigurationError(ClientConfigurationErrorMessage.logoutRequestEmptyError.code, ClientConfigurationErrorMessage.logoutRequestEmptyError.desc);
+        };
+        /**
+         * Throws error when token request is empty and nothing cached in storage.
+         */
+        ClientConfigurationError.createEmptyTokenRequestError = function () {
+            return new ClientConfigurationError(ClientConfigurationErrorMessage.tokenRequestEmptyError.code, ClientConfigurationErrorMessage.tokenRequestEmptyError.desc);
+        };
+        /**
+         * Throws error when an invalid code_challenge_method is passed by the user
+         */
+        ClientConfigurationError.createInvalidCodeChallengeMethodError = function () {
+            return new ClientConfigurationError(ClientConfigurationErrorMessage.invalidCodeChallengeMethod.code, ClientConfigurationErrorMessage.invalidCodeChallengeMethod.desc);
+        };
+        /**
+         * Throws error when both params: code_challenge and code_challenge_method are not passed together
+         */
+        ClientConfigurationError.createInvalidCodeChallengeParamsError = function () {
+            return new ClientConfigurationError(ClientConfigurationErrorMessage.invalidCodeChallengeParams.code, ClientConfigurationErrorMessage.invalidCodeChallengeParams.desc);
+        };
+        /**
+         * Throws an error when the user passes both knownAuthorities and cloudDiscoveryMetadata
+         */
+        ClientConfigurationError.createKnownAuthoritiesCloudDiscoveryMetadataError = function () {
+            return new ClientConfigurationError(ClientConfigurationErrorMessage.knownAuthoritiesAndCloudDiscoveryMetadata.code, ClientConfigurationErrorMessage.knownAuthoritiesAndCloudDiscoveryMetadata.desc);
+        };
+        /**
+         * Throws an error when the user passes invalid cloudDiscoveryMetadata
+         */
+        ClientConfigurationError.createInvalidCloudDiscoveryMetadataError = function () {
+            return new ClientConfigurationError(ClientConfigurationErrorMessage.invalidCloudDiscoveryMetadata.code, ClientConfigurationErrorMessage.invalidCloudDiscoveryMetadata.desc);
+        };
+        /**
+         * Throws error when provided authority is not a member of the trusted host list
+         */
+        ClientConfigurationError.createUntrustedAuthorityError = function () {
+            return new ClientConfigurationError(ClientConfigurationErrorMessage.untrustedAuthority.code, ClientConfigurationErrorMessage.untrustedAuthority.desc);
+        };
+        return ClientConfigurationError;
+    }(ClientAuthError));
+
+    /*
+     * Copyright (c) Microsoft Corporation. All rights reserved.
+     * Licensed under the MIT License.
+     */
+    /**
+     * The ScopeSet class creates a set of scopes. Scopes are case-insensitive, unique values, so the Set object in JS makes
+     * the most sense to implement for this class. All scopes are trimmed and converted to lower case strings in intersection and union functions
+     * to ensure uniqueness of strings.
+     */
+    var ScopeSet = /** @class */ (function () {
+        function ScopeSet(inputScopes) {
+            var _this = this;
+            // Filter empty string and null/undefined array items
+            var scopeArr = inputScopes ? StringUtils.trimArrayEntries(__spreadArrays$1(inputScopes)) : [];
+            var filteredInput = scopeArr ? StringUtils.removeEmptyStringsFromArray(scopeArr) : [];
+            // Validate and filter scopes (validate function throws if validation fails)
+            this.validateInputScopes(filteredInput);
+            this.scopes = new Set(); // Iterator in constructor not supported by IE11
+            filteredInput.forEach(function (scope) { return _this.scopes.add(scope); });
+        }
+        /**
+         * Factory method to create ScopeSet from space-delimited string
+         * @param inputScopeString
+         * @param appClientId
+         * @param scopesRequired
+         */
+        ScopeSet.fromString = function (inputScopeString) {
+            inputScopeString = inputScopeString || "";
+            var inputScopes = inputScopeString.split(" ");
+            return new ScopeSet(inputScopes);
+        };
+        /**
+         * Used to validate the scopes input parameter requested  by the developer.
+         * @param {Array<string>} inputScopes - Developer requested permissions. Not all scopes are guaranteed to be included in the access token returned.
+         * @param {boolean} scopesRequired - Boolean indicating whether the scopes array is required or not
+         */
+        ScopeSet.prototype.validateInputScopes = function (inputScopes) {
+            // Check if scopes are required but not given or is an empty array
+            if (!inputScopes || inputScopes.length < 1) {
+                throw ClientConfigurationError.createEmptyScopesArrayError(inputScopes);
+            }
+        };
+        /**
+         * Check if a given scope is present in this set of scopes.
+         * @param scope
+         */
+        ScopeSet.prototype.containsScope = function (scope) {
+            return !StringUtils.isEmpty(scope) ? this.scopes.has(scope) : false;
+        };
+        /**
+         * Check if a set of scopes is present in this set of scopes.
+         * @param scopeSet
+         */
+        ScopeSet.prototype.containsScopeSet = function (scopeSet) {
+            var _this = this;
+            if (!scopeSet || scopeSet.scopes.size <= 0) {
+                return false;
+            }
+            return (this.scopes.size >= scopeSet.scopes.size && scopeSet.asArray().every(function (scope) { return _this.containsScope(scope); }));
+        };
+        /**
+         * Appends single scope if passed
+         * @param newScope
+         */
+        ScopeSet.prototype.appendScope = function (newScope) {
+            if (!StringUtils.isEmpty(newScope)) {
+                this.scopes.add(newScope.trim());
+            }
+        };
+        /**
+         * Appends multiple scopes if passed
+         * @param newScopes
+         */
+        ScopeSet.prototype.appendScopes = function (newScopes) {
+            var _this = this;
+            try {
+                newScopes.forEach(function (newScope) { return _this.appendScope(newScope); });
+            }
+            catch (e) {
+                throw ClientAuthError.createAppendScopeSetError(e);
+            }
+        };
+        /**
+         * Removes element from set of scopes.
+         * @param scope
+         */
+        ScopeSet.prototype.removeScope = function (scope) {
+            if (StringUtils.isEmpty(scope)) {
+                throw ClientAuthError.createRemoveEmptyScopeFromSetError(scope);
+            }
+            this.scopes.delete(scope.trim());
+        };
+        /**
+         * Combines an array of scopes with the current set of scopes.
+         * @param otherScopes
+         */
+        ScopeSet.prototype.unionScopeSets = function (otherScopes) {
+            if (!otherScopes) {
+                throw ClientAuthError.createEmptyInputScopeSetError(otherScopes);
+            }
+            var unionScopes = new Set(); // Iterator in constructor not supported in IE11
+            otherScopes.scopes.forEach(function (scope) { return unionScopes.add(scope); });
+            this.scopes.forEach(function (scope) { return unionScopes.add(scope); });
+            return unionScopes;
+        };
+        /**
+         * Check if scopes intersect between this set and another.
+         * @param otherScopes
+         */
+        ScopeSet.prototype.intersectingScopeSets = function (otherScopes) {
+            if (!otherScopes) {
+                throw ClientAuthError.createEmptyInputScopeSetError(otherScopes);
+            }
+            var unionScopes = this.unionScopeSets(otherScopes);
+            // Do not allow offline_access to be the only intersecting scope
+            var sizeOtherScopes = otherScopes.getScopeCount();
+            var sizeThisScopes = this.getScopeCount();
+            var sizeUnionScopes = unionScopes.size;
+            return sizeUnionScopes < (sizeThisScopes + sizeOtherScopes);
+        };
+        /**
+         * Returns size of set of scopes.
+         */
+        ScopeSet.prototype.getScopeCount = function () {
+            return this.scopes.size;
+        };
+        /**
+         * Returns the scopes as an array of string values
+         */
+        ScopeSet.prototype.asArray = function () {
+            var array = [];
+            this.scopes.forEach(function (val) { return array.push(val); });
+            return array;
+        };
+        /**
+         * Prints scopes into a space-delimited string
+         */
+        ScopeSet.prototype.printScopes = function () {
+            if (this.scopes) {
+                var scopeArr = this.asArray();
+                return scopeArr.join(" ");
+            }
+            return "";
+        };
+        /**
+         * Prints scopes into a space-delimited lower-case string (used for caching)
+         */
+        ScopeSet.prototype.printScopesLowerCase = function () {
+            return this.printScopes().toLowerCase();
+        };
+        return ScopeSet;
+    }());
+
+    /*
+     * Copyright (c) Microsoft Corporation. All rights reserved.
+     * Licensed under the MIT License.
+     */
+    /**
+     * Function to build a client info object
+     * @param rawClientInfo
+     * @param crypto
+     */
+    function buildClientInfo(rawClientInfo, crypto) {
+        if (StringUtils.isEmpty(rawClientInfo)) {
+            throw ClientAuthError.createClientInfoEmptyError(rawClientInfo);
+        }
         try {
-            components = this.CanonicalAuthorityUrlComponents;
+            var decodedClientInfo = crypto.base64Decode(rawClientInfo);
+            return JSON.parse(decodedClientInfo);
         }
         catch (e) {
-            throw ErrorMessage_1.ErrorMessage.invalidAuthorityType;
+            throw ClientAuthError.createClientInfoDecodingError(e);
         }
-        if (!components.Protocol || components.Protocol.toLowerCase() !== "https:") {
-            throw ErrorMessage_1.ErrorMessage.authorityUriInsecure;
-        }
-        if (!components.PathSegments || components.PathSegments.length < 1) {
-            throw ErrorMessage_1.ErrorMessage.authorityUriInvalidPath;
-        }
-    };
-    /*
-     * Calls the OIDC endpoint and returns the response
-     */
-    Authority.prototype.DiscoverEndpoints = function (openIdConfigurationEndpoint) {
-        var client = new XHRClient_1.XhrClient();
-        return client.sendRequestAsync(openIdConfigurationEndpoint, "GET", /*enableCaching: */ true)
-            .then(function (response) {
-            return {
-                AuthorizationEndpoint: response.authorization_endpoint,
-                EndSessionEndpoint: response.end_session_endpoint,
-                Issuer: response.issuer
-            };
-        });
-    };
-    /*
-     * Returns a promise.
-     * Checks to see if the authority is in the cache
-     * Discover endpoints via openid-configuration
-     * If successful, caches the endpoint for later use in OIDC
-     */
-    Authority.prototype.ResolveEndpointsAsync = function () {
-        var _this = this;
-        var openIdConfigurationEndpoint = "";
-        return this.GetOpenIdConfigurationEndpointAsync().then(function (openIdConfigurationEndpointResponse) {
-            openIdConfigurationEndpoint = openIdConfigurationEndpointResponse;
-            return _this.DiscoverEndpoints(openIdConfigurationEndpoint);
-        }).then(function (tenantDiscoveryResponse) {
-            _this.tenantDiscoveryResponse = tenantDiscoveryResponse;
-            return _this;
-        });
-    };
-    return Authority;
-}());
-exports.Authority = Authority;
-
-
-/***/ }),
-/* 2 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (immutable) */ __webpack_exports__["__extends"] = __extends;
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "__assign", function() { return __assign; });
-/* harmony export (immutable) */ __webpack_exports__["__rest"] = __rest;
-/* harmony export (immutable) */ __webpack_exports__["__decorate"] = __decorate;
-/* harmony export (immutable) */ __webpack_exports__["__param"] = __param;
-/* harmony export (immutable) */ __webpack_exports__["__metadata"] = __metadata;
-/* harmony export (immutable) */ __webpack_exports__["__awaiter"] = __awaiter;
-/* harmony export (immutable) */ __webpack_exports__["__generator"] = __generator;
-/* harmony export (immutable) */ __webpack_exports__["__exportStar"] = __exportStar;
-/* harmony export (immutable) */ __webpack_exports__["__values"] = __values;
-/* harmony export (immutable) */ __webpack_exports__["__read"] = __read;
-/* harmony export (immutable) */ __webpack_exports__["__spread"] = __spread;
-/* harmony export (immutable) */ __webpack_exports__["__await"] = __await;
-/* harmony export (immutable) */ __webpack_exports__["__asyncGenerator"] = __asyncGenerator;
-/* harmony export (immutable) */ __webpack_exports__["__asyncDelegator"] = __asyncDelegator;
-/* harmony export (immutable) */ __webpack_exports__["__asyncValues"] = __asyncValues;
-/*! *****************************************************************************
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use
-this file except in compliance with the License. You may obtain a copy of the
-License at http://www.apache.org/licenses/LICENSE-2.0
-
-THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
-WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
-MERCHANTABLITY OR NON-INFRINGEMENT.
-
-See the Apache Version 2.0 License for specific language governing permissions
-and limitations under the License.
-***************************************************************************** */
-/* global Reflect, Promise */
-
-var extendStatics = Object.setPrototypeOf ||
-    ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-    function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-
-function __extends(d, b) {
-    extendStatics(d, b);
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-}
-
-var __assign = Object.assign || function __assign(t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-        s = arguments[i];
-        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
     }
-    return t;
-}
 
-function __rest(s, e) {
-    var t = {};
-    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-        t[p] = s[p];
-    if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
-            t[p[i]] = s[p[i]];
-    return t;
-}
-
-function __decorate(decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-}
-
-function __param(paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-}
-
-function __metadata(metadataKey, metadataValue) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(metadataKey, metadataValue);
-}
-
-function __awaiter(thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator.throw(value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-}
-
-function __generator(thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [0, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
+    /**
+     * Url object class which can perform various transformations on url strings.
+     */
+    var UrlString = /** @class */ (function () {
+        function UrlString(url) {
+            this._urlString = url;
+            if (StringUtils.isEmpty(this._urlString)) {
+                // Throws error if url is empty
+                throw ClientConfigurationError.createUrlEmptyError();
             }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-}
-
-function __exportStar(m, exports) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
-
-function __values(o) {
-    var m = typeof Symbol === "function" && o[Symbol.iterator], i = 0;
-    if (m) return m.call(o);
-    return {
-        next: function () {
-            if (o && i >= o.length) o = void 0;
-            return { value: o && o[i++], done: !o };
+            if (StringUtils.isEmpty(this.getHash())) {
+                this._urlString = UrlString.canonicalizeUri(url);
+            }
         }
-    };
-}
-
-function __read(o, n) {
-    var m = typeof Symbol === "function" && o[Symbol.iterator];
-    if (!m) return o;
-    var i = m.call(o), r, ar = [], e;
-    try {
-        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
-    }
-    catch (error) { e = { error: error }; }
-    finally {
-        try {
-            if (r && !r.done && (m = i["return"])) m.call(i);
-        }
-        finally { if (e) throw e.error; }
-    }
-    return ar;
-}
-
-function __spread() {
-    for (var ar = [], i = 0; i < arguments.length; i++)
-        ar = ar.concat(__read(arguments[i]));
-    return ar;
-}
-
-function __await(v) {
-    return this instanceof __await ? (this.v = v, this) : new __await(v);
-}
-
-function __asyncGenerator(thisArg, _arguments, generator) {
-    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-    var g = generator.apply(thisArg, _arguments || []), i, q = [];
-    return i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i;
-    function verb(n) { if (g[n]) i[n] = function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]) > 1 || resume(n, v); }); }; }
-    function resume(n, v) { try { step(g[n](v)); } catch (e) { settle(q[0][3], e); } }
-    function step(r) { r.value instanceof __await ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r);  }
-    function fulfill(value) { resume("next", value); }
-    function reject(value) { resume("throw", value); }
-    function settle(f, v) { if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]); }
-}
-
-function __asyncDelegator(o) {
-    var i, p;
-    return i = {}, verb("next"), verb("throw", function (e) { throw e; }), verb("return"), i[Symbol.iterator] = function () { return this; }, i;
-    function verb(n, f) { if (o[n]) i[n] = function (v) { return (p = !p) ? { value: __await(o[n](v)), done: n === "return" } : f ? f(v) : v; }; }
-}
-
-function __asyncValues(o) {
-    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-    var m = o[Symbol.asyncIterator];
-    return m ? m.call(o) : typeof __values === "function" ? __values(o) : o[Symbol.iterator]();
-}
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/*
-  * Copyright (c) Microsoft Corporation
-  *  All Rights Reserved
-  *  MIT License
-  *
-  * Permission is hereby granted, free of charge, to any person obtaining a copy of this
-  * software and associated documentation files (the "Software"), to deal in the Software
-  * without restriction, including without limitation the rights to use, copy, modify,
-  * merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
-  * permit persons to whom the Software is furnished to do so, subject to the following
-  * conditions:
-  *
-  * The above copyright notice and this permission notice shall be
-  * included in all copies or substantial portions of the Software.
-  *
-  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
-  * OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-  * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT
-  * OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-  */
-Object.defineProperty(exports, "__esModule", { value: true });
-/*
- * @hidden
- */
-var Constants = /** @class */ (function () {
-    function Constants() {
-    }
-    Object.defineProperty(Constants, "errorDescription", {
-        get: function () { return "error_description"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "error", {
-        get: function () { return "error"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "scope", {
-        get: function () { return "scope"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "acquireTokenUser", {
-        get: function () { return "msal.acquireTokenUser"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "clientInfo", {
-        get: function () { return "client_info"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "clientId", {
-        get: function () { return "clientId"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "authority", {
-        get: function () { return "msal.authority"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "idToken", {
-        get: function () { return "id_token"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "accessToken", {
-        get: function () { return "access_token"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "expiresIn", {
-        get: function () { return "expires_in"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "sessionState", {
-        get: function () { return "session_state"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "msalClientInfo", {
-        get: function () { return "msal.client.info"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "msalError", {
-        get: function () { return "msal.error"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "msalErrorDescription", {
-        get: function () { return "msal.error.description"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "msalSessionState", {
-        get: function () { return "msal.session.state"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "tokenKeys", {
-        get: function () { return "msal.token.keys"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "accessTokenKey", {
-        get: function () { return "msal.access.token.key"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "expirationKey", {
-        get: function () { return "msal.expiration.key"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "stateLogin", {
-        get: function () { return "msal.state.login"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "stateAcquireToken", {
-        get: function () { return "msal.state.acquireToken"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "stateRenew", {
-        get: function () { return "msal.state.renew"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "nonceIdToken", {
-        get: function () { return "msal.nonce.idtoken"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "userName", {
-        get: function () { return "msal.username"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "idTokenKey", {
-        get: function () { return "msal.idtoken"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "loginRequest", {
-        get: function () { return "msal.login.request"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "loginError", {
-        get: function () { return "msal.login.error"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "renewStatus", {
-        get: function () { return "msal.token.renew.status"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "msal", {
-        get: function () { return "msal"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "resourceDelimeter", {
-        get: function () { return "|"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "tokenRenewStatusCancelled", {
-        get: function () { return "Canceled"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "tokenRenewStatusCompleted", {
-        get: function () { return "Completed"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "tokenRenewStatusInProgress", {
-        get: function () { return "In Progress"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "popUpWidth", {
-        get: function () { return this._popUpWidth; },
-        set: function (width) {
-            this._popUpWidth = width;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "popUpHeight", {
-        get: function () { return this._popUpHeight; },
-        set: function (height) {
-            this._popUpHeight = height;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "login", {
-        get: function () { return "LOGIN"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "renewToken", {
-        get: function () { return "RENEW_TOKEN"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "unknown", {
-        get: function () { return "UNKNOWN"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "urlHash", {
-        get: function () { return "msal.urlHash"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "angularLoginRequest", {
-        get: function () { return "msal.angular.login.request"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Constants, "userIdentifier", {
-        get: function () { return "userIdentifier"; },
-        enumerable: true,
-        configurable: true
-    });
-    Constants._popUpWidth = 483;
-    Constants._popUpHeight = 600;
-    return Constants;
-}());
-exports.Constants = Constants;
-/*
- * @hidden
- */
-var ErrorCodes = /** @class */ (function () {
-    function ErrorCodes() {
-    }
-    Object.defineProperty(ErrorCodes, "loginProgressError", {
-        get: function () { return "login_progress_error"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ErrorCodes, "acquireTokenProgressError", {
-        get: function () { return "acquiretoken_progress_error"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ErrorCodes, "inputScopesError", {
-        get: function () { return "input_scopes_error"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ErrorCodes, "endpointResolutionError", {
-        get: function () { return "endpoints_resolution_error"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ErrorCodes, "popUpWindowError", {
-        get: function () { return "popup_window_error"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ErrorCodes, "userLoginError", {
-        get: function () { return "user_login_error"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ErrorCodes, "userCancelledError", {
-        get: function () { return "user_cancelled"; },
-        enumerable: true,
-        configurable: true
-    });
-    return ErrorCodes;
-}());
-exports.ErrorCodes = ErrorCodes;
-/*
- * @hidden
- */
-var ErrorDescription = /** @class */ (function () {
-    function ErrorDescription() {
-    }
-    Object.defineProperty(ErrorDescription, "loginProgressError", {
-        get: function () { return "Login is in progress"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ErrorDescription, "acquireTokenProgressError", {
-        get: function () { return "Acquire token is in progress"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ErrorDescription, "inputScopesError", {
-        get: function () { return "Invalid value of input scopes provided"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ErrorDescription, "endpointResolutionError", {
-        get: function () { return "Endpoints cannot be resolved"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ErrorDescription, "popUpWindowError", {
-        get: function () { return "Error opening popup window. This can happen if you are using IE or if popups are blocked in the browser."; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ErrorDescription, "userLoginError", {
-        get: function () { return "User login is required"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ErrorDescription, "userCancelledError", {
-        get: function () { return "User closed the popup window and cancelled the flow"; },
-        enumerable: true,
-        configurable: true
-    });
-    return ErrorDescription;
-}());
-exports.ErrorDescription = ErrorDescription;
-
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/**
- * Copyright (c) Microsoft Corporation
- *  All Rights Reserved
- *  MIT License
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this
- * software and associated documentation files (the 'Software'), to deal in the Software
- * without restriction, including without limitation the rights to use, copy, modify,
- * merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to the following
- * conditions:
- *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
- * OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
- * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT
- * OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-var Utils_1 = __webpack_require__(0);
-var LogLevel;
-(function (LogLevel) {
-    LogLevel[LogLevel["Error"] = 0] = "Error";
-    LogLevel[LogLevel["Warning"] = 1] = "Warning";
-    LogLevel[LogLevel["Info"] = 2] = "Info";
-    LogLevel[LogLevel["Verbose"] = 3] = "Verbose";
-})(LogLevel = exports.LogLevel || (exports.LogLevel = {}));
-var Logger = /** @class */ (function () {
-    function Logger(localCallback, options) {
-        if (options === void 0) { options = {}; }
-        /*
-         * @hidden
+        Object.defineProperty(UrlString.prototype, "urlString", {
+            get: function () {
+                return this._urlString;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        /**
+         * Ensure urls are lower case and end with a / character.
+         * @param url
          */
-        this._level = LogLevel.Info;
-        var _a = options.correlationId, correlationId = _a === void 0 ? "" : _a, _b = options.level, level = _b === void 0 ? LogLevel.Info : _b, _c = options.piiLoggingEnabled, piiLoggingEnabled = _c === void 0 ? false : _c;
-        this._localCallback = localCallback;
-        this._correlationId = correlationId;
-        this._level = level;
-        this._piiLoggingEnabled = piiLoggingEnabled;
-    }
-    /*
-     * @hidden
-     */
-    Logger.prototype.logMessage = function (logLevel, logMessage, containsPii) {
-        if ((logLevel > this._level) || (!this._piiLoggingEnabled && containsPii)) {
-            return;
-        }
-        var timestamp = new Date().toUTCString();
-        var log;
-        if (!Utils_1.Utils.isEmpty(this._correlationId)) {
-            log = timestamp + ":" + this._correlationId + "-" + Utils_1.Utils.getLibraryVersion() + "-" + LogLevel[logLevel] + " " + logMessage;
-        }
-        else {
-            log = timestamp + ":" + Utils_1.Utils.getLibraryVersion() + "-" + LogLevel[logLevel] + " " + logMessage;
-        }
-        this.executeCallback(logLevel, log, containsPii);
-    };
-    /*
-     * @hidden
-     */
-    Logger.prototype.executeCallback = function (level, message, containsPii) {
-        if (this._localCallback) {
-            this._localCallback(level, message, containsPii);
-        }
-    };
-    /*
-     * @hidden
-     */
-    Logger.prototype.error = function (message) {
-        this.logMessage(LogLevel.Error, message, false);
-    };
-    /*
-     * @hidden
-     */
-    Logger.prototype.errorPii = function (message) {
-        this.logMessage(LogLevel.Error, message, true);
-    };
-    /*
-     * @hidden
-     */
-    Logger.prototype.warning = function (message) {
-        this.logMessage(LogLevel.Warning, message, false);
-    };
-    /*
-     * @hidden
-     */
-    Logger.prototype.warningPii = function (message) {
-        this.logMessage(LogLevel.Warning, message, true);
-    };
-    /*
-     * @hidden
-     */
-    Logger.prototype.info = function (message) {
-        this.logMessage(LogLevel.Info, message, false);
-    };
-    /*
-     * @hidden
-     */
-    Logger.prototype.infoPii = function (message) {
-        this.logMessage(LogLevel.Info, message, true);
-    };
-    /*
-     * @hidden
-     */
-    Logger.prototype.verbose = function (message) {
-        this.logMessage(LogLevel.Verbose, message, false);
-    };
-    /*
-     * @hidden
-     */
-    Logger.prototype.verbosePii = function (message) {
-        this.logMessage(LogLevel.Verbose, message, true);
-    };
-    return Logger;
-}());
-exports.Logger = Logger;
-
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/*
-  * Copyright (c) Microsoft Corporation
-  *  All Rights Reserved
-  *  MIT License
-  *
-  * Permission is hereby granted, free of charge, to any person obtaining a copy of this
-  * software and associated documentation files (the "Software"), to deal in the Software
-  * without restriction, including without limitation the rights to use, copy, modify,
-  * merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
-  * permit persons to whom the Software is furnished to do so, subject to the following
-  * conditions:
-  *
-  * The above copyright notice and this permission notice shall be
-  * included in all copies or substantial portions of the Software.
-  *
-  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
-  * OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-  * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT
-  * OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-  */
-Object.defineProperty(exports, "__esModule", { value: true });
-/*
- * @hidden
- */
-var ErrorMessage = /** @class */ (function () {
-    function ErrorMessage() {
-    }
-    Object.defineProperty(ErrorMessage, "authorityUriInvalidPath", {
-        get: function () { return "AuthorityUriInvalidPath"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ErrorMessage, "authorityUriInsecure", {
-        get: function () { return "AuthorityUriInsecure"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ErrorMessage, "invalidAuthorityType", {
-        get: function () { return "InvalidAuthorityType"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ErrorMessage, "unsupportedAuthorityValidation", {
-        get: function () { return "UnsupportedAuthorityValidation"; },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ErrorMessage, "b2cAuthorityUriInvalidPath", {
-        get: function () { return "B2cAuthorityUriInvalidPath"; },
-        enumerable: true,
-        configurable: true
-    });
-    return ErrorMessage;
-}());
-exports.ErrorMessage = ErrorMessage;
-
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/**
- * Copyright (c) Microsoft Corporation
- *  All Rights Reserved
- *  MIT License
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this
- * software and associated documentation files (the 'Software'), to deal in the Software
- * without restriction, including without limitation the rights to use, copy, modify,
- * merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to the following
- * conditions:
- *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
- * OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
- * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT
- * OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-/*
- * @hidden
- */
-var TokenResponse = /** @class */ (function () {
-    function TokenResponse() {
-        this.valid = false;
-        this.parameters = {};
-        this.stateMatch = false;
-        this.stateResponse = "";
-        this.requestType = "unknown";
-    }
-    return TokenResponse;
-}());
-exports.TokenResponse = TokenResponse;
-
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/**
- * Copyright (c) Microsoft Corporation
- *  All Rights Reserved
- *  MIT License
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this
- * software and associated documentation files (the 'Software'), to deal in the Software
- * without restriction, including without limitation the rights to use, copy, modify,
- * merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to the following
- * conditions:
- *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
- * OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
- * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT
- * OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-var Utils_1 = __webpack_require__(0);
-var User = /** @class */ (function () {
-    /*
-     * @hidden
-     */
-    function User(displayableId, name, identityProvider, userIdentifier, idToken) {
-        this.displayableId = displayableId;
-        this.name = name;
-        this.identityProvider = identityProvider;
-        this.userIdentifier = userIdentifier;
-        this.idToken = idToken;
-    }
-    /*
-     * @hidden
-     */
-    User.createUser = function (idToken, clientInfo, authority) {
-        var uid;
-        var utid;
-        if (!clientInfo) {
-            uid = "";
-            utid = "";
-        }
-        else {
-            uid = clientInfo.uid;
-            utid = clientInfo.utid;
-        }
-        var userIdentifier = Utils_1.Utils.base64EncodeStringUrlSafe(uid) + "." + Utils_1.Utils.base64EncodeStringUrlSafe(utid);
-        return new User(idToken.preferredName, idToken.name, idToken.issuer, userIdentifier, idToken.decodedIdToken);
-    };
-    return User;
-}());
-exports.User = User;
-
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/**
- * Copyright (c) Microsoft Corporation
- *  All Rights Reserved
- *  MIT License
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this
- * software and associated documentation files (the 'Software'), to deal in the Software
- * without restriction, including without limitation the rights to use, copy, modify,
- * merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to the following
- * conditions:
- *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
- * OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
- * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT
- * OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(2);
-var Authority_1 = __webpack_require__(1);
-var XHRClient_1 = __webpack_require__(9);
-/**
- * @hidden
- */
-var AadAuthority = /** @class */ (function (_super) {
-    tslib_1.__extends(AadAuthority, _super);
-    function AadAuthority(authority, validateAuthority) {
-        return _super.call(this, authority, validateAuthority) || this;
-    }
-    Object.defineProperty(AadAuthority.prototype, "AadInstanceDiscoveryEndpointUrl", {
-        get: function () {
-            return AadAuthority.AadInstanceDiscoveryEndpoint + "?api-version=1.0&authorization_endpoint=" + this.CanonicalAuthority + "oauth2/v2.0/authorize";
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(AadAuthority.prototype, "AuthorityType", {
-        get: function () {
-            return Authority_1.AuthorityType.Aad;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /**
-     * Returns a promise which resolves to the OIDC endpoint
-     * Only responds with the endpoint
-     */
-    AadAuthority.prototype.GetOpenIdConfigurationEndpointAsync = function () {
-        var _this = this;
-        var resultPromise = new Promise(function (resolve, reject) {
-            return resolve(_this.DefaultOpenIdConfigurationEndpoint);
-        });
-        if (!this.IsValidationEnabled) {
-            return resultPromise;
-        }
-        var host = this.CanonicalAuthorityUrlComponents.HostNameAndPort;
-        if (this.IsInTrustedHostList(host)) {
-            return resultPromise;
-        }
-        var client = new XHRClient_1.XhrClient();
-        return client.sendRequestAsync(this.AadInstanceDiscoveryEndpointUrl, "GET", true)
-            .then(function (response) {
-            return response.tenant_discovery_endpoint;
-        });
-    };
-    /**
-     * Checks to see if the host is in a list of trusted hosts
-     * @param {string} The host to look up
-     */
-    AadAuthority.prototype.IsInTrustedHostList = function (host) {
-        return AadAuthority.TrustedHostList[host.toLowerCase()];
-    };
-    AadAuthority.AadInstanceDiscoveryEndpoint = "https://login.microsoftonline.com/common/discovery/instance";
-    AadAuthority.TrustedHostList = {
-        "login.windows.net": "login.windows.net",
-        "login.chinacloudapi.cn": "login.chinacloudapi.cn",
-        "login.cloudgovapi.us": "login.cloudgovapi.us",
-        "login.microsoftonline.com": "login.microsoftonline.com",
-        "login.microsoftonline.de": "login.microsoftonline.de",
-        "login.microsoftonline.us": "login.microsoftonline.us"
-    };
-    return AadAuthority;
-}(Authority_1.Authority));
-exports.AadAuthority = AadAuthority;
-
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/**
- * Copyright (c) Microsoft Corporation
- *  All Rights Reserved
- *  MIT License
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this
- * software and associated documentation files (the 'Software'), to deal in the Software
- * without restriction, including without limitation the rights to use, copy, modify,
- * merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to the following
- * conditions:
- *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
- * OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
- * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT
- * OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-/*
- * XHR client for JSON endpoints
- * https://www.npmjs.com/package/async-promise
- * @hidden
- */
-var XhrClient = /** @class */ (function () {
-    function XhrClient() {
-    }
-    XhrClient.prototype.sendRequestAsync = function (url, method, enableCaching) {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            var xhr = new XMLHttpRequest();
-            xhr.open(method, url, /*async: */ true);
-            if (enableCaching) {
-                // TODO: (shivb) ensure that this can be cached
-                // xhr.setRequestHeader("Cache-Control", "Public");
+        UrlString.canonicalizeUri = function (url) {
+            if (url) {
+                url = url.toLowerCase();
             }
-            xhr.onload = function (ev) {
-                if (xhr.status < 200 || xhr.status >= 300) {
-                    reject(_this.handleError(xhr.responseText));
+            if (url && !StringUtils.endsWith(url, "/")) {
+                url += "/";
+            }
+            return url;
+        };
+        /**
+         * Throws if urlString passed is not a valid authority URI string.
+         */
+        UrlString.prototype.validateAsUri = function () {
+            // Attempts to parse url for uri components
+            var components;
+            try {
+                components = this.getUrlComponents();
+            }
+            catch (e) {
+                throw ClientConfigurationError.createUrlParseError(e);
+            }
+            // Throw error if URI or path segments are not parseable.
+            if (!components.HostNameAndPort || !components.PathSegments || components.PathSegments.length < 1) {
+                throw ClientConfigurationError.createUrlParseError("Given url string: " + this.urlString);
+            }
+            // Throw error if uri is insecure.
+            if (!components.Protocol || components.Protocol.toLowerCase() !== "https:") {
+                throw ClientConfigurationError.createInsecureAuthorityUriError(this.urlString);
+            }
+        };
+        /**
+         * Function to remove query string params from url. Returns the new url.
+         * @param url
+         * @param name
+         */
+        UrlString.prototype.urlRemoveQueryStringParameter = function (name) {
+            var regex = new RegExp("(\\&" + name + "=)[^\&]+");
+            this._urlString = this.urlString.replace(regex, "");
+            // name=value&
+            regex = new RegExp("(" + name + "=)[^\&]+&");
+            this._urlString = this.urlString.replace(regex, "");
+            // name=value
+            regex = new RegExp("(" + name + "=)[^\&]+");
+            this._urlString = this.urlString.replace(regex, "");
+            return this.urlString;
+        };
+        UrlString.removeHashFromUrl = function (url) {
+            return UrlString.canonicalizeUri(url.split("#")[0]);
+        };
+        /**
+         * Given a url like https://a:b/common/d?e=f#g, and a tenantId, returns https://a:b/tenantId/d
+         * @param href The url
+         * @param tenantId The tenant id to replace
+         */
+        UrlString.prototype.replaceTenantPath = function (tenantId) {
+            var urlObject = this.getUrlComponents();
+            var pathArray = urlObject.PathSegments;
+            if (tenantId && (pathArray.length !== 0 && (pathArray[0] === AADAuthorityConstants.COMMON || pathArray[0] === AADAuthorityConstants.ORGANIZATIONS))) {
+                pathArray[0] = tenantId;
+            }
+            return UrlString.constructAuthorityUriFromObject(urlObject);
+        };
+        /**
+         * Returns the anchor part(#) of the URL
+         */
+        UrlString.prototype.getHash = function () {
+            return UrlString.parseHash(this.urlString);
+        };
+        /**
+         * Parses out the components from a url string.
+         * @returns An object with the various components. Please cache this value insted of calling this multiple times on the same url.
+         */
+        UrlString.prototype.getUrlComponents = function () {
+            // https://gist.github.com/curtisz/11139b2cfcaef4a261e0
+            var regEx = RegExp("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?");
+            // If url string does not match regEx, we throw an error
+            var match = this.urlString.match(regEx);
+            if (!match) {
+                throw ClientConfigurationError.createUrlParseError("Given url string: " + this.urlString);
+            }
+            // Url component object
+            var urlComponents = {
+                Protocol: match[1],
+                HostNameAndPort: match[4],
+                AbsolutePath: match[5]
+            };
+            var pathSegments = urlComponents.AbsolutePath.split("/");
+            pathSegments = pathSegments.filter(function (val) { return val && val.length > 0; }); // remove empty elements
+            urlComponents.PathSegments = pathSegments;
+            return urlComponents;
+        };
+        UrlString.getDomainFromUrl = function (url) {
+            var regEx = RegExp("^([^:/?#]+://)?([^/?#]*)");
+            var match = url.match(regEx);
+            if (!match) {
+                throw ClientConfigurationError.createUrlParseError("Given url string: " + url);
+            }
+            return match[2];
+        };
+        /**
+         * Parses hash string from given string. Returns empty string if no hash symbol is found.
+         * @param hashString
+         */
+        UrlString.parseHash = function (hashString) {
+            var hashIndex1 = hashString.indexOf("#");
+            var hashIndex2 = hashString.indexOf("#/");
+            if (hashIndex2 > -1) {
+                return hashString.substring(hashIndex2 + 2);
+            }
+            else if (hashIndex1 > -1) {
+                return hashString.substring(hashIndex1 + 1);
+            }
+            return "";
+        };
+        UrlString.constructAuthorityUriFromObject = function (urlObject) {
+            return new UrlString(urlObject.Protocol + "//" + urlObject.HostNameAndPort + "/" + urlObject.PathSegments.join("/"));
+        };
+        /**
+         * Returns URL hash as server auth code response object.
+         */
+        UrlString.getDeserializedHash = function (hash) {
+            // Check if given hash is empty
+            if (StringUtils.isEmpty(hash)) {
+                return {};
+            }
+            // Strip the # symbol if present
+            var parsedHash = UrlString.parseHash(hash);
+            // If # symbol was not present, above will return empty string, so give original hash value
+            var deserializedHash = StringUtils.queryStringToObject(StringUtils.isEmpty(parsedHash) ? hash : parsedHash);
+            // Check if deserialization didn't work
+            if (!deserializedHash) {
+                throw ClientAuthError.createHashNotDeserializedError(JSON.stringify(deserializedHash));
+            }
+            return deserializedHash;
+        };
+        /**
+         * Check if the hash of the URL string contains known properties
+         */
+        UrlString.hashContainsKnownProperties = function (hash) {
+            if (StringUtils.isEmpty(hash)) {
+                return false;
+            }
+            var parameters = UrlString.getDeserializedHash(hash);
+            return !!(parameters.code ||
+                parameters.error_description ||
+                parameters.error ||
+                parameters.state);
+        };
+        return UrlString;
+    }());
+
+    var TrustedAuthority = /** @class */ (function () {
+        function TrustedAuthority() {
+        }
+        /**
+         * Set the CloudDiscoveryMetadata object from knownAuthorities or cloudDiscoveryMetadata passed into the app config
+         * @param knownAuthorities
+         * @param cloudDiscoveryMetadata
+         */
+        TrustedAuthority.setTrustedAuthoritiesFromConfig = function (knownAuthorities, cloudDiscoveryMetadata) {
+            if (!this.getTrustedHostList().length) {
+                if (knownAuthorities.length > 0 && !StringUtils.isEmpty(cloudDiscoveryMetadata)) {
+                    throw ClientConfigurationError.createKnownAuthoritiesCloudDiscoveryMetadataError();
                 }
+                this.createCloudDiscoveryMetadataFromKnownAuthorities(knownAuthorities);
                 try {
-                    var jsonResponse = JSON.parse(xhr.responseText);
+                    if (cloudDiscoveryMetadata) {
+                        var parsedMetadata = JSON.parse(cloudDiscoveryMetadata);
+                        this.saveCloudDiscoveryMetadata(parsedMetadata.metadata);
+                    }
                 }
                 catch (e) {
-                    reject(_this.handleError(xhr.responseText));
+                    throw ClientConfigurationError.createInvalidCloudDiscoveryMetadataError();
                 }
-                resolve(jsonResponse);
-            };
-            xhr.onerror = function (ev) {
-                reject(xhr.status);
-            };
-            if (method === "GET") {
-                xhr.send();
             }
-            else {
-                throw "not implemented";
-            }
-        });
-    };
-    XhrClient.prototype.handleError = function (responseText) {
-        var jsonResponse;
-        try {
-            jsonResponse = JSON.parse(responseText);
-            if (jsonResponse.error) {
-                return jsonResponse.error;
-            }
-            else {
-                throw responseText;
-            }
-        }
-        catch (e) {
-            return responseText;
-        }
-    };
-    return XhrClient;
-}());
-exports.XhrClient = XhrClient;
-
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(11);
-
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var UserAgentApplication_1 = __webpack_require__(12);
-exports.UserAgentApplication = UserAgentApplication_1.UserAgentApplication;
-var Logger_1 = __webpack_require__(4);
-exports.Logger = Logger_1.Logger;
-var Logger_2 = __webpack_require__(4);
-exports.LogLevel = Logger_2.LogLevel;
-var User_1 = __webpack_require__(7);
-exports.User = User_1.User;
-var Constants_1 = __webpack_require__(3);
-exports.Constants = Constants_1.Constants;
-var RequestInfo_1 = __webpack_require__(6);
-exports.TokenResponse = RequestInfo_1.TokenResponse;
-var Authority_1 = __webpack_require__(1);
-exports.Authority = Authority_1.Authority;
-
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/**
- * Copyright (c) Microsoft Corporation
- *  All Rights Reserved
- *  MIT License
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this
- * software and associated documentation files (the 'Software'), to deal in the Software
- * without restriction, including without limitation the rights to use, copy, modify,
- * merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to the following
- * conditions:
- *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
- * OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
- * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT
- * OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(2);
-var AccessTokenKey_1 = __webpack_require__(13);
-var AccessTokenValue_1 = __webpack_require__(14);
-var AuthenticationRequestParameters_1 = __webpack_require__(15);
-var ClientInfo_1 = __webpack_require__(16);
-var Constants_1 = __webpack_require__(3);
-var IdToken_1 = __webpack_require__(17);
-var Logger_1 = __webpack_require__(4);
-var Storage_1 = __webpack_require__(18);
-var RequestInfo_1 = __webpack_require__(6);
-var User_1 = __webpack_require__(7);
-var Utils_1 = __webpack_require__(0);
-var AuthorityFactory_1 = __webpack_require__(20);
-/*
- * @hidden
- */
-var ResponseTypes = {
-    id_token: "id_token",
-    token: "token",
-    id_token_token: "id_token token"
-};
-var resolveTokenOnlyIfOutOfIframe = function (target, propertyKey, descriptor) {
-    var tokenAcquisitionMethod = descriptor.value;
-    descriptor.value = function () {
-        var args = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            args[_i] = arguments[_i];
-        }
-        return this.isInIframe()
-            ? new Promise(function () { })
-            : tokenAcquisitionMethod.apply(this, args);
-    };
-    return descriptor;
-};
-var UserAgentApplication = /** @class */ (function () {
-    /*
-     * Initialize a UserAgentApplication with a given clientId and authority.
-     * @constructor
-     * @param {string} clientId - The clientID of your application, you should get this from the application registration portal.
-     * @param {string} authority - A URL indicating a directory that MSAL can use to obtain tokens.
-     * - In Azure AD, it is of the form https://&lt;instance>/&lt;tenant&gt;,\ where &lt;instance&gt; is the directory host (e.g. https://login.microsoftonline.com) and &lt;tenant&gt; is a identifier within the directory itself (e.g. a domain associated to the tenant, such as contoso.onmicrosoft.com, or the GUID representing the TenantID property of the directory)
-     * - In Azure B2C, it is of the form https://&lt;instance&gt;/tfp/&lt;tenantId&gt;/&lt;policyName&gt;/
-     * - Default value is: "https://login.microsoftonline.com/common"
-     * @param _tokenReceivedCallback -  The function that will get the call back once this API is completed (either successfully or with a failure).
-     * @param {boolean} validateAuthority -  boolean to turn authority validation on/off.
-     */
-    function UserAgentApplication(clientId, authority, tokenReceivedCallback, options) {
-        if (options === void 0) { options = {}; }
-        /*
-         * @hidden
-         */
-        this._cacheLocations = {
-            localStorage: "localStorage",
-            sessionStorage: "sessionStorage"
         };
-        /*
-         * @hidden
+        /**
+         * Called to get metadata from network if CloudDiscoveryMetadata was not populated by config
+         * @param networkInterface
          */
-        this._clockSkew = 300;
-        /*
-         * @hidden
-         */
-        this._tokenReceivedCallback = null;
-        this._isAngular = false;
-        var _a = options.validateAuthority, validateAuthority = _a === void 0 ? true : _a, _b = options.cacheLocation, cacheLocation = _b === void 0 ? "sessionStorage" : _b, _c = options.redirectUri, redirectUri = _c === void 0 ? window.location.href.split("?")[0].split("#")[0] : _c, _d = options.postLogoutRedirectUri, postLogoutRedirectUri = _d === void 0 ? window.location.href.split("?")[0].split("#")[0] : _d, _e = options.logger, logger = _e === void 0 ? new Logger_1.Logger(null) : _e, _f = options.loadFrameTimeout, loadFrameTimeout = _f === void 0 ? 6000 : _f, _g = options.navigateToLoginRequestUrl, navigateToLoginRequestUrl = _g === void 0 ? true : _g, _h = options.state, state = _h === void 0 ? "" : _h, _j = options.isAngular, isAngular = _j === void 0 ? false : _j, _k = options.unprotectedResources, unprotectedResources = _k === void 0 ? new Array() : _k, _l = options.protectedResourceMap, protectedResourceMap = _l === void 0 ? new Map() : _l;
-        this.loadFrameTimeout = loadFrameTimeout;
-        this.clientId = clientId;
-        this.validateAuthority = validateAuthority;
-        this.authority = authority || "https://login.microsoftonline.com/common";
-        this._tokenReceivedCallback = tokenReceivedCallback;
-        this._redirectUri = redirectUri;
-        this._postLogoutredirectUri = postLogoutRedirectUri;
-        this._loginInProgress = false;
-        this._acquireTokenInProgress = false;
-        this._cacheLocation = cacheLocation;
-        this._navigateToLoginRequestUrl = navigateToLoginRequestUrl;
-        this._state = state;
-        this._isAngular = isAngular;
-        this._unprotectedResources = unprotectedResources;
-        this._protectedResourceMap = protectedResourceMap;
-        if (!this._cacheLocations[cacheLocation]) {
-            throw new Error("Cache Location is not valid. Provided value:" + this._cacheLocation + ".Possible values are: " + this._cacheLocations.localStorage + ", " + this._cacheLocations.sessionStorage);
-        }
-        this._cacheStorage = new Storage_1.Storage(this._cacheLocation); //cache keys msal
-        this._logger = logger;
-        window.openedWindows = [];
-        window.activeRenewals = {};
-        window.renewStates = [];
-        window.callBackMappedToRenewStates = {};
-        window.callBacksMappedToRenewStates = {};
-        window.msal = this;
-        var urlHash = window.location.hash;
-        var isCallback = this.isCallback(urlHash);
-        if (!this._isAngular) {
-            if (isCallback) {
-                this.handleAuthenticationResponse.call(this, urlHash);
-            }
-            else {
-                var pendingCallback = this._cacheStorage.getItem(Constants_1.Constants.urlHash);
-                if (pendingCallback) {
-                    this.processCallBack(pendingCallback);
-                }
-            }
-        }
-    }
-    Object.defineProperty(UserAgentApplication.prototype, "cacheLocation", {
-        /*
-         * Used to get the cache location
-         */
-        get: function () {
-            return this._cacheLocation;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(UserAgentApplication.prototype, "authority", {
-        /*
-         * Used to get the authority.
-         */
-        get: function () {
-            return this.authorityInstance.CanonicalAuthority;
-        },
-        /*
-         * Used to set the authority.
-         * @param {string} authority - A URL indicating a directory that MSAL can use to obtain tokens.
-         * - In Azure AD, it is of the form https://&lt;tenant&gt;/&lt;tenant&gt;, where &lt;tenant&gt; is the directory host (e.g. https://login.microsoftonline.com) and &lt;tenant&gt; is a identifier within the directory itself (e.g. a domain associated to the tenant, such as contoso.onmicrosoft.com, or the GUID representing the TenantID property of the directory)
-         * - In Azure B2C, it is of the form https://&lt;instance&gt;/tfp/&lt;tenant&gt;/<policyName>/
-         * - Default value is: "https://login.microsoftonline.com/common"
-         */
-        set: function (val) {
-            this.authorityInstance = AuthorityFactory_1.AuthorityFactory.CreateInstance(val, this.validateAuthority);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /*
-     * Used to call the constructor callback with the token/error
-     * @param {string} [hash=window.location.hash] - Hash fragment of Url.
-     * @hidden
-     */
-    UserAgentApplication.prototype.processCallBack = function (hash) {
-        this._logger.info('Processing the callback from redirect response');
-        var requestInfo = this.getRequestInfo(hash);
-        this.saveTokenFromHash(requestInfo);
-        var token = requestInfo.parameters[Constants_1.Constants.accessToken] || requestInfo.parameters[Constants_1.Constants.idToken];
-        var errorDesc = requestInfo.parameters[Constants_1.Constants.errorDescription];
-        var error = requestInfo.parameters[Constants_1.Constants.error];
-        var tokenType;
-        if (requestInfo.parameters[Constants_1.Constants.accessToken]) {
-            tokenType = Constants_1.Constants.accessToken;
-        }
-        else {
-            tokenType = Constants_1.Constants.idToken;
-        }
-        this._cacheStorage.removeItem(Constants_1.Constants.urlHash);
-        try {
-            if (this._tokenReceivedCallback) {
-                this._tokenReceivedCallback.call(this, errorDesc, token, error, tokenType, this.getUserState(this._cacheStorage.getItem(Constants_1.Constants.stateLogin)));
-            }
-        }
-        catch (err) {
-            this._logger.error("Error occurred in token received callback function: " + err);
-        }
-    };
-    /*
-     * Initiate the login process by redirecting the user to the STS authorization endpoint.
-     * @param {Array.<string>} scopes - Permissions you want included in the access token. Not all scopes are guaranteed to be included in the access token returned.
-     * @param {string} extraQueryParameters - Key-value pairs to pass to the authentication server during the interactive authentication flow.
-     */
-    UserAgentApplication.prototype.loginRedirect = function (scopes, extraQueryParameters) {
-        var _this = this;
-        /*
-        1. Create navigate url
-        2. saves value in cache
-        3. redirect user to AAD
-         */
-        if (this._loginInProgress) {
-            if (this._tokenReceivedCallback) {
-                this._tokenReceivedCallback(Constants_1.ErrorDescription.loginProgressError, null, Constants_1.ErrorCodes.loginProgressError, Constants_1.Constants.idToken, this.getUserState(this._cacheStorage.getItem(Constants_1.Constants.stateLogin)));
-                return;
-            }
-        }
-        if (scopes) {
-            var isValidScope = this.validateInputScope(scopes);
-            if (isValidScope && !Utils_1.Utils.isEmpty(isValidScope)) {
-                if (this._tokenReceivedCallback) {
-                    this._tokenReceivedCallback(Constants_1.ErrorDescription.inputScopesError, null, Constants_1.ErrorCodes.inputScopesError, Constants_1.Constants.idToken, this.getUserState(this._cacheStorage.getItem(Constants_1.Constants.stateLogin)));
-                    return;
-                }
-            }
-            scopes = this.filterScopes(scopes);
-        }
-        this._loginInProgress = true;
-        this.authorityInstance.ResolveEndpointsAsync()
-            .then(function () {
-            var authenticationRequest = new AuthenticationRequestParameters_1.AuthenticationRequestParameters(_this.authorityInstance, _this.clientId, scopes, ResponseTypes.id_token, _this._redirectUri, _this._state);
-            if (extraQueryParameters) {
-                authenticationRequest.extraQueryParameters = extraQueryParameters;
-            }
-            var loginStartPage = _this._cacheStorage.getItem(Constants_1.Constants.angularLoginRequest);
-            if (!loginStartPage || loginStartPage === "") {
-                loginStartPage = window.location.href;
-            }
-            else {
-                _this._cacheStorage.setItem(Constants_1.Constants.angularLoginRequest, "");
-            }
-            _this._cacheStorage.setItem(Constants_1.Constants.loginRequest, loginStartPage);
-            _this._cacheStorage.setItem(Constants_1.Constants.loginError, "");
-            _this._cacheStorage.setItem(Constants_1.Constants.stateLogin, authenticationRequest.state);
-            _this._cacheStorage.setItem(Constants_1.Constants.nonceIdToken, authenticationRequest.nonce);
-            _this._cacheStorage.setItem(Constants_1.Constants.msalError, "");
-            _this._cacheStorage.setItem(Constants_1.Constants.msalErrorDescription, "");
-            var authorityKey = Constants_1.Constants.authority + Constants_1.Constants.resourceDelimeter + authenticationRequest.state;
-            if (Utils_1.Utils.isEmpty(_this._cacheStorage.getItem(authorityKey))) {
-                _this._cacheStorage.setItem(authorityKey, _this.authority);
-            }
-            var urlNavigate = authenticationRequest.createNavigateUrl(scopes) + "&prompt=select_account" + "&response_mode=fragment";
-            _this.promptUser(urlNavigate);
-        });
-    };
-    /*
-     * Initiate the login process by opening a popup window.
-     * @param {Array.<string>} scopes - Permissions you want included in the access token. Not all scopes are  guaranteed to be included in the access token returned.
-     * @param {string} extraQueryParameters - Key-value pairs to pass to the STS during the interactive authentication flow.
-     * @returns {Promise.<string>} - A Promise that is fulfilled when this function has completed, or rejected if an error was raised. Returns the token or error.
-     */
-    UserAgentApplication.prototype.loginPopup = function (scopes, extraQueryParameters) {
-        var _this = this;
-        /*
-        1. Create navigate url
-        2. saves value in cache
-        3. redirect user to AAD
-         */
-        return new Promise(function (resolve, reject) {
-            if (_this._loginInProgress) {
-                reject(Constants_1.ErrorCodes.loginProgressError + "|" + Constants_1.ErrorDescription.loginProgressError);
-                return;
-            }
-            if (scopes) {
-                var isValidScope = _this.validateInputScope(scopes);
-                if (isValidScope && !Utils_1.Utils.isEmpty(isValidScope)) {
-                    reject(Constants_1.ErrorCodes.inputScopesError + "|" + Constants_1.ErrorDescription.inputScopesError);
-                    return;
-                }
-                scopes = _this.filterScopes(scopes);
-            }
-            else {
-                scopes = [_this.clientId];
-            }
-            var scope = scopes.join(" ").toLowerCase();
-            var popUpWindow = _this.openWindow("about:blank", "_blank", 1, _this, resolve, reject);
-            if (!popUpWindow) {
-                return;
-            }
-            _this._loginInProgress = true;
-            _this.authorityInstance.ResolveEndpointsAsync().then(function () {
-                var authenticationRequest = new AuthenticationRequestParameters_1.AuthenticationRequestParameters(_this.authorityInstance, _this.clientId, scopes, ResponseTypes.id_token, _this._redirectUri, _this._state);
-                if (extraQueryParameters) {
-                    authenticationRequest.extraQueryParameters = extraQueryParameters;
-                }
-                _this._cacheStorage.setItem(Constants_1.Constants.loginRequest, window.location.href);
-                _this._cacheStorage.setItem(Constants_1.Constants.loginError, "");
-                _this._cacheStorage.setItem(Constants_1.Constants.nonceIdToken, authenticationRequest.nonce);
-                _this._cacheStorage.setItem(Constants_1.Constants.msalError, "");
-                _this._cacheStorage.setItem(Constants_1.Constants.msalErrorDescription, "");
-                var authorityKey = Constants_1.Constants.authority + Constants_1.Constants.resourceDelimeter + authenticationRequest.state;
-                if (Utils_1.Utils.isEmpty(_this._cacheStorage.getItem(authorityKey))) {
-                    _this._cacheStorage.setItem(authorityKey, _this.authority);
-                }
-                var urlNavigate = authenticationRequest.createNavigateUrl(scopes) + "&prompt=select_account" + "&response_mode=fragment";
-                window.renewStates.push(authenticationRequest.state);
-                window.requestType = Constants_1.Constants.login;
-                _this.registerCallback(authenticationRequest.state, scope, resolve, reject);
-                if (popUpWindow) {
-                    _this._logger.infoPii("Navigated Popup window to:" + urlNavigate);
-                    popUpWindow.location.href = urlNavigate;
-                }
-            }, function () {
-                _this._logger.info(Constants_1.ErrorCodes.endpointResolutionError + ":" + Constants_1.ErrorDescription.endpointResolutionError);
-                _this._cacheStorage.setItem(Constants_1.Constants.msalError, Constants_1.ErrorCodes.endpointResolutionError);
-                _this._cacheStorage.setItem(Constants_1.Constants.msalErrorDescription, Constants_1.ErrorDescription.endpointResolutionError);
-                if (reject) {
-                    reject(Constants_1.ErrorCodes.endpointResolutionError + ":" + Constants_1.ErrorDescription.endpointResolutionError);
-                }
-                if (popUpWindow) {
-                    popUpWindow.close();
-                }
-            }).catch(function (err) {
-                _this._logger.warning("could not resolve endpoints");
-                reject(err);
+        TrustedAuthority.setTrustedAuthoritiesFromNetwork = function (authorityToVerify, networkInterface) {
+            return __awaiter$1(this, void 0, void 0, function () {
+                var instanceDiscoveryEndpoint, response, metadata, e_1, host;
+                return __generator$1(this, function (_a) {
+                    switch (_a.label) {
+                        case 0:
+                            instanceDiscoveryEndpoint = "" + Constants.AAD_INSTANCE_DISCOVERY_ENDPT + authorityToVerify.urlString + "oauth2/v2.0/authorize";
+                            _a.label = 1;
+                        case 1:
+                            _a.trys.push([1, 3, , 4]);
+                            return [4 /*yield*/, networkInterface.sendGetRequestAsync(instanceDiscoveryEndpoint)];
+                        case 2:
+                            response = _a.sent();
+                            metadata = response.body.metadata;
+                            this.saveCloudDiscoveryMetadata(metadata);
+                            return [3 /*break*/, 4];
+                        case 3:
+                            e_1 = _a.sent();
+                            return [2 /*return*/];
+                        case 4:
+                            host = authorityToVerify.getUrlComponents().HostNameAndPort;
+                            if (this.getTrustedHostList().length > 0 && !this.IsInTrustedHostList(host)) {
+                                // Custom Domain scenario, host is trusted because Instance Discovery call succeeded
+                                this.createCloudDiscoveryMetadataFromKnownAuthorities([host]);
+                            }
+                            return [2 /*return*/];
+                    }
+                });
             });
-        });
-    };
+        };
+        /**
+         *
+         * @param metadata
+         */
+        TrustedAuthority.saveCloudDiscoveryMetadata = function (metadata) {
+            metadata.forEach(function (entry) {
+                var authorities = entry.aliases;
+                authorities.forEach(function (authority) {
+                    TrustedAuthority.TrustedHostList[authority.toLowerCase()] = entry;
+                });
+            });
+        };
+        /**
+         * Create a generic metadata object for each host passed to knownAuthorities.
+         * This is mostly useful for B2C or ADFS scenarios
+         * @param knownAuthorities
+         */
+        TrustedAuthority.createCloudDiscoveryMetadataFromKnownAuthorities = function (knownAuthorities) {
+            var _this = this;
+            knownAuthorities.forEach(function (authority) {
+                var authorityDomain = UrlString.getDomainFromUrl(authority).toLowerCase();
+                _this.TrustedHostList[authorityDomain] = {
+                    preferred_cache: authorityDomain,
+                    preferred_network: authorityDomain,
+                    aliases: [authorityDomain]
+                };
+            });
+        };
+        TrustedAuthority.getTrustedHostList = function () {
+            return Object.keys(this.TrustedHostList);
+        };
+        /**
+         * Get metadata for the provided host
+         * @param host
+         */
+        TrustedAuthority.getCloudDiscoveryMetadata = function (host) {
+            return this.TrustedHostList[host.toLowerCase()] || null;
+        };
+        /**
+         * Checks to see if the host is in a list of trusted hosts
+         * @param host
+         */
+        TrustedAuthority.IsInTrustedHostList = function (host) {
+            return Object.keys(this.TrustedHostList).indexOf(host.toLowerCase()) > -1;
+        };
+        TrustedAuthority.TrustedHostList = {};
+        return TrustedAuthority;
+    }());
+
     /*
-      * Used to redirect the browser to the STS authorization endpoint
-      * @param {string} urlNavigate - URL of the authorization endpoint
-      * @hidden
-      */
-    UserAgentApplication.prototype.promptUser = function (urlNavigate) {
-        if (urlNavigate && !Utils_1.Utils.isEmpty(urlNavigate)) {
-            this._logger.infoPii("Navigate to:" + urlNavigate);
-            window.location.replace(urlNavigate);
-        }
-        else {
-            this._logger.info("Navigate url is empty");
-        }
-    };
-    /*
-     * Used to send the user to the redirect_uri after authentication is complete. The user"s bearer token is attached to the URI fragment as an id_token/access_token field.
-     * This function also closes the popup window after redirection.
-     * @hidden
-     * @ignore
+     * Copyright (c) Microsoft Corporation. All rights reserved.
+     * Licensed under the MIT License.
      */
-    UserAgentApplication.prototype.openWindow = function (urlNavigate, title, interval, instance, resolve, reject) {
-        var _this = this;
-        var popupWindow = this.openPopup(urlNavigate, title, Constants_1.Constants.popUpWidth, Constants_1.Constants.popUpHeight);
-        if (popupWindow == null) {
-            instance._loginInProgress = false;
-            instance._acquireTokenInProgress = false;
-            this._logger.info(Constants_1.ErrorCodes.popUpWindowError + ":" + Constants_1.ErrorDescription.popUpWindowError);
-            this._cacheStorage.setItem(Constants_1.Constants.msalError, Constants_1.ErrorCodes.popUpWindowError);
-            this._cacheStorage.setItem(Constants_1.Constants.msalErrorDescription, Constants_1.ErrorDescription.popUpWindowError);
-            if (reject) {
-                reject(Constants_1.ErrorCodes.popUpWindowError + "|" + Constants_1.ErrorDescription.popUpWindowError);
-            }
-            return null;
+    /**
+     * Type that defines required and optional parameters for an Account field (based on universal cache schema implemented by all MSALs).
+     *
+     * Key : Value Schema
+     *
+     * Key: <home_account_id>-<environment>-<realm*>
+     *
+     * Value Schema:
+     * {
+     *      homeAccountId: home account identifier for the auth scheme,
+     *      environment: entity that issued the token, represented as a full host
+     *      realm: Full tenant or organizational identifier that the account belongs to
+     *      localAccountId: Original tenant-specific accountID, usually used for legacy cases
+     *      username: primary username that represents the user, usually corresponds to preferred_username in the v2 endpt
+     *      authorityType: Accounts authority type as a string
+     *      name: Full name for the account, including given name and family name,
+     *      clientInfo: Full base64 encoded client info received from ESTS
+     *      lastModificationTime: last time this entity was modified in the cache
+     *      lastModificationApp:
+     * }
+     */
+    var AccountEntity = /** @class */ (function () {
+        function AccountEntity() {
         }
-        window.openedWindows.push(popupWindow);
-        var pollTimer = window.setInterval(function () {
-            if (popupWindow && popupWindow.closed && instance._loginInProgress) {
-                if (reject) {
-                    reject(Constants_1.ErrorCodes.userCancelledError + "|" + Constants_1.ErrorDescription.userCancelledError);
+        /**
+         * Generate Account Id key component as per the schema: <home_account_id>-<environment>
+         */
+        AccountEntity.prototype.generateAccountId = function () {
+            var accountId = [this.homeAccountId, this.environment];
+            return accountId.join(Separators.CACHE_KEY_SEPARATOR).toLowerCase();
+        };
+        /**
+         * Generate Account Cache Key as per the schema: <home_account_id>-<environment>-<realm*>
+         */
+        AccountEntity.prototype.generateAccountKey = function () {
+            return AccountEntity.generateAccountCacheKey({
+                homeAccountId: this.homeAccountId,
+                environment: this.environment,
+                tenantId: this.realm,
+                username: this.username
+            });
+        };
+        /**
+         * returns the type of the cache (in this case account)
+         */
+        AccountEntity.prototype.generateType = function () {
+            switch (this.authorityType) {
+                case CacheAccountType.ADFS_ACCOUNT_TYPE:
+                    return CacheType.ADFS;
+                case CacheAccountType.MSAV1_ACCOUNT_TYPE:
+                    return CacheType.MSA;
+                case CacheAccountType.MSSTS_ACCOUNT_TYPE:
+                    return CacheType.MSSTS;
+                case CacheAccountType.GENERIC_ACCOUNT_TYPE:
+                    return CacheType.GENERIC;
+                default: {
+                    throw ClientAuthError.createUnexpectedAccountTypeError();
                 }
-                window.clearInterval(pollTimer);
-                if (_this._isAngular) {
-                    _this.broadcast('msal:popUpClosed', Constants_1.ErrorCodes.userCancelledError + "|" + Constants_1.ErrorDescription.userCancelledError);
+            }
+        };
+        /**
+         * Returns the AccountInfo interface for this account.
+         */
+        AccountEntity.prototype.getAccountInfo = function () {
+            return {
+                homeAccountId: this.homeAccountId,
+                environment: this.environment,
+                tenantId: this.realm,
+                username: this.username
+            };
+        };
+        /**
+         * Generates account key from interface
+         * @param accountInterface
+         */
+        AccountEntity.generateAccountCacheKey = function (accountInterface) {
+            var accountKey = [
+                accountInterface.homeAccountId,
+                accountInterface.environment || "",
+                accountInterface.tenantId || "",
+            ];
+            return accountKey.join(Separators.CACHE_KEY_SEPARATOR).toLowerCase();
+        };
+        /**
+         * Build Account cache from IdToken, clientInfo and authority/policy
+         * @param clientInfo
+         * @param authority
+         * @param idToken
+         * @param policy
+         */
+        AccountEntity.createAccount = function (clientInfo, authority, idToken, crypto) {
+            var account = new AccountEntity();
+            account.authorityType = CacheAccountType.MSSTS_ACCOUNT_TYPE;
+            account.clientInfo = clientInfo;
+            var clientInfoObj = buildClientInfo(clientInfo, crypto);
+            account.homeAccountId = "" + clientInfoObj.uid + Separators.CLIENT_INFO_SEPARATOR + clientInfoObj.utid;
+            var reqEnvironment = authority.canonicalAuthorityUrlComponents.HostNameAndPort;
+            var env = TrustedAuthority.getCloudDiscoveryMetadata(reqEnvironment) ? TrustedAuthority.getCloudDiscoveryMetadata(reqEnvironment).preferred_cache : "";
+            if (StringUtils.isEmpty(env)) {
+                throw ClientAuthError.createInvalidCacheEnvironmentError();
+            }
+            account.environment = env;
+            account.realm = idToken.claims.tid;
+            if (idToken) {
+                // How do you account for MSA CID here?
+                var localAccountId = !StringUtils.isEmpty(idToken.claims.oid)
+                    ? idToken.claims.oid
+                    : idToken.claims.sid;
+                account.localAccountId = localAccountId;
+                // In B2C scenarios the emails claim is used instead of preferred_username and it is an array. In most cases it will contain a single email.
+                // This field should not be relied upon if a custom policy is configured to return more than 1 email.
+                account.username = idToken.claims.preferred_username || (idToken.claims.emails ? idToken.claims.emails[0] : "");
+                account.name = idToken.claims.name;
+            }
+            return account;
+        };
+        /**
+         * Build ADFS account type
+         * @param authority
+         * @param idToken
+         */
+        AccountEntity.createADFSAccount = function (authority, idToken) {
+            var account = new AccountEntity();
+            account.authorityType = CacheAccountType.ADFS_ACCOUNT_TYPE;
+            account.homeAccountId = idToken.claims.sub;
+            var reqEnvironment = authority.canonicalAuthorityUrlComponents.HostNameAndPort;
+            var env = TrustedAuthority.getCloudDiscoveryMetadata(reqEnvironment) ? TrustedAuthority.getCloudDiscoveryMetadata(reqEnvironment).preferred_cache : "";
+            if (StringUtils.isEmpty(env)) {
+                throw ClientAuthError.createInvalidCacheEnvironmentError();
+            }
+            account.environment = env;
+            account.username = idToken.claims.upn;
+            // add uniqueName to claims
+            // account.name = idToken.claims.uniqueName;
+            return account;
+        };
+        /**
+         * Validates an entity: checks for all expected params
+         * @param entity
+         */
+        AccountEntity.isAccountEntity = function (entity) {
+            return (entity.hasOwnProperty("homeAccountId") &&
+                entity.hasOwnProperty("environment") &&
+                entity.hasOwnProperty("realm") &&
+                entity.hasOwnProperty("localAccountId") &&
+                entity.hasOwnProperty("username") &&
+                entity.hasOwnProperty("authorityType"));
+        };
+        return AccountEntity;
+    }());
+
+    /*
+     * Copyright (c) Microsoft Corporation. All rights reserved.
+     * Licensed under the MIT License.
+     */
+    /**
+     * Interface class which implement cache storage functions used by MSAL to perform validity checks, and store tokens.
+     */
+    var CacheManager = /** @class */ (function () {
+        function CacheManager() {
+        }
+        /**
+         * Returns all accounts in cache
+         */
+        CacheManager.prototype.getAllAccounts = function () {
+            var currentAccounts = this.getAccountsFilteredBy();
+            var accountValues = Object.keys(currentAccounts).map(function (accountKey) { return currentAccounts[accountKey]; });
+            var numAccounts = accountValues.length;
+            if (numAccounts < 1) {
+                return [];
+            }
+            else {
+                var allAccounts = accountValues.map(function (value) {
+                    var accountObj = new AccountEntity();
+                    accountObj = CacheManager.toObject(accountObj, value);
+                    return accountObj.getAccountInfo();
+                });
+                return allAccounts;
+            }
+        };
+        /**
+         * saves a cache record
+         * @param cacheRecord
+         */
+        CacheManager.prototype.saveCacheRecord = function (cacheRecord) {
+            if (!cacheRecord) {
+                throw ClientAuthError.createNullOrUndefinedCacheRecord();
+            }
+            if (!!cacheRecord.account) {
+                this.saveAccount(cacheRecord.account);
+            }
+            if (!!cacheRecord.idToken) {
+                this.saveCredential(cacheRecord.idToken);
+            }
+            if (!!cacheRecord.accessToken) {
+                this.saveAccessToken(cacheRecord.accessToken);
+            }
+            if (!!cacheRecord.refreshToken) {
+                this.saveCredential(cacheRecord.refreshToken);
+            }
+        };
+        /**
+         * saves account into cache
+         * @param account
+         */
+        CacheManager.prototype.saveAccount = function (account) {
+            var key = account.generateAccountKey();
+            this.setItem(key, account, CacheSchemaType.ACCOUNT);
+        };
+        /**
+         * saves credential - accessToken, idToken or refreshToken into cache
+         * @param credential
+         */
+        CacheManager.prototype.saveCredential = function (credential) {
+            var key = credential.generateCredentialKey();
+            this.setItem(key, credential, CacheSchemaType.CREDENTIAL);
+        };
+        /**
+         * saves access token credential
+         * @param credential
+         */
+        CacheManager.prototype.saveAccessToken = function (credential) {
+            var _this = this;
+            var currentTokenCache = this.getCredentialsFilteredBy({
+                clientId: credential.clientId,
+                credentialType: CredentialType.ACCESS_TOKEN,
+                environment: credential.environment,
+                homeAccountId: credential.homeAccountId,
+                realm: credential.realm
+            });
+            var currentScopes = ScopeSet.fromString(credential.target);
+            var currentAccessTokens = Object.keys(currentTokenCache.accessTokens).map(function (key) { return currentTokenCache.accessTokens[key]; });
+            if (currentAccessTokens) {
+                currentAccessTokens.forEach(function (tokenEntity) {
+                    var tokenScopeSet = ScopeSet.fromString(tokenEntity.target);
+                    if (tokenScopeSet.intersectingScopeSets(currentScopes)) {
+                        _this.removeCredential(tokenEntity);
+                    }
+                });
+            }
+            this.saveCredential(credential);
+        };
+        /**
+         * Given account key retrieve an account
+         * @param key
+         */
+        CacheManager.prototype.getAccount = function (key) {
+            var account = this.getItem(key, CacheSchemaType.ACCOUNT);
+            return account;
+        };
+        /**
+         * retrieve a credential - accessToken, idToken or refreshToken; given the cache key
+         * @param key
+         */
+        CacheManager.prototype.getCredential = function (key) {
+            return this.getItem(key, CacheSchemaType.CREDENTIAL);
+        };
+        /**
+         * retrieve accounts matching all provided filters; if no filter is set, get all accounts
+         * not checking for casing as keys are all generated in lower case, remember to convert to lower case if object properties are compared
+         * @param homeAccountId
+         * @param environment
+         * @param realm
+         */
+        CacheManager.prototype.getAccountsFilteredBy = function (accountFilter) {
+            return this.getAccountsFilteredByInternal(accountFilter ? accountFilter.homeAccountId : "", accountFilter ? accountFilter.environment : "", accountFilter ? accountFilter.realm : "");
+        };
+        /**
+         * retrieve accounts matching all provided filters; if no filter is set, get all accounts
+         * not checking for casing as keys are all generated in lower case, remember to convert to lower case if object properties are compared
+         * @param homeAccountId
+         * @param environment
+         * @param realm
+         */
+        CacheManager.prototype.getAccountsFilteredByInternal = function (homeAccountId, environment, realm) {
+            var _this = this;
+            var allCacheKeys = this.getKeys();
+            var matchingAccounts = {};
+            allCacheKeys.forEach(function (cacheKey) {
+                var entity = _this.getAccountEntity(cacheKey);
+                if (!entity) {
+                    return null;
+                }
+                if (!StringUtils.isEmpty(homeAccountId) && !_this.matchHomeAccountId(entity, homeAccountId)) {
                     return;
                 }
-                instance._loginInProgress = false;
-                instance._acquireTokenInProgress = false;
+                if (!StringUtils.isEmpty(environment) && !_this.matchEnvironment(entity, environment)) {
+                    return;
+                }
+                if (!StringUtils.isEmpty(realm) && !_this.matchRealm(entity, realm)) {
+                    return;
+                }
+                matchingAccounts[cacheKey] = entity;
+            });
+            return matchingAccounts;
+        };
+        /**
+         * retrieve credentails matching all provided filters; if no filter is set, get all credentials
+         * @param homeAccountId
+         * @param environment
+         * @param credentialType
+         * @param clientId
+         * @param realm
+         * @param target
+         */
+        CacheManager.prototype.getCredentialsFilteredBy = function (filter) {
+            return this.getCredentialsFilteredByInternal(filter.homeAccountId, filter.environment, filter.credentialType, filter.clientId, filter.realm, filter.target);
+        };
+        /**
+         * Support function to help match credentials
+         * @param homeAccountId
+         * @param environment
+         * @param credentialType
+         * @param clientId
+         * @param realm
+         * @param target
+         */
+        CacheManager.prototype.getCredentialsFilteredByInternal = function (homeAccountId, environment, credentialType, clientId, realm, target) {
+            var _this = this;
+            var allCacheKeys = this.getKeys();
+            var matchingCredentials = {
+                idTokens: {},
+                accessTokens: {},
+                refreshTokens: {}
+            };
+            allCacheKeys.forEach(function (cacheKey) {
+                var entity;
+                // don't parse any non-credential type cache entities
+                var credType = CredentialEntity.getCredentialType(cacheKey);
+                if (credType === Constants.NOT_DEFINED) {
+                    return;
+                }
+                // Attempt retrieval
+                try {
+                    entity = _this.getItem(cacheKey, CacheSchemaType.CREDENTIAL);
+                }
+                catch (e) {
+                    return;
+                }
+                if (!StringUtils.isEmpty(homeAccountId) && !_this.matchHomeAccountId(entity, homeAccountId)) {
+                    return;
+                }
+                if (!StringUtils.isEmpty(environment) && !_this.matchEnvironment(entity, environment)) {
+                    return;
+                }
+                if (!StringUtils.isEmpty(realm) && !_this.matchRealm(entity, realm)) {
+                    return;
+                }
+                if (!StringUtils.isEmpty(credentialType) && !_this.matchCredentialType(entity, credentialType)) {
+                    return;
+                }
+                if (!StringUtils.isEmpty(clientId) && !_this.matchClientId(entity, clientId)) {
+                    return;
+                }
+                // idTokens do not have "target", target specific refreshTokens do exist for some types of authentication
+                // TODO: Add case for target specific refresh tokens
+                if (!StringUtils.isEmpty(target) && !_this.matchTarget(entity, target)) {
+                    return;
+                }
+                switch (credType) {
+                    case CredentialType.ID_TOKEN:
+                        matchingCredentials.idTokens[cacheKey] = entity;
+                        break;
+                    case CredentialType.ACCESS_TOKEN:
+                        matchingCredentials.accessTokens[cacheKey] = entity;
+                        break;
+                    case CredentialType.REFRESH_TOKEN:
+                        matchingCredentials.refreshTokens[cacheKey] = entity;
+                        break;
+                }
+            });
+            return matchingCredentials;
+        };
+        /**
+         * Removes all app metadata objects from cache.
+         */
+        CacheManager.prototype.removeAppMetadata = function () {
+            var _this = this;
+            var allCacheKeys = this.getKeys();
+            allCacheKeys.forEach(function (cacheKey) {
+                if (_this.isAppMetadata(cacheKey)) {
+                    _this.removeItem(cacheKey, CacheSchemaType.APP_METADATA);
+                }
+            });
+            return true;
+        };
+        /**
+         * Removes all accounts and related tokens from cache.
+         */
+        CacheManager.prototype.removeAllAccounts = function () {
+            var _this = this;
+            var allCacheKeys = this.getKeys();
+            allCacheKeys.forEach(function (cacheKey) {
+                var entity = _this.getAccountEntity(cacheKey);
+                if (!entity) {
+                    return;
+                }
+                _this.removeAccount(cacheKey);
+            });
+            return true;
+        };
+        /**
+         * returns a boolean if the given account is removed
+         * @param account
+         */
+        CacheManager.prototype.removeAccount = function (accountKey) {
+            var account = this.getAccount(accountKey);
+            if (!account) {
+                throw ClientAuthError.createNoAccountFoundError();
+            }
+            return (this.removeAccountContext(account) && this.removeItem(accountKey, CacheSchemaType.ACCOUNT));
+        };
+        /**
+         * returns a boolean if the given account is removed
+         * @param account
+         */
+        CacheManager.prototype.removeAccountContext = function (account) {
+            var _this = this;
+            var allCacheKeys = this.getKeys();
+            var accountId = account.generateAccountId();
+            allCacheKeys.forEach(function (cacheKey) {
+                // don't parse any non-credential type cache entities
+                if (CredentialEntity.getCredentialType(cacheKey) === Constants.NOT_DEFINED) {
+                    return;
+                }
+                var cacheEntity = _this.getItem(cacheKey, CacheSchemaType.CREDENTIAL);
+                if (!!cacheEntity && accountId === cacheEntity.generateAccountId()) {
+                    _this.removeCredential(cacheEntity);
+                }
+            });
+            return true;
+        };
+        /**
+         * returns a boolean if the given credential is removed
+         * @param credential
+         */
+        CacheManager.prototype.removeCredential = function (credential) {
+            var key = credential.generateCredentialKey();
+            return this.removeItem(key, CacheSchemaType.CREDENTIAL);
+        };
+        /**
+         *
+         * @param value
+         * @param homeAccountId
+         */
+        CacheManager.prototype.matchHomeAccountId = function (entity, homeAccountId) {
+            return entity.homeAccountId && homeAccountId === entity.homeAccountId;
+        };
+        /**
+         *
+         * @param value
+         * @param environment
+         */
+        CacheManager.prototype.matchEnvironment = function (entity, environment) {
+            var cloudMetadata = TrustedAuthority.getCloudDiscoveryMetadata(environment);
+            if (cloudMetadata &&
+                cloudMetadata.aliases.indexOf(entity.environment) > -1) {
+                return true;
+            }
+            return false;
+        };
+        /**
+         *
+         * @param entity
+         * @param credentialType
+         */
+        CacheManager.prototype.matchCredentialType = function (entity, credentialType) {
+            return entity.credentialType && credentialType.toLowerCase() === entity.credentialType.toLowerCase();
+        };
+        /**
+         *
+         * @param entity
+         * @param clientId
+         */
+        CacheManager.prototype.matchClientId = function (entity, clientId) {
+            return entity.clientId && clientId === entity.clientId;
+        };
+        /**
+         *
+         * @param entity
+         * @param realm
+         */
+        CacheManager.prototype.matchRealm = function (entity, realm) {
+            return entity.realm && realm === entity.realm;
+        };
+        /**
+         * Returns true if the target scopes are a subset of the current entity's scopes, false otherwise.
+         * @param entity
+         * @param target
+         */
+        CacheManager.prototype.matchTarget = function (entity, target) {
+            if (entity.credentialType !== CredentialType.ACCESS_TOKEN || StringUtils.isEmpty(entity.target)) {
+                return false;
+            }
+            var entityScopeSet = ScopeSet.fromString(entity.target);
+            var requestTargetScopeSet = ScopeSet.fromString(target);
+            // ignore offline_access when comparing scopes
+            entityScopeSet.removeScope(Constants.OFFLINE_ACCESS_SCOPE);
+            requestTargetScopeSet.removeScope(Constants.OFFLINE_ACCESS_SCOPE);
+            return entityScopeSet.containsScopeSet(requestTargetScopeSet);
+        };
+        /**
+         * Returns a valid AccountEntity if key and object contain correct values, null otherwise.
+         * @param key
+         */
+        CacheManager.prototype.getAccountEntity = function (key) {
+            // don't parse any non-account type cache entities
+            if (CredentialEntity.getCredentialType(key) !== Constants.NOT_DEFINED || this.isAppMetadata(key)) {
+                return null;
+            }
+            // Attempt retrieval
+            var entity;
+            try {
+                entity = this.getItem(key, CacheSchemaType.ACCOUNT);
+            }
+            catch (e) {
+                return null;
+            }
+            // Authority type is required for accounts, return if it is not available (not an account entity)
+            if (!entity || StringUtils.isEmpty(entity.authorityType)) {
+                return null;
+            }
+            return entity;
+        };
+        /**
+         * returns if a given cache entity is of the type appmetadata
+         * @param key
+         */
+        CacheManager.prototype.isAppMetadata = function (key) {
+            return key.indexOf(APP_METADATA) !== -1;
+        };
+        /**
+         * Helper to convert serialized data to object
+         * @param obj
+         * @param json
+         */
+        CacheManager.toObject = function (obj, json) {
+            for (var propertyName in json) {
+                obj[propertyName] = json[propertyName];
+            }
+            return obj;
+        };
+        return CacheManager;
+    }());
+    var DefaultStorageClass = /** @class */ (function (_super) {
+        __extends$1(DefaultStorageClass, _super);
+        function DefaultStorageClass() {
+            return _super !== null && _super.apply(this, arguments) || this;
+        }
+        DefaultStorageClass.prototype.setItem = function () {
+            var notImplErr = "Storage interface - setItem() has not been implemented for the cacheStorage interface.";
+            throw AuthError.createUnexpectedError(notImplErr);
+        };
+        DefaultStorageClass.prototype.getItem = function () {
+            var notImplErr = "Storage interface - getItem() has not been implemented for the cacheStorage interface.";
+            throw AuthError.createUnexpectedError(notImplErr);
+        };
+        DefaultStorageClass.prototype.removeItem = function () {
+            var notImplErr = "Storage interface - removeItem() has not been implemented for the cacheStorage interface.";
+            throw AuthError.createUnexpectedError(notImplErr);
+        };
+        DefaultStorageClass.prototype.containsKey = function () {
+            var notImplErr = "Storage interface - containsKey() has not been implemented for the cacheStorage interface.";
+            throw AuthError.createUnexpectedError(notImplErr);
+        };
+        DefaultStorageClass.prototype.getKeys = function () {
+            var notImplErr = "Storage interface - getKeys() has not been implemented for the cacheStorage interface.";
+            throw AuthError.createUnexpectedError(notImplErr);
+        };
+        DefaultStorageClass.prototype.clear = function () {
+            var notImplErr = "Storage interface - clear() has not been implemented for the cacheStorage interface.";
+            throw AuthError.createUnexpectedError(notImplErr);
+        };
+        return DefaultStorageClass;
+    }(CacheManager));
+
+    /*
+     * Copyright (c) Microsoft Corporation. All rights reserved.
+     * Licensed under the MIT License.
+     */
+    // Token renewal offset default in seconds
+    var DEFAULT_TOKEN_RENEWAL_OFFSET_SEC = 300;
+    var DEFAULT_AUTH_OPTIONS = {
+        clientId: "",
+        authority: null,
+        knownAuthorities: [],
+        cloudDiscoveryMetadata: "",
+        clientCapabilities: []
+    };
+    var DEFAULT_SYSTEM_OPTIONS = {
+        tokenRenewalOffsetSeconds: DEFAULT_TOKEN_RENEWAL_OFFSET_SEC
+    };
+    var DEFAULT_LOGGER_IMPLEMENTATION = {
+        loggerCallback: function () {
+            // allow users to not set loggerCallback
+        },
+        piiLoggingEnabled: false,
+        logLevel: exports.LogLevel.Info
+    };
+    var DEFAULT_NETWORK_IMPLEMENTATION = {
+        sendGetRequestAsync: function () {
+            return __awaiter$1(this, void 0, void 0, function () {
+                var notImplErr;
+                return __generator$1(this, function (_a) {
+                    notImplErr = "Network interface - sendGetRequestAsync() has not been implemented";
+                    throw AuthError.createUnexpectedError(notImplErr);
+                });
+            });
+        },
+        sendPostRequestAsync: function () {
+            return __awaiter$1(this, void 0, void 0, function () {
+                var notImplErr;
+                return __generator$1(this, function (_a) {
+                    notImplErr = "Network interface - sendPostRequestAsync() has not been implemented";
+                    throw AuthError.createUnexpectedError(notImplErr);
+                });
+            });
+        }
+    };
+    var DEFAULT_CRYPTO_IMPLEMENTATION = {
+        createNewGuid: function () {
+            var notImplErr = "Crypto interface - createNewGuid() has not been implemented";
+            throw AuthError.createUnexpectedError(notImplErr);
+        },
+        base64Decode: function () {
+            var notImplErr = "Crypto interface - base64Decode() has not been implemented";
+            throw AuthError.createUnexpectedError(notImplErr);
+        },
+        base64Encode: function () {
+            var notImplErr = "Crypto interface - base64Encode() has not been implemented";
+            throw AuthError.createUnexpectedError(notImplErr);
+        },
+        generatePkceCodes: function () {
+            return __awaiter$1(this, void 0, void 0, function () {
+                var notImplErr;
+                return __generator$1(this, function (_a) {
+                    notImplErr = "Crypto interface - generatePkceCodes() has not been implemented";
+                    throw AuthError.createUnexpectedError(notImplErr);
+                });
+            });
+        }
+    };
+    var DEFAULT_LIBRARY_INFO = {
+        sku: Constants.SKU,
+        version: version,
+        cpu: "",
+        os: ""
+    };
+    var DEFAULT_CLIENT_CREDENTIALS = {
+        clientSecret: "",
+        clientAssertion: null
+    };
+    /**
+     * Function that sets the default options when not explicitly configured from app developer
+     *
+     * @param Configuration
+     *
+     * @returns Configuration
+     */
+    function buildClientConfiguration(_a) {
+        var userAuthOptions = _a.authOptions, userSystemOptions = _a.systemOptions, userLoggerOption = _a.loggerOptions, storageImplementation = _a.storageInterface, networkImplementation = _a.networkInterface, cryptoImplementation = _a.cryptoInterface, clientCredentials = _a.clientCredentials, libraryInfo = _a.libraryInfo, serverTelemetryManager = _a.serverTelemetryManager;
+        return {
+            authOptions: __assign$1(__assign$1({}, DEFAULT_AUTH_OPTIONS), userAuthOptions),
+            systemOptions: __assign$1(__assign$1({}, DEFAULT_SYSTEM_OPTIONS), userSystemOptions),
+            loggerOptions: __assign$1(__assign$1({}, DEFAULT_LOGGER_IMPLEMENTATION), userLoggerOption),
+            storageInterface: storageImplementation || new DefaultStorageClass(),
+            networkInterface: networkImplementation || DEFAULT_NETWORK_IMPLEMENTATION,
+            cryptoInterface: cryptoImplementation || DEFAULT_CRYPTO_IMPLEMENTATION,
+            clientCredentials: clientCredentials || DEFAULT_CLIENT_CREDENTIALS,
+            libraryInfo: __assign$1(__assign$1({}, DEFAULT_LIBRARY_INFO), libraryInfo),
+            serverTelemetryManager: serverTelemetryManager || null
+        };
+    }
+
+    /*
+     * Copyright (c) Microsoft Corporation. All rights reserved.
+     * Licensed under the MIT License.
+     */
+    /**
+     * Base application class which will construct requests to send to and handle responses from the Microsoft STS using the authorization code flow.
+     */
+    var BaseClient = /** @class */ (function () {
+        function BaseClient(configuration) {
+            // Set the configuration
+            this.config = buildClientConfiguration(configuration);
+            // Initialize the logger
+            this.logger = new Logger(this.config.loggerOptions);
+            // Initialize crypto
+            this.cryptoUtils = this.config.cryptoInterface;
+            // Initialize storage interface
+            this.cacheManager = this.config.storageInterface;
+            // Set the network interface
+            this.networkClient = this.config.networkInterface;
+            // Set TelemetryManager
+            this.serverTelemetryManager = this.config.serverTelemetryManager;
+            TrustedAuthority.setTrustedAuthoritiesFromConfig(this.config.authOptions.knownAuthorities, this.config.authOptions.cloudDiscoveryMetadata);
+            this.authority = this.config.authOptions.authority;
+        }
+        /**
+         * Creates default headers for requests to token endpoint
+         */
+        BaseClient.prototype.createDefaultTokenRequestHeaders = function () {
+            var headers = this.createDefaultLibraryHeaders();
+            headers[HeaderNames.CONTENT_TYPE] = Constants.URL_FORM_CONTENT_TYPE;
+            if (this.serverTelemetryManager) {
+                headers[HeaderNames.X_CLIENT_CURR_TELEM] = this.serverTelemetryManager.generateCurrentRequestHeaderValue();
+                headers[HeaderNames.X_CLIENT_LAST_TELEM] = this.serverTelemetryManager.generateLastRequestHeaderValue();
+            }
+            return headers;
+        };
+        /**
+         * addLibraryData
+         */
+        BaseClient.prototype.createDefaultLibraryHeaders = function () {
+            var headers = {};
+            // client info headers
+            headers[AADServerParamKeys.X_CLIENT_SKU] = this.config.libraryInfo.sku;
+            headers[AADServerParamKeys.X_CLIENT_VER] = this.config.libraryInfo.version;
+            headers[AADServerParamKeys.X_CLIENT_OS] = this.config.libraryInfo.os;
+            headers[AADServerParamKeys.X_CLIENT_CPU] = this.config.libraryInfo.cpu;
+            return headers;
+        };
+        /**
+         * Http post to token endpoint
+         * @param tokenEndpoint
+         * @param queryString
+         * @param headers
+         */
+        BaseClient.prototype.executePostToTokenEndpoint = function (tokenEndpoint, queryString, headers) {
+            return __awaiter$1(this, void 0, void 0, function () {
+                var response;
+                return __generator$1(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4 /*yield*/, this.networkClient.sendPostRequestAsync(tokenEndpoint, {
+                            body: queryString,
+                            headers: headers,
+                        })];
+                        case 1:
+                            response = _a.sent();
+                            if (this.config.serverTelemetryManager && response.status < 500 && response.status !== 429) {
+                                // Telemetry data successfully logged by server, clear Telemetry cache
+                                this.config.serverTelemetryManager.clearTelemetryCache();
+                            }
+                            return [2 /*return*/, response];
+                    }
+                });
+            });
+        };
+        return BaseClient;
+    }());
+
+    /*
+     * Copyright (c) Microsoft Corporation. All rights reserved.
+     * Licensed under the MIT License.
+     */
+    /**
+     * Validates server consumable params from the "request" objects
+     */
+    var RequestValidator = /** @class */ (function () {
+        function RequestValidator() {
+        }
+        /**
+         * Utility to check if the `redirectUri` in the request is a non-null value
+         * @param redirectUri
+         */
+        RequestValidator.validateRedirectUri = function (redirectUri) {
+            if (StringUtils.isEmpty(redirectUri)) {
+                throw ClientConfigurationError.createRedirectUriEmptyError();
+            }
+        };
+        /**
+         * Utility to validate prompt sent by the user in the request
+         * @param prompt
+         */
+        RequestValidator.validatePrompt = function (prompt) {
+            if ([
+                PromptValue.LOGIN,
+                PromptValue.SELECT_ACCOUNT,
+                PromptValue.CONSENT,
+                PromptValue.NONE
+            ].indexOf(prompt) < 0) {
+                throw ClientConfigurationError.createInvalidPromptError(prompt);
+            }
+        };
+        RequestValidator.validateClaims = function (claims) {
+            try {
+                JSON.parse(claims);
+            }
+            catch (e) {
+                throw ClientConfigurationError.createInvalidClaimsRequestError();
+            }
+        };
+        /**
+         * Utility to validate code_challenge and code_challenge_method
+         * @param codeChallenge
+         * @param codeChallengeMethod
+         */
+        RequestValidator.validateCodeChallengeParams = function (codeChallenge, codeChallengeMethod) {
+            if (StringUtils.isEmpty(codeChallenge) || StringUtils.isEmpty(codeChallengeMethod)) {
+                throw ClientConfigurationError.createInvalidCodeChallengeParamsError();
+            }
+            else {
+                this.validateCodeChallengeMethod(codeChallengeMethod);
+            }
+        };
+        /**
+         * Utility to validate code_challenge_method
+         * @param codeChallengeMethod
+         */
+        RequestValidator.validateCodeChallengeMethod = function (codeChallengeMethod) {
+            if ([
+                CodeChallengeMethodValues.PLAIN,
+                CodeChallengeMethodValues.S256
+            ].indexOf(codeChallengeMethod) < 0) {
+                throw ClientConfigurationError.createInvalidCodeChallengeMethodError();
+            }
+        };
+        /**
+         * Removes unnecessary or duplicate query parameters from extraQueryParameters
+         * @param request
+         */
+        RequestValidator.sanitizeEQParams = function (eQParams, queryParams) {
+            if (!eQParams) {
+                return null;
+            }
+            // Remove any query parameters already included in SSO params
+            queryParams.forEach(function (value, key) {
+                if (eQParams[key]) {
+                    delete eQParams[key];
+                }
+            });
+            return eQParams;
+        };
+        return RequestValidator;
+    }());
+
+    /*
+    * Copyright (c) Microsoft Corporation. All rights reserved.
+    * Licensed under the MIT License.
+    */
+    var RequestParameterBuilder = /** @class */ (function () {
+        function RequestParameterBuilder() {
+            this.parameters = new Map();
+        }
+        /**
+         * add response_type = code
+         */
+        RequestParameterBuilder.prototype.addResponseTypeCode = function () {
+            this.parameters.set(AADServerParamKeys.RESPONSE_TYPE, encodeURIComponent(Constants.CODE_RESPONSE_TYPE));
+        };
+        /**
+         * add response_mode. defaults to query.
+         * @param responseMode
+         */
+        RequestParameterBuilder.prototype.addResponseMode = function (responseMode) {
+            this.parameters.set(AADServerParamKeys.RESPONSE_MODE, encodeURIComponent((responseMode) ? responseMode : ResponseMode.QUERY));
+        };
+        /**
+         * add scopes
+         * @param scopeSet
+         */
+        RequestParameterBuilder.prototype.addScopes = function (scopeSet) {
+            this.parameters.set(AADServerParamKeys.SCOPE, encodeURIComponent(scopeSet.printScopes()));
+        };
+        /**
+         * add clientId
+         * @param clientId
+         */
+        RequestParameterBuilder.prototype.addClientId = function (clientId) {
+            this.parameters.set(AADServerParamKeys.CLIENT_ID, encodeURIComponent(clientId));
+        };
+        /**
+         * add redirect_uri
+         * @param redirectUri
+         */
+        RequestParameterBuilder.prototype.addRedirectUri = function (redirectUri) {
+            RequestValidator.validateRedirectUri(redirectUri);
+            this.parameters.set(AADServerParamKeys.REDIRECT_URI, encodeURIComponent(redirectUri));
+        };
+        /**
+         * add domain_hint
+         * @param domainHint
+         */
+        RequestParameterBuilder.prototype.addDomainHint = function (domainHint) {
+            this.parameters.set(SSOTypes.DOMAIN_HINT, encodeURIComponent(domainHint));
+        };
+        /**
+         * add login_hint
+         * @param loginHint
+         */
+        RequestParameterBuilder.prototype.addLoginHint = function (loginHint) {
+            this.parameters.set(SSOTypes.LOGIN_HINT, encodeURIComponent(loginHint));
+        };
+        /**
+         * add sid
+         * @param sid
+         */
+        RequestParameterBuilder.prototype.addSid = function (sid) {
+            this.parameters.set(SSOTypes.SID, encodeURIComponent(sid));
+        };
+        /**
+         * add claims
+         * @param claims
+         */
+        RequestParameterBuilder.prototype.addClaims = function (claims, clientCapabilities) {
+            var mergedClaims = this.addClientCapabilitiesToClaims(claims, clientCapabilities);
+            RequestValidator.validateClaims(mergedClaims);
+            this.parameters.set(AADServerParamKeys.CLAIMS, encodeURIComponent(mergedClaims));
+        };
+        /**
+         * add correlationId
+         * @param correlationId
+         */
+        RequestParameterBuilder.prototype.addCorrelationId = function (correlationId) {
+            this.parameters.set(AADServerParamKeys.CLIENT_REQUEST_ID, encodeURIComponent(correlationId));
+        };
+        /**
+         * add library info query params
+         * @param libraryInfo
+         */
+        RequestParameterBuilder.prototype.addLibraryInfo = function (libraryInfo) {
+            // Telemetry Info
+            this.parameters.set(AADServerParamKeys.X_CLIENT_SKU, libraryInfo.sku);
+            this.parameters.set(AADServerParamKeys.X_CLIENT_VER, libraryInfo.version);
+            this.parameters.set(AADServerParamKeys.X_CLIENT_OS, libraryInfo.os);
+            this.parameters.set(AADServerParamKeys.X_CLIENT_CPU, libraryInfo.cpu);
+        };
+        /**
+         * add prompt
+         * @param prompt
+         */
+        RequestParameterBuilder.prototype.addPrompt = function (prompt) {
+            RequestValidator.validatePrompt(prompt);
+            this.parameters.set("" + AADServerParamKeys.PROMPT, encodeURIComponent(prompt));
+        };
+        /**
+         * add state
+         * @param state
+         */
+        RequestParameterBuilder.prototype.addState = function (state) {
+            if (!StringUtils.isEmpty(state)) {
+                this.parameters.set(AADServerParamKeys.STATE, encodeURIComponent(state));
+            }
+        };
+        /**
+         * add nonce
+         * @param nonce
+         */
+        RequestParameterBuilder.prototype.addNonce = function (nonce) {
+            this.parameters.set(AADServerParamKeys.NONCE, encodeURIComponent(nonce));
+        };
+        /**
+         * add code_challenge and code_challenge_method
+         * - throw if either of them are not passed
+         * @param codeChallenge
+         * @param codeChallengeMethod
+         */
+        RequestParameterBuilder.prototype.addCodeChallengeParams = function (codeChallenge, codeChallengeMethod) {
+            RequestValidator.validateCodeChallengeParams(codeChallenge, codeChallengeMethod);
+            if (codeChallenge && codeChallengeMethod) {
+                this.parameters.set(AADServerParamKeys.CODE_CHALLENGE, encodeURIComponent(codeChallenge));
+                this.parameters.set(AADServerParamKeys.CODE_CHALLENGE_METHOD, encodeURIComponent(codeChallengeMethod));
+            }
+            else {
+                throw ClientConfigurationError.createInvalidCodeChallengeParamsError();
+            }
+        };
+        /**
+         * add the `authorization_code` passed by the user to exchange for a token
+         * @param code
+         */
+        RequestParameterBuilder.prototype.addAuthorizationCode = function (code) {
+            this.parameters.set(AADServerParamKeys.CODE, encodeURIComponent(code));
+        };
+        /**
+         * add the `authorization_code` passed by the user to exchange for a token
+         * @param code
+         */
+        RequestParameterBuilder.prototype.addDeviceCode = function (code) {
+            this.parameters.set(AADServerParamKeys.DEVICE_CODE, encodeURIComponent(code));
+        };
+        /**
+         * add the `refreshToken` passed by the user
+         * @param refreshToken
+         */
+        RequestParameterBuilder.prototype.addRefreshToken = function (refreshToken) {
+            this.parameters.set(AADServerParamKeys.REFRESH_TOKEN, encodeURIComponent(refreshToken));
+        };
+        /**
+         * add the `code_verifier` passed by the user to exchange for a token
+         * @param codeVerifier
+         */
+        RequestParameterBuilder.prototype.addCodeVerifier = function (codeVerifier) {
+            this.parameters.set(AADServerParamKeys.CODE_VERIFIER, encodeURIComponent(codeVerifier));
+        };
+        /**
+         * add client_secret
+         * @param clientSecret
+         */
+        RequestParameterBuilder.prototype.addClientSecret = function (clientSecret) {
+            this.parameters.set(AADServerParamKeys.CLIENT_SECRET, encodeURIComponent(clientSecret));
+        };
+        /**
+         * add clientAssertion for confidential client flows
+         * @param clientAssertion
+         */
+        RequestParameterBuilder.prototype.addClientAssertion = function (clientAssertion) {
+            this.parameters.set(AADServerParamKeys.CLIENT_ASSERTION, encodeURIComponent(clientAssertion));
+        };
+        /**
+         * add clientAssertionType for confidential client flows
+         * @param clientAssertionType
+         */
+        RequestParameterBuilder.prototype.addClientAssertionType = function (clientAssertionType) {
+            this.parameters.set(AADServerParamKeys.CLIENT_ASSERTION_TYPE, encodeURIComponent(clientAssertionType));
+        };
+        /**
+         * add grant type
+         * @param grantType
+         */
+        RequestParameterBuilder.prototype.addGrantType = function (grantType) {
+            this.parameters.set(AADServerParamKeys.GRANT_TYPE, encodeURIComponent(grantType));
+        };
+        /**
+         * add client info
+         *
+         */
+        RequestParameterBuilder.prototype.addClientInfo = function () {
+            this.parameters.set(ClientInfo, "1");
+        };
+        /**
+         * add extraQueryParams
+         * @param eQparams
+         */
+        RequestParameterBuilder.prototype.addExtraQueryParameters = function (eQparams) {
+            var _this = this;
+            RequestValidator.sanitizeEQParams(eQparams, this.parameters);
+            Object.keys(eQparams).forEach(function (key) {
+                _this.parameters.set(key, eQparams[key]);
+            });
+        };
+        RequestParameterBuilder.prototype.addClientCapabilitiesToClaims = function (claims, clientCapabilities) {
+            var mergedClaims;
+            // Parse provided claims into JSON object or initialize empty object
+            if (StringUtils.isEmpty(claims)) {
+                mergedClaims = {};
+            }
+            else {
+                try {
+                    mergedClaims = JSON.parse(claims);
+                }
+                catch (e) {
+                    throw ClientConfigurationError.createInvalidClaimsRequestError();
+                }
+            }
+            if (clientCapabilities && clientCapabilities.length > 0) {
+                if (!mergedClaims.hasOwnProperty(ClaimsRequestKeys.ACCESS_TOKEN)) {
+                    // Add access_token key to claims object
+                    mergedClaims[ClaimsRequestKeys.ACCESS_TOKEN] = {};
+                }
+                // Add xms_cc claim with provided clientCapabilities to access_token key
+                mergedClaims[ClaimsRequestKeys.ACCESS_TOKEN][ClaimsRequestKeys.XMS_CC] = {
+                    values: clientCapabilities
+                };
+            }
+            return JSON.stringify(mergedClaims);
+        };
+        /**
+         * Utility to create a URL from the params map
+         */
+        RequestParameterBuilder.prototype.createQueryString = function () {
+            var queryParameterArray = new Array();
+            this.parameters.forEach(function (value, key) {
+                queryParameterArray.push(key + "=" + value);
+            });
+            return queryParameterArray.join("&");
+        };
+        return RequestParameterBuilder;
+    }());
+
+    /**
+     * Error thrown when there is an error with the server code, for example, unavailability.
+     */
+    var ServerError = /** @class */ (function (_super) {
+        __extends$1(ServerError, _super);
+        function ServerError(errorCode, errorMessage, subError) {
+            var _this = _super.call(this, errorCode, errorMessage) || this;
+            _this.name = "ServerError";
+            _this.subError = subError;
+            Object.setPrototypeOf(_this, ServerError.prototype);
+            return _this;
+        }
+        return ServerError;
+    }(AuthError));
+
+    /**
+     * Id Token representation class. Parses id token string and generates claims object.
+     */
+    var IdToken = /** @class */ (function () {
+        function IdToken(rawIdToken, crypto) {
+            if (StringUtils.isEmpty(rawIdToken)) {
+                throw ClientAuthError.createIdTokenNullOrEmptyError(rawIdToken);
+            }
+            this.rawIdToken = rawIdToken;
+            this.claims = IdToken.extractIdToken(rawIdToken, crypto);
+        }
+        /**
+         * Extract IdToken by decoding the RAWIdToken
+         *
+         * @param encodedIdToken
+         */
+        IdToken.extractIdToken = function (encodedIdToken, crypto) {
+            // id token will be decoded to get the username
+            var decodedToken = StringUtils.decodeJwt(encodedIdToken);
+            if (!decodedToken) {
+                return null;
             }
             try {
-                var popUpWindowLocation = popupWindow.location;
-                if (popUpWindowLocation.href.indexOf(_this._redirectUri) !== -1) {
-                    window.clearInterval(pollTimer);
-                    instance._loginInProgress = false;
-                    instance._acquireTokenInProgress = false;
-                    _this._logger.info("Closing popup window");
-                    if (_this._isAngular) {
-                        _this.broadcast('msal:popUpHashChanged', popUpWindowLocation.hash);
-                        for (var i = 0; i < window.openedWindows.length; i++) {
-                            window.openedWindows[i].close();
-                        }
+                var base64IdTokenPayload = decodedToken.JWSPayload;
+                // base64Decode() should throw an error if there is an issue
+                var base64Decoded = crypto.base64Decode(base64IdTokenPayload);
+                return JSON.parse(base64Decoded);
+            }
+            catch (err) {
+                throw ClientAuthError.createIdTokenParsingError(err);
+            }
+        };
+        return IdToken;
+    }());
+
+    /*
+     * Copyright (c) Microsoft Corporation. All rights reserved.
+     * Licensed under the MIT License.
+     */
+    /**
+     * Utility class which exposes functions for managing date and time operations.
+     */
+    var TimeUtils = /** @class */ (function () {
+        function TimeUtils() {
+        }
+        /**
+         * return the current time in Unix time (seconds).
+         */
+        TimeUtils.nowSeconds = function () {
+            // Date.getTime() returns in milliseconds.
+            return Math.round(new Date().getTime() / 1000.0);
+        };
+        /**
+         * check if a token is expired based on given UTC time in seconds.
+         * @param expiresOn
+         */
+        TimeUtils.isTokenExpired = function (expiresOn, offset) {
+            // check for access token expiry
+            var expirationSec = Number(expiresOn) || 0;
+            var offsetCurrentTimeSec = TimeUtils.nowSeconds() + offset;
+            // If current time + offset is greater than token expiration time, then token is expired.
+            return (offsetCurrentTimeSec > expirationSec);
+        };
+        return TimeUtils;
+    }());
+
+    /*
+     * Copyright (c) Microsoft Corporation. All rights reserved.
+     * Licensed under the MIT License.
+     */
+    /**
+     * Authority types supported by MSAL.
+     */
+    var AuthorityType;
+    (function (AuthorityType) {
+        AuthorityType[AuthorityType["Default"] = 0] = "Default";
+        AuthorityType[AuthorityType["Adfs"] = 1] = "Adfs";
+    })(AuthorityType || (AuthorityType = {}));
+
+    /*
+     * Copyright (c) Microsoft Corporation. All rights reserved.
+     * Licensed under the MIT License.
+     */
+    /**
+     * ID_TOKEN Cache
+     *
+     * Key:Value Schema:
+     *
+     * Key Example: uid.utid-login.microsoftonline.com-idtoken-clientId-contoso.com-
+     *
+     * Value Schema:
+     * {
+     *      homeAccountId: home account identifier for the auth scheme,
+     *      environment: entity that issued the token, represented as a full host
+     *      credentialType: Type of credential as a string, can be one of the following: RefreshToken, AccessToken, IdToken, Password, Cookie, Certificate, Other
+     *      clientId: client ID of the application
+     *      secret: Actual credential as a string
+     *      realm: Full tenant or organizational identifier that the account belongs to
+     * }
+     */
+    var IdTokenEntity = /** @class */ (function (_super) {
+        __extends$1(IdTokenEntity, _super);
+        function IdTokenEntity() {
+            return _super !== null && _super.apply(this, arguments) || this;
+        }
+        /**
+         * Create IdTokenEntity
+         * @param homeAccountId
+         * @param authenticationResult
+         * @param clientId
+         * @param authority
+         */
+        IdTokenEntity.createIdTokenEntity = function (homeAccountId, environment, idToken, clientId, tenantId) {
+            var idTokenEntity = new IdTokenEntity();
+            idTokenEntity.credentialType = CredentialType.ID_TOKEN;
+            idTokenEntity.homeAccountId = homeAccountId;
+            idTokenEntity.environment = environment;
+            idTokenEntity.clientId = clientId;
+            idTokenEntity.secret = idToken;
+            idTokenEntity.realm = tenantId;
+            return idTokenEntity;
+        };
+        /**
+         * Validates an entity: checks for all expected params
+         * @param entity
+         */
+        IdTokenEntity.isIdTokenEntity = function (entity) {
+            return (entity.hasOwnProperty("homeAccountId") &&
+                entity.hasOwnProperty("environment") &&
+                entity.hasOwnProperty("credentialType") &&
+                entity.hasOwnProperty("realm") &&
+                entity.hasOwnProperty("clientId") &&
+                entity.hasOwnProperty("secret") &&
+                entity["credentialType"] === CredentialType.ID_TOKEN);
+        };
+        return IdTokenEntity;
+    }(CredentialEntity));
+
+    /*
+     * Copyright (c) Microsoft Corporation. All rights reserved.
+     * Licensed under the MIT License.
+     */
+    /**
+     * ACCESS_TOKEN Credential Type
+     *
+     * Key:Value Schema:
+     *
+     * Key Example: uid.utid-login.microsoftonline.com-accesstoken-clientId-contoso.com-user.read
+     *
+     * Value Schema:
+     * {
+     *      homeAccountId: home account identifier for the auth scheme,
+     *      environment: entity that issued the token, represented as a full host
+     *      credentialType: Type of credential as a string, can be one of the following: RefreshToken, AccessToken, IdToken, Password, Cookie, Certificate, Other
+     *      clientId: client ID of the application
+     *      secret: Actual credential as a string
+     *      familyId: Family ID identifier, usually only used for refresh tokens
+     *      realm: Full tenant or organizational identifier that the account belongs to
+     *      target: Permissions that are included in the token, or for refresh tokens, the resource identifier.
+     *      cachedAt: Absolute device time when entry was created in the cache.
+     *      expiresOn: Token expiry time, calculated based on current UTC time in seconds. Represented as a string.
+     *      extendedExpiresOn: Additional extended expiry time until when token is valid in case of server-side outage. Represented as string in UTC seconds.
+     *      keyId: used for POP and SSH tokenTypes
+     *      tokenType: Type of the token issued. Usually "Bearer"
+     * }
+     */
+    var AccessTokenEntity = /** @class */ (function (_super) {
+        __extends$1(AccessTokenEntity, _super);
+        function AccessTokenEntity() {
+            return _super !== null && _super.apply(this, arguments) || this;
+        }
+        /**
+         * Create AccessTokenEntity
+         * @param homeAccountId
+         * @param environment
+         * @param accessToken
+         * @param clientId
+         * @param tenantId
+         * @param scopes
+         * @param expiresOn
+         * @param extExpiresOn
+         */
+        AccessTokenEntity.createAccessTokenEntity = function (homeAccountId, environment, accessToken, clientId, tenantId, scopes, expiresOn, extExpiresOn) {
+            var atEntity = new AccessTokenEntity();
+            atEntity.homeAccountId = homeAccountId;
+            atEntity.credentialType = CredentialType.ACCESS_TOKEN;
+            atEntity.secret = accessToken;
+            var currentTime = TimeUtils.nowSeconds();
+            atEntity.cachedAt = currentTime.toString();
+            // Token expiry time.
+            // This value should be â€¯calculated based on the current UTC time measured locally and the value â€¯expires_in Represented as a string in JSON.
+            atEntity.expiresOn = expiresOn.toString();
+            atEntity.extendedExpiresOn = extExpiresOn.toString();
+            atEntity.environment = environment;
+            atEntity.clientId = clientId;
+            atEntity.realm = tenantId;
+            atEntity.target = scopes;
+            return atEntity;
+        };
+        /**
+         * Validates an entity: checks for all expected params
+         * @param entity
+         */
+        AccessTokenEntity.isAccessTokenEntity = function (entity) {
+            return (entity.hasOwnProperty("homeAccountId") &&
+                entity.hasOwnProperty("environment") &&
+                entity.hasOwnProperty("credentialType") &&
+                entity.hasOwnProperty("realm") &&
+                entity.hasOwnProperty("clientId") &&
+                entity.hasOwnProperty("secret") &&
+                entity.hasOwnProperty("target") &&
+                entity["credentialType"] === CredentialType.ACCESS_TOKEN);
+        };
+        return AccessTokenEntity;
+    }(CredentialEntity));
+
+    /*
+     * Copyright (c) Microsoft Corporation. All rights reserved.
+     * Licensed under the MIT License.
+     */
+    /**
+     * REFRESH_TOKEN Cache
+     *
+     * Key:Value Schema:
+     *
+     * Key Example: uid.utid-login.microsoftonline.com-refreshtoken-clientId--
+     *
+     * Value:
+     * {
+     *      homeAccountId: home account identifier for the auth scheme,
+     *      environment: entity that issued the token, represented as a full host
+     *      credentialType: Type of credential as a string, can be one of the following: RefreshToken, AccessToken, IdToken, Password, Cookie, Certificate, Other
+     *      clientId: client ID of the application
+     *      secret: Actual credential as a string
+     *      familyId: Family ID identifier, '1' represents Microsoft Family
+     *      realm: Full tenant or organizational identifier that the account belongs to
+     *      target: Permissions that are included in the token, or for refresh tokens, the resource identifier.
+     * }
+     */
+    var RefreshTokenEntity = /** @class */ (function (_super) {
+        __extends$1(RefreshTokenEntity, _super);
+        function RefreshTokenEntity() {
+            return _super !== null && _super.apply(this, arguments) || this;
+        }
+        /**
+         * Create RefreshTokenEntity
+         * @param homeAccountId
+         * @param authenticationResult
+         * @param clientId
+         * @param authority
+         */
+        RefreshTokenEntity.createRefreshTokenEntity = function (homeAccountId, environment, refreshToken, clientId, familyId) {
+            var rtEntity = new RefreshTokenEntity();
+            rtEntity.clientId = clientId;
+            rtEntity.credentialType = CredentialType.REFRESH_TOKEN;
+            rtEntity.environment = environment;
+            rtEntity.homeAccountId = homeAccountId;
+            rtEntity.secret = refreshToken;
+            if (familyId)
+                rtEntity.familyId = familyId;
+            return rtEntity;
+        };
+        /**
+         * Validates an entity: checks for all expected params
+         * @param entity
+         */
+        RefreshTokenEntity.isRefreshTokenEntity = function (entity) {
+            return (entity.hasOwnProperty("homeAccountId") &&
+                entity.hasOwnProperty("environment") &&
+                entity.hasOwnProperty("credentialType") &&
+                entity.hasOwnProperty("clientId") &&
+                entity.hasOwnProperty("secret") &&
+                entity["credentialType"] === CredentialType.REFRESH_TOKEN);
+        };
+        return RefreshTokenEntity;
+    }(CredentialEntity));
+
+    /*
+     * Copyright (c) Microsoft Corporation. All rights reserved.
+     * Licensed under the MIT License.
+     */
+    /**
+     * InteractionRequiredAuthErrorMessage class containing string constants used by error codes and messages.
+     */
+    var InteractionRequiredAuthErrorMessage = [
+        "interaction_required",
+        "consent_required",
+        "login_required"
+    ];
+    var InteractionRequiredAuthSubErrorMessage = [
+        "message_only",
+        "additional_action",
+        "basic_action",
+        "user_password_expired",
+        "consent_required"
+    ];
+    /**
+     * Error thrown when user interaction is required at the auth server.
+     */
+    var InteractionRequiredAuthError = /** @class */ (function (_super) {
+        __extends$1(InteractionRequiredAuthError, _super);
+        function InteractionRequiredAuthError(errorCode, errorMessage, subError) {
+            var _this = _super.call(this, errorCode, errorMessage, subError) || this;
+            _this.name = "InteractionRequiredAuthError";
+            Object.setPrototypeOf(_this, InteractionRequiredAuthError.prototype);
+            return _this;
+        }
+        InteractionRequiredAuthError.isInteractionRequiredError = function (errorCode, errorString, subError) {
+            var isInteractionRequiredErrorCode = !StringUtils.isEmpty(errorCode) && InteractionRequiredAuthErrorMessage.indexOf(errorCode) > -1;
+            var isInteractionRequiredSubError = !StringUtils.isEmpty(subError) && InteractionRequiredAuthSubErrorMessage.indexOf(subError) > -1;
+            var isInteractionRequiredErrorDesc = !StringUtils.isEmpty(errorString) && InteractionRequiredAuthErrorMessage.some(function (irErrorCode) {
+                return errorString.indexOf(irErrorCode) > -1;
+            });
+            return isInteractionRequiredErrorCode || isInteractionRequiredErrorDesc || isInteractionRequiredSubError;
+        };
+        return InteractionRequiredAuthError;
+    }(ServerError));
+
+    /*
+     * Copyright (c) Microsoft Corporation. All rights reserved.
+     * Licensed under the MIT License.
+     */
+    var CacheRecord = /** @class */ (function () {
+        function CacheRecord(accountEntity, idTokenEntity, accessTokenEntity, refreshTokenEntity) {
+            this.account = accountEntity;
+            this.idToken = idTokenEntity;
+            this.accessToken = accessTokenEntity;
+            this.refreshToken = refreshTokenEntity;
+        }
+        return CacheRecord;
+    }());
+
+    /*
+     * Copyright (c) Microsoft Corporation. All rights reserved.
+     * Licensed under the MIT License.
+     */
+    /**
+     * Class which provides helpers for OAuth 2.0 protocol specific values
+     */
+    var ProtocolUtils = /** @class */ (function () {
+        function ProtocolUtils() {
+        }
+        /**
+         * Appends user state with random guid, or returns random guid.
+         * @param userState
+         * @param randomGuid
+         */
+        ProtocolUtils.setRequestState = function (cryptoObj, userState, meta) {
+            var libraryState = ProtocolUtils.generateLibraryState(cryptoObj, meta);
+            return !StringUtils.isEmpty(userState) ? "" + libraryState + Constants.RESOURCE_DELIM + userState : libraryState;
+        };
+        /**
+         * Generates the state value used by the common library.
+         * @param randomGuid
+         * @param cryptoObj
+         */
+        ProtocolUtils.generateLibraryState = function (cryptoObj, meta) {
+            if (!cryptoObj) {
+                throw ClientAuthError.createNoCryptoObjectError("generateLibraryState");
+            }
+            // Create a state object containing a unique id and the timestamp of the request creation
+            var stateObj = {
+                id: cryptoObj.createNewGuid(),
+                ts: TimeUtils.nowSeconds()
+            };
+            if (meta) {
+                stateObj.meta = meta;
+            }
+            var stateString = JSON.stringify(stateObj);
+            return cryptoObj.base64Encode(stateString);
+        };
+        /**
+         * Parses the state into the RequestStateObject, which contains the LibraryState info and the state passed by the user.
+         * @param state
+         * @param cryptoObj
+         */
+        ProtocolUtils.parseRequestState = function (cryptoObj, state) {
+            if (!cryptoObj) {
+                throw ClientAuthError.createNoCryptoObjectError("parseRequestState");
+            }
+            if (StringUtils.isEmpty(state)) {
+                throw ClientAuthError.createInvalidStateError(state, "Null, undefined or empty state");
+            }
+            try {
+                // Split the state between library state and user passed state and decode them separately
+                var splitState = decodeURIComponent(state).split(Constants.RESOURCE_DELIM);
+                var libraryState = splitState[0];
+                var userState = splitState.length > 1 ? splitState.slice(1).join(Constants.RESOURCE_DELIM) : "";
+                var libraryStateString = cryptoObj.base64Decode(libraryState);
+                var libraryStateObj = JSON.parse(libraryStateString);
+                return {
+                    userRequestState: !StringUtils.isEmpty(userState) ? userState : "",
+                    libraryState: libraryStateObj
+                };
+            }
+            catch (e) {
+                throw ClientAuthError.createInvalidStateError(state, e);
+            }
+        };
+        return ProtocolUtils;
+    }());
+
+    /**
+     * Class that handles response parsing.
+     */
+    var ResponseHandler = /** @class */ (function () {
+        function ResponseHandler(clientId, cacheStorage, cryptoObj, logger) {
+            this.clientId = clientId;
+            this.cacheStorage = cacheStorage;
+            this.cryptoObj = cryptoObj;
+            this.logger = logger;
+        }
+        /**
+         * Function which validates server authorization code response.
+         * @param serverResponseHash
+         * @param cachedState
+         * @param cryptoObj
+         */
+        ResponseHandler.prototype.validateServerAuthorizationCodeResponse = function (serverResponseHash, cachedState, cryptoObj) {
+            if (decodeURIComponent(serverResponseHash.state) !== decodeURIComponent(cachedState)) {
+                throw ClientAuthError.createStateMismatchError();
+            }
+            // Check for error
+            if (serverResponseHash.error || serverResponseHash.error_description || serverResponseHash.suberror) {
+                if (InteractionRequiredAuthError.isInteractionRequiredError(serverResponseHash.error, serverResponseHash.error_description, serverResponseHash.suberror)) {
+                    throw new InteractionRequiredAuthError(serverResponseHash.error, serverResponseHash.error_description, serverResponseHash.suberror);
+                }
+                throw new ServerError(serverResponseHash.error, serverResponseHash.error_description, serverResponseHash.suberror);
+            }
+            if (serverResponseHash.client_info) {
+                buildClientInfo(serverResponseHash.client_info, cryptoObj);
+            }
+        };
+        /**
+         * Function which validates server authorization token response.
+         * @param serverResponse
+         */
+        ResponseHandler.prototype.validateTokenResponse = function (serverResponse) {
+            // Check for error
+            if (serverResponse.error || serverResponse.error_description || serverResponse.suberror) {
+                if (InteractionRequiredAuthError.isInteractionRequiredError(serverResponse.error, serverResponse.error_description, serverResponse.suberror)) {
+                    throw new InteractionRequiredAuthError(serverResponse.error, serverResponse.error_description, serverResponse.suberror);
+                }
+                var errString = serverResponse.error_codes + " - [" + serverResponse.timestamp + "]: " + serverResponse.error_description + " - Correlation ID: " + serverResponse.correlation_id + " - Trace ID: " + serverResponse.trace_id;
+                throw new ServerError(serverResponse.error, errString);
+            }
+        };
+        /**
+         * Returns a constructed token response based on given string. Also manages the cache updates and cleanups.
+         * @param serverTokenResponse
+         * @param authority
+         */
+        ResponseHandler.prototype.handleServerTokenResponse = function (serverTokenResponse, authority, cachedNonce, cachedState, requestScopes) {
+            // generate homeAccountId
+            if (serverTokenResponse.client_info) {
+                this.clientInfo = buildClientInfo(serverTokenResponse.client_info, this.cryptoObj);
+                if (!StringUtils.isEmpty(this.clientInfo.uid) && !StringUtils.isEmpty(this.clientInfo.utid)) {
+                    this.homeAccountIdentifier = this.clientInfo.uid + "." + this.clientInfo.utid;
+                }
+            }
+            else {
+                this.homeAccountIdentifier = "";
+            }
+            var idTokenObj = null;
+            if (!StringUtils.isEmpty(serverTokenResponse.id_token)) {
+                // create an idToken object (not entity)
+                idTokenObj = new IdToken(serverTokenResponse.id_token, this.cryptoObj);
+                // token nonce check (TODO: Add a warning if no nonce is given?)
+                if (!StringUtils.isEmpty(cachedNonce)) {
+                    if (idTokenObj.claims.nonce !== cachedNonce) {
+                        throw ClientAuthError.createNonceMismatchError();
                     }
                 }
             }
+            // save the response tokens
+            var requestStateObj = null;
+            if (!StringUtils.isEmpty(cachedState)) {
+                requestStateObj = ProtocolUtils.parseRequestState(this.cryptoObj, cachedState);
+            }
+            var cacheRecord = this.generateCacheRecord(serverTokenResponse, idTokenObj, authority, requestStateObj && requestStateObj.libraryState, requestScopes);
+            this.cacheStorage.saveCacheRecord(cacheRecord);
+            return ResponseHandler.generateAuthenticationResult(cacheRecord, idTokenObj, false, requestStateObj);
+        };
+        /**
+         * Generates CacheRecord
+         * @param serverTokenResponse
+         * @param idTokenObj
+         * @param authority
+         */
+        ResponseHandler.prototype.generateCacheRecord = function (serverTokenResponse, idTokenObj, authority, libraryState, requestScopes) {
+            var reqEnvironment = authority.canonicalAuthorityUrlComponents.HostNameAndPort;
+            var env = TrustedAuthority.getCloudDiscoveryMetadata(reqEnvironment) ? TrustedAuthority.getCloudDiscoveryMetadata(reqEnvironment).preferred_cache : "";
+            if (StringUtils.isEmpty(env)) {
+                throw ClientAuthError.createInvalidCacheEnvironmentError();
+            }
+            // IdToken
+            var cachedIdToken = null;
+            var cachedAccount = null;
+            if (!StringUtils.isEmpty(serverTokenResponse.id_token)) {
+                cachedIdToken = IdTokenEntity.createIdTokenEntity(this.homeAccountIdentifier, env, serverTokenResponse.id_token, this.clientId, idTokenObj.claims.tid);
+                cachedAccount = this.generateAccountEntity(serverTokenResponse, idTokenObj, authority);
+            }
+            // AccessToken
+            var cachedAccessToken = null;
+            if (!StringUtils.isEmpty(serverTokenResponse.access_token)) {
+                // If scopes not returned in server response, use request scopes
+                var responseScopes = serverTokenResponse.scope ? ScopeSet.fromString(serverTokenResponse.scope) : new ScopeSet(requestScopes || []);
+                // Expiration calculation
+                var currentTime = TimeUtils.nowSeconds();
+                // If the request timestamp was sent in the library state, use that timestamp to calculate expiration. Otherwise, use current time.
+                var timestamp = libraryState ? libraryState.ts : currentTime;
+                var tokenExpirationSeconds = timestamp + serverTokenResponse.expires_in;
+                var extendedTokenExpirationSeconds = tokenExpirationSeconds + serverTokenResponse.ext_expires_in;
+                cachedAccessToken = AccessTokenEntity.createAccessTokenEntity(this.homeAccountIdentifier, env, serverTokenResponse.access_token, this.clientId, idTokenObj ? idTokenObj.claims.tid : authority.tenant, responseScopes.printScopesLowerCase(), tokenExpirationSeconds, extendedTokenExpirationSeconds);
+            }
+            // refreshToken
+            var cachedRefreshToken = null;
+            if (!StringUtils.isEmpty(serverTokenResponse.refresh_token)) {
+                cachedRefreshToken = RefreshTokenEntity.createRefreshTokenEntity(this.homeAccountIdentifier, env, serverTokenResponse.refresh_token, this.clientId, serverTokenResponse.foci);
+            }
+            return new CacheRecord(cachedAccount, cachedIdToken, cachedAccessToken, cachedRefreshToken);
+        };
+        /**
+         * Generate Account
+         * @param serverTokenResponse
+         * @param idToken
+         * @param authority
+         */
+        ResponseHandler.prototype.generateAccountEntity = function (serverTokenResponse, idToken, authority) {
+            var authorityType = authority.authorityType;
+            // ADFS does not require client_info in the response
+            if (authorityType === AuthorityType.Adfs) {
+                return AccountEntity.createADFSAccount(authority, idToken);
+            }
+            if (StringUtils.isEmpty(serverTokenResponse.client_info)) {
+                throw ClientAuthError.createClientInfoEmptyError(serverTokenResponse.client_info);
+            }
+            return AccountEntity.createAccount(serverTokenResponse.client_info, authority, idToken, this.cryptoObj);
+        };
+        /**
+         * Creates an @AuthenticationResult from @CacheRecord , @IdToken , and a boolean that states whether or not the result is from cache.
+         *
+         * Optionally takes a state string that is set as-is in the response.
+         *
+         * @param cacheRecord
+         * @param idTokenObj
+         * @param fromTokenCache
+         * @param stateString
+         */
+        ResponseHandler.generateAuthenticationResult = function (cacheRecord, idTokenObj, fromTokenCache, requestState) {
+            var accessToken = "";
+            var responseScopes = [];
+            var expiresOn = null;
+            var extExpiresOn = null;
+            var familyId = null;
+            if (cacheRecord.accessToken) {
+                accessToken = cacheRecord.accessToken.secret;
+                responseScopes = ScopeSet.fromString(cacheRecord.accessToken.target).asArray();
+                expiresOn = new Date(Number(cacheRecord.accessToken.expiresOn) * 1000);
+                extExpiresOn = new Date(Number(cacheRecord.accessToken.extendedExpiresOn) * 1000);
+            }
+            if (cacheRecord.refreshToken) {
+                familyId = cacheRecord.refreshToken.familyId || null;
+            }
+            var uid = idTokenObj ? idTokenObj.claims.oid || idTokenObj.claims.sub : "";
+            var tid = idTokenObj ? idTokenObj.claims.tid : "";
+            return {
+                uniqueId: uid,
+                tenantId: tid,
+                scopes: responseScopes,
+                account: cacheRecord.account ? cacheRecord.account.getAccountInfo() : null,
+                idToken: idTokenObj ? idTokenObj.rawIdToken : "",
+                idTokenClaims: idTokenObj ? idTokenObj.claims : null,
+                accessToken: accessToken,
+                fromCache: fromTokenCache,
+                expiresOn: expiresOn,
+                extExpiresOn: extExpiresOn,
+                familyId: familyId,
+                state: requestState ? requestState.userRequestState : ""
+            };
+        };
+        return ResponseHandler;
+    }());
+
+    /*
+     * Copyright (c) Microsoft Corporation. All rights reserved.
+     * Licensed under the MIT License.
+     */
+    /**
+     * Oauth2.0 Authorization Code client
+     */
+    var AuthorizationCodeClient = /** @class */ (function (_super) {
+        __extends$1(AuthorizationCodeClient, _super);
+        function AuthorizationCodeClient(configuration) {
+            return _super.call(this, configuration) || this;
+        }
+        /**
+         * Creates the URL of the authorization request letting the user input credentials and consent to the
+         * application. The URL target the /authorize endpoint of the authority configured in the
+         * application object.
+         *
+         * Once the user inputs their credentials and consents, the authority will send a response to the redirect URI
+         * sent in the request and should contain an authorization code, which can then be used to acquire tokens via
+         * acquireToken(AuthorizationCodeRequest)
+         * @param request
+         */
+        AuthorizationCodeClient.prototype.getAuthCodeUrl = function (request) {
+            return __awaiter$1(this, void 0, void 0, function () {
+                var queryString;
+                return __generator$1(this, function (_a) {
+                    queryString = this.createAuthCodeUrlQueryString(request);
+                    return [2 /*return*/, this.authority.authorizationEndpoint + "?" + queryString];
+                });
+            });
+        };
+        /**
+         * API to acquire a token in exchange of 'authorization_code` acquired by the user in the first leg of the
+         * authorization_code_grant
+         * @param request
+         */
+        AuthorizationCodeClient.prototype.acquireToken = function (request, cachedNonce, cachedState) {
+            return __awaiter$1(this, void 0, void 0, function () {
+                var response, responseHandler, tokenResponse;
+                return __generator$1(this, function (_a) {
+                    switch (_a.label) {
+                        case 0:
+                            this.logger.info("in acquireToken call");
+                            if (!request || StringUtils.isEmpty(request.code)) {
+                                throw ClientAuthError.createTokenRequestCannotBeMadeError();
+                            }
+                            return [4 /*yield*/, this.executeTokenRequest(this.authority, request)];
+                        case 1:
+                            response = _a.sent();
+                            responseHandler = new ResponseHandler(this.config.authOptions.clientId, this.cacheManager, this.cryptoUtils, this.logger);
+                            // Validate response. This function throws a server error if an error is returned by the server.
+                            responseHandler.validateTokenResponse(response.body);
+                            tokenResponse = responseHandler.handleServerTokenResponse(response.body, this.authority, cachedNonce, cachedState);
+                            return [2 /*return*/, tokenResponse];
+                    }
+                });
+            });
+        };
+        /**
+         * Handles the hash fragment response from public client code request. Returns a code response used by
+         * the client to exchange for a token in acquireToken.
+         * @param hashFragment
+         */
+        AuthorizationCodeClient.prototype.handleFragmentResponse = function (hashFragment, cachedState) {
+            // Handle responses.
+            var responseHandler = new ResponseHandler(this.config.authOptions.clientId, this.cacheManager, this.cryptoUtils, this.logger);
+            // Create UrlString object to remove leading # using getHash()
+            var hashUrlString = new UrlString(hashFragment);
+            // Deserialize hash fragment response parameters.
+            var serverParams = UrlString.getDeserializedHash(hashUrlString.getHash());
+            // Get code response
+            responseHandler.validateServerAuthorizationCodeResponse(serverParams, cachedState, this.cryptoUtils);
+            return serverParams.code;
+        };
+        /**
+         * Use to log out the current user, and redirect the user to the postLogoutRedirectUri.
+         * Default behaviour is to redirect the user to `window.location.href`.
+         * @param authorityUri
+         */
+        AuthorizationCodeClient.prototype.getLogoutUri = function (logoutRequest) {
+            // Throw error if logoutRequest is null/undefined
+            if (!logoutRequest) {
+                throw ClientConfigurationError.createEmptyLogoutRequestError();
+            }
+            if (logoutRequest.account) {
+                // Clear given account.
+                this.cacheManager.removeAccount(AccountEntity.generateAccountCacheKey(logoutRequest.account));
+            }
+            else {
+                // Clear all accounts and tokens
+                this.cacheManager.clear();
+            }
+            // Get postLogoutRedirectUri.
+            var postLogoutUriParam = logoutRequest.postLogoutRedirectUri ?
+                "?" + AADServerParamKeys.POST_LOGOUT_URI + "=" + encodeURIComponent(logoutRequest.postLogoutRedirectUri) : "";
+            var correlationIdParam = logoutRequest.correlationId ?
+                "&" + AADServerParamKeys.CLIENT_REQUEST_ID + "=" + encodeURIComponent(logoutRequest.correlationId) : "";
+            // Construct logout URI.
+            var logoutUri = "" + this.authority.endSessionEndpoint + postLogoutUriParam + correlationIdParam;
+            return logoutUri;
+        };
+        /**
+         * Executes POST request to token endpoint
+         * @param authority
+         * @param request
+         */
+        AuthorizationCodeClient.prototype.executeTokenRequest = function (authority, request) {
+            return __awaiter$1(this, void 0, void 0, function () {
+                var requestBody, headers;
+                return __generator$1(this, function (_a) {
+                    requestBody = this.createTokenRequestBody(request);
+                    headers = this.createDefaultTokenRequestHeaders();
+                    return [2 /*return*/, this.executePostToTokenEndpoint(authority.tokenEndpoint, requestBody, headers)];
+                });
+            });
+        };
+        /**
+         * Generates a map for all the params to be sent to the service
+         * @param request
+         */
+        AuthorizationCodeClient.prototype.createTokenRequestBody = function (request) {
+            var parameterBuilder = new RequestParameterBuilder();
+            parameterBuilder.addClientId(this.config.authOptions.clientId);
+            // validate the redirectUri (to be a non null value)
+            parameterBuilder.addRedirectUri(request.redirectUri);
+            var scopeSet = new ScopeSet(request.scopes || []);
+            parameterBuilder.addScopes(scopeSet);
+            // add code: user set, not validated
+            parameterBuilder.addAuthorizationCode(request.code);
+            // add code_verifier if passed
+            if (request.codeVerifier) {
+                parameterBuilder.addCodeVerifier(request.codeVerifier);
+            }
+            if (this.config.clientCredentials.clientSecret) {
+                parameterBuilder.addClientSecret(this.config.clientCredentials.clientSecret);
+            }
+            if (this.config.clientCredentials.clientAssertion) {
+                var clientAssertion = this.config.clientCredentials.clientAssertion;
+                parameterBuilder.addClientAssertion(clientAssertion.assertion);
+                parameterBuilder.addClientAssertionType(clientAssertion.assertionType);
+            }
+            parameterBuilder.addGrantType(GrantType.AUTHORIZATION_CODE_GRANT);
+            parameterBuilder.addClientInfo();
+            var correlationId = request.correlationId || this.config.cryptoInterface.createNewGuid();
+            parameterBuilder.addCorrelationId(correlationId);
+            if (!StringUtils.isEmpty(request.claims) || this.config.authOptions.clientCapabilities && this.config.authOptions.clientCapabilities.length > 0) {
+                parameterBuilder.addClaims(request.claims, this.config.authOptions.clientCapabilities);
+            }
+            return parameterBuilder.createQueryString();
+        };
+        /**
+         * This API validates the `AuthorizationCodeUrlRequest` and creates a URL
+         * @param request
+         */
+        AuthorizationCodeClient.prototype.createAuthCodeUrlQueryString = function (request) {
+            var parameterBuilder = new RequestParameterBuilder();
+            parameterBuilder.addClientId(this.config.authOptions.clientId);
+            var scopeSet = new ScopeSet(request.scopes || []);
+            if (request.extraScopesToConsent) {
+                scopeSet.appendScopes(request.extraScopesToConsent);
+            }
+            parameterBuilder.addScopes(scopeSet);
+            // validate the redirectUri (to be a non null value)
+            parameterBuilder.addRedirectUri(request.redirectUri);
+            // generate the correlationId if not set by the user and add
+            var correlationId = request.correlationId || this.config.cryptoInterface.createNewGuid();
+            parameterBuilder.addCorrelationId(correlationId);
+            // add response_mode. If not passed in it defaults to query.
+            parameterBuilder.addResponseMode(request.responseMode);
+            // add response_type = code
+            parameterBuilder.addResponseTypeCode();
+            // add library info parameters
+            parameterBuilder.addLibraryInfo(this.config.libraryInfo);
+            // add client_info=1
+            parameterBuilder.addClientInfo();
+            if (request.codeChallenge) {
+                parameterBuilder.addCodeChallengeParams(request.codeChallenge, request.codeChallengeMethod);
+            }
+            if (request.prompt) {
+                parameterBuilder.addPrompt(request.prompt);
+            }
+            if (request.loginHint) {
+                parameterBuilder.addLoginHint(request.loginHint);
+            }
+            if (request.domainHint) {
+                parameterBuilder.addDomainHint(request.domainHint);
+            }
+            if (request.sid) {
+                parameterBuilder.addSid(request.sid);
+            }
+            if (request.nonce) {
+                parameterBuilder.addNonce(request.nonce);
+            }
+            if (request.state) {
+                parameterBuilder.addState(request.state);
+            }
+            if (!StringUtils.isEmpty(request.claims) || this.config.authOptions.clientCapabilities && this.config.authOptions.clientCapabilities.length > 0) {
+                parameterBuilder.addClaims(request.claims, this.config.authOptions.clientCapabilities);
+            }
+            if (request.extraQueryParameters) {
+                parameterBuilder.addExtraQueryParameters(request.extraQueryParameters);
+            }
+            return parameterBuilder.createQueryString();
+        };
+        return AuthorizationCodeClient;
+    }(BaseClient));
+
+    /*
+     * Copyright (c) Microsoft Corporation. All rights reserved.
+     * Licensed under the MIT License.
+     */
+    /**
+     * OAuth2.0 Device code client
+     */
+    var DeviceCodeClient = /** @class */ (function (_super) {
+        __extends$1(DeviceCodeClient, _super);
+        function DeviceCodeClient(configuration) {
+            return _super.call(this, configuration) || this;
+        }
+        /**
+         * Gets device code from device code endpoint, calls back to with device code response, and
+         * polls token endpoint to exchange device code for tokens
+         * @param request
+         */
+        DeviceCodeClient.prototype.acquireToken = function (request) {
+            return __awaiter$1(this, void 0, void 0, function () {
+                var deviceCodeResponse, response, responseHandler, tokenResponse;
+                return __generator$1(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4 /*yield*/, this.getDeviceCode(request)];
+                        case 1:
+                            deviceCodeResponse = _a.sent();
+                            request.deviceCodeCallback(deviceCodeResponse);
+                            return [4 /*yield*/, this.acquireTokenWithDeviceCode(request, deviceCodeResponse)];
+                        case 2:
+                            response = _a.sent();
+                            responseHandler = new ResponseHandler(this.config.authOptions.clientId, this.cacheManager, this.cryptoUtils, this.logger);
+                            // Validate response. This function throws a server error if an error is returned by the server.
+                            responseHandler.validateTokenResponse(response);
+                            tokenResponse = responseHandler.handleServerTokenResponse(response, this.authority);
+                            return [2 /*return*/, tokenResponse];
+                    }
+                });
+            });
+        };
+        /**
+         * Creates device code request and executes http GET
+         * @param request
+         */
+        DeviceCodeClient.prototype.getDeviceCode = function (request) {
+            return __awaiter$1(this, void 0, void 0, function () {
+                var queryString, headers;
+                return __generator$1(this, function (_a) {
+                    queryString = this.createQueryString(request);
+                    headers = this.createDefaultLibraryHeaders();
+                    return [2 /*return*/, this.executePostRequestToDeviceCodeEndpoint(this.authority.deviceCodeEndpoint, queryString, headers)];
+                });
+            });
+        };
+        /**
+         * Executes POST request to device code endpoint
+         * @param deviceCodeEndpoint
+         * @param queryString
+         * @param headers
+         */
+        DeviceCodeClient.prototype.executePostRequestToDeviceCodeEndpoint = function (deviceCodeEndpoint, queryString, headers) {
+            return __awaiter$1(this, void 0, void 0, function () {
+                var _a, userCode, deviceCode, verificationUri, expiresIn, interval, message;
+                return __generator$1(this, function (_b) {
+                    switch (_b.label) {
+                        case 0: return [4 /*yield*/, this.networkClient.sendPostRequestAsync(deviceCodeEndpoint, {
+                            body: queryString,
+                            headers: headers
+                        })];
+                        case 1:
+                            _a = (_b.sent()).body, userCode = _a.user_code, deviceCode = _a.device_code, verificationUri = _a.verification_uri, expiresIn = _a.expires_in, interval = _a.interval, message = _a.message;
+                            return [2 /*return*/, {
+                                userCode: userCode,
+                                deviceCode: deviceCode,
+                                verificationUri: verificationUri,
+                                expiresIn: expiresIn,
+                                interval: interval,
+                                message: message
+                            }];
+                    }
+                });
+            });
+        };
+        /**
+         * Create device code endpoint query parameters and returns string
+         */
+        DeviceCodeClient.prototype.createQueryString = function (request) {
+            var parameterBuilder = new RequestParameterBuilder();
+            var scopeSet = new ScopeSet(request.scopes || []);
+            parameterBuilder.addScopes(scopeSet);
+            parameterBuilder.addClientId(this.config.authOptions.clientId);
+            if (!StringUtils.isEmpty(request.claims) || this.config.authOptions.clientCapabilities && this.config.authOptions.clientCapabilities.length > 0) {
+                parameterBuilder.addClaims(request.claims, this.config.authOptions.clientCapabilities);
+            }
+            return parameterBuilder.createQueryString();
+        };
+        /**
+         * Creates token request with device code response and polls token endpoint at interval set by the device code
+         * response
+         * @param request
+         * @param deviceCodeResponse
+         */
+        DeviceCodeClient.prototype.acquireTokenWithDeviceCode = function (request, deviceCodeResponse) {
+            return __awaiter$1(this, void 0, void 0, function () {
+                var requestBody, headers, deviceCodeExpirationTime, pollingIntervalMilli;
+                var _this = this;
+                return __generator$1(this, function (_a) {
+                    requestBody = this.createTokenRequestBody(request, deviceCodeResponse);
+                    headers = this.createDefaultTokenRequestHeaders();
+                    deviceCodeExpirationTime = TimeUtils.nowSeconds() + deviceCodeResponse.expiresIn;
+                    pollingIntervalMilli = deviceCodeResponse.interval * 1000;
+                    // Poll token endpoint while (device code is not expired AND operation has not been cancelled by
+                    // setting CancellationToken.cancel = true). POST request is sent at interval set by pollingIntervalMilli
+                    return [2 /*return*/, new Promise(function (resolve, reject) {
+                        var intervalId = setInterval(function () { return __awaiter$1(_this, void 0, void 0, function () {
+                            var response, error_1;
+                            return __generator$1(this, function (_a) {
+                                switch (_a.label) {
+                                    case 0:
+                                        _a.trys.push([0, 5, , 6]);
+                                        if (!request.cancel) return [3 /*break*/, 1];
+                                        this.logger.error("Token request cancelled by setting DeviceCodeRequest.cancel = true");
+                                        clearInterval(intervalId);
+                                        reject(ClientAuthError.createDeviceCodeCancelledError());
+                                        return [3 /*break*/, 4];
+                                    case 1:
+                                        if (!(TimeUtils.nowSeconds() > deviceCodeExpirationTime)) return [3 /*break*/, 2];
+                                        this.logger.error("Device code expired. Expiration time of device code was " + deviceCodeExpirationTime);
+                                        clearInterval(intervalId);
+                                        reject(ClientAuthError.createDeviceCodeExpiredError());
+                                        return [3 /*break*/, 4];
+                                    case 2: return [4 /*yield*/, this.executePostToTokenEndpoint(this.authority.tokenEndpoint, requestBody, headers)];
+                                    case 3:
+                                        response = _a.sent();
+                                        if (response.body && response.body.error == Constants.AUTHORIZATION_PENDING) {
+                                            // user authorization is pending. Sleep for polling interval and try again
+                                            this.logger.info(response.body.error_description);
+                                        }
+                                        else {
+                                            clearInterval(intervalId);
+                                            resolve(response.body);
+                                        }
+                                        _a.label = 4;
+                                    case 4: return [3 /*break*/, 6];
+                                    case 5:
+                                        error_1 = _a.sent();
+                                        clearInterval(intervalId);
+                                        reject(error_1);
+                                        return [3 /*break*/, 6];
+                                    case 6: return [2 /*return*/];
+                                }
+                            });
+                        }); }, pollingIntervalMilli);
+                    })];
+                });
+            });
+        };
+        /**
+         * Creates query parameters and converts to string.
+         * @param request
+         * @param deviceCodeResponse
+         */
+        DeviceCodeClient.prototype.createTokenRequestBody = function (request, deviceCodeResponse) {
+            var requestParameters = new RequestParameterBuilder();
+            var scopeSet = new ScopeSet(request.scopes || []);
+            requestParameters.addScopes(scopeSet);
+            requestParameters.addClientId(this.config.authOptions.clientId);
+            requestParameters.addGrantType(GrantType.DEVICE_CODE_GRANT);
+            requestParameters.addDeviceCode(deviceCodeResponse.deviceCode);
+            var correlationId = request.correlationId || this.config.cryptoInterface.createNewGuid();
+            requestParameters.addCorrelationId(correlationId);
+            requestParameters.addClientInfo();
+            if (!StringUtils.isEmpty(request.claims) || this.config.authOptions.clientCapabilities && this.config.authOptions.clientCapabilities.length > 0) {
+                requestParameters.addClaims(request.claims, this.config.authOptions.clientCapabilities);
+            }
+            return requestParameters.createQueryString();
+        };
+        return DeviceCodeClient;
+    }(BaseClient));
+
+    /*
+     * Copyright (c) Microsoft Corporation. All rights reserved.
+     * Licensed under the MIT License.
+     */
+    /**
+     * OAuth2.0 refresh token client
+     */
+    var RefreshTokenClient = /** @class */ (function (_super) {
+        __extends$1(RefreshTokenClient, _super);
+        function RefreshTokenClient(configuration) {
+            return _super.call(this, configuration) || this;
+        }
+        RefreshTokenClient.prototype.acquireToken = function (request) {
+            return __awaiter$1(this, void 0, void 0, function () {
+                var response, responseHandler, tokenResponse;
+                return __generator$1(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4 /*yield*/, this.executeTokenRequest(request, this.authority)];
+                        case 1:
+                            response = _a.sent();
+                            responseHandler = new ResponseHandler(this.config.authOptions.clientId, this.cacheManager, this.cryptoUtils, this.logger);
+                            responseHandler.validateTokenResponse(response.body);
+                            tokenResponse = responseHandler.handleServerTokenResponse(response.body, this.authority);
+                            return [2 /*return*/, tokenResponse];
+                    }
+                });
+            });
+        };
+        RefreshTokenClient.prototype.executeTokenRequest = function (request, authority) {
+            return __awaiter$1(this, void 0, void 0, function () {
+                var requestBody, headers;
+                return __generator$1(this, function (_a) {
+                    requestBody = this.createTokenRequestBody(request);
+                    headers = this.createDefaultTokenRequestHeaders();
+                    return [2 /*return*/, this.executePostToTokenEndpoint(authority.tokenEndpoint, requestBody, headers)];
+                });
+            });
+        };
+        RefreshTokenClient.prototype.createTokenRequestBody = function (request) {
+            var parameterBuilder = new RequestParameterBuilder();
+            parameterBuilder.addClientId(this.config.authOptions.clientId);
+            var scopeSet = new ScopeSet(request.scopes || []);
+            parameterBuilder.addScopes(scopeSet);
+            parameterBuilder.addGrantType(GrantType.REFRESH_TOKEN_GRANT);
+            parameterBuilder.addClientInfo();
+            var correlationId = request.correlationId || this.config.cryptoInterface.createNewGuid();
+            parameterBuilder.addCorrelationId(correlationId);
+            parameterBuilder.addRefreshToken(request.refreshToken);
+            if (this.config.clientCredentials.clientSecret) {
+                parameterBuilder.addClientSecret(this.config.clientCredentials.clientSecret);
+            }
+            if (this.config.clientCredentials.clientAssertion) {
+                var clientAssertion = this.config.clientCredentials.clientAssertion;
+                parameterBuilder.addClientAssertion(clientAssertion.assertion);
+                parameterBuilder.addClientAssertionType(clientAssertion.assertionType);
+            }
+            if (!StringUtils.isEmpty(request.claims) || this.config.authOptions.clientCapabilities && this.config.authOptions.clientCapabilities.length > 0) {
+                parameterBuilder.addClaims(request.claims, this.config.authOptions.clientCapabilities);
+            }
+            return parameterBuilder.createQueryString();
+        };
+        return RefreshTokenClient;
+    }(BaseClient));
+
+    /*
+     * Copyright (c) Microsoft Corporation. All rights reserved.
+     * Licensed under the MIT License.
+     */
+    /**
+     * OAuth2.0 client credential grant
+     */
+    var ClientCredentialClient = /** @class */ (function (_super) {
+        __extends$1(ClientCredentialClient, _super);
+        function ClientCredentialClient(configuration) {
+            return _super.call(this, configuration) || this;
+        }
+        ClientCredentialClient.prototype.acquireToken = function (request) {
+            return __awaiter$1(this, void 0, void 0, function () {
+                var cachedAuthenticationResult;
+                return __generator$1(this, function (_a) {
+                    switch (_a.label) {
+                        case 0:
+                            this.scopeSet = new ScopeSet(request.scopes || []);
+                            if (!request.skipCache) return [3 /*break*/, 2];
+                            return [4 /*yield*/, this.executeTokenRequest(request, this.authority)];
+                        case 1: return [2 /*return*/, _a.sent()];
+                        case 2:
+                            cachedAuthenticationResult = this.getCachedAuthenticationResult();
+                            if (!(cachedAuthenticationResult != null)) return [3 /*break*/, 3];
+                            return [2 /*return*/, cachedAuthenticationResult];
+                        case 3: return [4 /*yield*/, this.executeTokenRequest(request, this.authority)];
+                        case 4: return [2 /*return*/, _a.sent()];
+                    }
+                });
+            });
+        };
+        ClientCredentialClient.prototype.getCachedAuthenticationResult = function () {
+            var cachedAccessToken = this.readAccessTokenFromCache();
+            if (!cachedAccessToken ||
+                TimeUtils.isTokenExpired(cachedAccessToken.expiresOn, this.config.systemOptions.tokenRenewalOffsetSeconds)) {
+                return null;
+            }
+            return ResponseHandler.generateAuthenticationResult({
+                account: null,
+                accessToken: cachedAccessToken,
+                idToken: null,
+                refreshToken: null
+            }, null, true);
+        };
+        ClientCredentialClient.prototype.readAccessTokenFromCache = function () {
+            var accessTokenFilter = {
+                homeAccountId: "",
+                environment: this.authority.canonicalAuthorityUrlComponents.HostNameAndPort,
+                credentialType: CredentialType.ACCESS_TOKEN,
+                clientId: this.config.authOptions.clientId,
+                realm: this.authority.tenant,
+                target: this.scopeSet.printScopesLowerCase()
+            };
+            var credentialCache = this.cacheManager.getCredentialsFilteredBy(accessTokenFilter);
+            var accessTokens = Object.keys(credentialCache.accessTokens).map(function (key) { return credentialCache.accessTokens[key]; });
+            if (accessTokens.length < 1) {
+                return null;
+            }
+            return accessTokens[0];
+        };
+        ClientCredentialClient.prototype.executeTokenRequest = function (request, authority) {
+            return __awaiter$1(this, void 0, void 0, function () {
+                var requestBody, headers, response, responseHandler, tokenResponse;
+                return __generator$1(this, function (_a) {
+                    switch (_a.label) {
+                        case 0:
+                            requestBody = this.createTokenRequestBody(request);
+                            headers = this.createDefaultTokenRequestHeaders();
+                            return [4 /*yield*/, this.executePostToTokenEndpoint(authority.tokenEndpoint, requestBody, headers)];
+                        case 1:
+                            response = _a.sent();
+                            responseHandler = new ResponseHandler(this.config.authOptions.clientId, this.cacheManager, this.cryptoUtils, this.logger);
+                            responseHandler.validateTokenResponse(response.body);
+                            tokenResponse = responseHandler.handleServerTokenResponse(response.body, this.authority, null, null, request.scopes);
+                            return [2 /*return*/, tokenResponse];
+                    }
+                });
+            });
+        };
+        ClientCredentialClient.prototype.createTokenRequestBody = function (request) {
+            var parameterBuilder = new RequestParameterBuilder();
+            parameterBuilder.addClientId(this.config.authOptions.clientId);
+            parameterBuilder.addScopes(this.scopeSet);
+            parameterBuilder.addGrantType(GrantType.CLIENT_CREDENTIALS_GRANT);
+            var correlationId = request.correlationId || this.config.cryptoInterface.createNewGuid();
+            parameterBuilder.addCorrelationId(correlationId);
+            if (this.config.clientCredentials.clientSecret) {
+                parameterBuilder.addClientSecret(this.config.clientCredentials.clientSecret);
+            }
+            if (this.config.clientCredentials.clientAssertion) {
+                var clientAssertion = this.config.clientCredentials.clientAssertion;
+                parameterBuilder.addClientAssertion(clientAssertion.assertion);
+                parameterBuilder.addClientAssertionType(clientAssertion.assertionType);
+            }
+            if (!StringUtils.isEmpty(request.claims) || this.config.authOptions.clientCapabilities && this.config.authOptions.clientCapabilities.length > 0) {
+                parameterBuilder.addClaims(request.claims, this.config.authOptions.clientCapabilities);
+            }
+            return parameterBuilder.createQueryString();
+        };
+        return ClientCredentialClient;
+    }(BaseClient));
+
+    /*
+     * Copyright (c) Microsoft Corporation. All rights reserved.
+     * Licensed under the MIT License.
+     */
+    var SilentFlowClient = /** @class */ (function (_super) {
+        __extends$1(SilentFlowClient, _super);
+        function SilentFlowClient(configuration) {
+            return _super.call(this, configuration) || this;
+        }
+        /**
+         * Retrieves a token from cache if it is still valid, or uses the cached refresh token to renew
+         * the given token and returns the renewed token
+         * @param request
+         */
+        SilentFlowClient.prototype.acquireToken = function (request) {
+            return __awaiter$1(this, void 0, void 0, function () {
+                var requestScopes, accountKey, cachedAccount, homeAccountId, environment, cachedAccessToken, cachedRefreshToken, refreshTokenClient, refreshTokenRequest, cachedIdToken, idTokenObj;
+                return __generator$1(this, function (_a) {
+                    // Cannot renew token if no request object is given.
+                    if (!request) {
+                        throw ClientConfigurationError.createEmptyTokenRequestError();
+                    }
+                    // We currently do not support silent flow for account === null use cases; This will be revisited for confidential flow usecases
+                    if (!request.account) {
+                        throw ClientAuthError.createNoAccountInSilentRequestError();
+                    }
+                    requestScopes = new ScopeSet(request.scopes || []);
+                    accountKey = AccountEntity.generateAccountCacheKey(request.account);
+                    cachedAccount = this.cacheManager.getAccount(accountKey);
+                    homeAccountId = cachedAccount.homeAccountId;
+                    environment = cachedAccount.environment;
+                    cachedAccessToken = this.readAccessTokenFromCache(homeAccountId, environment, requestScopes, cachedAccount.realm);
+                    cachedRefreshToken = this.readRefreshTokenFromCache(homeAccountId, environment);
+                    // Check if refresh is forced, claims are being requested or if tokens are expired. If neither are true, return a token response with the found token entry.
+                    if (this.isRefreshRequired(request, cachedAccessToken)) {
+                        // no refresh Token
+                        if (!cachedRefreshToken) {
+                            throw ClientAuthError.createNoTokensFoundError();
+                        }
+                        refreshTokenClient = new RefreshTokenClient(this.config);
+                        refreshTokenRequest = __assign$1(__assign$1({}, request), { refreshToken: cachedRefreshToken.secret });
+                        return [2 /*return*/, refreshTokenClient.acquireToken(refreshTokenRequest)];
+                    }
+                    // Return tokens from cache
+                    if (this.config.serverTelemetryManager) {
+                        this.config.serverTelemetryManager.incrementCacheHits();
+                    }
+                    cachedIdToken = this.readIdTokenFromCache(homeAccountId, environment, cachedAccount.realm);
+                    idTokenObj = new IdToken(cachedIdToken.secret, this.config.cryptoInterface);
+                    return [2 /*return*/, ResponseHandler.generateAuthenticationResult({
+                        account: cachedAccount,
+                        accessToken: cachedAccessToken,
+                        idToken: cachedIdToken,
+                        refreshToken: cachedRefreshToken
+                    }, idTokenObj, true)];
+                });
+            });
+        };
+        SilentFlowClient.prototype.isRefreshRequired = function (request, cachedAccessToken) {
+            if (request.forceRefresh || request.claims) {
+                // Must refresh due to request parameters
+                return true;
+            }
+            else if (!cachedAccessToken || TimeUtils.isTokenExpired(cachedAccessToken.expiresOn, this.config.systemOptions.tokenRenewalOffsetSeconds)) {
+                // Must refresh due to expired or non-existent access_token
+                return true;
+            }
+            return false;
+        };
+        /**
+         * fetches idToken from cache if present
+         * @param request
+         */
+        SilentFlowClient.prototype.readIdTokenFromCache = function (homeAccountId, environment, inputRealm) {
+            var idTokenKey = CredentialEntity.generateCredentialCacheKey(homeAccountId, environment, CredentialType.ID_TOKEN, this.config.authOptions.clientId, inputRealm);
+            return this.cacheManager.getCredential(idTokenKey);
+        };
+        /**
+         * fetches accessToken from cache if present
+         * @param request
+         * @param scopes
+         */
+        SilentFlowClient.prototype.readAccessTokenFromCache = function (homeAccountId, environment, scopes, inputRealm) {
+            var accessTokenFilter = {
+                homeAccountId: homeAccountId,
+                environment: environment,
+                credentialType: CredentialType.ACCESS_TOKEN,
+                clientId: this.config.authOptions.clientId,
+                realm: inputRealm,
+                target: scopes.printScopesLowerCase()
+            };
+            var credentialCache = this.cacheManager.getCredentialsFilteredBy(accessTokenFilter);
+            var accessTokens = Object.keys(credentialCache.accessTokens).map(function (key) { return credentialCache.accessTokens[key]; });
+            if (accessTokens.length > 1) ;
+            else if (accessTokens.length < 1) {
+                return null;
+            }
+            return accessTokens[0];
+        };
+        /**
+         * fetches refreshToken from cache if present
+         * @param request
+         */
+        SilentFlowClient.prototype.readRefreshTokenFromCache = function (homeAccountId, environment) {
+            var refreshTokenKey = CredentialEntity.generateCredentialCacheKey(homeAccountId, environment, CredentialType.REFRESH_TOKEN, this.config.authOptions.clientId);
+            return this.cacheManager.getCredential(refreshTokenKey);
+        };
+        return SilentFlowClient;
+    }(BaseClient));
+
+    /**
+     * The authority class validates the authority URIs used by the user, and retrieves the OpenID Configuration Data from the
+     * endpoint. It will store the pertinent config data in this object for use during token calls.
+     */
+    var Authority = /** @class */ (function () {
+        function Authority(authority, networkInterface) {
+            this.canonicalAuthority = authority;
+            this._canonicalAuthority.validateAsUri();
+            this.networkInterface = networkInterface;
+        }
+        Object.defineProperty(Authority.prototype, "authorityType", {
+            // See above for AuthorityType
+            get: function () {
+                var pathSegments = this.canonicalAuthorityUrlComponents.PathSegments;
+                if (pathSegments.length && pathSegments[0].toLowerCase() === Constants.ADFS) {
+                    return AuthorityType.Adfs;
+                }
+                return AuthorityType.Default;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Authority.prototype, "canonicalAuthority", {
+            /**
+             * A URL that is the authority set by the developer
+             */
+            get: function () {
+                return this._canonicalAuthority.urlString;
+            },
+            /**
+             * Sets canonical authority.
+             */
+            set: function (url) {
+                this._canonicalAuthority = new UrlString(url);
+                this._canonicalAuthority.validateAsUri();
+                this._canonicalAuthorityUrlComponents = null;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Authority.prototype, "canonicalAuthorityUrlComponents", {
+            /**
+             * Get authority components.
+             */
+            get: function () {
+                if (!this._canonicalAuthorityUrlComponents) {
+                    this._canonicalAuthorityUrlComponents = this._canonicalAuthority.getUrlComponents();
+                }
+                return this._canonicalAuthorityUrlComponents;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Authority.prototype, "tenant", {
+            /**
+             * Get tenant for authority.
+             */
+            get: function () {
+                return this.canonicalAuthorityUrlComponents.PathSegments[0];
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Authority.prototype, "authorizationEndpoint", {
+            /**
+             * OAuth /authorize endpoint for requests
+             */
+            get: function () {
+                if (this.discoveryComplete()) {
+                    return this.replaceTenant(this.tenantDiscoveryResponse.authorization_endpoint);
+                }
+                else {
+                    throw ClientAuthError.createEndpointDiscoveryIncompleteError("Discovery incomplete.");
+                }
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Authority.prototype, "tokenEndpoint", {
+            /**
+             * OAuth /token endpoint for requests
+             */
+            get: function () {
+                if (this.discoveryComplete()) {
+                    return this.replaceTenant(this.tenantDiscoveryResponse.token_endpoint);
+                }
+                else {
+                    throw ClientAuthError.createEndpointDiscoveryIncompleteError("Discovery incomplete.");
+                }
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Authority.prototype, "deviceCodeEndpoint", {
+            get: function () {
+                if (this.discoveryComplete()) {
+                    return this.tenantDiscoveryResponse.token_endpoint.replace("/token", "/devicecode");
+                }
+                else {
+                    throw ClientAuthError.createEndpointDiscoveryIncompleteError("Discovery incomplete.");
+                }
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Authority.prototype, "endSessionEndpoint", {
+            /**
+             * OAuth logout endpoint for requests
+             */
+            get: function () {
+                if (this.discoveryComplete()) {
+                    return this.replaceTenant(this.tenantDiscoveryResponse.end_session_endpoint);
+                }
+                else {
+                    throw ClientAuthError.createEndpointDiscoveryIncompleteError("Discovery incomplete.");
+                }
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Authority.prototype, "selfSignedJwtAudience", {
+            /**
+             * OAuth issuer for requests
+             */
+            get: function () {
+                if (this.discoveryComplete()) {
+                    return this.replaceTenant(this.tenantDiscoveryResponse.issuer);
+                }
+                else {
+                    throw ClientAuthError.createEndpointDiscoveryIncompleteError("Discovery incomplete.");
+                }
+            },
+            enumerable: true,
+            configurable: true
+        });
+        /**
+         * Replaces tenant in url path with current tenant. Defaults to common.
+         * @param urlString
+         */
+        Authority.prototype.replaceTenant = function (urlString) {
+            return urlString.replace(/{tenant}|{tenantid}/g, this.tenant);
+        };
+        Object.defineProperty(Authority.prototype, "defaultOpenIdConfigurationEndpoint", {
+            /**
+             * The default open id configuration endpoint for any canonical authority.
+             */
+            get: function () {
+                if (this.authorityType === AuthorityType.Adfs) {
+                    return this.canonicalAuthority + ".well-known/openid-configuration";
+                }
+                return this.canonicalAuthority + "v2.0/.well-known/openid-configuration";
+            },
+            enumerable: true,
+            configurable: true
+        });
+        /**
+         * Boolean that returns whethr or not tenant discovery has been completed.
+         */
+        Authority.prototype.discoveryComplete = function () {
+            return !!this.tenantDiscoveryResponse;
+        };
+        /**
+         * Gets OAuth endpoints from the given OpenID configuration endpoint.
+         * @param openIdConfigurationEndpoint
+         */
+        Authority.prototype.discoverEndpoints = function (openIdConfigurationEndpoint) {
+            return __awaiter$1(this, void 0, void 0, function () {
+                return __generator$1(this, function (_a) {
+                    return [2 /*return*/, this.networkInterface.sendGetRequestAsync(openIdConfigurationEndpoint)];
+                });
+            });
+        };
+        Object.defineProperty(Authority.prototype, "aadInstanceDiscoveryEndpointUrl", {
+            // Default AAD Instance Discovery Endpoint
+            get: function () {
+                return "" + Constants.AAD_INSTANCE_DISCOVERY_ENDPT + this.canonicalAuthority + "oauth2/v2.0/authorize";
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Authority.prototype.validateAndSetPreferredNetwork = function () {
+            return __awaiter$1(this, void 0, void 0, function () {
+                var host, preferredNetwork;
+                return __generator$1(this, function (_a) {
+                    switch (_a.label) {
+                        case 0:
+                            host = this.canonicalAuthorityUrlComponents.HostNameAndPort;
+                            if (!(TrustedAuthority.getTrustedHostList().length === 0)) return [3 /*break*/, 2];
+                            return [4 /*yield*/, TrustedAuthority.setTrustedAuthoritiesFromNetwork(this._canonicalAuthority, this.networkInterface)];
+                        case 1:
+                            _a.sent();
+                            _a.label = 2;
+                        case 2:
+                            if (!TrustedAuthority.IsInTrustedHostList(host)) {
+                                throw ClientConfigurationError.createUntrustedAuthorityError();
+                            }
+                            preferredNetwork = TrustedAuthority.getCloudDiscoveryMetadata(host).preferred_network;
+                            if (host !== preferredNetwork) {
+                                this.canonicalAuthority = this.canonicalAuthority.replace(host, preferredNetwork);
+                            }
+                            return [2 /*return*/];
+                    }
+                });
+            });
+        };
+        /**
+         * Perform endpoint discovery to discover the /authorize, /token and logout endpoints.
+         */
+        Authority.prototype.resolveEndpointsAsync = function () {
+            return __awaiter$1(this, void 0, void 0, function () {
+                var openIdConfigEndpoint, response;
+                return __generator$1(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4 /*yield*/, this.validateAndSetPreferredNetwork()];
+                        case 1:
+                            _a.sent();
+                            openIdConfigEndpoint = this.defaultOpenIdConfigurationEndpoint;
+                            return [4 /*yield*/, this.discoverEndpoints(openIdConfigEndpoint)];
+                        case 2:
+                            response = _a.sent();
+                            this.tenantDiscoveryResponse = response.body;
+                            return [2 /*return*/];
+                    }
+                });
+            });
+        };
+        return Authority;
+    }());
+
+    var AuthorityFactory = /** @class */ (function () {
+        function AuthorityFactory() {
+        }
+        /**
+         * Create an authority object of the correct type based on the url
+         * Performs basic authority validation - checks to see if the authority is of a valid type (i.e. aad, b2c, adfs)
+         *
+         * Also performs endpoint discovery.
+         *
+         * @param authorityUri
+         * @param networkClient
+         */
+        AuthorityFactory.createDiscoveredInstance = function (authorityUri, networkClient) {
+            return __awaiter$1(this, void 0, void 0, function () {
+                var acquireTokenAuthority, e_1;
+                return __generator$1(this, function (_a) {
+                    switch (_a.label) {
+                        case 0:
+                            acquireTokenAuthority = AuthorityFactory.createInstance(authorityUri, networkClient);
+                            if (acquireTokenAuthority.discoveryComplete()) {
+                                return [2 /*return*/, acquireTokenAuthority];
+                            }
+                            _a.label = 1;
+                        case 1:
+                            _a.trys.push([1, 3, , 4]);
+                            return [4 /*yield*/, acquireTokenAuthority.resolveEndpointsAsync()];
+                        case 2:
+                            _a.sent();
+                            return [2 /*return*/, acquireTokenAuthority];
+                        case 3:
+                            e_1 = _a.sent();
+                            throw ClientAuthError.createEndpointDiscoveryIncompleteError(e_1);
+                        case 4: return [2 /*return*/];
+                    }
+                });
+            });
+        };
+        /**
+         * Create an authority object of the correct type based on the url
+         * Performs basic authority validation - checks to see if the authority is of a valid type (i.e. aad, b2c, adfs)
+         *
+         * Does not perform endpoint discovery.
+         *
+         * @param authorityUrl
+         * @param networkInterface
+         */
+        AuthorityFactory.createInstance = function (authorityUrl, networkInterface) {
+            // Throw error if authority url is empty
+            if (StringUtils.isEmpty(authorityUrl)) {
+                throw ClientConfigurationError.createUrlEmptyError();
+            }
+            return new Authority(authorityUrl, networkInterface);
+        };
+        return AuthorityFactory;
+    }());
+
+    /*
+     * Copyright (c) Microsoft Corporation. All rights reserved.
+     * Licensed under the MIT License.
+     */
+    var ServerTelemetryManager = /** @class */ (function () {
+        function ServerTelemetryManager(telemetryRequest, cacheManager) {
+            this.cacheManager = cacheManager;
+            this.apiId = telemetryRequest.apiId;
+            this.correlationId = telemetryRequest.correlationId;
+            this.forceRefresh = telemetryRequest.forceRefresh || false;
+            this.telemetryCacheKey = SERVER_TELEM_CONSTANTS.CACHE_KEY + Separators.CACHE_KEY_SEPARATOR + telemetryRequest.clientId;
+        }
+        // API to add MSER Telemetry to request
+        ServerTelemetryManager.prototype.generateCurrentRequestHeaderValue = function () {
+            var forceRefreshInt = this.forceRefresh ? 1 : 0;
+            var request = "" + this.apiId + SERVER_TELEM_CONSTANTS.VALUE_SEPARATOR + forceRefreshInt;
+            var platformFields = ""; // TODO: Determine what we want to include
+            return [SERVER_TELEM_CONSTANTS.SCHEMA_VERSION, request, platformFields].join(SERVER_TELEM_CONSTANTS.CATEGORY_SEPARATOR);
+        };
+        // API to add MSER Telemetry for the last failed request
+        ServerTelemetryManager.prototype.generateLastRequestHeaderValue = function () {
+            var lastRequests = this.getLastRequests();
+            var failedRequests = lastRequests.failedRequests.join(SERVER_TELEM_CONSTANTS.VALUE_SEPARATOR);
+            var errors = lastRequests.errors.join(SERVER_TELEM_CONSTANTS.VALUE_SEPARATOR);
+            var platformFields = lastRequests.errorCount;
+            return [SERVER_TELEM_CONSTANTS.SCHEMA_VERSION, lastRequests.cacheHits, failedRequests, errors, platformFields].join(SERVER_TELEM_CONSTANTS.CATEGORY_SEPARATOR);
+        };
+        // API to cache token failures for MSER data capture
+        ServerTelemetryManager.prototype.cacheFailedRequest = function (error) {
+            var lastRequests = this.getLastRequests();
+            lastRequests.failedRequests.push(this.apiId, this.correlationId);
+            lastRequests.errors.push(error.errorCode);
+            lastRequests.errorCount += 1;
+            if (lastRequests.errors.length > SERVER_TELEM_CONSTANTS.FAILURE_LIMIT) {
+                // Prevent request headers from becoming too large due to excessive failures
+                lastRequests.failedRequests.shift(); // Remove apiId
+                lastRequests.failedRequests.shift(); // Remove correlationId
+                lastRequests.errors.shift();
+            }
+            this.cacheManager.setItem(this.telemetryCacheKey, lastRequests, CacheSchemaType.TELEMETRY);
+            return;
+        };
+        ServerTelemetryManager.prototype.incrementCacheHits = function () {
+            var lastRequests = this.getLastRequests();
+            lastRequests.cacheHits += 1;
+            this.cacheManager.setItem(this.telemetryCacheKey, lastRequests, CacheSchemaType.TELEMETRY);
+            return lastRequests.cacheHits;
+        };
+        ServerTelemetryManager.prototype.getLastRequests = function () {
+            var initialValue = {
+                failedRequests: [],
+                errors: [],
+                errorCount: 0,
+                cacheHits: 0
+            };
+            var lastRequests = this.cacheManager.getItem(this.telemetryCacheKey, CacheSchemaType.TELEMETRY);
+            return lastRequests || initialValue;
+        };
+        ServerTelemetryManager.prototype.clearTelemetryCache = function () {
+            this.cacheManager.removeItem(this.telemetryCacheKey);
+        };
+        return ServerTelemetryManager;
+    }());
+
+    /*
+     * Copyright (c) Microsoft Corporation. All rights reserved.
+     * Licensed under the MIT License.
+     */
+    /**
+     * Constants
+     */
+    var BrowserConstants = {
+        // Local storage constant string
+        CACHE_LOCATION_LOCAL: "localStorage",
+        // Session storage constant string
+        CACHE_LOCATION_SESSION: "sessionStorage",
+        // Interaction status key (only used for browsers)
+        INTERACTION_STATUS_KEY: "interaction.status",
+        // Interaction in progress cache value
+        INTERACTION_IN_PROGRESS_VALUE: "interaction_in_progress",
+        // Invalid grant error code
+        INVALID_GRANT_ERROR: "invalid_grant",
+        // Default popup window width
+        POPUP_WIDTH: 483,
+        // Default popup window height
+        POPUP_HEIGHT: 600,
+        // Default popup monitor poll interval in milliseconds
+        POLL_INTERVAL_MS: 50,
+        // msal-browser SKU
+        MSAL_SKU: "msal.js.browser",
+    };
+    /**
+     * HTTP Request types supported by MSAL.
+     */
+    var HTTP_REQUEST_TYPE;
+    (function (HTTP_REQUEST_TYPE) {
+        HTTP_REQUEST_TYPE["GET"] = "GET";
+        HTTP_REQUEST_TYPE["POST"] = "POST";
+    })(HTTP_REQUEST_TYPE || (HTTP_REQUEST_TYPE = {}));
+    /**
+     * Temporary cache keys for MSAL, deleted after any request.
+     */
+    var TemporaryCacheKeys;
+    (function (TemporaryCacheKeys) {
+        TemporaryCacheKeys["AUTHORITY"] = "authority";
+        TemporaryCacheKeys["ACQUIRE_TOKEN_ACCOUNT"] = "acquireToken.account";
+        TemporaryCacheKeys["SESSION_STATE"] = "session.state";
+        TemporaryCacheKeys["REQUEST_STATE"] = "request.state";
+        TemporaryCacheKeys["NONCE_IDTOKEN"] = "nonce.id_token";
+        TemporaryCacheKeys["ORIGIN_URI"] = "request.origin";
+        TemporaryCacheKeys["RENEW_STATUS"] = "token.renew.status";
+        TemporaryCacheKeys["URL_HASH"] = "urlHash";
+        TemporaryCacheKeys["REQUEST_PARAMS"] = "request.params";
+        TemporaryCacheKeys["SCOPES"] = "scopes";
+    })(TemporaryCacheKeys || (TemporaryCacheKeys = {}));
+    /**
+     * API Codes for Telemetry purposes.
+     * Before adding a new code you must claim it in the MSAL Telemetry tracker as these number spaces are shared across all MSALs
+     * 0-99 Silent Flow
+     * 800-899 Auth Code Flow
+     */
+    var ApiId;
+    (function (ApiId) {
+        ApiId[ApiId["acquireTokenRedirect"] = 861] = "acquireTokenRedirect";
+        ApiId[ApiId["acquireTokenPopup"] = 862] = "acquireTokenPopup";
+        ApiId[ApiId["ssoSilent"] = 863] = "ssoSilent";
+        ApiId[ApiId["acquireTokenSilent_authCode"] = 864] = "acquireTokenSilent_authCode";
+        ApiId[ApiId["handleRedirectPromise"] = 865] = "handleRedirectPromise";
+        ApiId[ApiId["acquireTokenSilent_silentFlow"] = 61] = "acquireTokenSilent_silentFlow";
+    })(ApiId || (ApiId = {}));
+    /*
+     * Interaction type of the API - used for state and telemetry
+     */
+    var InteractionType;
+    (function (InteractionType) {
+        InteractionType["REDIRECT"] = "redirect";
+        InteractionType["POPUP"] = "popup";
+        InteractionType["SILENT"] = "silent";
+    })(InteractionType || (InteractionType = {}));
+    var DEFAULT_REQUEST = {
+        scopes: [Constants.OPENID_SCOPE, Constants.PROFILE_SCOPE]
+    };
+
+    /**
+     * This class implements the Fetch API for GET and POST requests. See more here: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
+     */
+    var FetchClient = /** @class */ (function () {
+        function FetchClient() {
+        }
+        /**
+         * Fetch Client for REST endpoints - Get request
+         * @param url
+         * @param headers
+         * @param body
+         */
+        FetchClient.prototype.sendGetRequestAsync = function (url, options) {
+            return __awaiter(this, void 0, void 0, function () {
+                var response, _a;
+                return __generator(this, function (_b) {
+                    switch (_b.label) {
+                        case 0: return [4 /*yield*/, fetch(url, {
+                            method: HTTP_REQUEST_TYPE.GET,
+                            headers: this.getFetchHeaders(options)
+                        })];
+                        case 1:
+                            response = _b.sent();
+                            _a = {
+                                headers: this.getHeaderDict(response.headers)
+                            };
+                            return [4 /*yield*/, response.json()];
+                        case 2: return [2 /*return*/, (_a.body = (_b.sent()),
+                            _a.status = response.status,
+                            _a)];
+                    }
+                });
+            });
+        };
+        /**
+         * Fetch Client for REST endpoints - Post request
+         * @param url
+         * @param headers
+         * @param body
+         */
+        FetchClient.prototype.sendPostRequestAsync = function (url, options) {
+            return __awaiter(this, void 0, void 0, function () {
+                var reqBody, response, _a;
+                return __generator(this, function (_b) {
+                    switch (_b.label) {
+                        case 0:
+                            reqBody = (options && options.body) || "";
+                            return [4 /*yield*/, fetch(url, {
+                                method: HTTP_REQUEST_TYPE.POST,
+                                headers: this.getFetchHeaders(options),
+                                body: reqBody
+                            })];
+                        case 1:
+                            response = _b.sent();
+                            _a = {
+                                headers: this.getHeaderDict(response.headers)
+                            };
+                            return [4 /*yield*/, response.json()];
+                        case 2: return [2 /*return*/, (_a.body = (_b.sent()),
+                            _a.status = response.status,
+                            _a)];
+                    }
+                });
+            });
+        };
+        /**
+         * Get Fetch API Headers object from string map
+         * @param inputHeaders
+         */
+        FetchClient.prototype.getFetchHeaders = function (options) {
+            var headers = new Headers();
+            if (!(options && options.headers)) {
+                return headers;
+            }
+            Object.keys(options.headers).forEach(function (key) {
+                headers.append(key, options.headers[key]);
+            });
+            return headers;
+        };
+        FetchClient.prototype.getHeaderDict = function (headers) {
+            var headerDict = {};
+            headers.forEach(function (value, key) {
+                headerDict[key] = value;
+            });
+            return headerDict;
+        };
+        return FetchClient;
+    }());
+
+    /**
+     * BrowserAuthErrorMessage class containing string constants used by error codes and messages.
+     */
+    var BrowserAuthErrorMessage = {
+        noWindowObjectError: {
+            code: "no_window_object",
+            desc: "No window object detected."
+        },
+        pkceNotGenerated: {
+            code: "pkce_not_created",
+            desc: "The PKCE code challenge and verifier could not be generated."
+        },
+        cryptoDoesNotExist: {
+            code: "crypto_nonexistent",
+            desc: "The crypto object or function is not available."
+        },
+        httpMethodNotImplementedError: {
+            code: "http_method_not_implemented",
+            desc: "The HTTP method given has not been implemented in this library."
+        },
+        emptyNavigateUriError: {
+            code: "empty_navigate_uri",
+            desc: "Navigation URI is empty. Please check stack trace for more info."
+        },
+        hashEmptyError: {
+            code: "hash_empty_error",
+            desc: "Hash value cannot be processed because it is empty."
+        },
+        interactionInProgress: {
+            code: "interaction_in_progress",
+            desc: "Interaction is currently in progress. Please ensure that this interaction has been completed before calling an interactive API."
+        },
+        popUpWindowError: {
+            code: "popup_window_error",
+            desc: "Error opening popup window. This can happen if you are using IE or if popups are blocked in the browser."
+        },
+        emptyWindowError: {
+            code: "empty_window_error",
+            desc: "window.open returned null or undefined window object."
+        },
+        userCancelledError: {
+            code: "user_cancelled",
+            desc: "User cancelled the flow."
+        },
+        monitorWindowTimeoutError: {
+            code: "monitor_window_timeout",
+            desc: "Token acquisition in popup failed due to timeout."
+        },
+        redirectInIframeError: {
+            code: "redirect_in_iframe",
+            desc: "Code flow is not supported inside an iframe. Please ensure you are using MSAL.js in a top frame of the window if using the redirect APIs, or use the popup APIs."
+        },
+        blockTokenRequestsInHiddenIframeError: {
+            code: "block_iframe_reload",
+            desc: "Request was blocked inside an iframe because MSAL detected an authentication response. Please ensure monitorWindowForHash was called."
+        },
+        iframeClosedPrematurelyError: {
+            code: "iframe_closed_prematurely",
+            desc: "The iframe being monitored was closed prematurely."
+        },
+        silentSSOInsufficientInfoError: {
+            code: "silent_sso_error",
+            desc: "Silent SSO could not be completed - insufficient information was provided. Please provide either a loginHint or sid."
+        },
+        silentPromptValueError: {
+            code: "silent_prompt_value_error",
+            desc: "The value given for the prompt value is not valid for silent requests - must be set to 'none'."
+        },
+        tokenRequestCacheError: {
+            code: "token_request_cache_error",
+            desc: "The token request could not be fetched from the cache correctly."
+        },
+        invalidCacheType: {
+            code: "invalid_cache_type",
+            desc: "Invalid cache type"
+        }
+    };
+    /**
+     * Browser library error class thrown by the MSAL.js library for SPAs
+     */
+    var BrowserAuthError = /** @class */ (function (_super) {
+        __extends(BrowserAuthError, _super);
+        function BrowserAuthError(errorCode, errorMessage) {
+            var _this = _super.call(this, errorCode, errorMessage) || this;
+            Object.setPrototypeOf(_this, BrowserAuthError.prototype);
+            _this.name = "BrowserAuthError";
+            return _this;
+        }
+        /**
+         * Creates error thrown when no window object can be found.
+         */
+        BrowserAuthError.createNoWindowObjectError = function () {
+            return new BrowserAuthError(BrowserAuthErrorMessage.noWindowObjectError.code, BrowserAuthErrorMessage.noWindowObjectError.desc);
+        };
+        /**
+         * Creates an error thrown when PKCE is not implemented.
+         * @param errDetail
+         */
+        BrowserAuthError.createPkceNotGeneratedError = function (errDetail) {
+            return new BrowserAuthError(BrowserAuthErrorMessage.pkceNotGenerated.code, BrowserAuthErrorMessage.pkceNotGenerated.desc + " Detail:" + errDetail);
+        };
+        /**
+         * Creates an error thrown when the crypto object is unavailable.
+         * @param errDetail
+         */
+        BrowserAuthError.createCryptoNotAvailableError = function (errDetail) {
+            return new BrowserAuthError(BrowserAuthErrorMessage.cryptoDoesNotExist.code, BrowserAuthErrorMessage.cryptoDoesNotExist.desc + " Detail:" + errDetail);
+        };
+        /**
+         * Creates an error thrown when an HTTP method hasn't been implemented by the browser class.
+         * @param method
+         */
+        BrowserAuthError.createHttpMethodNotImplementedError = function (method) {
+            return new BrowserAuthError(BrowserAuthErrorMessage.httpMethodNotImplementedError.code, BrowserAuthErrorMessage.httpMethodNotImplementedError.desc + " Given Method: " + method);
+        };
+        /**
+         * Creates an error thrown when the navigation URI is empty.
+         */
+        BrowserAuthError.createEmptyNavigationUriError = function () {
+            return new BrowserAuthError(BrowserAuthErrorMessage.emptyNavigateUriError.code, BrowserAuthErrorMessage.emptyNavigateUriError.desc);
+        };
+        /**
+         * Creates an error thrown when the hash string value is unexpectedly empty.
+         * @param hashValue
+         */
+        BrowserAuthError.createEmptyHashError = function (hashValue) {
+            return new BrowserAuthError(BrowserAuthErrorMessage.hashEmptyError.code, BrowserAuthErrorMessage.hashEmptyError.desc + " Given Url: " + hashValue);
+        };
+        /**
+         * Creates an error thrown when a browser interaction (redirect or popup) is in progress.
+         */
+        BrowserAuthError.createInteractionInProgressError = function () {
+            return new BrowserAuthError(BrowserAuthErrorMessage.interactionInProgress.code, BrowserAuthErrorMessage.interactionInProgress.desc);
+        };
+        /**
+         * Creates an error thrown when the popup window could not be opened.
+         * @param errDetail
+         */
+        BrowserAuthError.createPopupWindowError = function (errDetail) {
+            var errorMessage = BrowserAuthErrorMessage.popUpWindowError.desc;
+            errorMessage = !StringUtils.isEmpty(errDetail) ? errorMessage + " Details: " + errDetail : errorMessage;
+            return new BrowserAuthError(BrowserAuthErrorMessage.popUpWindowError.code, errorMessage);
+        };
+        /**
+         * Creates an error thrown when window.open returns an empty window object.
+         * @param errDetail
+         */
+        BrowserAuthError.createEmptyWindowCreatedError = function () {
+            return new BrowserAuthError(BrowserAuthErrorMessage.emptyWindowError.code, BrowserAuthErrorMessage.emptyWindowError.desc);
+        };
+        /**
+         * Creates an error thrown when the user closes a popup.
+         */
+        BrowserAuthError.createUserCancelledError = function () {
+            return new BrowserAuthError(BrowserAuthErrorMessage.userCancelledError.code, BrowserAuthErrorMessage.userCancelledError.desc);
+        };
+        /**
+         * Creates an error thrown when monitorWindowFromHash times out for a given popup.
+         * @param urlNavigate
+         */
+        BrowserAuthError.createMonitorWindowTimeoutError = function () {
+            return new BrowserAuthError(BrowserAuthErrorMessage.monitorWindowTimeoutError.code, BrowserAuthErrorMessage.monitorWindowTimeoutError.desc);
+        };
+        /**
+         * Creates an error thrown when navigateWindow is called inside an iframe.
+         * @param windowParentCheck
+         */
+        BrowserAuthError.createRedirectInIframeError = function (windowParentCheck) {
+            return new BrowserAuthError(BrowserAuthErrorMessage.redirectInIframeError.code, BrowserAuthErrorMessage.redirectInIframeError.desc + " (window.parent !== window) => " + windowParentCheck);
+        };
+        /**
+         * Creates an error thrown when an auth reload is done inside an iframe.
+         */
+        BrowserAuthError.createBlockReloadInHiddenIframeError = function () {
+            return new BrowserAuthError(BrowserAuthErrorMessage.blockTokenRequestsInHiddenIframeError.code, BrowserAuthErrorMessage.blockTokenRequestsInHiddenIframeError.desc);
+        };
+        /**
+         * Creates an error thrown when an iframe is found to be closed before the timeout is reached.
+         */
+        BrowserAuthError.createIframeClosedPrematurelyError = function () {
+            return new BrowserAuthError(BrowserAuthErrorMessage.iframeClosedPrematurelyError.code, BrowserAuthErrorMessage.iframeClosedPrematurelyError.desc);
+        };
+        /**
+         * Creates an error thrown when the login_hint, sid or account object is not provided in the ssoSilent API.
+         */
+        BrowserAuthError.createSilentSSOInsufficientInfoError = function () {
+            return new BrowserAuthError(BrowserAuthErrorMessage.silentSSOInsufficientInfoError.code, BrowserAuthErrorMessage.silentSSOInsufficientInfoError.desc);
+        };
+        /**
+         * Creates an error thrown when a given prompt value is invalid for silent requests.
+         */
+        BrowserAuthError.createSilentPromptValueError = function (givenPrompt) {
+            return new BrowserAuthError(BrowserAuthErrorMessage.silentPromptValueError.code, BrowserAuthErrorMessage.silentPromptValueError.desc + " Given value: " + givenPrompt);
+        };
+        /**
+         * Creates an error thrown when the token request could not be retrieved from the cache
+         * @param errDetail
+         */
+        BrowserAuthError.createTokenRequestCacheError = function (errDetail) {
+            return new BrowserAuthError(BrowserAuthErrorMessage.tokenRequestCacheError.code, BrowserAuthErrorMessage.tokenRequestCacheError.desc + " Error Detail: " + errDetail);
+        };
+        /**
+         * Creates an error thrown if cache type is invalid.
+         */
+        BrowserAuthError.createInvalidCacheTypeError = function () {
+            return new BrowserAuthError(BrowserAuthErrorMessage.invalidCacheType.code, "" + BrowserAuthErrorMessage.invalidCacheType.desc);
+        };
+        return BrowserAuthError;
+    }(AuthError));
+
+    /**
+     * This client implements the XMLHttpRequest class to send GET and POST requests.
+     */
+    var XhrClient = /** @class */ (function () {
+        function XhrClient() {
+        }
+        /**
+         * XhrClient for REST endpoints - Get request
+         * @param url
+         * @param headers
+         * @param body
+         */
+        XhrClient.prototype.sendGetRequestAsync = function (url, options) {
+            return __awaiter(this, void 0, void 0, function () {
+                return __generator(this, function (_a) {
+                    return [2 /*return*/, this.sendRequestAsync(url, HTTP_REQUEST_TYPE.GET, options)];
+                });
+            });
+        };
+        /**
+         * XhrClient for REST endpoints - Post request
+         * @param url
+         * @param headers
+         * @param body
+         */
+        XhrClient.prototype.sendPostRequestAsync = function (url, options) {
+            return __awaiter(this, void 0, void 0, function () {
+                return __generator(this, function (_a) {
+                    return [2 /*return*/, this.sendRequestAsync(url, HTTP_REQUEST_TYPE.POST, options)];
+                });
+            });
+        };
+        /**
+         * Helper for XhrClient requests.
+         * @param url
+         * @param method
+         * @param options
+         */
+        XhrClient.prototype.sendRequestAsync = function (url, method, options) {
+            var _this = this;
+            return new Promise(function (resolve, reject) {
+                var xhr = new XMLHttpRequest();
+                xhr.open(method, url, /* async: */ true);
+                _this.setXhrHeaders(xhr, options);
+                xhr.onload = function () {
+                    if (xhr.status < 200 || xhr.status >= 300) {
+                        reject(xhr.responseText);
+                    }
+                    try {
+                        var jsonResponse = JSON.parse(xhr.responseText);
+                        var networkResponse = {
+                            headers: _this.getHeaderDict(xhr),
+                            body: jsonResponse,
+                            status: xhr.status
+                        };
+                        resolve(networkResponse);
+                    }
+                    catch (e) {
+                        reject(xhr.responseText);
+                    }
+                };
+                xhr.onerror = function () {
+                    reject(xhr.status);
+                };
+                if (method === "POST" && options.body) {
+                    xhr.send(options.body);
+                }
+                else if (method === "GET") {
+                    xhr.send();
+                }
+                else {
+                    throw BrowserAuthError.createHttpMethodNotImplementedError(method);
+                }
+            });
+        };
+        /**
+         * Helper to set XHR headers for request.
+         * @param xhr
+         * @param options
+         */
+        XhrClient.prototype.setXhrHeaders = function (xhr, options) {
+            if (options && options.headers) {
+                Object.keys(options.headers).forEach(function (key) {
+                    xhr.setRequestHeader(key, options.headers[key]);
+                });
+            }
+        };
+        /**
+         * Gets a string map of the headers received in the response.
+         *
+         * Algorithm comes from https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/getAllResponseHeaders
+         * @param xhr
+         */
+        XhrClient.prototype.getHeaderDict = function (xhr) {
+            var headerString = xhr.getAllResponseHeaders();
+            var headerArr = headerString.trim().split(/[\r\n]+/);
+            var headerDict = {};
+            headerArr.forEach(function (value) {
+                var parts = value.split(": ");
+                var headerName = parts.shift();
+                var headerVal = parts.join(": ");
+                headerDict[headerName] = headerVal;
+            });
+            return headerDict;
+        };
+        return XhrClient;
+    }());
+
+    /*
+     * Copyright (c) Microsoft Corporation. All rights reserved.
+     * Licensed under the MIT License.
+     */
+    /**
+     * Utility class for browser specific functions
+     */
+    var BrowserUtils = /** @class */ (function () {
+        function BrowserUtils() {
+        }
+        // #region Window Navigation and URL management
+        /**
+         * Used to redirect the browser to the STS authorization endpoint
+         * @param {string} urlNavigate - URL of the authorization endpoint
+         * @param {boolean} noHistory - boolean flag, uses .replace() instead of .assign() if true
+         */
+        BrowserUtils.navigateWindow = function (urlNavigate, noHistory) {
+            if (noHistory) {
+                window.location.replace(urlNavigate);
+            }
+            else {
+                window.location.assign(urlNavigate);
+            }
+        };
+        /**
+         * Clears hash from window url.
+         */
+        BrowserUtils.clearHash = function () {
+            window.location.hash = "";
+        };
+        /**
+         * Replaces current hash with hash from provided url
+         */
+        BrowserUtils.replaceHash = function (url) {
+            var urlParts = url.split("#");
+            urlParts.shift(); // Remove part before the hash
+            window.location.hash = urlParts.length > 0 ? urlParts.join("#") : "";
+        };
+        /**
+         * Returns boolean of whether the current window is in an iframe or not.
+         */
+        BrowserUtils.isInIframe = function () {
+            return window.parent !== window;
+        };
+        // #endregion
+        /**
+         * Returns current window URL as redirect uri
+         */
+        BrowserUtils.getCurrentUri = function () {
+            return window.location.href.split("?")[0].split("#")[0];
+        };
+        /**
+         * Gets the homepage url for the current window location.
+         */
+        BrowserUtils.getHomepage = function () {
+            var currentUrl = new UrlString(window.location.href);
+            var urlComponents = currentUrl.getUrlComponents();
+            return urlComponents.Protocol + "//" + urlComponents.HostNameAndPort + "/";
+        };
+        /**
+         * Returns best compatible network client object.
+         */
+        BrowserUtils.getBrowserNetworkClient = function () {
+            if (window.fetch) {
+                return new FetchClient();
+            }
+            else {
+                return new XhrClient();
+            }
+        };
+        /**
+         * Throws error if we have completed an auth and are
+         * attempting another auth request inside an iframe.
+         */
+        BrowserUtils.blockReloadInHiddenIframes = function () {
+            var isResponseHash = UrlString.hashContainsKnownProperties(window.location.hash);
+            // return an error if called from the hidden iframe created by the msal js silent calls
+            if (isResponseHash && BrowserUtils.isInIframe()) {
+                throw BrowserAuthError.createBlockReloadInHiddenIframeError();
+            }
+        };
+        /**
+         * Returns boolean of whether current browser is an Internet Explorer or Edge browser.
+         */
+        BrowserUtils.detectIEOrEdge = function () {
+            var ua = window.navigator.userAgent;
+            var msie = ua.indexOf("MSIE ");
+            var msie11 = ua.indexOf("Trident/");
+            var msedge = ua.indexOf("Edge/");
+            var isIE = msie > 0 || msie11 > 0;
+            var isEdge = msedge > 0;
+            return isIE || isEdge;
+        };
+        return BrowserUtils;
+    }());
+
+    // Default timeout for popup windows and iframes in milliseconds
+    var DEFAULT_POPUP_TIMEOUT_MS = 60000;
+    var DEFAULT_IFRAME_TIMEOUT_MS = 6000;
+    // Default auth options for browser
+    var DEFAULT_AUTH_OPTIONS$1 = {
+        clientId: "",
+        authority: "" + Constants.DEFAULT_AUTHORITY,
+        knownAuthorities: [],
+        cloudDiscoveryMetadata: "",
+        redirectUri: "",
+        postLogoutRedirectUri: "",
+        navigateToLoginRequestUrl: true,
+        clientCapabilities: []
+    };
+    // Default cache options for browser
+    var DEFAULT_CACHE_OPTIONS = {
+        cacheLocation: BrowserConstants.CACHE_LOCATION_SESSION,
+        storeAuthStateInCookie: false
+    };
+    // Default logger options for browser
+    var DEFAULT_LOGGER_OPTIONS = {
+        loggerCallback: function () { },
+        piiLoggingEnabled: false
+    };
+    // Default system options for browser
+    var DEFAULT_BROWSER_SYSTEM_OPTIONS = __assign(__assign({}, DEFAULT_SYSTEM_OPTIONS), { loggerOptions: DEFAULT_LOGGER_OPTIONS, networkClient: BrowserUtils.getBrowserNetworkClient(), windowHashTimeout: DEFAULT_POPUP_TIMEOUT_MS, iframeHashTimeout: DEFAULT_IFRAME_TIMEOUT_MS, loadFrameTimeout: BrowserUtils.detectIEOrEdge() ? 500 : 0, asyncPopups: false });
+    /**
+     * MSAL function that sets the default options when not explicitly configured from app developer
+     *
+     * @param auth
+     * @param cache
+     * @param system
+     *
+     * @returns Configuration object
+     */
+    function buildConfiguration(_a) {
+        var userInputAuth = _a.auth, userInputCache = _a.cache, userInputSystem = _a.system;
+        var overlayedConfig = {
+            auth: __assign(__assign({}, DEFAULT_AUTH_OPTIONS$1), userInputAuth),
+            cache: __assign(__assign({}, DEFAULT_CACHE_OPTIONS), userInputCache),
+            system: __assign(__assign({}, DEFAULT_BROWSER_SYSTEM_OPTIONS), userInputSystem)
+        };
+        return overlayedConfig;
+    }
+
+    /**
+     * BrowserAuthErrorMessage class containing string constants used by error codes and messages.
+     */
+    var BrowserConfigurationAuthErrorMessage = {
+        redirectUriNotSet: {
+            code: "redirect_uri_empty",
+            desc: "A redirect URI is required for all calls, and none has been set."
+        },
+        postLogoutUriNotSet: {
+            code: "post_logout_uri_empty",
+            desc: "A post logout redirect has not been set."
+        },
+        storageNotSupportedError: {
+            code: "storage_not_supported",
+            desc: "Given storage configuration option was not supported."
+        },
+        noRedirectCallbacksSet: {
+            code: "no_redirect_callbacks",
+            desc: "No redirect callbacks have been set. Please call setRedirectCallbacks() with the appropriate function arguments before continuing. " +
+                "More information is available here: https://github.com/AzureAD/microsoft-authentication-library-for-js/wiki/MSAL-basics."
+        },
+        invalidCallbackObject: {
+            code: "invalid_callback_object",
+            desc: "The object passed for the callback was invalid. " +
+                "More information is available here: https://github.com/AzureAD/microsoft-authentication-library-for-js/wiki/MSAL-basics."
+        },
+    };
+    /**
+     * Browser library error class thrown by the MSAL.js library for SPAs
+     */
+    var BrowserConfigurationAuthError = /** @class */ (function (_super) {
+        __extends(BrowserConfigurationAuthError, _super);
+        function BrowserConfigurationAuthError(errorCode, errorMessage) {
+            var _this = _super.call(this, errorCode, errorMessage) || this;
+            _this.name = "BrowserConfigurationAuthError";
+            Object.setPrototypeOf(_this, BrowserConfigurationAuthError.prototype);
+            return _this;
+        }
+        /**
+         * Creates an error thrown when the redirect uri is empty (not set by caller)
+         */
+        BrowserConfigurationAuthError.createRedirectUriEmptyError = function () {
+            return new BrowserConfigurationAuthError(BrowserConfigurationAuthErrorMessage.redirectUriNotSet.code, BrowserConfigurationAuthErrorMessage.redirectUriNotSet.desc);
+        };
+        /**
+         * Creates an error thrown when the post-logout redirect uri is empty (not set by caller)
+         */
+        BrowserConfigurationAuthError.createPostLogoutRedirectUriEmptyError = function () {
+            return new BrowserConfigurationAuthError(BrowserConfigurationAuthErrorMessage.postLogoutUriNotSet.code, BrowserConfigurationAuthErrorMessage.postLogoutUriNotSet.desc);
+        };
+        /**
+         * Creates error thrown when given storage location is not supported.
+         * @param givenStorageLocation
+         */
+        BrowserConfigurationAuthError.createStorageNotSupportedError = function (givenStorageLocation) {
+            return new BrowserConfigurationAuthError(BrowserConfigurationAuthErrorMessage.storageNotSupportedError.code, BrowserConfigurationAuthErrorMessage.storageNotSupportedError.desc + " Given Location: " + givenStorageLocation);
+        };
+        /**
+         * Creates error thrown when callback object is invalid.
+         * @param callbackObject
+         */
+        BrowserConfigurationAuthError.createInvalidCallbackObjectError = function (callbackObject) {
+            return new BrowserConfigurationAuthError(BrowserConfigurationAuthErrorMessage.invalidCallbackObject.code, BrowserConfigurationAuthErrorMessage.invalidCallbackObject.desc + " Given value for callback function: " + callbackObject);
+        };
+        /**
+         * Creates error thrown when redirect callbacks are not set before calling loginRedirect() or acquireTokenRedirect().
+         */
+        BrowserConfigurationAuthError.createRedirectCallbacksNotSetError = function () {
+            return new BrowserConfigurationAuthError(BrowserConfigurationAuthErrorMessage.noRedirectCallbacksSet.code, BrowserConfigurationAuthErrorMessage.noRedirectCallbacksSet.desc);
+        };
+        return BrowserConfigurationAuthError;
+    }(AuthError));
+
+    // Cookie life calculation (hours * minutes * seconds * ms)
+    var COOKIE_LIFE_MULTIPLIER = 24 * 60 * 60 * 1000;
+    /**
+     * This class implements the cache storage interface for MSAL through browser local or session storage.
+     * Cookies are only used if storeAuthStateInCookie is true, and are only used for
+     * parameters such as state and nonce, generally.
+     */
+    var BrowserStorage = /** @class */ (function (_super) {
+        __extends(BrowserStorage, _super);
+        function BrowserStorage(clientId, cacheConfig) {
+            var _this = _super.call(this) || this;
+            // Validate cache location
+            _this.validateWindowStorage(cacheConfig.cacheLocation);
+            _this.cacheConfig = cacheConfig;
+            _this.windowStorage = window[_this.cacheConfig.cacheLocation];
+            _this.clientId = clientId;
+            // Migrate any cache entries from older versions of MSAL.
+            _this.migrateCacheEntries();
+            return _this;
+        }
+        /**
+         * Validates the the given cache location string is an expected value:
+         * - localStorage
+         * - sessionStorage (default)
+         * Also validates if given cacheLocation is supported on the browser.
+         * @param cacheLocation
+         */
+        BrowserStorage.prototype.validateWindowStorage = function (cacheLocation) {
+            if (typeof window === "undefined" || !window) {
+                throw BrowserAuthError.createNoWindowObjectError();
+            }
+            if (cacheLocation !== BrowserConstants.CACHE_LOCATION_LOCAL && cacheLocation !== BrowserConstants.CACHE_LOCATION_SESSION) {
+                throw BrowserConfigurationAuthError.createStorageNotSupportedError(cacheLocation);
+            }
+            var storageSupported = !!window[cacheLocation];
+            if (!storageSupported) {
+                throw BrowserConfigurationAuthError.createStorageNotSupportedError(cacheLocation);
+            }
+        };
+        /**
+         * Migrate all old cache entries to new schema. No rollback supported.
+         * @param storeAuthStateInCookie
+         */
+        BrowserStorage.prototype.migrateCacheEntries = function () {
+            var _this = this;
+            var idTokenKey = Constants.CACHE_PREFIX + "." + PersistentCacheKeys.ID_TOKEN;
+            var clientInfoKey = Constants.CACHE_PREFIX + "." + PersistentCacheKeys.CLIENT_INFO;
+            var errorKey = Constants.CACHE_PREFIX + "." + PersistentCacheKeys.ERROR;
+            var errorDescKey = Constants.CACHE_PREFIX + "." + PersistentCacheKeys.ERROR_DESC;
+            var idTokenValue = this.windowStorage.getItem(idTokenKey);
+            var clientInfoValue = this.windowStorage.getItem(clientInfoKey);
+            var errorValue = this.windowStorage.getItem(errorKey);
+            var errorDescValue = this.windowStorage.getItem(errorDescKey);
+            var values = [idTokenValue, clientInfoValue, errorValue, errorDescValue];
+            var keysToMigrate = [PersistentCacheKeys.ID_TOKEN, PersistentCacheKeys.CLIENT_INFO, PersistentCacheKeys.ERROR, PersistentCacheKeys.ERROR_DESC];
+            keysToMigrate.forEach(function (cacheKey, index) { return _this.migrateCacheEntry(cacheKey, values[index]); });
+        };
+        /**
+         * Utility function to help with migration.
+         * @param newKey
+         * @param value
+         * @param storeAuthStateInCookie
+         */
+        BrowserStorage.prototype.migrateCacheEntry = function (newKey, value) {
+            if (value) {
+                this.setItem(this.generateCacheKey(newKey), value, CacheSchemaType.TEMPORARY);
+            }
+        };
+        /**
+         * Parses key as JSON object, JSON.parse() will throw an error.
+         * @param key
+         */
+        BrowserStorage.prototype.validateObjectKey = function (key) {
+            JSON.parse(key);
+        };
+        /**
+         * Sets the cache item with the key and value given.
+         * Stores in cookie if storeAuthStateInCookie is set to true.
+         * This can cause cookie overflow if used incorrectly.
+         * @param key
+         * @param value
+         */
+        BrowserStorage.prototype.setItem = function (key, value, type) {
+            // save the cacheItem
+            switch (type) {
+                case CacheSchemaType.ACCOUNT:
+                case CacheSchemaType.CREDENTIAL:
+                case CacheSchemaType.APP_METADATA:
+                    this.windowStorage.setItem(key, JSON.stringify(value));
+                    break;
+                case CacheSchemaType.TEMPORARY: {
+                    var stringVal = value;
+                    this.windowStorage.setItem(key, stringVal);
+                    if (this.cacheConfig.storeAuthStateInCookie) {
+                        this.setItemCookie(key, stringVal);
+                    }
+                    break;
+                }
+                case CacheSchemaType.TELEMETRY: {
+                    this.windowStorage.setItem(key, JSON.stringify(value));
+                    break;
+                }
+                default: {
+                    throw BrowserAuthError.createInvalidCacheTypeError();
+                }
+            }
+        };
+        /**
+         * Gets cache item with given key.
+         * Will retrieve frm cookies if storeAuthStateInCookie is set to true.
+         * @param key
+         */
+        BrowserStorage.prototype.getItem = function (key, type) {
+            var value = this.windowStorage.getItem(key);
+            if (StringUtils.isEmpty(value)) {
+                return null;
+            }
+            switch (type) {
+                case CacheSchemaType.ACCOUNT: {
+                    var account = new AccountEntity();
+                    return CacheManager.toObject(account, JSON.parse(value));
+                }
+                case CacheSchemaType.CREDENTIAL: {
+                    var credentialType = CredentialEntity.getCredentialType(key);
+                    switch (credentialType) {
+                        case CredentialType.ID_TOKEN: {
+                            var idTokenEntity = new IdTokenEntity();
+                            return CacheManager.toObject(idTokenEntity, JSON.parse(value));
+                        }
+                        case CredentialType.ACCESS_TOKEN: {
+                            var accessTokenEntity = new AccessTokenEntity();
+                            return CacheManager.toObject(accessTokenEntity, JSON.parse(value));
+                        }
+                        case CredentialType.REFRESH_TOKEN: {
+                            var refreshTokenEntity = new RefreshTokenEntity();
+                            return CacheManager.toObject(refreshTokenEntity, JSON.parse(value));
+                        }
+                    }
+                }
+                case CacheSchemaType.APP_METADATA: {
+                    return JSON.parse(value);
+                }
+                case CacheSchemaType.TEMPORARY: {
+                    var itemCookie = this.getItemCookie(key);
+                    if (this.cacheConfig.storeAuthStateInCookie) {
+                        return itemCookie;
+                    }
+                    return value;
+                }
+                case CacheSchemaType.TELEMETRY: {
+                    return JSON.parse(value);
+                }
+                default: {
+                    throw BrowserAuthError.createInvalidCacheTypeError();
+                }
+            }
+        };
+        /**
+         * Removes the cache item with the given key.
+         * Will also clear the cookie item if storeAuthStateInCookie is set to true.
+         * @param key
+         */
+        BrowserStorage.prototype.removeItem = function (key) {
+            this.windowStorage.removeItem(key);
+            if (this.cacheConfig.storeAuthStateInCookie) {
+                this.clearItemCookie(key);
+            }
+            return true;
+        };
+        /**
+         * Checks whether key is in cache.
+         * @param key
+         */
+        BrowserStorage.prototype.containsKey = function (key) {
+            return this.windowStorage.hasOwnProperty(key);
+        };
+        /**
+         * Gets all keys in window.
+         */
+        BrowserStorage.prototype.getKeys = function () {
+            return Object.keys(this.windowStorage);
+        };
+        /**
+         * Clears all cache entries created by MSAL (except tokens).
+         */
+        BrowserStorage.prototype.clear = function () {
+            this.removeAllAccounts();
+            this.removeAppMetadata();
+            var key;
+            for (key in this.windowStorage) {
+                // Check if key contains msal prefix; For now, we are clearing all the cache items created by MSAL.js
+                if (this.windowStorage.hasOwnProperty(key) && ((key.indexOf(Constants.CACHE_PREFIX) !== -1) || (key.indexOf(this.clientId) !== -1))) {
+                    this.removeItem(key);
+                }
+            }
+        };
+        /**
+         * Add value to cookies
+         * @param cookieName
+         * @param cookieValue
+         * @param expires
+         */
+        BrowserStorage.prototype.setItemCookie = function (cookieName, cookieValue, expires) {
+            var cookieStr = encodeURIComponent(cookieName) + "=" + encodeURIComponent(cookieValue) + ";path=/;";
+            if (expires) {
+                var expireTime = this.getCookieExpirationTime(expires);
+                cookieStr += "expires=" + expireTime + ";";
+            }
+            document.cookie = cookieStr;
+        };
+        /**
+         * Get one item by key from cookies
+         * @param cookieName
+         */
+        BrowserStorage.prototype.getItemCookie = function (cookieName) {
+            var name = encodeURIComponent(cookieName) + "=";
+            var cookieList = document.cookie.split(";");
+            for (var i = 0; i < cookieList.length; i++) {
+                var cookie = cookieList[i];
+                while (cookie.charAt(0) === " ") {
+                    cookie = cookie.substring(1);
+                }
+                if (cookie.indexOf(name) === 0) {
+                    return decodeURIComponent(cookie.substring(name.length, cookie.length));
+                }
+            }
+            return "";
+        };
+        /**
+         * Clear an item in the cookies by key
+         * @param cookieName
+         */
+        BrowserStorage.prototype.clearItemCookie = function (cookieName) {
+            this.setItemCookie(cookieName, "", -1);
+        };
+        /**
+         * Clear all msal cookies
+         */
+        BrowserStorage.prototype.clearMsalCookie = function (state) {
+            var nonceKey = state ? TemporaryCacheKeys.NONCE_IDTOKEN + "|" + state : TemporaryCacheKeys.NONCE_IDTOKEN;
+            this.clearItemCookie(this.generateCacheKey(nonceKey));
+            this.clearItemCookie(this.generateCacheKey(TemporaryCacheKeys.REQUEST_STATE));
+            this.clearItemCookie(this.generateCacheKey(TemporaryCacheKeys.ORIGIN_URI));
+        };
+        /**
+         * Get cookie expiration time
+         * @param cookieLifeDays
+         */
+        BrowserStorage.prototype.getCookieExpirationTime = function (cookieLifeDays) {
+            var today = new Date();
+            var expr = new Date(today.getTime() + cookieLifeDays * COOKIE_LIFE_MULTIPLIER);
+            return expr.toUTCString();
+        };
+        /**
+         * Gets the cache object referenced by the browser
+         */
+        BrowserStorage.prototype.getCache = function () {
+            return this.windowStorage;
+        };
+        /**
+         * interface compat, we cannot overwrite browser cache; Functionality is supported by individual entities in browser
+         */
+        BrowserStorage.prototype.setCache = function () {
+            // sets nothing
+        };
+        /**
+         * Prepend msal.<client-id> to each key; Skip for any JSON object as Key (defined schemas do not need the key appended: AccessToken Keys or the upcoming schema)
+         * @param key
+         * @param addInstanceId
+         */
+        BrowserStorage.prototype.generateCacheKey = function (key) {
+            try {
+                // Defined schemas do not need the key migrated
+                this.validateObjectKey(key);
+                return key;
+            }
             catch (e) {
-                //Cross Domain url check error. Will be thrown until AAD redirects the user back to the app"s root page with the token. No need to log or throw this error as it will create unnecessary traffic.
+                if (StringUtils.startsWith(key, Constants.CACHE_PREFIX) || StringUtils.startsWith(key, PersistentCacheKeys.ADAL_ID_TOKEN)) {
+                    return key;
+                }
+                return Constants.CACHE_PREFIX + "." + this.clientId + "." + key;
             }
-        }, interval);
-        return popupWindow;
-    };
-    UserAgentApplication.prototype.broadcast = function (eventName, data) {
-        var evt = new CustomEvent(eventName, { detail: data });
-        window.dispatchEvent(evt);
-    };
+        };
+        /**
+         * Create authorityKey to cache authority
+         * @param state
+         */
+        BrowserStorage.prototype.generateAuthorityKey = function (state) {
+            return "" + TemporaryCacheKeys.AUTHORITY + Constants.RESOURCE_DELIM + state;
+        };
+        /**
+         * Create Nonce key to cache nonce
+         * @param state
+         */
+        BrowserStorage.prototype.generateNonceKey = function (state) {
+            return "" + TemporaryCacheKeys.NONCE_IDTOKEN + Constants.RESOURCE_DELIM + state;
+        };
+        /**
+         * Sets the cacheKey for and stores the authority information in cache
+         * @param state
+         * @param authority
+         */
+        BrowserStorage.prototype.setAuthorityCache = function (authority, state) {
+            // Cache authorityKey
+            var authorityKey = this.generateAuthorityKey(state);
+            this.setItem(this.generateCacheKey(authorityKey), authority, CacheSchemaType.TEMPORARY);
+        };
+        /**
+         * Gets the cached authority based on the cached state. Returns empty if no cached state found.
+         */
+        BrowserStorage.prototype.getCachedAuthority = function () {
+            var state = this.getItem(this.generateCacheKey(TemporaryCacheKeys.REQUEST_STATE), CacheSchemaType.TEMPORARY);
+            if (!state) {
+                return null;
+            }
+            return this.getItem(this.generateCacheKey(this.generateAuthorityKey(state)), CacheSchemaType.TEMPORARY);
+        };
+        /**
+         * Updates account, authority, and state in cache
+         * @param serverAuthenticationRequest
+         * @param account
+         */
+        BrowserStorage.prototype.updateCacheEntries = function (state, nonce, authorityInstance) {
+            // Cache the request state
+            this.setItem(this.generateCacheKey(TemporaryCacheKeys.REQUEST_STATE), state, CacheSchemaType.TEMPORARY);
+            // Cache the nonce
+            this.setItem(this.generateCacheKey(this.generateNonceKey(state)), nonce, CacheSchemaType.TEMPORARY);
+            // Cache authorityKey
+            this.setAuthorityCache(authorityInstance, state);
+        };
+        /**
+         * Reset all temporary cache items
+         * @param state
+         */
+        BrowserStorage.prototype.resetRequestCache = function (state) {
+            var _this = this;
+            // check state and remove associated cache items
+            this.getKeys().forEach(function (key) {
+                if (!StringUtils.isEmpty(state) && key.indexOf(state) !== -1) {
+                    _this.removeItem(key);
+                }
+            });
+            // delete generic interactive request parameters
+            this.removeItem(this.generateCacheKey(TemporaryCacheKeys.REQUEST_STATE));
+            this.removeItem(this.generateCacheKey(TemporaryCacheKeys.REQUEST_PARAMS));
+            this.removeItem(this.generateCacheKey(TemporaryCacheKeys.ORIGIN_URI));
+            this.removeItem(this.generateCacheKey(TemporaryCacheKeys.URL_HASH));
+        };
+        BrowserStorage.prototype.cleanRequest = function () {
+            // Interaction is completed - remove interaction status.
+            this.removeItem(this.generateCacheKey(BrowserConstants.INTERACTION_STATUS_KEY));
+            var cachedState = this.getItem(this.generateCacheKey(TemporaryCacheKeys.REQUEST_STATE), CacheSchemaType.TEMPORARY);
+            this.resetRequestCache(cachedState || "");
+        };
+        BrowserStorage.prototype.cacheCodeRequest = function (authCodeRequest, browserCrypto) {
+            this.setItem(this.generateCacheKey(TemporaryCacheKeys.REQUEST_PARAMS), browserCrypto.base64Encode(JSON.stringify(authCodeRequest)), CacheSchemaType.TEMPORARY);
+        };
+        /**
+         * Gets the token exchange parameters from the cache. Throws an error if nothing is found.
+         */
+        BrowserStorage.prototype.getCachedRequest = function (state, browserCrypto) {
+            try {
+                // Get token request from cache and parse as TokenExchangeParameters.
+                var encodedTokenRequest = this.getItem(this.generateCacheKey(TemporaryCacheKeys.REQUEST_PARAMS), CacheSchemaType.TEMPORARY);
+                var parsedRequest = JSON.parse(browserCrypto.base64Decode(encodedTokenRequest));
+                this.removeItem(this.generateCacheKey(TemporaryCacheKeys.REQUEST_PARAMS));
+                // Get cached authority and use if no authority is cached with request.
+                if (StringUtils.isEmpty(parsedRequest.authority)) {
+                    var authorityKey = this.generateAuthorityKey(state);
+                    var cachedAuthority = this.getItem(this.generateCacheKey(authorityKey), CacheSchemaType.TEMPORARY);
+                    parsedRequest.authority = cachedAuthority;
+                }
+                return parsedRequest;
+            }
+            catch (err) {
+                throw BrowserAuthError.createTokenRequestCacheError(err);
+            }
+        };
+        return BrowserStorage;
+    }(CacheManager));
+
     /*
-     * Used to log out the current user, and redirect the user to the postLogoutRedirectUri.
-     * Defaults behaviour is to redirect the user to `window.location.href`.
+     * Copyright (c) Microsoft Corporation. All rights reserved.
+     * Licensed under the MIT License.
      */
-    UserAgentApplication.prototype.logout = function () {
-        this.clearCache();
-        this._user = null;
-        var logout = "";
-        if (this._postLogoutredirectUri) {
-            logout = "post_logout_redirect_uri=" + encodeURIComponent(this._postLogoutredirectUri);
+    /**
+     * Utility class for math specific functions in browser.
+     */
+    var MathUtils = /** @class */ (function () {
+        function MathUtils() {
         }
-        var urlNavigate = this.authority + "/oauth2/v2.0/logout?" + logout;
-        this.promptUser(urlNavigate);
-    };
+        /**
+         * Decimal to Hex
+         *
+         * @param num
+         */
+        MathUtils.decimalToHex = function (num) {
+            var hex = num.toString(16);
+            while (hex.length < 2) {
+                hex = "0" + hex;
+            }
+            return hex;
+        };
+        return MathUtils;
+    }());
+
     /*
-     * Used to configure the popup window for login.
-     * @ignore
-     * @hidden
+     * Copyright (c) Microsoft Corporation. All rights reserved.
+     * Licensed under the MIT License.
      */
-    UserAgentApplication.prototype.clearCache = function () {
-        window.renewStates = [];
-        var accessTokenItems = this._cacheStorage.getAllAccessTokens(Constants_1.Constants.clientId, Constants_1.Constants.userIdentifier);
-        for (var i = 0; i < accessTokenItems.length; i++) {
-            this._cacheStorage.removeItem(JSON.stringify(accessTokenItems[i].key));
+    var GuidGenerator = /** @class */ (function () {
+        function GuidGenerator(cryptoObj) {
+            this.cryptoObj = cryptoObj;
         }
-        this._cacheStorage.resetCacheItems();
-    };
-    UserAgentApplication.prototype.clearCacheForScope = function (accessToken) {
-        var accessTokenItems = this._cacheStorage.getAllAccessTokens(Constants_1.Constants.clientId, Constants_1.Constants.userIdentifier);
-        for (var i = 0; i < accessTokenItems.length; i++) {
-            var token = accessTokenItems[i];
-            if (token.value.accessToken == accessToken) {
-                this._cacheStorage.removeItem(JSON.stringify(token.key));
+        /*
+         * RFC4122: The version 4 UUID is meant for generating UUIDs from truly-random or
+         * pseudo-random numbers.
+         * The algorithm is as follows:
+         *     Set the two most significant bits (bits 6 and 7) of the
+         *        clock_seq_hi_and_reserved to zero and one, respectively.
+         *     Set the four most significant bits (bits 12 through 15) of the
+         *        time_hi_and_version field to the 4-bit version number from
+         *        Section 4.1.3. Version4
+         *     Set all the other bits to randomly (or pseudo-randomly) chosen
+         *     values.
+         * UUID                   = time-low "-" time-mid "-"time-high-and-version "-"clock-seq-reserved and low(2hexOctet)"-" node
+         * time-low               = 4hexOctet
+         * time-mid               = 2hexOctet
+         * time-high-and-version  = 2hexOctet
+         * clock-seq-and-reserved = hexOctet:
+         * clock-seq-low          = hexOctet
+         * node                   = 6hexOctet
+         * Format: xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx
+         * y could be 1000, 1001, 1010, 1011 since most significant two bits needs to be 10
+         * y values are 8, 9, A, B
+         */
+        GuidGenerator.prototype.generateGuid = function () {
+            try {
+                var buffer = new Uint8Array(16);
+                this.cryptoObj.getRandomValues(buffer);
+                // buffer[6] and buffer[7] represents the time_hi_and_version field. We will set the four most significant bits (4 through 7) of buffer[6] to represent decimal number 4 (UUID version number).
+                buffer[6] |= 0x40; // buffer[6] | 01000000 will set the 6 bit to 1.
+                buffer[6] &= 0x4f; // buffer[6] & 01001111 will set the 4, 5, and 7 bit to 0 such that bits 4-7 == 0100 = "4".
+                // buffer[8] represents the clock_seq_hi_and_reserved field. We will set the two most significant bits (6 and 7) of the clock_seq_hi_and_reserved to zero and one, respectively.
+                buffer[8] |= 0x80; // buffer[8] | 10000000 will set the 7 bit to 1.
+                buffer[8] &= 0xbf; // buffer[8] & 10111111 will set the 6 bit to 0.
+                return MathUtils.decimalToHex(buffer[0]) + MathUtils.decimalToHex(buffer[1])
+                    + MathUtils.decimalToHex(buffer[2]) + MathUtils.decimalToHex(buffer[3])
+                    + "-" + MathUtils.decimalToHex(buffer[4]) + MathUtils.decimalToHex(buffer[5])
+                    + "-" + MathUtils.decimalToHex(buffer[6]) + MathUtils.decimalToHex(buffer[7])
+                    + "-" + MathUtils.decimalToHex(buffer[8]) + MathUtils.decimalToHex(buffer[9])
+                    + "-" + MathUtils.decimalToHex(buffer[10]) + MathUtils.decimalToHex(buffer[11])
+                    + MathUtils.decimalToHex(buffer[12]) + MathUtils.decimalToHex(buffer[13])
+                    + MathUtils.decimalToHex(buffer[14]) + MathUtils.decimalToHex(buffer[15]);
+            }
+            catch (err) {
+                var guidHolder = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx";
+                var hex = "0123456789abcdef";
+                var r = 0;
+                var guidResponse = "";
+                for (var i = 0; i < 36; i++) {
+                    if (guidHolder[i] !== "-" && guidHolder[i] !== "4") {
+                        // each x and y needs to be random
+                        r = Math.random() * 16 | 0;
+                    }
+                    if (guidHolder[i] === "x") {
+                        guidResponse += hex[r];
+                    }
+                    else if (guidHolder[i] === "y") {
+                        // clock-seq-and-reserved first hex is filtered and remaining hex values are random
+                        r &= 0x3; // bit and with 0011 to set pos 2 to zero ?0??
+                        r |= 0x8; // set pos 3 to 1 as 1???
+                        guidResponse += hex[r];
+                    }
+                    else {
+                        guidResponse += guidHolder[i];
+                    }
+                }
+                return guidResponse;
+            }
+        };
+        /**
+         * verifies if a string is  GUID
+         * @param guid
+         */
+        GuidGenerator.isGuid = function (guid) {
+            var regexGuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+            return regexGuid.test(guid);
+        };
+        return GuidGenerator;
+    }());
+
+    /*
+     * Copyright (c) Microsoft Corporation. All rights reserved.
+     * Licensed under the MIT License.
+     */
+    /**
+     * Utility functions for strings in a browser. See here for implementation details:
+     * https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64/Base64_encoding_and_decoding#Solution_2_%E2%80%93_JavaScript's_UTF-16_%3E_UTF-8_%3E_base64
+     */
+    var BrowserStringUtils = /** @class */ (function () {
+        function BrowserStringUtils() {
+        }
+        /**
+         * Converts string to Uint8Array
+         * @param sDOMStr
+         */
+        BrowserStringUtils.stringToUtf8Arr = function (sDOMStr) {
+            var nChr;
+            var nArrLen = 0;
+            var nStrLen = sDOMStr.length;
+            /* mapping... */
+            for (var nMapIdx = 0; nMapIdx < nStrLen; nMapIdx++) {
+                nChr = sDOMStr.charCodeAt(nMapIdx);
+                nArrLen += nChr < 0x80 ? 1 : nChr < 0x800 ? 2 : nChr < 0x10000 ? 3 : nChr < 0x200000 ? 4 : nChr < 0x4000000 ? 5 : 6;
+            }
+            var aBytes = new Uint8Array(nArrLen);
+            /* transcription... */
+            for (var nIdx = 0, nChrIdx = 0; nIdx < nArrLen; nChrIdx++) {
+                nChr = sDOMStr.charCodeAt(nChrIdx);
+                if (nChr < 128) {
+                    /* one byte */
+                    aBytes[nIdx++] = nChr;
+                }
+                else if (nChr < 0x800) {
+                    /* two bytes */
+                    aBytes[nIdx++] = 192 + (nChr >>> 6);
+                    aBytes[nIdx++] = 128 + (nChr & 63);
+                }
+                else if (nChr < 0x10000) {
+                    /* three bytes */
+                    aBytes[nIdx++] = 224 + (nChr >>> 12);
+                    aBytes[nIdx++] = 128 + (nChr >>> 6 & 63);
+                    aBytes[nIdx++] = 128 + (nChr & 63);
+                }
+                else if (nChr < 0x200000) {
+                    /* four bytes */
+                    aBytes[nIdx++] = 240 + (nChr >>> 18);
+                    aBytes[nIdx++] = 128 + (nChr >>> 12 & 63);
+                    aBytes[nIdx++] = 128 + (nChr >>> 6 & 63);
+                    aBytes[nIdx++] = 128 + (nChr & 63);
+                }
+                else if (nChr < 0x4000000) {
+                    /* five bytes */
+                    aBytes[nIdx++] = 248 + (nChr >>> 24);
+                    aBytes[nIdx++] = 128 + (nChr >>> 18 & 63);
+                    aBytes[nIdx++] = 128 + (nChr >>> 12 & 63);
+                    aBytes[nIdx++] = 128 + (nChr >>> 6 & 63);
+                    aBytes[nIdx++] = 128 + (nChr & 63);
+                }
+                else /* if (nChr <= 0x7fffffff) */ {
+                    /* six bytes */
+                    aBytes[nIdx++] = 252 + (nChr >>> 30);
+                    aBytes[nIdx++] = 128 + (nChr >>> 24 & 63);
+                    aBytes[nIdx++] = 128 + (nChr >>> 18 & 63);
+                    aBytes[nIdx++] = 128 + (nChr >>> 12 & 63);
+                    aBytes[nIdx++] = 128 + (nChr >>> 6 & 63);
+                    aBytes[nIdx++] = 128 + (nChr & 63);
+                }
+            }
+            return aBytes;
+        };
+        /**
+         * Converts Uint8Array to a string
+         * @param aBytes
+         */
+        BrowserStringUtils.utf8ArrToString = function (aBytes) {
+            var sView = "";
+            for (var nPart = void 0, nLen = aBytes.length, nIdx = 0; nIdx < nLen; nIdx++) {
+                nPart = aBytes[nIdx];
+                sView += String.fromCharCode(nPart > 251 && nPart < 254 && nIdx + 5 < nLen ? /* six bytes */
+                    /* (nPart - 252 << 30) may be not so safe in ECMAScript! So...: */
+                    (nPart - 252) * 1073741824 + (aBytes[++nIdx] - 128 << 24) + (aBytes[++nIdx] - 128 << 18) + (aBytes[++nIdx] - 128 << 12) + (aBytes[++nIdx] - 128 << 6) + aBytes[++nIdx] - 128
+                    : nPart > 247 && nPart < 252 && nIdx + 4 < nLen ? /* five bytes */
+                        (nPart - 248 << 24) + (aBytes[++nIdx] - 128 << 18) + (aBytes[++nIdx] - 128 << 12) + (aBytes[++nIdx] - 128 << 6) + aBytes[++nIdx] - 128
+                        : nPart > 239 && nPart < 248 && nIdx + 3 < nLen ? /* four bytes */
+                            (nPart - 240 << 18) + (aBytes[++nIdx] - 128 << 12) + (aBytes[++nIdx] - 128 << 6) + aBytes[++nIdx] - 128
+                            : nPart > 223 && nPart < 240 && nIdx + 2 < nLen ? /* three bytes */
+                                (nPart - 224 << 12) + (aBytes[++nIdx] - 128 << 6) + aBytes[++nIdx] - 128
+                                : nPart > 191 && nPart < 224 && nIdx + 1 < nLen ? /* two bytes */
+                                    (nPart - 192 << 6) + aBytes[++nIdx] - 128
+                                    : /* nPart < 127 ? */ /* one byte */
+                                    nPart);
+            }
+            return sView;
+        };
+        return BrowserStringUtils;
+    }());
+
+    /*
+     * Copyright (c) Microsoft Corporation. All rights reserved.
+     * Licensed under the MIT License.
+     */
+    /**
+     * Class which exposes APIs to encode plaintext to base64 encoded string. See here for implementation details:
+     * https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64/Base64_encoding_and_decoding#Solution_2_%E2%80%93_JavaScript's_UTF-16_%3E_UTF-8_%3E_base64
+     */
+    var Base64Encode = /** @class */ (function () {
+        function Base64Encode() {
+        }
+        /**
+         * Returns URL Safe b64 encoded string from a plaintext string.
+         * @param input
+         */
+        Base64Encode.prototype.urlEncode = function (input) {
+            return encodeURIComponent(this.encode(input)
+                .replace(/=/g, "")
+                .replace(/\+/g, "-")
+                .replace(/\//g, "_"));
+        };
+        /**
+         * Returns URL Safe b64 encoded string from an int8Array.
+         * @param inputArr
+         */
+        Base64Encode.prototype.urlEncodeArr = function (inputArr) {
+            return this.base64EncArr(inputArr)
+                .replace(/=/g, "")
+                .replace(/\+/g, "-")
+                .replace(/\//g, "_");
+        };
+        /**
+         * Returns b64 encoded string from plaintext string.
+         * @param input
+         */
+        Base64Encode.prototype.encode = function (input) {
+            var inputUtf8Arr = BrowserStringUtils.stringToUtf8Arr(input);
+            return this.base64EncArr(inputUtf8Arr);
+        };
+        /**
+         * Base64 encode byte array
+         * @param aBytes
+         */
+        Base64Encode.prototype.base64EncArr = function (aBytes) {
+            var eqLen = (3 - (aBytes.length % 3)) % 3;
+            var sB64Enc = "";
+            for (var nMod3 = void 0, nLen = aBytes.length, nUint24 = 0, nIdx = 0; nIdx < nLen; nIdx++) {
+                nMod3 = nIdx % 3;
+                /* Uncomment the following line in order to split the output in lines 76-character long: */
+                /*
+                if (nIdx > 0 && (nIdx * 4 / 3) % 76 === 0) { sB64Enc += "\r\n"; }
+                */
+                nUint24 |= aBytes[nIdx] << (16 >>> nMod3 & 24);
+                if (nMod3 === 2 || aBytes.length - nIdx === 1) {
+                    sB64Enc += String.fromCharCode(this.uint6ToB64(nUint24 >>> 18 & 63), this.uint6ToB64(nUint24 >>> 12 & 63), this.uint6ToB64(nUint24 >>> 6 & 63), this.uint6ToB64(nUint24 & 63));
+                    nUint24 = 0;
+                }
+            }
+            return eqLen === 0 ? sB64Enc : sB64Enc.substring(0, sB64Enc.length - eqLen) + (eqLen === 1 ? "=" : "==");
+        };
+        /**
+         * Base64 string to array encoding helper
+         * @param nUint6
+         */
+        Base64Encode.prototype.uint6ToB64 = function (nUint6) {
+            return nUint6 < 26 ?
+                nUint6 + 65
+                : nUint6 < 52 ?
+                    nUint6 + 71
+                    : nUint6 < 62 ?
+                        nUint6 - 4
+                        : nUint6 === 62 ?
+                            43
+                            : nUint6 === 63 ?
+                                47
+                                :
+                                65;
+        };
+        return Base64Encode;
+    }());
+
+    /*
+     * Copyright (c) Microsoft Corporation. All rights reserved.
+     * Licensed under the MIT License.
+     */
+    /**
+     * Class which exposes APIs to decode base64 strings to plaintext. See here for implementation details:
+     * https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64/Base64_encoding_and_decoding#Solution_2_%E2%80%93_JavaScript's_UTF-16_%3E_UTF-8_%3E_base64
+     */
+    var Base64Decode = /** @class */ (function () {
+        function Base64Decode() {
+        }
+        /**
+         * Returns a URL-safe plaintext decoded string from b64 encoded input.
+         * @param input
+         */
+        Base64Decode.prototype.decode = function (input) {
+            var encodedString = input.replace(/-/g, "+").replace(/_/g, "/");
+            switch (encodedString.length % 4) {
+                case 0:
+                    break;
+                case 2:
+                    encodedString += "==";
+                    break;
+                case 3:
+                    encodedString += "=";
+                    break;
+                default:
+                    throw new Error("Invalid base64 string");
+            }
+            var inputUtf8Arr = this.base64DecToArr(encodedString);
+            return decodeURIComponent(BrowserStringUtils.utf8ArrToString(inputUtf8Arr));
+        };
+        /**
+         * Decodes base64 into Uint8Array
+         * @param base64String
+         * @param nBlockSize
+         */
+        Base64Decode.prototype.base64DecToArr = function (base64String, nBlockSize) {
+            var sB64Enc = base64String.replace(/[^A-Za-z0-9\+\/]/g, "");
+            var nInLen = sB64Enc.length;
+            var nOutLen = nBlockSize ? Math.ceil((nInLen * 3 + 1 >>> 2) / nBlockSize) * nBlockSize : nInLen * 3 + 1 >>> 2;
+            var aBytes = new Uint8Array(nOutLen);
+            for (var nMod3 = void 0, nMod4 = void 0, nUint24 = 0, nOutIdx = 0, nInIdx = 0; nInIdx < nInLen; nInIdx++) {
+                nMod4 = nInIdx & 3;
+                nUint24 |= this.b64ToUint6(sB64Enc.charCodeAt(nInIdx)) << 18 - 6 * nMod4;
+                if (nMod4 === 3 || nInLen - nInIdx === 1) {
+                    for (nMod3 = 0; nMod3 < 3 && nOutIdx < nOutLen; nMod3++, nOutIdx++) {
+                        aBytes[nOutIdx] = nUint24 >>> (16 >>> nMod3 & 24) & 255;
+                    }
+                    nUint24 = 0;
+                }
+            }
+            return aBytes;
+        };
+        /**
+         * Base64 string to array decoding helper
+         * @param charNum
+         */
+        Base64Decode.prototype.b64ToUint6 = function (charNum) {
+            return charNum > 64 && charNum < 91 ?
+                charNum - 65
+                : charNum > 96 && charNum < 123 ?
+                    charNum - 71
+                    : charNum > 47 && charNum < 58 ?
+                        charNum + 4
+                        : charNum === 43 ?
+                            62
+                            : charNum === 47 ?
+                                63
+                                :
+                                0;
+        };
+        return Base64Decode;
+    }());
+
+    // Constant byte array length
+    var RANDOM_BYTE_ARR_LENGTH = 32;
+    /**
+     * Class which exposes APIs to generate PKCE codes and code verifiers.
+     */
+    var PkceGenerator = /** @class */ (function () {
+        function PkceGenerator(cryptoObj) {
+            this.base64Encode = new Base64Encode();
+            this.cryptoObj = cryptoObj;
+        }
+        /**
+         * Generates PKCE Codes. See the RFC for more information: https://tools.ietf.org/html/rfc7636
+         */
+        PkceGenerator.prototype.generateCodes = function () {
+            return __awaiter(this, void 0, void 0, function () {
+                var codeVerifier, codeChallenge;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0:
+                            codeVerifier = this.generateCodeVerifier();
+                            return [4 /*yield*/, this.generateCodeChallengeFromVerifier(codeVerifier)];
+                        case 1:
+                            codeChallenge = _a.sent();
+                            return [2 /*return*/, {
+                                verifier: codeVerifier,
+                                challenge: codeChallenge
+                            }];
+                    }
+                });
+            });
+        };
+        /**
+         * Generates a random 32 byte buffer and returns the base64
+         * encoded string to be used as a PKCE Code Verifier
+         */
+        PkceGenerator.prototype.generateCodeVerifier = function () {
+            try {
+                // Generate random values as utf-8
+                var buffer = new Uint8Array(RANDOM_BYTE_ARR_LENGTH);
+                this.cryptoObj.getRandomValues(buffer);
+                // encode verifier as base64
+                var pkceCodeVerifierB64 = this.base64Encode.urlEncodeArr(buffer);
+                return pkceCodeVerifierB64;
+            }
+            catch (e) {
+                throw BrowserAuthError.createPkceNotGeneratedError(e);
+            }
+        };
+        /**
+         * Creates a base64 encoded PKCE Code Challenge string from the
+         * hash created from the PKCE Code Verifier supplied
+         */
+        PkceGenerator.prototype.generateCodeChallengeFromVerifier = function (pkceCodeVerifier) {
+            return __awaiter(this, void 0, void 0, function () {
+                var pkceHashedCodeVerifier, e_1;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0:
+                            _a.trys.push([0, 2, , 3]);
+                            return [4 /*yield*/, this.cryptoObj.sha256Digest(pkceCodeVerifier)];
+                        case 1:
+                            pkceHashedCodeVerifier = _a.sent();
+                            // encode hash as base64
+                            return [2 /*return*/, this.base64Encode.urlEncodeArr(new Uint8Array(pkceHashedCodeVerifier))];
+                        case 2:
+                            e_1 = _a.sent();
+                            throw BrowserAuthError.createPkceNotGeneratedError(e_1);
+                        case 3: return [2 /*return*/];
+                    }
+                });
+            });
+        };
+        return PkceGenerator;
+    }());
+
+    // SHA-256 hashing algorithm
+    var HASH_ALG = "SHA-256";
+    /**
+     * This class implements functions used by the browser library to perform cryptography operations such as
+     * hashing and encoding. It also has helper functions to validate the availability of specific APIs.
+     */
+    var BrowserCrypto = /** @class */ (function () {
+        function BrowserCrypto() {
+            if (!(this.hasCryptoAPI())) {
+                throw BrowserAuthError.createCryptoNotAvailableError("Browser crypto or msCrypto object not available.");
             }
         }
-    };
-    /*
-     * Configures popup window for login.
-     * @ignore
-     * @hidden
+        /**
+         * Returns a sha-256 hash of the given dataString as an ArrayBuffer.
+         * @param dataString
+         */
+        BrowserCrypto.prototype.sha256Digest = function (dataString) {
+            return __awaiter(this, void 0, void 0, function () {
+                var data;
+                return __generator(this, function (_a) {
+                    data = BrowserStringUtils.stringToUtf8Arr(dataString);
+                    return [2 /*return*/, this.hasIECrypto() ? this.getMSCryptoDigest(HASH_ALG, data) : this.getSubtleCryptoDigest(HASH_ALG, data)];
+                });
+            });
+        };
+        /**
+         * Populates buffer with cryptographically random values.
+         * @param dataBuffer
+         */
+        BrowserCrypto.prototype.getRandomValues = function (dataBuffer) {
+            var cryptoObj = window["msCrypto"] || window.crypto;
+            if (!cryptoObj.getRandomValues) {
+                throw BrowserAuthError.createCryptoNotAvailableError("getRandomValues does not exist.");
+            }
+            cryptoObj.getRandomValues(dataBuffer);
+        };
+        /**
+         * Checks whether IE crypto (AKA msCrypto) is available.
+         */
+        BrowserCrypto.prototype.hasIECrypto = function () {
+            return !!window["msCrypto"];
+        };
+        /**
+         * Check whether browser crypto is available.
+         */
+        BrowserCrypto.prototype.hasBrowserCrypto = function () {
+            return !!window.crypto;
+        };
+        /**
+         * Check whether IE crypto or other browser cryptography is available.
+         */
+        BrowserCrypto.prototype.hasCryptoAPI = function () {
+            return this.hasIECrypto() || this.hasBrowserCrypto();
+        };
+        /**
+         * Helper function for SHA digest.
+         * @param algorithm
+         * @param data
+         */
+        BrowserCrypto.prototype.getSubtleCryptoDigest = function (algorithm, data) {
+            return __awaiter(this, void 0, void 0, function () {
+                return __generator(this, function (_a) {
+                    return [2 /*return*/, window.crypto.subtle.digest(algorithm, data)];
+                });
+            });
+        };
+        /**
+         * Helper function for SHA digest.
+         * @param algorithm
+         * @param data
+         */
+        BrowserCrypto.prototype.getMSCryptoDigest = function (algorithm, data) {
+            return __awaiter(this, void 0, void 0, function () {
+                return __generator(this, function (_a) {
+                    return [2 /*return*/, new Promise(function (resolve, reject) {
+                        var digestOperation = window["msCrypto"].subtle.digest(algorithm, data.buffer);
+                        digestOperation.addEventListener("complete", function (e) {
+                            resolve(e.target.result);
+                        });
+                        digestOperation.addEventListener("error", function (error) {
+                            reject(error);
+                        });
+                    })];
+                });
+            });
+        };
+        return BrowserCrypto;
+    }());
+
+    /**
+     * This class implements MSAL's crypto interface, which allows it to perform base64 encoding and decoding, generating cryptographically random GUIDs and
+     * implementing Proof Key for Code Exchange specs for the OAuth Authorization Code Flow using PKCE (rfc here: https://tools.ietf.org/html/rfc7636).
      */
-    UserAgentApplication.prototype.openPopup = function (urlNavigate, title, popUpWidth, popUpHeight) {
-        try {
-            /*
+    var CryptoOps = /** @class */ (function () {
+        function CryptoOps() {
+            // Browser crypto needs to be validated first before any other classes can be set.
+            this.browserCrypto = new BrowserCrypto();
+            this.b64Encode = new Base64Encode();
+            this.b64Decode = new Base64Decode();
+            this.guidGenerator = new GuidGenerator(this.browserCrypto);
+            this.pkceGenerator = new PkceGenerator(this.browserCrypto);
+        }
+        /**
+         * Creates a new random GUID - used to populate state and nonce.
+         * @returns string (GUID)
+         */
+        CryptoOps.prototype.createNewGuid = function () {
+            return this.guidGenerator.generateGuid();
+        };
+        /**
+         * Encodes input string to base64.
+         * @param input
+         */
+        CryptoOps.prototype.base64Encode = function (input) {
+            return this.b64Encode.encode(input);
+        };
+        /**
+         * Decodes input string from base64.
+         * @param input
+         */
+        CryptoOps.prototype.base64Decode = function (input) {
+            return this.b64Decode.decode(input);
+        };
+        /**
+         * Generates PKCE codes used in Authorization Code Flow.
+         */
+        CryptoOps.prototype.generatePkceCodes = function () {
+            return __awaiter(this, void 0, void 0, function () {
+                return __generator(this, function (_a) {
+                    return [2 /*return*/, this.pkceGenerator.generateCodes()];
+                });
+            });
+        };
+        return CryptoOps;
+    }());
+
+    /**
+     * Abstract class which defines operations for a browser interaction handling class.
+     */
+    var InteractionHandler = /** @class */ (function () {
+        function InteractionHandler(authCodeModule, storageImpl) {
+            this.authModule = authCodeModule;
+            this.browserStorage = storageImpl;
+        }
+        /**
+         * Function to handle response parameters from hash.
+         * @param locationHash
+         */
+        InteractionHandler.prototype.handleCodeResponse = function (locationHash) {
+            return __awaiter(this, void 0, void 0, function () {
+                var requestState, authCode, cachedNonceKey, cachedNonce, tokenResponse;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0:
+                            // Check that location hash isn't empty.
+                            if (StringUtils.isEmpty(locationHash)) {
+                                throw BrowserAuthError.createEmptyHashError(locationHash);
+                            }
+                            requestState = this.browserStorage.getItem(this.browserStorage.generateCacheKey(TemporaryCacheKeys.REQUEST_STATE), CacheSchemaType.TEMPORARY);
+                            authCode = this.authModule.handleFragmentResponse(locationHash, requestState);
+                            cachedNonceKey = this.browserStorage.generateNonceKey(requestState);
+                            cachedNonce = this.browserStorage.getItem(this.browserStorage.generateCacheKey(cachedNonceKey), CacheSchemaType.TEMPORARY);
+                            // Assign code to request
+                            this.authCodeRequest.code = authCode;
+                            return [4 /*yield*/, this.authModule.acquireToken(this.authCodeRequest, cachedNonce, requestState)];
+                        case 1:
+                            tokenResponse = _a.sent();
+                            this.browserStorage.cleanRequest();
+                            return [2 /*return*/, tokenResponse];
+                    }
+                });
+            });
+        };
+        return InteractionHandler;
+    }());
+
+    var RedirectHandler = /** @class */ (function (_super) {
+        __extends(RedirectHandler, _super);
+        function RedirectHandler() {
+            return _super !== null && _super.apply(this, arguments) || this;
+        }
+        /**
+         * Redirects window to given URL.
+         * @param urlNavigate
+         */
+        RedirectHandler.prototype.initiateAuthRequest = function (requestUrl, authCodeRequest, redirectStartPage, browserCrypto) {
+            // Navigate if valid URL
+            if (!StringUtils.isEmpty(requestUrl)) {
+                // Cache start page, returns to this page after redirectUri if navigateToLoginRequestUrl is true
+                if (redirectStartPage) {
+                    this.browserStorage.setItem(this.browserStorage.generateCacheKey(TemporaryCacheKeys.ORIGIN_URI), redirectStartPage, CacheSchemaType.TEMPORARY);
+                }
+                // Set interaction status in the library.
+                this.browserStorage.setItem(this.browserStorage.generateCacheKey(BrowserConstants.INTERACTION_STATUS_KEY), BrowserConstants.INTERACTION_IN_PROGRESS_VALUE, CacheSchemaType.TEMPORARY);
+                this.browserStorage.cacheCodeRequest(authCodeRequest, browserCrypto);
+                this.authModule.logger.infoPii("Navigate to:" + requestUrl);
+                var isIframedApp = BrowserUtils.isInIframe();
+                if (isIframedApp) {
+                    // If we are not in top frame, we shouldn't redirect. This is also handled by the service.
+                    throw BrowserAuthError.createRedirectInIframeError(isIframedApp);
+                }
+                // Navigate window to request URL
+                BrowserUtils.navigateWindow(requestUrl);
+            }
+            else {
+                // Throw error if request URL is empty.
+                this.authModule.logger.info("Navigate url is empty");
+                throw BrowserAuthError.createEmptyNavigationUriError();
+            }
+            // Return this window handle. Not used for redirect, but needed for API definition.
+            return window;
+        };
+        /**
+         * Handle authorization code response in the window.
+         * @param hash
+         */
+        RedirectHandler.prototype.handleCodeResponse = function (locationHash, browserCrypto) {
+            return __awaiter(this, void 0, void 0, function () {
+                var requestState, authCode, cachedNonceKey, cachedNonce, tokenResponse;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0:
+                            // Check that location hash isn't empty.
+                            if (StringUtils.isEmpty(locationHash)) {
+                                throw BrowserAuthError.createEmptyHashError(locationHash);
+                            }
+                            // Interaction is completed - remove interaction status.
+                            this.browserStorage.removeItem(this.browserStorage.generateCacheKey(BrowserConstants.INTERACTION_STATUS_KEY));
+                            requestState = this.browserStorage.getItem(this.browserStorage.generateCacheKey(TemporaryCacheKeys.REQUEST_STATE), CacheSchemaType.TEMPORARY);
+                            authCode = this.authModule.handleFragmentResponse(locationHash, requestState);
+                            cachedNonceKey = this.browserStorage.generateNonceKey(requestState);
+                            cachedNonce = this.browserStorage.getItem(this.browserStorage.generateCacheKey(cachedNonceKey), CacheSchemaType.TEMPORARY);
+                            this.authCodeRequest = this.browserStorage.getCachedRequest(requestState, browserCrypto);
+                            this.authCodeRequest.code = authCode;
+                            return [4 /*yield*/, this.authModule.acquireToken(this.authCodeRequest, cachedNonce, requestState)];
+                        case 1:
+                            tokenResponse = _a.sent();
+                            this.browserStorage.cleanRequest();
+                            return [2 /*return*/, tokenResponse];
+                    }
+                });
+            });
+        };
+        return RedirectHandler;
+    }(InteractionHandler));
+
+    /**
+     * This class implements the interaction handler base class for browsers. It is written specifically for handling
+     * popup window scenarios. It includes functions for monitoring the popup window for a hash.
+     */
+    var PopupHandler = /** @class */ (function (_super) {
+        __extends(PopupHandler, _super);
+        function PopupHandler(authCodeModule, storageImpl) {
+            var _this = _super.call(this, authCodeModule, storageImpl) || this;
+            // Properly sets this reference for the unload event.
+            _this.unloadWindow = _this.unloadWindow.bind(_this);
+            return _this;
+        }
+        /**
+         * Opens a popup window with given request Url.
+         * @param requestUrl
+         */
+        PopupHandler.prototype.initiateAuthRequest = function (requestUrl, authCodeRequest, popup) {
+            // Check that request url is not empty.
+            if (!StringUtils.isEmpty(requestUrl)) {
+                // Save auth code request
+                this.authCodeRequest = authCodeRequest;
+                // Set interaction status in the library.
+                this.browserStorage.setItem(this.browserStorage.generateCacheKey(BrowserConstants.INTERACTION_STATUS_KEY), BrowserConstants.INTERACTION_IN_PROGRESS_VALUE, CacheSchemaType.TEMPORARY);
+                this.authModule.logger.infoPii("Navigate to:" + requestUrl);
+                // Open the popup window to requestUrl.
+                return this.openPopup(requestUrl, popup);
+            }
+            else {
+                // Throw error if request URL is empty.
+                this.authModule.logger.error("Navigate url is empty");
+                throw BrowserAuthError.createEmptyNavigationUriError();
+            }
+        };
+        /**
+         * Monitors a window until it loads a url with a known hash, or hits a specified timeout.
+         * @param popupWindow - window that is being monitored
+         * @param timeout - milliseconds until timeout
+         * @param urlNavigate - url that was navigated to
+         */
+        PopupHandler.prototype.monitorPopupForHash = function (popupWindow, timeout) {
+            var _this = this;
+            return new Promise(function (resolve, reject) {
+                var maxTicks = timeout / BrowserConstants.POLL_INTERVAL_MS;
+                var ticks = 0;
+                var intervalId = setInterval(function () {
+                    if (popupWindow.closed) {
+                        // Window is closed
+                        _this.cleanPopup();
+                        clearInterval(intervalId);
+                        reject(BrowserAuthError.createUserCancelledError());
+                        return;
+                    }
+                    var href;
+                    try {
+                        /*
+                         * Will throw if cross origin,
+                         * which should be caught and ignored
+                         * since we need the interval to keep running while on STS UI.
+                         */
+                        href = popupWindow.location.href;
+                    }
+                    catch (e) { }
+                    // Don't process blank pages or cross domain
+                    if (StringUtils.isEmpty(href) || href === "about:blank") {
+                        return;
+                    }
+                    // Only run clock when we are on same domain
+                    ticks++;
+                    var contentHash = popupWindow.location.hash;
+                    if (UrlString.hashContainsKnownProperties(contentHash)) {
+                        // Success case
+                        _this.cleanPopup(popupWindow);
+                        clearInterval(intervalId);
+                        resolve(contentHash);
+                        return;
+                    }
+                    else if (ticks > maxTicks) {
+                        // Timeout error
+                        _this.cleanPopup(popupWindow);
+                        clearInterval(intervalId);
+                        reject(BrowserAuthError.createMonitorWindowTimeoutError());
+                        return;
+                    }
+                }, BrowserConstants.POLL_INTERVAL_MS);
+            });
+        };
+        /**
+         * @hidden
+         *
+         * Configures popup window for login.
+         *
+         * @param urlNavigate
+         * @param title
+         * @param popUpWidth
+         * @param popUpHeight
+         * @ignore
+         * @hidden
+         */
+        PopupHandler.prototype.openPopup = function (urlNavigate, popup) {
+            try {
+                var popupWindow = void 0;
+                // Popup window passed in, setting url to navigate to
+                if (popup) {
+                    popupWindow = popup;
+                    popupWindow.location.assign(urlNavigate);
+                }
+                else if (typeof popup === "undefined") {
+                    // Popup will be undefined if it was not passed in
+                    popupWindow = PopupHandler.openSizedPopup(urlNavigate);
+                }
+                // Popup will be null if popups are blocked
+                if (!popupWindow) {
+                    throw BrowserAuthError.createEmptyWindowCreatedError();
+                }
+                if (popupWindow.focus) {
+                    popupWindow.focus();
+                }
+                this.currentWindow = popupWindow;
+                window.addEventListener("beforeunload", this.unloadWindow);
+                return popupWindow;
+            }
+            catch (e) {
+                this.authModule.logger.error("error opening popup " + e.message);
+                this.browserStorage.removeItem(this.browserStorage.generateCacheKey(BrowserConstants.INTERACTION_STATUS_KEY));
+                throw BrowserAuthError.createPopupWindowError(e.toString());
+            }
+        };
+        PopupHandler.openSizedPopup = function (urlNavigate) {
+            if (urlNavigate === void 0) { urlNavigate = "about:blank"; }
+            /**
              * adding winLeft and winTop to account for dual monitor
              * using screenLeft and screenTop for IE8 and earlier
              */
             var winLeft = window.screenLeft ? window.screenLeft : window.screenX;
             var winTop = window.screenTop ? window.screenTop : window.screenY;
-            /*
+            /**
              * window.innerWidth displays browser window"s height and width excluding toolbars
              * using document.documentElement.clientWidth for IE8 and earlier
              */
             var width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
             var height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-            var left = ((width / 2) - (popUpWidth / 2)) + winLeft;
-            var top_1 = ((height / 2) - (popUpHeight / 2)) + winTop;
-            var popupWindow = window.open(urlNavigate, title, "width=" + popUpWidth + ", height=" + popUpHeight + ", top=" + top_1 + ", left=" + left);
-            if (popupWindow.focus) {
-                popupWindow.focus();
+            var left = Math.max(0, ((width / 2) - (BrowserConstants.POPUP_WIDTH / 2)) + winLeft);
+            var top = Math.max(0, ((height / 2) - (BrowserConstants.POPUP_HEIGHT / 2)) + winTop);
+            return window.open(urlNavigate, Constants.LIBRARY_NAME, "width=" + BrowserConstants.POPUP_WIDTH + ", height=" + BrowserConstants.POPUP_HEIGHT + ", top=" + top + ", left=" + left);
+        };
+        /**
+         * Event callback to unload main window.
+         */
+        PopupHandler.prototype.unloadWindow = function (e) {
+            this.browserStorage.cleanRequest();
+            this.currentWindow.close();
+            // Guarantees browser unload will happen, so no other errors will be thrown.
+            delete e["returnValue"];
+        };
+        /**
+         * Closes popup, removes any state vars created during popup calls.
+         * @param popupWindow
+         */
+        PopupHandler.prototype.cleanPopup = function (popupWindow) {
+            if (popupWindow) {
+                // Close window.
+                popupWindow.close();
             }
-            return popupWindow;
+            // Remove window unload function
+            window.removeEventListener("beforeunload", this.unloadWindow);
+            // Interaction is completed - remove interaction status.
+            this.browserStorage.removeItem(this.browserStorage.generateCacheKey(BrowserConstants.INTERACTION_STATUS_KEY));
+        };
+        return PopupHandler;
+    }(InteractionHandler));
+
+    var SilentHandler = /** @class */ (function (_super) {
+        __extends(SilentHandler, _super);
+        function SilentHandler(authCodeModule, storageImpl, configuredLoadFrameTimeout) {
+            var _this = _super.call(this, authCodeModule, storageImpl) || this;
+            _this.loadFrameTimeout = configuredLoadFrameTimeout;
+            return _this;
         }
-        catch (e) {
-            this._logger.error("error opening popup " + e.message);
-            this._loginInProgress = false;
-            this._acquireTokenInProgress = false;
-            return null;
-        }
-    };
-    /*
-     * Used to validate the scopes input parameter requested  by the developer.
-     * @param {Array<string>} scopes - Developer requested permissions. Not all scopes are guaranteed to be included in the access token returned.
-     * @ignore
-     * @hidden
-     */
-    UserAgentApplication.prototype.validateInputScope = function (scopes) {
-        if (!scopes || scopes.length < 1) {
-            return "Scopes cannot be passed as an empty array";
-        }
-        if (!Array.isArray(scopes)) {
-            throw new Error("API does not accept non-array scopes");
-        }
-        if (scopes.indexOf(this.clientId) > -1) {
-            if (scopes.length > 1) {
-                return "ClientId can only be provided as a single scope";
-            }
-        }
-        return "";
-    };
-    /*
-      * Used to remove openid and profile from the list of scopes passed by the developer.These scopes are added by default
-      * @hidden
-      */
-    UserAgentApplication.prototype.filterScopes = function (scopes) {
-        scopes = scopes.filter(function (element) {
-            return element !== "openid";
-        });
-        scopes = scopes.filter(function (element) {
-            return element !== "profile";
-        });
-        return scopes;
-    };
-    /*
-     * Used to add the developer requested callback to the array of callbacks for the specified scopes. The updated array is stored on the window object
-     * @param {string} scope - Developer requested permissions. Not all scopes are guaranteed to be included in the access token returned.
-     * @param {string} expectedState - Unique state identifier (guid).
-     * @param {Function} resolve - The resolve function of the promise object.
-     * @param {Function} reject - The reject function of the promise object.
-     * @ignore
-     * @hidden
-     */
-    UserAgentApplication.prototype.registerCallback = function (expectedState, scope, resolve, reject) {
-        var _this = this;
-        window.activeRenewals[scope] = expectedState;
-        if (!window.callBacksMappedToRenewStates[expectedState]) {
-            window.callBacksMappedToRenewStates[expectedState] = [];
-        }
-        window.callBacksMappedToRenewStates[expectedState].push({ resolve: resolve, reject: reject });
-        if (!window.callBackMappedToRenewStates[expectedState]) {
-            window.callBackMappedToRenewStates[expectedState] =
-                function (errorDesc, token, error, tokenType) {
-                    window.activeRenewals[scope] = null;
-                    for (var i = 0; i < window.callBacksMappedToRenewStates[expectedState].length; ++i) {
-                        try {
-                            if (errorDesc || error) {
-                                window.callBacksMappedToRenewStates[expectedState][i].reject(errorDesc + "|" + error);
+        /**
+         * Creates a hidden iframe to given URL using user-requested scopes as an id.
+         * @param urlNavigate
+         * @param userRequestScopes
+         */
+        SilentHandler.prototype.initiateAuthRequest = function (requestUrl, authCodeRequest, userRequestScopes) {
+            return __awaiter(this, void 0, void 0, function () {
+                var frameName, _a;
+                return __generator(this, function (_b) {
+                    switch (_b.label) {
+                        case 0:
+                            if (StringUtils.isEmpty(requestUrl)) {
+                                // Throw error if request URL is empty.
+                                this.authModule.logger.info("Navigate url is empty");
+                                throw BrowserAuthError.createEmptyNavigationUriError();
                             }
-                            else if (token) {
-                                window.callBacksMappedToRenewStates[expectedState][i].resolve(token);
-                            }
-                        }
-                        catch (e) {
-                            _this._logger.warning(e);
-                        }
+                            // Save auth code request
+                            this.authCodeRequest = authCodeRequest;
+                            frameName = userRequestScopes ? "msalTokenFrame" + userRequestScopes : "msalTokenFrame";
+                            if (!this.loadFrameTimeout) return [3 /*break*/, 2];
+                            return [4 /*yield*/, this.loadFrame(requestUrl, frameName)];
+                        case 1:
+                            _a = _b.sent();
+                            return [3 /*break*/, 3];
+                        case 2:
+                            _a = this.loadFrameSync(requestUrl, frameName);
+                            _b.label = 3;
+                        case 3: return [2 /*return*/, _a];
                     }
-                    window.callBacksMappedToRenewStates[expectedState] = null;
-                    window.callBackMappedToRenewStates[expectedState] = null;
-                };
-        }
-    };
-    UserAgentApplication.prototype.getCachedTokenInternal = function (scopes, user) {
-        var userObject = user ? user : this.getUser();
-        if (!userObject) {
-            return;
-        }
-        var authenticationRequest;
-        var newAuthority = this.authorityInstance ? this.authorityInstance : AuthorityFactory_1.AuthorityFactory.CreateInstance(this.authority, this.validateAuthority);
-        if (Utils_1.Utils.compareObjects(userObject, this.getUser())) {
-            if (scopes.indexOf(this.clientId) > -1) {
-                authenticationRequest = new AuthenticationRequestParameters_1.AuthenticationRequestParameters(newAuthority, this.clientId, scopes, ResponseTypes.id_token, this._redirectUri, this._state);
-            }
-            else {
-                authenticationRequest = new AuthenticationRequestParameters_1.AuthenticationRequestParameters(newAuthority, this.clientId, scopes, ResponseTypes.token, this._redirectUri, this._state);
-            }
-        }
-        else {
-            authenticationRequest = new AuthenticationRequestParameters_1.AuthenticationRequestParameters(newAuthority, this.clientId, scopes, ResponseTypes.id_token_token, this._redirectUri, this._state);
-        }
-        return this.getCachedToken(authenticationRequest, user);
-    };
-    /*
-     * Used to get token for the specified set of scopes from the cache
-     * @param {AuthenticationRequestParameters} authenticationRequest - Request sent to the STS to obtain an id_token/access_token
-     * @param {User} user - User for which the scopes were requested
-     * @hidden
-     */
-    UserAgentApplication.prototype.getCachedToken = function (authenticationRequest, user) {
-        var accessTokenCacheItem = null;
-        var scopes = authenticationRequest.scopes;
-        var tokenCacheItems = this._cacheStorage.getAllAccessTokens(this.clientId, user ? user.userIdentifier : null); //filter by clientId and user
-        if (tokenCacheItems.length === 0) { // No match found after initial filtering
-            return null;
-        }
-        var filteredItems = [];
-        //if no authority passed
-        if (!authenticationRequest.authority) {
-            //filter by scope
-            for (var i = 0; i < tokenCacheItems.length; i++) {
-                var cacheItem = tokenCacheItems[i];
-                var cachedScopes = cacheItem.key.scopes.split(" ");
-                if (Utils_1.Utils.containsScope(cachedScopes, scopes)) {
-                    filteredItems.push(cacheItem);
-                }
-            }
-            //if only one cached token found
-            if (filteredItems.length === 1) {
-                accessTokenCacheItem = filteredItems[0];
-                authenticationRequest.authorityInstance = AuthorityFactory_1.AuthorityFactory.CreateInstance(accessTokenCacheItem.key.authority, this.validateAuthority);
-            }
-            else if (filteredItems.length > 1) {
-                return {
-                    errorDesc: "The cache contains multiple tokens satisfying the requirements. Call AcquireToken again providing more requirements like authority",
-                    token: null,
-                    error: "multiple_matching_tokens_detected"
-                };
-            }
-            else {
-                //no match found. check if there was a single authority used
-                var authorityList = this.getUniqueAuthority(tokenCacheItems, "authority");
-                if (authorityList.length > 1) {
-                    return {
-                        errorDesc: "Multiple authorities found in the cache. Pass authority in the API overload.",
-                        token: null,
-                        error: "multiple_matching_tokens_detected"
-                    };
-                }
-                authenticationRequest.authorityInstance = AuthorityFactory_1.AuthorityFactory.CreateInstance(authorityList[0], this.validateAuthority);
-            }
-        }
-        else {
-            //authority was passed in the API, filter by authority and scope
-            for (var i = 0; i < tokenCacheItems.length; i++) {
-                var cacheItem = tokenCacheItems[i];
-                var cachedScopes = cacheItem.key.scopes.split(" ");
-                if (Utils_1.Utils.containsScope(cachedScopes, scopes) && cacheItem.key.authority === authenticationRequest.authority) {
-                    filteredItems.push(cacheItem);
-                }
-            }
-            //no match
-            if (filteredItems.length === 0) {
-                return null;
-            }
-            //only one cachedToken Found
-            else if (filteredItems.length === 1) {
-                accessTokenCacheItem = filteredItems[0];
-            }
-            else {
-                //more than one match found.
-                return {
-                    errorDesc: "The cache contains multiple tokens satisfying the requirements.Call AcquireToken again providing more requirements like authority",
-                    token: null,
-                    error: "multiple_matching_tokens_detected"
-                };
-            }
-        }
-        if (accessTokenCacheItem != null) {
-            var expired = Number(accessTokenCacheItem.value.expiresIn);
-            // If expiration is within offset, it will force renew
-            var offset = this._clockSkew || 300;
-            if (expired && (expired > Utils_1.Utils.now() + offset)) {
-                return {
-                    errorDesc: null,
-                    token: accessTokenCacheItem.value.accessToken,
-                    error: null
-                };
-            }
-            else {
-                this._cacheStorage.removeItem(JSON.stringify(filteredItems[0].key));
-                return null;
-            }
-        }
-        else {
-            return null;
-        }
-    };
-    /*
-     * Used to filter all cached items and return a list of unique users based on userIdentifier.
-     * @param {Array<User>} Users - users saved in the cache.
-     */
-    UserAgentApplication.prototype.getAllUsers = function () {
-        var users = [];
-        var accessTokenCacheItems = this._cacheStorage.getAllAccessTokens(Constants_1.Constants.clientId, Constants_1.Constants.userIdentifier);
-        for (var i = 0; i < accessTokenCacheItems.length; i++) {
-            var idToken = new IdToken_1.IdToken(accessTokenCacheItems[i].value.idToken);
-            var clientInfo = new ClientInfo_1.ClientInfo(accessTokenCacheItems[i].value.clientInfo);
-            var user = User_1.User.createUser(idToken, clientInfo, this.authority);
-            users.push(user);
-        }
-        return this.getUniqueUsers(users);
-    };
-    /*
-     * Used to filter users based on userIdentifier
-     * @param {Array<User>}  Users - users saved in the cache
-     * @ignore
-     * @hidden
-     */
-    UserAgentApplication.prototype.getUniqueUsers = function (users) {
-        if (!users || users.length <= 1) {
-            return users;
-        }
-        var flags = [];
-        var uniqueUsers = [];
-        for (var index = 0; index < users.length; ++index) {
-            if (users[index].userIdentifier && flags.indexOf(users[index].userIdentifier) === -1) {
-                flags.push(users[index].userIdentifier);
-                uniqueUsers.push(users[index]);
-            }
-        }
-        return uniqueUsers;
-    };
-    /*
-    * Used to get a unique list of authoritues from the cache
-    * @param {Array<AccessTokenCacheItem>}  accessTokenCacheItems - accessTokenCacheItems saved in the cache
-    * @ignore
-    * @hidden
-    */
-    UserAgentApplication.prototype.getUniqueAuthority = function (accessTokenCacheItems, property) {
-        var authorityList = [];
-        var flags = [];
-        accessTokenCacheItems.forEach(function (element) {
-            if (element.key.hasOwnProperty(property) && (flags.indexOf(element.key[property]) === -1)) {
-                flags.push(element.key[property]);
-                authorityList.push(element.key[property]);
-            }
-        });
-        return authorityList;
-    };
-    /*
-     * Adds login_hint to authorization URL which is used to pre-fill the username field of sign in page for the user if known ahead of time
-     * domain_hint can be one of users/organisations which when added skips the email based discovery process of the user
-     * domain_req utid received as part of the clientInfo
-     * login_req uid received as part of clientInfo
-     * @param {string} urlNavigate - Authentication request url
-     * @param {User} user - User for which the token is requested
-     * @ignore
-     * @hidden
-     */
-    UserAgentApplication.prototype.addHintParameters = function (urlNavigate, user) {
-        var userObject = user ? user : this.getUser();
-        var decodedClientInfo = userObject.userIdentifier.split(".");
-        var uid = Utils_1.Utils.base64DecodeStringUrlSafe(decodedClientInfo[0]);
-        var utid = Utils_1.Utils.base64DecodeStringUrlSafe(decodedClientInfo[1]);
-        if (!this.urlContainsQueryStringParameter("login_hint", urlNavigate) && userObject.displayableId && !Utils_1.Utils.isEmpty(userObject.displayableId)) {
-            urlNavigate += "&login_hint=" + encodeURIComponent(user.displayableId);
-        }
-        if (!Utils_1.Utils.isEmpty(uid) && !Utils_1.Utils.isEmpty(utid)) {
-            if (!this.urlContainsQueryStringParameter("domain_req", urlNavigate) && !Utils_1.Utils.isEmpty(utid)) {
-                urlNavigate += "&domain_req=" + encodeURIComponent(utid);
-            }
-            if (!this.urlContainsQueryStringParameter("login_req", urlNavigate) && !Utils_1.Utils.isEmpty(uid)) {
-                urlNavigate += "&login_req=" + encodeURIComponent(uid);
-            }
-            if (!this.urlContainsQueryStringParameter("domain_hint", urlNavigate) && !Utils_1.Utils.isEmpty(utid)) {
-                if (utid === "9188040d-6c67-4c5b-b112-36a304b66dad") {
-                    urlNavigate += "&domain_hint=" + encodeURIComponent("consumers");
-                }
-                else {
-                    urlNavigate += "&domain_hint=" + encodeURIComponent("organizations");
-                }
-            }
-        }
-        return urlNavigate;
-    };
-    /*
-     * Checks if the authorization endpoint URL contains query string parameters
-     * @ignore
-     * @hidden
-     */
-    UserAgentApplication.prototype.urlContainsQueryStringParameter = function (name, url) {
-        // regex to detect pattern of a ? or & followed by the name parameter and an equals character
-        var regex = new RegExp("[\\?&]" + name + "=");
-        return regex.test(url);
-    };
-    UserAgentApplication.prototype.acquireTokenRedirect = function (scopes, authority, user, extraQueryParameters) {
-        var _this = this;
-        var isValidScope = this.validateInputScope(scopes);
-        if (isValidScope && !Utils_1.Utils.isEmpty(isValidScope)) {
-            if (this._tokenReceivedCallback) {
-                this._tokenReceivedCallback(Constants_1.ErrorDescription.inputScopesError, null, Constants_1.ErrorCodes.inputScopesError, Constants_1.Constants.accessToken, this.getUserState(this._cacheStorage.getItem(Constants_1.Constants.stateLogin)));
-                return;
-            }
-        }
-        if (scopes) {
-            scopes = this.filterScopes(scopes);
-        }
-        var userObject = user ? user : this.getUser();
-        if (this._acquireTokenInProgress) {
-            return;
-        }
-        var scope = scopes.join(" ").toLowerCase();
-        if (!userObject) {
-            if (this._tokenReceivedCallback) {
-                this._tokenReceivedCallback(Constants_1.ErrorDescription.userLoginError, null, Constants_1.ErrorCodes.userLoginError, Constants_1.Constants.accessToken, this.getUserState(this._cacheStorage.getItem(Constants_1.Constants.stateLogin)));
-                return;
-            }
-        }
-        this._acquireTokenInProgress = true;
-        var authenticationRequest;
-        var acquireTokenAuthority = authority ? AuthorityFactory_1.AuthorityFactory.CreateInstance(authority, this.validateAuthority) : this.authorityInstance;
-        acquireTokenAuthority.ResolveEndpointsAsync().then(function () {
-            if (Utils_1.Utils.compareObjects(userObject, _this.getUser())) {
-                if (scopes.indexOf(_this.clientId) > -1) {
-                    authenticationRequest = new AuthenticationRequestParameters_1.AuthenticationRequestParameters(acquireTokenAuthority, _this.clientId, scopes, ResponseTypes.id_token, _this._redirectUri, _this._state);
-                }
-                else {
-                    authenticationRequest = new AuthenticationRequestParameters_1.AuthenticationRequestParameters(acquireTokenAuthority, _this.clientId, scopes, ResponseTypes.token, _this._redirectUri, _this._state);
-                }
-            }
-            else {
-                authenticationRequest = new AuthenticationRequestParameters_1.AuthenticationRequestParameters(acquireTokenAuthority, _this.clientId, scopes, ResponseTypes.id_token_token, _this._redirectUri, _this._state);
-            }
-            _this._cacheStorage.setItem(Constants_1.Constants.nonceIdToken, authenticationRequest.nonce);
-            var acquireTokenUserKey = Constants_1.Constants.acquireTokenUser + Constants_1.Constants.resourceDelimeter + userObject.userIdentifier + Constants_1.Constants.resourceDelimeter + authenticationRequest.state;
-            if (Utils_1.Utils.isEmpty(_this._cacheStorage.getItem(acquireTokenUserKey))) {
-                _this._cacheStorage.setItem(acquireTokenUserKey, JSON.stringify(userObject));
-            }
-            var authorityKey = Constants_1.Constants.authority + Constants_1.Constants.resourceDelimeter + authenticationRequest.state;
-            if (Utils_1.Utils.isEmpty(_this._cacheStorage.getItem(authorityKey))) {
-                _this._cacheStorage.setItem(authorityKey, acquireTokenAuthority.CanonicalAuthority);
-            }
-            if (extraQueryParameters) {
-                authenticationRequest.extraQueryParameters = extraQueryParameters;
-            }
-            var urlNavigate = authenticationRequest.createNavigateUrl(scopes) + "&prompt=select_account" + "&response_mode=fragment";
-            urlNavigate = _this.addHintParameters(urlNavigate, userObject);
-            if (urlNavigate) {
-                _this._cacheStorage.setItem(Constants_1.Constants.stateAcquireToken, authenticationRequest.state);
-                window.location.replace(urlNavigate);
-            }
-        });
-    };
-    UserAgentApplication.prototype.acquireTokenPopup = function (scopes, authority, user, extraQueryParameters) {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            var isValidScope = _this.validateInputScope(scopes);
-            if (isValidScope && !Utils_1.Utils.isEmpty(isValidScope)) {
-                reject(Constants_1.ErrorCodes.inputScopesError + "|" + isValidScope);
-            }
-            if (scopes) {
-                scopes = _this.filterScopes(scopes);
-            }
-            var userObject = user ? user : _this.getUser();
-            if (_this._acquireTokenInProgress) {
-                reject(Constants_1.ErrorCodes.acquireTokenProgressError + "|" + Constants_1.ErrorDescription.acquireTokenProgressError);
-                return;
-            }
-            var scope = scopes.join(" ").toLowerCase();
-            if (!userObject) {
-                reject(Constants_1.ErrorCodes.userLoginError + "|" + Constants_1.ErrorDescription.userLoginError);
-                return;
-            }
-            _this._acquireTokenInProgress = true;
-            var authenticationRequest;
-            var acquireTokenAuthority = authority ? AuthorityFactory_1.AuthorityFactory.CreateInstance(authority, _this.validateAuthority) : _this.authorityInstance;
-            var popUpWindow = _this.openWindow("about:blank", "_blank", 1, _this, resolve, reject);
-            if (!popUpWindow) {
-                return;
-            }
-            acquireTokenAuthority.ResolveEndpointsAsync().then(function () {
-                if (Utils_1.Utils.compareObjects(userObject, _this.getUser())) {
-                    if (scopes.indexOf(_this.clientId) > -1) {
-                        authenticationRequest = new AuthenticationRequestParameters_1.AuthenticationRequestParameters(acquireTokenAuthority, _this.clientId, scopes, ResponseTypes.id_token, _this._redirectUri, _this._state);
-                    }
-                    else {
-                        authenticationRequest = new AuthenticationRequestParameters_1.AuthenticationRequestParameters(acquireTokenAuthority, _this.clientId, scopes, ResponseTypes.token, _this._redirectUri, _this._state);
-                    }
-                }
-                else {
-                    authenticationRequest = new AuthenticationRequestParameters_1.AuthenticationRequestParameters(acquireTokenAuthority, _this.clientId, scopes, ResponseTypes.id_token_token, _this._redirectUri, _this._state);
-                }
-                _this._cacheStorage.setItem(Constants_1.Constants.nonceIdToken, authenticationRequest.nonce);
-                authenticationRequest.state = authenticationRequest.state;
-                var acquireTokenUserKey = Constants_1.Constants.acquireTokenUser + Constants_1.Constants.resourceDelimeter + userObject.userIdentifier + Constants_1.Constants.resourceDelimeter + authenticationRequest.state;
-                if (Utils_1.Utils.isEmpty(_this._cacheStorage.getItem(acquireTokenUserKey))) {
-                    _this._cacheStorage.setItem(acquireTokenUserKey, JSON.stringify(userObject));
-                }
-                var authorityKey = Constants_1.Constants.authority + Constants_1.Constants.resourceDelimeter + authenticationRequest.state;
-                if (Utils_1.Utils.isEmpty(_this._cacheStorage.getItem(authorityKey))) {
-                    _this._cacheStorage.setItem(authorityKey, acquireTokenAuthority.CanonicalAuthority);
-                }
-                if (extraQueryParameters) {
-                    authenticationRequest.extraQueryParameters = extraQueryParameters;
-                }
-                var urlNavigate = authenticationRequest.createNavigateUrl(scopes) + "&prompt=select_account" + "&response_mode=fragment";
-                urlNavigate = _this.addHintParameters(urlNavigate, userObject);
-                window.renewStates.push(authenticationRequest.state);
-                window.requestType = Constants_1.Constants.renewToken;
-                _this.registerCallback(authenticationRequest.state, scope, resolve, reject);
-                if (popUpWindow) {
-                    popUpWindow.location.href = urlNavigate;
-                }
-            }, function () {
-                _this._logger.info(Constants_1.ErrorCodes.endpointResolutionError + ":" + Constants_1.ErrorDescription.endpointResolutionError);
-                _this._cacheStorage.setItem(Constants_1.Constants.msalError, Constants_1.ErrorCodes.endpointResolutionError);
-                _this._cacheStorage.setItem(Constants_1.Constants.msalErrorDescription, Constants_1.ErrorDescription.endpointResolutionError);
-                if (reject) {
-                    reject(Constants_1.ErrorCodes.endpointResolutionError + "|" + Constants_1.ErrorDescription.endpointResolutionError);
-                }
-                if (popUpWindow) {
-                    popUpWindow.close();
-                }
-            }).catch(function (err) {
-                _this._logger.warning("could not resolve endpoints");
-                reject(err);
-            });
-        });
-    };
-    /*
-     * Used to get the token from cache.
-     * MSAL will return the cached token if it is not expired.
-     * Or it will send a request to the STS to obtain an access_token using a hidden iframe. To renew idToken, clientId should be passed as the only scope in the scopes array.
-     * @param {Array<string>} scopes - Permissions you want included in the access token. Not all scopes are  guaranteed to be included in the access token. Scopes like "openid" and "profile" are sent with every request.
-     * @param {string} authority - A URL indicating a directory that MSAL can use to obtain tokens.
-     * - In Azure AD, it is of the form https://&lt;tenant&gt;/&lt;tenant&gt;, where &lt;tenant&gt; is the directory host (e.g. https://login.microsoftonline.com) and &lt;tenant&gt; is a identifier within the directory itself (e.g. a domain associated to the tenant, such as contoso.onmicrosoft.com, or the GUID representing the TenantID property of the directory)
-     * - In Azure B2C, it is of the form https://&lt;instance&gt;/tfp/&lt;tenant&gt;/<policyName>/
-     * - Default value is: "https://login.microsoftonline.com/common"
-     * @param {User} user - The user for which the scopes are requested.The default user is the logged in user.
-     * @param {string} extraQueryParameters - Key-value pairs to pass to the STS during the  authentication flow.
-     * @returns {Promise.<string>} - A Promise that is fulfilled when this function has completed, or rejected if an error was raised. Resolved with token or rejected with error.
-     */
-    UserAgentApplication.prototype.acquireTokenSilent = function (scopes, authority, user, extraQueryParameters) {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            var isValidScope = _this.validateInputScope(scopes);
-            if (isValidScope && !Utils_1.Utils.isEmpty(isValidScope)) {
-                reject(Constants_1.ErrorCodes.inputScopesError + "|" + isValidScope);
-            }
-            else {
-                if (scopes) {
-                    scopes = _this.filterScopes(scopes);
-                }
-                var scope_1 = scopes.join(" ").toLowerCase();
-                var userObject_1 = user ? user : _this.getUser();
-                if (!userObject_1) {
-                    reject(Constants_1.ErrorCodes.userLoginError + "|" + Constants_1.ErrorDescription.userLoginError);
-                    return;
-                }
-                var authenticationRequest_1;
-                var newAuthority = authority ? AuthorityFactory_1.AuthorityFactory.CreateInstance(authority, _this.validateAuthority) : _this.authorityInstance;
-                if (Utils_1.Utils.compareObjects(userObject_1, _this.getUser())) {
-                    if (scopes.indexOf(_this.clientId) > -1) {
-                        authenticationRequest_1 = new AuthenticationRequestParameters_1.AuthenticationRequestParameters(newAuthority, _this.clientId, scopes, ResponseTypes.id_token, _this._redirectUri, _this._state);
-                    }
-                    else {
-                        authenticationRequest_1 = new AuthenticationRequestParameters_1.AuthenticationRequestParameters(newAuthority, _this.clientId, scopes, ResponseTypes.token, _this._redirectUri, _this._state);
-                    }
-                }
-                else {
-                    authenticationRequest_1 = new AuthenticationRequestParameters_1.AuthenticationRequestParameters(newAuthority, _this.clientId, scopes, ResponseTypes.id_token_token, _this._redirectUri, _this._state);
-                }
-                var cacheResult = _this.getCachedToken(authenticationRequest_1, userObject_1);
-                if (cacheResult) {
-                    if (cacheResult.token) {
-                        _this._logger.info("Token is already in cache for scope:" + scope_1);
-                        resolve(cacheResult.token);
-                        return;
-                    }
-                    else if (cacheResult.errorDesc || cacheResult.error) {
-                        _this._logger.infoPii(cacheResult.errorDesc + ":" + cacheResult.error);
-                        reject(cacheResult.errorDesc + "|" + cacheResult.error);
-                        return;
-                    }
-                }
-                else {
-                    _this._logger.verbose("Token is not in cache for scope:" + scope_1);
-                }
-                // cache miss
-                return newAuthority.ResolveEndpointsAsync()
-                    .then(function () {
-                    // refresh attept with iframe
-                    //Already renewing for this scope, callback when we get the token.
-                    if (window.activeRenewals[scope_1]) {
-                        _this._logger.verbose("Renew token for scope: " + scope_1 + " is in progress. Registering callback");
-                        //Active renewals contains the state for each renewal.
-                        _this.registerCallback(window.activeRenewals[scope_1], scope_1, resolve, reject);
-                    }
-                    else {
-                        if (scopes && scopes.indexOf(_this.clientId) > -1 && scopes.length === 1) {
-                            // App uses idToken to send to api endpoints
-                            // Default scope is tracked as clientId to store this token
-                            _this._logger.verbose("renewing idToken");
-                            _this.renewIdToken(scopes, resolve, reject, userObject_1, authenticationRequest_1, extraQueryParameters);
-                        }
-                        else {
-                            _this._logger.verbose("renewing accesstoken");
-                            _this.renewToken(scopes, resolve, reject, userObject_1, authenticationRequest_1, extraQueryParameters);
-                        }
-                    }
-                }).catch(function (err) {
-                    _this._logger.warning("could not resolve endpoints");
-                    reject(err);
                 });
+            });
+        };
+        /**
+         * Monitors an iframe content window until it loads a url with a known hash, or hits a specified timeout.
+         * @param iframe
+         * @param timeout
+         */
+        SilentHandler.prototype.monitorIframeForHash = function (iframe, timeout) {
+            var _this = this;
+            return new Promise(function (resolve, reject) {
+                /*
+                 * Polling for iframes can be purely timing based,
+                 * since we don't need to account for interaction.
+                 */
+                var nowMark = window.performance.now();
+                var timeoutMark = nowMark + timeout;
+                var intervalId = setInterval(function () {
+                    if (window.performance.now() > timeoutMark) {
+                        _this.removeHiddenIframe(iframe);
+                        clearInterval(intervalId);
+                        reject(BrowserAuthError.createMonitorWindowTimeoutError());
+                        return;
+                    }
+                    var href;
+                    try {
+                        /*
+                         * Will throw if cross origin,
+                         * which should be caught and ignored
+                         * since we need the interval to keep running while on STS UI.
+                         */
+                        href = iframe.contentWindow.location.href;
+                    }
+                    catch (e) { }
+                    if (StringUtils.isEmpty(href)) {
+                        return;
+                    }
+                    var contentHash = iframe.contentWindow.location.hash;
+                    if (UrlString.hashContainsKnownProperties(contentHash)) {
+                        // Success case
+                        _this.removeHiddenIframe(iframe);
+                        clearInterval(intervalId);
+                        resolve(contentHash);
+                        return;
+                    }
+                }, BrowserConstants.POLL_INTERVAL_MS);
+            });
+        };
+        /**
+         * @hidden
+         * Loads iframe with authorization endpoint URL
+         * @ignore
+         */
+        SilentHandler.prototype.loadFrame = function (urlNavigate, frameName) {
+            /*
+             * This trick overcomes iframe navigation in IE
+             * IE does not load the page consistently in iframe
+             */
+            var _this = this;
+            return new Promise(function (resolve, reject) {
+                setTimeout(function () {
+                    var frameHandle = _this.loadFrameSync(urlNavigate, frameName);
+                    if (!frameHandle) {
+                        reject("Unable to load iframe with name: " + frameName);
+                        return;
+                    }
+                    resolve(frameHandle);
+                }, _this.loadFrameTimeout);
+            });
+        };
+        /**
+         * @hidden
+         * Loads the iframe synchronously when the navigateTimeFrame is set to `0`
+         * @param urlNavigate
+         * @param frameName
+         * @param logger
+         */
+        SilentHandler.prototype.loadFrameSync = function (urlNavigate, frameName) {
+            var frameHandle = this.getHiddenIframe(frameName);
+            // returning to handle null in loadFrame, also to avoid null object access errors
+            if (!frameHandle) {
+                return null;
             }
-        });
-    };
-    /*
-     * Calling _loadFrame but with a timeout to signal failure in loadframeStatus. Callbacks are left.
-     * registered when network errors occur and subsequent token requests for same resource are registered to the pending request.
-     * @ignore
-     * @hidden
-     */
-    UserAgentApplication.prototype.loadIframeTimeout = function (urlNavigate, frameName, scope) {
-        var _this = this;
-        //set iframe session to pending
-        var expectedState = window.activeRenewals[scope];
-        this._logger.verbose("Set loading state to pending for: " + scope + ":" + expectedState);
-        this._cacheStorage.setItem(Constants_1.Constants.renewStatus + expectedState, Constants_1.Constants.tokenRenewStatusInProgress);
-        this.loadFrame(urlNavigate, frameName);
-        setTimeout(function () {
-            if (_this._cacheStorage.getItem(Constants_1.Constants.renewStatus + expectedState) === Constants_1.Constants.tokenRenewStatusInProgress) {
-                // fail the iframe session if it"s in pending state
-                _this._logger.verbose("Loading frame has timed out after: " + (_this.loadFrameTimeout / 1000) + " seconds for scope " + scope + ":" + expectedState);
-                if (expectedState && window.callBackMappedToRenewStates[expectedState]) {
-                    window.callBackMappedToRenewStates[expectedState]("Token renewal operation failed due to timeout", null, "Token Renewal Failed", Constants_1.Constants.accessToken);
-                }
-                _this._cacheStorage.setItem(Constants_1.Constants.renewStatus + expectedState, Constants_1.Constants.tokenRenewStatusCancelled);
-            }
-        }, this.loadFrameTimeout);
-    };
-    /*
-     * Loads iframe with authorization endpoint URL
-     * @ignore
-     * @hidden
-     */
-    UserAgentApplication.prototype.loadFrame = function (urlNavigate, frameName) {
-        var _this = this;
-        // This trick overcomes iframe navigation in IE
-        // IE does not load the page consistently in iframe
-        this._logger.info("LoadFrame: " + frameName);
-        var frameCheck = frameName;
-        setTimeout(function () {
-            var frameHandle = _this.addAdalFrame(frameCheck);
-            if (frameHandle.src === "" || frameHandle.src === "about:blank") {
+            else if (frameHandle.src === "" || frameHandle.src === "about:blank") {
                 frameHandle.src = urlNavigate;
-                _this._logger.infoPii("Frame Name : " + frameName + " Navigated to: " + urlNavigate);
             }
-        }, 500);
-    };
-    /*
-     * Adds the hidden iframe for silent token renewal.
-     * @ignore
-     * @hidden
-     */
-    UserAgentApplication.prototype.addAdalFrame = function (iframeId) {
-        if (typeof iframeId === "undefined") {
-            return null;
-        }
-        this._logger.info("Add msal frame to document:" + iframeId);
-        var adalFrame = document.getElementById(iframeId);
-        if (!adalFrame) {
-            if (document.createElement &&
-                document.documentElement &&
-                (window.navigator.userAgent.indexOf("MSIE 5.0") === -1)) {
-                var ifr = document.createElement("iframe");
-                ifr.setAttribute("id", iframeId);
-                ifr.style.visibility = "hidden";
-                ifr.style.position = "absolute";
-                ifr.style.width = ifr.style.height = "0";
-                ifr.style.border = "0";
-                adalFrame = document.getElementsByTagName("body")[0].appendChild(ifr);
+            return frameHandle;
+        };
+        /**
+         * @hidden
+         * Creates a new hidden iframe or gets an existing one for silent token renewal.
+         * @ignore
+         */
+        SilentHandler.prototype.getHiddenIframe = function (iframeId) {
+            if (typeof iframeId === "undefined") {
+                return null;
             }
-            else if (document.body && document.body.insertAdjacentHTML) {
-                document.body.insertAdjacentHTML('beforeend', '<iframe name="' + iframeId + '" id="' + iframeId + '" style="display:none"></iframe>');
-            }
-            if (window.frames && window.frames[iframeId]) {
-                adalFrame = window.frames[iframeId];
-            }
-        }
-        return adalFrame;
-    };
-    /*
-     * Acquires access token using a hidden iframe.
-     * @ignore
-     * @hidden
-     */
-    UserAgentApplication.prototype.renewToken = function (scopes, resolve, reject, user, authenticationRequest, extraQueryParameters) {
-        var scope = scopes.join(" ").toLowerCase();
-        this._logger.verbose("renewToken is called for scope:" + scope);
-        var frameHandle = this.addAdalFrame("msalRenewFrame" + scope);
-        if (extraQueryParameters) {
-            authenticationRequest.extraQueryParameters = extraQueryParameters;
-        }
-        var acquireTokenUserKey = Constants_1.Constants.acquireTokenUser + Constants_1.Constants.resourceDelimeter + user.userIdentifier + Constants_1.Constants.resourceDelimeter + authenticationRequest.state;
-        if (Utils_1.Utils.isEmpty(this._cacheStorage.getItem(acquireTokenUserKey))) {
-            this._cacheStorage.setItem(acquireTokenUserKey, JSON.stringify(user));
-        }
-        var authorityKey = Constants_1.Constants.authority + Constants_1.Constants.resourceDelimeter + authenticationRequest.state;
-        if (Utils_1.Utils.isEmpty(this._cacheStorage.getItem(authorityKey))) {
-            this._cacheStorage.setItem(authorityKey, authenticationRequest.authority);
-        }
-        // renew happens in iframe, so it keeps javascript context
-        this._cacheStorage.setItem(Constants_1.Constants.nonceIdToken, authenticationRequest.nonce);
-        this._logger.verbose("Renew token Expected state: " + authenticationRequest.state);
-        var urlNavigate = authenticationRequest.createNavigateUrl(scopes) + "&prompt=none";
-        urlNavigate = this.addHintParameters(urlNavigate, user);
-        window.renewStates.push(authenticationRequest.state);
-        window.requestType = Constants_1.Constants.renewToken;
-        this.registerCallback(authenticationRequest.state, scope, resolve, reject);
-        this._logger.infoPii("Navigate to:" + urlNavigate);
-        frameHandle.src = "about:blank";
-        this.loadIframeTimeout(urlNavigate, "msalRenewFrame" + scope, scope);
-    };
-    /*
-     * Renews idtoken for app"s own backend when clientId is passed as a single scope in the scopes array.
-     * @ignore
-     * @hidden
-     */
-    UserAgentApplication.prototype.renewIdToken = function (scopes, resolve, reject, user, authenticationRequest, extraQueryParameters) {
-        var scope = scopes.join(" ").toLowerCase();
-        this._logger.info("renewidToken is called");
-        var frameHandle = this.addAdalFrame("msalIdTokenFrame");
-        if (extraQueryParameters) {
-            authenticationRequest.extraQueryParameters = extraQueryParameters;
-        }
-        var acquireTokenUserKey = Constants_1.Constants.acquireTokenUser + Constants_1.Constants.resourceDelimeter + user.userIdentifier + Constants_1.Constants.resourceDelimeter + authenticationRequest.state;
-        if (Utils_1.Utils.isEmpty(this._cacheStorage.getItem(acquireTokenUserKey))) {
-            this._cacheStorage.setItem(acquireTokenUserKey, JSON.stringify(user));
-        }
-        var authorityKey = Constants_1.Constants.authority + Constants_1.Constants.resourceDelimeter + authenticationRequest.state;
-        if (Utils_1.Utils.isEmpty(this._cacheStorage.getItem(authorityKey))) {
-            this._cacheStorage.setItem(authorityKey, authenticationRequest.authority);
-        }
-        this._cacheStorage.setItem(Constants_1.Constants.nonceIdToken, authenticationRequest.nonce);
-        this._logger.verbose("Renew Idtoken Expected state: " + authenticationRequest.state);
-        var urlNavigate = authenticationRequest.createNavigateUrl(scopes) + "&prompt=none";
-        urlNavigate = this.addHintParameters(urlNavigate, user);
-        window.renewStates.push(authenticationRequest.state);
-        window.requestType = Constants_1.Constants.renewToken;
-        this.registerCallback(authenticationRequest.state, this.clientId, resolve, reject);
-        this._logger.infoPii("Navigate to:" + urlNavigate);
-        frameHandle.src = "about:blank";
-        this.loadIframeTimeout(urlNavigate, "msalIdTokenFrame", this.clientId);
-    };
-    /*
-      * Returns the signed in user (received from a user object created at the time of login) or null.
-      */
-    UserAgentApplication.prototype.getUser = function () {
-        // idToken is first call
-        if (this._user) {
-            return this._user;
-        }
-        // frame is used to get idToken
-        var rawIdToken = this._cacheStorage.getItem(Constants_1.Constants.idTokenKey);
-        var rawClientInfo = this._cacheStorage.getItem(Constants_1.Constants.msalClientInfo);
-        if (!Utils_1.Utils.isEmpty(rawIdToken) && !Utils_1.Utils.isEmpty(rawClientInfo)) {
-            var idToken = new IdToken_1.IdToken(rawIdToken);
-            var clientInfo = new ClientInfo_1.ClientInfo(rawClientInfo);
-            this._user = User_1.User.createUser(idToken, clientInfo, this.authority);
-            return this._user;
-        }
-        return null;
-    };
-    /*
-     * This method must be called for processing the response received from the STS. It extracts the hash, processes the token or error information and saves it in the cache. It then
-     * calls the registered callbacks in case of redirect or resolves the promises with the result.
-     * @param {string} [hash=window.location.hash] - Hash fragment of Url.
-     * @hidden
-     */
-    UserAgentApplication.prototype.handleAuthenticationResponse = function (hash) {
-        if (hash == null) {
-            hash = window.location.hash;
-        }
-        var self = null;
-        var isPopup = false;
-        var isWindowOpenerMsal = false;
-        try {
-            isWindowOpenerMsal = window.opener && window.opener.msal && window.opener.msal !== window.msal;
-        }
-        catch (err) {
-            // err = SecurityError: Blocked a frame with origin "[url]" from accessing a cross-origin frame.
-            isWindowOpenerMsal = false;
-        }
-        if (isWindowOpenerMsal) {
-            self = window.opener.msal;
-            isPopup = true;
-        }
-        else if (window.parent && window.parent.msal) {
-            self = window.parent.msal;
-        }
-        var requestInfo = self.getRequestInfo(hash); //if(window.parent!==window), by using self, window.parent becomes equal to window in getRequestInfo method specifically
-        var token = null, tokenReceivedCallback = null, tokenType, saveToken = true;
-        self._logger.info("Returned from redirect url");
-        if (window.parent !== window && window.parent.msal) {
-            tokenReceivedCallback = window.parent.callBackMappedToRenewStates[requestInfo.stateResponse];
-        }
-        else if (isWindowOpenerMsal) {
-            tokenReceivedCallback = window.opener.callBackMappedToRenewStates[requestInfo.stateResponse];
-        }
-        else {
-            if (self._navigateToLoginRequestUrl) {
-                tokenReceivedCallback = null;
-                self._cacheStorage.setItem(Constants_1.Constants.urlHash, hash);
-                saveToken = false;
-                if (window.parent === window && !isPopup) {
-                    window.location.href = self._cacheStorage.getItem(Constants_1.Constants.loginRequest);
+            var authFrame = document.getElementById(iframeId);
+            if (!authFrame) {
+                if (document.createElement &&
+                    document.documentElement &&
+                    (window.navigator.userAgent.indexOf("MSIE 5.0") === -1)) {
+                    var ifr = document.createElement("iframe");
+                    ifr.setAttribute("id", iframeId);
+                    ifr.style.visibility = "hidden";
+                    ifr.style.position = "absolute";
+                    ifr.style.width = ifr.style.height = "0";
+                    ifr.style.border = "0";
+                    ifr.setAttribute("sandbox", "allow-scripts allow-same-origin allow-forms");
+                    authFrame = document.getElementsByTagName("body")[0].appendChild(ifr);
                 }
-                return;
-            }
-            else {
-                tokenReceivedCallback = self._tokenReceivedCallback;
-                window.location.hash = '';
-            }
-        }
-        self.saveTokenFromHash(requestInfo);
-        if ((requestInfo.requestType === Constants_1.Constants.renewToken) && window.parent) {
-            if (window.parent !== window) {
-                self._logger.verbose("Window is in iframe, acquiring token silently");
-            }
-            else {
-                self._logger.verbose("acquiring token interactive in progress");
-            }
-            token = requestInfo.parameters[Constants_1.Constants.accessToken] || requestInfo.parameters[Constants_1.Constants.idToken];
-            tokenType = Constants_1.Constants.accessToken;
-        }
-        else if (requestInfo.requestType === Constants_1.Constants.login) {
-            token = requestInfo.parameters[Constants_1.Constants.idToken];
-            tokenType = Constants_1.Constants.idToken;
-        }
-        var errorDesc = requestInfo.parameters[Constants_1.Constants.errorDescription];
-        var error = requestInfo.parameters[Constants_1.Constants.error];
-        try {
-            if (tokenReceivedCallback) {
-                tokenReceivedCallback.call(self, errorDesc, token, error, tokenType);
-            }
-        }
-        catch (err) {
-            self._logger.error("Error occurred in token received callback function: " + err);
-        }
-        if (isWindowOpenerMsal) {
-            for (var i = 0; i < window.opener.openedWindows.length; i++) {
-                window.opener.openedWindows[i].close();
-            }
-        }
-    };
-    /*
-     * This method must be called for processing the response received from AAD. It extracts the hash, processes the token or error, saves it in the cache and calls the registered callbacks with the result.
-     * @param {string} authority authority received in the redirect response from AAD.
-     * @param {TokenResponse} requestInfo an object created from the redirect response from AAD comprising of the keys - parameters, requestType, stateMatch, stateResponse and valid.
-     * @param {User} user user object for which scopes are consented for. The default user is the logged in user.
-     * @param {ClientInfo} clientInfo clientInfo received as part of the response comprising of fields uid and utid.
-     * @param {IdToken} idToken idToken received as part of the response.
-     * @ignore
-     * @private
-     * @hidden
-     */
-    UserAgentApplication.prototype.saveAccessToken = function (authority, tokenResponse, user, clientInfo, idToken) {
-        var scope;
-        var clientObj = new ClientInfo_1.ClientInfo(clientInfo);
-        if (tokenResponse.parameters.hasOwnProperty("scope")) {
-            scope = tokenResponse.parameters["scope"];
-            var consentedScopes = scope.split(" ");
-            var accessTokenCacheItems = this._cacheStorage.getAllAccessTokens(this.clientId, authority);
-            for (var i = 0; i < accessTokenCacheItems.length; i++) {
-                var accessTokenCacheItem = accessTokenCacheItems[i];
-                if (accessTokenCacheItem.key.userIdentifier === user.userIdentifier) {
-                    var cachedScopes = accessTokenCacheItem.key.scopes.split(" ");
-                    if (Utils_1.Utils.isIntersectingScopes(cachedScopes, consentedScopes)) {
-                        this._cacheStorage.removeItem(JSON.stringify(accessTokenCacheItem.key));
-                    }
+                else if (document.body && document.body.insertAdjacentHTML) {
+                    document.body.insertAdjacentHTML("beforeend", "<iframe name='" + iframeId + "' id='" + iframeId + "' style='display:none'></iframe>");
+                }
+                if (window.frames && window.frames[iframeId]) {
+                    authFrame = window.frames[iframeId];
                 }
             }
-            var accessTokenKey = new AccessTokenKey_1.AccessTokenKey(authority, this.clientId, scope, clientObj.uid, clientObj.utid);
-            var accessTokenValue = new AccessTokenValue_1.AccessTokenValue(tokenResponse.parameters[Constants_1.Constants.accessToken], idToken.rawIdToken, Utils_1.Utils.expiresIn(tokenResponse.parameters[Constants_1.Constants.expiresIn]).toString(), clientInfo);
-            this._cacheStorage.setItem(JSON.stringify(accessTokenKey), JSON.stringify(accessTokenValue));
-        }
-        else {
-            scope = this.clientId;
-            var accessTokenKey = new AccessTokenKey_1.AccessTokenKey(authority, this.clientId, scope, clientObj.uid, clientObj.utid);
-            var accessTokenValue = new AccessTokenValue_1.AccessTokenValue(tokenResponse.parameters[Constants_1.Constants.idToken], tokenResponse.parameters[Constants_1.Constants.idToken], idToken.expiration, clientInfo);
-            this._cacheStorage.setItem(JSON.stringify(accessTokenKey), JSON.stringify(accessTokenValue));
-        }
-    };
+            return authFrame;
+        };
+        /**
+         * @hidden
+         * Removes a hidden iframe from the page.
+         * @ignore
+         */
+        SilentHandler.prototype.removeHiddenIframe = function (iframe) {
+            if (document.body === iframe.parentNode) {
+                document.body.removeChild(iframe);
+            }
+        };
+        return SilentHandler;
+    }(InteractionHandler));
+
+    var version$1 = "2.1.0";
+
     /*
-     * Saves token or error received in the response from AAD in the cache. In case of id_token, it also creates the user object.
-     * @ignore
-     * @hidden
+     * Copyright (c) Microsoft Corporation. All rights reserved.
+     * Licensed under the MIT License.
      */
-    UserAgentApplication.prototype.saveTokenFromHash = function (tokenResponse) {
-        this._logger.info("State status:" + tokenResponse.stateMatch + "; Request type:" + tokenResponse.requestType);
-        this._cacheStorage.setItem(Constants_1.Constants.msalError, "");
-        this._cacheStorage.setItem(Constants_1.Constants.msalErrorDescription, "");
-        var scope = "";
-        var authorityKey = "";
-        var acquireTokenUserKey = "";
-        if (tokenResponse.parameters.hasOwnProperty("scope")) {
-            scope = tokenResponse.parameters["scope"].toLowerCase();
+    var BrowserProtocolUtils = /** @class */ (function () {
+        function BrowserProtocolUtils() {
         }
-        else {
-            scope = this.clientId;
-        }
-        // Record error
-        if (tokenResponse.parameters.hasOwnProperty(Constants_1.Constants.errorDescription) || tokenResponse.parameters.hasOwnProperty(Constants_1.Constants.error)) {
-            this._logger.infoPii("Error :" + tokenResponse.parameters[Constants_1.Constants.error] + "; Error description:" + tokenResponse.parameters[Constants_1.Constants.errorDescription]);
-            this._cacheStorage.setItem(Constants_1.Constants.msalError, tokenResponse.parameters["error"]);
-            this._cacheStorage.setItem(Constants_1.Constants.msalErrorDescription, tokenResponse.parameters[Constants_1.Constants.errorDescription]);
-            if (tokenResponse.requestType === Constants_1.Constants.login) {
-                this._loginInProgress = false;
-                this._cacheStorage.setItem(Constants_1.Constants.loginError, tokenResponse.parameters[Constants_1.Constants.errorDescription] + ":" + tokenResponse.parameters[Constants_1.Constants.error]);
-                authorityKey = Constants_1.Constants.authority + Constants_1.Constants.resourceDelimeter + tokenResponse.stateResponse;
+        /**
+         * Extracts the BrowserStateObject from the state string.
+         * @param browserCrypto
+         * @param state
+         */
+        BrowserProtocolUtils.extractBrowserRequestState = function (browserCrypto, state) {
+            if (StringUtils.isEmpty(state)) {
+                return null;
             }
-            if (tokenResponse.requestType === Constants_1.Constants.renewToken) {
-                this._acquireTokenInProgress = false;
-                authorityKey = Constants_1.Constants.authority + Constants_1.Constants.resourceDelimeter + tokenResponse.stateResponse;
-                var userKey = this.getUser() !== null ? this.getUser().userIdentifier : "";
-                acquireTokenUserKey = Constants_1.Constants.acquireTokenUser + Constants_1.Constants.resourceDelimeter + userKey + Constants_1.Constants.resourceDelimeter + tokenResponse.stateResponse;
+            try {
+                var requestStateObj = ProtocolUtils.parseRequestState(browserCrypto, state);
+                return requestStateObj.libraryState.meta;
             }
+            catch (e) {
+                throw ClientAuthError.createInvalidStateError(state, e);
+            }
+        };
+        return BrowserProtocolUtils;
+    }());
+
+    /**
+     * The PublicClientApplication class is the object exposed by the library to perform authentication and authorization functions in Single Page Applications
+     * to obtain JWT tokens as described in the OAuth 2.0 Authorization Code Flow with PKCE specification.
+     */
+    var PublicClientApplication = /** @class */ (function () {
+        /**
+         * @constructor
+         * Constructor for the PublicClientApplication used to instantiate the PublicClientApplication object
+         *
+         * Important attributes in the Configuration object for auth are:
+         * - clientID: the application ID of your application. You can obtain one by registering your application with our Application registration portal : https://portal.azure.com/#blade/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/RegisteredAppsPreview
+         * - authority: the authority URL for your application.
+         * - redirect_uri: the uri of your application registered in the portal.
+         *
+         * In Azure AD, authority is a URL indicating the Azure active directory that MSAL uses to obtain tokens.
+         * It is of the form https://login.microsoftonline.com/{Enter_the_Tenant_Info_Here}
+         * If your application supports Accounts in one organizational directory, replace "Enter_the_Tenant_Info_Here" value with the Tenant Id or Tenant name (for example, contoso.microsoft.com).
+         * If your application supports Accounts in any organizational directory, replace "Enter_the_Tenant_Info_Here" value with organizations.
+         * If your application supports Accounts in any organizational directory and personal Microsoft accounts, replace "Enter_the_Tenant_Info_Here" value with common.
+         * To restrict support to Personal Microsoft accounts only, replace "Enter_the_Tenant_Info_Here" value with consumers.
+         *
+         * In Azure B2C, authority is of the form https://{instance}/tfp/{tenant}/{policyName}/
+         * Full B2C functionality will be available in this library in future versions.
+         *
+         * @param {@link (Configuration:type)} configuration object for the MSAL PublicClientApplication instance
+         */
+        function PublicClientApplication(configuration) {
+            // Set the configuration.
+            this.config = buildConfiguration(configuration);
+            // Initialize the crypto class.
+            this.browserCrypto = new CryptoOps();
+            // Initialize the network module class.
+            this.networkClient = this.config.system.networkClient;
+            // Initialize the browser storage class.
+            this.browserStorage = new BrowserStorage(this.config.auth.clientId, this.config.cache);
+            // Initialize logger
+            this.logger = new Logger(this.config.system.loggerOptions);
+            // Initialize default authority instance
+            TrustedAuthority.setTrustedAuthoritiesFromConfig(this.config.auth.knownAuthorities, this.config.auth.cloudDiscoveryMetadata);
+            this.defaultAuthority = null;
         }
-        else {
-            // It must verify the state from redirect
-            if (tokenResponse.stateMatch) {
-                // record tokens to storage if exists
-                this._logger.info("State is right");
-                if (tokenResponse.parameters.hasOwnProperty(Constants_1.Constants.sessionState)) {
-                    this._cacheStorage.setItem(Constants_1.Constants.msalSessionState, tokenResponse.parameters[Constants_1.Constants.sessionState]);
-                }
-                var idToken;
-                var clientInfo = "";
-                if (tokenResponse.parameters.hasOwnProperty(Constants_1.Constants.accessToken)) {
-                    this._logger.info("Fragment has access token");
-                    this._acquireTokenInProgress = false;
-                    var user = void 0;
-                    if (tokenResponse.parameters.hasOwnProperty(Constants_1.Constants.idToken)) {
-                        idToken = new IdToken_1.IdToken(tokenResponse.parameters[Constants_1.Constants.idToken]);
+        // #region Redirect Flow
+        /**
+         * Event handler function which allows users to fire events after the PublicClientApplication object
+         * has loaded during redirect flows. This should be invoked on all page loads involved in redirect
+         * auth flows.
+         * @returns {Promise.<AuthenticationResult | null>} token response or null. If the return value is null, then no auth redirect was detected.
+         */
+        PublicClientApplication.prototype.handleRedirectPromise = function () {
+            return __awaiter(this, void 0, void 0, function () {
+                return __generator(this, function (_a) {
+                    return [2 /*return*/, this.handleRedirectResponse()];
+                });
+            });
+        };
+        /**
+         * Checks if navigateToLoginRequestUrl is set, and:
+         * - if true, performs logic to cache and navigate
+         * - if false, handles hash string and parses response
+         */
+        PublicClientApplication.prototype.handleRedirectResponse = function () {
+            return __awaiter(this, void 0, void 0, function () {
+                var responseHash, loginRequestUrl, loginRequestUrlNormalized, currentUrlNormalized, hashKey, homepage;
+                return __generator(this, function (_a) {
+                    responseHash = this.getRedirectResponseHash();
+                    if (StringUtils.isEmpty(responseHash)) {
+                        // Not a recognized server response hash or hash not associated with a redirect request
+                        return [2 /*return*/, null];
                     }
-                    else {
-                        idToken = new IdToken_1.IdToken(this._cacheStorage.getItem(Constants_1.Constants.idTokenKey));
+                    loginRequestUrl = this.browserStorage.getItem(this.browserStorage.generateCacheKey(TemporaryCacheKeys.ORIGIN_URI), CacheSchemaType.TEMPORARY);
+                    loginRequestUrlNormalized = UrlString.removeHashFromUrl(loginRequestUrl || "");
+                    currentUrlNormalized = UrlString.removeHashFromUrl(window.location.href);
+                    if (loginRequestUrlNormalized === currentUrlNormalized && this.config.auth.navigateToLoginRequestUrl) {
+                        if (loginRequestUrl.indexOf("#") > -1) {
+                            // Replace current hash with non-msal hash, if present
+                            BrowserUtils.replaceHash(loginRequestUrl);
+                        }
+                        // We are on the page we need to navigate to - handle hash
+                        return [2 /*return*/, this.handleHash(responseHash)];
                     }
-                    authorityKey = Constants_1.Constants.authority + Constants_1.Constants.resourceDelimeter + tokenResponse.stateResponse;
-                    var authority = void 0;
-                    if (!Utils_1.Utils.isEmpty(this._cacheStorage.getItem(authorityKey))) {
-                        authority = this._cacheStorage.getItem(authorityKey);
-                        authority = Utils_1.Utils.replaceFirstPath(authority, idToken.tenantId);
+                    else if (!this.config.auth.navigateToLoginRequestUrl) {
+                        return [2 /*return*/, this.handleHash(responseHash)];
                     }
-                    if (tokenResponse.parameters.hasOwnProperty(Constants_1.Constants.clientInfo)) {
-                        clientInfo = tokenResponse.parameters[Constants_1.Constants.clientInfo];
-                        user = User_1.User.createUser(idToken, new ClientInfo_1.ClientInfo(clientInfo), authority);
-                    }
-                    else {
-                        this._logger.warning("ClientInfo not received in the response from AAD");
-                        user = User_1.User.createUser(idToken, new ClientInfo_1.ClientInfo(clientInfo), authority);
-                    }
-                    acquireTokenUserKey = Constants_1.Constants.acquireTokenUser + Constants_1.Constants.resourceDelimeter + user.userIdentifier + Constants_1.Constants.resourceDelimeter + tokenResponse.stateResponse;
-                    var acquireTokenUser = void 0;
-                    if (!Utils_1.Utils.isEmpty(this._cacheStorage.getItem(acquireTokenUserKey))) {
-                        acquireTokenUser = JSON.parse(this._cacheStorage.getItem(acquireTokenUserKey));
-                        if (user && acquireTokenUser && Utils_1.Utils.compareObjects(user, acquireTokenUser)) {
-                            this.saveAccessToken(authority, tokenResponse, user, clientInfo, idToken);
-                            this._logger.info("The user object received in the response is the same as the one passed in the acquireToken request");
+                    else if (!BrowserUtils.isInIframe()) {
+                        hashKey = this.browserStorage.generateCacheKey(TemporaryCacheKeys.URL_HASH);
+                        this.browserStorage.setItem(hashKey, responseHash, CacheSchemaType.TEMPORARY);
+                        if (!loginRequestUrl || loginRequestUrl === "null") {
+                            homepage = BrowserUtils.getHomepage();
+                            // Cache the homepage under ORIGIN_URI to ensure cached hash is processed on homepage
+                            this.browserStorage.setItem(this.browserStorage.generateCacheKey(TemporaryCacheKeys.ORIGIN_URI), homepage, CacheSchemaType.TEMPORARY);
+                            this.logger.warning("Unable to get valid login request url from cache, redirecting to home page");
+                            BrowserUtils.navigateWindow(homepage, true);
                         }
                         else {
-                            this._logger.warning("The user object created from the response is not the same as the one passed in the acquireToken request");
+                            // Navigate to page that initiated the redirect request
+                            BrowserUtils.navigateWindow(loginRequestUrl, true);
                         }
                     }
-                }
-                if (tokenResponse.parameters.hasOwnProperty(Constants_1.Constants.idToken)) {
-                    if (scope.indexOf(this.clientId) > -1) {
-                        this._logger.info("Fragment has id token");
-                        this._loginInProgress = false;
-                        idToken = new IdToken_1.IdToken(tokenResponse.parameters[Constants_1.Constants.idToken]);
-                        if (tokenResponse.parameters.hasOwnProperty(Constants_1.Constants.clientInfo)) {
-                            clientInfo = tokenResponse.parameters[Constants_1.Constants.clientInfo];
-                        }
-                        else {
-                            this._logger.warning("ClientInfo not received in the response from AAD");
-                        }
-                        authorityKey = Constants_1.Constants.authority + Constants_1.Constants.resourceDelimeter + tokenResponse.stateResponse;
-                        var authority = void 0;
-                        if (!Utils_1.Utils.isEmpty(this._cacheStorage.getItem(authorityKey))) {
-                            authority = this._cacheStorage.getItem(authorityKey);
-                            authority = Utils_1.Utils.replaceFirstPath(authority, idToken.tenantId);
-                        }
-                        this._user = User_1.User.createUser(idToken, new ClientInfo_1.ClientInfo(clientInfo), authority);
-                        if (idToken && idToken.nonce) {
-                            if (idToken.nonce !== this._cacheStorage.getItem(Constants_1.Constants.nonceIdToken)) {
-                                this._user = null;
-                                this._cacheStorage.setItem(Constants_1.Constants.loginError, "Nonce Mismatch. Expected Nonce: " + this._cacheStorage.getItem(Constants_1.Constants.nonceIdToken) + "," + "Actual Nonce: " + idToken.nonce);
-                                this._logger.error("Nonce Mismatch.Expected Nonce: " + this._cacheStorage.getItem(Constants_1.Constants.nonceIdToken) + "," + "Actual Nonce: " + idToken.nonce);
-                            }
-                            else {
-                                this._cacheStorage.setItem(Constants_1.Constants.idTokenKey, tokenResponse.parameters[Constants_1.Constants.idToken]);
-                                this._cacheStorage.setItem(Constants_1.Constants.msalClientInfo, clientInfo);
-                                // Save idToken as access token for app itself
-                                this.saveAccessToken(authority, tokenResponse, this._user, clientInfo, idToken);
-                            }
-                        }
-                        else {
-                            authorityKey = tokenResponse.stateResponse;
-                            acquireTokenUserKey = tokenResponse.stateResponse;
-                            this._logger.error("Invalid id_token received in the response");
-                            tokenResponse.parameters['error'] = 'invalid idToken';
-                            tokenResponse.parameters['error_description'] = 'Invalid idToken. idToken: ' + tokenResponse.parameters[Constants_1.Constants.idToken];
-                            this._cacheStorage.setItem(Constants_1.Constants.msalError, "invalid idToken");
-                            this._cacheStorage.setItem(Constants_1.Constants.msalErrorDescription, "Invalid idToken. idToken: " + tokenResponse.parameters[Constants_1.Constants.idToken]);
-                        }
-                    }
-                }
-            }
-            else {
-                authorityKey = tokenResponse.stateResponse;
-                acquireTokenUserKey = tokenResponse.stateResponse;
-                this._logger.error("State Mismatch.Expected State: " + this._cacheStorage.getItem(Constants_1.Constants.stateLogin) + "," + "Actual State: " + tokenResponse.stateResponse);
-                tokenResponse.parameters['error'] = 'Invalid_state';
-                tokenResponse.parameters['error_description'] = 'Invalid_state. state: ' + tokenResponse.stateResponse;
-                this._cacheStorage.setItem(Constants_1.Constants.msalError, "Invalid_state");
-                this._cacheStorage.setItem(Constants_1.Constants.msalErrorDescription, "Invalid_state. state: " + tokenResponse.stateResponse);
-            }
-        }
-        this._cacheStorage.setItem(Constants_1.Constants.renewStatus + tokenResponse.stateResponse, Constants_1.Constants.tokenRenewStatusCompleted);
-        this._cacheStorage.removeAcquireTokenEntries(authorityKey, acquireTokenUserKey);
-    };
-    /*
-     * Checks if the redirect response is received from the STS. In case of redirect, the url fragment has either id_token, access_token or error.
-     * @param {string} hash - Hash passed from redirect page.
-     * @returns {Boolean} - true if response contains id_token, access_token or error, false otherwise.
-     * @hidden
-     */
-    UserAgentApplication.prototype.isCallback = function (hash) {
-        hash = this.getHash(hash);
-        var parameters = Utils_1.Utils.deserialize(hash);
-        return (parameters.hasOwnProperty(Constants_1.Constants.errorDescription) ||
-            parameters.hasOwnProperty(Constants_1.Constants.error) ||
-            parameters.hasOwnProperty(Constants_1.Constants.accessToken) ||
-            parameters.hasOwnProperty(Constants_1.Constants.idToken));
-    };
-    /*
-     * Returns the anchor part(#) of the URL
-     * @ignore
-     * @hidden
-     */
-    UserAgentApplication.prototype.getHash = function (hash) {
-        if (hash.indexOf("#/") > -1) {
-            hash = hash.substring(hash.indexOf("#/") + 2);
-        }
-        else if (hash.indexOf("#") > -1) {
-            hash = hash.substring(1);
-        }
-        return hash;
-    };
-    /*
-      * Creates a requestInfo object from the URL fragment and returns it.
-      * @param {string} hash  -  Hash passed from redirect page
-      * @returns {TokenResponse} an object created from the redirect response from AAD comprising of the keys - parameters, requestType, stateMatch, stateResponse and valid.
-      * @ignore
-      * @hidden
-      */
-    UserAgentApplication.prototype.getRequestInfo = function (hash) {
-        hash = this.getHash(hash);
-        var parameters = Utils_1.Utils.deserialize(hash);
-        var tokenResponse = new RequestInfo_1.TokenResponse();
-        if (parameters) {
-            tokenResponse.parameters = parameters;
-            if (parameters.hasOwnProperty(Constants_1.Constants.errorDescription) ||
-                parameters.hasOwnProperty(Constants_1.Constants.error) ||
-                parameters.hasOwnProperty(Constants_1.Constants.accessToken) ||
-                parameters.hasOwnProperty(Constants_1.Constants.idToken)) {
-                tokenResponse.valid = true;
-                // which call
-                var stateResponse = void 0;
-                if (parameters.hasOwnProperty("state")) {
-                    stateResponse = parameters.state;
-                }
-                else {
-                    return tokenResponse;
-                }
-                tokenResponse.stateResponse = stateResponse;
-                // async calls can fire iframe and login request at the same time if developer does not use the API as expected
-                // incoming callback needs to be looked up to find the request type
-                if (stateResponse === this._cacheStorage.getItem(Constants_1.Constants.stateLogin)) { // loginRedirect
-                    tokenResponse.requestType = Constants_1.Constants.login;
-                    tokenResponse.stateMatch = true;
-                    return tokenResponse;
-                }
-                else if (stateResponse === this._cacheStorage.getItem(Constants_1.Constants.stateAcquireToken)) { //acquireTokenRedirect
-                    tokenResponse.requestType = Constants_1.Constants.renewToken;
-                    tokenResponse.stateMatch = true;
-                    return tokenResponse;
-                }
-                // external api requests may have many renewtoken requests for different resource
-                if (!tokenResponse.stateMatch) {
-                    tokenResponse.requestType = window.requestType;
-                    var statesInParentContext = window.renewStates;
-                    for (var i = 0; i < statesInParentContext.length; i++) {
-                        if (statesInParentContext[i] === tokenResponse.stateResponse) {
-                            tokenResponse.stateMatch = true;
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-        return tokenResponse;
-    };
-    /*
-      * Extracts scope value from the state sent with the authentication request.
-      * @returns {string} scope.
-      * @ignore
-      * @hidden
-      */
-    UserAgentApplication.prototype.getScopeFromState = function (state) {
-        if (state) {
-            var splitIndex = state.indexOf("|");
-            if (splitIndex > -1 && splitIndex + 1 < state.length) {
-                return state.substring(splitIndex + 1);
-            }
-        }
-        return "";
-    };
-    /*
-    * Extracts state value from the userState sent with the authentication request.
-    * @returns {string} scope.
-    * @ignore
-    * @hidden
-    */
-    UserAgentApplication.prototype.getUserState = function (state) {
-        if (state) {
-            var splitIndex = state.indexOf("|");
-            if (splitIndex > -1 && splitIndex + 1 < state.length) {
-                return state.substring(splitIndex + 1);
-            }
-        }
-        return "";
-    };
-    ;
-    /*
-      * Returns whether current window is in ifram for token renewal
-      * @ignore
-      * @hidden
-      */
-    UserAgentApplication.prototype.isInIframe = function () {
-        return window.parent !== window;
-    };
-    UserAgentApplication.prototype.loginInProgress = function () {
-        var pendingCallback = this._cacheStorage.getItem(Constants_1.Constants.urlHash);
-        if (pendingCallback)
-            return true;
-        return this._loginInProgress;
-    };
-    UserAgentApplication.prototype.getHostFromUri = function (uri) {
-        // remove http:// or https:// from uri
-        var extractedUri = String(uri).replace(/^(https?:)\/\//, '');
-        extractedUri = extractedUri.split('/')[0];
-        return extractedUri;
-    };
-    UserAgentApplication.prototype.getScopesForEndpoint = function (endpoint) {
-        // if user specified list of unprotectedResources, no need to send token to these endpoints, return null.
-        if (this._unprotectedResources.length > 0) {
-            for (var i = 0; i < this._unprotectedResources.length; i++) {
-                if (endpoint.indexOf(this._unprotectedResources[i]) > -1) {
+                    return [2 /*return*/, null];
+                });
+            });
+        };
+        /**
+         * Gets the response hash for a redirect request
+         * Returns null if interactionType in the state value is not "redirect" or the hash does not contain known properties
+         * @returns {string}
+         */
+        PublicClientApplication.prototype.getRedirectResponseHash = function () {
+            // Get current location hash from window or cache.
+            var hash = window.location.hash;
+            var isResponseHash = UrlString.hashContainsKnownProperties(hash);
+            var cachedHash = this.browserStorage.getItem(this.browserStorage.generateCacheKey(TemporaryCacheKeys.URL_HASH), CacheSchemaType.TEMPORARY);
+            this.browserStorage.removeItem(this.browserStorage.generateCacheKey(TemporaryCacheKeys.URL_HASH));
+            var responseHash = isResponseHash ? hash : cachedHash;
+            if (responseHash) {
+                // Deserialize hash fragment response parameters.
+                var serverParams = UrlString.getDeserializedHash(responseHash);
+                var platformStateObj = BrowserProtocolUtils.extractBrowserRequestState(this.browserCrypto, serverParams.state);
+                if (platformStateObj.interactionType !== InteractionType.REDIRECT) {
                     return null;
                 }
-            }
-        }
-        if (this._protectedResourceMap.size > 0) {
-            for (var _i = 0, _a = Array.from(this._protectedResourceMap.keys()); _i < _a.length; _i++) {
-                var key = _a[_i];
-                // configEndpoint is like /api/Todo requested endpoint can be /api/Todo/1
-                if (endpoint.indexOf(key) > -1) {
-                    return this._protectedResourceMap.get(key);
+                else {
+                    BrowserUtils.clearHash();
+                    return responseHash;
                 }
             }
-        }
-        // default resource will be clientid if nothing specified
-        // App will use idtoken for calls to itself
-        // check if it's staring from http or https, needs to match with app host
-        if (endpoint.indexOf('http://') > -1 || endpoint.indexOf('https://') > -1) {
-            if (this.getHostFromUri(endpoint) === this.getHostFromUri(this._redirectUri)) {
-                return new Array(this.clientId);
+            this.browserStorage.cleanRequest();
+            return null;
+        };
+        /**
+         * Checks if hash exists and handles in window.
+         * @param responseHash
+         * @param interactionHandler
+         */
+        PublicClientApplication.prototype.handleHash = function (responseHash) {
+            return __awaiter(this, void 0, void 0, function () {
+                var encodedTokenRequest, cachedRequest, serverTelemetryManager, currentAuthority, authClient, interactionHandler, e_1;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0:
+                            encodedTokenRequest = this.browserStorage.getItem(this.browserStorage.generateCacheKey(TemporaryCacheKeys.REQUEST_PARAMS), CacheSchemaType.TEMPORARY);
+                            cachedRequest = JSON.parse(this.browserCrypto.base64Decode(encodedTokenRequest));
+                            serverTelemetryManager = this.initializeServerTelemetryManager(ApiId.handleRedirectPromise, cachedRequest.correlationId);
+                            _a.label = 1;
+                        case 1:
+                            _a.trys.push([1, 4, , 5]);
+                            currentAuthority = this.browserStorage.getCachedAuthority();
+                            return [4 /*yield*/, this.createAuthCodeClient(serverTelemetryManager, currentAuthority)];
+                        case 2:
+                            authClient = _a.sent();
+                            interactionHandler = new RedirectHandler(authClient, this.browserStorage);
+                            return [4 /*yield*/, interactionHandler.handleCodeResponse(responseHash, this.browserCrypto)];
+                        case 3: return [2 /*return*/, _a.sent()];
+                        case 4:
+                            e_1 = _a.sent();
+                            serverTelemetryManager.cacheFailedRequest(e_1);
+                            this.browserStorage.cleanRequest();
+                            throw e_1;
+                        case 5: return [2 /*return*/];
+                    }
+                });
+            });
+        };
+        /**
+         * Use when initiating the login process by redirecting the user's browser to the authorization endpoint. This function redirects the page, so
+         * any code that follows this function will not execute.
+         *
+         * IMPORTANT: It is NOT recommended to have code that is dependent on the resolution of the Promise. This function will navigate away from the current
+         * browser window. It currently returns a Promise in order to reflect the asynchronous nature of the code running in this function.
+         *
+         * @param {@link (RedirectRequest:type)}
+         */
+        PublicClientApplication.prototype.loginRedirect = function (request) {
+            return __awaiter(this, void 0, void 0, function () {
+                return __generator(this, function (_a) {
+                    return [2 /*return*/, this.acquireTokenRedirect(request || DEFAULT_REQUEST)];
+                });
+            });
+        };
+        /**
+         * Use when you want to obtain an access_token for your API by redirecting the user's browser window to the authorization endpoint. This function redirects
+         * the page, so any code that follows this function will not execute.
+         *
+         * IMPORTANT: It is NOT recommended to have code that is dependent on the resolution of the Promise. This function will navigate away from the current
+         * browser window. It currently returns a Promise in order to reflect the asynchronous nature of the code running in this function.
+         *
+         * @param {@link (RedirectRequest:type)}
+         */
+        PublicClientApplication.prototype.acquireTokenRedirect = function (request) {
+            return __awaiter(this, void 0, void 0, function () {
+                var validRequest, serverTelemetryManager, authCodeRequest, authClient, interactionHandler, navigateUrl, redirectStartPage, e_2;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0:
+                            validRequest = this.preflightInteractiveRequest(request, InteractionType.REDIRECT);
+                            serverTelemetryManager = this.initializeServerTelemetryManager(ApiId.acquireTokenRedirect, validRequest.correlationId);
+                            _a.label = 1;
+                        case 1:
+                            _a.trys.push([1, 5, , 6]);
+                            return [4 /*yield*/, this.initializeAuthorizationCodeRequest(validRequest)];
+                        case 2:
+                            authCodeRequest = _a.sent();
+                            return [4 /*yield*/, this.createAuthCodeClient(serverTelemetryManager, validRequest.authority)];
+                        case 3:
+                            authClient = _a.sent();
+                            interactionHandler = new RedirectHandler(authClient, this.browserStorage);
+                            return [4 /*yield*/, authClient.getAuthCodeUrl(validRequest)];
+                        case 4:
+                            navigateUrl = _a.sent();
+                            redirectStartPage = (request && request.redirectStartPage) || window.location.href;
+                            // Show the UI once the url has been created. Response will come back in the hash, which will be handled in the handleRedirectCallback function.
+                            interactionHandler.initiateAuthRequest(navigateUrl, authCodeRequest, redirectStartPage, this.browserCrypto);
+                            return [3 /*break*/, 6];
+                        case 5:
+                            e_2 = _a.sent();
+                            serverTelemetryManager.cacheFailedRequest(e_2);
+                            this.browserStorage.cleanRequest();
+                            throw e_2;
+                        case 6: return [2 /*return*/];
+                    }
+                });
+            });
+        };
+        // #endregion
+        // #region Popup Flow
+        /**
+         * Use when initiating the login process via opening a popup window in the user's browser
+         *
+         * @param {@link (PopupRequest:type)}
+         *
+         * @returns {Promise.<AuthenticationResult>} - a promise that is fulfilled when this function has completed, or rejected if an error was raised. Returns the {@link AuthResponse} object
+         */
+        PublicClientApplication.prototype.loginPopup = function (request) {
+            return this.acquireTokenPopup(request || DEFAULT_REQUEST);
+        };
+        /**
+         * Use when you want to obtain an access_token for your API via opening a popup window in the user's browser
+         * @param {@link (PopupRequest:type)}
+         *
+         * @returns {Promise.<AuthenticationResult>} - a promise that is fulfilled when this function has completed, or rejected if an error was raised. Returns the {@link AuthResponse} object
+         */
+        PublicClientApplication.prototype.acquireTokenPopup = function (request) {
+            // asyncPopups flag is true. Acquires token without first opening popup. Popup will be opened later asynchronously.
+            if (this.config.system.asyncPopups) {
+                return this.acquireTokenPopupAsync(request);
             }
-        }
-        else {
-            // in angular level, the url for $http interceptor call could be relative url,
-            // if it's relative call, we'll treat it as app backend call.            
-            return new Array(this.clientId);
-        }
-        // if not the app's own backend or not a domain listed in the endpoints structure
-        return null;
-    };
-    //These APIS are exposed for msalAngular wrapper only
-    UserAgentApplication.prototype.setloginInProgress = function (loginInProgress) {
-        this._loginInProgress = loginInProgress;
-    };
-    UserAgentApplication.prototype.getAcquireTokenInProgress = function () {
-        return this._acquireTokenInProgress;
-    };
-    UserAgentApplication.prototype.setAcquireTokenInProgress = function (acquireTokenInProgress) {
-        this._acquireTokenInProgress = acquireTokenInProgress;
-    };
-    UserAgentApplication.prototype.getLogger = function () {
-        return this._logger;
-    };
-    tslib_1.__decorate([
-        resolveTokenOnlyIfOutOfIframe
-    ], UserAgentApplication.prototype, "acquireTokenSilent", null);
-    return UserAgentApplication;
-}());
-exports.UserAgentApplication = UserAgentApplication;
-
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/*
- * Copyright (c) Microsoft Corporation
- *  All Rights Reserved
- *  MIT License
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this
- * software and associated documentation files (the "Software"), to deal in the Software
- * without restriction, including without limitation the rights to use, copy, modify,
- * merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to the following
- * conditions:
- *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
- * OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
- * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT
- * OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-var Utils_1 = __webpack_require__(0);
-/*
- * @hidden
- */
-var AccessTokenKey = /** @class */ (function () {
-    function AccessTokenKey(authority, clientId, scopes, uid, utid) {
-        this.authority = authority;
-        this.clientId = clientId;
-        this.scopes = scopes;
-        this.userIdentifier = Utils_1.Utils.base64EncodeStringUrlSafe(uid) + "." + Utils_1.Utils.base64EncodeStringUrlSafe(utid);
-    }
-    return AccessTokenKey;
-}());
-exports.AccessTokenKey = AccessTokenKey;
-
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/**
- * Copyright (c) Microsoft Corporation
- *  All Rights Reserved
- *  MIT License
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this
- * software and associated documentation files (the 'Software'), to deal in the Software
- * without restriction, including without limitation the rights to use, copy, modify,
- * merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to the following
- * conditions:
- *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
- * OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
- * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT
- * OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-/*
- * @hidden
- */
-var AccessTokenValue = /** @class */ (function () {
-    function AccessTokenValue(accessToken, idToken, expiresIn, clientInfo) {
-        this.accessToken = accessToken;
-        this.idToken = idToken;
-        this.expiresIn = expiresIn;
-        this.clientInfo = clientInfo;
-    }
-    return AccessTokenValue;
-}());
-exports.AccessTokenValue = AccessTokenValue;
-
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/**
- * Copyright (c) Microsoft Corporation
- *  All Rights Reserved
- *  MIT License
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this
- * software and associated documentation files (the 'Software'), to deal in the Software
- * without restriction, including without limitation the rights to use, copy, modify,
- * merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to the following
- * conditions:
- *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
- * OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
- * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT
- * OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-var Utils_1 = __webpack_require__(0);
-/*
- * @hidden
- */
-var AuthenticationRequestParameters = /** @class */ (function () {
-    function AuthenticationRequestParameters(authority, clientId, scope, responseType, redirectUri, state) {
-        this.authorityInstance = authority;
-        this.clientId = clientId;
-        this.scopes = scope;
-        this.responseType = responseType;
-        this.redirectUri = redirectUri;
-        // randomly generated values
-        this.correlationId = Utils_1.Utils.createNewGuid();
-        this.state = state && !Utils_1.Utils.isEmpty(state) ? Utils_1.Utils.createNewGuid() + "|" + state : Utils_1.Utils.createNewGuid();
-        this.nonce = Utils_1.Utils.createNewGuid();
-        // telemetry information
-        this.xClientSku = "MSAL.JS";
-        this.xClientVer = Utils_1.Utils.getLibraryVersion();
-    }
-    Object.defineProperty(AuthenticationRequestParameters.prototype, "authority", {
-        get: function () {
-            return this.authorityInstance.CanonicalAuthority;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    AuthenticationRequestParameters.prototype.createNavigateUrl = function (scopes) {
-        var str = this.createNavigationUrlString(scopes);
-        var authEndpoint = this.authorityInstance.AuthorizationEndpoint;
-        // if the endpoint already has queryparams, lets add to it, otherwise add the first one
-        if (authEndpoint.indexOf("?") < 0) {
-            authEndpoint += "?";
-        }
-        else {
-            authEndpoint += "&";
-        }
-        var requestUrl = "" + authEndpoint + str.join("&");
-        return requestUrl;
-    };
-    AuthenticationRequestParameters.prototype.createNavigationUrlString = function (scopes) {
-        if (!scopes) {
-            scopes = [this.clientId];
-        }
-        if (scopes.indexOf(this.clientId) === -1) {
-            scopes.push(this.clientId);
-        }
-        var str = [];
-        str.push("response_type=" + this.responseType);
-        this.translateclientIdUsedInScope(scopes);
-        str.push("scope=" + encodeURIComponent(this.parseScope(scopes)));
-        str.push("client_id=" + encodeURIComponent(this.clientId));
-        str.push("redirect_uri=" + encodeURIComponent(this.redirectUri));
-        str.push("state=" + encodeURIComponent(this.state));
-        str.push("nonce=" + encodeURIComponent(this.nonce));
-        str.push("client_info=1");
-        str.push("x-client-SKU=" + this.xClientSku);
-        str.push("x-client-Ver=" + this.xClientVer);
-        if (this.extraQueryParameters) {
-            str.push(this.extraQueryParameters);
-        }
-        str.push("client-request-id=" + encodeURIComponent(this.correlationId));
-        return str;
-    };
-    AuthenticationRequestParameters.prototype.translateclientIdUsedInScope = function (scopes) {
-        var clientIdIndex = scopes.indexOf(this.clientId);
-        if (clientIdIndex >= 0) {
-            scopes.splice(clientIdIndex, 1);
-            if (scopes.indexOf("openid") === -1) {
-                scopes.push("openid");
+            else {
+                // asyncPopups flag is set to false. Opens popup before acquiring token.
+                var popup = PopupHandler.openSizedPopup();
+                return this.acquireTokenPopupAsync(request, popup);
             }
-            if (scopes.indexOf("profile") === -1) {
-                scopes.push("profile");
+        };
+        /**
+         * Helper which obtains an access_token for your API via opening a popup window in the user's browser
+         * @param {@link (PopupRequest:type)}
+         *
+         * @returns {Promise.<AuthenticationResult>} - a promise that is fulfilled when this function has completed, or rejected if an error was raised. Returns the {@link AuthResponse} object
+         */
+        PublicClientApplication.prototype.acquireTokenPopupAsync = function (request, popup) {
+            return __awaiter(this, void 0, void 0, function () {
+                var validRequest, serverTelemetryManager, authCodeRequest, authClient, navigateUrl, interactionHandler, popupWindow, hash, e_3;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0:
+                            validRequest = this.preflightInteractiveRequest(request, InteractionType.POPUP);
+                            serverTelemetryManager = this.initializeServerTelemetryManager(ApiId.acquireTokenPopup, validRequest.correlationId);
+                            _a.label = 1;
+                        case 1:
+                            _a.trys.push([1, 7, , 8]);
+                            return [4 /*yield*/, this.initializeAuthorizationCodeRequest(validRequest)];
+                        case 2:
+                            authCodeRequest = _a.sent();
+                            return [4 /*yield*/, this.createAuthCodeClient(serverTelemetryManager, validRequest.authority)];
+                        case 3:
+                            authClient = _a.sent();
+                            return [4 /*yield*/, authClient.getAuthCodeUrl(validRequest)];
+                        case 4:
+                            navigateUrl = _a.sent();
+                            interactionHandler = new PopupHandler(authClient, this.browserStorage);
+                            popupWindow = interactionHandler.initiateAuthRequest(navigateUrl, authCodeRequest, popup);
+                            return [4 /*yield*/, interactionHandler.monitorPopupForHash(popupWindow, this.config.system.windowHashTimeout)];
+                        case 5:
+                            hash = _a.sent();
+                            return [4 /*yield*/, interactionHandler.handleCodeResponse(hash)];
+                        case 6:
+                            // Handle response from hash string.
+                            return [2 /*return*/, _a.sent()];
+                        case 7:
+                            e_3 = _a.sent();
+                            serverTelemetryManager.cacheFailedRequest(e_3);
+                            this.browserStorage.cleanRequest();
+                            throw e_3;
+                        case 8: return [2 /*return*/];
+                    }
+                });
+            });
+        };
+        // #endregion
+        // #region Silent Flow
+        /**
+         * This function uses a hidden iframe to fetch an authorization code from the eSTS. There are cases where this may not work:
+         * - Any browser using a form of Intelligent Tracking Prevention
+         * - If there is not an established session with the service
+         *
+         * In these cases, the request must be done inside a popup or full frame redirect.
+         *
+         * For the cases where interaction is required, you cannot send a request with prompt=none.
+         *
+         * If your refresh token has expired, you can use this function to fetch a new set of tokens silently as long as
+         * you session on the server still exists.
+         * @param {@link AuthorizationUrlRequest}
+         *
+         * @returns {Promise.<AuthenticationResult>} - a promise that is fulfilled when this function has completed, or rejected if an error was raised. Returns the {@link AuthResponse} object
+         */
+        PublicClientApplication.prototype.ssoSilent = function (request) {
+            return __awaiter(this, void 0, void 0, function () {
+                var silentRequest, serverTelemetryManager, authCodeRequest, scopeString, authClient, navigateUrl, e_4;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0:
+                            // block the reload if it occurred inside a hidden iframe
+                            BrowserUtils.blockReloadInHiddenIframes();
+                            // Check that we have some SSO data
+                            if (StringUtils.isEmpty(request.loginHint) && StringUtils.isEmpty(request.sid)) {
+                                throw BrowserAuthError.createSilentSSOInsufficientInfoError();
+                            }
+                            // Check that prompt is set to none, throw error if it is set to anything else.
+                            if (request.prompt && request.prompt !== PromptValue.NONE) {
+                                throw BrowserAuthError.createSilentPromptValueError(request.prompt);
+                            }
+                            silentRequest = this.initializeAuthorizationRequest(__assign(__assign({}, request), { prompt: PromptValue.NONE }), InteractionType.SILENT);
+                            serverTelemetryManager = this.initializeServerTelemetryManager(ApiId.ssoSilent, silentRequest.correlationId);
+                            _a.label = 1;
+                        case 1:
+                            _a.trys.push([1, 6, , 7]);
+                            return [4 /*yield*/, this.initializeAuthorizationCodeRequest(silentRequest)];
+                        case 2:
+                            authCodeRequest = _a.sent();
+                            scopeString = silentRequest.scopes ? silentRequest.scopes.join(" ") : "";
+                            return [4 /*yield*/, this.createAuthCodeClient(serverTelemetryManager, silentRequest.authority)];
+                        case 3:
+                            authClient = _a.sent();
+                            return [4 /*yield*/, authClient.getAuthCodeUrl(silentRequest)];
+                        case 4:
+                            navigateUrl = _a.sent();
+                            return [4 /*yield*/, this.silentTokenHelper(navigateUrl, authCodeRequest, authClient, scopeString)];
+                        case 5: return [2 /*return*/, _a.sent()];
+                        case 6:
+                            e_4 = _a.sent();
+                            serverTelemetryManager.cacheFailedRequest(e_4);
+                            this.browserStorage.cleanRequest();
+                            throw e_4;
+                        case 7: return [2 /*return*/];
+                    }
+                });
+            });
+        };
+        /**
+         * Use this function to obtain a token before every call to the API / resource provider
+         *
+         * MSAL return's a cached token when available
+         * Or it send's a request to the STS to obtain a new token using a refresh token.
+         *
+         * @param {@link (SilentRequest:type)}
+         *
+         * To renew idToken, please pass clientId as the only scope in the Authentication Parameters
+         * @returns {Promise.<AuthenticationResult>} - a promise that is fulfilled when this function has completed, or rejected if an error was raised. Returns the {@link AuthResponse} object
+         *
+         */
+        PublicClientApplication.prototype.acquireTokenSilent = function (request) {
+            return __awaiter(this, void 0, void 0, function () {
+                var silentRequest, serverTelemetryManager, silentAuthClient, e_5, isServerError, isInteractionRequiredError, isInvalidGrantError, silentAuthUrlRequest, authCodeRequest, authClient, navigateUrl, scopeString, e_6;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0:
+                            // block the reload if it occurred inside a hidden iframe
+                            BrowserUtils.blockReloadInHiddenIframes();
+                            silentRequest = __assign(__assign({}, request), this.initializeBaseRequest(request));
+                            serverTelemetryManager = this.initializeServerTelemetryManager(ApiId.acquireTokenSilent_silentFlow, silentRequest.correlationId);
+                            _a.label = 1;
+                        case 1:
+                            _a.trys.push([1, 4, , 12]);
+                            return [4 /*yield*/, this.createSilentFlowClient(serverTelemetryManager, silentRequest.authority)];
+                        case 2:
+                            silentAuthClient = _a.sent();
+                            return [4 /*yield*/, silentAuthClient.acquireToken(silentRequest)];
+                        case 3:
+                            // Send request to renew token. Auth module will throw errors if token cannot be renewed.
+                            return [2 /*return*/, _a.sent()];
+                        case 4:
+                            e_5 = _a.sent();
+                            serverTelemetryManager.cacheFailedRequest(e_5);
+                            isServerError = e_5 instanceof ServerError;
+                            isInteractionRequiredError = e_5 instanceof InteractionRequiredAuthError;
+                            isInvalidGrantError = (e_5.errorCode === BrowserConstants.INVALID_GRANT_ERROR);
+                            if (!(isServerError && isInvalidGrantError && !isInteractionRequiredError)) return [3 /*break*/, 11];
+                            silentAuthUrlRequest = this.initializeAuthorizationRequest(__assign(__assign({}, silentRequest), { redirectUri: request.redirectUri, prompt: PromptValue.NONE }), InteractionType.SILENT);
+                            serverTelemetryManager = this.initializeServerTelemetryManager(ApiId.acquireTokenSilent_authCode, silentAuthUrlRequest.correlationId);
+                            _a.label = 5;
+                        case 5:
+                            _a.trys.push([5, 10, , 11]);
+                            return [4 /*yield*/, this.initializeAuthorizationCodeRequest(silentAuthUrlRequest)];
+                        case 6:
+                            authCodeRequest = _a.sent();
+                            return [4 /*yield*/, this.createAuthCodeClient(serverTelemetryManager, silentAuthUrlRequest.authority)];
+                        case 7:
+                            authClient = _a.sent();
+                            return [4 /*yield*/, authClient.getAuthCodeUrl(silentAuthUrlRequest)];
+                        case 8:
+                            navigateUrl = _a.sent();
+                            scopeString = silentAuthUrlRequest.scopes ? silentAuthUrlRequest.scopes.join(" ") : "";
+                            return [4 /*yield*/, this.silentTokenHelper(navigateUrl, authCodeRequest, authClient, scopeString)];
+                        case 9: return [2 /*return*/, _a.sent()];
+                        case 10:
+                            e_6 = _a.sent();
+                            serverTelemetryManager.cacheFailedRequest(e_6);
+                            this.browserStorage.cleanRequest();
+                            throw e_6;
+                        case 11: throw e_5;
+                        case 12: return [2 /*return*/];
+                    }
+                });
+            });
+        };
+        /**
+         * Helper which acquires an authorization code silently using a hidden iframe from given url
+         * using the scopes requested as part of the id, and exchanges the code for a set of OAuth tokens.
+         * @param navigateUrl
+         * @param userRequestScopes
+         */
+        PublicClientApplication.prototype.silentTokenHelper = function (navigateUrl, authCodeRequest, authClient, userRequestScopes) {
+            return __awaiter(this, void 0, void 0, function () {
+                var silentHandler, msalFrame, hash;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0:
+                            silentHandler = new SilentHandler(authClient, this.browserStorage, this.config.system.loadFrameTimeout);
+                            return [4 /*yield*/, silentHandler.initiateAuthRequest(navigateUrl, authCodeRequest, userRequestScopes)];
+                        case 1:
+                            msalFrame = _a.sent();
+                            return [4 /*yield*/, silentHandler.monitorIframeForHash(msalFrame, this.config.system.iframeHashTimeout)];
+                        case 2:
+                            hash = _a.sent();
+                            // Handle response from hash string
+                            return [2 /*return*/, silentHandler.handleCodeResponse(hash)];
+                    }
+                });
+            });
+        };
+        // #endregion
+        // #region Logout
+        /**
+         * Use to log out the current user, and redirect the user to the postLogoutRedirectUri.
+         * Default behaviour is to redirect the user to `window.location.href`.
+         * @param {@link (EndSessionRequest:type)}
+         */
+        PublicClientApplication.prototype.logout = function (logoutRequest) {
+            return __awaiter(this, void 0, void 0, function () {
+                var validLogoutRequest, authClient, logoutUri;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0:
+                            validLogoutRequest = this.initializeLogoutRequest(logoutRequest);
+                            return [4 /*yield*/, this.createAuthCodeClient(null, validLogoutRequest && validLogoutRequest.authority)];
+                        case 1:
+                            authClient = _a.sent();
+                            logoutUri = authClient.getLogoutUri(validLogoutRequest);
+                            BrowserUtils.navigateWindow(logoutUri);
+                            return [2 /*return*/];
+                    }
+                });
+            });
+        };
+        // #endregion
+        // #region Account APIs
+        /**
+         * Returns all accounts that MSAL currently has data for.
+         * (the account object is created at the time of successful login)
+         * or empty array when no accounts are found
+         * @returns {@link AccountInfo[]} - Array of account objects in cache
+         */
+        PublicClientApplication.prototype.getAllAccounts = function () {
+            return this.browserStorage.getAllAccounts();
+        };
+        /**
+         * Returns the signed in account matching username.
+         * (the account object is created at the time of successful login)
+         * or null when no matching account is found.
+         * This API is provided for convenience but getAccountById should be used for best reliability
+         * @returns {@link AccountInfo} - the account object stored in MSAL
+         */
+        PublicClientApplication.prototype.getAccountByUsername = function (userName) {
+            var allAccounts = this.getAllAccounts();
+            if (!StringUtils.isEmpty(userName) && allAccounts && allAccounts.length) {
+                return allAccounts.filter(function (accountObj) { return accountObj.username.toLowerCase() === userName.toLowerCase(); })[0] || null;
             }
-        }
-    };
-    AuthenticationRequestParameters.prototype.parseScope = function (scopes) {
-        var scopeList = "";
-        if (scopes) {
-            for (var i = 0; i < scopes.length; ++i) {
-                scopeList += (i !== scopes.length - 1) ? scopes[i] + " " : scopes[i];
+            else {
+                return null;
             }
-        }
-        return scopeList;
-    };
-    return AuthenticationRequestParameters;
-}());
-exports.AuthenticationRequestParameters = AuthenticationRequestParameters;
-
-
-/***/ }),
-/* 16 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/**
- * Copyright (c) Microsoft Corporation
- *  All Rights Reserved
- *  MIT License
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this
- * software and associated documentation files (the 'Software'), to deal in the Software
- * without restriction, including without limitation the rights to use, copy, modify,
- * merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to the following
- * conditions:
- *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
- * OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
- * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT
- * OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-var Utils_1 = __webpack_require__(0);
-/*
- * @hidden
- */
-var ClientInfo = /** @class */ (function () {
-    function ClientInfo(rawClientInfo) {
-        if (!rawClientInfo || Utils_1.Utils.isEmpty(rawClientInfo)) {
-            this.uid = "";
-            this.utid = "";
-            return;
-        }
-        try {
-            var decodedClientInfo = Utils_1.Utils.base64DecodeStringUrlSafe(rawClientInfo);
-            var clientInfo = JSON.parse(decodedClientInfo);
-            if (clientInfo) {
-                if (clientInfo.hasOwnProperty("uid")) {
-                    this.uid = clientInfo.uid;
-                }
-                if (clientInfo.hasOwnProperty("utid")) {
-                    this.utid = clientInfo.utid;
-                }
+        };
+        /**
+         * Returns the signed in account matching homeAccountId.
+         * (the account object is created at the time of successful login)
+         * or null when no matching account is found
+         * @returns {@link AccountInfo} - the account object stored in MSAL
+         */
+        PublicClientApplication.prototype.getAccountByHomeId = function (homeAccountId) {
+            var allAccounts = this.getAllAccounts();
+            if (!StringUtils.isEmpty(homeAccountId) && allAccounts && allAccounts.length) {
+                return allAccounts.filter(function (accountObj) { return accountObj.homeAccountId === homeAccountId; })[0] || null;
             }
-        }
-        catch (e) {
-            throw new Error(e);
-        }
-    }
-    Object.defineProperty(ClientInfo.prototype, "uid", {
-        get: function () {
-            return this._uid ? this._uid : "";
-        },
-        set: function (uid) {
-            this._uid = uid;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ClientInfo.prototype, "utid", {
-        get: function () {
-            return this._utid ? this._utid : "";
-        },
-        set: function (utid) {
-            this._utid = utid;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return ClientInfo;
-}());
-exports.ClientInfo = ClientInfo;
-
-
-/***/ }),
-/* 17 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/*
-  * Copyright (c) Microsoft Corporation
-  *  All Rights Reserved
-  *  MIT License
-  *
-  * Permission is hereby granted, free of charge, to any person obtaining a copy of this
-  * software and associated documentation files (the "Software"), to deal in the Software
-  * without restriction, including without limitation the rights to use, copy, modify,
-  * merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
-  * permit persons to whom the Software is furnished to do so, subject to the following
-  * conditions:
-  *
-  * The above copyright notice and this permission notice shall be
-  * included in all copies or substantial portions of the Software.
-  *
-  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
-  * OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-  * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT
-  * OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-  */
-Object.defineProperty(exports, "__esModule", { value: true });
-var Utils_1 = __webpack_require__(0);
-/*
- * @hidden
- */
-var IdToken = /** @class */ (function () {
-    function IdToken(rawIdToken) {
-        if (Utils_1.Utils.isEmpty(rawIdToken)) {
-            throw new Error("null or empty raw idtoken");
-        }
-        try {
-            this.rawIdToken = rawIdToken;
-            this.decodedIdToken = Utils_1.Utils.extractIdToken(rawIdToken);
-            if (this.decodedIdToken) {
-                if (this.decodedIdToken.hasOwnProperty("iss")) {
-                    this.issuer = this.decodedIdToken["iss"];
-                }
-                if (this.decodedIdToken.hasOwnProperty("oid")) {
-                    this.objectId = this.decodedIdToken['oid'];
-                }
-                if (this.decodedIdToken.hasOwnProperty("sub")) {
-                    this.subject = this.decodedIdToken["sub"];
-                }
-                if (this.decodedIdToken.hasOwnProperty("tid")) {
-                    this.tenantId = this.decodedIdToken["tid"];
-                }
-                if (this.decodedIdToken.hasOwnProperty("ver")) {
-                    this.version = this.decodedIdToken["ver"];
-                }
-                if (this.decodedIdToken.hasOwnProperty("preferred_username")) {
-                    this.preferredName = this.decodedIdToken["preferred_username"];
-                }
-                if (this.decodedIdToken.hasOwnProperty("name")) {
-                    this.name = this.decodedIdToken["name"];
-                }
-                if (this.decodedIdToken.hasOwnProperty("nonce")) {
-                    this.nonce = this.decodedIdToken["nonce"];
-                }
-                if (this.decodedIdToken.hasOwnProperty("exp")) {
-                    this.expiration = this.decodedIdToken["exp"];
-                }
-                if (this.decodedIdToken.hasOwnProperty("home_oid")) {
-                    this.homeObjectId = this.decodedIdToken["home_oid"];
-                }
+            else {
+                return null;
             }
-        }
-        catch (e) {
-            throw new Error("Failed to parse the returned id token");
-        }
-    }
-    return IdToken;
-}());
-exports.IdToken = IdToken;
-
-
-/***/ }),
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/**
- * Copyright (c) Microsoft Corporation
- *  All Rights Reserved
- *  MIT License
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this
- * software and associated documentation files (the 'Software'), to deal in the Software
- * without restriction, including without limitation the rights to use, copy, modify,
- * merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to the following
- * conditions:
- *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
- * OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
- * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT
- * OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-var Constants_1 = __webpack_require__(3);
-var AccessTokenCacheItem_1 = __webpack_require__(19);
-/*
- * @hidden
- */
-var Storage = /** @class */ (function () {
-    function Storage(cacheLocation) {
-        if (Storage._instance) {
-            return Storage._instance;
-        }
-        this._cacheLocation = cacheLocation;
-        this._localStorageSupported = typeof window[this._cacheLocation] !== "undefined" && window[this._cacheLocation] != null;
-        this._sessionStorageSupported = typeof window[cacheLocation] !== "undefined" && window[cacheLocation] != null;
-        Storage._instance = this;
-        if (!this._localStorageSupported && !this._sessionStorageSupported) {
-            throw new Error("localStorage and sessionStorage not supported");
-        }
-        return Storage._instance;
-    }
-    // add value to storage
-    Storage.prototype.setItem = function (key, value) {
-        if (window[this._cacheLocation]) {
-            window[this._cacheLocation].setItem(key, value);
-        }
-        else {
-            throw new Error("localStorage and sessionStorage are not supported");
-        }
-    };
-    // get one item by key from storage
-    Storage.prototype.getItem = function (key) {
-        if (window[this._cacheLocation]) {
-            return window[this._cacheLocation].getItem(key);
-        }
-        else {
-            throw new Error("localStorage and sessionStorage are not supported");
-        }
-    };
-    // remove value from storage
-    Storage.prototype.removeItem = function (key) {
-        if (window[this._cacheLocation]) {
-            return window[this._cacheLocation].removeItem(key);
-        }
-        else {
-            throw new Error("localStorage and sessionStorage are not supported");
-        }
-    };
-    // clear storage (remove all items from it)
-    Storage.prototype.clear = function () {
-        if (window[this._cacheLocation]) {
-            return window[this._cacheLocation].clear();
-        }
-        else {
-            throw new Error("localStorage and sessionStorage are not supported");
-        }
-    };
-    Storage.prototype.getAllAccessTokens = function (clientId, userIdentifier) {
-        var results = [];
-        var accessTokenCacheItem;
-        var storage = window[this._cacheLocation];
-        if (storage) {
-            var key = void 0;
-            for (key in storage) {
-                if (storage.hasOwnProperty(key)) {
-                    if (key.match(clientId) && key.match(userIdentifier)) {
-                        var value = this.getItem(key);
-                        if (value) {
-                            accessTokenCacheItem = new AccessTokenCacheItem_1.AccessTokenCacheItem(JSON.parse(key), JSON.parse(value));
-                            results.push(accessTokenCacheItem);
-                        }
+        };
+        // #endregion
+        // #region Helpers
+        /**
+         *
+         * Use to get the redirect uri configured in MSAL or null.
+         * @returns {string} redirect URL
+         *
+         */
+        PublicClientApplication.prototype.getRedirectUri = function (requestRedirectUri) {
+            return requestRedirectUri || this.config.auth.redirectUri || BrowserUtils.getCurrentUri();
+        };
+        /**
+         * Use to get the post logout redirect uri configured in MSAL or null.
+         *
+         * @returns {string} post logout redirect URL
+         */
+        PublicClientApplication.prototype.getPostLogoutRedirectUri = function (requestPostLogoutRedirectUri) {
+            return requestPostLogoutRedirectUri || this.config.auth.postLogoutRedirectUri || BrowserUtils.getCurrentUri();
+        };
+        /**
+         * Used to get a discovered version of the default authority.
+         */
+        PublicClientApplication.prototype.getDiscoveredDefaultAuthority = function () {
+            return __awaiter(this, void 0, void 0, function () {
+                var _a;
+                return __generator(this, function (_b) {
+                    switch (_b.label) {
+                        case 0:
+                            if (!!this.defaultAuthority) return [3 /*break*/, 2];
+                            _a = this;
+                            return [4 /*yield*/, AuthorityFactory.createDiscoveredInstance(this.config.auth.authority, this.config.system.networkClient)];
+                        case 1:
+                            _a.defaultAuthority = _b.sent();
+                            _b.label = 2;
+                        case 2: return [2 /*return*/, this.defaultAuthority];
+                    }
+                });
+            });
+        };
+        /**
+         * Helper to check whether interaction is in progress.
+         */
+        PublicClientApplication.prototype.interactionInProgress = function () {
+            // Check whether value in cache is present and equal to expected value
+            return this.browserStorage.getItem(this.browserStorage.generateCacheKey(BrowserConstants.INTERACTION_STATUS_KEY), CacheSchemaType.TEMPORARY) === BrowserConstants.INTERACTION_IN_PROGRESS_VALUE;
+        };
+        /**
+         * Creates an Authorization Code Client with the given authority, or the default authority.
+         * @param authorityUrl
+         */
+        PublicClientApplication.prototype.createAuthCodeClient = function (serverTelemetryManager, authorityUrl) {
+            return __awaiter(this, void 0, void 0, function () {
+                var clientConfig;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4 /*yield*/, this.getClientConfiguration(serverTelemetryManager, authorityUrl)];
+                        case 1:
+                            clientConfig = _a.sent();
+                            return [2 /*return*/, new AuthorizationCodeClient(clientConfig)];
+                    }
+                });
+            });
+        };
+        /**
+         * Creates an Silent Flow Client with the given authority, or the default authority.
+         * @param authorityUrl
+         */
+        PublicClientApplication.prototype.createSilentFlowClient = function (serverTelemetryManager, authorityUrl) {
+            return __awaiter(this, void 0, void 0, function () {
+                var clientConfig;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4 /*yield*/, this.getClientConfiguration(serverTelemetryManager, authorityUrl)];
+                        case 1:
+                            clientConfig = _a.sent();
+                            return [2 /*return*/, new SilentFlowClient(clientConfig)];
+                    }
+                });
+            });
+        };
+        /**
+         * Creates a Client Configuration object with the given request authority, or the default authority.
+         * @param requestAuthority
+         */
+        PublicClientApplication.prototype.getClientConfiguration = function (serverTelemetryManager, requestAuthority) {
+            return __awaiter(this, void 0, void 0, function () {
+                var discoveredAuthority, _a;
+                return __generator(this, function (_b) {
+                    switch (_b.label) {
+                        case 0:
+                            if (!(!StringUtils.isEmpty(requestAuthority) && requestAuthority !== this.config.auth.authority)) return [3 /*break*/, 2];
+                            return [4 /*yield*/, AuthorityFactory.createDiscoveredInstance(requestAuthority, this.config.system.networkClient)];
+                        case 1:
+                            _a = _b.sent();
+                            return [3 /*break*/, 4];
+                        case 2: return [4 /*yield*/, this.getDiscoveredDefaultAuthority()];
+                        case 3:
+                            _a = _b.sent();
+                            _b.label = 4;
+                        case 4:
+                            discoveredAuthority = _a;
+                            return [2 /*return*/, {
+                                authOptions: {
+                                    clientId: this.config.auth.clientId,
+                                    authority: discoveredAuthority,
+                                    knownAuthorities: this.config.auth.knownAuthorities,
+                                    cloudDiscoveryMetadata: this.config.auth.cloudDiscoveryMetadata,
+                                    clientCapabilities: this.config.auth.clientCapabilities
+                                },
+                                systemOptions: {
+                                    tokenRenewalOffsetSeconds: this.config.system.tokenRenewalOffsetSeconds
+                                },
+                                loggerOptions: {
+                                    loggerCallback: this.config.system.loggerOptions.loggerCallback,
+                                    piiLoggingEnabled: this.config.system.loggerOptions.piiLoggingEnabled
+                                },
+                                cryptoInterface: this.browserCrypto,
+                                networkInterface: this.networkClient,
+                                storageInterface: this.browserStorage,
+                                serverTelemetryManager: serverTelemetryManager,
+                                libraryInfo: {
+                                    sku: BrowserConstants.MSAL_SKU,
+                                    version: version$1,
+                                    cpu: "",
+                                    os: ""
+                                }
+                            }];
+                    }
+                });
+            });
+        };
+        /**
+         * Helper to validate app environment before making a request.
+         */
+        PublicClientApplication.prototype.preflightInteractiveRequest = function (request, interactionType) {
+            // block the reload if it occurred inside a hidden iframe
+            BrowserUtils.blockReloadInHiddenIframes();
+            // Check if interaction is in progress. Throw error if true.
+            if (this.interactionInProgress()) {
+                throw BrowserAuthError.createInteractionInProgressError();
+            }
+            return this.initializeAuthorizationRequest(request, interactionType);
+        };
+        /**
+         * Initializer function for all request APIs
+         * @param request
+         */
+        PublicClientApplication.prototype.initializeBaseRequest = function (request) {
+            var validatedRequest = __assign({}, request);
+            if (StringUtils.isEmpty(validatedRequest.authority)) {
+                validatedRequest.authority = this.config.auth.authority;
+            }
+            validatedRequest.correlationId = (request && request.correlationId) || this.browserCrypto.createNewGuid();
+            return validatedRequest;
+        };
+        PublicClientApplication.prototype.initializeServerTelemetryManager = function (apiId, correlationId, forceRefresh) {
+            var telemetryPayload = {
+                clientId: this.config.auth.clientId,
+                correlationId: correlationId,
+                apiId: apiId,
+                forceRefresh: forceRefresh || false
+            };
+            return new ServerTelemetryManager(telemetryPayload, this.browserStorage);
+        };
+        /**
+         * Generates a request that will contain the openid and profile scopes.
+         * @param request
+         */
+        PublicClientApplication.prototype.setDefaultScopes = function (request) {
+            return __assign(__assign({}, request), { scopes: __spreadArrays(((request && request.scopes) || []), DEFAULT_REQUEST.scopes) });
+        };
+        /**
+         * Helper to initialize required request parameters for interactive APIs and ssoSilent()
+         * @param request
+         */
+        PublicClientApplication.prototype.initializeAuthorizationRequest = function (request, interactionType) {
+            var validatedRequest = __assign({}, request);
+            validatedRequest.redirectUri = this.getRedirectUri(validatedRequest.redirectUri);
+            // Check for ADAL SSO
+            if (StringUtils.isEmpty(validatedRequest.loginHint)) {
+                // Only check for adal token if no SSO params are being used
+                var adalIdTokenString = this.browserStorage.getItem(PersistentCacheKeys.ADAL_ID_TOKEN, CacheSchemaType.TEMPORARY);
+                if (!StringUtils.isEmpty(adalIdTokenString)) {
+                    var adalIdToken = new IdToken(adalIdTokenString, this.browserCrypto);
+                    this.browserStorage.removeItem(PersistentCacheKeys.ADAL_ID_TOKEN);
+                    if (adalIdToken.claims && adalIdToken.claims.upn) {
+                        validatedRequest.loginHint = adalIdToken.claims.upn;
                     }
                 }
             }
-        }
-        else {
-            throw new Error("localStorage and sessionStorage are not supported");
-        }
-        return results;
-    };
-    Storage.prototype.removeAcquireTokenEntries = function (authorityKey, acquireTokenUserKey) {
-        var storage = window[this._cacheLocation];
-        if (storage) {
-            var key = void 0;
-            for (key in storage) {
-                if (storage.hasOwnProperty(key)) {
-                    if ((authorityKey != "" && key.indexOf(authorityKey) > -1) || (acquireTokenUserKey != "" && key.indexOf(acquireTokenUserKey) > -1)) {
-                        this.removeItem(key);
+            var browserState = {
+                interactionType: interactionType
+            };
+            validatedRequest.state = ProtocolUtils.setRequestState(this.browserCrypto, (request && request.state) || "", browserState);
+            if (StringUtils.isEmpty(validatedRequest.nonce)) {
+                validatedRequest.nonce = this.browserCrypto.createNewGuid();
+            }
+            validatedRequest.responseMode = ResponseMode.FRAGMENT;
+            validatedRequest = __assign(__assign({}, validatedRequest), this.initializeBaseRequest(validatedRequest));
+            this.browserStorage.updateCacheEntries(validatedRequest.state, validatedRequest.nonce, validatedRequest.authority);
+            return __assign(__assign({}, validatedRequest), this.setDefaultScopes(validatedRequest));
+        };
+        /**
+         * Generates an auth code request tied to the url request.
+         * @param request
+         */
+        PublicClientApplication.prototype.initializeAuthorizationCodeRequest = function (request) {
+            return __awaiter(this, void 0, void 0, function () {
+                var generatedPkceParams, authCodeRequest;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4 /*yield*/, this.browserCrypto.generatePkceCodes()];
+                        case 1:
+                            generatedPkceParams = _a.sent();
+                            authCodeRequest = __assign(__assign({}, request), { redirectUri: request.redirectUri, code: "", codeVerifier: generatedPkceParams.verifier });
+                            request.codeChallenge = generatedPkceParams.challenge;
+                            request.codeChallengeMethod = Constants.S256_CODE_CHALLENGE_METHOD;
+                            return [2 /*return*/, authCodeRequest];
                     }
-                }
+                });
+            });
+        };
+        /**
+         * Initializer for the logout request.
+         * @param logoutRequest
+         */
+        PublicClientApplication.prototype.initializeLogoutRequest = function (logoutRequest) {
+            var validLogoutRequest = __assign({}, logoutRequest);
+            if (StringUtils.isEmpty(validLogoutRequest.authority)) {
+                validLogoutRequest.authority = this.config.auth.authority;
             }
-        }
-        else {
-            throw new Error("localStorage and sessionStorage are not supported");
-        }
-    };
-    Storage.prototype.resetCacheItems = function () {
-        var storage = window[this._cacheLocation];
-        if (storage) {
-            var key = void 0;
-            for (key in storage) {
-                if (storage.hasOwnProperty(key) && key.indexOf(Constants_1.Constants.msal) !== -1) {
-                    this.setItem(key, "");
-                }
-                if (storage.hasOwnProperty(key) && key.indexOf(Constants_1.Constants.renewStatus) !== -1)
-                    this.removeItem(key);
-            }
-        }
-        else {
-            throw new Error("localStorage and sessionStorage are not supported");
-        }
-    };
-    return Storage;
-}());
-exports.Storage = Storage;
+            validLogoutRequest.correlationId = (validLogoutRequest && validLogoutRequest.correlationId) || this.browserCrypto.createNewGuid();
+            validLogoutRequest.postLogoutRedirectUri = this.getPostLogoutRedirectUri(logoutRequest ? logoutRequest.postLogoutRedirectUri : "");
+            return validLogoutRequest;
+        };
+        return PublicClientApplication;
+    }());
 
+    exports.AuthError = AuthError;
+    exports.AuthErrorMessage = AuthErrorMessage;
+    exports.BrowserAuthError = BrowserAuthError;
+    exports.BrowserAuthErrorMessage = BrowserAuthErrorMessage;
+    exports.BrowserConfigurationAuthError = BrowserConfigurationAuthError;
+    exports.BrowserConfigurationAuthErrorMessage = BrowserConfigurationAuthErrorMessage;
+    exports.InteractionRequiredAuthError = InteractionRequiredAuthError;
+    exports.Logger = Logger;
+    exports.PublicClientApplication = PublicClientApplication;
 
-/***/ }),
-/* 19 */
-/***/ (function(module, exports, __webpack_require__) {
+    Object.defineProperty(exports, '__esModule', { value: true });
 
-"use strict";
-
-/**
- * Copyright (c) Microsoft Corporation
- *  All Rights Reserved
- *  MIT License
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this
- * software and associated documentation files (the 'Software'), to deal in the Software
- * without restriction, including without limitation the rights to use, copy, modify,
- * merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to the following
- * conditions:
- *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
- * OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
- * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT
- * OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-/*
- * @hidden
- */
-var AccessTokenCacheItem = /** @class */ (function () {
-    function AccessTokenCacheItem(key, value) {
-        this.key = key;
-        this.value = value;
-    }
-    return AccessTokenCacheItem;
-}());
-exports.AccessTokenCacheItem = AccessTokenCacheItem;
-
-
-/***/ }),
-/* 20 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/**
- * Copyright (c) Microsoft Corporation
- *  All Rights Reserved
- *  MIT License
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this
- * software and associated documentation files (the 'Software'), to deal in the Software
- * without restriction, including without limitation the rights to use, copy, modify,
- * merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to the following
- * conditions:
- *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
- * OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
- * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT
- * OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-/*
- * @hidden
- */
-var Utils_1 = __webpack_require__(0);
-var AadAuthority_1 = __webpack_require__(8);
-var B2cAuthority_1 = __webpack_require__(21);
-var Authority_1 = __webpack_require__(1);
-var ErrorMessage_1 = __webpack_require__(5);
-var AuthorityFactory = /** @class */ (function () {
-    function AuthorityFactory() {
-    }
-    /*
-    * Parse the url and determine the type of authority
-    */
-    AuthorityFactory.DetectAuthorityFromUrl = function (authorityUrl) {
-        authorityUrl = Utils_1.Utils.CanonicalizeUri(authorityUrl);
-        var components = Utils_1.Utils.GetUrlComponents(authorityUrl);
-        var pathSegments = components.PathSegments;
-        switch (pathSegments[0]) {
-            case "tfp":
-                return Authority_1.AuthorityType.B2C;
-            case "adfs":
-                return Authority_1.AuthorityType.Adfs;
-            default:
-                return Authority_1.AuthorityType.Aad;
-        }
-    };
-    /*
-    * Create an authority object of the correct type based on the url
-    * Performs basic authority validation - checks to see if the authority is of a valid type (eg aad, b2c)
-    */
-    AuthorityFactory.CreateInstance = function (authorityUrl, validateAuthority) {
-        var type = AuthorityFactory.DetectAuthorityFromUrl(authorityUrl);
-        // Depending on above detection, create the right type.
-        switch (type) {
-            case Authority_1.AuthorityType.B2C:
-                return new B2cAuthority_1.B2cAuthority(authorityUrl, validateAuthority);
-            case Authority_1.AuthorityType.Aad:
-                return new AadAuthority_1.AadAuthority(authorityUrl, validateAuthority);
-            default:
-                throw ErrorMessage_1.ErrorMessage.invalidAuthorityType;
-        }
-    };
-    return AuthorityFactory;
-}());
-exports.AuthorityFactory = AuthorityFactory;
-
-
-/***/ }),
-/* 21 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-/**
- * Copyright (c) Microsoft Corporation
- *  All Rights Reserved
- *  MIT License
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this
- * software and associated documentation files (the 'Software'), to deal in the Software
- * without restriction, including without limitation the rights to use, copy, modify,
- * merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to the following
- * conditions:
- *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
- * OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
- * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT
- * OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
-Object.defineProperty(exports, "__esModule", { value: true });
-var tslib_1 = __webpack_require__(2);
-var AadAuthority_1 = __webpack_require__(8);
-var Authority_1 = __webpack_require__(1);
-var ErrorMessage_1 = __webpack_require__(5);
-var Utils_1 = __webpack_require__(0);
-/*
- * @hidden
- */
-var B2cAuthority = /** @class */ (function (_super) {
-    tslib_1.__extends(B2cAuthority, _super);
-    function B2cAuthority(authority, validateAuthority) {
-        var _this = _super.call(this, authority, validateAuthority) || this;
-        var urlComponents = Utils_1.Utils.GetUrlComponents(authority);
-        var pathSegments = urlComponents.PathSegments;
-        if (pathSegments.length < 3) {
-            throw ErrorMessage_1.ErrorMessage.b2cAuthorityUriInvalidPath;
-        }
-        _this.CanonicalAuthority = "https://" + urlComponents.HostNameAndPort + "/" + pathSegments[0] + "/" + pathSegments[1] + "/" + pathSegments[2] + "/";
-        return _this;
-    }
-    Object.defineProperty(B2cAuthority.prototype, "AuthorityType", {
-        get: function () {
-            return Authority_1.AuthorityType.B2C;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    /*
-     * Returns a promise with the TenantDiscoveryEndpoint
-     */
-    B2cAuthority.prototype.GetOpenIdConfigurationEndpointAsync = function () {
-        var _this = this;
-        var resultPromise = new Promise(function (resolve, reject) {
-            return resolve(_this.DefaultOpenIdConfigurationEndpoint);
-        });
-        if (!this.IsValidationEnabled) {
-            return resultPromise;
-        }
-        if (this.IsInTrustedHostList(this.CanonicalAuthorityUrlComponents.HostNameAndPort)) {
-            return resultPromise;
-        }
-        return new Promise(function (resolve, reject) {
-            return reject(ErrorMessage_1.ErrorMessage.unsupportedAuthorityValidation);
-        });
-    };
-    return B2cAuthority;
-}(AadAuthority_1.AadAuthority));
-exports.B2cAuthority = B2cAuthority;
-
-
-/***/ })
-/******/ ]);
-});
-//# sourceMappingURL=msal.js.map
+})));
+//# sourceMappingURL=msal-browser.js.map
