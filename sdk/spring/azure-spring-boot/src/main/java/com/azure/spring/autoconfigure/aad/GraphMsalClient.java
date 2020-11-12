@@ -42,9 +42,9 @@ import static com.azure.spring.autoconfigure.aad.Constants.ROLE_PREFIX;
 /**
  * Microsoft Graph client encapsulation.
  */
-public class AzureADGraphClient {
+public class GraphMsalClient {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AzureADGraphClient.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GraphMsalClient.class);
     private static final String MICROSOFT_GRAPH_SCOPE = "https://graph.microsoft.com/user.read";
     private static final String AAD_GRAPH_API_SCOPE = "https://graph.windows.net/user.read";
     // We use "aadfeed5" as suffix when client library is ADAL, upgrade to "aadfeed6" for MSAL
@@ -55,8 +55,8 @@ public class AzureADGraphClient {
     private final AADAuthenticationProperties aadAuthenticationProperties;
     private final boolean graphApiVersionIsV2;
 
-    public AzureADGraphClient(AADAuthenticationProperties aadAuthenticationProperties,
-                              ServiceEndpointsProperties serviceEndpointsProps) {
+    public GraphMsalClient(AADAuthenticationProperties aadAuthenticationProperties,
+                           ServiceEndpointsProperties serviceEndpointsProps) {
         this.aadAuthenticationProperties = aadAuthenticationProperties;
         this.serviceEndpoints = serviceEndpointsProps.getServiceEndpoints(aadAuthenticationProperties.getEnvironment());
         this.graphApiVersionIsV2 = Optional.of(aadAuthenticationProperties)

@@ -16,28 +16,23 @@ import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 
-import javax.naming.ServiceUnavailableException;
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.Optional;
 import java.util.Set;
 
 import static com.azure.spring.autoconfigure.aad.AADOAuth2ErrorCode.CONDITIONAL_ACCESS_POLICY;
-import static com.azure.spring.autoconfigure.aad.AADOAuth2ErrorCode.INVALID_REQUEST;
-import static com.azure.spring.autoconfigure.aad.AADOAuth2ErrorCode.SERVER_SERVER;
 
 /**
- * This implementation will retrieve group info of user from Microsoft Graph and map groups to {@link GrantedAuthority}.
+ * This implementation will retrieve group info of user from Microsoft Graph and map groups to {@link
+ * GrantedAuthority}.
  */
 public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, OidcUser> {
-    private final AADAuthenticationProperties aadAuthenticationProperties;
-    private final ServiceEndpointsProperties serviceEndpointsProperties;
     private final OidcUserService oidcUserService;
+    private final GraphWebClient graphWebClient;
 
-    public AADOAuth2UserService(AADAuthenticationProperties aadAuthenticationProperties,
-                                ServiceEndpointsProperties serviceEndpointsProperties) {
-        this.aadAuthenticationProperties = aadAuthenticationProperties;
-        this.serviceEndpointsProperties = serviceEndpointsProperties;
+    public AADOAuth2UserService(
+        GraphWebClient graphWebClient
+    ) {
+        this.graphWebClient = graphWebClient;
         this.oidcUserService = new OidcUserService();
     }
 
@@ -47,26 +42,9 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
         OidcUser oidcUser = oidcUserService.loadUser(userRequest);
         final Set<SimpleGrantedAuthority> mappedAuthorities;
         try {
-            // https://github.com/MicrosoftDocs/azure-docs/issues/8121#issuecomment-387090099
-            // In AAD App Registration configure oauth2AllowImplicitFlow to true
-            final AzureADGraphClient azureADGraphClient = new AzureADGraphClient(
-                aadAuthenticationProperties,
-                serviceEndpointsProperties
-            );
-            String graphApiToken = azureADGraphClient
-                .acquireTokenForGraphApi(
-                    userRequest.getIdToken().getTokenValue(),
-                    aadAuthenticationProperties.getTenantId()
-                )
-                .accessToken();
-            mappedAuthorities = azureADGraphClient.getGrantedAuthorities(graphApiToken);
-        } catch (MalformedURLException e) {
-            throw toOAuth2AuthenticationException(INVALID_REQUEST, "Failed to acquire token for Graph API.", e);
-        } catch (ServiceUnavailableException e) {
-            throw toOAuth2AuthenticationException(SERVER_SERVER, "Failed to acquire token for Graph API.", e);
-        } catch (IOException e) {
-            throw toOAuth2AuthenticationException(SERVER_SERVER, "Failed to map group to authorities.", e);
+            mappedAuthorities = graphWebClient.getGrantedAuthorities();
         } catch (MsalServiceException e) {
+            // TODO: chenrujun. Reimplement conditional access policy, or just delete related code.
             // Handle conditional access policy, step 2.
             // OAuth2AuthenticationException will be caught by AADAuthenticationFailureHandler.
             if (e.claims() != null && !e.claims().isEmpty()) {

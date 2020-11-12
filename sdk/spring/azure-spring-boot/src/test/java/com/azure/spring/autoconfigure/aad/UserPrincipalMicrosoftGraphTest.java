@@ -47,10 +47,9 @@ public class UserPrincipalMicrosoftGraphTest {
     @Rule
     public WireMockRule wireMockRule = new WireMockRule(9519);
 
-    private AzureADGraphClient graphClientMock;
+    private GraphWebClient graphWebClient;
     private AADAuthenticationProperties aadAuthenticationProperties;
     private ServiceEndpointsProperties serviceEndpointsProperties;
-    private String accessToken;
     private static String userGroupsJson;
 
     static {
@@ -69,7 +68,6 @@ public class UserPrincipalMicrosoftGraphTest {
 
     @Before
     public void setup() {
-        accessToken = MicrosoftGraphConstants.BEARER_TOKEN;
         aadAuthenticationProperties = new AADAuthenticationProperties();
         aadAuthenticationProperties.setEnvironment("global-v2-graph");
         aadAuthenticationProperties.getUserGroup().setKey("@odata.type");
@@ -83,12 +81,16 @@ public class UserPrincipalMicrosoftGraphTest {
     }
 
     @Test
-    public void getAuthoritiesByUserGroups() throws Exception {
+    public void getAuthoritiesByUserGroups() {
         aadAuthenticationProperties.getUserGroup().setGroupRelationship("direct");
         aadAuthenticationProperties.getUserGroup().setAllowedGroups(Collections.singletonList("group1"));
         serviceEndpointsProperties.getServiceEndpoints("global-v2-graph")
                                   .setAadMembershipRestUri("http://localhost:9519/memberOf");
-        this.graphClientMock = new AzureADGraphClient(aadAuthenticationProperties, serviceEndpointsProperties);
+        this.graphWebClient = new GraphWebClient(
+            aadAuthenticationProperties,
+            serviceEndpointsProperties,
+            UserPrincipalAzureADGraphTest.createWebClientForTest()
+        );
 
         stubFor(get(urlEqualTo("/memberOf"))
             .withHeader(ACCEPT, equalTo(APPLICATION_JSON_VALUE))
@@ -97,23 +99,27 @@ public class UserPrincipalMicrosoftGraphTest {
                 .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
                 .withBody(userGroupsJson)));
 
-        assertThat(graphClientMock.getGrantedAuthorities(MicrosoftGraphConstants.BEARER_TOKEN))
+        assertThat(graphWebClient.getGrantedAuthorities())
             .isNotEmpty()
             .extracting(GrantedAuthority::getAuthority)
             .containsExactly("ROLE_group1");
 
         verify(getRequestedFor(urlMatching("/memberOf"))
-            .withHeader(AUTHORIZATION, equalTo(String.format("Bearer %s", accessToken)))
+            .withHeader(AUTHORIZATION, equalTo(String.format("Bearer %s", TestConstants.ACCESS_TOKEN)))
             .withHeader(ACCEPT, equalTo(APPLICATION_JSON_VALUE)));
     }
 
     @Test
-    public void getDirectGroups() throws Exception {
+    public void getDirectGroups() {
         aadAuthenticationProperties.getUserGroup().setGroupRelationship("direct");
         AADAuthenticationProperties.UserGroupProperties userGroupProperties = aadAuthenticationProperties.getUserGroup();
         userGroupProperties.setAllowedGroups(Arrays.asList("group1", "group2", "group3"));
         aadAuthenticationProperties.setUserGroup(userGroupProperties);
-        this.graphClientMock = new AzureADGraphClient(aadAuthenticationProperties, serviceEndpointsProperties);
+        this.graphWebClient = new GraphWebClient(
+            aadAuthenticationProperties,
+            serviceEndpointsProperties,
+            UserPrincipalAzureADGraphTest.createWebClientForTest()
+        );
 
         stubFor(get(urlEqualTo("/memberOf"))
             .withHeader(ACCEPT, equalTo(APPLICATION_JSON_VALUE))
@@ -122,8 +128,7 @@ public class UserPrincipalMicrosoftGraphTest {
                 .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
                 .withBody(userGroupsJson)));
 
-        final Collection<? extends GrantedAuthority> authorities = graphClientMock
-            .getGrantedAuthorities(MicrosoftGraphConstants.BEARER_TOKEN);
+        final Collection<? extends GrantedAuthority> authorities = graphWebClient.getGrantedAuthorities();
 
         assertThat(authorities)
             .isNotEmpty()
@@ -131,17 +136,21 @@ public class UserPrincipalMicrosoftGraphTest {
             .containsExactlyInAnyOrder("ROLE_group1", "ROLE_group2", "ROLE_group3");
 
         verify(getRequestedFor(urlMatching("/memberOf"))
-            .withHeader(AUTHORIZATION, equalTo(String.format("Bearer %s", accessToken)))
+            .withHeader(AUTHORIZATION, equalTo(String.format("Bearer %s", TestConstants.ACCESS_TOKEN)))
             .withHeader(ACCEPT, equalTo(APPLICATION_JSON_VALUE)));
     }
 
     @Test
-    public void getTransitiveGroups() throws Exception {
+    public void getTransitiveGroups() {
         aadAuthenticationProperties.getUserGroup().setGroupRelationship("transitive");
         AADAuthenticationProperties.UserGroupProperties userGroupProperties = aadAuthenticationProperties.getUserGroup();
         userGroupProperties.setAllowedGroups(Arrays.asList("group1", "group2", "group3"));
         aadAuthenticationProperties.setUserGroup(userGroupProperties);
-        this.graphClientMock = new AzureADGraphClient(aadAuthenticationProperties, serviceEndpointsProperties);
+        this.graphWebClient = new GraphWebClient(
+            aadAuthenticationProperties,
+            serviceEndpointsProperties,
+            UserPrincipalAzureADGraphTest.createWebClientForTest()
+        );
 
         stubFor(get(urlEqualTo("/transitiveMemberOf"))
             .withHeader(ACCEPT, equalTo(APPLICATION_JSON_VALUE))
@@ -150,8 +159,7 @@ public class UserPrincipalMicrosoftGraphTest {
                 .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
                 .withBody(userGroupsJson)));
 
-        final Collection<? extends GrantedAuthority> authorities = graphClientMock
-            .getGrantedAuthorities(MicrosoftGraphConstants.BEARER_TOKEN);
+        final Collection<? extends GrantedAuthority> authorities = graphWebClient.getGrantedAuthorities();
 
         assertThat(authorities)
             .isNotEmpty()
@@ -159,7 +167,7 @@ public class UserPrincipalMicrosoftGraphTest {
             .containsExactlyInAnyOrder("ROLE_group1", "ROLE_group2", "ROLE_group3");
 
         verify(getRequestedFor(urlMatching("/transitiveMemberOf"))
-            .withHeader(AUTHORIZATION, equalTo(String.format("Bearer %s", accessToken)))
+            .withHeader(AUTHORIZATION, equalTo(String.format("Bearer %s", TestConstants.ACCESS_TOKEN)))
             .withHeader(ACCEPT, equalTo(APPLICATION_JSON_VALUE)));
     }
 

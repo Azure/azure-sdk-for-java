@@ -88,7 +88,6 @@ public class AADOAuth2ConfigTest {
             "azure.service.endpoints.global.aadMembershipRestUri=https://test/",
             TestConstants.ALLOW_TELEMETRY_PROPERTY + "=false");
 
-
         final Environment environment = testContext.getEnvironment();
         assertThat(environment.getProperty("azure.service.endpoints.global.aadSigninUri"))
             .isEqualTo("https://test/");
