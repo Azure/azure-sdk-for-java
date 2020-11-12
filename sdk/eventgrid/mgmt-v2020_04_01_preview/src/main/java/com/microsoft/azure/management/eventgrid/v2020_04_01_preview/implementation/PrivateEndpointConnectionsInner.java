@@ -96,7 +96,7 @@ public class PrivateEndpointConnectionsInner {
      * Get a specific private endpoint connection under a topic or domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'.
+     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'. Possible values include: 'topics', 'domains'
      * @param parentName The name of the parent resource (namely, either, the topic name or domain name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -113,7 +113,7 @@ public class PrivateEndpointConnectionsInner {
      * Get a specific private endpoint connection under a topic or domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'.
+     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'. Possible values include: 'topics', 'domains'
      * @param parentName The name of the parent resource (namely, either, the topic name or domain name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -129,7 +129,7 @@ public class PrivateEndpointConnectionsInner {
      * Get a specific private endpoint connection under a topic or domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'.
+     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'. Possible values include: 'topics', 'domains'
      * @param parentName The name of the parent resource (namely, either, the topic name or domain name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -149,7 +149,7 @@ public class PrivateEndpointConnectionsInner {
      * Get a specific private endpoint connection under a topic or domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'.
+     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'. Possible values include: 'topics', 'domains'
      * @param parentName The name of the parent resource (namely, either, the topic name or domain name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -200,7 +200,7 @@ public class PrivateEndpointConnectionsInner {
      * Update a specific private endpoint connection under a topic or domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'.
+     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'. Possible values include: 'topics', 'domains'
      * @param parentName The name of the parent resource (namely, either, the topic name or domain name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @param privateEndpointConnection The private endpoint connection object to update.
@@ -218,7 +218,7 @@ public class PrivateEndpointConnectionsInner {
      * Update a specific private endpoint connection under a topic or domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'.
+     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'. Possible values include: 'topics', 'domains'
      * @param parentName The name of the parent resource (namely, either, the topic name or domain name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @param privateEndpointConnection The private endpoint connection object to update.
@@ -235,7 +235,7 @@ public class PrivateEndpointConnectionsInner {
      * Update a specific private endpoint connection under a topic or domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'.
+     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'. Possible values include: 'topics', 'domains'
      * @param parentName The name of the parent resource (namely, either, the topic name or domain name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @param privateEndpointConnection The private endpoint connection object to update.
@@ -256,7 +256,7 @@ public class PrivateEndpointConnectionsInner {
      * Update a specific private endpoint connection under a topic or domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'.
+     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'. Possible values include: 'topics', 'domains'
      * @param parentName The name of the parent resource (namely, either, the topic name or domain name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @param privateEndpointConnection The private endpoint connection object to update.
@@ -295,7 +295,7 @@ public class PrivateEndpointConnectionsInner {
      * Update a specific private endpoint connection under a topic or domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'.
+     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'. Possible values include: 'topics', 'domains'
      * @param parentName The name of the parent resource (namely, either, the topic name or domain name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @param privateEndpointConnection The private endpoint connection object to update.
@@ -313,7 +313,7 @@ public class PrivateEndpointConnectionsInner {
      * Update a specific private endpoint connection under a topic or domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'.
+     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'. Possible values include: 'topics', 'domains'
      * @param parentName The name of the parent resource (namely, either, the topic name or domain name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @param privateEndpointConnection The private endpoint connection object to update.
@@ -330,7 +330,7 @@ public class PrivateEndpointConnectionsInner {
      * Update a specific private endpoint connection under a topic or domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'.
+     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'. Possible values include: 'topics', 'domains'
      * @param parentName The name of the parent resource (namely, either, the topic name or domain name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @param privateEndpointConnection The private endpoint connection object to update.
@@ -351,7 +351,7 @@ public class PrivateEndpointConnectionsInner {
      * Update a specific private endpoint connection under a topic or domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'.
+     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'. Possible values include: 'topics', 'domains'
      * @param parentName The name of the parent resource (namely, either, the topic name or domain name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @param privateEndpointConnection The private endpoint connection object to update.
@@ -408,7 +408,7 @@ public class PrivateEndpointConnectionsInner {
      * Delete a specific private endpoint connection under a topic or domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'.
+     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'. Possible values include: 'topics', 'domains'
      * @param parentName The name of the parent resource (namely, either, the topic name or domain name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -424,7 +424,7 @@ public class PrivateEndpointConnectionsInner {
      * Delete a specific private endpoint connection under a topic or domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'.
+     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'. Possible values include: 'topics', 'domains'
      * @param parentName The name of the parent resource (namely, either, the topic name or domain name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -440,7 +440,7 @@ public class PrivateEndpointConnectionsInner {
      * Delete a specific private endpoint connection under a topic or domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'.
+     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'. Possible values include: 'topics', 'domains'
      * @param parentName The name of the parent resource (namely, either, the topic name or domain name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -460,7 +460,7 @@ public class PrivateEndpointConnectionsInner {
      * Delete a specific private endpoint connection under a topic or domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'.
+     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'. Possible values include: 'topics', 'domains'
      * @param parentName The name of the parent resource (namely, either, the topic name or domain name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -494,7 +494,7 @@ public class PrivateEndpointConnectionsInner {
      * Delete a specific private endpoint connection under a topic or domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'.
+     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'. Possible values include: 'topics', 'domains'
      * @param parentName The name of the parent resource (namely, either, the topic name or domain name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -510,7 +510,7 @@ public class PrivateEndpointConnectionsInner {
      * Delete a specific private endpoint connection under a topic or domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'.
+     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'. Possible values include: 'topics', 'domains'
      * @param parentName The name of the parent resource (namely, either, the topic name or domain name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -526,7 +526,7 @@ public class PrivateEndpointConnectionsInner {
      * Delete a specific private endpoint connection under a topic or domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'.
+     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'. Possible values include: 'topics', 'domains'
      * @param parentName The name of the parent resource (namely, either, the topic name or domain name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -546,7 +546,7 @@ public class PrivateEndpointConnectionsInner {
      * Delete a specific private endpoint connection under a topic or domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'.
+     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'. Possible values include: 'topics', 'domains'
      * @param parentName The name of the parent resource (namely, either, the topic name or domain name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -598,7 +598,7 @@ public class PrivateEndpointConnectionsInner {
      * Get all private endpoint connections under a topic or domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'.
+     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'. Possible values include: 'topics', 'domains'
      * @param parentName The name of the parent resource (namely, either, the topic name or domain name).
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -620,7 +620,7 @@ public class PrivateEndpointConnectionsInner {
      * Get all private endpoint connections under a topic or domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'.
+     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'. Possible values include: 'topics', 'domains'
      * @param parentName The name of the parent resource (namely, either, the topic name or domain name).
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -643,7 +643,7 @@ public class PrivateEndpointConnectionsInner {
      * Get all private endpoint connections under a topic or domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'.
+     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'. Possible values include: 'topics', 'domains'
      * @param parentName The name of the parent resource (namely, either, the topic name or domain name).
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PrivateEndpointConnectionInner&gt; object
@@ -663,7 +663,7 @@ public class PrivateEndpointConnectionsInner {
      * Get all private endpoint connections under a topic or domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'.
+     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'. Possible values include: 'topics', 'domains'
      * @param parentName The name of the parent resource (namely, either, the topic name or domain name).
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;PrivateEndpointConnectionInner&gt; object
@@ -687,7 +687,7 @@ public class PrivateEndpointConnectionsInner {
      * Get all private endpoint connections under a topic or domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'.
+     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'. Possible values include: 'topics', 'domains'
      * @param parentName The name of the parent resource (namely, either, the topic name or domain name).
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;PrivateEndpointConnectionInner&gt; object wrapped in {@link ServiceResponse} if successful.
@@ -729,7 +729,7 @@ public class PrivateEndpointConnectionsInner {
      * Get all private endpoint connections under a topic or domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'.
+     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'. Possible values include: 'topics', 'domains'
      * @param parentName The name of the parent resource (namely, either, the topic name or domain name).
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and with limited number of OData operations. These operations are: the 'contains' function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified, the default number of results to be returned is 20 items per page.
@@ -753,7 +753,7 @@ public class PrivateEndpointConnectionsInner {
      * Get all private endpoint connections under a topic or domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'.
+     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'. Possible values include: 'topics', 'domains'
      * @param parentName The name of the parent resource (namely, either, the topic name or domain name).
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and with limited number of OData operations. These operations are: the 'contains' function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified, the default number of results to be returned is 20 items per page.
@@ -778,7 +778,7 @@ public class PrivateEndpointConnectionsInner {
      * Get all private endpoint connections under a topic or domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'.
+     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'. Possible values include: 'topics', 'domains'
      * @param parentName The name of the parent resource (namely, either, the topic name or domain name).
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and with limited number of OData operations. These operations are: the 'contains' function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified, the default number of results to be returned is 20 items per page.
@@ -800,7 +800,7 @@ public class PrivateEndpointConnectionsInner {
      * Get all private endpoint connections under a topic or domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'.
+     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'. Possible values include: 'topics', 'domains'
      * @param parentName The name of the parent resource (namely, either, the topic name or domain name).
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and with limited number of OData operations. These operations are: the 'contains' function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified, the default number of results to be returned is 20 items per page.
@@ -826,7 +826,7 @@ public class PrivateEndpointConnectionsInner {
      * Get all private endpoint connections under a topic or domain.
      *
     ServiceResponse<PageImpl<PrivateEndpointConnectionInner>> * @param resourceGroupName The name of the resource group within the user's subscription.
-    ServiceResponse<PageImpl<PrivateEndpointConnectionInner>> * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'.
+    ServiceResponse<PageImpl<PrivateEndpointConnectionInner>> * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'. Possible values include: 'topics', 'domains'
     ServiceResponse<PageImpl<PrivateEndpointConnectionInner>> * @param parentName The name of the parent resource (namely, either, the topic name or domain name).
     ServiceResponse<PageImpl<PrivateEndpointConnectionInner>> * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the 'name' property only and with limited number of OData operations. These operations are: the 'contains' function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
     ServiceResponse<PageImpl<PrivateEndpointConnectionInner>> * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to 100. If not specified, the default number of results to be returned is 20 items per page.

@@ -22,7 +22,7 @@ public interface PrivateEndpointConnections extends HasInner<PrivateEndpointConn
      * Get a specific private endpoint connection under a topic or domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'.
+     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'. Possible values include: 'topics', 'domains'
      * @param parentName The name of the parent resource (namely, either, the topic name or domain name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -35,7 +35,7 @@ public interface PrivateEndpointConnections extends HasInner<PrivateEndpointConn
      * Delete a specific private endpoint connection under a topic or domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'.
+     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'. Possible values include: 'topics', 'domains'
      * @param parentName The name of the parent resource (namely, either, the topic name or domain name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -48,7 +48,7 @@ public interface PrivateEndpointConnections extends HasInner<PrivateEndpointConn
      * Get all private endpoint connections under a topic or domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'.
+     * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'. Possible values include: 'topics', 'domains'
      * @param parentName The name of the parent resource (namely, either, the topic name or domain name).
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
