@@ -10,8 +10,8 @@
 package com.microsoft.azure.management.applicationinsights.v2015_05_01.implementation;
 
 import com.microsoft.azure.arm.resources.collection.implementation.GroupableResourcesCoreImpl;
-import com.microsoft.azure.management.applicationinsights.v2015_05_01.Workbooks;
-import com.microsoft.azure.management.applicationinsights.v2015_05_01.Workbook;
+import com.microsoft.azure.management.applicationinsights.v2015_05_01.MyWorkbooks;
+import com.microsoft.azure.management.applicationinsights.v2015_05_01.MyWorkbook;
 import rx.Observable;
 import rx.Completable;
 import java.util.ArrayList;
@@ -23,20 +23,20 @@ import rx.functions.Func1;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.management.applicationinsights.v2015_05_01.CategoryType;
 
-class WorkbooksImpl extends GroupableResourcesCoreImpl<Workbook, WorkbookImpl, WorkbookInner, WorkbooksInner, InsightsManager>  implements Workbooks {
-    protected WorkbooksImpl(InsightsManager manager) {
-        super(manager.inner().workbooks(), manager);
+class MyWorkbooksImpl extends GroupableResourcesCoreImpl<MyWorkbook, MyWorkbookImpl, MyWorkbookInner, MyWorkbooksInner, InsightsManager>  implements MyWorkbooks {
+    protected MyWorkbooksImpl(InsightsManager manager) {
+        super(manager.inner().myWorkbooks(), manager);
     }
 
     @Override
-    protected Observable<WorkbookInner> getInnerAsync(String resourceGroupName, String name) {
-        WorkbooksInner client = this.inner();
+    protected Observable<MyWorkbookInner> getInnerAsync(String resourceGroupName, String name) {
+        MyWorkbooksInner client = this.inner();
         return client.getByResourceGroupAsync(resourceGroupName, name);
     }
 
     @Override
     protected Completable deleteInnerAsync(String resourceGroupName, String name) {
-        WorkbooksInner client = this.inner();
+        MyWorkbooksInner client = this.inner();
         return client.deleteAsync(resourceGroupName, name).toCompletable();
     }
 
@@ -73,36 +73,54 @@ class WorkbooksImpl extends GroupableResourcesCoreImpl<Workbook, WorkbookImpl, W
     }
 
     @Override
-    public WorkbookImpl define(String name) {
+    public MyWorkbookImpl define(String name) {
         return wrapModel(name);
     }
 
     @Override
-    public Observable<Workbook> listByResourceGroupAsync(String resourceGroupName, CategoryType category) {
-        WorkbooksInner client = this.inner();
+    public Observable<MyWorkbook> listByResourceGroupAsync(String resourceGroupName, CategoryType category) {
+        MyWorkbooksInner client = this.inner();
         return client.listByResourceGroupAsync(resourceGroupName, category)
-        .flatMap(new Func1<Page<WorkbookInner>, Observable<WorkbookInner>>() {
+        .flatMap(new Func1<Page<MyWorkbookInner>, Observable<MyWorkbookInner>>() {
             @Override
-            public Observable<WorkbookInner> call(Page<WorkbookInner> innerPage) {
+            public Observable<MyWorkbookInner> call(Page<MyWorkbookInner> innerPage) {
                 return Observable.from(innerPage.items());
             }
         })
-        .map(new Func1<WorkbookInner, Workbook>() {
+        .map(new Func1<MyWorkbookInner, MyWorkbook>() {
             @Override
-            public Workbook call(WorkbookInner inner) {
-                return new WorkbookImpl(inner.name(), inner, manager());
+            public MyWorkbook call(MyWorkbookInner inner) {
+                return new MyWorkbookImpl(inner.name(), inner, manager());
             }
         });
     }
 
     @Override
-    protected WorkbookImpl wrapModel(WorkbookInner inner) {
-        return  new WorkbookImpl(inner.name(), inner, manager());
+    public Observable<MyWorkbook> listAsync(CategoryType category) {
+        MyWorkbooksInner client = this.inner();
+        return client.listAsync(category)
+        .flatMap(new Func1<Page<MyWorkbookInner>, Observable<MyWorkbookInner>>() {
+            @Override
+            public Observable<MyWorkbookInner> call(Page<MyWorkbookInner> innerPage) {
+                return Observable.from(innerPage.items());
+            }
+        })
+        .map(new Func1<MyWorkbookInner, MyWorkbook>() {
+            @Override
+            public MyWorkbook call(MyWorkbookInner inner) {
+                return new MyWorkbookImpl(inner.name(), inner, manager());
+            }
+        });
     }
 
     @Override
-    protected WorkbookImpl wrapModel(String name) {
-        return new WorkbookImpl(name, new WorkbookInner(), this.manager());
+    protected MyWorkbookImpl wrapModel(MyWorkbookInner inner) {
+        return  new MyWorkbookImpl(inner.name(), inner, manager());
+    }
+
+    @Override
+    protected MyWorkbookImpl wrapModel(String name) {
+        return new MyWorkbookImpl(name, new MyWorkbookInner(), this.manager());
     }
 
 }
