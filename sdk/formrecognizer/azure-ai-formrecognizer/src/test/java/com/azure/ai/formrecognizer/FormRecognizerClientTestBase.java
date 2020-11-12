@@ -233,6 +233,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             assertEquals(expectedTable.getColumns(), actualTable.getColumnCount());
             validateCellData(expectedTable.getCells(), actualTable.getCells(), readResults, includeFieldElements);
             assertEquals(expectedTable.getRows(), actualTable.getRowCount());
+            validateBoundingBoxData(expectedTable.getBoundingBox(), actualTable.getFieldBoundingBox());
         }
     }
 
