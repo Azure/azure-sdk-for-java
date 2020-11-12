@@ -489,7 +489,8 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
         Mono<PhoneNumberReservation> testResult = client.getReservationById(RESERVATION_ID);
         StepVerifier.create(testResult)
             .assertNext(item -> {
-                assertEquals(ReservationStatus.SUCCESS, item.getStatus());
+                assertEquals(ReservationStatus.SUCCESS,
+                    ReservationStatus.fromString(item.getStatus().toString()));
             })
             .verifyComplete();
     }
@@ -506,7 +507,8 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
         Mono<AsyncPollResponse<PhoneNumberRelease, PhoneNumberRelease>> asyncRes = poller.last();
         StepVerifier.create(asyncRes)
             .assertNext(item -> {
-                assertEquals(ReleaseStatus.COMPLETE, item.getValue().getStatus());
+                assertEquals(ReleaseStatus.COMPLETE,
+                    item.getValue().getStatus());
             })
             .verifyComplete();
     }

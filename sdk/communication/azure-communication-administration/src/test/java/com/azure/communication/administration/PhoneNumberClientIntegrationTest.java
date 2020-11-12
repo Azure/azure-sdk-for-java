@@ -77,7 +77,7 @@ public class PhoneNumberClientIntegrationTest extends PhoneNumberIntegrationTest
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void listAllSearches(HttpClient httpClient) {
+    public void listAllReservations(HttpClient httpClient) {
         PagedIterable<PhoneNumberEntity> pagedIterable = this.getClient(httpClient).listAllReservations();
 
         assertNotNull(pagedIterable.iterator().next().getId());
@@ -255,13 +255,13 @@ public class PhoneNumberClientIntegrationTest extends PhoneNumberIntegrationTest
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void cancelSearch(HttpClient httpClient) {
+    public void cancelReservation(HttpClient httpClient) {
         this.getClient(httpClient).cancelReservation(RESERVATION_ID_TO_CANCEL);
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void cancelSearchWithResponse(HttpClient httpClient) {
+    public void cancelReservationWithResponse(HttpClient httpClient) {
         Response<Void> response = this.getClient(httpClient).cancelReservationWithResponse(RESERVATION_ID_TO_CANCEL, Context.NONE);
 
         assertEquals(202, response.getStatusCode());
