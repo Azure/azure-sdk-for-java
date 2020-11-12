@@ -111,6 +111,7 @@ public final class RecognizeContentOptions {
      * range with a comma, ex - ["1-3"].</p>
      *
      * @param pages the custom page numbers value to set.
+     * @return the updated {@code RecognizeContentOptions} value.
      */
     public RecognizeContentOptions setPages(List<String> pages) {
         this.pages = pages;

@@ -3,8 +3,10 @@
 
 package com.azure.ai.formrecognizer;
 
+import com.azure.ai.formrecognizer.implementation.FormLineHelper;
 import com.azure.ai.formrecognizer.implementation.FormPageHelper;
 import com.azure.ai.formrecognizer.implementation.FormSelectionMarkHelper;
+import com.azure.ai.formrecognizer.implementation.FormTableHelper;
 import com.azure.ai.formrecognizer.implementation.RecognizedFormHelper;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.implementation.models.DocumentResult;
@@ -221,8 +223,8 @@ final class Transforms {
             return new ArrayList<>();
         } else {
             return pageResultItem.getTables().stream()
-                .map(dataTable ->
-                    new FormTable(dataTable.getRows(), dataTable.getColumns(),
+                .map(dataTable -> {
+                    FormTable formTable = new FormTable(dataTable.getRows(), dataTable.getColumns(),
                         dataTable.getCells()
                             .stream()
                             .map(dataTableCell -> new FormTableCell(
@@ -234,7 +236,11 @@ final class Transforms {
                                 dataTableCell.isHeader() == null ? false : dataTableCell.isHeader(),
                                 dataTableCell.isFooter() == null ? false : dataTableCell.isFooter(),
                                 pageNumber, setReferenceElements(dataTableCell.getElements(), readResults)))
-                            .collect(Collectors.toList()), pageNumber))
+                            .collect(Collectors.toList()), pageNumber);
+
+                    FormTableHelper.setBoundingBox(formTable, toBoundingBox(dataTable.getBoundingBox()));
+                    return formTable;
+                })
                 .collect(Collectors.toList());
         }
     }
@@ -248,11 +254,16 @@ final class Transforms {
      */
     static List<FormLine> getReadResultFormLines(ReadResult readResultItem) {
         return readResultItem.getLines().stream()
-            .map(textLine -> new FormLine(
-                textLine.getText(),
-                toBoundingBox(textLine.getBoundingBox()),
-                readResultItem.getPage(),
-                toWords(textLine.getWords(), readResultItem.getPage())))
+            .map(textLine -> {
+                FormLine formLine = new FormLine(
+                    textLine.getText(),
+                    toBoundingBox(textLine.getBoundingBox()),
+                    readResultItem.getPage(),
+                    toWords(textLine.getWords(), readResultItem.getPage()));
+
+                FormLineHelper.setAppearance(formLine, textLine.getAppearance());
+                return formLine;
+            })
             .collect(Collectors.toList());
     }
 
@@ -545,6 +556,7 @@ final class Transforms {
                 TextLine textLine = readResults.get(readResultIndex).getLines().get(lineIndex);
                 FormLine lineElement = new FormLine(textLine.getText(), toBoundingBox(textLine.getBoundingBox()),
                     readResultIndex + 1, toWords(textLine.getWords(), readResultIndex + 1));
+                FormLineHelper.setAppearance(lineElement, textLine.getAppearance());
                 formElementList.add(lineElement);
             }
         });
