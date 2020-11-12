@@ -150,7 +150,7 @@ public class LookupSyncTests extends SearchTestBase {
 
         Response<SearchDocument> response = client.getDocumentWithResponse("1", SearchDocument.class,
             selectedFields, Context.NONE);
-        assertEquals(expectedDoc, response.getValue());
+        assertObjectEquals(expectedDoc, response.getValue(), true);
     }
 
     @Test
@@ -179,7 +179,7 @@ public class LookupSyncTests extends SearchTestBase {
 
         Response<SearchDocument> response = client.getDocumentWithResponse("1", SearchDocument.class,
             selectedFields, Context.NONE);
-        assertEquals(expectedDoc, response.getValue());
+        assertObjectEquals(expectedDoc, response.getValue(), true);
     }
 
     @Test
@@ -259,7 +259,7 @@ public class LookupSyncTests extends SearchTestBase {
 
         Response<SearchDocument> response = client.getDocumentWithResponse("1", SearchDocument.class,
             selectedFields, Context.NONE);
-        assertEquals(expectedDoc, response.getValue());
+        assertObjectEquals(expectedDoc, response.getValue(), true);
     }
 
     @Test
@@ -269,14 +269,14 @@ public class LookupSyncTests extends SearchTestBase {
         SearchDocument indexedDoc = new SearchDocument();
         indexedDoc.put("HotelId", "1");
         indexedDoc.put("LastRenovationDate", "2017-01-13T14:03:00.7552052-07:00");
-//        indexedDoc.put("Location", createPointGeometryString(40.760586, -73.975403)); // Test that we don't confuse Geo-JSON & complex types.
+        //indexedDoc.put("Location", createPointGeometry(40.760586, -73.975403)); // Test that we don't confuse Geo-JSON & complex types.
         indexedDoc.put("Rooms", Collections.singletonList(new SearchDocument(Collections.singletonMap("BaseRate", NaN))));
 
         SearchDocument expectedDoc = new SearchDocument();
         expectedDoc.put("HotelId", "1");
         expectedDoc.put("LastRenovationDate", OffsetDateTime.of(2017, 1, 13, 21, 3,
             0, 755000000, ZoneOffset.UTC));
-//        expectedDoc.put("Location", createPointGeometryString(40.760586, -73.975403));
+        //expectedDoc.put("Location", createPointGeometry(40.760586, -73.975403));
         expectedDoc.put("Rooms", Collections.singletonList(new SearchDocument(Collections.singletonMap("BaseRate", "NaN"))));
 
         client.indexDocuments(new IndexDocumentsBatch<>().addUploadActions(Collections.singletonList(indexedDoc)));
@@ -284,7 +284,7 @@ public class LookupSyncTests extends SearchTestBase {
         // Select only the fields set in the test case so we don't get superfluous data back.
         List<String> selectedFields = Arrays.asList("HotelId", "LastRenovationDate", "Location", "Rooms/BaseRate");
         assertMapEquals(expectedDoc, client.getDocumentWithResponse("1", SearchDocument.class, selectedFields,
-            Context.NONE).getValue(), false, "properties");
+            Context.NONE).getValue(), true, "boundingBox", "properties");
     }
 
     @Test
@@ -351,7 +351,7 @@ public class LookupSyncTests extends SearchTestBase {
 
         Response<SearchDocument> response = client.getDocumentWithResponse("1", SearchDocument.class,
             selectedFields, Context.NONE);
-        assertEquals(expectedDoc, response.getValue());
+        assertObjectEquals(expectedDoc, response.getValue(), true);
     }
 
     @Test
@@ -360,7 +360,7 @@ public class LookupSyncTests extends SearchTestBase {
 
         String docKey = "1";
         OffsetDateTime dateTime = OffsetDateTime.parse("2019-08-13T14:30:00Z");
-//        String geoPoint = createPointGeometryString(1.0, 100.0);
+        //PointGeometry geoPoint = createPointGeometry(1.0, 100.0);
 
         SearchDocument indexedDoc = new SearchDocument();
         indexedDoc.put("Key", docKey);
@@ -370,7 +370,7 @@ public class LookupSyncTests extends SearchTestBase {
         indexedDoc.put("Longs", new Long[]{9999999999999999L, 832372345832523L});
         indexedDoc.put("Strings", new String[]{"hello", "bye"});
         indexedDoc.put("Ints", new int[]{1, 2, 3, 4, -13, 5, 0});
-//        indexedDoc.put("Points", new String[]{geoPoint});
+        //indexedDoc.put("Points", new PointGeometry[]{geoPoint});
 
         // This is the expected document when querying the document later
         SearchDocument expectedDoc = new SearchDocument();
@@ -380,7 +380,7 @@ public class LookupSyncTests extends SearchTestBase {
         expectedDoc.put("Longs", Arrays.asList(9999999999999999L, 832372345832523L));
         expectedDoc.put("Strings", Arrays.asList("hello", "bye"));
         expectedDoc.put("Ints", Arrays.asList(1, 2, 3, 4, -13, 5, 0));
-//        expectedDoc.put("Points", Collections.singletonList(geoPoint));
+        //expectedDoc.put("Points", Collections.singletonList(geoPoint));
         expectedDoc.put("Dates", Collections.singletonList(dateTime));
 
         uploadDocument(client, indexedDoc);
@@ -407,7 +407,7 @@ public class LookupSyncTests extends SearchTestBase {
                 expectDate.getMonth(), expectDate.getDate(), expectDate.getHours(),
                 expectDate.getMinutes(), expectDate.getSeconds()))
             .rating(5)
-//            .location(createPointGeometryString(47.678581, -122.131577))
+            //.location(createPointGeometry(47.678581, -122.131577))
             .rooms(new ArrayList<>());
     }
 
@@ -435,7 +435,7 @@ public class LookupSyncTests extends SearchTestBase {
             .smokingAllowed(true)
             .lastRenovationDate(new Date(2010 - 1900, Calendar.JUNE, 26, 13, 0, 0))
             .rating(3)
-//            .location(createPointGeometryString(35.904160, -78.940483))
+//            .location(createPointGeometry(35.904160, -78.940483))
             .address(new HotelAddress().streetAddress("6910 Fayetteville Rd").city("Durham").stateProvince("NC").country("USA").postalCode("27713"))
             .rooms(Arrays.asList(
                 new HotelRoom()
@@ -468,9 +468,9 @@ public class LookupSyncTests extends SearchTestBase {
             .doubles(new Double[]{NEGATIVE_INFINITY, 0.0, 2.78, NaN, 3.14, POSITIVE_INFINITY})
             .ints(new int[]{1, 2, 3, 4, -13, 5, 0})
             .longs(new Long[]{-9_999_999_999_999_999L, 832_372_345_832_523L})
-//            .points(new String[]{
-//                createPointGeometryString(49.0, -67.0),
-//                createPointGeometryString(47.0, 21.0)})
+//            .points(new PointGeometry[]{
+//                createPointGeometry(49.0, -67.0),
+//                createPointGeometry(47.0, 21.0)})
             .strings(new String[]{"hello", "2019-04-14T14:56:00-07:00"});
     }
 

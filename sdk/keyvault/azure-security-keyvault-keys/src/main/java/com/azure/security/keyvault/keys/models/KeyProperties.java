@@ -99,6 +99,17 @@ public class KeyProperties {
     private Integer recoverableDays;
 
     /**
+     * Indicates if the private key can be exported.
+     */
+    @JsonProperty(value = "exportable")
+    Boolean exportable;
+
+    /**
+     * The policy rules under which the key can be exported.
+     */
+    KeyReleasePolicy releasePolicy;
+
+    /**
      * Gets the number of days a key is retained before being deleted for a soft delete-enabled Key Vault.
      * @return the recoverable days.
      */
@@ -252,9 +263,50 @@ public class KeyProperties {
     }
 
     /**
-     * Unpacks the attributes json response and updates the variables in the Key Attributes object.
-     * Uses Lazy Update to set values for variables id, tags, contentType, managed and id as these variables are
-     * part of main json body and not attributes json body when the key response comes from list keys operations.
+     * Indicates if the private key can be exported.
+     *
+     * @return The exportable value.
+     */
+    public Boolean isExportable() {
+        return this.exportable;
+    }
+
+    /**
+     * Set a value that indicates if the private key can be exported.
+     *
+     * @param exportable The exportable value to set.
+     * @return The updated {@link KeyProperties} object.
+     */
+    public KeyProperties setExportable(Boolean exportable) {
+        this.exportable = exportable;
+        return this;
+    }
+
+    /**
+     * Get the policy rules under which the key can be exported.
+     *
+     * @return The release policy.
+     */
+    public KeyReleasePolicy getReleasePolicy() {
+        return releasePolicy;
+    }
+
+    /**
+     * Set the policy rules under which the key can be exported.
+     *
+     * @param releasePolicy The release policy to set.
+     * @return The updated {@link KeyProperties} object.
+     */
+    public KeyProperties setReleasePolicy(KeyReleasePolicy releasePolicy) {
+        this.releasePolicy = releasePolicy;
+        return this;
+    }
+
+    /**
+     * Unpacks the attributes JSON response and updates the variables in the Key Attributes object. Uses Lazy Update to
+     * set values for variables id, contentType, and id as these variables are part of main JSON body and not attributes
+     * JSON body when the key response comes from list keys operations.
+     *
      * @param attributes The key value mapping of the key attributes
      */
     @JsonProperty("attributes")
@@ -266,10 +318,7 @@ public class KeyProperties {
         this.createdOn = epochToOffsetDateTime(attributes.get("created"));
         this.updatedOn = epochToOffsetDateTime(attributes.get("updated"));
         this.recoveryLevel = (String) attributes.get("recoveryLevel");
-        this.tags = (Map<String, String>) lazyValueSelection(attributes.get("tags"), this.tags);
-        this.managed = (Boolean) lazyValueSelection(attributes.get("managed"), this.managed);
         this.recoverableDays = (Integer) attributes.get("recoverableDays");
-        unpackId((String) lazyValueSelection(attributes.get("id"), this.id));
     }
 
     private OffsetDateTime epochToOffsetDateTime(Object epochValue) {
@@ -331,6 +380,10 @@ public class KeyProperties {
                 .setId((String) key.get("kid"));
         unpackId((String) key.get("kid"));
         return outputKey;
+    }
+
+    void setManaged(boolean managed) {
+        this.managed = managed;
     }
 
     private byte[] decode(String in) {

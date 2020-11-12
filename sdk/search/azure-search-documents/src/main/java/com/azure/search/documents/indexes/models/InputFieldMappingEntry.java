@@ -6,6 +6,9 @@ package com.azure.search.documents.indexes.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
+
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -115,6 +118,19 @@ public final class InputFieldMappingEntry {
      * @param inputs the inputs value to set.
      * @return the InputFieldMappingEntry object itself.
      */
+    public InputFieldMappingEntry setInputs(InputFieldMappingEntry... inputs) {
+        this.inputs = (inputs == null) ? null : Arrays.asList(inputs);
+        return this;
+    }
+
+    /**
+     * Set the inputs property: The recursive inputs used when creating a
+     * complex type.
+     *
+     * @param inputs the inputs value to set.
+     * @return the InputFieldMappingEntry object itself.
+     */
+    @JsonSetter
     public InputFieldMappingEntry setInputs(List<InputFieldMappingEntry> inputs) {
         this.inputs = inputs;
         return this;

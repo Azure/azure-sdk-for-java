@@ -3,8 +3,8 @@
 
 package com.azure.storage.blob.changefeed;
 
-import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper;
 import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor;
+import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper;
 import com.azure.storage.blob.changefeed.implementation.models.InternalBlobChangefeedEvent;
 import com.azure.storage.blob.changefeed.models.BlobChangefeedEvent;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -18,16 +18,19 @@ import reactor.core.publisher.Flux;
  */
 class Chunk {
 
-    private final ChangefeedCursor shardCursor; /* Cursor associated with parent shard. */
+    private final String chunkPath;
+    private final ChangefeedCursor changefeedCursor; /* Cursor associated with parent shard. */
     private final AvroReader avroReader; /* AvroReader to read objects off of. */
 
     /**
      * Creates a new Chunk.
      */
-    Chunk(ChangefeedCursor shardCursor, AvroReader avroReader) {
-        StorageImplUtils.assertNotNull("shardCursor", shardCursor);
+    Chunk(String chunkPath, ChangefeedCursor changefeedCursor, AvroReader avroReader) {
+        StorageImplUtils.assertNotNull("chunkPath", chunkPath);
+        StorageImplUtils.assertNotNull("changefeedCursor", changefeedCursor);
         StorageImplUtils.assertNotNull("avroReader", avroReader);
-        this.shardCursor = shardCursor;
+        this.chunkPath = chunkPath;
+        this.changefeedCursor = changefeedCursor;
         this.avroReader = avroReader;
     }
 
@@ -41,12 +44,13 @@ class Chunk {
             /* Convert AvroObjects into BlobChangefeedEventWrappers. */
             .map(avroObject -> {
                 /* Unwrap AvroObject. */
-                long blockOffset = avroObject.getBlockOffset();
-                long objectBlockIndex = avroObject.getObjectBlockIndex();
+                long blockOffset = avroObject.getNextBlockOffset();
+                long eventIndex = avroObject.getNextObjectIndex();
                 Object object = avroObject.getObject();
 
                 /* Get the event cursor associated with this event. */
-                ChangefeedCursor eventCursor = shardCursor.toEventCursor(blockOffset, objectBlockIndex);
+                ChangefeedCursor eventCursor = changefeedCursor.toEventCursor(chunkPath, blockOffset, eventIndex);
+
                 BlobChangefeedEvent event = InternalBlobChangefeedEvent.fromRecord(object);
 
                 /* Wrap the event and cursor. */

@@ -66,17 +66,11 @@ stages:
                 deploy:
                   steps:
                     - checkout: self
-                    - template: /eng/pipelines/templates/steps/stage-artifacts.yml
-                      parameters:
-                        SourceFolder: ${{parameters.ArtifactName}}-signed
-                        TargetFolder: ${{artifact.safeName}}
-                        PackageName: ${{artifact.name}}
                     - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
                       parameters:
-                        ArtifactLocation: $(Pipeline.Workspace)/${{artifact.safeName}}
+                        ArtifactLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}
                         PackageRepository: Maven
                         ReleaseSha: $(Build.SourceVersion)
-                        RepoId: Azure/azure-sdk-for-java
 
           - ${{if ne(artifact.options.skipPublishPackage, 'true')}}:
             - deployment: PublishPackage

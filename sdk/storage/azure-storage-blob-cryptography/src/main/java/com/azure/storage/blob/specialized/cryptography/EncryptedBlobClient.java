@@ -265,7 +265,7 @@ public class EncryptedBlobClient extends BlobClient {
      * Unsupported. Cannot query data encrypted on client side.
      */
     @Override
-    public InputStream openQueryInputStream(BlobQueryOptions queryOptions) {
+    public Response<InputStream> openQueryInputStreamWithResponse(BlobQueryOptions queryOptions) {
         throw logger.logExceptionAsError(new UnsupportedOperationException(
             "Cannot query data encrypted on client side."));
     }

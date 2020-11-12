@@ -4,8 +4,8 @@
 package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.FormPage;
+import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.ai.formrecognizer.models.FormTable;
-import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
 
@@ -30,7 +30,6 @@ public class RecognizeContent {
      */
     public static void main(final String[] args) throws IOException {
         // Instantiate a client that will be used to call the service.
-
         FormRecognizerClient client = new FormRecognizerClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
@@ -41,16 +40,16 @@ public class RecognizeContent {
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
         InputStream targetStream = new ByteArrayInputStream(fileContent);
 
-        SyncPoller<OperationResult, List<FormPage>> recognizeContentPoller =
+        SyncPoller<FormRecognizerOperationResult, List<FormPage>> recognizeContentPoller =
             client.beginRecognizeContent(targetStream, sourceFile.length());
 
         List<FormPage> contentPageResults = recognizeContentPoller.getFinalResult();
 
         for (int i = 0; i < contentPageResults.size(); i++) {
             final FormPage formPage = contentPageResults.get(i);
-            System.out.printf("----Recognizing content for page %d ----%n", i);
+            System.out.printf("---- Recognized content info for page %d ----%n", i);
             // Table information
-            System.out.printf("Has width: %f and height: %f, measured with unit: %s%n", formPage.getWidth(),
+            System.out.printf("Has width: %.2f and height: %.2f, measured with unit: %s%n", formPage.getWidth(),
                 formPage.getHeight(),
                 formPage.getUnit());
             final List<FormTable> tables = formPage.getTables();
@@ -59,13 +58,8 @@ public class RecognizeContent {
                 System.out.printf("Table %d has %d rows and %d columns.%n", i1, formTable.getRowCount(),
                     formTable.getColumnCount());
                 formTable.getCells().forEach(formTableCell -> {
-                    final StringBuilder boundingBoxStr = new StringBuilder();
-                    if (formTableCell.getBoundingBox() != null) {
-                        formTableCell.getBoundingBox().getPoints().forEach(point ->
-                            boundingBoxStr.append(String.format("[%.2f, %.2f]", point.getX(), point.getY())));
-                    }
-                    System.out.printf("Cell has text %s, within bounding box %s.%n", formTableCell.getText(),
-                        boundingBoxStr);
+                    System.out.printf("Cell has text '%s', within bounding box %s.%n", formTableCell.getText(),
+                        formTableCell.getBoundingBox().toString());
                 });
                 System.out.println();
             }

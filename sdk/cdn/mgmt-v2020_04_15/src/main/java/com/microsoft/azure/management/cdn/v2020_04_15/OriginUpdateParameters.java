@@ -8,7 +8,6 @@
 
 package com.microsoft.azure.management.cdn.v2020_04_15;
 
-import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
@@ -17,12 +16,6 @@ import com.microsoft.rest.serializer.JsonFlatten;
  */
 @JsonFlatten
 public class OriginUpdateParameters {
-    /**
-     * Origin tags.
-     */
-    @JsonProperty(value = "tags")
-    private Map<String, String> tags;
-
     /**
      * The address of the origin. Domain names, IPv4 addresses, and IPv6
      * addresses are supported.This should be unique across all origins in an
@@ -101,26 +94,6 @@ public class OriginUpdateParameters {
      */
     @JsonProperty(value = "properties.privateLinkApprovalMessage")
     private String privateLinkApprovalMessage;
-
-    /**
-     * Get origin tags.
-     *
-     * @return the tags value
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set origin tags.
-     *
-     * @param tags the tags value to set
-     * @return the OriginUpdateParameters object itself.
-     */
-    public OriginUpdateParameters withTags(Map<String, String> tags) {
-        this.tags = tags;
-        return this;
-    }
 
     /**
      * Get the address of the origin. Domain names, IPv4 addresses, and IPv6 addresses are supported.This should be unique across all origins in an endpoint.

@@ -17,7 +17,7 @@ public final class FormLine extends FormElement {
     /*
      * List of words in the text line.
      */
-    private final List<FormWord> formWords;
+    private final List<FormWord> words;
 
     /**
      * Creates raw OCR item.
@@ -26,12 +26,12 @@ public final class FormLine extends FormElement {
      * @param text The text content of recognized field.
      * @param boundingBox The BoundingBox of the recognized field.
      * @param pageNumber the page number.
-     * @param formWords The list of word element references.
+     * @param words The list of word element references.
      */
-    public FormLine(String text, BoundingBox boundingBox, Integer pageNumber,
-        final List<FormWord> formWords) {
+    public FormLine(String text, FieldBoundingBox boundingBox, Integer pageNumber,
+        final List<FormWord> words) {
         super(text, boundingBox, pageNumber);
-        this.formWords = formWords == null ? null : Collections.unmodifiableList(formWords);
+        this.words = words == null ? null : Collections.unmodifiableList(words);
     }
 
     /**
@@ -39,15 +39,15 @@ public final class FormLine extends FormElement {
      *
      * @return the unmodifiable list of words in the {@code FormLine}.
      */
-    public List<FormWord> getFormWords() {
-        return this.formWords;
+    public List<FormWord> getWords() {
+        return this.words;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public BoundingBox getBoundingBox() {
+    public FieldBoundingBox getBoundingBox() {
         return super.getBoundingBox();
     }
 
@@ -63,7 +63,7 @@ public final class FormLine extends FormElement {
      * {@inheritDoc}
      */
     @Override
-    public Integer getPageNumber() {
+    public int getPageNumber() {
         return super.getPageNumber();
     }
 }

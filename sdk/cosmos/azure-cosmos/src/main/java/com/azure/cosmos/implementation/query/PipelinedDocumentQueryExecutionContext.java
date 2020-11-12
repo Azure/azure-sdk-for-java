@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.query;
 
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.ResourceType;
@@ -45,6 +46,7 @@ public class PipelinedDocumentQueryExecutionContext<T extends Resource> implemen
     }
 
     public static <T extends Resource> Flux<PipelinedDocumentQueryExecutionContext<T>> createAsync(
+        DiagnosticsClientContext diagnosticsClientContext,
         IDocumentQueryClient client,
         PipelinedDocumentQueryParams<T> initParams) {
 
@@ -61,7 +63,7 @@ public class PipelinedDocumentQueryExecutionContext<T extends Resource> implemen
                 ModelBridgeInternal.setQueryRequestOptionsContinuationToken(orderByCosmosQueryRequestOptions, continuationToken);
                 initParams.setCosmosQueryRequestOptions(orderByCosmosQueryRequestOptions);
 
-                return OrderByDocumentQueryExecutionContext.createAsync(client, documentQueryParams);
+                return OrderByDocumentQueryExecutionContext.createAsync(diagnosticsClientContext, client, documentQueryParams);
             };
         } else {
             createBaseComponentFunction = (continuationToken, documentQueryParams) -> {
@@ -69,7 +71,7 @@ public class PipelinedDocumentQueryExecutionContext<T extends Resource> implemen
                 ModelBridgeInternal.setQueryRequestOptionsContinuationToken(parallelCosmosQueryRequestOptions, continuationToken);
                 initParams.setCosmosQueryRequestOptions(parallelCosmosQueryRequestOptions);
 
-                return ParallelDocumentQueryExecutionContext.createAsync(client, documentQueryParams);
+                return ParallelDocumentQueryExecutionContext.createAsync(diagnosticsClientContext, client, documentQueryParams);
             };
         }
 
@@ -170,12 +172,12 @@ public class PipelinedDocumentQueryExecutionContext<T extends Resource> implemen
     }
 
     public static <T extends Resource> Flux<PipelinedDocumentQueryExecutionContext<T>> createReadManyAsync(
-        IDocumentQueryClient queryClient, String collectionResourceId, SqlQuerySpec sqlQuery,
+        DiagnosticsClientContext diagnosticsClientContext, IDocumentQueryClient queryClient, String collectionResourceId, SqlQuerySpec sqlQuery,
         Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap, CosmosQueryRequestOptions cosmosQueryRequestOptions,
         String resourceId, String collectionLink, UUID activityId, Class<T> klass,
         ResourceType resourceTypeEnum) {
         Flux<IDocumentQueryExecutionComponent<T>> documentQueryExecutionComponentFlux = ParallelDocumentQueryExecutionContext
-                                                                                            .createReadManyQueryAsync(queryClient,
+                                                                                            .createReadManyQueryAsync(diagnosticsClientContext, queryClient,
                                                                                                                       collectionResourceId, sqlQuery, rangeQueryMap,
                                                                                                 cosmosQueryRequestOptions, resourceId, collectionLink, activityId, klass, resourceTypeEnum);
 

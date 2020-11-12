@@ -212,18 +212,30 @@ public final class BlobItemProperties {
     @JsonProperty(value = "AccessTierChangeTime")
     private OffsetDateTime accessTierChangeTime;
 
-    // TODO: (rickle-msft) uncomment when these are returned on lists.
-    /*
-    private Map<String, ObjectReplicationPolicy> objectReplicationSourcePolicies;
-
-    private String objectReplicationDestinationPolicyId;
-    */
-
     /*
      * The tagCount property.
      */
     @JsonProperty(value = "TagCount")
     private Integer tagCount;
+
+    /*
+     * Possible values include: 'High', 'Standard'
+     */
+    @JsonProperty(value = "RehydratePriority")
+    private RehydratePriority rehydratePriority;
+
+    /*
+     * The sealed property. Whether or not the blob is sealed  (marked as read only).
+     * This is only returned for Append blobs.
+     */
+    @JsonProperty(value = "Sealed")
+    private Boolean sealed;
+
+    /*
+     * The lastAccessedTime property.
+     */
+    @JsonProperty(value = "LastAccessTime")
+    private OffsetDateTime lastAccessedTime;
 
     /**
      * Get the creationTime property: The creationTime property.
@@ -909,6 +921,68 @@ public final class BlobItemProperties {
      */
     public BlobItemProperties setTagCount(Integer tagCount) {
         this.tagCount = tagCount;
+        return this;
+    }
+
+    /**
+     * Get the rehydratePriority property: Possible values include: 'High',
+     * 'Standard'.
+     *
+     * @return the rehydratePriority value.
+     */
+    public RehydratePriority getRehydratePriority() {
+        return this.rehydratePriority;
+    }
+
+    /**
+     * Set the rehydratePriority property: Possible values include: 'High',
+     * 'Standard'.
+     *
+     * @param rehydratePriority the rehydratePriority value to set.
+     * @return the BlobItemProperties object itself.
+     */
+    public BlobItemProperties setRehydratePriority(RehydratePriority rehydratePriority) {
+        this.rehydratePriority = rehydratePriority;
+        return this;
+    }
+
+    /**
+     * Get the sealed property: The sealed property.
+     *
+     * @return Whether or not the blob is sealed  (marked as read only). This is only applicable for Append blobs.
+     */
+    public Boolean isSealed() {
+        return this.sealed;
+    }
+
+    /**
+     * Set the sealed property: The sealed property.
+     *
+     * @param sealed Whether or not the blob is sealed  (marked as read only). This is only applicable for Append blobs.
+     * @return the BlobItemProperties object itself.
+     */
+    public BlobItemProperties setSealed(Boolean sealed) {
+        this.sealed = sealed;
+        return this;
+    }
+
+    /**
+     * Get the lastAccessedTime property: The lastAccessedTime property.
+     *
+     * @return the lastAccessedTime value.
+     */
+    public OffsetDateTime getLastAccessedTime() {
+        return this.lastAccessedTime;
+    }
+
+    /**
+     * Set the lastAccessedTime property: The lastAccessedTime property.
+     *
+     * @param lastAccessedTime the lastAccessedTime value to set.
+     * @return the BlobItemProperties object itself.
+     */
+    public BlobItemProperties setLastAccessedTime(OffsetDateTime lastAccessedTime) {
+        this.lastAccessedTime = lastAccessedTime;
         return this;
     }
 }

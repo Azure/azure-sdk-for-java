@@ -3,36 +3,38 @@
 
 package com.azure.security.keyvault.keys;
 
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceClient;
-import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.util.FluxUtil;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.PollingContext;
-import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
-import com.azure.security.keyvault.keys.models.KeyVaultKey;
-import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
-import com.azure.security.keyvault.keys.models.ImportKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
+import com.azure.security.keyvault.keys.models.DeletedKey;
+import com.azure.security.keyvault.keys.models.ImportKeyOptions;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyCurveName;
 import com.azure.security.keyvault.keys.models.KeyOperation;
+import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.KeyType;
+import com.azure.security.keyvault.keys.models.KeyVaultKey;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -40,9 +42,6 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Function;
-
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -70,6 +69,8 @@ public final class KeyAsyncClient {
     // Please see <a href=https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
     // for more information on Azure resource provider namespaces.
     private static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
+
+    private static final Duration DEFAULT_POLLING_INTERVAL = Duration.ofSeconds(1);
 
     private final String vaultUrl;
     private final KeyService service;
@@ -99,14 +100,18 @@ public final class KeyAsyncClient {
         return vaultUrl;
     }
 
+    Duration getDefaultPollingInterval() {
+        return DEFAULT_POLLING_INTERVAL;
+    }
+
     /**
      * Creates a new key and stores it in the key vault. The create key operation can be used to create any key type in
      * key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It requires the
      * {@code keys/create} permission.
      *
-     * <p>The {@link KeyType keyType} indicates the type of key to create. Possible values include: {@link KeyType#EC
-     * EC}, {@link KeyType#EC_HSM EC-HSM}, {@link KeyType#RSA RSA}, {@link KeyType#RSA_HSM RSA-HSM} and
-     * {@link KeyType#OCT OCT}.</p>
+     * <p>The {@link KeyType keyType} indicates the type of key to create. Possible values include:
+     * {@link KeyType#EC EC}, {@link KeyType#EC_HSM EC-HSM}, {@link KeyType#RSA RSA}, {@link KeyType#RSA_HSM RSA-HSM},
+     * {@link KeyType#OCT OCT} and {@link KeyType#OCT_HSM OCT-HSM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new EC key. Subscribes to the call asynchronously and prints out the newly created key details when
@@ -135,9 +140,9 @@ public final class KeyAsyncClient {
      * key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It requires the
      * {@code keys/create} permission.
      *
-     * <p>The {@link KeyType keyType} indicates the type of key to create. Possible values include: {@link KeyType#EC
-     * EC}, {@link KeyType#EC_HSM EC-HSM}, {@link KeyType#RSA RSA}, {@link KeyType#RSA_HSM RSA-HSM} and
-     * {@link KeyType#OCT OCT}.</p>
+     * <p>The {@link KeyType keyType} indicates the type of key to create. Possible values include:
+     * {@link KeyType#EC EC}, {@link KeyType#EC_HSM EC-HSM}, {@link KeyType#RSA RSA}, {@link KeyType#RSA_HSM RSA-HSM},
+     * {@link KeyType#OCT OCT} and {@link KeyType#OCT_HSM OCT-HSM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new EC key. Subscribes to the call asynchronously and prints out the newly created key details when
@@ -178,9 +183,9 @@ public final class KeyAsyncClient {
      * CreateKeyOptions#getNotBefore() notBefore} values are optional. The {@link CreateKeyOptions#isEnabled() enabled}
      * field is set to true by Azure Key Vault, if not specified.</p>
      *
-     * <p>The {@link CreateKeyOptions#getKeyType() keyType} indicates the type of key to create. Possible values include:
-     * {@link KeyType#EC EC}, {@link KeyType#EC_HSM EC-HSM}, {@link KeyType#RSA RSA}, {@link KeyType#RSA_HSM RSA-HSM}
-     * and {@link KeyType#OCT OCT}.</p>
+     * <p>The {@link CreateKeyOptions#getKeyType() keyType} indicates the type of key to create. Possible values
+     * include: {@link KeyType#EC EC}, {@link KeyType#EC_HSM EC-HSM}, {@link KeyType#RSA RSA},
+     * {@link KeyType#RSA_HSM RSA-HSM}, {@link KeyType#OCT OCT} and {@link KeyType#OCT_HSM OCT-HSM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new Rsa key which activates in one day and expires in one year. Subscribes to the call
@@ -208,7 +213,8 @@ public final class KeyAsyncClient {
         KeyRequestParameters parameters = new KeyRequestParameters()
             .setKty(createKeyOptions.getKeyType())
             .setKeyOps(createKeyOptions.getKeyOperations())
-            .setKeyAttributes(new KeyRequestAttributes(createKeyOptions));
+            .setKeyAttributes(new KeyRequestAttributes(createKeyOptions))
+            .setReleasePolicy(createKeyOptions.getReleasePolicy());
         return service.createKey(vaultUrl, createKeyOptions.getName(), apiVersion, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.info("Creating key - {}", createKeyOptions.getName()))
@@ -288,7 +294,9 @@ public final class KeyAsyncClient {
             .setKty(createRsaKeyOptions.getKeyType())
             .setKeySize(createRsaKeyOptions.getKeySize())
             .setKeyOps(createRsaKeyOptions.getKeyOperations())
-            .setKeyAttributes(new KeyRequestAttributes(createRsaKeyOptions));
+            .setKeyAttributes(new KeyRequestAttributes(createRsaKeyOptions))
+            .setReleasePolicy(createRsaKeyOptions.getReleasePolicy())
+            .setPublicExponent(createRsaKeyOptions.getPublicExponent());
         return service.createKey(vaultUrl, createRsaKeyOptions.getName(), apiVersion, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.info("Creating Rsa key - {}", createRsaKeyOptions.getName()))
@@ -374,7 +382,8 @@ public final class KeyAsyncClient {
             .setKty(createEcKeyOptions.getKeyType())
             .setCurve(createEcKeyOptions.getCurveName())
             .setKeyOps(createEcKeyOptions.getKeyOperations())
-            .setKeyAttributes(new KeyRequestAttributes(createEcKeyOptions));
+            .setKeyAttributes(new KeyRequestAttributes(createEcKeyOptions))
+            .setReleasePolicy(createEcKeyOptions.getReleasePolicy());
         return service.createKey(vaultUrl, createEcKeyOptions.getName(), apiVersion, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.info("Creating Ec key - {}", createEcKeyOptions.getName()))
@@ -487,12 +496,106 @@ public final class KeyAsyncClient {
         KeyImportRequestParameters parameters = new KeyImportRequestParameters()
             .setKey(importKeyOptions.getKey())
             .setHsm(importKeyOptions.isHardwareProtected())
-            .setKeyAttributes(new KeyRequestAttributes(importKeyOptions));
+            .setKeyAttributes(new KeyRequestAttributes(importKeyOptions))
+            .setReleasePolicy(importKeyOptions.getReleasePolicy());
         return service.importKey(vaultUrl, importKeyOptions.getName(), apiVersion, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.info("Importing key - {}", importKeyOptions.getName()))
             .doOnSuccess(response -> logger.info("Imported key - {}", response.getValue().getName()))
             .doOnError(error -> logger.warning("Failed to import key - {}", importKeyOptions.getName(), error));
+    }
+
+    /**
+     * Exports the latest version of a key from the key vault. The export key operation may be used to import any key
+     * from the Azure Key Vault as long as it is marked as exportable and its release policy is satisfied.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Exports a key from a key vault. Subscribes to the call asynchronously and prints out the newly exported key
+     * details when a response has been received.</p>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.keyasyncclient.exportKey#String-String}
+     *
+     * @param name The name of the key to be exported.
+     * @param environment The target environment assertion.
+     * @return A {@link Mono} containing the {@link KeyVaultKey exported key}.
+     * @throws NullPointerException If the specified {@code name} or {@code environment} are {@code null}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<KeyVaultKey> exportKey(String name, String environment) {
+        try {
+            return exportKeyWithResponse(name, "", environment).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Exports a key from the key vault. The export key operation may be used to import any key from the Azure Key Vault
+     * as long as it is marked as exportable and its release policy is satisfied.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Exports a key from a key vault. Subscribes to the call asynchronously and prints out the newly exported key
+     * details when a response has been received.</p>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.keyasyncclient.exportKey#String-String-String}
+     *
+     * @param name The name of the key to be exported.
+     * @param version The key version.
+     * @param environment The target environment assertion.
+     * @return A {@link Mono} containing the {@link KeyVaultKey exported key}.
+     * @throws NullPointerException If the specified {@code name}, {@code version} or {@code environment} are
+     * {@code null}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<KeyVaultKey> exportKey(String name, String version, String environment) {
+        try {
+            return exportKeyWithResponse(name, version, environment).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Exports a key from the key vault. The export key operation may be used to import any key from the Azure Key Vault
+     * as long as it is marked as exportable and its release policy is satisfied.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Exports a key from a key vault. Subscribes to the call asynchronously and prints out the newly exported key
+     * details when a response has been received.</p>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.keyasyncclient.exportKeyWithResponse#String-String-String}
+     *
+     * @param name The name of the key to be exported.
+     * @param version The key version.
+     * @param environment The target environment assertion.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
+     * {@link KeyVaultKey exported key}.
+     * @throws NullPointerException If the specified {@code name}, {@code version} or {@code environment} are
+     * {@code null}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<KeyVaultKey>> exportKeyWithResponse(String name, String version, String environment) {
+        try {
+            return withContext(context -> exportKeyWithResponse(name, version, environment, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<KeyVaultKey>> exportKeyWithResponse(String name, String version, String environment,
+                                                      Context context) {
+        Objects.requireNonNull(name, "The key name cannot be null.");
+        Objects.requireNonNull(version, "The key version cannot be null.");
+        Objects.requireNonNull(environment, "The environment parameter cannot be null.");
+
+        context = context == null ? Context.NONE : context;
+        KeyExportRequestParameters parameters = new KeyExportRequestParameters().setEnvironment(environment);
+
+        return service.exportKey(vaultUrl, name, version, apiVersion, ACCEPT_LANGUAGE, parameters,
+            CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+            .doOnRequest(ignored -> logger.info("Exporting key - {}", name))
+            .doOnSuccess(response -> logger.info("Exported key - {}", response.getValue().getName()))
+            .doOnError(error -> logger.warning("Failed to export key - {}", name, error));
     }
 
     /**
@@ -654,7 +757,8 @@ public final class KeyAsyncClient {
         context = context == null ? Context.NONE : context;
         KeyRequestParameters parameters = new KeyRequestParameters()
             .setTags(keyProperties.getTags())
-            .setKeyAttributes(new KeyRequestAttributes(keyProperties));
+            .setKeyAttributes(new KeyRequestAttributes(keyProperties))
+            .setReleasePolicy(keyProperties.getReleasePolicy());
         if (keyOperations.length > 0) {
             parameters.setKeyOps(Arrays.asList(keyOperations));
         }
@@ -677,7 +781,7 @@ public final class KeyAsyncClient {
      * <p>Deletes the key in the Azure Key Vault. Subscribes to the call asynchronously and prints out the deleted key
      * details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.deleteKey#string}
+     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.deleteKey#String}
      *
      * @param name The name of the key to be deleted.
      * @return A {@link PollerFlux} to poll on the {@link DeletedKey deleted key} status.
@@ -686,7 +790,32 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<DeletedKey, Void> beginDeleteKey(String name) {
-        return new PollerFlux<>(Duration.ofSeconds(1),
+        return beginDeleteKey(name, getDefaultPollingInterval());
+    }
+
+    /**
+     * Deletes a key of any type from the key vault. If soft-delete is enabled on the key vault then the key is placed
+     * in the deleted state and requires to be purged for permanent deletion else the key is permanently deleted. The
+     * delete operation applies to any key stored in Azure Key Vault but it cannot be applied to an individual version
+     * of a key. This operation removes the cryptographic material associated with the key, which means the key is not
+     * usable for Sign/Verify, Wrap/Unwrap or Encrypt/Decrypt operations. This operation requires the
+     * {@code keys/delete} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Deletes the key in the Azure Key Vault. Subscribes to the call asynchronously and prints out the deleted key
+     * details when a response has been received.</p>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.deleteKey#String-Duration}
+     *
+     * @param name The name of the key to be deleted.
+     * @param pollingInterval The interval at which the operation status will be polled for.
+     * @return A {@link PollerFlux} to poll on the {@link DeletedKey deleted key} status.
+     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
+     * @throws HttpResponseException when a key with {@code name} is empty string.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<DeletedKey, Void> beginDeleteKey(String name, Duration pollingInterval) {
+        return new PollerFlux<>(pollingInterval,
             activationOperation(name),
             createPollOperation(name),
             (context, firstResponse) -> Mono.empty(),
@@ -854,7 +983,7 @@ public final class KeyAsyncClient {
      * <p>Recovers the deleted key from the key vault enabled for soft-delete. Subscribes to the call asynchronously and
      * prints out the recovered key details when a response has been received.</p>
      * //Assuming key is deleted on a soft-delete enabled vault.
-     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.recoverDeletedKey#string}
+     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.recoverDeletedKey#String}
      *
      * @param name The name of the deleted key to be recovered.
      * @return A {@link PollerFlux} to poll on the {@link KeyVaultKey recovered key} status.
@@ -863,7 +992,29 @@ public final class KeyAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<KeyVaultKey, Void> beginRecoverDeletedKey(String name) {
-        return new PollerFlux<>(Duration.ofSeconds(1),
+        return beginRecoverDeletedKey(name, getDefaultPollingInterval());
+    }
+
+    /**
+     * Recovers the deleted key in the key vault to its latest version and can only be performed on a soft-delete
+     * enabled vault. An attempt to recover an non-deleted key will return an error. Consider this the inverse of the
+     * delete operation on soft-delete enabled vaults. This operation requires the {@code keys/recover} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Recovers the deleted key from the key vault enabled for soft-delete. Subscribes to the call asynchronously and
+     * prints out the recovered key details when a response has been received.</p>
+     * //Assuming key is deleted on a soft-delete enabled vault.
+     * {@codesnippet com.azure.security.keyvault.keys.async.keyclient.recoverDeletedKey#String-Duration}
+     *
+     * @param name The name of the deleted key to be recovered.
+     * @param pollingInterval The interval at which the operation status will be polled for.
+     * @return A {@link PollerFlux} to poll on the {@link KeyVaultKey recovered key} status.
+     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
+     * @throws HttpResponseException when a key with {@code name} is empty string.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<KeyVaultKey, Void> beginRecoverDeletedKey(String name, Duration pollingInterval) {
+        return new PollerFlux<>(pollingInterval,
             recoverActivationOperation(name),
             createRecoverPollOperation(name),
             (context, firstResponse) -> Mono.empty(),

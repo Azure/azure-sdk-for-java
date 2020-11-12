@@ -8,6 +8,8 @@ import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.ISessionContainer;
 import org.mockito.Mockito;
 
+import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
+
 public class ConsistencyReaderUnderTest extends ConsistencyReader {
     private QuorumReader origQuorumReader;
     private QuorumReader spyQuorumReader;
@@ -20,7 +22,7 @@ public class ConsistencyReaderUnderTest extends ConsistencyReader {
                                       TransportClient transportClient,
                                       GatewayServiceConfigurationReader serviceConfigReader,
                                       IAuthorizationTokenProvider authorizationTokenProvider) {
-        super(new Configs(), addressSelector, sessionContainer, transportClient, serviceConfigReader, authorizationTokenProvider);
+        super(mockDiagnosticsClientContext(), new Configs(), addressSelector, sessionContainer, transportClient, serviceConfigReader, authorizationTokenProvider);
 
     }
 

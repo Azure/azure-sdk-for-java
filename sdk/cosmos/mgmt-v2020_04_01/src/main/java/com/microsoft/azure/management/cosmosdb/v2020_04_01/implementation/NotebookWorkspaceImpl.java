@@ -10,7 +10,6 @@ package com.microsoft.azure.management.cosmosdb.v2020_04_01.implementation;
 
 import com.microsoft.azure.management.cosmosdb.v2020_04_01.NotebookWorkspace;
 import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
-import com.microsoft.azure.management.cosmosdb.v2020_04_01.NotebookWorkspaceCreateUpdateParameters;
 import rx.Observable;
 
 class NotebookWorkspaceImpl extends CreatableUpdatableImpl<NotebookWorkspace, NotebookWorkspaceInner, NotebookWorkspaceImpl> implements NotebookWorkspace, NotebookWorkspace.Definition, NotebookWorkspace.Update {
@@ -45,14 +44,14 @@ class NotebookWorkspaceImpl extends CreatableUpdatableImpl<NotebookWorkspace, No
     @Override
     public Observable<NotebookWorkspace> createResourceAsync() {
         NotebookWorkspacesInner client = this.manager().inner().notebookWorkspaces();
-        return client.createOrUpdateAsync(this.resourceGroupName, this.accountName, new NotebookWorkspaceCreateUpdateParameters())
+        return client.createOrUpdateAsync(this.resourceGroupName, this.accountName)
             .map(innerToFluentMap(this));
     }
 
     @Override
     public Observable<NotebookWorkspace> updateResourceAsync() {
         NotebookWorkspacesInner client = this.manager().inner().notebookWorkspaces();
-        return client.createOrUpdateAsync(this.resourceGroupName, this.accountName, new NotebookWorkspaceCreateUpdateParameters())
+        return client.createOrUpdateAsync(this.resourceGroupName, this.accountName)
             .map(innerToFluentMap(this));
     }
 

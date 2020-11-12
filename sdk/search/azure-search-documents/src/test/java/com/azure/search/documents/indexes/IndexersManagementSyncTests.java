@@ -145,10 +145,7 @@ public class IndexersManagementSyncTests extends SearchTestBase {
         SearchIndexer actualIndexer = searchIndexerClient.createIndexer(expectedIndexer);
         indexersToDelete.add(actualIndexer.getName());
 
-        expectedIndexer.setParameters(new IndexingParameters()
-            .setConfiguration(Collections.emptyMap()));
         setSameStartTime(expectedIndexer, actualIndexer);
-
         assertObjectEquals(expectedIndexer, actualIndexer, true, "etag");
     }
 

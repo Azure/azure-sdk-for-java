@@ -4,9 +4,9 @@
 package com.azure.storage.blob.options;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.http.RequestConditions;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
@@ -23,9 +23,10 @@ public class BlobBeginCopyOptions {
     private Map<String, String> tags;
     private AccessTier tier;
     private RehydratePriority rehydratePriority;
-    private RequestConditions sourceRequestConditions;
+    private BlobBeginCopySourceRequestConditions sourceRequestConditions;
     private BlobRequestConditions destinationRequestConditions;
     private Duration pollInterval;
+    private Boolean sealDestination;
 
     /**
      * @param sourceUrl The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
@@ -107,17 +108,18 @@ public class BlobBeginCopyOptions {
     }
 
     /**
-     * @return {@link RequestConditions} for the source.
+     * @return {@link BlobBeginCopySourceRequestConditions} for the source.
      */
-    public RequestConditions getSourceRequestConditions() {
+    public BlobBeginCopySourceRequestConditions getSourceRequestConditions() {
         return sourceRequestConditions;
     }
 
     /**
-     * @param sourceRequestConditions {@link RequestConditions} for the source.
+     * @param sourceRequestConditions {@link BlobBeginCopySourceRequestConditions} for the source.
      * @return The updated options.
      */
-    public BlobBeginCopyOptions setSourceRequestConditions(RequestConditions sourceRequestConditions) {
+    public BlobBeginCopyOptions setSourceRequestConditions(
+        BlobBeginCopySourceRequestConditions sourceRequestConditions) {
         this.sourceRequestConditions = sourceRequestConditions;
         return this;
     }
@@ -153,6 +155,25 @@ public class BlobBeginCopyOptions {
      */
     public BlobBeginCopyOptions setPollInterval(Duration pollInterval) {
         this.pollInterval = pollInterval;
+        return this;
+    }
+
+    /**
+     *  Only applicable for Append Blobs.
+     * @return Whether or not the destination blob should be sealed (marked as read only).
+     */
+    public Boolean isSealDestination() {
+        return sealDestination;
+    }
+
+    /**
+     * Only applicable for Append Blobs.
+     *
+     * @param sealDestination Whether or not the destination blob should be sealed (marked as read only).
+     * @return The updated options.
+     */
+    public BlobBeginCopyOptions setSealDestination(Boolean sealDestination) {
+        this.sealDestination = sealDestination;
         return this;
     }
 }

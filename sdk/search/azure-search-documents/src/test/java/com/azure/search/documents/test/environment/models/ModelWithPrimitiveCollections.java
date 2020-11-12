@@ -2,10 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.test.environment.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.OffsetDateTime;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ModelWithPrimitiveCollections {
 
     @JsonProperty(value = "Key")

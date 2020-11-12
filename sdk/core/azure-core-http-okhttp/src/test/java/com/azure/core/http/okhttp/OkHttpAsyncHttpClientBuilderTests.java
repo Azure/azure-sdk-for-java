@@ -10,12 +10,7 @@ import com.azure.core.util.Configuration;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
-import okhttp3.Call;
-import okhttp3.ConnectionPool;
-import okhttp3.Dispatcher;
-import okhttp3.EventListener;
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
+import okhttp3.*;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -31,9 +26,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Executors;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests {@link OkHttpAsyncHttpClientBuilder}.
@@ -335,6 +328,19 @@ public class OkHttpAsyncHttpClientBuilderTests {
         StepVerifier.create(okClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
+    }
+
+    @Test
+    public void buildWithConfigurationForProxyWithCredentials() {
+        Configuration configuration = new Configuration()
+            .put(Configuration.PROPERTY_HTTP_PROXY, "http://username:password@localhost:8888")
+            .put(Configuration.PROPERTY_NO_PROXY, "localhost");
+
+        assertDoesNotThrow(() ->
+            new OkHttpAsyncHttpClientBuilder()
+                .configuration(configuration)
+                .build()
+        );
     }
 
     private static final class TestEventListenerValidator extends EventListener {

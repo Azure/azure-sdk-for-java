@@ -71,7 +71,7 @@ public final class RulesImpl {
                 @PathParam("ruleName") String ruleName,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("If-Match") String ifMatch,
-                @BodyParam("application/xml") Object requestBody,
+                @BodyParam("application/atom+xml") Object requestBody,
                 Context context);
 
         @Delete("/{topicName}/subscriptions/{subscriptionName}/rules/{ruleName}")

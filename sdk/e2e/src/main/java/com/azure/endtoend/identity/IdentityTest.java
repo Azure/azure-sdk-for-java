@@ -32,6 +32,10 @@ public class IdentityTest {
                 WebJobsIdentityTest webJobsIdentityTest  = new WebJobsIdentityTest();
                 webJobsIdentityTest.run();
                 break;
+            case "multitenant":
+                MultiTenantTest multiTenantTest  = new MultiTenantTest();
+                multiTenantTest.run();
+                break;
             default:
                 throw (new IllegalStateException("Invalid Test Platform is configured for AZURE_IDENTITY_TEST_PLATFORM."
                                                                                + "Possible value is webjobs."));

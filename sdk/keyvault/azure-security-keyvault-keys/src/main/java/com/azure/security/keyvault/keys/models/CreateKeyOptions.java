@@ -15,11 +15,20 @@ import java.util.Map;
  */
 @Fluent
 public class CreateKeyOptions {
+    /**
+     * The key name.
+     */
+    private final String name;
 
     /**
-     * Determines whether the object is enabled.
+     * The type of the key.
      */
-    private Boolean enabled;
+    private KeyType keyType;
+
+    /**
+     * The key operations.
+     */
+    private List<KeyOperation> keyOperations;
 
     /**
      * Not before date in UTC.
@@ -37,21 +46,19 @@ public class CreateKeyOptions {
     private Map<String, String> tags;
 
     /**
-     * The type of the key.
+     * Determines whether the object is enabled.
      */
-    KeyType keyType;
+    private Boolean enabled;
 
     /**
-     * The key operations.
+     * Indicates if the private key can be exported.
      */
-    List<KeyOperation> keyOperations;
+    private Boolean exportable;
 
     /**
-     * The key name.
+     * The policy rules under which the key can be exported.
      */
-    String name;
-
-    CreateKeyOptions() { }
+    private KeyReleasePolicy releasePolicy;
 
     /**
      * Creates instance of KeyCreateOptions with {@code name} as key name and {@code keyType} as type of the key.
@@ -90,6 +97,10 @@ public class CreateKeyOptions {
      */
     public KeyType getKeyType() {
         return this.keyType;
+    }
+
+    void setKeyType(KeyType keyType) {
+        this.keyType = keyType;
     }
 
     /**
@@ -170,6 +181,46 @@ public class CreateKeyOptions {
      */
     public Boolean isEnabled() {
         return this.enabled;
+    }
+
+    /**
+     * Indicates if the private key can be exported.
+     *
+     * @return The exportable value.
+     */
+    public Boolean isExportable() {
+        return this.exportable;
+    }
+
+    /**
+     * Set a value that indicates if the private key can be exported.
+     *
+     * @param exportable The exportable value to set.
+     * @return The updated {@link CreateKeyOptions} object.
+     */
+    public CreateKeyOptions setExportable(Boolean exportable) {
+        this.exportable = exportable;
+        return this;
+    }
+
+    /**
+     * Get the policy rules under which the key can be exported.
+     *
+     * @return The release policy.
+     */
+    public KeyReleasePolicy getReleasePolicy() {
+        return releasePolicy;
+    }
+
+    /**
+     * Set the policy rules under which the key can be exported.
+     *
+     * @param releasePolicy The release policy to set.
+     * @return The updated {@link CreateKeyOptions} object.
+     */
+    public CreateKeyOptions setReleasePolicy(KeyReleasePolicy releasePolicy) {
+        this.releasePolicy = releasePolicy;
+        return this;
     }
 
     /**

@@ -9,6 +9,7 @@ module com.azure.core.amqp {
     requires transitive org.apache.qpid.proton.j;
 
     exports com.azure.core.amqp;
+    exports com.azure.core.amqp.models;
     exports com.azure.core.amqp.exception;
 
     // FIXME this should not be a long-term solution

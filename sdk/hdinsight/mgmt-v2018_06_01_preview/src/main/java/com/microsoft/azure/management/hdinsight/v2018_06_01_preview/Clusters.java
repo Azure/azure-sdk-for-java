@@ -76,4 +76,14 @@ public interface Clusters extends SupportsCreating<Cluster.DefinitionStages.Blan
      */
     Completable resizeAsync(String resourceGroupName, String clusterName);
 
+    /**
+     * Updates the Autoscale Configuration for HDInsight cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable updateAutoScaleConfigurationAsync(String resourceGroupName, String clusterName);
+
 }

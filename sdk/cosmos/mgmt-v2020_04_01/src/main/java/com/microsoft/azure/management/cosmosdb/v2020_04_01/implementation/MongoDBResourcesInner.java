@@ -27,6 +27,7 @@ import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.HTTP;
 import retrofit2.http.Path;
+import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import retrofit2.Response;
@@ -95,6 +96,22 @@ public class MongoDBResourcesInner {
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/throughputSettings/default")
         Observable<Response<ResponseBody>> beginUpdateMongoDBDatabaseThroughput(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Body ThroughputSettingsUpdateParameters updateThroughputParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2020_04_01.MongoDBResources migrateMongoDBDatabaseToAutoscale" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/throughputSettings/default/migrateToAutoscale")
+        Observable<Response<ResponseBody>> migrateMongoDBDatabaseToAutoscale(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2020_04_01.MongoDBResources beginMigrateMongoDBDatabaseToAutoscale" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/throughputSettings/default/migrateToAutoscale")
+        Observable<Response<ResponseBody>> beginMigrateMongoDBDatabaseToAutoscale(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2020_04_01.MongoDBResources migrateMongoDBDatabaseToManualThroughput" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/throughputSettings/default/migrateToManualThroughput")
+        Observable<Response<ResponseBody>> migrateMongoDBDatabaseToManualThroughput(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2020_04_01.MongoDBResources beginMigrateMongoDBDatabaseToManualThroughput" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/throughputSettings/default/migrateToManualThroughput")
+        Observable<Response<ResponseBody>> beginMigrateMongoDBDatabaseToManualThroughput(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2020_04_01.MongoDBResources listMongoDBCollections" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/collections")
         Observable<Response<ResponseBody>> listMongoDBCollections(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -130,6 +147,22 @@ public class MongoDBResourcesInner {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2020_04_01.MongoDBResources beginUpdateMongoDBCollectionThroughput" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/collections/{collectionName}/throughputSettings/default")
         Observable<Response<ResponseBody>> beginUpdateMongoDBCollectionThroughput(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Path("collectionName") String collectionName, @Query("api-version") String apiVersion, @Body ThroughputSettingsUpdateParameters updateThroughputParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2020_04_01.MongoDBResources migrateMongoDBCollectionToAutoscale" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/collections/{collectionName}/throughputSettings/default/migrateToAutoscale")
+        Observable<Response<ResponseBody>> migrateMongoDBCollectionToAutoscale(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Path("collectionName") String collectionName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2020_04_01.MongoDBResources beginMigrateMongoDBCollectionToAutoscale" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/collections/{collectionName}/throughputSettings/default/migrateToAutoscale")
+        Observable<Response<ResponseBody>> beginMigrateMongoDBCollectionToAutoscale(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Path("collectionName") String collectionName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2020_04_01.MongoDBResources migrateMongoDBCollectionToManualThroughput" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/collections/{collectionName}/throughputSettings/default/migrateToManualThroughput")
+        Observable<Response<ResponseBody>> migrateMongoDBCollectionToManualThroughput(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Path("collectionName") String collectionName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cosmosdb.v2020_04_01.MongoDBResources beginMigrateMongoDBCollectionToManualThroughput" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/collections/{collectionName}/throughputSettings/default/migrateToManualThroughput")
+        Observable<Response<ResponseBody>> beginMigrateMongoDBCollectionToManualThroughput(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("databaseName") String databaseName, @Path("collectionName") String collectionName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -925,6 +958,338 @@ public class MongoDBResourcesInner {
     }
 
     private ServiceResponse<ThroughputSettingsGetResultsInner> beginUpdateMongoDBDatabaseThroughputDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ThroughputSettingsGetResultsInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ThroughputSettingsGetResultsInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB MongoDB database from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ThroughputSettingsGetResultsInner object if successful.
+     */
+    public ThroughputSettingsGetResultsInner migrateMongoDBDatabaseToAutoscale(String resourceGroupName, String accountName, String databaseName) {
+        return migrateMongoDBDatabaseToAutoscaleWithServiceResponseAsync(resourceGroupName, accountName, databaseName).toBlocking().last().body();
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB MongoDB database from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ThroughputSettingsGetResultsInner> migrateMongoDBDatabaseToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName, final ServiceCallback<ThroughputSettingsGetResultsInner> serviceCallback) {
+        return ServiceFuture.fromResponse(migrateMongoDBDatabaseToAutoscaleWithServiceResponseAsync(resourceGroupName, accountName, databaseName), serviceCallback);
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB MongoDB database from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ThroughputSettingsGetResultsInner> migrateMongoDBDatabaseToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName) {
+        return migrateMongoDBDatabaseToAutoscaleWithServiceResponseAsync(resourceGroupName, accountName, databaseName).map(new Func1<ServiceResponse<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>() {
+            @Override
+            public ThroughputSettingsGetResultsInner call(ServiceResponse<ThroughputSettingsGetResultsInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB MongoDB database from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<ThroughputSettingsGetResultsInner>> migrateMongoDBDatabaseToAutoscaleWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        final String apiVersion = "2020-04-01";
+        Observable<Response<ResponseBody>> observable = service.migrateMongoDBDatabaseToAutoscale(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<ThroughputSettingsGetResultsInner>() { }.getType());
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB MongoDB database from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ThroughputSettingsGetResultsInner object if successful.
+     */
+    public ThroughputSettingsGetResultsInner beginMigrateMongoDBDatabaseToAutoscale(String resourceGroupName, String accountName, String databaseName) {
+        return beginMigrateMongoDBDatabaseToAutoscaleWithServiceResponseAsync(resourceGroupName, accountName, databaseName).toBlocking().single().body();
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB MongoDB database from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ThroughputSettingsGetResultsInner> beginMigrateMongoDBDatabaseToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName, final ServiceCallback<ThroughputSettingsGetResultsInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginMigrateMongoDBDatabaseToAutoscaleWithServiceResponseAsync(resourceGroupName, accountName, databaseName), serviceCallback);
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB MongoDB database from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ThroughputSettingsGetResultsInner object
+     */
+    public Observable<ThroughputSettingsGetResultsInner> beginMigrateMongoDBDatabaseToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName) {
+        return beginMigrateMongoDBDatabaseToAutoscaleWithServiceResponseAsync(resourceGroupName, accountName, databaseName).map(new Func1<ServiceResponse<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>() {
+            @Override
+            public ThroughputSettingsGetResultsInner call(ServiceResponse<ThroughputSettingsGetResultsInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB MongoDB database from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ThroughputSettingsGetResultsInner object
+     */
+    public Observable<ServiceResponse<ThroughputSettingsGetResultsInner>> beginMigrateMongoDBDatabaseToAutoscaleWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        final String apiVersion = "2020-04-01";
+        return service.beginMigrateMongoDBDatabaseToAutoscale(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ThroughputSettingsGetResultsInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ThroughputSettingsGetResultsInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ThroughputSettingsGetResultsInner> clientResponse = beginMigrateMongoDBDatabaseToAutoscaleDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ThroughputSettingsGetResultsInner> beginMigrateMongoDBDatabaseToAutoscaleDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ThroughputSettingsGetResultsInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ThroughputSettingsGetResultsInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB MongoDB database from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ThroughputSettingsGetResultsInner object if successful.
+     */
+    public ThroughputSettingsGetResultsInner migrateMongoDBDatabaseToManualThroughput(String resourceGroupName, String accountName, String databaseName) {
+        return migrateMongoDBDatabaseToManualThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName).toBlocking().last().body();
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB MongoDB database from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ThroughputSettingsGetResultsInner> migrateMongoDBDatabaseToManualThroughputAsync(String resourceGroupName, String accountName, String databaseName, final ServiceCallback<ThroughputSettingsGetResultsInner> serviceCallback) {
+        return ServiceFuture.fromResponse(migrateMongoDBDatabaseToManualThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName), serviceCallback);
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB MongoDB database from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ThroughputSettingsGetResultsInner> migrateMongoDBDatabaseToManualThroughputAsync(String resourceGroupName, String accountName, String databaseName) {
+        return migrateMongoDBDatabaseToManualThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName).map(new Func1<ServiceResponse<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>() {
+            @Override
+            public ThroughputSettingsGetResultsInner call(ServiceResponse<ThroughputSettingsGetResultsInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB MongoDB database from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<ThroughputSettingsGetResultsInner>> migrateMongoDBDatabaseToManualThroughputWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        final String apiVersion = "2020-04-01";
+        Observable<Response<ResponseBody>> observable = service.migrateMongoDBDatabaseToManualThroughput(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<ThroughputSettingsGetResultsInner>() { }.getType());
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB MongoDB database from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ThroughputSettingsGetResultsInner object if successful.
+     */
+    public ThroughputSettingsGetResultsInner beginMigrateMongoDBDatabaseToManualThroughput(String resourceGroupName, String accountName, String databaseName) {
+        return beginMigrateMongoDBDatabaseToManualThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName).toBlocking().single().body();
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB MongoDB database from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ThroughputSettingsGetResultsInner> beginMigrateMongoDBDatabaseToManualThroughputAsync(String resourceGroupName, String accountName, String databaseName, final ServiceCallback<ThroughputSettingsGetResultsInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginMigrateMongoDBDatabaseToManualThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName), serviceCallback);
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB MongoDB database from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ThroughputSettingsGetResultsInner object
+     */
+    public Observable<ThroughputSettingsGetResultsInner> beginMigrateMongoDBDatabaseToManualThroughputAsync(String resourceGroupName, String accountName, String databaseName) {
+        return beginMigrateMongoDBDatabaseToManualThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName).map(new Func1<ServiceResponse<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>() {
+            @Override
+            public ThroughputSettingsGetResultsInner call(ServiceResponse<ThroughputSettingsGetResultsInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB MongoDB database from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ThroughputSettingsGetResultsInner object
+     */
+    public Observable<ServiceResponse<ThroughputSettingsGetResultsInner>> beginMigrateMongoDBDatabaseToManualThroughputWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        final String apiVersion = "2020-04-01";
+        return service.beginMigrateMongoDBDatabaseToManualThroughput(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ThroughputSettingsGetResultsInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ThroughputSettingsGetResultsInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ThroughputSettingsGetResultsInner> clientResponse = beginMigrateMongoDBDatabaseToManualThroughputDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ThroughputSettingsGetResultsInner> beginMigrateMongoDBDatabaseToManualThroughputDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<ThroughputSettingsGetResultsInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ThroughputSettingsGetResultsInner>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
@@ -1787,6 +2152,366 @@ public class MongoDBResourcesInner {
     }
 
     private ServiceResponse<ThroughputSettingsGetResultsInner> beginUpdateMongoDBCollectionThroughputDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ThroughputSettingsGetResultsInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ThroughputSettingsGetResultsInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB MongoDB collection from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ThroughputSettingsGetResultsInner object if successful.
+     */
+    public ThroughputSettingsGetResultsInner migrateMongoDBCollectionToAutoscale(String resourceGroupName, String accountName, String databaseName, String collectionName) {
+        return migrateMongoDBCollectionToAutoscaleWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName).toBlocking().last().body();
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB MongoDB collection from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ThroughputSettingsGetResultsInner> migrateMongoDBCollectionToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName, String collectionName, final ServiceCallback<ThroughputSettingsGetResultsInner> serviceCallback) {
+        return ServiceFuture.fromResponse(migrateMongoDBCollectionToAutoscaleWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName), serviceCallback);
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB MongoDB collection from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ThroughputSettingsGetResultsInner> migrateMongoDBCollectionToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName, String collectionName) {
+        return migrateMongoDBCollectionToAutoscaleWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName).map(new Func1<ServiceResponse<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>() {
+            @Override
+            public ThroughputSettingsGetResultsInner call(ServiceResponse<ThroughputSettingsGetResultsInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB MongoDB collection from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<ThroughputSettingsGetResultsInner>> migrateMongoDBCollectionToAutoscaleWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName, String collectionName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (collectionName == null) {
+            throw new IllegalArgumentException("Parameter collectionName is required and cannot be null.");
+        }
+        final String apiVersion = "2020-04-01";
+        Observable<Response<ResponseBody>> observable = service.migrateMongoDBCollectionToAutoscale(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, collectionName, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<ThroughputSettingsGetResultsInner>() { }.getType());
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB MongoDB collection from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ThroughputSettingsGetResultsInner object if successful.
+     */
+    public ThroughputSettingsGetResultsInner beginMigrateMongoDBCollectionToAutoscale(String resourceGroupName, String accountName, String databaseName, String collectionName) {
+        return beginMigrateMongoDBCollectionToAutoscaleWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName).toBlocking().single().body();
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB MongoDB collection from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ThroughputSettingsGetResultsInner> beginMigrateMongoDBCollectionToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName, String collectionName, final ServiceCallback<ThroughputSettingsGetResultsInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginMigrateMongoDBCollectionToAutoscaleWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName), serviceCallback);
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB MongoDB collection from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ThroughputSettingsGetResultsInner object
+     */
+    public Observable<ThroughputSettingsGetResultsInner> beginMigrateMongoDBCollectionToAutoscaleAsync(String resourceGroupName, String accountName, String databaseName, String collectionName) {
+        return beginMigrateMongoDBCollectionToAutoscaleWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName).map(new Func1<ServiceResponse<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>() {
+            @Override
+            public ThroughputSettingsGetResultsInner call(ServiceResponse<ThroughputSettingsGetResultsInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB MongoDB collection from manual throughput to autoscale.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ThroughputSettingsGetResultsInner object
+     */
+    public Observable<ServiceResponse<ThroughputSettingsGetResultsInner>> beginMigrateMongoDBCollectionToAutoscaleWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName, String collectionName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (collectionName == null) {
+            throw new IllegalArgumentException("Parameter collectionName is required and cannot be null.");
+        }
+        final String apiVersion = "2020-04-01";
+        return service.beginMigrateMongoDBCollectionToAutoscale(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, collectionName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ThroughputSettingsGetResultsInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ThroughputSettingsGetResultsInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ThroughputSettingsGetResultsInner> clientResponse = beginMigrateMongoDBCollectionToAutoscaleDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ThroughputSettingsGetResultsInner> beginMigrateMongoDBCollectionToAutoscaleDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ThroughputSettingsGetResultsInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ThroughputSettingsGetResultsInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB MongoDB collection from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ThroughputSettingsGetResultsInner object if successful.
+     */
+    public ThroughputSettingsGetResultsInner migrateMongoDBCollectionToManualThroughput(String resourceGroupName, String accountName, String databaseName, String collectionName) {
+        return migrateMongoDBCollectionToManualThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName).toBlocking().last().body();
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB MongoDB collection from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ThroughputSettingsGetResultsInner> migrateMongoDBCollectionToManualThroughputAsync(String resourceGroupName, String accountName, String databaseName, String collectionName, final ServiceCallback<ThroughputSettingsGetResultsInner> serviceCallback) {
+        return ServiceFuture.fromResponse(migrateMongoDBCollectionToManualThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName), serviceCallback);
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB MongoDB collection from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ThroughputSettingsGetResultsInner> migrateMongoDBCollectionToManualThroughputAsync(String resourceGroupName, String accountName, String databaseName, String collectionName) {
+        return migrateMongoDBCollectionToManualThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName).map(new Func1<ServiceResponse<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>() {
+            @Override
+            public ThroughputSettingsGetResultsInner call(ServiceResponse<ThroughputSettingsGetResultsInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB MongoDB collection from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<ThroughputSettingsGetResultsInner>> migrateMongoDBCollectionToManualThroughputWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName, String collectionName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (collectionName == null) {
+            throw new IllegalArgumentException("Parameter collectionName is required and cannot be null.");
+        }
+        final String apiVersion = "2020-04-01";
+        Observable<Response<ResponseBody>> observable = service.migrateMongoDBCollectionToManualThroughput(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, collectionName, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<ThroughputSettingsGetResultsInner>() { }.getType());
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB MongoDB collection from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ThroughputSettingsGetResultsInner object if successful.
+     */
+    public ThroughputSettingsGetResultsInner beginMigrateMongoDBCollectionToManualThroughput(String resourceGroupName, String accountName, String databaseName, String collectionName) {
+        return beginMigrateMongoDBCollectionToManualThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName).toBlocking().single().body();
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB MongoDB collection from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ThroughputSettingsGetResultsInner> beginMigrateMongoDBCollectionToManualThroughputAsync(String resourceGroupName, String accountName, String databaseName, String collectionName, final ServiceCallback<ThroughputSettingsGetResultsInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginMigrateMongoDBCollectionToManualThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName), serviceCallback);
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB MongoDB collection from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ThroughputSettingsGetResultsInner object
+     */
+    public Observable<ThroughputSettingsGetResultsInner> beginMigrateMongoDBCollectionToManualThroughputAsync(String resourceGroupName, String accountName, String databaseName, String collectionName) {
+        return beginMigrateMongoDBCollectionToManualThroughputWithServiceResponseAsync(resourceGroupName, accountName, databaseName, collectionName).map(new Func1<ServiceResponse<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>() {
+            @Override
+            public ThroughputSettingsGetResultsInner call(ServiceResponse<ThroughputSettingsGetResultsInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Migrate an Azure Cosmos DB MongoDB collection from autoscale to manual throughput.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseName Cosmos DB database name.
+     * @param collectionName Cosmos DB collection name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ThroughputSettingsGetResultsInner object
+     */
+    public Observable<ServiceResponse<ThroughputSettingsGetResultsInner>> beginMigrateMongoDBCollectionToManualThroughputWithServiceResponseAsync(String resourceGroupName, String accountName, String databaseName, String collectionName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (collectionName == null) {
+            throw new IllegalArgumentException("Parameter collectionName is required and cannot be null.");
+        }
+        final String apiVersion = "2020-04-01";
+        return service.beginMigrateMongoDBCollectionToManualThroughput(this.client.subscriptionId(), resourceGroupName, accountName, databaseName, collectionName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ThroughputSettingsGetResultsInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ThroughputSettingsGetResultsInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ThroughputSettingsGetResultsInner> clientResponse = beginMigrateMongoDBCollectionToManualThroughputDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ThroughputSettingsGetResultsInner> beginMigrateMongoDBCollectionToManualThroughputDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<ThroughputSettingsGetResultsInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ThroughputSettingsGetResultsInner>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())

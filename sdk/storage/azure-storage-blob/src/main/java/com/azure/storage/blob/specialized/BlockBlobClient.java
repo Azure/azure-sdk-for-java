@@ -18,6 +18,7 @@ import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.options.BlockBlobCommitBlockListOptions;
 import com.azure.storage.blob.models.BlockBlobItem;
+import com.azure.storage.blob.options.BlockBlobListBlocksOptions;
 import com.azure.storage.blob.options.BlockBlobOutputStreamOptions;
 import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
 import com.azure.storage.blob.models.BlockList;
@@ -201,8 +202,8 @@ public final class BlockBlobClient extends BlobClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.upload#InputStream-long}
      *
      * @param data The data to write to the blob. The data must be markable. This is in order to support retries. If
-     * the data is not markable, consider using {@link #getBlobOutputStream()} and writing to the returned
-     * OutputStream.
+     * the data is not markable, consider using {@link #getBlobOutputStream()} and writing to the returned OutputStream.
+     * Alternatively, consider wrapping your data source in a {@link java.io.BufferedInputStream} to add mark support.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data provided in the {@link InputStream}.
      * @return The information of the uploaded block blob.
@@ -372,7 +373,7 @@ public final class BlockBlobClient extends BlobClientBase {
         String leaseId, Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("data", data);
         Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length,
-            BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
+            BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, true);
 
         Mono<Response<Void>> response = client.stageBlockWithResponse(base64BlockId,
             fbb.subscribeOn(Schedulers.elastic()), length, contentMd5, leaseId, context);
@@ -471,7 +472,26 @@ public final class BlockBlobClient extends BlobClientBase {
      */
     public Response<BlockList> listBlocksWithResponse(BlockListType listType, String leaseId, Duration timeout,
         Context context) {
-        return blockWithOptionalTimeout(client.listBlocksWithResponse(listType, leaseId, context), timeout);
+        return listBlocksWithResponse(new BlockBlobListBlocksOptions(listType).setLeaseId(leaseId), timeout, context);
+    }
+
+    /**
+     * Returns the list of blocks that have been uploaded as part of a block blob using the specified block list
+     * filter. For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/get-block-list">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobClient.listBlocksWithResponse#BlockBlobListBlocksOptions-Duration-Context}
+     *
+     * @param options {@link BlockBlobListBlocksOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return The list of blocks.
+     */
+    public Response<BlockList> listBlocksWithResponse(BlockBlobListBlocksOptions options, Duration timeout,
+        Context context) {
+        return blockWithOptionalTimeout(client.listBlocksWithResponse(options, context), timeout);
     }
 
     /**

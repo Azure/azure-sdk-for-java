@@ -3,29 +3,25 @@
 
 package com.azure.storage.blob.perf;
 
-import static com.azure.perf.test.core.TestDataCreationHelper.createRandomInputStream;
-
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.storage.blob.perf.core.BlobTestBase;
 import com.azure.storage.blob.specialized.BlobOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
+
+import static com.azure.perf.test.core.TestDataCreationHelper.writeBytesToOutputStream;
+
 public class UploadOutputStreamTest extends BlobTestBase<PerfStressOptions> {
-
-    private final InputStream inputStream;
-
     public UploadOutputStreamTest(PerfStressOptions options) {
         super(options);
-        this.inputStream = createRandomInputStream(options.getSize());
     }
 
     @Override
     public void run() {
         try {
             BlobOutputStream blobOutputStream = blockBlobClient.getBlobOutputStream();
-            copyStream(inputStream, blobOutputStream);
+            writeBytesToOutputStream(blobOutputStream, options.getSize());
             blobOutputStream.close();
         } catch (IOException e) {
             throw new RuntimeException(e);

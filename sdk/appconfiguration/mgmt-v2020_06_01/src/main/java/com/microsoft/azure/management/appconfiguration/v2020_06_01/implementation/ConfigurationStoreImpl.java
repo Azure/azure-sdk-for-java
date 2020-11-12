@@ -113,12 +113,6 @@ class ConfigurationStoreImpl extends GroupableResourceCoreImpl<ConfigurationStor
     }
 
     @Override
-    public ConfigurationStoreImpl withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
-        this.inner().withPublicNetworkAccess(publicNetworkAccess);
-        return this;
-    }
-
-    @Override
     public ConfigurationStoreImpl withSku(Sku sku) {
         if (isInCreateMode()) {
             this.inner().withSku(sku);
@@ -144,6 +138,16 @@ class ConfigurationStoreImpl extends GroupableResourceCoreImpl<ConfigurationStor
             this.inner().withIdentity(identity);
         } else {
             this.updateParameter.withIdentity(identity);
+        }
+        return this;
+    }
+
+    @Override
+    public ConfigurationStoreImpl withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        if (isInCreateMode()) {
+            this.inner().withPublicNetworkAccess(publicNetworkAccess);
+        } else {
+            this.updateParameter.withPublicNetworkAccess(publicNetworkAccess);
         }
         return this;
     }

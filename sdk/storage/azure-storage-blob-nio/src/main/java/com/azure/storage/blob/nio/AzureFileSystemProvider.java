@@ -76,7 +76,7 @@ import java.util.function.Supplier;
  * {@link FileSystemProvider}.
  * <p>
  * The scheme for this provider is {@code "azb"}, and the format of the URI to identify an {@code AzureFileSystem} is
- * {@code "azb://?account=&lt;accountName&gt;"}. The name of the Storage account is used to uniquely identify the file
+ * {@code "azb://?account=<accountName>"}. The name of the Storage account is used to uniquely identify the file
  * system.
  * <p>
  * An {@link AzureFileSystem} is backed by an account. An {@link AzureFileStore} is backed by a container. Any number of
@@ -106,7 +106,7 @@ import java.util.function.Supplier;
  *     <li>{@code AzureStorageMaxConcurrencyPerRequest:}{@link Integer}</li>
  *     <li>{@code AzureStorageDownloadResumeRetries:}{@link Integer}</li>
  *     <li>{@code AzureStorageUseHttps:}{@link Boolean}</li>
- *     <li>{@code AzureStorageFileStores:}{@link Iterable}&lt;String&gt;}</li>
+ *     <li>{@code AzureStorageFileStores:}{@link String}</li>
  * </ul>
  * <p>
  * Either an account key or a sas token must be specified. If both are provided, the account key will be preferred. If
@@ -125,11 +125,34 @@ import java.util.function.Supplier;
 public final class AzureFileSystemProvider extends FileSystemProvider {
     private final ClientLogger logger = new ClientLogger(AzureFileSystemProvider.class);
 
+    /**
+     * A helper for setting the HTTP properties when creating a directory.
+     */
     public static final String CONTENT_TYPE = "Content-Type";
+
+    /**
+     * A helper for setting the HTTP properties when creating a directory.
+     */
     public static final String CONTENT_DISPOSITION = "Content-Disposition";
+
+    /**
+     * A helper for setting the HTTP properties when creating a directory.
+     */
     public static final String CONTENT_LANGUAGE = "Content-Language";
+
+    /**
+     * A helper for setting the HTTP properties when creating a directory.
+     */
     public static final String CONTENT_ENCODING = "Content-Encoding";
+
+    /**
+     * A helper for setting the HTTP properties when creating a directory.
+     */
     public static final String CONTENT_MD5 = "Content-MD5";
+
+    /**
+     * A helper for setting the HTTP properties when creating a directory.
+     */
     public static final String CACHE_CONTROL = "Cache-Control";
 
     private static final String ACCOUNT_QUERY_KEY = "account";
@@ -147,7 +170,9 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     }
 
     /**
-     * Returns {@code "azb".}
+     * Returns the URI scheme that identifies this provider: {@code "azb".}
+     *
+     * @return {@code "azb"}
      */
     @Override
     public String getScheme() {
@@ -155,10 +180,20 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     }
 
     /**
-     * The format of a {@code URI} identifying a file system is {@code "azb://?account=&lt;accountName&gt;"}.
+     * Constructs a new FileSystem object identified by a URI.
+     * <p>
+     * The format of a {@code URI} identifying a file system is {@code "azb://?account=<accountName>"}.
      * <p>
      * Once closed, a file system with the same identifier may be reopened.
-     * {@inheritDoc}
+     *
+     * @param uri URI reference
+     * @param config A map of provider specific properties to configure the file system
+     * @return a new file system.
+     * @throws IllegalArgumentException If the pre-conditions for the uri parameter aren't met, or the env parameter
+     * does not contain properties required by the provider, or a property value is invalid.
+     * @throws IOException If an I/O error occurs.
+     * @throws SecurityException never
+     * @throws FileSystemAlreadyExistsException If the file system has already been created.
      */
     @Override
     public FileSystem newFileSystem(URI uri, Map<String, ?> config) throws IOException {
@@ -175,11 +210,18 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     }
 
     /**
+     * Returns an existing FileSystem created by this provider.
+     * <p>
      * The format of a {@code URI} identifying an file system is {@code "azb://?account=&lt;accountName&gt;"}.
      * <p>
      * Trying to retrieve a closed file system will throw a {@link FileSystemNotFoundException}. Once closed, a
      * file system with the same identifier may be reopened.
-     * {@inheritDoc}
+     *
+     * @param uri URI reference
+     * @return the file system
+     * @throws IllegalArgumentException If the pre-conditions for the uri parameter aren't met
+     * @throws FileSystemNotFoundException If the file system already exists
+     * @throws SecurityException never
      */
     @Override
     public FileSystem getFileSystem(URI uri) {
@@ -191,7 +233,17 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     }
 
     /**
-     * {@inheritDoc}
+     * Return a Path object by converting the given URI. The resulting Path is associated with a FileSystem that already
+     * exists.
+     *
+     * @param uri The URI to convert
+     * @return The path identified by the URI.
+     * @throws IllegalArgumentException If the URI scheme does not identify this provider or other preconditions on the
+     * uri parameter do not hold
+     * @throws FileSystemNotFoundException if the file system identified by the query does not exist
+     * @throws SecurityException never
+     *
+     * @see #getFileSystem(URI) for information on the URI format
      */
     @Override
     public Path getPath(URI uri) {
@@ -199,12 +251,24 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     }
 
     /**
-     * {@inheritDoc}
+     * Unsupported. Use {@link #newInputStream(Path, OpenOption...)} or {@link #newOutputStream(Path, OpenOption...)}
+     * instead.
+     *
+     * @param path the Path
+     * @param set open options
+     * @param fileAttributes attributes
+     * @return a new seekable byte channel
+     * @throws UnsupportedOperationException Operation is not supported.
+     * @throws IllegalArgumentException if the set contains an invalid combination of options
+     * @throws FileAlreadyExistsException if a file of that name already exists and the CREATE_NEW option is specified
+     * (optional specific exception)
+     * @throws IOException If an I/O error occurs.
+     * @throws SecurityException never
      */
     @Override
     public SeekableByteChannel newByteChannel(Path path, Set<? extends OpenOption> set,
             FileAttribute<?>... fileAttributes) throws IOException {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -216,7 +280,13 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      * <p>
      * Only {@link StandardOpenOption#READ} is supported. Any other option will throw.
      *
-     * {@inheritDoc}
+     * @param path the path to the file to open
+     * @param options options specifying how the file is opened
+     * @return a new input stream
+     * @throws IllegalArgumentException if an invalid combination of options is specified
+     * @throws UnsupportedOperationException if an unsupported option is specified
+     * @throws IOException If an I/O error occurs.
+     * @throws SecurityException never
      */
     @Override
     public InputStream newInputStream(Path path, OpenOption... options) throws IOException {
@@ -226,15 +296,17 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
                 new UnsupportedOperationException("Only the read option is supported."));
         }
 
-        // Ensure the path points to a file.
         AzureResource resource = new AzureResource(path);
+        AzurePath.ensureFileSystemOpen(resource.getPath());
+
+        // Ensure the path points to a file.
         if (!resource.checkDirStatus().equals(DirectoryStatus.NOT_A_DIRECTORY)) {
             throw LoggingUtility.logError(logger, new IOException("Path either does not exist or points to a directory."
                 + "Path must point to a file. Path: " + path.toString()));
         }
 
         // Note that methods on BlobInputStream are already synchronized.
-        return new NioBlobInputStream(resource.getBlobClient().openInputStream());
+        return new NioBlobInputStream(resource.getBlobClient().openInputStream(), resource.getPath());
     }
 
     /**
@@ -266,7 +338,13 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      * This can be a useful tool because writing happens asynchronously, and therefore an error from a previous write
      * may not otherwise be thrown unless the stream is flushed, closed, or written to again.
      *
-     * {@inheritDoc}
+     * @param path the path to the file to open or create
+     * @param options options specifying how the file is opened
+     * @return a new output stream
+     * @throws IllegalArgumentException if an invalid combination of options is specified
+     * @throws UnsupportedOperationException if an unsupported option is specified
+     * @throws IOException If an I/O error occurs.
+     * @throws SecurityException never
      */
     @Override
     public OutputStream newOutputStream(Path path, OpenOption... options) throws IOException {
@@ -299,6 +377,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         }
 
         AzureResource resource = new AzureResource(path);
+        AzurePath.ensureFileSystemOpen(resource.getPath());
         DirectoryStatus status = resource.checkDirStatus();
 
         // Cannot write to a directory.
@@ -335,14 +414,29 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         }
 
         return new NioBlobOutputStream(resource.getBlobClient().getBlockBlobClient().getBlobOutputStream(pto, null,
-            null, null, rq));
+            null, null, rq), resource.getPath());
     }
 
     /**
-     * Returns an {@link AzureDirectoryStream} for iterating over the contents of a directory.
+     * Returns an {@link AzureDirectoryStream} for iterating over the contents of a directory. The elements returned by
+     * the directory stream's iterator are of type Path, each one representing an entry in the directory. The Path
+     * objects are obtained as if by resolving the name of the directory entry against dir. The entries returned by the
+     * iterator are filtered by the given filter.
+     * <p>
+     * When not using the try-with-resources construct, then directory stream's close method should be invoked after
+     * iteration is completed so as to free any resources held for the open directory.
+     * <p>
+     * Where the filter terminates due to an uncaught error or runtime exception then it is propagated to the hasNext or
+     * next method. Where an IOException is thrown, it results in the hasNext or next method throwing a
+     * DirectoryIteratorException with the IOException as the cause.
      *
-     * {@inheritDoc}
+     * @param path the path to the directory
+     * @param filter the directory stream filter
+     * @return a new and open {@code DirectoryStream} object
      * @throws IllegalArgumentException If the path type is not an instance of {@link AzurePath}.
+     * @throws NotDirectoryException if the file could not otherwise be opened because it is not a directory
+     * @throws IOException If an I/O error occurs.
+     * @throws SecurityException never
      */
     @Override
     public DirectoryStream<Path> newDirectoryStream(Path path, DirectoryStream.Filter<? super Path> filter)
@@ -351,6 +445,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
             throw LoggingUtility.logError(logger, new IllegalArgumentException("This provider cannot operate on "
                 + "subtypes of Path other than AzurePath"));
         }
+        AzurePath.ensureFileSystemOpen(path);
 
         /*
         Ensure the path is a directory. Note that roots are always directories. The case of an invalid root will be
@@ -398,7 +493,8 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      * location. In other words, it is possible to "double create" a directory if it first weakly exists and then is
      * strongly created. This is both because it is impossible to atomically check if a virtual directory exists while
      * creating a concrete directory and because such behavior will have minimal side effects--no files will be
-     * overwritten and the directory will still be available for writing as intended, though it may not be empty.
+     * overwritten and the directory will still be available for writing as intended, though it may not be empty. This
+     * is not a complete list of such unintuitive behavior.
      * <p>
      * This method will attempt to extract standard HTTP content headers from the list of file attributes to set them
      * as blob headers. All other attributes will be set as blob metadata. The value of every attribute will be
@@ -418,8 +514,15 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-properties">Azure Docs</a> for more
      * information.
      *
-     * {@inheritDoc}
+     * @param path the directory to create
+     * @param fileAttributes an optional list of file attributes to set atomically when creating the directory
      * @throws IllegalArgumentException If the path type is not an instance of {@link AzurePath}.
+     * @throws UnsupportedOperationException if the array contains an attribute that cannot be set atomically when
+     * creating the directory
+     * @throws FileAlreadyExistsException if a directory could not otherwise be created because a file of that name
+     * already exists
+     * @throws IOException If an I/O error occurs.
+     * @throws SecurityException never
      */
     @Override
     public void createDirectory(Path path, FileAttribute<?>... fileAttributes) throws IOException {
@@ -427,6 +530,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
 
         // Get the destination for the directory. Will throw if path is a root.
         AzureResource azureResource = new AzureResource(path);
+        AzurePath.ensureFileSystemOpen(azureResource.getPath());
 
         // Check if parent exists. If it does, atomically check if a file already exists and create a new dir if not.
         if (azureResource.checkParentDirectoryExists()) {
@@ -452,17 +556,23 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     /**
      * Deletes the specified resource.
      * <p>
-     * This method is not atomic. It is possible to delete a file in use by another process, and doing so will not
-     * immediately invalidate any channels open to that file--they will simply start to fail. Root directories cannot be
-     * deleted even when empty.
-     * {@inheritDoc}
+     * This method is not atomic with respect to other file system operations. It is possible to delete a file in use by
+     * another process, and doing so will not immediately invalidate any channels open to that file--they will simply
+     * start to fail. Root directories cannot be deleted even when empty.
      *
+     * @param path the path to the file to delete
      * @throws IllegalArgumentException If the path type is not an instance of {@link AzurePath}.
+     * @throws NoSuchFileException if the file does not exist
+     * @throws DirectoryNotEmptyException if the file is a directory and could not otherwise be deleted because the
+     * directory is not empty
+     * @throws IOException If an I/O error occurs.
+     * @throws SecurityException never
      */
     @Override
     public void delete(Path path) throws IOException {
         // Basic validation. Must be an AzurePath. Cannot be a root.
         AzureResource azureResource = new AzureResource(path);
+        AzurePath.ensureFileSystemOpen(azureResource.getPath());
 
         // Check directory status--possibly throw DirectoryNotEmpty or NoSuchFile.
         DirectoryStatus dirStatus = azureResource.checkDirStatus();
@@ -487,26 +597,36 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     /**
      * Copies the resource at the source location to the destination.
      * <p>
-     * This method is not atomic. More specifically, the checks necessary to validate the
-     * inputs and state of the file system are not atomic with the actual copying of data. If the copy is triggered,
-     * the copy itself is atomic and only a complete copy will ever be left at the destination.
+     * This method is not atomic with respect to other file system operations. More specifically, the checks necessary
+     * to validate the inputs and state of the file system are not atomic with the actual copying of data. If the copy
+     * is triggered, the copy itself is atomic and only a complete copy will ever be left at the destination.
      * <p>
-     * In addition to those in the nio javadocs, this method has the following requirements for successful completion.
-     * {@link StandardCopyOption#COPY_ATTRIBUTES} must be passed as it is impossible not to copy blob properties;
-     * if this option is not passed, an {@link UnsupportedOperationException} will be thrown. Neither the source nor the
-     * destination can be a root directory; if either is a root directory, an {@link IllegalArgumentException} will be
-     * thrown. The parent directory of the destination must at least weakly exist; if it does not, an
-     * {@link IOException} will be thrown. The only supported option other than
-     * {@link StandardCopyOption#COPY_ATTRIBUTES} is {@link StandardCopyOption#REPLACE_EXISTING}; the presence of any
-     * other option will result in an {@link UnsupportedOperationException}.
-     *
+     * In addition to those in the docs for {@link FileSystemProvider#copy(Path, Path, CopyOption...)}, this method has
+     * the following requirements for successful completion. {@link StandardCopyOption#COPY_ATTRIBUTES} must be passed
+     * as it is impossible not to copy blob properties; if this option is not passed, an
+     * {@link UnsupportedOperationException} will be thrown. Neither the source nor the destination can be a root
+     * directory; if either is a root directory, an {@link IllegalArgumentException} will be thrown. The parent
+     * directory of the destination must at least weakly exist; if it does not, an {@link IOException} will be thrown.
+     * The only supported option other than {@link StandardCopyOption#COPY_ATTRIBUTES} is
+     * {@link StandardCopyOption#REPLACE_EXISTING}; the presence of any other option will result in an
+     * {@link UnsupportedOperationException}.
+     * <p>
      * This method supports both virtual and concrete directories as both the source and destination. Unlike when
      * creating a directory, the existence of a virtual directory at the destination will cause this operation to fail.
      * This is in order to prevent the possibility of overwriting a non-empty virtual directory with a file. Still, as
      * mentioned above, this check is not atomic with the creation of the resultant directory.
      *
-     * {@inheritDoc}
+     * @param source the path to the file to copy
+     * @param destination the path to the target file
+     * @param copyOptions specifying how the copy should be done
+     * @throws UnsupportedOperationException if the array contains a copy option that is not supported
+     * @throws FileAlreadyExistsException if the target file exists but cannot be replaced because the REPLACE_EXISTING
+     * option is not specified
+     * @throws DirectoryNotEmptyException the REPLACE_EXISTING option is specified but the file cannot be replaced
+     * because it is a non-empty directory
+     * @throws IOException If an I/O error occurs.
      * @throws IllegalArgumentException If the path type is not an instance of {@link AzurePath}.
+     * @throws SecurityException never
      * @see #createDirectory(Path, FileAttribute[]) for more information about directory existence.
      */
     @Override
@@ -538,7 +658,9 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         // Validate paths. Build resources.
         // Copying a root directory or attempting to create/overwrite a root directory is illegal.
         AzureResource sourceRes = new AzureResource(source);
+        AzurePath.ensureFileSystemOpen(sourceRes.getPath());
         AzureResource destinationRes = new AzureResource(destination);
+        AzurePath.ensureFileSystemOpen(destinationRes.getPath());
 
         // Check destination is not a directory with children.
         DirectoryStatus destinationStatus = destinationRes.checkDirStatus();
@@ -611,23 +733,37 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     }*/
 
     /**
-     * {@inheritDoc}
+     * Unsupported.
+     *
+     * @param path path
+     * @param path1 path
+     * @param copyOptions options
+     * @throws UnsupportedOperationException Operation is not supported.
      */
     @Override
     public void move(Path path, Path path1, CopyOption... copyOptions) throws IOException {
-
+        throw new UnsupportedOperationException();
     }
 
     /**
-     * {@inheritDoc}
+     * Unsupported.
+     *
+     * @param path path
+     * @param path1 path
+     * @throws UnsupportedOperationException Operation is not supported.
      */
     @Override
     public boolean isSameFile(Path path, Path path1) throws IOException {
-        return false;
+        throw new UnsupportedOperationException();
     }
 
     /**
-     * {@inheritDoc}
+     * Always returns false as hidden files are not supported.
+     *
+     * @param path the path
+     * @return false
+     * @throws IOException If an I/O error occurs.
+     * @throws SecurityException never
      */
     @Override
     public boolean isHidden(Path path) throws IOException {
@@ -635,40 +771,59 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     }
 
     /**
-     * {@inheritDoc}
+     * Unsupported.
+     *
+     * @param path path
+     * @return the file store where the file is stored.
+     * @throws UnsupportedOperationException Operation is not supported.
+     * @throws IOException If an I/O error occurs.
+     * @throws SecurityException never
      */
     @Override
     public FileStore getFileStore(Path path) throws IOException {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     /**
-     * {@inheritDoc}
+     * Unsupported.
+     *
+     * @param path path
+     * @param accessModes accessMode
+     * @throws UnsupportedOperationException Operation is not supported.
+     * @throws NoSuchFileException if a file does not exist
+     * @throws java.nio.file.AccessDeniedException the requested access would be denied or the access cannot be
+     * determined because the Java virtual machine has insufficient privileges or other reasons
+     * @throws IOException If an I/O error occurs.
+     * @throws SecurityException never
      */
     @Override
     public void checkAccess(Path path, AccessMode... accessModes) throws IOException {
-
+        throw new UnsupportedOperationException();
     }
 
     /**
      * Returns a file attribute view of a given type.
-     *
+     * <p>
      * See {@link AzureBasicFileAttributeView} and {@link AzureBlobFileAttributeView} for more information.
-     *
+     * <p>
      * Reading or setting attributes on a virtual directory is not supported and will throw an {@link IOException}. See
      * {@link #createDirectory(Path, FileAttribute[])} for more information on virtual directories.
-     * {@inheritDoc}
+     *
+     * @param path the path to the file
+     * @param type the Class object corresponding to the file attribute view
+     * @param linkOptions ignored
+     * @return a file attribute view of the specified type, or null if the attribute view type is not available
      */
     @Override
     @SuppressWarnings("unchecked")
-    public <V extends FileAttributeView> V getFileAttributeView(Path path, Class<V> aClass, LinkOption... linkOptions) {
+    public <V extends FileAttributeView> V getFileAttributeView(Path path, Class<V> type, LinkOption... linkOptions) {
         /*
         No resource validation is necessary here. That can happen at the time of making a network requests internal to
         the view object.
          */
-        if (aClass == BasicFileAttributeView.class || aClass == AzureBasicFileAttributeView.class) {
+        if (type == BasicFileAttributeView.class || type == AzureBasicFileAttributeView.class) {
             return (V) new AzureBasicFileAttributeView(path);
-        } else if (aClass == AzureBlobFileAttributeView.class) {
+        } else if (type == AzureBlobFileAttributeView.class) {
             return (V) new AzureBlobFileAttributeView(path);
         } else {
             return null;
@@ -677,21 +832,30 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
 
     /**
      * Reads a file's attributes as a bulk operation.
-     *
+     * <p>
      * See {@link AzureBasicFileAttributes} and {@link AzureBlobFileAttributes} for more information.
-     *
+     * <p>
      * Reading attributes on a virtual directory is not supported and will throw an {@link IOException}. See
      * {@link #createDirectory(Path, FileAttribute[])} for more information on virtual directories.
-     * {@inheritDoc}
+     *
+     * @param path the path to the file
+     * @param type the Class of the file attributes required to read
+     * @param linkOptions ignored
+     * @return the file attributes
+     * @throws UnsupportedOperationException if an attributes of the given type are not supported
+     * @throws IOException If an I/O error occurs.
+     * @throws SecurityException never
      */
     @Override
     @SuppressWarnings("unchecked")
-    public <A extends BasicFileAttributes> A readAttributes(Path path, Class<A> aClass, LinkOption... linkOptions)
+    public <A extends BasicFileAttributes> A readAttributes(Path path, Class<A> type, LinkOption... linkOptions)
         throws IOException {
+        AzurePath.ensureFileSystemOpen(path);
+
         Class<? extends BasicFileAttributeView> view;
-        if (aClass == BasicFileAttributes.class || aClass == AzureBasicFileAttributes.class) {
+        if (type == BasicFileAttributes.class || type == AzureBasicFileAttributes.class) {
             view = AzureBasicFileAttributeView.class;
-        } else if (aClass == AzureBlobFileAttributes.class) {
+        } else if (type == AzureBlobFileAttributes.class) {
             view = AzureBlobFileAttributeView.class;
         } else {
             throw new UnsupportedOperationException();
@@ -706,18 +870,30 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
 
     /**
      * Reads a set of file attributes as a bulk operation.
-     *
+     * <p>
      * See {@link AzureBasicFileAttributes} and {@link AzureBlobFileAttributes} for more information.
-     *
+     * <p>
      * Reading attributes on a virtual directory is not supported and will throw an {@link IOException}. See
      * {@link #createDirectory(Path, FileAttribute[])} for more information on virtual directories.
-     * {@inheritDoc}
+     *
+     * @param path the path to the file
+     * @param attributes the attributes to read
+     * @param linkOptions ignored
+     * @return a map of the attributes returned; may be empty. The map's keys are the attribute names, its values are
+     * the attribute values
+     * @throws UnsupportedOperationException if an attributes of the given type are not supported
+     * @throws IllegalArgumentException if no attributes are specified or an unrecognized attributes is specified
+     * @throws IOException If an I/O error occurs.
+     * @throws SecurityException never
      */
     @Override
-    public Map<String, Object> readAttributes(Path path, String s, LinkOption... linkOptions) throws IOException {
-        if (s == null) {
+    public Map<String, Object> readAttributes(Path path, String attributes, LinkOption... linkOptions)
+        throws IOException {
+        if (attributes == null) {
             throw LoggingUtility.logError(logger, new IllegalArgumentException("Attribute string cannot be null."));
         }
+
+        AzurePath.ensureFileSystemOpen(path);
 
         Map<String, Object> results = new HashMap<>();
 
@@ -730,16 +906,16 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         Map<String, Supplier<Object>> attributeSuppliers = null; // Initialized later as needed.
         String viewType;
         String attributeList;
-        String[] parts = s.split(":");
+        String[] parts = attributes.split(":");
 
         if (parts.length > 2) {
             throw LoggingUtility.logError(logger,
-                new IllegalArgumentException("Invalid format for attribute string: " + s));
+                new IllegalArgumentException("Invalid format for attribute string: " + attributes));
         }
 
         if (parts.length == 1) {
             viewType = "basic"; // Per jdk docs.
-            attributeList = s;
+            attributeList = attributes;
         } else {
             viewType = parts[0];
             attributeList = parts[1];
@@ -750,9 +926,9 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         state that "basic" must be supported, so we funnel to azureBasic.
          */
         if (viewType.equals("basic")) {
-            viewType = "azureBasic";
+            viewType = AzureBasicFileAttributeView.NAME;
         }
-        if (!viewType.equals("azureBasic") && !viewType.equals("azureBlob")) {
+        if (!viewType.equals(AzureBasicFileAttributeView.NAME) && !viewType.equals(AzureBlobFileAttributeView.NAME)) {
             throw LoggingUtility.logError(logger,
                 new UnsupportedOperationException("Invalid attribute view: " + viewType));
         }
@@ -763,7 +939,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
             should at least validate that the attribute is available on a basic view.
              */
             // TODO: Put these strings in constants
-            if (viewType.equals("azureBasic")) {
+            if (viewType.equals(AzureBasicFileAttributeView.NAME)) {
                 if (!AzureBasicFileAttributes.ATTRIBUTE_STRINGS.contains(attributeName) && !attributeName.equals("*")) {
                     throw LoggingUtility.logError(logger,
                         new IllegalArgumentException("Invalid attribute. View: " + viewType
@@ -781,7 +957,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
             // If "*" is specified, add all of the attributes from the specified set.
             if (attributeName.equals("*")) {
                 Set<String> attributesToAdd;
-                if (viewType.equals("azureBasic")) {
+                if (viewType.equals(AzureBasicFileAttributeView.NAME)) {
                     for (String attr : AzureBasicFileAttributes.ATTRIBUTE_STRINGS) {
                         results.put(attr, attributeSuppliers.get(attr).get());
                     }
@@ -806,7 +982,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         // Throw if nothing specified per jdk docs.
         if (results.isEmpty()) {
             throw LoggingUtility.logError(logger,
-                new IllegalArgumentException("No attributes were specified. Attributes: " + s));
+                new IllegalArgumentException("No attributes were specified. Attributes: " + attributes));
         }
 
         return results;
@@ -814,25 +990,37 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
 
     /**
      * Sets the value of a file attribute.
-     *
+     * <p>
      * See {@link AzureBlobFileAttributeView} for more information.
-     *
+     * <p>
      * Setting attributes on a virtual directory is not supported and will throw an {@link IOException}. See
      * {@link #createDirectory(Path, FileAttribute[])} for more information on virtual directories.
-     * {@inheritDoc}
+     *
+     * @param path the path to the file
+     * @param attributes the attribute to set
+     * @param value the attribute value
+     * @param linkOptions ignored
+     * @throws UnsupportedOperationException if an attribute view is not available
+     * @throws IllegalArgumentException if the attribute name is not specified, or is not recognized, or the attribute
+     * value is of the correct type but has an inappropriate value
+     * @throws ClassCastException If the attribute value is not of the expected type or is a collection containing
+     * elements that are not of the expected type
+     * @throws IOException If an I/O error occurs.
+     * @throws SecurityException never
      */
     @Override
-    public void setAttribute(Path path, String s, Object o, LinkOption... linkOptions) throws IOException {
+    public void setAttribute(Path path, String attributes, Object value, LinkOption... linkOptions) throws IOException {
+        AzurePath.ensureFileSystemOpen(path);
         String viewType;
         String attributeName;
-        String[] parts = s.split(":");
+        String[] parts = attributes.split(":");
         if (parts.length > 2) {
             throw LoggingUtility.logError(logger,
-                new IllegalArgumentException("Invalid format for attribute string: " + s));
+                new IllegalArgumentException("Invalid format for attribute string: " + attributes));
         }
         if (parts.length == 1) {
             viewType = "basic"; // Per jdk docs.
-            attributeName = s;
+            attributeName = attributes;
         } else {
             viewType = parts[0];
             attributeName = parts[1];
@@ -843,15 +1031,15 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         state that "basic" must be supported, so we funnel to azureBasic.
          */
         if (viewType.equals("basic")) {
-            viewType = "azureBasic";
+            viewType = AzureBasicFileAttributeView.NAME;
         }
 
         // We don't actually support any setters on the basic view.
-        if (viewType.equals("azureBasic")) {
+        if (viewType.equals(AzureBasicFileAttributeView.NAME)) {
             throw LoggingUtility.logError(logger,
                 new IllegalArgumentException("Invalid attribute. View: " + viewType
                     + ". Attribute: " + attributeName));
-        } else if (viewType.equals("azureBlob")) {
+        } else if (viewType.equals(AzureBlobFileAttributeView.NAME)) {
             Map<String, Consumer<Object>> attributeConsumers = AzureBlobFileAttributeView.setAttributeConsumers(
                 this.getFileAttributeView(path, AzureBlobFileAttributeView.class, linkOptions));
             if (!attributeConsumers.containsKey(attributeName)) {
@@ -861,7 +1049,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
                         + ". Attribute: " + attributeName));
             }
             try {
-                attributeConsumers.get(attributeName).accept(o);
+                attributeConsumers.get(attributeName).accept(value);
             } catch (UncheckedIOException e) {
                 if (e.getMessage().equals(AzureBlobFileAttributeView.ATTR_CONSUMER_ERROR)) {
                     throw LoggingUtility.logError(logger, e.getCause());

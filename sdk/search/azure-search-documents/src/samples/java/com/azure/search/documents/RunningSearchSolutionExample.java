@@ -27,7 +27,7 @@ import java.util.Iterator;
 
 /**
  * This scenario assumes an existing search solution, with index and an indexer setup (see LifecycleSetupExample)
- * Azure Search Sample Data
+ * Azure Cognitive Search Sample Data
  * https://docs.microsoft.com/en-us/samples/azure-samples/azure-search-sample-data/azure-search-sample-data/
  */
 public class RunningSearchSolutionExample {

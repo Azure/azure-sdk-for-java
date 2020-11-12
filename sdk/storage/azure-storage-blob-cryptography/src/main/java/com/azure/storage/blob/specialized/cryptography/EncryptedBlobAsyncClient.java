@@ -252,7 +252,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
         AccessTier tier, BlobRequestConditions requestConditions) {
         return this.uploadWithResponse(new BlobParallelUploadOptions(data)
             .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
-            .setTier(AccessTier.HOT).setRequestConditions(requestConditions));
+            .setTier(tier).setRequestConditions(requestConditions));
     }
 
     /**
@@ -294,13 +294,14 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
             final Map<String, String> metadataFinal = options.getMetadata() == null
                 ? new HashMap<>() : options.getMetadata();
             Flux<ByteBuffer> data = options.getDataFlux() == null ? Utility.convertStreamToByteBuffer(
-                options.getDataStream(), options.getLength(), BLOB_DEFAULT_UPLOAD_BLOCK_SIZE)
+                options.getDataStream(), options.getLength(), BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, false)
                 : options.getDataFlux();
             Mono<Flux<ByteBuffer>> dataFinal = prepareToSendEncryptedRequest(data, metadataFinal);
             return dataFinal.flatMap(df -> super.uploadWithResponse(new BlobParallelUploadOptions(df)
                 .setParallelTransferOptions(options.getParallelTransferOptions()).setHeaders(options.getHeaders())
                 .setMetadata(metadataFinal).setTags(options.getTags()).setTier(options.getTier())
-                .setRequestConditions(options.getRequestConditions())));
+                .setRequestConditions(options.getRequestConditions())
+                .setComputeMd5(options.isComputeMd5())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -443,24 +444,24 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
             keyWrappingMetadata.put(CryptographyConstants.AGENT_METADATA_KEY,
                 CryptographyConstants.AGENT_METADATA_VALUE);
 
-            return this.keyWrapper.wrapKey(keyWrapAlgorithm, aesKey.getEncoded())
-                .map(encryptedKey -> {
-                    WrappedKey wrappedKey = new WrappedKey(
-                        this.keyWrapper.getKeyId().block(), encryptedKey, keyWrapAlgorithm);
+            return this.keyWrapper.getKeyId().flatMap(keyId ->
+                this.keyWrapper.wrapKey(keyWrapAlgorithm, aesKey.getEncoded())
+                    .map(encryptedKey -> {
+                        WrappedKey wrappedKey = new WrappedKey(keyId, encryptedKey, keyWrapAlgorithm);
 
-                    // Build EncryptionData
-                    EncryptionData encryptionData = new EncryptionData()
-                        .setEncryptionMode(CryptographyConstants.ENCRYPTION_MODE)
-                        .setEncryptionAgent(
-                            new EncryptionAgent(CryptographyConstants.ENCRYPTION_PROTOCOL_V1,
-                                EncryptionAlgorithm.AES_CBC_256))
-                        .setKeyWrappingMetadata(keyWrappingMetadata)
-                        .setContentEncryptionIV(cipher.getIV())
-                        .setWrappedContentKey(wrappedKey);
+                        // Build EncryptionData
+                        EncryptionData encryptionData = new EncryptionData()
+                            .setEncryptionMode(CryptographyConstants.ENCRYPTION_MODE)
+                            .setEncryptionAgent(
+                                new EncryptionAgent(CryptographyConstants.ENCRYPTION_PROTOCOL_V1,
+                                    EncryptionAlgorithm.AES_CBC_256))
+                            .setKeyWrappingMetadata(keyWrappingMetadata)
+                            .setContentEncryptionIV(cipher.getIV())
+                            .setWrappedContentKey(wrappedKey);
 
-                    // Encrypt plain text with content encryption key
-                    Flux<ByteBuffer> encryptedTextFlux = plainTextFlux.map(plainTextBuffer -> {
-                        int outputSize = cipher.getOutputSize(plainTextBuffer.remaining());
+                        // Encrypt plain text with content encryption key
+                        Flux<ByteBuffer> encryptedTextFlux = plainTextFlux.map(plainTextBuffer -> {
+                            int outputSize = cipher.getOutputSize(plainTextBuffer.remaining());
 
                         /*
                         This should be the only place we allocate memory in encryptBlob(). Although there is an
@@ -468,33 +469,33 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
                         customer's memory, so we must allocate our own memory. If memory usage becomes unreasonable,
                         we should implement pooling.
                          */
-                        ByteBuffer encryptedTextBuffer = ByteBuffer.allocate(outputSize);
+                            ByteBuffer encryptedTextBuffer = ByteBuffer.allocate(outputSize);
 
-                        int encryptedBytes;
-                        try {
-                            encryptedBytes = cipher.update(plainTextBuffer, encryptedTextBuffer);
-                        } catch (ShortBufferException e) {
-                            throw logger.logExceptionAsError(Exceptions.propagate(e));
-                        }
-                        encryptedTextBuffer.position(0);
-                        encryptedTextBuffer.limit(encryptedBytes);
-                        return encryptedTextBuffer;
-                    });
+                            int encryptedBytes;
+                            try {
+                                encryptedBytes = cipher.update(plainTextBuffer, encryptedTextBuffer);
+                            } catch (ShortBufferException e) {
+                                throw logger.logExceptionAsError(Exceptions.propagate(e));
+                            }
+                            encryptedTextBuffer.position(0);
+                            encryptedTextBuffer.limit(encryptedBytes);
+                            return encryptedTextBuffer;
+                        });
 
                     /*
                     Defer() ensures the contained code is not executed until the Flux is subscribed to, in
                     other words, cipher.doFinal() will not be called until the plainTextFlux has completed
                     and therefore all other data has been encrypted.
                      */
-                    encryptedTextFlux = Flux.concat(encryptedTextFlux, Flux.defer(() -> {
-                        try {
-                            return Flux.just(ByteBuffer.wrap(cipher.doFinal()));
-                        } catch (GeneralSecurityException e) {
-                            throw logger.logExceptionAsError(Exceptions.propagate(e));
-                        }
+                        encryptedTextFlux = Flux.concat(encryptedTextFlux, Flux.defer(() -> {
+                            try {
+                                return Flux.just(ByteBuffer.wrap(cipher.doFinal()));
+                            } catch (GeneralSecurityException e) {
+                                throw logger.logExceptionAsError(Exceptions.propagate(e));
+                            }
+                        }));
+                        return new EncryptedBlob(encryptionData, encryptedTextFlux);
                     }));
-                    return new EncryptedBlob(encryptionData, encryptedTextFlux);
-                });
         } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
             // These are hardcoded and guaranteed to work. There is no reason to propogate a checked exception.
             throw logger.logExceptionAsError(new RuntimeException(e));

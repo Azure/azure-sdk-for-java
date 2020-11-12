@@ -37,27 +37,25 @@ public class UsernamePasswordCredentialBuilder extends AadCredentialBuilderBase<
     }
 
     /**
-     * Sets whether to use an unprotected file specified by <code>cacheFileLocation()</code> instead of
-     * Gnome keyring on Linux. This is false by default.
+     * Allows to use an unprotected file specified by <code>cacheFileLocation()</code> instead of
+     * Gnome keyring on Linux. This is restricted by default.
      *
-     * @param allowUnencryptedCache whether to use an unprotected file for cache storage.
-     *
-     * @return An updated instance of this builder with the unprotected token cache setting set as specified.
+     * @return An updated instance of this builder.
      */
-    public UsernamePasswordCredentialBuilder allowUnencryptedCache(boolean allowUnencryptedCache) {
-        this.identityClientOptions.allowUnencryptedCache(allowUnencryptedCache);
+    UsernamePasswordCredentialBuilder allowUnencryptedCache() {
+        this.identityClientOptions.setAllowUnencryptedCache(true);
         return this;
     }
 
     /**
-     * Sets whether to enable using the shared token cache. This is disabled by default.
-     *
-     * @param enabled whether to enabled using the shared token cache.
+     * Enables the shared token cache which is disabled by default. If enabled, the credential will store tokens
+     * in a cache persisted to the machine, protected to the current user, which can be shared by other credentials
+     * and processes.
      *
      * @return An updated instance of this builder with if the shared token cache enabled specified.
      */
-    public UsernamePasswordCredentialBuilder enablePersistentCache(boolean enabled) {
-        this.identityClientOptions.enablePersistentCache(enabled);
+    UsernamePasswordCredentialBuilder enablePersistentCache() {
+        this.identityClientOptions.enablePersistentCache();
         return this;
     }
 

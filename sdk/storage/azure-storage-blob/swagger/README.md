@@ -15,7 +15,7 @@ autorest --use=@microsoft.azure/autorest.java@3.0.4 --use=jianghaolu/autorest.mo
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.BlobStorage/preview/2019-12-12/blob.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.BlobStorage/preview/2020-02-10/blob.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.blob
@@ -25,7 +25,7 @@ sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
-custom-types: BlobAccessPolicy,AccessTier,AccountKind,ArchiveStatus,BlobHttpHeaders,BlobContainerItem,FilterBlobItem,BlobContainerItemProperties,BlobContainerEncryptionScope,BlobServiceProperties,BlobType,Block,BlockList,BlockListType,BlockLookupList,BlobPrefix,ClearRange,CopyStatusType,BlobCorsRule,CpkInfo,CustomerProvidedKeyInfo,DeleteSnapshotsOptionType,EncryptionAlgorithmType,FilterBlobsItem,GeoReplication,GeoReplicationStatusType,KeyInfo,LeaseDurationType,LeaseStateType,LeaseStatusType,ListBlobContainersIncludeType,ListBlobsIncludeItem,BlobAnalyticsLogging,BlobMetrics,PageList,PageRange,PathRenameMode,PublicAccessType,RehydratePriority,BlobRetentionPolicy,SequenceNumberActionType,BlobSignedIdentifier,SkuName,StaticWebsite,BlobErrorCode,BlobServiceStatistics,SyncCopyStatusType,UserDelegationKey,BlobQueryHeaders
+custom-types: BlobAccessPolicy,AccessTier,AccountKind,ArchiveStatus,BlobHttpHeaders,BlobContainerItem,BlobContainerItemProperties,BlobContainerEncryptionScope,BlobServiceProperties,BlobType,Block,BlockList,BlockListType,BlockLookupList,BlobPrefix,ClearRange,CopyStatusType,BlobCorsRule,CpkInfo,CustomerProvidedKeyInfo,DeleteSnapshotsOptionType,EncryptionAlgorithmType,FilterBlobsItem,GeoReplication,GeoReplicationStatusType,KeyInfo,LeaseDurationType,LeaseStateType,LeaseStatusType,ListBlobContainersIncludeType,ListBlobsIncludeItem,BlobAnalyticsLogging,BlobMetrics,PageList,PageRange,PathRenameMode,PublicAccessType,RehydratePriority,BlobRetentionPolicy,SequenceNumberActionType,BlobSignedIdentifier,SkuName,StaticWebsite,BlobErrorCode,BlobServiceStatistics,SyncCopyStatusType,UserDelegationKey,BlobQueryHeaders
 custom-types-subpackage: models
 ```
 
@@ -266,6 +266,20 @@ directive:
 directive:
 - from: swagger-document
   where: $["x-ms-paths"]["/{containerName}/{blob}?comp=undelete"]
+  transform: >
+    let param = $.put.parameters[0];
+    if (!param["$ref"].endsWith("ContainerName")) {
+      const path = param["$ref"].replace(/[#].*$/, "#/parameters/");
+      $.put.parameters.splice(0, 0, { "$ref": path + "ContainerName" });
+      $.put.parameters.splice(1, 0, { "$ref": path + "Blob" });
+    }
+```
+
+### /{containerName}/{blob}?comp=seal
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=seal"]
   transform: >
     let param = $.put.parameters[0];
     if (!param["$ref"].endsWith("ContainerName")) {
@@ -880,6 +894,21 @@ directive:
         "@JsonDeserialize(using = CustomHierarchicalListingDeserializer.class)\npublic final class BlobHierarchyListSegment {");
 ```
 
+### Add the PageListDeserializer attribute
+``` yaml
+directive:
+- from: PageList.java
+  where: $
+  transform: >
+    return $.
+      replace(
+        "import com.fasterxml.jackson.annotation.JsonProperty;",
+        "import com.fasterxml.jackson.annotation.JsonProperty;\nimport com.fasterxml.jackson.databind.annotation.JsonDeserialize;").
+      replace(
+        "public final class PageList {",
+        "@JsonDeserialize(using = PageListDeserializer.class)\npublic final class PageList {");
+```
+
 ### Add EncryptionKeySha256 to PageBlobUploadPagesFromURLHeaders
 ``` yaml
 directive:
@@ -1246,6 +1275,7 @@ directive:
     delete $.SourceIfModifiedSince["x-ms-parameter-grouping"];
     delete $.SourceIfNoneMatch["x-ms-parameter-grouping"];
     delete $.SourceIfUnmodifiedSince["x-ms-parameter-grouping"];
+    delete $.SourceIfTags["x-ms-parameter-grouping"];
 - from: swagger-document
   where: $.parameters
   transform: >
@@ -1253,6 +1283,7 @@ directive:
     delete $.IfModifiedSince["x-ms-parameter-grouping"];
     delete $.IfNoneMatch["x-ms-parameter-grouping"];
     delete $.IfUnmodifiedSince["x-ms-parameter-grouping"];
+    delete $.IfTags["x-ms-parameter-grouping"];
 - from: swagger-document
   where: $.parameters
   transform: >

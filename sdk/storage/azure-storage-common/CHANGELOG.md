@@ -1,5 +1,21 @@
 # Release History
 
+## 12.9.0 (2020-11-11)
+- GA release
+
+## 12.9.0-beta.2 (2020-10-08)
+- Updated `azure-core` version to `1.9.0` to pick up fixes related to listBlobs.
+
+## 12.9.0-beta.1 (2020-10-01)
+- Added a Constant that represented the default storage scope for TokenCredentials.
+- Added UploadUtils.computeMd5 that computes the md5 of a flux and wraps it with the data.
+
+## 12.8.0 (2020-08-13)
+- Added support for setting tags and filterTags operations on SAS by adding to AccountSASPermissions.
+- Fixed bug where FluxInputStream would throw when a ByteBuffer of length 0 was encountered.
+- Added appendQueryParameter method to support adding version and snapshot support to BlobBatch setTier.
+- Fixed a bug in StorageInputStream.read(byte[]) that would incorrectly return -1 if the byte array was larger than both the requested data and the chunk size
+
 ## 12.8.0-beta.1 (2020-07-07)
 - Added support for the 2019-12-12 service version.
 - Buffered UploadUtils now supports uploading data of long sized length.

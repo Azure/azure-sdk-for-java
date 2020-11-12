@@ -9,12 +9,12 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.DirectBridgeInternal;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
+import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.implementation.http.ReactorNettyRequestRecord;
-import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.slf4j.Logger;
@@ -24,6 +24,7 @@ import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,6 +40,7 @@ import java.util.concurrent.Callable;
  */
 class RxGatewayStoreModel implements RxStoreModel {
     private final static byte[] EMPTY_BYTE_ARRAY = {};
+    private final DiagnosticsClientContext clientContext;
     private final Logger logger = LoggerFactory.getLogger(RxGatewayStoreModel.class);
     private final Map<String, String> defaultHeaders;
     private final HttpClient httpClient;
@@ -48,12 +50,14 @@ class RxGatewayStoreModel implements RxStoreModel {
     private ISessionContainer sessionContainer;
 
     public RxGatewayStoreModel(
+            DiagnosticsClientContext clientContext,
             ISessionContainer sessionContainer,
             ConsistencyLevel defaultConsistencyLevel,
             QueryCompatibilityMode queryCompatibilityMode,
             UserAgentContainer userAgentContainer,
             GlobalEndpointManager globalEndpointManager,
             HttpClient httpClient) {
+        this.clientContext = clientContext;
         this.defaultHeaders = new HashMap<>();
         this.defaultHeaders.put(HttpConstants.HttpHeaders.CACHE_CONTROL,
                 "no-cache");
@@ -139,24 +143,29 @@ class RxGatewayStoreModel implements RxStoreModel {
         try {
 
             if (request.requestContext.cosmosDiagnostics == null) {
-                request.requestContext.cosmosDiagnostics = BridgeInternal.createCosmosDiagnostics();
+                request.requestContext.cosmosDiagnostics = clientContext.createDiagnostics();
             }
 
             URI uri = getUri(request);
 
             HttpHeaders httpHeaders = this.getHttpRequestHeaders(request.getHeaders());
 
-            // The RxDocumentServiceRequest::getContentAsByteBufFlux guaranteed to return
-            // a valid flux (including Flux.empty) hence null check is not required here.
-            Flux<ByteBuf> byteBufObservable = request.getContentAsByteBufFlux();
+            Flux<byte[]> contentAsByteArray = request.getContentAsByteArrayFlux();
 
             HttpRequest httpRequest = new HttpRequest(method,
                     uri,
                     uri.getPort(),
                     httpHeaders,
-                    byteBufObservable);
+                    contentAsByteArray);
 
-            Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest);
+            Duration responseTimeout = Duration.ofSeconds(Configs.getHttpResponseTimeoutInSeconds());
+            if (OperationType.QueryPlan.equals(request.getOperationType())) {
+                responseTimeout = Duration.ofSeconds(Configs.getQueryPlanResponseTimeoutInSeconds());
+            } else if (request.isAddressRefresh()) {
+                responseTimeout = Duration.ofSeconds(Configs.getAddressRefreshResponseTimeoutInSeconds());
+            }
+
+            Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest, responseTimeout);
 
             return toDocumentServiceResponse(httpResponseMono, request);
 
@@ -246,22 +255,14 @@ class RxGatewayStoreModel implements RxStoreModel {
             HttpHeaders httpResponseHeaders = httpResponse.headers();
             int httpResponseStatus = httpResponse.statusCode();
 
-            Mono<byte[]> contentObservable;
-
-            if (request.getOperationType() == OperationType.Delete) {
-                // for delete we don't expect any body
-                contentObservable = Mono.just(EMPTY_BYTE_ARRAY);
-            } else {
-                // transforms the ByteBufFlux to Flux<String>
-                contentObservable = httpResponse
-                                        .bodyAsByteArray()
-                                        .switchIfEmpty(Mono.just(EMPTY_BYTE_ARRAY));
-            }
+            Mono<byte[]> contentObservable = httpResponse
+                .bodyAsByteArray()
+                .switchIfEmpty(Mono.just(EMPTY_BYTE_ARRAY));
 
             return contentObservable
                        .map(content -> {
                                //Adding transport client request timeline to diagnostics
-                               ReactorNettyRequestRecord reactorNettyRequestRecord = httpResponse.request().getReactorNettyRequestRecord();
+                               ReactorNettyRequestRecord reactorNettyRequestRecord = httpResponse.request().reactorNettyRequestRecord();
                                if (reactorNettyRequestRecord != null) {
                                    reactorNettyRequestRecord.setTimeCompleted(Instant.now());
                                    BridgeInternal.setTransportClientRequestTimelineOnDiagnostics(request.requestContext.cosmosDiagnostics,
@@ -285,7 +286,7 @@ class RxGatewayStoreModel implements RxStoreModel {
                        })
                        .single();
 
-        }).map(RxDocumentServiceResponse::new)
+        }).map(rsp -> new RxDocumentServiceResponse(this.clientContext, rsp))
                    .onErrorResume(throwable -> {
                        Throwable unwrappedException = reactor.core.Exceptions.unwrap(throwable);
                        if (!(unwrappedException instanceof Exception)) {
@@ -295,20 +296,30 @@ class RxGatewayStoreModel implements RxStoreModel {
                        }
 
                        Exception exception = (Exception) unwrappedException;
+                       CosmosException dce;
                        if (!(exception instanceof CosmosException)) {
                            // wrap in CosmosException
                            logger.error("Network failure", exception);
-                           CosmosException dce = BridgeInternal.createCosmosException(0, exception);
+                           dce = BridgeInternal.createCosmosException(0, exception);
                            BridgeInternal.setRequestHeaders(dce, request.getHeaders());
-                           return Mono.error(dce);
+                       } else {
+                           dce = (CosmosException) exception;
+                       }
+
+                       if (WebExceptionUtility.isNetworkFailure(dce)) {
+                           if (WebExceptionUtility.isReadTimeoutException(dce)) {
+                               BridgeInternal.setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT);
+                           } else {
+                               BridgeInternal.setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE);
+                           }
                        }
 
                        if (request.requestContext.cosmosDiagnostics != null) {
-                           BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, null, (CosmosException)exception);
-                           BridgeInternal.setCosmosDiagnostics((CosmosException)exception, request.requestContext.cosmosDiagnostics);
+                           BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, null, dce);
+                           BridgeInternal.setCosmosDiagnostics(dce, request.requestContext.cosmosDiagnostics);
                        }
 
-                       return Mono.error(exception);
+                       return Mono.error(dce);
                    });
     }
 
@@ -340,6 +351,7 @@ class RxGatewayStoreModel implements RxStoreModel {
     private Mono<RxDocumentServiceResponse> invokeAsyncInternal(RxDocumentServiceRequest request)  {
         switch (request.getOperationType()) {
             case Create:
+            case Batch:
                 return this.create(request);
             case Upsert:
                 return this.upsert(request);
@@ -403,7 +415,9 @@ class RxGatewayStoreModel implements RxStoreModel {
     }
 
     private void captureSessionToken(RxDocumentServiceRequest request, Map<String, String> responseHeaders) {
-        if (request.getResourceType() == ResourceType.DocumentCollection && request.getOperationType() == OperationType.Delete) {
+        if (request.getResourceType() == ResourceType.DocumentCollection &&
+            request.getOperationType() == OperationType.Delete) {
+
             String resourceId;
             if (request.getIsNameBased()) {
                 resourceId = responseHeaders.get(HttpConstants.HttpHeaders.OWNER_ID);
@@ -420,21 +434,28 @@ class RxGatewayStoreModel implements RxStoreModel {
         Map<String, String> headers = request.getHeaders();
         Objects.requireNonNull(headers, "RxDocumentServiceRequest::headers is required and cannot be null");
 
+        String requestConsistencyLevel = headers.get(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
+
+        boolean sessionTokenApplicable =
+            Strings.areEqual(requestConsistencyLevel, ConsistencyLevel.SESSION.toString()) ||
+                (this.defaultConsistencyLevel == ConsistencyLevel.SESSION &&
+                    // skip applying the session token when Eventual Consistency is explicitly requested
+                    // on request-level for data plane operations.
+                    // The session token is ignored on teh backend/gateway in this case anyway
+                    // and the session token can be rather large (even run in the 16 KB header length problem
+                    // on the gateway - so not worth sending when not needed
+                    (!request.isReadOnlyRequest() ||
+                        request.getResourceType() != ResourceType.Document ||
+                        !Strings.areEqual(requestConsistencyLevel, ConsistencyLevel.EVENTUAL.toString())));
+
         if (!Strings.isNullOrEmpty(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))) {
-            if (ReplicatedResourceClientUtils.isMasterResource(request.getResourceType())) {
+            if (!sessionTokenApplicable || ReplicatedResourceClientUtils.isMasterResource(request.getResourceType())) {
                 request.getHeaders().remove(HttpConstants.HttpHeaders.SESSION_TOKEN);
             }
             return; //User is explicitly controlling the session.
         }
 
-        String requestConsistencyLevel = headers.get(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
-
-        boolean sessionConsistency =
-                this.defaultConsistencyLevel == ConsistencyLevel.SESSION ||
-                        (!Strings.isNullOrEmpty(requestConsistencyLevel)
-                                && Strings.areEqual(requestConsistencyLevel, ConsistencyLevel.SESSION.toString()));
-
-        if (!sessionConsistency || ReplicatedResourceClientUtils.isMasterResource(request.getResourceType())) {
+        if (!sessionTokenApplicable || ReplicatedResourceClientUtils.isMasterResource(request.getResourceType())) {
             return; // Only apply the session token in case of session consistency and when resource is not a master resource
         }
 

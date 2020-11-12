@@ -8,6 +8,7 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.options.BlockBlobCommitBlockListOptions;
+import com.azure.storage.blob.options.BlockBlobListBlocksOptions;
 import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
 import com.azure.storage.blob.models.BlockList;
 import com.azure.storage.blob.models.BlockListType;
@@ -31,6 +32,7 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
     private BlockBlobAsyncClient client = new SpecializedBlobClientBuilder().buildBlockBlobAsyncClient();
     private Flux<ByteBuffer> data = Flux.just(ByteBuffer.wrap("data".getBytes(StandardCharsets.UTF_8)));
     private long length = 4L;
+    private String tags = "tags";
     private String leaseId = "leaseId";
     private String base64BlockID = "base64BlockID";
     private String sourceUrl = "https://example.com";
@@ -199,6 +201,26 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
             block.getUncommittedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.getName(), b.getSize()));
         });
         // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.listBlocksWithResponse#BlockListType-String
+    }
+
+    /**
+     * Code snippet for {@link BlockBlobAsyncClient#listBlocksWithResponse(BlockBlobListBlocksOptions)}
+     */
+    public void listBlocks3() {
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.listBlocksWithResponse#BlockBlobListBlocksOptions
+        client.listBlocksWithResponse(new BlockBlobListBlocksOptions(BlockListType.ALL)
+            .setLeaseId(leaseId)
+            .setIfTagsMatch(tags)).subscribe(response -> {
+                BlockList block = response.getValue();
+                System.out.println("Committed Blocks:");
+                block.getCommittedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.getName(),
+                    b.getSizeLong()));
+
+                System.out.println("Uncommitted Blocks:");
+                block.getUncommittedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.getName(),
+                    b.getSizeLong()));
+            });
+        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.listBlocksWithResponse#BlockBlobListBlocksOptions
     }
 
     /**

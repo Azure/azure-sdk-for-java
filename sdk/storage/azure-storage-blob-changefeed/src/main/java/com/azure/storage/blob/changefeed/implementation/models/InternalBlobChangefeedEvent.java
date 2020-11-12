@@ -155,4 +155,18 @@ public class InternalBlobChangefeedEvent implements BlobChangefeedEvent {
         return Objects.hash(getTopic(), getSubject(), getEventType(), getEventTime(), getId(), getData(),
             getDataVersion(), getMetadataVersion());
     }
+
+    @Override
+    public String toString() {
+        return "BlobChangefeedEvent{"
+            + "topic='" + topic + '\''
+            + ", subject='" + subject + '\''
+            + ", eventType=" + eventType
+            + ", eventTime=" + eventTime
+            + ", id='" + id + '\''
+            + ", data=" + data
+            + ", dataVersion=" + dataVersion
+            + ", metadataVersion='" + metadataVersion + '\''
+            + '}';
+    }
 }

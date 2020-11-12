@@ -128,6 +128,15 @@ public class TaskAddParameter {
     private TaskConstraints constraints;
 
     /**
+     * The number of scheduling slots that the Task required to run.
+     * The default is 1. A Task can only be scheduled to run on a compute node
+     * if the node has enough free scheduling slots available. For
+     * multi-instance Tasks, this must be 1.
+     */
+    @JsonProperty(value = "requiredSlots")
+    private Integer requiredSlots;
+
+    /**
      * The user identity under which the Task runs.
      * If omitted, the Task runs as a non-administrative user unique to the
      * Task.
@@ -378,6 +387,26 @@ public class TaskAddParameter {
      */
     public TaskAddParameter withConstraints(TaskConstraints constraints) {
         this.constraints = constraints;
+        return this;
+    }
+
+    /**
+     * Get the default is 1. A Task can only be scheduled to run on a compute node if the node has enough free scheduling slots available. For multi-instance Tasks, this must be 1.
+     *
+     * @return the requiredSlots value
+     */
+    public Integer requiredSlots() {
+        return this.requiredSlots;
+    }
+
+    /**
+     * Set the default is 1. A Task can only be scheduled to run on a compute node if the node has enough free scheduling slots available. For multi-instance Tasks, this must be 1.
+     *
+     * @param requiredSlots the requiredSlots value to set
+     * @return the TaskAddParameter object itself.
+     */
+    public TaskAddParameter withRequiredSlots(Integer requiredSlots) {
+        this.requiredSlots = requiredSlots;
         return this;
     }
 

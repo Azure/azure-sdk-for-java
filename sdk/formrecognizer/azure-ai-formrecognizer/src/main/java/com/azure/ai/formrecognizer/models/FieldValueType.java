@@ -3,179 +3,32 @@
 
 package com.azure.ai.formrecognizer.models;
 
-import com.azure.core.util.logging.ClientLogger;
-
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Objects;
-
-/**
- * Define enum values for FieldValue types.
- */
-@SuppressWarnings("unchecked")
+/** Defines values for FieldValueType. */
 public enum FieldValueType {
-    /**
-     * Static value string for FieldValueType.
-     */
-    STRING {
-        @Override
-        public <T> T cast(FormField<?> formField) {
-            if (isFieldValueNull(formField)) {
-                return null;
-            }
-            return (T) String.valueOf(formField.getValue());
-        }
-    },
+    /** Enum value string. */
+    STRING,
 
-    /**
-     * Static value date for FieldValueType.
-     */
-    DATE {
-        @Override
-        public <T> T cast(FormField<?> formField) {
-            if (isFieldValueNull(formField)) {
-                return null;
-            }
-            if (this == formField.getValueType()) {
-                return (T) formField.getValue();
-            } else if (STRING == formField.getValueType()) {
-                return (T) LocalDate.parse(formField.getValue().toString(), DateTimeFormatter.ofPattern("yyyy/MM/dd"));
-            } else {
-                throw LOGGER.logExceptionAsError(new UnsupportedOperationException(String.format("Cannot cast from "
-                    + "field value of type %s to type %s", formField.getValueType(), DATE)));
-            }
-        }
-    },
+    /** Enum value date. */
+    DATE,
 
-    /**
-     * Static value time for FieldValueType.
-     */
-    TIME {
-        @Override
-        public <T> T cast(FormField<?> formField) {
-            if (isFieldValueNull(formField)) {
-                return null;
-            }
-            if (this == formField.getValueType()) {
-                return (T) formField.getValue();
-            } else if (STRING == formField.getValueType()) {
-                return (T) LocalTime.parse(formField.getValue().toString(), DateTimeFormatter.ofPattern("HH:mm:ss"));
-            } else {
-                throw LOGGER.logExceptionAsError(new UnsupportedOperationException(String.format("Cannot cast from "
-                    + "field value of type %s to type %s", formField.getValueType(), TIME)));
-            }
-        }
-    },
+    /** Enum value time. */
+    TIME,
 
-    /**
-     * Static value phone number for FieldValueType.
-     */
-    PHONE_NUMBER {
-        @Override
-        public <T> T cast(FormField<?> formField) {
-            if (isFieldValueNull(formField)) {
-                return null;
-            }
-            if (this == formField.getValueType()) {
-                return (T) formField.getValue();
-            } else if (STRING == formField.getValueType()) {
-                return (T) formField.getValue();
-            } else {
-                throw LOGGER.logExceptionAsError(new UnsupportedOperationException(String.format("Cannot cast from "
-                    + "field value of type %s to type %s", formField.getValueType(), PHONE_NUMBER)));
-            }
-        }
-    },
+    /** Enum value phoneNumber. */
+    PHONE_NUMBER,
 
-    /**
-     * Static value double for FieldValueType.
-     */
-    DOUBLE {
-        @Override
-        public <T> T cast(FormField<?> formField) {
-            if (isFieldValueNull(formField)) {
-                return null;
-            }
-            if (this == formField.getValueType()) {
-                return (T) formField.getValue();
-            } else if (STRING == formField.getValueType()) {
-                return (T) Double.valueOf(formField.getValue().toString());
-            } else {
-                throw LOGGER.logExceptionAsError(new UnsupportedOperationException(String.format("Cannot cast from "
-                    + "field value of type %s to type %s", formField.getValueType(), DOUBLE)));
-            }
-        }
-    },
+    /** Enum value floating point number. */
+    FLOAT,
 
-    /**
-     * Static value long for FieldValueType.
-     */
-    LONG {
-        @Override
-        public <T> T cast(FormField<?> formField) {
-            if (isFieldValueNull(formField)) {
-                return null;
-            }
-            if (this == formField.getValueType()) {
-                return (T) formField.getValue();
-            } else if (STRING == formField.getValueType()) {
-                return (T) Long.valueOf(formField.getValue().toString());
-            } else {
-                throw LOGGER.logExceptionAsError(new UnsupportedOperationException(String.format("Cannot cast from "
-                    + "field value of type %s to type %s", formField.getValueType(), LONG)));
-            }
-        }
-    },
+    /** Enum value long. */
+    LONG,
 
-    /**
-     * Static value list for FieldValueType.
-     */
-    LIST {
-        @Override
-        public <T> T cast(FormField<?> formField) {
-            return getCollectionTypeCast(formField);
-        }
-    },
+    /** Enum value list. */
+    LIST,
 
-    /**
-     * Static value map for FieldValueType.
-     */
-    MAP {
-        @Override
-        public <T> T cast(FormField<?> formField) {
-            return getCollectionTypeCast(formField);
-        }
-    };
+    /** Enum value map. */
+    MAP,
 
-    static boolean isFieldValueNull(FormField<?> formField) {
-        Objects.requireNonNull(formField, "'formField' cannot be null");
-        return formField.getValue() == null;
-    }
-
-    <T> T getCollectionTypeCast(FormField<?> formField) {
-        if (isFieldValueNull(formField)) {
-            return null;
-        }
-        if (this == formField.getValueType()) {
-            return (T) formField.getValue();
-        } else {
-            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(String.format("Cannot cast from "
-                + "field value of type %s to type %s", formField.getValueType(), this)));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(FieldValueType.class);
-
-    /**
-     * Converts the form field value to a specific enum type.
-     *
-     * @param formField The recognized field value that needs to be converted.
-     * @param <T> the class of the field.
-     *
-     * @return the converted value of the recognized field.
-     * @throws UnsupportedOperationException if the {@code formField} type does not match the casting value type.
-     * @throws NullPointerException if {@code formField} is {@code null}
-     */
-    public abstract <T> T cast(FormField<?> formField);
+    /** Enum value selection mark state. */
+    SELECTION_MARK_STATE;
 }

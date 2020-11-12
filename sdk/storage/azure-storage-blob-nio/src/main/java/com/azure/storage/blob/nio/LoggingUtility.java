@@ -8,7 +8,7 @@ import com.azure.core.util.logging.ClientLogger;
 /**
  * Only a minimal Utility class to get around a shortcoming in Core's logging.
  */
-class LoggingUtility {
+final class LoggingUtility {
     public static <T extends Exception> T logError(ClientLogger logger, T e) {
         logger.error(e.getMessage());
         return e;

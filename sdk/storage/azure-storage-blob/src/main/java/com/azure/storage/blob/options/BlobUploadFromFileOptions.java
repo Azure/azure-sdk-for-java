@@ -12,7 +12,6 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.util.Map;
 
-
 /**
  * Extended options that may be passed when uploading a blob from a file.
  */

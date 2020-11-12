@@ -4,7 +4,9 @@
 package com.azure.storage.blob
 
 import com.azure.core.util.Context
+import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.BlobListDetails
+import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.ListBlobsOptions
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.sas.BlobSasPermission
@@ -16,7 +18,6 @@ import com.azure.storage.common.sas.AccountSasSignatureValues
 import org.apache.commons.lang3.StringUtils
 
 import java.nio.charset.StandardCharsets
-import java.time.Duration
 
 class VersioningTest extends APISpec {
 
@@ -30,7 +31,7 @@ class VersioningTest extends APISpec {
     def setup() {
         blobName = generateBlobName()
         containerName = generateContainerName()
-        blobContainerClient = primaryBlobServiceClient.createBlobContainer(containerName)
+        blobContainerClient = versionedBlobServiceClient.createBlobContainer(containerName)
         blobClient = blobContainerClient.getBlobClient(blobName)
     }
 
@@ -235,8 +236,8 @@ class VersioningTest extends APISpec {
         sourceBlob.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
 
         when:
-        def pooler = blobClient.beginCopy(sourceBlob.getBlobUrl(), Duration.ofSeconds(1))
-        def copyInfo = pooler.waitForCompletion().getValue()
+        def poller = blobClient.beginCopy(sourceBlob.getBlobUrl(), getPollingDuration(1000))
+        def copyInfo = poller.waitForCompletion().getValue()
 
         then:
         copyInfo.getVersionId() != null
@@ -257,6 +258,34 @@ class VersioningTest extends APISpec {
         then:
         versionIdAfterCopy != null
         versionIdAfterCopy != blobItemV1.getVersionId()
+    }
+
+    def "Set tier with version"() {
+        given:
+        def inputV1 = new ByteArrayInputStream(contentV1.getBytes(StandardCharsets.UTF_8))
+        def inputV2 = new ByteArrayInputStream(contentV2.getBytes(StandardCharsets.UTF_8))
+        def blobItemV1 = blobClient.getBlockBlobClient().upload(inputV1, inputV1.available())
+        blobClient.getBlockBlobClient().upload(inputV2, inputV2.available(), true)
+
+        when:
+        blobClient.getVersionClient(blobItemV1.getVersionId()).setAccessTier(AccessTier.COOL)
+
+        then:
+        blobClient.getVersionClient(blobItemV1.getVersionId()).getProperties().getAccessTier() == AccessTier.COOL
+        blobClient.getProperties().getAccessTier() != AccessTier.COOL
+    }
+
+    def "Set tier with version error"() {
+        given:
+        def inputV1 = new ByteArrayInputStream(contentV1.getBytes(StandardCharsets.UTF_8))
+        blobClient.getBlockBlobClient().upload(inputV1, inputV1.available())
+        String fakeVersion = "2020-04-17T20:37:16.5129130Z"
+
+        when:
+        blobClient.getVersionClient(fakeVersion).setAccessTier(AccessTier.COOL)
+
+        then:
+        thrown(BlobStorageException)
     }
 
     def "Blob Properties should contain Version information"() {

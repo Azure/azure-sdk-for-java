@@ -39,32 +39,30 @@ public class ReceiveNamedSessionSample {
         // Create a receiver.
         // "<<queue-name>>" will be the name of the Service Bus session-enabled queue instance you created inside the
         // Service Bus namespace.
-        ServiceBusReceiverClient receiver = new ServiceBusClientBuilder()
+        ServiceBusSessionReceiverClient sessionReceiver = new ServiceBusClientBuilder()
             .connectionString(connectionString)
             .sessionReceiver()
-            .sessionId("greetings")
             .queueName("<<queue-name>>")
             .buildClient();
-
+        ServiceBusReceiverClient receiver = sessionReceiver.acceptSession("greetings");
         while (isRunning.get()) {
-            IterableStream<ServiceBusReceivedMessageContext> messages = receiver.receiveMessages(10, Duration.ofSeconds(30));
+            IterableStream<ServiceBusReceivedMessage> messages = receiver.receiveMessages(10, Duration.ofSeconds(30));
 
-            for (ServiceBusReceivedMessageContext context : messages) {
-                System.out.println("Processing message from session: " + context.getSessionId());
+            for (ServiceBusReceivedMessage message : messages) {
+                System.out.println("Processing message from session: " + message.getSessionId());
 
-                ServiceBusReceivedMessage message = context.getMessage();
                 boolean isSuccessfullyProcessed = processMessage(message);
 
                 if (isSuccessfullyProcessed) {
-                    receiver.complete(message.getLockToken(), message.getSessionId());
+                    receiver.complete(message);
                 } else {
-                    receiver.abandon(message.getLockToken(), null, message.getSessionId());
+                    receiver.abandon(message, null);
                 }
             }
         }
 
         // Close the receiver.
-        receiver.close();
+        sessionReceiver.close();
     }
 
     private static boolean processMessage(ServiceBusReceivedMessage message) {

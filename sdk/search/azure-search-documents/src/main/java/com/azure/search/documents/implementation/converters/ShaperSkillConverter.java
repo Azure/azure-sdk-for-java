@@ -4,7 +4,6 @@
 package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
-import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
 import com.azure.search.documents.indexes.models.ShaperSkill;
 
 import java.util.List;
@@ -22,13 +21,10 @@ public final class ShaperSkillConverter {
             return null;
         }
 
-        List<OutputFieldMappingEntry> outputs = obj.getOutputs() == null ? null
-            : obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
-
         List<InputFieldMappingEntry> inputs = obj.getInputs() == null ? null
             : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
 
-        ShaperSkill shaperSkill = new ShaperSkill(inputs, outputs);
+        ShaperSkill shaperSkill = new ShaperSkill(inputs, obj.getOutputs());
 
         String name = obj.getName();
         shaperSkill.setName(name);
@@ -48,15 +44,12 @@ public final class ShaperSkillConverter {
         if (obj == null) {
             return null;
         }
-        List<com.azure.search.documents.indexes.implementation.models.OutputFieldMappingEntry> outputs =
-            obj.getOutputs() == null ? null
-                : obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
 
         List<com.azure.search.documents.indexes.implementation.models.InputFieldMappingEntry> inputs =
             obj.getOutputs() == null ? null
                 : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
         com.azure.search.documents.indexes.implementation.models.ShaperSkill shaperSkill =
-            new com.azure.search.documents.indexes.implementation.models.ShaperSkill(inputs, outputs);
+            new com.azure.search.documents.indexes.implementation.models.ShaperSkill(inputs, obj.getOutputs());
 
 
         String name = obj.getName();
@@ -67,7 +60,7 @@ public final class ShaperSkillConverter {
 
         String description = obj.getDescription();
         shaperSkill.setDescription(description);
-        shaperSkill.validate();
+
         return shaperSkill;
     }
 

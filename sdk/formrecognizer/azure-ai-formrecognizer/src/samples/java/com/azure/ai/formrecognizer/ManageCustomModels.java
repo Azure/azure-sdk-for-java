@@ -3,9 +3,9 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.models.AccountProperties;
-import com.azure.ai.formrecognizer.models.CustomFormModel;
-import com.azure.ai.formrecognizer.models.CustomFormModelInfo;
+import com.azure.ai.formrecognizer.training.models.AccountProperties;
+import com.azure.ai.formrecognizer.training.models.CustomFormModel;
+import com.azure.ai.formrecognizer.training.models.CustomFormModelInfo;
 import com.azure.ai.formrecognizer.training.FormTrainingClient;
 import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
@@ -44,6 +44,9 @@ public class ManageCustomModels {
         System.out.println("We have following models in the account:");
         customModels.forEach(customFormModelInfo -> {
             System.out.printf("Model Id: %s%n", customFormModelInfo.getModelId());
+            if (customFormModelInfo.getCustomModelProperties() != null) {
+                System.out.printf("Is it a composed model? : %s%n", customFormModelInfo.getCustomModelProperties().isComposed());
+            }
             // get custom model info
             modelId.set(customFormModelInfo.getModelId());
             CustomFormModel customModel = client.getCustomModel(customFormModelInfo.getModelId());
@@ -60,12 +63,11 @@ public class ManageCustomModels {
                         System.out.printf("Field Accuracy: %.2f%n", customFormModelField.getAccuracy());
                     });
                 }
-
             });
         });
 
         // Delete Custom Model
-        System.out.printf("Deleted model with model Id: %s operation completed with status: %s%n", modelId.get(),
+        System.out.printf("Deleted model with model Id: %s, operation completed with status: %s%n", modelId.get(),
             client.deleteModelWithResponse(modelId.get(), Context.NONE).getStatusCode());
     }
 }

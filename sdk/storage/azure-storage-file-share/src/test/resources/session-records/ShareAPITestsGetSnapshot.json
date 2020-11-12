@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net/shareapitestsgetsnapshotshareapitestsgetsnapshot25b9108723?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b779ecb4-0171-4e74-a510-fd75d23e540a"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-02-10",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D8452846355C9D",
+      "Last-Modified" : "Thu, 20 Aug 2020 16:44:15 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "5594fc55-f01a-000f-3f11-77acae000000",
+      "Date" : "Thu, 20 Aug 2020 16:44:14 GMT",
+      "x-ms-client-request-id" : "b779ecb4-0171-4e74-a510-fd75d23e540a"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net/shareapitestsgetsnapshotshareapitestsgetsnapshot25b9108723?restype=share&comp=snapshot",
+    "Headers" : {
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e2e0628d-36f8-43c4-9c1a-6d7cbb2edccd"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-02-10",
+      "x-ms-snapshot" : "2020-08-20T16:44:15.0000000Z",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D8452846355C9D",
+      "Last-Modified" : "Thu, 20 Aug 2020 16:44:15 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "5594fc59-f01a-000f-4111-77acae000000",
+      "Date" : "Thu, 20 Aug 2020 16:44:15 GMT",
+      "x-ms-client-request-id" : "e2e0628d-36f8-43c4-9c1a-6d7cbb2edccd"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "shareapitestsgetsnapshotshareapitestsgetsnapshot25b9108723" ]
+}

@@ -2,7 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
+import com.azure.cosmos.models.ChangeFeedProcessorState;
+import com.azure.cosmos.util.Beta;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -59,4 +63,15 @@ public interface ChangeFeedProcessor {
      *         lag, asynchronously.
      */
     Mono<Map<String, Integer>> getEstimatedLag();
+
+    /**
+     * Returns a read only list of states each representing one scoped worker item.
+     * <p>
+     * An empty list will be returned if the processor was not started or no lease items matching the current
+     *   {@link ChangeFeedProcessor} instance's lease prefix could be found.
+     *
+     * @return a read only list of states each representing one scoped worker item.
+     */
+    @Beta(Beta.SinceVersion.V4_5_1)
+    Mono<List<ChangeFeedProcessorState>> getCurrentState();
 }

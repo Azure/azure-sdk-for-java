@@ -23,12 +23,12 @@ public final class FieldData extends FormElement {
      * Creates raw OCR FieldData item.
      *
      * @param text The text content of ExtractedField.
-     * @param boundingBox The BoundingBox of ExtractedField.
+     * @param boundingBox The Bounding Box of the recognized field.
      * @param pageNumber the 1 based page number.
      * @param fieldElements The list of element references when includeFieldElements is set to true.
      */
-    public FieldData(String text, BoundingBox boundingBox, Integer pageNumber,
-                     final List<FormElement> fieldElements) {
+    public FieldData(String text, FieldBoundingBox boundingBox, int pageNumber,
+        final List<FormElement> fieldElements) {
         super(text, boundingBox, pageNumber);
         this.fieldElements = fieldElements == null ? null : Collections.unmodifiableList(fieldElements);
     }
@@ -37,7 +37,7 @@ public final class FieldData extends FormElement {
      * {@inheritDoc}
      */
     @Override
-    public BoundingBox getBoundingBox() {
+    public FieldBoundingBox getBoundingBox() {
         return super.getBoundingBox();
     }
 
@@ -53,7 +53,7 @@ public final class FieldData extends FormElement {
      * {@inheritDoc}
      */
     @Override
-    public Integer getPageNumber() {
+    public int getPageNumber() {
         return super.getPageNumber();
     }
 

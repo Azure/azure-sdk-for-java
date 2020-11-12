@@ -28,7 +28,9 @@
   "variables": {
     "apiVersion": "2020-04-01",
     "accountName": "[toLower(parameters('baseName'))]",
+    "newAccountName": "[toLower(concat(parameters('baseName'), '2'))]",
     "resourceId": "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('accountName'))]",
+    "newResourceId": "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('newAccountName'))]",
     "singleRegionConfiguration": [
       {
         "locationName": "East US 2",
@@ -79,6 +81,32 @@
         "capabilities": [],
         "ipRules": []
       }
+    },
+    {
+      "type": "Microsoft.DocumentDB/databaseAccounts",
+      "apiVersion": "[variables('apiVersion')]",
+      "name": "[variables('newAccountName')]",
+      "location": "[resourceGroup().location]",
+      "kind": "GlobalDocumentDB",
+      "properties": {
+        "publicNetworkAccess": "Enabled",
+        "enableAutomaticFailover": false,
+        "enableMultipleWriteLocations": "[parameters('enableMultipleWriteLocations')]",
+        "isVirtualNetworkFilterEnabled": false,
+        "virtualNetworkRules": [],
+        "disableKeyBasedMetadataWriteAccess": false,
+        "enableFreeTier": false,
+        "enableAnalyticalStorage": false,
+        "databaseAccountOfferType": "Standard",
+        "consistencyPolicy": {
+          "defaultConsistencyLevel": "[parameters('defaultConsistencyLevel')]",
+          "maxIntervalInSeconds": 5,
+          "maxStalenessPrefix": 100
+        },
+        "locations": "[variables('locationsConfiguration')]",
+        "capabilities": [],
+        "ipRules": []
+      }
     }
   ],
   "outputs": {
@@ -93,6 +121,18 @@
     "SECONDARY_ACCOUNT_KEY": {
       "type": "string",
       "value": "[listKeys(variables('resourceId'), variables('apiVersion')).secondaryMasterKey]"
+    },
+    "NEW_ACCOUNT_HOST": {
+      "type": "string",
+      "value": "[reference(variables('newResourceId'), variables('apiVersion')).documentEndpoint]"
+    },
+    "NEW_ACCOUNT_KEY": {
+      "type": "string",
+      "value": "[listKeys(variables('newResourceId'), variables('apiVersion')).primaryMasterKey]"
+    },
+    "NEW_SECONDARY_ACCOUNT_KEY": {
+      "type": "string",
+      "value": "[listKeys(variables('newResourceId'), variables('apiVersion')).secondaryMasterKey]"
     }
   }
 }

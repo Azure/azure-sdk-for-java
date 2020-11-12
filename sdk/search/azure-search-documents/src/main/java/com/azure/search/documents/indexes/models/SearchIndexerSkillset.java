@@ -6,6 +6,9 @@ package com.azure.search.documents.indexes.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
+
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -42,6 +45,22 @@ public final class SearchIndexerSkillset {
      */
     @JsonProperty(value = "@odata.etag")
     private String eTag;
+
+    /*
+     * A description of an encryption key that you create in Azure Key Vault.
+     * This key is used to provide an additional level of encryption-at-rest
+     * for your skillset definition when you want full assurance that no one,
+     * not even Microsoft, can decrypt your skillset definition in Azure
+     * Cognitive Search. Once you have encrypted your skillset definition, it
+     * will always remain encrypted. Azure Cognitive Search will ignore
+     * attempts to set this property to null. You can change this property as
+     * needed if you want to rotate your encryption key; Your skillset
+     * definition will be unaffected. Encryption with customer-managed keys is
+     * not available for free search services, and is only available for paid
+     * services created on or after January 1, 2019.
+     */
+    @JsonProperty(value = "encryptionKey")
+    private SearchResourceEncryptionKey encryptionKey;
 
     /**
      * Constructor of {@link SearchIndexerSkillset}.
@@ -110,6 +129,18 @@ public final class SearchIndexerSkillset {
      * @param skills the skills value to set.
      * @return the SearchIndexerSkillset object itself.
      */
+    public SearchIndexerSkillset setSkills(SearchIndexerSkill... skills) {
+        this.skills = (skills == null) ? null : Arrays.asList(skills);
+        return this;
+    }
+
+    /**
+     * Set the skills property: A list of skills in the skillset.
+     *
+     * @param skills the skills value to set.
+     * @return the SearchIndexerSkillset object itself.
+     */
+    @JsonSetter
     public SearchIndexerSkillset setSkills(List<SearchIndexerSkill> skills) {
         this.skills = skills;
         return this;
@@ -155,6 +186,38 @@ public final class SearchIndexerSkillset {
      */
     public SearchIndexerSkillset setETag(String eTag) {
         this.eTag = eTag;
+        return this;
+    }
+
+    /**
+     * Get the encryptionKey property: A description of an encryption key that you create in Azure Key Vault. This key
+     * is used to provide an additional level of encryption-at-rest for your skillset definition when you want full
+     * assurance that no one, not even Microsoft, can decrypt your skillset definition in Azure Cognitive Search. Once
+     * you have encrypted your skillset definition, it will always remain encrypted. Azure Cognitive Search will ignore
+     * attempts to set this property to null. You can change this property as needed if you want to rotate your
+     * encryption key; Your skillset definition will be unaffected. Encryption with customer-managed keys is not
+     * available for free search services, and is only available for paid services created on or after January 1, 2019.
+     *
+     * @return the encryptionKey value.
+     */
+    public SearchResourceEncryptionKey getEncryptionKey() {
+        return this.encryptionKey;
+    }
+
+    /**
+     * Set the encryptionKey property: A description of an encryption key that you create in Azure Key Vault. This key
+     * is used to provide an additional level of encryption-at-rest for your skillset definition when you want full
+     * assurance that no one, not even Microsoft, can decrypt your skillset definition in Azure Cognitive Search. Once
+     * you have encrypted your skillset definition, it will always remain encrypted. Azure Cognitive Search will ignore
+     * attempts to set this property to null. You can change this property as needed if you want to rotate your
+     * encryption key; Your skillset definition will be unaffected. Encryption with customer-managed keys is not
+     * available for free search services, and is only available for paid services created on or after January 1, 2019.
+     *
+     * @param encryptionKey the encryptionKey value to set.
+     * @return the SearchIndexerSkillset object itself.
+     */
+    public SearchIndexerSkillset setEncryptionKey(SearchResourceEncryptionKey encryptionKey) {
+        this.encryptionKey = encryptionKey;
         return this;
     }
 }

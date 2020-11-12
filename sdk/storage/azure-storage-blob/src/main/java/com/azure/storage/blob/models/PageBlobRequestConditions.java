@@ -83,6 +83,18 @@ public final class PageBlobRequestConditions extends BlobRequestConditions {
     }
 
     /**
+     * Optionally applies the SQL statement to the tags of the blob.
+     *
+     * @param tagsConditions The SQL statement that apply to the tags of the blob.
+     * @return The updated BlobRequestConditions object.
+     */
+    @Override
+    public PageBlobRequestConditions setTagsConditions(String tagsConditions) {
+        super.setTagsConditions(tagsConditions);
+        return this;
+    }
+
+    /**
      * Gets the value that the page blob's sequence number must be less than or equal to.
      *
      * @return The value the sequence number must be less than or equal to.

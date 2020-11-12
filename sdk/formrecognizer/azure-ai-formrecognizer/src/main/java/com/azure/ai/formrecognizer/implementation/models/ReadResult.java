@@ -4,6 +4,7 @@
 
 package com.azure.ai.formrecognizer.implementation.models;
 
+import com.azure.ai.formrecognizer.models.LengthUnit;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -60,6 +61,12 @@ public final class ReadResult {
      */
     @JsonProperty(value = "lines")
     private List<TextLine> lines;
+
+    /*
+     * List of selection marks extracted from the page.
+     */
+    @JsonProperty(value = "selectionMarks")
+    private List<SelectionMark> selectionMarks;
 
     /**
      * Get the page property: The 1-based page number in the input document.
@@ -210,6 +217,26 @@ public final class ReadResult {
      */
     public ReadResult setLines(List<TextLine> lines) {
         this.lines = lines;
+        return this;
+    }
+
+    /**
+     * Get the selectionMarks property: List of selection marks extracted from the page.
+     *
+     * @return the selectionMarks value.
+     */
+    public List<SelectionMark> getSelectionMarks() {
+        return this.selectionMarks;
+    }
+
+    /**
+     * Set the selectionMarks property: List of selection marks extracted from the page.
+     *
+     * @param selectionMarks the selectionMarks value to set.
+     * @return the ReadResult object itself.
+     */
+    public ReadResult setSelectionMarks(List<SelectionMark> selectionMarks) {
+        this.selectionMarks = selectionMarks;
         return this;
     }
 }

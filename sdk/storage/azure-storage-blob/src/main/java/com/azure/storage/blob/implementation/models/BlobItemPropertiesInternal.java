@@ -14,6 +14,7 @@ import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.LeaseDurationType;
 import com.azure.storage.blob.models.LeaseStateType;
 import com.azure.storage.blob.models.LeaseStatusType;
+import com.azure.storage.blob.models.RehydratePriority;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -234,8 +235,20 @@ public final class BlobItemPropertiesInternal {
     /*
      * The isSealed property.
      */
-    @JsonProperty(value = "IsSealed")
+    @JsonProperty(value = "Sealed")
     private Boolean isSealed;
+
+    /*
+     * Possible values include: 'High', 'Standard'
+     */
+    @JsonProperty(value = "RehydratePriority")
+    private RehydratePriority rehydratePriority;
+
+    /*
+     * The lastAccessedOn property.
+     */
+    @JsonProperty(value = "LastAccessTime")
+    private DateTimeRfc1123 lastAccessedOn;
 
     /**
      * Get the creationTime property: The creationTime property.
@@ -1003,6 +1016,55 @@ public final class BlobItemPropertiesInternal {
      */
     public BlobItemPropertiesInternal setIsSealed(Boolean isSealed) {
         this.isSealed = isSealed;
+        return this;
+    }
+
+    /**
+     * Get the rehydratePriority property: Possible values include: 'High',
+     * 'Standard'.
+     *
+     * @return the rehydratePriority value.
+     */
+    public RehydratePriority getRehydratePriority() {
+        return this.rehydratePriority;
+    }
+
+    /**
+     * Set the rehydratePriority property: Possible values include: 'High',
+     * 'Standard'.
+     *
+     * @param rehydratePriority the rehydratePriority value to set.
+     * @return the BlobItemPropertiesInternal object itself.
+     */
+    public BlobItemPropertiesInternal setRehydratePriority(RehydratePriority rehydratePriority) {
+        this.rehydratePriority = rehydratePriority;
+        return this;
+    }
+
+    /**
+     * Get the lastAccessedOn property: The lastAccessedOn property.
+     *
+     * @return the lastAccessedOn value.
+     */
+    public OffsetDateTime getLastAccessedOn() {
+        if (this.lastAccessedOn == null) {
+            return null;
+        }
+        return this.lastAccessedOn.getDateTime();
+    }
+
+    /**
+     * Set the lastAccessedOn property: The lastAccessedOn property.
+     *
+     * @param lastAccessedOn the lastAccessedOn value to set.
+     * @return the BlobItemPropertiesInternal object itself.
+     */
+    public BlobItemPropertiesInternal setLastAccessedOn(OffsetDateTime lastAccessedOn) {
+        if (lastAccessedOn == null) {
+            this.lastAccessedOn = null;
+        } else {
+            this.lastAccessedOn = new DateTimeRfc1123(lastAccessedOn);
+        }
         return this;
     }
 }

@@ -16,6 +16,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 import io.netty.buffer.ByteBuf;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -23,6 +25,7 @@ import java.io.ObjectOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -46,10 +49,15 @@ import java.util.UUID;
  * This is meant to be internally used only by our sdk.
  */
 public class Utils {
+
+    private final static Logger logger = LoggerFactory.getLogger(Utils.class);
+
     private static final int ONE_KB = 1024;
     private static final ZoneId GMT_ZONE_ID = ZoneId.of("GMT");
     public static final Base64.Encoder Base64Encoder = Base64.getEncoder();
     public static final Base64.Decoder Base64Decoder = Base64.getDecoder();
+    public static final Base64.Encoder Base64UrlEncoder = Base64.getUrlEncoder();
+    public static final Base64.Decoder Base64UrlDecoder = Base64.getUrlDecoder();
 
     private static final ObjectMapper simpleObjectMapper = new ObjectMapper();
     private static final TimeBasedGenerator TIME_BASED_GENERATOR =
@@ -85,8 +93,33 @@ public class Utils {
 
     }
 
+    public static byte[] getUtf16Bytes(String str) {
+        return str.getBytes(StandardCharsets.UTF_16LE);
+    }
+
     public static String encodeBase64String(byte[] binaryData) {
         String encodedString = Base64Encoder.encodeToString(binaryData);
+
+        if (encodedString.endsWith("\r\n")) {
+            encodedString = encodedString.substring(0, encodedString.length() - 2);
+        }
+        return encodedString;
+    }
+
+    public static String decodeAsUTF8String(String inputString) {
+        if (inputString == null || inputString.isEmpty()) {
+            return inputString;
+        }
+        try {
+            return URLDecoder.decode(inputString, StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException e) {
+            logger.warn("Error while decoding input string", e);
+            return inputString;
+        }
+    }
+
+    public static String encodeUrlBase64String(byte[] binaryData) {
+        String encodedString = Base64UrlEncoder.withoutPadding().encodeToString(binaryData);
 
         if (encodedString.endsWith("\r\n")) {
             encodedString = encodedString.substring(0, encodedString.length() - 2);
@@ -318,7 +351,7 @@ public class Utils {
 
     public static boolean isWriteOperation(OperationType operationType) {
         return operationType == OperationType.Create || operationType == OperationType.Upsert || operationType == OperationType.Delete || operationType == OperationType.Replace
-                || operationType == OperationType.ExecuteJavaScript;
+                || operationType == OperationType.ExecuteJavaScript || operationType == OperationType.Batch;
     }
 
     public static boolean isFeedRequest(OperationType requestOperationType) {
@@ -387,12 +420,14 @@ public class Utils {
             osName = "Unknown";
         }
         osName = osName.replaceAll("\\s", "");
-        String userAgent = String.format("%s/%s JRE/%s %s/%s",
+        String userAgent = String.format("%s%s/%s %s/%s JRE/%s",
+                UserAgentContainer.AZSDK_USERAGENT_PREFIX,
+                sdkName,
+                sdkVersion,
                 osName,
                 System.getProperty("os.version"),
-                System.getProperty("java.version"),
-                sdkName,
-                sdkVersion);
+                System.getProperty("java.version")
+                );
         return userAgent;
     }
 
@@ -579,12 +614,25 @@ public class Utils {
         }
     }
 
+    public static <T> T parse(byte[] item, Class<T> itemClassType, ItemDeserializer itemDeserializer) {
+        if (Utils.isEmpty(item)) {
+            return null;
+        }
+
+        if (itemDeserializer == null) {
+            return Utils.parse(item, itemClassType);
+        }
+
+        return itemDeserializer.parseFrom(itemClassType, item);
+    }
+
     public static ByteBuffer serializeJsonToByteBuffer(ObjectMapper objectMapper, Object object) {
         try {
             ByteBufferOutputStream byteBufferOutputStream = new ByteBufferOutputStream(ONE_KB);
             objectMapper.writeValue(byteBufferOutputStream, object);
             return byteBufferOutputStream.asByteBuffer();
         } catch (IOException e) {
+            // TODO moderakh: on serialization/deserialization failure we should throw CosmosException here and elsewhere
             throw new IllegalArgumentException("Failed to serialize the object into json", e);
         }
     }
@@ -639,10 +687,14 @@ public class Utils {
         }
     }
 
-    static byte[] toByteArray(ByteBuf buf) {
+    public static byte[] toByteArray(ByteBuf buf) {
         byte[] bytes = new byte[buf.readableBytes()];
         buf.readBytes(bytes);
         return bytes;
+    }
+
+    public static ByteBuffer toByteBuffer(byte[] bytes) {
+        return ByteBuffer.wrap(bytes);
     }
 
     public static String toJson(ObjectMapper mapper, ObjectNode object) {

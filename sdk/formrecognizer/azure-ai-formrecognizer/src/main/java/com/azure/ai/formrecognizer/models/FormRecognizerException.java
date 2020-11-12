@@ -12,10 +12,10 @@ import java.util.List;
 /**
  * General exception for FormRecognizer client-side related failures.
  *
- * @see ErrorInformation
+ * @see FormRecognizerErrorInformation
  */
 public class FormRecognizerException extends AzureException {
-    private final List<ErrorInformation> errorInformationList;
+    private final List<FormRecognizerErrorInformation> errorInformationList;
     private final String errorInformationMessage;
 
     /**
@@ -24,13 +24,14 @@ public class FormRecognizerException extends AzureException {
      * @param message Text containing the details of the exception.
      * @param errorInformationList The List of error information that caused the exception
      */
-    public FormRecognizerException(final String message, final List<ErrorInformation> errorInformationList) {
+    public FormRecognizerException(final String message,
+        final List<FormRecognizerErrorInformation> errorInformationList) {
         super(message);
         StringBuilder errorInformationStringBuilder = new StringBuilder().append(message);
         if (!CoreUtils.isNullOrEmpty(errorInformationList)) {
-            for (ErrorInformation errorInformation : errorInformationList) {
+            for (FormRecognizerErrorInformation errorInformation : errorInformationList) {
                 errorInformationStringBuilder.append(", " + "errorCode" + ": [")
-                    .append(errorInformation.getCode()).append("], ").append("message")
+                    .append(errorInformation.getErrorCode()).append("], ").append("message")
                     .append(": ").append(errorInformation.getMessage());
             }
             this.errorInformationList = Collections.unmodifiableList(errorInformationList);
@@ -50,7 +51,7 @@ public class FormRecognizerException extends AzureException {
      *
      * @return the unmodifiable error information list for this exception.
      */
-    public List<ErrorInformation> getErrorInformation() {
+    public List<FormRecognizerErrorInformation> getErrorInformation() {
         return this.errorInformationList;
     }
 }

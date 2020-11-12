@@ -83,52 +83,6 @@ public class CdnManagementClientImpl extends AzureServiceClient {
         return this.apiVersion;
     }
 
-    /** Azure Subscription ID. */
-    private String subscriptionId1;
-
-    /**
-     * Gets Azure Subscription ID.
-     *
-     * @return the subscriptionId1 value.
-     */
-    public String subscriptionId1() {
-        return this.subscriptionId1;
-    }
-
-    /**
-     * Sets Azure Subscription ID.
-     *
-     * @param subscriptionId1 the subscriptionId1 value.
-     * @return the service client itself
-     */
-    public CdnManagementClientImpl withSubscriptionId1(String subscriptionId1) {
-        this.subscriptionId1 = subscriptionId1;
-        return this;
-    }
-
-    /** Version of the API to be used with the client request. Current version is 2017-04-02. */
-    private String apiVersion1;
-
-    /**
-     * Gets Version of the API to be used with the client request. Current version is 2017-04-02.
-     *
-     * @return the apiVersion1 value.
-     */
-    public String apiVersion1() {
-        return this.apiVersion1;
-    }
-
-    /**
-     * Sets Version of the API to be used with the client request. Current version is 2017-04-02.
-     *
-     * @param apiVersion1 the apiVersion1 value.
-     * @return the service client itself
-     */
-    public CdnManagementClientImpl withApiVersion1(String apiVersion1) {
-        this.apiVersion1 = apiVersion1;
-        return this;
-    }
-
     /** The preferred language for the response. */
     private String acceptLanguage;
 

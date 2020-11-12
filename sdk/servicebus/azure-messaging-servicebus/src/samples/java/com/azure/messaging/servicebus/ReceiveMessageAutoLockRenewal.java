@@ -37,20 +37,20 @@ public class ReceiveMessageAutoLockRenewal {
         ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
             .connectionString(connectionString)
             .receiver()
-            .maxAutoLockRenewalDuration(Duration.ofSeconds(120))
             .queueName("<<queue-name>>")
             .buildAsyncClient();
 
         Disposable subscription = receiver.receiveMessages()
-            .flatMap(context -> {
+            .flatMap(message -> {
+                receiver.renewMessageLock(message, Duration.ofSeconds(120));
                 boolean messageProcessed = false;
                 // Process the context and its message here.
                 // Change the `messageProcessed` according to you business logic and if you are able to process the
                 // message successfully.
                 if (messageProcessed) {
-                    return receiver.complete(context.getMessage().getLockToken());
+                    return receiver.complete(message);
                 } else {
-                    return receiver.abandon(context.getMessage().getLockToken());
+                    return receiver.abandon(message);
                 }
             }).subscribe();
 

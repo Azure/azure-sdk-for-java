@@ -3,32 +3,31 @@
 
 package com.azure.storage.blob
 
-import com.azure.core.util.paging.ContinuablePage
+import com.azure.core.http.rest.Response
 import com.azure.core.util.Context
+import com.azure.core.util.paging.ContinuablePage
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.models.BlobAnalyticsLogging
 import com.azure.storage.blob.models.BlobContainerItem
 import com.azure.storage.blob.models.BlobContainerListDetails
 import com.azure.storage.blob.models.BlobCorsRule
 import com.azure.storage.blob.models.BlobMetrics
-import com.azure.storage.blob.options.BlobParallelUploadOptions
 import com.azure.storage.blob.models.BlobRetentionPolicy
 import com.azure.storage.blob.models.BlobServiceProperties
+import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.CustomerProvidedKey
-import com.azure.storage.blob.options.FindBlobsOptions
 import com.azure.storage.blob.models.ListBlobContainersOptions
 import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.models.StaticWebsite
-
-import com.azure.storage.blob.models.BlobStorageException
+import com.azure.storage.blob.options.BlobParallelUploadOptions
+import com.azure.storage.blob.options.FindBlobsOptions
 import com.azure.storage.blob.options.UndeleteBlobContainerOptions
 import com.azure.storage.common.policy.RequestRetryOptions
-import com.azure.storage.common.policy.RequestRetryPolicy
+import com.azure.storage.common.policy.RetryPolicyType
 import com.azure.storage.common.sas.AccountSasPermission
 import com.azure.storage.common.sas.AccountSasResourceType
 import com.azure.storage.common.sas.AccountSasService
 import com.azure.storage.common.sas.AccountSasSignatureValues
-import spock.lang.Ignore
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 import spock.lang.Unroll
@@ -161,7 +160,6 @@ class ServiceAPITest extends APISpec {
         containers.each { container -> container.delete() }
     }
 
-    @Ignore // Container soft delete
     def "List deleted"() {
         given:
         def NUM_CONTAINERS = 5
@@ -188,7 +186,6 @@ class ServiceAPITest extends APISpec {
         listResult.size() == NUM_CONTAINERS
     }
 
-    @Ignore // Container soft delete
     def "List with all details"() {
         given:
         def NUM_CONTAINERS = 5
@@ -273,8 +270,11 @@ class ServiceAPITest extends APISpec {
         blobClient = containerClient.getBlobClient(generateBlobName())
         blobClient.upload(defaultInputStream.get(), defaultDataSize)
 
+        sleepIfRecord(10 * 1000) // To allow tags to index
+
         when:
-        def results = primaryBlobServiceClient.findBlobsByTags("\"bar\"='foo'")
+        def results = primaryBlobServiceClient.findBlobsByTags(String.format("@container='%s' AND \"bar\"='foo'",
+            containerClient.getBlobContainerName()))
 
         then:
         results.size() == 1
@@ -291,6 +291,8 @@ class ServiceAPITest extends APISpec {
             cc.getBlobClient(generateBlobName()).uploadWithResponse(
                 new BlobParallelUploadOptions(defaultInputStream.get(), defaultDataSize).setTags(tags), null, null)
         }
+
+        sleepIfRecord(10 * 1000) // To allow tags to index
 
         def firstPage = primaryBlobServiceClient.findBlobsByTags(new FindBlobsOptions("\"tag\"='value'")
             .setMaxResultsPerPage(5), null, Context.NONE)
@@ -500,6 +502,29 @@ class ServiceAPITest extends APISpec {
         primaryBlobServiceClient.setPropertiesWithResponse(serviceProperties, null, null).getStatusCode() == 202
     }
 
+    def "Set props static website"() {
+        setup:
+        def serviceProperties = primaryBlobServiceClient.getProperties()
+        def errorDocument404Path = "error/404.html"
+        def defaultIndexDocumentPath = "index.html"
+
+        serviceProperties.setStaticWebsite(new StaticWebsite()
+            .setEnabled(true)
+            .setErrorDocument404Path(errorDocument404Path)
+            .setDefaultIndexDocumentPath(defaultIndexDocumentPath)
+            )
+
+        when:
+        Response<Void> resp = primaryBlobServiceClient.setPropertiesWithResponse(serviceProperties, null, null)
+
+        then:
+        resp.getStatusCode() == 202
+        def staticWebsite = primaryBlobServiceClient.getProperties().getStaticWebsite()
+        staticWebsite.isEnabled()
+        staticWebsite.getErrorDocument404Path() == errorDocument404Path
+        staticWebsite.getDefaultIndexDocumentPath() == defaultIndexDocumentPath
+    }
+
     def "Set props error"() {
         when:
         getServiceClient(primaryCredential, "https://error.blob.core.windows.net")
@@ -649,8 +674,9 @@ class ServiceAPITest extends APISpec {
     def "Invalid account name"() {
         setup:
         def badURL = new URL("http://fake.blobfake.core.windows.net")
-        def client = getServiceClient(primaryCredential, badURL.toString(),
-            new RequestRetryPolicy(new RequestRetryOptions(null, 2, null, null, null, null)))
+        def client = getServiceClientBuilder(primaryCredential, badURL.toString())
+            .retryOptions(new RequestRetryOptions(RetryPolicyType.FIXED, 2, 60, 100, 1000, null))
+            .buildClient()
 
         when:
         client.getProperties()
@@ -710,7 +736,6 @@ class ServiceAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
-    @Ignore // Container soft delete
     def "Restore Container"() {
         given:
         def cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
@@ -737,7 +762,6 @@ class ServiceAPITest extends APISpec {
         restoredContainerClient.listBlobs().first().getName() == blobName
     }
 
-    @Ignore // Container soft delete
     def "Restore Container into other container"() {
         given:
         def cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
@@ -766,7 +790,6 @@ class ServiceAPITest extends APISpec {
         restoredContainerClient.listBlobs().first().getName() == blobName
     }
 
-    @Ignore // Container soft delete
     def "Restore Container with response"() {
         given:
         def cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
@@ -797,7 +820,6 @@ class ServiceAPITest extends APISpec {
         restoredContainerClient.listBlobs().first().getName() == blobName
     }
 
-    @Ignore // Container soft delete
     def "Restore Container async"() {
         given:
         def cc1 = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName())
@@ -828,7 +850,6 @@ class ServiceAPITest extends APISpec {
         .verifyComplete()
     }
 
-    @Ignore // Container soft delete
     def "Restore Container async with response"() {
         given:
         def cc1 = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName())
@@ -862,7 +883,6 @@ class ServiceAPITest extends APISpec {
         .verifyComplete()
     }
 
-    @Ignore // Container soft delete
     def "Restore Container error"() {
         when:
         primaryBlobServiceClient.undeleteBlobContainer(generateContainerName(), "01D60F8BB59A4652")
@@ -871,7 +891,6 @@ class ServiceAPITest extends APISpec {
         thrown(BlobStorageException.class)
     }
 
-    @Ignore // Container soft delete
     def "Restore Container into existing container error"() {
         given:
         def cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
@@ -935,5 +954,17 @@ class ServiceAPITest extends APISpec {
         "https://doesntmatter. blob.core.windows.net" | "containername"  || _
         "https://doesntmatter.blob.core.windows.net"  | "container name" || _
         /* Note: the check is on the blob builder as well but I can't test it this way since we encode all blob names - so it will not be invalid. */
+    }
+
+    // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
+    def "Per call policy"() {
+        def sc = getServiceClientBuilder(primaryCredential, primaryBlobServiceClient.getAccountUrl(), getPerCallVersionPolicy()).buildClient()
+
+        when:
+        def response = sc.getPropertiesWithResponse(null, null)
+
+        then:
+        notThrown(BlobStorageException)
+        response.getHeaders().getValue("x-ms-version") == "2017-11-09"
     }
 }

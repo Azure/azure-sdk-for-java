@@ -13,13 +13,13 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 @Fluent
 public final class CreateSubscriptionBody {
     /*
-     * TopicDescription for the new topic.
+     * SubscriptionDescription for the new subscription.
      */
     @JacksonXmlProperty(localName = "content", namespace = "http://www.w3.org/2005/Atom")
     private CreateSubscriptionBodyContent content;
 
     /**
-     * Get the content property: TopicDescription for the new topic.
+     * Get the content property: SubscriptionDescription for the new subscription.
      *
      * @return the content value.
      */
@@ -28,7 +28,7 @@ public final class CreateSubscriptionBody {
     }
 
     /**
-     * Set the content property: TopicDescription for the new topic.
+     * Set the content property: SubscriptionDescription for the new subscription.
      *
      * @param content the content value to set.
      * @return the CreateSubscriptionBody object itself.

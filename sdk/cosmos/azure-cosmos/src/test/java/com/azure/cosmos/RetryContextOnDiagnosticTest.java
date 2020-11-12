@@ -18,6 +18,7 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.RxStoreModel;
 import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
@@ -35,6 +36,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
+import static com.azure.cosmos.implementation.TestUtils.*;
 
 import static com.azure.cosmos.implementation.Utils.getUTF8BytesOrNull;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -45,13 +47,15 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
 
     private IRetryPolicy retryPolicy;
     private RxDocumentServiceRequest serviceRequest;
+    private AddressSelector addressSelector;
 
     @Test(groups = {"simple"})
     public void backoffRetryUtilityExecuteRetry() throws Exception {
         @SuppressWarnings("unchecked")
         Callable<Mono<StoreResponse>> callbackMethod = Mockito.mock(Callable.class);
-        serviceRequest = RxDocumentServiceRequest.create(OperationType.Read, ResourceType.Document);
+        serviceRequest = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
         retryPolicy = new TestRetryPolicy();
+        addressSelector = Mockito.mock(AddressSelector.class);
         CosmosException exception = new CosmosException(410, exceptionText);
         Mockito.when(callbackMethod.call()).thenThrow(exception, exception, exception, exception, exception)
             .thenReturn(Mono.just(new StoreResponse(200, new ArrayList<>(), getUTF8BytesOrNull(responseText))));
@@ -67,8 +71,9 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
     public void backoffRetryUtilityExecuteRetryWithFailure() throws Exception {
         @SuppressWarnings("unchecked")
         Callable<Mono<StoreResponse>> callbackMethod = Mockito.mock(Callable.class);
-        serviceRequest = RxDocumentServiceRequest.create(OperationType.Read, ResourceType.Document);
+        serviceRequest = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
         retryPolicy = new TestRetryPolicy();
+        addressSelector = Mockito.mock(AddressSelector.class);
         CosmosException exception = new CosmosException(410, exceptionText);
         Mockito.when(callbackMethod.call()).thenThrow(exception);
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
@@ -87,13 +92,20 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
     public void backoffRetryUtilityExecuteAsync() {
         Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<StoreResponse>> inBackoffAlternateCallbackMethod = Mockito.mock(Function.class);
         Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<StoreResponse>> parameterizedCallbackMethod = Mockito.mock(Function.class);
-        serviceRequest = RxDocumentServiceRequest.create(OperationType.Read, ResourceType.Document);
+        serviceRequest = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
         retryPolicy = new TestRetryPolicy();
+        addressSelector = Mockito.mock(AddressSelector.class);
         CosmosException exception = new CosmosException(410, exceptionText);
         Mono<CosmosException> exceptionMono = Mono.error(exception);
         Mockito.when(parameterizedCallbackMethod.apply(Matchers.any(Quadruple.class))).thenReturn(exceptionMono, exceptionMono, exceptionMono, exceptionMono, exceptionMono)
             .thenReturn(Mono.just(new StoreResponse(200, new ArrayList<>(), getUTF8BytesOrNull(responseText))));
-        Mono<StoreResponse> monoResponse = BackoffRetryUtility.executeAsync(parameterizedCallbackMethod, retryPolicy, inBackoffAlternateCallbackMethod, Duration.ofSeconds(5), serviceRequest);
+        Mono<StoreResponse> monoResponse = BackoffRetryUtility.executeAsync(
+            parameterizedCallbackMethod,
+            retryPolicy,
+            inBackoffAlternateCallbackMethod,
+            Duration.ofSeconds(5),
+            serviceRequest,
+            addressSelector);
         StoreResponse response = validateSuccess(monoResponse);
 
         assertThat(serviceRequest.requestContext.retryContext.retryCount).isEqualTo(5);
@@ -107,7 +119,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
     public void backoffRetryUtilityExecuteAsyncWithFailure() {
         Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<StoreResponse>> inBackoffAlternateCallbackMethod = Mockito.mock(Function.class);
         Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<StoreResponse>> parameterizedCallbackMethod = Mockito.mock(Function.class);
-        serviceRequest = RxDocumentServiceRequest.create(OperationType.Read, ResourceType.Document);
+        serviceRequest = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
         retryPolicy = new TestRetryPolicy();
         CosmosException exception = new CosmosException(410, exceptionText);
         Mono<CosmosException> exceptionMono = Mono.error(exception);
@@ -116,7 +128,13 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         executor.schedule(() -> {
             ((TestRetryPolicy) retryPolicy).noRetry = true;
         }, 10, TimeUnit.SECONDS);
-        Mono<StoreResponse> monoResponse = BackoffRetryUtility.executeAsync(parameterizedCallbackMethod, retryPolicy, inBackoffAlternateCallbackMethod, Duration.ofSeconds(5), serviceRequest);
+        Mono<StoreResponse> monoResponse = BackoffRetryUtility.executeAsync(
+            parameterizedCallbackMethod,
+            retryPolicy,
+            inBackoffAlternateCallbackMethod,
+            Duration.ofSeconds(5),
+            serviceRequest,
+            addressSelector);
         validateFailure(monoResponse);
 
         assertThat(serviceRequest.requestContext.retryContext.retryCount).isGreaterThanOrEqualTo(5);

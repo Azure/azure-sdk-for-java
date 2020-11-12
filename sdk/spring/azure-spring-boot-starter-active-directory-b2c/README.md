@@ -1,21 +1,28 @@
 # Azure AD B2C Spring Boot Starter client library for Java
-## Overview
 
 Azure Active Directory (Azure AD) B2C is an identity management service that enables you to customize and control how
 customers sign up, sign in, and manage their profiles when using your applications. Azure AD B2C enables these actions
 while protecting the identities of your customers at the same time.
 
-## Prerequisites
-
-The following prerequisites are required in order to complete the steps in this article:
-
-* A supported Java Development Kit (JDK). For more information about the JDKs available for use when developing on Azure, see <https://aka.ms/azure-jdks>.
-* [Apache Maven](http://maven.apache.org/), version 3.0 or later.
-* Azure subscription.
-
-If you don't have an Azure subscription, create a [free account](https://azure.microsoft.com/free/?WT.mc_id=A261C142F) before you begin.
+[Package (Maven)][package] | [API reference documentation][refdocs] | [Product documentation][docs] | [Samples][sample]
 
 ## Getting started
+
+### Prerequisites
+- [Java Development Kit (JDK)][jdk_link] with version 8 or above
+- [Azure Subscription][azure_subscription]
+- [Maven](https://maven.apache.org/) 3.0 and above
+
+### Include the package
+[//]: # "{x-version-update-start;com.azure.spring:azure-spring-boot-starter-active-directory-b2c;current}"
+```xml
+<dependency>
+    <groupId>com.azure.spring</groupId>
+    <artifactId>azure-spring-boot-starter-active-directory-b2c</artifactId>
+    <version>3.0.0-beta.1</version>
+</dependency>
+```
+[//]: # "{x-version-update-end}"
 
 ### Create the Active Directory instance
 
@@ -36,7 +43,7 @@ If you don't have an Azure subscription, create a [free account](https://azure.m
 
 1. Select **Azure AD B2C** from the portal menu, click **Applications**, and then click **Add**.
 
-2. Specify your application **Name**, add `http://localhost:8080/home` for the **Reply URL**, record the
+2. Specify your application **Name**, add `https://localhost:8080/home` for the **Reply URL**, record the
 **Application ID** as your `${your-client-id}` and then click **Save**.
 
 3. Select **Keys** from your application, click **Generate key** to generate `${your-client-secret}` and then **Save**.
@@ -45,6 +52,11 @@ If you don't have an Azure subscription, create a [free account](https://azure.m
 
 5. Choose **Sign up or in**, **Profile editing** and **Password reset** to create user flows
 respectively. Specify your user flow **Name** and **User attributes and claims**, click **Create**.
+
+## Key concepts
+In this documentation, you created a new Java web application using the Azure Active Directory B2C starter,
+configured a new Azure AD B2C tenant and registered a new application in it, and then configured your
+application to use the Spring annotations and classes to protect the web app.
 
 ## Examples
 ### Configure and compile your app
@@ -57,7 +69,7 @@ respectively. Specify your user flow **Name** and **User attributes and claims**
 
    ```xml
    <dependency>
-       <groupId>com.azure</groupId>
+       <groupId>com.azure.spring</groupId>
        <artifactId>azure-spring-boot-starter-active-directory-b2c</artifactId>
    </dependency>
    <dependency>
@@ -171,7 +183,7 @@ public class AADB2COidcLoginConfigSample extends WebSecurityConfigurerAdapter {
     }
 }
 ```
-14. Copy the `greeting.html` and `home.html` from [Azure AD B2C Spring Boot Sample](../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-b2c-oidc/src/main/resources/templates), and replace the
+14. Copy the `greeting.html` and `home.html` from [Azure AD B2C Spring Boot Sample](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-b2c-oidc/src/main/resources/templates), and replace the
 `${your-profile-edit-user-flow}` and `${your-password-reset-user-flow}` with your user flow name
 respectively that completed earlier.
 
@@ -186,35 +198,45 @@ respectively that completed earlier.
    mvn spring-boot:run
    ```
 
-3. After your application is built and started by Maven, open <http://localhost:8080/> in a web browser; 
+3. After your application is built and started by Maven, open <https://localhost:8080/> in a web browser; 
 you should be redirected to login page.
 
 4. Click linke with name of `${your-sign-up-or-in}` user flow, you should be rediected Azure AD B2C to start the authentication process.
 
 4. After you have logged in successfully, you should see the sample `home page` from the browser.
 
-## Key concepts
-
 ## Troubleshooting
+### Enable client logging
+Azure SDKs for Java offers a consistent logging story to help aid in troubleshooting application errors and expedite their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
 
+### Enable Spring logging
+Spring allow all the supported logging systems to set logger levels set in the Spring Environment (for example, in application.properties) by using `logging.level.<logger-name>=<level>` where level is one of TRACE, DEBUG, INFO, WARN, ERROR, FATAL, or OFF. The root logger can be configured by using logging.level.root.
+
+The following example shows potential logging settings in `application.properties`:
+
+```properties
+logging.level.root=WARN
+logging.level.org.springframework.web=DEBUG
+logging.level.org.hibernate=ERROR
+```
+
+For more information about setting logging in spring, please refer to the [official doc](https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging).
+ 
 ## Next steps
-#### Allow telemetry
-
-Microsoft would like to collect data about how users use this Spring boot starter. Microsoft uses this information to improve our tooling experience. Participation is voluntary. If you don't want to participate, just simply disable it by setting below configuration in `application.properties`.
-
-```
-azure.activedirectory.b2c.allow-telemetry=false
-```
-
-When telemetry is enabled, an HTTP request will be sent to URL `https://dc.services.visualstudio.com/v2/track`. So please make sure it's not blocked by your firewall.
-
-Find more information about Azure Service Privacy Statement, please check [Microsoft Online Services Privacy Statement](https://www.microsoft.com/privacystatement/OnlineServices/Default.aspx).
+The following section provide a sample project illustrating how to use the starter.
+### More sample code
+- [Azure Active Directory B2C](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-b2c-oidc)
 
 ## Contributing
+This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
 
-## Summary
+Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/CONTRIBUTING.md) to build from source or contribute.
 
-In this documentation, you created a new Java web application using the Azure Active Directory B2C starter,
-configured a new Azure AD B2C tenant and registered a new application in it, and then configured your
-application to use the Spring annotations and classes to protect the web app.
-
+<!-- LINKS -->
+[docs]: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-active-directory-b2c-oidc
+[refdocs]: https://azure.github.io/azure-sdk-for-java/spring.html#azure-active-directory-b2c-spring-boot-starter
+[package]: https://mvnrepository.com/artifact/com.microsoft.azure/azure-active-directory-b2c-spring-boot-starter
+[sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-b2c-oidc
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
+[azure_subscription]: https://azure.microsoft.com/free
+[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable

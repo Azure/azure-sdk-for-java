@@ -1,32 +1,25 @@
 # Azure Cognitive Search client library for Java
-This is the Java client library for [Azure Cognitive Search](https://docs.microsoft.com/azure/search/). 
-Azure Cognitive Search service is a
-search-as-a-service cloud solution that gives developers APIs and tools
-for adding a rich search experience over private, heterogeneous content
-in web, mobile, and enterprise applications.
 
-The Azure Cognitive Search service is well suited for the following
- application scenarios:
+This is the Java client library for [Azure Cognitive Search](https://docs.microsoft.com/azure/search/).
+Azure Cognitive Search service is a search-as-a-service cloud solution that gives developers APIs and tools for adding
+a rich search experience over private, heterogeneous content in web, mobile, and enterprise applications.
 
-* Consolidate varied content types into a single searchable index.
-  To populate an index, you can push JSON documents that contain your content,
-  or if your data is already in Azure, create an indexer to pull in data
-  automatically.
-* Attach skillsets to an indexer to create searchable content from images
-  and large text documents. A skillset leverages AI from Cognitive Services
-  for built-in OCR, entity recognition, key phrase extraction, language
-  detection, text translation, and sentiment analysis. You can also add
-  custom skills to integrate external processing of your content during
-  data ingestion.
-* In a search client application, implement query logic and user experiences
-  similar to commercial web search engines.
+The Azure Cognitive Search service is well suited for the following application scenarios:
 
-Use the Azure Search client library to:
+* Consolidate varied content types into a single searchable index. To populate an index, you can push JSON documents
+that contain your content, or if your data is already in Azure, create an indexer to pull in data automatically.
 
-* Submit queries for simple and advanced query forms that include fuzzy
-  search, wildcard search, regular expressions.
-* Implement filtered queries for faceted navigation, geospatial search,
-  or to narrow results based on filter criteria.
+* Attach skillsets to an indexer to create searchable content from images and large text documents. A skillset leverages
+AI from Cognitive Services for built-in OCR, entity recognition, key phrase extraction, language detection, text
+translation, and sentiment analysis. You can also add custom skills to integrate external processing of your content
+during data ingestion.
+
+* In a search client application, implement query logic and user experiences similar to commercial web search engines.
+
+Use the Azure Cognitive Search client library to:
+
+* Submit queries for simple and advanced query forms that include fuzzy search, wildcard search, regular expressions.
+* Implement filtered queries for faceted navigation, geospatial search, or to narrow results based on filter criteria.
 * Create and manage search indexes.
 * Upload and update documents in the search index.
 * Create and manage indexers that pull data from Azure into an index.
@@ -45,65 +38,63 @@ Use the Azure Search client library to:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-search-documents</artifactId>
-    <version>11.0.0</version>
+    <version>11.2.0-beta.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 
 ### Prerequisites
 
-- [Java Development Kit (JDK) with version 8 or above][jdk]
-- [Azure subscription][azure_subscription]
-- [Azure Cognitive Search service][search]
-- To create a new search service, you can use the [Azure portal][create_search_service_docs],
+* [Java Development Kit (JDK) with version 8 or above][jdk]
+* [Azure subscription][azure_subscription]
+* [Azure Cognitive Search service][search]
+* To create a new search service, you can use the [Azure portal][create_search_service_docs],
 [Azure PowerShell][create_search_service_ps], or the [Azure CLI][create_search_service_cli].
 Here's an example using the Azure CLI to create a free instance for getting started:
 
-```
+```bash
 az search service create --name <mysearch> --resource-group <mysearch-rg> --sku free --location westus
 ```
 
-- See [choosing a pricing tier](https://docs.microsoft.com/azure/search/search-sku-tier)
- for more information about available options.
- 
+See [choosing a pricing tier](https://docs.microsoft.com/azure/search/search-sku-tier) for more information about available options.
+
 ### Authenticate the client
 
-In order to interact with the Azure Cognitive Search service you'll need to create an instance of the Search Client class. 
-To make this possible you will need, 
-1. [URL endpoint](https://docs.microsoft.com/en-us/azure/search/search-create-service-portal#get-a-key-and-url-endpoint) and
-1. All requests to a search service need an api-key that was generated specifically
+In order to interact with the Azure Cognitive Search service you'll need to create an instance of the Search Client class.
+To make this possible you will need,
+
+1. [URL endpoint](https://docs.microsoft.com/azure/search/search-create-service-portal#get-a-key-and-url-endpoint)
+1. [API key](https://docs.microsoft.com/azure/search/search-create-service-portal#get-a-key-and-url-endpoint)
+
 for your service. [The api-key is the sole mechanism for authenticating access to
 your search service endpoint.](https://docs.microsoft.com/azure/search/search-security-api-keys)
-You can obtain your api-key from the
-[Azure portal](https://portal.azure.com/) or via the Azure CLI:
+You can obtain your api-key from the [Azure portal](https://portal.azure.com/) or via the Azure CLI:
 
-```
+```bash
 az search admin-key show --service-name <mysearch> --resource-group <mysearch-rg>
 ```
+
 **Note:**
-1. The example Azure CLI snippet above retrieves an admin key so it's easier
-to get started exploring APIs, but it should be managed carefully.
-1. There are two types of keys used to access your search service: **admin**
-*(read-write)* and **query** *(read-only)* keys.  Restricting access and
-operations in client apps is essential to safeguarding the search assets on your
-service.  Always use a query key rather than an admin key for any query
-originating from a client app.
 
-
+* The example Azure CLI snippet above retrieves an admin key. This allows for easier access when exploring APIs,
+but it should be managed carefully.
+* There are two types of keys used to access your search service: **admin** *(read-write)* and **query** *(read-only)*
+keys. Restricting access and operations in client apps is essential to safeguarding the search assets on your service.
+Always use a query key rather than an admin key for any query originating from a client app.
 
 The SDK provides three clients.
 
-1. SearchIndexClient for all CRUD operations on index and synonym maps.
-1. SearchIndexerClient for all CRUD operations on indexer, date source, and skillset.
-1. SearchClient for all document operations.
+* `SearchIndexClient` for CRUD operations on indexes and synonym maps.
+* `SearchIndexerClient` for CRUD operations on indexers, date sources, and skillsets.
+* `SearchClient` for all document operations.
 
 #### Create a SearchIndexClient
 
-To create a `SearchIndexClient/SearchIndexAsyncClient`, you will need the values of the Azure Cognitive Search service 
+To create a `SearchIndexClient/SearchIndexAsyncClient`, you will need the values of the Azure Cognitive Search service
 URL endpoint and admin key.
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L69-L72 -->
-```Java
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L66-L69 -->
+```java
 SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
     .endpoint(endpoint)
     .credential(new AzureKeyCredential(apiKey))
@@ -112,8 +103,8 @@ SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
 
 or
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L76-L79 -->
-```Java
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L73-L76 -->
+```java
 SearchIndexAsyncClient searchIndexAsyncClient = new SearchIndexClientBuilder()
     .endpoint(endpoint)
     .credential(new AzureKeyCredential(apiKey))
@@ -122,11 +113,11 @@ SearchIndexAsyncClient searchIndexAsyncClient = new SearchIndexClientBuilder()
 
 #### Create a SearchIndexerClient
 
-To create a `SearchIndexerClient/SearchIndexerAsyncClient`, you will need the values of the Azure Cognitive Search service 
+To create a `SearchIndexerClient/SearchIndexerAsyncClient`, you will need the values of the Azure Cognitive Search service
 URL endpoint and admin key.
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L83-L86 -->
-```Java
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L80-L83 -->
+```java
 SearchIndexerClient searchIndexerClient = new SearchIndexerClientBuilder()
     .endpoint(endpoint)
     .credential(new AzureKeyCredential(apiKey))
@@ -135,8 +126,8 @@ SearchIndexerClient searchIndexerClient = new SearchIndexerClientBuilder()
 
 or
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L90-L93 -->
-```Java
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L87-L90 -->
+```java
 SearchIndexerAsyncClient searchIndexerAsyncClient = new SearchIndexerClientBuilder()
     .endpoint(endpoint)
     .credential(new AzureKeyCredential(apiKey))
@@ -145,11 +136,11 @@ SearchIndexerAsyncClient searchIndexerAsyncClient = new SearchIndexerClientBuild
 
 #### Create a SearchClient
 
-Once you have the values of the Azure Cognitive Search service URL endpoint and 
+Once you have the values of the Azure Cognitive Search service URL endpoint and
 admin key, you can create the `SearchClient/SearchAsyncClient` with an existing index name:
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L53-L57 -->
-```Java
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L50-L54 -->
+```java
 SearchClient searchClient = new SearchClientBuilder()
     .endpoint(endpoint)
     .credential(new AzureKeyCredential(adminKey))
@@ -159,8 +150,8 @@ SearchClient searchClient = new SearchClientBuilder()
 
 or
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L61-L65 -->
-```Java
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L58-L62 -->
+```java
 SearchAsyncClient searchAsyncClient = new SearchClientBuilder()
     .endpoint(endpoint)
     .credential(new AzureKeyCredential(adminKey))
@@ -170,12 +161,11 @@ SearchAsyncClient searchAsyncClient = new SearchClientBuilder()
 
 ### Send your first search query
 
-To get running immediately, we're going to connect to a well-known sandbox
-Search service provided by Microsoft. This means you do not need an Azure
-subscription or Azure Cognitive Search service to try out this query.
+To get running immediately, we're going to connect to a well-known sandbox Search service provided by Microsoft. This
+means you do not need an Azure subscription or Azure Cognitive Search service to try out this query.
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L122-L147 -->
-```Java
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L119-L144 -->
+```java
 // We'll connect to the Azure Cognitive Search public sandbox and send a
 // query to its "nycjobs" index built from a public dataset of available jobs
 // in New York.
@@ -206,11 +196,9 @@ for (SearchResult searchResult: searchResultsIterable) {
 
 ## Key concepts
 
-An Azure Cognitive Search service contains one or more indexes that provide
-persistent storage of searchable data in the form of JSON documents.  _(If
-you're brand new to search, you can make a very rough analogy between
-indexes and database tables.)_  The Azure.Search.Documents client library
-exposes operations on these resources through two main client types.
+An Azure Cognitive Search service contains one or more indexes that provide persistent storage of searchable data in
+the form of JSON documents. _(If you're new to search, you can make a very rough analogy between indexes and database
+tables.)_ The `azure-search-documents` client library exposes operations on these resources through two main client types.
 
 * `SearchClient` helps with:
   * [Searching](https://docs.microsoft.com/azure/search/search-lucene-query-architecture)
@@ -234,10 +222,10 @@ exposes operations on these resources through two main client types.
   * [Define AI powered Skillsets to transform and enrich your data](https://docs.microsoft.com/rest/api/searchservice/skillset-operations)
 
 ## Examples
+
 The following examples all use a simple [Hotel data set](https://docs.microsoft.com/samples/azure-samples/azure-search-sample-data/azure-search-sample-data/)
 that you can [import into your own index from the Azure portal.](https://docs.microsoft.com/azure/search/search-get-started-portal#step-1---start-the-import-data-wizard-and-create-a-data-source)
-These are just a few of the basics - please [check out our Samples][samples_readme] for
-much more.
+These are just a few of the basics - please [check out our Samples][samples_readme] for much more.
 
 * [Querying](#querying)
   * [Use `SearchDocument` like a dictionary for search results](#use-searchdocument-like-a-dictionary-for-search-results)
@@ -249,17 +237,18 @@ much more.
 * [Async APIs](#async-apis)
 
 ### Querying
+
 There are two ways to interact with the data returned from a search query.
+
 Let's explore them with a search for a "luxury" hotel.
 
 #### Use `SearchDocument` like a dictionary for search results
 
-`SearchDocument` is the default type returned from queries when you don't
-provide your own.  Here we perform the search, enumerate over the results, and
-extract data using `SearchDocument`'s dictionary indexer.
+`SearchDocument` is the default type returned from queries when you don't provide your own.  Here we perform the search,
+enumerate over the results, and extract data using `SearchDocument`'s dictionary indexer.
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L151-L157 -->
-```Java
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L148-L154 -->
+```java
 SearchPagedIterable searchResultsIterable = searchClient.search("luxury");
 for (SearchResult searchResult: searchResultsIterable) {
     SearchDocument doc = searchResult.getDocument(SearchDocument.class);
@@ -270,9 +259,11 @@ for (SearchResult searchResult: searchResultsIterable) {
 ```
 
 #### Use Java model class for search results
+
 Define a `Hotel` class.
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L160-L181 -->
-```Java
+
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L157-L178 -->
+```java
 public class Hotel {
     private String id;
     private String name;
@@ -297,9 +288,10 @@ public class Hotel {
 }
 ```
 
-And use them in place of `SearchDocument` when querying.
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L184-L190 -->
-```Java
+Use it in place of `SearchDocument` when querying.
+
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L181-L187 -->
+```java
 SearchPagedIterable searchResultsIterable = searchClient.search("luxury");
 for (SearchResult searchResult: searchResultsIterable) {
     Hotel doc = searchResult.getDocument(Hotel.class);
@@ -309,16 +301,16 @@ for (SearchResult searchResult: searchResultsIterable) {
 }
 ```
 
-If you're working with a search index and know the schema, creating Java model class
-is recommended.
+It is recommended, when you know the schema of the search index, to create a Java model class.
 
 #### Search Options
 
 The `SearchOptions` provide powerful control over the behavior of our queries.
+
 Let's search for the top 5 luxury hotels with a good rating.
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L194-L200 -->
-```Java 
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L191-L197 -->
+```java
 int stars = 4;
 SearchOptions options = new SearchOptions()
     .setFilter(String.format("rating ge %s", stars))
@@ -330,130 +322,135 @@ SearchPagedIterable searchResultsIterable = searchClient.search("luxury", option
 
 ### Creating an index
 
-You can use the [`SearchIndexClient`](#Create-a-SearchIndexClient) to create a search index. Fields can be
-defined using convenient `SimpleField`, `SearchableField`, or `ComplexField`
-classes. Indexes can also define suggesters, lexical analyzers, and more.
+You can use the [`SearchIndexClient`](#create-a-searchindexclient) to create a search index. Indexes can also define
+suggesters, lexical analyzers, and more.
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L226-L276 -->
-```Java
-        searchFieldList.add(new SimpleFieldBuilder("hotelId", SearchFieldDataType.STRING, false)
-            .setKey(true)
-            .setFilterable(true)
-            .setSortable(true)
-            .build());
-        searchFieldList.add(new SearchableFieldBuilder("hotelName", false)
-            .setFilterable(true)
-            .setSortable(true)
-            .build());
-        searchFieldList.add(new SearchableFieldBuilder("description", false)
-            .setAnalyzerName(LexicalAnalyzerName.EU_LUCENE)
-            .build());
-        searchFieldList.add(new SearchableFieldBuilder("tags", true)
-            .setKey(true)
+There are multiple ways of preparing search fields for a search index. For basic needs, we provide a static helper method
+`buildSearchFields` in `SearchIndexClient` and `SearchIndexAsyncClient`, which can convert Java POJO class into
+`List<SearchField>`. There are three annotations `SimpleFieldProperty`, `SearchFieldProperty` and `FieldBuilderIgnore`
+to configure the field of model class.
+
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L274-L275 -->
+```java
+List<SearchField> searchFields = SearchIndexClient.buildSearchFields(Hotel.class, null);
+searchIndexClient.createIndex(new SearchIndex("index", searchFields));
+```
+
+For advanced scenarios, we can build search fields using `SearchField` directly.
+
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L221-L270 -->
+```java
+List<SearchField> searchFieldList = new ArrayList<>();
+searchFieldList.add(new SearchField("hotelId", SearchFieldDataType.STRING)
+    .setKey(true)
+    .setFilterable(true)
+    .setSortable(true));
+
+searchFieldList.add(new SearchField("hotelName", SearchFieldDataType.STRING)
+    .setSearchable(true)
+    .setFilterable(true)
+    .setSortable(true));
+searchFieldList.add(new SearchField("description", SearchFieldDataType.STRING)
+    .setSearchable(true)
+    .setAnalyzerName(LexicalAnalyzerName.EU_LUCENE));
+searchFieldList.add(new SearchField("tags", SearchFieldDataType.collection(SearchFieldDataType.STRING))
+    .setSearchable(true)
+    .setKey(true)
+    .setFilterable(true)
+    .setFacetable(true));
+searchFieldList.add(new SearchField("address", SearchFieldDataType.COMPLEX)
+    .setFields(Arrays.asList(
+        new SearchField("streetAddress", SearchFieldDataType.STRING).setSearchable(true),
+        new SearchField("city", SearchFieldDataType.STRING)
+            .setSearchable(true)
             .setFilterable(true)
             .setFacetable(true)
-            .build());
-        searchFieldList.add(new ComplexFieldBuilder("address", false)
-            .setFields(Arrays.asList(
-                new SearchableFieldBuilder("streetAddress", false).build(),
-                new SearchableFieldBuilder("city", false)
-                    .setFilterable(true)
-                    .setFacetable(true)
-                    .setSortable(true)
-                    .build(),
-                new SearchableFieldBuilder("stateProvince", false)
-                    .setFilterable(true)
-                    .setFacetable(true)
-                    .setSortable(true)
-                    .build(),
-                new SearchableFieldBuilder("country", false)
-                    .setFilterable(true)
-                    .setFacetable(true)
-                    .setSortable(true)
-                    .build(),
-                new SearchableFieldBuilder("postalCode", false)
-                    .setFilterable(true)
-                    .setFacetable(true)
-                    .setSortable(true)
-                    .build()
-            ))
-            .build());
-        // Prepare suggester.
-        SearchSuggester suggester = new SearchSuggester("sg", Collections.singletonList("hotelName"));
-        // Prepare SearchIndex with index name and search fields.
-        SearchIndex index = new SearchIndex("hotels").setFields(searchFieldList).setSuggesters(
-            Collections.singletonList(suggester));
-        // Create an index
-        searchIndexClient.createIndex(index);
-    }
-}
+            .setSortable(true),
+        new SearchField("stateProvince", SearchFieldDataType.STRING)
+            .setSearchable(true)
+            .setFilterable(true)
+            .setFacetable(true)
+            .setSortable(true),
+        new SearchField("country", SearchFieldDataType.STRING)
+            .setSearchable(true)
+            .setFilterable(true)
+            .setFacetable(true)
+            .setSortable(true),
+        new SearchField("postalCode", SearchFieldDataType.STRING)
+            .setSearchable(true)
+            .setFilterable(true)
+            .setFacetable(true)
+            .setSortable(true)
+    )));
+
+// Prepare suggester.
+SearchSuggester suggester = new SearchSuggester("sg", Collections.singletonList("hotelName"));
+// Prepare SearchIndex with index name and search fields.
+SearchIndex index = new SearchIndex("hotels").setFields(searchFieldList).setSuggesters(
+    Collections.singletonList(suggester));
+// Create an index
+searchIndexClient.createIndex(index);
 ```
 
 ### Retrieving a specific document from your index
 
-In addition to querying for documents using keywords and optional filters,
-you can retrieve a specific document from your index if you already know the
-key. You could get the key from a query, for example, and want to show more
+In addition to querying for documents using keywords and optional filters, you can retrieve a specific document from
+your index if you already know the key. You could get the key from a query, for example, and want to show more
 information about it or navigate your customer to that document.
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L212-L213 -->
-```Java 
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L209-L210 -->
+```java
 Hotel hotel = searchClient.getDocument("1", Hotel.class);
 System.out.printf("This is hotelId %s, and this is hotel name %s.%n", hotel.getId(), hotel.getName());
 ```
 
 ### Adding documents to your index
 
-You can `Upload`, `Merge`, `MergeOrUpload`, and `Delete` multiple documents from
-an index in a single batched request.  There are
-[a few special rules for merging](https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents#document-actions)
+You can `Upload`, `Merge`, `MergeOrUpload`, and `Delete` multiple documents from an index in a single batched request.
+There are [a few special rules for merging](https://docs.microsoft.com/rest/api/searchservice/addupdate-or-delete-documents#document-actions)
 to be aware of.
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L217-L220 -->
-```Java
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L214-L217 -->
+```java
 IndexDocumentsBatch<Hotel> batch = new IndexDocumentsBatch<Hotel>();
 batch.addUploadActions(Collections.singletonList(new Hotel().setId("783").setName("Upload Inn")));
 batch.addMergeActions(Collections.singletonList(new Hotel().setId("12").setName("Renovated Ranch")));
 searchClient.indexDocuments(batch);
 ```
 
-The request will throw `IndexBatchException` by default if any of the individual actions fail, and you can use 
-`findFailedActionsToRetry` to retry on failed documents.
-There's also a `ThrowOnAnyError` option, and you can set it to `false` to get a successful response
-with an `IndexDocumentsResult` for inspection.
-
+The request will throw `IndexBatchException` by default if any of the individual actions fail, and you can use
+`findFailedActionsToRetry` to retry on failed documents. There's also a `throwOnAnyError` option, and you can set it
+to `false` to get a successful response with an `IndexDocumentsResult` for inspection.
 
 ### Async APIs
 
-All of the examples so far have been using synchronous APIs, but we provide full
-support for async APIs as well. You'll need to use [SearchAsyncClient](#Create-a-SearchClient)
+The examples so far have been using synchronous APIs, but we provide full support for async APIs as well. You'll need
+to use [SearchAsyncClient](#create-a-searchclient).
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L204-L209 -->
-```Java
-    searchAsyncClient.search("luxury")
-        .subscribe(result -> {
-            Hotel hotel = result.getDocument(Hotel.class);
-            System.out.printf("This is hotelId %s, and this is hotel name %s.%n", hotel.getId(), hotel.getName());
-        });
-}
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L201-L205 -->
+```java
+searchAsyncClient.search("luxury")
+    .subscribe(result -> {
+        Hotel hotel = result.getDocument(Hotel.class);
+        System.out.printf("This is hotelId %s, and this is hotel name %s.%n", hotel.getId(), hotel.getName());
+    });
 ```
 
 ## Troubleshooting
 
 ### General
 
-When you interact with Azure Cognitive Search using this Java client library, errors returned by the service correspond 
-to the same HTTP status codes returned for [REST API][rest_api] requests. For example, if you try to retrieve a document 
-that doesn't exist in your index, a `404` error is returned, indicating `Not Found`.
+When you interact with Azure Cognitive Search using this Java client library, errors returned by the service correspond
+to the same HTTP status codes returned for [REST API][rest_api] requests. For example, the service will return a `404`
+error if you try to retrieve a document that doesn't exist in your index.
 
 ### Handling Search Error Response
 
-Any Search API operation that fails will throw a
-[`HttpResponseException`][HttpResponseException] with
-helpful [`Status codes`][status_codes].  Many of these errors are recoverable.
+Any Search API operation that fails will throw an [`HttpResponseException`][HttpResponseException] with helpful
+[`Status codes`][status_codes]. Many of these errors are recoverable.
 
-<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L110-L118 -->
-```Java
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L107-L115 -->
+```java
 try {
     Iterable<SearchResult> results = searchClient.search("hotel");
 } catch (HttpResponseException ex) {
@@ -465,38 +462,38 @@ try {
 }
 ```
 
-You can also easily [enable console logging][logging] if you want to dig
-deeper into the requests you're making against the service.
+You can also easily [enable console logging][logging] if you want to dig deeper into the requests you're making against
+the service.
 
 ### Enabling Logging
 
-Azure SDKs for Java offer a consistent logging story to help aid in troubleshooting application errors and expedite 
-their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help 
+Azure SDKs for Java provide a consistent logging story to help aid in troubleshooting application errors and expedite
+their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help
 locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
 
 ### Default HTTP Client
 
-By default a Netty based HTTP client will be used, for more information on configuring or changing the HTTP client is 
-detailed in the [HTTP clients wiki](https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients).
+By default, a Netty based HTTP client will be used. The [HTTP clients wiki](https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients)
+provides more information on configuring or changing the HTTP client.
 
 ## Next steps
 
-- Samples are explained in detail [here][samples_readme].
-- [Watch a demo or deep dive video](https://azure.microsoft.com/resources/videos/index/?services=search)
-- [Read more about the Azure Cognitive Search service](https://docs.microsoft.com/azure/search/search-what-is-azure-search)
+* Samples are explained in detail [here][samples_readme].
+* Watch a [demo or deep dive video](https://azure.microsoft.com/resources/videos/index/?services=search)
+* Read more about the [Azure Cognitive Search service](https://docs.microsoft.com/azure/search/search-what-is-azure-search)
 
 ## Contributing
 
-This project welcomes contributions and suggestions. Most contributions require you to agree to a 
-[Contributor License Agreement (CLA)][cla] declaring that you have the right to, and actually do, grant us the rights 
+This project welcomes contributions and suggestions. Most contributions require you to agree to a
+[Contributor License Agreement (CLA)][cla] declaring that you have the right to, and actually do, grant us the rights
 to use your contribution.
 
-When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate 
-the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to 
+When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate
+the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to
 do this once across all repos using our CLA.
 
-This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq] 
-or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
+This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the
+[Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
 <!-- LINKS -->
 [jdk]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
@@ -506,9 +503,9 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [azure_subscription]: https://azure.microsoft.com/free
 [maven]: https://maven.apache.org/
 [package]: https://search.maven.org/artifact/com.azure/azure-search-documents
-[samples]: src/samples/java/com/azure/search
-[samples_readme]: src/samples/README.md
-[source_code]: src
+[samples]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents
+[samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/search/azure-search-documents/src/samples/README.md
+[source_code]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/search/azure-search-documents/src
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/

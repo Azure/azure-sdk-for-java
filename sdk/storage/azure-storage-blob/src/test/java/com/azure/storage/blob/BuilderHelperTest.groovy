@@ -3,11 +3,8 @@
 
 package com.azure.storage.blob
 
-import com.azure.core.http.HttpClient
-import com.azure.core.http.HttpHeaders
-import com.azure.core.http.HttpMethod
-import com.azure.core.http.HttpRequest
-import com.azure.core.http.HttpResponse
+import com.azure.core.http.*
+import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.test.http.MockHttpResponse
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.DateTimeRfc1123
@@ -16,6 +13,7 @@ import com.azure.storage.blob.implementation.util.BuilderHelper
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.policy.RequestRetryOptions
+import com.azure.storage.common.policy.RetryPolicyType
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
@@ -24,6 +22,7 @@ import spock.lang.Specification
 class BuilderHelperTest extends Specification {
     static def credentials = new StorageSharedKeyCredential("accountName", "accountKey")
     static def endpoint = "https://account.blob.core.windows.net/"
+    static def requestRetryOptions = new RequestRetryOptions(RetryPolicyType.FIXED, 2, 2, 1000, 4000, null)
 
     static HttpRequest request(String url) {
         return new HttpRequest(HttpMethod.HEAD, new URL(url), new HttpHeaders().put("Content-Length", "0"),
@@ -35,8 +34,8 @@ class BuilderHelperTest extends Specification {
      */
     def "Fresh date applied on retry"() {
         when:
-        def pipeline = BuilderHelper.buildPipeline(credentials, null, null, endpoint, new RequestRetryOptions(), null,
-            new FreshDateTestClient(), new ArrayList<>(), null, new ClientLogger(BuilderHelperTest.class))
+        def pipeline = BuilderHelper.buildPipeline(credentials, null, null, endpoint, requestRetryOptions, BuilderHelper.getDefaultHttpLogOptions(),
+            new FreshDateTestClient(), new ArrayList<>(), new ArrayList<>(), null, new ClientLogger(BuilderHelperTest.class))
 
         then:
         StepVerifier.create(pipeline.send(request(endpoint)))
@@ -53,6 +52,7 @@ class BuilderHelperTest extends Specification {
             .endpoint(endpoint)
             .credential(credentials)
             .httpClient(new FreshDateTestClient())
+            .retryOptions(requestRetryOptions)
             .buildClient()
 
         then:
@@ -71,6 +71,7 @@ class BuilderHelperTest extends Specification {
             .containerName("container")
             .credential(credentials)
             .httpClient(new FreshDateTestClient())
+            .retryOptions(requestRetryOptions)
             .buildClient()
 
         then:
@@ -90,6 +91,7 @@ class BuilderHelperTest extends Specification {
             .blobName("blob")
             .credential(credentials)
             .httpClient(new FreshDateTestClient())
+            .retryOptions(requestRetryOptions)
             .buildClient()
 
         then:
@@ -109,9 +111,11 @@ class BuilderHelperTest extends Specification {
             .containerName("container")
             .blobName("blob")
             .credential(credentials)
+            .retryOptions(requestRetryOptions)
+            .httpClient(new FreshDateTestClient())
 
         when:
-        def appendBlobClient = specializedBlobClientBuilder.httpClient(new FreshDateTestClient())
+        def appendBlobClient = specializedBlobClientBuilder
             .buildAppendBlobClient()
 
         then:
@@ -120,7 +124,7 @@ class BuilderHelperTest extends Specification {
             .verifyComplete()
 
         when:
-        def blockBlobClient = specializedBlobClientBuilder.httpClient(new FreshDateTestClient())
+        def blockBlobClient = specializedBlobClientBuilder
             .buildBlockBlobClient()
 
         then:
@@ -129,7 +133,120 @@ class BuilderHelperTest extends Specification {
             .verifyComplete()
 
         when:
-        def pageBlobClient = specializedBlobClientBuilder.httpClient(new FreshDateTestClient())
+        def pageBlobClient = specializedBlobClientBuilder
+            .buildPageBlobClient()
+
+        then:
+        StepVerifier.create(pageBlobClient.getHttpPipeline().send(request(pageBlobClient.getBlobUrl())))
+            .assertNext({ it.getStatusCode() == 200 })
+            .verifyComplete()
+    }
+
+    /**
+     * Tests that a user application id will be honored in the UA string when using the default pipeline builder.
+     */
+    def "Custom application id in UA string"() {
+        when:
+        def pipeline = BuilderHelper.buildPipeline(credentials, null, null, endpoint, new RequestRetryOptions(), new HttpLogOptions().setApplicationId("custom-id"),
+            new ApplicationIdUAStringTestClient(), new ArrayList<>(), new ArrayList<>(), null, new ClientLogger(BuilderHelperTest.class))
+
+        then:
+        StepVerifier.create(pipeline.send(request(endpoint)))
+            .assertNext({ it.getStatusCode() == 200 })
+            .verifyComplete()
+    }
+
+    /**
+     * Tests that a user application id will be honored in the UA string when using the service client builder's default pipeline.
+     */
+    def "Service client custom application id in UA string"() {
+        when:
+        def serviceClient = new BlobServiceClientBuilder()
+            .endpoint(endpoint)
+            .credential(credentials)
+            .httpLogOptions(new HttpLogOptions().setApplicationId("custom-id"))
+            .httpClient(new ApplicationIdUAStringTestClient())
+            .buildClient()
+
+        then:
+        StepVerifier.create(serviceClient.getHttpPipeline().send(request(serviceClient.getAccountUrl())))
+            .assertNext({ it.getStatusCode() == 200 })
+            .verifyComplete()
+    }
+
+    /**
+     * Tests that a user application id will be honored in the UA string when using the container client builder's default pipeline.
+     */
+    def "Container client custom application id in UA string"() {
+        when:
+        def containerClient = new BlobContainerClientBuilder()
+            .endpoint(endpoint)
+            .containerName("container")
+            .credential(credentials)
+            .httpLogOptions(new HttpLogOptions().setApplicationId("custom-id"))
+            .httpClient(new ApplicationIdUAStringTestClient())
+            .buildClient()
+
+        then:
+        StepVerifier.create(containerClient.getHttpPipeline().send(request(containerClient.getBlobContainerUrl())))
+            .assertNext({ it.getStatusCode() == 200 })
+            .verifyComplete()
+    }
+
+    /**
+     * Tests that a user application id will be honored in the UA string when using the blob client builder's default pipeline.
+     */
+    def "Blob client custom application id in UA string"() {
+        when:
+        def blobClient = new BlobClientBuilder()
+            .endpoint(endpoint)
+            .containerName("container")
+            .blobName("blob")
+            .credential(credentials)
+            .httpLogOptions(new HttpLogOptions().setApplicationId("custom-id"))
+            .httpClient(new ApplicationIdUAStringTestClient())
+            .buildClient()
+
+        then:
+        StepVerifier.create(blobClient.getHttpPipeline().send(request(blobClient.getBlobUrl())))
+            .assertNext({ it.getStatusCode() == 200 })
+            .verifyComplete()
+    }
+
+    /**
+     * Tests that a user application id will be honored in the UA string when using the specialized blob client builder's default
+     * pipeline.
+     */
+    def "Specialized blob client custom application id in UA string"() {
+        setup:
+        def specializedBlobClientBuilder = new SpecializedBlobClientBuilder()
+            .endpoint(endpoint)
+            .containerName("container")
+            .blobName("blob")
+            .credential(credentials)
+            .httpLogOptions(new HttpLogOptions().setApplicationId("custom-id"))
+            .httpClient(new ApplicationIdUAStringTestClient())
+
+        when:
+        def appendBlobClient = specializedBlobClientBuilder
+            .buildAppendBlobClient()
+
+        then:
+        StepVerifier.create(appendBlobClient.getHttpPipeline().send(request(appendBlobClient.getBlobUrl())))
+            .assertNext({ it.getStatusCode() == 200 })
+            .verifyComplete()
+
+        when:
+        def blockBlobClient = specializedBlobClientBuilder
+            .buildBlockBlobClient()
+
+        then:
+        StepVerifier.create(blockBlobClient.getHttpPipeline().send(request(blockBlobClient.getBlobUrl())))
+            .assertNext({ it.getStatusCode() == 200 })
+            .verifyComplete()
+
+        when:
+        def pageBlobClient = specializedBlobClientBuilder
             .buildPageBlobClient()
 
         then:
@@ -158,6 +275,17 @@ class BuilderHelperTest extends Specification {
             }
 
             return new DateTimeRfc1123(dateHeader)
+        }
+    }
+
+    private static final class ApplicationIdUAStringTestClient implements HttpClient {
+        @Override
+        Mono<HttpResponse> send(HttpRequest request) {
+            if (CoreUtils.isNullOrEmpty(request.getHeaders().getValue("User-Agent"))) {
+                throw new RuntimeException("Failed to set 'User-Agent' header.")
+            }
+            assert request.getHeaders().getValue("User-Agent").startsWith("custom-id")
+            return Mono.just(new MockHttpResponse(request, 200))
         }
     }
 }

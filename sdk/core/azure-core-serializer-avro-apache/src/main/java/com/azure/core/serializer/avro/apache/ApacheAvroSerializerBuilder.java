@@ -3,6 +3,7 @@
 
 package com.azure.core.serializer.avro.apache;
 
+import com.azure.core.experimental.serializer.AvroSerializer;
 import org.apache.avro.Schema;
 import org.apache.avro.io.DecoderFactory;
 import org.apache.avro.io.EncoderFactory;
@@ -27,7 +28,7 @@ public class ApacheAvroSerializerBuilder {
      * @return A new instance of {@link ApacheAvroSerializer}.
      * @throws NullPointerException If {@code schema} is {@code null}.
      */
-    public ApacheAvroSerializer build() {
+    public AvroSerializer build() {
         Objects.requireNonNull(schema, "'schema' cannot be null.");
 
         DecoderFactory buildDecoderFactory = (decoderFactory == null) ? DecoderFactory.get() : decoderFactory;

@@ -24,9 +24,8 @@ import java.util.Set;
  * {@link AzureBlobFileAttributes} is generally preferred.
  * <p>
  * Some attributes are not supported. Refer to the javadocs on each method for more information.
- * {@inheritDoc}
  */
-public class AzureBasicFileAttributes implements BasicFileAttributes {
+public final class AzureBasicFileAttributes implements BasicFileAttributes {
     private final ClientLogger logger = new ClientLogger(AzureBasicFileAttributes.class);
 
     // For verifying parameters on FileSystemProvider.readAttributes
@@ -62,7 +61,9 @@ public class AzureBasicFileAttributes implements BasicFileAttributes {
     }
 
     /**
-     * {@inheritDoc}
+     * Returns the time of last modification.
+     *
+     * @return the time of last modification.
      */
     @Override
     public FileTime lastModifiedTime() {
@@ -70,17 +71,22 @@ public class AzureBasicFileAttributes implements BasicFileAttributes {
     }
 
     /**
-     * Unsupported.
-     * @throws UnsupportedOperationException Operation not supported.
-     * {@inheritDoc}
+     * Returns the time of last modification.
+     * <p>
+     * Last access time is not supported by the blob service. In this case, it is typical for implementations to return
+     * the {@link #lastModifiedTime()}.
+     *
+     * @return the time of last modification.
      */
     @Override
     public FileTime lastAccessTime() {
-        throw new UnsupportedOperationException();
+        return this.lastModifiedTime();
     }
 
     /**
-     * {@inheritDoc}
+     * Returns the creation time. The creation time is the time that the file was created.
+     *
+     * @return The creation time.
      */
     @Override
     public FileTime creationTime() {
@@ -88,7 +94,9 @@ public class AzureBasicFileAttributes implements BasicFileAttributes {
     }
 
     /**
-     * {@inheritDoc}
+     * Tells whether the file is a regular file with opaque content.
+     *
+     * @return whether the file is a regular file.
      */
     @Override
     public boolean isRegularFile() {
@@ -96,11 +104,13 @@ public class AzureBasicFileAttributes implements BasicFileAttributes {
     }
 
     /**
-     * {@inheritDoc}
+     * Tells whether the file is a directory.
      * <p>
      * Will only return true if the directory is a concrete directory. See
      * {@link AzureFileSystemProvider#createDirectory(Path, FileAttribute[])} for more information on virtual and
      * concrete directories.
+     *
+     * @return whether the file is a directory
      */
     @Override
     public boolean isDirectory() {
@@ -108,6 +118,8 @@ public class AzureBasicFileAttributes implements BasicFileAttributes {
     }
 
     /**
+     * Tells whether the file is a symbolic link.
+     *
      * @return false. Symbolic links are not supported.
      */
     @Override
@@ -116,7 +128,9 @@ public class AzureBasicFileAttributes implements BasicFileAttributes {
     }
 
     /**
-     * @return false
+     * Tells whether the file is something other than a regular file, directory, or symbolic link.
+     *
+     * @return false. No other object types are supported.
      */
     @Override
     public boolean isOther() {
@@ -124,7 +138,9 @@ public class AzureBasicFileAttributes implements BasicFileAttributes {
     }
 
     /**
-     * {@inheritDoc}
+     * Returns the size of the file (in bytes).
+     *
+     * @return the size of the file
      */
     @Override
     public long size() {
@@ -133,8 +149,8 @@ public class AzureBasicFileAttributes implements BasicFileAttributes {
 
     /**
      * Unsupported.
+     *
      * @throws UnsupportedOperationException Operation not supported.
-     * {@inheritDoc}
      */
     @Override
     public Object fileKey() {

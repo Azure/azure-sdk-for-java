@@ -2,14 +2,24 @@
 // Licensed under the MIT License.
 
 package com.azure.search.documents.models;
+
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.JsonSerializer;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.search.documents.SearchDocument;
-import com.azure.search.documents.implementation.SerializationUtil;
+import com.azure.search.documents.implementation.converters.SuggestResultHelper;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
+import static com.azure.core.util.serializer.TypeReference.createInstance;
+import static com.azure.search.documents.implementation.util.Utility.initializeSerializerAdapter;
 
 /**
  * A result containing a document found by a suggestion query, plus associated
@@ -17,13 +27,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 @Fluent
 public final class SuggestResult {
-    private static final ObjectMapper MAPPER;
-    static {
-        MAPPER = new JacksonAdapter().serializer();
-        SerializationUtil.configureMapper(MAPPER);
-        MAPPER.setSerializationInclusion(JsonInclude.Include.ALWAYS);
-    }
-
+    private final ClientLogger logger = new ClientLogger(SuggestResult.class);
     /*
      * Unmatched properties from the message are deserialized this collection
      */
@@ -35,6 +39,20 @@ public final class SuggestResult {
      */
     @JsonProperty(value = "@search.text", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String text;
+
+    @JsonIgnore
+    private JsonSerializer jsonSerializer;
+
+    private static final JacksonAdapter searchJacksonAdapter = (JacksonAdapter) initializeSerializerAdapter();
+
+    static {
+        SuggestResultHelper.setAccessor(new SuggestResultHelper.SuggestResultAccessor() {
+            @Override
+            public void setAdditionalProperties(SuggestResult suggestResult, SearchDocument additionalProperties) {
+                suggestResult.setAdditionalProperties(additionalProperties);
+            }
+        });
+    }
 
     /**
      * Constructor of {@link SuggestResult}.
@@ -57,7 +75,18 @@ public final class SuggestResult {
      * @return the additionalProperties value.
      */
     public <T> T getDocument(Class<T> modelClass) {
-        return MAPPER.convertValue(this.additionalProperties, modelClass);
+        if (jsonSerializer == null) {
+            try {
+                String serializedJson = searchJacksonAdapter.serialize(additionalProperties, SerializerEncoding.JSON);
+                return searchJacksonAdapter.deserialize(serializedJson, modelClass, SerializerEncoding.JSON);
+            } catch (IOException ex) {
+                throw logger.logExceptionAsError(new RuntimeException("Failed to deserialize suggestion result.", ex));
+            }
+        }
+        ByteArrayOutputStream sourceStream = new ByteArrayOutputStream();
+        jsonSerializer.serialize(sourceStream, additionalProperties);
+        return jsonSerializer.deserialize(new ByteArrayInputStream(sourceStream.toByteArray()),
+            createInstance(modelClass));
     }
 
     /**
@@ -67,5 +96,15 @@ public final class SuggestResult {
      */
     public String getText() {
         return this.text;
+    }
+
+    /**
+     * The private setter to set the select property
+     * via {@link SuggestResultHelper.SuggestResultAccessor}.
+     *
+     * @param additionalProperties The unmatched properties from the message.
+     */
+    private void setAdditionalProperties(SearchDocument additionalProperties) {
+        this.additionalProperties = additionalProperties;
     }
 }

@@ -37,6 +37,17 @@ public class ChainedTokenCredential implements TokenCredential {
         this.credentials = Collections.unmodifiableList(credentials);
     }
 
+    /**
+     * Sequentially calls {@link TokenCredential#getToken(TokenRequestContext)} on all the specified credentials,
+     * returning the first successfully obtained {@link AccessToken}.
+     *
+     * This method is called automatically by Azure SDK client libraries.
+     * You may call this method directly, but you must also handle token
+     * caching and token refreshing.
+     *
+     * @param request the details of the token request
+     * @return a Publisher that emits a single access token
+     */
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         List<CredentialUnavailableException> exceptions = new ArrayList<>(4);
@@ -67,15 +78,5 @@ public class ChainedTokenCredential implements TokenCredential {
                 }
                 return Mono.error(last);
             }));
-    }
-
-
-    /**
-     * Get the read-only list of credentials sequentially used to attempt authentication.
-     *
-     * @return The list of {@link TokenCredential}.
-     */
-    public List<TokenCredential> getCredentials() {
-        return credentials;
     }
 }

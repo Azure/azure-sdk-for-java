@@ -3,7 +3,9 @@
 
 package com.azure.core.serializer.avro.apache;
 
-import com.azure.core.experimental.serializer.ObjectSerializer;
+import com.azure.core.experimental.serializer.AvroSerializer;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.TypeReference;
 import org.apache.avro.Schema;
 import org.apache.avro.io.DatumReader;
 import org.apache.avro.io.DatumWriter;
@@ -15,13 +17,17 @@ import org.apache.avro.specific.SpecificDatumReader;
 import org.apache.avro.specific.SpecificDatumWriter;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UncheckedIOException;
 
 /**
- * Apache Avro based implementation of the {@link ObjectSerializer} interface.
+ * Apache Avro based implementation of the {@link AvroSerializer} interface.
  */
-public class ApacheAvroSerializer implements ObjectSerializer {
+public class ApacheAvroSerializer implements AvroSerializer {
+    private final ClientLogger logger = new ClientLogger(ApacheAvroSerializer.class);
+
     private final Schema schema;
     private final DecoderFactory decoderFactory;
     private final EncoderFactory encoderFactory;
@@ -36,27 +42,40 @@ public class ApacheAvroSerializer implements ObjectSerializer {
     }
 
     @Override
-    public <T> Mono<T> deserialize(InputStream stream, Class<T> clazz) {
-        return Mono.fromCallable(() -> {
-            if (stream == null) {
-                return null;
-            }
+    public <T> T deserialize(InputStream stream, TypeReference<T> typeReference) {
+        if (stream == null) {
+            return null;
+        }
 
-            DatumReader<T> reader = new SpecificDatumReader<>(schema, schema, specificData);
+        DatumReader<T> reader = new SpecificDatumReader<>(schema, schema, specificData);
 
-            return clazz.cast(reader.read(null, decoderFactory.binaryDecoder(stream, null)));
-        });
+        try {
+            return reader.read(null, decoderFactory.binaryDecoder(stream, null));
+        } catch (IOException ex) {
+            throw logger.logExceptionAsError(new UncheckedIOException(ex));
+        }
     }
 
     @Override
-    public <S extends OutputStream> Mono<S> serialize(S stream, Object value) {
-        return Mono.fromCallable(() -> {
-            DatumWriter<Object> writer = new SpecificDatumWriter<>(schema, specificData);
+    public <T> Mono<T> deserializeAsync(InputStream stream, TypeReference<T> typeReference) {
+        return Mono.fromCallable(() -> deserialize(stream, typeReference));
+    }
 
-            Encoder encoder = encoderFactory.binaryEncoder(stream, null);
+    @Override
+    public void serialize(OutputStream stream, Object value) {
+        DatumWriter<Object> writer = new SpecificDatumWriter<>(schema, specificData);
+
+        Encoder encoder = encoderFactory.binaryEncoder(stream, null);
+        try {
             writer.write(value, encoder);
             encoder.flush();
-            return stream;
-        });
+        } catch (IOException ex) {
+            throw logger.logExceptionAsError(new UncheckedIOException(ex));
+        }
+    }
+
+    @Override
+    public Mono<Void> serializeAsync(OutputStream stream, Object value) {
+        return Mono.fromRunnable(() -> serialize(stream, value));
     }
 }

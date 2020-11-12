@@ -11,6 +11,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.util.LoggingUtil;
+import com.azure.identity.implementation.util.ValidationUtil;
 import reactor.core.publisher.Mono;
 
 /**
@@ -37,7 +38,6 @@ import reactor.core.publisher.Mono;
 @Immutable
 public class EnvironmentCredential implements TokenCredential {
     private final Configuration configuration;
-    private final IdentityClientOptions identityClientOptions;
     private final ClientLogger logger = new ClientLogger(EnvironmentCredential.class);
     private final TokenCredential tokenCredential;
 
@@ -48,7 +48,6 @@ public class EnvironmentCredential implements TokenCredential {
      */
     EnvironmentCredential(IdentityClientOptions identityClientOptions) {
         this.configuration = Configuration.getGlobalConfiguration().clone();
-        this.identityClientOptions = identityClientOptions;
         TokenCredential targetCredential = null;
 
         String clientId = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID);
@@ -57,6 +56,7 @@ public class EnvironmentCredential implements TokenCredential {
         String certPath = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH);
         String username = configuration.get(Configuration.PROPERTY_AZURE_USERNAME);
         String password = configuration.get(Configuration.PROPERTY_AZURE_PASSWORD);
+        ValidationUtil.validateTenantIdCharacterRange(getClass().getSimpleName(), tenantId);
         LoggingUtil.logAvailableEnvironmentVariables(logger, configuration);
         if (verifyNotNull(clientId)) {
             // 1 - Attempt ClientSecretCredential or ClientCertificateCredential
@@ -69,8 +69,8 @@ public class EnvironmentCredential implements TokenCredential {
                 } else if (verifyNotNull(certPath)) {
                     // 1.2 Attempt ClientCertificateCredential
                     logger.info("Azure Identity => EnvironmentCredential invoking ClientCertificateCredential");
-                    targetCredential = new ClientCertificateCredential(tenantId, clientId, certPath,
-                        null, identityClientOptions);
+                    targetCredential = new ClientCertificateCredential(tenantId, clientId, certPath, null, null,
+                            identityClientOptions);
                 } else {
                     // 1.3 Log error if neither is found
                     logger.error("Azure Identity => ERROR in EnvironmentCredential: Failed to create a "

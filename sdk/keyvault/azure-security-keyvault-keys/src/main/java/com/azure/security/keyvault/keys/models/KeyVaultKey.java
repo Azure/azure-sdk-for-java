@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 import java.util.Map;
+
 /**
  *  Key is the resource consisting of name, {@link JsonWebKey} and its attributes specified in {@link KeyProperties}.
  *  It is managed by Key Service.
@@ -97,6 +98,15 @@ public class KeyVaultKey {
     }
 
     /**
+     * Get the policy rules under which the key can be exported.
+     *
+     * @return The release policy.
+     */
+    public KeyReleasePolicy getReleasePolicy() {
+        return properties.getReleasePolicy();
+    }
+
+    /**
      * Unpacks the key material json response and updates the variables in the Key Base object.
      * @param key The key value mapping of the key material
      */
@@ -105,14 +115,24 @@ public class KeyVaultKey {
         this.key = properties.createKeyMaterialFromJson(key);
     }
 
-    @JsonProperty(value = "kid")
-    private void unpackKid(String kid) {
-        properties.unpackId(kid);
-    }
-
     @JsonProperty("attributes")
     @SuppressWarnings("unchecked")
     private void unpackAttributes(Map<String, Object> attributes) {
         properties.unpackAttributes(attributes);
+    }
+
+    @JsonProperty("tags")
+    private void setTags(Map<String, String> tags) {
+        properties.setTags(tags);
+    }
+
+    @JsonProperty("managed")
+    private void setManaged(boolean managed) {
+        properties.setManaged(managed);
+    }
+
+    @JsonProperty(value = "release_policy")
+    private void setReleasePolicy(KeyReleasePolicy releasePolicy) {
+        properties.setReleasePolicy(releasePolicy);
     }
 }

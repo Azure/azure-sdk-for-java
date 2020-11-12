@@ -62,4 +62,13 @@ public class Person {
     public int getAge() {
         return age;
     }
+
+    /**
+     * Getter for property 'guid'.
+     *
+     * @return Value for property 'guid'.
+     */
+    public UUID getGuid() {
+        return guid;
+    }
 }

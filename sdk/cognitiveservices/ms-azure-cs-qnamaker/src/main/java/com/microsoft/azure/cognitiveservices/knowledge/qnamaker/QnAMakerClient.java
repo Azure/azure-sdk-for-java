@@ -36,14 +36,14 @@ public interface QnAMakerClient {
     String userAgent();
 
     /**
-     * Gets Supported Cognitive Services endpoints (protocol and hostname, for example: https://westus.api.cognitive.microsoft.com)..
+     * Gets Supported Cognitive Services endpoint (e.g., https://< qnamaker-resource-name >.api.cognitiveservices.azure.com)..
      *
      * @return the endpoint value.
      */
     String endpoint();
 
     /**
-     * Sets Supported Cognitive Services endpoints (protocol and hostname, for example: https://westus.api.cognitive.microsoft.com)..
+     * Sets Supported Cognitive Services endpoint (e.g., https://< qnamaker-resource-name >.api.cognitiveservices.azure.com)..
      *
      * @param endpoint the endpoint value.
      * @return the service client itself

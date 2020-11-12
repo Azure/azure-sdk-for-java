@@ -20,6 +20,7 @@ import com.microsoft.azure.management.cosmosdb.v2020_04_01.VirtualNetworkRule;
 import com.microsoft.azure.management.cosmosdb.v2020_04_01.ConnectorOffer;
 import com.microsoft.azure.management.cosmosdb.v2020_04_01.PublicNetworkAccess;
 import com.microsoft.azure.management.cosmosdb.v2020_04_01.ApiProperties;
+import com.microsoft.azure.management.cosmosdb.v2020_04_01.CorsPolicy;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.management.cosmosdb.v2020_04_01.ARMResourceProperties;
@@ -184,6 +185,12 @@ public class DatabaseAccountGetResultsInner extends ARMResourceProperties {
      */
     @JsonProperty(value = "properties.enableAnalyticalStorage")
     private Boolean enableAnalyticalStorage;
+
+    /**
+     * The CORS policy for the Cosmos DB database account.
+     */
+    @JsonProperty(value = "properties.cors")
+    private List<CorsPolicy> cors;
 
     /**
      * Get indicates the type of database account. This can only be set at database account creation. Possible values include: 'GlobalDocumentDB', 'MongoDB', 'Parse'.
@@ -585,6 +592,26 @@ public class DatabaseAccountGetResultsInner extends ARMResourceProperties {
      */
     public DatabaseAccountGetResultsInner withEnableAnalyticalStorage(Boolean enableAnalyticalStorage) {
         this.enableAnalyticalStorage = enableAnalyticalStorage;
+        return this;
+    }
+
+    /**
+     * Get the CORS policy for the Cosmos DB database account.
+     *
+     * @return the cors value
+     */
+    public List<CorsPolicy> cors() {
+        return this.cors;
+    }
+
+    /**
+     * Set the CORS policy for the Cosmos DB database account.
+     *
+     * @param cors the cors value to set
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner withCors(List<CorsPolicy> cors) {
+        this.cors = cors;
         return this;
     }
 

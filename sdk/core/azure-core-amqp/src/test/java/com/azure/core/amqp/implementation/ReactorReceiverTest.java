@@ -144,7 +144,6 @@ class ReactorReceiverTest {
             .expectNext(AmqpEndpointState.ACTIVE)
             .then(() -> receiverHandler.close())
             .expectNext(AmqpEndpointState.CLOSED)
-            .then(() -> reactorReceiver.dispose())
             .verifyComplete();
     }
 

@@ -3,13 +3,18 @@
 
 package com.azure.storage.blob.implementation.util;
 
+import com.azure.core.http.RequestConditions;
 import com.azure.storage.blob.BlobAsyncClient;
+import com.azure.storage.blob.ProgressReceiver;
 import com.azure.storage.blob.implementation.models.BlobDownloadHeaders;
 import com.azure.storage.blob.implementation.models.BlobItemInternal;
 import com.azure.storage.blob.implementation.models.BlobItemPropertiesInternal;
 import com.azure.storage.blob.implementation.models.BlobTag;
+import com.azure.storage.blob.models.PageBlobCopyIncrementalRequestConditions;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobItemProperties;
+import com.azure.storage.blob.models.BlobLeaseRequestConditions;
+import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions;
 import com.azure.storage.blob.models.ObjectReplicationPolicy;
 import com.azure.storage.blob.models.ObjectReplicationRule;
 import com.azure.storage.blob.models.ObjectReplicationStatus;
@@ -79,6 +84,39 @@ public class ModelHelper {
     }
 
     /**
+     * Fills in default values for a ParallelTransferOptions where no value has been set. This will construct a new
+     * object for safety.
+     *
+     * @param other The options to fill in defaults.
+     * @return An object with defaults filled in for null values in the original.
+     */
+    public static com.azure.storage.common.ParallelTransferOptions populateAndApplyDefaults(
+        com.azure.storage.common.ParallelTransferOptions other) {
+        other = other == null ? new com.azure.storage.common.ParallelTransferOptions() : other;
+
+        Long blockSize = other.getBlockSizeLong();
+        if (blockSize == null) {
+            blockSize = (long) BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
+        }
+
+        Integer maxConcurrency = other.getMaxConcurrency();
+        if (maxConcurrency == null) {
+            maxConcurrency = BlobAsyncClient.BLOB_DEFAULT_NUMBER_OF_BUFFERS;
+        }
+
+        Long maxSingleUploadSize = other.getMaxSingleUploadSizeLong();
+        if (maxSingleUploadSize == null) {
+            maxSingleUploadSize = BLOB_DEFAULT_MAX_SINGLE_UPLOAD_SIZE;
+        }
+
+        return new com.azure.storage.common.ParallelTransferOptions()
+            .setBlockSizeLong(blockSize)
+            .setMaxConcurrency(maxConcurrency)
+            .setProgressReceiver(other.getProgressReceiver())
+            .setMaxSingleUploadSizeLong(maxSingleUploadSize);
+    }
+
+    /**
      * Transforms a blob type into a common type.
      * @param blobOptions {@link ParallelTransferOptions}
      * @return {@link com.azure.storage.common.ParallelTransferOptions}
@@ -97,6 +135,17 @@ public class ModelHelper {
             .setMaxConcurrency(maxConcurrency)
             .setProgressReceiver(wrappedReceiver)
             .setMaxSingleUploadSizeLong(maxSingleUploadSize);
+    }
+
+
+    /**
+     * Transforms a common type into a blob type.
+     * @param commonProgressReceiver {@link com.azure.storage.common.ProgressReceiver}
+     * @return {@link ProgressReceiver}
+     */
+    public static ProgressReceiver wrapCommonReceiver(
+        com.azure.storage.common.ProgressReceiver commonProgressReceiver) {
+        return commonProgressReceiver == null ? null : commonProgressReceiver::reportProgress;
     }
 
     /**
@@ -173,6 +222,8 @@ public class ModelHelper {
             objectReplicationSourcePolicies.add(new ObjectReplicationPolicy(entry.getKey(), entry.getValue()));
         }
         headers.setObjectReplicationSourcePolicies(objectReplicationSourcePolicies);
+        headers.setSealed(internalHeaders.isSealed());
+        headers.setLastAccessedTime(internalHeaders.getLastAccessed());
 
         return headers;
     }
@@ -201,6 +252,9 @@ public class ModelHelper {
             }
         }
         blobItem.setTags(tags);
+
+        blobItem.setObjectReplicationSourcePolicies(
+            transformObjectReplicationMetadata(blobItemInternal.getObjectReplicationMetadata()));
 
         return blobItem;
     }
@@ -246,26 +300,126 @@ public class ModelHelper {
         blobItemProperties.setEncryptionScope(blobItemPropertiesInternal.getEncryptionScope());
         blobItemProperties.setAccessTierChangeTime(blobItemPropertiesInternal.getAccessTierChangeTime());
         blobItemProperties.setTagCount(blobItemPropertiesInternal.getTagCount());
-
-        // TODO: (rickle-msft) Uncomment when these properties are returned on lists.
-        /*this.objectReplicationSourcePolicies = new HashMap<>();
-        this.objectReplicationDestinationPolicyId = objectReplicationStatus.getOrDefault("policy-id", null);
-        if (objectReplicationDestinationPolicyId == null) {
-            for (String str : objectReplicationStatus.keySet()) {
-                String[] split = str.split("_");
-                String policyId = split[0];
-                String ruleId = split[1];
-                if (objectReplicationSourcePolicies.containsKey(policyId)) {
-                    objectReplicationSourcePolicies.get(policyId)
-                        .putRuleAndStatus(ruleId, objectReplicationStatus.get(str));
-                } else {
-                    ObjectReplicationPolicy policy = new ObjectReplicationPolicy(policyId);
-                    policy.putRuleAndStatus(ruleId, objectReplicationStatus.get(str));
-                    objectReplicationSourcePolicies.put(policyId, policy);
-                }
-            }
-        }*/
+        blobItemProperties.setRehydratePriority(blobItemPropertiesInternal.getRehydratePriority());
+        blobItemProperties.setSealed(blobItemPropertiesInternal.isSealed());
+        blobItemProperties.setLastAccessedTime(blobItemPropertiesInternal.getLastAccessedOn());
 
         return blobItemProperties;
+    }
+
+    private static List<ObjectReplicationPolicy> transformObjectReplicationMetadata(
+        Map<String, String> objectReplicationMetadata) {
+
+        Map<String, List<ObjectReplicationRule>> internalSourcePolicies = new HashMap<>();
+        objectReplicationMetadata = objectReplicationMetadata == null ? new HashMap<>() : objectReplicationMetadata;
+        for (Map.Entry<String, String> entry : objectReplicationMetadata.entrySet()) {
+            String orString = entry.getKey();
+            String str = orString.startsWith("or-") ? orString.substring(3) : orString;
+            String[] split = str.split("_");
+            String policyId = split[0];
+            String ruleId = split[1];
+            ObjectReplicationRule rule = new ObjectReplicationRule(ruleId,
+                ObjectReplicationStatus.fromString(entry.getValue()));
+            if (!internalSourcePolicies.containsKey(policyId)) {
+                internalSourcePolicies.put(policyId, new ArrayList<>());
+            }
+            internalSourcePolicies.get(policyId).add(rule);
+        }
+
+        if (internalSourcePolicies.isEmpty()) {
+            return null;
+        }
+        List<ObjectReplicationPolicy> objectReplicationSourcePolicies = new ArrayList<>();
+        for (Map.Entry<String, List<ObjectReplicationRule>> entry : internalSourcePolicies.entrySet()) {
+            objectReplicationSourcePolicies.add(new ObjectReplicationPolicy(entry.getKey(), entry.getValue()));
+        }
+        return objectReplicationSourcePolicies;
+    }
+
+    /**
+     * Transforms {@link RequestConditions} into a {@link BlobLeaseRequestConditions}.
+     *
+     * @param requestConditions {@link RequestConditions}
+     * @return {@link BlobLeaseRequestConditions}
+     */
+    public static BlobLeaseRequestConditions populateBlobLeaseRequestConditions(RequestConditions requestConditions) {
+        if (requestConditions == null) {
+            return null;
+        }
+
+        return new BlobLeaseRequestConditions()
+            .setIfMatch(requestConditions.getIfMatch())
+            .setIfNoneMatch(requestConditions.getIfNoneMatch())
+            .setIfModifiedSince(requestConditions.getIfModifiedSince())
+            .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince())
+            .setTagsConditions(null);
+    }
+
+    /**
+     * Transforms {@link RequestConditions} into a {@link BlobBeginCopySourceRequestConditions}.
+     *
+     * @param requestConditions {@link RequestConditions}
+     * @return {@link BlobBeginCopySourceRequestConditions}
+     */
+    public static BlobBeginCopySourceRequestConditions populateBlobSourceRequestConditions(RequestConditions requestConditions) {
+        if (requestConditions == null) {
+            return null;
+        }
+
+        return new BlobBeginCopySourceRequestConditions()
+            .setIfMatch(requestConditions.getIfMatch())
+            .setIfNoneMatch(requestConditions.getIfNoneMatch())
+            .setIfModifiedSince(requestConditions.getIfModifiedSince())
+            .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince())
+            .setTagsConditions(null);
+    }
+
+    /**
+     * Transforms {@link RequestConditions} into a {@link PageBlobCopyIncrementalRequestConditions}.
+     *
+     * @param requestConditions {@link RequestConditions}
+     * @return {@link PageBlobCopyIncrementalRequestConditions}
+     */
+    public static PageBlobCopyIncrementalRequestConditions populateBlobDestinationRequestConditions(
+        RequestConditions requestConditions) {
+        if (requestConditions == null) {
+            return null;
+        }
+
+        return new PageBlobCopyIncrementalRequestConditions()
+            .setIfMatch(requestConditions.getIfMatch())
+            .setIfNoneMatch(requestConditions.getIfNoneMatch())
+            .setIfModifiedSince(requestConditions.getIfModifiedSince())
+            .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince())
+            .setTagsConditions(null);
+    }
+
+    public static String getObjectReplicationDestinationPolicyId(Map<String, String> objectReplicationStatus) {
+        objectReplicationStatus = objectReplicationStatus == null ? new HashMap<>() : objectReplicationStatus;
+        return objectReplicationStatus.getOrDefault("policy-id", null);
+    }
+
+    public static List<ObjectReplicationPolicy> getObjectReplicationSourcePolicies(
+        Map<String, String> objectReplicationStatus) {
+        Map<String, List<ObjectReplicationRule>> internalSourcePolicies = new HashMap<>();
+        objectReplicationStatus = objectReplicationStatus == null ? new HashMap<>() : objectReplicationStatus;
+        if (getObjectReplicationDestinationPolicyId(objectReplicationStatus) == null) {
+            for (Map.Entry<String, String> entry : objectReplicationStatus.entrySet()) {
+                String[] split = entry.getKey().split("_");
+                String policyId = split[0];
+                String ruleId = split[1];
+                ObjectReplicationRule rule = new ObjectReplicationRule(ruleId,
+                    ObjectReplicationStatus.fromString(entry.getValue()));
+                if (!internalSourcePolicies.containsKey(policyId)) {
+                    internalSourcePolicies.put(policyId, new ArrayList<>());
+                }
+                internalSourcePolicies.get(policyId).add(rule);
+            }
+        }
+        List<ObjectReplicationPolicy> objectReplicationSourcePolicies = new ArrayList<>();
+        for (Map.Entry<String, List<ObjectReplicationRule>> entry : internalSourcePolicies.entrySet()) {
+            objectReplicationSourcePolicies.add(new ObjectReplicationPolicy(entry.getKey(), entry.getValue()));
+        }
+        return objectReplicationSourcePolicies;
     }
 }

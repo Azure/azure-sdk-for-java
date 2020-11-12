@@ -18,7 +18,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
-import com.azure.storage.blob.models.FilterBlobItem;
+import com.azure.storage.blob.models.TaggedBlobItem;
 import com.azure.storage.blob.implementation.models.ServiceGetAccountInfoHeaders;
 import com.azure.storage.blob.implementation.models.ServicesListBlobContainersSegmentResponse;
 import com.azure.storage.blob.models.BlobContainerEncryptionScope;
@@ -36,6 +36,7 @@ import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.options.UndeleteBlobContainerOptions;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.AccountSasImplUtil;
 import com.azure.storage.common.implementation.Constants;
@@ -52,6 +53,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
@@ -354,7 +356,7 @@ public final class BlobServiceAsyncClient {
      * @param query Filters the results to return only blobs whose tags match the specified expression.
      * @return A reactive response emitting the list of blobs.
      */
-    public PagedFlux<FilterBlobItem> findBlobsByTags(String query) {
+    public PagedFlux<TaggedBlobItem> findBlobsByTags(String query) {
         return this.findBlobsByTags(new FindBlobsOptions(query));
     }
 
@@ -369,7 +371,7 @@ public final class BlobServiceAsyncClient {
      * @param options {@link FindBlobsOptions}
      * @return A reactive response emitting the list of blobs.
      */
-    public PagedFlux<FilterBlobItem> findBlobsByTags(FindBlobsOptions options) {
+    public PagedFlux<TaggedBlobItem> findBlobsByTags(FindBlobsOptions options) {
         try {
             return findBlobsByTags(options, null);
         } catch (RuntimeException ex) {
@@ -377,21 +379,21 @@ public final class BlobServiceAsyncClient {
         }
     }
 
-    PagedFlux<FilterBlobItem> findBlobsByTags(FindBlobsOptions options, Duration timeout) {
+    PagedFlux<TaggedBlobItem> findBlobsByTags(FindBlobsOptions options, Duration timeout) {
         throwOnAnonymousAccess();
         return new PagedFlux<>(
             () -> withContext(context -> this.findBlobsByTags(options, null, timeout, context)),
             marker -> withContext(context -> this.findBlobsByTags(options, marker, timeout, context)));
     }
 
-    PagedFlux<FilterBlobItem> findBlobsByTags(FindBlobsOptions options, Duration timeout, Context context) {
+    PagedFlux<TaggedBlobItem> findBlobsByTags(FindBlobsOptions options, Duration timeout, Context context) {
         throwOnAnonymousAccess();
         return new PagedFlux<>(
             () -> this.findBlobsByTags(options, null, timeout, context),
             marker -> this.findBlobsByTags(options, marker, timeout, context));
     }
 
-    private Mono<PagedResponse<FilterBlobItem>> findBlobsByTags(
+    private Mono<PagedResponse<TaggedBlobItem>> findBlobsByTags(
         FindBlobsOptions options, String marker,
         Duration timeout, Context context) {
         throwOnAnonymousAccess();
@@ -401,9 +403,12 @@ public final class BlobServiceAsyncClient {
                 options.getQuery(), marker, options.getMaxResultsPerPage(),
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE)), timeout)
             .map(response -> {
-                List<FilterBlobItem> value = response.getValue().getBlobs() == null
+                List<TaggedBlobItem> value = response.getValue().getBlobs() == null
                     ? Collections.emptyList()
-                    : response.getValue().getBlobs();
+                    : response.getValue().getBlobs().stream()
+                    .map(filterBlobItem -> new TaggedBlobItem(filterBlobItem.getContainerName(),
+                        filterBlobItem.getName()))
+                    .collect(Collectors.toList());
 
                 return new PagedResponseBase<>(
                     response.getRequest(),
@@ -424,15 +429,12 @@ public final class BlobServiceAsyncClient {
      */
     private List<ListBlobContainersIncludeType> toIncludeTypes(BlobContainerListDetails blobContainerListDetails) {
         boolean hasDetails = blobContainerListDetails != null
-            && blobContainerListDetails.getRetrieveMetadata();
-        // Add back for container soft delete.
-//        boolean hasDetails = blobContainerListDetails != null
-//            && (blobContainerListDetails.getRetrieveMetadata() || blobContainerListDetails.getRetrieveDeleted());
+            && (blobContainerListDetails.getRetrieveMetadata() || blobContainerListDetails.getRetrieveDeleted());
         if (hasDetails) {
             List<ListBlobContainersIncludeType> flags = new ArrayList<>(2);
-//            if (blobContainerListDetails.getRetrieveDeleted()) {
-//                flags.add(ListBlobContainersIncludeType.DELETED);
-//            }
+            if (blobContainerListDetails.getRetrieveDeleted()) {
+                flags.add(ListBlobContainersIncludeType.DELETED);
+            }
             if (blobContainerListDetails.getRetrieveMetadata()) {
                 flags.add(ListBlobContainersIncludeType.METADATA);
             }
@@ -827,14 +829,13 @@ public final class BlobServiceAsyncClient {
         }
     }
 
+    /* TODO (gapra-msft) : REST Docs */
     /**
      * Restores a previously deleted container.
      * If the container associated with provided <code>deletedContainerName</code>
      * already exists, this call will result in a 409 (conflict).
      * This API is only functional if Container Soft Delete is enabled
      * for the storage account associated with the container.
-     * For more information, see the
-     * <a href="TBD">Azure Docs</a>. TODO (kasobol-msft) add link to REST API docs
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -845,14 +846,12 @@ public final class BlobServiceAsyncClient {
      * @return A {@link Mono} containing a {@link BlobContainerAsyncClient} used
      * to interact with the restored container.
      */
-    /*
     public Mono<BlobContainerAsyncClient> undeleteBlobContainer(
         String deletedContainerName, String deletedContainerVersion) {
-        return this.undeleteBlobContainerWithResponse(
-            new UndeleteBlobContainerOptions(deletedContainerName, deletedContainerVersion)
+        return this.undeleteBlobContainerWithResponse(new UndeleteBlobContainerOptions(deletedContainerName,
+            deletedContainerVersion)
         ).flatMap(FluxUtil::toMono);
     }
-    */
 
     /**
      * Restores a previously deleted container. The restored container
@@ -862,8 +861,6 @@ public final class BlobServiceAsyncClient {
      * already exists, this call will result in a 409 (conflict).
      * This API is only functional if Container Soft Delete is enabled
      * for the storage account associated with the container.
-     * For more information, see the
-     * <a href="TBD">Azure Docs</a>. TODO (kasobol-msft) add link to REST API docs
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -873,13 +870,10 @@ public final class BlobServiceAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * BlobContainerAsyncClient} used to interact with the restored container.
      */
-    /*
     public Mono<Response<BlobContainerAsyncClient>> undeleteBlobContainerWithResponse(
         UndeleteBlobContainerOptions options) {
         try {
-            return withContext(context ->
-                undeleteBlobContainerWithResponse(
-                    options, context));
+            return withContext(context -> undeleteBlobContainerWithResponse(options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -899,5 +893,4 @@ public final class BlobServiceAsyncClient {
             .map(response -> new SimpleResponse<>(response,
                 getBlobContainerAsyncClient(finalDestinationContainerName)));
     }
-    */
 }

@@ -106,7 +106,40 @@ public enum AmqpErrorCondition {
     /**
      * A connection error occurred.
      */
-    CONNECTION_FRAMING_ERROR("amqp:connection:framing-error");
+    CONNECTION_FRAMING_ERROR("amqp:connection:framing-error"),
+    /**
+     * The operation was cancelled.
+     */
+    OPERATION_CANCELLED("com.microsoft:operation-cancelled"),
+    /**
+     * Error condition when receiver attempts {@code complete}, {@code abandon}, {@code renewLock}, {@code deadLetter},
+     * or {@code defer} on a peek-locked message whose lock had already expired.
+     */
+    MESSAGE_LOCK_LOST("com.microsoft:message-lock-lost"),
+    /**
+     * Error condition when a session receiver performs an operation on a session after its lock is expired. When a
+     * client accepts a session, the session is locked to the receiver for a duration specified in the entity
+     * definition. When the accepted session remains idle for the duration of lock, that is no operations performed on
+     * the session, the lock expires and the session is made available to other clients.
+     */
+    SESSION_LOCK_LOST("com.microsoft:session-lock-lost"),
+    /**
+     * Error condition when a client attempts to accept a session that is already locked by another client.
+     */
+    SESSION_CANNOT_BE_LOCKED("com.microsoft:session-cannot-be-locked"),
+    /**
+     * Error condition when a receiver attempts to receive a message with sequence number and the message with that
+     * sequence number is not available in the queue or subscription.
+     */
+    MESSAGE_NOT_FOUND("com.microsoft:message-not-found"),
+    /**
+     * Error condition when a receiver attempts to receive from a session that does not exist.
+     */
+    SESSION_NOT_FOUND("com.microsoft:session-not-found"),
+    /**
+     * Error condition when a subscription client tries to create a rule with the name of an already existing rule.
+     */
+    ENTITY_ALREADY_EXISTS("com.microsoft:entity-already-exists");
 
     private static final Map<String, AmqpErrorCondition> ERROR_CONSTANT_MAP = new HashMap<>();
     private final String errorCondition;

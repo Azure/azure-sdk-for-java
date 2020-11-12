@@ -11,6 +11,8 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 
 /** Initializes a new instance of the SearchIndexClient type. */
 public final class SearchIndexClientImpl {
@@ -62,6 +64,18 @@ public final class SearchIndexClientImpl {
         return this.httpPipeline;
     }
 
+    /** The serializer to serialize an object into a string. */
+    private final SerializerAdapter serializerAdapter;
+
+    /**
+     * Gets The serializer to serialize an object into a string.
+     *
+     * @return the serializerAdapter value.
+     */
+    public SerializerAdapter getSerializerAdapter() {
+        return this.serializerAdapter;
+    }
+
     /** The DocumentsImpl object to access its operations. */
     private final DocumentsImpl documents;
 
@@ -74,12 +88,18 @@ public final class SearchIndexClientImpl {
         return this.documents;
     }
 
-    /** Initializes an instance of SearchIndexClient client. */
+    /**
+     * Initializes an instance of SearchIndexClient client.
+     *
+     * @param endpoint The endpoint URL of the search service.
+     * @param indexName The name of the index.
+     */
     SearchIndexClientImpl(String endpoint, String indexName) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
+                JacksonAdapter.createDefaultSerializerAdapter(),
                 endpoint,
                 indexName);
     }
@@ -88,9 +108,25 @@ public final class SearchIndexClientImpl {
      * Initializes an instance of SearchIndexClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param endpoint The endpoint URL of the search service.
+     * @param indexName The name of the index.
      */
     SearchIndexClientImpl(HttpPipeline httpPipeline, String endpoint, String indexName) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, indexName);
+    }
+
+    /**
+     * Initializes an instance of SearchIndexClient client.
+     *
+     * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param serializerAdapter The serializer to serialize an object into a string.
+     * @param endpoint The endpoint URL of the search service.
+     * @param indexName The name of the index.
+     */
+    SearchIndexClientImpl(
+            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint, String indexName) {
         this.httpPipeline = httpPipeline;
+        this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
         this.indexName = indexName;
         this.apiVersion = "2020-06-30";

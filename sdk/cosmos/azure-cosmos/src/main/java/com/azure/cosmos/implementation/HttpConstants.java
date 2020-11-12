@@ -249,6 +249,11 @@ public class HttpConstants {
         public static final String API_TYPE = "x-ms-cosmos-apitype";
         public static final String QUERY_METRICS = "x-ms-documentdb-query-metrics";
 
+        // Batch operations
+        public static final String IS_BATCH_ATOMIC = "x-ms-cosmos-batch-atomic";
+        public static final String IS_BATCH_ORDERED = "x-ms-cosmos-batch-ordered";
+        public static final String IS_BATCH_REQUEST = "x-ms-cosmos-is-batch-request";
+        public static final String SHOULD_BATCH_CONTINUE_ON_ERROR = "x-ms-cosmos-batch-continue-on-error";
     }
 
     public static class A_IMHeaderValues {
@@ -261,10 +266,11 @@ public class HttpConstants {
         public static final String AZURE_COSMOS_PROPERTIES_FILE_NAME = "azure-cosmos.properties";
 
         public static final String SDK_VERSION = CoreUtils.getProperties(AZURE_COSMOS_PROPERTIES_FILE_NAME).get("version");
-        public static final String SDK_NAME = "cosmosdb-java-sdk";
+        public static final String SDK_NAME = "cosmos";
     }
 
     public static class StatusCodes {
+        public static final int OK = 200;
         public static final int NOT_MODIFIED = 304;
         // Client error
         public static final int MINIMUM_STATUSCODE_AS_ERROR_GATEWAY = 400;
@@ -306,6 +312,12 @@ public class HttpConstants {
 
         // 404: LSN in session token is higher
         public static final int READ_SESSION_NOT_AVAILABLE = 1002;
+
+        // Client generated gateway network error substatus
+        public static final int GATEWAY_ENDPOINT_UNAVAILABLE = 10001;
+
+        // Client generated gateway network error on ReadTimeoutException
+        public static final int GATEWAY_ENDPOINT_READ_TIMEOUT = 10002;
     }
 
     public static class HeaderValues {

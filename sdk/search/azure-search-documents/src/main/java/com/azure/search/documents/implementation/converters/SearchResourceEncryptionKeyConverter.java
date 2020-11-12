@@ -43,10 +43,9 @@ public final class SearchResourceEncryptionKeyConverter {
         AzureActiveDirectoryApplicationCredentials accessCredentials =
             new AzureActiveDirectoryApplicationCredentials(obj.getApplicationId());
         accessCredentials.setApplicationSecret(obj.getApplicationSecret());
-        accessCredentials.validate();
+
         searchResourceEncryptionKey.setAccessCredentials(accessCredentials);
 
-        searchResourceEncryptionKey.validate();
         return searchResourceEncryptionKey;
     }
 

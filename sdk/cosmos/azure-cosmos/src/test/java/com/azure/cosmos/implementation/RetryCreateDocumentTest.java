@@ -38,7 +38,7 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void retryDocumentCreate() throws Exception {
         // create a document to ensure collection is cached
-        client.createDocument(collection.getSelfLink(),  getDocumentDefinition(), null, false).single().block();
+        client.createDocument(collection.getSelfLink(),  getDocumentDefinition(), null, false).block();
 
         Document docDefinition = getDocumentDefinition();
 
@@ -95,7 +95,6 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
 
         // create a document to ensure collection is cached
         client.createDocument(collection.getSelfLink(),  getDocumentDefinition(), null, false)
-                .single()
                 .block();
 
         Document docDefinition = getDocumentDefinition();
@@ -111,7 +110,7 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void createDocument_failImmediatelyOnNonRetriable() throws Exception {
         // create a document to ensure collection is cached
-        client.createDocument(collection.getSelfLink(),  getDocumentDefinition(), null, false).single().block();
+        client.createDocument(collection.getSelfLink(),  getDocumentDefinition(), null, false).block();
         AtomicInteger count = new AtomicInteger();
 
         doAnswer((Answer<Mono<RxDocumentServiceResponse>>) invocation -> {

@@ -6,6 +6,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.Document;
+import com.azure.cosmos.implementation.ItemDeserializer;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.Utils;
@@ -21,15 +22,21 @@ import java.util.Map;
  */
 public class CosmosItemResponse<T> {
     private final Class<T> itemClassType;
-    private final byte[] responseBodyAsByteArray;
+    private final ItemDeserializer itemDeserializer;
+    byte[] responseBodyAsByteArray;
     private T item;
-    private final ResourceResponse<Document> resourceResponse;
+    final ResourceResponse<Document> resourceResponse;
     private InternalObjectNode props;
 
-    CosmosItemResponse(ResourceResponse<Document> response, Class<T> classType) {
+    CosmosItemResponse(ResourceResponse<Document> response, Class<T> classType, ItemDeserializer itemDeserializer) {
+        this(response, response.getBodyAsByteArray(), classType, itemDeserializer);
+    }
+
+    CosmosItemResponse(ResourceResponse<Document> response, byte[] responseBodyAsByteArray, Class<T> classType, ItemDeserializer itemDeserializer) {
         this.itemClassType = classType;
-        this.responseBodyAsByteArray = response.getBodyAsByteArray();
+        this.responseBodyAsByteArray = responseBodyAsByteArray;
         this.resourceResponse = response;
+        this.itemDeserializer = itemDeserializer;
     }
 
     /**
@@ -61,7 +68,7 @@ public class CosmosItemResponse<T> {
             synchronized (this) {
                 if (item == null && !Utils.isEmpty(responseBodyAsByteArray)) {
                     Instant serializationStartTime = Instant.now();
-                    item = Utils.parse(responseBodyAsByteArray, itemClassType);
+                    item = Utils.parse(responseBodyAsByteArray, itemClassType, itemDeserializer);
                     Instant serializationEndTime = Instant.now();
                     SerializationDiagnosticsContext.SerializationDiagnostics diagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
                         serializationStartTime,

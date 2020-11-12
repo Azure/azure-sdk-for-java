@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-internal-avro</artifactId>
-  <version>12.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-internal-avro;current} -->
+  <version>12.0.1</version> <!-- {x-version-update;com.azure:azure-storage-internal-avro;current} -->
 
   <name>Microsoft Azure internal Avro module for Storage</name>
   <description>This module contains internal use only avro parser code based for Microsoft Azure Storage client libraries.</description>
@@ -41,12 +41,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-common</artifactId>
-      <version>12.8.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+      <version>12.9.0</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
     </dependency>
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.3.5.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.3.11.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -56,4 +56,226 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <!-- START: Empty Java Doc -->
+      <!-- The following code will generate an empty javadoc with just a README.md. This is necessary
+           to pass the required checks on Maven. The way this works is by setting the classesDirectory
+           to a directory that only contains the README.md, which we need to copy. If the classesDirectory
+           is set to the root, where the README.md lives, it still won't have javadocs but the jar file
+           will contain a bunch of files that shouldn't be there. The faux sources directory is deleted
+           and recreated with the README.md being copied every time to guarantee that, when building locally,
+           it'll have the latest copy of the README.md file.
+      -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>attach-javadocs</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+            <configuration>
+              <skip>true</skip>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>empty-javadoc-jar-with-readme</id>
+            <phase>package</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+            <configuration>
+              <classifier>javadoc</classifier>
+              <classesDirectory>${project.basedir}/javadocTemp</classesDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.8</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>copy-readme-to-javadocTemp</id>
+            <phase>prepare-package</phase>
+            <configuration>
+              <target>
+                <echo>Deleting existing ${project.basedir}/javadocTemp</echo>
+                <delete includeEmptyDirs="true" quiet="true">
+                  <fileset dir="${project.basedir}/javadocTemp"/>
+                </delete>
+                <echo>Copying ${project.basedir}/README.md to
+                  ${project.basedir}/javadocTemp/README.md
+                </echo>
+                <copy file="${project.basedir}/README.md" tofile="${project.basedir}/javadocTemp/README.md"/>
+              </target>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- END: Empty Java Doc -->
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>java8</id>
+      <activation>
+        <jdk>[1.8,9)</jdk>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <configuration>
+              <source>1.8</source>
+              <target>1.8</target>
+              <showWarnings>true</showWarnings>
+              <failOnWarning>true</failOnWarning>
+              <compilerArgs>
+                <arg>-Xlint:all</arg>
+                <arg>-Xlint:-serial</arg>
+                <arg>-Xlint:-deprecation</arg>
+                <arg>-Xlint:-processing</arg>
+              </compilerArgs>
+              <excludes>
+                <exclude>module-info.java</exclude>
+              </excludes>
+            </configuration>
+
+            <executions>
+              <execution>
+                <id>test-compile</id>
+                <phase>process-test-sources</phase>
+                <goals>
+                  <goal>testCompile</goal>
+                </goals>
+                <configuration>
+                  <compilerId>groovy-eclipse-compiler</compilerId>
+                  <compilerArgs>-warn:-unused</compilerArgs>
+                </configuration>
+              </execution>
+              <execution>
+                <id>default-testCompile</id>
+                <phase>process-test-sources</phase>
+                <goals>
+                  <goal>testCompile</goal>
+                </goals>
+                <configuration>
+                  <compilerId>groovy-eclipse-compiler</compilerId>
+                  <compilerArgs>-warn:-unused</compilerArgs>
+                </configuration>
+              </execution>
+            </executions>
+            <dependencies>
+              <dependency>
+                <groupId>org.codehaus.groovy</groupId>
+                <artifactId>groovy-eclipse-compiler</artifactId>
+                <version>3.4.0-01</version> <!-- {x-version-update;org.codehaus.groovy:groovy-eclipse-compiler;external_dependency} -->
+              </dependency>
+              <dependency>
+                <groupId>org.codehaus.groovy</groupId>
+                <artifactId>groovy-eclipse-batch</artifactId>
+                <version>2.5.8-01</version> <!-- {x-version-update;org.codehaus.groovy:groovy-eclipse-batch;external_dependency} -->
+              </dependency>
+            </dependencies>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>java9plus</id>
+      <activation>
+        <jdk>[9,)</jdk>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <!-- Skip maven compiler and use gmavenplus plugin instead -->
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <configuration>
+              <source>9</source>
+              <target>9</target>
+            </configuration>
+            <executions>
+              <execution>
+                <id>test-compile</id>
+                <phase>process-test-sources</phase>
+                <goals>
+                  <goal>testCompile</goal>
+                </goals>
+                <configuration>
+                  <compilerId>groovy-eclipse-compiler</compilerId>
+                  <compilerArgs>-warn:-unused</compilerArgs>
+                  <release>8</release>
+                </configuration>
+              </execution>
+              <execution>
+                <id>default-testCompile</id>
+                <phase>process-test-sources</phase>
+                <goals>
+                  <goal>testCompile</goal>
+                </goals>
+                <configuration>
+                  <compilerId>groovy-eclipse-compiler</compilerId>
+                  <compilerArgs>-warn:-unused</compilerArgs>
+                  <release>8</release>
+                </configuration>
+              </execution>
+            </executions>
+            <dependencies>
+              <dependency>
+                <groupId>org.codehaus.groovy</groupId>
+                <artifactId>groovy-eclipse-compiler</artifactId>
+                <version>3.4.0-01</version> <!-- {x-version-update;org.codehaus.groovy:groovy-eclipse-compiler;external_dependency} -->
+              </dependency>
+              <dependency>
+                <groupId>org.codehaus.groovy</groupId>
+                <artifactId>groovy-eclipse-batch</artifactId>
+                <version>2.5.8-01</version> <!-- {x-version-update;org.codehaus.groovy:groovy-eclipse-batch;external_dependency} -->
+              </dependency>
+            </dependencies>
+          </plugin>
+
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+              <argLine>
+                --add-opens com.azure.storage.common/com.azure.storage.common.implementation=ALL-UNNAMED
+                --add-opens com.azure.storage.internal.avro/com.azure.storage.internal.avro.implementation=ALL-UNNAMED
+                --add-opens com.azure.storage.internal.avro/com.azure.storage.internal.avro.implementation.schema=ALL-UNNAMED
+              </argLine>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

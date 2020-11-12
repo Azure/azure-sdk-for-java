@@ -38,7 +38,7 @@ public final class AsciiFoldingTokenFilterConverter {
 
         Boolean preserveOriginal = obj.isPreserveOriginal();
         asciiFoldingTokenFilter.setPreserveOriginal(preserveOriginal);
-        asciiFoldingTokenFilter.validate();
+
         return asciiFoldingTokenFilter;
     }
 

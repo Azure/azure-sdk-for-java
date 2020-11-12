@@ -1,5 +1,6 @@
 parameters:
   Artifacts: []
+  TestPipeline: false
   ArtifactName: 'not-specified'
   TargetDocRepoOwner: ''
   TargetDocRepoName: ''
@@ -61,6 +62,15 @@ stages:
               vmImage: ubuntu-18.04
 
             steps:
+              - ${{if eq(parameters.TestPipeline, 'true')}}:
+                - task: PowerShell@2
+                  displayName: Prep template pipeline for release
+                  condition: succeeded()
+                  inputs:
+                    pwsh: true
+                    workingDirectory: $(Build.SourcesDirectory)
+                    filePath: eng/scripts/SetTestPipelineVersion.ps1
+
               - task: UsePythonVersion@0
                 displayName: 'Use Python 3.6'
                 inputs:
@@ -87,7 +97,6 @@ stages:
             displayName: "Create release tag"
             condition: and(succeeded(), ne(variables['Skip.TagRepository'], 'true'))
             environment: github
-            timeoutInMinutes: 5
             dependsOn: VerifyReleaseVersion
             variables:
               - template: ../variables/globals.yml
@@ -98,19 +107,13 @@ stages:
                 deploy:
                   steps:
                     - checkout: self
-                    - template: /eng/pipelines/templates/steps/stage-artifacts.yml
-                      parameters:
-                        SourceFolder: ${{parameters.ArtifactName}}-signed
-                        TargetFolder: ${{artifact.safeName}}
-                        PackageName: ${{artifact.name}}
                     - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
                       parameters:
-                        ArtifactLocation: $(Pipeline.Workspace)/${{artifact.safeName}}
+                        ArtifactLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}
                         PackageRepository: Maven
                         ReleaseSha: $(Build.SourceVersion)
-                        RepoId: Azure/azure-sdk-for-java
 
-          - ${{if ne(artifact.options.skipPublishPackage, 'true')}}:
+          - ${{if ne(artifact.skipPublishPackage, 'true')}}:
             - deployment: PublishPackage
               displayName: "Publish to Maven Central"
               condition: and(succeeded(), ne(variables['Skip.PublishPackage'], 'true'))
@@ -150,14 +153,15 @@ stages:
                           BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
                           JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
 
-          - ${{if ne(artifact.options.skipPublishDocs, 'true')}}:
+          - ${{if ne(artifact.skipPublishDocMs, 'true')}}:
             - deployment: PublicDocsMs
               displayName: "Publish Updates for Docs.MS"
               condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
               environment: github
               dependsOn: PublishPackage
               variables:
-                - template: ../variables/globals.yml
+                CIConfigs: "{'targets':[{'path_to_config':'package.json','mode':'Preview','monikerid':'1'},{'path_to_config':'package.json','mode':'Latest','monikerid':'0'}]}"
+                skipComponentGovernanceDetection: true
               pool:
                 vmImage: vs2017-win2016
               strategy:
@@ -165,26 +169,27 @@ stages:
                   deploy:
                     steps:
                       - checkout: self
-                      - template: /eng/pipelines/templates/steps/stage-artifacts.yml
+                      - template: /eng/common/pipelines/templates/steps/get-pr-owners.yml
                         parameters:
-                          SourceFolder: ${{parameters.ArtifactName}}-signed
-                          TargetFolder: ${{artifact.safeName}}
-                          PackageName: ${{artifact.name}}
+                          TargetVariable: "OwningGHUser"
+                          ServiceDirectory: ${{parameters.ServiceDirectory}}
                       - template: /eng/common/pipelines/templates/steps/docs-metadata-release.yml
                         parameters:
-                          ArtifactLocation: $(Pipeline.Workspace)/${{artifact.safeName}}
+                          ArtifactLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}
                           PackageRepository: Maven
                           ReleaseSha: $(Build.SourceVersion)
-                          RepoId: Azure/azure-sdk-for-java
                           WorkingDirectory: $(System.DefaultWorkingDirectory)
                           TargetDocRepoOwner: ${{parameters.TargetDocRepoOwner}}
                           TargetDocRepoName: ${{parameters.TargetDocRepoName}}
-                          PRBranchName: 'smoke-test-rdme'
-                          ArtifactName: ${{parameters.ArtifactName}}
+                          PRBranchName: onboarding-${{artifact.name}}-$(Build.BuildId)
+                          ArtifactName: ${{artifact.name}}
                           Language: 'java'
                           DocRepoDestinationPath: 'docs-ref-services/'
+                          GHReviewersVariable: 'OwningGHUser'
+                          CIConfigs: $(CIConfigs)
+                          CloseAfterOpenForTesting: '${{ parameters.TestPipeline }}'
 
-          - ${{if ne(artifact.options.skipPublishDocs, 'true')}}:
+          - ${{if ne(artifact.skipPublishDocGithubIo, 'true')}}:
             - deployment: PublishDocs
               displayName: Publish Docs to GitHubIO Blob Storage
               condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
@@ -199,26 +204,21 @@ stages:
                   deploy:
                     steps:
                       - checkout: self
-                      - template: /eng/pipelines/templates/steps/stage-artifacts.yml
-                        parameters:
-                          SourceFolder: ${{parameters.ArtifactName}}-signed
-                          TargetFolder: ${{artifact.safeName}}
-                          PackageName: ${{artifact.name}}
                       - pwsh: |
-                          Get-ChildItem -Recurse $(Pipeline.Workspace)/${{artifact.safeName}}
+                          Get-ChildItem -Recurse $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}
                         workingDirectory: $(Pipeline.Workspace)
                         displayName: Output Visible Artifacts
                       - template: /eng/common/pipelines/templates/steps/publish-blobs.yml
                         parameters:
-                          FolderForUpload: '$(Pipeline.Workspace)/${{artifact.safeName}}'
+                          FolderForUpload: '$(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}'
                           BlobSASKey: '$(azure-sdk-docs-prod-sas)'
                           BlobName: '$(azure-sdk-docs-prod-blob-name)'
                           TargetLanguage: 'java'
-
+                          ArtifactLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}
                           # we override the regular script path because we have cloned the build tools repo as a separate artifact.
                           ScriptPath: 'eng/common/scripts/copy-docs-to-blobstorage.ps1'
 
-          - ${{if ne(artifact.options.skipUpdatePackageVersion, 'true')}}:
+          - ${{if ne(artifact.skipUpdatePackageVersion, 'true')}}:
             - deployment: UpdatePackageVersion
               displayName: "Update Package Version"
               condition: and(succeeded(), ne(variables['Skip.UpdatePackageVersion'], 'true'))
@@ -251,7 +251,6 @@ stages:
 
                       - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
                         parameters:
-                          RepoName: azure-sdk-for-java
                           PRBranchName: increment-package-version-${{ parameters.ServiceDirectory }}-$(Build.BuildId)
                           CommitMsg: "Increment package version after release of ${{ artifact.groupId }} ${{ artifact.name }}"
                           PRTitle: "Increment version for ${{ parameters.ServiceDirectory }} releases"
@@ -295,12 +294,13 @@ stages:
         - template: tools/gpg/gpg.yml@azure-sdk-build-tools
 
         - ${{ each artifact in parameters.Artifacts }}:
-          - template: /eng/pipelines/templates/steps/java-publishing.yml
-            parameters:
-              ArtifactID: ${{artifact.name}}
-              GroupID: ${{artifact.groupId}}
-              ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
-              RepositoryUrl: $(RepositoryUrl)
-              Target: JavaDevFeed
-              BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
-              JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
+          - ${{if ne(artifact.skipPublishDevFeed, 'true')}}:
+            - template: /eng/pipelines/templates/steps/java-publishing.yml
+              parameters:
+                ArtifactID: ${{artifact.name}}
+                GroupID: ${{artifact.groupId}}
+                ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+                RepositoryUrl: $(RepositoryUrl)
+                Target: JavaDevFeed
+                BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
+                JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java

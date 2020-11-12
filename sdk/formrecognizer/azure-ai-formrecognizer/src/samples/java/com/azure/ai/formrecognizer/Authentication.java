@@ -3,10 +3,10 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.models.AccountProperties;
+import com.azure.ai.formrecognizer.training.models.AccountProperties;
 import com.azure.ai.formrecognizer.models.FieldValueType;
 import com.azure.ai.formrecognizer.models.FormField;
-import com.azure.ai.formrecognizer.models.OperationResult;
+import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.training.FormTrainingClient;
 import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
@@ -31,11 +31,11 @@ public class Authentication {
      *
      */
     public static void main(String[] args) {
-        /**
-         * Set the environment variables with your own values before running the sample:
-         * AZURE_CLIENT_ID - the client ID of your active directory application.
-         * AZURE_TENANT_ID - the tenant ID of your active directory application.
-         * AZURE_CLIENT_SECRET - the secret of your active directory application.
+        /*
+          Set the environment variables with your own values before running the sample:
+          AZURE_CLIENT_ID - the client ID of your active directory application.
+          AZURE_TENANT_ID - the tenant ID of your active directory application.
+          AZURE_CLIENT_SECRET - the secret of your active directory application.
          */
 
         // Form recognizer client: Key credential
@@ -84,68 +84,66 @@ public class Authentication {
         String receiptUrl = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/formrecognizer"
             + "/azure-ai-formrecognizer/src/samples/java/sample-forms/receipts/contoso-allinone.jpg";
 
-        SyncPoller<OperationResult, List<RecognizedForm>> recognizeReceiptPoller =
+        SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> recognizeReceiptPoller =
             formRecognizerClient.beginRecognizeReceiptsFromUrl(receiptUrl);
 
         List<RecognizedForm> receiptPageResults = recognizeReceiptPoller.getFinalResult();
 
         for (int i = 0; i < receiptPageResults.size(); i++) {
             RecognizedForm recognizedForm = receiptPageResults.get(i);
-            Map<String, FormField<?>> recognizedFields = recognizedForm.getFields();
-            System.out.printf("----------- Recognized Receipt page %d -----------%n", i);
-            FormField<?> merchantNameField = recognizedFields.get("MerchantName");
+            Map<String, FormField> recognizedFields = recognizedForm.getFields();
+            System.out.printf("----------- Recognizing receipt info for page %d -----------%n", i);
+            FormField merchantNameField = recognizedFields.get("MerchantName");
             if (merchantNameField != null) {
-                if (FieldValueType.STRING.equals(merchantNameField.getValueType())) {
-                    String merchantName = FieldValueType.STRING.cast(merchantNameField);
+                if (FieldValueType.STRING == merchantNameField.getValue().getValueType()) {
+                    String merchantName = merchantNameField.getValue().asString();
                     System.out.printf("Merchant Name: %s, confidence: %.2f%n",
                         merchantName, merchantNameField.getConfidence());
                 }
             }
 
-            FormField<?> merchantPhoneNumberField = recognizedFields.get("MerchantPhoneNumber");
+            FormField merchantPhoneNumberField = recognizedFields.get("MerchantPhoneNumber");
             if (merchantPhoneNumberField != null) {
-                if (FieldValueType.PHONE_NUMBER.equals(merchantNameField.getValueType())) {
-                    String merchantAddress = FieldValueType.PHONE_NUMBER.cast(merchantPhoneNumberField);
+                if (FieldValueType.PHONE_NUMBER == merchantPhoneNumberField.getValue().getValueType()) {
+                    String merchantAddress = merchantPhoneNumberField.getValue().asPhoneNumber();
                     System.out.printf("Merchant Phone number: %s, confidence: %.2f%n",
                         merchantAddress, merchantPhoneNumberField.getConfidence());
                 }
             }
 
-            FormField<?> transactionDateField = recognizedFields.get("TransactionDate");
+            FormField transactionDateField = recognizedFields.get("TransactionDate");
             if (transactionDateField != null) {
-                if (FieldValueType.DATE.equals(transactionDateField.getValueType())) {
-                    LocalDate transactionDate = FieldValueType.DATE.cast(transactionDateField);
+                if (FieldValueType.DATE == transactionDateField.getValue().getValueType()) {
+                    LocalDate transactionDate = transactionDateField.getValue().asDate();
                     System.out.printf("Transaction Date: %s, confidence: %.2f%n",
                         transactionDate, transactionDateField.getConfidence());
                 }
             }
 
-            FormField<?> receiptItemsField = recognizedFields.get("Items");
+            FormField receiptItemsField = recognizedFields.get("Items");
             if (receiptItemsField != null) {
                 System.out.printf("Receipt Items: %n");
-                if (FieldValueType.LIST.equals(receiptItemsField.getValueType())) {
-                    List<FormField<?>> receiptItems = FieldValueType.LIST.cast(receiptItemsField);
-                    receiptItems.forEach(receiptItem -> {
-                        if (FieldValueType.MAP.equals(receiptItem.getValueType())) {
-                            Map<String, FormField<?>> formFieldMap = FieldValueType.MAP.cast(receiptItem);
-                            formFieldMap.forEach((key, formField) -> {
-                                if ("Name".equals(key)) {
-                                    if (FieldValueType.STRING.equals(formField.getValueType())) {
-                                        String name = FieldValueType.STRING.cast(formField);
-                                        System.out.printf("Name: %s, confidence: %.2fs%n",
-                                            name, formField.getConfidence());
-                                    }
+                if (FieldValueType.LIST == receiptItemsField.getValue().getValueType()) {
+                    List<FormField> receiptItems = receiptItemsField.getValue().asList();
+                    receiptItems.stream()
+                        .filter(receiptItem -> FieldValueType.MAP == receiptItem.getValue().getValueType())
+                        .map(formField -> formField.getValue().asMap())
+                        .forEach(formFieldMap -> formFieldMap.forEach((key, formField) -> {
+                            if ("Name".equals(key)) {
+                                if (FieldValueType.STRING == formField.getValue().getValueType()) {
+                                    String name = formField.getValue().asString();
+                                    System.out.printf("Name: %s, confidence: %.2fs%n",
+                                        name, formField.getConfidence());
                                 }
-                                if ("Quantity".equals(key)) {
-                                    if (FieldValueType.DOUBLE.equals(formField.getValueType())) {
-                                        Float quantity = FieldValueType.DOUBLE.cast(formField);
-                                        System.out.printf("Quantity: %f, confidence: %.2f%n",
-                                            quantity, formField.getConfidence());
-                                    }
+                            }
+                            if ("Quantity".equals(key)) {
+                                if (FieldValueType.FLOAT == formField.getValue().getValueType()) {
+                                    Float quantity = formField.getValue().asFloat();
+                                    System.out.printf("Quantity: %f, confidence: %.2f%n",
+                                        quantity, formField.getConfidence());
                                 }
-                            });
-                        }
-                    });
+                            }
+                        }));
                 }
             }
             System.out.print("-----------------------------------");

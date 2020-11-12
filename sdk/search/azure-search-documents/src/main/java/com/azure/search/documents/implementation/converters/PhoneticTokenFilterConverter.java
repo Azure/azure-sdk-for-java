@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.indexes.models.PhoneticEncoder;
 import com.azure.search.documents.indexes.models.PhoneticTokenFilter;
 
 /**
@@ -25,8 +24,7 @@ public final class PhoneticTokenFilterConverter {
         phoneticTokenFilter.setOriginalTokensReplaced(replaceOriginalTokens);
 
         if (obj.getEncoder() != null) {
-            PhoneticEncoder encoder = PhoneticEncoderConverter.map(obj.getEncoder());
-            phoneticTokenFilter.setEncoder(encoder);
+            phoneticTokenFilter.setEncoder(obj.getEncoder());
         }
         return phoneticTokenFilter;
     }
@@ -46,11 +44,9 @@ public final class PhoneticTokenFilterConverter {
         phoneticTokenFilter.setReplaceOriginalTokens(replaceOriginalTokens);
 
         if (obj.getEncoder() != null) {
-            com.azure.search.documents.indexes.implementation.models.PhoneticEncoder encoder =
-                PhoneticEncoderConverter.map(obj.getEncoder());
-            phoneticTokenFilter.setEncoder(encoder);
+            phoneticTokenFilter.setEncoder(obj.getEncoder());
         }
-        phoneticTokenFilter.validate();
+
         return phoneticTokenFilter;
     }
 

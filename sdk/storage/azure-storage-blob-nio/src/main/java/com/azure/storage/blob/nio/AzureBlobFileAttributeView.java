@@ -29,6 +29,7 @@ public final class AzureBlobFileAttributeView implements BasicFileAttributeView 
     private final ClientLogger logger = new ClientLogger(AzureBlobFileAttributeView.class);
 
     static final String ATTR_CONSUMER_ERROR = "Exception thrown by attribute consumer";
+    static final String NAME = "azureBlob";
 
     private final Path path;
 
@@ -69,23 +70,26 @@ public final class AzureBlobFileAttributeView implements BasicFileAttributeView 
     }
 
     /**
-     * Returns "azureBlob".
-     * {@inheritDoc}
+     * Returns the name of the attribute view: {@code "azureBlob"}
+     *
+     * @return the name of the attribute view: {@code "azureBlob"}
      */
     @Override
     public String name() {
-        return "azureBlob";
+        return NAME;
     }
 
     /**
      * Reads the file attributes as a bulk operation.
-     *
-     * Gets a fresh copy every time it is called.
+     * <p>
+     * All file attributes are read as an atomic operation with respect to other file system operations. A fresh copy is
+     * retrieved every time this method is called.
      * @return {@link AzureBlobFileAttributes}
      * @throws IOException if an IOException occurs.
      */
     @Override
     public AzureBlobFileAttributes readAttributes() throws IOException {
+        AzurePath.ensureFileSystemOpen(path);
         return new AzureBlobFileAttributes(path);
     }
 
@@ -97,6 +101,7 @@ public final class AzureBlobFileAttributeView implements BasicFileAttributeView 
      * @throws IOException if an IOException occurs.
      */
     public void setBlobHttpHeaders(BlobHttpHeaders headers) throws IOException {
+        AzurePath.ensureFileSystemOpen(path);
         try {
             new AzureResource(this.path).getBlobClient().setHttpHeaders(headers);
         } catch (BlobStorageException e) {
@@ -112,6 +117,7 @@ public final class AzureBlobFileAttributeView implements BasicFileAttributeView 
      * @throws IOException if an IOException occurs.
      */
     public void setMetadata(Map<String, String> metadata) throws IOException {
+        AzurePath.ensureFileSystemOpen(path);
         try {
             new AzureResource(this.path).getBlobClient().setMetadata(metadata);
         } catch (BlobStorageException e) {
@@ -121,12 +127,13 @@ public final class AzureBlobFileAttributeView implements BasicFileAttributeView 
 
     /**
      * Sets the {@link AccessTier} on the file.
-     *
+     * <p>
      * See {@link BlobClientBase#setAccessTier(AccessTier)} for more information.
      * @param tier {@link AccessTier}
      * @throws IOException if an IOException occurs.
      */
     public void setTier(AccessTier tier) throws IOException {
+        AzurePath.ensureFileSystemOpen(path);
         try {
             new AzureResource(this.path).getBlobClient().setAccessTier(tier);
         } catch (BlobStorageException e) {
@@ -137,11 +144,14 @@ public final class AzureBlobFileAttributeView implements BasicFileAttributeView 
     /**
      * Unsupported.
      *
+     * @param lastModifiedTime the new last modified time, or null to not change the value
+     * @param lastAccessTime the last access time, or null to not change the value
+     * @param createTime the file's create time, or null to not change the value
      * @throws UnsupportedOperationException Operation not supported.
-     * {@inheritDoc}
+     * @throws IOException never
      */
     @Override
-    public void setTimes(FileTime fileTime, FileTime fileTime1, FileTime fileTime2) throws IOException {
+    public void setTimes(FileTime lastModifiedTime, FileTime lastAccessTime, FileTime createTime) throws IOException {
         throw new UnsupportedOperationException();
     }
 }

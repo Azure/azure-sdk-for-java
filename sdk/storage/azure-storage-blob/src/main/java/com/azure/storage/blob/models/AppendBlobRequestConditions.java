@@ -83,6 +83,18 @@ public final class AppendBlobRequestConditions extends BlobRequestConditions {
     }
 
     /**
+     * Optionally applies the SQL statement to the tags of the blob.
+     *
+     * @param tagsConditions The SQL statement that apply to the tags of the blob.
+     * @return The updated BlobRequestConditions object.
+     */
+    @Override
+    public AppendBlobRequestConditions setTagsConditions(String tagsConditions) {
+        super.setTagsConditions(tagsConditions);
+        return this;
+    }
+
+    /**
      * Gets the max length in bytes allowed for the append blob.
      *
      * <p>If the operation would cause the append blob to grow larger than the limit the request will fail.</p>

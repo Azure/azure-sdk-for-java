@@ -102,6 +102,13 @@ public class AzureDatabricksLinkedService extends LinkedServiceInner {
     private Map<String, Object> newClusterCustomTags;
 
     /**
+     * Specify a location to deliver Spark driver, worker, and event logs.
+     * Type: string (or Expression with resultType string).
+     */
+    @JsonProperty(value = "typeProperties.newClusterLogDestination")
+    private Object newClusterLogDestination;
+
+    /**
      * The driver node type for the new job cluster. This property is ignored
      * in instance pool configurations. Type: string (or Expression with
      * resultType string).
@@ -330,6 +337,26 @@ public class AzureDatabricksLinkedService extends LinkedServiceInner {
      */
     public AzureDatabricksLinkedService withNewClusterCustomTags(Map<String, Object> newClusterCustomTags) {
         this.newClusterCustomTags = newClusterCustomTags;
+        return this;
+    }
+
+    /**
+     * Get specify a location to deliver Spark driver, worker, and event logs. Type: string (or Expression with resultType string).
+     *
+     * @return the newClusterLogDestination value
+     */
+    public Object newClusterLogDestination() {
+        return this.newClusterLogDestination;
+    }
+
+    /**
+     * Set specify a location to deliver Spark driver, worker, and event logs. Type: string (or Expression with resultType string).
+     *
+     * @param newClusterLogDestination the newClusterLogDestination value to set
+     * @return the AzureDatabricksLinkedService object itself.
+     */
+    public AzureDatabricksLinkedService withNewClusterLogDestination(Object newClusterLogDestination) {
+        this.newClusterLogDestination = newClusterLogDestination;
         return this;
     }
 

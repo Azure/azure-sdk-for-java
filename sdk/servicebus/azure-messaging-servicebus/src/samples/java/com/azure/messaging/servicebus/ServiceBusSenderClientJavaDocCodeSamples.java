@@ -3,7 +3,8 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.messaging.servicebus.models.CreateBatchOptions;
+import com.azure.core.experimental.util.BinaryData;
+import com.azure.messaging.servicebus.models.CreateMessageBatchOptions;
 
 import java.util.Arrays;
 import java.util.List;
@@ -46,22 +47,22 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
             .sender()
             .buildClient();
 
-        // BEGIN: com.azure.messaging.servicebus.servicebussenderclient.createBatch
+        // BEGIN: com.azure.messaging.servicebus.servicebussenderclient.createMessageBatch
 
-        List<ServiceBusMessage> messages = Arrays.asList(new ServiceBusMessage("test-1".getBytes(UTF_8)),
-            new ServiceBusMessage("test-2".getBytes(UTF_8)));
+        List<ServiceBusMessage> messages = Arrays.asList(new ServiceBusMessage(BinaryData.fromBytes("test-1".getBytes(UTF_8))),
+            new ServiceBusMessage(BinaryData.fromBytes("test-2".getBytes(UTF_8))));
 
-        final CreateBatchOptions options = new CreateBatchOptions().setMaximumSizeInBytes(10 * 1024);
+        final CreateMessageBatchOptions options = new CreateMessageBatchOptions().setMaximumSizeInBytes(10 * 1024);
         // Creating a batch without options set.
-        ServiceBusMessageBatch batch = sender.createBatch(options);
+        ServiceBusMessageBatch batch = sender.createMessageBatch(options);
         for (ServiceBusMessage message : messages) {
-            if (batch.tryAdd(message)) {
+            if (batch.tryAddMessage(message)) {
                 continue;
             }
 
             sender.sendMessages(batch);
         }
-        // END: com.azure.messaging.servicebus.servicebussenderclient.createBatch
+        // END: com.azure.messaging.servicebus.servicebussenderclient.createMessageBatch
 
         sender.close();
     }
@@ -79,38 +80,38 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
             .queueName("<< QUEUE NAME >>")
             .buildClient();
 
-        final ServiceBusMessage firstMessage = new ServiceBusMessage("message-1".getBytes(UTF_8));
-        firstMessage.getProperties().put("telemetry", "latency");
-        final ServiceBusMessage secondMessage = new ServiceBusMessage("message-2".getBytes(UTF_8));
-        secondMessage.getProperties().put("telemetry", "cpu-temperature");
-        final ServiceBusMessage thirdMessage = new ServiceBusMessage("message-3".getBytes(UTF_8));
-        thirdMessage.getProperties().put("telemetry", "fps");
+        final ServiceBusMessage firstMessage = new ServiceBusMessage(BinaryData.fromBytes("message-1".getBytes(UTF_8)));
+        firstMessage.getApplicationProperties().put("telemetry", "latency");
+        final ServiceBusMessage secondMessage = new ServiceBusMessage(BinaryData.fromBytes("message-2".getBytes(UTF_8)));
+        secondMessage.getApplicationProperties().put("telemetry", "cpu-temperature");
+        final ServiceBusMessage thirdMessage = new ServiceBusMessage(BinaryData.fromBytes("message-3".getBytes(UTF_8)));
+        thirdMessage.getApplicationProperties().put("telemetry", "fps");
 
-        // BEGIN: com.azure.messaging.servicebus.servicebussenderclient.createBatch#CreateBatchOptions-int
+        // BEGIN: com.azure.messaging.servicebus.servicebussenderclient.createMessageBatch#CreateMessageBatchOptions-int
 
 
         final List<ServiceBusMessage> telemetryMessages = Arrays.asList(firstMessage, secondMessage, thirdMessage);
 
         // Setting `setMaximumSizeInBytes` when creating a batch, limits the size of that batch.
         // In this case, all the batches created with these options are limited to 256 bytes.
-        final CreateBatchOptions options = new CreateBatchOptions()
+        final CreateMessageBatchOptions options = new CreateMessageBatchOptions()
             .setMaximumSizeInBytes(256);
 
-        ServiceBusMessageBatch currentBatch = sender.createBatch(options);
+        ServiceBusMessageBatch currentBatch = sender.createMessageBatch(options);
 
         // For each telemetry message, we try to add it to the current batch.
         // When the batch is full, send it then create another batch to add more mesages to.
         for (ServiceBusMessage message : telemetryMessages) {
-            if (!currentBatch.tryAdd(message)) {
+            if (!currentBatch.tryAddMessage(message)) {
                 sender.sendMessages(currentBatch);
-                currentBatch = sender.createBatch(options);
+                currentBatch = sender.createMessageBatch(options);
 
                 // Add the message we couldn't before.
-                if (!currentBatch.tryAdd(message)) {
+                if (!currentBatch.tryAddMessage(message)) {
                     throw new IllegalArgumentException("Message is too large for an empty batch.");
                 }
             }
         }
-        // END: com.azure.messaging.servicebus.servicebussenderclient.createBatch#CreateBatchOptions-int
+        // END: com.azure.messaging.servicebus.servicebussenderclient.createMessageBatch#CreateMessageBatchOptions-int
     }
 }

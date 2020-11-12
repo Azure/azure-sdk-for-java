@@ -4,25 +4,26 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.apachecommons.lang.NotImplementedException;
-import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.implementation.Resource;
-import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.RequestChargeTracker;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
+import com.azure.cosmos.implementation.apachecommons.lang.NotImplementedException;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.query.orderbyquery.OrderByRowResult;
 import com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer;
 import com.azure.cosmos.implementation.routing.Range;
-import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.SqlQuerySpec;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -53,6 +54,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
     private final Map<String, OrderByContinuationToken> targetRangeToOrderByContinuationTokenMap;
 
     private OrderByDocumentQueryExecutionContext(
+            DiagnosticsClientContext diagnosticsClientContext,
             IDocumentQueryClient client,
             List<PartitionKeyRange> partitionKeyRanges,
             ResourceType resourceTypeEnum,
@@ -66,7 +68,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
             OrderbyRowComparer<T> consumeComparer,
             String collectionRid,
             UUID correlatedActivityId) {
-        super(client, partitionKeyRanges, resourceTypeEnum, klass, query, cosmosQueryRequestOptions, resourceLink, rewrittenQuery,
+        super(diagnosticsClientContext, client, partitionKeyRanges, resourceTypeEnum, klass, query, cosmosQueryRequestOptions, resourceLink, rewrittenQuery,
                 isContinuationExpected, getLazyFeedResponse, correlatedActivityId);
         this.collectionRid = collectionRid;
         this.consumeComparer = consumeComparer;
@@ -76,10 +78,11 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
     }
 
     public static <T extends Resource> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
+            DiagnosticsClientContext diagnosticsClientContext,
             IDocumentQueryClient client,
             PipelinedDocumentQueryParams<T> initParams) {
 
-        OrderByDocumentQueryExecutionContext<T> context = new OrderByDocumentQueryExecutionContext<T>(
+        OrderByDocumentQueryExecutionContext<T> context = new OrderByDocumentQueryExecutionContext<T>(diagnosticsClientContext,
                 client,
                 initParams.getPartitionKeyRanges(),
                 initParams.getResourceTypeEnum(),
@@ -411,8 +414,9 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
             headers.put(HttpConstants.HttpHeaders.CONTINUATION,
                     orderByContinuationToken);
             return BridgeInternal.createFeedResponseWithQueryMetrics(page.getResults(),
-                    headers,
-                    BridgeInternal.queryMetricsFromFeedResponse(page));
+                headers,
+                BridgeInternal.queryMetricsFromFeedResponse(page),
+                ModelBridgeInternal.getQueryPlanDiagnosticsContext(page));
         }
 
         @Override
@@ -489,13 +493,14 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                             unwrappedResults.add(orderByRowResult.getPayload());
                         }
 
-                        return BridgeInternal.createFeedResponseWithQueryMetrics(unwrappedResults,
-                                feedOfOrderByRowResults.getResponseHeaders(),
-                                BridgeInternal.queryMetricsFromFeedResponse(feedOfOrderByRowResults));
-                    }).switchIfEmpty(Flux.defer(() -> {
+                    return BridgeInternal.createFeedResponseWithQueryMetrics(unwrappedResults,
+                        feedOfOrderByRowResults.getResponseHeaders(),
+                        BridgeInternal.queryMetricsFromFeedResponse(feedOfOrderByRowResults),
+                        ModelBridgeInternal.getQueryPlanDiagnosticsContext(feedOfOrderByRowResults));
+                }).switchIfEmpty(Flux.defer(() -> {
                         // create an empty page if there is no result
-                        return Flux.just(BridgeInternal.createFeedResponse(Utils.immutableListOf(),
-                                headerResponse(tracker.getAndResetCharge())));
+                        return Flux.just(BridgeInternal.createFeedResponseWithQueryMetrics(Utils.immutableListOf(),
+                                headerResponse(tracker.getAndResetCharge()), queryMetricMap, null));
                     }));
         }
     }

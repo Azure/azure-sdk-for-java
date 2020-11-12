@@ -56,7 +56,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 /**
@@ -146,7 +146,6 @@ public class ServiceBusReactorSessionTest {
         sink1.next(EndpointState.ACTIVE);
         when(handler.getHostname()).thenReturn(HOSTNAME);
         when(handler.getConnectionId()).thenReturn(CONNECTION_ID);
-        when(handler.getErrors()).thenReturn(Flux.empty());
 
         when(handlerProvider.createSendLinkHandler(CONNECTION_ID, HOSTNAME, viaEntityPathSenderLinkName, viaEntityPath))
             .thenReturn(sendViaEntityLinkHandler);
@@ -164,9 +163,6 @@ public class ServiceBusReactorSessionTest {
 
         when(sendViaEntityLinkHandler.getEndpointStates()).thenReturn(endpointStateReplayProcessor);
         when(sendEntityLinkHandler.getEndpointStates()).thenReturn(endpointStateReplayProcessor);
-
-        when(sendViaEntityLinkHandler.getErrors()).thenReturn(Flux.empty());
-        when(sendEntityLinkHandler.getErrors()).thenReturn(Flux.empty());
 
         when(tokenManagerProvider.getTokenManager(cbsNodeSupplier, viaEntityPath)).thenReturn(tokenManagerViaQueue);
         when(tokenManagerProvider.getTokenManager(cbsNodeSupplier, entityPath)).thenReturn(tokenManagerEntity);
@@ -251,7 +247,7 @@ public class ServiceBusReactorSessionTest {
         // Assert
         verify(tokenManagerEntity).authorize();
         verify(tokenManagerViaQueue).authorize();
-        verifyZeroInteractions(dispatcher);
+        verifyNoInteractions(dispatcher);
     }
 
     /**

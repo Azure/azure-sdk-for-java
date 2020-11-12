@@ -6,6 +6,9 @@ package com.azure.search.documents.indexes.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
+
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -152,6 +155,18 @@ public final class SearchIndex {
      * @param fields the fields value to set.
      * @return the SearchIndex object itself.
      */
+    public SearchIndex setFields(SearchField... fields) {
+        this.fields = (fields == null) ? null : Arrays.asList(fields);
+        return this;
+    }
+
+    /**
+     * Set the fields property: The fields of the index.
+     *
+     * @param fields the fields value to set.
+     * @return the SearchIndex object itself.
+     */
+    @JsonSetter
     public SearchIndex setFields(List<SearchField> fields) {
         this.fields = fields;
         return this;
@@ -172,6 +187,18 @@ public final class SearchIndex {
      * @param scoringProfiles the scoringProfiles value to set.
      * @return the SearchIndex object itself.
      */
+    public SearchIndex setScoringProfiles(ScoringProfile... scoringProfiles) {
+        this.scoringProfiles = (scoringProfiles == null) ? null : Arrays.asList(scoringProfiles);
+        return this;
+    }
+
+    /**
+     * Set the scoringProfiles property: The scoring profiles for the index.
+     *
+     * @param scoringProfiles the scoringProfiles value to set.
+     * @return the SearchIndex object itself.
+     */
+    @JsonSetter
     public SearchIndex setScoringProfiles(List<ScoringProfile> scoringProfiles) {
         this.scoringProfiles = scoringProfiles;
         return this;
@@ -240,6 +267,18 @@ public final class SearchIndex {
      * @param suggesters the suggesters value to set.
      * @return the SearchIndex object itself.
      */
+    public SearchIndex setSuggesters(SearchSuggester... suggesters) {
+        this.suggesters = (suggesters == null) ? null : Arrays.asList(suggesters);
+        return this;
+    }
+
+    /**
+     * Set the suggesters property: The suggesters for the index.
+     *
+     * @param suggesters the suggesters value to set.
+     * @return the SearchIndex object itself.
+     */
+    @JsonSetter
     public SearchIndex setSuggesters(List<SearchSuggester> suggesters) {
         this.suggesters = suggesters;
         return this;
@@ -260,6 +299,18 @@ public final class SearchIndex {
      * @param analyzers the analyzers value to set.
      * @return the SearchIndex object itself.
      */
+    public SearchIndex setAnalyzers(LexicalAnalyzer... analyzers) {
+        this.analyzers = (analyzers == null) ? null : Arrays.asList(analyzers);
+        return this;
+    }
+
+    /**
+     * Set the analyzers property: The analyzers for the index.
+     *
+     * @param analyzers the analyzers value to set.
+     * @return the SearchIndex object itself.
+     */
+    @JsonSetter
     public SearchIndex setAnalyzers(List<LexicalAnalyzer> analyzers) {
         this.analyzers = analyzers;
         return this;
@@ -280,6 +331,18 @@ public final class SearchIndex {
      * @param tokenizers the tokenizers value to set.
      * @return the SearchIndex object itself.
      */
+    public SearchIndex setTokenizers(LexicalTokenizer... tokenizers) {
+        this.tokenizers = (tokenizers == null) ? null : Arrays.asList(tokenizers);
+        return this;
+    }
+
+    /**
+     * Set the tokenizers property: The tokenizers for the index.
+     *
+     * @param tokenizers the tokenizers value to set.
+     * @return the SearchIndex object itself.
+     */
+    @JsonSetter
     public SearchIndex setTokenizers(List<LexicalTokenizer> tokenizers) {
         this.tokenizers = tokenizers;
         return this;
@@ -300,6 +363,18 @@ public final class SearchIndex {
      * @param tokenFilters the tokenFilters value to set.
      * @return the SearchIndex object itself.
      */
+    public SearchIndex setTokenFilters(TokenFilter... tokenFilters) {
+        this.tokenFilters = (tokenFilters == null) ? null : Arrays.asList(tokenFilters);
+        return this;
+    }
+
+    /**
+     * Set the tokenFilters property: The token filters for the index.
+     *
+     * @param tokenFilters the tokenFilters value to set.
+     * @return the SearchIndex object itself.
+     */
+    @JsonSetter
     public SearchIndex setTokenFilters(List<TokenFilter> tokenFilters) {
         this.tokenFilters = tokenFilters;
         return this;
@@ -320,6 +395,18 @@ public final class SearchIndex {
      * @param charFilters the charFilters value to set.
      * @return the SearchIndex object itself.
      */
+    public SearchIndex setCharFilters(CharFilter... charFilters) {
+        this.charFilters = (charFilters == null) ? null : Arrays.asList(charFilters);
+        return this;
+    }
+
+    /**
+     * Set the charFilters property: The character filters for the index.
+     *
+     * @param charFilters the charFilters value to set.
+     * @return the SearchIndex object itself.
+     */
+    @JsonSetter
     public SearchIndex setCharFilters(List<CharFilter> charFilters) {
         this.charFilters = charFilters;
         return this;

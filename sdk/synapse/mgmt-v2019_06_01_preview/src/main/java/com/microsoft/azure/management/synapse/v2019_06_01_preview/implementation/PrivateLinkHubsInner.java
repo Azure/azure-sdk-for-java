@@ -8,39 +8,38 @@
 
 package com.microsoft.azure.management.synapse.v2019_06_01_preview.implementation;
 
+import com.microsoft.azure.arm.collection.InnerSupportsGet;
+import com.microsoft.azure.arm.collection.InnerSupportsDelete;
+import com.microsoft.azure.arm.collection.InnerSupportsListing;
+import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.PrivateLinkHubPatchInfo;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.arm.collection.InnerSupportsDelete;
-import com.microsoft.azure.arm.collection.InnerSupportsGet;
-import com.microsoft.azure.arm.collection.InnerSupportsListing;
-import com.microsoft.azure.management.synapse.v2019_06_01_preview.PrivateLinkHubPatchInfo;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
-import okhttp3.ResponseBody;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.HTTP;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.PATCH;
-import retrofit2.http.PUT;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
-import retrofit2.http.Url;
-import rx.Observable;
-import rx.functions.Func1;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import okhttp3.ResponseBody;
+import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.Headers;
+import retrofit2.http.HTTP;
+import retrofit2.http.PATCH;
+import retrofit2.http.Path;
+import retrofit2.http.PUT;
+import retrofit2.http.Query;
+import retrofit2.http.Url;
+import retrofit2.Response;
+import rx.functions.Func1;
+import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined

@@ -148,7 +148,7 @@ class BlobBaseAPITest extends APISpec {
 
         /* Input Stream. */
         when:
-        InputStream qqStream = bc.openQueryInputStream(new BlobQueryOptions(expression).setInputSerialization(ser).setOutputSerialization(ser))
+        InputStream qqStream = bc.openQueryInputStreamWithResponse(new BlobQueryOptions(expression).setInputSerialization(ser).setOutputSerialization(ser)).getValue()
         byte[] queryData = readFromInputStream(qqStream, downloadedData.length)
 
         then:
@@ -224,7 +224,7 @@ class BlobBaseAPITest extends APISpec {
 
         /* Input Stream. */
         when:
-        InputStream qqStream = bc.openQueryInputStream(new BlobQueryOptions(expression).setInputSerialization(ser).setOutputSerialization(ser))
+        InputStream qqStream = bc.openQueryInputStreamWithResponse(new BlobQueryOptions(expression).setInputSerialization(ser).setOutputSerialization(ser)).getValue()
         byte[] queryData = readFromInputStream(qqStream, downloadedData.length)
 
         then:
@@ -263,7 +263,7 @@ class BlobBaseAPITest extends APISpec {
 
         /* Input Stream. */
         when:
-        InputStream qqStream = bc.openQueryInputStream(options)
+        InputStream qqStream = bc.openQueryInputStreamWithResponse(options).getValue()
         byte[] queryData = readFromInputStream(qqStream, downloadedData.length)
 
         then:
@@ -305,7 +305,7 @@ class BlobBaseAPITest extends APISpec {
 
         /* Input Stream. */
         when:
-        InputStream qqStream = bc.openQueryInputStream(options)
+        InputStream qqStream = bc.openQueryInputStreamWithResponse(options).getValue()
         byte[] queryData = readFromInputStream(qqStream, expectedData.length)
 
         then:
@@ -344,7 +344,7 @@ class BlobBaseAPITest extends APISpec {
 
         /* Input Stream. */
         when:
-        InputStream qqStream = bc.openQueryInputStream(options)
+        InputStream qqStream = bc.openQueryInputStreamWithResponse(options).getValue()
         byte[] queryData = readFromInputStream(qqStream, expectedData.length)
 
         then:
@@ -365,6 +365,42 @@ class BlobBaseAPITest extends APISpec {
         }
     }
 
+    def "Query Input csv Output arrow"() {
+        setup:
+        BlobQueryDelimitedSerialization inSer = new BlobQueryDelimitedSerialization()
+            .setRecordSeparator('\n' as char)
+            .setColumnSeparator(',' as char)
+            .setEscapeChar('\0' as char)
+            .setFieldQuote('\0' as char)
+            .setHeadersPresent(false)
+        uploadCsv(inSer, 32)
+        List<BlobQueryArrowField> schema = new ArrayList<>()
+        schema.add(new BlobQueryArrowField(BlobQueryArrowFieldType.DECIMAL).setName("Name").setPrecision(4).setScale(2))
+        BlobQueryArrowSerialization outSer = new BlobQueryArrowSerialization().setSchema(schema)
+        def expression = "SELECT _2 from BlobStorage WHERE _1 > 250;"
+        String expectedData = "/////4AAAAAQAAAAAAAKAAwABgAFAAgACgAAAAABAwAMAAAACAAIAAAABAAIAAAABAAAAAEAAAAUAAAAEAAUAAgABgAHAAwAAAAQABAAAAAAAAEHJAAAABQAAAAEAAAAAAAAAAgADAAEAAgACAAAAAQAAAACAAAABAAAAE5hbWUAAAAAAAAAAP////9wAAAAEAAAAAAACgAOAAYABQAIAAoAAAAAAwMAEAAAAAAACgAMAAAABAAIAAoAAAAwAAAABAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAP////+IAAAAFAAAAAAAAAAMABYABgAFAAgADAAMAAAAAAMDABgAAAAAAgAAAAAAAAAACgAYAAwABAAIAAoAAAA8AAAAEAAAACAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAABAAAAIAAAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAA"
+        OutputStream os = new ByteArrayOutputStream()
+        BlobQueryOptions options = new BlobQueryOptions(expression, os).setInputSerialization(inSer).setOutputSerialization(outSer)
+
+        /* Input Stream. */
+        when:
+        InputStream qqStream = bc.openQueryInputStreamWithResponse(options).getValue()
+        byte[] queryData = readFromInputStream(qqStream, 912)
+
+        then:
+        notThrown(IOException)
+        Base64.getEncoder().encodeToString(queryData) == expectedData
+
+        /* Output Stream. */
+        when:
+        bc.queryWithResponse(options, null, null)
+        byte[] osData = os.toByteArray()
+
+        then:
+        notThrown(BlobStorageException)
+        Base64.getEncoder().encodeToString(osData) == expectedData
+    }
+
     def "Query non fatal error"() {
         setup:
         BlobQueryDelimitedSerialization base = new BlobQueryDelimitedSerialization()
@@ -382,7 +418,7 @@ class BlobBaseAPITest extends APISpec {
 
         /* Input Stream. */
         when:
-        InputStream qqStream = bc.openQueryInputStream(options)
+        InputStream qqStream = bc.openQueryInputStreamWithResponse(options).getValue()
         readFromInputStream(qqStream, Constants.KB)
 
         then:
@@ -417,7 +453,7 @@ class BlobBaseAPITest extends APISpec {
 
         /* Input Stream. */
         when:
-        InputStream qqStream = bc.openQueryInputStream(options)
+        InputStream qqStream = bc.openQueryInputStreamWithResponse(options).getValue()
         readFromInputStream(qqStream, Constants.KB)
 
         then:
@@ -449,7 +485,7 @@ class BlobBaseAPITest extends APISpec {
 
         /* Input Stream. */
         when:
-        InputStream qqStream = bc.openQueryInputStream(options)
+        InputStream qqStream = bc.openQueryInputStreamWithResponse(options).getValue()
 
         /* The QQ Avro stream has the following pattern
            n * (data record -> progress record) -> end record */
@@ -491,7 +527,7 @@ class BlobBaseAPITest extends APISpec {
 
         /* Input Stream. */
         when:
-        InputStream qqStream = bc.openQueryInputStream(options)
+        InputStream qqStream = bc.openQueryInputStreamWithResponse(options).getValue()
 
         /* The Avro stream has the following pattern
            n * (data record -> progress record) -> end record */
@@ -576,7 +612,7 @@ class BlobBaseAPITest extends APISpec {
             .setOutputSerialization(outSer)
 
         when:
-        bc.openQueryInputStream(options) /* Don't need to call read. */
+        bc.openQueryInputStreamWithResponse(options).getValue() /* Don't need to call read. */
 
         then:
         thrown(IllegalArgumentException)
@@ -593,9 +629,51 @@ class BlobBaseAPITest extends APISpec {
         false   | true     || _
     }
 
+    def "Query arrow input IA"() {
+        setup:
+        def inSer = new BlobQueryArrowSerialization()
+        def expression = "SELECT * from BlobStorage"
+        BlobQueryOptions options = new BlobQueryOptions(expression)
+            .setInputSerialization(inSer)
+
+        when:
+        InputStream stream = bc.openQueryInputStreamWithResponse(options).getValue()  /* Don't need to call read. */
+
+        then:
+        thrown(IllegalArgumentException)
+
+        when:
+        options = new BlobQueryOptions(expression, new ByteArrayOutputStream())
+            .setInputSerialization(inSer)
+        bc.queryWithResponse(options, null, null)
+
+        then:
+        thrown(IllegalArgumentException)
+    }
+
+    def "Query error"() {
+        setup:
+        bc = cc.getBlobClient(generateBlobName())
+
+        when:
+        bc.openQueryInputStream("SELECT * from BlobStorage") /* Don't need to call read. */
+
+        then:
+        thrown(BlobStorageException)
+
+        when:
+        bc.query(new ByteArrayOutputStream(), "SELECT * from BlobStorage")
+
+        then:
+        thrown(BlobStorageException)
+    }
+
     @Unroll
     def "Query AC"() {
         setup:
+        def t = new HashMap<String, String>()
+        t.put("foo", "bar")
+        bc.setTags(t)
         match = setupBlobMatchCondition(bc, match)
         leaseID = setupBlobLeaseCondition(bc, leaseID)
         def bac = new BlobRequestConditions()
@@ -604,6 +682,7 @@ class BlobBaseAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags)
         def expression = "SELECT * from BlobStorage"
         BlobQueryOptions optionsIs = new BlobQueryOptions(expression)
             .setRequestConditions(bac)
@@ -611,7 +690,7 @@ class BlobBaseAPITest extends APISpec {
             .setRequestConditions(bac)
 
         when:
-        InputStream stream = bc.openQueryInputStream(optionsIs)
+        InputStream stream = bc.openQueryInputStreamWithResponse(optionsIs).getValue()
         stream.read()
         stream.close()
 
@@ -625,13 +704,14 @@ class BlobBaseAPITest extends APISpec {
         notThrown(BlobStorageException)
 
         where:
-        modified | unmodified | match        | noneMatch   | leaseID
-        null     | null       | null         | null        | null
-        oldDate  | null       | null         | null        | null
-        null     | newDate    | null         | null        | null
-        null     | null       | receivedEtag | null        | null
-        null     | null       | null         | garbageEtag | null
-        null     | null       | null         | null        | receivedLeaseID
+        modified | unmodified | match        | noneMatch   | leaseID         | tags
+        null     | null       | null         | null        | null            | null
+        oldDate  | null       | null         | null        | null            | null
+        null     | newDate    | null         | null        | null            | null
+        null     | null       | receivedEtag | null        | null            | null
+        null     | null       | null         | garbageEtag | null            | null
+        null     | null       | null         | null        | receivedLeaseID | null
+        null     | null       | null         | null        | null            | "\"foo\" = 'bar'"
     }
 
     @Unroll
@@ -644,6 +724,7 @@ class BlobBaseAPITest extends APISpec {
             .setIfNoneMatch(setupBlobMatchCondition(bc, noneMatch))
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags)
         def expression = "SELECT * from BlobStorage"
         BlobQueryOptions optionsIs = new BlobQueryOptions(expression)
             .setRequestConditions(bac)
@@ -651,7 +732,7 @@ class BlobBaseAPITest extends APISpec {
             .setRequestConditions(bac)
 
         when:
-        bc.openQueryInputStream(optionsIs) /* Don't need to call read. */
+        bc.openQueryInputStreamWithResponse(optionsIs).getValue() /* Don't need to call read. */
 
         then:
         thrown(BlobStorageException)
@@ -663,12 +744,13 @@ class BlobBaseAPITest extends APISpec {
         thrown(BlobStorageException)
 
         where:
-        modified | unmodified | match       | noneMatch    | leaseID
-        newDate  | null       | null        | null         | null
-        null     | oldDate    | null        | null         | null
-        null     | null       | garbageEtag | null         | null
-        null     | null       | null        | receivedEtag | null
-        null     | null       | null        | null         | garbageLeaseID
+        modified | unmodified | match       | noneMatch    | leaseID        | tags
+        newDate  | null       | null        | null         | null           | null
+        null     | oldDate    | null        | null         | null           | null
+        null     | null       | garbageEtag | null         | null           | null
+        null     | null       | null        | receivedEtag | null           | null
+        null     | null       | null        | null         | garbageLeaseID | null
+        null     | null       | null        | null        | null            | "\"notfoo\" = 'notbar'"
     }
 
     class MockProgressConsumer implements Consumer<BlobQueryProgress> {
@@ -703,11 +785,7 @@ class BlobBaseAPITest extends APISpec {
         }
     }
 
-    class RandomOtherSerialization extends BlobQuerySerialization {
-        @Override
-        public RandomOtherSerialization setRecordSeparator(char recordSeparator) {
-            this.recordSeparator = recordSeparator
-            return this
-        }
+    class RandomOtherSerialization implements BlobQuerySerialization {
+
     }
 }

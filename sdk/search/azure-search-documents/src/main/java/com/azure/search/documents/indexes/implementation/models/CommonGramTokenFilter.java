@@ -14,7 +14,10 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** The CommonGramTokenFilter model. */
+/**
+ * Construct bigrams for frequently occurring terms while indexing. Single terms are still indexed too, with bigrams
+ * overlaid. This token filter is implemented using Apache Lucene.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.CommonGramTokenFilter")
 @JsonFlatten
@@ -42,10 +45,16 @@ public class CommonGramTokenFilter extends TokenFilter {
     @JsonProperty(value = "queryMode")
     private Boolean useQueryMode;
 
-    /** Creates an instance of CommonGramTokenFilter class. */
+    /**
+     * Creates an instance of CommonGramTokenFilter class.
+     *
+     * @param name the name value to set.
+     * @param commonWords the commonWords value to set.
+     */
     @JsonCreator
     public CommonGramTokenFilter(
-            @JsonProperty(value = "name") String name, @JsonProperty(value = "commonWords") List<String> commonWords) {
+            @JsonProperty(value = "name", required = true) String name,
+            @JsonProperty(value = "commonWords", required = true) List<String> commonWords) {
         super(name);
         this.commonWords = commonWords;
     }
@@ -59,12 +68,6 @@ public class CommonGramTokenFilter extends TokenFilter {
         return this.commonWords;
     }
 
-    /**
-     * Set the commonWords property: The set of common words.
-     *
-     * @param commonWords the commonWords value to set.
-     * @return the CommonGramTokenFilter object itself.
-     */
     /**
      * Get the ignoreCase property: A value indicating whether common words matching will be case insensitive. Default
      * is false.
@@ -109,18 +112,5 @@ public class CommonGramTokenFilter extends TokenFilter {
     public CommonGramTokenFilter setUseQueryMode(Boolean useQueryMode) {
         this.useQueryMode = useQueryMode;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
-        if (getCommonWords() == null) {
-            throw new IllegalArgumentException("Missing required property commonWords in model CommonGramTokenFilter");
-        }
     }
 }

@@ -6,7 +6,9 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.AuthorizationTokenType;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -21,6 +23,7 @@ import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.PathsHelper;
 import com.azure.cosmos.implementation.RMResources;
+import com.azure.cosmos.implementation.RequestVerb;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
@@ -34,7 +37,6 @@ import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
-import com.azure.cosmos.implementation.RequestVerb;
 import io.netty.handler.codec.http.HttpMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,12 +49,13 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.Duration;
 import java.time.Instant;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -62,6 +65,7 @@ public class GatewayAddressCache implements IAddressCache {
     private final static int DefaultBatchSize = 50;
 
     private final static int DefaultSuboptimalPartitionForceRefreshIntervalInSeconds = 600;
+    private final DiagnosticsClientContext clientContext;
     private final ServiceConfig serviceConfig = ServiceConfig.getInstance();
 
     private final String databaseFeedEntryUrl = PathsHelper.generatePath(ResourceType.Database, "", true);
@@ -81,13 +85,19 @@ public class GatewayAddressCache implements IAddressCache {
     private volatile Pair<PartitionKeyRangeIdentity, AddressInformation[]> masterPartitionAddressCache;
     private volatile Instant suboptimalMasterPartitionTimestamp;
 
+    private final ConcurrentHashMap<URI, Set<PartitionKeyRangeIdentity>> serverPartitionAddressToPkRangeIdMap;
+    private final boolean tcpConnectionEndpointRediscoveryEnabled;
+
     public GatewayAddressCache(
+            DiagnosticsClientContext clientContext,
             URI serviceEndpoint,
             Protocol protocol,
             IAuthorizationTokenProvider tokenProvider,
             UserAgentContainer userAgent,
             HttpClient httpClient,
-            long suboptimalPartitionForceRefreshIntervalInSeconds) {
+            long suboptimalPartitionForceRefreshIntervalInSeconds,
+            boolean tcpConnectionEndpointRediscoveryEnabled) {
+        this.clientContext = clientContext;
         try {
             this.addressEndpoint = new URL(serviceEndpoint.toURL(), Paths.ADDRESS_PATH_SEGMENT).toURI();
         } catch (MalformedURLException | URISyntaxException e) {
@@ -119,20 +129,51 @@ public class GatewayAddressCache implements IAddressCache {
 
         // Set requested API version header for version enforcement.
         defaultRequestHeaders.put(HttpConstants.HttpHeaders.VERSION, HttpConstants.Versions.CURRENT_VERSION);
+
+        this.serverPartitionAddressToPkRangeIdMap = new ConcurrentHashMap<>();
+        this.tcpConnectionEndpointRediscoveryEnabled = tcpConnectionEndpointRediscoveryEnabled;
     }
 
     public GatewayAddressCache(
+            DiagnosticsClientContext clientContext,
             URI serviceEndpoint,
             Protocol protocol,
             IAuthorizationTokenProvider tokenProvider,
             UserAgentContainer userAgent,
-            HttpClient httpClient) {
-        this(serviceEndpoint,
+            HttpClient httpClient,
+            boolean tcpConnectionEndpointRediscoveryEnabled) {
+        this(clientContext,
+             serviceEndpoint,
              protocol,
              tokenProvider,
              userAgent,
              httpClient,
-             DefaultSuboptimalPartitionForceRefreshIntervalInSeconds);
+             DefaultSuboptimalPartitionForceRefreshIntervalInSeconds,
+             tcpConnectionEndpointRediscoveryEnabled);
+    }
+
+    @Override
+    public void updateAddresses(final URI serverKey) {
+
+        Objects.requireNonNull(serverKey, "expected non-null serverKey");
+
+        if (this.tcpConnectionEndpointRediscoveryEnabled) {
+            this.serverPartitionAddressToPkRangeIdMap.computeIfPresent(serverKey, (uri, partitionKeyRangeIdentitySet) -> {
+
+                for (PartitionKeyRangeIdentity partitionKeyRangeIdentity : partitionKeyRangeIdentitySet) {
+                    if (partitionKeyRangeIdentity.getPartitionKeyRangeId().equals(PartitionKeyRange.MASTER_PARTITION_KEY_RANGE_ID)) {
+                        this.masterPartitionAddressCache = null;
+                    } else {
+                        this.serverPartitionAddressCache.remove(partitionKeyRangeIdentity);
+                    }
+                }
+
+                return null;
+            });
+        } else {
+            logger.warn("tcpConnectionEndpointRediscovery is not enabled, should not reach here.");
+        }
+
     }
 
     @Override
@@ -174,7 +215,7 @@ public class GatewayAddressCache implements IAddressCache {
                             }
                         });
                 logger.debug("newValue is {}", newValue);
-                if (!newValue.equals(suboptimalServerPartitionTimestamp)) {
+                if (!suboptimalServerPartitionTimestamp.equals(newValue)) {
                     logger.debug("setting forceRefreshPartitionAddresses to true");
                     // the value was replaced;
                     forceRefreshPartitionAddresses = true;
@@ -207,37 +248,37 @@ public class GatewayAddressCache implements IAddressCache {
                         false)).map(Utils.ValueHolder::new);
 
         return addressesObs.map(
-                addressesValueHolder -> {
-                    if (notAllReplicasAvailable(addressesValueHolder.v)) {
-                        if (logger.isDebugEnabled()) {
-                            logger.debug("not all replicas available {}", JavaStreamUtils.info(addressesValueHolder.v));
-                        }
-                        this.suboptimalServerPartitionTimestamps.putIfAbsent(partitionKeyRangeIdentity, Instant.now());
+            addressesValueHolder -> {
+                if (notAllReplicasAvailable(addressesValueHolder.v)) {
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("not all replicas available {}", JavaStreamUtils.info(addressesValueHolder.v));
                     }
+                    this.suboptimalServerPartitionTimestamps.putIfAbsent(partitionKeyRangeIdentity, Instant.now());
+                }
 
-                    return addressesValueHolder;
-                    }).onErrorResume(ex -> {
-                        Throwable unwrappedException = reactor.core.Exceptions.unwrap(ex);
-                        CosmosException dce = Utils.as(unwrappedException, CosmosException.class);
-                        if (dce == null) {
-                            logger.error("unexpected failure", ex);
-                            if (forceRefreshPartitionAddressesModified) {
-                                this.suboptimalServerPartitionTimestamps.remove(partitionKeyRangeIdentity);
-                            }
-                            return Mono.error(unwrappedException);
-                        } else {
-                            logger.debug("tryGetAddresses dce", dce);
-                            if (Exceptions.isStatusCode(dce, HttpConstants.StatusCodes.NOTFOUND) ||
-                                    Exceptions.isStatusCode(dce, HttpConstants.StatusCodes.GONE) ||
-                                    Exceptions.isSubStatusCode(dce, HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE)) {
-                                //remove from suboptimal cache in case the collection+pKeyRangeId combo is gone.
-                                this.suboptimalServerPartitionTimestamps.remove(partitionKeyRangeIdentity);
-                                logger.debug("tryGetAddresses: inner onErrorResumeNext return null", dce);
-                                return Mono.just(new Utils.ValueHolder<>(null));
-                            }
-                            return Mono.error(unwrappedException);
-                        }
-                    });
+                return addressesValueHolder;
+            }).onErrorResume(ex -> {
+            Throwable unwrappedException = reactor.core.Exceptions.unwrap(ex);
+            CosmosException dce = Utils.as(unwrappedException, CosmosException.class);
+            if (dce == null) {
+                logger.error("unexpected failure", ex);
+                if (forceRefreshPartitionAddressesModified) {
+                    this.suboptimalServerPartitionTimestamps.remove(partitionKeyRangeIdentity);
+                }
+                return Mono.error(unwrappedException);
+            } else {
+                logger.debug("tryGetAddresses dce", dce);
+                if (Exceptions.isStatusCode(dce, HttpConstants.StatusCodes.NOTFOUND) ||
+                    Exceptions.isStatusCode(dce, HttpConstants.StatusCodes.GONE) ||
+                    Exceptions.isSubStatusCode(dce, HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE)) {
+                    //remove from suboptimal cache in case the collection+pKeyRangeId combo is gone.
+                    this.suboptimalServerPartitionTimestamps.remove(partitionKeyRangeIdentity);
+                    logger.debug("tryGetAddresses: inner onErrorResumeNext return null", dce);
+                    return Mono.just(new Utils.ValueHolder<>(null));
+                }
+                return Mono.error(unwrappedException);
+            }
+        });
     }
 
     public Mono<List<Address>> getServerAddressesViaGatewayAsync(
@@ -249,6 +290,7 @@ public class GatewayAddressCache implements IAddressCache {
             logger.debug("getServerAddressesViaGatewayAsync collectionRid {}, partitionKeyRangeIds {}", collectionRid,
                 JavaStreamUtils.toString(partitionKeyRangeIds, ","));
         }
+        request.setAddressRefresh(true);
         String entryUrl = PathsHelper.generatePath(ResourceType.Document, collectionRid, true);
         HashMap<String, String> addressQuery = new HashMap<>();
 
@@ -267,61 +309,106 @@ public class GatewayAddressCache implements IAddressCache {
 
         addressQuery.put(HttpConstants.QueryStrings.PARTITION_KEY_RANGE_IDS, String.join(",", partitionKeyRangeIds));
         headers.put(HttpConstants.HttpHeaders.X_DATE, Utils.nowAsRFC1123());
-        String token;
 
-        token = this.tokenProvider.getUserAuthorizationToken(
-                collectionRid,
-                ResourceType.Document,
-                RequestVerb.GET,
-                headers,
-                AuthorizationTokenType.PrimaryMasterKey,
-                request.properties);
-
-        if (token == null && request.getIsNameBased()) {
-            // User doesn't have rid based resource token. Maybe user has name based.
-            String collectionAltLink = PathsHelper.getCollectionPath(request.getResourceAddress());
-            token = this.tokenProvider.getUserAuthorizationToken(
-                    collectionAltLink,
+        if (tokenProvider.getAuthorizationTokenType() != AuthorizationTokenType.AadToken) {
+            String token = this.tokenProvider.getUserAuthorizationToken(
+                    collectionRid,
                     ResourceType.Document,
                     RequestVerb.GET,
                     headers,
                     AuthorizationTokenType.PrimaryMasterKey,
                     request.properties);
+
+            if (token == null && request.getIsNameBased()) {
+                // User doesn't have rid based resource token. Maybe user has name based.
+                String collectionAltLink = PathsHelper.getCollectionPath(request.getResourceAddress());
+                token = this.tokenProvider.getUserAuthorizationToken(
+                        collectionAltLink,
+                        ResourceType.Document,
+                        RequestVerb.GET,
+                        headers,
+                        AuthorizationTokenType.PrimaryMasterKey,
+                        request.properties);
+            }
+
+            token = HttpUtils.urlEncode(token);
+            headers.put(HttpConstants.HttpHeaders.AUTHORIZATION, token);
         }
 
-        token = HttpUtils.urlEncode(token);
-        headers.put(HttpConstants.HttpHeaders.AUTHORIZATION, token);
         URI targetEndpoint = Utils.setQuery(this.addressEndpoint.toString(), Utils.createQuery(addressQuery));
         String identifier = logAddressResolutionStart(request, targetEndpoint);
 
-        HttpHeaders httpHeaders = new HttpHeaders(headers.size());
-        for (Map.Entry<String, String> entry : headers.entrySet()) {
-            httpHeaders.set(entry.getKey(), entry.getValue());
-        }
+        HttpHeaders httpHeaders = new HttpHeaders(headers);
 
         Instant addressCallStartTime = Instant.now();
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(), httpHeaders);
 
-        Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest);
+        Mono<HttpResponse> httpResponseMono;
+        if (tokenProvider.getAuthorizationTokenType() != AuthorizationTokenType.AadToken) {
+            httpResponseMono = this.httpClient.send(httpRequest,
+                Duration.ofSeconds(Configs.getAddressRefreshResponseTimeoutInSeconds()));
+        } else {
+            httpResponseMono = tokenProvider
+                .populateAuthorizationHeader(httpHeaders)
+                .flatMap(valueHttpHeaders -> this.httpClient.send(httpRequest,
+                    Duration.ofSeconds(Configs.getAddressRefreshResponseTimeoutInSeconds())));
+        }
 
-        Mono<RxDocumentServiceResponse> dsrObs = HttpClientUtils.parseResponseAsync(httpResponseMono, httpRequest);
+        Mono<RxDocumentServiceResponse> dsrObs = HttpClientUtils.parseResponseAsync(clientContext, httpResponseMono, httpRequest);
         return dsrObs.map(
-                dsr -> {
-                    MetadataDiagnosticsContext metadataDiagnosticsContext = BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
-                    if (metadataDiagnosticsContext != null) {
-                        Instant addressCallEndTime = Instant.now();
-                        MetadataDiagnostics metaDataDiagnostic = new MetadataDiagnostics(addressCallStartTime,
-                            addressCallEndTime,
-                            MetadataType.SERVER_ADDRESS_LOOKUP);
-                        metadataDiagnosticsContext.addMetaDataDiagnostic(metaDataDiagnostic);
-                    }
+            dsr -> {
+                MetadataDiagnosticsContext metadataDiagnosticsContext =
+                    BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
+                if (metadataDiagnosticsContext != null) {
+                    Instant addressCallEndTime = Instant.now();
+                    MetadataDiagnostics metaDataDiagnostic = new MetadataDiagnostics(addressCallStartTime,
+                        addressCallEndTime,
+                        MetadataType.SERVER_ADDRESS_LOOKUP);
+                    metadataDiagnosticsContext.addMetaDataDiagnostic(metaDataDiagnostic);
+                }
 
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("getServerAddressesViaGatewayAsync deserializes result");
-                    }
-                    logAddressResolutionEnd(request, identifier);
-                    return dsr.getQueryResponse(Address.class);
-                });
+                if (logger.isDebugEnabled()) {
+                    logger.debug("getServerAddressesViaGatewayAsync deserializes result");
+                }
+                logAddressResolutionEnd(request, identifier, null);
+                return dsr.getQueryResponse(Address.class);
+            }).onErrorResume(throwable -> {
+            Throwable unwrappedException = reactor.core.Exceptions.unwrap(throwable);
+            logAddressResolutionEnd(request, identifier, unwrappedException.toString());
+            if (!(unwrappedException instanceof Exception)) {
+                // fatal error
+                logger.error("Unexpected failure {}", unwrappedException.getMessage(), unwrappedException);
+                return Mono.error(unwrappedException);
+            }
+
+            Exception exception = (Exception) unwrappedException;
+            CosmosException dce;
+            if (!(exception instanceof CosmosException)) {
+                // wrap in CosmosException
+                logger.error("Network failure", exception);
+                dce = BridgeInternal.createCosmosException(0, exception);
+                BridgeInternal.setRequestHeaders(dce, request.getHeaders());
+            } else {
+                dce = (CosmosException) exception;
+            }
+
+            if (WebExceptionUtility.isNetworkFailure(dce)) {
+                if (WebExceptionUtility.isReadTimeoutException(dce)) {
+                    BridgeInternal.setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT);
+                } else {
+                    BridgeInternal.setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE);
+                }
+            }
+
+            if (request.requestContext.cosmosDiagnostics != null) {
+                BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, null,
+                    dce);
+                BridgeInternal.setCosmosDiagnostics(dce,
+                    request.requestContext.cosmosDiagnostics);
+            }
+
+            return Mono.error(dce);
+        });
     }
 
     public void dispose() {
@@ -451,6 +538,7 @@ public class GatewayAddressCache implements IAddressCache {
             forceRefresh,
             useMasterCollectionResolver
         );
+        request.setAddressRefresh(true);
         HashMap<String, String> queryParameters = new HashMap<>();
         queryParameters.put(HttpConstants.QueryStrings.URL, HttpUtils.urlEncode(entryUrl));
         HashMap<String, String> headers = new HashMap<>(defaultRequestHeaders);
@@ -469,54 +557,126 @@ public class GatewayAddressCache implements IAddressCache {
 
         queryParameters.put(HttpConstants.QueryStrings.FILTER, HttpUtils.urlEncode(this.protocolFilter));
         headers.put(HttpConstants.HttpHeaders.X_DATE, Utils.nowAsRFC1123());
-        String token = this.tokenProvider.getUserAuthorizationToken(
-                resourceAddress,
-                resourceType,
-                RequestVerb.GET,
-                headers,
-                AuthorizationTokenType.PrimaryMasterKey,
-                properties);
 
-        headers.put(HttpConstants.HttpHeaders.AUTHORIZATION, HttpUtils.urlEncode(token));
+        if (tokenProvider.getAuthorizationTokenType() != AuthorizationTokenType.AadToken) {
+            String token = this.tokenProvider.getUserAuthorizationToken(
+                    resourceAddress,
+                    resourceType,
+                    RequestVerb.GET,
+                    headers,
+                    AuthorizationTokenType.PrimaryMasterKey,
+                    properties);
+
+            headers.put(HttpConstants.HttpHeaders.AUTHORIZATION, HttpUtils.urlEncode(token));
+        }
+
         URI targetEndpoint = Utils.setQuery(this.addressEndpoint.toString(), Utils.createQuery(queryParameters));
         String identifier = logAddressResolutionStart(request, targetEndpoint);
 
-        HttpHeaders defaultHttpHeaders = new HttpHeaders(headers.size());
-        for (Map.Entry<String, String> entry : headers.entrySet()) {
-            defaultHttpHeaders.set(entry.getKey(), entry.getValue());
+        HttpHeaders defaultHttpHeaders = new HttpHeaders(headers);
+        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(), defaultHttpHeaders);
+        Instant addressCallStartTime = Instant.now();
+        Mono<HttpResponse> httpResponseMono;
+
+        if (tokenProvider.getAuthorizationTokenType() != AuthorizationTokenType.AadToken) {
+            httpResponseMono = this.httpClient.send(httpRequest,
+                Duration.ofSeconds(Configs.getAddressRefreshResponseTimeoutInSeconds()));
+        } else {
+            httpResponseMono = tokenProvider
+                .populateAuthorizationHeader(defaultHttpHeaders)
+                .flatMap(valueHttpHeaders -> this.httpClient.send(httpRequest,
+                    Duration.ofSeconds(Configs.getAddressRefreshResponseTimeoutInSeconds())));
         }
 
-        HttpRequest httpRequest;
-        httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(), defaultHttpHeaders);
-        Instant addressCallStartTime = Instant.now();
-        Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest);
-        Mono<RxDocumentServiceResponse> dsrObs = HttpClientUtils.parseResponseAsync(httpResponseMono, httpRequest);
+        Mono<RxDocumentServiceResponse> dsrObs = HttpClientUtils.parseResponseAsync(this.clientContext, httpResponseMono, httpRequest);
 
         return dsrObs.map(
-                dsr -> {
-                    MetadataDiagnosticsContext metadataDiagnosticsContext = BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
-                    if (metadataDiagnosticsContext != null) {
-                        Instant addressCallEndTime = Instant.now();
-                        MetadataDiagnostics metaDataDiagnostic = new MetadataDiagnostics(addressCallStartTime,
-                            addressCallEndTime,
-                            MetadataType.MASTER_ADDRESS_LOOK_UP);
-                        metadataDiagnosticsContext.addMetaDataDiagnostic(metaDataDiagnostic);
-                    }
+            dsr -> {
+                MetadataDiagnosticsContext metadataDiagnosticsContext =
+                    BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
+                if (metadataDiagnosticsContext != null) {
+                    Instant addressCallEndTime = Instant.now();
+                    MetadataDiagnostics metaDataDiagnostic = new MetadataDiagnostics(addressCallStartTime,
+                        addressCallEndTime,
+                        MetadataType.MASTER_ADDRESS_LOOK_UP);
+                    metadataDiagnosticsContext.addMetaDataDiagnostic(metaDataDiagnostic);
+                }
 
-                    logAddressResolutionEnd(request, identifier);
-                    return dsr.getQueryResponse(Address.class);
-                });
+                logAddressResolutionEnd(request, identifier, null);
+                return dsr.getQueryResponse(Address.class);
+            }).onErrorResume(throwable -> {
+            Throwable unwrappedException = reactor.core.Exceptions.unwrap(throwable);
+            logAddressResolutionEnd(request, identifier, unwrappedException.toString());
+            if (!(unwrappedException instanceof Exception)) {
+                // fatal error
+                logger.error("Unexpected failure {}", unwrappedException.getMessage(), unwrappedException);
+                return Mono.error(unwrappedException);
+            }
+
+            Exception exception = (Exception) unwrappedException;
+            CosmosException dce;
+            if (!(exception instanceof CosmosException)) {
+                // wrap in CosmosException
+                logger.error("Network failure", exception);
+                dce = BridgeInternal.createCosmosException(0, exception);
+                BridgeInternal.setRequestHeaders(dce, request.getHeaders());
+            } else {
+                dce = (CosmosException) exception;
+            }
+
+            if (WebExceptionUtility.isNetworkFailure(dce)) {
+                if (WebExceptionUtility.isReadTimeoutException(dce)) {
+                    BridgeInternal.setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT);
+                } else {
+                    BridgeInternal.setSubStatusCode(dce, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE);
+                }
+            }
+
+            if (request.requestContext.cosmosDiagnostics != null) {
+                BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, null,
+                    dce);
+                BridgeInternal.setCosmosDiagnostics(dce,
+                    request.requestContext.cosmosDiagnostics);
+            }
+
+            return Mono.error(dce);
+        });
     }
 
     private Pair<PartitionKeyRangeIdentity, AddressInformation[]> toPartitionAddressAndRange(String collectionRid, List<Address> addresses) {
-        logger.debug("toPartitionAddressAndRange");
+        if (logger.isDebugEnabled()) {
+            logger.debug("toPartitionAddressAndRange");
+        }
+
         Address address = addresses.get(0);
+        PartitionKeyRangeIdentity partitionKeyRangeIdentity = new PartitionKeyRangeIdentity(collectionRid, address.getParitionKeyRangeId());
 
         AddressInformation[] addressInfos =
                 addresses.stream().map(addr ->
                                 GatewayAddressCache.toAddressInformation(addr)
                                       ).collect(Collectors.toList()).toArray(new AddressInformation[addresses.size()]);
-        return Pair.of(new PartitionKeyRangeIdentity(collectionRid, address.getParitionKeyRangeId()), addressInfos);
+
+        if (this.tcpConnectionEndpointRediscoveryEnabled) {
+            for (AddressInformation addressInfo : addressInfos) {
+                if (logger.isDebugEnabled()) {
+                    logger.debug(
+                        "Added address to serverPartitionAddressToPkRangeIdMap: ({\"partitionKeyRangeIdentity\":{},\"address\":{}})",
+                        partitionKeyRangeIdentity,
+                        addressInfo);
+                }
+
+                this.serverPartitionAddressToPkRangeIdMap.compute(addressInfo.getServerKey(), (serverKey, partitionKeyRangeIdentitySet) -> {
+                    if (partitionKeyRangeIdentitySet == null) {
+                        partitionKeyRangeIdentitySet = ConcurrentHashMap.newKeySet();
+                    }
+
+                    partitionKeyRangeIdentitySet.add(partitionKeyRangeIdentity);
+                    return partitionKeyRangeIdentitySet;
+                });
+            }
+        }
+
+        return Pair.of(partitionKeyRangeIdentity, addressInfos);
     }
 
     private static AddressInformation toAddressInformation(Address address) {
@@ -533,6 +693,7 @@ public class GatewayAddressCache implements IAddressCache {
         int batchSize = GatewayAddressCache.DefaultBatchSize;
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+                this.clientContext,
                 OperationType.Read,
                 //    collection.AltLink,
                 collection.getResourceId(),
@@ -582,9 +743,9 @@ public class GatewayAddressCache implements IAddressCache {
         return null;
     }
 
-    private static void logAddressResolutionEnd(RxDocumentServiceRequest request, String identifier) {
+    private static void logAddressResolutionEnd(RxDocumentServiceRequest request, String identifier, String errorMessage) {
         if (request.requestContext.cosmosDiagnostics != null) {
-            BridgeInternal.recordAddressResolutionEnd(request.requestContext.cosmosDiagnostics, identifier);
+            BridgeInternal.recordAddressResolutionEnd(request.requestContext.cosmosDiagnostics, identifier, errorMessage);
         }
     }
 }

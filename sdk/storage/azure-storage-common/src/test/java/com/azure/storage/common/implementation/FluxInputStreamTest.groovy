@@ -65,6 +65,40 @@ class FluxInputStreamTest extends Specification {
         Constants.MB    || _
     }
 
+    @Unroll
+    def "FluxIS with empty byte buffers"() {
+        setup:
+        def num = Constants.KB
+        List<ByteBuffer> buffers = new ArrayList<>()
+        for(int i = 0; i < num; i++) {
+            buffers.add(ByteBuffer.wrap(i.byteValue()))
+            buffers.add(ByteBuffer.wrap(new byte[0]))
+        }
+        def data = Flux.fromIterable(buffers)
+
+        when:
+        def is = new FluxInputStream(data)
+        def bytes = new byte[num]
+
+        def totalRead = 0
+        def bytesRead = 0
+
+        while (bytesRead != -1 && totalRead < num) {
+            bytesRead = is.read(bytes, totalRead, num)
+            if (bytesRead != -1) {
+                totalRead += bytesRead
+                num -= bytesRead
+            }
+        }
+
+        is.close()
+
+        then:
+        for (int i = 0; i < num; i++) {
+            assert bytes[i] == i.byteValue()
+        }
+    }
+
     def "FluxIS error"() {
         setup:
         def data = Flux.error(exception)

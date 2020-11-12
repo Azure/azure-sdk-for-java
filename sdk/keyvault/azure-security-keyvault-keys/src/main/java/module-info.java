@@ -6,6 +6,7 @@ module com.azure.security.keyvault.keys {
 
     requires java.xml.crypto;
 
+    exports com.azure.security.keyvault.keys;
     exports com.azure.security.keyvault.keys.cryptography;
     exports com.azure.security.keyvault.keys.cryptography.models;
     exports com.azure.security.keyvault.keys.models;

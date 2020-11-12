@@ -50,6 +50,11 @@ public interface BigDataPoolResourceInfo extends HasInner<BigDataPoolResourceInf
     String id();
 
     /**
+     * @return the isComputeIsolationEnabled value.
+     */
+    Boolean isComputeIsolationEnabled();
+
+    /**
      * @return the libraryRequirements value.
      */
     LibraryRequirements libraryRequirements();
@@ -206,6 +211,18 @@ public interface BigDataPoolResourceInfo extends HasInner<BigDataPoolResourceInf
         }
 
         /**
+         * The stage of the bigdatapoolresourceinfo definition allowing to specify IsComputeIsolationEnabled.
+         */
+        interface WithIsComputeIsolationEnabled {
+            /**
+             * Specifies isComputeIsolationEnabled.
+             * @param isComputeIsolationEnabled Whether compute isolation is required or not
+             * @return the next definition stage
+             */
+            WithCreate withIsComputeIsolationEnabled(Boolean isComputeIsolationEnabled);
+        }
+
+        /**
          * The stage of the bigdatapoolresourceinfo definition allowing to specify LibraryRequirements.
          */
         interface WithLibraryRequirements {
@@ -235,7 +252,7 @@ public interface BigDataPoolResourceInfo extends HasInner<BigDataPoolResourceInf
         interface WithNodeSize {
             /**
              * Specifies nodeSize.
-             * @param nodeSize The level of compute power that each node in the Big Data pool has. Possible values include: 'None', 'Small', 'Medium', 'Large'
+             * @param nodeSize The level of compute power that each node in the Big Data pool has. Possible values include: 'None', 'Small', 'Medium', 'Large', 'XLarge', 'XXLarge'
              * @return the next definition stage
              */
             WithCreate withNodeSize(NodeSize nodeSize);
@@ -306,13 +323,13 @@ public interface BigDataPoolResourceInfo extends HasInner<BigDataPoolResourceInf
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<BigDataPoolResourceInfo>, DefinitionStages.WithAutoPause, DefinitionStages.WithAutoScale, DefinitionStages.WithCreationDate, DefinitionStages.WithDefaultSparkLogFolder, DefinitionStages.WithLibraryRequirements, DefinitionStages.WithNodeCount, DefinitionStages.WithNodeSize, DefinitionStages.WithNodeSizeFamily, DefinitionStages.WithProvisioningState, DefinitionStages.WithSparkEventsFolder, DefinitionStages.WithSparkVersion, DefinitionStages.WithTags {
+        interface WithCreate extends Creatable<BigDataPoolResourceInfo>, DefinitionStages.WithAutoPause, DefinitionStages.WithAutoScale, DefinitionStages.WithCreationDate, DefinitionStages.WithDefaultSparkLogFolder, DefinitionStages.WithIsComputeIsolationEnabled, DefinitionStages.WithLibraryRequirements, DefinitionStages.WithNodeCount, DefinitionStages.WithNodeSize, DefinitionStages.WithNodeSizeFamily, DefinitionStages.WithProvisioningState, DefinitionStages.WithSparkEventsFolder, DefinitionStages.WithSparkVersion, DefinitionStages.WithTags {
         }
     }
     /**
      * The template for a BigDataPoolResourceInfo update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<BigDataPoolResourceInfo>, UpdateStages.WithForce, UpdateStages.WithAutoPause, UpdateStages.WithAutoScale, UpdateStages.WithCreationDate, UpdateStages.WithDefaultSparkLogFolder, UpdateStages.WithLibraryRequirements, UpdateStages.WithNodeCount, UpdateStages.WithNodeSize, UpdateStages.WithNodeSizeFamily, UpdateStages.WithProvisioningState, UpdateStages.WithSparkEventsFolder, UpdateStages.WithSparkVersion, UpdateStages.WithTags {
+    interface Update extends Appliable<BigDataPoolResourceInfo>, UpdateStages.WithForce, UpdateStages.WithAutoPause, UpdateStages.WithAutoScale, UpdateStages.WithCreationDate, UpdateStages.WithDefaultSparkLogFolder, UpdateStages.WithIsComputeIsolationEnabled, UpdateStages.WithLibraryRequirements, UpdateStages.WithNodeCount, UpdateStages.WithNodeSize, UpdateStages.WithNodeSizeFamily, UpdateStages.WithProvisioningState, UpdateStages.WithSparkEventsFolder, UpdateStages.WithSparkVersion, UpdateStages.WithTags {
     }
 
     /**
@@ -380,6 +397,18 @@ public interface BigDataPoolResourceInfo extends HasInner<BigDataPoolResourceInf
         }
 
         /**
+         * The stage of the bigdatapoolresourceinfo update allowing to specify IsComputeIsolationEnabled.
+         */
+        interface WithIsComputeIsolationEnabled {
+            /**
+             * Specifies isComputeIsolationEnabled.
+             * @param isComputeIsolationEnabled Whether compute isolation is required or not
+             * @return the next update stage
+             */
+            Update withIsComputeIsolationEnabled(Boolean isComputeIsolationEnabled);
+        }
+
+        /**
          * The stage of the bigdatapoolresourceinfo update allowing to specify LibraryRequirements.
          */
         interface WithLibraryRequirements {
@@ -409,7 +438,7 @@ public interface BigDataPoolResourceInfo extends HasInner<BigDataPoolResourceInf
         interface WithNodeSize {
             /**
              * Specifies nodeSize.
-             * @param nodeSize The level of compute power that each node in the Big Data pool has. Possible values include: 'None', 'Small', 'Medium', 'Large'
+             * @param nodeSize The level of compute power that each node in the Big Data pool has. Possible values include: 'None', 'Small', 'Medium', 'Large', 'XLarge', 'XXLarge'
              * @return the next update stage
              */
             Update withNodeSize(NodeSize nodeSize);

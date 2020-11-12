@@ -4,8 +4,8 @@
 package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.FormContentType;
-import com.azure.ai.formrecognizer.models.OperationResult;
-import com.azure.ai.formrecognizer.models.RecognizeOptions;
+import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
+import com.azure.ai.formrecognizer.models.RecognizeCustomFormsOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.PollerFlux;
@@ -54,42 +54,44 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
             + "forms/Form_1.jpg");
         byte[] fileContent = Files.readAllBytes(analyzeFile.toPath());
 
-        PollerFlux<OperationResult, List<RecognizedForm>> labeledCustomFormPoller =
-            client.beginRecognizeCustomForms(toFluxByteBuffer(new ByteArrayInputStream(fileContent)),
-                analyzeFile.length(), "{labeled_model_Id}", new RecognizeOptions()
-                    .setContentType(FormContentType.APPLICATION_PDF)
-                    .setIncludeFieldElements(true)
+        PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> labeledCustomFormPoller =
+            client.beginRecognizeCustomForms("{labeled_model_Id}",
+                toFluxByteBuffer(new ByteArrayInputStream(fileContent)),
+                analyzeFile.length(),
+                    new RecognizeCustomFormsOptions()
+                    .setContentType(FormContentType.IMAGE_JPEG)
+                    .setFieldElementsIncluded(true)
                     .setPollInterval(Duration.ofSeconds(5)));
 
-        PollerFlux<OperationResult, List<RecognizedForm>> unlabeledCustomFormPoller =
-            client.beginRecognizeCustomForms(toFluxByteBuffer(new ByteArrayInputStream(fileContent)),
-                analyzeFile.length(), "{unlabeled_model_Id}",
-                new RecognizeOptions()
-                    .setContentType(FormContentType.APPLICATION_PDF)
-                    .setIncludeFieldElements(true)
+        PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> unlabeledCustomFormPoller =
+            client.beginRecognizeCustomForms("{unlabeled_model_Id}",
+                toFluxByteBuffer(new ByteArrayInputStream(fileContent)),
+                analyzeFile.length(),
+                    new RecognizeCustomFormsOptions()
+                    .setContentType(FormContentType.IMAGE_JPEG)
+                    .setFieldElementsIncluded(true)
                     .setPollInterval(Duration.ofSeconds(5)));
 
         Mono<List<RecognizedForm>> labeledDataResult = labeledCustomFormPoller
             .last()
-            .flatMap(trainingOperationResponse -> {
-                if (trainingOperationResponse.getStatus().isComplete()) {
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
                     // training completed successfully, retrieving final result.
-                    return trainingOperationResponse.getFinalResult();
+                    return pollResponse.getFinalResult();
                 } else {
                     return Mono.error(new RuntimeException("Polling completed unsuccessfully with status:"
-                        + trainingOperationResponse.getStatus()));
+                        + pollResponse.getStatus()));
                 }
             });
 
         Mono<List<RecognizedForm>> unlabeledDataResult = unlabeledCustomFormPoller
             .last()
-            .flatMap(trainingOperationResponse -> {
-                if (trainingOperationResponse.getStatus().isComplete()) {
-                    // training completed successfully, retrieving final result.
-                    return trainingOperationResponse.getFinalResult();
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    return pollResponse.getFinalResult();
                 } else {
                     return Mono.error(new RuntimeException("Polling completed unsuccessfully with status:"
-                        + trainingOperationResponse.getStatus()));
+                        + pollResponse.getStatus()));
                 }
             });
 
@@ -101,15 +103,10 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
         // the key
         labeledDataResult.subscribe(formsWithLabeledModel -> formsWithLabeledModel.forEach(labeledForm ->
             labeledForm.getFields().forEach((label, formField) -> {
-                final StringBuilder boundingBoxStr = new StringBuilder();
-                if (formField.getValueData().getBoundingBox() != null) {
-                    formField.getValueData().getBoundingBox().getPoints().stream().map(point -> String.format("[%.2f,"
-                        + " %.2f]", point.getX(), point.getY())).forEach(boundingBoxStr::append);
-                }
-                System.out.printf("Field %s has value %s based on %s within bounding box %s with a confidence score "
-                        + "of %.2f.%n",
-                    label, formField.getValue(), formField.getValueData().getText(), boundingBoxStr,
-                    formField.getConfidence());
+                System.out.printf("Field %s has value data text %s based on %s within bounding box %s with "
+                        + "a confidence score of %.2f.%n",
+                    label, formField.getValueData().getText(), formField.getValueData().getText(),
+                    formField.getValueData().getBoundingBox().toString(), formField.getConfidence());
 
                 // Find the value of a specific labeled field.
                 System.out.println("Value for a specific labeled field using the training-time label:");
@@ -118,7 +115,8 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
                     .filter(formFieldEntry -> "Merchant".equals(formFieldEntry.getKey())) // filter by form field key
                     .findAny()
                     .ifPresent(formFieldEntry ->
-                        System.out.printf("The Merchant name is: %s%n", formFieldEntry.getValue()));
+                        System.out.printf("The Merchant name is: %s%n", formFieldEntry.getValue()
+                            .getValue().asString()));
                     // @since 9
                     // .ifPresentOrElse(
                     //     formFieldEntry -> System.out.printf("The Merchant name is: %s%n", formFieldEntry.getValue()),
@@ -146,18 +144,18 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
                         String.format("[%.2f, %.2f]", point.getX(), point.getY())).forEach(boundingBoxStr::append);
                 }
 
-                final StringBuilder boundingBoxLabelStr = new StringBuilder();
                 if (formField.getLabelData() != null && formField.getLabelData().getBoundingBox() != null) {
                     formField.getLabelData().getBoundingBox().getPoints().stream().map(point ->
                         String.format("[%.2f, %.2f]", point.getX(), point.getY())).forEach(boundingBoxStr::append);
-                }
-                System.out.printf("Field %s has label %s  within bounding box %s with a confidence score "
-                        + "of %.2f.%n",
-                    label, formField.getLabelData().getText(), boundingBoxLabelStr, formField.getConfidence());
 
-                System.out.printf("Field %s has value %s based on %s within bounding box %s with a confidence "
-                        + "score of %.2f.%n",
-                    label, formField.getValue(), formField.getValueData().getText(), boundingBoxStr,
+                    System.out.printf("Field %s has label %s within bounding box %s with a confidence score "
+                            + "of %.2f.%n",
+                        label, formField.getLabelData().getText(), "", formField.getConfidence());
+                }
+
+                System.out.printf("Field %s has value data text %s based on %s within bounding box %s with "
+                        + "a confidence score of %.2f.%n",
+                    label, formField.getValueData().getText(), formField.getValueData().getText(), boundingBoxStr,
                     formField.getConfidence());
 
                 // Find the value of a specific unlabeled field. The specific key "Vendor Name:" provided in the
@@ -168,7 +166,8 @@ public class AdvancedDiffLabeledUnlabeledDataAsync {
                     .filter(formFieldEntry -> "Vendor Name:".equals(formFieldEntry.getValue().getLabelData().getText()))
                     .findAny()
                     .ifPresent(formFieldEntry ->
-                        System.out.printf("The Vendor name is: %s%n", formFieldEntry.getValue()));
+                        System.out.printf("The Vendor name is: %s%n", formFieldEntry.getValue()
+                            .getValue().asString()));
                     // @since 9
                     // .ifPresentOrElse(
                     //     formFieldEntry -> System.out.printf("The Vendor name is: %s%n", formFieldEntry.getValue()),

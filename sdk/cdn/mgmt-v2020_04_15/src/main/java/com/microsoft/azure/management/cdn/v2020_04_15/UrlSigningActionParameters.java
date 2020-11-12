@@ -16,6 +16,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class UrlSigningActionParameters {
     /**
+     * Possible values include:
+     * '#Microsoft.Azure.Cdn.Models.DeliveryRuleUrlSigningActionParameters'.
+     */
+    @JsonProperty(value = "@odata\\.type")
+    private String odatatype;
+
+    /**
      * Id reference of the key to be used to verify the hash and should be
      * defined in UrlSigningKeys.
      */
@@ -26,7 +33,7 @@ public class UrlSigningActionParameters {
      * Algorithm to use for URL signing. Possible values include: 'SHA256'.
      */
     @JsonProperty(value = "algorithm")
-    private String algorithm;
+    private Algorithm algorithm;
 
     /**
      * Defines which query string parameters in the url to be considered for
@@ -41,6 +48,26 @@ public class UrlSigningActionParameters {
      */
     @JsonProperty(value = "ipSubnets")
     private List<String> ipSubnets;
+
+    /**
+     * Get possible values include: '#Microsoft.Azure.Cdn.Models.DeliveryRuleUrlSigningActionParameters'.
+     *
+     * @return the odatatype value
+     */
+    public String odatatype() {
+        return this.odatatype;
+    }
+
+    /**
+     * Set possible values include: '#Microsoft.Azure.Cdn.Models.DeliveryRuleUrlSigningActionParameters'.
+     *
+     * @param odatatype the odatatype value to set
+     * @return the UrlSigningActionParameters object itself.
+     */
+    public UrlSigningActionParameters withOdatatype(String odatatype) {
+        this.odatatype = odatatype;
+        return this;
+    }
 
     /**
      * Get id reference of the key to be used to verify the hash and should be defined in UrlSigningKeys.
@@ -67,7 +94,7 @@ public class UrlSigningActionParameters {
      *
      * @return the algorithm value
      */
-    public String algorithm() {
+    public Algorithm algorithm() {
         return this.algorithm;
     }
 
@@ -77,7 +104,7 @@ public class UrlSigningActionParameters {
      * @param algorithm the algorithm value to set
      * @return the UrlSigningActionParameters object itself.
      */
-    public UrlSigningActionParameters withAlgorithm(String algorithm) {
+    public UrlSigningActionParameters withAlgorithm(Algorithm algorithm) {
         this.algorithm = algorithm;
         return this;
     }

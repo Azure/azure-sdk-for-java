@@ -6,8 +6,8 @@ package com.azure.ai.formrecognizer;
 import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.FormTable;
 import com.azure.ai.formrecognizer.models.FormWord;
-import com.azure.ai.formrecognizer.models.OperationResult;
-import com.azure.ai.formrecognizer.models.RecognizeOptions;
+import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
+import com.azure.ai.formrecognizer.models.RecognizeCustomFormsOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.PollerFlux;
@@ -36,43 +36,41 @@ public class GetBoundingBoxesAsync {
 
         String modelId = "{model_Id}";
         String formUrl = "{form_url}";
-        PollerFlux<OperationResult, List<RecognizedForm>> recognizeFormPoller =
-            client.beginRecognizeCustomFormsFromUrl(formUrl, modelId, new RecognizeOptions()
-                .setIncludeFieldElements(true));
+        PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> recognizeFormPoller =
+            client.beginRecognizeCustomFormsFromUrl(modelId, formUrl,
+                    new RecognizeCustomFormsOptions()
+                    .setFieldElementsIncluded(true));
 
         Mono<List<RecognizedForm>> recognizeFormResult = recognizeFormPoller
             .last()
-            .flatMap(trainingOperationResponse -> {
-                if (trainingOperationResponse.getStatus().isComplete()) {
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
                     // training completed successfully, retrieving final result.
-                    return trainingOperationResponse.getFinalResult();
+                    return pollResponse.getFinalResult();
                 } else {
                     return Mono.error(new RuntimeException("Polling completed unsuccessfully with status:"
-                        + trainingOperationResponse.getStatus()));
+                        + pollResponse.getStatus()));
                 }
             });
 
-        System.out.println("--------RECOGNIZING FORM --------");
         recognizeFormResult.subscribe(recognizedForms -> {
             for (int i = 0; i < recognizedForms.size(); i++) {
                 final RecognizedForm recognizedForm = recognizedForms.get(i);
-                System.out.printf("Form %s has type: %s%n", i, recognizedForm.getFormType());
+                System.out.printf("Form %d has type: %s%n", i, recognizedForm.getFormType());
                 // each field is of type FormField
-                //     The value of the field can also be a FormField, or a list of FormFields
-                //     In our sample, it is not.
-                recognizedForm.getFields().forEach((fieldText, fieldValue) -> {
-                    System.out.printf("Field %s has value %s based on %s with a confidence score "
-                            + "of %.2f.%n",
-                        fieldText, fieldValue.getValue(), fieldValue.getValueData().getText(),
-                        fieldValue.getConfidence());
-                });
+                // The value of the field can also be a FormField, or a list of FormFields
+                // In our sample, it is not.
+                recognizedForm.getFields().forEach((fieldText, formField) ->
+                    System.out.printf("Field %s has value data text %s with a confidence score "
+                            + "of %.2f.%n", fieldText, formField.getValueData().getText(),
+                        formField.getConfidence()));
 
                 // Page Information
                 final List<FormPage> pages = recognizedForm.getPages();
                 for (int i1 = 0; i1 < pages.size(); i1++) {
                     final FormPage formPage = pages.get(i1);
-                    System.out.printf("-------Recognizing Page %s of Form -------%n", i1);
-                    System.out.printf("Has width %f , angle %f, height %f %n", formPage.getWidth(),
+                    System.out.printf("------- Recognizing info on page %s of Form -------%n", i1);
+                    System.out.printf("Has width: %f , angle: %f, height: %f %n", formPage.getWidth(),
                         formPage.getTextAngle(), formPage.getHeight());
                     // Table information
                     System.out.println("Recognized Tables: ");
@@ -82,25 +80,17 @@ public class GetBoundingBoxesAsync {
                         System.out.printf("Table %d%n", i2);
                         formTable.getCells().forEach(formTableCell -> {
                             System.out.printf("Cell text %s has following words: %n", formTableCell.getText());
-                            // textContent only exists if you set includeFieldElements to True in your
+                            // FormElements only exists if you set includeFieldElements to true in your
                             // call to beginRecognizeCustomFormsFromUrl
-                            // It is also a list of FormWords and FormLines, but in this example, we only deal with
-                            // FormWords
-                            formTableCell.getFieldElements().forEach(formContent -> {
-                                if (formContent instanceof FormWord) {
-                                    FormWord formWordElement = (FormWord) (formContent);
-                                    final StringBuilder boundingBoxStr = new StringBuilder();
-                                    if (formWordElement.getBoundingBox() != null) {
-                                        formWordElement.getBoundingBox().getPoints().forEach(point -> {
-                                            boundingBoxStr.append(String.format("[%.2f, %.2f]", point.getX(),
-                                                point.getY()));
-                                        });
-                                    }
+                            // It is also a list of FormWords, FormLines and FormSelectionMarks, but in this example,
+                            // we only deal with FormWords.
+                            formTableCell.getFieldElements().stream()
+                                .filter(formContent -> formContent instanceof FormWord)
+                                .map(formContent -> (FormWord) (formContent))
+                                .forEach(formWordElement ->
                                     System.out.printf("Word '%s' within bounding box %s with a confidence of %.2f.%n",
-                                        formWordElement.getText(), boundingBoxStr,
-                                        formWordElement.getConfidence());
-                                }
-                            });
+                                        formWordElement.getText(), formWordElement.getBoundingBox().toString(),
+                                        formWordElement.getConfidence()));
                         });
                         System.out.println();
                     }

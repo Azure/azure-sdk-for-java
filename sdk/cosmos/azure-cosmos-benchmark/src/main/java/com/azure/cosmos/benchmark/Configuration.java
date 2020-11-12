@@ -30,9 +30,9 @@ import java.net.UnknownHostException;
 import java.time.Duration;
 import java.util.Arrays;
 
-class Configuration {
+public class Configuration {
 
-    final static String DEFAULT_PARTITION_KEY_PATH = "/pk";
+    public final static String DEFAULT_PARTITION_KEY_PATH = "/pk";
     private final static int DEFAULT_GRAPHITE_SERVER_PORT = 2003;
     private MeterRegistry azureMonitorMeterRegistry;
     private MeterRegistry graphiteMeterRegistry;
@@ -61,6 +61,9 @@ class Configuration {
     @Parameter(names = "-maxConnectionPoolSize", description = "Max Connection Pool Size")
     private Integer maxConnectionPoolSize = 1000;
 
+    @Parameter(names = "-diagnosticsThresholdDuration", description = "Latency threshold for printing diagnostics", converter = DurationConverter.class)
+    private Duration diagnosticsThresholdDuration = Duration.ofSeconds(60);
+
     @Parameter(names = "-disablePassingPartitionKeyAsOptionOnWrite", description = "Disables passing partition in request options for write operation;" +
         " in this case, json will be parsed and partition key will be extracted (this requires more computational overhead).")
     private boolean disablePassingPartitionKeyAsOptionOnWrite = false;
@@ -80,6 +83,12 @@ class Configuration {
     @Parameter(names = "-throughput", description = "provisioned throughput for test container")
     private int throughput = 100000;
 
+    @Parameter(names = "-numberOfCollectionForCtl", description = "Number of collections for ctl load")
+    private int numberOfCollectionForCtl = 4;
+
+    @Parameter(names = "-readWriteQueryPct", description = "Comma separated read write query workload percent")
+    private String readWriteQueryPct = "90,9,1";
+
     @Parameter(names = "-operation", description = "Type of Workload:\n"
         + "\tReadThroughput- run a READ workload that prints only throughput *\n"
         + "\tReadThroughputWithMultipleClients - run a READ workload that prints throughput and latency for multiple client read.*\n"
@@ -97,6 +106,8 @@ class Configuration {
         + "\tQueryTopOrderby - run a 'Select top 1000 * from c order by c._ts' workload that prints throughput\n"
         + "\tMixed - runa workload of 90 reads, 9 writes and 1 QueryTopOrderby per 100 operations *\n"
         + "\tReadMyWrites - run a workflow of writes followed by reads and queries attempting to read the write.*\n"
+        + "\tCtlWorkload - run a ctl workflow.*\n"
+        + "\tReadAllItemsOfLogicalPartition - run a workload that uses readAllItems for a logical partition and prints throughput\n"
         + "\n\t* writes 10k documents initially, which are used in the reads", converter = OperationTypeConverter.class)
     private Operation operation = Operation.WriteThroughput;
 
@@ -130,6 +141,15 @@ class Configuration {
     @Parameter(names = "-numberOfPreCreatedDocuments", description = "Total NUMBER Of Documents To pre create for a read workload to use")
     private int numberOfPreCreatedDocuments = 1000;
 
+    @Parameter(names = "-sparsityWaitTime", description = "Sleep time before making each request. Default is no sleep time."
+        + " NOTE: For now only ReadLatency and ReadThroughput support this."
+        + " Format: A string representation of this duration using ISO-8601 seconds based representation, such as "
+        + "PT20.345S (20.345 seconds), PT15M (15 minutes)", converter = DurationConverter.class)
+    private Duration sparsityWaitTime = null;
+
+    @Parameter(names = "-skipWarmUpOperations", description = "the number of operations to be skipped before starting perf numbers.")
+    private int skipWarmUpOperations = 0;
+
     @Parameter(names = "-useSync", description = "Uses Sync API")
     private boolean useSync = false;
 
@@ -139,7 +159,7 @@ class Configuration {
     @Parameter(names = {"-h", "-help", "--help"}, description = "Help", help = true)
     private boolean help = false;
 
-    enum Operation {
+    public enum Operation {
         ReadThroughput,
         WriteThroughput,
         ReadLatency,
@@ -155,7 +175,9 @@ class Configuration {
         QueryTopOrderby,
         Mixed,
         ReadMyWrites,
-        ReadThroughputWithMultipleClients;
+        ReadThroughputWithMultipleClients,
+        CtlWorkload,
+        ReadAllItemsOfLogicalPartition;
 
         static Operation fromString(String code) {
 
@@ -214,88 +236,99 @@ class Configuration {
         }
     }
 
+    public int getSkipWarmUpOperations() {
+        return skipWarmUpOperations;
+    }
 
-    boolean isDisablePassingPartitionKeyAsOptionOnWrite() {
+    public Duration getSparsityWaitTime() {
+        return sparsityWaitTime;
+    }
+
+    public boolean isDisablePassingPartitionKeyAsOptionOnWrite() {
         return disablePassingPartitionKeyAsOptionOnWrite;
     }
 
-    boolean isSync() {
+    public boolean isSync() {
         return useSync;
     }
 
-    Duration getMaxRunningTimeDuration() {
+    public Duration getMaxRunningTimeDuration() {
         return maxRunningTimeDuration;
     }
 
-    Operation getOperationType() {
+    public Operation getOperationType() {
         return operation;
     }
 
-    int getNumberOfOperations() {
+    public int getNumberOfOperations() {
         return numberOfOperations;
     }
 
-    int getThroughput() {
+    public int getThroughput() {
         return throughput;
     }
 
-    String getServiceEndpoint() {
+    public String getServiceEndpoint() {
         return serviceEndpoint;
     }
 
-    String getMasterKey() {
+    public String getMasterKey() {
         return masterKey;
     }
 
-    boolean isHelp() {
+    public boolean isHelp() {
         return help;
     }
 
-    int getDocumentDataFieldSize() {
+    public int getDocumentDataFieldSize() {
         return documentDataFieldSize;
     }
 
-    int getDocumentDataFieldCount() {
+    public int getDocumentDataFieldCount() {
         return documentDataFieldCount;
     }
 
-    Integer getMaxConnectionPoolSize() {
+    public Integer getMaxConnectionPoolSize() {
         return maxConnectionPoolSize;
     }
 
-    ConnectionMode getConnectionMode() {
+    public ConnectionMode getConnectionMode() {
         return connectionMode;
     }
 
-    ConsistencyLevel getConsistencyLevel() {
+    public ConsistencyLevel getConsistencyLevel() {
         return consistencyLevel;
     }
 
-    String isContentResponseOnWriteEnabled() {
+    public String isContentResponseOnWriteEnabled() {
         return contentResponseOnWriteEnabled;
     }
 
-    String getDatabaseId() {
+    public String getDatabaseId() {
         return databaseId;
     }
 
-    String getCollectionId() {
+    public String getCollectionId() {
         return collectionId;
     }
 
-    int getNumberOfPreCreatedDocuments() {
+    public int getNumberOfPreCreatedDocuments() {
         return numberOfPreCreatedDocuments;
     }
 
-    int getPrintingInterval() {
+    public int getPrintingInterval() {
         return printingInterval;
     }
 
-    File getReportingDirectory() {
+    public Duration getDiagnosticsThresholdDuration() {
+        return diagnosticsThresholdDuration;
+    }
+
+    public File getReportingDirectory() {
         return reportingDirectory == null ? null : new File(reportingDirectory);
     }
 
-    int getConcurrency() {
+    public int getConcurrency() {
         if (this.concurrency != null) {
             return concurrency;
         } else {
@@ -303,7 +336,7 @@ class Configuration {
         }
     }
 
-    boolean isUseNameLink() {
+    public boolean isUseNameLink() {
         return useNameLink;
     }
 
@@ -346,11 +379,19 @@ class Configuration {
         }
     }
 
+    public int getNumberOfCollectionForCtl(){
+        return this.numberOfCollectionForCtl;
+    }
+
+    public String getReadWriteQueryPct() {
+        return this.readWriteQueryPct;
+    }
+
     public String toString() {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
     }
 
-    void tryGetValuesFromSystem() {
+    public void tryGetValuesFromSystem() {
         serviceEndpoint = StringUtils.defaultString(Strings.emptyToNull(System.getenv().get("SERVICE_END_POINT")),
                                                     serviceEndpoint);
 

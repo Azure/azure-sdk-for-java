@@ -55,6 +55,12 @@ public class SqlContainerGetPropertiesResource {
     private ConflictResolutionPolicy conflictResolutionPolicy;
 
     /**
+     * Analytical TTL.
+     */
+    @JsonProperty(value = "analyticalStorageTtl")
+    private Long analyticalStorageTtl;
+
+    /**
      * A system generated property. A unique identifier.
      */
     @JsonProperty(value = "_rid", access = JsonProperty.Access.WRITE_ONLY)
@@ -191,6 +197,26 @@ public class SqlContainerGetPropertiesResource {
      */
     public SqlContainerGetPropertiesResource withConflictResolutionPolicy(ConflictResolutionPolicy conflictResolutionPolicy) {
         this.conflictResolutionPolicy = conflictResolutionPolicy;
+        return this;
+    }
+
+    /**
+     * Get analytical TTL.
+     *
+     * @return the analyticalStorageTtl value
+     */
+    public Long analyticalStorageTtl() {
+        return this.analyticalStorageTtl;
+    }
+
+    /**
+     * Set analytical TTL.
+     *
+     * @param analyticalStorageTtl the analyticalStorageTtl value to set
+     * @return the SqlContainerGetPropertiesResource object itself.
+     */
+    public SqlContainerGetPropertiesResource withAnalyticalStorageTtl(Long analyticalStorageTtl) {
+        this.analyticalStorageTtl = analyticalStorageTtl;
         return this;
     }
 

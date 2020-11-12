@@ -19,7 +19,8 @@ public class DataDisk {
     /**
      * The logical unit number.
      * The lun is used to uniquely identify each data disk. If attaching
-     * multiple disks, each should have a distinct lun.
+     * multiple disks, each should have a distinct lun. The value must be
+     * between 0 and 63, inclusive.
      */
     @JsonProperty(value = "lun", required = true)
     private int lun;
@@ -49,7 +50,7 @@ public class DataDisk {
     private StorageAccountType storageAccountType;
 
     /**
-     * Get the lun is used to uniquely identify each data disk. If attaching multiple disks, each should have a distinct lun.
+     * Get the lun is used to uniquely identify each data disk. If attaching multiple disks, each should have a distinct lun. The value must be between 0 and 63, inclusive.
      *
      * @return the lun value
      */
@@ -58,7 +59,7 @@ public class DataDisk {
     }
 
     /**
-     * Set the lun is used to uniquely identify each data disk. If attaching multiple disks, each should have a distinct lun.
+     * Set the lun is used to uniquely identify each data disk. If attaching multiple disks, each should have a distinct lun. The value must be between 0 and 63, inclusive.
      *
      * @param lun the lun value to set
      * @return the DataDisk object itself.

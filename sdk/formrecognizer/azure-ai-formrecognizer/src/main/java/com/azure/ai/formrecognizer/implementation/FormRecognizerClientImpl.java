@@ -4,15 +4,19 @@
 
 package com.azure.ai.formrecognizer.implementation;
 
+import com.azure.ai.formrecognizer.implementation.models.AnalyzeBusinessCardAsyncResponse;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeLayoutAsyncResponse;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeOperationResult;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeReceiptAsyncResponse;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeWithCustomModelResponse;
+import com.azure.ai.formrecognizer.implementation.models.ComposeCustomModelsAsyncResponse;
+import com.azure.ai.formrecognizer.implementation.models.ComposeRequest;
 import com.azure.ai.formrecognizer.implementation.models.ContentType;
 import com.azure.ai.formrecognizer.implementation.models.CopyAuthorizationResult;
 import com.azure.ai.formrecognizer.implementation.models.CopyCustomModelResponse;
 import com.azure.ai.formrecognizer.implementation.models.CopyOperationResult;
 import com.azure.ai.formrecognizer.implementation.models.CopyRequest;
+import com.azure.ai.formrecognizer.implementation.models.ErrorResponseException;
 import com.azure.ai.formrecognizer.implementation.models.GenerateModelCopyAuthorizationResponse;
 import com.azure.ai.formrecognizer.implementation.models.Model;
 import com.azure.ai.formrecognizer.implementation.models.ModelInfo;
@@ -20,7 +24,6 @@ import com.azure.ai.formrecognizer.implementation.models.Models;
 import com.azure.ai.formrecognizer.implementation.models.SourcePath;
 import com.azure.ai.formrecognizer.implementation.models.TrainCustomModelAsyncResponse;
 import com.azure.ai.formrecognizer.implementation.models.TrainRequest;
-import com.azure.ai.formrecognizer.implementation.models.ErrorResponseException;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -46,9 +49,10 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 import java.nio.ByteBuffer;
 import java.util.UUID;
 import reactor.core.publisher.Flux;
@@ -63,7 +67,7 @@ public final class FormRecognizerClientImpl {
      * Supported Cognitive Services endpoints (protocol and hostname, for example:
      * https://westus2.api.cognitive.microsoft.com).
      */
-    private String endpoint;
+    private final String endpoint;
 
     /**
      * Gets Supported Cognitive Services endpoints (protocol and hostname, for example:
@@ -73,18 +77,6 @@ public final class FormRecognizerClientImpl {
      */
     public String getEndpoint() {
         return this.endpoint;
-    }
-
-    /**
-     * Sets Supported Cognitive Services endpoints (protocol and hostname, for example:
-     * https://westus2.api.cognitive.microsoft.com).
-     *
-     * @param endpoint the endpoint value.
-     * @return the service client itself.
-     */
-    public FormRecognizerClientImpl setEndpoint(String endpoint) {
-        this.endpoint = endpoint;
-        return this;
     }
 
     /** The HTTP pipeline to send requests through. */
@@ -99,9 +91,26 @@ public final class FormRecognizerClientImpl {
         return this.httpPipeline;
     }
 
+    /** The serializer to serialize an object into a string. */
+    private final SerializerAdapter serializerAdapter;
+
+    /**
+     * Gets The serializer to serialize an object into a string.
+     *
+     * @return the serializerAdapter value.
+     */
+    public SerializerAdapter getSerializerAdapter() {
+        return this.serializerAdapter;
+    }
+
     /** Initializes an instance of FormRecognizerClient client. */
-    public FormRecognizerClientImpl() {
-        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build());
+    FormRecognizerClientImpl(String endpoint) {
+        this(
+                new HttpPipelineBuilder()
+                        .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
+                        .build(),
+                JacksonAdapter.createDefaultSerializerAdapter(),
+                endpoint);
     }
 
     /**
@@ -109,16 +118,29 @@ public final class FormRecognizerClientImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      */
-    public FormRecognizerClientImpl(HttpPipeline httpPipeline) {
+    FormRecognizerClientImpl(HttpPipeline httpPipeline, String endpoint) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint);
+    }
+
+    /**
+     * Initializes an instance of FormRecognizerClient client.
+     *
+     * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param serializerAdapter The serializer to serialize an object into a string.
+     */
+    FormRecognizerClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint) {
         this.httpPipeline = httpPipeline;
-        this.service = RestProxy.create(FormRecognizerClientService.class, this.httpPipeline);
+        this.serializerAdapter = serializerAdapter;
+        this.endpoint = endpoint;
+        this.service =
+                RestProxy.create(FormRecognizerClientService.class, this.httpPipeline, this.getSerializerAdapter());
     }
 
     /**
      * The interface defining all the services for FormRecognizerClient to be used by the proxy service to perform REST
      * calls.
      */
-    @Host("{endpoint}/formrecognizer/v2.0-preview")
+    @Host("{endpoint}/formrecognizer/v2.1-preview.1")
     @ServiceInterface(name = "FormRecognizerClient")
     private interface FormRecognizerClientService {
         @Post("/custom/models")
@@ -132,7 +154,7 @@ public final class FormRecognizerClientImpl {
         @Get("/custom/models/{modelId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<SimpleResponse<Model>> getCustomModel(
+        Mono<Response<Model>> getCustomModel(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("modelId") UUID modelId,
                 @QueryParam("includeKeys") Boolean includeKeys,
@@ -169,7 +191,7 @@ public final class FormRecognizerClientImpl {
         @Get("/custom/models/{modelId}/analyzeResults/{resultId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<SimpleResponse<AnalyzeOperationResult>> getAnalyzeFormResult(
+        Mono<Response<AnalyzeOperationResult>> getAnalyzeFormResult(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("modelId") UUID modelId,
                 @PathParam("resultId") UUID resultId,
@@ -187,7 +209,7 @@ public final class FormRecognizerClientImpl {
         @Get("/custom/models/{modelId}/copyResults/{resultId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<SimpleResponse<CopyOperationResult>> getCustomModelCopyResult(
+        Mono<Response<CopyOperationResult>> getCustomModelCopyResult(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("modelId") UUID modelId,
                 @PathParam("resultId") UUID resultId,
@@ -199,12 +221,49 @@ public final class FormRecognizerClientImpl {
         Mono<GenerateModelCopyAuthorizationResponse> generateModelCopyAuthorization(
                 @HostParam("endpoint") String endpoint, Context context);
 
+        @Post("/custom/models/compose")
+        @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<ComposeCustomModelsAsyncResponse> composeCustomModelsAsync(
+                @HostParam("endpoint") String endpoint,
+                @BodyParam("application/json") ComposeRequest composeRequest,
+                Context context);
+
+        @Post("/prebuilt/businessCard/analyze")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<AnalyzeBusinessCardAsyncResponse> analyzeBusinessCardAsync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("includeTextDetails") Boolean includeTextDetails,
+                @QueryParam("locale") String locale,
+                @HeaderParam("Content-Type") ContentType contentType,
+                @BodyParam("application/octet-stream") Flux<ByteBuffer> fileStream,
+                @HeaderParam("Content-Length") long contentLength,
+                Context context);
+
+        @Post("/prebuilt/businessCard/analyze")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<AnalyzeBusinessCardAsyncResponse> analyzeBusinessCardAsync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("includeTextDetails") Boolean includeTextDetails,
+                @QueryParam("locale") String locale,
+                @BodyParam("application/json") SourcePath fileStream,
+                Context context);
+
+        @Get("/prebuilt/businessCard/analyzeResults/{resultId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<Response<AnalyzeOperationResult>> getAnalyzeBusinessCardResult(
+                @HostParam("endpoint") String endpoint, @PathParam("resultId") UUID resultId, Context context);
+
         @Post("/prebuilt/receipt/analyze")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("includeTextDetails") Boolean includeTextDetails,
+                @QueryParam("locale") String locale,
                 @HeaderParam("Content-Type") ContentType contentType,
                 @BodyParam("application/octet-stream") Flux<ByteBuffer> fileStream,
                 @HeaderParam("Content-Length") long contentLength,
@@ -216,13 +275,14 @@ public final class FormRecognizerClientImpl {
         Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("includeTextDetails") Boolean includeTextDetails,
+                @QueryParam("locale") String locale,
                 @BodyParam("application/json") SourcePath fileStream,
                 Context context);
 
         @Get("/prebuilt/receipt/analyzeResults/{resultId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<SimpleResponse<AnalyzeOperationResult>> getAnalyzeReceiptResult(
+        Mono<Response<AnalyzeOperationResult>> getAnalyzeReceiptResult(
                 @HostParam("endpoint") String endpoint, @PathParam("resultId") UUID resultId, Context context);
 
         @Post("/layout/analyze")
@@ -246,25 +306,25 @@ public final class FormRecognizerClientImpl {
         @Get("/layout/analyzeResults/{resultId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<SimpleResponse<AnalyzeOperationResult>> getAnalyzeLayoutResult(
+        Mono<Response<AnalyzeOperationResult>> getAnalyzeLayoutResult(
                 @HostParam("endpoint") String endpoint, @PathParam("resultId") UUID resultId, Context context);
 
         @Get("/custom/models")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<SimpleResponse<Models>> listCustomModels(
+        Mono<Response<Models>> listCustomModels(
                 @HostParam("endpoint") String endpoint, @QueryParam("op") String op, Context context);
 
         @Get("/custom/models")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<SimpleResponse<Models>> getCustomModels(
+        Mono<Response<Models>> getCustomModels(
                 @HostParam("endpoint") String endpoint, @QueryParam("op") String op, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<SimpleResponse<Models>> listCustomModelsNext(
+        Mono<Response<Models>> listCustomModelsNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -287,7 +347,7 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TrainCustomModelAsyncResponse> trainCustomModelAsyncWithResponseAsync(TrainRequest trainRequest) {
         return FluxUtil.withContext(
-            context -> service.trainCustomModelAsync(this.getEndpoint(), trainRequest, context));
+                context -> service.trainCustomModelAsync(this.getEndpoint(), trainRequest, context));
     }
 
     /**
@@ -332,7 +392,7 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> trainCustomModelAsyncAsync(TrainRequest trainRequest) {
         return trainCustomModelAsyncWithResponseAsync(trainRequest)
-            .flatMap((TrainCustomModelAsyncResponse res) -> Mono.empty());
+                .flatMap((TrainCustomModelAsyncResponse res) -> Mono.empty());
     }
 
     /**
@@ -355,7 +415,7 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> trainCustomModelAsyncAsync(TrainRequest trainRequest, Context context) {
         return trainCustomModelAsyncWithResponseAsync(trainRequest, context)
-            .flatMap((TrainCustomModelAsyncResponse res) -> Mono.empty());
+                .flatMap((TrainCustomModelAsyncResponse res) -> Mono.empty());
     }
 
     /**
@@ -393,10 +453,11 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void trainCustomModelAsync(TrainRequest trainRequest, Context context) {
-        trainCustomModelAsyncAsync(trainRequest, context).block();
+    public Response<Void> trainCustomModelAsyncWithResponse(TrainRequest trainRequest, Context context) {
+        return trainCustomModelAsyncWithResponseAsync(trainRequest, context).block();
     }
 
     /**
@@ -410,9 +471,9 @@ public final class FormRecognizerClientImpl {
      * @return detailed information about a custom model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Model>> getCustomModelWithResponseAsync(UUID modelId, Boolean includeKeys) {
+    public Mono<Response<Model>> getCustomModelWithResponseAsync(UUID modelId, Boolean includeKeys) {
         return FluxUtil.withContext(
-            context -> service.getCustomModel(this.getEndpoint(), modelId, includeKeys, context));
+                context -> service.getCustomModel(this.getEndpoint(), modelId, includeKeys, context));
     }
 
     /**
@@ -427,8 +488,7 @@ public final class FormRecognizerClientImpl {
      * @return detailed information about a custom model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Model>> getCustomModelWithResponseAsync(
-            UUID modelId, Boolean includeKeys, Context context) {
+    public Mono<Response<Model>> getCustomModelWithResponseAsync(UUID modelId, Boolean includeKeys, Context context) {
         return service.getCustomModel(this.getEndpoint(), modelId, includeKeys, context);
     }
 
@@ -445,13 +505,14 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Model> getCustomModelAsync(UUID modelId, Boolean includeKeys) {
         return getCustomModelWithResponseAsync(modelId, includeKeys)
-            .flatMap((SimpleResponse<Model> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+                .flatMap(
+                        (Response<Model> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -468,13 +529,14 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Model> getCustomModelAsync(UUID modelId, Boolean includeKeys, Context context) {
         return getCustomModelWithResponseAsync(modelId, includeKeys, context)
-            .flatMap((SimpleResponse<Model> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+                .flatMap(
+                        (Response<Model> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -504,8 +566,8 @@ public final class FormRecognizerClientImpl {
      * @return detailed information about a custom model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Model getCustomModel(UUID modelId, Boolean includeKeys, Context context) {
-        return getCustomModelAsync(modelId, includeKeys, context).block();
+    public Response<Model> getCustomModelWithResponse(UUID modelId, Boolean includeKeys, Context context) {
+        return getCustomModelWithResponseAsync(modelId, includeKeys, context).block();
     }
 
     /**
@@ -587,10 +649,11 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteCustomModel(UUID modelId, Context context) {
-        deleteCustomModelAsync(modelId, context).block();
+    public Response<Void> deleteCustomModelWithResponse(UUID modelId, Context context) {
+        return deleteCustomModelWithResponseAsync(modelId, context).block();
     }
 
     /**
@@ -610,20 +673,21 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeWithCustomModelResponse> analyzeWithCustomModelWithResponseAsync(
-        UUID modelId,
-        ContentType contentType,
-        Flux<ByteBuffer> fileStream,
-        long contentLength,
-        Boolean includeTextDetails) {
+            UUID modelId,
+            ContentType contentType,
+            Flux<ByteBuffer> fileStream,
+            long contentLength,
+            Boolean includeTextDetails) {
         return FluxUtil.withContext(
-            context -> service.analyzeWithCustomModel(
-                this.getEndpoint(),
-                modelId,
-                includeTextDetails,
-                contentType,
-                fileStream,
-                contentLength,
-                context));
+                context ->
+                        service.analyzeWithCustomModel(
+                                this.getEndpoint(),
+                                modelId,
+                                includeTextDetails,
+                                contentType,
+                                fileStream,
+                                contentLength,
+                                context));
     }
 
     /**
@@ -644,12 +708,12 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeWithCustomModelResponse> analyzeWithCustomModelWithResponseAsync(
-        UUID modelId,
-        ContentType contentType,
-        Flux<ByteBuffer> fileStream,
-        long contentLength,
-        Boolean includeTextDetails,
-        Context context) {
+            UUID modelId,
+            ContentType contentType,
+            Flux<ByteBuffer> fileStream,
+            long contentLength,
+            Boolean includeTextDetails,
+            Context context) {
         return service.analyzeWithCustomModel(
                 this.getEndpoint(), modelId, includeTextDetails, contentType, fileStream, contentLength, context);
     }
@@ -671,11 +735,11 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> analyzeWithCustomModelAsync(
-        UUID modelId,
-        ContentType contentType,
-        Flux<ByteBuffer> fileStream,
-        long contentLength,
-        Boolean includeTextDetails) {
+            UUID modelId,
+            ContentType contentType,
+            Flux<ByteBuffer> fileStream,
+            long contentLength,
+            Boolean includeTextDetails) {
         return analyzeWithCustomModelWithResponseAsync(
                         modelId, contentType, fileStream, contentLength, includeTextDetails)
                 .flatMap((AnalyzeWithCustomModelResponse res) -> Mono.empty());
@@ -699,14 +763,14 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> analyzeWithCustomModelAsync(
-        UUID modelId,
-        ContentType contentType,
-        Flux<ByteBuffer> fileStream,
-        long contentLength,
-        Boolean includeTextDetails,
-        Context context) {
+            UUID modelId,
+            ContentType contentType,
+            Flux<ByteBuffer> fileStream,
+            long contentLength,
+            Boolean includeTextDetails,
+            Context context) {
         return analyzeWithCustomModelWithResponseAsync(
-                    modelId, contentType, fileStream, contentLength, includeTextDetails, context)
+                        modelId, contentType, fileStream, contentLength, includeTextDetails, context)
                 .flatMap((AnalyzeWithCustomModelResponse res) -> Mono.empty());
     }
 
@@ -726,11 +790,11 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void analyzeWithCustomModel(
-        UUID modelId,
-        ContentType contentType,
-        Flux<ByteBuffer> fileStream,
-        long contentLength,
-        Boolean includeTextDetails) {
+            UUID modelId,
+            ContentType contentType,
+            Flux<ByteBuffer> fileStream,
+            long contentLength,
+            Boolean includeTextDetails) {
         analyzeWithCustomModelAsync(modelId, contentType, fileStream, contentLength, includeTextDetails).block();
     }
 
@@ -748,17 +812,19 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void analyzeWithCustomModel(
-        UUID modelId,
-        ContentType contentType,
-        Flux<ByteBuffer> fileStream,
-        long contentLength,
-        Boolean includeTextDetails,
-        Context context) {
-        analyzeWithCustomModelAsync(modelId, contentType, fileStream, contentLength, includeTextDetails, context)
-            .block();
+    public Response<Void> analyzeWithCustomModelWithResponse(
+            UUID modelId,
+            ContentType contentType,
+            Flux<ByteBuffer> fileStream,
+            long contentLength,
+            Boolean includeTextDetails,
+            Context context) {
+        return analyzeWithCustomModelWithResponseAsync(
+                        modelId, contentType, fileStream, contentLength, includeTextDetails, context)
+                .block();
     }
 
     /**
@@ -777,9 +843,10 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeWithCustomModelResponse> analyzeWithCustomModelWithResponseAsync(
             UUID modelId, Boolean includeTextDetails, SourcePath fileStream) {
-        return FluxUtil.withContext(context ->
-            service.analyzeWithCustomModel(
-                this.getEndpoint(), modelId, includeTextDetails, fileStream, context));
+        return FluxUtil.withContext(
+                context ->
+                        service.analyzeWithCustomModel(
+                                this.getEndpoint(), modelId, includeTextDetails, fileStream, context));
     }
 
     /**
@@ -818,7 +885,7 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> analyzeWithCustomModelAsync(UUID modelId, Boolean includeTextDetails, SourcePath fileStream) {
         return analyzeWithCustomModelWithResponseAsync(modelId, includeTextDetails, fileStream)
-            .flatMap((AnalyzeWithCustomModelResponse res) -> Mono.empty());
+                .flatMap((AnalyzeWithCustomModelResponse res) -> Mono.empty());
     }
 
     /**
@@ -839,7 +906,7 @@ public final class FormRecognizerClientImpl {
     public Mono<Void> analyzeWithCustomModelAsync(
             UUID modelId, Boolean includeTextDetails, SourcePath fileStream, Context context) {
         return analyzeWithCustomModelWithResponseAsync(modelId, includeTextDetails, fileStream, context)
-            .flatMap((AnalyzeWithCustomModelResponse res) -> Mono.empty());
+                .flatMap((AnalyzeWithCustomModelResponse res) -> Mono.empty());
     }
 
     /**
@@ -871,11 +938,12 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void analyzeWithCustomModel(
+    public Response<Void> analyzeWithCustomModelWithResponse(
             UUID modelId, Boolean includeTextDetails, SourcePath fileStream, Context context) {
-        analyzeWithCustomModelAsync(modelId, includeTextDetails, fileStream, context).block();
+        return analyzeWithCustomModelWithResponseAsync(modelId, includeTextDetails, fileStream, context).block();
     }
 
     /**
@@ -889,10 +957,9 @@ public final class FormRecognizerClientImpl {
      * @return status and result of the queued analyze operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<AnalyzeOperationResult>> getAnalyzeFormResultWithResponseAsync(
-            UUID modelId, UUID resultId) {
+    public Mono<Response<AnalyzeOperationResult>> getAnalyzeFormResultWithResponseAsync(UUID modelId, UUID resultId) {
         return FluxUtil.withContext(
-            context -> service.getAnalyzeFormResult(this.getEndpoint(), modelId, resultId, context));
+                context -> service.getAnalyzeFormResult(this.getEndpoint(), modelId, resultId, context));
     }
 
     /**
@@ -907,7 +974,7 @@ public final class FormRecognizerClientImpl {
      * @return status and result of the queued analyze operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<AnalyzeOperationResult>> getAnalyzeFormResultWithResponseAsync(
+    public Mono<Response<AnalyzeOperationResult>> getAnalyzeFormResultWithResponseAsync(
             UUID modelId, UUID resultId, Context context) {
         return service.getAnalyzeFormResult(this.getEndpoint(), modelId, resultId, context);
     }
@@ -925,13 +992,14 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeOperationResult> getAnalyzeFormResultAsync(UUID modelId, UUID resultId) {
         return getAnalyzeFormResultWithResponseAsync(modelId, resultId)
-            .flatMap((SimpleResponse<AnalyzeOperationResult> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+                .flatMap(
+                        (Response<AnalyzeOperationResult> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -948,13 +1016,14 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeOperationResult> getAnalyzeFormResultAsync(UUID modelId, UUID resultId, Context context) {
         return getAnalyzeFormResultWithResponseAsync(modelId, resultId, context)
-            .flatMap((SimpleResponse<AnalyzeOperationResult> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+                .flatMap(
+                        (Response<AnalyzeOperationResult> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -984,8 +1053,9 @@ public final class FormRecognizerClientImpl {
      * @return status and result of the queued analyze operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AnalyzeOperationResult getAnalyzeFormResult(UUID modelId, UUID resultId, Context context) {
-        return getAnalyzeFormResultAsync(modelId, resultId, context).block();
+    public Response<AnalyzeOperationResult> getAnalyzeFormResultWithResponse(
+            UUID modelId, UUID resultId, Context context) {
+        return getAnalyzeFormResultWithResponseAsync(modelId, resultId, context).block();
     }
 
     /**
@@ -1002,7 +1072,7 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CopyCustomModelResponse> copyCustomModelWithResponseAsync(UUID modelId, CopyRequest copyRequest) {
         return FluxUtil.withContext(
-            context -> service.copyCustomModel(this.getEndpoint(), modelId, copyRequest, context));
+                context -> service.copyCustomModel(this.getEndpoint(), modelId, copyRequest, context));
     }
 
     /**
@@ -1037,7 +1107,7 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> copyCustomModelAsync(UUID modelId, CopyRequest copyRequest) {
         return copyCustomModelWithResponseAsync(modelId, copyRequest)
-            .flatMap((CopyCustomModelResponse res) -> Mono.empty());
+                .flatMap((CopyCustomModelResponse res) -> Mono.empty());
     }
 
     /**
@@ -1055,7 +1125,7 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> copyCustomModelAsync(UUID modelId, CopyRequest copyRequest, Context context) {
         return copyCustomModelWithResponseAsync(modelId, copyRequest, context)
-            .flatMap((CopyCustomModelResponse res) -> Mono.empty());
+                .flatMap((CopyCustomModelResponse res) -> Mono.empty());
     }
 
     /**
@@ -1083,10 +1153,11 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void copyCustomModel(UUID modelId, CopyRequest copyRequest, Context context) {
-        copyCustomModelAsync(modelId, copyRequest, context).block();
+    public Response<Void> copyCustomModelWithResponse(UUID modelId, CopyRequest copyRequest, Context context) {
+        return copyCustomModelWithResponseAsync(modelId, copyRequest, context).block();
     }
 
     /**
@@ -1100,10 +1171,9 @@ public final class FormRecognizerClientImpl {
      * @return status and result of the queued copy operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<CopyOperationResult>> getCustomModelCopyResultWithResponseAsync(
-            UUID modelId, UUID resultId) {
+    public Mono<Response<CopyOperationResult>> getCustomModelCopyResultWithResponseAsync(UUID modelId, UUID resultId) {
         return FluxUtil.withContext(
-            context -> service.getCustomModelCopyResult(this.getEndpoint(), modelId, resultId, context));
+                context -> service.getCustomModelCopyResult(this.getEndpoint(), modelId, resultId, context));
     }
 
     /**
@@ -1118,7 +1188,7 @@ public final class FormRecognizerClientImpl {
      * @return status and result of the queued copy operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<CopyOperationResult>> getCustomModelCopyResultWithResponseAsync(
+    public Mono<Response<CopyOperationResult>> getCustomModelCopyResultWithResponseAsync(
             UUID modelId, UUID resultId, Context context) {
         return service.getCustomModelCopyResult(this.getEndpoint(), modelId, resultId, context);
     }
@@ -1136,13 +1206,14 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CopyOperationResult> getCustomModelCopyResultAsync(UUID modelId, UUID resultId) {
         return getCustomModelCopyResultWithResponseAsync(modelId, resultId)
-            .flatMap((SimpleResponse<CopyOperationResult> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+                .flatMap(
+                        (Response<CopyOperationResult> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -1159,13 +1230,14 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CopyOperationResult> getCustomModelCopyResultAsync(UUID modelId, UUID resultId, Context context) {
         return getCustomModelCopyResultWithResponseAsync(modelId, resultId, context)
-            .flatMap((SimpleResponse<CopyOperationResult> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+                .flatMap(
+                        (Response<CopyOperationResult> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -1195,8 +1267,9 @@ public final class FormRecognizerClientImpl {
      * @return status and result of the queued copy operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CopyOperationResult getCustomModelCopyResult(UUID modelId, UUID resultId, Context context) {
-        return getCustomModelCopyResultAsync(modelId, resultId, context).block();
+    public Response<CopyOperationResult> getCustomModelCopyResultWithResponse(
+            UUID modelId, UUID resultId, Context context) {
+        return getCustomModelCopyResultWithResponseAsync(modelId, resultId, context).block();
     }
 
     /**
@@ -1236,14 +1309,14 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CopyAuthorizationResult> generateModelCopyAuthorizationAsync() {
         return generateModelCopyAuthorizationWithResponseAsync()
-            .flatMap(
-                (GenerateModelCopyAuthorizationResponse res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+                .flatMap(
+                        (GenerateModelCopyAuthorizationResponse res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -1258,13 +1331,14 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CopyAuthorizationResult> generateModelCopyAuthorizationAsync(Context context) {
         return generateModelCopyAuthorizationWithResponseAsync(context)
-            .flatMap((GenerateModelCopyAuthorizationResponse res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+                .flatMap(
+                        (GenerateModelCopyAuthorizationResponse res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -1289,19 +1363,512 @@ public final class FormRecognizerClientImpl {
      * @return request parameter that contains authorization claims for copy operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CopyAuthorizationResult generateModelCopyAuthorization(Context context) {
-        return generateModelCopyAuthorizationAsync(context).block();
+    public Response<CopyAuthorizationResult> generateModelCopyAuthorizationWithResponse(Context context) {
+        return generateModelCopyAuthorizationWithResponseAsync(context).block();
     }
 
     /**
-     * Extract field text and semantic values from a given receipt document. The input document must be of one of the
-     * supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use
-     * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
+     * Compose request would include list of models ids. It would validate what all models either trained with labels
+     * model or composed model. It would validate limit of models put together.
+     *
+     * @param composeRequest Request contract for compose operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ComposeCustomModelsAsyncResponse> composeCustomModelsAsyncWithResponseAsync(
+            ComposeRequest composeRequest) {
+        return FluxUtil.withContext(
+                context -> service.composeCustomModelsAsync(this.getEndpoint(), composeRequest, context));
+    }
+
+    /**
+     * Compose request would include list of models ids. It would validate what all models either trained with labels
+     * model or composed model. It would validate limit of models put together.
+     *
+     * @param composeRequest Request contract for compose operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ComposeCustomModelsAsyncResponse> composeCustomModelsAsyncWithResponseAsync(
+            ComposeRequest composeRequest, Context context) {
+        return service.composeCustomModelsAsync(this.getEndpoint(), composeRequest, context);
+    }
+
+    /**
+     * Compose request would include list of models ids. It would validate what all models either trained with labels
+     * model or composed model. It would validate limit of models put together.
+     *
+     * @param composeRequest Request contract for compose operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> composeCustomModelsAsyncAsync(ComposeRequest composeRequest) {
+        return composeCustomModelsAsyncWithResponseAsync(composeRequest)
+                .flatMap((ComposeCustomModelsAsyncResponse res) -> Mono.empty());
+    }
+
+    /**
+     * Compose request would include list of models ids. It would validate what all models either trained with labels
+     * model or composed model. It would validate limit of models put together.
+     *
+     * @param composeRequest Request contract for compose operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> composeCustomModelsAsyncAsync(ComposeRequest composeRequest, Context context) {
+        return composeCustomModelsAsyncWithResponseAsync(composeRequest, context)
+                .flatMap((ComposeCustomModelsAsyncResponse res) -> Mono.empty());
+    }
+
+    /**
+     * Compose request would include list of models ids. It would validate what all models either trained with labels
+     * model or composed model. It would validate limit of models put together.
+     *
+     * @param composeRequest Request contract for compose operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void composeCustomModelsAsync(ComposeRequest composeRequest) {
+        composeCustomModelsAsyncAsync(composeRequest).block();
+    }
+
+    /**
+     * Compose request would include list of models ids. It would validate what all models either trained with labels
+     * model or composed model. It would validate limit of models put together.
+     *
+     * @param composeRequest Request contract for compose operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> composeCustomModelsAsyncWithResponse(ComposeRequest composeRequest, Context context) {
+        return composeCustomModelsAsyncWithResponseAsync(composeRequest, context).block();
+    }
+
+    /**
+     * Extract field text and semantic values from a given business card document. The input document must be of one of
+     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use
+     * 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
      * @param contentType Content type for upload.
      * @param fileStream Uri or local path to source data.
      * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the business card. Supported locales include: en-AU, en-CA, en-GB, en-IN, en-US(default).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AnalyzeBusinessCardAsyncResponse> analyzeBusinessCardAsyncWithResponseAsync(
+            ContentType contentType,
+            Flux<ByteBuffer> fileStream,
+            long contentLength,
+            Boolean includeTextDetails,
+            String locale) {
+        return FluxUtil.withContext(
+                context ->
+                        service.analyzeBusinessCardAsync(
+                                this.getEndpoint(),
+                                includeTextDetails,
+                                locale,
+                                contentType,
+                                fileStream,
+                                contentLength,
+                                context));
+    }
+
+    /**
+     * Extract field text and semantic values from a given business card document. The input document must be of one of
+     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use
+     * 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     *
+     * @param contentType Content type for upload.
+     * @param fileStream Uri or local path to source data.
+     * @param contentLength The contentLength parameter.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the business card. Supported locales include: en-AU, en-CA, en-GB, en-IN, en-US(default).
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AnalyzeBusinessCardAsyncResponse> analyzeBusinessCardAsyncWithResponseAsync(
+            ContentType contentType,
+            Flux<ByteBuffer> fileStream,
+            long contentLength,
+            Boolean includeTextDetails,
+            String locale,
+            Context context) {
+        return service.analyzeBusinessCardAsync(
+                this.getEndpoint(), includeTextDetails, locale, contentType, fileStream, contentLength, context);
+    }
+
+    /**
+     * Extract field text and semantic values from a given business card document. The input document must be of one of
+     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use
+     * 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     *
+     * @param contentType Content type for upload.
+     * @param fileStream Uri or local path to source data.
+     * @param contentLength The contentLength parameter.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the business card. Supported locales include: en-AU, en-CA, en-GB, en-IN, en-US(default).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> analyzeBusinessCardAsyncAsync(
+            ContentType contentType,
+            Flux<ByteBuffer> fileStream,
+            long contentLength,
+            Boolean includeTextDetails,
+            String locale) {
+        return analyzeBusinessCardAsyncWithResponseAsync(
+                        contentType, fileStream, contentLength, includeTextDetails, locale)
+                .flatMap((AnalyzeBusinessCardAsyncResponse res) -> Mono.empty());
+    }
+
+    /**
+     * Extract field text and semantic values from a given business card document. The input document must be of one of
+     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use
+     * 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     *
+     * @param contentType Content type for upload.
+     * @param fileStream Uri or local path to source data.
+     * @param contentLength The contentLength parameter.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the business card. Supported locales include: en-AU, en-CA, en-GB, en-IN, en-US(default).
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> analyzeBusinessCardAsyncAsync(
+            ContentType contentType,
+            Flux<ByteBuffer> fileStream,
+            long contentLength,
+            Boolean includeTextDetails,
+            String locale,
+            Context context) {
+        return analyzeBusinessCardAsyncWithResponseAsync(
+                        contentType, fileStream, contentLength, includeTextDetails, locale, context)
+                .flatMap((AnalyzeBusinessCardAsyncResponse res) -> Mono.empty());
+    }
+
+    /**
+     * Extract field text and semantic values from a given business card document. The input document must be of one of
+     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use
+     * 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     *
+     * @param contentType Content type for upload.
+     * @param fileStream Uri or local path to source data.
+     * @param contentLength The contentLength parameter.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the business card. Supported locales include: en-AU, en-CA, en-GB, en-IN, en-US(default).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void analyzeBusinessCardAsync(
+            ContentType contentType,
+            Flux<ByteBuffer> fileStream,
+            long contentLength,
+            Boolean includeTextDetails,
+            String locale) {
+        analyzeBusinessCardAsyncAsync(contentType, fileStream, contentLength, includeTextDetails, locale).block();
+    }
+
+    /**
+     * Extract field text and semantic values from a given business card document. The input document must be of one of
+     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use
+     * 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     *
+     * @param contentType Content type for upload.
+     * @param fileStream Uri or local path to source data.
+     * @param contentLength The contentLength parameter.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the business card. Supported locales include: en-AU, en-CA, en-GB, en-IN, en-US(default).
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> analyzeBusinessCardAsyncWithResponse(
+            ContentType contentType,
+            Flux<ByteBuffer> fileStream,
+            long contentLength,
+            Boolean includeTextDetails,
+            String locale,
+            Context context) {
+        return analyzeBusinessCardAsyncWithResponseAsync(
+                        contentType, fileStream, contentLength, includeTextDetails, locale, context)
+                .block();
+    }
+
+    /**
+     * Extract field text and semantic values from a given business card document. The input document must be of one of
+     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use
+     * 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     *
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the business card. Supported locales include: en-AU, en-CA, en-GB, en-IN, en-US(default).
+     * @param fileStream Uri or local path to source data.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AnalyzeBusinessCardAsyncResponse> analyzeBusinessCardAsyncWithResponseAsync(
+            Boolean includeTextDetails, String locale, SourcePath fileStream) {
+        return FluxUtil.withContext(
+                context ->
+                        service.analyzeBusinessCardAsync(
+                                this.getEndpoint(), includeTextDetails, locale, fileStream, context));
+    }
+
+    /**
+     * Extract field text and semantic values from a given business card document. The input document must be of one of
+     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use
+     * 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     *
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the business card. Supported locales include: en-AU, en-CA, en-GB, en-IN, en-US(default).
+     * @param fileStream Uri or local path to source data.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AnalyzeBusinessCardAsyncResponse> analyzeBusinessCardAsyncWithResponseAsync(
+            Boolean includeTextDetails, String locale, SourcePath fileStream, Context context) {
+        return service.analyzeBusinessCardAsync(this.getEndpoint(), includeTextDetails, locale, fileStream, context);
+    }
+
+    /**
+     * Extract field text and semantic values from a given business card document. The input document must be of one of
+     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use
+     * 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     *
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the business card. Supported locales include: en-AU, en-CA, en-GB, en-IN, en-US(default).
+     * @param fileStream Uri or local path to source data.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> analyzeBusinessCardAsyncAsync(Boolean includeTextDetails, String locale, SourcePath fileStream) {
+        return analyzeBusinessCardAsyncWithResponseAsync(includeTextDetails, locale, fileStream)
+                .flatMap((AnalyzeBusinessCardAsyncResponse res) -> Mono.empty());
+    }
+
+    /**
+     * Extract field text and semantic values from a given business card document. The input document must be of one of
+     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use
+     * 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     *
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the business card. Supported locales include: en-AU, en-CA, en-GB, en-IN, en-US(default).
+     * @param fileStream Uri or local path to source data.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> analyzeBusinessCardAsyncAsync(
+            Boolean includeTextDetails, String locale, SourcePath fileStream, Context context) {
+        return analyzeBusinessCardAsyncWithResponseAsync(includeTextDetails, locale, fileStream, context)
+                .flatMap((AnalyzeBusinessCardAsyncResponse res) -> Mono.empty());
+    }
+
+    /**
+     * Extract field text and semantic values from a given business card document. The input document must be of one of
+     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use
+     * 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     *
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the business card. Supported locales include: en-AU, en-CA, en-GB, en-IN, en-US(default).
+     * @param fileStream Uri or local path to source data.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void analyzeBusinessCardAsync(Boolean includeTextDetails, String locale, SourcePath fileStream) {
+        analyzeBusinessCardAsyncAsync(includeTextDetails, locale, fileStream).block();
+    }
+
+    /**
+     * Extract field text and semantic values from a given business card document. The input document must be of one of
+     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use
+     * 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     *
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the business card. Supported locales include: en-AU, en-CA, en-GB, en-IN, en-US(default).
+     * @param fileStream Uri or local path to source data.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> analyzeBusinessCardAsyncWithResponse(
+            Boolean includeTextDetails, String locale, SourcePath fileStream, Context context) {
+        return analyzeBusinessCardAsyncWithResponseAsync(includeTextDetails, locale, fileStream, context).block();
+    }
+
+    /**
+     * Track the progress and obtain the result of the analyze business card operation.
+     *
+     * @param resultId Analyze operation result identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status and result of the queued analyze operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<AnalyzeOperationResult>> getAnalyzeBusinessCardResultWithResponseAsync(UUID resultId) {
+        return FluxUtil.withContext(
+                context -> service.getAnalyzeBusinessCardResult(this.getEndpoint(), resultId, context));
+    }
+
+    /**
+     * Track the progress and obtain the result of the analyze business card operation.
+     *
+     * @param resultId Analyze operation result identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status and result of the queued analyze operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<AnalyzeOperationResult>> getAnalyzeBusinessCardResultWithResponseAsync(
+            UUID resultId, Context context) {
+        return service.getAnalyzeBusinessCardResult(this.getEndpoint(), resultId, context);
+    }
+
+    /**
+     * Track the progress and obtain the result of the analyze business card operation.
+     *
+     * @param resultId Analyze operation result identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status and result of the queued analyze operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AnalyzeOperationResult> getAnalyzeBusinessCardResultAsync(UUID resultId) {
+        return getAnalyzeBusinessCardResultWithResponseAsync(resultId)
+                .flatMap(
+                        (Response<AnalyzeOperationResult> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Track the progress and obtain the result of the analyze business card operation.
+     *
+     * @param resultId Analyze operation result identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status and result of the queued analyze operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AnalyzeOperationResult> getAnalyzeBusinessCardResultAsync(UUID resultId, Context context) {
+        return getAnalyzeBusinessCardResultWithResponseAsync(resultId, context)
+                .flatMap(
+                        (Response<AnalyzeOperationResult> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Track the progress and obtain the result of the analyze business card operation.
+     *
+     * @param resultId Analyze operation result identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status and result of the queued analyze operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AnalyzeOperationResult getAnalyzeBusinessCardResult(UUID resultId) {
+        return getAnalyzeBusinessCardResultAsync(resultId).block();
+    }
+
+    /**
+     * Track the progress and obtain the result of the analyze business card operation.
+     *
+     * @param resultId Analyze operation result identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status and result of the queued analyze operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AnalyzeOperationResult> getAnalyzeBusinessCardResultWithResponse(UUID resultId, Context context) {
+        return getAnalyzeBusinessCardResultWithResponseAsync(resultId, context).block();
+    }
+
+    /**
+     * Extract field text and semantic values from a given receipt document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use
+     * 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     *
+     * @param contentType Content type for upload.
+     * @param fileStream Uri or local path to source data.
+     * @param contentLength The contentLength parameter.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the receipt. Supported locales include: en-AU, en-CA, en-GB, en-IN, en-US(default).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1309,26 +1876,33 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsyncWithResponseAsync(
-            ContentType contentType, Flux<ByteBuffer> fileStream, long contentLength, Boolean includeTextDetails) {
-        return FluxUtil.withContext(context ->
-            service.analyzeReceiptAsync(
-                this.getEndpoint(),
-                includeTextDetails,
-                contentType,
-                fileStream,
-                contentLength,
-                context));
+            ContentType contentType,
+            Flux<ByteBuffer> fileStream,
+            long contentLength,
+            Boolean includeTextDetails,
+            String locale) {
+        return FluxUtil.withContext(
+                context ->
+                        service.analyzeReceiptAsync(
+                                this.getEndpoint(),
+                                includeTextDetails,
+                                locale,
+                                contentType,
+                                fileStream,
+                                contentLength,
+                                context));
     }
 
     /**
      * Extract field text and semantic values from a given receipt document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use
-     * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
+     * 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
      * @param contentType Content type for upload.
      * @param fileStream Uri or local path to source data.
      * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the receipt. Supported locales include: en-AU, en-CA, en-GB, en-IN, en-US(default).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1341,20 +1915,22 @@ public final class FormRecognizerClientImpl {
             Flux<ByteBuffer> fileStream,
             long contentLength,
             Boolean includeTextDetails,
+            String locale,
             Context context) {
         return service.analyzeReceiptAsync(
-            this.getEndpoint(), includeTextDetails, contentType, fileStream, contentLength, context);
+                this.getEndpoint(), includeTextDetails, locale, contentType, fileStream, contentLength, context);
     }
 
     /**
      * Extract field text and semantic values from a given receipt document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use
-     * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
+     * 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
      * @param contentType Content type for upload.
      * @param fileStream Uri or local path to source data.
      * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the receipt. Supported locales include: en-AU, en-CA, en-GB, en-IN, en-US(default).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1362,20 +1938,25 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> analyzeReceiptAsyncAsync(
-            ContentType contentType, Flux<ByteBuffer> fileStream, long contentLength, Boolean includeTextDetails) {
-        return analyzeReceiptAsyncWithResponseAsync(contentType, fileStream, contentLength, includeTextDetails)
-            .flatMap((AnalyzeReceiptAsyncResponse res) -> Mono.empty());
+            ContentType contentType,
+            Flux<ByteBuffer> fileStream,
+            long contentLength,
+            Boolean includeTextDetails,
+            String locale) {
+        return analyzeReceiptAsyncWithResponseAsync(contentType, fileStream, contentLength, includeTextDetails, locale)
+                .flatMap((AnalyzeReceiptAsyncResponse res) -> Mono.empty());
     }
 
     /**
      * Extract field text and semantic values from a given receipt document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use
-     * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
+     * 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
      * @param contentType Content type for upload.
      * @param fileStream Uri or local path to source data.
      * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the receipt. Supported locales include: en-AU, en-CA, en-GB, en-IN, en-US(default).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1388,40 +1969,23 @@ public final class FormRecognizerClientImpl {
             Flux<ByteBuffer> fileStream,
             long contentLength,
             Boolean includeTextDetails,
+            String locale,
             Context context) {
-        return analyzeReceiptAsyncWithResponseAsync(contentType, fileStream, contentLength, includeTextDetails, context)
-            .flatMap((AnalyzeReceiptAsyncResponse res) -> Mono.empty());
+        return analyzeReceiptAsyncWithResponseAsync(
+                        contentType, fileStream, contentLength, includeTextDetails, locale, context)
+                .flatMap((AnalyzeReceiptAsyncResponse res) -> Mono.empty());
     }
 
     /**
      * Extract field text and semantic values from a given receipt document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use
-     * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
+     * 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
      * @param contentType Content type for upload.
      * @param fileStream Uri or local path to source data.
      * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void analyzeReceiptAsync(
-            ContentType contentType, Flux<ByteBuffer> fileStream, long contentLength, Boolean includeTextDetails) {
-        analyzeReceiptAsyncAsync(contentType, fileStream, contentLength, includeTextDetails).block();
-    }
-
-    /**
-     * Extract field text and semantic values from a given receipt document. The input document must be of one of the
-     * supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use
-     * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
-     *
-     * @param contentType Content type for upload.
-     * @param fileStream Uri or local path to source data.
-     * @param contentLength The contentLength parameter.
-     * @param includeTextDetails Include text lines and element references in the result.
-     * @param context The context to associate with this operation.
+     * @param locale Locale of the receipt. Supported locales include: en-AU, en-CA, en-GB, en-IN, en-US(default).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1432,16 +1996,46 @@ public final class FormRecognizerClientImpl {
             Flux<ByteBuffer> fileStream,
             long contentLength,
             Boolean includeTextDetails,
-            Context context) {
-        analyzeReceiptAsyncAsync(contentType, fileStream, contentLength, includeTextDetails, context).block();
+            String locale) {
+        analyzeReceiptAsyncAsync(contentType, fileStream, contentLength, includeTextDetails, locale).block();
     }
 
     /**
      * Extract field text and semantic values from a given receipt document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use
-     * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
+     * 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     *
+     * @param contentType Content type for upload.
+     * @param fileStream Uri or local path to source data.
+     * @param contentLength The contentLength parameter.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the receipt. Supported locales include: en-AU, en-CA, en-GB, en-IN, en-US(default).
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> analyzeReceiptAsyncWithResponse(
+            ContentType contentType,
+            Flux<ByteBuffer> fileStream,
+            long contentLength,
+            Boolean includeTextDetails,
+            String locale,
+            Context context) {
+        return analyzeReceiptAsyncWithResponseAsync(
+                        contentType, fileStream, contentLength, includeTextDetails, locale, context)
+                .block();
+    }
+
+    /**
+     * Extract field text and semantic values from a given receipt document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use
+     * 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
      * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the receipt. Supported locales include: en-AU, en-CA, en-GB, en-IN, en-US(default).
      * @param fileStream Uri or local path to source data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1450,17 +2044,20 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsyncWithResponseAsync(
-            Boolean includeTextDetails, SourcePath fileStream) {
+            Boolean includeTextDetails, String locale, SourcePath fileStream) {
         return FluxUtil.withContext(
-            context -> service.analyzeReceiptAsync(this.getEndpoint(), includeTextDetails, fileStream, context));
+                context ->
+                        service.analyzeReceiptAsync(
+                                this.getEndpoint(), includeTextDetails, locale, fileStream, context));
     }
 
     /**
      * Extract field text and semantic values from a given receipt document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use
-     * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
+     * 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
      * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the receipt. Supported locales include: en-AU, en-CA, en-GB, en-IN, en-US(default).
      * @param fileStream Uri or local path to source data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1470,16 +2067,17 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsyncWithResponseAsync(
-            Boolean includeTextDetails, SourcePath fileStream, Context context) {
-        return service.analyzeReceiptAsync(this.getEndpoint(), includeTextDetails, fileStream, context);
+            Boolean includeTextDetails, String locale, SourcePath fileStream, Context context) {
+        return service.analyzeReceiptAsync(this.getEndpoint(), includeTextDetails, locale, fileStream, context);
     }
 
     /**
      * Extract field text and semantic values from a given receipt document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use
-     * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
+     * 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
      * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the receipt. Supported locales include: en-AU, en-CA, en-GB, en-IN, en-US(default).
      * @param fileStream Uri or local path to source data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1487,17 +2085,18 @@ public final class FormRecognizerClientImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> analyzeReceiptAsyncAsync(Boolean includeTextDetails, SourcePath fileStream) {
-        return analyzeReceiptAsyncWithResponseAsync(includeTextDetails, fileStream)
-            .flatMap((AnalyzeReceiptAsyncResponse res) -> Mono.empty());
+    public Mono<Void> analyzeReceiptAsyncAsync(Boolean includeTextDetails, String locale, SourcePath fileStream) {
+        return analyzeReceiptAsyncWithResponseAsync(includeTextDetails, locale, fileStream)
+                .flatMap((AnalyzeReceiptAsyncResponse res) -> Mono.empty());
     }
 
     /**
      * Extract field text and semantic values from a given receipt document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use
-     * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
+     * 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
      * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the receipt. Supported locales include: en-AU, en-CA, en-GB, en-IN, en-US(default).
      * @param fileStream Uri or local path to source data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1506,42 +2105,47 @@ public final class FormRecognizerClientImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> analyzeReceiptAsyncAsync(Boolean includeTextDetails, SourcePath fileStream, Context context) {
-        return analyzeReceiptAsyncWithResponseAsync(includeTextDetails, fileStream, context)
-            .flatMap((AnalyzeReceiptAsyncResponse res) -> Mono.empty());
+    public Mono<Void> analyzeReceiptAsyncAsync(
+            Boolean includeTextDetails, String locale, SourcePath fileStream, Context context) {
+        return analyzeReceiptAsyncWithResponseAsync(includeTextDetails, locale, fileStream, context)
+                .flatMap((AnalyzeReceiptAsyncResponse res) -> Mono.empty());
     }
 
     /**
      * Extract field text and semantic values from a given receipt document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use
-     * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
+     * 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
      * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the receipt. Supported locales include: en-AU, en-CA, en-GB, en-IN, en-US(default).
      * @param fileStream Uri or local path to source data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void analyzeReceiptAsync(Boolean includeTextDetails, SourcePath fileStream) {
-        analyzeReceiptAsyncAsync(includeTextDetails, fileStream).block();
+    public void analyzeReceiptAsync(Boolean includeTextDetails, String locale, SourcePath fileStream) {
+        analyzeReceiptAsyncAsync(includeTextDetails, locale, fileStream).block();
     }
 
     /**
      * Extract field text and semantic values from a given receipt document. The input document must be of one of the
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use
-     * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
+     * 'application/json' type to specify the location (Uri) of the document to be analyzed.
      *
      * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the receipt. Supported locales include: en-AU, en-CA, en-GB, en-IN, en-US(default).
      * @param fileStream Uri or local path to source data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void analyzeReceiptAsync(Boolean includeTextDetails, SourcePath fileStream, Context context) {
-        analyzeReceiptAsyncAsync(includeTextDetails, fileStream, context).block();
+    public Response<Void> analyzeReceiptAsyncWithResponse(
+            Boolean includeTextDetails, String locale, SourcePath fileStream, Context context) {
+        return analyzeReceiptAsyncWithResponseAsync(includeTextDetails, locale, fileStream, context).block();
     }
 
     /**
@@ -1554,7 +2158,7 @@ public final class FormRecognizerClientImpl {
      * @return status and result of the queued analyze operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<AnalyzeOperationResult>> getAnalyzeReceiptResultWithResponseAsync(UUID resultId) {
+    public Mono<Response<AnalyzeOperationResult>> getAnalyzeReceiptResultWithResponseAsync(UUID resultId) {
         return FluxUtil.withContext(context -> service.getAnalyzeReceiptResult(this.getEndpoint(), resultId, context));
     }
 
@@ -1569,7 +2173,7 @@ public final class FormRecognizerClientImpl {
      * @return status and result of the queued analyze operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<AnalyzeOperationResult>> getAnalyzeReceiptResultWithResponseAsync(
+    public Mono<Response<AnalyzeOperationResult>> getAnalyzeReceiptResultWithResponseAsync(
             UUID resultId, Context context) {
         return service.getAnalyzeReceiptResult(this.getEndpoint(), resultId, context);
     }
@@ -1586,14 +2190,14 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeOperationResult> getAnalyzeReceiptResultAsync(UUID resultId) {
         return getAnalyzeReceiptResultWithResponseAsync(resultId)
-            .flatMap(
-                (SimpleResponse<AnalyzeOperationResult> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+                .flatMap(
+                        (Response<AnalyzeOperationResult> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -1609,13 +2213,14 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeOperationResult> getAnalyzeReceiptResultAsync(UUID resultId, Context context) {
         return getAnalyzeReceiptResultWithResponseAsync(resultId, context)
-            .flatMap((SimpleResponse<AnalyzeOperationResult> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+                .flatMap(
+                        (Response<AnalyzeOperationResult> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -1643,8 +2248,8 @@ public final class FormRecognizerClientImpl {
      * @return status and result of the queued analyze operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AnalyzeOperationResult getAnalyzeReceiptResult(UUID resultId, Context context) {
-        return getAnalyzeReceiptResultAsync(resultId, context).block();
+    public Response<AnalyzeOperationResult> getAnalyzeReceiptResultWithResponse(UUID resultId, Context context) {
+        return getAnalyzeReceiptResultWithResponseAsync(resultId, context).block();
     }
 
     /**
@@ -1664,9 +2269,9 @@ public final class FormRecognizerClientImpl {
     public Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsyncWithResponseAsync(
             ContentType contentType, Flux<ByteBuffer> fileStream, long contentLength) {
         return FluxUtil.withContext(
-            context ->
-                service.analyzeLayoutAsync(
-                        this.getEndpoint(), contentType, fileStream, contentLength, context));
+                context ->
+                        service.analyzeLayoutAsync(
+                                this.getEndpoint(), contentType, fileStream, contentLength, context));
     }
 
     /**
@@ -1759,11 +2364,12 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void analyzeLayoutAsync(
+    public Response<Void> analyzeLayoutAsyncWithResponse(
             ContentType contentType, Flux<ByteBuffer> fileStream, long contentLength, Context context) {
-        analyzeLayoutAsyncAsync(contentType, fileStream, contentLength, context).block();
+        return analyzeLayoutAsyncWithResponseAsync(contentType, fileStream, contentLength, context).block();
     }
 
     /**
@@ -1814,7 +2420,7 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> analyzeLayoutAsyncAsync(SourcePath fileStream) {
         return analyzeLayoutAsyncWithResponseAsync(fileStream)
-            .flatMap((AnalyzeLayoutAsyncResponse res) -> Mono.empty());
+                .flatMap((AnalyzeLayoutAsyncResponse res) -> Mono.empty());
     }
 
     /**
@@ -1832,7 +2438,7 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> analyzeLayoutAsyncAsync(SourcePath fileStream, Context context) {
         return analyzeLayoutAsyncWithResponseAsync(fileStream, context)
-            .flatMap((AnalyzeLayoutAsyncResponse res) -> Mono.empty());
+                .flatMap((AnalyzeLayoutAsyncResponse res) -> Mono.empty());
     }
 
     /**
@@ -1860,10 +2466,11 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void analyzeLayoutAsync(SourcePath fileStream, Context context) {
-        analyzeLayoutAsyncAsync(fileStream, context).block();
+    public Response<Void> analyzeLayoutAsyncWithResponse(SourcePath fileStream, Context context) {
+        return analyzeLayoutAsyncWithResponseAsync(fileStream, context).block();
     }
 
     /**
@@ -1876,7 +2483,7 @@ public final class FormRecognizerClientImpl {
      * @return status and result of the queued analyze operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<AnalyzeOperationResult>> getAnalyzeLayoutResultWithResponseAsync(UUID resultId) {
+    public Mono<Response<AnalyzeOperationResult>> getAnalyzeLayoutResultWithResponseAsync(UUID resultId) {
         return FluxUtil.withContext(context -> service.getAnalyzeLayoutResult(this.getEndpoint(), resultId, context));
     }
 
@@ -1891,7 +2498,7 @@ public final class FormRecognizerClientImpl {
      * @return status and result of the queued analyze operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<AnalyzeOperationResult>> getAnalyzeLayoutResultWithResponseAsync(
+    public Mono<Response<AnalyzeOperationResult>> getAnalyzeLayoutResultWithResponseAsync(
             UUID resultId, Context context) {
         return service.getAnalyzeLayoutResult(this.getEndpoint(), resultId, context);
     }
@@ -1908,13 +2515,14 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeOperationResult> getAnalyzeLayoutResultAsync(UUID resultId) {
         return getAnalyzeLayoutResultWithResponseAsync(resultId)
-                .flatMap((SimpleResponse<AnalyzeOperationResult> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+                .flatMap(
+                        (Response<AnalyzeOperationResult> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -1930,13 +2538,14 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeOperationResult> getAnalyzeLayoutResultAsync(UUID resultId, Context context) {
         return getAnalyzeLayoutResultWithResponseAsync(resultId, context)
-                .flatMap((SimpleResponse<AnalyzeOperationResult> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+                .flatMap(
+                        (Response<AnalyzeOperationResult> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -1964,8 +2573,8 @@ public final class FormRecognizerClientImpl {
      * @return status and result of the queued analyze operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AnalyzeOperationResult getAnalyzeLayoutResult(UUID resultId, Context context) {
-        return getAnalyzeLayoutResultAsync(resultId, context).block();
+    public Response<AnalyzeOperationResult> getAnalyzeLayoutResultWithResponse(UUID resultId, Context context) {
+        return getAnalyzeLayoutResultWithResponseAsync(resultId, context).block();
     }
 
     /**
@@ -1979,14 +2588,15 @@ public final class FormRecognizerClientImpl {
     public Mono<PagedResponse<ModelInfo>> listCustomModelsSinglePageAsync() {
         final String op = "full";
         return FluxUtil.withContext(context -> service.listCustomModels(this.getEndpoint(), op, context))
-                .map(res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().getModelList(),
-                        res.getValue().getNextLink(),
-                        null));
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getModelList(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
@@ -2002,14 +2612,15 @@ public final class FormRecognizerClientImpl {
     public Mono<PagedResponse<ModelInfo>> listCustomModelsSinglePageAsync(Context context) {
         final String op = "full";
         return service.listCustomModels(this.getEndpoint(), op, context)
-                .map(res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().getModelList(),
-                        res.getValue().getNextLink(),
-                        null));
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getModelList(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
@@ -2022,7 +2633,7 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ModelInfo> listCustomModelsAsync() {
         return new PagedFlux<>(
-            () -> listCustomModelsSinglePageAsync(), nextLink -> listCustomModelsNextSinglePageAsync(nextLink));
+                () -> listCustomModelsSinglePageAsync(), nextLink -> listCustomModelsNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -2037,8 +2648,8 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ModelInfo> listCustomModelsAsync(Context context) {
         return new PagedFlux<>(
-            () -> listCustomModelsSinglePageAsync(context),
-            nextLink -> listCustomModelsNextSinglePageAsync(nextLink));
+                () -> listCustomModelsSinglePageAsync(context),
+                nextLink -> listCustomModelsNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2075,7 +2686,7 @@ public final class FormRecognizerClientImpl {
      * @return information about all custom models.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Models>> getCustomModelsWithResponseAsync() {
+    public Mono<Response<Models>> getCustomModelsWithResponseAsync() {
         final String op = "summary";
         return FluxUtil.withContext(context -> service.getCustomModels(this.getEndpoint(), op, context));
     }
@@ -2090,7 +2701,7 @@ public final class FormRecognizerClientImpl {
      * @return information about all custom models.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Models>> getCustomModelsWithResponseAsync(Context context) {
+    public Mono<Response<Models>> getCustomModelsWithResponseAsync(Context context) {
         final String op = "summary";
         return service.getCustomModels(this.getEndpoint(), op, context);
     }
@@ -2105,13 +2716,14 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Models> getCustomModelsAsync() {
         return getCustomModelsWithResponseAsync()
-                .flatMap((SimpleResponse<Models> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+                .flatMap(
+                        (Response<Models> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -2126,13 +2738,14 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Models> getCustomModelsAsync(Context context) {
         return getCustomModelsWithResponseAsync(context)
-                .flatMap((SimpleResponse<Models> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+                .flatMap(
+                        (Response<Models> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -2157,8 +2770,8 @@ public final class FormRecognizerClientImpl {
      * @return information about all custom models.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Models getCustomModels(Context context) {
-        return getCustomModelsAsync(context).block();
+    public Response<Models> getCustomModelsWithResponse(Context context) {
+        return getCustomModelsWithResponseAsync(context).block();
     }
 
     /**
@@ -2173,13 +2786,15 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ModelInfo>> listCustomModelsNextSinglePageAsync(String nextLink) {
         return FluxUtil.withContext(context -> service.listCustomModelsNext(nextLink, context))
-                .map(res -> new PagedResponseBase<>(
-                    res.getRequest(),
-                    res.getStatusCode(),
-                    res.getHeaders(),
-                    res.getValue().getModelList(),
-                    res.getValue().getNextLink(),
-                    null));
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getModelList(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
@@ -2195,12 +2810,14 @@ public final class FormRecognizerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ModelInfo>> listCustomModelsNextSinglePageAsync(String nextLink, Context context) {
         return service.listCustomModelsNext(nextLink, context)
-                .map(res -> new PagedResponseBase<>(
-                    res.getRequest(),
-                    res.getStatusCode(),
-                    res.getHeaders(),
-                    res.getValue().getModelList(),
-                    res.getValue().getNextLink(),
-                    null));
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getModelList(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 }

@@ -6,7 +6,9 @@ package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +17,7 @@ import java.util.List;
  */
 @JacksonXmlRootElement(localName = "PageList")
 @Fluent
+@JsonDeserialize(using = PageListDeserializer.class)
 public final class PageList {
     /*
      * The pageRange property.
