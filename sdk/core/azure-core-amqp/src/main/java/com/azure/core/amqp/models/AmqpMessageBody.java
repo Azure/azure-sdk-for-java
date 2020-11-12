@@ -24,39 +24,6 @@ public final class AmqpMessageBody {
     private byte[] data;
 
     /**
-     * Creates instance of {@link AmqpMessageBody} with given {@link Iterable} of byte array. Please note that this
-     * version of the SDK supports only one element in given {@link Iterable}.
-     *
-     * @param data used to create another instance of {@link AmqpMessageBody}.
-     *
-     * @return AmqpMessageBody Newly created instance.
-     *
-     * @throws NullPointerException if {@code data} is null.
-     *
-     * @throws IllegalArgumentException if size of 'data' is zero or greater than one.
-     */
-    public static AmqpMessageBody fromData(Iterable<byte[]> data) {
-        Objects.requireNonNull(data, "'data' cannot be null.");
-        byte[] payload = null;
-        for (byte[] binaryData : data) {
-            if (payload != null) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                    "Only one instance of byte array is allowed in 'data'."));
-            }
-            payload = binaryData;
-        }
-
-        if (payload == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'data' can not be empty."));
-        }
-
-        AmqpMessageBody body = new AmqpMessageBody();
-        body.bodyType = AmqpBodyType.DATA;
-        body.data = payload;
-        return body;
-    }
-
-    /**
      * Creates instance of {@link AmqpMessageBody} with given byte array.
      *
      * @param data used to create another instance of {@link AmqpMessageBody}.

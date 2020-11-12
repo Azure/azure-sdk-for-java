@@ -8,7 +8,7 @@ import java.util.Objects;
 /**
  * This represents amqp address information.
  */
-public class AmqpAddress {
+public final class AmqpAddress {
 
     private final String address;
 

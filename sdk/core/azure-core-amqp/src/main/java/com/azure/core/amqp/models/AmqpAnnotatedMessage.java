@@ -49,10 +49,12 @@ public final class AmqpAnnotatedMessage {
      * @param message used to create another instance of {@link AmqpAnnotatedMessage}.
      *
      * @throws NullPointerException if {@code message} or {@link AmqpAnnotatedMessage#getBody() body} is null.
+     * @throws UnsupportedOperationException if {@link AmqpBodyType} is {@link AmqpBodyType#SEQUENCE} or
+     * {@link AmqpBodyType#VALUE}.
+     * @throws IllegalStateException for invalid {@link AmqpBodyType}.
      */
     public AmqpAnnotatedMessage(AmqpAnnotatedMessage message) {
         Objects.requireNonNull(message, "'message' cannot be null.");
-        Objects.requireNonNull(message.getBody(), "'message.body' cannot be null.");
 
         AmqpBodyType bodyType = message.getBody().getBodyType();
         switch (bodyType) {
