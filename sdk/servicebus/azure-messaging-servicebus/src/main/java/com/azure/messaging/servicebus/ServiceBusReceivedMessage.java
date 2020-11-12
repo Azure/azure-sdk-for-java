@@ -6,8 +6,8 @@ package com.azure.messaging.servicebus;
 import com.azure.core.amqp.AmqpMessageConstant;
 import com.azure.core.amqp.models.AmqpAddress;
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
-import com.azure.core.amqp.models.AmqpBodyType;
 import com.azure.core.amqp.models.AmqpMessageBody;
+import com.azure.core.amqp.models.AmqpMessageBodyType;
 import com.azure.core.amqp.models.AmqpMessageId;
 import com.azure.core.experimental.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
@@ -73,7 +73,7 @@ public final class ServiceBusReceivedMessage {
      * @return A byte array representing the data.
      */
     public BinaryData getBody() {
-        final AmqpBodyType bodyType = amqpAnnotatedMessage.getBody().getBodyType();
+        final AmqpMessageBodyType bodyType = amqpAnnotatedMessage.getBody().getBodyType();
         switch (bodyType) {
             case DATA:
                 return BinaryData.fromBytes(amqpAnnotatedMessage.getBody().getData().stream().findFirst().get());
