@@ -244,10 +244,14 @@ class ManagementLocksImpl extends WrapperImpl<ManagementLocksInner> implements M
 
     @Override
     public Observable<ManagementLockObject> getByResourceGroupAsync(String resourceGroupName, String name) {
-        return this.getInnerAsync(resourceGroupName, name).map(new Func1<ManagementLockObjectInner, ManagementLockObject> () {
+        return this.getInnerAsync(resourceGroupName, name).flatMap(new Func1<ManagementLockObjectInner, Observable<ManagementLockObject>> () {
             @Override
-            public ManagementLockObject call(ManagementLockObjectInner innerT) {
-                return wrapModel(innerT);
+            public Observable<ManagementLockObject> call(ManagementLockObjectInner innerT) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ManagementLockObject)wrapModel(innerT));
+                }
             }
         });
     }
