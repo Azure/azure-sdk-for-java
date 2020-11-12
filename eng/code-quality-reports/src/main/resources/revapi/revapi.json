@@ -294,6 +294,12 @@
       },
       {
         "code": "java.method.returnTypeChanged",
+        "old": "method com.azure.core.amqp.models.AmqpBodyType com.azure.core.amqp.models.AmqpMessageBody::getBodyType()",
+        "new": "method com.azure.core.amqp.models.AmqpMessageBodyType com.azure.core.amqp.models.AmqpMessageBody::getBodyType()",
+        "justification": "Renamed to matach AmqpMessage prefix."
+      },
+      {
+        "code": "java.method.returnTypeChanged",
         "old": "method java.lang.String com.azure.core.amqp.models.AmqpMessageProperties::getCorrelationId()",
         "new": "method com.azure.core.amqp.models.AmqpMessageId com.azure.core.amqp.models.AmqpMessageProperties::getCorrelationId()",
         "justification": "New return type AmqpMessageId."

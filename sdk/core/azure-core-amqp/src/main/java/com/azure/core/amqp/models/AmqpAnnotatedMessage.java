@@ -49,14 +49,14 @@ public final class AmqpAnnotatedMessage {
      * @param message used to create another instance of {@link AmqpAnnotatedMessage}.
      *
      * @throws NullPointerException if {@code message} or {@link AmqpAnnotatedMessage#getBody() body} is null.
-     * @throws UnsupportedOperationException if {@link AmqpBodyType} is {@link AmqpBodyType#SEQUENCE} or
-     * {@link AmqpBodyType#VALUE}.
-     * @throws IllegalStateException for invalid {@link AmqpBodyType}.
+     * @throws UnsupportedOperationException if {@link AmqpMessageBodyType} is {@link AmqpMessageBodyType#SEQUENCE} or
+     * {@link AmqpMessageBodyType#VALUE}.
+     * @throws IllegalStateException for invalid {@link AmqpMessageBodyType}.
      */
     public AmqpAnnotatedMessage(AmqpAnnotatedMessage message) {
         Objects.requireNonNull(message, "'message' cannot be null.");
 
-        AmqpBodyType bodyType = message.getBody().getBodyType();
+        AmqpMessageBodyType bodyType = message.getBody().getBodyType();
         switch (bodyType) {
             case DATA:
                 amqpMessageBody = AmqpMessageBody.fromData(message.getBody().getData().get(0));
@@ -90,9 +90,9 @@ public final class AmqpAnnotatedMessage {
 
     /**
      * Gets the {@link AmqpMessageBody} of an amqp message.
-     * <b>Client should test for {@link AmqpBodyType} before calling corresponding get method on
+     * <b>Client should test for {@link AmqpMessageBodyType} before calling corresponding get method on
      * {@link AmqpMessageBody}</b>
-     * <p><strong>How to check for {@link AmqpBodyType}</strong></p>
+     * <p><strong>How to check for {@link AmqpMessageBodyType}</strong></p>
      * {@codesnippet com.azure.core.amqp.models.AmqpBodyType.checkBodyType}
      *
      * @return the {@link AmqpMessageBody} object.

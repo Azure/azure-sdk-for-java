@@ -26,7 +26,7 @@ public class AmqpMessageBodyTest {
         final AmqpMessageBody actual = AmqpMessageBody.fromData(expectedData);
 
         // Assert
-        assertEquals(AmqpBodyType.DATA, actual.getBodyType());
+        assertEquals(AmqpMessageBodyType.DATA, actual.getBodyType());
 
         // Validate Message Body
         assertArrayEquals(expectedData, actual.getData().get(0));

@@ -13,7 +13,7 @@ public class AmqpAnnotatedMessageJavaDocCodeSamples {
     public void checkBodyType() {
         AmqpAnnotatedMessage amqpAnnotatedMessage = null;
         // BEGIN: com.azure.core.amqp.models.AmqpBodyType.checkBodyType
-        AmqpBodyType bodyType = amqpAnnotatedMessage.getBody().getBodyType();
+        AmqpMessageBodyType bodyType = amqpAnnotatedMessage.getBody().getBodyType();
         AmqpMessageBody messageBody = null;
         switch (bodyType) {
             case DATA:

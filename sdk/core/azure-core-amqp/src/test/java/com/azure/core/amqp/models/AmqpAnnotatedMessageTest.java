@@ -111,7 +111,7 @@ public class AmqpAnnotatedMessageTest {
         final AmqpAnnotatedMessage actual = new AmqpAnnotatedMessage(amqpMessageBody);
 
         // Assert
-        assertMessageCreation(AmqpBodyType.DATA, actual);
+        assertMessageCreation(AmqpMessageBodyType.DATA, actual);
     }
 
     /**
@@ -127,7 +127,7 @@ public class AmqpAnnotatedMessageTest {
         final AmqpAnnotatedMessage actual = new AmqpAnnotatedMessage(expected);
 
         // Assert
-        assertMessageCreation(AmqpBodyType.DATA, actual);
+        assertMessageCreation(AmqpMessageBodyType.DATA, actual);
     }
 
     /**
@@ -142,7 +142,7 @@ public class AmqpAnnotatedMessageTest {
         Assertions.assertThrows(NullPointerException.class, () -> new AmqpAnnotatedMessage(body));
     }
 
-    private void assertMessageCreation(AmqpBodyType expectedType, AmqpAnnotatedMessage actual) {
+    private void assertMessageCreation(AmqpMessageBodyType expectedType, AmqpAnnotatedMessage actual) {
         assertEquals(expectedType, actual.getBody().getBodyType());
         assertNotNull(actual.getProperties());
         assertNotNull(actual.getHeader());
@@ -158,7 +158,7 @@ public class AmqpAnnotatedMessageTest {
     }
 
     private void assertMessageBody(byte[] expectedbody, AmqpAnnotatedMessage actual) {
-        final AmqpBodyType actualType = actual.getBody().getBodyType();
+        final AmqpMessageBodyType actualType = actual.getBody().getBodyType();
         switch (actualType) {
             case DATA:
                 byte[] actualData = actual.getBody().getData().get(0);

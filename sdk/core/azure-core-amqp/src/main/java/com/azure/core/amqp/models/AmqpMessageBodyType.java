@@ -6,7 +6,7 @@ package com.azure.core.amqp.models;
 /**
  * All AmqpBodyType available for AMQP Message.
  */
-public enum AmqpBodyType {
+public enum AmqpMessageBodyType {
     /**
      * Message content is byte array, equivalent to AMQP Data.
      */

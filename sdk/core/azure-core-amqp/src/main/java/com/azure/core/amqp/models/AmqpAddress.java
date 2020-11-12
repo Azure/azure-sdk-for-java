@@ -6,7 +6,10 @@ package com.azure.core.amqp.models;
 import java.util.Objects;
 
 /**
- * This represents amqp address information.
+ * This represents amqp address information. This will be used in populating information like 'To', 'ReplyTo' etc.
+ *
+ * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#type-address-string">
+ *     Address type Format.</a>
  */
 public final class AmqpAddress {
 
