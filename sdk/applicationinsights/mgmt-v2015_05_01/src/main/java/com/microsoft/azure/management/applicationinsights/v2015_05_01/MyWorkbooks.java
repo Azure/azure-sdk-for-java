@@ -13,21 +13,30 @@ import com.microsoft.azure.arm.resources.collection.SupportsDeletingByResourceGr
 import com.microsoft.azure.arm.resources.collection.SupportsBatchDeletion;
 import com.microsoft.azure.arm.resources.collection.SupportsGettingByResourceGroup;
 import rx.Observable;
-import com.microsoft.azure.management.applicationinsights.v2015_05_01.implementation.WorkbooksInner;
+import com.microsoft.azure.management.applicationinsights.v2015_05_01.implementation.MyWorkbooksInner;
 import com.microsoft.azure.arm.model.HasInner;
 
 /**
- * Type representing Workbooks.
+ * Type representing MyWorkbooks.
  */
-public interface Workbooks extends SupportsCreating<Workbook.DefinitionStages.Blank>, SupportsDeletingByResourceGroup, SupportsBatchDeletion, SupportsGettingByResourceGroup<Workbook>, HasInner<WorkbooksInner> {
+public interface MyWorkbooks extends SupportsCreating<MyWorkbook.DefinitionStages.Blank>, SupportsDeletingByResourceGroup, SupportsBatchDeletion, SupportsGettingByResourceGroup<MyWorkbook>, HasInner<MyWorkbooksInner> {
     /**
-     * Get all Workbooks defined within a specified resource group and category.
+     * Get all private workbooks defined within a specified resource group and category.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param category Category of workbook to return. Possible values include: 'workbook', 'TSG', 'performance', 'retention'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<Workbook> listByResourceGroupAsync(String resourceGroupName, CategoryType category);
+    Observable<MyWorkbook> listByResourceGroupAsync(String resourceGroupName, CategoryType category);
+
+    /**
+     * Get all private workbooks defined within a specified subscription and category.
+     *
+     * @param category Category of workbook to return. Possible values include: 'workbook', 'TSG', 'performance', 'retention'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<MyWorkbook> listAsync(CategoryType category);
 
 }
