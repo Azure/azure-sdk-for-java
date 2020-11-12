@@ -293,6 +293,11 @@
         "justification": "Made it final."
       },
       {
+        "code": "java.class.removed",
+        "old": "enum com.azure.core.amqp.models.AmqpBodyType",
+        "justification": "Because It is renamed to AmqpMessageBodyType"
+      },
+      {
         "code": "java.method.returnTypeChanged",
         "old": "method com.azure.core.amqp.models.AmqpBodyType com.azure.core.amqp.models.AmqpMessageBody::getBodyType()",
         "new": "method com.azure.core.amqp.models.AmqpMessageBodyType com.azure.core.amqp.models.AmqpMessageBody::getBodyType()",
