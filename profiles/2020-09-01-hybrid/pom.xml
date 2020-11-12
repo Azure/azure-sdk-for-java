@@ -110,8 +110,6 @@
     <!-- roll up packages -->
     <module>./azure</module>
     <!-- multi api -->
-    <module>../../sdk/appservice/mgmt-v2016_03_01</module>
-    <module>../../sdk/appservice/mgmt-v2016_09_01</module>
     <module>../../sdk/appservice/mgmt-v2018_02_01</module>
     <module>../../sdk/authorization/mgmt-v2015_07_01</module>
     <module>../../sdk/commerce/mgmt-v2015_06_01_preview</module>

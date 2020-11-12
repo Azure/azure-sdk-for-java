@@ -55,8 +55,6 @@ public final class Azure {
     private final com.microsoft.azure.management.resources.v2019_10_01.implementation.ResourcesManager resourceManager20191001;
     private final com.microsoft.azure.management.storage.v2019_06_01.implementation.StorageManager storageManager20190601;
     private final com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServiceManager appServiceManager20180201;
-    private final com.microsoft.azure.management.appservice.v2016_09_01.implementation.AppServiceManager appServiceManager20160901;
-    private final com.microsoft.azure.management.appservice.v2016_03_01.implementation.AppServiceManager appServiceManager20160301;
     private final String subscriptionId;
     private final Authenticated authenticated;
 
@@ -339,20 +337,6 @@ public final class Azure {
     }
 
     /**
-     * @return Entry point to app service plan manager.
-     */
-    public com.microsoft.azure.management.appservice.v2016_09_01.implementation.AppServiceManager appServicePlanManager() {
-        return this.appServiceManager20160901;
-    }
-
-    /**
-     * @return Entry point to app service provider manager.
-     */
-    public com.microsoft.azure.management.appservice.v2016_03_01.implementation.AppServiceManager appServiceProviderManager() {
-        return this.appServiceManager20160301;
-    }
-
-    /**
      * The implementation for Configurable interface.
      */
     private static final class ConfigurableImpl extends AzureConfigurableCoreImpl<Configurable> implements Configurable {
@@ -389,8 +373,6 @@ public final class Azure {
         resourceManager20191001 = com.microsoft.azure.management.resources.v2019_10_01.implementation.ResourcesManager.authenticate(restClient, subscriptionId);
         storageManager20190601 = com.microsoft.azure.management.storage.v2019_06_01.implementation.StorageManager.authenticate(restClient, subscriptionId);
         appServiceManager20180201 = com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServiceManager.authenticate(restClient, subscriptionId);
-        appServiceManager20160901 = com.microsoft.azure.management.appservice.v2016_09_01.implementation.AppServiceManager.authenticate(restClient, subscriptionId);
-        appServiceManager20160301 = com.microsoft.azure.management.appservice.v2016_03_01.implementation.AppServiceManager.authenticate(restClient, subscriptionId);
         this.subscriptionId = subscriptionId;
         this.authenticated = authenticated;
     }

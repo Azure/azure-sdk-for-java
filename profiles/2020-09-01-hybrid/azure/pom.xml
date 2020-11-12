@@ -141,16 +141,6 @@
       <version>1.0.0-beta-9</version>
     </dependency>
     <dependency>
-      <groupId>com.microsoft.azure.appservice.v2016_03_01</groupId>
-      <artifactId>azure-mgmt-appservice</artifactId>
-      <version>1.0.0-beta-2</version>
-    </dependency>
-    <dependency>
-      <groupId>com.microsoft.azure.appservice.v2016_09_01</groupId>
-      <artifactId>azure-mgmt-appservice</artifactId>
-      <version>1.0.0-beta-2</version>
-    </dependency>
-    <dependency>
       <groupId>com.microsoft.azure.appservice.v2018_02_01</groupId>
       <artifactId>azure-mgmt-appservice</artifactId>
       <version>1.0.0-beta-1</version>
