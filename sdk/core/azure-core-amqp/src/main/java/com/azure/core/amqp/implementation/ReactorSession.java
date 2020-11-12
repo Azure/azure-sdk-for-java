@@ -467,8 +467,7 @@ public class ReactorSession implements AmqpSession {
      * NOTE: Ensure this is invoked using the reactor dispatcher because proton-j is not thread-safe.
      */
     private LinkSubscription<AmqpSendLink> getSubscription(String linkName, String entityPath,
-        Map<Symbol, Object> linkProperties, Duration timeout, AmqpRetryPolicy retry,
-        TokenManager tokenManager) {
+        Map<Symbol, Object> linkProperties, Duration timeout, AmqpRetryPolicy retry, TokenManager tokenManager) {
 
         final Sender sender = session.sender(linkName);
         final Target target = new Target();

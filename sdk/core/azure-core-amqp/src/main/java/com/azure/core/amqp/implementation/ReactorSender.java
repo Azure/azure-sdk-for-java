@@ -45,7 +45,6 @@ import java.util.PriorityQueue;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
