@@ -147,7 +147,8 @@ object CosmosRowConverter
     // When constructing the JSONArray, the internalData should contain JSON-compatible objects in order for the schema to be mantained.
     // Otherwise, the data will be converted into String.
     // TODO: moderakh new JSONArray(internalData)
-    null
+    val arrayNode = objectMapper.createArrayNode()
+    arrayNode.addAll(internalData)
   }
 
   private def arrayDataTypeToJsonArray(elementType: DataType, data: ArrayData, isInternalRow: Boolean): ArrayNode = {
@@ -159,8 +160,8 @@ object CosmosRowConverter
     }
     // When constructing the JSONArray, the internalData should contain JSON-compatible objects in order for the schema to be mantained.
     // Otherwise, the data will be converted into String.
-    // TODO: moderakh new JSONArray(listBuffer.toList.asJava)
-    null
+    val arrayNode = objectMapper.createArrayNode()
+    arrayNode.addAll(listBuffer.toList.asJava)
   }
 
   private def rowTyperouterToJsonArray(element: Any, schema: StructType) = element match {
