@@ -11,6 +11,7 @@ package com.microsoft.azure.management.synapse.v2019_06_01_preview;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.implementation.SensitivityLabelInner;
 import com.microsoft.azure.arm.model.Indexable;
+import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
@@ -20,7 +21,7 @@ import com.microsoft.azure.management.synapse.v2019_06_01_preview.implementation
 /**
  * Type representing SensitivityLabels.
  */
-public interface SensitivityLabels extends HasInner<SensitivityLabelInner>, Indexable, Updatable<SensitivityLabels.Update>, HasManager<SynapseManager> {
+public interface SensitivityLabels extends HasInner<SensitivityLabelInner>, Indexable, Refreshable<SensitivityLabels>, Updatable<SensitivityLabels.Update>, HasManager<SynapseManager> {
     /**
      * @return the id value.
      */

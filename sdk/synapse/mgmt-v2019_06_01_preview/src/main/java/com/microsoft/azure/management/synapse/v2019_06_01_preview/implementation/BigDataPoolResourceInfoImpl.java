@@ -144,6 +144,11 @@ class BigDataPoolResourceInfoImpl extends CreatableUpdatableImpl<BigDataPoolReso
     }
 
     @Override
+    public LibraryRequirements sparkConfigProperties() {
+        return this.inner().sparkConfigProperties();
+    }
+
+    @Override
     public String sparkEventsFolder() {
         return this.inner().sparkEventsFolder();
     }
@@ -243,6 +248,12 @@ class BigDataPoolResourceInfoImpl extends CreatableUpdatableImpl<BigDataPoolReso
     @Override
     public BigDataPoolResourceInfoImpl withProvisioningState(String provisioningState) {
         this.inner().withProvisioningState(provisioningState);
+        return this;
+    }
+
+    @Override
+    public BigDataPoolResourceInfoImpl withSparkConfigProperties(LibraryRequirements sparkConfigProperties) {
+        this.inner().withSparkConfigProperties(sparkConfigProperties);
         return this;
     }
 
