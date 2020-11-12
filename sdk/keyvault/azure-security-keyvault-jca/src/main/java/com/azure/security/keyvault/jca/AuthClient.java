@@ -78,7 +78,7 @@ class AuthClient extends DelegateRestClient {
         String result;
 
         if (System.getenv("WEBSITE_SITE_NAME") != null
-                && !System.getenv("WEBSITE_SITE_NAME").isEmpty()) {
+            && !System.getenv("WEBSITE_SITE_NAME").isEmpty()) {
             result = getAccessTokenOnAppService(resource, identity);
         } else {
             result = getAccessTokenOnOthers(resource, identity);
@@ -141,9 +141,8 @@ class AuthClient extends DelegateRestClient {
 
         StringBuilder url = new StringBuilder();
         url.append(System.getenv("MSI_ENDPOINT"))
-                .append("?api-version=2017-09-01")
-                .append(RESOURCE_FRAGMENT).append(resource);
-
+           .append("?api-version=2017-09-01")
+           .append(RESOURCE_FRAGMENT).append(resource);
         if (identity != null) {
             url.append("&objectid=").append(identity);
         }
@@ -175,13 +174,11 @@ class AuthClient extends DelegateRestClient {
         if (identity != null) {
             LOGGER.log(INFO, "Using managed identity with object ID: {0}", identity);
         }
-
         String result = null;
 
         StringBuilder url = new StringBuilder();
         url.append(OAUTH2_MANAGED_IDENTITY_TOKEN_URL)
-                .append(RESOURCE_FRAGMENT).append(resource);
-
+           .append(RESOURCE_FRAGMENT).append(resource);
         if (identity != null) {
             url.append("&object_id=").append(identity);
         }

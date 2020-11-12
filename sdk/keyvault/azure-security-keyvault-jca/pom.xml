@@ -113,21 +113,13 @@
                     <rules>
                         <bannedDependencies>
                             <includes>
-                                <include>com.fasterxml.jackson.core:jackson-databind:[2.11.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+                                <include>com.fasterxml.jackson.core:jackson-databind:[2.11.3]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
                                 <include>org.apache.httpcomponents.client5:httpclient5:[5.0.3]</include> <!-- {x-include-update;org.apache.httpcomponents.client5:httpclient5;external_dependency} -->
                                 <include>org.conscrypt:conscrypt-openjdk-uber:[2.2.1]</include> <!-- {x-include-update;org.conscrypt:conscrypt-openjdk-uber;external_dependency} -->
                                 <include>org.slf4j:slf4j-nop:[1.7.30]</include> <!-- {x-include-update;org.slf4j:slf4j-nop;external_dependency} -->
                             </includes>
                         </bannedDependencies>
                     </rules>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.revapi</groupId>
-                <artifactId>revapi-maven-plugin</artifactId>
-                <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
-                <configuration>
-                    <skip>true</skip>
                 </configuration>
             </plugin>
         </plugins>
@@ -151,26 +143,26 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.11.2</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+            <version>2.11.3</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
             <optional>true</optional>
         </dependency>
         <!-- JUnit -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>5.6.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+            <version>5.6.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
-            <version>5.6.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+            <version>5.6.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.6.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+            <version>5.6.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
             <scope>test</scope>
         </dependency>
         <!-- SLF4j -->

@@ -72,7 +72,7 @@ public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
                     .withRootUsername(userName)
                     .withRootPassword(password)
                     .withUnmanagedDisks()
-                    .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                     .defineNewExtension("CustomScriptForLinux")
                         .withPublisher("Microsoft.OSTCExtensions")
                         .withType("CustomScriptForLinux")
@@ -128,7 +128,7 @@ public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
                     .withStoredLinuxImage(capturedImageUri) // Note: A Generalized Image can also be an uploaded VHD prepared from an on-premise generalized VM.
                     .withRootUsername(userName)
                     .withRootPassword(password)
-                    .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                     .create();
 
             Utils.print(linuxVM2);
@@ -157,7 +157,7 @@ public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
                     .withPrimaryPrivateIPAddressDynamic()
                     .withoutPrimaryPublicIPAddress()
                     .withSpecializedOSUnmanagedDisk(specializedVhd, OperatingSystemTypes.LINUX) // New user credentials cannot be specified
-                    .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)       // when attaching a specialized VHD
+                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))       // when attaching a specialized VHD
                     .create();
 
             Utils.print(linuxVM3);

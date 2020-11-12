@@ -37,8 +37,8 @@ class ServiceBusSessionReceiver implements AutoCloseable {
     private final ClientLogger logger = new ClientLogger(ServiceBusSessionReceiver.class);
     private final ServiceBusReceiveLink receiveLink;
     private final Disposable.Composite subscriptions;
-    private final Flux<ServiceBusReceivedMessageContext> receivedMessages;
-    private final MonoProcessor<ServiceBusReceivedMessageContext> cancelReceiveProcessor = MonoProcessor.create();
+    private final Flux<ServiceBusMessageContext> receivedMessages;
+    private final MonoProcessor<ServiceBusMessageContext> cancelReceiveProcessor = MonoProcessor.create();
     private final DirectProcessor<String> messageReceivedEmitter = DirectProcessor.create();
     private final FluxSink<String> messageReceivedSink = messageReceivedEmitter.sink(FluxSink.OverflowStrategy.BUFFER);
 
@@ -65,7 +65,7 @@ class ServiceBusSessionReceiver implements AutoCloseable {
 
         receiveLink.setEmptyCreditListener(() -> 1);
 
-        final Flux<ServiceBusReceivedMessageContext> receivedMessagesFlux = receiveLink
+        final Flux<ServiceBusMessageContext> receivedMessagesFlux = receiveLink
             .receive()
             .publishOn(scheduler)
             .doOnSubscribe(subscription -> {
@@ -86,11 +86,11 @@ class ServiceBusSessionReceiver implements AutoCloseable {
                         deserialized.getSessionId(), deserialized.getMessageId());
                 }
 
-                return new ServiceBusReceivedMessageContext(deserialized);
+                return new ServiceBusMessageContext(deserialized);
             })
             .onErrorResume(error -> {
                 logger.warning("sessionId[{}]. Error occurred. Ending session.", sessionId, error);
-                return Mono.just(new ServiceBusReceivedMessageContext(getSessionId(), error));
+                return Mono.just(new ServiceBusMessageContext(getSessionId(), error));
             })
             .doOnNext(context -> {
                 if (context.hasError()) {
@@ -169,7 +169,7 @@ class ServiceBusSessionReceiver implements AutoCloseable {
      *
      * @return A flux of messages for the session.
      */
-    Flux<ServiceBusReceivedMessageContext> receive() {
+    Flux<ServiceBusMessageContext> receive() {
         return receivedMessages;
     }
 

@@ -635,7 +635,8 @@ public final class BlobProperties {
     }
 
     /**
-     * @return the flag indicating whether or not this blob has been sealed.
+     * @return the flag indicating whether or not this blob has been sealed (marked as read only).
+     * This is only returned for Append blobs.
      */
     public Boolean isSealed() {
         return isSealed;

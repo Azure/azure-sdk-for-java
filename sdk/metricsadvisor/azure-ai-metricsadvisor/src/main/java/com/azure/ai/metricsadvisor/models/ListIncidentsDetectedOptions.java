@@ -3,47 +3,14 @@
 
 package com.azure.ai.metricsadvisor.models;
 
-import java.time.OffsetDateTime;
 import java.util.List;
 
 /**
  * Describes the additional parameters for the API to list incidents detected.
  */
 public final class ListIncidentsDetectedOptions {
-    private final OffsetDateTime startTime;
-    private final OffsetDateTime endTime;
     private Integer top;
     private List<DimensionKey> dimensionsToFilter;
-
-    /**
-     * Creates a new instance of ListIncidentsDetectedOptions.
-     *
-     * @param startTime The start time of the time range within which the incidents were detected.
-     * @param endTime The end time of the time range within which the incidents were detected.
-     */
-    public ListIncidentsDetectedOptions(OffsetDateTime startTime,
-                                        OffsetDateTime endTime) {
-        this.startTime = startTime;
-        this.endTime = endTime;
-    }
-
-    /**
-     * Gets the start time of the time range within which the incidents were detected.
-     *
-     * @return The start time.
-     */
-    public OffsetDateTime getStartTime() {
-        return this.startTime;
-    }
-
-    /**
-     * Gets the end time of the time range within which the incidents were detected.
-     *
-     * @return The end time.
-     */
-    public OffsetDateTime getEndTime() {
-        return this.endTime;
-    }
 
     /**
      * Gets limit indicating the number of items to be included in a service returned page.
