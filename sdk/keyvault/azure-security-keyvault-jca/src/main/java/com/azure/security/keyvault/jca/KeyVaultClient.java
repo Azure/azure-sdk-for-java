@@ -304,6 +304,7 @@ class KeyVaultClient extends DelegateRestClient {
      * @throws IOException when an I/O error occurs.
      * @throws NoSuchAlgorithmException when algorithm is unavailable.
      * @throws InvalidKeySpecException when the private key cannot be generated.
+     * */
     private PrivateKey createPrivateKeyFromPem(String pemString) 
             throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
         StringBuilder builder = new StringBuilder();

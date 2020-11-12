@@ -151,13 +151,4 @@ public class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParameter {
     public String getUri() {
         return uri;
     }
-
-    /**
-     * Get the user-assigned identity.
-     * 
-     * @return the user-assign identity.
-     */
-    public String getUserAssignedIdentity() {
-        return userAssignedIdentity;
-    }
 }
