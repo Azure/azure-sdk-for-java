@@ -173,9 +173,9 @@ public class GoneAndRetryWithRetryPolicyTest {
             return goneExceptionForFlushedRequest;
         };
 
-        Mono<IRetryPolicy.ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy
+        Mono<ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy
             .shouldRetry(goneExceptionForFlushedRequestSupplier.get());
-        IRetryPolicy.ShouldRetryResult shouldRetryResult = singleShouldRetry.block();
+        ShouldRetryResult shouldRetryResult = singleShouldRetry.block();
         assertThat(shouldRetryResult.shouldRetry).isTrue();
         assertThat(shouldRetryResult.policyArg.getValue0()).isTrue();
         assertThat(shouldRetryResult.policyArg.getValue3()).isEqualTo(1);

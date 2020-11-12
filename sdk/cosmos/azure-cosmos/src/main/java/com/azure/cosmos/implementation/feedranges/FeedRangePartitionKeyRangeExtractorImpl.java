@@ -19,12 +19,12 @@ import java.util.List;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-final class FeedRangePartitionKeyRangeExtractor extends FeedRangeAsyncVisitor<List<Range<String>>> {
+final class FeedRangePartitionKeyRangeExtractorImpl extends FeedRangeAsyncVisitor<List<Range<String>>> {
 
     private final RxDocumentClientImpl client;
     private final String collectionLink;
 
-    public FeedRangePartitionKeyRangeExtractor(
+    public FeedRangePartitionKeyRangeExtractorImpl(
         RxDocumentClientImpl client,
         String collectionLink) {
 
@@ -36,7 +36,7 @@ final class FeedRangePartitionKeyRangeExtractor extends FeedRangeAsyncVisitor<Li
     }
 
     @Override
-    public Mono<List<Range<String>>> visitAsync(FeedRangePartitionKey feedRange) {
+    public Mono<List<Range<String>>> visitAsync(FeedRangePartitionKeyImpl feedRange) {
         final RxPartitionKeyRangeCache partitionKeyRangeCache =
             this.client.getPartitionKeyRangeCache();
         final Mono<ResourceResponse<DocumentCollection>> collectionResponseObservable = this.client
@@ -51,7 +51,7 @@ final class FeedRangePartitionKeyRangeExtractor extends FeedRangeAsyncVisitor<Li
     }
 
     @Override
-    public Mono<List<Range<String>>> visitAsync(FeedRangePartitionKeyRange feedRange) {
+    public Mono<List<Range<String>>> visitAsync(FeedRangePartitionKeyRangeImpl feedRange) {
         final RxPartitionKeyRangeCache partitionKeyRangeCache =
             this.client.getPartitionKeyRangeCache();
         final Mono<ResourceResponse<DocumentCollection>> collectionResponseObservable = this.client
@@ -65,7 +65,7 @@ final class FeedRangePartitionKeyRangeExtractor extends FeedRangeAsyncVisitor<Li
     }
 
     @Override
-    public Mono<List<Range<String>>> visitAsync(FeedRangeEpk feedRange) {
+    public Mono<List<Range<String>>> visitAsync(FeedRangeEpkImpl feedRange) {
         final RxPartitionKeyRangeCache partitionKeyRangeCache =
             this.client.getPartitionKeyRangeCache();
         final Mono<ResourceResponse<DocumentCollection>> collectionResponseObservable = this.client

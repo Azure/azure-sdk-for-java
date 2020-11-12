@@ -11,18 +11,18 @@ import java.util.Map;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-final class FeedRangeRxDocumentServiceRequestPopulatorVisitor
+final class FeedRangeRxDocumentServiceRequestPopulatorVisitorImpl
     extends GenericFeedRangeVisitor<RxDocumentServiceRequest> {
 
-    public final static FeedRangeRxDocumentServiceRequestPopulatorVisitor SINGLETON =
-        new FeedRangeRxDocumentServiceRequestPopulatorVisitor();
+    public final static FeedRangeRxDocumentServiceRequestPopulatorVisitorImpl SINGLETON =
+        new FeedRangeRxDocumentServiceRequestPopulatorVisitorImpl();
 
-    private FeedRangeRxDocumentServiceRequestPopulatorVisitor()
+    private FeedRangeRxDocumentServiceRequestPopulatorVisitorImpl()
     {
     }
 
     @Override
-    public void visit(FeedRangeEpk feedRange,
+    public void visit(FeedRangeEpkImpl feedRange,
                       RxDocumentServiceRequest rxDocumentServiceRequest) {
 
         checkNotNull(feedRange, "'feedRange' must not be null");
@@ -42,7 +42,7 @@ final class FeedRangeRxDocumentServiceRequestPopulatorVisitor
     }
 
     @Override
-    public void visit(FeedRangePartitionKeyRange feedRange, RxDocumentServiceRequest rxDocumentServiceRequest) {
+    public void visit(FeedRangePartitionKeyRangeImpl feedRange, RxDocumentServiceRequest rxDocumentServiceRequest) {
 
         checkNotNull(feedRange, "'feedRange' must not be null");
         checkNotNull(rxDocumentServiceRequest, "'rxDocumentServiceRequest' must not be null");
@@ -51,7 +51,7 @@ final class FeedRangeRxDocumentServiceRequestPopulatorVisitor
     }
 
     @Override
-    public void visit(FeedRangePartitionKey feedRange, RxDocumentServiceRequest rxDocumentServiceRequest) {
+    public void visit(FeedRangePartitionKeyImpl feedRange, RxDocumentServiceRequest rxDocumentServiceRequest) {
         checkNotNull(feedRange, "'feedRange' must not be null");
         checkNotNull(rxDocumentServiceRequest, "'rxDocumentServiceRequest' must not be null");
 

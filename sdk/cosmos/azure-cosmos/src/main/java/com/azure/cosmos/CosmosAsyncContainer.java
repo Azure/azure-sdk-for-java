@@ -25,6 +25,7 @@ import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
@@ -1123,5 +1124,16 @@ public class CosmosAsyncContainer {
 
     ItemDeserializer getItemDeserializer() {
         return getDatabase().getDocClientWrapper().getItemDeserializer();
+    }
+
+    /**
+     * Obtains a list of {@link FeedRange} that can be used to parallelize Feed
+     * operations.
+     *
+     * @return An unmodifiable list of {@link FeedRange}
+     */
+    @Beta(Beta.SinceVersion.NextMinorRelease)
+    public Mono<List<FeedRange>> getFeedRanges() {
+        return this.getDatabase().getDocClientWrapper().getFeedRanges(getLink());
     }
 }

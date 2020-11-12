@@ -16,14 +16,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-final class FeedRangeEpk extends FeedRangeInternal {
-    private static final FeedRangeEpk fullRangeEPK =
-        new FeedRangeEpk(PartitionKeyInternalHelper.FullRange);
+final class FeedRangeEpkImpl extends FeedRangeInternal {
+    private static final FeedRangeEpkImpl fullRangeEPK =
+        new FeedRangeEpkImpl(PartitionKeyInternalHelper.FullRange);
 
     private final Range<String> range;
     private final UnmodifiableList<Range<String>> rangeList;
 
-    public FeedRangeEpk(final Range<String> range) {
+    public FeedRangeEpkImpl(final Range<String> range) {
         if (range == null) {
             throw new NullPointerException("range");
         }
@@ -39,7 +39,7 @@ final class FeedRangeEpk extends FeedRangeInternal {
         return this.range;
     }
 
-    public static FeedRangeEpk ForFullRange() {
+    public static FeedRangeEpkImpl ForFullRange() {
         return fullRangeEPK;
     }
 

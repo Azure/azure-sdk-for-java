@@ -11,6 +11,7 @@ import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.batch.BatchResponseParser;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
 import com.azure.cosmos.implementation.batch.SinglePartitionKeyServerBatchRequest;
@@ -26,6 +27,7 @@ import com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver;
 import com.azure.cosmos.implementation.directconnectivity.ServerStoreModel;
 import com.azure.cosmos.implementation.directconnectivity.StoreClient;
 import com.azure.cosmos.implementation.directconnectivity.StoreClientFactory;
+import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpHeaders;
@@ -40,8 +42,10 @@ import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyAndResourceTokenPair;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
+import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
@@ -94,6 +98,9 @@ import static com.azure.cosmos.models.ModelBridgeInternal.toDatabaseAccount;
 public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorizationTokenProvider, CpuListener, DiagnosticsClientContext {
     private static final AtomicInteger activeClientsCnt = new AtomicInteger(0);
     private static final AtomicInteger clientIdGenerator = new AtomicInteger(0);
+    private static final Range<String> RANGE_INCLUDING_ALL_PARTITION_KEY_RANGES = new Range<String>(
+        PartitionKeyInternalHelper.MinimumInclusiveEffectivePartitionKey,
+        PartitionKeyInternalHelper.MaximumExclusiveEffectivePartitionKey, true, false);
 
     private static final String DUMMY_SQL_QUERY = "this is dummy and only used in creating " +
         "ParallelDocumentQueryExecutioncontext, but not used";
@@ -3633,5 +3640,60 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         queryStringBuilder.append(pkParamName);
 
         return new SqlQuerySpec(queryStringBuilder.toString(), parameters);
+    }
+
+    @Override
+    public Mono<List<FeedRange>> getFeedRanges(String collectionLink) {
+
+        if (StringUtils.isEmpty(collectionLink)) {
+            throw new IllegalArgumentException("collectionLink");
+        }
+
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+            this,
+            OperationType.Query,
+            ResourceType.Document,
+            collectionLink,
+            null); // This should not go to backend
+        Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = collectionCache.resolveCollectionAsync(null,
+            request);
+
+        return collectionObs.flatMap(documentCollectionResourceResponse -> {
+            final DocumentCollection collection = documentCollectionResourceResponse.v;
+            if (collection == null) {
+                throw new IllegalStateException("Collection cannot be null");
+            }
+
+            Mono<Utils.ValueHolder<List<PartitionKeyRange>>> valueHolderMono = partitionKeyRangeCache
+                .tryGetOverlappingRangesAsync(
+                    BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
+                    collection.getResourceId(), RANGE_INCLUDING_ALL_PARTITION_KEY_RANGES, true, null);
+
+            return valueHolderMono.map(partitionKeyRangeListResponse -> {
+                return toFeedRanges(partitionKeyRangeListResponse);
+            });
+        });
+    }
+
+    private static List<FeedRange> toFeedRanges(
+        Utils.ValueHolder<List<PartitionKeyRange>> partitionKeyRangeListValueHolder) {
+        final List<PartitionKeyRange> partitionKeyRangeList = partitionKeyRangeListValueHolder.v;
+        if (partitionKeyRangeList == null) {
+            throw new IllegalStateException("PartitionKeyRange list cannot be null");
+        }
+
+        List<FeedRange> feedRanges = new ArrayList<FeedRange>();
+        partitionKeyRangeList.forEach(pkRange -> {
+            feedRanges.add(toFeedRange(pkRange));
+        });
+
+        UnmodifiableList<FeedRange> feedRangesResult = (UnmodifiableList<FeedRange>) Collections
+            .unmodifiableList(feedRanges);
+
+        return feedRangesResult;
+    }
+
+    private static FeedRange toFeedRange(PartitionKeyRange pkRange) {
+        return new FeedRangePartitionKeyRangeImpl(pkRange.getId());
     }
 }

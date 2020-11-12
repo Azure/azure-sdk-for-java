@@ -15,11 +15,11 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 import java.util.Collections;
 
-final class FeedRangePartitionKeyRange extends FeedRangeInternal {
+public final class FeedRangePartitionKeyRangeImpl extends FeedRangeInternal {
     private final String partitionKeyRangeId;
     private final PartitionKeyRangeIdentity partitionKeyRangeIdentity;
 
-    public FeedRangePartitionKeyRange(final String partitionKeyRangeId) {
+    public FeedRangePartitionKeyRangeImpl(final String partitionKeyRangeId) {
         if (partitionKeyRangeId == null) {
             throw new NullPointerException("partitionKeyRangeId");
         }

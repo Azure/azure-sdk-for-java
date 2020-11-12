@@ -14,10 +14,10 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 import java.util.Collections;
 
-final class FeedRangePartitionKey extends FeedRangeInternal {
+final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
     private final PartitionKeyInternal partitionKey;
 
-    public FeedRangePartitionKey(PartitionKeyInternal partitionKey) {
+    public FeedRangePartitionKeyImpl(PartitionKeyInternal partitionKey) {
         if (partitionKey == null) {
             throw new NullPointerException("partitionKey");
         }

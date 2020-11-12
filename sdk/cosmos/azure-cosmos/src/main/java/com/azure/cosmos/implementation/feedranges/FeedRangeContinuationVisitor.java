@@ -4,5 +4,5 @@
 package com.azure.cosmos.implementation.feedranges;
 
 abstract class FeedRangeContinuationVisitor {
-    public abstract void visit(FeedRangeCompositeContinuation feedRangeCompositeContinuation);
+    public abstract void visit(FeedRangeCompositeContinuationImpl feedRangeCompositeContinuation);
 }

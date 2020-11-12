@@ -11,12 +11,12 @@ import java.util.function.BiConsumer;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-final class FeedRangeContinuationRxDocumentServiceRequestPopulatorVisitor extends FeedRangeContinuationVisitor {
+final class FeedRangeContinuationRxDocumentServiceRequestPopulatorVisitorImpl extends FeedRangeContinuationVisitor {
 
     private final RxDocumentServiceRequest request;
     private final BiConsumer<RxDocumentServiceRequest, String> fillContinuation;
 
-    public FeedRangeContinuationRxDocumentServiceRequestPopulatorVisitor(
+    public FeedRangeContinuationRxDocumentServiceRequestPopulatorVisitorImpl(
         RxDocumentServiceRequest request, BiConsumer<RxDocumentServiceRequest, String> fillContinuation)
     {
         checkNotNull(request, "'request' must not be null");
@@ -27,7 +27,7 @@ final class FeedRangeContinuationRxDocumentServiceRequestPopulatorVisitor extend
     }
 
     @Override
-    public void visit(FeedRangeCompositeContinuation feedRangeCompositeContinuation) {
+    public void visit(FeedRangeCompositeContinuationImpl feedRangeCompositeContinuation) {
         checkNotNull(feedRangeCompositeContinuation, "'feedRangeCompositeContinuation' must not be null");
 
         final Map<String, Object> properties = this.request.getProperties();

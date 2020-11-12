@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation.feedranges;
 
-import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.ShouldRetryResult;
@@ -45,7 +44,7 @@ abstract class FeedRangeContinuation {
 
     public static FeedRangeContinuation tryParse(String toStringValue)
     {
-        return FeedRangeCompositeContinuation.tryParse(toStringValue);
+        return FeedRangeCompositeContinuationImpl.tryParse(toStringValue);
     }
 
     public abstract ShouldRetryResult handleChangeFeedNotModified(

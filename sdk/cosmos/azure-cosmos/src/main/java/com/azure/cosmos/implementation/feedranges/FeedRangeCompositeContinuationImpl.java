@@ -30,7 +30,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * FeedRangeContinuation using Composite Continuation Tokens and split proof.
  * It uses a breath-first approach to transverse Composite Continuation Tokens.
  */
-final class FeedRangeCompositeContinuation extends FeedRangeContinuation {
+final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
 
     private final static ShouldRetryResult RETRY = ShouldRetryResult.retryAfter(Duration.ZERO);
     private final static ShouldRetryResult NO_RETRY = ShouldRetryResult.noRetry();
@@ -39,13 +39,13 @@ final class FeedRangeCompositeContinuation extends FeedRangeContinuation {
     private CompositeContinuationToken currentToken;
     private String initialNoResultsRange;
 
-    private FeedRangeCompositeContinuation(String containerRid, FeedRangeInternal feedRange) {
+    private FeedRangeCompositeContinuationImpl(String containerRid, FeedRangeInternal feedRange) {
         super(containerRid, feedRange);
 
         this.compositeContinuationTokens = new LinkedList<CompositeContinuationToken>();
     }
 
-    public FeedRangeCompositeContinuation(
+    public FeedRangeCompositeContinuationImpl(
         String containerRid,
         FeedRangeInternal feedRange,
         List<Range<String>> ranges) {
@@ -53,7 +53,7 @@ final class FeedRangeCompositeContinuation extends FeedRangeContinuation {
         this(containerRid, feedRange, ranges, null);
     }
 
-    public FeedRangeCompositeContinuation(
+    public FeedRangeCompositeContinuationImpl(
         String containerRid,
         FeedRangeInternal feedRange,
         List<Range<String>> ranges,
@@ -69,7 +69,7 @@ final class FeedRangeCompositeContinuation extends FeedRangeContinuation {
 
         for (Range<String> range : ranges) {
             this.compositeContinuationTokens.add(
-                FeedRangeCompositeContinuation.createCompositeContinuationTokenForRange(
+                FeedRangeCompositeContinuationImpl.createCompositeContinuationTokenForRange(
                     range.getMin(),
                     range.getMax(),
                     continuation)
@@ -82,12 +82,12 @@ final class FeedRangeCompositeContinuation extends FeedRangeContinuation {
     /**
      * Used for deserializtion only
      */
-    public static FeedRangeCompositeContinuation createFromDeserializedTokens(
+    public static FeedRangeCompositeContinuationImpl createFromDeserializedTokens(
         String containerRid,
         FeedRangeInternal feedRange,
         List<CompositeContinuationToken> deserializedTokens) {
 
-        FeedRangeCompositeContinuation thisPtr = new FeedRangeCompositeContinuation(containerRid, feedRange);
+        FeedRangeCompositeContinuationImpl thisPtr = new FeedRangeCompositeContinuationImpl(containerRid, feedRange);
 
         checkNotNull(deserializedTokens, "'deserializedTokens' must not be null");
 
@@ -124,14 +124,14 @@ final class FeedRangeCompositeContinuation extends FeedRangeContinuation {
 
     @Override
     public FeedRangeInternal getFeedRange() {
-        if (!(this.feedRange instanceof FeedRangeEpk))
+        if (!(this.feedRange instanceof FeedRangeEpkImpl))
         {
             return this.feedRange;
         }
 
         if (this.currentToken != null)
         {
-            return new FeedRangeEpk(this.currentToken.getRange());
+            return new FeedRangeEpkImpl(this.currentToken.getRange());
         }
 
         return null;
@@ -271,7 +271,7 @@ final class FeedRangeCompositeContinuation extends FeedRangeContinuation {
 
         final ObjectMapper mapper = Utils.getSimpleObjectMapper();
 
-        return mapper.readValue(jsonString, FeedRangeCompositeContinuation.class);
+        return mapper.readValue(jsonString, FeedRangeCompositeContinuationImpl.class);
     }
 
     private static CompositeContinuationToken createCompositeContinuationTokenForRange(

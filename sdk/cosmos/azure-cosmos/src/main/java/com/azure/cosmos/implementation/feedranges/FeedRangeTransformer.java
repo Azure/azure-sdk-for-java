@@ -4,9 +4,9 @@
 package com.azure.cosmos.implementation.feedranges;
 
 abstract class FeedRangeTransformer<TResult> {
-    public abstract TResult visit(FeedRangePartitionKey feedRange);
+    public abstract TResult visit(FeedRangePartitionKeyImpl feedRange);
 
-    public abstract TResult visit(FeedRangePartitionKeyRange feedRange);
+    public abstract TResult visit(FeedRangePartitionKeyRangeImpl feedRange);
 
-    public abstract TResult visit(FeedRangeEpk feedRange);
+    public abstract TResult visit(FeedRangeEpkImpl feedRange);
 }
