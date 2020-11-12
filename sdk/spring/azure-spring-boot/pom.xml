@@ -112,8 +112,8 @@
     </dependency>
     <dependency>
       <groupId>io.projectreactor.netty</groupId>
-      <artifactId>reactor-netty</artifactId> <!-- {x-version-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
-      <version>0.9.13.RELEASE</version>
+      <artifactId>reactor-netty</artifactId>
+      <version>0.9.13.RELEASE</version> <!-- {x-version-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
     </dependency>
 
     <!--Cosmos-->
