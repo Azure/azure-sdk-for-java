@@ -3,10 +3,13 @@
 
 package com.azure.core.amqp.models;
 
+import org.apache.qpid.proton.amqp.messaging.Data;
+
+import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -60,9 +63,9 @@ public final class AmqpMessageBody {
     }
 
     /**
-     * Gets an immutable list containing only first byte array set on this {@link AmqpMessageBody}. The proton-j
-     * library used only support one byte array, so the returned list will have only one element. Look for future
-     * releases where we will support multiple byte array.
+     * Gets an immutable list containing only first byte array set on this {@link AmqpMessageBody}. This library only
+     * support one byte array, so the returned list will have only one element. Look for future releases where we will
+     * support multiple byte array.
      * <b>Client should test for {@link AmqpMessageBodyType} before calling corresponding get method.Get methods not
      * corresponding to the type of the body throws exception.</b>
      * <p><strong>How to check for {@link AmqpMessageBodyType}</strong></p>
@@ -71,11 +74,35 @@ public final class AmqpMessageBody {
      *
      * @throws IllegalArgumentException If {@link AmqpMessageBodyType} is not {@link AmqpMessageBodyType#DATA DATA}.
      */
-    public List<byte[]> getData() {
+    public IterableStream<byte[]> getData() {
         if (bodyType != AmqpMessageBodyType.DATA) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format("Can not return data for a "
                 + "message which is of type %s.", getBodyType().toString())));
         }
-        return Collections.singletonList(data);
+
+        return new IterableStream<>(Collections.singletonList(data));
+    }
+
+    /**
+     * Gets first byte array set on this {@link AmqpMessageBody}. This library only support one byte array on Amqp
+     * Message. Look for future releases where we will support multiple byte array and you can use
+     * {@link AmqpMessageBody#getData()} API.
+     * <b>Client should test for {@link AmqpMessageBodyType} before calling corresponding get method.Get methods not
+     * corresponding to the type of the body throws exception.</b>
+     * <p><strong>How to check for {@link AmqpMessageBodyType}</strong></p>
+     * {@codesnippet com.azure.core.amqp.models.AmqpBodyType.checkBodyType}
+     * @return data set on {@link AmqpMessageBody}.
+     *
+     * @throws IllegalArgumentException If {@link AmqpMessageBodyType} is not {@link AmqpMessageBodyType#DATA DATA}.
+     * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#section-message-format">
+     *     Amqp Message Format.</a>
+     */
+    public byte[] getFirstData() {
+        if (bodyType != AmqpMessageBodyType.DATA) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format("Can not return data for a "
+                + "message which is of type %s.", getBodyType().toString())));
+        }
+
+        return Arrays.copyOf(data, data.length);
     }
 }

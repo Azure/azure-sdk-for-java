@@ -161,7 +161,7 @@ public class AmqpAnnotatedMessageTest {
         final AmqpMessageBodyType actualType = actual.getBody().getBodyType();
         switch (actualType) {
             case DATA:
-                byte[] actualData = actual.getBody().getData().get(0);
+                byte[] actualData = actual.getBody().getData().stream().findFirst().get();
                 assertArrayEquals(expectedbody, actualData);
                 break;
             case VALUE:

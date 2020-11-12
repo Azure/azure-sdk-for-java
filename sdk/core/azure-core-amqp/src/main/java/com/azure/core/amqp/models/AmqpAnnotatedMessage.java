@@ -59,7 +59,7 @@ public final class AmqpAnnotatedMessage {
         AmqpMessageBodyType bodyType = message.getBody().getBodyType();
         switch (bodyType) {
             case DATA:
-                amqpMessageBody = AmqpMessageBody.fromData(message.getBody().getData().get(0));
+                amqpMessageBody = AmqpMessageBody.fromData(message.getBody().getFirstData());
                 break;
             case SEQUENCE:
             case VALUE:

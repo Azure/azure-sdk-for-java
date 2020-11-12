@@ -76,7 +76,8 @@ public final class ServiceBusReceivedMessage {
         final AmqpMessageBodyType bodyType = amqpAnnotatedMessage.getBody().getBodyType();
         switch (bodyType) {
             case DATA:
-                return BinaryData.fromBytes(amqpAnnotatedMessage.getBody().getData().stream().findFirst().get());
+                return BinaryData.fromBytes(amqpAnnotatedMessage.getBody()
+                    .getData().stream().findFirst().get());
             case SEQUENCE:
             case VALUE:
                 throw logger.logExceptionAsError(new UnsupportedOperationException("Body type not supported yet "

@@ -17,7 +17,7 @@ public class AmqpAnnotatedMessageJavaDocCodeSamples {
         AmqpMessageBody messageBody = null;
         switch (bodyType) {
             case DATA:
-                messageBody = AmqpMessageBody.fromData(amqpAnnotatedMessage.getBody().getData().get(0));
+                messageBody = AmqpMessageBody.fromData(amqpAnnotatedMessage.getBody().getFirstData());
                 break;
             case SEQUENCE:
             case VALUE:

@@ -29,7 +29,8 @@ public class AmqpMessageBodyTest {
         assertEquals(AmqpMessageBodyType.DATA, actual.getBodyType());
 
         // Validate Message Body
-        assertArrayEquals(expectedData, actual.getData().get(0));
+        assertArrayEquals(expectedData, actual.getFirstData());
+        assertArrayEquals(expectedData, actual.getData().stream().findFirst().get());
     }
 
     /**
