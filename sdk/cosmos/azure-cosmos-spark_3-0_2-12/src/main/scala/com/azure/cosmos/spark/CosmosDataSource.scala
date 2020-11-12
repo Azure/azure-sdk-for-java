@@ -11,7 +11,7 @@ import org.apache.spark.sql.types.StructType
 import org.apache.spark.sql.util.CaseInsensitiveStringMap
 
 class CosmosDataSource extends DataSourceRegister with TableProvider with CosmosLoggingTrait {
-  logInfo("Instantiated")
+  logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
   override def inferSchema(caseInsensitiveStringMap: CaseInsensitiveStringMap): StructType = {
     getTable(null,

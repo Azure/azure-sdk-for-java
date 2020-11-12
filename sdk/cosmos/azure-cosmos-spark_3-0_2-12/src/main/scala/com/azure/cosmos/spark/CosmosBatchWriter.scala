@@ -5,7 +5,7 @@ package com.azure.cosmos.spark
 import org.apache.spark.sql.connector.write.{BatchWrite, DataWriterFactory, PhysicalWriteInfo, WriterCommitMessage}
 
 class CosmosBatchWriter extends BatchWrite with CosmosLoggingTrait {
-  logInfo("Instantiated")
+  logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
   override def createBatchWriterFactory(physicalWriteInfo: PhysicalWriteInfo): DataWriterFactory = new CosmosDataWriteFactory()
 

@@ -21,7 +21,7 @@ class CosmosTable(val userProvidedSchema: StructType,
                   val transforms: Array[Transform],
                   val map: util.Map[String, String])
   extends Table with SupportsWrite with CosmosLoggingTrait {
-  logInfo("Instantiated")
+  logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
   override def name(): String = "com.azure.cosmos.spark.write"
 

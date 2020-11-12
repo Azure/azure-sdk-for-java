@@ -5,7 +5,7 @@ package com.azure.cosmos.spark
 import org.apache.spark.sql.connector.write.{BatchWrite, WriteBuilder}
 
 class CosmosWriterBuilder extends WriteBuilder with CosmosLoggingTrait {
-  logInfo("Instantiated")
+  logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
   override def buildForBatch(): BatchWrite = new CosmosBatchWriter()
 }

@@ -11,12 +11,12 @@ import org.apache.spark.sql.connector.write.{DataWriter, DataWriterFactory, Writ
 import org.apache.spark.sql.types.{IntegerType, StringType, StructField, StructType}
 
 class CosmosDataWriteFactory extends DataWriterFactory with CosmosLoggingTrait {
-  logInfo("Instantiated")
+  logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
   override def createWriter(i: Int, l: Long): DataWriter[InternalRow] = new CosmosWriter()
 
   class CosmosWriter() extends DataWriter[InternalRow] {
-    logInfo("Instantiated")
+    logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
     // TODO moderakh account config and databaseName, containerName need to passed down from the user
     val client = new CosmosClientBuilder()
