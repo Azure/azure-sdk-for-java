@@ -45,7 +45,6 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
     private final Object queueLock = new Object();
     private final AtomicBoolean isTerminated = new AtomicBoolean();
     private final AtomicInteger retryAttempts = new AtomicInteger();
-    private final AtomicBoolean linkCreditsAdded = new AtomicBoolean();
     private final AtomicReference<String> linkName = new AtomicReference<>();
 
     // Queue containing all the prefetched messages.
@@ -199,12 +198,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
             oldSubscription = currentLinkSubscriptions;
 
             currentLink = next;
-            next.setEmptyCreditListener(() -> {
-                final int creditsToAdd = getCreditsToAdd(0);
-                linkCreditsAdded.set(creditsToAdd > 0);
-
-                return creditsToAdd;
-            });
+            next.setEmptyCreditListener(() -> 0);
 
             currentLinkSubscriptions = Disposables.composite(
                 next.receive().publishOn(Schedulers.boundedElastic()).subscribe(message -> {
@@ -449,6 +443,9 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
         try {
             drainQueue();
         } finally {
+            if (prefetch > 0) { // re-fill messageQueue if there is prefetch configured.
+                checkAndAddCredits(currentLink);
+            }
             if (wip.decrementAndGet() != 0) {
                 logger.warning("There is another worker in drainLoop. But there should only be 1 worker.");
             }
@@ -544,13 +541,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
             return;
         }
 
-        // Credits have already been added to the link. We won't try again.
-        if (linkCreditsAdded.getAndSet(true)) {
-            return;
-        }
-
         final int credits = getCreditsToAdd(link.getCredits());
-        linkCreditsAdded.set(credits > 0);
 
         logger.info("Link credits to add. Credits: '{}'", credits);
 
@@ -570,21 +561,28 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
         }
 
         final int creditsToAdd;
-        if (messageQueue.isEmpty() && !hasBackpressure) {
-            creditsToAdd = prefetch;
+        final int expectedTotalCredit;
+        if (prefetch == 0) {
+            if (r <= Integer.MAX_VALUE) {
+                expectedTotalCredit = (int) r;
+            } else {
+                expectedTotalCredit = Integer.MAX_VALUE;
+            }
         } else {
-            synchronized (queueLock) {
-                final int queuedMessages = pendingMessages.get();
-                final int pending = queuedMessages + linkCredits;
+            expectedTotalCredit = prefetch;
+        }
 
-                if (hasBackpressure) {
-                    creditsToAdd = Math.max(Long.valueOf(r).intValue() - pending, 0);
-                } else {
-                    // If the queue has less than 1/3 of the prefetch, then add the difference to keep the queue full.
-                    creditsToAdd = minimumNumberOfMessages >= queuedMessages
-                        ? Math.max(prefetch - pending, 1)
-                        : 0;
-                }
+        synchronized (queueLock) {
+            final int queuedMessages = pendingMessages.get();
+            final int pending = queuedMessages + linkCredits;
+
+            if (hasBackpressure) {
+                creditsToAdd = Math.max(expectedTotalCredit - pending, 0);
+            } else {
+                // If the queue has less than 1/3 of the prefetch, then add the difference to keep the queue full.
+                creditsToAdd = minimumNumberOfMessages >= queuedMessages
+                    ? Math.max(expectedTotalCredit - pending, 0)
+                    : 0;
             }
         }
 

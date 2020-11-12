@@ -203,7 +203,7 @@ class ServiceBusClientBuilderTest {
             .receiveMode(ReceiveMode.PEEK_LOCK);
 
         // Act & Assert
-        assertThrows(IllegalArgumentException.class, () -> receiverBuilder.prefetchCount(0));
+        assertThrows(IllegalArgumentException.class, () -> receiverBuilder.prefetchCount(-1));
     }
 
     @MethodSource("getProxyConfigurations")

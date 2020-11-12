@@ -86,6 +86,7 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
         logger.info("[{}] Pending: {}, Scheduling receive timeout task '{}'.", work.getId(), work.getNumberOfEvents(),
             work.getTimeout());
         workQueue.add(work);
+        subscription.request(work.getNumberOfEvents());
 
         // Do not drain if another thread want to queue the work before we have subscriber
         if (subscriberInitialized) {
@@ -174,15 +175,6 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
                         currentTimeoutOperation.dispose();
                     }
                     logger.verbose("The work [{}] is complete.", currentWork.getId());
-                } else {
-                    // Since this work is not complete, find out how much we should request from upstream
-                    long creditToAdd = currentWork.getRemaining() - (remaining.get() + bufferMessages.size());
-                    if (creditToAdd > 0) {
-                        remaining.addAndGet(creditToAdd);
-                        subscription.request(creditToAdd);
-                        logger.verbose("Requesting [{}] from upstream for work [{}].", creditToAdd,
-                            currentWork.getId());
-                    }
                 }
             }
         }
