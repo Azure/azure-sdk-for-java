@@ -317,7 +317,7 @@ public final class FormRecognizerAsyncClient {
                 urlActivationOperation(
                     () -> service.analyzeLayoutAsyncWithResponseAsync(
                         Language.fromString(finalRecognizeContentOptions.getLanguage()),
-                        null,
+                        finalRecognizeContentOptions.getPages(),
                         new SourcePath().setSource(formUrl),
                         context)
                         .map(response -> new FormRecognizerOperationResult(
@@ -405,7 +405,7 @@ public final class FormRecognizerAsyncClient {
                         form,
                         length,
                         Language.fromString(finalRecognizeContentOptions.getLanguage()),
-                        null,
+                        finalRecognizeContentOptions.getPages(),
                         context)
                         .map(response -> new FormRecognizerOperationResult(
                             parseModelId(response.getDeserializedHeaders().getOperationLocation()))),
