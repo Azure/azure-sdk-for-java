@@ -19,7 +19,7 @@ import java.util.Objects;
  * <li><a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#type-amqp-value">VALUE</a></li>
  * </ul>
  * <b>Client should test for {@link AmqpBodyType} before calling corresponding get method.Get methods not corresponding
- * to the type of the body throw exception.</b>
+ * to the type of the body throws exception.</b>
  * <p><strong>How to check for {@link AmqpBodyType}</strong></p>
  * {@codesnippet com.azure.core.amqp.models.AmqpBodyType.checkBodyType}
  *
@@ -63,7 +63,7 @@ public final class AmqpMessageBody {
      * library used only support one byte array, so the returned list will have only one element. Look for future
      * releases where we will support multiple byte array.
      * <b>Client should test for {@link AmqpBodyType} before calling corresponding get method.Get methods not
-     * corresponding to the type of the body throw exception.</b>
+     * corresponding to the type of the body throws exception.</b>
      * <p><strong>How to check for {@link AmqpBodyType}</strong></p>
      * {@codesnippet com.azure.core.amqp.models.AmqpBodyType.checkBodyType}
      * @return data set on {@link AmqpMessageBody}.
