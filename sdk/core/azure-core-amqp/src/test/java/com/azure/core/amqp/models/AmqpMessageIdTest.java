@@ -6,8 +6,6 @@ package com.azure.core.amqp.models;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-
 /**
  * Test for {@link AmqpMessageId}.
  */
@@ -17,10 +15,7 @@ public class AmqpMessageIdTest {
      */
     @Test
     public void constructorNullValue() {
-        // Arrange
-        final List<byte[]> listBinaryData = null;
-
-        // Act & Assert
+        // Arrange, Act & Assert
         Assertions.assertThrows(NullPointerException.class, () -> new AmqpMessageId(null));
     }
 

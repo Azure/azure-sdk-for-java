@@ -43,7 +43,7 @@ public final class AmqpAddress {
             return true;
         }
 
-        if (!address.equals(((AmqpAddress) other).toString())) {
+        if (!address.equals(other.toString())) {
             return false;
         }
 

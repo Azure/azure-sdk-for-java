@@ -90,7 +90,8 @@ public final class AmqpAnnotatedMessage {
 
     /**
      * Gets the {@link AmqpMessageBody} of an amqp message.
-     * <b>Client should test for {@link AmqpBodyType} before calling corresponding get method on {@link AmqpMessageBody}
+     * <b>Client should test for {@link AmqpBodyType} before calling corresponding get method on
+     * {@link AmqpMessageBody}</b>
      * <p><strong>How to check for {@link AmqpBodyType}</strong></p>
      * {@codesnippet com.azure.core.amqp.models.AmqpBodyType.checkBodyType}
      *

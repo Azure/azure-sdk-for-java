@@ -6,21 +6,17 @@ package com.azure.core.amqp.models;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-
 /**
  * Test for {@link AmqpAddress}.
  */
 public class AmqpAddressTest {
+
     /**
      * Verifies {@link AmqpAddress} constructor for null values.
      */
     @Test
     public void constructorNullValue() {
-        // Arrange
-        final List<byte[]> listBinaryData = null;
-
-        // Act & Assert
+        // Arrange, Act & Assert
         Assertions.assertThrows(NullPointerException.class, () -> new AmqpAddress(null));
     }
 

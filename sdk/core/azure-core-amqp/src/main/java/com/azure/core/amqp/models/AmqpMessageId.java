@@ -45,7 +45,7 @@ public final class AmqpMessageId {
             return true;
         }
 
-        if (!messageId.equals(((AmqpMessageId) other).toString())) {
+        if (!messageId.equals(other.toString())) {
             return false;
         }
 
