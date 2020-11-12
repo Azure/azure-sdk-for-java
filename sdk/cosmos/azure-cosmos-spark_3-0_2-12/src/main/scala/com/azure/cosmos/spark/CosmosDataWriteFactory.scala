@@ -36,7 +36,10 @@ class CosmosDataWriteFactory extends DataWriterFactory with CosmosLoggingTrait {
       if (!objectNode.has("id")) {
         objectNode.put("id", UUID.randomUUID().toString)
       }
-      client.getDatabase(databaseName).getContainer(containerName).createItem(objectNode).block()
+      client.getDatabase(databaseName)
+        .getContainer(containerName)
+        .createItem(objectNode)
+        .block()
     }
 
     override def commit(): WriterCommitMessage = {

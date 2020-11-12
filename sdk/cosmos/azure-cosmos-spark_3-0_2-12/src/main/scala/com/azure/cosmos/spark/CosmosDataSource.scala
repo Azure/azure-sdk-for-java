@@ -22,7 +22,6 @@ class CosmosDataSource extends DataSourceRegister with TableProvider with Cosmos
   override def shortName(): String = "cosmos.write"
 
   override def getTable(structType: StructType, transforms: Array[Transform], map: util.Map[String, String]): Table = {
-
     // getTable - This is used for loading table with user specified schema and other transformations.
     new CosmosTable(structType, transforms, map)
   }
