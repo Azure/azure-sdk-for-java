@@ -1,4 +1,32 @@
 # Release History
+## 5.0.1 (2020-11-11)
+- Update dependency version, `azure-core` to 1.10.0 and `azure-core-http-netty` to 1.6.3. 
+
+## 5.1.0-beta.2 (2020-10-06) 
+### Breaking changes 
+- Removed property `length` from `CategorizedEntity`, `SentenceSentiment`, `LinkedEntityMatch`, `AspectSentiment`,  
+`OpinionSentiment`, and `PiiEntity` because the length information can be accessed from the text property itself 
+using the string's length property. 
+ 
+### Dependency updates 
+- Update dependency version, `azure-core` to 1.9.0 and `azure-core-http-netty` to 1.6.2. 
+ 
+## 5.1.0-beta.1 (2020-09-17) 
+- Added `offset` and `length` properties for `CategorizedEntity`, `LinkedEntityMatch` and `SentenceSentiment` 
+  - `length` is the number of characters in the text of these models 
+  - `offset` is the offset of the text from the start of the document 
+   
+**New features** 
+- Updated Text Analytics SDK's default service API version to `v3.1-preview.2` from `v3.0`. 
+- Added support for Personally Identifiable Information(PII) entity recognition feature. 
+  To use this feature, you need to make sure you are using the service's v3.1-preview.1 API. 
+- Added support for the Opinion Mining feature. To use this feature, you need to make sure you are using the  
+service's v3.1-preview.1 and above API. To get this support pass `includeOpinionMining` as `true` in  
+`AnalyzeSentimentOptions` when calling the sentiment analysis endpoints. 
+- Add property `bingEntitySearchApiId` to the `LinkedEntity` class. This property is only available for v3.1-preview.2 
+and up, and it is to be used in conjunction with the Bing Entity Search API to fetch additional relevant information 
+about the returned entity. 
+
 ## 5.0.0 (2020-07-27)
 - Re-release of version `1.0.1` with updated version `5.0.0`.
 
