@@ -35,7 +35,7 @@ public class ReceiveMessagesTest extends ServiceTest<ServiceBusStressOptions> {
      * @param options to set performance test options.
      */
     public ReceiveMessagesTest(ServiceBusStressOptions options) {
-        super(new ClientLogger(ReceiveMessagesTest.class), options);
+        super(options, new ClientLogger(ReceiveMessagesTest.class));
 
         this.queueName = getQueueName();
 

@@ -23,7 +23,7 @@ public class SendMessageTest extends ServiceTest<ServiceBusStressOptions> {
      * @param options to set performance test options.
      */
     public SendMessageTest(ServiceBusStressOptions options) {
-        super(new ClientLogger(SendMessageTest.class), options);
+        super(options, new ClientLogger(SendMessageTest.class));
 
         final String queueName = getQueueName();
 

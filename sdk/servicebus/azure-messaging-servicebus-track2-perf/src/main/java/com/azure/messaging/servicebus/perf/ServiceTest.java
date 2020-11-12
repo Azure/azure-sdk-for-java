@@ -38,7 +38,7 @@ abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStres
      *
      * @throws IllegalArgumentException if environment variable not being available.
      */
-    ServiceTest(ClientLogger logger, TOptions options) {
+    ServiceTest(TOptions options, ClientLogger logger) {
         super(options);
         this.logger = logger;
 
