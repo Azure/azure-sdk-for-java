@@ -7,40 +7,42 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.perf.test.core.PerfStressTest;
-import com.microsoft.azure.servicebus.ClientFactory;
-import com.microsoft.azure.servicebus.IMessageReceiver;
-import com.microsoft.azure.servicebus.IMessageSender;
-import com.microsoft.azure.servicebus.ReceiveMode;
+import com.microsoft.azure.servicebus.Message;
 import com.microsoft.azure.servicebus.primitives.MessagingFactory;
-import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 
+import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Base class for performance etest.
+ *
  * @param <TOptions> for performance configuration.
  */
 abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStressTest<TOptions> {
     static final String CONTENTS = "Performance Test";
-    static final int TOTAL_MESSAGE_MULTIPLIER = 300;
 
     private static final String AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING =
         "AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING";
     private static final String AZURE_SERVICEBUS_QUEUE_NAME = "AZURE_SERVICEBUS_QUEUE_NAME";
 
-    private final IMessageSender sender;
-    private final IMessageReceiver receiver;
+    private final ClientLogger logger;
+    private final MessagingFactory factory;
+    private final String queueName;
 
     /**
      * Creates a new instance of the service bus stress test.
      *
+     * @param logger Client logger.
      * @param options to configure.
-     * @param receiveMode to receive messages.
+     *
      * @throws IllegalArgumentException for environment variable not being available.
+     * @throws RuntimeException if the {@link MessagingFactory} cannot be created.
      */
-    ServiceTest(TOptions options, ReceiveMode receiveMode) {
+    ServiceTest(ClientLogger logger, TOptions options) {
         super(options);
-        final ClientLogger logger = new ClientLogger(ServiceTest.class);
+        this.logger = logger;
 
         final String connectionString = System.getenv(AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING);
         if (CoreUtils.isNullOrEmpty(connectionString)) {
@@ -48,28 +50,73 @@ abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStres
                 + AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING + " must be set."));
         }
 
-        final String queueName = System.getenv(AZURE_SERVICEBUS_QUEUE_NAME);
+        this.queueName = System.getenv(AZURE_SERVICEBUS_QUEUE_NAME);
         if (CoreUtils.isNullOrEmpty(queueName)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Environment variable "
                 + AZURE_SERVICEBUS_QUEUE_NAME + " must be set."));
         }
 
-        // Setup the service client
         try {
-            final MessagingFactory factory = MessagingFactory.createFromConnectionString(connectionString);
-
-            this.sender = ClientFactory.createMessageSenderFromEntityPath(factory, queueName);
-            this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, queueName, receiveMode);
-        } catch (ServiceBusException | InterruptedException | ExecutionException e) {
-            throw logger.logExceptionAsWarning(new RuntimeException(e));
+            this.factory = MessagingFactory.createFromConnectionString(connectionString);
+        } catch (InterruptedException | ExecutionException e) {
+            throw logger.logExceptionAsWarning(new RuntimeException("Unable to create messaging factory.", e));
         }
     }
 
-    public IMessageSender getSender() {
-        return sender;
+    /**
+     * Gets the client logger.
+     *
+     * @return The logger.
+     */
+    ClientLogger getLogger() {
+        return logger;
     }
 
-    public IMessageReceiver getReceiver() {
-        return receiver;
+    /**
+     * Gets the underlying AMQP connection to a service bus namespace.
+     *
+     * @return The factory to create to a service bus namespace.
+     */
+    MessagingFactory getMessagingFactory() {
+        return factory;
+    }
+
+    /**
+     * Gets the name of the queue to send/receive messages to/from.
+     *
+     * @return Name of the queue to send/receive messages to/from.
+     */
+    String getQueueName() {
+        return queueName;
+    }
+
+    /**
+     * Gets the given number of Service Bus messages with {@link #CONTENTS}.
+     *
+     * @param count Number of messages to emit.
+     *
+     * @return A list of {@link Message messages}.
+     */
+    List<Message> getMessages(int count) {
+        return IntStream.range(0, count)
+            .mapToObj(index -> {
+                final Message message = new Message(CONTENTS);
+                message.setMessageId(String.valueOf(index));
+                return message;
+            })
+            .collect(Collectors.toList());
+    }
+
+    void dispose(AutoCloseable... closeables) {
+        for (int i = 0; i < closeables.length; i++) {
+            final AutoCloseable closeable = closeables[i];
+            try {
+                if (closeable != null) {
+                    closeable.close();
+                }
+            } catch (Exception e) {
+                logger.warning("Unable to dispose of {}.", closeable.getClass(), e);
+            }
+        }
     }
 }

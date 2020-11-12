@@ -33,6 +33,7 @@ abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStres
     /**
      * Creates a new instance of the service bus stress test.
      *
+     * @param logger Client logger.
      * @param options to configure.
      *
      * @throws IllegalArgumentException if environment variable not being available.
@@ -76,9 +77,9 @@ abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStres
     }
 
     /**
-     * Gets the name of the queue to send messages to.
+     * Gets the name of the queue to send/receive messages to/from.
      *
-     * @return Name of the queue to send messages to.
+     * @return Name of the queue to send/receive messages to/from.
      */
     String getQueueName() {
         return queueName;

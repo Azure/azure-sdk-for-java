@@ -6,32 +6,34 @@ package com.microsoft.azure.servicebus.perf;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.beust.jcommander.Parameter;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.microsoft.azure.servicebus.ReceiveMode;
 
 /**
  * Represents the command line configurable options for a performance test.
  */
 @JsonPropertyOrder(alphabetic = true)
 public class ServiceBusStressOptions extends PerfStressOptions {
+    @Parameter(names = { "--mode" }, description = "The receive mode.")
+    private ReceiveMode receiveMode = ReceiveMode.PEEKLOCK;
 
-    @Parameter(names = { "-mr", "--maxReceive" }, description = "MaxReceive messages")
-    private int messagesToReceive = 10;
-
-    @Parameter(names = { "-ms", "--messageSend" }, description = "Messages to send")
-    private int messagesToSend = 10;
+    @Parameter(names = { "--autocomplete" }, description = "Enables autocomplete when receiving messages.")
+    private boolean autoComplete = false;
 
     /**
-     * Get the configured messagesToSend option for performance test.
-     * @return The size.
+     * Gets the receive mode for a test.
+     *
+     * @return The receive mode for a test.
      */
-    public int getMessagesToSend() {
-        return messagesToSend;
+    public ReceiveMode getReceiveMode() {
+        return receiveMode;
     }
 
     /**
-     * Get the configured messagesToReceive option for performance test.
-     * @return The size.
+     * Gets whether or not to autocomplete messages when receiving.
+     *
+     * @return {@code true} to autocomplete messages, {@code false} to manually complete message.
      */
-    public int getMessagesToReceive() {
-        return messagesToReceive;
+    public boolean isAutoComplete() {
+        return autoComplete;
     }
 }
