@@ -8,15 +8,34 @@
 
 package com.microsoft.azure.management.resources.v2016_06_01.implementation;
 
+import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
+import com.microsoft.azure.management.resources.v2016_06_01.ErrorResponseException;
+import com.microsoft.azure.management.resources.v2016_06_01.ResourceName;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.RestClient;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
+import com.microsoft.rest.ServiceResponse;
+import com.microsoft.rest.Validator;
+import java.io.IOException;
+import okhttp3.ResponseBody;
+import retrofit2.http.Body;
+import retrofit2.http.Header;
+import retrofit2.http.Headers;
+import retrofit2.http.POST;
+import retrofit2.http.Query;
+import retrofit2.Response;
+import rx.functions.Func1;
+import rx.Observable;
 
 /**
  * Initializes a new instance of the SubscriptionClientImpl class.
  */
 public class SubscriptionClientImpl extends AzureServiceClient {
+    /** The Retrofit service to perform REST calls. */
+    private SubscriptionClientService service;
     /** the {@link AzureClient} used for long running operations. */
     private AzureClient azureClient;
 
@@ -40,11 +59,11 @@ public class SubscriptionClientImpl extends AzureServiceClient {
         return this.apiVersion;
     }
 
-    /** Gets or sets the preferred language for the response. */
+    /** The preferred language for the response. */
     private String acceptLanguage;
 
     /**
-     * Gets Gets or sets the preferred language for the response.
+     * Gets The preferred language for the response.
      *
      * @return the acceptLanguage value.
      */
@@ -53,7 +72,7 @@ public class SubscriptionClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Sets Gets or sets the preferred language for the response.
+     * Sets The preferred language for the response.
      *
      * @param acceptLanguage the acceptLanguage value.
      * @return the service client itself
@@ -63,11 +82,11 @@ public class SubscriptionClientImpl extends AzureServiceClient {
         return this;
     }
 
-    /** Gets or sets the retry timeout in seconds for Long Running Operations. Default value is 30. */
+    /** The retry timeout in seconds for Long Running Operations. Default value is 30. */
     private int longRunningOperationRetryTimeout;
 
     /**
-     * Gets Gets or sets the retry timeout in seconds for Long Running Operations. Default value is 30.
+     * Gets The retry timeout in seconds for Long Running Operations. Default value is 30.
      *
      * @return the longRunningOperationRetryTimeout value.
      */
@@ -76,7 +95,7 @@ public class SubscriptionClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Sets Gets or sets the retry timeout in seconds for Long Running Operations. Default value is 30.
+     * Sets The retry timeout in seconds for Long Running Operations. Default value is 30.
      *
      * @param longRunningOperationRetryTimeout the longRunningOperationRetryTimeout value.
      * @return the service client itself
@@ -86,11 +105,11 @@ public class SubscriptionClientImpl extends AzureServiceClient {
         return this;
     }
 
-    /** When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true. */
+    /** Whether a unique x-ms-client-request-id should be generated. When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true. */
     private boolean generateClientRequestId;
 
     /**
-     * Gets When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true.
+     * Gets Whether a unique x-ms-client-request-id should be generated. When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true.
      *
      * @return the generateClientRequestId value.
      */
@@ -99,7 +118,7 @@ public class SubscriptionClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Sets When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true.
+     * Sets Whether a unique x-ms-client-request-id should be generated. When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true.
      *
      * @param generateClientRequestId the generateClientRequestId value.
      * @return the service client itself
@@ -107,6 +126,19 @@ public class SubscriptionClientImpl extends AzureServiceClient {
     public SubscriptionClientImpl withGenerateClientRequestId(boolean generateClientRequestId) {
         this.generateClientRequestId = generateClientRequestId;
         return this;
+    }
+
+    /**
+     * The OperationsInner object to access its operations.
+     */
+    private OperationsInner operations;
+
+    /**
+     * Gets the OperationsInner object to access its operations.
+     * @return the OperationsInner object.
+     */
+    public OperationsInner operations() {
+        return this.operations;
     }
 
     /**
@@ -170,9 +202,11 @@ public class SubscriptionClientImpl extends AzureServiceClient {
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
+        this.operations = new OperationsInner(restClient().retrofit(), this);
         this.subscriptions = new SubscriptionsInner(restClient().retrofit(), this);
         this.tenants = new TenantsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
+        initializeService();
     }
 
     /**
@@ -182,6 +216,167 @@ public class SubscriptionClientImpl extends AzureServiceClient {
      */
     @Override
     public String userAgent() {
-        return String.format("%s (%s, %s)", super.userAgent(), "SubscriptionClient", "2016-06-01");
+        return String.format("%s (%s, %s, auto-generated)", super.userAgent(), "SubscriptionClient", "2016-06-01");
     }
+
+    private void initializeService() {
+        service = restClient().retrofit().create(SubscriptionClientService.class);
+    }
+
+    /**
+     * The interface defining all the services for SubscriptionClient to be
+     * used by Retrofit to perform actually REST calls.
+     */
+    interface SubscriptionClientService {
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.v2016_06_01.SubscriptionClient checkResourceName" })
+        @POST("providers/Microsoft.Resources/checkResourceName")
+        Observable<Response<ResponseBody>> checkResourceName(@Body ResourceName resourceNameDefinition, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+    }
+
+    /**
+     * Checks resource name validity.
+     * A resource name is valid if it is not a reserved word, does not contains a reserved word and does not start with a reserved word.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the CheckResourceNameResultInner object if successful.
+     */
+    public CheckResourceNameResultInner checkResourceName() {
+        return checkResourceNameWithServiceResponseAsync().toBlocking().single().body();
+    }
+
+    /**
+     * Checks resource name validity.
+     * A resource name is valid if it is not a reserved word, does not contains a reserved word and does not start with a reserved word.
+     *
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<CheckResourceNameResultInner> checkResourceNameAsync(final ServiceCallback<CheckResourceNameResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(checkResourceNameWithServiceResponseAsync(), serviceCallback);
+    }
+
+    /**
+     * Checks resource name validity.
+     * A resource name is valid if it is not a reserved word, does not contains a reserved word and does not start with a reserved word.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the CheckResourceNameResultInner object
+     */
+    public Observable<CheckResourceNameResultInner> checkResourceNameAsync() {
+        return checkResourceNameWithServiceResponseAsync().map(new Func1<ServiceResponse<CheckResourceNameResultInner>, CheckResourceNameResultInner>() {
+            @Override
+            public CheckResourceNameResultInner call(ServiceResponse<CheckResourceNameResultInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Checks resource name validity.
+     * A resource name is valid if it is not a reserved word, does not contains a reserved word and does not start with a reserved word.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the CheckResourceNameResultInner object
+     */
+    public Observable<ServiceResponse<CheckResourceNameResultInner>> checkResourceNameWithServiceResponseAsync() {
+        if (this.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
+        }
+        final ResourceName resourceNameDefinition = null;
+        return service.checkResourceName(resourceNameDefinition, this.apiVersion(), this.acceptLanguage(), this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CheckResourceNameResultInner>>>() {
+                @Override
+                public Observable<ServiceResponse<CheckResourceNameResultInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<CheckResourceNameResultInner> clientResponse = checkResourceNameDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Checks resource name validity.
+     * A resource name is valid if it is not a reserved word, does not contains a reserved word and does not start with a reserved word.
+     *
+     * @param resourceNameDefinition Resource object with values for resource name and resource type
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the CheckResourceNameResultInner object if successful.
+     */
+    public CheckResourceNameResultInner checkResourceName(ResourceName resourceNameDefinition) {
+        return checkResourceNameWithServiceResponseAsync(resourceNameDefinition).toBlocking().single().body();
+    }
+
+    /**
+     * Checks resource name validity.
+     * A resource name is valid if it is not a reserved word, does not contains a reserved word and does not start with a reserved word.
+     *
+     * @param resourceNameDefinition Resource object with values for resource name and resource type
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<CheckResourceNameResultInner> checkResourceNameAsync(ResourceName resourceNameDefinition, final ServiceCallback<CheckResourceNameResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(checkResourceNameWithServiceResponseAsync(resourceNameDefinition), serviceCallback);
+    }
+
+    /**
+     * Checks resource name validity.
+     * A resource name is valid if it is not a reserved word, does not contains a reserved word and does not start with a reserved word.
+     *
+     * @param resourceNameDefinition Resource object with values for resource name and resource type
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the CheckResourceNameResultInner object
+     */
+    public Observable<CheckResourceNameResultInner> checkResourceNameAsync(ResourceName resourceNameDefinition) {
+        return checkResourceNameWithServiceResponseAsync(resourceNameDefinition).map(new Func1<ServiceResponse<CheckResourceNameResultInner>, CheckResourceNameResultInner>() {
+            @Override
+            public CheckResourceNameResultInner call(ServiceResponse<CheckResourceNameResultInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Checks resource name validity.
+     * A resource name is valid if it is not a reserved word, does not contains a reserved word and does not start with a reserved word.
+     *
+     * @param resourceNameDefinition Resource object with values for resource name and resource type
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the CheckResourceNameResultInner object
+     */
+    public Observable<ServiceResponse<CheckResourceNameResultInner>> checkResourceNameWithServiceResponseAsync(ResourceName resourceNameDefinition) {
+        if (this.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(resourceNameDefinition);
+        return service.checkResourceName(resourceNameDefinition, this.apiVersion(), this.acceptLanguage(), this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CheckResourceNameResultInner>>>() {
+                @Override
+                public Observable<ServiceResponse<CheckResourceNameResultInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<CheckResourceNameResultInner> clientResponse = checkResourceNameDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<CheckResourceNameResultInner> checkResourceNameDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<CheckResourceNameResultInner, ErrorResponseException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<CheckResourceNameResultInner>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
 }
