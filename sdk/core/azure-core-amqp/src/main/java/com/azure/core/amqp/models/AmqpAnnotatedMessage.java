@@ -59,7 +59,7 @@ public final class AmqpAnnotatedMessage {
         AmqpBodyType bodyType = message.getBody().getBodyType();
         switch (bodyType) {
             case DATA:
-                amqpMessageBody = AmqpMessageBody.fromData(message.getBody().getData());
+                amqpMessageBody = AmqpMessageBody.fromData(message.getBody().getData().get(0));
                 break;
             case SEQUENCE:
             case VALUE:
@@ -90,7 +90,9 @@ public final class AmqpAnnotatedMessage {
 
     /**
      * Gets the {@link AmqpMessageBody} of an amqp message.
-     *
+     * <b>Client should test for {@link AmqpBodyType} before calling corresponding get method on {@link AmqpMessageBody}
+     * <p><strong>How to check for {@link AmqpBodyType}</strong></p>
+     * {@codesnippet com.azure.core.amqp.models.AmqpBodyType.checkBodyType}
      * @return the {@link AmqpMessageBody} object.
      */
     public AmqpMessageBody getBody() {

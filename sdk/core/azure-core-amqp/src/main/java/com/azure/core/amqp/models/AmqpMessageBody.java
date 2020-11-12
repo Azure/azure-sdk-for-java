@@ -12,8 +12,16 @@ import java.util.Objects;
 /**
  * This class encapsulates the body of a message. The {@link AmqpBodyType} map to AMQP specification message body types.
  * Current implementation only support {@link AmqpBodyType#DATA DATA}. Other types will be supported in future releases.
- * Client should test for {@link AmqpBodyType} before calling corresponding get method.
- * Get methods not corresponding to the type of the body throw exception.
+ * <b>Amqp message body types:
+ * <ul>
+ * <li><a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#type-data">DATA</a></li>
+ * <li><a href="http://docs.oasis-open.org/amqp/core/v1.0/amqp-core-messaging-v1.0.html#type-amqp-sequence">SEQUENCE</a></li>
+ * <li><a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#type-amqp-value">VALUE</a></li>
+ * </ul>
+ * <b>Client should test for {@link AmqpBodyType} before calling corresponding get method.Get methods not corresponding
+ * to the type of the body throw exception.
+ * <p><strong>How to check for {@link AmqpBodyType}</strong></p>
+ * {@codesnippet com.azure.core.amqp.models.AmqpBodyType.checkBodyType}
  *
  * @see AmqpBodyType
  */
@@ -42,7 +50,8 @@ public final class AmqpMessageBody {
 
     /**
      * Gets the {@link AmqpBodyType} of the message.
-     *
+     * <p><strong>How to check for {@link AmqpBodyType}</strong></p>
+     * {@codesnippet com.azure.core.amqp.models.AmqpBodyType.checkBodyType}
      * @return AmqpBodyType type of the message.
      */
     public AmqpBodyType getBodyType() {
@@ -50,8 +59,13 @@ public final class AmqpMessageBody {
     }
 
     /**
-     * Gets an immutable list containing only first byte array set on this {@link AmqpMessageBody}.
-     *
+     * Gets an immutable list containing only first byte array set on this {@link AmqpMessageBody}. The proton-j
+     * library used only support one byte array, so the returned list will have only one element. Look for future
+     * releases where we will support multiple byte array.
+     * <b>Client should test for {@link AmqpBodyType} before calling corresponding get method.Get methods not corresponding
+     * to the type of the body throw exception.
+     * <p><strong>How to check for {@link AmqpBodyType}</strong></p>
+     * {@codesnippet com.azure.core.amqp.models.AmqpBodyType.checkBodyType}
      * @return data set on {@link AmqpMessageBody}.
      *
      * @throws IllegalArgumentException If {@link AmqpBodyType} is not {@link AmqpBodyType#DATA DATA}.

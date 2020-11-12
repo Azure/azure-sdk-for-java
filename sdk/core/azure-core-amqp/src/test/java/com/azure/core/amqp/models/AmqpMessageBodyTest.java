@@ -6,10 +6,6 @@ package com.azure.core.amqp.models;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -24,19 +20,16 @@ public class AmqpMessageBodyTest {
     @Test
     public void constructorValidValues() {
         // Arrange
-        final List<byte[]> expectedDataList = new ArrayList<>();
-        expectedDataList.add("some data 1".getBytes());
+        final byte[] expectedData = "some data 1".getBytes();
 
         // Act
-        final AmqpMessageBody actual = AmqpMessageBody.fromData(expectedDataList);
+        final AmqpMessageBody actual = AmqpMessageBody.fromData(expectedData);
 
         // Assert
         assertEquals(AmqpBodyType.DATA, actual.getBodyType());
 
         // Validate Message Body
-        final List<byte[]> dataList = actual.getData().stream().collect(Collectors.toList());
-        assertEquals(expectedDataList.size(), dataList.size());
-        assertArrayEquals(expectedDataList.toArray(), dataList.toArray());
+        assertArrayEquals(expectedData, actual.getData().get(0));
     }
 
     /**
@@ -45,23 +38,9 @@ public class AmqpMessageBodyTest {
     @Test
     public void constructorNullValidValues() {
         // Arrange
-        final List<byte[]> listBinaryData = null;
+        final byte[] binaryData = null;
 
         // Act & Assert
-        Assertions.assertThrows(NullPointerException.class, () -> AmqpMessageBody.fromData(listBinaryData));
-    }
-
-    /**
-     * Verifies that only one byte array is alllowed in {@link AmqpMessageBody}.
-     */
-    @Test
-    public void constructorSupportOneByteArray() {
-        // Arrange
-        final List<byte[]> expectedDataList = new ArrayList<>();
-        expectedDataList.add("some data 1".getBytes());
-        expectedDataList.add("some data 2".getBytes());
-
-        // Act & Assert
-        Assertions.assertThrows(IllegalArgumentException.class, () -> AmqpMessageBody.fromData(expectedDataList));
+        Assertions.assertThrows(NullPointerException.class, () -> AmqpMessageBody.fromData(binaryData));
     }
 }

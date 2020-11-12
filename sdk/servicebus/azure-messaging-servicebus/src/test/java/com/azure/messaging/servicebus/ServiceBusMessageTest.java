@@ -146,10 +146,10 @@ public class ServiceBusMessageTest {
         // Assert
         // Validate updated values
         assertEquals(expectedSubject, originalMessage.getAmqpAnnotatedMessage().getProperties().getSubject());
-        assertEquals(expectedTo, originalMessage.getAmqpAnnotatedMessage().getProperties().getTo());
-        assertEquals(expectedReplyTo, originalMessage.getAmqpAnnotatedMessage().getProperties().getReplyTo());
+        assertEquals(expectedTo, originalMessage.getAmqpAnnotatedMessage().getProperties().getTo().toString());
+        assertEquals(expectedReplyTo, originalMessage.getAmqpAnnotatedMessage().getProperties().getReplyTo().toString());
         assertEquals(expectedReplyToSessionId, originalMessage.getAmqpAnnotatedMessage().getProperties().getReplyToGroupId());
-        assertEquals(expectedCorrelationId, originalMessage.getAmqpAnnotatedMessage().getProperties().getCorrelationId());
+        assertEquals(expectedCorrelationId, originalMessage.getAmqpAnnotatedMessage().getProperties().getCorrelationId().toString());
 
         assertEquals(expectedTimeToLive, originalMessage.getAmqpAnnotatedMessage().getHeader().getTimeToLive());
 
