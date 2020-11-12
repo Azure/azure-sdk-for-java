@@ -3,8 +3,6 @@
 
 package com.azure.core.amqp.models;
 
-import org.apache.qpid.proton.amqp.messaging.Data;
-
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -34,6 +32,10 @@ public final class AmqpMessageBody {
     private AmqpMessageBodyType bodyType;
 
     private byte[] data;
+
+    AmqpMessageBody() {
+        // package constructor so no one can create instance of this except classes im this package.
+    }
 
     /**
      * Creates instance of {@link AmqpMessageBody} with given byte array.
