@@ -2414,13 +2414,4 @@
       <Method name="~(get|post)" />
       <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE" />
   </Match>
-
-  <!-- Service accepts null byte arrays as input parameters -->
-  <Match>
-      <Or>
-          <Class name="com.azure.security.keyvault.keys.cryptography.DecryptOptions" />
-          <Class name="com.azure.security.keyvault.keys.cryptography.EncryptOptions" />
-      </Or>
-      <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS" />
-  </Match>
 </FindBugsFilter>

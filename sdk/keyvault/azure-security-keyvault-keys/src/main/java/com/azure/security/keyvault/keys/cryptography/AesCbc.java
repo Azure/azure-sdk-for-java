@@ -71,15 +71,17 @@ abstract class AesCbc extends SymmetricEncryptionAlgorithm {
     }
 
     @Override
-    public ICryptoTransform createEncryptor(byte[] key, byte[] iv, byte[] authenticationData)
+    public ICryptoTransform createEncryptor(byte[] key, byte[] iv, byte[] additionalAuthenticatedData,
+                                            byte[] authenticationTag)
         throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
         InvalidAlgorithmParameterException {
 
-        return createEncryptor(key, iv, authenticationData, null);
+        return createEncryptor(key, iv, additionalAuthenticatedData, null, null);
     }
 
     @Override
-    public ICryptoTransform createEncryptor(byte[] key, byte[] iv, byte[] authenticationData, Provider provider)
+    public ICryptoTransform createEncryptor(byte[] key, byte[] iv, byte[] additionalAuthenticatedData,
+                                            byte[] authenticationTag, Provider provider)
         throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
         InvalidAlgorithmParameterException {
 
@@ -91,16 +93,17 @@ abstract class AesCbc extends SymmetricEncryptionAlgorithm {
     }
 
     @Override
-    public ICryptoTransform createDecryptor(byte[] key, byte[] iv, byte[] authenticationData, byte[] authenticationTag)
+    public ICryptoTransform createDecryptor(byte[] key, byte[] iv, byte[] additionalAuthenticatedData,
+                                            byte[] authenticationTag)
         throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
         InvalidAlgorithmParameterException {
 
-        return createDecryptor(key, iv, authenticationData, authenticationTag, null);
+        return createDecryptor(key, iv, additionalAuthenticatedData, authenticationTag, null);
     }
 
     @Override
-    public ICryptoTransform createDecryptor(byte[] key, byte[] iv, byte[] authenticationData, byte[] authenticationTag,
-                                            Provider provider)
+    public ICryptoTransform createDecryptor(byte[] key, byte[] iv, byte[] additionalAuthenticatedData,
+                                            byte[] authenticationTag, Provider provider)
         throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
         InvalidAlgorithmParameterException {
 

@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.keys.cryptography;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 
 import java.util.Objects;
@@ -255,29 +256,14 @@ public class EncryptOptions {
      * @param iv Initialization vector for the encryption operation.
      * @param additionalAuthenticatedData Additional data to authenticate when using authenticated crypto algorithms.
      */
-    EncryptOptions(EncryptionAlgorithm algorithm, byte[] plainText, byte[] iv,
-                           byte[] additionalAuthenticatedData) {
-        Objects.requireNonNull(plainText, "'plaintext' cannot be null");
+    EncryptOptions(EncryptionAlgorithm algorithm, byte[] plainText, byte[] iv, byte[] additionalAuthenticatedData) {
+        Objects.requireNonNull(algorithm, "Encryption algorithm cannot be null.");
+        Objects.requireNonNull(plainText, "Plain text content to be encrypted cannot be null.");
 
         this.algorithm = algorithm;
-        this.plainText = new byte[plainText.length];
-
-        System.arraycopy(plainText, 0, this.plainText, 0, plainText.length);
-
-        if (iv == null) {
-            this.iv = null;
-        } else {
-            this.iv = new byte[iv.length];
-            System.arraycopy(iv, 0, this.iv, 0, iv.length);
-        }
-
-        if (additionalAuthenticatedData == null) {
-            this.additionalAuthenticatedData = null;
-        } else {
-            this.additionalAuthenticatedData = new byte[additionalAuthenticatedData.length];
-            System.arraycopy(additionalAuthenticatedData, 0, this.additionalAuthenticatedData, 0,
-                additionalAuthenticatedData.length);
-        }
+        this.plainText = CoreUtils.clone(plainText);
+        this.iv = CoreUtils.clone(iv);
+        this.additionalAuthenticatedData = CoreUtils.clone(additionalAuthenticatedData);
     }
 
     /**
@@ -295,11 +281,7 @@ public class EncryptOptions {
      * @return The content to be encrypted.
      */
     public byte[] getPlainText() {
-        if (plainText == null) {
-            return null;
-        } else {
-            return plainText.clone();
-        }
+        return CoreUtils.clone(plainText);
     }
 
     /**
@@ -308,11 +290,7 @@ public class EncryptOptions {
      * @return The initialization vector.
      */
     public byte[] getIv() {
-        if (iv == null) {
-            return null;
-        } else {
-            return iv.clone();
-        }
+        return CoreUtils.clone(iv);
     }
 
     /**
@@ -321,10 +299,6 @@ public class EncryptOptions {
      * @return The additional authenticated data.
      */
     public byte[] getAdditionalAuthenticatedData() {
-        if (additionalAuthenticatedData == null) {
-            return null;
-        } else {
-            return additionalAuthenticatedData.clone();
-        }
+        return CoreUtils.clone(additionalAuthenticatedData);
     }
 }

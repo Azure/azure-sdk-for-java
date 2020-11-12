@@ -22,6 +22,9 @@ import java.security.SecureRandom;
 import java.util.Objects;
 
 class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
+    private static final int CBC_BLOCK_SIZE = 16;
+    private static final int GCM_NONCE_SIZE = 12;
+
     private final ClientLogger logger = new ClientLogger(SymmetricKeyCryptographyClient.class);
 
     private byte[] key;
@@ -73,22 +76,24 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         byte[] iv = encryptOptions.getIv();
         byte[] additionalAuthenticatedData = encryptOptions.getAdditionalAuthenticatedData();
+        byte[] authenticationTag = generateRandomByteArray(GCM_NONCE_SIZE);
 
         if (iv == null) {
             if (algorithm == EncryptionAlgorithm.A128GCM || algorithm == EncryptionAlgorithm.A192GCM
                 || algorithm == EncryptionAlgorithm.A256GCM) {
 
-                iv = generateRandomIvForGcm();
+                iv = generateRandomByteArray(GCM_NONCE_SIZE);
             } else if (algorithm == EncryptionAlgorithm.A128CBC || algorithm == EncryptionAlgorithm.A192CBC
                 || algorithm == EncryptionAlgorithm.A256CBC || algorithm == EncryptionAlgorithm.A128CBCPAD
                 || algorithm == EncryptionAlgorithm.A192CBCPAD || algorithm == EncryptionAlgorithm.A256CBCPAD) {
 
-                iv = generateRandomIvForCbc();
+                iv = generateRandomByteArray(CBC_BLOCK_SIZE);
             }
         }
 
         try {
-            transform = symmetricEncryptionAlgorithm.createEncryptor(this.key, iv, additionalAuthenticatedData, null);
+            transform = symmetricEncryptionAlgorithm.createEncryptor(this.key, iv, additionalAuthenticatedData,
+                authenticationTag);
         } catch (Exception e) {
             return Mono.error(e);
         }
@@ -101,7 +106,8 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
             return Mono.error(e);
         }
 
-        return Mono.just(new EncryptResult(encrypted, algorithm, jsonWebKey.getId()));
+        return Mono.just(new EncryptResult(encrypted, algorithm, jsonWebKey.getId(), iv, additionalAuthenticatedData,
+            authenticationTag));
     }
 
     @Override
@@ -136,12 +142,12 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
             if (algorithm == EncryptionAlgorithm.A128GCM || algorithm == EncryptionAlgorithm.A192GCM
                 || algorithm == EncryptionAlgorithm.A256GCM) {
 
-                iv = generateRandomIvForGcm();
+                iv = generateRandomByteArray(GCM_NONCE_SIZE);
             } else if (algorithm == EncryptionAlgorithm.A128CBC || algorithm == EncryptionAlgorithm.A192CBC
                 || algorithm == EncryptionAlgorithm.A256CBC || algorithm == EncryptionAlgorithm.A128CBCPAD
                 || algorithm == EncryptionAlgorithm.A192CBCPAD || algorithm == EncryptionAlgorithm.A256CBCPAD) {
 
-                iv = generateRandomIvForCbc();
+                iv = generateRandomByteArray(CBC_BLOCK_SIZE);
             }
         }
 
@@ -251,21 +257,13 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
         return verifyAsync(algorithm, data, signature, context, key);
     }
 
-    private byte[] generateRandomIvForCbc() {
-        return generateRandomIv(16);
-    }
-
-    private byte[] generateRandomIvForGcm() {
-        return generateRandomIv(12);
-    }
-
-    private byte[] generateRandomIv(int ivSize) {
+    private byte[] generateRandomByteArray(int sizeInBytes) {
         byte[] iv = new byte[0];
         SecureRandom randomSecureRandom;
 
         try {
             randomSecureRandom = SecureRandom.getInstance("SHA1PRNG");
-            iv = new byte[ivSize];
+            iv = new byte[sizeInBytes];
             randomSecureRandom.nextBytes(iv);
         } catch (NoSuchAlgorithmException e) {
             logger.logThrowableAsError(e);

@@ -127,8 +127,6 @@ class CryptographyServiceClient {
 
     Mono<EncryptResult> encrypt(EncryptOptions encryptOptions, Context context) {
         Objects.requireNonNull(encryptOptions, "'encryptOptions' cannot be null.");
-        Objects.requireNonNull(encryptOptions.getAlgorithm(), "Encryption algorithm cannot be null.");
-        Objects.requireNonNull(encryptOptions.getPlainText(), "Plain text content to be encrypted cannot be null.");
 
         EncryptionAlgorithm algorithm = encryptOptions.getAlgorithm();
         byte[] iv = encryptOptions.getIv();
@@ -153,8 +151,6 @@ class CryptographyServiceClient {
 
     Mono<DecryptResult> decrypt(DecryptOptions decryptOptions, Context context) {
         Objects.requireNonNull(decryptOptions, "'decryptOptions' cannot be null.");
-        Objects.requireNonNull(decryptOptions.getAlgorithm(), "Encryption algorithm cannot be null.");
-        Objects.requireNonNull(decryptOptions.getCipherText(), "Cipher text content to be decrypted cannot be null.");
 
         EncryptionAlgorithm algorithm = decryptOptions.getAlgorithm();
         byte[] iv = decryptOptions.getIv();

@@ -17,8 +17,6 @@ import java.util.Arrays;
 import java.util.Objects;
 
 abstract class AesGcm extends SymmetricEncryptionAlgorithm {
-    static final int DEFAULT_TAG_LENGTH = 96;
-
     final int keySizeInBytes;
     final int keySize;
 
@@ -32,7 +30,8 @@ abstract class AesGcm extends SymmetricEncryptionAlgorithm {
     static class AesGcmEncryptor implements ICryptoTransform {
         private final Cipher cipher;
 
-        AesGcmEncryptor(byte[] key, byte[] iv, byte[] authenticationData, Provider provider)
+        AesGcmEncryptor(byte[] key, byte[] iv, byte[] additionalAuthenticatedData, byte[] authenticationTag,
+                        Provider provider)
             throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
             InvalidAlgorithmParameterException {
 
@@ -44,7 +43,7 @@ abstract class AesGcm extends SymmetricEncryptionAlgorithm {
             }
 
             cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key, "AES"),
-                new GCMParameterSpec(DEFAULT_TAG_LENGTH, iv));
+                new GCMParameterSpec(authenticationTag.length << 3, iv));
         }
 
         @Override
@@ -56,7 +55,8 @@ abstract class AesGcm extends SymmetricEncryptionAlgorithm {
     static class AesGcmDecryptor implements ICryptoTransform {
         private final Cipher cipher;
 
-        AesGcmDecryptor(byte[] key, byte[] iv, byte[] authenticationData, byte[] authenticationTag, Provider provider)
+        AesGcmDecryptor(byte[] key, byte[] iv, byte[] additionalAuthenticatedData, byte[] authenticationTag,
+                        Provider provider)
             throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
             InvalidAlgorithmParameterException {
 
@@ -81,15 +81,17 @@ abstract class AesGcm extends SymmetricEncryptionAlgorithm {
     }
 
     @Override
-    public ICryptoTransform createEncryptor(byte[] key, byte[] iv, byte[] authenticationData)
+    public ICryptoTransform createEncryptor(byte[] key, byte[] iv, byte[] additionalAuthenticatedData,
+                                            byte[] authenticationTag)
         throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
         InvalidAlgorithmParameterException {
 
-        return createEncryptor(key, iv, authenticationData, null);
+        return createEncryptor(key, iv, additionalAuthenticatedData, authenticationTag, null);
     }
 
     @Override
-    public ICryptoTransform createEncryptor(byte[] key, byte[] iv, byte[] authenticationData, Provider provider)
+    public ICryptoTransform createEncryptor(byte[] key, byte[] iv, byte[] additionalAuthenticatedData,
+                                            byte[] authenticationTag, Provider provider)
         throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
         InvalidAlgorithmParameterException {
 
@@ -97,20 +99,22 @@ abstract class AesGcm extends SymmetricEncryptionAlgorithm {
             throw new InvalidKeyException("key must be at least " + keySize + " bits in length");
         }
 
-        return new AesGcmEncryptor(Arrays.copyOfRange(key, 0, keySizeInBytes), iv, authenticationData, provider);
+        return new AesGcmEncryptor(Arrays.copyOfRange(key, 0, keySizeInBytes), iv, additionalAuthenticatedData,
+            authenticationTag, provider);
     }
 
     @Override
-    public ICryptoTransform createDecryptor(byte[] key, byte[] iv, byte[] authenticationData, byte[] authenticationTag)
+    public ICryptoTransform createDecryptor(byte[] key, byte[] iv, byte[] additionalAuthenticatedData,
+                                            byte[] authenticationTag)
         throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
         InvalidAlgorithmParameterException {
 
-        return createDecryptor(key, iv, authenticationData, authenticationTag, null);
+        return createDecryptor(key, iv, additionalAuthenticatedData, authenticationTag, null);
     }
 
     @Override
-    public ICryptoTransform createDecryptor(byte[] key, byte[] iv, byte[] authenticationData, byte[] authenticationTag,
-                                            Provider provider)
+    public ICryptoTransform createDecryptor(byte[] key, byte[] iv, byte[] additionalAuthenticatedData,
+                                            byte[] authenticationTag, Provider provider)
         throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
         InvalidAlgorithmParameterException {
 
@@ -118,7 +122,7 @@ abstract class AesGcm extends SymmetricEncryptionAlgorithm {
             throw new InvalidKeyException("key must be at least " + keySize + " bits in length");
         }
 
-        return new AesGcmDecryptor(Arrays.copyOfRange(key, 0, keySizeInBytes), iv, authenticationData,
+        return new AesGcmDecryptor(Arrays.copyOfRange(key, 0, keySizeInBytes), iv, additionalAuthenticatedData,
             authenticationTag, provider);
     }
 }

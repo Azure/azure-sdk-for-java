@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.keys.cryptography;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 
 import java.util.Objects;
@@ -202,35 +203,15 @@ public class DecryptOptions {
      * @param additionalAuthenticatedData Additional data to authenticate when using authenticated crypto algorithms.
      */
     DecryptOptions(EncryptionAlgorithm algorithm, byte[] cipherText, byte[] iv, byte[] authenticationTag,
-                           byte[] additionalAuthenticatedData) {
-        Objects.requireNonNull(cipherText, "'cipherText' cannot be null");
+                   byte[] additionalAuthenticatedData) {
+        Objects.requireNonNull(algorithm, "Encryption algorithm cannot be null.");
+        Objects.requireNonNull(cipherText, "Cipher text content to be decrypted cannot be null.");
 
         this.algorithm = algorithm;
-        this.cipherText = new byte[cipherText.length];
-        System.arraycopy(cipherText, 0, this.cipherText, 0, cipherText.length);
-
-        if (iv == null) {
-            this.iv = null;
-        } else {
-            this.iv = new byte[iv.length];
-            System.arraycopy(iv, 0, this.iv, 0, iv.length);
-        }
-
-        if (additionalAuthenticatedData == null) {
-            this.additionalAuthenticatedData = null;
-        } else {
-            this.additionalAuthenticatedData = new byte[additionalAuthenticatedData.length];
-            System.arraycopy(additionalAuthenticatedData, 0, this.additionalAuthenticatedData, 0,
-                additionalAuthenticatedData.length);
-        }
-
-        if (authenticationTag == null) {
-            this.authenticationTag = null;
-        } else {
-            this.authenticationTag = new byte[authenticationTag.length];
-            System.arraycopy(authenticationTag, 0, this.authenticationTag, 0,
-                authenticationTag.length);
-        }
+        this.cipherText = CoreUtils.clone(cipherText);
+        this.iv = CoreUtils.clone(iv);
+        this.additionalAuthenticatedData = CoreUtils.clone(additionalAuthenticatedData);
+        this.authenticationTag = CoreUtils.clone(authenticationTag);
     }
 
     /**
@@ -248,11 +229,7 @@ public class DecryptOptions {
      * @return The content to be encrypted.
      */
     public byte[] getCipherText() {
-        if (cipherText == null) {
-            return null;
-        } else {
-            return cipherText.clone();
-        }
+        return CoreUtils.clone(cipherText);
     }
 
     /**
@@ -261,11 +238,7 @@ public class DecryptOptions {
      * @return The initialization vector.
      */
     public byte[] getIv() {
-        if (iv == null) {
-            return null;
-        } else {
-            return iv.clone();
-        }
+        return CoreUtils.clone(iv);
     }
 
     /**
@@ -274,11 +247,7 @@ public class DecryptOptions {
      * @return The additional authenticated data.
      */
     public byte[] getAdditionalAuthenticatedData() {
-        if (additionalAuthenticatedData == null) {
-            return null;
-        } else {
-            return additionalAuthenticatedData.clone();
-        }
+        return CoreUtils.clone(additionalAuthenticatedData);
     }
 
     /**
@@ -287,10 +256,6 @@ public class DecryptOptions {
      * @return The authentication tag.
      */
     public byte[] getAuthenticationTag() {
-        if (authenticationTag == null) {
-            return null;
-        } else {
-            return authenticationTag.clone();
-        }
+        return CoreUtils.clone(authenticationTag);
     }
 }

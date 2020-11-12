@@ -112,10 +112,10 @@ public abstract class LocalCryptographyClientTestBase extends TestBase {
         byte[] plaintext = "My16BitPlaintext".getBytes();
         byte[] iv = "My16BytesTestIv.".getBytes();
         LocalCryptographyClient localCryptographyClient = initializeCryptographyClient(getTestJsonWebKey(keySize));
-        EncryptOptions encryptOptions = EncryptOptions.createAes128CbcOptions(plaintext, iv);
+        EncryptOptions encryptOptions = new EncryptOptions(algorithm, plaintext, iv, null);
         EncryptResult encryptResult =
             localCryptographyClient.encrypt(encryptOptions);
-        DecryptOptions decryptOptions = DecryptOptions.createAes128CbcOptions(encryptResult.getCipherText(), iv);
+        DecryptOptions decryptOptions = new DecryptOptions(algorithm, encryptResult.getCipherText(), iv, null, null);
         DecryptResult decryptResult =
             localCryptographyClient.decrypt(decryptOptions);
 
@@ -126,15 +126,12 @@ public abstract class LocalCryptographyClientTestBase extends TestBase {
         byte[] plaintext = "My16BitPlaintext".getBytes();
         byte[] iv = "My12BytesIv.".getBytes();
         LocalCryptographyClient localCryptographyClient = initializeCryptographyClient(getTestJsonWebKey(keySize));
-        EncryptOptions encryptOptions = EncryptOptions.createAes128GcmOptions(plaintext, iv);
+        EncryptOptions encryptOptions = new EncryptOptions(algorithm, plaintext, iv, null);
         EncryptResult encryptResult =
             localCryptographyClient.encrypt(encryptOptions);
-        byte[] authenticationTag = new byte[12];
-
-        System.arraycopy(encryptResult.getCipherText(), 0, authenticationTag, 0, authenticationTag.length);
-
-        DecryptOptions decryptOptions = DecryptOptions.createAes128GcmOptions(encryptResult.getCipherText(), iv,
-            authenticationTag);
+        byte[] authenticationTag = encryptResult.getAuthenticationTag();
+        DecryptOptions decryptOptions = new DecryptOptions(algorithm, encryptResult.getCipherText(), iv,
+            authenticationTag, null);
         DecryptResult decryptResult =
             localCryptographyClient.decrypt(decryptOptions);
 
