@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus.perf;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import reactor.core.publisher.Mono;
@@ -12,24 +13,34 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Performance test.
+ * Performance test that sends a batch of messages using both the async and synchronous message senders.
  */
 public class SendMessagesTest extends ServiceTest<ServiceBusStressOptions> {
     private final List<ServiceBusMessage> messages;
+    private final ServiceBusSenderClient sender;
+    private final ServiceBusSenderAsyncClient senderAsync;
 
     /**
      * Creates test object
      * @param options to set performance test options.
      */
     public SendMessagesTest(ServiceBusStressOptions options) {
-        super(options, ServiceBusReceiveMode.PEEK_LOCK);
-        messages = new ArrayList<>();
-        for (int i = 0; i < options.getMessagesToSend(); ++i) {
-            ServiceBusMessage message =  new ServiceBusMessage(CONTENTS);
-            message.setMessageId(UUID.randomUUID().toString());
-            messages.add(message);
-        }
+        super(options);
 
+        final ClientLogger logger = new ClientLogger(SendMessageTest.class);
+        final String queueName = getQueueName();
+
+        logger.info("Sending {} messages to '{}'", options.getCount(), queueName);
+
+        messages = getMessages(options.getCount());
+        sender = getBuilder()
+            .sender()
+            .queueName(queueName)
+            .buildClient();
+        senderAsync = getBuilder()
+            .sender()
+            .queueName(queueName)
+            .buildAsyncClient();
     }
 
     @Override

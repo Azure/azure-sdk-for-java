@@ -6,9 +6,14 @@ package com.azure.messaging.servicebus.perf;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
+import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.perf.test.core.PerfStressTest;
+
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Base class for performance test.
@@ -24,16 +29,14 @@ abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStres
 
     private final ServiceBusClientBuilder builder;
     private final String queueName;
-    private final ReceiveMode receiveMode;
 
     /**
      * Creates a new instance of the service bus stress test.
      *
      * @param options to configure.
-     * @param receiveMode to receive messages.
      * @throws IllegalArgumentException if environment variable not being available.
      */
-    ServiceTest(TOptions options, ServiceBusReceiveMode receiveMode) {
+    ServiceTest(TOptions options) {
         super(options);
         final ClientLogger logger = new ClientLogger(ServiceTest.class);
 
@@ -49,7 +52,6 @@ abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStres
                 + AZURE_SERVICEBUS_QUEUE_NAME + " must be set."));
         }
 
-        this.receiveMode = receiveMode;
         this.builder = new ServiceBusClientBuilder().connectionString(connectionString);
         this.queueName = queueName;
     }
@@ -63,11 +65,25 @@ abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStres
         return builder;
     }
 
+    /**
+     * Gets the name of the queue to send messages to.
+     *
+     * @return Name of the queue to send messages to.
+     */
     String getQueueName() {
         return queueName;
     }
 
-    ReceiveMode getReceiveMode() {
-        return receiveMode;
+    /**
+     * Gets the given number of Service Bus messages with {@link #CONTENTS}.
+     *
+     * @param count Number of messages to emit.
+     *
+     * @return A list of {@link ServiceBusMessage messages}.
+     */
+    List<ServiceBusMessage> getMessages(int count) {
+        return IntStream.range(0, count)
+            .mapToObj(index -> new ServiceBusMessage(CONTENTS).setMessageId(String.valueOf(index)))
+            .collect(Collectors.toList());
     }
 }
