@@ -17,13 +17,13 @@ import com.azure.perf.test.core.PerfStressProgram;
 public class App {
     /**
      * Main function.
+     *
      * @param args args
      * @throws RuntimeException If not able to load test classes.
      */
     public static void main(String[] args) {
-        Class<?>[] testClasses = new Class<?>[]{
-            ReceiveAndDeleteMessageTest.class,
-            ReceiveAndLockMessageTest.class,
+        final Class<?>[] testClasses = new Class<?>[]{
+            ReceiveMessagesTest.class,
             SendMessageTest.class,
             SendMessagesTest.class
         };

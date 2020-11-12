@@ -23,12 +23,11 @@ public class SendMessageTest extends ServiceTest<ServiceBusStressOptions> {
      * @param options to set performance test options.
      */
     public SendMessageTest(ServiceBusStressOptions options) {
-        super(options);
+        super(new ClientLogger(SendMessageTest.class), options);
 
-        final ClientLogger logger = new ClientLogger(SendMessageTest.class);
         final String queueName = getQueueName();
 
-        logger.info("Sending 1 message to '{}'", queueName);
+        getLogger().info("Sending 1 message to '{}'.", queueName);
 
         message = getMessages(1).get(0);
         sender = getBuilder()
@@ -49,5 +48,11 @@ public class SendMessageTest extends ServiceTest<ServiceBusStressOptions> {
     @Override
     public Mono<Void> runAsync() {
         return senderAsync.sendMessage(message);
+    }
+
+    @Override
+    public Mono<Void> cleanupAsync() {
+        dispose(sender, senderAsync);
+        return Mono.empty();
     }
 }
