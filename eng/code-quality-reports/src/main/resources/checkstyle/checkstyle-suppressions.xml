@@ -349,6 +349,10 @@
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
             files="com.azure.security.keyvault.keys.cryptography.AesCbc.java"/>
 
+  <!-- suppress the runtime exception in the KeyVaultClient class-->
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
+            files="com.azure.security.keyvault.jca.KeyVaultClient.java"/>
+
   <!-- MSAL extension temporarily living in our package. Will not take dependency on azure-core once migrated to MSAL repo -->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
             files="com.azure.identity.implementation.msalextensions.CacheLock"/>
