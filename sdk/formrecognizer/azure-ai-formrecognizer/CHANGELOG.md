@@ -1,5 +1,8 @@
 # Release History
 
+## 3.1.0-beta.1 (Unreleased)
+
+
 ## 3.0.3 (2020-11-10)
 ### Dependency updates
 - Update dependency version, `azure-core`, `azure-core-http-netty` and `azure-identity`.
