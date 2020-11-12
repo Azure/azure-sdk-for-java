@@ -12,6 +12,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusTransactionContext;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
+import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
@@ -46,6 +47,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.ArrayList;
 import java.util.stream.Stream;
 
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.ASSOCIATED_LINK_NAME_KEY;
@@ -438,6 +440,27 @@ class ManagementChannelTests {
                 assertFalse(((AmqpException) error).isTransient());
             })
             .verify();
+    }
+
+    @Test
+    void getDeferredMessagesWithEmptyArrayReturnsAnEmptyFlux() {
+        // Arrange, act, assert
+        StepVerifier.create(managementChannel.receiveDeferredMessages(ReceiveMode.PEEK_LOCK, null, null, new ArrayList<>()))
+            .verifyComplete();
+    }
+
+    @Test
+    void getDeferredMessagesWithNullThrows() {
+        // Arrange, act, assert
+        StepVerifier.create(managementChannel.receiveDeferredMessages(ReceiveMode.PEEK_LOCK, null, null, null))
+            .verifyError(NullPointerException.class);
+    }
+
+    @Test
+    void cancelScheduledMessagesWithEmptyIterable() {
+        // Arrange, act, assert
+        StepVerifier.create(managementChannel.cancelScheduledMessages(new ArrayList<>(), null))
+                .verifyComplete();
     }
 
     private static Stream<Arguments> updateDisposition() {

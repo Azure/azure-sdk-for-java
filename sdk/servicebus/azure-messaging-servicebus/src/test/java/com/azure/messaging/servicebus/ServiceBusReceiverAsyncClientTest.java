@@ -362,6 +362,25 @@ class ServiceBusReceiverAsyncClientTest {
         }
     }
 
+    @Test
+    void throwsExceptionAboutSettlingPeekedMessagesWithNullLockToken() {
+        final ReceiverOptions options = new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, null, false);
+        ServiceBusReceiverAsyncClient client = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
+            MessagingEntityType.QUEUE, options, connectionProcessor, CLEANUP_INTERVAL, tracerProvider,
+            messageSerializer, onClientClose);
+
+        when(receivedMessage.getLockToken()).thenReturn(null);
+
+        try {
+            StepVerifier.create(client.complete(receivedMessage))
+                .expectError(UnsupportedOperationException.class)
+                .verify();
+        } finally {
+            client.close();
+        }
+    }
+
+
     /**
      * Verifies that this peek batch of messages.
      */
