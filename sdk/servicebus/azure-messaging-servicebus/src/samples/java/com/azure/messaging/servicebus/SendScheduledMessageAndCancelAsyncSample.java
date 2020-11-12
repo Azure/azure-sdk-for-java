@@ -3,6 +3,8 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.experimental.util.BinaryData;
+
 import java.time.OffsetDateTime;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
@@ -36,7 +38,7 @@ public class SendScheduledMessageAndCancelAsyncSample {
             .queueName("<< QUEUE NAME >>")
             .buildAsyncClient();
 
-        final ServiceBusMessage message = new ServiceBusMessage("Hello World!!".getBytes(UTF_8));
+        final ServiceBusMessage message = new ServiceBusMessage(BinaryData.fromBytes("Hello World!!".getBytes(UTF_8)));
         final AtomicLong messageSequenceNumber = new AtomicLong();
         final Semaphore completedSemaphore = new Semaphore(1);
         completedSemaphore.acquire();

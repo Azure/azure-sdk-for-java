@@ -48,7 +48,7 @@ public final class KeyVaultCertificateSourceParameters {
     /*
      * The version(GUID) of Key Vault Secret in Key Vault.
      */
-    @JsonProperty(value = "secretVersion", required = true)
+    @JsonProperty(value = "secretVersion")
     private String secretVersion;
 
     /*
@@ -263,12 +263,6 @@ public final class KeyVaultCertificateSourceParameters {
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property secretName in model KeyVaultCertificateSourceParameters"));
-        }
-        if (secretVersion() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property secretVersion in model KeyVaultCertificateSourceParameters"));
         }
         if (updateRule() == null) {
             throw logger

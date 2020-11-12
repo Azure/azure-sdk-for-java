@@ -65,7 +65,7 @@ public class AzureContextAutoConfiguration {
             .withInterceptor(new ResourceManagerThrottlingInterceptor()).withUserAgent(SPRING_CLOUD_USER_AGENT)
             .build();
 
-        String subscriptionId = Optional.of(azureProperties.getSubscriptionId())
+        String subscriptionId = Optional.ofNullable(azureProperties.getSubscriptionId())
                                         .orElseGet(credentials::defaultSubscriptionId);
         return Azure.authenticate(restClient, credentials.domain())
                     .withSubscription(subscriptionId);

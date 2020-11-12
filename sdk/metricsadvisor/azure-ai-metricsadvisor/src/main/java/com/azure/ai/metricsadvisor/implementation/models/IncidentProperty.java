@@ -4,8 +4,8 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
-import com.azure.ai.metricsadvisor.models.IncidentStatus;
-import com.azure.ai.metricsadvisor.models.Severity;
+import com.azure.ai.metricsadvisor.models.AnomalyIncidentStatus;
+import com.azure.ai.metricsadvisor.models.AnomalySeverity;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -16,7 +16,7 @@ public final class IncidentProperty {
      * max severity of latest anomalies in the incident
      */
     @JsonProperty(value = "maxSeverity", required = true)
-    private Severity maxSeverity;
+    private AnomalySeverity maxSeverity;
 
     /*
      * incident status
@@ -24,14 +24,14 @@ public final class IncidentProperty {
      * only return for alerting incident result
      */
     @JsonProperty(value = "incidentStatus", access = JsonProperty.Access.WRITE_ONLY)
-    private IncidentStatus incidentStatus;
+    private AnomalyIncidentStatus incidentStatus;
 
     /**
      * Get the maxSeverity property: max severity of latest anomalies in the incident.
      *
      * @return the maxSeverity value.
      */
-    public Severity getMaxSeverity() {
+    public AnomalySeverity getMaxSeverity() {
         return this.maxSeverity;
     }
 
@@ -41,7 +41,7 @@ public final class IncidentProperty {
      * @param maxSeverity the maxSeverity value to set.
      * @return the IncidentProperty object itself.
      */
-    public IncidentProperty setMaxSeverity(Severity maxSeverity) {
+    public IncidentProperty setMaxSeverity(AnomalySeverity maxSeverity) {
         this.maxSeverity = maxSeverity;
         return this;
     }
@@ -53,7 +53,7 @@ public final class IncidentProperty {
      *
      * @return the incidentStatus value.
      */
-    public IncidentStatus getIncidentStatus() {
+    public AnomalyIncidentStatus getIncidentStatus() {
         return this.incidentStatus;
     }
 }

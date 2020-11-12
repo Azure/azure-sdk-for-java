@@ -23,6 +23,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.models.JsonPatchDocument;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
@@ -109,7 +110,7 @@ public final class DigitalTwinModelsImpl {
                 @HeaderParam("tracestate") String tracestate,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json-patch+json") List<Object> updateModel,
+                @BodyParam("application/json-patch+json") JsonPatchDocument updateModel,
                 Context context);
 
         @Delete("/models/{id}")
@@ -306,7 +307,7 @@ public final class DigitalTwinModelsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateWithResponseAsync(
             String id,
-            List<Object> updateModel,
+            JsonPatchDocument updateModel,
             DigitalTwinModelsUpdateOptions digitalTwinModelsUpdateOptions,
             Context context) {
         if (this.client.getHost() == null) {

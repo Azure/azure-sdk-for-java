@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import com.azure.core.experimental.util.BinaryData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -30,7 +31,7 @@ import java.time.Duration;
 public class ServiceBusMessageTest {
     // Create a giant payload with 10000 characters that are "a".
     private static final String PAYLOAD = new String(new char[10000]).replace("\0", "a");
-    private static final byte[] PAYLOAD_BYTES = PAYLOAD.getBytes(UTF_8);
+    private static final BinaryData PAYLOAD_BINARY = BinaryData.fromString(PAYLOAD);
 
     /**
      * Verifies we correctly set values via copy constructor for {@link ServiceBusMessage}.
@@ -50,7 +51,7 @@ public class ServiceBusMessageTest {
         final Duration expectedTimeToLive = Duration.ofSeconds(20);
         final String expectedPartitionKey = "old-p-key";
 
-        final ServiceBusReceivedMessage expected = new ServiceBusReceivedMessage(PAYLOAD_BYTES);
+        final ServiceBusReceivedMessage expected = new ServiceBusReceivedMessage(PAYLOAD_BINARY);
         expected.getAmqpAnnotatedMessage().getMessageAnnotations().put(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), "10");
         expected.getAmqpAnnotatedMessage().getMessageAnnotations().put(DEAD_LETTER_SOURCE_KEY_ANNOTATION_NAME.getValue(), "abc");
         expected.getAmqpAnnotatedMessage().getMessageAnnotations().put(ENQUEUED_SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), "11");
@@ -120,7 +121,7 @@ public class ServiceBusMessageTest {
         final Duration expectedTimeToLive = Duration.ofSeconds(20);
         final String expectedPartitionKey = "old-p-key";
 
-        final ServiceBusReceivedMessage originalMessage = new ServiceBusReceivedMessage(PAYLOAD_BYTES);
+        final ServiceBusReceivedMessage originalMessage = new ServiceBusReceivedMessage(PAYLOAD_BINARY);
         originalMessage.setSubject(expectedSubject);
         originalMessage.setTo(expectedTo);
         originalMessage.setReplyTo(expectedReplyTo);
@@ -168,7 +169,22 @@ public class ServiceBusMessageTest {
         ServiceBusMessage message = new ServiceBusMessage(body);
 
         // Assert
-        assertArrayEquals(encoded, message.getBody());
+        assertArrayEquals(encoded, message.getBody().toBytes());
+    }
+
+    /**
+     * Verify body is created.
+     */
+    @Test
+    void bodyAsBytes() {
+        // Arrange
+        byte[] expected = "some-contents".getBytes(UTF_8);
+
+        // Act
+        ServiceBusMessage message = new ServiceBusMessage(expected);
+
+        // Assert
+        assertArrayEquals(expected, message.getBody().toBytes());
     }
 
     /**
@@ -177,13 +193,14 @@ public class ServiceBusMessageTest {
     @Test
     void bodyNotNull() {
         assertThrows(NullPointerException.class, () -> new ServiceBusMessage((String) null));
+        assertThrows(NullPointerException.class, () -> new ServiceBusMessage((BinaryData) null));
         assertThrows(NullPointerException.class, () -> new ServiceBusMessage((byte[]) null));
     }
 
     @Test
     void messagePropertiesShouldNotBeNull() {
-        // Act
-        final ServiceBusMessage serviceBusMessageData = new ServiceBusMessage(PAYLOAD_BYTES);
+        // Arrange
+        final ServiceBusMessage serviceBusMessageData = new ServiceBusMessage(PAYLOAD_BINARY);
 
         // Assert
         Assertions.assertNotNull(serviceBusMessageData.getBody());
@@ -200,10 +217,10 @@ public class ServiceBusMessageTest {
         byte[] byteArray = new byte[0];
 
         // Act
-        final ServiceBusMessage serviceBusMessageData = new ServiceBusMessage(byteArray);
+        final ServiceBusMessage serviceBusMessageData = new ServiceBusMessage(BinaryData.fromBytes(byteArray));
 
         // Assert
-        final byte[] actual = serviceBusMessageData.getBody();
+        final byte[] actual = serviceBusMessageData.getBody().toBytes();
         Assertions.assertNotNull(actual);
         Assertions.assertEquals(0, actual.length);
     }
@@ -213,11 +230,81 @@ public class ServiceBusMessageTest {
      */
     @Test
     void canCreateWithBytePayload() {
-        // Act
-        final ServiceBusMessage serviceBusMessageData = new ServiceBusMessage(PAYLOAD_BYTES);
+        // Arrange
+        final ServiceBusMessage serviceBusMessageData = new ServiceBusMessage(PAYLOAD_BINARY);
 
         // Assert
         Assertions.assertNotNull(serviceBusMessageData.getBody());
-        Assertions.assertEquals(PAYLOAD, new String(serviceBusMessageData.getBody(), UTF_8));
+        Assertions.assertEquals(PAYLOAD, serviceBusMessageData.getBody().toString());
+    }
+
+    @Test
+    void sessionIdMustMatchPartitionKeyAndViceVersa() {
+        // Arrange
+        final ServiceBusMessage serviceBusMessageData = new ServiceBusMessage("not-used-for-test");
+
+        // Setting them up to already be matching.
+        serviceBusMessageData.setSessionId("this must match with the other field");
+        serviceBusMessageData.setPartitionKey("this must match with the other field");
+
+        // Assert
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            serviceBusMessageData.setSessionId("something inconsistent!");
+        });
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            serviceBusMessageData.setPartitionKey("something inconsistent!");
+        });
+    }
+
+    @Test
+    void sessionIdAndPartitionIdCanBeSetToNull() {
+        // Arrange
+        final ServiceBusMessage serviceBusMessageData = new ServiceBusMessage("not-used-for-test");
+
+        // Act/Assert (ie, throw no exceptions)
+        serviceBusMessageData.setPartitionKey(null);
+        serviceBusMessageData.setSessionId(null);
+
+        // and the ordering doesn't matter
+        serviceBusMessageData.setPartitionKey("hello");
+        serviceBusMessageData.setSessionId(null);
+
+        // reset
+        serviceBusMessageData.setPartitionKey(null);
+        serviceBusMessageData.setSessionId(null);
+
+        serviceBusMessageData.setSessionId("hello");
+        serviceBusMessageData.setPartitionKey(null);
+    }
+
+    @Test
+    void idsCannotBeTooLong() {
+        // Arrange
+        final ServiceBusMessage serviceBusMessageData = new ServiceBusMessage("not-used-for-test");
+        final String longId = new String(new char[128 + 1]).replace("\0", "a");
+        final String justRightId = new String(new char[128]).replace("\0", "a");
+
+        // Assert
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            serviceBusMessageData.setMessageId(longId);
+        });
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            serviceBusMessageData.setPartitionKey(longId);
+        });
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            serviceBusMessageData.setSessionId(longId);
+        });
+
+        serviceBusMessageData.setMessageId(justRightId);
+        Assertions.assertEquals(justRightId, serviceBusMessageData.getMessageId());
+
+        serviceBusMessageData.setPartitionKey(justRightId);
+        Assertions.assertEquals(justRightId, serviceBusMessageData.getPartitionKey());
+
+        serviceBusMessageData.setSessionId(justRightId);
+        Assertions.assertEquals(justRightId, serviceBusMessageData.getSessionId());
     }
 }

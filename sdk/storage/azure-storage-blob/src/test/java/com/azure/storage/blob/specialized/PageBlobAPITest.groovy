@@ -352,6 +352,25 @@ class PageBlobAPITest extends APISpec {
         thrown(BlobStorageException)
     }
 
+    def "Upload page retry on transient failure"() {
+        setup:
+        def clientWithFailure = getBlobClient(
+            primaryCredential,
+            bc.getBlobUrl(),
+            new TransientFailureInjectingHttpPipelinePolicy()
+        ).getPageBlobClient()
+
+        when:
+        def data = getRandomByteArray(PageBlobClient.PAGE_BYTES)
+        clientWithFailure.uploadPages(new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1),
+            new ByteArrayInputStream(data))
+
+        then:
+        def os = new ByteArrayOutputStream()
+        bc.download(os)
+        os.toByteArray() == data
+    }
+
     def "Upload page from URL min"() {
         setup:
         cc.setAccessPolicy(PublicAccessType.CONTAINER, null)

@@ -70,7 +70,7 @@ public final class ManageVirtualMachineWithUnmanagedDisks {
                     .withAdminUsername(userName)
                     .withAdminPassword(password)
                     .withUnmanagedDisks()
-                    .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                     .create();
 
             Date t2 = new Date();
@@ -204,7 +204,7 @@ public final class ManageVirtualMachineWithUnmanagedDisks {
                     .withRootUsername(userName)
                     .withRootPassword(password)
                     .withUnmanagedDisks()
-                    .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                     .create();
 
             System.out.println("Created a Linux VM (in the same virtual network): " + linuxVM.id());

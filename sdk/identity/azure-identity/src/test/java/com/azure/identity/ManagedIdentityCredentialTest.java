@@ -4,6 +4,7 @@
 package com.azure.identity;
 
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.util.Configuration;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.util.TestUtils;
@@ -68,38 +69,6 @@ public class ManagedIdentityCredentialTest {
     }
 
     @Test
-    public void testIdentityEndpoint() throws Exception {
-        Configuration configuration = Configuration.getGlobalConfiguration();
-
-        try {
-            // setup
-            String endpoint = "http://localhost";
-            String secret = "secret";
-            String token1 = "token1";
-            TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
-            OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
-            configuration.put("IDENTITY_ENDPOINT", endpoint);
-            configuration.put("IDENTITY_HEADER", secret);
-
-            // mock
-            IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
-            when(identityClient.authenticateToManagedIdentityEndpoint(endpoint, secret, null, null, request1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
-            PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
-
-            // test
-            ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().clientId(CLIENT_ID).build();
-            StepVerifier.create(credential.getToken(request1))
-                .expectNextMatches(token -> token1.equals(token.getToken())
-                                                && expiresAt.getSecond() == token.getExpiresAt().getSecond())
-                .verifyComplete();
-        } finally {
-            // clean up
-            configuration.remove("IDENTITY_ENDPOINT");
-            configuration.remove("IDENTITY_HEADER");
-        }
-    }
-
-    @Test
     public void testIMDS() throws Exception {
         // setup
         String token1 = "token1";
@@ -118,4 +87,24 @@ public class ManagedIdentityCredentialTest {
                         && expiresOn.getSecond() == token.getExpiresAt().getSecond())
                 .verifyComplete();
     }
+
+    @Test
+    public void testArcUserAssigned() throws Exception {
+        Configuration configuration = Configuration.getGlobalConfiguration().clone();
+
+        // setup
+        String token1 = "token1";
+        String endpoint = "http://localhost";
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
+        configuration.put("IDENTITY_ENDPOINT", endpoint);
+        configuration.put("IMDS_ENDPOINT", endpoint);
+
+
+        // test
+        ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().clientId(CLIENT_ID).build();
+        StepVerifier.create(credential.getToken(request))
+            .expectErrorMatches(t -> t instanceof ClientAuthenticationException)
+            .verify();
+    }
+
 }

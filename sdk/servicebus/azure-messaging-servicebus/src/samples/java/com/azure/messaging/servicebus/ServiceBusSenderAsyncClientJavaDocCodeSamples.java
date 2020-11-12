@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.experimental.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.models.CreateMessageBatchOptions;
 import reactor.core.Exceptions;
@@ -72,8 +73,8 @@ public class ServiceBusSenderAsyncClientJavaDocCodeSamples {
 
         // Creating a batch without options set, will allow for automatic routing of events to any partition.
         sender.createMessageBatch().flatMap(batch -> {
-            batch.tryAddMessage(new ServiceBusMessage("test-1".getBytes(UTF_8)));
-            batch.tryAddMessage(new ServiceBusMessage("test-2".getBytes(UTF_8)));
+            batch.tryAddMessage(new ServiceBusMessage(BinaryData.fromBytes("test-1".getBytes(UTF_8))));
+            batch.tryAddMessage(new ServiceBusMessage(BinaryData.fromBytes("test-2".getBytes(UTF_8))));
             return sender.sendMessages(batch);
         }).subscribe(unused -> {
         },
@@ -93,9 +94,9 @@ public class ServiceBusSenderAsyncClientJavaDocCodeSamples {
             .sender()
             .buildAsyncClient();
 
-        final ServiceBusMessage firstMessage = new ServiceBusMessage("92".getBytes(UTF_8));
+        final ServiceBusMessage firstMessage = new ServiceBusMessage(BinaryData.fromBytes("92".getBytes(UTF_8)));
         firstMessage.getApplicationProperties().put("telemetry", "latency");
-        final ServiceBusMessage secondMessage = new ServiceBusMessage("98".getBytes(UTF_8));
+        final ServiceBusMessage secondMessage = new ServiceBusMessage(BinaryData.fromBytes("98".getBytes(UTF_8)));
         secondMessage.getApplicationProperties().put("telemetry", "cpu-temperature");
 
         // BEGIN: com.azure.messaging.servicebus.servicebusasyncsenderclient.createMessageBatch#CreateMessageBatchOptionsLimitedSize
