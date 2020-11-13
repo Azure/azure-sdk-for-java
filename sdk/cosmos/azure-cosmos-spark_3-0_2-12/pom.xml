@@ -90,7 +90,7 @@
     <dependency>
       <groupId>org.scalatest</groupId>
       <artifactId>scalatest-flatspec_2.12</artifactId>
-      <version>3.2.3</version> <!-- {x-version-update;cosmos_org.scalatest:scalatest-flatspec;external_dependency} -->
+      <version>3.2.3</version> <!-- {x-version-update;cosmos_org.scalatest:scalatest-flatspec_2.12;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
