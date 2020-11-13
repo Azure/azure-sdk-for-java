@@ -19,7 +19,6 @@ import reactor.core.publisher.Mono;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.Objects;
 
 class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
     private static final int CBC_BLOCK_SIZE = 16;
@@ -52,10 +51,6 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
 
     @Override
     Mono<EncryptResult> encryptAsync(EncryptOptions encryptOptions, Context context, JsonWebKey jsonWebKey) {
-        Objects.requireNonNull(encryptOptions, "'encryptOptions' cannot be null.");
-        Objects.requireNonNull(encryptOptions.getAlgorithm(), "Encryption algorithm cannot be null.");
-        Objects.requireNonNull(encryptOptions.getPlainText(), "Plain text content to be encrypted cannot be null.");
-
         this.key = getKey(jsonWebKey);
 
         if (key == null || key.length == 0) {
@@ -101,7 +96,7 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
         byte[] encrypted;
 
         try {
-            encrypted = transform.doFinal(encryptOptions.getPlainText());
+            encrypted = transform.doFinal(encryptOptions.getPlaintext());
         } catch (Exception e) {
             return Mono.error(e);
         }
@@ -112,10 +107,6 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
 
     @Override
     Mono<DecryptResult> decryptAsync(DecryptOptions decryptOptions, Context context, JsonWebKey jsonWebKey) {
-        Objects.requireNonNull(decryptOptions, "'decryptOptions' cannot be null.");
-        Objects.requireNonNull(decryptOptions.getAlgorithm(), "Encryption algorithm cannot be null.");
-        Objects.requireNonNull(decryptOptions.getCipherText(), "Cipher text content to be decrypted cannot be null.");
-
         this.key = getKey(jsonWebKey);
 
         if (key == null || key.length == 0) {
@@ -160,7 +151,7 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
         byte[] decrypted;
 
         try {
-            decrypted = transform.doFinal(decryptOptions.getCipherText());
+            decrypted = transform.doFinal(decryptOptions.getCiphertext());
         } catch (Exception e) {
             return Mono.error(e);
         }

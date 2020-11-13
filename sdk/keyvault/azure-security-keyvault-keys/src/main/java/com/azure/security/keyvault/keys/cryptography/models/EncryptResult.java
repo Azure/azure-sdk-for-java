@@ -5,7 +5,6 @@ package com.azure.security.keyvault.keys.cryptography.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.CoreUtils;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Represents the details of encrypt operation result.

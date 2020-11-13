@@ -219,7 +219,7 @@ public class CryptographyAsyncClient {
      * contains the encrypted content.
      * @throws ResourceNotFoundException If the key cannot be found for encryption.
      * @throws UnsupportedOperationException If the encrypt operation is not supported or configured on the key.
-     * @throws NullPointerException If {@code algorithm} or {@code plainText} are {@code null}.
+     * @throws NullPointerException If {@code algorithm} or {@code plaintext} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EncryptResult> encrypt(EncryptionAlgorithm algorithm, byte[] plaintext) {
@@ -255,10 +255,12 @@ public class CryptographyAsyncClient {
      * contains the encrypted content.
      * @throws ResourceNotFoundException If the key cannot be found for encryption.
      * @throws UnsupportedOperationException If the encrypt operation is not supported or configured on the key.
-     * @throws NullPointerException If {@code algorithm} or {@code plainText} are {@code null}.
+     * @throws NullPointerException If {@code encryptOptions} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EncryptResult> encrypt(EncryptOptions encryptOptions) {
+        Objects.requireNonNull(encryptOptions, "'encryptOptions' cannot be null");
+
         try {
             return withContext(context -> encrypt(encryptOptions, context));
         } catch (RuntimeException ex) {
@@ -307,15 +309,15 @@ public class CryptographyAsyncClient {
      * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.decrypt#EncryptionAlgorithm-byte}
      *
      * @param algorithm The algorithm to be used for decryption.
-     * @param cipherText The content to be decrypted.
+     * @param ciphertext The content to be decrypted.
      * @return A {@link Mono} containing the decrypted blob.
      * @throws ResourceNotFoundException If the key cannot be found for decryption.
      * @throws UnsupportedOperationException If the decrypt operation is not supported or configured on the key.
-     * @throws NullPointerException If {@code algorithm} or {@code cipherText} are {@code null}.
+     * @throws NullPointerException If {@code algorithm} or {@code ciphertext} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DecryptResult> decrypt(EncryptionAlgorithm algorithm, byte[] cipherText) {
-        return decrypt(new DecryptOptions(algorithm, cipherText, null, null, null));
+    public Mono<DecryptResult> decrypt(EncryptionAlgorithm algorithm, byte[] ciphertext) {
+        return decrypt(new DecryptOptions(algorithm, ciphertext, null, null, null));
     }
 
     /**
@@ -346,10 +348,12 @@ public class CryptographyAsyncClient {
      * @return A {@link Mono} containing the decrypted blob.
      * @throws ResourceNotFoundException If the key cannot be found for decryption.
      * @throws UnsupportedOperationException If the decrypt operation is not supported or configured on the key.
-     * @throws NullPointerException If {@code algorithm} or {@code cipherText} are {@code null}.
+     * @throws NullPointerException If {@code decryptOptions} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DecryptResult> decrypt(DecryptOptions decryptOptions) {
+        Objects.requireNonNull(decryptOptions, "'decryptOptions' cannot be null");
+
         try {
             return withContext(context -> decrypt(decryptOptions, context));
         } catch (RuntimeException ex) {

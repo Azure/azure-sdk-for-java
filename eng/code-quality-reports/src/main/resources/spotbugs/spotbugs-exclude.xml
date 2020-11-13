@@ -2414,4 +2414,13 @@
       <Method name="~(get|post)" />
       <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE" />
   </Match>
+
+  <!-- Conflicting APIs have already been GA'd with incorrect capitalization  -->
+  <Match>
+    <Or>
+      <Class name="com.azure.security.keyvault.keys.cryptography.DecryptOptions" />
+      <Class name="com.azure.security.keyvault.keys.cryptography.EncryptOptions" />
+    </Or>
+    <Bug pattern="NM_CONFUSING" />
+  </Match>
 </FindBugsFilter>

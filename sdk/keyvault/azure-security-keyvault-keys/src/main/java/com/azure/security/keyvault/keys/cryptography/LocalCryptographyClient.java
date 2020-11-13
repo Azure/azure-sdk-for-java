@@ -65,8 +65,8 @@ public class LocalCryptographyClient {
      * @param plaintext The content to be encrypted.
      * @return The {@link EncryptResult} whose {@link EncryptResult#getCipherText() cipher text} contains the encrypted
      *     content.
-     * @throws UnsupportedOperationException if the encrypt operation is not supported or configured on the key.
-     * @throws NullPointerException if {@code algorithm} or  {@code plainText} is null.
+     * @throws UnsupportedOperationException If the encrypt operation is not supported or configured on the key.
+     * @throws NullPointerException If {@code decryptOptions} or {@code plaintext} is {@code null}.
      */
     public EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plaintext) {
         return client.encrypt(algorithm, plaintext).block();
@@ -99,8 +99,8 @@ public class LocalCryptographyClient {
      * @param encryptOptions The parameters to use in the encryption operation.
      * @return The {@link EncryptResult} whose {@link EncryptResult#getCipherText() cipher text} contains the encrypted
      *     content.
-     * @throws UnsupportedOperationException if the encrypt operation is not supported or configured on the key.
-     * @throws NullPointerException if {@code algorithm} or  {@code plainText} is null.
+     * @throws UnsupportedOperationException If the encrypt operation is not supported or configured on the key.
+     * @throws NullPointerException If {@code decryptOptions} is {@code null}.
      */
     public EncryptResult encrypt(EncryptOptions encryptOptions) {
         return client.encrypt(encryptOptions).block();
@@ -131,13 +131,13 @@ public class LocalCryptographyClient {
      * {@codesnippet com.azure.security.keyvault.keys.cryptography.LocalCryptographyClient.decrypt#EncryptionAlgorithm-byte}
      *
      * @param algorithm The algorithm to be used for decryption.
-     * @param cipherText The content to be decrypted.
+     * @param ciphertext The content to be decrypted.
      * @return The decrypted blob.
-     * @throws UnsupportedOperationException if the decrypt operation is not supported or configured on the key.
-     * @throws NullPointerException if {@code algorithm} or {@code cipherText} is null.
+     * @throws UnsupportedOperationException If the decrypt operation is not supported or configured on the key.
+     * @throws NullPointerException If {@code algorithm} or {@code ciphertext} is {@code null}.
      */
-    public DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] cipherText) {
-        return client.decrypt(algorithm, cipherText).block();
+    public DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] ciphertext) {
+        return client.decrypt(algorithm, ciphertext).block();
     }
 
     /**
@@ -166,8 +166,8 @@ public class LocalCryptographyClient {
      *
      * @param decryptOptions The parameters to use in the decryption operation.
      * @return The decrypted blob.
-     * @throws UnsupportedOperationException if the decrypt operation is not supported or configured on the key.
-     * @throws NullPointerException if {@code algorithm} or {@code cipherText} is null.
+     * @throws UnsupportedOperationException If the decrypt operation is not supported or configured on the key.
+     * @throws NullPointerException If {@code decryptOptions} is {@code null}.
      */
     public DecryptResult decrypt(DecryptOptions decryptOptions) {
         return client.decrypt(decryptOptions).block();
