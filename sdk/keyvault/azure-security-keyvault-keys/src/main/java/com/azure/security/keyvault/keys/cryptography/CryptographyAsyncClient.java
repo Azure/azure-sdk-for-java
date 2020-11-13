@@ -196,7 +196,7 @@ public class CryptographyAsyncClient {
      * portion of the key is used for encryption. This operation requires the keys/encrypt permission.
      *
      * <p>The {@link EncryptionAlgorithm encryption algorithm} indicates the type of algorithm to use for encrypting the
-     * specified {@code plaintext}. Possible values for asymmetric keys include:
+     * specified {@code plainText}. Possible values for asymmetric keys include:
      * {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP RSA_OAEP} and
      * {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
      *
@@ -214,16 +214,16 @@ public class CryptographyAsyncClient {
      * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.encrypt#EncryptionAlgorithm-byte}
      *
      * @param algorithm The algorithm to be used for encryption.
-     * @param plaintext The content to be encrypted.
+     * @param plainText The content to be encrypted.
      * @return A {@link Mono} containing a {@link EncryptResult} whose {@link EncryptResult#getCipherText() cipher text}
      * contains the encrypted content.
      * @throws ResourceNotFoundException If the key cannot be found for encryption.
      * @throws UnsupportedOperationException If the encrypt operation is not supported or configured on the key.
-     * @throws NullPointerException If {@code algorithm} or {@code plaintext} are {@code null}.
+     * @throws NullPointerException If {@code algorithm} or {@code plainText} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EncryptResult> encrypt(EncryptionAlgorithm algorithm, byte[] plaintext) {
-        return encrypt(new EncryptOptions(algorithm, plaintext, null, null), null);
+    public Mono<EncryptResult> encrypt(EncryptionAlgorithm algorithm, byte[] plainText) {
+        return encrypt(new EncryptOptions(algorithm, plainText, null, null), null);
     }
 
     /**
@@ -233,7 +233,7 @@ public class CryptographyAsyncClient {
      * portion of the key is used for encryption. This operation requires the keys/encrypt permission.
      *
      * <p>The {@link EncryptionAlgorithm encryption algorithm} indicates the type of algorithm to use for encrypting the
-     * specified {@code plaintext}. Possible values for asymmetric keys include:
+     * specified {@code plainText}. Possible values for asymmetric keys include:
      * {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP RSA_OAEP} and
      * {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
      *
@@ -309,15 +309,15 @@ public class CryptographyAsyncClient {
      * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.decrypt#EncryptionAlgorithm-byte}
      *
      * @param algorithm The algorithm to be used for decryption.
-     * @param ciphertext The content to be decrypted.
+     * @param cipherText The content to be decrypted.
      * @return A {@link Mono} containing the decrypted blob.
      * @throws ResourceNotFoundException If the key cannot be found for decryption.
      * @throws UnsupportedOperationException If the decrypt operation is not supported or configured on the key.
-     * @throws NullPointerException If {@code algorithm} or {@code ciphertext} are {@code null}.
+     * @throws NullPointerException If {@code algorithm} or {@code cipherText} are {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DecryptResult> decrypt(EncryptionAlgorithm algorithm, byte[] ciphertext) {
-        return decrypt(new DecryptOptions(algorithm, ciphertext, null, null, null));
+    public Mono<DecryptResult> decrypt(EncryptionAlgorithm algorithm, byte[] cipherText) {
+        return decrypt(new DecryptOptions(algorithm, cipherText, null, null, null));
     }
 
     /**

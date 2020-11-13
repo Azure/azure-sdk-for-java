@@ -19,6 +19,7 @@ import reactor.core.publisher.Mono;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.Objects;
 
 class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
     private static final int CBC_BLOCK_SIZE = 16;
@@ -96,7 +97,7 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
         byte[] encrypted;
 
         try {
-            encrypted = transform.doFinal(encryptOptions.getPlaintext());
+            encrypted = transform.doFinal(encryptOptions.getPlainText());
         } catch (Exception e) {
             return Mono.error(e);
         }
@@ -125,22 +126,9 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         ICryptoTransform transform;
 
-        byte[] iv = decryptOptions.getIv();
+        byte[] iv = Objects.requireNonNull(decryptOptions.getIv(), "Initialization vector cannot be null in local decryption operations.");
         byte[] additionalAuthenticatedData = decryptOptions.getAdditionalAuthenticatedData();
         byte[] authenticationTag = decryptOptions.getAuthenticationTag();
-
-        if (iv == null) {
-            if (algorithm == EncryptionAlgorithm.A128GCM || algorithm == EncryptionAlgorithm.A192GCM
-                || algorithm == EncryptionAlgorithm.A256GCM) {
-
-                iv = generateRandomByteArray(GCM_NONCE_SIZE);
-            } else if (algorithm == EncryptionAlgorithm.A128CBC || algorithm == EncryptionAlgorithm.A192CBC
-                || algorithm == EncryptionAlgorithm.A256CBC || algorithm == EncryptionAlgorithm.A128CBCPAD
-                || algorithm == EncryptionAlgorithm.A192CBCPAD || algorithm == EncryptionAlgorithm.A256CBCPAD) {
-
-                iv = generateRandomByteArray(CBC_BLOCK_SIZE);
-            }
-        }
 
         try {
             transform = symmetricEncryptionAlgorithm.createDecryptor(this.key, iv, additionalAuthenticatedData, authenticationTag);
@@ -151,7 +139,7 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
         byte[] decrypted;
 
         try {
-            decrypted = transform.doFinal(decryptOptions.getCiphertext());
+            decrypted = transform.doFinal(decryptOptions.getCipherText());
         } catch (Exception e) {
             return Mono.error(e);
         }

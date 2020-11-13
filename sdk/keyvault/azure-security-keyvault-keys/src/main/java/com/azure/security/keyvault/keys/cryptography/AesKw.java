@@ -48,10 +48,10 @@ abstract class AesKw extends LocalKeyWrapAlgorithm {
         }
 
         @Override
-        public byte[] doFinal(byte[] plaintext)
+        public byte[] doFinal(byte[] plainText)
             throws IllegalBlockSizeException, BadPaddingException, InvalidKeyException, NoSuchAlgorithmException {
 
-            return cipher.unwrap(plaintext, "AESWrap", Cipher.SECRET_KEY).getEncoded();
+            return cipher.unwrap(plainText, "AESWrap", Cipher.SECRET_KEY).getEncoded();
         }
 
     }
@@ -81,10 +81,10 @@ abstract class AesKw extends LocalKeyWrapAlgorithm {
         }
 
         @Override
-        public byte[] doFinal(byte[] plaintext)
+        public byte[] doFinal(byte[] plainText)
             throws IllegalBlockSizeException, BadPaddingException, InvalidKeyException {
 
-            return cipher.wrap(new SecretKeySpec(plaintext, "AES"));
+            return cipher.wrap(new SecretKeySpec(plainText, "AES"));
         }
 
     }
