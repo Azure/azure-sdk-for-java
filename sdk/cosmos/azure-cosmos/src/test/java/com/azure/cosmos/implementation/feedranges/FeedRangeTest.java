@@ -1,8 +1,10 @@
 package com.azure.cosmos.implementation.feedranges;
 
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IRoutingMapProvider;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
@@ -201,5 +203,41 @@ public class FeedRangeTest {
                 eq(partitionKeyRange.getId()),
                 anyBoolean(),
                 anyMapOf(String.class, Object.class));
+    }
+
+    @Test(groups = "unit")
+    public void FeedRangePKRangeId_GetEffectiveRangesAsync_Null()
+    {
+        String pkRangeId = UUID.randomUUID().toString();
+        PartitionKeyRange partitionKeyRange = new PartitionKeyRange()
+            .setId(pkRangeId)
+            .setMinInclusive("AA")
+            .setMaxExclusive("BB");
+
+        FeedRangePartitionKeyRangeImpl feedRangePartitionKeyRange =
+            new FeedRangePartitionKeyRangeImpl(partitionKeyRange.getId());
+        IRoutingMapProvider routingMapProviderMock = Mockito.mock(IRoutingMapProvider.class);
+        when(
+            routingMapProviderMock.tryGetPartitionKeyRangeByIdAsync(
+                any(MetadataDiagnosticsContext.class),
+                anyString(),
+                eq(partitionKeyRange.getId()),
+                anyBoolean(),
+                anyMapOf(String.class, Object.class)))
+            .thenReturn(Mono.just(Utils.ValueHolder.initialize(null)))
+            .thenReturn(Mono.just(Utils.ValueHolder.initialize(null)));
+
+        StepVerifier
+            .create(
+                feedRangePartitionKeyRange.getEffectiveRangesAsync(
+                    routingMapProviderMock, null, null))
+            .recordWith(ArrayList::new)
+            .expectErrorSatisfies((e) -> {
+                assertThat(e).isInstanceOf(PartitionKeyRangeGoneException.class);
+                PartitionKeyRangeGoneException pkGoneException = (PartitionKeyRangeGoneException)e;
+                assertThat(pkGoneException.getSubStatusCode())
+                    .isEqualTo(HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE);
+            })
+            .verify();
     }
 }
