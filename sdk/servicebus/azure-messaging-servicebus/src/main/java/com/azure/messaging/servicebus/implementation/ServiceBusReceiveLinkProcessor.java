@@ -443,9 +443,6 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
         try {
             drainQueue();
         } finally {
-            if (prefetch > 0) { // re-fill messageQueue if there is prefetch configured.
-                checkAndAddCredits(currentLink);
-            }
             if (wip.decrementAndGet() != 0) {
                 logger.warning("There is another worker in drainLoop. But there should only be 1 worker.");
             }
@@ -494,6 +491,9 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
                     // decrement the count.
                     if (receiveMode != ReceiveMode.PEEK_LOCK) {
                         pendingMessages.decrementAndGet();
+                    }
+                    if (prefetch > 0) { // re-fill messageQueue if there is prefetch configured.
+                        checkAndAddCredits(currentLink);
                     }
                 } catch (Exception e) {
                     logger.error("Exception occurred while handling downstream onNext operation.", e);
@@ -546,7 +546,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
         logger.info("Link credits to add. Credits: '{}'", credits);
 
         if (credits > 0) {
-            link.addCredits(credits);
+            link.addCreditsBlocking(credits);
         }
     }
 
