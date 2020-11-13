@@ -14,8 +14,8 @@ object TestE2EMain {
     val cosmosContainer = "testContainer"
 
     val client = new CosmosClientBuilder()
-      .key(cosmosEndpoint)
       .endpoint(cosmosMasterKey)
+      .key(cosmosMasterKey)
       .consistencyLevel(ConsistencyLevel.EVENTUAL)
       .buildAsyncClient()
 
