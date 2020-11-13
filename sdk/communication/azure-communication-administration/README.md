@@ -260,23 +260,23 @@ String phonePlanId = "PHONE_PLAN_ID";
 List<String> phonePlanIds = new ArrayList<>();
 phonePlanIds.add(phonePlanId);
 
-CreateSearchOptions createSearchOptions = new CreateSearchOptions();
-createSearchOptions
-    .setAreaCode("AREA_CODE_FOR_SEARCH")
-    .setDescription("DESCRIPTION_FOR_SEARCH")
-    .setDisplayName("NAME_FOR_SEARCH")
+CreateReservationOptions createReservationOptions = new CreateReservationOptions();
+createReservationOptions
+    .setAreaCode("AREA_CODE_FOR_RESERVATION")
+    .setDescription("DESCRIPTION_FOR_RESERVATION")
+    .setDisplayName("NAME_FOR_RESERVATION")
     .setPhonePlanIds(phonePlanIds)
     .setQuantity(2);
 
 Duration duration = Duration.ofSeconds(1);
 PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
 
-SyncPoller<PhoneNumberSearch, PhoneNumberSearch> res = 
-    phoneNumberClient.beginCreateSearch(createSearchOptions, duration);
+SyncPoller<PhoneNumberReservation, PhoneNumberReservation> res =
+    phoneNumberClient.beginCreateReservation(createReservationOptions, duration);
 res.waitForCompletion();
-PhoneNumberSearch result = res.getFinalResult();
+PhoneNumberReservation result = res.getFinalResult();
 
-System.out.println("Search Id: " + result.getSearchId());
+System.out.println("Reservation Id: " + result.getReservationId());
 for (String phoneNumber: result.getPhoneNumbers()) {
     System.out.println("Phone Number: " + phoneNumber);
 }
@@ -286,11 +286,11 @@ for (String phoneNumber: result.getPhoneNumbers()) {
 <!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L376-L382 -->
 ```java
 Duration duration = Duration.ofSeconds(1);
-String phoneNumberSearchId = "SEARCH_ID_TO_PURCHASE";
+String phoneNumberReservationId = "RESERVATION_ID_TO_PURCHASE";
 PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
 
-SyncPoller<Void, Void> res = 
-    phoneNumberClient.beginPurchaseSearch(phoneNumberSearchId, duration);
+SyncPoller<Void, Void> res =
+    phoneNumberClient.beginPurchaseReservation(phoneNumberReservationId, duration);
 res.waitForCompletion();
 ```
 
@@ -303,7 +303,7 @@ List<PhoneNumber> phoneNumbers = new ArrayList<>();
 phoneNumbers.add(phoneNumber);
 PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
 
-SyncPoller<PhoneNumberRelease, PhoneNumberRelease> res = 
+SyncPoller<PhoneNumberRelease, PhoneNumberRelease> res =
     phoneNumberClient.beginReleasePhoneNumbers(phoneNumbers, duration);
 res.waitForCompletion();
 PhoneNumberRelease result = res.getFinalResult();

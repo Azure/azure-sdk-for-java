@@ -9,14 +9,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The PhoneNumberSearch model. */
+/** The PhoneNumberReservation model. */
 @Fluent
-public final class PhoneNumberSearch {
+public final class PhoneNumberReservation {
     /*
      * The id of the search.
      */
     @JsonProperty(value = "searchId")
-    private String searchId;
+    private String reservationId;
 
     /*
      * The name of the search.
@@ -86,22 +86,22 @@ public final class PhoneNumberSearch {
     private Integer errorCode;
 
     /**
-     * Get the searchId property: The id of the search.
+     * Get the reservationId property: The id of the search.
      *
-     * @return the searchId value.
+     * @return the reservationId value.
      */
-    public String getSearchId() {
-        return this.searchId;
+    public String getReservationId() {
+        return this.reservationId;
     }
 
     /**
-     * Set the searchId property: The id of the search.
+     * Set the reservationId property: The id of the search.
      *
-     * @param searchId the searchId value to set.
-     * @return the PhoneNumberSearch object itself.
+     * @param reservationId the reservationId value to set.
+     * @return the PhoneNumberReservation object itself.
      */
-    public PhoneNumberSearch setSearchId(String searchId) {
-        this.searchId = searchId;
+    public PhoneNumberReservation setReservationId(String reservationId) {
+        this.reservationId = reservationId;
         return this;
     }
 
@@ -118,9 +118,9 @@ public final class PhoneNumberSearch {
      * Set the displayName property: The name of the search.
      *
      * @param displayName the displayName value to set.
-     * @return the PhoneNumberSearch object itself.
+     * @return the PhoneNumberReservation object itself.
      */
-    public PhoneNumberSearch setDisplayName(String displayName) {
+    public PhoneNumberReservation setDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
     }
@@ -138,9 +138,9 @@ public final class PhoneNumberSearch {
      * Set the createdAt property: The creation time of the search.
      *
      * @param createdAt the createdAt value to set.
-     * @return the PhoneNumberSearch object itself.
+     * @return the PhoneNumberReservation object itself.
      */
-    public PhoneNumberSearch setCreatedAt(OffsetDateTime createdAt) {
+    public PhoneNumberReservation setCreatedAt(OffsetDateTime createdAt) {
         this.createdAt = createdAt;
         return this;
     }
@@ -158,9 +158,9 @@ public final class PhoneNumberSearch {
      * Set the description property: The description of the search.
      *
      * @param description the description value to set.
-     * @return the PhoneNumberSearch object itself.
+     * @return the PhoneNumberReservation object itself.
      */
-    public PhoneNumberSearch setDescription(String description) {
+    public PhoneNumberReservation setDescription(String description) {
         this.description = description;
         return this;
     }
@@ -178,9 +178,9 @@ public final class PhoneNumberSearch {
      * Set the phonePlanIds property: The phone plan ids of the search.
      *
      * @param phonePlanIds the phonePlanIds value to set.
-     * @return the PhoneNumberSearch object itself.
+     * @return the PhoneNumberReservation object itself.
      */
-    public PhoneNumberSearch setPhonePlanIds(List<String> phonePlanIds) {
+    public PhoneNumberReservation setPhonePlanIds(List<String> phonePlanIds) {
         this.phonePlanIds = phonePlanIds;
         return this;
     }
@@ -198,9 +198,9 @@ public final class PhoneNumberSearch {
      * Set the areaCode property: The area code of the search.
      *
      * @param areaCode the areaCode value to set.
-     * @return the PhoneNumberSearch object itself.
+     * @return the PhoneNumberReservation object itself.
      */
-    public PhoneNumberSearch setAreaCode(String areaCode) {
+    public PhoneNumberReservation setAreaCode(String areaCode) {
         this.areaCode = areaCode;
         return this;
     }
@@ -218,9 +218,9 @@ public final class PhoneNumberSearch {
      * Set the quantity property: The quantity of phone numbers in the search.
      *
      * @param quantity the quantity value to set.
-     * @return the PhoneNumberSearch object itself.
+     * @return the PhoneNumberReservation object itself.
      */
-    public PhoneNumberSearch setQuantity(Integer quantity) {
+    public PhoneNumberReservation setQuantity(Integer quantity) {
         this.quantity = quantity;
         return this;
     }
@@ -238,9 +238,9 @@ public final class PhoneNumberSearch {
      * Set the locationOptions property: The location options of the search.
      *
      * @param locationOptions the locationOptions value to set.
-     * @return the PhoneNumberSearch object itself.
+     * @return the PhoneNumberReservation object itself.
      */
-    public PhoneNumberSearch setLocationOptions(List<LocationOptionsDetails> locationOptions) {
+    public PhoneNumberReservation setLocationOptions(List<LocationOptionsDetails> locationOptions) {
         this.locationOptions = locationOptions;
         return this;
     }
@@ -258,9 +258,9 @@ public final class PhoneNumberSearch {
      * Set the status property: The status of the search.
      *
      * @param status the status value to set.
-     * @return the PhoneNumberSearch object itself.
+     * @return the PhoneNumberReservation object itself.
      */
-    public PhoneNumberSearch setStatus(SearchStatus status) {
+    public PhoneNumberReservation setStatus(SearchStatus status) {
         this.status = status;
         return this;
     }
@@ -280,9 +280,9 @@ public final class PhoneNumberSearch {
      * success.
      *
      * @param phoneNumbers the phoneNumbers value to set.
-     * @return the PhoneNumberSearch object itself.
+     * @return the PhoneNumberReservation object itself.
      */
-    public PhoneNumberSearch setPhoneNumbers(List<String> phoneNumbers) {
+    public PhoneNumberReservation setPhoneNumbers(List<String> phoneNumbers) {
         this.phoneNumbers = phoneNumbers;
         return this;
     }
@@ -300,9 +300,9 @@ public final class PhoneNumberSearch {
      * Set the reservationExpiryDate property: The date that search expires and the numbers become available.
      *
      * @param reservationExpiryDate the reservationExpiryDate value to set.
-     * @return the PhoneNumberSearch object itself.
+     * @return the PhoneNumberReservation object itself.
      */
-    public PhoneNumberSearch setReservationExpiryDate(OffsetDateTime reservationExpiryDate) {
+    public PhoneNumberReservation setReservationExpiryDate(OffsetDateTime reservationExpiryDate) {
         this.reservationExpiryDate = reservationExpiryDate;
         return this;
     }
@@ -320,9 +320,9 @@ public final class PhoneNumberSearch {
      * Set the errorCode property: The error code of the search.
      *
      * @param errorCode the errorCode value to set.
-     * @return the PhoneNumberSearch object itself.
+     * @return the PhoneNumberReservation object itself.
      */
-    public PhoneNumberSearch setErrorCode(Integer errorCode) {
+    public PhoneNumberReservation setErrorCode(Integer errorCode) {
         this.errorCode = errorCode;
         return this;
     }
