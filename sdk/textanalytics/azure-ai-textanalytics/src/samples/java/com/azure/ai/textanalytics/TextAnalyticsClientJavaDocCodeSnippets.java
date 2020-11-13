@@ -47,10 +47,10 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -900,16 +900,17 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 
     // Healthcare - Cancellation
     /**
-     * Code snippet for {@link TextAnalyticsClient#beginCancelAnalyzeHealthcare(UUID, Context)}
+     * Code snippet for {@link TextAnalyticsClient#beginCancelAnalyzeHealthcare(String, RecognizeHealthcareEntityOptions, Context)}
      */
     public void cancelAnalyzeHealthcareMaxOverload() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.beginCancelAnalyzeHealthcare#UUID-Context
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.beginCancelAnalyzeHealthcare#String-RecognizeHealthcareEntityOptions-Context
         final SyncPoller<TextAnalyticsOperationResult, Void> textAnalyticsOperationResultVoidSyncPoller
-            = textAnalyticsClient.beginCancelAnalyzeHealthcare(UUID.fromString("{job_id_to_cancel}"), Context.NONE);
+            = textAnalyticsClient.beginCancelAnalyzeHealthcare("{job_id_to_cancel}",
+            new RecognizeHealthcareEntityOptions().setPollInterval(Duration.ofSeconds(10)), Context.NONE);
 
         final PollResponse<TextAnalyticsOperationResult> poll = textAnalyticsOperationResultVoidSyncPoller.poll();
         System.out.printf("Task status: %s.%n", poll.getStatus());
-        // END: com.azure.ai.textanalytics.TextAnalyticsClient.beginCancelAnalyzeHealthcare#UUID-Context
+        // END: com.azure.ai.textanalytics.TextAnalyticsClient.beginCancelAnalyzeHealthcare#String-RecognizeHealthcareEntityOptions-Context
     }
 
     // Analyze Tasks

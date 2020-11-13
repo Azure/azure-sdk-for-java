@@ -85,7 +85,7 @@ import static com.azure.ai.textanalytics.implementation.models.State.SUCCEEDED;
 public final class Utility {
     private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
     // default time interval for polling
-    public static final Duration DEFAULT_POLL_DURATION = Duration.ofSeconds(5);
+    public static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(5);
 
     private Utility() {
     }

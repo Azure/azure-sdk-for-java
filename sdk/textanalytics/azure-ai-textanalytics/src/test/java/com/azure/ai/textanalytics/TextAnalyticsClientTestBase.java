@@ -778,8 +778,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         validateTextAnalyticsResult(showStatistics, expected, actual, (expectedItem, actualItem) -> {
             final PiiEntityCollection expectedPiiEntityCollection = expectedItem.getEntities();
             final PiiEntityCollection actualPiiEntityCollection = actualItem.getEntities();
-            //TODO: redacted text is empty, which is wrong
-            //assertEquals(expectedPiiEntityCollection.getRedactedText(), actualPiiEntityCollection.getRedactedText());
+            assertEquals(expectedPiiEntityCollection.getRedactedText(), actualPiiEntityCollection.getRedactedText());
             validatePiiEntities(
                 expectedPiiEntityCollection.stream().collect(Collectors.toList()),
                 actualPiiEntityCollection.stream().collect(Collectors.toList()));

@@ -8,6 +8,7 @@ import com.azure.ai.textanalytics.models.AnalyzeTasksResult;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.HealthcareTaskResult;
 import com.azure.ai.textanalytics.models.PiiEntityDomainType;
+import com.azure.ai.textanalytics.models.RecognizeHealthcareEntityOptions;
 import com.azure.ai.textanalytics.models.RecognizePiiEntityOptions;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
@@ -29,7 +30,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TestUtils.CATEGORIZED_ENTITY_INPUTS;
@@ -1671,7 +1671,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 syncPoller = client.beginAnalyzeHealthcare(documents, null).getSyncPoller();
 
             PollResponse<TextAnalyticsOperationResult> pollResponse = syncPoller.poll();
-            client.beginCancelAnalyzeHealthcare(UUID.fromString(pollResponse.getValue().getResultId()));
+            client.beginCancelAnalyzeHealthcare(pollResponse.getValue().getResultId(),
+                new RecognizeHealthcareEntityOptions().setPollInterval(Duration.ofSeconds(10)));
             syncPoller.waitForCompletion();
         });
     }

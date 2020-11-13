@@ -36,10 +36,10 @@ import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.AsyncPollResponse;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -866,17 +866,18 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
     // Healthcare - Cancellation
     /**
-     * Code snippet for {@link TextAnalyticsAsyncClient#beginCancelAnalyzeHealthcare(UUID)}
+     * Code snippet for {@link TextAnalyticsAsyncClient#beginCancelAnalyzeHealthcare(String, RecognizeHealthcareEntityOptions)}
      */
     public void cancelAnalyzeHealthcareMaxOverload() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginCancelAnalyzeHealthcare#UUID
-        textAnalyticsAsyncClient.beginCancelAnalyzeHealthcare(UUID.fromString("{job_id_to_cancel}"))
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginCancelAnalyzeHealthcare#String-RecognizeHealthcareEntityOptions
+        textAnalyticsAsyncClient.beginCancelAnalyzeHealthcare("{job_id_to_cancel}",
+            new RecognizeHealthcareEntityOptions().setPollInterval(Duration.ofSeconds(10)))
             .map(response -> {
                 System.out.println(response.getStatus());
                 return response;
             })
             .subscribe(dummyVar -> System.out.println("Job is successfully cancelled."));
-        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginCancelAnalyzeHealthcare#UUID
+        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginCancelAnalyzeHealthcare#String-RecognizeHealthcareEntityOptions
     }
 
     // Analyze Tasks

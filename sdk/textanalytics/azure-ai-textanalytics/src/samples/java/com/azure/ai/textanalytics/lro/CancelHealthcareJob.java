@@ -6,6 +6,7 @@ package com.azure.ai.textanalytics.lro;
 import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.HealthcareTaskResult;
+import com.azure.ai.textanalytics.models.RecognizeHealthcareEntityOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsOperationResult;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.credential.AzureKeyCredential;
@@ -14,9 +15,9 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Sample demonstrates how to cancel a healthcare job.
@@ -60,7 +61,8 @@ public class CancelHealthcareJob {
         System.out.printf("The Job ID that is cancelling is %s.%n", pollResponse.getValue().getResultId());
 
         final SyncPoller<TextAnalyticsOperationResult, Void> textAnalyticsOperationResultVoidSyncPoller
-            = client.beginCancelAnalyzeHealthcare(UUID.fromString(pollResponse.getValue().getResultId()), Context.NONE);
+            = client.beginCancelAnalyzeHealthcare(pollResponse.getValue().getResultId(),
+            new RecognizeHealthcareEntityOptions().setPollInterval(Duration.ofSeconds(10)), Context.NONE);
 
         final PollResponse<TextAnalyticsOperationResult> poll = textAnalyticsOperationResultVoidSyncPoller.poll();
         System.out.printf("Task status: %s.%n", poll.getStatus());

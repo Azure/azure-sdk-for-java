@@ -44,7 +44,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.Collections;
 import java.util.Objects;
-import java.util.UUID;
 
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.mapByIndex;
@@ -1032,8 +1031,8 @@ public final class TextAnalyticsAsyncClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginAnalyzeHealthcare#Iterable-RecognizeHealthcareEntityOptions}
      *
      * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
-     * @param options The additional configurable {@link AnalyzeSentimentOptions options} that may be passed when
-     * analyzing sentiments.
+     * @param options The additional configurable {@link RecognizeHealthcareEntityOptions options} that may be passed
+     * when analyzing healthcare task.
      *
      * @return A {@link PollerFlux} that polls the analyze healthcare operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a {@link PagedFlux} of {@link HealthcareTaskResult}.
@@ -1048,22 +1047,25 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
-     * Cancel a long-running operation healthcare task by given job ID.
+     * Cancel a long-running operation healthcare task by given a healthcare task identification number.
      *
      * <p><strong>Code Sample</strong></p>
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginCancelAnalyzeHealthcare#UUID}
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginCancelAnalyzeHealthcare#String-RecognizeHealthcareEntityOptions}
      *
-     * @param jobId A job identification number.
+     * @param healthcareTaskId The healthcare task identification number.
+     * @param options The additional configurable {@link RecognizeHealthcareEntityOptions options} that may be passed
+     * when cancelling healthcare task.
      *
      * @return A {@link PollerFlux} that polls the analyze healthcare operation until it has completed, has failed,
      * or has been cancelled.
      *
      * @throws TextAnalyticsException If analyze operation fails.
-     * @throws NullPointerException If {@code jobId} is null.
+     * @throws NullPointerException If {@code healthcareTaskId} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<TextAnalyticsOperationResult, Void> beginCancelAnalyzeHealthcare(UUID jobId) {
-        return analyzeHealthcareAsyncClient.beginCancelAnalyzeHealthcare(jobId, Context.NONE);
+    public PollerFlux<TextAnalyticsOperationResult, Void> beginCancelAnalyzeHealthcare(String healthcareTaskId,
+        RecognizeHealthcareEntityOptions options) {
+        return analyzeHealthcareAsyncClient.beginCancelAnalyzeHealthcare(healthcareTaskId, options, Context.NONE);
     }
 
     // Analyze LRO
@@ -1077,7 +1079,7 @@ public final class TextAnalyticsAsyncClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginAnalyze#Iterable-String-JobManifestTasks-AnalyzeTasksOptions}
      *
      * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
-     * @param displayName Job's display name.
+     * @param displayName The analyze tasks' display name.
      * @param jobManifestTasks A collection of analyze tasks, such as entity recognition, PII, and key phrase tasks.
      * @param options The additional configurable {@link AnalyzeTasksOptions options} that may be passed when
      * analyzing a collection of tasks.

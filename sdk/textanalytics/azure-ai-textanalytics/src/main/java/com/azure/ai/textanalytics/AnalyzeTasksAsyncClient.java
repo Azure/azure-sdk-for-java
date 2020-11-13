@@ -55,7 +55,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
-import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_DURATION;
+import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_INTERVAL;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.parseModelId;
 import static com.azure.ai.textanalytics.implementation.Utility.parseNextLink;
@@ -89,7 +89,7 @@ class AnalyzeTasksAsyncClient {
             final Integer finalTop = options == null ? null : options.getTop();
             final Integer finalSkip = options == null ? null : options.getSkip();
             return new PollerFlux<>(
-                DEFAULT_POLL_DURATION,
+                options == null ? DEFAULT_POLL_INTERVAL : options.getPollInterval(),
                 activationOperation(
                     service.analyzeWithResponseAsync(analyzeBatchInput,
                         context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
@@ -124,7 +124,7 @@ class AnalyzeTasksAsyncClient {
             final Integer finalTop = options == null ? null : options.getTop();
             final Integer finalSkip = options == null ? null : options.getSkip();
             return new PollerFlux<>(
-                DEFAULT_POLL_DURATION,
+                options == null ? DEFAULT_POLL_INTERVAL : options.getPollInterval(),
                 activationOperation(
                     service.analyzeWithResponseAsync(analyzeBatchInput,
                         context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
@@ -260,24 +260,24 @@ class AnalyzeTasksAsyncClient {
         };
     }
 
-    PagedFlux<AnalyzeTasksResult> getAnalyzeOperationFluxPage(String jobID, Integer top, Integer skip,
+    PagedFlux<AnalyzeTasksResult> getAnalyzeOperationFluxPage(String analyzeTasksId, Integer top, Integer skip,
         Boolean showStats, Context context) {
         return new PagedFlux<>(
-            () -> getPage(null, jobID, top, skip, showStats, context),
-            continuationToken -> getPage(continuationToken, jobID, top, skip, showStats, context));
+            () -> getPage(null, analyzeTasksId, top, skip, showStats, context),
+            continuationToken -> getPage(continuationToken, analyzeTasksId, top, skip, showStats, context));
     }
 
-    Mono<PagedResponse<AnalyzeTasksResult>> getPage(String continuationToken, String jobID, Integer top, Integer skip,
-        Boolean showStats, Context context) {
+    Mono<PagedResponse<AnalyzeTasksResult>> getPage(String continuationToken, String analyzeTasksId, Integer top,
+        Integer skip, Boolean showStats, Context context) {
         if (continuationToken != null) {
             final Map<String, Integer> continuationTokenMap = parseNextLink(continuationToken);
             final Integer topValue = continuationTokenMap.getOrDefault("$top", null);
             final Integer skipValue = continuationTokenMap.getOrDefault("$skip", null);
-            return service.analyzeStatusWithResponseAsync(jobID, showStats, topValue, skipValue, context)
+            return service.analyzeStatusWithResponseAsync(analyzeTasksId, showStats, topValue, skipValue, context)
                 .map(this::toAnalyzeTasksPagedResponse)
                 .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
         } else {
-            return service.analyzeStatusWithResponseAsync(jobID, showStats, top, skip, context)
+            return service.analyzeStatusWithResponseAsync(analyzeTasksId, showStats, top, skip, context)
                 .map(this::toAnalyzeTasksPagedResponse)
                 .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
         }

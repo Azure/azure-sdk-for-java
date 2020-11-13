@@ -119,16 +119,16 @@ public final class AnalyzeTasksResult extends JobMetadata {
     /**
      * Creates a {@link AnalyzeTasksResult} model that describes analyzed tasks result.
      *
-     * @param jobId the job identification.
+     * @param analyzeTasksId the analyze tasks identification.
      * @param createdDateTime the created time of the job.
      * @param lastUpdateDateTime the last updated time of the job.
      * @param status the job status.
      * @param displayName the display name.
      * @param expirationDateTime the expiration time of the job.
      */
-    public AnalyzeTasksResult(String jobId, OffsetDateTime createdDateTime, OffsetDateTime lastUpdateDateTime,
+    public AnalyzeTasksResult(String analyzeTasksId, OffsetDateTime createdDateTime, OffsetDateTime lastUpdateDateTime,
         JobState status, String displayName, OffsetDateTime expirationDateTime) {
-        super(jobId, createdDateTime, lastUpdateDateTime, status, displayName, expirationDateTime);
+        super(analyzeTasksId, createdDateTime, lastUpdateDateTime, status, displayName, expirationDateTime);
     }
 
     /**

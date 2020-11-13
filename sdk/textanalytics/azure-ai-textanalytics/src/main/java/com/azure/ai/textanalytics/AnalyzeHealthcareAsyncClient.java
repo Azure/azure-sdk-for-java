@@ -35,6 +35,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.PollingContext;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +45,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
-import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_DURATION;
+import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_INTERVAL;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.parseModelId;
 import static com.azure.ai.textanalytics.implementation.Utility.parseNextLink;
@@ -74,15 +75,17 @@ class AnalyzeHealthcareAsyncClient {
         try {
             inputDocumentsValidation(documents);
             String modelVersion = null;
+            Duration pollInterval = DEFAULT_POLL_INTERVAL;
             if (options != null) {
                 modelVersion = options.getModelVersion();
+                pollInterval = options.getPollInterval();
             }
             // the variable used in the lambda function has to be 'final' or 'effective final'.
             final Boolean finalIncludeStatistics = options == null ? null : options.isIncludeStatistics();
             final Integer finalTop = options == null ? null : options.getTop();
             final Integer finalSkip = options == null ? null : options.getSkip();
             return new PollerFlux<>(
-                DEFAULT_POLL_DURATION,
+                pollInterval,
                 activationOperation(service.healthWithResponseAsync(
                     new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
                     modelVersion,
@@ -112,14 +115,16 @@ class AnalyzeHealthcareAsyncClient {
         try {
             inputDocumentsValidation(documents);
             String modelVersion = null;
+            Duration pollInterval = DEFAULT_POLL_INTERVAL;
             if (options != null) {
                 modelVersion = options.getModelVersion();
+                pollInterval = options.getPollInterval();
             }
             final Boolean finalIncludeStatistics = options == null ? null : options.isIncludeStatistics();
             final Integer finalTop = options == null ? null : options.getTop();
             final Integer finalSkip = options == null ? null : options.getSkip();
             return new PollerFlux<>(
-                DEFAULT_POLL_DURATION,
+                pollInterval,
                 activationOperation(service.healthWithResponseAsync(
                     new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
                     modelVersion,
@@ -202,12 +207,13 @@ class AnalyzeHealthcareAsyncClient {
             null);
     }
 
-    PollerFlux<TextAnalyticsOperationResult, Void> beginCancelAnalyzeHealthcare(UUID jobId, Context context) {
+    PollerFlux<TextAnalyticsOperationResult, Void> beginCancelAnalyzeHealthcare(String healthTaskId,
+        RecognizeHealthcareEntityOptions options, Context context) {
         try {
-            Objects.requireNonNull(jobId, "'jobId' is required and cannot be null.");
+            Objects.requireNonNull(healthTaskId, "'healthTaskId' is required and cannot be null.");
             return new PollerFlux<>(
-                DEFAULT_POLL_DURATION,
-                activationOperation(service.cancelHealthJobWithResponseAsync(jobId,
+                options == null ? DEFAULT_POLL_INTERVAL : options.getPollInterval(),
+                activationOperation(service.cancelHealthJobWithResponseAsync(UUID.fromString(healthTaskId),
                     context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
                     .map(healthResponse -> {
                         final TextAnalyticsOperationResult textAnalyticsOperationResult =

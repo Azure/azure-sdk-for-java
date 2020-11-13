@@ -4,6 +4,11 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Fluent;
+
+import java.time.Duration;
+
+import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_INTERVAL;
+
 /**
  * The {@link AnalyzeTasksOptions} model.
  */
@@ -11,6 +16,7 @@ import com.azure.core.annotation.Fluent;
 public final class AnalyzeTasksOptions extends TextAnalyticsRequestOptions {
     private Integer skip;
     private Integer top;
+    private Duration pollInterval = DEFAULT_POLL_INTERVAL;
 
     /**
      * Set the model version. This value indicates which model will be used for scoring, e.g. "latest", "2019-10-01".
@@ -79,6 +85,29 @@ public final class AnalyzeTasksOptions extends TextAnalyticsRequestOptions {
      */
     public AnalyzeTasksOptions setSkip(Integer skip) {
         this.skip = skip;
+        return this;
+    }
+
+    /**
+     * Get the duration between each poll for the operation status. If none is specified, a default of
+     * 5 seconds is used.
+     *
+     * @return the {@code pollInterval} value.
+     */
+    public Duration getPollInterval() {
+        return pollInterval;
+    }
+
+    /**
+     * Set the duration between each poll for the operation status. If none is specified, a default of
+     * 5 seconds is used.
+     *
+     * @param pollInterval the duration to specify between each poll for the operation status.
+     *
+     * @return the updated {@code AnalyzeTasksOptions} value.
+     */
+    public AnalyzeTasksOptions setPollInterval(final Duration pollInterval) {
+        this.pollInterval = pollInterval == null ? DEFAULT_POLL_INTERVAL : pollInterval;
         return this;
     }
 }
