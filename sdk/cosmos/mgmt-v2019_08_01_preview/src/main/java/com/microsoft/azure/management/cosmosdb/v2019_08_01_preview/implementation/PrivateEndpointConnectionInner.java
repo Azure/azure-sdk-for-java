@@ -32,6 +32,18 @@ public class PrivateEndpointConnectionInner extends ProxyResource {
     private PrivateLinkServiceConnectionStateProperty privateLinkServiceConnectionState;
 
     /**
+     * Group id of the private endpoint.
+     */
+    @JsonProperty(value = "properties.groupId")
+    private String groupId;
+
+    /**
+     * Provisioning state of the private endpoint.
+     */
+    @JsonProperty(value = "properties.provisioningState")
+    private String provisioningState;
+
+    /**
      * Get private endpoint which the connection belongs to.
      *
      * @return the privateEndpoint value
@@ -68,6 +80,46 @@ public class PrivateEndpointConnectionInner extends ProxyResource {
      */
     public PrivateEndpointConnectionInner withPrivateLinkServiceConnectionState(PrivateLinkServiceConnectionStateProperty privateLinkServiceConnectionState) {
         this.privateLinkServiceConnectionState = privateLinkServiceConnectionState;
+        return this;
+    }
+
+    /**
+     * Get group id of the private endpoint.
+     *
+     * @return the groupId value
+     */
+    public String groupId() {
+        return this.groupId;
+    }
+
+    /**
+     * Set group id of the private endpoint.
+     *
+     * @param groupId the groupId value to set
+     * @return the PrivateEndpointConnectionInner object itself.
+     */
+    public PrivateEndpointConnectionInner withGroupId(String groupId) {
+        this.groupId = groupId;
+        return this;
+    }
+
+    /**
+     * Get provisioning state of the private endpoint.
+     *
+     * @return the provisioningState value
+     */
+    public String provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * Set provisioning state of the private endpoint.
+     *
+     * @param provisioningState the provisioningState value to set
+     * @return the PrivateEndpointConnectionInner object itself.
+     */
+    public PrivateEndpointConnectionInner withProvisioningState(String provisioningState) {
+        this.provisioningState = provisioningState;
         return this;
     }
 
