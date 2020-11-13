@@ -336,4 +336,36 @@ public class FeedRangeTest {
             })
             .verifyComplete();
     }
+
+    @Test(groups = "unit")
+    public void feedRangePKRangeId_getPartitionKeyRangesAsync()
+    {
+        Range<String> range = new Range<>("AA", "BB", true, false);
+        String pkRangeId = UUID.randomUUID().toString();
+        PartitionKeyRange partitionKeyRange = new PartitionKeyRange()
+            .setId(pkRangeId)
+            .setMinInclusive(range.getMin())
+            .setMaxExclusive(range.getMax());
+
+        FeedRangePartitionKeyRangeImpl feedRangPartitionKeyRange =
+            new FeedRangePartitionKeyRangeImpl(partitionKeyRange.getId());
+
+        IRoutingMapProvider routingMapProviderMock = Mockito.mock(IRoutingMapProvider.class);
+        StepVerifier
+            .create(
+                feedRangPartitionKeyRange.getPartitionKeyRangesAsync(
+                    routingMapProviderMock,
+                    null,
+                    null))
+            .recordWith(ArrayList::new)
+            .expectNextCount(1)
+            .consumeRecordedWith(r -> {
+                assertThat(r).hasSize(1);
+                UnmodifiableList<String> response = new ArrayList<>(r).get(0);
+                assertThat(response)
+                    .hasSize(1)
+                    .contains(partitionKeyRange.getId());
+            })
+            .verifyComplete();
+    }
 }
