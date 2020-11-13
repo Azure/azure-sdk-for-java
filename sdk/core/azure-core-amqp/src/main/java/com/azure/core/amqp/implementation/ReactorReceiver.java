@@ -108,6 +108,11 @@ public class ReactorReceiver implements AmqpReceiveLink {
     }
 
     @Override
+    public void addCreditsBlocking(int credits) {
+        receiver.flow(credits);
+    }
+
+    @Override
     public int getCredits() {
         return receiver.getRemoteCredit();
     }

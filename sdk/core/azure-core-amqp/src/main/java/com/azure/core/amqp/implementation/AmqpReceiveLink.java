@@ -35,6 +35,16 @@ public interface AmqpReceiveLink extends AmqpLink {
     void addCredits(int credits);
 
     /**
+     * Adds the specified number of credits to the link and block until it's added to the service.
+     *
+     * The number of link credits initialises to zero. It is the application's responsibility to call this method to
+     * allow the receiver to receive {@code credits} more deliveries.
+     *
+     * @param credits Number of credits to add to the receive link.
+     */
+    void addCreditsBlocking(int credits);
+
+    /**
      * Gets the current number of credits this link has.
      *
      * @return The number of credits (deliveries) this link has.
