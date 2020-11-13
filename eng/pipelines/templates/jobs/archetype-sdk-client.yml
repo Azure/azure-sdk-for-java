@@ -218,7 +218,7 @@ jobs:
         displayName: 'Component Detection'
         inputs:
           sourceScanPath: ${{parameters.SourceScanPath}}
-          ignoreDirectories: '${{ join(',',parameters.IgnoreDirectories) }}'
+          ignoreDirectories: "${{ join(',',parameters.IgnoreDirectories) }}"
 
       - task: Maven@3
         displayName: 'Run SpotBugs, Checkstyle, RevApi, and Javadoc'
