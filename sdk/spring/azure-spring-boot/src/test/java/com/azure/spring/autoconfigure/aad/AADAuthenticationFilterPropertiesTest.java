@@ -57,7 +57,7 @@ public class AADAuthenticationFilterPropertiesTest {
 
             final AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
 
-            assertThat(properties.getEnvironment()).isEqualTo(TestConstants.DEFAULT_ENVIRONMENT);
+            assertThat(properties.getEnvironment()).isEqualTo("global");
         }
     }
 

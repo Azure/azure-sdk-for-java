@@ -72,7 +72,7 @@ public class AADOAuth2ConfigTest {
 
     @Test
     public void noOAuth2UserServiceBeanCreatedIfTenantIdNotConfigured() {
-        testPropResource.getSource().remove(TestConstants.TENANT_ID_PROPERTY);
+        testPropResource.getSource().remove("azure.activedirectory.tenant-id");
         testContext = initTestContext();
 
         exception.expect(NoSuchBeanDefinitionException.class);
