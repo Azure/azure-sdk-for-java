@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.aad.implementation;
+package com.azure.spring.autoconfigure.aad;
 
 import org.jetbrains.annotations.NotNull;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;

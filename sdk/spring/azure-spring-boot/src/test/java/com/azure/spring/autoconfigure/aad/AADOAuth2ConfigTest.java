@@ -3,8 +3,6 @@
 
 package com.azure.spring.autoconfigure.aad;
 
-import com.azure.spring.aad.implementation.AzureActiveDirectoryAutoConfiguration;
-import com.azure.spring.aad.implementation.AzureClientRegistrationRepository;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;

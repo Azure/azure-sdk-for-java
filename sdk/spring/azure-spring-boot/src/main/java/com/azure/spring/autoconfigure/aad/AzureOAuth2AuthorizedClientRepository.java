@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.aad.implementation;
+package com.azure.spring.autoconfigure.aad;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.InMemoryOAuth2AuthorizedClientService;

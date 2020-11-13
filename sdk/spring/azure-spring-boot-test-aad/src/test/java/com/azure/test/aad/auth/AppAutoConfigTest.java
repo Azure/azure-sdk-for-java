@@ -1,8 +1,8 @@
 package com.azure.test.aad.auth;
 
-import com.azure.spring.aad.implementation.AuthorizationServerEndpoints;
-import com.azure.spring.aad.implementation.AzureClientRegistrationRepository;
-import com.azure.spring.aad.implementation.DefaultClient;
+import com.azure.spring.autoconfigure.aad.AuthorizationServerEndpoints;
+import com.azure.spring.autoconfigure.aad.AzureClientRegistrationRepository;
+import com.azure.spring.autoconfigure.aad.DefaultClient;
 import com.azure.test.utils.AppRunner;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;

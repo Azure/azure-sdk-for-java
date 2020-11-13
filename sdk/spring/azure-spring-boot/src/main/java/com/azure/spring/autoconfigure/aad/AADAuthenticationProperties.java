@@ -3,7 +3,6 @@
 
 package com.azure.spring.autoconfigure.aad;
 
-import com.azure.spring.aad.implementation.AuthorizationProperties;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
