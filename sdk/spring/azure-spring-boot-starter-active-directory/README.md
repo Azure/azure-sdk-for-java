@@ -204,39 +204,6 @@ azure.activedirectory.environment=cn-v2-graph
 Please refer to [azure-spring-boot-sample-active-directory-backend-v2](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-backend-v2/README.md) to see a sample configured to use the Microsoft Graph API.
 
 
-### AAD Conditional Access Policy
-Now azure-active-directory-spring-boot-starter has supported AAD conditional access policy, if you are using this policy, you need add **AADOAuth2AuthorizationRequestResolver** and **AADAuthenticationFailureHandler** to your WebSecurityConfigurerAdapter.
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/aad/AADOAuth2LoginConditionalPolicyConfigSample.java#L26-L53 -->
-```java
-@EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
-public class AADOAuth2LoginConditionalPolicyConfigSample extends WebSecurityConfigurerAdapter {
-
-    @Autowired
-    private OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService;
-
-    @Autowired
-    ApplicationContext applicationContext;
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        final ClientRegistrationRepository clientRegistrationRepository =
-            applicationContext.getBean(ClientRegistrationRepository.class);
-
-        http.authorizeRequests()
-            .anyRequest().authenticated()
-            .and()
-            .oauth2Login()
-            .userInfoEndpoint()
-            .oidcUserService(oidcUserService)
-            .and()
-            .authorizationEndpoint()
-            .authorizationRequestResolver(new AADOAuth2AuthorizationRequestResolver(clientRegistrationRepository))
-            .and()
-            .failureHandler(new AADAuthenticationFailureHandler());
-    }
-}
-```
 ### Customize scopes in authorize requests
 
 By default, `azure-spring-boot-starter-active-directory` configures scopes of `openid`, `profile` and `https://graph.microsoft.com/user.read` to implement OpenID Connect protocol and access of Microsoft Graph API. For customization of scope, developers need to configure in the `application.properties`:

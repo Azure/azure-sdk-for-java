@@ -6,7 +6,7 @@ package com.azure.spring.autoconfigure.aad;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * factoty class of JacksonObjectMapper
+ * Factory class of JacksonObjectMapper
  */
 public final class JacksonObjectMapperFactory {
 
