@@ -3,7 +3,6 @@
 
 package com.azure.spring.autoconfigure.aad;
 
-import com.azure.spring.aad.implementation.AzureActiveDirectoryAutoConfiguration;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
@@ -16,10 +15,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class AADAuthenticationAutoConfigurationTest {
     private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
-        .withConfiguration(AutoConfigurations.of(AzureActiveDirectoryAutoConfiguration.class))
         .withConfiguration(AutoConfigurations.of(AADAuthenticationFilterAutoConfiguration.class))
         .withPropertyValues(
-            "azure.activedirectory.tenant-id=fake-tenant-id",
             "azure.activedirectory.client-id=fake-client-id",
             "azure.activedirectory.client-secret=fake-client-secret",
             "azure.activedirectory.user-group.allowed-groups=fake-group",

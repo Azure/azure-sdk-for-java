@@ -65,10 +65,13 @@ public class UserPrincipalAzureADGraphTest {
     static {
         try {
             final ObjectMapper objectMapper = new ObjectMapper();
-            final Map<String, Object> json = objectMapper.readValue(UserPrincipalAzureADGraphTest.class.getClassLoader()
-                                                                                                       .getResourceAsStream("aad/azure-ad-graph-user-groups.json"),
+            final Map<String, Object> json = objectMapper.readValue(
+                UserPrincipalAzureADGraphTest.class
+                    .getClassLoader()
+                    .getResourceAsStream("aad/azure-ad-graph-user-groups.json"),
                 new TypeReference<HashMap<String, Object>>() {
-                });
+                }
+            );
             userGroupsJson = objectMapper.writeValueAsString(json);
         } catch (IOException e) {
             e.printStackTrace();
