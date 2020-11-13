@@ -30,7 +30,7 @@ public class ClientTelemetryTest extends TestSuiteBase {
     CosmosClient directClient = null;
     CosmosClient telemetryDisabledClient = null;
 
-    @BeforeClass(groups = {"simple"})
+    @BeforeClass(groups = {"emulator"})
     public void beforeClass() {
         gatewayClient = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
@@ -56,7 +56,7 @@ public class ClientTelemetryTest extends TestSuiteBase {
             .buildClient();
     }
 
-    @AfterClass(groups = {"simple"})
+    @AfterClass(groups = {"emulator"})
     public void afterClass() {
         if (this.gatewayClient != null) {
             this.gatewayClient.close();
