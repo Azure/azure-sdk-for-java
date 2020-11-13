@@ -10,7 +10,6 @@ import java.util.List;
 import com.azure.communication.administration.models.AcquiredPhoneNumber;
 import com.azure.communication.administration.models.AreaCodes;
 import com.azure.communication.administration.models.CreateReservationOptions;
-import com.azure.communication.administration.models.CreateReservationResponse;
 import com.azure.communication.administration.models.LocationOptions;
 import com.azure.communication.administration.models.LocationOptionsDetails;
 import com.azure.communication.administration.models.LocationOptionsQuery;
@@ -26,6 +25,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.polling.SyncPoller;
+
 
 public class ReadmeSamples {
     /**
@@ -292,38 +292,6 @@ public class ReadmeSamples {
         }
 
         return areaCodes;
-    }
-
-    /**
-     * Sample code to create a phone number reservation
-     *
-     * @return PhoneNumberReservation for the phone plan
-     */
-    public PhoneNumberReservation createPhoneNumberReservation() {
-        String phonePlanId = "PHONE_PLAN_ID";
-
-        List<String> phonePlanIds = new ArrayList<>();
-        phonePlanIds.add(phonePlanId);
-
-        CreateReservationOptions createReservationOptions = new CreateReservationOptions();
-        createReservationOptions
-            .setAreaCode("AREA_CODE_FOR_RESERVATION")
-            .setDescription("DESCRIPTION_FOR_RESERVATION")
-            .setDisplayName("NAME_FOR_RESERVATION")
-            .setPhonePlanIds(phonePlanIds)
-            .setQuantity(2);
-        PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
-        CreateReservationResponse createReservationResponse = phoneNumberClient.createReservation(createReservationOptions);
-
-        System.out.println("ReservationId: " + createReservationResponse.getReservationId());
-        PhoneNumberReservation phoneNumberReservation = phoneNumberClient.getReservationById(createReservationResponse.getReservationId());
-
-        for (String phoneNumber
-            : phoneNumberReservation.getPhoneNumbers()) {
-            System.out.println("Phone Number: " + phoneNumber);
-        }
-
-        return phoneNumberReservation;
     }
 
     /**

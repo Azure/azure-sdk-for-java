@@ -22,7 +22,7 @@ Acquired phone numbers can come with many capabilities, depending on the country
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-administration</artifactId>
-  <version>1.0.0-beta.2</version>
+  <version>1.0.0-beta.3</version>
 </dependency>
 ```
 
@@ -242,7 +242,7 @@ for (String areaCode
 
 ### Configure Phone Number
 
-<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L338-L338 -->
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L306-L306 -->
 ```java
 phoneNumberClient.configureNumber(phoneNumber, pstnConfiguration);
 ```
@@ -253,7 +253,7 @@ The Phone Number Client supports a variety of long running operations that allow
 
 ### Create Search
 
-<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L345-L369 -->
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L313-L337 -->
 ```java
 String phonePlanId = "PHONE_PLAN_ID";
 
@@ -283,7 +283,7 @@ for (String phoneNumber: result.getPhoneNumbers()) {
 ```
 
 ### Purchase Search
-<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L376-L382 -->
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L344-L350 -->
 ```java
 Duration duration = Duration.ofSeconds(1);
 String phoneNumberReservationId = "RESERVATION_ID_TO_PURCHASE";
@@ -295,7 +295,7 @@ res.waitForCompletion();
 ```
 
 ### Release Phone Numbers
-<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L389-L399 -->
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L357-L367 -->
 ```java
 Duration duration = Duration.ofSeconds(1);
 PhoneNumber phoneNumber = new PhoneNumber("PHONE_NUMBER_TO_RELEASE");

@@ -5,8 +5,6 @@ package com.azure.communication.administration;
 import com.azure.communication.administration.models.AcquiredPhoneNumber;
 import com.azure.communication.administration.models.AreaCodes;
 import com.azure.communication.administration.models.Capability;
-import com.azure.communication.administration.models.CreateReservationOptions;
-import com.azure.communication.administration.models.CreateReservationResponse;
 import com.azure.communication.administration.models.LocationOptionsQuery;
 import com.azure.communication.administration.models.LocationOptionsResponse;
 import com.azure.communication.administration.models.NumberConfigurationResponse;
@@ -194,46 +192,6 @@ public class PhoneNumberClientIntegrationTest extends PhoneNumberIntegrationTest
 
         assertEquals(200, response.getStatusCode());
         assertNotNull(response.getValue().getCapabilitiesUpdateId());
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void createReservation(HttpClient httpClient) {
-        List<String> phonePlanIds = new ArrayList<>();
-        phonePlanIds.add(PHONE_PLAN_ID);
-
-        CreateReservationOptions createReservationOptions = new CreateReservationOptions();
-        createReservationOptions
-            .setAreaCode(AREA_CODE_FOR_SEARCH)
-            .setDescription("318362fa-2b19-4062-92af-fa0673914f30")
-            .setDisplayName("318362fa-2b19-4062-92af-fa0673914f30")
-            .setPhonePlanIds(phonePlanIds)
-            .setQuantity(1);
-
-        CreateReservationResponse createReservationResponse = this.getClient(httpClient).createReservation(createReservationOptions);
-
-        assertNotNull(createReservationResponse.getReservationId());
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void createReservationWithResponse(HttpClient httpClient) {
-        List<String> phonePlanIds = new ArrayList<>();
-        phonePlanIds.add(PHONE_PLAN_ID);
-
-        CreateReservationOptions createReservationOptions = new CreateReservationOptions();
-        createReservationOptions
-            .setAreaCode(AREA_CODE_FOR_SEARCH)
-            .setDescription("318362fa-2b19-4062-92af-fa0673914f30")
-            .setDisplayName("318362fa-2b19-4062-92af-fa0673914f30")
-            .setPhonePlanIds(phonePlanIds)
-            .setQuantity(1);
-
-        Response<CreateReservationResponse> response =
-            this.getClient(httpClient).createReservationWithResponse(createReservationOptions, Context.NONE);
-
-        assertEquals(201, response.getStatusCode());
-        assertNotNull(response.getValue().getReservationId());
     }
 
     @ParameterizedTest

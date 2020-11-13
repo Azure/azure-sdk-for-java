@@ -275,29 +275,6 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void createReservation(HttpClient httpClient) {
-        List<String> phonePlanIds = new ArrayList<>();
-        phonePlanIds.add(PHONE_PLAN_ID);
-
-        CreateReservationOptions createReservationOptions = new CreateReservationOptions();
-        createReservationOptions
-            .setAreaCode(AREA_CODE_FOR_SEARCH)
-            .setDescription("testreservation20200014")
-            .setDisplayName("testreservation20200014")
-            .setPhonePlanIds(phonePlanIds)
-            .setQuantity(1);
-
-        Mono<CreateReservationResponse> mono = this.getClient(httpClient).createReservation(createReservationOptions);
-
-        StepVerifier.create(mono)
-            .assertNext(item -> {
-                assertNotNull(item.getReservationId());
-            })
-            .verifyComplete();
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createReservationWithResponse(HttpClient httpClient) {
         List<String> phonePlanIds = new ArrayList<>();
         phonePlanIds.add(PHONE_PLAN_ID);
