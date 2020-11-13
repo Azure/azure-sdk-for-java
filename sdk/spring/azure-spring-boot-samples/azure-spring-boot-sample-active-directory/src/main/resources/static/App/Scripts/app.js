@@ -15,14 +15,14 @@ angular.module('todoApp', ['ngRoute', 'MsalAngular'])
         }).otherwise({redirectTo: "/Home"});
 
         window.applicationConfig = {
-            clientID: '762eb4c6-0597-4585-a3cb-198827bdef0c'
+            clientID: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
         };
 
         msalProvider.init(
             {
                 auth: {
-                    clientId: "762eb4c6-0597-4585-a3cb-198827bdef0c",
-                    authority: "https://login.microsoftonline.com/7bf345ec-5c80-41a1-94ad-07ff910be5d8",
+                    clientId: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+                    authority: "https://login.microsoftonline.com/xxxorg.onmicrosoft.com",
                     redirectUri: "http://localhost:8080/",
                 },
                 cache: {
