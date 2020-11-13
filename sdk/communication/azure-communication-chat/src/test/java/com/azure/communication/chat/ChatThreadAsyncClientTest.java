@@ -200,7 +200,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         StepVerifier
             .create(chatThreadClient.sendMessage(messageRequest)
                 .flatMap(response -> {
-                    return chatThreadClient.getMessage(response.getId());
+                    return chatThreadClient.getMessage(response);
                 })
             )
             .assertNext(message -> {
@@ -223,7 +223,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
             .create(chatThreadClient.sendMessageWithResponse(messageRequest)
                 .flatMap(sendResponse -> {
                     assertEquals(sendResponse.getStatusCode(), 201);
-                    return chatThreadClient.getMessageWithResponse(sendResponse.getValue().getId());
+                    return chatThreadClient.getMessageWithResponse(sendResponse.getValue());
                 })
             )
             .assertNext(getResponse -> {
@@ -246,7 +246,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         StepVerifier.create(
             chatThreadClient.sendMessage(messageRequest)
                 .flatMap(response -> {
-                    return chatThreadClient.deleteMessage(response.getId());
+                    return chatThreadClient.deleteMessage(response);
                 })
             )
             .verifyComplete();
@@ -263,7 +263,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         StepVerifier.create(
             chatThreadClient.sendMessage(messageRequest)
                 .flatMap(response -> {
-                    return chatThreadClient.deleteMessageWithResponse(response.getId());
+                    return chatThreadClient.deleteMessageWithResponse(response);
                 })
             )
             .assertNext(deleteResponse -> {
@@ -281,15 +281,15 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         UpdateChatMessageOptions updateMessageRequest = ChatOptionsProvider.updateMessageOptions();
 
         // Action & Assert
-        AtomicReference<SendChatMessageResult> messageResponseRef = new AtomicReference<>();
+        AtomicReference<String> messageResponseRef = new AtomicReference<>();
         StepVerifier.create(
             chatThreadClient.sendMessage(messageRequest)
                 .flatMap(response -> {
                     messageResponseRef.set(response);
-                    return chatThreadClient.updateMessage(response.getId(), updateMessageRequest);
+                    return chatThreadClient.updateMessage(response, updateMessageRequest);
                 })
                 .flatMap((Void resp) -> {
-                    return chatThreadClient.getMessage(messageResponseRef.get().getId());
+                    return chatThreadClient.getMessage(messageResponseRef.get());
                 })
             )
             .assertNext(message -> {
@@ -306,16 +306,16 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         UpdateChatMessageOptions updateMessageRequest = ChatOptionsProvider.updateMessageOptions();
 
         // Action & Assert
-        AtomicReference<SendChatMessageResult> messageResponseRef = new AtomicReference<>();
+        AtomicReference<String> messageResponseRef = new AtomicReference<>();
         StepVerifier.create(
                 chatThreadClient.sendMessage(messageRequest)
-                    .flatMap((SendChatMessageResult response) -> {
+                    .flatMap((String response) -> {
                         messageResponseRef.set(response);
-                        return chatThreadClient.updateMessageWithResponse(response.getId(), updateMessageRequest);
+                        return chatThreadClient.updateMessageWithResponse(response, updateMessageRequest);
                     })
                     .flatMap((Response<Void> updateResponse) -> {
                         assertEquals(updateResponse.getStatusCode(), 200);
-                        return chatThreadClient.getMessage(messageResponseRef.get().getId());
+                        return chatThreadClient.getMessage(messageResponseRef.get());
                     })
                 )
             .assertNext(message -> {
@@ -416,14 +416,14 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         // Arrange
         setupTest(httpClient);
         SendChatMessageOptions messageRequest = ChatOptionsProvider.sendMessageOptions();
-        AtomicReference<SendChatMessageResult> messageResponseRef = new AtomicReference<>();
+        AtomicReference<String> messageResponseRef = new AtomicReference<>();
 
         // Action & Assert
         StepVerifier.create(
             chatThreadClient.sendMessage(messageRequest)
                 .flatMap(response -> {
                     messageResponseRef.set(response);
-                    return chatThreadClient.sendReadReceipt(response.getId());
+                    return chatThreadClient.sendReadReceipt(response);
                 })
             )
             .assertNext(noResp -> {
@@ -436,7 +436,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
                     resp.getItems().forEach(item -> returnedReadReceipts.add(item));
                 });
                 assertTrue(returnedReadReceipts.size() > 0);
-                checkReadReceiptListContainsMessageId(returnedReadReceipts, messageResponseRef.get().getId());
+                checkReadReceiptListContainsMessageId(returnedReadReceipts, messageResponseRef.get());
             });
     }
 
@@ -449,14 +449,14 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         // Arrange
         setupTest(httpClient);
         SendChatMessageOptions messageRequest = ChatOptionsProvider.sendMessageOptions();
-        AtomicReference<SendChatMessageResult> messageResponseRef = new AtomicReference<>();
+        AtomicReference<String> messageResponseRef = new AtomicReference<>();
 
         // Action & Assert
         StepVerifier.create(
             chatThreadClient.sendMessage(messageRequest)
                 .flatMap(response -> {
                     messageResponseRef.set(response);
-                    return chatThreadClient.sendReadReceiptWithResponse(response.getId());
+                    return chatThreadClient.sendReadReceiptWithResponse(response);
                 })
             )
             .assertNext(receiptResponse -> {
@@ -471,7 +471,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
                 });
 
                 assertTrue(returnedReadReceipts.size() > 0);
-                checkReadReceiptListContainsMessageId(returnedReadReceipts, messageResponseRef.get().getId());
+                checkReadReceiptListContainsMessageId(returnedReadReceipts, messageResponseRef.get());
             });
 
     }

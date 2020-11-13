@@ -10,7 +10,6 @@ import com.azure.communication.chat.models.ChatThread;
 import com.azure.communication.chat.models.ChatParticipant;
 import com.azure.communication.chat.models.ChatMessageReadReceipt;
 import com.azure.communication.chat.models.CreateChatThreadOptions;
-import com.azure.communication.chat.models.SendChatMessageResult;
 import com.azure.communication.chat.models.SendChatMessageOptions;
 import com.azure.communication.chat.models.UpdateChatMessageOptions;
 import com.azure.communication.chat.models.UpdateChatThreadOptions;
@@ -145,8 +144,7 @@ public class ReadmeSamples {
             .setPriority(ChatMessagePriority.NORMAL)
             .setSenderDisplayName("Sender Display Name");
 
-        SendChatMessageResult sendChatMessageResult = chatThreadClient.sendMessage(sendChatMessageOptions);
-        String chatMessageId = sendChatMessageResult.getId();
+        String chatMessageId = chatThreadClient.sendMessage(sendChatMessageOptions);
     }
 
     /**

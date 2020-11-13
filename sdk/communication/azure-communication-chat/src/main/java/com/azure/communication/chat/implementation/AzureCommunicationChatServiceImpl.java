@@ -14,11 +14,11 @@ import com.azure.communication.chat.implementation.models.ChatParticipantsCollec
 import com.azure.communication.chat.implementation.models.ChatThread;
 import com.azure.communication.chat.implementation.models.ChatThreadsInfoCollection;
 import com.azure.communication.chat.implementation.models.CreateChatThreadOptions;
+import com.azure.communication.chat.implementation.models.SendChatMessageResult;
 import com.azure.communication.chat.implementation.models.SendReadReceiptRequest;
 import com.azure.communication.chat.models.ChatThreadInfo;
 import com.azure.communication.chat.models.ErrorException;
 import com.azure.communication.chat.models.SendChatMessageOptions;
-import com.azure.communication.chat.models.SendChatMessageResult;
 import com.azure.communication.chat.models.UpdateChatMessageOptions;
 import com.azure.communication.chat.models.UpdateChatThreadOptions;
 import com.azure.core.annotation.BodyParam;
@@ -238,7 +238,7 @@ public final class AzureCommunicationChatServiceImpl {
                 Context context);
 
         @Post("/chat/threads/{chatThreadId}/participants")
-        @ExpectedResponses({207})
+        @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ErrorException.class)
         Mono<Response<Void>> addChatParticipants(
                 @HostParam("endpoint") String endpoint,

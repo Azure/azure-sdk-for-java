@@ -10,13 +10,13 @@ import com.azure.communication.chat.implementation.converters.AddChatParticipant
 import com.azure.communication.chat.implementation.converters.ChatMessageConverter;
 import com.azure.communication.chat.implementation.converters.ChatParticipantConverter;
 import com.azure.communication.chat.implementation.converters.ChatMessageReadReceiptConverter;
+import com.azure.communication.chat.implementation.converters.SendChatMessageResultConverter;
 import com.azure.communication.chat.implementation.models.SendReadReceiptRequest;
 import com.azure.communication.chat.models.AddChatParticipantsOptions;
 import com.azure.communication.chat.models.ChatMessage;
 import com.azure.communication.chat.models.ChatParticipant;
 import com.azure.communication.chat.models.ChatMessageReadReceipt;
 import com.azure.communication.chat.models.ListChatMessagesOptions;
-import com.azure.communication.chat.models.SendChatMessageResult;
 import com.azure.communication.chat.models.SendChatMessageOptions;
 import com.azure.communication.chat.models.UpdateChatMessageOptions;
 import com.azure.communication.chat.models.UpdateChatThreadOptions;
@@ -263,20 +263,14 @@ public final class ChatThreadAsyncClient {
      * Sends a message to a thread.
      *
      * @param options Options for sending the message.
-     * @return the response.
+     * @return the MessageId.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SendChatMessageResult> sendMessage(SendChatMessageOptions options) {
+    public Mono<String> sendMessage(SendChatMessageOptions options) {
         try {
             return withContext(context -> sendMessage(options, context)
                 .flatMap(
-                    (Response<SendChatMessageResult> res) -> {
-                        if (res.getValue() != null) {
-                            return Mono.just(res.getValue());
-                        } else {
-                            return Mono.empty();
-                        }
-                    }));
+                    res -> Mono.just(res.getValue())));
         } catch (RuntimeException ex) {
 
             return monoError(logger, ex);
@@ -287,10 +281,10 @@ public final class ChatThreadAsyncClient {
      * Sends a message to a thread.
      *
      * @param options Options for sending the message.
-     * @return the response.
+     * @return the MessageId.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SendChatMessageResult>> sendMessageWithResponse(SendChatMessageOptions options) {
+    public Mono<Response<String>> sendMessageWithResponse(SendChatMessageOptions options) {
         try {
             return withContext(context -> sendMessage(options, context));
         } catch (RuntimeException ex) {
@@ -304,15 +298,17 @@ public final class ChatThreadAsyncClient {
      *
      * @param options Options for sending the message.
      * @param context The context to associate with this operation.
-     * @return the response.
+     * @return the MessageId.
      */
-    Mono<Response<SendChatMessageResult>> sendMessage(SendChatMessageOptions options, Context context) {
+    Mono<Response<String>> sendMessage(SendChatMessageOptions options, Context context) {
         context = context == null ? Context.NONE : context;
 
         Objects.requireNonNull(options, "'options' cannot be null.");
 
         return this.chatServiceClient.sendChatMessageWithResponseAsync(
-            chatThreadId, options, context);
+            chatThreadId, options, context).map(
+                result -> new SimpleResponse<String>(
+                    result, SendChatMessageResultConverter.convert(result.getValue())));
     }
 
     /**
