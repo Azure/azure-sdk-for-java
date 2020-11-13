@@ -3,6 +3,7 @@
 
 package com.azure.spring.autoconfigure.aad;
 
+import com.azure.spring.aad.implementation.AuthorizationProperties;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +16,9 @@ import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -30,6 +33,12 @@ public class AADAuthenticationProperties {
     private static final Logger LOGGER = LoggerFactory.getLogger(AADAuthenticationProperties.class);
     private static final String DEFAULT_SERVICE_ENVIRONMENT = "global";
     private static final long DEFAULT_JWK_SET_CACHE_LIFESPAN = TimeUnit.MINUTES.toMillis(5);
+    private static final String GROUP_RELATIONSHIP_DIRECT = "direct";
+    private static final String GROUP_RELATIONSHIP_TRANSITIVE = "transitive";
+
+    private String uri;
+
+    private Map<String, AuthorizationProperties> authorization = new HashMap<>();
 
     /**
      * Default UserGroup configuration.
@@ -62,8 +71,10 @@ public class AADAuthenticationProperties {
     /**
      * Optional. scope doc:
      * https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-permissions-and-consent#scopes-and-permissions
+     * @deprecated Please use "azure.activedirectory.authorization.client-registration-id.scope" instead.
      */
-    private List<String> scope = Arrays.asList("openid", "https://graph.microsoft.com/user.read", "profile");
+    @Deprecated
+    private List<String> scope = Arrays.asList("openid", "profile", "https://graph.microsoft.com/user.read");
 
     /**
      * App ID URI which might be used in the <code>"aud"</code> claim of an <code>id_token</code>.
@@ -112,6 +123,7 @@ public class AADAuthenticationProperties {
     public List<String> getActiveDirectoryGroups() {
         return userGroup.getAllowedGroups();
     }
+
     /**
      * Properties dedicated to changing the behavior of how the groups are mapped from the Azure AD response. Depending
      * on the graph API used the object will not be the same.
@@ -136,13 +148,23 @@ public class AADAuthenticationProperties {
          * Node is a UserGroup.
          */
         @NotEmpty
-        private String value = MemberShip.OBJECT_TYPE_GROUP;
+        private String value = Membership.OBJECT_TYPE_GROUP;
 
         /**
          * Key of the JSON Node containing the Azure Object ID for the {@code UserGroup}.
          */
         @NotEmpty
         private String objectIDKey = "objectId";
+
+
+        /**
+         * The way to obtain group relationship.<br/>
+         * direct: the default value, get groups that the user is a direct member of;<br/>
+         * transitive: Get groups that the user is a member of, and will also return all
+         *  groups the user is a nested member of;
+         */
+        @NotEmpty
+        private String groupRelationship = GROUP_RELATIONSHIP_DIRECT;
 
         public List<String> getAllowedGroups() {
             return allowedGroups;
@@ -176,6 +198,14 @@ public class AADAuthenticationProperties {
             this.objectIDKey = objectIDKey;
         }
 
+        public String getGroupRelationship() {
+            return groupRelationship;
+        }
+
+        public void setGroupRelationship(String groupRelationship) {
+            this.groupRelationship = groupRelationship;
+        }
+
         @Override
         public String toString() {
             return "UserGroupProperties{"
@@ -183,6 +213,7 @@ public class AADAuthenticationProperties {
                 +  ", key='" + key + '\''
                 +  ", value='" + value + '\''
                 +  ", objectIDKey='" + objectIDKey + '\''
+                +  ", groupRelationship='" + groupRelationship + '\''
                 +  '}';
         }
 
@@ -198,7 +229,8 @@ public class AADAuthenticationProperties {
             return Objects.equals(allowedGroups, that.allowedGroups)
                 && Objects.equals(key, that.key)
                 && Objects.equals(value, that.value)
-                && Objects.equals(objectIDKey, that.objectIDKey);
+                && Objects.equals(objectIDKey, that.objectIDKey)
+                && Objects.equals(groupRelationship, that.groupRelationship);
         }
 
         @Override
@@ -230,6 +262,27 @@ public class AADAuthenticationProperties {
             throw new IllegalArgumentException("One of the User Group Properties must be populated. "
                 + "Please populate azure.activedirectory.user-group.allowed-groups");
         }
+        if (!GROUP_RELATIONSHIP_DIRECT.equalsIgnoreCase(userGroup.groupRelationship)
+            && !GROUP_RELATIONSHIP_TRANSITIVE.equalsIgnoreCase(userGroup.groupRelationship)) {
+            throw new IllegalArgumentException("Configuration 'azure.activedirectory.user-group.group-relationship' "
+                + "should be 'direct' or 'transitive'.");
+        }
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
+    }
+
+    public String getUri() {
+        return uri;
+    }
+
+    public void setAuthorization(Map<String, AuthorizationProperties> authorization) {
+        this.authorization = authorization;
+    }
+
+    public Map<String, AuthorizationProperties> getAuthorization() {
+        return authorization;
     }
 
     public UserGroupProperties getUserGroup() {
@@ -272,10 +325,20 @@ public class AADAuthenticationProperties {
         this.redirectUriTemplate = redirectUriTemplate;
     }
 
+    /**
+     * @param scope scope
+     * @deprecated Please use "azure.activedirectory.authorization.client-registration-id.scope" instead.
+     */
+    @Deprecated
     public void setScope(List<String> scope) {
         this.scope = scope;
     }
 
+    /**
+     * @return scope
+     * @deprecated Please use "azure.activedirectory.authorization.client-registration-id.scope" instead.
+     */
+    @Deprecated
     public List<String> getScope() {
         return scope;
     }
@@ -347,6 +410,14 @@ public class AADAuthenticationProperties {
 
     public void setSessionStateless(Boolean sessionStateless) {
         this.sessionStateless = sessionStateless;
+    }
+
+    public static String getDirectGroupRelationship() {
+        return GROUP_RELATIONSHIP_DIRECT;
+    }
+
+    public static String getTransitiveGroupRelationship() {
+        return GROUP_RELATIONSHIP_TRANSITIVE;
     }
 
     public boolean isAllowedGroup(String group) {

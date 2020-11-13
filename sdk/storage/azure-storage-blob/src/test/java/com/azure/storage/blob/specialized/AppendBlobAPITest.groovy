@@ -346,6 +346,23 @@ class AppendBlobAPITest extends APISpec {
         thrown(BlobStorageException)
     }
 
+    def "Append block retry on transient failure"() {
+        setup:
+        def clientWithFailure = getBlobClient(
+            primaryCredential,
+            bc.getBlobUrl(),
+            new TransientFailureInjectingHttpPipelinePolicy()
+        ).getAppendBlobClient()
+
+        when:
+        clientWithFailure.appendBlock(defaultInputStream.get(), defaultDataSize)
+
+        then:
+        def os = new ByteArrayOutputStream()
+        bc.download(os)
+        os.toByteArray() == defaultData.array()
+    }
+
     def "Append block from URL min"() {
         setup:
         cc.setAccessPolicy(PublicAccessType.CONTAINER, null)

@@ -15,7 +15,7 @@ Azure Core Netty HTTP client is a plugin for the `azure-core` HTTP client API.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-http-netty</artifactId>
-    <version>1.6.2</version>
+    <version>1.6.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -56,7 +56,7 @@ Get started with Azure libraries that are [built using Azure Core](https://azure
 ## Troubleshooting
 
 If you encounter any bugs, please file issues via [GitHub Issues](https://github.com/Azure/azure-sdk-for-java/issues/new/choose)
-or checkout [StackOverflow for Azure Java SDK](http://stackoverflow.com/questions/tagged/azure-java-sdk).
+or checkout [StackOverflow for Azure Java SDK](https://stackoverflow.com/questions/tagged/azure-java-sdk).
 
 ### Enabling Logging
 
@@ -67,7 +67,7 @@ locate the root issue. View the [logging][logging] wiki for guidance about enabl
 ## Contributing
 
 If you would like to become an active contributor to this project please follow the instructions provided in 
-[Microsoft Azure Projects Contribution Guidelines](http://azure.github.io/guidelines.html).
+[Microsoft Azure Projects Contribution Guidelines](https://azure.github.io/guidelines.html).
 
 1. Fork it
 1. Create your feature branch (`git checkout -b my-new-feature`)

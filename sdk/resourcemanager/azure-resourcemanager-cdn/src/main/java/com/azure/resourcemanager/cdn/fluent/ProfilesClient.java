@@ -391,6 +391,21 @@ public interface ProfilesClient
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cDN profile is a logical grouping of endpoints that share the same settings, such as CDN provider and
+     *     pricing tier.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ProfileInner update(String resourceGroupName, String profileName);
+
+    /**
+     * Updates an existing CDN profile with the specified profile name under the specified subscription and resource
+     * group.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param tags Profile tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -401,21 +416,6 @@ public interface ProfilesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ProfileInner update(String resourceGroupName, String profileName, Map<String, String> tags, Context context);
-
-    /**
-     * Updates an existing CDN profile with the specified profile name under the specified subscription and resource
-     * group.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN profile is a logical grouping of endpoints that share the same settings, such as CDN provider and
-     *     pricing tier.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ProfileInner update(String resourceGroupName, String profileName);
 
     /**
      * Deletes an existing CDN profile with the specified parameters. Deleting a profile will result in the deletion of

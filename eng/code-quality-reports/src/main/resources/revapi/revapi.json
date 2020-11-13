@@ -3,6 +3,11 @@
     "extension": "revapi.java",
     "configuration": {
       "filter": {
+        "classes": {
+          "exclude": [
+            "com.azure.core.util.Configuration"
+          ]
+        },
         "packages": {
           "regex": true,
           "exclude": [
@@ -64,6 +69,24 @@
         "code": "java.method.parameterTypeChanged",
         "new": "parameter java.lang.Iterable<P> com.azure.core.util.paging.ContinuablePagedIterable<C, T, P extends com.azure.core.util.paging.ContinuablePage<C extends java.lang.Object, T extends java.lang.Object>>::iterableByPage(===int===) @ com.azure.core.http.rest.PagedIterableBase<T, P extends com.azure.core.http.rest.PagedResponse<T extends java.lang.Object>>",
         "justification": "A new overload which shares the same number of parameters was introduced, confusing revapi. azure.core 1.3.0 will introduce a new base type for GAed PagedIterable. Since the base type is not in azure.core <= 1.2.0, revapi is reporting it. This entry should be removed after 1.3.0 release."
+      },
+      {
+        "regex": true,
+        "code": "java.class.nonPublicPartOfAPI",
+        "new": "(class|interface) com\\.azure\\.keyvault\\.jca\\.com\\..*",
+        "justification": "skip check for third party files."
+      },
+      {
+        "regex": true,
+        "code": "java.class.nonPublicPartOfAPI",
+        "new": "(class|interface) com\\.azure\\.keyvault\\.jca\\.org\\..*",
+        "justification": "skip check for third party files."
+      },
+      {
+        "regex": true,
+        "code": "java.class.nonPublicPartOfAPI",
+        "new": "(class|enum|interface) org\\.conscrypt\\..*",
+        "justification": "skip check for third party files."
       },
       {
         "code": "java.method.parameterTypeChanged",
@@ -235,6 +258,17 @@
         "code": "java\\.class\\.externalClassExposedInAPI",
         "new": "(interface|class|enum) io\\.opentelemetry.*",
         "justification": "Azure Monitor Exporter is allowed to use OpenTelemetry types in public APIs as it implements interfaces defined by OpenTelemetry"
+      },
+      {
+        "code": "java.annotation.attributeAdded",
+        "old": "class com.azure.messaging.eventhubs.EventHubClientBuilder",
+        "new": "class com.azure.messaging.eventhubs.EventHubClientBuilder",
+        "justification": "Setting protocol to AMQP in @ServiceClientBuilder annotation is not a breaking change"
+      },
+      {
+        "code": "java.annotation.added",
+        "new": "class com.azure.storage.blob.models.PageList",
+        "justification": "Annotation required to resolve deserialization bug."
       }
     ]
   }

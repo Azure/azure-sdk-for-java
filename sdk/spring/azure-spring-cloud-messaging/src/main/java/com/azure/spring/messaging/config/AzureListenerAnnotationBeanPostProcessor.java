@@ -158,11 +158,17 @@ public class AzureListenerAnnotationBeanPostProcessor
     public void postProcessMergedBeanDefinition(RootBeanDefinition beanDefinition, Class<?> beanType, String beanName) {
     }
 
+    /**
+     * @throws BeansException in case of errors
+     */
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
         return bean;
     }
 
+    /**
+     * @throws BeansException in case of errors
+     */
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         if (bean instanceof AopInfrastructureBean || bean instanceof ListenerContainerFactory
@@ -208,6 +214,7 @@ public class AzureListenerAnnotationBeanPostProcessor
      * @param bean the instance to invoke the method on
      * @see #createMethodAzureListenerEndpoint()
      * @see AzureListenerEndpointRegistrar#registerEndpoint
+     * @throws BeanInitializationException If no ListenerContainerFactory could be found.
      */
     protected void processAzureListener(AzureMessageListener azureMessageListener, Method mostSpecificMethod,
             Object bean) {

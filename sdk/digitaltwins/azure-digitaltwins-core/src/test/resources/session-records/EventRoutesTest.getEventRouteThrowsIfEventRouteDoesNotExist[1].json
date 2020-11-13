@@ -3,8 +3,8 @@
     "Method" : "GET",
     "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/eventroutes?api-version=2020-10-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "82c840b7-848c-453a-8bf0-8115c9df102b"
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.0.0 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "772c1347-b41e-4d77-a939-b4070ba68f14"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
@@ -12,16 +12,16 @@
       "Content-Length" : "28",
       "StatusCode" : "200",
       "Body" : "{\"value\":[],\"nextLink\":null}",
-      "Date" : "Tue, 13 Oct 2020 18:54:36 GMT",
+      "Date" : "Fri, 30 Oct 2020 16:34:48 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/eventroutes/564997dc-65bd-4e8f-aa7f-6dbe8a621d94?api-version=2020-10-31",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/eventroutes/01c69f52-28b9-4456-b212-4dfb833d1690?api-version=2020-10-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "fc7e0c93-bcff-4622-ba89-50f36bfd6043"
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.0.0 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8e58ae64-d50b-47ff-b5cc-1ca7c702ccc2"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
@@ -29,10 +29,10 @@
       "Content-Length" : "222",
       "StatusCode" : "404",
       "Body" : "{\"error\":{\"code\":\"EventRouteNotFound\",\"message\":\"There is no route available that matches the provided input. Check for all valid event routes by calling EventRoute_List. See Swagger example (http://aka.ms/RouteSwSmpl).\"}}",
-      "Date" : "Tue, 13 Oct 2020 18:54:37 GMT",
+      "Date" : "Fri, 30 Oct 2020 16:34:48 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   } ],
-  "variables" : [ "564997dc-65bd-4e8f-aa7f-6dbe8a621d94" ]
+  "variables" : [ "01c69f52-28b9-4456-b212-4dfb833d1690" ]
 }

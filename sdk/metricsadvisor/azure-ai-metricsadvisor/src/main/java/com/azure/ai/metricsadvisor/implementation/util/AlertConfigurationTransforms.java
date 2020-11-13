@@ -93,11 +93,11 @@ public final class AlertConfigurationTransforms {
     }
 
     /**
-     * Internal helper method to get the service Metric alert configurations list.
+     * Internal helper method to get the service DataFeedMetric alert configurations list.
      *
      * @param metricAlertConfigurations the SDK level provided metric configurations list.
      *
-     * @return the service required Metric alert configurations list.
+     * @return the service required DataFeedMetric alert configurations list.
      */
     private static List<MetricAlertingConfiguration> getMetricAlertConfigList(
         List<MetricAnomalyAlertConfiguration> metricAlertConfigurations) {
@@ -186,9 +186,9 @@ public final class AlertConfigurationTransforms {
                     .getCrossMetricsOperator()
                     .toString()));
         }
-        PrivateFieldAccessHelper.set(alertConfiguration,
-            "id",
+        AnomalyAlertConfigurationHelper.setId(alertConfiguration,
             innerAlertConfiguration.getAnomalyAlertingConfigurationId().toString());
+
         alertConfiguration.setDescription(innerAlertConfiguration.getDescription());
         alertConfiguration.setIdOfHooksToAlert(innerAlertConfiguration
             .getHookIds()
@@ -223,28 +223,23 @@ public final class AlertConfigurationTransforms {
                     || innerMetricAlertConfiguration.getValueFilter() != null) {
                     MetricAnomalyAlertConditions alertConditions = new MetricAnomalyAlertConditions();
                     // Set severity based condition.
-                    alertConditions.setSeverityCondition(innerMetricAlertConfiguration.getSeverityFilter());
+                    alertConditions.setSeverityRangeCondition(innerMetricAlertConfiguration.getSeverityFilter());
                     // Set boundary based condition.
                     ValueCondition innerValueCondition = innerMetricAlertConfiguration.getValueFilter();
                     if (innerValueCondition != null) {
                         MetricBoundaryCondition boundaryCondition = new MetricBoundaryCondition();
-                        PrivateFieldAccessHelper.set(boundaryCondition,
-                            "lowerBoundary",
+                        MetricBoundaryConditionHelper.setLowerBoundary(boundaryCondition,
                             innerValueCondition.getLower());
-                        PrivateFieldAccessHelper.set(boundaryCondition,
-                            "upperBoundary",
+                        MetricBoundaryConditionHelper.setUpperBoundary(boundaryCondition,
                             innerValueCondition.getUpper());
                         if (innerValueCondition.getDirection() == Direction.DOWN) {
-                            PrivateFieldAccessHelper.set(boundaryCondition,
-                                "boundaryDirection",
+                            MetricBoundaryConditionHelper.setBoundaryDirection(boundaryCondition,
                                 BoundaryDirection.LOWER);
                         } else if (innerValueCondition.getDirection() == Direction.UP) {
-                            PrivateFieldAccessHelper.set(boundaryCondition,
-                                "boundaryDirection",
+                            MetricBoundaryConditionHelper.setBoundaryDirection(boundaryCondition,
                                 BoundaryDirection.UPPER);
                         } else if (innerValueCondition.getDirection() == Direction.BOTH) {
-                            PrivateFieldAccessHelper.set(boundaryCondition,
-                                "boundaryDirection",
+                            MetricBoundaryConditionHelper.setBoundaryDirection(boundaryCondition,
                                 BoundaryDirection.BOTH);
                         }
                         if (innerValueCondition.getMetricId() != null) {

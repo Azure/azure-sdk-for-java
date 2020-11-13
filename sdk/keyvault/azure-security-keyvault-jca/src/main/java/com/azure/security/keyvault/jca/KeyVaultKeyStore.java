@@ -1,6 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
 package com.azure.security.keyvault.jca;
 
 import java.io.BufferedReader;
@@ -10,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -32,9 +32,9 @@ import static java.util.logging.Level.INFO;
 import static java.util.logging.Level.WARNING;
 
 /**
- * The Azure KeyVault implementation of the KeyStoreSpi.
+ * The Azure Key Vault implementation of the KeyStoreSpi.
  */
-public class KeyVaultKeyStore extends KeyStoreSpi {
+public final class KeyVaultKeyStore extends KeyStoreSpi {
 
     /**
      * Stores the logger.
@@ -64,32 +64,41 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
     /**
      * Stores the key vault client.
      */
-    private KeyVaultClient keyVault;
+    private KeyVaultClient keyVaultClient;
 
     /**
      * Constructor.
      *
      * <p>
      * The constructor uses System.getProperty for
-     * <code>azure.keyvault.uri</code>, <code>azure.keyvault.tenantId</code>,
+     * <code>azure.keyvault.uri</code>, 
+     * <code>azure.keyvault.aadAuthenticationUrl</code>, 
+     * <code>azure.keyvault.tenantId</code>,
      * <code>azure.keyvault.clientId</code>,
-     * <code>azure.keyvault.clientSecret</code> to initialize the keyvault
-     * client.
+     * <code>azure.keyvault.clientSecret</code> and
+     * <code>azure.keyvault.managedIdentity</code> to initialize the
+     * Key Vault client.
      * </p>
      */
     public KeyVaultKeyStore() {
         creationDate = new Date();
         String keyVaultUri = System.getProperty("azure.keyvault.uri");
+        String aadAuthenticationUrl = System.getProperty("azure.keyvault.aadAuthenticationUrl");
         String tenantId = System.getProperty("azure.keyvault.tenantId");
         String clientId = System.getProperty("azure.keyvault.clientId");
         String clientSecret = System.getProperty("azure.keyvault.clientSecret");
-        keyVault = new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret);
+        String managedIdentity = System.getProperty("azure.keyvault.managedIdentity");
+        if (clientId != null) {
+            keyVaultClient = new KeyVaultClient(keyVaultUri, aadAuthenticationUrl, tenantId, clientId, clientSecret);
+        } else {
+            keyVaultClient = new KeyVaultClient(keyVaultUri, managedIdentity);
+        }
     }
 
     @Override
     public Enumeration<String> engineAliases() {
         if (aliases == null) {
-            aliases = keyVault.getAliases();
+            aliases = keyVaultClient.getAliases();
         }
         return Collections.enumeration(aliases);
     }
@@ -114,7 +123,7 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
         if (certificates.containsKey(alias)) {
             certificate = certificates.get(alias);
         } else {
-            certificate = keyVault.getCertificate(alias);
+            certificate = keyVaultClient.getCertificate(alias);
             if (certificate != null) {
                 certificates.put(alias, certificate);
                 if (!aliases.contains(alias)) {
@@ -130,7 +139,7 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
         String alias = null;
         if (cert != null) {
             if (aliases == null) {
-                aliases = keyVault.getAliases();
+                aliases = keyVaultClient.getAliases();
             }
             for (String candidateAlias : aliases) {
                 Certificate certificate = engineGetCertificate(candidateAlias);
@@ -156,7 +165,7 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
 
     @Override
     public Date engineGetCreationDate(String alias) {
-        return creationDate;
+        return new Date(creationDate.getTime());
     }
 
     @Override
@@ -170,9 +179,12 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
         if (certificateKeys.containsKey(alias)) {
             key = certificateKeys.get(alias);
         } else {
-            key = keyVault.getKey(alias, password);
+            key = keyVaultClient.getKey(alias, password);
             if (key != null) {
                 certificateKeys.put(alias, key);
+                if (aliases == null) {
+                    aliases = keyVaultClient.getAliases();
+                }
                 if (!aliases.contains(alias)) {
                     aliases.add(alias);
                 }
@@ -184,7 +196,7 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
     @Override
     public boolean engineIsCertificateEntry(String alias) {
         if (aliases == null) {
-            aliases = keyVault.getAliases();
+            aliases = keyVaultClient.getAliases();
         }
         return aliases.contains(alias);
     }
@@ -198,11 +210,21 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
     public void engineLoad(KeyStore.LoadStoreParameter param) {
         if (param instanceof KeyVaultLoadStoreParameter) {
             KeyVaultLoadStoreParameter parameter = (KeyVaultLoadStoreParameter) param;
-            keyVault = new KeyVaultClient(
-                parameter.getUri(),
-                parameter.getTenantId(),
-                parameter.getClientId(),
-                parameter.getClientSecret());
+            if (parameter.getClientId() != null) {
+                keyVaultClient = new KeyVaultClient(
+                        parameter.getUri(),
+                        parameter.getAadAuthenticationUrl(),
+                        parameter.getTenantId(),
+                        parameter.getClientId(),
+                        parameter.getClientSecret());
+            } else if (parameter.getManagedIdentity() != null) {
+                keyVaultClient = new KeyVaultClient(
+                        parameter.getUri(),
+                        parameter.getManagedIdentity()
+                );
+            } else {
+                keyVaultClient = new KeyVaultClient(parameter.getUri());
+            }
         }
         sideLoad();
     }
@@ -215,7 +237,7 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
     @Override
     public void engineSetCertificateEntry(String alias, Certificate certificate) {
         if (aliases == null) {
-            aliases = keyVault.getAliases();
+            aliases = keyVaultClient.getAliases();
         }
         if (!aliases.contains(alias)) {
             aliases.add(alias);
@@ -258,12 +280,14 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
      */
     private String[] getFilenames(String path) throws IOException {
         List<String> filenames = new ArrayList<>();
-        InputStream in = getClass().getResourceAsStream(path);
-        if (in != null) {
-            BufferedReader br = new BufferedReader(new InputStreamReader(in));
-            String resource;
-            while ((resource = br.readLine()) != null) {
-                filenames.add(resource);
+        try (InputStream in = getClass().getResourceAsStream(path)) {
+            if (in != null) {
+                try (BufferedReader br = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8))) {
+                    String resource;
+                    while ((resource = br.readLine()) != null) {
+                        filenames.add(resource);
+                    }
+                }
             }
         }
         return filenames.toArray(new String[0]);
@@ -277,16 +301,19 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
      * @throws IOException when an I/O error occurs.
      */
     private byte[] readAllBytes(InputStream inputStream) throws IOException {
-        ByteArrayOutputStream byteOutput = new ByteArrayOutputStream();
-        byte[] buffer = new byte[1024];
-        while (true) {
-            int r = inputStream.read(buffer);
-            if (r == -1) {
-                break;
+        byte[] bytes;
+        try (ByteArrayOutputStream byteOutput = new ByteArrayOutputStream()) {
+            byte[] buffer = new byte[1024];
+            while (true) {
+                int r = inputStream.read(buffer);
+                if (r == -1) {
+                    break;
+                }
+                byteOutput.write(buffer, 0, r);
             }
-            byteOutput.write(buffer, 0, r);
+            bytes = byteOutput.toByteArray();
         }
-        return byteOutput.toByteArray();
+        return bytes;
     }
 
     /**
@@ -307,12 +334,12 @@ public class KeyVaultKeyStore extends KeyStoreSpi {
                             try {
                                 CertificateFactory cf = CertificateFactory.getInstance("X.509");
                                 X509Certificate certificate = (X509Certificate) cf.generateCertificate(
-                                    new ByteArrayInputStream(bytes));
+                                        new ByteArrayInputStream(bytes));
                                 engineSetCertificateEntry(alias, certificate);
                                 LOGGER.log(INFO, "Side loaded certificate: {0} from: {1}",
-                                    new Object[] { alias, filename });
+                                        new Object[]{alias, filename});
                             } catch (CertificateException e) {
-                                LOGGER.log(WARNING, "Unable to side-load certificate", e);
+                                LOGGER.log(WARNING, "Unable to side-load certificate from: " + filename, e);
                             }
                         }
                     }

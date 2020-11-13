@@ -56,6 +56,13 @@ public class AzureEventHubAutoConfiguration {
         return new EventHubTemplate(clientFactory);
     }
 
+    /**
+     * Create a {@link EventHubConnectionStringProvider} bean.
+     * @param eventHubProperties The Event Hubs properties.
+     * @return The {@link EventHubConnectionStringProvider} bean.
+     *
+     * @throws IllegalArgumentException If connection string is empty.
+     */
     @Bean
     @ConditionalOnMissingBean
     public EventHubConnectionStringProvider eventHubConnectionStringProvider(
@@ -67,12 +74,11 @@ public class AzureEventHubAutoConfiguration {
         } else {
             String connectionString = eventHubProperties.getConnectionString();
 
-            if (!StringUtils.hasText(connectionString)) {
-                throw new IllegalArgumentException("Event hubs connection string cannot be empty");
+            if (StringUtils.hasText(connectionString)) {
+                TelemetryCollector.getInstance()
+                                  .addProperty(EVENT_HUB, NAMESPACE, EventHubUtils.getNamespace(connectionString));
             }
 
-            TelemetryCollector.getInstance()
-                .addProperty(EVENT_HUB, NAMESPACE, EventHubUtils.getNamespace(connectionString));
             return new EventHubConnectionStringProvider(connectionString);
         }
     }

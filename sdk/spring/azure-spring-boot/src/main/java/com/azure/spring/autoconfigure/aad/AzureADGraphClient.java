@@ -119,25 +119,39 @@ public class AzureADGraphClient {
     public Set<String> getGroups(String graphApiToken) throws IOException {
         final Set<String> groups = new LinkedHashSet<>();
         final ObjectMapper objectMapper = JacksonObjectMapperFactory.getInstance();
-        String aadMembershipRestUri = serviceEndpoints.getAadMembershipRestUri();
+        String aadMembershipRestUri = getAadMembershipRestUri();
         while (aadMembershipRestUri != null) {
             String membershipsJson = getUserMemberships(graphApiToken, aadMembershipRestUri);
-            MemberShips memberShips = objectMapper.readValue(membershipsJson, MemberShips.class);
-            memberShips.getValue()
+            Memberships memberships = objectMapper.readValue(membershipsJson, Memberships.class);
+            memberships.getValue()
                        .stream()
                        .filter(this::isGroupObject)
-                       .map(MemberShip::getDisplayName)
+                       .map(Membership::getDisplayName)
                        .forEach(groups::add);
-            aadMembershipRestUri = Optional.of(memberShips)
-                                           .map(MemberShips::getOdataNextLink)
+            aadMembershipRestUri = Optional.of(memberships)
+                                           .map(Memberships::getOdataNextLink)
                                            .map(this::getUrlStringFromODataNextLink)
                                            .orElse(null);
         }
         return groups;
     }
 
-    private boolean isGroupObject(final MemberShip memberShip) {
-        return memberShip.getObjectType().equals(aadAuthenticationProperties.getUserGroup().getValue());
+    /**
+     * Get the rest url to get the groups that the user is a member of.
+     * @return rest url
+     */
+    private String getAadMembershipRestUri() {
+        if (AADAuthenticationProperties.getDirectGroupRelationship()
+                                       .equalsIgnoreCase(aadAuthenticationProperties
+                                           .getUserGroup().getGroupRelationship())) {
+            return serviceEndpoints.getAadMembershipRestUri();
+        } else {
+            return serviceEndpoints.getAadTransitiveMemberRestUri();
+        }
+    }
+
+    private boolean isGroupObject(final Membership membership) {
+        return membership.getObjectType().equals(aadAuthenticationProperties.getUserGroup().getValue());
     }
 
     /**
@@ -185,7 +199,7 @@ public class AzureADGraphClient {
             final OnBehalfOfParameters onBehalfOfParameters = OnBehalfOfParameters.builder(scopes, assertion).build();
             result = application.acquireToken(onBehalfOfParameters).get();
         } catch (ExecutionException | InterruptedException | MalformedURLException e) {
-            // Handle conditional access policy
+            // Handle conditional access policy, step 1.
             final Throwable cause = e.getCause();
             if (cause instanceof MsalServiceException) {
                 final MsalServiceException exception = (MsalServiceException) cause;

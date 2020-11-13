@@ -9,6 +9,9 @@ import com.microsoft.azure.management.eventhub.EventHubConsumerGroup;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
 import com.azure.spring.cloud.context.core.util.Tuple;
 
+/**
+ * Resource manager for Event Hubs consumer group.
+ */
 public class EventHubConsumerGroupManager extends AzureManager<EventHubConsumerGroup, Tuple<EventHub, String>> {
 
     public EventHubConsumerGroupManager(Azure azure, AzureProperties azureProperties) {

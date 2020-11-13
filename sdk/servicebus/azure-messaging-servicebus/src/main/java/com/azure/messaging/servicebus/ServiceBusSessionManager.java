@@ -55,6 +55,7 @@ class ServiceBusSessionManager implements AutoCloseable {
     private final String entityPath;
     private final MessagingEntityType entityType;
     private final ReceiverOptions receiverOptions;
+    private final ServiceBusReceiveLink receiveLink;
     private final ServiceBusConnectionProcessor connectionProcessor;
     private final Duration operationTimeout;
     private final TracerProvider tracerProvider;
@@ -70,14 +71,14 @@ class ServiceBusSessionManager implements AutoCloseable {
      * SessionId to receiver mapping.
      */
     private final ConcurrentHashMap<String, ServiceBusSessionReceiver> sessionReceivers = new ConcurrentHashMap<>();
-    private final EmitterProcessor<Flux<ServiceBusReceivedMessageContext>> processor;
-    private final FluxSink<Flux<ServiceBusReceivedMessageContext>> sessionReceiveSink;
+    private final EmitterProcessor<Flux<ServiceBusMessageContext>> processor;
+    private final FluxSink<Flux<ServiceBusMessageContext>> sessionReceiveSink;
 
-    private volatile Flux<ServiceBusReceivedMessageContext> receiveFlux;
+    private volatile Flux<ServiceBusMessageContext> receiveFlux;
 
     ServiceBusSessionManager(String entityPath, MessagingEntityType entityType,
         ServiceBusConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
-        MessageSerializer messageSerializer, ReceiverOptions receiverOptions) {
+        MessageSerializer messageSerializer, ReceiverOptions receiverOptions, ServiceBusReceiveLink receiveLink) {
         this.entityPath = entityPath;
         this.entityType = entityType;
         this.receiverOptions = receiverOptions;
@@ -103,6 +104,14 @@ class ServiceBusSessionManager implements AutoCloseable {
 
         this.processor = EmitterProcessor.create(numberOfSchedulers, false);
         this.sessionReceiveSink = processor.sink();
+        this.receiveLink = receiveLink;
+    }
+
+    ServiceBusSessionManager(String entityPath, MessagingEntityType entityType,
+        ServiceBusConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
+        MessageSerializer messageSerializer, ReceiverOptions receiverOptions) {
+        this(entityPath, entityType, connectionProcessor, tracerProvider,
+            messageSerializer, receiverOptions, null);
     }
 
     /**
@@ -140,7 +149,7 @@ class ServiceBusSessionManager implements AutoCloseable {
      *
      * @return A Flux of messages merged from different sessions.
      */
-    Flux<ServiceBusReceivedMessageContext> receive() {
+    Flux<ServiceBusMessageContext> receive() {
         if (!isStarted.getAndSet(true)) {
             this.sessionReceiveSink.onRequest(this::onSessionRequest);
 
@@ -193,15 +202,15 @@ class ServiceBusSessionManager implements AutoCloseable {
             validateParameter(lockToken, "lockToken", operation),
             validateParameter(sessionId, "'sessionId'", operation)).then(
             Mono.defer(() -> {
-                final String lock = lockToken;
                 final ServiceBusSessionReceiver receiver = sessionReceivers.get(sessionId);
-                if (receiver == null || !receiver.containsLockToken(lock)) {
+                if (receiver == null || !receiver.containsLockToken(lockToken)) {
                     return Mono.just(false);
                 }
 
                 final DeliveryState deliveryState = MessageUtils.getDeliveryState(dispositionStatus, deadLetterReason,
                     deadLetterDescription, propertiesToModify, transactionContext);
-                return receiver.updateDisposition(lock, deliveryState).thenReturn(true);
+
+                return receiver.updateDisposition(lockToken, deliveryState).thenReturn(true);
             }));
     }
 
@@ -247,7 +256,10 @@ class ServiceBusSessionManager implements AutoCloseable {
      * @return A Mono that completes when an unnamed session becomes available.
      * @throws AmqpException if the session manager is already disposed.
      */
-    private Mono<ServiceBusReceiveLink> getActiveLink() {
+    Mono<ServiceBusReceiveLink> getActiveLink() {
+        if (this.receiveLink != null) {
+            return Mono.just(this.receiveLink);
+        }
         return Mono.defer(() -> createSessionReceiveLink()
             .flatMap(link -> link.getEndpointStates()
                 .takeUntil(e -> e == AmqpEndpointState.ACTIVE)
@@ -280,9 +292,9 @@ class ServiceBusSessionManager implements AutoCloseable {
      * @param disposeOnIdle true to dispose receiver when it idles; false otherwise.
      * @return A Mono that completes with an unnamed session receiver.
      */
-    private Flux<ServiceBusReceivedMessageContext> getSession(Scheduler scheduler, boolean disposeOnIdle) {
+    private Flux<ServiceBusMessageContext> getSession(Scheduler scheduler, boolean disposeOnIdle) {
         return getActiveLink().flatMap(link -> link.getSessionId()
-            .map(linkName -> sessionReceivers.compute(linkName, (key, existing) -> {
+            .map(sessionId -> sessionReceivers.compute(sessionId, (key, existing) -> {
                 if (existing != null) {
                     return existing;
                 }
@@ -290,7 +302,7 @@ class ServiceBusSessionManager implements AutoCloseable {
                     receiverOptions.getPrefetchCount(), disposeOnIdle, scheduler, this::renewSessionLock,
                     maxSessionLockRenewDuration);
             })))
-            .flatMapMany(session -> session.receive().doFinally(signalType -> {
+            .flatMapMany(sessionReceiver -> sessionReceiver.receive().doFinally(signalType -> {
                 logger.verbose("Adding scheduler back to pool.");
                 availableSchedulers.push(scheduler);
                 if (receiverOptions.isRollingSessionReceiver()) {
@@ -328,7 +340,7 @@ class ServiceBusSessionManager implements AutoCloseable {
                 return;
             }
 
-            Flux<ServiceBusReceivedMessageContext> session = getSession(scheduler, true);
+            Flux<ServiceBusMessageContext> session = getSession(scheduler, true);
 
             sessionReceiveSink.next(session);
         }

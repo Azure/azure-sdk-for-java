@@ -88,7 +88,7 @@ import static com.azure.cosmos.models.ModelBridgeInternal.serializeJsonToByteBuf
 import static com.azure.cosmos.models.ModelBridgeInternal.toDatabaseAccount;
 
 /**
- * While this class is public, but it is not part of our published public APIs.
+ * While this class is public, it is not part of our published public APIs.
  * This is meant to be internally used only by our sdk.
  */
 public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorizationTokenProvider, CpuListener, DiagnosticsClientContext {
@@ -1977,8 +1977,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         return new SqlQuerySpec(queryStringBuilder.toString(), parameters);
     }
-
-
 
     private String createPkSelector(PartitionKeyDefinition partitionKeyDefinition) {
         return partitionKeyDefinition.getPaths()

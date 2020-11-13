@@ -3,33 +3,33 @@
 
 package com.azure.messaging.servicebus;
 
-import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.SCHEDULED_ENQUEUE_UTC_TIME_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.VIA_PARTITION_KEY_ANNOTATION_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.LOCKED_UNTIL_KEY_ANNOTATION_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.DEAD_LETTER_SOURCE_KEY_ANNOTATION_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_SEQUENCE_NUMBER_ANNOTATION_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.DEAD_LETTER_DESCRIPTION_ANNOTATION_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.DEAD_LETTER_REASON_ANNOTATION_NAME;
-
 import com.azure.core.amqp.AmqpMessageConstant;
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.amqp.models.AmqpBodyType;
 import com.azure.core.amqp.models.AmqpDataBody;
+import com.azure.core.experimental.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+
+import static com.azure.core.amqp.AmqpMessageConstant.DEAD_LETTER_DESCRIPTION_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.DEAD_LETTER_REASON_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.DEAD_LETTER_SOURCE_KEY_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_SEQUENCE_NUMBER_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.LOCKED_UNTIL_KEY_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.SCHEDULED_ENQUEUE_UTC_TIME_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.VIA_PARTITION_KEY_ANNOTATION_NAME;
 
 /**
  * This class represents a received message from Service Bus.
@@ -38,8 +38,13 @@ public final class ServiceBusReceivedMessage {
     private final ClientLogger logger = new ClientLogger(ServiceBusReceivedMessage.class);
 
     private final AmqpAnnotatedMessage amqpAnnotatedMessage;
-    private final byte[] binaryData;
     private UUID lockToken;
+    private boolean isSettled = false;
+
+    ServiceBusReceivedMessage(BinaryData body) {
+        Objects.requireNonNull(body, "'body' cannot be null.");
+        amqpAnnotatedMessage = new AmqpAnnotatedMessage(new AmqpDataBody(Collections.singletonList(body.toBytes())));
+    }
 
     /**
      * The representation of message as defined by AMQP protocol.
@@ -53,15 +58,11 @@ public final class ServiceBusReceivedMessage {
         return amqpAnnotatedMessage;
     }
 
-    ServiceBusReceivedMessage(byte[] body) {
-        binaryData = Objects.requireNonNull(body, "'body' cannot be null.");
-        amqpAnnotatedMessage = new AmqpAnnotatedMessage(new AmqpDataBody(Collections.singletonList(
-            binaryData)));
-    }
-
     /**
      * Gets the actual payload/data wrapped by the {@link ServiceBusReceivedMessage}.
      *
+     * <p>The {@link BinaryData} wraps byte array and is an abstraction over many different ways it can be represented.
+     * It provides many convenience API including APIs to serialize/deserialize object.
      * <p>
      * If the means for deserializing the raw data is not apparent to consumers, a common technique is to make use of
      * {@link #getApplicationProperties()} when creating the event, to associate serialization hints as an aid to
@@ -70,20 +71,29 @@ public final class ServiceBusReceivedMessage {
      *
      * @return A byte array representing the data.
      */
-    public byte[] getBody() {
+    public BinaryData getBody() {
         final AmqpBodyType bodyType = amqpAnnotatedMessage.getBody().getBodyType();
         switch (bodyType) {
             case DATA:
-                return Arrays.copyOf(binaryData, binaryData.length);
+                return BinaryData.fromBytes(((AmqpDataBody) amqpAnnotatedMessage.getBody())
+                    .getData().stream().findFirst().get());
             case SEQUENCE:
             case VALUE:
                 throw logger.logExceptionAsError(new UnsupportedOperationException("Body type not supported yet "
                     + bodyType.toString()));
             default:
-                logger.warning("Invalid body type {}.", bodyType);
                 throw logger.logExceptionAsError(new IllegalStateException("Body type not valid "
                     + bodyType.toString()));
         }
+    }
+
+    /**
+     * Gets the actual payload/data wrapped by the {@link ServiceBusReceivedMessage}.
+     *
+     * @return A byte array representing the data.
+     */
+    public byte[] getBodyAsBytes() {
+        return getBody().toBytes();
     }
 
     /**
@@ -378,7 +388,7 @@ public final class ServiceBusReceivedMessage {
      * @return Session Id of the {@link ServiceBusReceivedMessage}.
      */
     public String getSessionId() {
-        return amqpAnnotatedMessage.getProperties().getGroupId();
+        return getAmqpAnnotatedMessage().getProperties().getGroupId();
     }
 
     /**
@@ -421,6 +431,15 @@ public final class ServiceBusReceivedMessage {
     public String getViaPartitionKey() {
         return getStringValue(amqpAnnotatedMessage.getMessageAnnotations(),
             VIA_PARTITION_KEY_ANNOTATION_NAME.getValue());
+    }
+
+    /**
+     * Gets whether the message has been settled.
+     *
+     * @return True if the message has been settled, false otherwise.
+     */
+    boolean isSettled() {
+        return this.isSettled;
     }
 
     /**
@@ -484,6 +503,11 @@ public final class ServiceBusReceivedMessage {
         amqpAnnotatedMessage.getHeader().setDeliveryCount(deliveryCount);
     }
 
+    /**
+     * Sets the message's sequence number.
+     *
+     * @param enqueuedSequenceNumber The message's sequence number.
+     */
     void setEnqueuedSequenceNumber(long enqueuedSequenceNumber) {
         amqpAnnotatedMessage.getMessageAnnotations().put(ENQUEUED_SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(),
             enqueuedSequenceNumber);
@@ -499,12 +523,11 @@ public final class ServiceBusReceivedMessage {
     }
 
     /**
-     * Sets the subject for the message.
+     * Sets whether the message has been settled.
      *
-     * @param subject The subject to set.
      */
-    void setSubject(String subject) {
-        amqpAnnotatedMessage.getProperties().setSubject(subject);
+    void setIsSettled() {
+        this.isSettled = true;
     }
 
     /**
@@ -572,6 +595,15 @@ public final class ServiceBusReceivedMessage {
      */
     void setSessionId(String sessionId) {
         amqpAnnotatedMessage.getProperties().setGroupId(sessionId);
+    }
+
+    /**
+     * Sets the subject for the message.
+     *
+     * @param subject The subject to set.
+     */
+    void setSubject(String subject) {
+        amqpAnnotatedMessage.getProperties().setSubject(subject);
     }
 
     /**

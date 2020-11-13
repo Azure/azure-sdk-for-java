@@ -1,6 +1,21 @@
 # Release History
 
-## 1.2.0-beta.3 (Unreleased)
+## 1.3.0-beta.1 (Unreleased)
+
+
+## 1.2.0 (2020-11-09)
+
+### New Features
+- Added Azure Service Fabric Managed Identity support to `ManagedIdentityCredential`
+- Added Azure Arc Managed Identity support to `ManagedIdentityCredential`
+- Added support for Docker Containers in `DefaultAzureCredential`
+
+### Fixes and improvements
+- Prevent `VisualStudioCodeCredential` using invalid authentication data when no user is signed in to Visual Studio Code
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to 1.10.0
+- Upgraded `msal4j` dependency to 1.8.0
 
 
 ## 1.2.0-beta.2 (2020-10-06)

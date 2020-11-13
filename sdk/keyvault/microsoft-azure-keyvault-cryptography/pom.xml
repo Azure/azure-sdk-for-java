@@ -59,7 +59,7 @@
       <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-databind</artifactId>
-        <version>2.11.2</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+        <version>2.11.3</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
       </dependency>
 
       <!-- Other Dependencies -->
@@ -90,7 +90,7 @@
       <dependency>
         <groupId>org.bouncycastle</groupId>
         <artifactId>bcprov-jdk15on</artifactId>
-        <version>1.60</version> <!-- {x-version-update;org.bouncycastle:bcprov-jdk15on;external_dependency} -->
+        <version>1.66</version> <!-- {x-version-update;org.bouncycastle:bcprov-jdk15on;external_dependency} -->
         <scope>test</scope>
       </dependency>
     </dependencies>

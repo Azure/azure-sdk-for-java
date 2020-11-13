@@ -34,13 +34,6 @@ public class LocalCryptographyClientTest extends LocalCryptographyClientTestBase
         beforeTestSetup();
     }
 
-
-    private LocalCryptographyClient initializeCryptographyClient(JsonWebKey key) {
-        return new LocalCryptographyClientBuilder()
-            .key(key)
-            .buildClient();
-    }
-
     @Test
     public void encryptDecryptRsa() throws Exception {
         encryptDecryptRsaRunner(keyPair -> {
@@ -116,6 +109,50 @@ public class LocalCryptographyClientTest extends LocalCryptographyClientTestBase
             Boolean verifyStatus = cryptoClient.verifyData(curveToSignature.get(crv), plainText, signature).isValid();
             assertTrue(verifyStatus);
         }
+    }
 
+    @Test
+    public void encryptDecryptLocalAes128Cbc() throws NoSuchAlgorithmException {
+        encryptDecryptAesCbc(128, EncryptionAlgorithm.A128CBC);
+    }
+
+    @Test
+    public void encryptDecryptLocalAes192Cbc() throws NoSuchAlgorithmException {
+        encryptDecryptAesCbc(256, EncryptionAlgorithm.A192CBC);
+    }
+
+    @Test
+    public void encryptDecryptLocalAes256Cbc() throws NoSuchAlgorithmException {
+        encryptDecryptAesCbc(256, EncryptionAlgorithm.A256CBC);
+    }
+
+    @Test
+    public void encryptDecryptLocalAes128CbcPad() throws NoSuchAlgorithmException {
+        encryptDecryptAesCbc(128, EncryptionAlgorithm.A128CBCPAD);
+    }
+
+    @Test
+    public void encryptDecryptLocalAes192CbcPad() throws NoSuchAlgorithmException {
+        encryptDecryptAesCbc(192, EncryptionAlgorithm.A192CBCPAD);
+    }
+
+    @Test
+    public void encryptDecryptLocalAes256CbcPad() throws NoSuchAlgorithmException {
+        encryptDecryptAesCbc(256, EncryptionAlgorithm.A256CBCPAD);
+    }
+
+    @Test
+    public void encryptDecryptLocalAes128Gcm() throws NoSuchAlgorithmException {
+        encryptDecryptAesGcm(128, EncryptionAlgorithm.A128GCM);
+    }
+
+    @Test
+    public void encryptDecryptLocalAes192Gcm() throws NoSuchAlgorithmException {
+        encryptDecryptAesGcm(192, EncryptionAlgorithm.A192GCM);
+    }
+
+    @Test
+    public void encryptDecryptLocalAes256Gcm() throws NoSuchAlgorithmException {
+        encryptDecryptAesGcm(256, EncryptionAlgorithm.A256GCM);
     }
 }

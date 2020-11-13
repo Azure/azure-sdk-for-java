@@ -32,7 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
-import java.util.Set;
+import java.net.URI;
 import java.util.concurrent.Callable;
 import java.util.function.Function;
 
@@ -64,11 +64,6 @@ public class AddressResolver implements IAddressResolver {
         this.collectionRoutingMapCache = collectionRoutingMapCache;
     }
 
-    @Override
-    public void remove(RxDocumentServiceRequest request, Set<PartitionKeyRangeIdentity> partitionKeyRangeIdentitySet) {
-        throw new NotImplementedException("remove() is not supported in AddressResolver");
-    }
-
     public Mono<AddressInformation[]> resolveAsync(
         RxDocumentServiceRequest request,
         boolean forceRefreshPartitionAddresses) {
@@ -87,6 +82,11 @@ public class AddressResolver implements IAddressResolver {
 
             return Mono.just(result.Addresses);
         });
+    }
+
+    @Override
+    public void updateAddresses(RxDocumentServiceRequest request, URI serverKey) {
+        throw new NotImplementedException("updateAddresses() is not supported in AddressResolver");
     }
 
     private static boolean isSameCollection(PartitionKeyRange initiallyResolved, PartitionKeyRange newlyResolved) {

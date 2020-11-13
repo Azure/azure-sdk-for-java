@@ -3,9 +3,12 @@
 
 package com.azure.security.keyvault.administration.models;
 
+import com.azure.core.annotation.Immutable;
+
 /**
  * A class that defines a role.
  */
+@Immutable
 public final class KeyVaultRoleDefinition {
     private final String id;
     private final String name;
@@ -19,7 +22,7 @@ public final class KeyVaultRoleDefinition {
      * @param name The name for this {@link KeyVaultRoleDefinition role definition}.
      * @param type The type for this {@link KeyVaultRoleDefinition role definition}.
      * @param properties {@link KeyVaultRoleDefinitionProperties properties} of this {@link KeyVaultRoleDefinition
-     * role assignment}.
+     * role definition}.
      */
     public KeyVaultRoleDefinition(String id, String name, String type, KeyVaultRoleDefinitionProperties properties) {
         this.id = id;
@@ -47,9 +50,9 @@ public final class KeyVaultRoleDefinition {
     }
 
     /**
-     * Get the {@link KeyVaultRoleDefinition role assignment} type.
+     * Get the {@link KeyVaultRoleDefinition role definition} type.
      *
-     * @return The {@link KeyVaultRoleDefinition role assignment} type.
+     * @return The {@link KeyVaultRoleDefinition role definition} type.
      */
     public String getType() {
         return type;
@@ -58,7 +61,7 @@ public final class KeyVaultRoleDefinition {
     /**
      * Get the {@link KeyVaultRoleDefinition role definition} {@link KeyVaultRoleDefinitionProperties properties}.
      *
-     * @return The {@link KeyVaultRoleDefinition role assignment} {@link KeyVaultRoleDefinitionProperties properties}.
+     * @return The {@link KeyVaultRoleDefinition role definition} {@link KeyVaultRoleDefinitionProperties properties}.
      */
     public KeyVaultRoleDefinitionProperties getProperties() {
         return properties;
