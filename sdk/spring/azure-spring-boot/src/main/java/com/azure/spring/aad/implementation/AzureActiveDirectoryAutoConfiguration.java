@@ -60,6 +60,21 @@ public class AzureActiveDirectoryAutoConfiguration {
     private ServiceEndpointsProperties serviceEndpointsProperties;
 
     @Bean
+    @ConditionalOnMissingBean({ ClientRegistrationRepository.class, AzureClientRegistrationRepository.class })
+    public AzureClientRegistrationRepository clientRegistrationRepository() {
+        return new AzureClientRegistrationRepository(
+            createDefaultClient(),
+            createClientRegistrations()
+        );
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public OAuth2AuthorizedClientRepository authorizedClientRepository(AzureClientRegistrationRepository repo) {
+        return new AzureOAuth2AuthorizedClientRepository(repo);
+    }
+
+    @Bean
     WebClient webClient(
         ClientRegistrationRepository clientRegistrationRepository,
         OAuth2AuthorizedClientRepository oAuth2AuthorizedClientRepository
@@ -88,15 +103,6 @@ public class AzureActiveDirectoryAutoConfiguration {
     @ConditionalOnProperty(prefix = "azure.activedirectory.user-group", value = "allowed-groups")
     public OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService(GraphWebClient graphWebClient) {
         return new AADOAuth2UserService(graphWebClient);
-    }
-
-    @Bean
-    @ConditionalOnMissingBean({ ClientRegistrationRepository.class, AzureClientRegistrationRepository.class })
-    public AzureClientRegistrationRepository clientRegistrationRepository() {
-        return new AzureClientRegistrationRepository(
-            createDefaultClient(),
-            createClientRegistrations()
-        );
     }
 
     private DefaultClient createDefaultClient() {
@@ -165,12 +171,6 @@ public class AzureActiveDirectoryAutoConfiguration {
                                  .authorizationUri(endpoints.authorizationEndpoint(tenantId))
                                  .tokenUri(endpoints.tokenEndpoint(tenantId))
                                  .jwkSetUri(endpoints.jwkSetEndpoint(tenantId));
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public OAuth2AuthorizedClientRepository authorizedClientRepository(AzureClientRegistrationRepository repo) {
-        return new AzureOAuth2AuthorizedClientRepository(repo);
     }
 
     @Configuration
