@@ -140,8 +140,18 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
                         ensure primaryTry is correct when passed to calculate the delay.
                          */
                     int newPrimaryTry = (!tryingPrimary || !considerSecondary) ? primaryTry + 1 : primaryTry;
-                    return attemptAsync(context, next, originalRequest, newConsiderSecondary, newPrimaryTry,
-                        attempt + 1);
+
+                    Flux<ByteBuffer> responseBody = response.getBody();
+                    if (responseBody == null) {
+                        return attemptAsync(context, next, originalRequest, newConsiderSecondary, newPrimaryTry,
+                            attempt + 1);
+                    } else {
+                        return response.getBody()
+                            .ignoreElements()
+                            .then(attemptAsync(context, next, originalRequest, newConsiderSecondary, newPrimaryTry,
+                                attempt + 1));
+                    }
+
                 }
                 return Mono.just(response);
             }).onErrorResume(throwable -> {

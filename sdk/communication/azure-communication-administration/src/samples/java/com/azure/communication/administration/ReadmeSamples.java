@@ -2,12 +2,11 @@
 // Licensed under the MIT License.
 
 package com.azure.communication.administration;
-
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import com.azure.communication.administration.models.AcquiredPhoneNumber;
 import com.azure.communication.administration.models.AreaCodes;
 import com.azure.communication.administration.models.CreateSearchOptions;
@@ -16,6 +15,7 @@ import com.azure.communication.administration.models.LocationOptions;
 import com.azure.communication.administration.models.LocationOptionsDetails;
 import com.azure.communication.administration.models.LocationOptionsQuery;
 import com.azure.communication.administration.models.PhoneNumberCountry;
+import com.azure.communication.administration.models.PhoneNumberRelease;
 import com.azure.communication.administration.models.PhoneNumberSearch;
 import com.azure.communication.administration.models.PhonePlan;
 import com.azure.communication.administration.models.PhonePlanGroup;
@@ -25,9 +25,9 @@ import com.azure.communication.common.PhoneNumber;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.polling.SyncPoller;
 
 public class ReadmeSamples {
-
     /**
      * Sample code for creating a sync Communication Identity Client.
      *
@@ -327,15 +327,6 @@ public class ReadmeSamples {
     }
 
     /**
-     * Sample code to purchase a phone number search
-     */
-    public void purchasePhoneNumberSearch() {
-        String phoneNumberSearchId = "SEARCH_ID_TO_PURCHASE";
-        PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
-        phoneNumberClient.purchaseSearch(phoneNumberSearchId);
-    }
-
-    /**
      * Sample code to configure a phone number
      */
     public void configurePhoneNumber() {
@@ -345,5 +336,66 @@ public class ReadmeSamples {
         pstnConfiguration.setCallbackUrl("CALLBACK_URL");
         PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
         phoneNumberClient.configureNumber(phoneNumber, pstnConfiguration);
+    }
+
+    /**
+     * Sample code to create a search as a long running operation
+     */
+    public void beginCreateSearch() {
+        String phonePlanId = "PHONE_PLAN_ID";
+
+        List<String> phonePlanIds = new ArrayList<>();
+        phonePlanIds.add(phonePlanId);
+
+        CreateSearchOptions createSearchOptions = new CreateSearchOptions();
+        createSearchOptions
+            .setAreaCode("AREA_CODE_FOR_SEARCH")
+            .setDescription("DESCRIPTION_FOR_SEARCH")
+            .setDisplayName("NAME_FOR_SEARCH")
+            .setPhonePlanIds(phonePlanIds)
+            .setQuantity(2);
+        
+        Duration duration = Duration.ofSeconds(1);
+        PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
+
+        SyncPoller<PhoneNumberSearch, PhoneNumberSearch> res = 
+            phoneNumberClient.beginCreateSearch(createSearchOptions, duration);
+        res.waitForCompletion();
+        PhoneNumberSearch result = res.getFinalResult();
+
+        System.out.println("Search Id: " + result.getSearchId());
+        for (String phoneNumber: result.getPhoneNumbers()) {
+            System.out.println("Phone Number: " + phoneNumber);
+        }
+    }
+
+    /**
+     * Sample code to purchase a search as a long running operation
+     */
+    public void beginPurchaseSearch() {
+        Duration duration = Duration.ofSeconds(1);
+        String phoneNumberSearchId = "SEARCH_ID_TO_PURCHASE";
+        PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
+
+        SyncPoller<Void, Void> res = 
+            phoneNumberClient.beginPurchaseSearch(phoneNumberSearchId, duration);
+        res.waitForCompletion();
+    }
+
+    /**
+     * Sample code to release a phone number as a long running operation
+     */
+    public void beginReleasePhoneNumbers() {
+        Duration duration = Duration.ofSeconds(1);
+        PhoneNumber phoneNumber = new PhoneNumber("PHONE_NUMBER_TO_RELEASE");
+        List<PhoneNumber> phoneNumbers = new ArrayList<>();
+        phoneNumbers.add(phoneNumber);
+        PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
+
+        SyncPoller<PhoneNumberRelease, PhoneNumberRelease> res = 
+            phoneNumberClient.beginReleasePhoneNumbers(phoneNumbers, duration);
+        res.waitForCompletion();
+        PhoneNumberRelease result = res.getFinalResult();
+        System.out.println("Phone number release status: " + result.getStatus());
     }
 }

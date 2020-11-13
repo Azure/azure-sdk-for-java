@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpMessageConstant;
+import com.azure.core.experimental.util.BinaryData;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.message.Message;
@@ -22,10 +23,10 @@ import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATI
 import static com.azure.core.amqp.AmqpMessageConstant.LOCKED_UNTIL_KEY_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -34,22 +35,17 @@ public class ServiceBusReceivedMessageTest {
     // Create a giant payload with 10000 characters that are "a".
     private static final String PAYLOAD = new String(new char[10000]).replace("\0", "a");
     private static final byte[] PAYLOAD_BYTES = PAYLOAD.getBytes(UTF_8);
-
-    @Test
-    public void byteArrayNotNull() {
-        assertThrows(NullPointerException.class, () -> new ServiceBusReceivedMessage(null));
-    }
+    private static final BinaryData PAYLOAD_BINARY = BinaryData.fromString(PAYLOAD);
 
     @Test
     public void messagePropertiesShouldNotBeNull() {
         // Act
-        final ServiceBusReceivedMessage receivedMessage = new ServiceBusReceivedMessage(PAYLOAD_BYTES);
+        final ServiceBusReceivedMessage receivedMessage = new ServiceBusReceivedMessage(PAYLOAD_BINARY);
 
         // Assert
         assertNotNull(receivedMessage.getBody());
         assertNotNull(receivedMessage.getApplicationProperties());
     }
-
 
     /**
      * Verify that we can create an Message with an empty byte array.
@@ -60,10 +56,10 @@ public class ServiceBusReceivedMessageTest {
         byte[] byteArray = new byte[0];
 
         // Act
-        final ServiceBusReceivedMessage serviceBusMessageData = new ServiceBusReceivedMessage(byteArray);
+        final ServiceBusReceivedMessage serviceBusMessageData = new ServiceBusReceivedMessage(BinaryData.fromBytes(byteArray));
 
         // Assert
-        final byte[] actual = serviceBusMessageData.getBody();
+        final byte[] actual = serviceBusMessageData.getBody().toBytes();
         assertNotNull(actual);
         assertEquals(0, actual.length);
     }
@@ -72,13 +68,26 @@ public class ServiceBusReceivedMessageTest {
      * Verify that we can create an Message with the correct body contents.
      */
     @Test
-    public void canCreateWithBytePayload() {
+    public void canCreateWithBinaryDataPayload() {
         // Act
-        final ServiceBusReceivedMessage serviceBusMessageData = new ServiceBusReceivedMessage(PAYLOAD_BYTES);
+        final ServiceBusReceivedMessage serviceBusMessageData = new ServiceBusReceivedMessage(PAYLOAD_BINARY);
 
         // Assert
         assertNotNull(serviceBusMessageData.getBody());
-        assertEquals(PAYLOAD, new String(serviceBusMessageData.getBody(), UTF_8));
+        assertEquals(PAYLOAD, serviceBusMessageData.getBody().toString());
+    }
+
+    /**
+     * Verify that we can create an Message with the correct byte array contents.
+     */
+    @Test
+    public void canCreateWithByteArrayPayload() {
+        // Act
+        final ServiceBusReceivedMessage serviceBusMessageData = new ServiceBusReceivedMessage(PAYLOAD_BINARY);
+
+        // Assert
+        assertNotNull(serviceBusMessageData.getBody());
+        assertArrayEquals(PAYLOAD_BYTES, serviceBusMessageData.getBodyAsBytes());
     }
 
     @Test
@@ -88,7 +97,7 @@ public class ServiceBusReceivedMessageTest {
         Data data = new Data(new Binary(PAYLOAD_BYTES));
         when(amqpMessage.getBody()).thenReturn(data);
         //
-        final ServiceBusReceivedMessage originalMessage = new ServiceBusReceivedMessage(PAYLOAD_BYTES);
+        final ServiceBusReceivedMessage originalMessage = new ServiceBusReceivedMessage(PAYLOAD_BINARY);
         originalMessage.setMessageId("mid");
         originalMessage.setContentType("type");
         originalMessage.setCorrelationId("cid");
@@ -118,7 +127,7 @@ public class ServiceBusReceivedMessageTest {
         // Assert
         assertNotNull(actual);
         assertNotNull(actual.getBody());
-        assertEquals(PAYLOAD, new String(actual.getBody(), UTF_8));
+        assertEquals(PAYLOAD, actual.getBody().toString());
         assertEquals(originalMessage.getMessageId(), actual.getMessageId());
         assertEquals(originalMessage.getContentType(), actual.getContentType());
         assertEquals(originalMessage.getCorrelationId(), actual.getCorrelationId());

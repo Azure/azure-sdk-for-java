@@ -5,6 +5,8 @@ package com.azure.resourcemanager.containerregistry.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.resourcemanager.containerregistry.ContainerRegistryManager;
+import com.azure.resourcemanager.containerregistry.fluent.models.RegistryInner;
+import com.azure.resourcemanager.containerregistry.fluent.models.RunInner;
 import com.azure.resourcemanager.containerregistry.models.AccessKeyType;
 import com.azure.resourcemanager.containerregistry.models.Registry;
 import com.azure.resourcemanager.containerregistry.models.RegistryCredentials;
@@ -16,16 +18,15 @@ import com.azure.resourcemanager.containerregistry.models.SkuName;
 import com.azure.resourcemanager.containerregistry.models.SourceUploadDefinition;
 import com.azure.resourcemanager.containerregistry.models.StorageAccountProperties;
 import com.azure.resourcemanager.containerregistry.models.WebhookOperations;
-import com.azure.resourcemanager.containerregistry.fluent.models.RegistryInner;
-import com.azure.resourcemanager.containerregistry.fluent.models.RunInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.StorageManager;
+import com.azure.resourcemanager.storage.models.StorageAccount;
+import reactor.core.publisher.Mono;
+
 import java.time.OffsetDateTime;
 import java.util.Collection;
-import reactor.core.publisher.Mono;
 
 /** Implementation for Registry and its create and update interfaces. */
 public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner, RegistryImpl, ContainerRegistryManager>
@@ -161,7 +162,6 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
             this.innerModel().withStorageAccount(null);
         } else {
             this.updateParameters.withSku(sku);
-            this.updateParameters.withStorageAccount(null);
         }
 
         return this;

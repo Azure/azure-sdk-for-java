@@ -43,9 +43,8 @@ public abstract class RegistryTest extends ResourceManagerTestBase {
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
-        resourceManager =
-            ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
-        registryManager = ContainerRegistryManager.authenticate(httpPipeline, profile);
+        registryManager = buildManager(ContainerRegistryManager.class, httpPipeline, profile);
+        resourceManager = registryManager.resourceManager();
         rgName = generateRandomResourceName("rgacr", 10);
     }
 }

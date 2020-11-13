@@ -48,6 +48,7 @@ context-client-method-parameter: true
 enable-xml: false
 required-parameter-client-methods: true
 ```
+
 ### Rename AddChatThreadMembersRequest to AddChatThreadMembersOptions
 ``` yaml
 directive:

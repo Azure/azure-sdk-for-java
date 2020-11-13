@@ -3,6 +3,8 @@
 
 package com.azure.test.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextException;
@@ -15,9 +17,10 @@ import java.util.List;
 import java.util.Map;
 
 public class AppRunner implements AutoCloseable {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AppRunner.class);
 
-    private Class<?> appClass;
-    private Map<String, String> props;
+    private final Class<?> appClass;
+    private final Map<String, String> props;
 
     private ConfigurableApplicationContext app;
 
@@ -30,25 +33,17 @@ public class AppRunner implements AutoCloseable {
         props.put(key, value);
     }
 
-    public void start() {
+    public ConfigurableApplicationContext start() {
         if (app == null) {
             final SpringApplicationBuilder builder = new SpringApplicationBuilder(appClass);
             builder.properties("spring.jmx.enabled=false");
-            builder.properties(String.format("server.port=%d", availableTcpPort()));
+            int port = availableTcpPort();
+            LOGGER.info("port = {}.", port);
+            builder.properties(String.format("server.port=%d", port));
             builder.properties(props());
-
+            LOGGER.info("app begin to run.");
             app = builder.build().run();
-        }
-    }
-
-    public ConfigurableApplicationContext start(String dummy) {
-        if (app == null) {
-            final SpringApplicationBuilder builder = new SpringApplicationBuilder(appClass);
-            builder.properties("spring.jmx.enabled=false");
-            builder.properties(String.format("server.port=%d", availableTcpPort()));
-            builder.properties(props());
-
-            app = builder.build().run();
+            LOGGER.info("app running.");
         }
         return app;
     }
@@ -72,10 +67,6 @@ public class AppRunner implements AutoCloseable {
             app.close();
             app = null;
         }
-    }
-
-    public ConfigurableApplicationContext app() {
-        return app;
     }
 
     public <T> T getBean(Class<T> type) {

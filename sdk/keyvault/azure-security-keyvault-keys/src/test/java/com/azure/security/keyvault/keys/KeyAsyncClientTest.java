@@ -15,11 +15,13 @@ import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
 import java.net.HttpURLConnection;
+import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +64,18 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     public void setKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyAsyncClient(httpClient, serviceVersion);
         setKeyRunner((expected) -> StepVerifier.create(client.createKey(expected))
+            .assertNext(response -> assertKeyEquals(expected, response))
+            .verifyComplete());
+    }
+
+    /**
+     * Tests that a RSA key created.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void createRsaKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        createKeyAsyncClient(httpClient, serviceVersion);
+        createRsaKeyRunner((expected) -> StepVerifier.create(client.createRsaKey(expected))
             .assertNext(response -> assertKeyEquals(expected, response))
             .verifyComplete());
     }
