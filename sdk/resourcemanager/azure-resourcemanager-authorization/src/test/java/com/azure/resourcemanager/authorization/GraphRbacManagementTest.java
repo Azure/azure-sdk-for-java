@@ -48,9 +48,8 @@ public abstract class GraphRbacManagementTest extends ResourceManagerTestBase {
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
-        authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile);
-        resourceManager =
-            ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
+        authorizationManager = buildManager(AuthorizationManager.class, httpPipeline, profile);
+        resourceManager = buildManager(ResourceManager.class, httpPipeline, profile);
     }
 
 

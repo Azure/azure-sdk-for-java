@@ -3,7 +3,10 @@
 
 package com.azure.resourcemanager.appservice.implementation;
 
+import com.azure.resourcemanager.appservice.models.DeployOptions;
+import com.azure.resourcemanager.appservice.models.DeployType;
 import com.azure.resourcemanager.appservice.models.DeploymentSlot;
+import com.azure.resourcemanager.appservice.models.DeploymentSlotBase;
 import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.appservice.fluent.models.SiteConfigResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.SiteInner;
@@ -11,6 +14,7 @@ import com.azure.resourcemanager.appservice.fluent.models.SiteLogsConfigInner;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Objects;
 
 import reactor.core.publisher.Mono;
 
@@ -21,8 +25,8 @@ class DeploymentSlotImpl
         DeploymentSlotImpl,
         WebAppImpl,
         DeploymentSlot.DefinitionStages.WithCreate,
-        DeploymentSlot.Update>
-    implements DeploymentSlot, DeploymentSlot.Definition, DeploymentSlot.Update {
+        DeploymentSlotBase.Update<DeploymentSlot>>
+    implements DeploymentSlot, DeploymentSlot.Definition {
 
     DeploymentSlotImpl(
         String name,
@@ -111,5 +115,61 @@ class DeploymentSlotImpl
         } catch (IOException e) {
             return Mono.error(e);
         }
+    }
+
+    @Override
+    public void deploy(DeployType type, File file) {
+        deployAsync(type, file).block();
+    }
+
+    @Override
+    public Mono<Void> deployAsync(DeployType type, File file) {
+        return deployAsync(type, file, new DeployOptions());
+    }
+
+    @Override
+    public void deploy(DeployType type, File file, DeployOptions deployOptions) {
+        deployAsync(type, file, deployOptions).block();
+    }
+
+    @Override
+    public Mono<Void> deployAsync(DeployType type, File file, DeployOptions deployOptions) {
+        Objects.requireNonNull(type);
+        Objects.requireNonNull(file);
+        if (deployOptions == null) {
+            deployOptions = new DeployOptions();
+        }
+        try {
+            return kuduClient.deployAsync(type, file,
+                deployOptions.path(), deployOptions.restartSite(), deployOptions.cleanDeployment());
+        } catch (IOException e) {
+            return Mono.error(e);
+        }
+    }
+
+    @Override
+    public void deploy(DeployType type, InputStream file, long length) {
+        deployAsync(type, file, length).block();
+    }
+
+    @Override
+    public Mono<Void> deployAsync(DeployType type, InputStream file, long length) {
+        return deployAsync(type, file, length, new DeployOptions());
+    }
+
+    @Override
+    public void deploy(DeployType type, InputStream file, long length, DeployOptions deployOptions) {
+        deployAsync(type, file, length, deployOptions).block();
+    }
+
+    @Override
+    public Mono<Void> deployAsync(DeployType type, InputStream file, long length, DeployOptions deployOptions) {
+        Objects.requireNonNull(type);
+        Objects.requireNonNull(file);
+        if (deployOptions == null) {
+            deployOptions = new DeployOptions();
+        }
+        return kuduClient.deployAsync(type, file, length,
+            deployOptions.path(), deployOptions.restartSite(), deployOptions.cleanDeployment());
     }
 }

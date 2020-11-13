@@ -65,6 +65,16 @@ public class KeyClientTest extends KeyClientTestBase {
     }
 
     /**
+     * Tests that an RSA key is created.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void createRsaKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        getKeyClient(httpClient, serviceVersion);
+        createRsaKeyRunner((expected) -> assertKeyEquals(expected, client.createRsaKey(expected)));
+    }
+
+    /**
      * Tests that an attempt to create a key with empty string name throws an error.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

@@ -89,13 +89,18 @@ public class ManagementChannel implements ServiceBusManagementNode {
      */
     @Override
     public Mono<Void> cancelScheduledMessages(Iterable<Long> sequenceNumbers, String associatedLinkName) {
+        final List<Long> numbers = new ArrayList<>();
+        sequenceNumbers.forEach(s -> numbers.add(s));
+
+        if (numbers.isEmpty()) {
+            return Mono.empty();
+        }
+
         return isAuthorized(ManagementConstants.OPERATION_CANCEL_SCHEDULED_MESSAGE)
             .then(createChannel.flatMap(channel -> {
                 final Message requestMessage = createManagementMessage(
                     ManagementConstants.OPERATION_CANCEL_SCHEDULED_MESSAGE, associatedLinkName);
 
-                final List<Long> numbers = new ArrayList<>();
-                sequenceNumbers.forEach(s -> numbers.add(s));
                 final Long[] longs = numbers.toArray(new Long[0]);
                 requestMessage.setBody(new AmqpValue(Collections.singletonMap(ManagementConstants.SEQUENCE_NUMBERS,
                     longs)));
@@ -190,6 +195,16 @@ public class ManagementChannel implements ServiceBusManagementNode {
     @Override
     public Flux<ServiceBusReceivedMessage> receiveDeferredMessages(ReceiveMode receiveMode, String sessionId,
         String associatedLinkName, Iterable<Long> sequenceNumbers) {
+        if (sequenceNumbers == null) {
+            return fluxError(logger, new NullPointerException("'sequenceNumbers' cannot be null"));
+        }
+
+        final List<Long> numbers = new ArrayList<>();
+        sequenceNumbers.forEach(s -> numbers.add(s));
+
+        if (numbers.isEmpty()) {
+            return Flux.empty();
+        }
 
         return isAuthorized(ManagementConstants.OPERATION_RECEIVE_BY_SEQUENCE_NUMBER)
             .thenMany(createChannel.flatMap(channel -> {
@@ -199,10 +214,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
                 // set mandatory properties on AMQP message body
                 final Map<String, Object> requestBodyMap = new HashMap<>();
 
-                final List<Long> numbers = new ArrayList<>();
-                sequenceNumbers.forEach(s -> numbers.add(s));
-                Long[] longs = numbers.toArray(new Long[0]);
-                requestBodyMap.put(ManagementConstants.SEQUENCE_NUMBERS, longs);
+                requestBodyMap.put(ManagementConstants.SEQUENCE_NUMBERS, numbers.toArray(new Long[0]));
 
                 requestBodyMap.put(ManagementConstants.RECEIVER_SETTLE_MODE,
                     UnsignedInteger.valueOf(receiveMode == ReceiveMode.RECEIVE_AND_DELETE ? 0 : 1));
@@ -509,7 +521,6 @@ public class ManagementChannel implements ServiceBusManagementNode {
      *
      * @param operation Management operation to perform (ie. peek, update-disposition, etc.)
      * @param associatedLinkName Name of the open receive link that first received the message.
-     *
      * @return An AMQP message with the required headers.
      */
     private Message createManagementMessage(String operation, String associatedLinkName) {

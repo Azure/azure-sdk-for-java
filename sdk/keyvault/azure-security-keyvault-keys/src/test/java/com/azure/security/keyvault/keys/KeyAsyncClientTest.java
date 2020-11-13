@@ -67,6 +67,18 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     }
 
     /**
+     * Tests that a RSA key created.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void createRsaKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        createKeyAsyncClient(httpClient, serviceVersion);
+        createRsaKeyRunner((expected) -> StepVerifier.create(client.createRsaKey(expected))
+            .assertNext(response -> assertKeyEquals(expected, response))
+            .verifyComplete());
+    }
+
+    /**
      * Tests that we cannot create a key when the key is an empty string.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

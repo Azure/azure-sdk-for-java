@@ -3,7 +3,7 @@
 
 package com.azure.ai.formrecognizer.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.ai.formrecognizer.implementation.RecognizedFormHelper;
 
 import java.util.Collections;
 import java.util.List;
@@ -12,7 +12,6 @@ import java.util.Map;
 /**
  * The RecognizedForm model.
  */
-@Immutable
 public final class RecognizedForm {
 
     /*
@@ -36,6 +35,24 @@ public final class RecognizedForm {
      * List of extracted pages from the form.
      */
     private final List<FormPage> pages;
+
+    private Float formTypeConfidence;
+
+    private String modelId;
+
+    static {
+        RecognizedFormHelper.setAccessor(new RecognizedFormHelper.RecognizedFormAccessor() {
+            @Override
+            public void setFormTypeConfidence(RecognizedForm form, Float formTypeConfidence) {
+                form.setFormTypeConfidence(formTypeConfidence);
+            }
+
+            @Override
+            public void setModelId(RecognizedForm form, String modelId) {
+                form.setModelId(modelId);
+            }
+        });
+    }
 
     /**
      * Constructs a RecognizedForm object.
@@ -89,5 +106,44 @@ public final class RecognizedForm {
      */
     public List<FormPage> getPages() {
         return this.pages;
+    }
+
+    /**
+     * Get the confidence of the form type identified by the model.
+     *
+     * @return the formTypeConfidence value.
+     */
+    public Float getFormTypeConfidence() {
+        return formTypeConfidence;
+    }
+
+    /**
+     * Get the identifier of the model that was used for recognition, if not using a prebuilt
+     * model.
+     *
+     * @return the modelId value.
+     */
+    public String getModelId() {
+        return modelId;
+    }
+
+    /**
+     * The private setter to set the formTypeConfidence property
+     * via {@link RecognizedFormHelper.RecognizedFormAccessor}.
+     *
+     * @param formTypeConfidence The confidence of the form type identified by the model.
+     */
+    private void setFormTypeConfidence(Float formTypeConfidence) {
+        this.formTypeConfidence = formTypeConfidence;
+    }
+
+    /**
+     * The private setter to set the modelId property
+     * via {@link RecognizedFormHelper.RecognizedFormAccessor}.
+     *
+     * @param modelId The identifier of the model that was used for recognition.
+     */
+    private void setModelId(String modelId) {
+        this.modelId = modelId;
     }
 }

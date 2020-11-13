@@ -20,7 +20,7 @@ import com.azure.core.util.Context;
 import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
 import com.azure.digitaltwins.core.implementation.models.QueriesQueryTwinsResponse;
 import com.azure.digitaltwins.core.implementation.models.QuerySpecification;
-import com.azure.digitaltwins.core.models.QueryTwinsOptions;
+import com.azure.digitaltwins.core.implementation.models.QueryTwinsOptions;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Queries. */

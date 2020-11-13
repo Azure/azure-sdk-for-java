@@ -1,5 +1,5 @@
 Hello! Thank you for being interested in contributing to our project! 
-Please make sure you've followed the instructions provided in the [Azure Projects Contribution Guidelines](http://azure.github.io/guidelines/).
+Please make sure you've followed the instructions provided in the [Azure Projects Contribution Guidelines](https://azure.github.io/guidelines/).
 ## Project Setup
 The Azure Storage development team uses Intellij. However, any preferred IDE or other toolset should be usable.
 
@@ -14,7 +14,7 @@ The Azure Storage development team uses Intellij. However, any preferred IDE or 
 
 #### Eclipse Installation
 * [Eclipse](https://eclipse.org/downloads/)
-* [Maven plugin for Eclipse](http://www.eclipse.org/m2e/index.html). Some Eclipse packages (ex Eclipse IDE for Java Developers) may come with this plugin already installed.
+* [Maven plugin for Eclipse](https://www.eclipse.org/m2e/index.html). Some Eclipse packages (ex Eclipse IDE for Java Developers) may come with this plugin already installed.
 * Open the project from Eclipse using File->Import->Maven->Existing Maven Projects and navigating to the azure-storage-java folder. Select the listed pom. This imports the source and the test files and downloads the required dependencies via Maven. If you'd like to import the samples, follow the same procedure but navigate to the azure-storage-java\microsoft-azure-storage-samples folder and select that pom. Both projects can be opened at the same time and will be shown in the Package Explorer.
 
 ## Tests

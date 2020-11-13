@@ -1,0 +1,1 @@
+servicebus-topic: com.azure.spring.servicebus.stream.binder.config.ServiceBusTopicBinderConfiguration

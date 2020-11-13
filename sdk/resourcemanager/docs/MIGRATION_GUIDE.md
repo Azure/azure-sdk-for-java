@@ -3,7 +3,7 @@
 This document is intended for users that are familiar with an older version of the Java SDK for managment libraries (`com.microsoft.azure.management.**`) and wish to migrate their application 
 to the next version of Azure resource management libraries (`com.azure.resourcemanager.**`)
 
-For users new to the Java SDK for resource management libraries, please see the [README for 'com.azure.resourcemanager.*`](https://aka.ms/azsdk/java/mgmt)
+**For users new to the Java SDK for resource management libraries, please see the [README for 'com.azure.resourcemanager.*`](https://aka.ms/azsdk/java/mgmt)**
 
 ## Table of contents
 
@@ -11,6 +11,7 @@ For users new to the Java SDK for resource management libraries, please see the 
 * [Updated Maven depedencies](#updated-maven-dependencies)
 * [General Changes](#general-changes)
   * [Authentication](#authentication)
+  * [AzureResourceManager Class](#azureresourcemanager-class)
   * [Customized Policy](#customized-policy)
   * [Custom HTTP Client](#custom-http-client)
   * [Error Handling](#error-handling)
@@ -72,6 +73,10 @@ Azure azure = Azure.authenticate(new File("my.azureauth")).withDefaultSubscripti
 **In new version, this feature has been removed.** If this creates concern on your side, please file an issue to let us know.
 
 For detailed information on the benefits of using the new authentication classes, please refer to [this page](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/AUTH.md)
+
+## AzureResourceManager Class
+
+The `Azure` class has been renamed to `AzureResourceManager`.
 
 ## Customized Policy
 

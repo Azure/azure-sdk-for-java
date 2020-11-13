@@ -1,45 +1,45 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0//metrics/3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5/series/query",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0//metrics/27e3015f-04fd-44ba-a20b-bc529a0aebae/series/query",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.1 (11.0.5; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "23c2924e-cbba-4ca5-9db0-6cfb45c7cbed",
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.2 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "96b80be1-f37a-46b1-8d7b-e8a52957d2f4",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-request-id" : "0aa0350f-d095-43f7-8f96-b04a6c49c367",
-      "x-envoy-upstream-service-time" : "197",
+      "x-request-id" : "40391864-932f-4d56-be71-dfb63b1f964a",
+      "x-envoy-upstream-service-time" : "256",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "0aa0350f-d095-43f7-8f96-b04a6c49c367",
+      "apim-request-id" : "40391864-932f-4d56-be71-dfb63b1f964a",
       "retry-after" : "0",
-      "Content-Length" : "2338",
+      "Content-Length" : "2425",
       "StatusCode" : "200",
-      "Body" : "{\"value\":[{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Common Lime\",\"Dim2\":\"Angelfish\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Blackthorn\",\"Dim2\":\"Angelfish\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Cabbage Palm\",\"Dim2\":\"Angelfish\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Caucasian Fir\",\"Dim2\":\"Angelfish\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Blue Atlas Cedar\",\"Dim2\":\"Angelfish\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Common Beech\",\"Dim2\":\"Angelfish\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Bastard Service Tree\",\"Dim2\":\"Angelfish\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Cherry Laurel\",\"Dim2\":\"Angelfish\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Chinese red-barked birch\",\"Dim2\":\"Angelfish\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Cider gum\",\"Dim2\":\"Angelfish\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Common Alder\",\"Dim2\":\"Angelfish\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Caucasian Lime\",\"Dim2\":\"Angelfish\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Birch\",\"Dim2\":\"Angelfish\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Common Ash\",\"Dim2\":\"Angelfish\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Austrian Pine\",\"Dim2\":\"Angelfish\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Black Birch (River Birch)\",\"Dim2\":\"Angelfish\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Cherry\",\"Dim2\":\"Angelfish\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Almond\",\"Dim2\":\"Angelfish\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Common Walnut\",\"Dim2\":\"Angelfish\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Black Poplar\",\"Dim2\":\"Angelfish\"}}],\"@nextLink\":\"https://anuchan-cg-metric-advisor.cognitiveservices.azure.com/metricsadvisor/v1.0/metrics/3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5/series/query?$top=20&$skip=20\"}",
-      "Date" : "Mon, 14 Sep 2020 07:29:13 GMT",
+      "Body" : "{\"value\":[{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Health & Personal Care\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Software & Computer Games\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Musical Instruments\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Shoes Handbags & Sunglasses\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Cell Phones\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Outdoors\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Luggage & Travel Accessories\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Beauty\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Historical & Advertising Collectibles\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Industrial & Scientific\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Music\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Personal Computers\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Jewelry\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Handmade\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Books\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Office Products\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Electronics (Consumer)\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Grocery & Gourmet Food\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Home & Garden\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Electronics (Accessories)\"}}],\"@nextLink\":\"https://js-metrics-advisor.cognitiveservices.azure.com:443/metricsadvisor/v1.0/metrics/27e3015f-04fd-44ba-a20b-bc529a0aebae/series/query?$top=20&$skip=20\"}",
+      "Date" : "Fri, 23 Oct 2020 21:58:57 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/metrics/3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5/series/query?$top=20&$skip=20",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com:443/metricsadvisor/v1.0/metrics/27e3015f-04fd-44ba-a20b-bc529a0aebae/series/query?$top=20&$skip=20",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.1 (11.0.5; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "ae18e7d0-a3ad-49a4-ae8b-33d5fb08cd5b",
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.2 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a70daaf5-2dce-48e6-8feb-7bf0c9ff0340",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-request-id" : "784d475a-98f5-4681-9dd8-27f69a797a3f",
-      "x-envoy-upstream-service-time" : "203",
+      "x-request-id" : "471645e7-53b8-4f9e-afb3-88bac8af6485",
+      "x-envoy-upstream-service-time" : "1175",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "784d475a-98f5-4681-9dd8-27f69a797a3f",
+      "apim-request-id" : "471645e7-53b8-4f9e-afb3-88bac8af6485",
       "retry-after" : "0",
-      "Content-Length" : "353",
+      "Content-Length" : "803",
       "StatusCode" : "200",
-      "Body" : "{\"value\":[{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Cockspur Thorn\",\"Dim2\":\"Angelfish\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Algerian Fir\",\"Dim2\":\"Angelfish\"}},{\"metricId\":\"3d48ed3e-6e6e-4391-b78f-b00dfee1e6f5\",\"dimension\":{\"Dim1\":\"Common Juniper\",\"Dim2\":\"Angelfish\"}}],\"@nextLink\":null}",
-      "Date" : "Mon, 14 Sep 2020 07:29:14 GMT",
+      "Body" : "{\"value\":[{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Automotive & Powersports\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Device Accessories\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Camera & Photo\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Collectible Coins\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Fine Art\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"__SUM__\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimension\":{\"city\":\"Miami\",\"category\":\"Clothing & Accessories\"}}],\"@nextLink\":null}",
+      "Date" : "Fri, 23 Oct 2020 21:58:58 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
