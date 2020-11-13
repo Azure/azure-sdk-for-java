@@ -3,8 +3,12 @@ package com.azure.cosmos.implementation.feedranges;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IRoutingMapProvider;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
+import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
+import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.implementation.ResourceType;
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
@@ -17,10 +21,13 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
+import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.ThrowableAssert.catchThrowableOfType;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyMapOf;
@@ -367,5 +374,80 @@ public class FeedRangeTest {
                     .contains(partitionKeyRange.getId());
             })
             .verifyComplete();
+    }
+
+    @Test(groups = "unit")
+    public void feedRangeEPK_RequestVisitor_ThrowsWhenNoPropertiesAvailable() {
+        Range<String> range = new Range<String>("AA", "BB", true, false);
+        FeedRangeEpkImpl feedRange = new FeedRangeEpkImpl(range);
+        RxDocumentServiceRequest request = createMockRequest(false);
+        assertThat(catchThrowableOfType(() -> {
+                feedRange.accept(
+                    FeedRangeRxDocumentServiceRequestPopulatorVisitorImpl.SINGLETON, request);
+            },
+            IllegalStateException.class)).isNotNull();
+    }
+
+    @Test(groups = "unit")
+    public void feedRangeEPK_RequestVisitor() {
+        Range<String> range = new Range<String>("AA", "BB", true, false);
+        FeedRangeEpkImpl feedRange = new FeedRangeEpkImpl(range);
+        RxDocumentServiceRequest request = createMockRequest(true);
+        feedRange.accept(
+            FeedRangeRxDocumentServiceRequestPopulatorVisitorImpl.SINGLETON, request);
+        assertThat(request.getProperties()).hasSize(2);
+        assertThat(request.getProperties().get(EpkRequestPropertyConstants.START_EPK_STRING))
+            .isNotNull()
+            .isEqualTo("AA");
+        assertThat(request.getProperties().get(EpkRequestPropertyConstants.END_EPK_STRING))
+            .isNotNull()
+            .isEqualTo("BB");
+    }
+
+    @Test(groups = "unit")
+    public void feedRangePKRangeId_RequestVisitor() {
+        Range<String> range = new Range<>("AA", "BB", true, false);
+        String pkRangeId = UUID.randomUUID().toString();
+        PartitionKeyRange partitionKeyRange = new PartitionKeyRange()
+            .setId(pkRangeId)
+            .setMinInclusive(range.getMin())
+            .setMaxExclusive(range.getMax());
+
+        FeedRangePartitionKeyRangeImpl feedRangPartitionKeyRange =
+            new FeedRangePartitionKeyRangeImpl(partitionKeyRange.getId());
+
+        RxDocumentServiceRequest request = createMockRequest(true);
+        feedRangPartitionKeyRange.accept(
+            FeedRangeRxDocumentServiceRequestPopulatorVisitorImpl.SINGLETON, request);
+        assertThat(request.getPartitionKeyRangeIdentity()).isNotNull();
+    }
+
+    @Test(groups = "unit")
+    public void feedRangePK_RequestVisitor() {
+        PartitionKeyInternal partitionKey = PartitionKeyInternalUtils.createPartitionKeyInternal("Test");
+        FeedRangePartitionKeyImpl feedRangePartitionKey = new FeedRangePartitionKeyImpl(partitionKey);
+        RxDocumentServiceRequest request = createMockRequest(true);
+        feedRangePartitionKey.accept(
+            FeedRangeRxDocumentServiceRequestPopulatorVisitorImpl.SINGLETON, request);
+        assertThat(request.getPartitionKeyInternal()).isNotNull();
+        assertThat(request.getPartitionKeyInternal().toJson())
+            .isNotNull()
+            .isEqualTo(request.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY));
+    }
+
+    private static RxDocumentServiceRequest createMockRequest(boolean hasProperties) {
+        RequestOptions requestOptions = new RequestOptions();
+
+        if (hasProperties) {
+            requestOptions.setProperties(new HashMap<>());
+        }
+
+        return RxDocumentServiceRequest.create(
+            mockDiagnosticsClientContext(),
+            OperationType.Read,
+            ResourceType.Document,
+            "/dbs/db/colls/col/docs/docId",
+            null,
+            requestOptions);
     }
 }

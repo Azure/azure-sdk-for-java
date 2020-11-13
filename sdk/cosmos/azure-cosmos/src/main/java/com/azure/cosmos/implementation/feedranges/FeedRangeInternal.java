@@ -18,6 +18,8 @@ import java.io.IOException;
 public abstract class FeedRangeInternal extends JsonSerializable implements FeedRange {
     public abstract void accept(FeedRangeVisitor visitor);
 
+    public abstract <TInput> void accept(GenericFeedRangeVisitor<TInput> visitor, TInput input);
+
     public abstract <T> Mono<T> acceptAsync(FeedRangeAsyncVisitor<T> visitor);
 
     public static FeedRangeInternal convert(final FeedRange feedRange) {

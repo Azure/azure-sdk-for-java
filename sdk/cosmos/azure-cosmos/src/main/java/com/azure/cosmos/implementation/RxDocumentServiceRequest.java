@@ -1019,6 +1019,20 @@ public class RxDocumentServiceRequest implements Cloneable {
         return this.properties;
     }
 
+    /**
+     * Gets the request properties.
+     *
+     * @return the request properties.
+     */
+    public Map<String, Object> getPropertiesOrThrow() {
+        if (this.properties == null) {
+            throw new IllegalStateException(
+                "Only requests with properties (request options) can be used when using feed ranges");
+        }
+
+        return this.properties;
+    }
+
     private static Map<String, Object> getProperties(Object options) {
         if (options == null) {
             return null;

@@ -39,6 +39,15 @@ final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
     }
 
     @Override
+    public <TInput> void accept(GenericFeedRangeVisitor<TInput> visitor, TInput input) {
+        if (visitor == null) {
+            throw new NullPointerException("visitor");
+        }
+
+        visitor.visit(this, input);
+    }
+
+    @Override
     public <T> Mono<T> acceptAsync(FeedRangeAsyncVisitor<T> visitor) {
         if (visitor == null) {
             throw new NullPointerException("visitor");

@@ -28,7 +28,7 @@ final class FeedRangeRxDocumentServiceRequestPopulatorVisitorImpl
         checkNotNull(feedRange, "'feedRange' must not be null");
         checkNotNull(rxDocumentServiceRequest, "'rxDocumentServiceRequest' must not be null");
 
-        final Map<String, Object> properties = rxDocumentServiceRequest.getProperties();
+        final Map<String, Object> properties = rxDocumentServiceRequest.getPropertiesOrThrow();
 
         // In case EPK has already been set by compute
         if (properties.containsKey(EpkRequestPropertyConstants.START_EPK_STRING)) {
