@@ -11,21 +11,24 @@ package com.microsoft.azure.management.azurestackhci.v2020_10_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The resource management error response.
+ * Error response.
+ * Common error response for all Azure Resource Manager APIs to return error
+ * details for failed operations. (This also follows the OData error response
+ * format.).
  */
 public class ErrorResponse {
     /**
      * The error object.
      */
     @JsonProperty(value = "error")
-    private ErrorResponseError error;
+    private ErrorDetail error;
 
     /**
      * Get the error object.
      *
      * @return the error value
      */
-    public ErrorResponseError error() {
+    public ErrorDetail error() {
         return this.error;
     }
 
@@ -35,7 +38,7 @@ public class ErrorResponse {
      * @param error the error value to set
      * @return the ErrorResponse object itself.
      */
-    public ErrorResponse withError(ErrorResponseError error) {
+    public ErrorResponse withError(ErrorDetail error) {
         this.error = error;
         return this;
     }

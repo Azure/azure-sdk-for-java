@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.azure.ProxyResource;
 
 /**
- * The resource model definition for a Azure Resource Manager resource with an
+ * The resource model definition for an Azure Resource Manager resource with an
  * etag.
  */
 public class AzureEntityResource extends ProxyResource {
