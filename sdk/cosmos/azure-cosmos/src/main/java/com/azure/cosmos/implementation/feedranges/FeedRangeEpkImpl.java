@@ -12,8 +12,6 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKeyDefinition;
-import com.fasterxml.jackson.core.TreeNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -35,7 +33,7 @@ final class FeedRangeEpkImpl extends FeedRangeInternal {
         }
 
         this.range = range;
-        final ArrayList<Range<String>> temp = new ArrayList<Range<String>>();
+        final ArrayList<Range<String>> temp = new ArrayList<>();
         temp.add(range);
 
         this.rangeList = (UnmodifiableList<Range<String>>)UnmodifiableList.unmodifiableList(temp);
@@ -91,24 +89,25 @@ final class FeedRangeEpkImpl extends FeedRangeInternal {
         final String containerRid,
         final PartitionKeyDefinition partitionKeyDefinition) {
 
-        return routingMapProvider.tryGetOverlappingRangesAsync(
-            null,
-            containerRid,
-            this.range,
-            false,
-            null)
-                                 .flatMap(pkRangeHolder -> {
-                                     final ArrayList<String> rangeList = new ArrayList<String>();
+        return routingMapProvider
+            .tryGetOverlappingRangesAsync(
+                null,
+                containerRid,
+                this.range,
+                false,
+                null)
+            .flatMap(pkRangeHolder -> {
+                final ArrayList<String> rangeList = new ArrayList<>();
 
-                                     if (pkRangeHolder != null) {
-                                         final List<PartitionKeyRange> pkRanges = pkRangeHolder.v;
-                                         for (final PartitionKeyRange pkRange : pkRanges) {
-                                             rangeList.add(pkRange.getId());
-                                         }
-                                     }
+                if (pkRangeHolder != null) {
+                    final List<PartitionKeyRange> pkRanges = pkRangeHolder.v;
+                    for (final PartitionKeyRange pkRange : pkRanges) {
+                        rangeList.add(pkRange.getId());
+                    }
+                }
 
-                                     return Mono.just((UnmodifiableList<String>)UnmodifiableList.unmodifiableList(rangeList));
-                                 });
+                return Mono.just((UnmodifiableList<String>)UnmodifiableList.unmodifiableList(rangeList));
+            });
     }
 
     @Override
@@ -117,7 +116,8 @@ final class FeedRangeEpkImpl extends FeedRangeInternal {
             return Utils.getSimpleObjectMapper().writeValueAsString(this);
         } catch (final IOException e) {
             throw new IllegalArgumentException(
-                "Unable serialize the feed range token for an extended partition key into a JSON string",
+                "Unable serialize the feed range token for an extended partition key into a JSON " +
+                    "string",
                 e);
         }
     }

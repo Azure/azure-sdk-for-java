@@ -394,11 +394,11 @@ public class FeedRangeTest {
         RxDocumentServiceRequest request = createMockRequest(true);
         feedRange.accept(
             FeedRangeRxDocumentServiceRequestPopulatorVisitorImpl.SINGLETON, request);
-        assertThat(request.getProperties()).hasSize(2);
-        assertThat(request.getProperties().get(EpkRequestPropertyConstants.START_EPK_STRING))
+        assertThat(request.getPropertiesOrThrow()).hasSize(2);
+        assertThat(request.getPropertiesOrThrow().get(EpkRequestPropertyConstants.START_EPK_STRING))
             .isNotNull()
             .isEqualTo("AA");
-        assertThat(request.getProperties().get(EpkRequestPropertyConstants.END_EPK_STRING))
+        assertThat(request.getPropertiesOrThrow().get(EpkRequestPropertyConstants.END_EPK_STRING))
             .isNotNull()
             .isEqualTo("BB");
     }

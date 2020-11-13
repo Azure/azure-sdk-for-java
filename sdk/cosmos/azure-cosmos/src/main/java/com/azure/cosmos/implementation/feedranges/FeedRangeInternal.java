@@ -76,16 +76,16 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
         String containerRid,
         PartitionKeyDefinition partitionKeyDefinition);
 
-    @Override
-    public String toJsonString() {
-        return this.toJson();
+    public void populatePropertyBag() {
+        super.populatePropertyBag();
     }
 
     @Override
     public abstract String toString();
 
-    public void populatePropertyBag() {
-        super.populatePropertyBag();
+    @Override
+    public String toJsonString() {
+        return this.toJson();
     }
 
     public static FeedRangeInternal tryParse(final String jsonString) throws IOException {
@@ -108,7 +108,8 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
             return new FeedRangePartitionKeyImpl(pk);
         }
 
-        JsonNode pkRangeIdNode = rootNode.get(Constants.Properties.FEED_RANGE_PARTITION_KEY_RANGE_ID);
+        JsonNode pkRangeIdNode =
+            rootNode.get(Constants.Properties.FEED_RANGE_PARTITION_KEY_RANGE_ID);
         if (pkRangeIdNode != null && pkRangeIdNode.isTextual()) {
             return new FeedRangePartitionKeyRangeImpl(pkRangeIdNode.asText());
         }

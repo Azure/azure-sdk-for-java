@@ -42,8 +42,7 @@ abstract class FeedRangeContinuation {
 
     public abstract void validateContainer(String containerRid);
 
-    public static FeedRangeContinuation tryParse(String toStringValue)
-    {
+    public static FeedRangeContinuation tryParse(String toStringValue) {
         return FeedRangeCompositeContinuationImpl.tryParse(toStringValue);
     }
 

@@ -76,13 +76,12 @@ final class FeedRangePartitionKeyRangeExtractorImpl extends FeedRangeAsyncVisito
                 .flatMap(collectionResponse -> {
                     final DocumentCollection collection = collectionResponse.getResource();
                     return partitionKeyRangeCache.tryGetOverlappingRangesAsync(
-                        BridgeInternal.getMetaDataDiagnosticContext(null), collection.getResourceId(),
+                        BridgeInternal.getMetaDataDiagnosticContext(null),
+                        collection.getResourceId(),
                         feedRange.getRange(), false, null);
                 });
 
-        return valueHolderMono.map(partitionKeyRangeListResponse -> {
-            return toFeedRanges(partitionKeyRangeListResponse);
-        });
+        return valueHolderMono.map(FeedRangePartitionKeyRangeExtractorImpl::toFeedRanges);
     }
 
     private static UnmodifiableList<Range<String>> toFeedRanges(
@@ -92,14 +91,9 @@ final class FeedRangePartitionKeyRangeExtractorImpl extends FeedRangeAsyncVisito
             throw new IllegalStateException("PartitionKeyRange list cannot be null");
         }
 
-        final List<Range<String>> feedRanges = new ArrayList<Range<String>>();
-        partitionKeyRangeList.forEach(pkRange -> {
-            feedRanges.add(pkRange.toRange());
-        });
+        final List<Range<String>> feedRanges = new ArrayList<>();
+        partitionKeyRangeList.forEach(pkRange -> feedRanges.add(pkRange.toRange()));
 
-        final UnmodifiableList<Range<String>> feedRangesResult =
-            (UnmodifiableList<Range<String>>)UnmodifiableList.unmodifiableList(feedRanges);
-
-        return feedRangesResult;
+        return (UnmodifiableList<Range<String>>)UnmodifiableList.unmodifiableList(feedRanges);
     }
 }

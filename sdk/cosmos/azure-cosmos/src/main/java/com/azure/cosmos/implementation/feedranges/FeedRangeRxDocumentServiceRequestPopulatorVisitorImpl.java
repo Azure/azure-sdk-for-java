@@ -17,8 +17,7 @@ final class FeedRangeRxDocumentServiceRequestPopulatorVisitorImpl
     public final static FeedRangeRxDocumentServiceRequestPopulatorVisitorImpl SINGLETON =
         new FeedRangeRxDocumentServiceRequestPopulatorVisitorImpl();
 
-    private FeedRangeRxDocumentServiceRequestPopulatorVisitorImpl()
-    {
+    private FeedRangeRxDocumentServiceRequestPopulatorVisitorImpl() {
     }
 
     @Override
@@ -42,7 +41,8 @@ final class FeedRangeRxDocumentServiceRequestPopulatorVisitorImpl
     }
 
     @Override
-    public void visit(FeedRangePartitionKeyRangeImpl feedRange, RxDocumentServiceRequest rxDocumentServiceRequest) {
+    public void visit(FeedRangePartitionKeyRangeImpl feedRange,
+                      RxDocumentServiceRequest rxDocumentServiceRequest) {
 
         checkNotNull(feedRange, "'feedRange' must not be null");
         checkNotNull(rxDocumentServiceRequest, "'rxDocumentServiceRequest' must not be null");
@@ -51,7 +51,8 @@ final class FeedRangeRxDocumentServiceRequestPopulatorVisitorImpl
     }
 
     @Override
-    public void visit(FeedRangePartitionKeyImpl feedRange, RxDocumentServiceRequest rxDocumentServiceRequest) {
+    public void visit(FeedRangePartitionKeyImpl feedRange,
+                      RxDocumentServiceRequest rxDocumentServiceRequest) {
         checkNotNull(feedRange, "'feedRange' must not be null");
         checkNotNull(rxDocumentServiceRequest, "'rxDocumentServiceRequest' must not be null");
 

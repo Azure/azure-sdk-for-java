@@ -30,7 +30,7 @@ final class FeedRangeContinuationRxDocumentServiceRequestPopulatorVisitorImpl ex
     public void visit(FeedRangeCompositeContinuationImpl feedRangeCompositeContinuation) {
         checkNotNull(feedRangeCompositeContinuation, "'feedRangeCompositeContinuation' must not be null");
 
-        final Map<String, Object> properties = this.request.getProperties();
+        final Map<String, Object> properties = this.request.getPropertiesOrThrow();
 
         // In case EPK has already been set by compute
         if (properties.containsKey(EpkRequestPropertyConstants.START_EPK_STRING)) {

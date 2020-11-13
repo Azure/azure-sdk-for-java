@@ -9,12 +9,10 @@ import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.Range;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 import static com.azure.cosmos.BridgeInternal.setProperty;
 
@@ -70,7 +68,7 @@ final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
             this.partitionKey,
             partitionKeyDefinition);
         Range<String> range = Range.getPointRange(effectivePartitionKey);
-        ArrayList<Range<String>> rangeList = new ArrayList<Range<String>>();
+        ArrayList<Range<String>> rangeList = new ArrayList<>();
         rangeList.add(range);
 
         return Mono.just((UnmodifiableList<Range<String>>)UnmodifiableList.unmodifiableList(rangeList));
@@ -93,7 +91,7 @@ final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
                 false,
                 null)
             .flatMap(pkRangeHolder -> {
-                ArrayList<String> rangeList = new ArrayList<String>();
+                ArrayList<String> rangeList = new ArrayList<>();
 
                 if (pkRangeHolder != null) {
                     String rangeId = pkRangeHolder.v.get(0).getId();
@@ -104,9 +102,12 @@ final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
             });
     }
 
-    @Override
-    public String toJsonString() {
-        return this.partitionKey.toJson();
+    public void populatePropertyBag() {
+        super.populatePropertyBag();
+
+        if (this.partitionKey != null) {
+            setProperty(this, Constants.Properties.FEED_RANGE_PARTITION_KEY, this.partitionKey);
+        }
     }
 
     @Override
@@ -114,12 +115,9 @@ final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
         return this.partitionKey.toJson();
     }
 
-    public void populatePropertyBag() {
-        super.populatePropertyBag();
-
-        if (this.partitionKey != null) {
-            setProperty(this, Constants.Properties.FEED_RANGE_PARTITION_KEY, this.partitionKey);
-        }
+    @Override
+    public String toJsonString() {
+        return this.partitionKey.toJson();
     }
 
     private static Mono<PartitionKeyRange> tryGetRangeByEffectivePartitionKey(

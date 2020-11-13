@@ -32,18 +32,11 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  */
 final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
 
-    private final static ShouldRetryResult RETRY = ShouldRetryResult.retryAfter(Duration.ZERO);
     private final static ShouldRetryResult NO_RETRY = ShouldRetryResult.noRetry();
-
+    private final static ShouldRetryResult RETRY = ShouldRetryResult.retryAfter(Duration.ZERO);
     private final Queue<CompositeContinuationToken> compositeContinuationTokens;
     private CompositeContinuationToken currentToken;
     private String initialNoResultsRange;
-
-    private FeedRangeCompositeContinuationImpl(String containerRid, FeedRangeInternal feedRange) {
-        super(containerRid, feedRange);
-
-        this.compositeContinuationTokens = new LinkedList<CompositeContinuationToken>();
-    }
 
     public FeedRangeCompositeContinuationImpl(
         String containerRid,
@@ -73,43 +66,37 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
                     range.getMin(),
                     range.getMax(),
                     continuation)
-                );
+            );
         }
 
         this.currentToken = this.getCompositeContinuationTokens().peek();
     }
 
-    /**
-     * Used for deserializtion only
-     */
-    public static FeedRangeCompositeContinuationImpl createFromDeserializedTokens(
-        String containerRid,
-        FeedRangeInternal feedRange,
-        List<CompositeContinuationToken> deserializedTokens) {
+    private FeedRangeCompositeContinuationImpl(String containerRid, FeedRangeInternal feedRange) {
+        super(containerRid, feedRange);
 
-        FeedRangeCompositeContinuationImpl thisPtr = new FeedRangeCompositeContinuationImpl(containerRid, feedRange);
-
-        checkNotNull(deserializedTokens, "'deserializedTokens' must not be null");
-
-        if (deserializedTokens.size() == 0) {
-            throw new IllegalArgumentException("'deserializedTokens' must not be empty");
-        }
-
-        for (CompositeContinuationToken token : deserializedTokens) {
-            thisPtr.compositeContinuationTokens.add(token);
-        }
-
-        thisPtr.currentToken = thisPtr.getCompositeContinuationTokens().peek();
-
-        return thisPtr;
+        this.compositeContinuationTokens = new LinkedList<>();
     }
 
     public Queue<CompositeContinuationToken> getCompositeContinuationTokens() {
-        return getCompositeContinuationTokens();
+        return compositeContinuationTokens;
     }
 
     public CompositeContinuationToken getCurrentToken() {
         return this.currentToken;
+    }
+
+    @Override
+    public FeedRangeInternal getFeedRange() {
+        if (!(this.feedRange instanceof FeedRangeEpkImpl)) {
+            return this.feedRange;
+        }
+
+        if (this.currentToken != null) {
+            return new FeedRangeEpkImpl(this.currentToken.getRange());
+        }
+
+        return null;
     }
 
     @Override
@@ -120,32 +107,6 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
         }
 
         return tokenSnapshot.getToken();
-    }
-
-    @Override
-    public FeedRangeInternal getFeedRange() {
-        if (!(this.feedRange instanceof FeedRangeEpkImpl))
-        {
-            return this.feedRange;
-        }
-
-        if (this.currentToken != null)
-        {
-            return new FeedRangeEpkImpl(this.currentToken.getRange());
-        }
-
-        return null;
-    }
-
-    @Override
-    public String toString() {
-        try {
-            return Utils.getSimpleObjectMapper().writeValueAsString(this);
-        } catch (final IOException e) {
-            throw new IllegalArgumentException(
-                "Unable serialize the composite FeedRange continuation token into a JSON string",
-                e);
-        }
     }
 
     @Override
@@ -228,10 +189,10 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
             nSubStatus = Integers.tryParse(valueSubStatus);
         }
 
-        final Boolean partitionSplit =
+        final boolean partitionSplit =
             response.getStatusCode() == HttpConstants.StatusCodes.GONE && nSubStatus != null
-                && (nSubStatus.intValue() == HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE
-                || nSubStatus.intValue() == HttpConstants.SubStatusCodes.COMPLETING_SPLIT);
+                && (nSubStatus == HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE
+                || nSubStatus == HttpConstants.SubStatusCodes.COMPLETING_SPLIT);
 
         if (!partitionSplit) {
             return Mono.just(NO_RETRY);
@@ -244,15 +205,13 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
                 this.currentToken.getRange().getMax(),
                 true);
 
-        final Mono<ShouldRetryResult> result = resolvedRangesTask.flatMap(resolvedRanges -> {
+        return resolvedRangesTask.flatMap(resolvedRanges -> {
             if (resolvedRanges.v != null && resolvedRanges.v.size() > 0) {
                 this.createChildRanges(resolvedRanges.v);
             }
 
             return Mono.just(RETRY);
         });
-
-        return result;
     }
 
     @Override
@@ -262,6 +221,30 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
         }
 
         visitor.visit(this);
+    }
+
+    /**
+     * Used for deserializtion only
+     */
+    public static FeedRangeCompositeContinuationImpl createFromDeserializedTokens(
+        String containerRid,
+        FeedRangeInternal feedRange,
+        List<CompositeContinuationToken> deserializedTokens) {
+
+        FeedRangeCompositeContinuationImpl thisPtr =
+            new FeedRangeCompositeContinuationImpl(containerRid, feedRange);
+
+        checkNotNull(deserializedTokens, "'deserializedTokens' must not be null");
+
+        if (deserializedTokens.size() == 0) {
+            throw new IllegalArgumentException("'deserializedTokens' must not be empty");
+        }
+
+        thisPtr.compositeContinuationTokens.addAll(deserializedTokens);
+
+        thisPtr.currentToken = thisPtr.getCompositeContinuationTokens().peek();
+
+        return thisPtr;
     }
 
     public static FeedRangeContinuation parse(final String jsonString) throws IOException {
@@ -274,46 +257,21 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
         return mapper.readValue(jsonString, FeedRangeCompositeContinuationImpl.class);
     }
 
-    private static CompositeContinuationToken createCompositeContinuationTokenForRange(
-        String minInclusive,
-        String maxExclusive,
-        String token)
-    {
-        return new CompositeContinuationToken(
-            token,
-            new Range<String>(minInclusive, maxExclusive, true, false));
-    }
-
-    private static CompositeContinuationToken tryParseAsCompositeContinuationToken(
-        final String providedContinuation) {
-
+    @Override
+    public String toString() {
         try {
-            final ObjectMapper mapper = Utils.getSimpleObjectMapper();
-
-            if (providedContinuation.trim().startsWith("[")) {
-                final List<CompositeContinuationToken> compositeContinuationTokens = Arrays
-                    .asList(mapper.readValue(providedContinuation,
-                        CompositeContinuationToken[].class));
-
-                if (compositeContinuationTokens != null && compositeContinuationTokens.size() > 0) {
-                    return compositeContinuationTokens.get(0);
-                }
-
-                return null;
-            } else if (providedContinuation.trim().startsWith("{")) {
-                return mapper.readValue(providedContinuation, CompositeContinuationToken.class);
-            }
-
-            return null;
-        } catch (final IOException ioError) {
-            return null;
+            return Utils.getSimpleObjectMapper().writeValueAsString(this);
+        } catch (final IOException e) {
+            throw new IllegalArgumentException(
+                "Unable serialize the composite FeedRange continuation token into a JSON string",
+                e);
         }
     }
 
     private void createChildRanges(final List<PartitionKeyRange> keyRanges) {
         final PartitionKeyRange firstRange = keyRanges.get(0);
         this.currentToken
-            .setRange(new Range<String>(firstRange.getMinInclusive(),
+            .setRange(new Range<>(firstRange.getMinInclusive(),
                 firstRange.getMaxExclusive(), true, false));
 
         final CompositeContinuationToken continuationAsComposite =
@@ -345,6 +303,15 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
         }
     }
 
+    private static CompositeContinuationToken createCompositeContinuationTokenForRange(
+        String minInclusive,
+        String maxExclusive,
+        String token) {
+        return new CompositeContinuationToken(
+            token,
+            new Range<>(minInclusive, maxExclusive, true, false));
+    }
+
     private void moveToNextToken() {
         final CompositeContinuationToken recentToken = this.compositeContinuationTokens.poll();
         if (recentToken.getToken() != null) {
@@ -368,6 +335,32 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
         final Boolean forceRefresh) {
 
         return partitionKeyRangeCache.tryGetOverlappingRangesAsync(null, this.getContainerRid(),
-            new Range<String>(min, max, false, true), forceRefresh, null);
+            new Range<>(min, max, false, true), forceRefresh, null);
+    }
+
+    private static CompositeContinuationToken tryParseAsCompositeContinuationToken(
+        final String providedContinuation) {
+
+        try {
+            final ObjectMapper mapper = Utils.getSimpleObjectMapper();
+
+            if (providedContinuation.trim().startsWith("[")) {
+                final List<CompositeContinuationToken> compositeContinuationTokens = Arrays
+                    .asList(mapper.readValue(providedContinuation,
+                        CompositeContinuationToken[].class));
+
+                if (compositeContinuationTokens.size() > 0) {
+                    return compositeContinuationTokens.get(0);
+                }
+
+                return null;
+            } else if (providedContinuation.trim().startsWith("{")) {
+                return mapper.readValue(providedContinuation, CompositeContinuationToken.class);
+            }
+
+            return null;
+        } catch (final IOException ioError) {
+            return null;
+        }
     }
 }

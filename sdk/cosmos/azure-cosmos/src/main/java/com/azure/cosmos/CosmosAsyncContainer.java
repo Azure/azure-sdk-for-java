@@ -1132,7 +1132,7 @@ public class CosmosAsyncContainer {
      *
      * @return An unmodifiable list of {@link FeedRange}
      */
-    @Beta(Beta.SinceVersion.NextMinorRelease)
+    @Beta(Beta.SinceVersion.V4_9_0)
     public Mono<List<FeedRange>> getFeedRanges() {
         return this.getDatabase().getDocClientWrapper().getFeedRanges(getLink());
     }

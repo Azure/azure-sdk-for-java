@@ -8,7 +8,8 @@ import reactor.core.publisher.Mono;
 abstract class FeedRangeAsyncVisitorWithArg<TResult, TArg> {
     public abstract Mono<TResult> visitAsync(FeedRangePartitionKeyImpl feedRange, TArg argument);
 
-    public abstract Mono<TResult> visitAsync(FeedRangePartitionKeyRangeImpl feedRange, TArg argument);
+    public abstract Mono<TResult> visitAsync(FeedRangePartitionKeyRangeImpl feedRange,
+                                             TArg argument);
 
     public abstract Mono<TResult> visitAsync(FeedRangeEpkImpl feedRange, TArg argument);
 }

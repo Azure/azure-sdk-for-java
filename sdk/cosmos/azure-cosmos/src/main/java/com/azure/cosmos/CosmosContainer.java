@@ -563,7 +563,7 @@ public class CosmosContainer {
      *
      * @return An unmodifiable list of {@link FeedRange}
      */
-    @Beta(Beta.SinceVersion.NextMinorRelease)
+    @Beta(Beta.SinceVersion.V4_9_0)
     public List<FeedRange> getFeedRanges() {
         try {
             return asyncContainer.getFeedRanges().block();

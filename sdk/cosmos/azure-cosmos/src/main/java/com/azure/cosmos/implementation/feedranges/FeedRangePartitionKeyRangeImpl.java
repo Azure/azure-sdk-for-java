@@ -4,7 +4,6 @@
 package com.azure.cosmos.implementation.feedranges;
 
 import com.azure.cosmos.implementation.Constants;
-import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.IRoutingMapProvider;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
@@ -16,7 +15,6 @@ import com.azure.cosmos.models.PartitionKeyDefinition;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 import static com.azure.cosmos.BridgeInternal.setProperty;
 
@@ -98,7 +96,8 @@ public final class FeedRangePartitionKeyRangeImpl extends FeedRangeInternal {
                     return Mono.error(
                         new PartitionKeyRangeGoneException(
                             String.format(
-                                "The PartitionKeyRangeId: \"%s\" is not valid for the current container %s .",
+                                "The PartitionKeyRangeId: \"%s\" is not valid for the current " +
+                                    "container %s .",
                                 partitionKeyRangeId,
                                 containerRid)
                         ));
@@ -108,7 +107,7 @@ public final class FeedRangePartitionKeyRangeImpl extends FeedRangeInternal {
             });
 
         return getPkRangeTask.flatMap((pkRangeHolder) -> {
-            final ArrayList<Range<String>> temp = new ArrayList<Range<String>>();
+            final ArrayList<Range<String>> temp = new ArrayList<>();
             if (pkRangeHolder != null) {
                 temp.add(pkRangeHolder.v.toRange());
             }
@@ -123,20 +122,11 @@ public final class FeedRangePartitionKeyRangeImpl extends FeedRangeInternal {
         final String containerRid,
         final PartitionKeyDefinition partitionKeyDefinition) {
 
-        final ArrayList<String> temp = new ArrayList<String>();
+        final ArrayList<String> temp = new ArrayList<>();
         temp.add(this.partitionKeyRangeId);
 
-        return Mono.just((UnmodifiableList<String>)UnmodifiableList.unmodifiableList(temp));
-    }
-
-    @Override
-    public String toJsonString() {
-        return this.partitionKeyRangeId;
-    }
-
-    @Override
-    public String toString() {
-        return this.partitionKeyRangeId;
+        return Mono.just(
+            (UnmodifiableList<String>)UnmodifiableList.unmodifiableList(temp));
     }
 
     public void populatePropertyBag() {
@@ -148,5 +138,15 @@ public final class FeedRangePartitionKeyRangeImpl extends FeedRangeInternal {
                 Constants.Properties.FEED_RANGE_PARTITION_KEY_RANGE_ID,
                 this.partitionKeyRangeId);
         }
+    }
+
+    @Override
+    public String toString() {
+        return this.partitionKeyRangeId;
+    }
+
+    @Override
+    public String toJsonString() {
+        return this.partitionKeyRangeId;
     }
 }
