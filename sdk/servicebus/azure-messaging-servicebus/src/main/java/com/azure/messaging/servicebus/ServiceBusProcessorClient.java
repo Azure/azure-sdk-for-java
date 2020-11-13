@@ -168,7 +168,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
                                 new ServiceBusReceivedMessageContext(receiverClient, serviceBusMessageContext);
                             processMessage.accept(serviceBusReceivedMessageContext);
                         } catch (Exception ex) {
-                            handleError(new ServiceBusReceiverException(ex, ServiceBusErrorSource.USER_CALLBACK));
+                            handleError(new ServiceBusException(ex, ServiceBusErrorSource.USER_CALLBACK));
                             if (!processorOptions.isDisableAutoComplete()) {
                                 logger.warning("Error when processing message. Abandoning message.", ex);
                                 abandonMessage(serviceBusMessageContext, receiverClient);

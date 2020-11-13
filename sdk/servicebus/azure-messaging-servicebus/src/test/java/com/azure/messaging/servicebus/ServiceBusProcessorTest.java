@@ -257,8 +257,8 @@ public class ServiceBusProcessorTest {
                 throw new IllegalStateException(); // throw error from user handler
             },
             error -> {
-                assertTrue(error instanceof ServiceBusReceiverException);
-                ServiceBusReceiverException exception = (ServiceBusReceiverException) error;
+                assertTrue(error instanceof ServiceBusException);
+                ServiceBusException exception = (ServiceBusException) error;
                 assertTrue(exception.getErrorSource() == ServiceBusErrorSource.USER_CALLBACK);
                 countDownLatch.countDown();
             },
@@ -304,8 +304,8 @@ public class ServiceBusProcessorTest {
                 throw new IllegalStateException(); // throw error from user handler
             },
             error -> {
-                assertTrue(error instanceof ServiceBusReceiverException);
-                ServiceBusReceiverException exception = (ServiceBusReceiverException) error;
+                assertTrue(error instanceof ServiceBusException);
+                ServiceBusException exception = (ServiceBusException) error;
                 assertTrue(exception.getErrorSource() == ServiceBusErrorSource.USER_CALLBACK);
                 countDownLatch.countDown();
             },

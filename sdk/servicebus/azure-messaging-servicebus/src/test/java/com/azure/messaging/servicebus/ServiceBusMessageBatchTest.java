@@ -52,11 +52,12 @@ public class ServiceBusMessageBatchTest {
         final ServiceBusMessage tooBig = new ServiceBusMessage(BinaryData.fromBytes(new byte[1024 * 1024 * 2]));
 
         // Act
-        AmqpException amqpException = assertThrows(AmqpException.class, () -> batch.tryAddMessage(tooBig));
+        ServiceBusException thrownException = assertThrows(ServiceBusException.class, () -> batch.tryAddMessage(tooBig));
 
         // Assert
-        Assertions.assertFalse(amqpException.isTransient());
-        Assertions.assertEquals(AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, amqpException.getErrorCondition());
+        Assertions.assertFalse(thrownException.isTransient());
+        Assertions.assertEquals(ServiceBusErrorSource.SENDING, thrownException.getErrorSource());
+        Assertions.assertEquals(ServiceBusFailureReason.MESSAGE_SIZE_EXCEEDED, thrownException.getReason());
     }
 
     /**

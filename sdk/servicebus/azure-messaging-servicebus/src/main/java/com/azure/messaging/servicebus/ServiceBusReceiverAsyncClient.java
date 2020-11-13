@@ -1055,17 +1055,17 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         return updateDispositionOperation
             .onErrorMap(throwable -> {
-                if (throwable instanceof ServiceBusReceiverException) {
+                if (throwable instanceof ServiceBusException) {
                     return throwable;
                 }
 
                 switch (dispositionStatus) {
                     case COMPLETED:
-                        return new ServiceBusReceiverException(throwable, ServiceBusErrorSource.COMPLETE);
+                        return new ServiceBusException(throwable, ServiceBusErrorSource.COMPLETE);
                     case ABANDONED:
-                        return new ServiceBusReceiverException(throwable, ServiceBusErrorSource.ABANDONED);
+                        return new ServiceBusException(throwable, ServiceBusErrorSource.ABANDONED);
                     default:
-                        return new ServiceBusReceiverException(throwable, ServiceBusErrorSource.UNKNOWN);
+                        return new ServiceBusException(throwable, ServiceBusErrorSource.UNKNOWN);
                 }
             });
     }
@@ -1190,7 +1190,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-            .flatMap(channel -> channel.setSessionState(sessionId, sessionState, linkName));
+            .flatMap(channel -> channel.setSessionState(sessionId, sessionState, linkName))
+                .onErrorMap((err) -> mapError(err, ServiceBusErrorSource.RECEIVE));
     }
 
     Mono<byte[]> getSessionState(String sessionId) {
@@ -1200,22 +1201,27 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         } else if (!receiverOptions.isSessionReceiver()) {
             return monoError(logger, new IllegalStateException("Cannot get session state on a non-session receiver."));
         }
+
+        Mono<byte[]> result;
+
         if (sessionManager != null) {
-            return sessionManager.getSessionState(sessionId);
+            result =  sessionManager.getSessionState(sessionId);
         } else {
-            return connectionProcessor
+            result =  connectionProcessor
                 .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
                 .flatMap(channel -> channel.getSessionState(sessionId, getLinkName(sessionId)));
         }
+
+        return result.onErrorMap((err) -> mapError(err, ServiceBusErrorSource.RECEIVE));
     }
 
     /**
-     * Map the error to {@link ServiceBusReceiverException}
+     * Map the error to {@link ServiceBusException}
      */
     private Throwable mapError(Throwable throwable, ServiceBusErrorSource errorSource) {
         // If it is already `ServiceBusReceiverException`, we can just throw it.
-        if (!(throwable instanceof ServiceBusReceiverException)) {
-            return new ServiceBusReceiverException(throwable, errorSource);
+        if (!(throwable instanceof ServiceBusException)) {
+            return new ServiceBusException(throwable, errorSource);
         }
         return throwable;
     }

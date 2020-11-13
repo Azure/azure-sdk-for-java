@@ -15,9 +15,7 @@ import com.azure.core.amqp.implementation.RequestResponseUtils;
 import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.ServiceBusMessage;
-import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
-import com.azure.messaging.servicebus.ServiceBusTransactionContext;
+import com.azure.messaging.servicebus.*;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
@@ -232,6 +230,14 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
                 return Flux.fromIterable(messageList);
             }));
+    }
+
+    private Throwable mapError(Throwable throwable) {
+        if (throwable instanceof AmqpException) {
+            return new ServiceBusException(throwable, ServiceBusErrorSource.MANAGEMENT);
+        }
+
+        return throwable;
     }
 
     /**
@@ -499,7 +505,8 @@ public class ManagementChannel implements ServiceBusManagementNode {
                 sink.error(throwable);
             })
             .switchIfEmpty(Mono.error(new AmqpException(true, "No response received from management channel.",
-                channel.getErrorContext())));
+                channel.getErrorContext())))
+            .onErrorMap(this::mapError);
     }
 
     private Mono<Void> isAuthorized(String operation) {
@@ -507,13 +514,16 @@ public class ManagementChannel implements ServiceBusManagementNode {
             .next()
             .handle((response, sink) -> {
                 if (response != AmqpResponseCode.ACCEPTED && response != AmqpResponseCode.OK) {
-                    sink.error(new AmqpException(false, String.format(
-                        "User does not have authorization to perform operation [%s] on entity [%s]. Response: [%s]",
-                        operation, entityPath, response), getErrorContext()));
+                    final String message = String.format("User does not have authorization to perform operation [%s] on entity [%s]. Response: [%s]",
+                            operation, entityPath, response);
+                    final Throwable exc = new AmqpException(false, AmqpErrorCondition.UNAUTHORIZED_ACCESS, message, getErrorContext());
+                    sink.error(new ServiceBusException(exc, ServiceBusErrorSource.MANAGEMENT));
                 } else {
                     sink.complete();
                 }
-            });
+            })
+            .onErrorMap(this::mapError)
+            .then();
     }
 
     /**

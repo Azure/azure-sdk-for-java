@@ -36,4 +36,12 @@ public final class ServiceBusErrorSource extends ExpandableStringEnum<ServiceBus
     /** Error while session is closed.*/
     public static final ServiceBusErrorSource CLOSE_SESSION = fromString("CLOSE_SESSION",
         ServiceBusErrorSource.class);
+
+    /** Error while sending a message.*/
+    public static final ServiceBusErrorSource SENDING = fromString("SENDING",
+            ServiceBusErrorSource.class);
+
+    /** Error while trying to do an operation on the management link. */
+    public static final ServiceBusErrorSource MANAGEMENT = fromString("MANAGEMENT",
+            ServiceBusErrorSource.class);
 }
