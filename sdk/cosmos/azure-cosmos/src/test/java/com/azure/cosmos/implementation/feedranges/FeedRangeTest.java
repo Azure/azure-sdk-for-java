@@ -291,4 +291,49 @@ public class FeedRangeTest {
                 eq(false),
                 anyMapOf(String.class, Object.class));
     }
+
+    @Test(groups = "unit")
+    public void feedRangePK_getPartitionKeyRangesAsync()
+    {
+        PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
+        partitionKeyDefinition.getPaths().add("/id");
+        PartitionKeyInternal partitionKey = PartitionKeyInternalUtils.createPartitionKeyInternal("Test");
+
+        Range<String> range = new Range<>("AA", "BB", true, false);
+        String pkRangeId = UUID.randomUUID().toString();
+        PartitionKeyRange partitionKeyRange = new PartitionKeyRange()
+            .setId(pkRangeId)
+            .setMinInclusive(range.getMin())
+            .setMaxExclusive(range.getMax());
+        List<PartitionKeyRange> pkRanges = new ArrayList<>();
+        pkRanges.add(partitionKeyRange);
+
+        IRoutingMapProvider routingMapProviderMock = Mockito.mock(IRoutingMapProvider.class);
+        when(
+            routingMapProviderMock.tryGetOverlappingRangesAsync(
+                any(MetadataDiagnosticsContext.class),
+                anyString(),
+                any(Range.class),
+                anyBoolean(),
+                anyMapOf(String.class, Object.class)))
+            .thenReturn(Mono.just(Utils.ValueHolder.initialize(pkRanges)));
+
+        FeedRangePartitionKeyImpl feedRangPartitionKey = new FeedRangePartitionKeyImpl(partitionKey);
+        StepVerifier
+            .create(
+                feedRangPartitionKey.getPartitionKeyRangesAsync(
+                    routingMapProviderMock,
+                    null,
+                    partitionKeyDefinition))
+            .recordWith(ArrayList::new)
+            .expectNextCount(1)
+            .consumeRecordedWith(r -> {
+                assertThat(r).hasSize(1);
+                UnmodifiableList<String> response = new ArrayList<>(r).get(0);
+                assertThat(response)
+                    .hasSize(1)
+                    .contains(partitionKeyRange.getId());
+            })
+            .verifyComplete();
+    }
 }
