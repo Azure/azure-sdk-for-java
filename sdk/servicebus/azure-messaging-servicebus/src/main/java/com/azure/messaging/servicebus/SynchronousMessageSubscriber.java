@@ -57,8 +57,6 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
 
         if (Operators.setOnce(UPSTREAM, this, subscription)) {
             this.subscription = subscription;
-            remaining.addAndGet(requested);
-            subscription.request(requested);
             subscriberInitialized = true;
             drain();
         } else {
@@ -86,7 +84,6 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
         logger.info("[{}] Pending: {}, Scheduling receive timeout task '{}'.", work.getId(), work.getNumberOfEvents(),
             work.getTimeout());
         workQueue.add(work);
-        subscription.request(work.getNumberOfEvents());
 
         // Do not drain if another thread want to queue the work before we have subscriber
         if (subscriberInitialized) {
@@ -141,7 +138,6 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
 
             while ((currentWork = workQueue.peek()) != null
                 && (!currentWork.isProcessingStarted() || bufferMessages.size() > 0)) {
-
                 // Additional check for safety, but normally this work should never be terminal
                 if (currentWork.isTerminal()) {
                     // This work already finished by either timeout or no more messages to send, process next work.
@@ -156,6 +152,9 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
                     // timer to complete the currentWork in case of timeout trigger
                     currentTimeoutOperation = getTimeoutOperation(currentWork);
                     currentWork.startedProcessing();
+                    final long calculatedRequest = currentWork.getNumberOfEvents() - bufferMessages.size();
+                    remaining.addAndGet(calculatedRequest);
+                    subscription.request(calculatedRequest);
                 }
 
                 // Send messages to currentWork from buffer
