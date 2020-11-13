@@ -4,8 +4,6 @@ parameters:
   TestPipeline: false
   Artifacts: []
   AdditionalModules: []
-  SourceScanPath: null
-  IgnoreDirectories: []
   PreTestSteps: []
   TestOptions: '$(DefaultOptions) -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Dparallel-test-playback'
   TestGoals: verify
@@ -40,6 +38,8 @@ parameters:
       RunTitle: 'From Source: Linux on Java 1.11'
       AdditionalOptions: '-amd'
       TestFromSource: true
+  SourceScanPath: null
+  IgnoreDirectories: []
 
 jobs:
   - job: 'Build'

@@ -27,6 +27,12 @@ parameters:
 - name: TargetDocRepoName
   type: string
   default: azure-docs-sdk-java
+- name: SourceScanPath
+  type: string
+  default: null
+- name: IgnoreDirectories
+  type: object
+  default: []
 
 stages:
   - stage: Build
@@ -38,6 +44,8 @@ stages:
         SDKType: ${{ parameters.SDKType }}
         Artifacts: ${{ parameters.Artifacts }}
         AdditionalModules: ${{ parameters.AdditionalModules }}
+        SourceScanPath: ${{ parameters.SourceScanPath }}
+        IgnoreDirectories: ${{ parameters.IgnoreDirectories }}
 
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
   - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
@@ -51,4 +59,6 @@ stages:
         ArtifactName: packages
         TargetDocRepoOwner: ${{ parameters.TargetDocRepoOwner }}
         TargetDocRepoName: ${{ parameters.TargetDocRepoName }} 
+        SourceScanPath: ${{ parameters.SourceScanPath }}
+        IgnoreDirectories: ${{ parameters.IgnoreDirectories }}
 
