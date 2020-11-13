@@ -2397,7 +2397,7 @@
     <Method name="getUserName" />
     <Bug pattern="NM_CONFUSING" />
   </Match>
- 
+
   <!-- Disabling false positives in azure-core -->
   <!-- This Issue has been resolved as per spotbugs's recommended solution but the static checker still flags it, its a known issue with this rule. -->
   <Match>
@@ -2427,5 +2427,14 @@
       <Class name="com.azure.security.keyvault.jca.LegacyRestClient" />
       <Method name="~(get|post)" />
       <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE" />
+  </Match>
+
+  <!-- Conflicting APIs have already been GA'd with incorrect capitalization  -->
+  <Match>
+    <Or>
+      <Class name="com.azure.security.keyvault.keys.cryptography.DecryptOptions" />
+      <Class name="com.azure.security.keyvault.keys.cryptography.EncryptOptions" />
+    </Or>
+    <Bug pattern="NM_CONFUSING" />
   </Match>
 </FindBugsFilter>

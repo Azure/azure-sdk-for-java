@@ -3,21 +3,22 @@
 
 package com.azure.ai.metricsadvisor.administration;
 
-import com.azure.ai.metricsadvisor.implementation.models.DataSourceType;
 import com.azure.ai.metricsadvisor.models.AzureAppInsightsDataFeedSource;
 import com.azure.ai.metricsadvisor.models.DataFeed;
+import com.azure.ai.metricsadvisor.models.DataFeedDimension;
 import com.azure.ai.metricsadvisor.models.DataFeedGranularity;
 import com.azure.ai.metricsadvisor.models.DataFeedGranularityType;
 import com.azure.ai.metricsadvisor.models.DataFeedIngestionSettings;
 import com.azure.ai.metricsadvisor.models.DataFeedMetric;
 import com.azure.ai.metricsadvisor.models.DataFeedOptions;
 import com.azure.ai.metricsadvisor.models.DataFeedSchema;
-import com.azure.ai.metricsadvisor.models.DataFeedDimension;
+import com.azure.ai.metricsadvisor.models.DataFeedSourceType;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
 import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * Async sample demonstrates how to create, get, update, delete and list datafeed.
@@ -79,7 +80,7 @@ public class DatafeedAsyncSample {
                         dataFeed.getMetricIds().forEach(metricId -> System.out.println(metricId));
                         System.out.printf("Data feed source type: %s%n", dataFeed.getSourceType());
 
-                        if (DataSourceType.AZURE_APPLICATION_INSIGHTS.equals(dataFeed.getSource())) {
+                        if (DataFeedSourceType.AZURE_APP_INSIGHTS.equals(dataFeed.getSourceType())) {
                             AzureAppInsightsDataFeedSource createdAppInsightsDatafeedSource
                                 = (AzureAppInsightsDataFeedSource) dataFeed.getSource();
                             System.out.println("Data feed source details");
@@ -95,7 +96,7 @@ public class DatafeedAsyncSample {
         Mono<DataFeed> updateDataFeedMono = fetchDataFeedMono
             .flatMap(dataFeed -> {
                 return advisorAdministrationAsyncClient.updateDataFeed(dataFeed
-                    .setOptions(new DataFeedOptions().setAdminEmails(Arrays.asList("admin1@admin.com"))))
+                    .setOptions(new DataFeedOptions().setAdminEmails(Collections.singletonList("admin1@admin.com"))))
                     .doOnSubscribe(__ ->
                         System.out.printf("Updating data feed: %s%n", dataFeed.getId()))
                     .doOnSuccess(config -> {
@@ -135,7 +136,7 @@ public class DatafeedAsyncSample {
                 System.out.printf("Data feed granularity value : %d%n",
                     dataFeedItem.getGranularity().getCustomGranularityValue());
                 System.out.println("Data feed related metric Id's:");
-                dataFeedItem.getMetricIds().forEach(metricId -> System.out.println(metricId));
+                dataFeedItem.getMetricIds().forEach(System.out::println);
                 System.out.printf("Data feed source type: %s%n", dataFeedItem.getSourceType());
             });
     }
