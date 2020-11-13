@@ -3,7 +3,6 @@
 
 package com.azure.messaging.servicebus.perf;
 
-
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
@@ -13,19 +12,19 @@ import com.azure.messaging.servicebus.ServiceBusReceiverAsyncClient;
 import com.azure.messaging.servicebus.ServiceBusReceiverClient;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.List;
 
 /**
- * Receives {@link ServiceBusStressOptions#getCount() number} of messages and <b>manually</b> completes them.
+ * Receives messages using various modes and settles them if set.
  */
 public class ReceiveMessagesTest extends ServiceTest<ServiceBusStressOptions> {
     /**
-     * The number of iterations we expect during to run per second during warmup.
+     * The number of iterations we expect during to run per second during warm-up.
      */
     private static final int WARM_UP_MULTIPLIER = 5;
 
     private final String queueName;
-    private final List<ServiceBusMessage> messages;
     private final ServiceBusReceiverClient receiver;
     private final ServiceBusReceiverAsyncClient receiverAsync;
 
@@ -39,28 +38,14 @@ public class ReceiveMessagesTest extends ServiceTest<ServiceBusStressOptions> {
 
         this.queueName = getQueueName();
 
-        final int numberOfMessages = options.getCount() * options.getIterations();
-        final int totalMessages;
-
-        if (options.getWarmup() > 0) {
-            final int totalIterations = WARM_UP_MULTIPLIER * options.getWarmup();
-
-            // Have the total number of messages be the sum of messages you expect to receive during the warm up period
-            // plus the number of messages from the normal run test scenario.
-            totalMessages = numberOfMessages + (options.getCount() * totalIterations);
-        } else {
-            totalMessages = numberOfMessages;
-        }
-
-        this.messages = getMessages(totalMessages);
-
+        // Disabling auto complete because the track 1 receiver does not have auto complete or auto lock renewal
+        // for the low level receiver. Only the processor does this.
         final ServiceBusReceiverClientBuilder builder = getBuilder()
             .receiver()
-            .queueName(queueName);
+            .queueName(queueName)
+            .maxAutoLockRenewDuration(Duration.ZERO)
+            .disableAutoComplete();
 
-        if (!options.isAutoComplete()) {
-            builder.disableAutoComplete();
-        }
         if (options.getReceiveMode() != null) {
             builder.receiveMode(options.getReceiveMode());
         }
@@ -78,6 +63,21 @@ public class ReceiveMessagesTest extends ServiceTest<ServiceBusStressOptions> {
 
     @Override
     public Mono<Void> setupAsync() {
+        final int numberOfMessages = options.getCount() * options.getIterations();
+        final int totalMessages;
+
+        if (options.getWarmup() > 0) {
+            final int totalIterations = WARM_UP_MULTIPLIER * options.getWarmup();
+
+            // Have the total number of messages be the sum of messages you expect to receive during the warm up period
+            // plus the number of messages from the normal run test scenario.
+            totalMessages = numberOfMessages + (options.getCount() * totalIterations);
+        } else {
+            totalMessages = numberOfMessages;
+        }
+
+        final List<ServiceBusMessage> messages = getMessages(totalMessages);
+
         getLogger().info("Sending {} messages to '{}'.", messages.size(), queueName);
 
         return Mono.using(
@@ -95,8 +95,11 @@ public class ReceiveMessagesTest extends ServiceTest<ServiceBusStressOptions> {
 
         int count = 0;
         for (ServiceBusReceivedMessage message : messages) {
-            receiver.complete(message);
             count++;
+
+            if (options.isSettleMessage()) {
+                receiver.complete(message);
+            }
         }
 
         if (count != numberOfMessages) {
@@ -110,10 +113,10 @@ public class ReceiveMessagesTest extends ServiceTest<ServiceBusStressOptions> {
         final int numberOfMessages = options.getCount();
         getLogger().info("Receiving {} messages from '{}' asynchronously.", numberOfMessages, queueName);
 
-        return receiverAsync
-            .receiveMessages()
+        return receiverAsync.receiveMessages()
             .take(options.getCount())
-            .flatMap(message -> receiverAsync.complete(message))
+            .flatMap(message -> options.isSettleMessage() ? receiverAsync.complete(message) : Mono.empty(),
+                options.getParallel(), options.getCount())
             .then();
     }
 
