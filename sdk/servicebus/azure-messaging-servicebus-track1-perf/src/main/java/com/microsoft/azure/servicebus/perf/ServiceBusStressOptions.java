@@ -19,6 +19,9 @@ public class ServiceBusStressOptions extends PerfStressOptions {
     @Parameter(names = { "--autocomplete" }, description = "Enables autocomplete when receiving messages.")
     private boolean autoComplete = false;
 
+    @Parameter(names = { "--settle" }, description = "Settles a received message.")
+    private boolean settleMessage = false;
+
     /**
      * Gets the receive mode for a test.
      *
@@ -35,5 +38,14 @@ public class ServiceBusStressOptions extends PerfStressOptions {
      */
     public boolean isAutoComplete() {
         return autoComplete;
+    }
+
+    /**
+     * Gets whether or not to settle a message.
+     *
+     * @return {@code true} to complete or abandon message. {@code false} otherwise.
+     */
+    public boolean isSettleMessage() {
+        return settleMessage;
     }
 }

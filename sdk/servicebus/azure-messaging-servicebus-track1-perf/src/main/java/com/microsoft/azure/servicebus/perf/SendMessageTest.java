@@ -53,9 +53,4 @@ public class SendMessageTest extends ServiceTest<ServiceBusStressOptions> {
     public Mono<Void> runAsync() {
         return Mono.fromFuture(sender.sendAsync(message));
     }
-
-    @Override
-    public Mono<Void> cleanupAsync() {
-        return Mono.fromFuture(getMessagingFactory().closeAsync());
-    }
 }

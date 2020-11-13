@@ -10,6 +10,7 @@ import com.azure.perf.test.core.PerfStressTest;
 import com.microsoft.azure.servicebus.IMessage;
 import com.microsoft.azure.servicebus.Message;
 import com.microsoft.azure.servicebus.primitives.MessagingFactory;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -119,5 +120,10 @@ abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStres
                 logger.warning("Unable to dispose of {}.", closeable.getClass(), e);
             }
         }
+    }
+
+    @Override
+    public Mono<Void> cleanupAsync() {
+        return Mono.fromFuture(factory.closeAsync());
     }
 }
