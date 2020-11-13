@@ -7,14 +7,11 @@ import java.sql.{Date, Timestamp}
 import com.fasterxml.jackson.databind.node.{ArrayNode, ObjectNode}
 import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
 import org.apache.spark.sql.Row
-import org.apache.spark.sql.catalyst.expressions.UnsafeMapData
-import org.apache.spark.sql.types.{BinaryType, BooleanType, DataType, DateType, DecimalType, DoubleType, FloatType, IntegerType, LongType, _}
 import org.apache.spark.sql.catalyst.InternalRow
+import org.apache.spark.sql.catalyst.expressions.UnsafeMapData
 import org.apache.spark.sql.catalyst.util.ArrayData
+import org.apache.spark.sql.types.{BinaryType, BooleanType, DataType, DateType, DecimalType, DoubleType, FloatType, IntegerType, LongType, _}
 import org.apache.spark.unsafe.types.UTF8String
-
-import scala.collection.JavaConverters._
-import scala.collection.mutable.ListBuffer
 
 /**
  * TODO add more unit tests for this class to CosmosRowConverterSpec.
@@ -28,68 +25,54 @@ object CosmosRowConverter
   val objectMapper = new ObjectMapper();
 
   def rowToObjectNode(row: Row): ObjectNode = {
-
-    val jsonObject: ObjectNode = objectMapper.createObjectNode();
+    val objectNode: ObjectNode = objectMapper.createObjectNode();
     row.schema.fields.zipWithIndex.foreach({
       case (field, i) => {
-        val jsonValue = convertToJson(row.get(i), field.dataType, isInternalRow = false)
-        addJsonPrimitive(jsonValue, field.name, jsonObject)
+        objectNode.set(field.name, convertToJson(row.get(i), field.dataType, isInternalRow = false))
+        objectNode
       }
     })
-    jsonObject
+    objectNode
   }
 
   def internalRowToObjectNode(internalRow: InternalRow, schema: StructType): ObjectNode = {
-    val jsonObject: ObjectNode = objectMapper.createObjectNode();
+    val objectNode: ObjectNode = objectMapper.createObjectNode();
     schema.fields.zipWithIndex.foreach({
       case (field, i) => {
-        val jsonValue = convertToJson(internalRow.get(i, field.dataType), field.dataType, isInternalRow = true)
-        addJsonPrimitive(jsonValue, field.name, jsonObject)
+        objectNode.set(field.name, convertToJson(internalRow.get(i, field.dataType), field.dataType, isInternalRow = true))
+        objectNode
       }
     })
-    jsonObject
+    objectNode
   }
 
-  private def addJsonPrimitive(jsonValue: Any, fieldName: String, objectNode : ObjectNode) : Unit = {
-    jsonValue match {
-      case element: Boolean => objectNode.put(fieldName, element.asInstanceOf[Boolean])
-      case element: String => objectNode.put(fieldName, element.asInstanceOf[String])
-      case element: Double => objectNode.put(fieldName, element.asInstanceOf[Double])
-      case element: Float => objectNode.put(fieldName, element.asInstanceOf[Float])
-      case element: Long => objectNode.put(fieldName, element.asInstanceOf[Long])
-      case element: Int => objectNode.put(fieldName, element.asInstanceOf[Int])
-      case element: JsonNode => objectNode.set(fieldName, element.asInstanceOf[JsonNode])
-      case _ => objectNode.putNull(fieldName)
-    }
-  }
-
-  private def convertToJson(element: Any, elementType: DataType, isInternalRow: Boolean): Any = {
+  private def convertToJson(element: Any, elementType: DataType, isInternalRow: Boolean): JsonNode = {
     elementType match {
-      case BinaryType => element.asInstanceOf[Array[Byte]]
-      case BooleanType => element.asInstanceOf[Boolean]
-      case DateType => element.asInstanceOf[Date].getTime
-      case DoubleType => element.asInstanceOf[Double]
-      case IntegerType => element.asInstanceOf[Int]
-      case LongType => element.asInstanceOf[Long]
-      case FloatType => element.asInstanceOf[Float]
-      case NullType => null // TODO: verify how it works for nulls
+      case BinaryType => objectMapper.convertValue(element.asInstanceOf[Array[Byte]], classOf[JsonNode])
+      case BooleanType => objectMapper.convertValue(element.asInstanceOf[Boolean], classOf[JsonNode])
+      case DateType => objectMapper.convertValue(element.asInstanceOf[Date].getTime, classOf[JsonNode])
+      case DoubleType => objectMapper.convertValue(element.asInstanceOf[Double], classOf[JsonNode])
+      case IntegerType => objectMapper.convertValue(element.asInstanceOf[Int], classOf[JsonNode])
+      case LongType => objectMapper.convertValue(element.asInstanceOf[Long], classOf[JsonNode])
+      case FloatType => objectMapper.convertValue(element.asInstanceOf[Float], classOf[JsonNode])
+      case NullType => objectMapper.convertValue(null, classOf[JsonNode])
       case DecimalType() => if (element.isInstanceOf[Decimal]) {
-        element.asInstanceOf[Decimal].toJavaBigDecimal
+        objectMapper.convertValue(element.asInstanceOf[Decimal].toJavaBigDecimal, classOf[JsonNode])
       } else if (element.isInstanceOf[java.lang.Long]) {
-        new java.math.BigDecimal(element.asInstanceOf[java.lang.Long])
+        objectMapper.convertValue(new java.math.BigDecimal(element.asInstanceOf[java.lang.Long]), classOf[JsonNode])
       } else {
-        element.asInstanceOf[java.math.BigDecimal]
+        objectMapper.convertValue(element.asInstanceOf[java.math.BigDecimal], classOf[JsonNode])
       }
       case StringType =>
         if (isInternalRow) {
-          new String(element.asInstanceOf[UTF8String].getBytes, "UTF-8")
+          objectMapper.convertValue(element.asInstanceOf[UTF8String].toString, classOf[JsonNode])
         } else {
-          element.asInstanceOf[String]
+          objectMapper.convertValue(element.asInstanceOf[String], classOf[JsonNode])
         }
       case TimestampType => if (element.isInstanceOf[java.lang.Long]) {
-        element.asInstanceOf[java.lang.Long]
+        objectMapper.convertValue(element.asInstanceOf[java.lang.Long], classOf[JsonNode])
       } else {
-        element.asInstanceOf[Timestamp].getTime
+        objectMapper.convertValue(element.asInstanceOf[Timestamp].getTime, classOf[JsonNode])
       }
       case arrayType: ArrayType => arrayTypeRouterToJsonArray(arrayType.elementType, element, isInternalRow)
 
@@ -106,7 +89,7 @@ object CosmosRowConverter
           )
         }
 
-      case structType: StructType => rowTyperouterToJsonArray(element, structType)
+      case structType: StructType => rowTypeRouterToJsonArray(element, structType)
       case _ =>
         throw new Exception(s"Cannot cast $element into a Json value. $elementType has no matching Json value.")
     }
@@ -114,11 +97,10 @@ object CosmosRowConverter
 
   private def mapTypeToObjectNode(valueType: DataType, data: Map[String, Any], isInternalRow: Boolean): ObjectNode = {
     val jsonObject: ObjectNode = objectMapper.createObjectNode();
-    val internalData = valueType match {
-      case subDocuments: StructType => data.map(kv => jsonObject.put(kv._1, rowTyperouterToJsonArray(kv._2, subDocuments)))
+    valueType match {
+      case subDocuments: StructType => data.map(kv => jsonObject.put(kv._1, rowTypeRouterToJsonArray(kv._2, subDocuments)))
       case subArray: ArrayType => data.map(kv => jsonObject.put(kv._1, arrayTypeRouterToJsonArray(subArray.elementType, kv._2, isInternalRow)))
-
-      // TODO moderakh      case _   => data.map(kv => jsonObject.put(kv._1, convertToJson(kv._2, valueType, isInternalRow)))
+      case _ => data.map(kv => jsonObject.put(kv._1, convertToJson(kv._2, valueType, isInternalRow)))
     }
     jsonObject
   }
@@ -132,35 +114,36 @@ object CosmosRowConverter
   }
 
   private def arrayTypeToJsonArray(elementType: DataType, data: Seq[Any], isInternalRow: Boolean): ArrayNode = {
-    val internalData = elementType match {
-      case subDocuments: StructType => data.map(x => rowTyperouterToJsonArray(x, subDocuments)).asJava
-      case subArray: ArrayType => data.map(x => arrayTypeRouterToJsonArray(subArray.elementType, x, isInternalRow)).asJava
-      case _ => data.map(x => convertToJson(x, elementType, isInternalRow)).asJava
+    val arrayNode = objectMapper.createArrayNode()
+
+    elementType match {
+      case subDocuments: StructType => data.foreach(x => arrayNode.add(rowTypeRouterToJsonArray(x, subDocuments)))
+      case subArray: ArrayType => data.foreach(x => arrayNode.add(arrayTypeRouterToJsonArray(subArray.elementType, x, isInternalRow)))
+      case _ => data.foreach(x => arrayNode.add(convertToJson(x, elementType, isInternalRow)))
     }
     // When constructing the JSONArray, the internalData should contain JSON-compatible objects in order for the schema to be mantained.
     // Otherwise, the data will be converted into String.
-    // TODO: moderakh new JSONArray(internalData)
-    val arrayNode = objectMapper.createArrayNode()
     arrayNode
   }
 
   private def arrayDataTypeToJsonArray(elementType: DataType, data: ArrayData, isInternalRow: Boolean): ArrayNode = {
-    val listBuffer = ListBuffer.empty[Any]
+    val arrayNode = objectMapper.createArrayNode()
+
     elementType match {
-      case subDocuments: StructType => data.foreach(elementType, (_, x) => listBuffer.append(rowTyperouterToJsonArray(x, subDocuments)))
-      case subArray: ArrayType => data.foreach(elementType, (_, x) => listBuffer.append(arrayTypeRouterToJsonArray(subArray.elementType, x, isInternalRow)))
-      case _ => data.foreach(elementType, (_, x) => listBuffer.append(convertToJson(x, elementType, isInternalRow)))
+      case subDocuments: StructType => data.foreach(elementType, (_, x) => arrayNode.add(rowTypeRouterToJsonArray(x, subDocuments)))
+      case subArray: ArrayType => data.foreach(elementType, (_, x) => arrayNode.add(arrayTypeRouterToJsonArray(subArray.elementType, x, isInternalRow)))
+      case _ => data.foreach(elementType, (_, x) => arrayNode.add(convertToJson(x, elementType, isInternalRow)))
     }
     // When constructing the JSONArray, the internalData should contain JSON-compatible objects in order for the schema to be mantained.
     // Otherwise, the data will be converted into String.
-    val arrayNode = objectMapper.createArrayNode()
-    // TODO: moderakh new JSONArray(listBuffer)
     arrayNode
   }
 
-  private def rowTyperouterToJsonArray(element: Any, schema: StructType) = element match {
-    case e: Row => rowToObjectNode(e)
-    case e: InternalRow => internalRowToObjectNode(e, schema)
-    case _ => throw new Exception(s"Cannot cast $element into a Json value. Struct $element has no matching Json value.")
+  private def rowTypeRouterToJsonArray(element: Any, schema: StructType) : ObjectNode = {
+    element match {
+      case e: Row => rowToObjectNode(e)
+      case e: InternalRow => internalRowToObjectNode(e, schema)
+      case _ => throw new Exception(s"Cannot cast $element into a Json value. Struct $element has no matching Json value.")
+    }
   }
 }

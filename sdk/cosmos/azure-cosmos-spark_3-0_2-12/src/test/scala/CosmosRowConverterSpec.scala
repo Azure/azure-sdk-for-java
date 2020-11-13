@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.google.gson.JsonArray
+import com.fasterxml.jackson.databind.node.ArrayNode
 import org.apache.spark.sql.catalyst.expressions.GenericRowWithSchema
 import org.apache.spark.sql.types.{ArrayType, IntegerType, NullType, StringType, StructField, StructType}
 import org.assertj.core.api.Assertions.assertThat
@@ -42,9 +42,6 @@ class CosmosRowConverterSpec extends UnitSpec {
   }
 
   "array in spark row" should "translate to null in ArrayNode" in {
-
-    // TODO add test for array
-
     val colName1 = "testCol1"
     val colName2 = "testCol2"
     val colVal1 = null
@@ -56,11 +53,12 @@ class CosmosRowConverterSpec extends UnitSpec {
 
     val objectNode = CosmosRowConverter.rowToObjectNode(row)
     assertThat(objectNode.get(colName1).isArray)
-    assertThat(objectNode.get(colName1).isInstanceOf[JsonArray]).isTrue
-    assertThat(objectNode.get(colName1).asInstanceOf[JsonArray]).hasSize(2)
-    assertThat(objectNode.get(colName1).asInstanceOf[JsonArray].get(0)).isEqualTo("arrayElement1")
-    assertThat(objectNode.get(colName1).asInstanceOf[JsonArray].get(1)).isEqualTo("arrayElement2")
+    assertThat(objectNode.get(colName1).asInstanceOf[ArrayNode]).hasSize(2)
+    assertThat(objectNode.get(colName1).asInstanceOf[ArrayNode].get(0).asText()).isEqualTo("arrayElement1")
+    assertThat(objectNode.get(colName1).asInstanceOf[ArrayNode].get(1).asText()).isEqualTo("arrayElement2")
 
     assertThat(objectNode.get(colName2).asText()).isEqualTo(colVal2)
   }
+
+  // TODO moderakh add more tests for all primitive types, Map, List, Nested Type, ...
 }
