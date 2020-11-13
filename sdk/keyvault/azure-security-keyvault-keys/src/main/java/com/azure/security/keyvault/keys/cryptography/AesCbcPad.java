@@ -15,28 +15,28 @@ import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
 import java.util.Arrays;
 
-abstract class AesCbc extends SymmetricEncryptionAlgorithm {
+abstract class AesCbcPad extends SymmetricEncryptionAlgorithm {
     final int keySizeInBytes;
     final int keySize;
 
-    protected AesCbc(String name, int size) {
+    protected AesCbcPad(String name, int size) {
         super(name);
 
         keySize = size;
         keySizeInBytes = size >> 3;
     }
 
-    static class AesCbcEncryptor implements ICryptoTransform {
+    static class AesCbcPadEncryptor implements ICryptoTransform {
         private final Cipher cipher;
 
-        AesCbcEncryptor(byte[] key, byte[] iv, Provider provider) throws NoSuchAlgorithmException,
+        AesCbcPadEncryptor(byte[] key, byte[] iv, Provider provider) throws NoSuchAlgorithmException,
             NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
 
             // Create the cipher using the Provider if specified
             if (provider == null) {
-                cipher = Cipher.getInstance("AES/CBC/NoPadding");
+                cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
             } else {
-                cipher = Cipher.getInstance("AES/CBC/NoPadding", provider);
+                cipher = Cipher.getInstance("AES/CBC/PKCS5Padding", provider);
             }
 
             cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key, "AES"), new IvParameterSpec(iv));
@@ -48,17 +48,17 @@ abstract class AesCbc extends SymmetricEncryptionAlgorithm {
         }
     }
 
-    static class AesCbcDecryptor implements ICryptoTransform {
+    static class AesCbcPadDecryptor implements ICryptoTransform {
         private final Cipher cipher;
 
-        AesCbcDecryptor(byte[] key, byte[] iv, Provider provider) throws NoSuchAlgorithmException,
+        AesCbcPadDecryptor(byte[] key, byte[] iv, Provider provider) throws NoSuchAlgorithmException,
             NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
 
             // Create the cipher using the Provider if specified
             if (provider == null) {
-                cipher = Cipher.getInstance("AES/CBC/NoPadding");
+                cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
             } else {
-                cipher = Cipher.getInstance("AES/CBC/NoPadding", provider);
+                cipher = Cipher.getInstance("AES/CBC/PKCS5Padding", provider);
             }
 
             cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key, "AES"), new IvParameterSpec(iv));
@@ -86,10 +86,10 @@ abstract class AesCbc extends SymmetricEncryptionAlgorithm {
         InvalidAlgorithmParameterException {
 
         if (key == null || key.length < keySizeInBytes) {
-            throw new InvalidKeyException("Key must be at least " + keySize + " bits in length.");
+            throw new InvalidKeyException("key must be at least " + keySize + " bits in length");
         }
 
-        return new AesCbcEncryptor(Arrays.copyOfRange(key, 0, keySizeInBytes), iv, provider);
+        return new AesCbcPadEncryptor(Arrays.copyOfRange(key, 0, keySizeInBytes), iv, provider);
     }
 
     @Override
@@ -108,9 +108,9 @@ abstract class AesCbc extends SymmetricEncryptionAlgorithm {
         InvalidAlgorithmParameterException {
 
         if (key == null || key.length < keySizeInBytes) {
-            throw new InvalidKeyException("Key must be at least " + keySize + " bits in length.");
+            throw new InvalidKeyException("key must be at least " + keySize + " bits in length");
         }
 
-        return new AesCbcDecryptor(Arrays.copyOfRange(key, 0, keySizeInBytes), iv, provider);
+        return new AesCbcPadDecryptor(Arrays.copyOfRange(key, 0, keySizeInBytes), iv, provider);
     }
 }

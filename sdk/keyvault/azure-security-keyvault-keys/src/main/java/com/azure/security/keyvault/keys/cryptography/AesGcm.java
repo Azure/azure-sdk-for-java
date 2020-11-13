@@ -7,39 +7,43 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
 import java.util.Arrays;
+import java.util.Objects;
 
-abstract class AesCbc extends SymmetricEncryptionAlgorithm {
+abstract class AesGcm extends SymmetricEncryptionAlgorithm {
     final int keySizeInBytes;
     final int keySize;
 
-    protected AesCbc(String name, int size) {
+    protected AesGcm(String name, int size) {
         super(name);
 
         keySize = size;
         keySizeInBytes = size >> 3;
     }
 
-    static class AesCbcEncryptor implements ICryptoTransform {
+    static class AesGcmEncryptor implements ICryptoTransform {
         private final Cipher cipher;
 
-        AesCbcEncryptor(byte[] key, byte[] iv, Provider provider) throws NoSuchAlgorithmException,
-            NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
+        AesGcmEncryptor(byte[] key, byte[] iv, byte[] additionalAuthenticatedData, byte[] authenticationTag,
+                        Provider provider)
+            throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
+            InvalidAlgorithmParameterException {
 
             // Create the cipher using the Provider if specified
             if (provider == null) {
-                cipher = Cipher.getInstance("AES/CBC/NoPadding");
+                cipher = Cipher.getInstance("AES/GCM/NoPadding");
             } else {
-                cipher = Cipher.getInstance("AES/CBC/NoPadding", provider);
+                cipher = Cipher.getInstance("AES/GCM/NoPadding", provider);
             }
 
-            cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key, "AES"), new IvParameterSpec(iv));
+            cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key, "AES"),
+                new GCMParameterSpec(authenticationTag.length << 3, iv));
         }
 
         @Override
@@ -48,20 +52,26 @@ abstract class AesCbc extends SymmetricEncryptionAlgorithm {
         }
     }
 
-    static class AesCbcDecryptor implements ICryptoTransform {
+    static class AesGcmDecryptor implements ICryptoTransform {
         private final Cipher cipher;
 
-        AesCbcDecryptor(byte[] key, byte[] iv, Provider provider) throws NoSuchAlgorithmException,
-            NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
+        AesGcmDecryptor(byte[] key, byte[] iv, byte[] additionalAuthenticatedData, byte[] authenticationTag,
+                        Provider provider)
+            throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
+            InvalidAlgorithmParameterException {
 
             // Create the cipher using the Provider if specified
             if (provider == null) {
-                cipher = Cipher.getInstance("AES/CBC/NoPadding");
+                cipher = Cipher.getInstance("AES/GCM/NoPadding");
             } else {
-                cipher = Cipher.getInstance("AES/CBC/NoPadding", provider);
+                cipher = Cipher.getInstance("AES/GCM/NoPadding", provider);
             }
 
-            cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key, "AES"), new IvParameterSpec(iv));
+
+            Objects.requireNonNull(authenticationTag, "'authenticationTag' cannot be null");
+
+            cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key, "AES"),
+                new GCMParameterSpec(authenticationTag.length << 3, iv));
         }
 
         @Override
@@ -76,7 +86,7 @@ abstract class AesCbc extends SymmetricEncryptionAlgorithm {
         throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
         InvalidAlgorithmParameterException {
 
-        return createEncryptor(key, iv, additionalAuthenticatedData, null, null);
+        return createEncryptor(key, iv, additionalAuthenticatedData, authenticationTag, null);
     }
 
     @Override
@@ -86,10 +96,11 @@ abstract class AesCbc extends SymmetricEncryptionAlgorithm {
         InvalidAlgorithmParameterException {
 
         if (key == null || key.length < keySizeInBytes) {
-            throw new InvalidKeyException("Key must be at least " + keySize + " bits in length.");
+            throw new InvalidKeyException("key must be at least " + keySize + " bits in length");
         }
 
-        return new AesCbcEncryptor(Arrays.copyOfRange(key, 0, keySizeInBytes), iv, provider);
+        return new AesGcmEncryptor(Arrays.copyOfRange(key, 0, keySizeInBytes), iv, additionalAuthenticatedData,
+            authenticationTag, provider);
     }
 
     @Override
@@ -108,9 +119,10 @@ abstract class AesCbc extends SymmetricEncryptionAlgorithm {
         InvalidAlgorithmParameterException {
 
         if (key == null || key.length < keySizeInBytes) {
-            throw new InvalidKeyException("Key must be at least " + keySize + " bits in length.");
+            throw new InvalidKeyException("key must be at least " + keySize + " bits in length");
         }
 
-        return new AesCbcDecryptor(Arrays.copyOfRange(key, 0, keySizeInBytes), iv, provider);
+        return new AesGcmDecryptor(Arrays.copyOfRange(key, 0, keySizeInBytes), iv, additionalAuthenticatedData,
+            authenticationTag, provider);
     }
 }
