@@ -10,13 +10,18 @@ import org.apache.spark.sql.Row
 import org.apache.spark.sql.catalyst.InternalRow
 import org.apache.spark.sql.catalyst.expressions.UnsafeMapData
 import org.apache.spark.sql.catalyst.util.ArrayData
-import org.apache.spark.sql.types.{BinaryType, BooleanType, DataType, DateType, DecimalType, DoubleType, FloatType, IntegerType, LongType, _}
+// scalastyle:off underscore.import
+import org.apache.spark.sql.types._
+// scalastyle:on underscore.import
 import org.apache.spark.unsafe.types.UTF8String
 
-/**
- * TODO add more unit tests for this class to CosmosRowConverterSpec.
- */
 
+// TODO: moderakh more discussion is required to decide how to do row conversion
+// see https://github.com/Azure/azure-sdk-for-java/pull/17532#discussion_r522749612 for more info
+
+// TODO add more unit tests for this class to CosmosRowConverterSpec.
+
+// scalastyle:off multiple.string.literals
 object CosmosRowConverter
   extends Serializable
     with CosmosLoggingTrait {
@@ -46,6 +51,7 @@ object CosmosRowConverter
     objectNode
   }
 
+  // scalastyle:off cyclomatic.complexity
   private def convertToJson(element: Any, elementType: DataType, isInternalRow: Boolean): JsonNode = {
     elementType match {
       case BinaryType => objectMapper.convertValue(element.asInstanceOf[Array[Byte]], classOf[JsonNode])
@@ -55,7 +61,7 @@ object CosmosRowConverter
       case IntegerType => objectMapper.convertValue(element.asInstanceOf[Int], classOf[JsonNode])
       case LongType => objectMapper.convertValue(element.asInstanceOf[Long], classOf[JsonNode])
       case FloatType => objectMapper.convertValue(element.asInstanceOf[Float], classOf[JsonNode])
-      case NullType => objectMapper.convertValue(null, classOf[JsonNode])
+      case NullType => objectMapper.nullNode()
       case DecimalType() => if (element.isInstanceOf[Decimal]) {
         objectMapper.convertValue(element.asInstanceOf[Decimal].toJavaBigDecimal, classOf[JsonNode])
       } else if (element.isInstanceOf[java.lang.Long]) {
@@ -94,6 +100,7 @@ object CosmosRowConverter
         throw new Exception(s"Cannot cast $element into a Json value. $elementType has no matching Json value.")
     }
   }
+  // scalastyle:off cyclomatic.complexity
 
   private def mapTypeToObjectNode(valueType: DataType, data: Map[String, Any], isInternalRow: Boolean): ObjectNode = {
     val jsonObject: ObjectNode = objectMapper.createObjectNode();
@@ -147,3 +154,4 @@ object CosmosRowConverter
     }
   }
 }
+// scalastyle:on multiple.string.literals

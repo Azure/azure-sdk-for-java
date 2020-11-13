@@ -9,7 +9,9 @@ import org.apache.spark.sql.connector.expressions.Transform
 import org.apache.spark.sql.connector.write.{LogicalWriteInfo, WriteBuilder}
 import org.apache.spark.sql.types.{IntegerType, StringType, StructField, StructType}
 
+// scalastyle:off underscore.import
 import scala.collection.JavaConverters._
+// scalastyle:on underscore.import
 
 /**
  * CosmosTable is the entry point this is registered in the spark

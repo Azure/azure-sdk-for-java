@@ -14,9 +14,11 @@ class CosmosItemsDataSource extends DataSourceRegister with TableProvider with C
   logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
   override def inferSchema(caseInsensitiveStringMap: CaseInsensitiveStringMap): StructType = {
+    // scalastyle:off null
     getTable(null,
       Array.empty[Transform],
       caseInsensitiveStringMap.asCaseSensitiveMap()).schema()
+    // scalastyle:on null
   }
 
   override def shortName(): String = "cosmos.items"
