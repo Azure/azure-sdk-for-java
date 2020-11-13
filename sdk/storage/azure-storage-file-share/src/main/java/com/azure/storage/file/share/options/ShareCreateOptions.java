@@ -5,7 +5,7 @@ package com.azure.storage.file.share.options;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.file.share.models.ShareAccessTier;
-import com.azure.storage.file.share.models.ShareEnabledProtocols;
+import com.azure.storage.file.share.models.ShareProtocols;
 import com.azure.storage.file.share.models.ShareRootSquash;
 
 import java.util.Map;
@@ -19,7 +19,7 @@ public class ShareCreateOptions {
     private Integer quotaInGb;
     private Map<String, String> metadata;
     private ShareAccessTier accessTier;
-    private ShareEnabledProtocols enabledProtocol;
+    private ShareProtocols protocols;
     private ShareRootSquash rootSquash;
 
     /**
@@ -71,18 +71,18 @@ public class ShareCreateOptions {
     }
 
     /**
-     * @return {@link ShareEnabledProtocols}
+     * @return {@link ShareProtocols}
      */
-    public ShareEnabledProtocols getEnabledProtocol() {
-        return enabledProtocol;
+    public ShareProtocols getProtocols() {
+        return protocols;
     }
 
     /**
-     * @param enabledProtocol {@link ShareEnabledProtocols}
+     * @param protocols {@link ShareProtocols}
      * @return The updated options.
      */
-    public ShareCreateOptions setEnabledProtocol(ShareEnabledProtocols enabledProtocol) {
-        this.enabledProtocol = enabledProtocol;
+    public ShareCreateOptions setProtocols(ShareProtocols protocols) {
+        this.protocols = protocols;
         return this;
     }
 

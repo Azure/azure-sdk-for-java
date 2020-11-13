@@ -9,8 +9,8 @@ import com.azure.storage.common.implementation.Constants;
 /**
  * Represents protocols that can be set on a share.
  */
-public class ShareEnabledProtocols {
-    private final ClientLogger logger = new ClientLogger(ShareEnabledProtocols.class);
+public class ShareProtocols {
+    private final ClientLogger logger = new ClientLogger(ShareProtocols.class);
 
     private boolean smb;
 
@@ -19,14 +19,14 @@ public class ShareEnabledProtocols {
     /**
      * @return Enable SMB
      */
-    public boolean isSmb() {
+    public boolean isSmbEnabled() {
         return smb;
     }
 
     /**
      * @return Enable NFS
      */
-    public boolean isNfs() {
+    public boolean isNfsEnabled() {
         return nfs;
     }
 
@@ -34,7 +34,7 @@ public class ShareEnabledProtocols {
      * @param smb Enable SMB
      * @return The updated object
      */
-    public ShareEnabledProtocols setSmb(boolean smb) {
+    public ShareProtocols setSmbEnabled(boolean smb) {
         this.smb = smb;
         return this;
     }
@@ -43,7 +43,7 @@ public class ShareEnabledProtocols {
      * @param nfs Enable NFS
      * @return The updated object
      */
-    public ShareEnabledProtocols setNfs(boolean nfs) {
+    public ShareProtocols setNfsEnabled(boolean nfs) {
         this.nfs = nfs;
         return this;
     }
@@ -65,26 +65,5 @@ public class ShareEnabledProtocols {
             return Constants.HeaderConstants.NFS_PROTOCOL;
         }
         return "";
-    }
-
-    /**
-     * Parses a {@code String} into a {@code SharEnabledProtocol}.
-     *
-     * @param str The string to parse.
-     * @return A {@code ShareEnabledProtocol} represented by the string.
-     * @throws IllegalArgumentException If the String is not a recognized protocol.
-     */
-    public static ShareEnabledProtocols parse(String str) {
-        if (str == null) {
-            return null;
-        }
-
-        if (str.equals(Constants.HeaderConstants.SMB_PROTOCOL)) {
-            return new ShareEnabledProtocols().setSmb(true);
-        } else if (str.equals(Constants.HeaderConstants.NFS_PROTOCOL)) {
-            return new ShareEnabledProtocols().setNfs(true);
-        }
-
-        throw new IllegalArgumentException("String is not an understood protocol: " + str);
     }
 }
