@@ -35,8 +35,6 @@ public class AADAuthenticationProperties {
     private static final String GROUP_RELATIONSHIP_DIRECT = "direct";
     private static final String GROUP_RELATIONSHIP_TRANSITIVE = "transitive";
 
-    private String authorizationServerUri;
-
     private Map<String, AuthorizationProperties> authorization = new HashMap<>();
 
     /**
@@ -266,14 +264,6 @@ public class AADAuthenticationProperties {
             throw new IllegalArgumentException("Configuration 'azure.activedirectory.user-group.group-relationship' "
                 + "should be 'direct' or 'transitive'.");
         }
-    }
-
-    public void setAuthorizationServerUri(String authorizationServerUri) {
-        this.authorizationServerUri = authorizationServerUri;
-    }
-
-    public String getAuthorizationServerUri() {
-        return authorizationServerUri;
     }
 
     public void setAuthorization(Map<String, AuthorizationProperties> authorization) {

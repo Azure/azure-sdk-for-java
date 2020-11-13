@@ -186,9 +186,9 @@ public class AppAutoConfigTest {
     }
 
     @Test
-    public void customizeUri() {
+    public void customizeEnvironment() {
         try (AppRunner appRunner = createApp()) {
-            appRunner.property("azure.activedirectory.authorization-server-uri", "http://localhost/");
+            appRunner.property("azure.activedirectory.environment", "cn-v2-graph");
             appRunner.start();
 
             AzureClientRegistrationRepository azureClientRegistrationRepository =
@@ -196,17 +196,18 @@ public class AppAutoConfigTest {
             ClientRegistration azureClientRegistration =
                 azureClientRegistrationRepository.findByRegistrationId("azure");
 
-            AuthorizationServerEndpoints endpoints = new AuthorizationServerEndpoints("http://localhost/");
+            AuthorizationServerEndpoints authorizationServerEndpoints =
+                new AuthorizationServerEndpoints("https://login.partner.microsoftonline.cn");
             assertEquals(
-                endpoints.authorizationEndpoint("fake-tenant-id"),
+                authorizationServerEndpoints.authorizationEndpoint("fake-tenant-id"),
                 azureClientRegistration.getProviderDetails().getAuthorizationUri()
             );
             assertEquals(
-                endpoints.tokenEndpoint("fake-tenant-id"),
+                authorizationServerEndpoints.tokenEndpoint("fake-tenant-id"),
                 azureClientRegistration.getProviderDetails().getTokenUri()
             );
             assertEquals(
-                endpoints.jwkSetEndpoint("fake-tenant-id"),
+                authorizationServerEndpoints.jwkSetEndpoint("fake-tenant-id"),
                 azureClientRegistration.getProviderDetails().getJwkSetUri()
             );
         }
