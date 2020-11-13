@@ -74,7 +74,7 @@ import java.util.stream.Collectors;
 import static com.azure.ai.textanalytics.implementation.models.State.CANCELLED;
 import static com.azure.ai.textanalytics.implementation.models.State.CANCELLING;
 import static com.azure.ai.textanalytics.implementation.models.State.FAILED;
-import static com.azure.ai.textanalytics.implementation.models.State.NOTSTARTED;
+import static com.azure.ai.textanalytics.implementation.models.State.NOT_STARTED;
 import static com.azure.ai.textanalytics.implementation.models.State.PARTIALLY_COMPLETED;
 import static com.azure.ai.textanalytics.implementation.models.State.RUNNING;
 import static com.azure.ai.textanalytics.implementation.models.State.SUCCEEDED;
@@ -534,7 +534,7 @@ public final class Utility {
      * @return the client side explored model, JobState.
      */
     public static JobState toJobState(State jobState) {
-        if (jobState == NOTSTARTED) {
+        if (jobState == NOT_STARTED) {
             return JobState.CANCELLED;
         } else if (jobState == RUNNING) {
             return JobState.RUNNING;

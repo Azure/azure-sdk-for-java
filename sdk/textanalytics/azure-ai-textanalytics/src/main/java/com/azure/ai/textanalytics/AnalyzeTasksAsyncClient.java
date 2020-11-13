@@ -348,7 +348,7 @@ class AnalyzeTasksAsyncClient {
 
         LongRunningOperationStatus status;
         switch (analyzeJobStateResponse.getValue().getStatus()) {
-            case NOTSTARTED:
+            case NOT_STARTED:
             case CANCELLING:
             case RUNNING:
                 status = LongRunningOperationStatus.IN_PROGRESS;

@@ -292,7 +292,7 @@ class AnalyzeHealthcareAsyncClient {
                 logger.info("LongRunningOperation-Cancelling");
                 status = LongRunningOperationStatus.IN_PROGRESS;
                 break;
-            case NOTSTARTED:
+            case NOT_STARTED:
             case RUNNING:
                 status = LongRunningOperationStatus.IN_PROGRESS;
                 break;
