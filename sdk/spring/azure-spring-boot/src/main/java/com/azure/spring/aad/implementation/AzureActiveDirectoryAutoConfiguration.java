@@ -75,6 +75,7 @@ public class AzureActiveDirectoryAutoConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean
     WebClient webClient(
         ClientRegistrationRepository clientRegistrationRepository,
         OAuth2AuthorizedClientRepository oAuth2AuthorizedClientRepository
@@ -91,7 +92,8 @@ public class AzureActiveDirectoryAutoConfiguration {
     }
 
     @Bean
-    GraphWebClient azureADGraphClient(WebClient webClient) {
+    @ConditionalOnMissingBean
+    GraphWebClient graphWebClient(WebClient webClient) {
         return new GraphWebClient(
             aadAuthenticationProperties,
             serviceEndpointsProperties,
