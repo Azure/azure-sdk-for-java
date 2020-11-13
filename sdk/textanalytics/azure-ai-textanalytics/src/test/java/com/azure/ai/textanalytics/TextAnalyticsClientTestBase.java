@@ -685,7 +685,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     // Healthcare LRO runner- Cancellation
-    void cancelHealthcareLroRunner(BiConsumer<List<TextDocumentInput>,RecognizeHealthcareEntityOptions> testRunner) {
+    void cancelHealthcareLroRunner(BiConsumer<List<TextDocumentInput>, RecognizeHealthcareEntityOptions> testRunner) {
         List<TextDocumentInput> documents = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             documents.add(new TextDocumentInput(Integer.toString(i), HEALTHCARE_INPUTS.get(0)));
