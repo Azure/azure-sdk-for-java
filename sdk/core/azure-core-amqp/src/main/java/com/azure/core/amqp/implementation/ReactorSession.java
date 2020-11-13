@@ -413,13 +413,14 @@ public class ReactorSession implements AmqpSession {
      * @param linkName Name of the receive link.
      * @param entityPath Address in the message broker for the link.
      * @param linkProperties The properties needed to be set on the link.
+     * @param senderDesiredCapabilities Capabilities that the sender link supports.
      * @param timeout Operation timeout when creating the link.
      * @param retry Retry policy to apply when link creation times out.
      *
      * @return A new instance of an {@link AmqpLink} with the correct properties set.
      */
     protected Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout,
-         AmqpRetryPolicy retry, Map<Symbol, Object> linkProperties) {
+         AmqpRetryPolicy retry, Map<Symbol, Object> linkProperties, Symbol[] senderDesiredCapabilities) {
 
         if (isDisposed()) {
             return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
@@ -451,8 +452,8 @@ public class ReactorSession implements AmqpSession {
                                 }
 
                                 logger.info("Creating a new sender link with linkName {}", linkName);
-                                return getSubscription(linkName, entityPath, linkProperties, timeout, retry,
-                                    tokenManager);
+                                return getSubscription(linkName, entityPath, linkProperties, senderDesiredCapabilities,
+                                    timeout, retry, tokenManager);
                             });
 
                         sink.success(computed.getLink());
@@ -463,11 +464,17 @@ public class ReactorSession implements AmqpSession {
             }));
     }
 
+    protected Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retry,
+        Map<Symbol, Object> linkProperties) {
+
+        return this.createProducer(linkName, entityPath, timeout, retry, linkProperties, null);
+    }
     /**
      * NOTE: Ensure this is invoked using the reactor dispatcher because proton-j is not thread-safe.
      */
     private LinkSubscription<AmqpSendLink> getSubscription(String linkName, String entityPath,
-        Map<Symbol, Object> linkProperties, Duration timeout, AmqpRetryPolicy retry, TokenManager tokenManager) {
+        Map<Symbol, Object> linkProperties, Symbol[] senderDesiredCapabilities, Duration timeout, AmqpRetryPolicy retry,
+        TokenManager tokenManager) {
 
         final Sender sender = session.sender(linkName);
         final Target target = new Target();
@@ -480,6 +487,10 @@ public class ReactorSession implements AmqpSession {
 
         if (linkProperties != null && linkProperties.size() > 0) {
             sender.setProperties(linkProperties);
+        }
+
+        if (senderDesiredCapabilities != null && senderDesiredCapabilities.length > 0) {
+            sender.setDesiredCapabilities(senderDesiredCapabilities);
         }
 
         final SendLinkHandler sendLinkHandler = handlerProvider.createSendLinkHandler(

@@ -119,6 +119,17 @@ public class EventHubProducerClient implements Closeable {
     }
 
     /**
+     * Get the idempotent producer's publishing state of a partition.
+     * @param partitionId The partition id of the publishing state
+     * @return A mono that has the {@link PartitionPublishingProperties}.
+     * {@code null} if the partition doesn't have any state yet.
+     * @throws UnsupportedOperationException if this producer isn't an idempotent producer.
+     */
+    public PartitionPublishingProperties getPartitionPublishingProperties(String partitionId) {
+        return producer.getPartitionPublishingProperties(partitionId).block();
+    }
+
+    /**
      * Creates an {@link EventDataBatch} that can fit as many events as the transport allows.
      *
      * @return A new {@link EventDataBatch} that can fit as many events as the transport allows.

@@ -29,8 +29,13 @@ public interface EventHubAmqpConnection extends AmqpConnection {
      * @param linkName The name of the link.
      * @param entityPath The remote address to connect to for the message broker.
      * @param retryOptions Options to use when creating the link.
+     * @param idempotentPartitionPublishing Enable the idempotent producer feature when creating the link.
+     * @param publishingState Set the starting state
      * @return A new or existing send link that is connected to the given {@code entityPath}.
      */
+    Mono<AmqpSendLink> createSendLink(String linkName, String entityPath, AmqpRetryOptions retryOptions,
+                                      boolean idempotentPartitionPublishing, PartitionPublishingState publishingState);
+
     Mono<AmqpSendLink> createSendLink(String linkName, String entityPath, AmqpRetryOptions retryOptions);
 
     /**

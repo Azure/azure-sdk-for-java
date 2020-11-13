@@ -27,7 +27,7 @@ public class PartitionEvent {
      * @throws NullPointerException if {@code partitionContext} or {@code eventData} is {@code null}.
      */
     public PartitionEvent(final PartitionContext partitionContext, final EventData eventData,
-        LastEnqueuedEventProperties lastEnqueuedEventProperties) {
+                          LastEnqueuedEventProperties lastEnqueuedEventProperties) {
         this.partitionContext = Objects.requireNonNull(partitionContext, "'partitionContext' cannot be null");
         this.eventData = Objects.requireNonNull(eventData, "'eventData' cannot be null");
         this.lastEnqueuedEventProperties = lastEnqueuedEventProperties;

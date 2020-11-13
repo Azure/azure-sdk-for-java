@@ -6,13 +6,16 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
+import com.azure.messaging.eventhubs.implementation.PartitionPublishingState;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 
 import java.io.Closeable;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -32,9 +35,17 @@ class EventHubAsyncClient implements Closeable {
     private final boolean isSharedConnection;
     private final Runnable onClientClose;
     private final TracerProvider tracerProvider;
+    private final boolean isIdempotentPartitionPublishing;
+    private final Map<String, PartitionPublishingState> initialPartitionPublishingStates;
+    private final ObjectSerializer serializer;
 
     EventHubAsyncClient(EventHubConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
-        MessageSerializer messageSerializer, Scheduler scheduler, boolean isSharedConnection, Runnable onClientClose) {
+        MessageSerializer messageSerializer, ObjectSerializer serializer, Scheduler scheduler,
+                        boolean isSharedConnection, Runnable onClientClose, boolean isIdempotentPartitionPublishing,
+                        Map<String, PartitionPublishingState> initialPartitionPublishingStates
+    ) {
+
+
         this.tracerProvider = Objects.requireNonNull(tracerProvider, "'tracerProvider' cannot be null.");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.connectionProcessor = Objects.requireNonNull(connectionProcessor,
@@ -43,6 +54,9 @@ class EventHubAsyncClient implements Closeable {
         this.onClientClose = Objects.requireNonNull(onClientClose, "'onClientClose' cannot be null.");
 
         this.isSharedConnection = isSharedConnection;
+        this.isIdempotentPartitionPublishing = isIdempotentPartitionPublishing;
+        this.initialPartitionPublishingStates = initialPartitionPublishingStates;
+        this.serializer = serializer;
     }
 
     /**
@@ -104,8 +118,9 @@ class EventHubAsyncClient implements Closeable {
      */
     EventHubProducerAsyncClient createProducer() {
         return new EventHubProducerAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), getEventHubName(),
-            connectionProcessor, connectionProcessor.getRetryOptions(), tracerProvider, messageSerializer, scheduler,
-            isSharedConnection, onClientClose);
+            connectionProcessor, connectionProcessor.getRetryOptions(), tracerProvider, messageSerializer,
+                serializer, scheduler, isSharedConnection, onClientClose, isIdempotentPartitionPublishing,
+                initialPartitionPublishingStates);
     }
 
     /**
@@ -129,8 +144,8 @@ class EventHubAsyncClient implements Closeable {
         }
 
         return new EventHubConsumerAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), getEventHubName(),
-            connectionProcessor, messageSerializer, consumerGroup, prefetchCount, scheduler, isSharedConnection,
-            onClientClose);
+            connectionProcessor, messageSerializer, serializer, consumerGroup, prefetchCount, scheduler,
+            isSharedConnection, onClientClose);
     }
 
     /**

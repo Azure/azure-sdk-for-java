@@ -1,6 +1,9 @@
 # Release History
 
-## 5.4.0-beta.1 (Unreleased)
+## 5.4.0-beta.1 (2020-11-12)
+### Breaking changes
+- Removed `ObjectBatch` and related `createBatch()` and `send()` operations in favor of
+ supporting `BinaryData` in `EventData`.
 
 ## 5.3.1 (2020-10-30)
 ### Bug fixes
@@ -22,6 +25,11 @@ the partition consumer to rebuild the connection later.
 - Update `azure-core` dependency to `1.9.0`.
 - Update `azure-core-amqp` dependency to `1.6.0`.
 - Update `azure-identity` dependency to `1.1.3`.
+
+## 5.3.0-beta.1 (2020-09-25)
+### New Features
+- A producer client can be configured to be an idempotent producer. When an event with the
+same producer group id and publishing sequence number is sent twice, only one will be accepted to the event hub.
 
 ## 5.2.0 (2020-09-11)
 - Default scheme to 'sb://' if no scheme is set in 'Endpoint'. 

@@ -3,8 +3,15 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.AmqpMessageConstant;
+import com.azure.core.experimental.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.ObjectSerializer;
+import com.azure.core.util.serializer.TypeReference;
+import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayInputStream;
 import java.nio.ByteBuffer;
 import java.time.Instant;
 import java.util.Arrays;
@@ -20,8 +27,11 @@ import java.util.Set;
 import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.PUBLISHER_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.PRODUCER_SEQUENCE_NUMBER_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.PRODUCER_EPOCH_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.PRODUCER_ID_ANNOTATION_NAME;
+import static com.azure.core.util.FluxUtil.monoError;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
@@ -52,10 +62,16 @@ public class EventData {
      */
     static final Set<String> RESERVED_SYSTEM_PROPERTIES;
 
+    private final ClientLogger logger = new ClientLogger(EventData.class);
     private final Map<String, Object> properties;
-    private final byte[] body;
+    private final BinaryData body;
     private final SystemProperties systemProperties;
+    private ObjectSerializer serializer;
     private Context context;
+
+    private Long publishedGroupId;
+    private Short publishedOwnerLevel;
+    private Integer publishedSequenceNumber;
 
     static {
         final Set<String> properties = new HashSet<>();
@@ -63,7 +79,6 @@ public class EventData {
         properties.add(PARTITION_KEY_ANNOTATION_NAME.getValue());
         properties.add(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
         properties.add(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue());
-        properties.add(PUBLISHER_ANNOTATION_NAME.getValue());
 
         RESERVED_SYSTEM_PROPERTIES = Collections.unmodifiableSet(properties);
     }
@@ -75,10 +90,7 @@ public class EventData {
      * @throws NullPointerException if {@code body} is {@code null}.
      */
     public EventData(byte[] body) {
-        this.body = Objects.requireNonNull(body, "'body' cannot be null.");
-        this.context = Context.NONE;
-        this.properties = new HashMap<>();
-        this.systemProperties = new SystemProperties();
+        this(BinaryData.fromBytes(Objects.requireNonNull(body, "'body' cannot be null.")));
     }
 
     /**
@@ -102,6 +114,15 @@ public class EventData {
     }
 
     /**
+     * Creates an event with the provided {@link BinaryData} as payload.
+     *
+     * @param body The {@link BinaryData} payload for this event.
+     */
+    public EventData(BinaryData body) {
+        this(Objects.requireNonNull(body, "'body' cannot be null."), new SystemProperties(), Context.NONE);
+    }
+
+    /**
      * Creates an event with the given {@code body}, system properties and context.
      *
      * @param body The data to set for this event.
@@ -109,11 +130,12 @@ public class EventData {
      * @param context A specified key-value pair of type {@link Context}.
      * @throws NullPointerException if {@code body}, {@code systemProperties}, or {@code context} is {@code null}.
      */
-    EventData(byte[] body, SystemProperties systemProperties, Context context) {
+    EventData(BinaryData body, SystemProperties systemProperties, Context context) {
         this.body = Objects.requireNonNull(body, "'body' cannot be null.");
         this.context = Objects.requireNonNull(context, "'context' cannot be null.");
         this.systemProperties =  Objects.requireNonNull(systemProperties, "'systemProperties' cannot be null.");
         this.properties = new HashMap<>();
+        this.commitProducerDataFromSysProperties();  // populate producer publishing when receiving an event.
     }
 
     /**
@@ -155,7 +177,7 @@ public class EventData {
      * @return A byte array representing the data.
      */
     public byte[] getBody() {
-        return Arrays.copyOf(body, body.length);
+        return body.toBytes();
     }
 
     /**
@@ -164,7 +186,16 @@ public class EventData {
      * @return UTF-8 decoded string representation of the event data.
      */
     public String getBodyAsString() {
-        return new String(body, UTF_8);
+        return new String(body.toBytes(), UTF_8);
+    }
+
+    /**
+     * Returns the {@link BinaryData} payload associated with this event.
+     *
+     * @return the {@link BinaryData} payload associated with this event.
+     */
+    public BinaryData getBodyAsBinaryData() {
+        return body;
     }
 
     /**
@@ -214,6 +245,80 @@ public class EventData {
     }
 
     /**
+     * Gets the producer sequence number that was assigned during publishing, if the event was successfully
+     * published by a sequence-aware producer.  If the producer was not configured to apply
+     * sequence numbering or if the event has not yet been successfully published, this member
+     * will be {@code null}.
+     *
+     * The published sequence number is only populated and relevant when certain features
+     * of the producer are enabled. For example, it is used by idempotent publishing.
+     *
+     * @return The publishing sequence number assigned to the event at the time it was successfully published.
+     * {@code null} if the {@link EventData} hasn't been sent or it's sent without idempotent publishing enabled.
+     */
+    public Integer getPublishedSequenceNumber() {
+        return publishedSequenceNumber;
+    }
+
+    /**
+     * Gets the producer group id that was assigned during publishing, if the event was successfully
+     * published by a sequence-aware producer.  If the producer was not configured to apply
+     * sequence numbering or if the event has not yet been successfully published, this member
+     * will be {@code null}.
+     *
+     * The producer group id is only populated and relevant when certain features
+     * of the producer are enabled. For example, it is used by idempotent publishing.
+     *
+     * @return The producer group id assigned to the event at the time it was successfully published.
+     * {@code null} if the {@link EventData} hasn't been sent or it's sent without idempotent publishing enabled.
+     */
+    Long getPublishedGroupId() {
+        return publishedGroupId;
+    }
+
+    /**
+     * Gets the producer owner level that was assigned during publishing, if the event was successfully
+     * published by a sequence-aware producer.  If the producer was not configured to apply
+     * sequence numbering or if the event has not yet been successfully published, this member
+     * will be {@code null}.
+     *
+     * The producer owner level is only populated and relevant when certain features
+     * of the producer are enabled. For example, it is used by idempotent publishing.
+     *
+     * @return The producer owner level assigned to the event at the time it was successfully published.
+     * {@code null} if the {@link EventData} hasn't been sent or it's sent without idempotent publishing enabled.
+     */
+    Short getPublishedOwnerLevel() {
+        return publishedOwnerLevel;
+    }
+
+    void setProducerGroupIdInSysProperties(Long producerGroupId) {
+        this.getSystemProperties().put(
+            AmqpMessageConstant.PRODUCER_ID_ANNOTATION_NAME.getValue(),
+            producerGroupId
+        );
+    }
+
+    void setProducerOwnerLevelInSysProperties(Short producerOwnerLevel) {
+        this.getSystemProperties().put(
+            AmqpMessageConstant.PRODUCER_EPOCH_ANNOTATION_NAME.getValue(),
+            producerOwnerLevel
+        );
+    }
+
+    void setPublishedSequenceNumberInSysProperties(Integer publishedSequenceNumber) {
+        this.getSystemProperties().put(
+            AmqpMessageConstant.PRODUCER_SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(),
+            publishedSequenceNumber);
+    }
+
+    void commitProducerDataFromSysProperties() {
+        this.publishedGroupId = this.systemProperties.getPublishedGroupId();
+        this.publishedOwnerLevel = this.systemProperties.getPublishedOwnerLevel();
+        this.publishedSequenceNumber = this.systemProperties.getPublishedSequenceNumber();
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -226,7 +331,7 @@ public class EventData {
         }
 
         EventData eventData = (EventData) o;
-        return Arrays.equals(body, eventData.body);
+        return Arrays.equals(body.toBytes(), eventData.body.toBytes());
     }
 
     /**
@@ -234,7 +339,7 @@ public class EventData {
      */
     @Override
     public int hashCode() {
-        return Arrays.hashCode(body);
+        return Arrays.hashCode(body.toBytes());
     }
 
     /**
@@ -259,6 +364,43 @@ public class EventData {
         Objects.requireNonNull(value, "The 'value' parameter cannot be null.");
         this.context = context.addData(key, value);
 
+        return this;
+    }
+
+
+    /**
+     * Deserializes event payload into an object of type {@code T}.
+     *
+     * @param objectType Class object of type T.
+     * @param <T> object type for deserialization.
+     * @return deserialized object as type T.
+     */
+    public <T> T getDeserializedObject(Class<T> objectType) {
+        return getDeserializedObjectAsync(objectType).block();
+    }
+
+    /**
+     * Deserializes event payload into object.
+     *
+     * @param objectType Class object of type T
+     * @param <T> object type for deserialization
+     * @return deserialized object as type T
+     */
+    public <T> Mono<T> getDeserializedObjectAsync(Class<T> objectType) {
+        if (this.serializer == null) {
+            return monoError(logger,
+                new NullPointerException("No serializer set for deserializing EventData payload."));
+        }
+        if (objectType == null) {
+            return monoError(logger, new IllegalArgumentException("objectType cannot be null."));
+        }
+
+        return serializer.deserializeAsync(new ByteArrayInputStream(getBody()),
+            TypeReference.createInstance(objectType));
+    }
+
+    EventData setSerializer(ObjectSerializer serializer) {
+        this.serializer = serializer;
         return this;
     }
 
@@ -347,6 +489,18 @@ public class EventData {
          */
         private Long getSequenceNumber() {
             return sequenceNumber;
+        }
+
+        private Integer getPublishedSequenceNumber() {
+            return (Integer) this.get(PRODUCER_SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
+        }
+
+        private Long getPublishedGroupId() {
+            return (Long) this.get(PRODUCER_ID_ANNOTATION_NAME.getValue());
+        }
+
+        private Short getPublishedOwnerLevel() {
+            return (Short) this.get(PRODUCER_EPOCH_ANNOTATION_NAME.getValue());
         }
 
         @SuppressWarnings("unchecked")

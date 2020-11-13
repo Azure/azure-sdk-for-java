@@ -25,6 +25,7 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
@@ -32,6 +33,11 @@ import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubReactorAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubSharedKeyCredential;
 import org.apache.qpid.proton.engine.SslDomain;
+
+import java.util.HashMap;
+import java.util.regex.Pattern;
+
+import com.azure.messaging.eventhubs.implementation.PartitionPublishingState;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
@@ -44,7 +50,6 @@ import java.util.Objects;
 import java.util.ServiceLoader;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.regex.Pattern;
 
 /**
  * This class provides a fluent builder API to aid the instantiation of {@link EventHubProducerAsyncClient}, {@link
@@ -144,6 +149,9 @@ public class EventHubClientBuilder {
     private Integer prefetchCount;
     private ClientOptions clientOptions;
     private SslDomain.VerifyMode verifyMode;
+    private boolean isIdempotentPartitionPublishing;
+    private Map<String, PartitionPublishingState> initialPartitionPublishingStates;
+    private ObjectSerializer serializer;
 
     /**
      * Keeps track of the open clients that were created from this builder when there is a shared connection.
@@ -389,6 +397,64 @@ public class EventHubClientBuilder {
     }
 
     /**
+     * Enables idempotent publishing when an {@link EventHubProducerAsyncClient} or {@link EventHubProducerClient}
+     * is built.
+     *
+     * If enabled, the producer will only be able to publish directly to partitions; it will not be able to publish to
+     * the Event Hubs gateway for automatic partition routing nor using a partition key.
+     *
+     * @return The updated {@link EventHubClientBuilder} object.
+     */
+    public EventHubClientBuilder enableIdempotentPartitionPublishing() {
+        this.isIdempotentPartitionPublishing = true;
+        return this;
+    }
+
+    /**
+     * Sets the idempotent publishing options to {@link EventHubProducerAsyncClient} or {@link EventHubProducerClient}
+     * when you build them.
+     *
+     * The set of options that can be specified to influence publishing behavior specific to the configured Event Hub
+     * partition.
+     * These options are not necessary in the majority of scenarios and are intended for use with specialized scenarios,
+     * such as when recovering the state used for idempotent publishing.
+     *
+     * It is highly recommended that these options only be specified if there is a proven need to do so; Incorrectly
+     * configuring these values may result in the built {@link EventHubProducerAsyncClient} or
+     * {@link EventHubProducerClient} instance unable to publish to the Event Hubs.
+     *
+     * These options are ignored when publishing to the Event Hubs gateway for automatic routing or when using a
+     * partition key.
+     *
+     * @param states A {@link Map} of {@link PartitionPublishingProperties} for each partition. The keys of the map
+     * are the partition ids.
+     * @return The updated {@link EventHubClientBuilder} object.
+     */
+    public EventHubClientBuilder initialPartitionPublishingStates(Map<String, PartitionPublishingProperties> states) {
+        if (states != null) {
+            this.initialPartitionPublishingStates = new HashMap<>();
+            states.forEach((partitionId, state) -> {
+                this.initialPartitionPublishingStates.put(partitionId, new PartitionPublishingState(state));
+            });
+        } else {
+            this.initialPartitionPublishingStates = null;
+        }
+        return this;
+    }
+
+    /**
+     * Set ObjectSerializer implementation to be used for creating ObjectBatch.
+     *
+     * @param serializer ObjectSerializer implementation
+     *
+     * @return updated builder instance
+     */
+    public EventHubClientBuilder serializer(ObjectSerializer serializer) {
+        this.serializer = serializer;
+        return this;
+    }
+
+    /**
      * Package-private method that sets the scheduler for the created Event Hub client.
      *
      * @param scheduler Scheduler to set.
@@ -454,6 +520,10 @@ public class EventHubClientBuilder {
      *     proxy is specified but the transport type is not {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}.
      */
     public EventHubProducerAsyncClient buildAsyncProducerClient() {
+        if (initialPartitionPublishingStates != null && !isIdempotentPartitionPublishing) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'initialPartitionPublishingStates' "
+                + "shouldn't be set if 'idempotentPartitionPublishing' is not true."));
+        }
         return buildAsyncClient().createProducer();
     }
 
@@ -527,8 +597,9 @@ public class EventHubClientBuilder {
 
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
 
-        return new EventHubAsyncClient(processor, tracerProvider, messageSerializer, scheduler,
-            isSharedConnection.get(), this::onClientClose);
+        return new EventHubAsyncClient(processor, tracerProvider, messageSerializer, serializer, scheduler,
+            isSharedConnection.get(), this::onClientClose,
+            isIdempotentPartitionPublishing, initialPartitionPublishingStates);
     }
 
     /**

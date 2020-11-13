@@ -46,8 +46,8 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_TR
  * @see EventHubClientBuilder See EventHubClientBuilder for examples of building an asynchronous or synchronous
  *     producer.
  */
-public final class EventDataBatch {
-    private final ClientLogger logger = new ClientLogger(EventDataBatch.class);
+public class EventDataBatch {
+    private final ClientLogger logger = new ClientLogger(this.getClass());
     private final Object lock = new Object();
     private final int maxMessageSize;
     private final String partitionKey;
@@ -55,13 +55,16 @@ public final class EventDataBatch {
     private final List<EventData> events;
     private final byte[] eventBytes;
     private final String partitionId;
+    private final boolean isPublishingSequenceNumberRequired;
     private int sizeInBytes;
     private final TracerProvider tracerProvider;
     private final String entityPath;
     private final String hostname;
+    private Integer startingPublishedSequenceNumber;
 
-    EventDataBatch(int maxMessageSize, String partitionId, String partitionKey, ErrorContextProvider contextProvider,
-        TracerProvider tracerProvider, String entityPath, String hostname) {
+    EventDataBatch(int maxMessageSize, String partitionId, String partitionKey,
+                       ErrorContextProvider contextProvider, TracerProvider tracerProvider, String entityPath,
+                       String hostname) {
         this.maxMessageSize = maxMessageSize;
         this.partitionKey = partitionKey;
         this.partitionId = partitionId;
@@ -72,6 +75,23 @@ public final class EventDataBatch {
         this.tracerProvider = tracerProvider;
         this.entityPath = entityPath;
         this.hostname = hostname;
+        this.isPublishingSequenceNumberRequired = false;
+    }
+
+    EventDataBatch(int maxMessageSize, String partitionId, String partitionKey,
+                       ErrorContextProvider contextProvider, TracerProvider tracerProvider, String entityPath,
+                       String hostname, boolean isPublishingSequenceNumberRequired) {
+        this.maxMessageSize = maxMessageSize;
+        this.partitionKey = partitionKey;
+        this.partitionId = partitionId;
+        this.contextProvider = contextProvider;
+        this.events = new LinkedList<>();
+        this.sizeInBytes = (maxMessageSize / 65536) * 1024; // reserve 1KB for every 64KB
+        this.eventBytes = new byte[maxMessageSize];
+        this.tracerProvider = tracerProvider;
+        this.entityPath = entityPath;
+        this.hostname = hostname;
+        this.isPublishingSequenceNumberRequired = isPublishingSequenceNumberRequired;
     }
 
     /**
@@ -102,6 +122,20 @@ public final class EventDataBatch {
     }
 
     /**
+     * Gets the sequence number of the first event in the batch, if the batch was successfully
+     * published by a sequence-aware producer.  If the producer was not configured to apply
+     * sequence numbering or if the batch has not yet been successfully published, this member
+     * will be {@code null}.
+     *
+     * @return the publishing sequence number assigned to the first event in the batch at the time
+     * the batch was successfully published. {@code null} if the producer was not configured to apply
+     * sequence numbering or if the batch has not yet been successfully published.
+     */
+    public Integer getStartingPublishedSequenceNumber() {
+        return this.startingPublishedSequenceNumber;
+    }
+
+    /**
      * Tries to add an {@link EventData event} to the batch.
      *
      * @param eventData The {@link EventData} to add to the batch.
@@ -112,7 +146,7 @@ public final class EventDataBatch {
      */
     public boolean tryAdd(final EventData eventData) {
         if (eventData == null) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("eventData cannot be null"));
+            throw logger.logExceptionAsWarning(new NullPointerException("eventData cannot be null"));
         }
         EventData event = tracerProvider.isEnabled() ? traceMessageSpan(eventData) : eventData;
 
@@ -138,13 +172,14 @@ public final class EventDataBatch {
         return true;
     }
 
+
     /**
      * Method to start and end a "Azure.EventHubs.message" span and add the "DiagnosticId" as a property of the message.
      *
      * @param eventData The Event to add tracing span for.
      * @return the updated event data object.
      */
-    private EventData traceMessageSpan(EventData eventData) {
+    EventData traceMessageSpan(EventData eventData) {
         Optional<Object> eventContextData = eventData.getContext().getData(SPAN_CONTEXT_KEY);
         if (eventContextData.isPresent()) {
             // if message has context (in case of retries), don't start a message span or add a new context
@@ -168,6 +203,10 @@ public final class EventDataBatch {
         return eventData;
     }
 
+    void setStartingPublishedSequenceNumber(Integer startingPublishedSequenceNumber) {
+        this.startingPublishedSequenceNumber = startingPublishedSequenceNumber;
+    }
+
     List<EventData> getEvents() {
         return events;
     }
@@ -180,10 +219,29 @@ public final class EventDataBatch {
         return partitionId;
     }
 
-    private int getSize(final EventData eventData, final boolean isFirst) {
+    int getSize(final EventData eventData, final boolean isFirst) {
         Objects.requireNonNull(eventData, "'eventData' cannot be null.");
 
         final Message amqpMessage = createAmqpMessage(eventData, partitionKey);
+        if (isPublishingSequenceNumberRequired) {
+            // Pre-allocate size for system properties "com.microsoft:producer-sequence-number",
+            // "com.microsoft:producer-epoch", and "com.microsoft:producer-producer-id".
+            // EventData doesn't have this system property until it's added just before an idempotent producer
+            // sends the EventData out.
+            final MessageAnnotations messageAnnotations = (amqpMessage.getMessageAnnotations() == null)
+                ? new MessageAnnotations(new HashMap<>())
+                : amqpMessage.getMessageAnnotations();
+            amqpMessage.setMessageAnnotations(messageAnnotations);
+            messageAnnotations.getValue().put(
+                Symbol.getSymbol(
+                    AmqpMessageConstant.PRODUCER_SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()), Integer.MAX_VALUE);
+            messageAnnotations.getValue().put(
+                Symbol.getSymbol(
+                    AmqpMessageConstant.PRODUCER_EPOCH_ANNOTATION_NAME.getValue()), Short.MAX_VALUE);
+            messageAnnotations.getValue().put(
+                Symbol.getSymbol(
+                    AmqpMessageConstant.PRODUCER_ID_ANNOTATION_NAME.getValue()), Long.MAX_VALUE);
+        }
         int eventSize = amqpMessage.encode(this.eventBytes, 0, maxMessageSize); // actual encoded bytes size
         eventSize += 16; // data section overhead
 
@@ -259,16 +317,17 @@ public final class EventDataBatch {
                         case REPLY_TO_GROUP_ID:
                             message.setReplyToGroupId((String) value);
                             break;
+                        case PRODUCER_EPOCH_ANNOTATION_NAME:
+                        case PRODUCER_ID_ANNOTATION_NAME:
+                        case PRODUCER_SEQUENCE_NUMBER_ANNOTATION_NAME:
+                            EventHubMessageSerializer.setMessageAnnotation(message, key, value);
+                            break;
                         default:
                             throw logger.logExceptionAsWarning(new IllegalArgumentException(String.format(Locale.US,
                                 "Property is not a recognized reserved property name: %s", key)));
                     }
                 } else {
-                    final MessageAnnotations messageAnnotations = (message.getMessageAnnotations() == null)
-                        ? new MessageAnnotations(new HashMap<>())
-                        : message.getMessageAnnotations();
-                    messageAnnotations.getValue().put(Symbol.getSymbol(key), value);
-                    message.setMessageAnnotations(messageAnnotations);
+                    EventHubMessageSerializer.setMessageAnnotation(message, key, value);
                 }
             });
         }

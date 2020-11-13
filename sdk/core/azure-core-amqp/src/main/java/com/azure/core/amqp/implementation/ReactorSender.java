@@ -41,6 +41,7 @@ import java.time.Instant;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -274,6 +275,15 @@ class ReactorSender implements AmqpSendLink {
                     })),
                 timeout, retry);
         }
+    }
+
+    @Override
+    public Mono<Map<Symbol, Object>> getRemoteProperties() {
+        return RetryUtil.withRetry(
+            getEndpointStates()
+                .takeUntil(state -> state == AmqpEndpointState.ACTIVE)
+                .then(Mono.fromCallable(sender::getRemoteProperties)),
+            timeout, retry);
     }
 
     @Override
