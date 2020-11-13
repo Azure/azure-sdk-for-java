@@ -8,6 +8,9 @@ import java.util.Objects;
 /**
  * This represents amqp address information. This will be used in populating information like 'To', 'ReplyTo' etc.
  *
+ * <p><strong>Create and retrieve address</strong></p>
+ * {@codesnippet com.azure.core.amqp.models.AmqpAddress.createAndGet}
+ *
  * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#type-address-string">
  *     Address type Format.</a>
  */
@@ -19,6 +22,7 @@ public final class AmqpAddress {
      * Creates the {@link AmqpAddress} with given {@code address}.
      *
      * @param address to use.
+     * @throws NullPointerException if {@code address} is null.
      */
     public AmqpAddress(String address) {
         this.address = Objects.requireNonNull(address, "'address' cannot be null.");
@@ -46,11 +50,7 @@ public final class AmqpAddress {
             return true;
         }
 
-        if (!address.equals(other.toString())) {
-            return false;
-        }
-
-        return true;
+        return Objects.equals(address, other.toString());
     }
 
     /**

@@ -6,10 +6,19 @@ package com.azure.core.amqp.models;
 import java.util.Objects;
 
 /**
- * This represents Message id in various forms.
+ * This represents Message id. Amqp specification support message id in various types. This class only implements
+ * {@link String} representation at present.
  *
- * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/amqp-core-messaging-v1.0.html#type-message-id-ulong">
- *     Amqp Message Id.</a>
+ * <p><strong>Create and retrieve message id </strong></p>
+ * {@codesnippet com.azure.core.amqp.models.AmqpBodyType.checkBodyType}
+ *
+ * <b>Amqp message id types:</b>
+ * <ul>
+ * <li><a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#type-message-id-string">String</a></li>
+ * <li><a href="http://docs.oasis-open.org/amqp/core/v1.0/amqp-core-messaging-v1.0.html#type-message-id-ulong">long</a></li>
+ * <li><a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#type-message-id-uuid">Uuid</a></li>
+ * <li><a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#type-message-id-binary">binary</a></li>
+ * </ul>
  */
 public final class AmqpMessageId {
     private final String messageId;
@@ -18,6 +27,7 @@ public final class AmqpMessageId {
      * Creates the {@link AmqpMessageId} with given {@code messageId}.
      *
      * @param messageId representing id of the message.
+     * @throws NullPointerException if {@code messageId} is null.
      */
     public AmqpMessageId(String messageId) {
         this.messageId = Objects.requireNonNull(messageId, "'messageId' cannot be null.");
@@ -45,11 +55,7 @@ public final class AmqpMessageId {
             return true;
         }
 
-        if (!messageId.equals(other.toString())) {
-            return false;
-        }
-
-        return true;
+        return messageId.equals(other.toString());
     }
 
     /**

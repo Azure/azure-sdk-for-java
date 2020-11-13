@@ -20,15 +20,17 @@ import java.util.Objects;
  * <li><a href="http://docs.oasis-open.org/amqp/core/v1.0/amqp-core-messaging-v1.0.html#type-amqp-sequence">SEQUENCE</a></li>
  * <li><a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#type-amqp-value">VALUE</a></li>
  * </ul>
+ *
  * <b>Client should test for {@link AmqpMessageBodyType} before calling corresponding get method.Get methods not
  * corresponding to the type of the body throws exception.</b>
+ *
  * <p><strong>How to check for {@link AmqpMessageBodyType}</strong></p>
  * {@codesnippet com.azure.core.amqp.models.AmqpBodyType.checkBodyType}
  *
  * @see AmqpMessageBodyType
  */
 public final class AmqpMessageBody {
-    private static final ClientLogger LOGGER = new ClientLogger(AmqpMessageBody.class);
+    private final ClientLogger logger = new ClientLogger(AmqpMessageBody.class);
     private AmqpMessageBodyType bodyType;
 
     private byte[] data;
@@ -65,11 +67,13 @@ public final class AmqpMessageBody {
     }
 
     /**
-     * Gets an immutable list containing only first byte array set on this {@link AmqpMessageBody}. This library only
-     * support one byte array, so the returned list will have only one element. Look for future releases where we will
-     * support multiple byte array.
+     * Gets an {@link IterableStream} of byte array containing only first byte array set on this
+     * {@link AmqpMessageBody}. This library only support one byte array, so the returned list will have only one
+     * element. Look for future releases where we will support multiple byte array.
+     *
      * <b>Client should test for {@link AmqpMessageBodyType} before calling corresponding get method.Get methods not
      * corresponding to the type of the body throws exception.</b>
+     *
      * <p><strong>How to check for {@link AmqpMessageBodyType}</strong></p>
      * {@codesnippet com.azure.core.amqp.models.AmqpBodyType.checkBodyType}
      * @return data set on {@link AmqpMessageBody}.
@@ -78,11 +82,11 @@ public final class AmqpMessageBody {
      */
     public IterableStream<byte[]> getData() {
         if (bodyType != AmqpMessageBodyType.DATA) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format("Can not return data for a "
+            throw logger.logExceptionAsError(new IllegalArgumentException(String.format("Cannot return data for a "
                 + "message which is of type %s.", getBodyType().toString())));
         }
 
-        return new IterableStream<>(Collections.singletonList(data));
+        return new IterableStream<>(Collections.singletonList(Arrays.copyOf(data, data.length)));
     }
 
     /**
@@ -101,7 +105,7 @@ public final class AmqpMessageBody {
      */
     public byte[] getFirstData() {
         if (bodyType != AmqpMessageBodyType.DATA) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format("Can not return data for a "
+            throw logger.logExceptionAsError(new IllegalArgumentException(String.format("Cannot return data for a "
                 + "message which is of type %s.", getBodyType().toString())));
         }
 
