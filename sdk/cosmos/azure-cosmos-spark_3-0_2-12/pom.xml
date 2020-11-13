@@ -88,21 +88,21 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.scalactic</groupId>
-      <artifactId>scalactic_2.12</artifactId>
-      <version>3.2.3</version>
+      <groupId>org.scalatest</groupId>
+      <artifactId>scalatest-flatspec_2.12</artifactId>
+      <version>3.2.3</version> <!-- {x-version-update;cosmos_org.scalatest:scalatest-flatspec;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.scalatest</groupId>
-      <artifactId>scalatest-flatspec_2.12</artifactId>
-      <version>3.2.3</version>
+      <groupId>org.scalactic</groupId>
+      <artifactId>scalactic_2.12</artifactId>
+      <version>3.2.3</version> <!-- {x-version-update;cosmos_org.scalactic:scalactic_2.12;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.scalamock</groupId>
       <artifactId>scalamock_2.12</artifactId>
-      <version>5.0.0</version>
+      <version>5.0.0</version> <!-- {x-version-update;cosmos_org.scalamock:scalamock_2.12;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
