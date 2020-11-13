@@ -93,7 +93,7 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
             .assertNext(chatThreadClientResponse -> {
                 ChatThreadAsyncClient chatThreadClient = chatThreadClientResponse.getValue();
                 assertNotNull(chatThreadClient);
-                assertNotNull(chatThreadClient.getChatThreadId()); 
+                assertNotNull(chatThreadClient.getChatThreadId());
             })
             .verifyComplete();
     }
@@ -160,24 +160,24 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getNotFoundOnNonExistingChatThread(HttpClient httpClient) {
+    public void getForbiddenOnNonExistingChatThread(HttpClient httpClient) {
         // Act & Assert
         setupTest(httpClient);
         StepVerifier.create(client.getChatThread("19:020082a8df7b44dd8c722bea8fe7167f@thread.v2"))
             .expectErrorMatches(exception ->
-                ((HttpResponseException) exception).getResponse().getStatusCode() == 404
+                ((HttpResponseException) exception).getResponse().getStatusCode() == 403
             )
             .verify();
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getNotFoundOnNonExistingChatThreadWithResponse(HttpClient httpClient) {
+    public void getForbiddenOnNonExistingChatThreadWithResponse(HttpClient httpClient) {
         // Act & Assert
         setupTest(httpClient);
         StepVerifier.create(client.getChatThreadWithResponse("19:020082a8df7b44dd8c722bea8fe7167f@thread.v2"))
             .expectErrorMatches(exception ->
-                ((HttpResponseException) exception).getResponse().getStatusCode() == 404
+                ((HttpResponseException) exception).getResponse().getStatusCode() == 403
             )
             .verify();
     }
@@ -209,7 +209,7 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
         setupTest(httpClient);
         CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(
             firstThreadMember.getId(), secondThreadMember.getId());
-        
+
         // Act & Assert
         AtomicReference<ChatThreadAsyncClient> chatThreadClientRef = new AtomicReference<>();
         StepVerifier.create(
@@ -232,7 +232,7 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
         setupTest(httpClient);
         CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(
             firstThreadMember.getId(), secondThreadMember.getId());
-        
+
         StepVerifier.create(
                 client.createChatThread(threadRequest)
                     .concatWith(client.createChatThread(threadRequest)))
@@ -258,7 +258,7 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
         setupTest(httpClient);
         CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(
             firstThreadMember.getId(), secondThreadMember.getId());
-        
+
         ListChatThreadsOptions options = new ListChatThreadsOptions();
         options.setMaxPageSize(10);
 
