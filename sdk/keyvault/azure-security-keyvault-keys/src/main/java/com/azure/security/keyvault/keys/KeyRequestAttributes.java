@@ -26,6 +26,7 @@ class KeyRequestAttributes {
             this.expires = keyProperties.getExpiresOn().toEpochSecond();
         }
         this.enabled = keyProperties.isEnabled();
+        this.exportable = keyProperties.isExportable();
     }
 
     /**
@@ -42,6 +43,7 @@ class KeyRequestAttributes {
             this.expires = keyOptions.getExpiresOn().toEpochSecond();
         }
         this.enabled = keyOptions.isEnabled();
+        this.exportable = keyOptions.isExportable();
     }
 
     /**
@@ -73,6 +75,12 @@ class KeyRequestAttributes {
      */
     @JsonProperty(value = "updated", access = JsonProperty.Access.WRITE_ONLY)
     private Long updated;
+
+    /**
+     * Indicates if the private key can be exported.
+     */
+    @JsonProperty(value = "exportable")
+    private Boolean exportable;
 
     /**
      * Get the enabled value.
@@ -170,5 +178,25 @@ class KeyRequestAttributes {
             return null;
         }
         return  OffsetDateTime.ofInstant(Instant.ofEpochMilli(this.updated * 1000L), ZoneOffset.UTC);
+    }
+
+    /**
+     * Indicates if the private key can be exported.
+     *
+     * @return The exportable value.
+     */
+    public Boolean isExportable() {
+        return this.exportable;
+    }
+
+    /**
+     * Set a value that indicates if the private key can be exported.
+     *
+     * @param exportable The exportable value to set.
+     * @return The updated {@link KeyRequestAttributes} object.
+     */
+    public KeyRequestAttributes setExportable(Boolean exportable) {
+        this.exportable = exportable;
+        return this;
     }
 }

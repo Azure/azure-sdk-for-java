@@ -362,6 +362,25 @@ class ServiceBusReceiverAsyncClientTest {
         }
     }
 
+    @Test
+    void throwsExceptionAboutSettlingPeekedMessagesWithNullLockToken() {
+        final ReceiverOptions options = new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, null, false);
+        ServiceBusReceiverAsyncClient client = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
+            MessagingEntityType.QUEUE, options, connectionProcessor, CLEANUP_INTERVAL, tracerProvider,
+            messageSerializer, onClientClose);
+
+        when(receivedMessage.getLockToken()).thenReturn(null);
+
+        try {
+            StepVerifier.create(client.complete(receivedMessage))
+                .expectError(UnsupportedOperationException.class)
+                .verify();
+        } finally {
+            client.close();
+        }
+    }
+
+
     /**
      * Verifies that this peek batch of messages.
      */
@@ -1117,18 +1136,27 @@ class ServiceBusReceiverAsyncClientTest {
         // Arrange
         final int numberOfEvents = 3;
         final List<Message> messages = getMessages();
-        final String lockToken = UUID.randomUUID().toString();
+        final String lockToken = "token1";
+        final String lockToken2 = "token2";
+        final String lockToken3 = "token3";
+
         final ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, null,
             true, "Some-Session", null);
         final ServiceBusReceiverAsyncClient sessionReceiver2 = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
             MessagingEntityType.QUEUE, receiverOptions, connectionProcessor, CLEANUP_INTERVAL, tracerProvider,
             messageSerializer, onClientClose);
 
+        final ServiceBusReceivedMessage receivedMessage3 = mock(ServiceBusReceivedMessage.class);
+
         when(receivedMessage.getLockToken()).thenReturn(lockToken);
+        when(receivedMessage2.getLockToken()).thenReturn(lockToken2);
+        when(receivedMessage3.getLockToken()).thenReturn(lockToken3);
         when(messageSerializer.deserialize(any(Message.class), eq(ServiceBusReceivedMessage.class)))
-            .thenReturn(receivedMessage);
+            .thenReturn(receivedMessage, receivedMessage2, receivedMessage3);
 
         when(sessionReceiveLink.updateDisposition(lockToken, Accepted.getInstance())).thenReturn(Mono.empty());
+        when(sessionReceiveLink.updateDisposition(lockToken2, Accepted.getInstance())).thenReturn(Mono.empty());
+        when(sessionReceiveLink.updateDisposition(lockToken3, Accepted.getInstance())).thenReturn(Mono.empty());
 
         try {
             // Act & Assert
@@ -1140,7 +1168,9 @@ class ServiceBusReceiverAsyncClientTest {
             sessionReceiver2.close();
         }
 
-        verify(sessionReceiveLink, times(numberOfEvents)).updateDisposition(lockToken, Accepted.getInstance());
+        verify(sessionReceiveLink).updateDisposition(lockToken, Accepted.getInstance());
+        verify(sessionReceiveLink).updateDisposition(lockToken2, Accepted.getInstance());
+        verify(sessionReceiveLink).updateDisposition(lockToken3, Accepted.getInstance());
     }
 
     private List<Message> getMessages() {

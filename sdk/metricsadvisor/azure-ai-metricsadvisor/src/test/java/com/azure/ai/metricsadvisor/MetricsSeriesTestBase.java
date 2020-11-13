@@ -43,14 +43,14 @@ public abstract class MetricsSeriesTestBase extends MetricsAdvisorClientTestBase
     protected static class ListEnrichmentStatusInput {
         static final ListEnrichmentStatusInput INSTANCE = new ListEnrichmentStatusInput();
         final ListMetricEnrichmentStatusOptions options =
-            new ListMetricEnrichmentStatusOptions(TIME_SERIES_START_TIME, TIME_SERIES_END_TIME);
+            new ListMetricEnrichmentStatusOptions();
 
         final String metricId = METRIC_ID;
     }
 
     protected static class ListEnrichmentStatusOutput {
         static final ListEnrichmentStatusOutput INSTANCE = new ListEnrichmentStatusOutput();
-        final int expectedStatuses = 30;
+        final int expectedStatuses = 29;
     }
 
     static void validateEnrichmentStatus(EnrichmentStatus actualEnrichmentStatus) {

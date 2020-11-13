@@ -105,7 +105,7 @@ public final class ManageVirtualMachineWithDisk {
                     .withExistingDataDisk(dataDisk1)
 
                     // End: Managed data disks
-                    .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                     .create();
 
             System.out.println("Created a Linux VM with managed OS and data disks: " + linuxVM.id());

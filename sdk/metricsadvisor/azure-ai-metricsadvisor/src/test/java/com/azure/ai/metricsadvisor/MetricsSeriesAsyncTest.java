@@ -6,7 +6,6 @@ package com.azure.ai.metricsadvisor;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
 import com.azure.ai.metricsadvisor.models.EnrichmentStatus;
 import com.azure.ai.metricsadvisor.models.ListMetricDimensionValuesOptions;
-import com.azure.ai.metricsadvisor.models.ListMetricSeriesDataOptions;
 import com.azure.ai.metricsadvisor.models.ListMetricSeriesDefinitionOptions;
 import com.azure.ai.metricsadvisor.models.MetricSeriesDefinition;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
@@ -19,6 +18,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -82,14 +82,13 @@ public class MetricsSeriesAsyncTest extends MetricsSeriesTestBase {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
         StepVerifier.create(client.listMetricSeriesData(METRIC_ID,
             Collections.singletonList(new DimensionKey(SERIES_KEY_FILTER)),
-            new ListMetricSeriesDataOptions(TIME_SERIES_START_TIME,
-                TIME_SERIES_END_TIME)))
+                TIME_SERIES_START_TIME, TIME_SERIES_END_TIME))
             .assertNext(metricSeriesData -> {
                 assertEquals(METRIC_ID, metricSeriesData.getMetricId());
                 assertNotNull(metricSeriesData.getSeriesKey());
                 assertEquals(SERIES_KEY_FILTER, metricSeriesData.getSeriesKey().asMap());
-                assertNotNull(metricSeriesData.getTimestampList());
-                assertNotNull(metricSeriesData.getValueList());
+                assertNotNull(metricSeriesData.getTimestamps());
+                assertNotNull(metricSeriesData.getMetricValues());
             })
             .verifyComplete();
     }
@@ -101,8 +100,7 @@ public class MetricsSeriesAsyncTest extends MetricsSeriesTestBase {
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     public void listMetricSeriesDefinitions(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
-        StepVerifier.create(client.listMetricSeriesDefinitions(METRIC_ID,
-            new ListMetricSeriesDefinitionOptions(TIME_SERIES_START_TIME)))
+        StepVerifier.create(client.listMetricSeriesDefinitions(METRIC_ID, TIME_SERIES_START_TIME, null))
             .thenConsumeWhile(metricSeriesDefinition -> metricSeriesDefinition.getMetricId() != null
                 && metricSeriesDefinition.getSeriesKey() != null)
             .verifyComplete();
@@ -116,8 +114,8 @@ public class MetricsSeriesAsyncTest extends MetricsSeriesTestBase {
     public void listMetricSeriesDefinitionsDimensionFilter(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
         List<MetricSeriesDefinition> actualMetricSeriesDefinitions = new ArrayList<>();
-        StepVerifier.create(client.listMetricSeriesDefinitions(METRIC_ID,
-            new ListMetricSeriesDefinitionOptions(TIME_SERIES_START_TIME)
+        StepVerifier.create(client.listMetricSeriesDefinitions(METRIC_ID, TIME_SERIES_START_TIME,
+            new ListMetricSeriesDefinitionOptions()
                 .setDimensionCombinationToFilter(new HashMap<String, List<String>>() {{
                         put("city", Collections.singletonList("Miami"));
                     }})))
@@ -141,6 +139,7 @@ public class MetricsSeriesAsyncTest extends MetricsSeriesTestBase {
         List<EnrichmentStatus> enrichmentStatuses = new ArrayList<>();
         StepVerifier.create(
             client.listMetricEnrichmentStatus(ListEnrichmentStatusInput.INSTANCE.metricId,
+                OffsetDateTime.parse("2020-10-01T00:00:00Z"), OffsetDateTime.parse("2020-10-30T00:00:00Z"),
                 ListEnrichmentStatusInput.INSTANCE.options))
             .thenConsumeWhile(enrichmentStatuses::add)
             .verifyComplete();
