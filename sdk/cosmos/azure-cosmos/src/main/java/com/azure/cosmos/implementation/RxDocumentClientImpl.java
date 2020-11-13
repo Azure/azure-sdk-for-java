@@ -3687,10 +3687,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             feedRanges.add(toFeedRange(pkRange));
         });
 
-        UnmodifiableList<FeedRange> feedRangesResult = (UnmodifiableList<FeedRange>) Collections
-            .unmodifiableList(feedRanges);
-
-        return feedRangesResult;
+        return feedRanges;
     }
 
     private static FeedRange toFeedRange(PartitionKeyRange pkRange) {

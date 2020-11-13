@@ -111,18 +111,6 @@ final class FeedRangeEpkImpl extends FeedRangeInternal {
     }
 
     @Override
-    public String toJsonString() {
-        try {
-            return Utils.getSimpleObjectMapper().writeValueAsString(this);
-        } catch (final IOException e) {
-            throw new IllegalArgumentException(
-                "Unable serialize the feed range token for an extended partition key into a JSON " +
-                    "string",
-                e);
-        }
-    }
-
-    @Override
     public String toString() {
         return this.range.toString();
     }

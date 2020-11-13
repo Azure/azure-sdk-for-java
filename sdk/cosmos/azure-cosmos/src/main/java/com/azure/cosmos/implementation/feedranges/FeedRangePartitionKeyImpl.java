@@ -6,12 +6,14 @@ package com.azure.cosmos.implementation.feedranges;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.IRoutingMapProvider;
 import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import static com.azure.cosmos.BridgeInternal.setProperty;
@@ -112,11 +114,6 @@ final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
 
     @Override
     public String toString() {
-        return this.partitionKey.toJson();
-    }
-
-    @Override
-    public String toJsonString() {
         return this.partitionKey.toJson();
     }
 
