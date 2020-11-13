@@ -24,6 +24,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.cert.CertificateFactory;
@@ -66,7 +67,10 @@ public class UserPrincipalManagerTest {
     public void testAlgIsTakenFromJWT() throws Exception {
         userPrincipalManager = new UserPrincipalManager(immutableJWKSet);
         final UserPrincipal userPrincipal = userPrincipalManager.buildUserPrincipal(
-            Files.readString(Paths.get("src/test/resources/jwt-signed.txt"))
+            new String(Files.readAllBytes(
+                Paths.get("src/test/resources/jwt-signed.txt")),
+                StandardCharsets.UTF_8
+            )
         );
         assertThat(userPrincipal)
             .isNotNull()
@@ -79,7 +83,10 @@ public class UserPrincipalManagerTest {
         userPrincipalManager = new UserPrincipalManager(immutableJWKSet);
         assertThatCode(() ->
             userPrincipalManager.buildUserPrincipal(
-                Files.readString(Paths.get("src/test/resources/jwt-bad-issuer.txt"))
+                new String(Files.readAllBytes(
+                    Paths.get("src/test/resources/jwt-bad-issuer.txt")),
+                    StandardCharsets.UTF_8
+                )
             )
         ).isInstanceOf(BadJWTException.class);
     }
@@ -98,7 +105,10 @@ public class UserPrincipalManagerTest {
         userPrincipalManager = new UserPrincipalManager(immutableJWKSet);
         assertThatCode(() ->
             userPrincipalManager.buildUserPrincipal(
-                Files.readString(Paths.get("src/test/resources/jwt-null-issuer.txt"))
+                new String(Files.readAllBytes(
+                    Paths.get("src/test/resources/jwt-null-issuer.txt")),
+                    StandardCharsets.UTF_8
+                )
             )
         ).isInstanceOf(BadJWTException.class);
     }
