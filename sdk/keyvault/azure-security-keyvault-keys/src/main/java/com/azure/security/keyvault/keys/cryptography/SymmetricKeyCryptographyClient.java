@@ -96,7 +96,7 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
         byte[] encrypted;
 
         try {
-            encrypted = transform.doFinal(encryptOptions.getPlaintext());
+            encrypted = transform.doFinal(encryptOptions.getPlainText());
         } catch (Exception e) {
             return Mono.error(e);
         }
@@ -151,7 +151,7 @@ class SymmetricKeyCryptographyClient extends LocalKeyCryptographyClient {
         byte[] decrypted;
 
         try {
-            decrypted = transform.doFinal(decryptOptions.getCiphertext());
+            decrypted = transform.doFinal(decryptOptions.getCipherText());
         } catch (Exception e) {
             return Mono.error(e);
         }

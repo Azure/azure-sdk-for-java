@@ -47,8 +47,8 @@ abstract class AesGcm extends SymmetricEncryptionAlgorithm {
         }
 
         @Override
-        public byte[] doFinal(byte[] plaintext) throws IllegalBlockSizeException, BadPaddingException {
-            return cipher.doFinal(plaintext);
+        public byte[] doFinal(byte[] plainText) throws IllegalBlockSizeException, BadPaddingException {
+            return cipher.doFinal(plainText);
         }
     }
 
@@ -75,8 +75,8 @@ abstract class AesGcm extends SymmetricEncryptionAlgorithm {
         }
 
         @Override
-        public byte[] doFinal(byte[] plaintext) throws IllegalBlockSizeException, BadPaddingException {
-            return cipher.doFinal(plaintext);
+        public byte[] doFinal(byte[] plainText) throws IllegalBlockSizeException, BadPaddingException {
+            return cipher.doFinal(plainText);
         }
     }
 
