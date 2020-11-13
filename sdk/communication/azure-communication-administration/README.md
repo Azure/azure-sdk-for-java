@@ -39,47 +39,47 @@ via the endpoint() and httpClient() functions respectively.
 
 <!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L37-L48 -->
 ```java
+// You can find your endpoint and access key from your resource in the Azure Portal
+String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
+String accessKey = "SECRET";
 
+// Create an HttpClient builder of your choice and customize it
+HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
 
-
-
-
-
-
-
-
-
-
-
+CommunicationIdentityClient communicationIdentityClient = new CommunicationIdentityClientBuilder()
+    .endpoint(endpoint)
+    .accessKey(accessKey)
+    .httpClient(httpClient)
+    .buildClient();
 ```
 
 Alternatively, you can provide the entire connection string using the connectionString() function instead of providing the endpoint and access key. 
 <!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L62-L68 -->
 ```java
+// Your can find your connection string from your resource in the Azure Portal
+String connectionString = "<connection_string>";
 
-
-
-
-
-
-
+CommunicationIdentityClient communicationIdentityClient = new CommunicationIdentityClientBuilder()
+    .connectionString(connectionString)
+    .httpClient(httpClient)
+    .buildClient();
 ```
 ### Initializing Phone Number Client
 
 <!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L128-L139 -->
 ```java
+// You can find your endpoint and access token from your resource in the Azure Portal
+String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
+String accessKey = "SECRET";
 
+// Create an HttpClient builder of your choice and customize it
+HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
 
-
-
-
-
-
-
-
-
-
-
+PhoneNumberClient phoneNumberClient = new PhoneNumberClientBuilder()
+    .endpoint(endpoint)
+    .accessKey(accessKey)
+    .httpClient(httpClient)
+    .buildClient();
 ```
 Alternatively, you can provide the entire connection string using the connectionString() function of the PhoneNumberClientBuilder instead of providing the endpoint and access key. 
 
@@ -105,8 +105,8 @@ unique ID of the user that was created.
 
 <!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L80-L81 -->
 ```java
+CommunicationUser user = communicationIdentityClient.createUser();
 System.out.println("User id: " + user.getId());
-return user;
 ```
 
 ### Issuing or Refreshing a token for an existing user
@@ -118,10 +118,10 @@ also takes in a list of communication token scopes. Scope options include:
 
 <!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L93-L96 -->
 ```java
+List<String> scopes = new ArrayList<>(Arrays.asList("chat"));
 CommunicationUserToken userToken = communicationIdentityClient.issueToken(user, scopes);
 System.out.println("Token: " + userToken.getToken());
 System.out.println("Expires On: " + userToken.getExpiresOn());
-return userToken;
 ```
 
 ### Revoking all tokens for an existing user
@@ -129,8 +129,8 @@ Use the `revokeTokens` function to revoke all the issued tokens of a user.
 
 <!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L108-L109 -->
 ```java
-    communicationIdentityClient.revokeTokens(user, OffsetDateTime.now());
-}
+// revoke tokens issued for the user prior to now
+communicationIdentityClient.revokeTokens(user, OffsetDateTime.now());
 ```
 
 ### Deleting a user
@@ -138,24 +138,24 @@ Use the `deleteUser` function to delete a user.
 
 <!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L118-L119 -->
 ```java
-    communicationIdentityClient.deleteUser(user);
-}
+// delete a previously created user
+communicationIdentityClient.deleteUser(user);
 ```
 
 ### Get Countries
 
 <!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L151-L160 -->
 ```java
+PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
 
+PagedIterable<PhoneNumberCountry> phoneNumberCountries = phoneNumberClient
+    .listAllSupportedCountries(locale);
 
-
-
-
-
-
-
-
-
+for (PhoneNumberCountry phoneNumberCountry
+    : phoneNumberCountries) {
+    System.out.println("Phone Number Country Code: " + phoneNumberCountry.getCountryCode());
+    System.out.println("Phone Number Country Name: " + phoneNumberCountry.getLocalizedName());
+}
 ```
 
 ### Get Phone Plan Groups
@@ -164,16 +164,16 @@ Phone plan groups come in two types, Geographic and Toll-Free.
 
 <!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L193-L202 -->
 ```java
+PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
 
+PagedIterable<PhonePlanGroup> phonePlanGroups = phoneNumberClient
+    .listPhonePlanGroups(countryCode, locale, true);
 
-
-
-
-
-
-
-
-
+for (PhonePlanGroup phonePlanGroup
+    : phonePlanGroups) {
+    System.out.println("Phone Plan GroupId: " + phonePlanGroup.getPhonePlanGroupId());
+    System.out.println("Phone Plan NumberType: " + phonePlanGroup.getPhoneNumberType());
+}
 ```
 
 ### Get Phone Plans
@@ -182,18 +182,18 @@ Unlike Toll-Free phone plans, area codes for Geographic Phone Plans are empty. A
 
 <!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L216-L227 -->
 ```java
+PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
 
+PagedIterable<PhonePlan> phonePlans = phoneNumberClient
+    .listPhonePlans(countryCode, phonePlanGroupId, locale);
 
-
-
-
-
-
-
-
-
-
-
+for (PhonePlan phonePlan
+    : phonePlans) {
+    System.out.println("Phone Plan Id: " + phonePlan.getPhonePlanId());
+    System.out.println("Phone Plan Name: " + phonePlan.getLocalizedName());
+    System.out.println("Phone Plan Capabilities: " + phonePlan.getCapabilities());
+    System.out.println("Phone Plan Area Codes: " + phonePlan.getAreaCodes());
+}
 ```
 
 ### Get Location Options
@@ -202,25 +202,25 @@ For Geographic phone plans, you can query the available geographic locations. Th
 
 <!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L242-L260 -->
 ```java
+PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
 
+LocationOptions locationOptions = phoneNumberClient
+    .getPhonePlanLocationOptions(countryCode, phonePlanGroupId, phonePlanId, locale)
+    .getLocationOptions();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+System.out.println("Getting LocationOptions for: " + locationOptions.getLabelId());
+for (LocationOptionsDetails locationOptionsDetails
+    : locationOptions.getOptions()) {
+    System.out.println(locationOptionsDetails.getValue());
+    for (LocationOptions locationOptions1
+        : locationOptionsDetails.getLocationOptions()) {
+        System.out.println("Getting LocationOptions for: " + locationOptions1.getLabelId());
+        for (LocationOptionsDetails locationOptionsDetails1
+            : locationOptions1.getOptions()) {
+            System.out.println(locationOptionsDetails1.getValue());
+        }
+    }
+}
 ```
 
 ### Get Area Codes
@@ -229,22 +229,22 @@ Fetching area codes for geographic phone plans will require the the location opt
 
 <!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L284-L292 -->
 ```java
+PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
 
+AreaCodes areaCodes = phoneNumberClient
+    .getAllAreaCodes("selection", countryCode, phonePlanId, locationOptions);
 
-
-
-
-
-
-
-
+for (String areaCode
+    : areaCodes.getPrimaryAreaCodes()) {
+    System.out.println(areaCode);
+}
 ```
 
 ### Configure Phone Number
 
 <!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L306-L306 -->
 ```java
-}
+phoneNumberClient.configureNumber(phoneNumber, pstnConfiguration);
 ```
 
 ## Long Running Operations
@@ -255,59 +255,59 @@ The Phone Number Client supports a variety of long running operations that allow
 
 <!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L313-L337 -->
 ```java
+String phonePlanId = "PHONE_PLAN_ID";
 
-    List<String> phonePlanIds = new ArrayList<>();
-    phonePlanIds.add(phonePlanId);
+List<String> phonePlanIds = new ArrayList<>();
+phonePlanIds.add(phonePlanId);
 
-    CreateReservationOptions createReservationOptions = new CreateReservationOptions();
-    createReservationOptions
-        .setAreaCode("AREA_CODE_FOR_RESERVATION")
-        .setDescription("DESCRIPTION_FOR_RESERVATION")
-        .setDisplayName("NAME_FOR_RESERVATION")
-        .setPhonePlanIds(phonePlanIds)
-        .setQuantity(2);
+CreateReservationOptions createReservationOptions = new CreateReservationOptions();
+createReservationOptions
+    .setAreaCode("AREA_CODE_FOR_RESERVATION")
+    .setDescription("DESCRIPTION_FOR_RESERVATION")
+    .setDisplayName("NAME_FOR_RESERVATION")
+    .setPhonePlanIds(phonePlanIds)
+    .setQuantity(2);
 
-    Duration duration = Duration.ofSeconds(1);
-    PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
+Duration duration = Duration.ofSeconds(1);
+PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
 
-    SyncPoller<PhoneNumberReservation, PhoneNumberReservation> res =
-        phoneNumberClient.beginCreateReservation(createReservationOptions, duration);
-    res.waitForCompletion();
-    PhoneNumberReservation result = res.getFinalResult();
+SyncPoller<PhoneNumberReservation, PhoneNumberReservation> res =
+    phoneNumberClient.beginCreateReservation(createReservationOptions, duration);
+res.waitForCompletion();
+PhoneNumberReservation result = res.getFinalResult();
 
-    System.out.println("Reservation Id: " + result.getReservationId());
-    for (String phoneNumber: result.getPhoneNumbers()) {
-        System.out.println("Phone Number: " + phoneNumber);
-    }
+System.out.println("Reservation Id: " + result.getReservationId());
+for (String phoneNumber: result.getPhoneNumbers()) {
+    System.out.println("Phone Number: " + phoneNumber);
 }
 ```
 
 ### Purchase Search
 <!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L344-L350 -->
 ```java
-    String phoneNumberReservationId = "RESERVATION_ID_TO_PURCHASE";
-    PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
+Duration duration = Duration.ofSeconds(1);
+String phoneNumberReservationId = "RESERVATION_ID_TO_PURCHASE";
+PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
 
-    SyncPoller<Void, Void> res =
-        phoneNumberClient.beginPurchaseReservation(phoneNumberReservationId, duration);
-    res.waitForCompletion();
-}
+SyncPoller<Void, Void> res =
+    phoneNumberClient.beginPurchaseReservation(phoneNumberReservationId, duration);
+res.waitForCompletion();
 ```
 
 ### Release Phone Numbers
 <!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L357-L367 -->
 ```java
-    PhoneNumber phoneNumber = new PhoneNumber("PHONE_NUMBER_TO_RELEASE");
-    List<PhoneNumber> phoneNumbers = new ArrayList<>();
-    phoneNumbers.add(phoneNumber);
-    PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
+Duration duration = Duration.ofSeconds(1);
+PhoneNumber phoneNumber = new PhoneNumber("PHONE_NUMBER_TO_RELEASE");
+List<PhoneNumber> phoneNumbers = new ArrayList<>();
+phoneNumbers.add(phoneNumber);
+PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
 
-    SyncPoller<PhoneNumberRelease, PhoneNumberRelease> res =
-        phoneNumberClient.beginReleasePhoneNumbers(phoneNumbers, duration);
-    res.waitForCompletion();
-    PhoneNumberRelease result = res.getFinalResult();
-    System.out.println("Phone number release status: " + result.getStatus());
-}
+SyncPoller<PhoneNumberRelease, PhoneNumberRelease> res =
+    phoneNumberClient.beginReleasePhoneNumbers(phoneNumbers, duration);
+res.waitForCompletion();
+PhoneNumberRelease result = res.getFinalResult();
+System.out.println("Phone number release status: " + result.getStatus());
 ```
 
 ## Contributing

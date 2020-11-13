@@ -26,6 +26,7 @@ import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.polling.SyncPoller;
 
+
 public class ReadmeSamples {
     /**
      * Sample code for creating a sync Communication Identity Client.
