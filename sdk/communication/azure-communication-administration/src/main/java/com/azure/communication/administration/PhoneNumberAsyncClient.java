@@ -640,8 +640,7 @@ public final class PhoneNumberAsyncClient {
      * @param reservationOptions A {@link CreateReservationOptions} with the reservation options
      * @return A {@link Mono} containing a {@link CreateReservationResponse} representing the reservation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CreateReservationResponse> createReservation(CreateReservationOptions reservationOptions) {
+    private Mono<CreateReservationResponse> createReservation(CreateReservationOptions reservationOptions) {
         return createReservationWithResponse(reservationOptions).flatMap(FluxUtil::toMono);
     }
 
@@ -652,8 +651,7 @@ public final class PhoneNumberAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue()} value returns
      * a {@link CreateReservationResponse} representing the reservation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CreateReservationResponse>> createReservationWithResponse(
+    private Mono<Response<CreateReservationResponse>> createReservationWithResponse(
         CreateReservationOptions reservationOptions) {
         return createReservationWithResponse(reservationOptions, null);
     }
