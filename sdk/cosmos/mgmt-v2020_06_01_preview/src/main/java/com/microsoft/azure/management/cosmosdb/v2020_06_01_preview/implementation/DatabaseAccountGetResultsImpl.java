@@ -19,6 +19,7 @@ import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.BackupPolicy;
 import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.Capability;
 import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.ConnectorOffer;
 import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.ConsistencyPolicy;
+import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.CorsPolicy;
 import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.CreateMode;
 import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.DatabaseAccountOfferType;
 import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.FailoverPolicy;
@@ -32,6 +33,7 @@ import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.RestoreParame
 import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.SystemData;
 import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.VirtualNetworkRule;
 import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.ManagedServiceIdentity;
+import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.DatabaseAccountCreateUpdateProperties;
 import rx.functions.Func1;
 
 class DatabaseAccountGetResultsImpl extends GroupableResourceCoreImpl<DatabaseAccountGetResults, DatabaseAccountGetResultsInner, DatabaseAccountGetResultsImpl, CosmosDBManager> implements DatabaseAccountGetResults, DatabaseAccountGetResults.Definition, DatabaseAccountGetResults.Update {
@@ -112,6 +114,11 @@ class DatabaseAccountGetResultsImpl extends GroupableResourceCoreImpl<DatabaseAc
     @Override
     public ConsistencyPolicy consistencyPolicy() {
         return this.inner().consistencyPolicy();
+    }
+
+    @Override
+    public List<CorsPolicy> cors() {
+        return this.inner().cors();
     }
 
     @Override
@@ -246,14 +253,8 @@ class DatabaseAccountGetResultsImpl extends GroupableResourceCoreImpl<DatabaseAc
     }
 
     @Override
-    public DatabaseAccountGetResultsImpl withDatabaseAccountOfferType(String databaseAccountOfferType) {
-        this.createParameter.withDatabaseAccountOfferType(databaseAccountOfferType);
-        return this;
-    }
-
-    @Override
-    public DatabaseAccountGetResultsImpl withIdentity(ManagedServiceIdentity identity) {
-        this.createParameter.withIdentity(identity);
+    public DatabaseAccountGetResultsImpl withProperties(DatabaseAccountCreateUpdateProperties properties) {
+        this.createParameter.withProperties(properties);
         return this;
     }
 
@@ -264,171 +265,119 @@ class DatabaseAccountGetResultsImpl extends GroupableResourceCoreImpl<DatabaseAc
     }
 
     @Override
-    public DatabaseAccountGetResultsImpl withLocations(List<Location> locations) {
-        if (isInCreateMode()) {
-            this.createParameter.withLocations(locations);
-        } else {
-            this.updateParameter.withLocations(locations);
-        }
-        return this;
-    }
-
-    @Override
     public DatabaseAccountGetResultsImpl withApiProperties(ApiProperties apiProperties) {
-        if (isInCreateMode()) {
-            this.createParameter.withApiProperties(apiProperties);
-        } else {
-            this.updateParameter.withApiProperties(apiProperties);
-        }
+        this.updateParameter.withApiProperties(apiProperties);
         return this;
     }
 
     @Override
     public DatabaseAccountGetResultsImpl withBackupPolicy(BackupPolicy backupPolicy) {
-        if (isInCreateMode()) {
-            this.createParameter.withBackupPolicy(backupPolicy);
-        } else {
-            this.updateParameter.withBackupPolicy(backupPolicy);
-        }
+        this.updateParameter.withBackupPolicy(backupPolicy);
         return this;
     }
 
     @Override
     public DatabaseAccountGetResultsImpl withCapabilities(List<Capability> capabilities) {
-        if (isInCreateMode()) {
-            this.createParameter.withCapabilities(capabilities);
-        } else {
-            this.updateParameter.withCapabilities(capabilities);
-        }
+        this.updateParameter.withCapabilities(capabilities);
         return this;
     }
 
     @Override
     public DatabaseAccountGetResultsImpl withConnectorOffer(ConnectorOffer connectorOffer) {
-        if (isInCreateMode()) {
-            this.createParameter.withConnectorOffer(connectorOffer);
-        } else {
-            this.updateParameter.withConnectorOffer(connectorOffer);
-        }
+        this.updateParameter.withConnectorOffer(connectorOffer);
         return this;
     }
 
     @Override
     public DatabaseAccountGetResultsImpl withConsistencyPolicy(ConsistencyPolicy consistencyPolicy) {
-        if (isInCreateMode()) {
-            this.createParameter.withConsistencyPolicy(consistencyPolicy);
-        } else {
-            this.updateParameter.withConsistencyPolicy(consistencyPolicy);
-        }
+        this.updateParameter.withConsistencyPolicy(consistencyPolicy);
+        return this;
+    }
+
+    @Override
+    public DatabaseAccountGetResultsImpl withCors(List<CorsPolicy> cors) {
+        this.updateParameter.withCors(cors);
         return this;
     }
 
     @Override
     public DatabaseAccountGetResultsImpl withDisableKeyBasedMetadataWriteAccess(Boolean disableKeyBasedMetadataWriteAccess) {
-        if (isInCreateMode()) {
-            this.createParameter.withDisableKeyBasedMetadataWriteAccess(disableKeyBasedMetadataWriteAccess);
-        } else {
-            this.updateParameter.withDisableKeyBasedMetadataWriteAccess(disableKeyBasedMetadataWriteAccess);
-        }
+        this.updateParameter.withDisableKeyBasedMetadataWriteAccess(disableKeyBasedMetadataWriteAccess);
         return this;
     }
 
     @Override
     public DatabaseAccountGetResultsImpl withEnableAnalyticalStorage(Boolean enableAnalyticalStorage) {
-        if (isInCreateMode()) {
-            this.createParameter.withEnableAnalyticalStorage(enableAnalyticalStorage);
-        } else {
-            this.updateParameter.withEnableAnalyticalStorage(enableAnalyticalStorage);
-        }
+        this.updateParameter.withEnableAnalyticalStorage(enableAnalyticalStorage);
         return this;
     }
 
     @Override
     public DatabaseAccountGetResultsImpl withEnableAutomaticFailover(Boolean enableAutomaticFailover) {
-        if (isInCreateMode()) {
-            this.createParameter.withEnableAutomaticFailover(enableAutomaticFailover);
-        } else {
-            this.updateParameter.withEnableAutomaticFailover(enableAutomaticFailover);
-        }
+        this.updateParameter.withEnableAutomaticFailover(enableAutomaticFailover);
         return this;
     }
 
     @Override
     public DatabaseAccountGetResultsImpl withEnableCassandraConnector(Boolean enableCassandraConnector) {
-        if (isInCreateMode()) {
-            this.createParameter.withEnableCassandraConnector(enableCassandraConnector);
-        } else {
-            this.updateParameter.withEnableCassandraConnector(enableCassandraConnector);
-        }
+        this.updateParameter.withEnableCassandraConnector(enableCassandraConnector);
         return this;
     }
 
     @Override
     public DatabaseAccountGetResultsImpl withEnableFreeTier(Boolean enableFreeTier) {
-        if (isInCreateMode()) {
-            this.createParameter.withEnableFreeTier(enableFreeTier);
-        } else {
-            this.updateParameter.withEnableFreeTier(enableFreeTier);
-        }
+        this.updateParameter.withEnableFreeTier(enableFreeTier);
         return this;
     }
 
     @Override
     public DatabaseAccountGetResultsImpl withEnableMultipleWriteLocations(Boolean enableMultipleWriteLocations) {
-        if (isInCreateMode()) {
-            this.createParameter.withEnableMultipleWriteLocations(enableMultipleWriteLocations);
-        } else {
-            this.updateParameter.withEnableMultipleWriteLocations(enableMultipleWriteLocations);
-        }
+        this.updateParameter.withEnableMultipleWriteLocations(enableMultipleWriteLocations);
         return this;
     }
 
     @Override
     public DatabaseAccountGetResultsImpl withIpRules(List<IpAddressOrRange> ipRules) {
-        if (isInCreateMode()) {
-            this.createParameter.withIpRules(ipRules);
-        } else {
-            this.updateParameter.withIpRules(ipRules);
-        }
+        this.updateParameter.withIpRules(ipRules);
         return this;
     }
 
     @Override
     public DatabaseAccountGetResultsImpl withIsVirtualNetworkFilterEnabled(Boolean isVirtualNetworkFilterEnabled) {
-        if (isInCreateMode()) {
-            this.createParameter.withIsVirtualNetworkFilterEnabled(isVirtualNetworkFilterEnabled);
-        } else {
-            this.updateParameter.withIsVirtualNetworkFilterEnabled(isVirtualNetworkFilterEnabled);
-        }
+        this.updateParameter.withIsVirtualNetworkFilterEnabled(isVirtualNetworkFilterEnabled);
         return this;
     }
 
     @Override
     public DatabaseAccountGetResultsImpl withKeyVaultKeyUri(String keyVaultKeyUri) {
-        if (isInCreateMode()) {
-            this.createParameter.withKeyVaultKeyUri(keyVaultKeyUri);
-        } else {
-            this.updateParameter.withKeyVaultKeyUri(keyVaultKeyUri);
-        }
+        this.updateParameter.withKeyVaultKeyUri(keyVaultKeyUri);
+        return this;
+    }
+
+    @Override
+    public DatabaseAccountGetResultsImpl withLocations(List<Location> locations) {
+        this.updateParameter.withLocations(locations);
         return this;
     }
 
     @Override
     public DatabaseAccountGetResultsImpl withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
-        if (isInCreateMode()) {
-            this.createParameter.withPublicNetworkAccess(publicNetworkAccess);
-        } else {
-            this.updateParameter.withPublicNetworkAccess(publicNetworkAccess);
-        }
+        this.updateParameter.withPublicNetworkAccess(publicNetworkAccess);
         return this;
     }
 
     @Override
     public DatabaseAccountGetResultsImpl withVirtualNetworkRules(List<VirtualNetworkRule> virtualNetworkRules) {
+        this.updateParameter.withVirtualNetworkRules(virtualNetworkRules);
+        return this;
+    }
+
+    @Override
+    public DatabaseAccountGetResultsImpl withIdentity(ManagedServiceIdentity identity) {
         if (isInCreateMode()) {
-            this.createParameter.withVirtualNetworkRules(virtualNetworkRules);
+            this.createParameter.withIdentity(identity);
         } else {
-            this.updateParameter.withVirtualNetworkRules(virtualNetworkRules);
+            this.updateParameter.withIdentity(identity);
         }
         return this;
     }
