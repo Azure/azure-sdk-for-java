@@ -18,7 +18,7 @@ import io.opentelemetry.trace.Tracer;
  */
 public class AppConfigurationAzureMonitorExporterSample {
 
-    private static final Tracer TRACER = configureOpenTelemetryAndLoggingExporter();
+    private static final Tracer TRACER = configureAzureMonitorExporter();
     private static final String CONNECTION_STRING = "<YOUR_CONNECTION_STRING>";
 
     /**
@@ -33,7 +33,7 @@ public class AppConfigurationAzureMonitorExporterSample {
      * Configure the OpenTelemetry {@link AzureMonitorExporter} to enable tracing.
      * @return The OpenTelemetry {@link Tracer} instance.
      */
-    private static Tracer configureOpenTelemetryAndLoggingExporter() {
+    private static Tracer configureAzureMonitorExporter() {
         AzureMonitorExporter exporter = new AzureMonitorExporterBuilder()
             .connectionString("{connection-string}")
             .buildExporter();
