@@ -1666,13 +1666,12 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void cancelHealthcareLro(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
-        cancelHealthcareLroRunner(documents -> {
+        cancelHealthcareLroRunner((documents, options) -> {
             SyncPoller<TextAnalyticsOperationResult, PagedFlux<HealthcareTaskResult>>
-                syncPoller = client.beginAnalyzeHealthcare(documents, null).getSyncPoller();
+                syncPoller = client.beginAnalyzeHealthcare(documents, options).getSyncPoller();
 
             PollResponse<TextAnalyticsOperationResult> pollResponse = syncPoller.poll();
-            client.beginCancelAnalyzeHealthcare(pollResponse.getValue().getResultId(),
-                new RecognizeHealthcareEntityOptions().setPollInterval(Duration.ofSeconds(10)));
+            client.beginCancelAnalyzeHealthcare(pollResponse.getValue().getResultId(), options);
             syncPoller.waitForCompletion();
         });
     }

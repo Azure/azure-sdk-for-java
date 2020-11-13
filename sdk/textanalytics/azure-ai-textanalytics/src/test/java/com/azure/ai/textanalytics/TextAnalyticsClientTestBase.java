@@ -55,6 +55,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.IterableStream;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -77,6 +78,7 @@ import static com.azure.ai.textanalytics.TestUtils.SENTIMENT_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.TOO_LONG_INPUT;
 import static com.azure.ai.textanalytics.TestUtils.getDuplicateTextDocumentInputs;
 import static com.azure.ai.textanalytics.TestUtils.getWarningsTextDocumentInputs;
+import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_INTERVAL;
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -89,6 +91,20 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     static final String INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE = "'documents' cannot be empty.";
     static final String INVALID_DOCUMENT_NPE_MESSAGE = "'document' cannot be null.";
     static final String WARNING_TOO_LONG_DOCUMENT_INPUT_MESSAGE = "The document contains very long words (longer than 64 characters). These words will be truncated and may result in unreliable model predictions.";
+
+    Duration durationTestMode;
+
+    /**
+     * Use duration of nearly zero value for PLAYBACK test mode, otherwise, use default duration value for LIVE mode.
+     */
+    @Override
+    protected void beforeTest() {
+        if (interceptorManager.isPlaybackMode()) {
+            durationTestMode = Duration.ofNanos(1);
+        } else {
+            durationTestMode = DEFAULT_POLL_INTERVAL;
+        }
+    }
 
     // Detect Language
     @Test
@@ -654,7 +670,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             asList(
                 new TextDocumentInput("0", HEALTHCARE_INPUTS.get(0)),
                 new TextDocumentInput("1", HEALTHCARE_INPUTS.get(1))),
-            new RecognizeHealthcareEntityOptions().setIncludeStatistics(true));
+            new RecognizeHealthcareEntityOptions().setIncludeStatistics(true).setPollInterval(durationTestMode));
     }
 
     void healthcareLroPaginationRunner(
@@ -664,16 +680,17 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         for (int i = 0; i < totalDocuments; i++) {
             documents.add(new TextDocumentInput(Integer.toString(i), HEALTHCARE_INPUTS.get(0)));
         }
-        testRunner.accept(documents, new RecognizeHealthcareEntityOptions().setIncludeStatistics(true));
+        testRunner.accept(documents,
+            new RecognizeHealthcareEntityOptions().setIncludeStatistics(true).setPollInterval(durationTestMode));
     }
 
     // Healthcare LRO runner- Cancellation
-    void cancelHealthcareLroRunner(Consumer<List<TextDocumentInput>> testRunner) {
+    void cancelHealthcareLroRunner(BiConsumer<List<TextDocumentInput>,RecognizeHealthcareEntityOptions> testRunner) {
         List<TextDocumentInput> documents = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             documents.add(new TextDocumentInput(Integer.toString(i), HEALTHCARE_INPUTS.get(0)));
         }
-        testRunner.accept(documents);
+        testRunner.accept(documents, new RecognizeHealthcareEntityOptions().setPollInterval(durationTestMode));
     }
 
     // Analyze LRO
@@ -690,7 +707,8 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         testRunner.apply(asList(
             new TextDocumentInput("0", CATEGORIZED_ENTITY_INPUTS.get(0)),
             new TextDocumentInput("1", PII_ENTITY_INPUTS.get(0))))
-            .accept(jobManifestTasks, new AnalyzeTasksOptions().setIncludeStatistics(false));
+            .accept(jobManifestTasks,
+                new AnalyzeTasksOptions().setIncludeStatistics(false).setPollInterval(durationTestMode));
     }
 
     void analyzeTasksPaginationRunner(Function<List<TextDocumentInput>, BiConsumer<JobManifestTasks,
@@ -707,7 +725,8 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         for (int i = 0; i < totalDocument; i++) {
             documents.add(new TextDocumentInput(Integer.toString(i), PII_ENTITY_INPUTS.get(0)));
         }
-        testRunner.apply(documents).accept(jobManifestTasks, new AnalyzeTasksOptions().setIncludeStatistics(false));
+        testRunner.apply(documents).accept(jobManifestTasks,
+            new AnalyzeTasksOptions().setIncludeStatistics(false).setPollInterval(durationTestMode));
     }
 
     String getEndpoint() {
