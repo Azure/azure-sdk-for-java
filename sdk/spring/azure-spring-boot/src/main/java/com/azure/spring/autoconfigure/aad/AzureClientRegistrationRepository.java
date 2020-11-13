@@ -15,6 +15,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * A ClientRegistrationRepository that manage all AAD's ClientRegistrations.
+ */
 public class AzureClientRegistrationRepository implements ClientRegistrationRepository, Iterable<ClientRegistration> {
 
     private final DefaultClient defaultClient;

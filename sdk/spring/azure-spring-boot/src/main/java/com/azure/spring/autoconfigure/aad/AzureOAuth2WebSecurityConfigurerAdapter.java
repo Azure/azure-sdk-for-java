@@ -12,6 +12,9 @@ import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCo
 
 import java.util.Optional;
 
+/**
+ * The main purpose of this class is to make AzureOAuth2AuthorizationCodeGrantRequestEntityConverter take effect.
+ */
 public abstract class AzureOAuth2WebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 
     @Autowired

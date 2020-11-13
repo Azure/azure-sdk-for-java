@@ -39,6 +39,9 @@ import java.util.Map;
 import static com.azure.spring.telemetry.TelemetryData.SERVICE_NAME;
 import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName;
 
+/**
+ * Provide necessary beans used for AAD authentication and authorization.
+ */
 @Configuration
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnResource(resources = "classpath:aad.enable.config")
@@ -171,6 +174,15 @@ public class AzureActiveDirectoryAutoConfiguration {
                                  .jwkSetUri(endpoints.jwkSetEndpoint(tenantId));
     }
 
+    /**
+     * Default configuration class for using AAD authentication and authorization.
+     *
+     * User can write another configuration bean to override it.
+     * If user write another configuration bean, to make sure `AzureOAuth2AuthorizationCodeGrantRequestEntityConverter`
+     * take effect, please:
+     * 1. Extends AzureOAuth2WebSecurityConfigurerAdapter instead of WebSecurityConfigurerAdapter.
+     * 2. Call `super.configure(http)` in your configure()
+     */
     @Configuration
     @ConditionalOnMissingBean(WebSecurityConfigurerAdapter.class)
     @EnableWebSecurity

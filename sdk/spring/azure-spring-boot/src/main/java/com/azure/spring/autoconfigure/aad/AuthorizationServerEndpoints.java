@@ -5,6 +5,9 @@ package com.azure.spring.autoconfigure.aad;
 
 import com.nimbusds.oauth2.sdk.util.StringUtils;
 
+/**
+ * Util class used to create authorization server endpoints.
+ */
 public class AuthorizationServerEndpoints {
 
     private static final String DEFAULT_AUTHORIZATION_SERVER_URI = "https://login.microsoftonline.com/";

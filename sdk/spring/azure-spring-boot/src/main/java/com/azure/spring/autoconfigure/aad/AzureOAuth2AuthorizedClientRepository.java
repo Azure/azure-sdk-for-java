@@ -18,6 +18,9 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
+/**
+ * An OAuth2AuthorizedClientRepository that manage all AAD authorizedClients.
+ */
 public class AzureOAuth2AuthorizedClientRepository implements OAuth2AuthorizedClientRepository {
 
     private final AzureClientRegistrationRepository azureClientRegistrationRepository;
