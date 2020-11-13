@@ -152,7 +152,7 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
                     // timer to complete the currentWork in case of timeout trigger
                     currentTimeoutOperation = getTimeoutOperation(currentWork);
                     currentWork.startedProcessing();
-                    final long calculatedRequest = currentWork.getNumberOfEvents() - bufferMessages.size();
+                    final long calculatedRequest = currentWork.getNumberOfEvents() - remaining.get();
                     remaining.addAndGet(calculatedRequest);
                     subscription.request(calculatedRequest);
                 }
