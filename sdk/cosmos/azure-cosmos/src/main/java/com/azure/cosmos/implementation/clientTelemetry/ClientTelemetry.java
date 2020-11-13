@@ -167,6 +167,8 @@ public class ClientTelemetry {
         httpResponseMono.flatMap(response -> response.bodyAsString()).map(metadataJson -> Utils.parse(metadataJson,
             AzureVMMetadata.class)).doOnSuccess(azureVMMetadata -> {
             this.clientTelemetryInfo.setApplicationRegion(azureVMMetadata.getLocation());
+            this.clientTelemetryInfo.setHostEnvInfo(azureVMMetadata.getOsType() + "|" + azureVMMetadata.getSku() +
+                "|" + azureVMMetadata.getVmSize() + "|" + azureVMMetadata.getAzEnvironment());
         }).onErrorResume(throwable -> {
             logger.info("Unable to get azure vm metadata");
             return Mono.empty();

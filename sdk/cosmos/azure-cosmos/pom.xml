@@ -108,7 +108,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>org.hdrhistogram</groupId>
       <artifactId>HdrHistogram</artifactId>
-      <version>2.1.4</version>
+      <version>2.1.12</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
@@ -236,7 +236,7 @@ Licensed under the MIT License.
                 <include>io.dropwizard.metrics:metrics-core:[4.1.0]</include> <!-- {x-include-update;cosmos_io.dropwizard.metrics:metrics-core;external_dependency} -->
                 <include>io.micrometer:micrometer-core:[1.5.6]</include> <!-- {x-include-update;io.micrometer:micrometer-core;external_dependency} -->
                 <include>org.slf4j:slf4j-api:[1.7.30]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
-                <include>org.hdrhistogram:HdrHistogram</include> <!-- {x-include-update;org.hdrhistogram:HdrHistogram;external_dependency} -->
+                <include>org.hdrhistogram:HdrHistogram</include> <!-- {x-include-update;cosmos_org.hdrhistogram:HdrHistogram;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

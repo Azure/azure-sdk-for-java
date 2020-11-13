@@ -9,9 +9,9 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.TransactionalBatchResponse;
 import com.azure.cosmos.implementation.clientTelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clientTelemetry.ReportPayload;
-import com.azure.cosmos.TransactionalBatchResponse;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -231,7 +231,7 @@ public class TracerProvider {
         if (latencyHistogram != null) {
             ClientTelemetry.recordValue(latencyHistogram, cosmosDiagnostics.getDuration().toNanos()/1000);
         } else {
-            if (statusCode == HttpConstants.StatusCodes.OK || statusCode == HttpConstants.StatusCodes.CREATED) {
+            if (statusCode >= HttpConstants.StatusCodes.MINIMUM_SUCCESS_STATUSCODE && statusCode <= HttpConstants.StatusCodes.MAXIMUM_SUCCESS_STATUSCODE) {
                 latencyHistogram = new ConcurrentDoubleHistogram(ClientTelemetry.REQUEST_LATENCY_MAX_MICRO_SEC, ClientTelemetry.REQUEST_LATENCY_SUCCESS_PRECISION);
             } else {
                 latencyHistogram = new ConcurrentDoubleHistogram(ClientTelemetry.REQUEST_LATENCY_MAX_MICRO_SEC, ClientTelemetry.REQUEST_LATENCY_FAILURE_PRECISION);
@@ -269,7 +269,7 @@ public class TracerProvider {
                                               String metricsName,
                                               String unitName) {
         ReportPayload reportPayload = new ReportPayload(metricsName, unitName);
-        reportPayload.setRegionsContacted(BridgeInternal.getRegionContacted(cosmosDiagnostics).toString());
+        reportPayload.setRegionsContacted(BridgeInternal.getRegionsContacted(cosmosDiagnostics).toString());
         reportPayload.setConsistency(consistencyLevel == null ?
             BridgeInternal.getContextClient(cosmosAsyncClient).getConsistencyLevel() :
             consistencyLevel);
