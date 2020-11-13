@@ -5,7 +5,7 @@
 ### New Features
 - Added support for passing a `ServiceVersion` in clients and their builders.
 
-### Changes
+### Breaking Changes
 - Removed exposure of `implementation` (internal) package types via `module-info.java`
 - Renamed `KeyVaultRoleAssignmentScope` to `KeyVaultRoleScope` to be in line with other languages.
 - Changed the `KeyVaultRoleScope` enum from using `URI` to `URL` and added an overload that accepts a `String` representation of a `URL` too.
