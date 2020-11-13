@@ -17,6 +17,7 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -45,7 +46,7 @@ public class FeedRangeTest {
     }
 
     @Test(groups = "unit")
-    public void FeedRangePKRangeId_PKRange()
+    public void feedRangePKRangeId_PKRange()
     {
         String pkRangeId = UUID.randomUUID().toString();
         FeedRangePartitionKeyRangeImpl feedRangePartitionKeyRange = new FeedRangePartitionKeyRangeImpl(pkRangeId);
@@ -53,7 +54,7 @@ public class FeedRangeTest {
     }
 
     @Test(groups = "unit")
-    public void FeedRangeEPK_GetEffectiveRangesAsync()
+    public void feedRangeEPK_getEffectiveRangesAsync()
     {
         Range<String> range = new Range<>("AA", "BB", true, false);
         FeedRangeEpkImpl FeedRangeEpk = new FeedRangeEpkImpl(range);
@@ -77,7 +78,7 @@ public class FeedRangeTest {
     }
 
     @Test(groups = "unit")
-    public void FeedRangePK_GetEffectiveRangesAsync()
+    public void feedRangePK_getEffectiveRangesAsync()
     {
         PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
         partitionKeyDefinition.getPaths().add("/id");
@@ -105,7 +106,7 @@ public class FeedRangeTest {
     }
 
     @Test(groups = "unit")
-    public void FeedRangePKRangeId_GetEffectiveRangesAsync()
+    public void feedRangePKRangeId_getEffectiveRangesAsync()
     {
         String pkRangeId = UUID.randomUUID().toString();
         PartitionKeyRange partitionKeyRange = new PartitionKeyRange()
@@ -155,7 +156,7 @@ public class FeedRangeTest {
     }
 
     @Test(groups = "unit")
-    public void FeedRangePKRangeId_GetEffectiveRangesAsync_Refresh()
+    public void feedRangePKRangeId_getEffectiveRangesAsync_Refresh()
     {
         String pkRangeId = UUID.randomUUID().toString();
         PartitionKeyRange partitionKeyRange = new PartitionKeyRange()
@@ -206,7 +207,7 @@ public class FeedRangeTest {
     }
 
     @Test(groups = "unit")
-    public void FeedRangePKRangeId_GetEffectiveRangesAsync_Null()
+    public void feedRangePKRangeId_getEffectiveRangesAsync_Null()
     {
         String pkRangeId = UUID.randomUUID().toString();
         PartitionKeyRange partitionKeyRange = new PartitionKeyRange()
@@ -239,5 +240,55 @@ public class FeedRangeTest {
                     .isEqualTo(HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE);
             })
             .verify();
+    }
+
+    @Test(groups = "unit")
+    public void feedRangeEPK_getPartitionKeyRangesAsync()
+    {
+        Range<String> range = new Range<>("AA", "BB", true, false);
+        String pkRangeId = UUID.randomUUID().toString();
+        PartitionKeyRange partitionKeyRange = new PartitionKeyRange()
+            .setId(pkRangeId)
+            .setMinInclusive(range.getMin())
+            .setMaxExclusive(range.getMax());
+
+        List<PartitionKeyRange> pkRanges = new ArrayList<>();
+        pkRanges.add(partitionKeyRange);
+        IRoutingMapProvider routingMapProviderMock = Mockito.mock(IRoutingMapProvider.class);
+        when(
+            routingMapProviderMock.tryGetOverlappingRangesAsync(
+                any(MetadataDiagnosticsContext.class),
+                anyString(),
+                eq(range),
+                anyBoolean(),
+                anyMapOf(String.class, Object.class)))
+            .thenReturn(Mono.just(Utils.ValueHolder.initialize(pkRanges)));
+
+        FeedRangeEpkImpl feedRangeEpk = new FeedRangeEpkImpl(range);
+        StepVerifier
+            .create(
+                feedRangeEpk.getPartitionKeyRangesAsync(
+                    routingMapProviderMock,
+                    null,
+                    null))
+            .recordWith(ArrayList::new)
+            .expectNextCount(1)
+            .consumeRecordedWith(r -> {
+                assertThat(r).hasSize(1);
+                UnmodifiableList<String> response = new ArrayList<>(r).get(0);
+                assertThat(response)
+                    .hasSize(1)
+                    .contains(partitionKeyRange.getId());
+            })
+            .verifyComplete();
+
+        Mockito
+            .verify(routingMapProviderMock, Mockito.times(1))
+            .tryGetOverlappingRangesAsync(
+                any(MetadataDiagnosticsContext.class),
+                anyString(),
+                eq(range),
+                eq(false),
+                anyMapOf(String.class, Object.class));
     }
 }
