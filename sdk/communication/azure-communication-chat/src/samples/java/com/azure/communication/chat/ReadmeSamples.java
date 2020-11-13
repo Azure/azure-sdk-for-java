@@ -3,8 +3,18 @@
 
 package com.azure.communication.chat;
 
-import com.azure.communication.chat.models.*;
 import com.azure.communication.chat.models.AddChatParticipantsOptions;
+import com.azure.communication.chat.models.ChatMessage;
+import com.azure.communication.chat.models.ChatMessagePriority;
+import com.azure.communication.chat.models.ChatThread;
+import com.azure.communication.chat.models.ChatParticipant;
+import com.azure.communication.chat.models.ChatMessageReadReceipt;
+import com.azure.communication.chat.models.CreateChatThreadOptions;
+import com.azure.communication.chat.models.SendChatMessageResult;
+import com.azure.communication.chat.models.SendChatMessageOptions;
+import com.azure.communication.chat.models.UpdateChatMessageOptions;
+import com.azure.communication.chat.models.UpdateChatThreadOptions;
+
 import com.azure.communication.common.CommunicationUser;
 import com.azure.communication.common.CommunicationUserCredential;
 import com.azure.core.http.HttpClient;

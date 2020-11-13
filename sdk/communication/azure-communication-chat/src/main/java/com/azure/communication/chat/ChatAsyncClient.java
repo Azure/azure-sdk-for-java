@@ -6,8 +6,6 @@ import reactor.core.publisher.Mono;
 
 import com.azure.communication.chat.implementation.converters.ChatThreadConverter;
 import com.azure.communication.chat.implementation.converters.CreateChatThreadOptionsConverter;
-import com.azure.communication.chat.implementation.models.IndividualStatusResponse;
-import com.azure.communication.chat.implementation.models.MultiStatusResponse;
 import com.azure.communication.chat.implementation.AzureCommunicationChatServiceImpl;
 import com.azure.communication.chat.models.CreateChatThreadOptions;
 import com.azure.communication.chat.models.ListChatThreadsOptions;
@@ -23,7 +21,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Objects;
-import java.util.List;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;

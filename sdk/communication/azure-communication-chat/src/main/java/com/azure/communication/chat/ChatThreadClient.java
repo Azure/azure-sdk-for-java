@@ -2,8 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.communication.chat;
 
-import com.azure.communication.chat.models.*;
 import com.azure.communication.chat.models.AddChatParticipantsOptions;
+import com.azure.communication.chat.models.ChatMessage;
+import com.azure.communication.chat.models.ChatParticipant;
+import com.azure.communication.chat.models.ChatMessageReadReceipt;
+import com.azure.communication.chat.models.ListChatMessagesOptions;
+import com.azure.communication.chat.models.SendChatMessageResult;
+import com.azure.communication.chat.models.SendChatMessageOptions;
+import com.azure.communication.chat.models.UpdateChatMessageOptions;
+import com.azure.communication.chat.models.UpdateChatThreadOptions;
 import com.azure.communication.common.CommunicationUser;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;

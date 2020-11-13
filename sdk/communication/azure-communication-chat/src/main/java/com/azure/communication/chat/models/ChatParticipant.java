@@ -72,8 +72,8 @@ public final class ChatParticipant {
     }
 
     /**
-     * Get the shareHistoryTime property: Time from which the chat history is shared with the chat participant. The timestamp is
-     * in ISO8601 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * Get the shareHistoryTime property: Time from which the chat history is shared with the chat participant.
+     * The timestamp is in ISO8601 format: `yyyy-MM-ddTHH:mm:ssZ`.
      *
      * @return the shareHistoryTime value.
      */
@@ -82,8 +82,8 @@ public final class ChatParticipant {
     }
 
     /**
-     * Set the shareHistoryTime property: Time from which the chat history is shared with the chat participant. The timestamp is
-     * in ISO8601 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * Set the shareHistoryTime property: Time from which the chat history is shared with the chat participant.
+     * The timestamp is in ISO8601 format: `yyyy-MM-ddTHH:mm:ssZ`.
      *
      * @param shareHistoryTime the shareHistoryTime value to set.
      * @return the ChatThreadMember object itself.

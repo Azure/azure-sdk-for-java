@@ -14,7 +14,8 @@ public final class ChatMessageReadReceiptConverter {
     /**
      * Maps from {com.azure.communication.chat.implementation.models.ReadReceipt} to {@link ChatMessageReadReceipt}.
      */
-    public static ChatMessageReadReceipt convert(com.azure.communication.chat.implementation.models.ChatMessageReadReceipt obj) {
+    public static ChatMessageReadReceipt convert(
+        com.azure.communication.chat.implementation.models.ChatMessageReadReceipt obj) {
         if (obj == null) {
             return null;
         }
