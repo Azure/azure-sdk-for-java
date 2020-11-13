@@ -6,7 +6,6 @@ package com.azure.cosmos.implementation.feedranges;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.IRoutingMapProvider;
 import com.azure.cosmos.implementation.PartitionKeyRange;
-import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.Range;
@@ -14,9 +13,9 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.azure.cosmos.BridgeInternal.setProperty;
 
@@ -43,7 +42,7 @@ final class FeedRangeEpkImpl extends FeedRangeInternal {
         return this.range;
     }
 
-    public static FeedRangeEpkImpl ForFullRange() {
+    public static FeedRangeEpkImpl forFullRange() {
         return fullRangeEPK;
     }
 
@@ -113,6 +112,19 @@ final class FeedRangeEpkImpl extends FeedRangeInternal {
     @Override
     public String toString() {
         return this.range.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FeedRangeEpkImpl that = (FeedRangeEpkImpl) o;
+        return Objects.equals(this.range, that.range);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(range);
     }
 
     public void populatePropertyBag() {

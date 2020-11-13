@@ -10,7 +10,7 @@ import reactor.core.publisher.Mono;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-abstract class FeedRangeContinuation {
+public abstract class FeedRangeContinuation {
     protected final FeedRangeInternal feedRange;
     private final String containerRid;
 
@@ -42,9 +42,10 @@ abstract class FeedRangeContinuation {
 
     public abstract void validateContainer(String containerRid);
 
+    /* TODO fabianm - infinite recursion
     public static FeedRangeContinuation tryParse(String toStringValue) {
         return FeedRangeCompositeContinuationImpl.tryParse(toStringValue);
-    }
+    }*/
 
     public abstract ShouldRetryResult handleChangeFeedNotModified(
         RxDocumentServiceResponse responseMessage);

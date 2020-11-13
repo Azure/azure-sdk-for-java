@@ -5,16 +5,14 @@ package com.azure.cosmos.implementation.feedranges;
 
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.IRoutingMapProvider;
-import com.azure.cosmos.implementation.PartitionKeyRange;
-import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import static com.azure.cosmos.BridgeInternal.setProperty;
 
@@ -117,6 +115,20 @@ final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
         return this.partitionKey.toJson();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FeedRangePartitionKeyImpl that = (FeedRangePartitionKeyImpl) o;
+        return Objects.equals(this.partitionKey, that.partitionKey);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(partitionKey);
+    }
+
+    /* TODO fabianm - not needed yet
     private static Mono<PartitionKeyRange> tryGetRangeByEffectivePartitionKey(
         IRoutingMapProvider routingMapProvider,
         String containerRid,
@@ -136,5 +148,5 @@ final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
 
                 return Mono.just(pkRangeHolder.v.get(0));
             });
-    }
+    }*/
 }
