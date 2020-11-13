@@ -151,4 +151,55 @@ public class FeedRangeTest {
                 false,
                 null);
     }
+
+    @Test(groups = "unit")
+    public void FeedRangePKRangeId_GetEffectiveRangesAsync_Refresh()
+    {
+        String pkRangeId = UUID.randomUUID().toString();
+        PartitionKeyRange partitionKeyRange = new PartitionKeyRange()
+            .setId(pkRangeId)
+            .setMinInclusive("AA")
+            .setMaxExclusive("BB");
+
+        FeedRangePartitionKeyRangeImpl feedRangePartitionKeyRange =
+            new FeedRangePartitionKeyRangeImpl(partitionKeyRange.getId());
+        IRoutingMapProvider routingMapProviderMock = Mockito.mock(IRoutingMapProvider.class);
+        when(
+            routingMapProviderMock.tryGetPartitionKeyRangeByIdAsync(
+                any(MetadataDiagnosticsContext.class),
+                anyString(),
+                eq(partitionKeyRange.getId()),
+                anyBoolean(),
+                anyMapOf(String.class, Object.class)))
+            .thenReturn(Mono.just(Utils.ValueHolder.initialize(null)))
+            .thenReturn(Mono.just(Utils.ValueHolder.initialize(partitionKeyRange)));
+
+        StepVerifier
+            .create(
+                feedRangePartitionKeyRange.getEffectiveRangesAsync(
+                    routingMapProviderMock, null, null))
+            .recordWith(ArrayList::new)
+            .expectNextCount(1)
+            .consumeRecordedWith(r -> {
+                assertThat(r).hasSize(1);
+                UnmodifiableList<Range<String>> ranges = new ArrayList<>(r).get(0);
+                assertThat(ranges).hasSize(1);
+                Range<String> range = ranges.get(0);
+                assertThat(range).isNotNull();
+                assertThat(range.getMin()).isEqualTo(partitionKeyRange.getMinInclusive());
+                assertThat(range.getMax()).isEqualTo(partitionKeyRange.getMaxExclusive());
+                assertThat(range.getMin()).isEqualTo(partitionKeyRange.toRange().getMin());
+                assertThat(range.getMax()).isEqualTo(partitionKeyRange.toRange().getMax());
+            })
+            .verifyComplete();
+
+        Mockito
+            .verify(routingMapProviderMock, Mockito.times(2))
+            .tryGetPartitionKeyRangeByIdAsync(
+                any(MetadataDiagnosticsContext.class),
+                anyString(),
+                eq(partitionKeyRange.getId()),
+                anyBoolean(),
+                anyMapOf(String.class, Object.class));
+    }
 }

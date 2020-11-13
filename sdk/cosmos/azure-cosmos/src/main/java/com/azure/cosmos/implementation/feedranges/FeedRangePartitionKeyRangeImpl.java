@@ -3,8 +3,10 @@
 
 package com.azure.cosmos.implementation.feedranges;
 
+import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.IRoutingMapProvider;
 import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
@@ -68,13 +70,26 @@ public final class FeedRangePartitionKeyRangeImpl extends FeedRangeInternal {
                 false,
                 null)
             .flatMap((pkRangeHolder) -> {
-                if (pkRangeHolder == null) {
+                if (pkRangeHolder.v == null) {
                     return routingMapProvider.tryGetPartitionKeyRangeByIdAsync(
                         null,
                         containerRid,
                         partitionKeyRangeId,
                         true,
                         null);
+                } else {
+                    return Mono.just(pkRangeHolder);
+                }
+            })
+            .flatMap((pkRangeHolder) -> {
+                if (pkRangeHolder.v == null) {
+                    return Mono.error(
+                        new PartitionKeyRangeGoneException(
+                            String.format(
+                                "The PartitionKeyRangeId: \"%s\" is not valid for the current container %s .",
+                                partitionKeyRangeId,
+                                containerRid)
+                        ));
                 } else {
                     return Mono.just(pkRangeHolder);
                 }
