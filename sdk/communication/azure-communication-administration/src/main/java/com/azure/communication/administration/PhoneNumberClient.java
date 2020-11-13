@@ -5,7 +5,6 @@ package com.azure.communication.administration;
 import com.azure.communication.administration.models.AcquiredPhoneNumber;
 import com.azure.communication.administration.models.AreaCodes;
 import com.azure.communication.administration.models.CreateReservationOptions;
-import com.azure.communication.administration.models.CreateReservationResponse;
 import com.azure.communication.administration.models.LocationOptionsQuery;
 import com.azure.communication.administration.models.LocationOptionsResponse;
 import com.azure.communication.administration.models.NumberConfigurationResponse;
@@ -409,31 +408,6 @@ public final class PhoneNumberClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PhoneNumberReservation> getReservationByIdWithResponse(String reservationId, Context context) {
         return phoneNumberAsyncClient.getReservationByIdWithResponse(reservationId, context).block();
-    }
-
-    /**
-     * Create a phone number reservation.
-     *
-     * @param reservationOptions A {@link CreateReservationOptions} with the reservation options
-     * @return A {@link CreateReservationResponse} representing the reservation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CreateReservationResponse createReservation(CreateReservationOptions reservationOptions) {
-        return phoneNumberAsyncClient.createReservation(reservationOptions).block();
-    }
-
-    /**
-     * Create a phone number reservation.
-     *
-     * @param reservationOptions A {@link CreateReservationOptions} with the reservation options
-     * @param context A {@link Context} representing the request context.
-     * @return A {@link Response} whose {@link Response#getValue()} value returns
-     * a {@link CreateReservationResponse} representing the reservation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CreateReservationResponse> createReservationWithResponse(
-        CreateReservationOptions reservationOptions, Context context) {
-        return phoneNumberAsyncClient.createReservationWithResponse(reservationOptions, context).block();
     }
 
     /**
