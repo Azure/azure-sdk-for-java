@@ -6,33 +6,13 @@ package com.azure.spring.autoconfigure.aad;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
-import com.nimbusds.jose.JWSObject;
-import com.nimbusds.jwt.JWTClaimsSet;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
-import org.springframework.security.oauth2.client.registration.ClientRegistration;
-import org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction;
-import org.springframework.security.oauth2.core.AuthorizationGrantType;
-import org.springframework.security.oauth2.core.OAuth2AccessToken;
-import org.springframework.util.StringUtils;
-import org.springframework.web.reactive.function.client.WebClient;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.nio.file.Files;
-import java.text.ParseException;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -48,13 +28,12 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertTrue;
 import static org.springframework.http.HttpHeaders.ACCEPT;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-
-public class UserPrincipalAzureADGraphTest {
+public class GraphWebClientAzureADGraphTest {
     @Rule
     public WireMockRule wireMockRule = new WireMockRule(9519);
 
@@ -66,7 +45,7 @@ public class UserPrincipalAzureADGraphTest {
         try {
             final ObjectMapper objectMapper = new ObjectMapper();
             final Map<String, Object> json = objectMapper.readValue(
-                UserPrincipalAzureADGraphTest.class
+                GraphWebClientAzureADGraphTest.class
                     .getClassLoader()
                     .getResourceAsStream("aad/azure-ad-graph-user-groups.json"),
                 new TypeReference<HashMap<String, Object>>() {
@@ -90,36 +69,8 @@ public class UserPrincipalAzureADGraphTest {
         this.graphWebClient = new GraphWebClient(
             aadAuthenticationProperties,
             serviceEndpointsProperties,
-            createWebClientForTest()
+            GraphWebClientTestUtil.createWebClientForTest()
         );
-    }
-
-    public static WebClient createWebClientForTest() {
-        ClientRegistration clientRegistration =
-            ClientRegistration.withRegistrationId("graph")
-                              .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                              .redirectUriTemplate("{baseUrl}/login/oauth2/code/{registrationId}")
-                              .clientId("test")
-                              .clientSecret("test")
-                              .authorizationUri("test")
-                              .tokenUri("test")
-                              .jwkSetUri("test")
-                              .build();
-        OAuth2AuthorizedClientManager oAuth2AuthorizedClientManager = authorizeRequest -> new OAuth2AuthorizedClient(
-            clientRegistration,
-            "principalName",
-            new OAuth2AccessToken(
-                OAuth2AccessToken.TokenType.BEARER,
-                TestConstants.ACCESS_TOKEN,
-                Instant.now().minus(10, ChronoUnit.MINUTES),
-                Instant.now().plus(10, ChronoUnit.MINUTES)
-            )
-        );
-        ServletOAuth2AuthorizedClientExchangeFilterFunction servletOAuth2AuthorizedClientExchangeFilterFunction =
-            new ServletOAuth2AuthorizedClientExchangeFilterFunction(oAuth2AuthorizedClientManager);
-        return WebClient.builder()
-                        .apply(servletOAuth2AuthorizedClientExchangeFilterFunction.oauth2Configuration())
-                        .build();
     }
 
     @Test
@@ -134,10 +85,11 @@ public class UserPrincipalAzureADGraphTest {
 
         assertThat(graphWebClient.getGrantedAuthorities())
             .isNotEmpty()
-            .extracting(GrantedAuthority::getAuthority).containsExactly("ROLE_group1");
+            .extracting(GrantedAuthority::getAuthority)
+            .containsExactly("ROLE_group1");
 
         verify(getRequestedFor(urlMatching("/memberOf"))
-            .withHeader(HttpHeaders.AUTHORIZATION, equalTo(String.format("Bearer %s", TestConstants.ACCESS_TOKEN)))
+            .withHeader(AUTHORIZATION, equalTo(String.format("Bearer %s", TestConstants.ACCESS_TOKEN)))
             .withHeader(ACCEPT, equalTo("application/json;odata=minimalmetadata"))
             .withHeader("api-version", equalTo("1.6")));
     }
@@ -154,11 +106,13 @@ public class UserPrincipalAzureADGraphTest {
 
         final Collection<? extends GrantedAuthority> authorities = graphWebClient.getGrantedAuthorities();
 
-        assertThat(authorities).isNotEmpty().extracting(GrantedAuthority::getAuthority)
-                               .containsExactlyInAnyOrder("ROLE_group1", "ROLE_group2", "ROLE_group3");
+        assertThat(authorities)
+            .isNotEmpty()
+            .extracting(GrantedAuthority::getAuthority)
+            .containsExactlyInAnyOrder("ROLE_group1", "ROLE_group2", "ROLE_group3");
 
         verify(getRequestedFor(urlMatching("/memberOf"))
-            .withHeader(HttpHeaders.AUTHORIZATION, equalTo(String.format("Bearer %s", TestConstants.ACCESS_TOKEN)))
+            .withHeader(AUTHORIZATION, equalTo(String.format("Bearer %s", TestConstants.ACCESS_TOKEN)))
             .withHeader(ACCEPT, equalTo("application/json;odata=minimalmetadata"))
             .withHeader("api-version", equalTo("1.6")));
     }

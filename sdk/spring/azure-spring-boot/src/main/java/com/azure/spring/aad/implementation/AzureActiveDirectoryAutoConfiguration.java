@@ -154,7 +154,8 @@ public class AzureActiveDirectoryAutoConfiguration {
     }
 
     private ClientRegistration.Builder toClientRegistrationBuilder(String registrationId) {
-        AuthorizationServerEndpoints endpoints = new AuthorizationServerEndpoints(aadAuthenticationProperties.getAuthorizationServerUri());
+        AuthorizationServerEndpoints endpoints =
+            new AuthorizationServerEndpoints(aadAuthenticationProperties.getAuthorizationServerUri());
         String tenantId = aadAuthenticationProperties.getTenantId();
         return ClientRegistration.withRegistrationId(registrationId)
                                  .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)

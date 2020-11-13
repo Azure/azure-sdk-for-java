@@ -6,23 +6,13 @@ package com.azure.spring.autoconfigure.aad;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
-import com.nimbusds.jose.JWSObject;
-import com.nimbusds.jwt.JWTClaimsSet;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.util.StringUtils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.nio.file.Files;
-import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -43,7 +33,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-public class UserPrincipalMicrosoftGraphTest {
+public class GraphWebClientMicrosoftGraphTest {
     @Rule
     public WireMockRule wireMockRule = new WireMockRule(9519);
 
@@ -55,9 +45,13 @@ public class UserPrincipalMicrosoftGraphTest {
     static {
         try {
             final ObjectMapper objectMapper = new ObjectMapper();
-            final Map<String, Object> json = objectMapper.readValue(UserPrincipalMicrosoftGraphTest.class
-                    .getClassLoader().getResourceAsStream("aad/microsoft-graph-user-groups.json"),
-                new TypeReference<HashMap<String, Object>>() { });
+            final Map<String, Object> json = objectMapper.readValue(
+                GraphWebClientMicrosoftGraphTest.class
+                    .getClassLoader()
+                    .getResourceAsStream("aad/microsoft-graph-user-groups.json"),
+                new TypeReference<HashMap<String, Object>>() {
+                }
+            );
             userGroupsJson = objectMapper.writeValueAsString(json);
         } catch (IOException e) {
             e.printStackTrace();
@@ -89,7 +83,7 @@ public class UserPrincipalMicrosoftGraphTest {
         this.graphWebClient = new GraphWebClient(
             aadAuthenticationProperties,
             serviceEndpointsProperties,
-            UserPrincipalAzureADGraphTest.createWebClientForTest()
+            GraphWebClientTestUtil.createWebClientForTest()
         );
 
         stubFor(get(urlEqualTo("/memberOf"))
@@ -118,7 +112,7 @@ public class UserPrincipalMicrosoftGraphTest {
         this.graphWebClient = new GraphWebClient(
             aadAuthenticationProperties,
             serviceEndpointsProperties,
-            UserPrincipalAzureADGraphTest.createWebClientForTest()
+            GraphWebClientTestUtil.createWebClientForTest()
         );
 
         stubFor(get(urlEqualTo("/memberOf"))
@@ -149,7 +143,7 @@ public class UserPrincipalMicrosoftGraphTest {
         this.graphWebClient = new GraphWebClient(
             aadAuthenticationProperties,
             serviceEndpointsProperties,
-            UserPrincipalAzureADGraphTest.createWebClientForTest()
+            GraphWebClientTestUtil.createWebClientForTest()
         );
 
         stubFor(get(urlEqualTo("/transitiveMemberOf"))
