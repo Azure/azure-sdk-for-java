@@ -4,6 +4,7 @@
 package com.azure.spring.integration.eventhub.factory;
 
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.util.ClientOptions;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
@@ -70,12 +71,14 @@ public class DefaultEventHubClientFactory implements EventHubClientFactory, Disp
         return new EventHubClientBuilder()
             .connectionString(connectionStringProvider.getConnectionString(), eventHubName)
             .consumerGroup(consumerGroup)
+            .clientOptions(new ClientOptions().setApplicationId(SPRING_EVENT_HUB_APPLICATION_ID))
             .buildAsyncConsumerClient();
     }
 
     private EventHubProducerAsyncClient createProducerClient(String eventHubName) {
         return new EventHubClientBuilder()
             .connectionString(connectionStringProvider.getConnectionString(), eventHubName)
+            .clientOptions(new ClientOptions().setApplicationId(SPRING_EVENT_HUB_APPLICATION_ID))
             .buildAsyncProducerClient();
     }
 
