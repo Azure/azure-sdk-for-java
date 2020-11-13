@@ -5,7 +5,6 @@ package com.azure.spring.autoconfigure.aad;
 
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.proc.BadJOSEException;
-import org.junit.Assume;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
