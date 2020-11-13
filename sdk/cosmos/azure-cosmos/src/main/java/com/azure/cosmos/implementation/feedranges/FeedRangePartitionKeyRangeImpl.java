@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.feedranges;
 
+import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.IRoutingMapProvider;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -16,6 +17,8 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Collections;
+
+import static com.azure.cosmos.BridgeInternal.setProperty;
 
 public final class FeedRangePartitionKeyRangeImpl extends FeedRangeInternal {
     private final String partitionKeyRangeId;
@@ -134,5 +137,16 @@ public final class FeedRangePartitionKeyRangeImpl extends FeedRangeInternal {
     @Override
     public String toString() {
         return this.partitionKeyRangeId;
+    }
+
+    public void populatePropertyBag() {
+        super.populatePropertyBag();
+
+        if (this.partitionKeyRangeId != null) {
+            setProperty(
+                this,
+                Constants.Properties.FEED_RANGE_PARTITION_KEY_RANGE_ID,
+                this.partitionKeyRangeId);
+        }
     }
 }

@@ -14,6 +14,7 @@ import com.azure.cosmos.implementation.apachecommons.collections.list.Unmodifiab
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalUtils;
 import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import org.mockito.Mockito;
 import org.testng.annotations.Test;
@@ -320,7 +321,7 @@ public class FeedRangeTest {
             routingMapProviderMock.tryGetOverlappingRangesAsync(
                 any(MetadataDiagnosticsContext.class),
                 anyString(),
-                any(Range.class),
+                any(),
                 anyBoolean(),
                 anyMapOf(String.class, Object.class)))
             .thenReturn(Mono.just(Utils.ValueHolder.initialize(pkRanges)));
@@ -378,19 +379,17 @@ public class FeedRangeTest {
 
     @Test(groups = "unit")
     public void feedRangeEPK_RequestVisitor_ThrowsWhenNoPropertiesAvailable() {
-        Range<String> range = new Range<String>("AA", "BB", true, false);
+        Range<String> range = new Range<>("AA", "BB", true, false);
         FeedRangeEpkImpl feedRange = new FeedRangeEpkImpl(range);
         RxDocumentServiceRequest request = createMockRequest(false);
-        assertThat(catchThrowableOfType(() -> {
-                feedRange.accept(
-                    FeedRangeRxDocumentServiceRequestPopulatorVisitorImpl.SINGLETON, request);
-            },
+        assertThat(catchThrowableOfType(() -> feedRange.accept(
+            FeedRangeRxDocumentServiceRequestPopulatorVisitorImpl.SINGLETON, request),
             IllegalStateException.class)).isNotNull();
     }
 
     @Test(groups = "unit")
     public void feedRangeEPK_RequestVisitor() {
-        Range<String> range = new Range<String>("AA", "BB", true, false);
+        Range<String> range = new Range<>("AA", "BB", true, false);
         FeedRangeEpkImpl feedRange = new FeedRangeEpkImpl(range);
         RxDocumentServiceRequest request = createMockRequest(true);
         feedRange.accept(
@@ -435,6 +434,54 @@ public class FeedRangeTest {
             .isEqualTo(request.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY));
     }
 
+    @Test(groups = "unit")
+    public void feedRangeEPK_toJsonFromJson() {
+        Range<String> range = new Range<>("AA", "BB", true, false);
+        FeedRangeEpkImpl feedRange = new FeedRangeEpkImpl(range);
+        String representation = feedRange.toJson();
+        assertThat(FeedRange.fromJsonString(representation))
+            .isNotNull()
+            .isInstanceOf(FeedRangeEpkImpl.class);
+        FeedRangeEpkImpl feedRangeDeserialized = (FeedRangeEpkImpl)FeedRange.fromJsonString(representation);
+        String representationAfterDeserialization = feedRangeDeserialized.toJson();
+        assertThat(representationAfterDeserialization).isEqualTo(representation);
+        assertThat(feedRangeDeserialized.getRange()).isNotNull();
+        assertThat(feedRangeDeserialized.getRange().getMin())
+            .isNotNull()
+            .isEqualTo(range.getMin());
+        assertThat(feedRangeDeserialized.getRange().getMax())
+            .isNotNull()
+            .isEqualTo(range.getMax());
+    }
+
+    @Test(groups = "unit")
+    public void feedRangePK_toJsonFromJson() {
+        PartitionKeyInternal partitionKey = PartitionKeyInternalUtils.createPartitionKeyInternal("Test");
+        FeedRangePartitionKeyImpl feedRange = new FeedRangePartitionKeyImpl(partitionKey);
+        String representation = feedRange.toJson();
+        assertThat(FeedRange.fromJsonString(representation))
+            .isNotNull()
+            .isInstanceOf(FeedRangePartitionKeyImpl.class);
+        FeedRangePartitionKeyImpl feedRangeDeserialized =
+            (FeedRangePartitionKeyImpl)FeedRange.fromJsonString(representation);
+        String representationAfterDeserialization = feedRangeDeserialized.toJson();
+        assertThat(representationAfterDeserialization).isEqualTo(representation);
+    }
+
+    @Test(groups = "unit")
+    public void feedRangePKRangeId_toJsonFromJson() {
+        String pkRangeId = UUID.randomUUID().toString();
+        FeedRangePartitionKeyRangeImpl feedRange = new FeedRangePartitionKeyRangeImpl(pkRangeId);
+        String representation = feedRange.toJson();
+        assertThat(FeedRange.fromJsonString(representation))
+            .isNotNull()
+            .isInstanceOf(FeedRangePartitionKeyRangeImpl.class);
+        FeedRangePartitionKeyRangeImpl feedRangeDeserialized =
+            (FeedRangePartitionKeyRangeImpl)FeedRange.fromJsonString(representation);
+        String representationAfterDeserialization = feedRangeDeserialized.toJson();
+        assertThat(representationAfterDeserialization).isEqualTo(representation);
+    }
+
     private static RxDocumentServiceRequest createMockRequest(boolean hasProperties) {
         RequestOptions requestOptions = new RequestOptions();
 
@@ -450,4 +497,6 @@ public class FeedRangeTest {
             null,
             requestOptions);
     }
+
+
 }

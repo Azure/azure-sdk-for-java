@@ -3,18 +3,24 @@
 
 package com.azure.cosmos.implementation.feedranges;
 
+import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.IRoutingMapProvider;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.fasterxml.jackson.core.TreeNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.azure.cosmos.BridgeInternal.setProperty;
 
 final class FeedRangeEpkImpl extends FeedRangeInternal {
     private static final FeedRangeEpkImpl fullRangeEPK =
@@ -119,5 +125,14 @@ final class FeedRangeEpkImpl extends FeedRangeInternal {
     @Override
     public String toString() {
         return this.range.toString();
+    }
+
+    public void populatePropertyBag() {
+        super.populatePropertyBag();
+
+        if (this.range != null) {
+            ModelBridgeInternal.populatePropertyBag(this.range);
+            setProperty(this, Constants.Properties.RANGE, this.range);
+        }
     }
 }

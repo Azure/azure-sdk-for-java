@@ -17,23 +17,7 @@ public interface FeedRange {
      * @return A feed range
      */
     public static FeedRange fromJsonString(String json) {
-        FeedRange parsedRange = null;
-
-        try {
-            parsedRange = FeedRangeInternal.tryParse(json);
-        } catch (IOException e) {
-            throw new IllegalArgumentException(
-                String.format("Unable to parse JSON %s", json), e);
-        }
-
-        if (parsedRange == null) {
-            throw new IllegalArgumentException(
-                String.format(
-                    "The provided string '%s' does not represent any known format.",
-                    json));
-        }
-
-        return parsedRange;
+        return FeedRangeInternal.fromJsonString(json);
     }
 
     public String toJsonString();
