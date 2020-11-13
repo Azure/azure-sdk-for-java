@@ -24,7 +24,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.cert.CertificateFactory;
@@ -57,8 +56,7 @@ public class UserPrincipalManagerTest {
     public static void setupClass() throws Exception {
         final X509Certificate cert = (X509Certificate) CertificateFactory.getInstance("X.509")
                 .generateCertificate(Files.newInputStream(Paths.get("src/test/resources/test-public-key.txt")));
-        immutableJWKSet = new ImmutableJWKSet<>(new JWKSet(JWK.parse(
-                cert)));
+        immutableJWKSet = new ImmutableJWKSet<>(new JWKSet(JWK.parse(cert)));
     }
 
     private UserPrincipalManager userPrincipalManager;
@@ -68,19 +66,22 @@ public class UserPrincipalManagerTest {
     public void testAlgIsTakenFromJWT() throws Exception {
         userPrincipalManager = new UserPrincipalManager(immutableJWKSet);
         final UserPrincipal userPrincipal = userPrincipalManager.buildUserPrincipal(
-                new String(Files.readAllBytes(
-                        Paths.get("src/test/resources/jwt-signed.txt")), StandardCharsets.UTF_8));
-        assertThat(userPrincipal).isNotNull().extracting(UserPrincipal::getIssuer, UserPrincipal::getSubject)
-                .containsExactly("https://sts.windows.net/test", "test@example.com");
+            Files.readString(Paths.get("src/test/resources/jwt-signed.txt"))
+        );
+        assertThat(userPrincipal)
+            .isNotNull()
+            .extracting(UserPrincipal::getIssuer, UserPrincipal::getSubject)
+            .containsExactly("https://sts.windows.net/test", "test@example.com");
     }
 
     @Test
     public void invalidIssuer() {
         userPrincipalManager = new UserPrincipalManager(immutableJWKSet);
-        assertThatCode(() -> userPrincipalManager.buildUserPrincipal(
-                new String(Files.readAllBytes(
-                        Paths.get("src/test/resources/jwt-bad-issuer.txt")), StandardCharsets.UTF_8)))
-                .isInstanceOf(BadJWTException.class);
+        assertThatCode(() ->
+            userPrincipalManager.buildUserPrincipal(
+                Files.readString(Paths.get("src/test/resources/jwt-bad-issuer.txt"))
+            )
+        ).isInstanceOf(BadJWTException.class);
     }
 
     @Test
@@ -95,10 +96,11 @@ public class UserPrincipalManagerTest {
     @Test
     public void nullIssuer() {
         userPrincipalManager = new UserPrincipalManager(immutableJWKSet);
-        assertThatCode(() -> userPrincipalManager.buildUserPrincipal(
-                new String(Files.readAllBytes(
-                        Paths.get("src/test/resources/jwt-null-issuer.txt")), StandardCharsets.UTF_8)))
-                .isInstanceOf(BadJWTException.class);
+        assertThatCode(() ->
+            userPrincipalManager.buildUserPrincipal(
+                Files.readString(Paths.get("src/test/resources/jwt-null-issuer.txt"))
+            )
+        ).isInstanceOf(BadJWTException.class);
     }
 
 
@@ -121,11 +123,15 @@ public class UserPrincipalManagerTest {
             final UserPrincipal serializedPrincipal = (UserPrincipal) objectInputStream.readObject();
 
             Assert.assertNotNull("Serialized UserPrincipal not null", serializedPrincipal);
-            Assert.assertFalse("Serialized UserPrincipal kid not empty",
-                StringUtils.isEmpty(serializedPrincipal.getKid()));
+            Assert.assertFalse(
+                "Serialized UserPrincipal kid not empty",
+                StringUtils.isEmpty(serializedPrincipal.getKid())
+            );
             Assert.assertNotNull("Serialized UserPrincipal claims not null.", serializedPrincipal.getClaims());
-            assertTrue("Serialized UserPrincipal claims not empty.",
-                serializedPrincipal.getClaims().size() > 0);
+            assertTrue(
+                "Serialized UserPrincipal claims not empty.",
+                serializedPrincipal.getClaims().size() > 0
+            );
         } finally {
             Files.deleteIfExists(tmpOutputFile.toPath());
         }

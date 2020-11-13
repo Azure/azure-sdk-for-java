@@ -92,7 +92,7 @@ public class AADAuthenticationFilterPropertiesTest {
             final BindValidationException bindException = (BindValidationException) exception.getCause().getCause();
             final List<ObjectError> errors = bindException.getValidationErrors().getAllErrors();
 
-            final List<String> errorStrings = errors.stream().map(e -> e.toString()).collect(Collectors.toList());
+            final List<String> errorStrings = errors.stream().map(ObjectError::toString).collect(Collectors.toList());
 
             final List<String> errorStringsExpected = Arrays.asList(
                     "Field error in object 'azure.activedirectory' on field 'activeDirectoryGroups': "
