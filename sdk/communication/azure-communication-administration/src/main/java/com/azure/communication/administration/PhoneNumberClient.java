@@ -437,9 +437,9 @@ public final class PhoneNumberClient {
     }
 
     /**
-     * Gets the list of all reservationes
+     * Gets the list of all reservations
      *
-     * @return A {@link PagedIterable} of {@link PhoneNumberEntity} instances representing reservationes.
+     * @return A {@link PagedIterable} of {@link PhoneNumberEntity} instances representing reservations.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PhoneNumberEntity> listAllReservations() {
@@ -450,7 +450,7 @@ public final class PhoneNumberClient {
      * Gets the list of all reservationes
      *
      * @param context A {@link Context} representing the request context.
-     * @return A {@link PagedIterable} of {@link PhoneNumberEntity} instances representing reservationes.
+     * @return A {@link PagedIterable} of {@link PhoneNumberEntity} instances representing reservations.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PhoneNumberEntity> listAllReservations(Context context) {

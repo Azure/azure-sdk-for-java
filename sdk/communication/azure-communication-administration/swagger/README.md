@@ -63,17 +63,6 @@ directive:
     transform: >
       $["x-ms-client-name"] = "reservationId";
 ```
-### Rename AddChatThreadMembersRequest to AddChatThreadMembersOptions
-``` yaml
-directive:
-- from: swagger-document
-  where: $["paths"]["/chat/threads/{chatThreadId}/members"].post.parameters[2]
-  transform: >
-    if ($.schema && $.schema.$ref && $.schema.$ref.endsWith("AddChatThreadMembersRequest")) {
-        const path = $.schema.$ref.replace(/[#].*$/, "#/definitions/AddChatThreadMembersOptions");
-        $.schema = { "$ref": path };
-    }
-```
 
 ### Rename PhoneNumberSearch to PhoneNumberReservation
 
@@ -101,8 +90,6 @@ directive:
         from: CreateSearchResponse
         to: CreateReservationResponse
 ```
-
-
 
 ### Code generation settings
 
