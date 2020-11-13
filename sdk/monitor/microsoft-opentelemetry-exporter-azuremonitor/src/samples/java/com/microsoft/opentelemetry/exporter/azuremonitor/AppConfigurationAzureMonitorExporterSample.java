@@ -53,11 +53,13 @@ public class AppConfigurationAzureMonitorExporterSample {
             .buildClient();
 
         Span span = TRACER.spanBuilder("user-parent-span").startSpan();
-        try (final Scope scope = TRACER.withSpan(span)) {
+        final Scope scope = TRACER.withSpan(span);
+        try {
             // Thread bound (sync) calls will automatically pick up the parent span and you don't need to pass it explicitly.
             client.setConfigurationSetting("hello", "text", "World");
         } finally {
             span.end();
+            scope.close();
         }
     }
 }

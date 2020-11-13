@@ -65,7 +65,8 @@ public class EventHubsAzureMonitorExporterSample {
             .buildAsyncProducerClient();
 
         Span span = TRACER.spanBuilder("user-parent-span").startSpan();
-        try (final Scope scope = TRACER.withSpan(span)) {
+        final Scope scope = TRACER.withSpan(span);
+        try {
             String firstPartition = producer.getPartitionIds().blockFirst(OPERATION_TIMEOUT);
 
             final byte[] body = "EventData Sample 1".getBytes(UTF_8);
@@ -132,6 +133,8 @@ public class EventHubsAzureMonitorExporterSample {
                 // Disposing of our producer.
                 producer.close();
             }
+        } finally {
+            scope.close();
         }
     }
 }
