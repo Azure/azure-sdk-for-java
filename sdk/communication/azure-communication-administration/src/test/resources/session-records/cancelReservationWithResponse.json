@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.communication.azure.com/administration/phonenumbers/searches/40fc0889-ce29-4a18-aac8-94fe6eda7af7/cancel?api-version=2020-07-20-preview1",
+    "Uri" : "https://REDACTED.communication.azure.com/administration/phonenumbers/searches/reservation-id-2/cancel?api-version=2020-07-20-preview1",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-administration/1.0.0-beta.3 (15.0.1; Windows 10; 10.0)"
     },
