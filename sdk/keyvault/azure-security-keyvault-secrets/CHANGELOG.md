@@ -1,7 +1,15 @@
 # Release History
 
-## 4.3.0-beta.1 (Unreleased)
+## 4.2.3 (2020-11-12)
 
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.10.0`
+- Upgraded `azure-core-http-netty` dependency to `1.6.3`
+- Upgraded `azure-core-http-okhttp` dependency to `1.3.3`
+- Upgraded `azure-core-test` dependency to `1.5.1`
+- Upgraded `azure-identity` dependency to `1.2.0`
+- Upgraded `junit-jupiter-api`, `junit-jupiter-engine`, `junit-jupiter-params` dependencies to `5.6.3`
+- Upgraded `reactor-test` dependency to `3.3.11.RELEASE`
 
 ## 4.2.2 (2020-10-08)
 
