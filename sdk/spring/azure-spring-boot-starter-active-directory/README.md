@@ -8,7 +8,7 @@ With Spring Starter for Azure Active Directory, now you can get started quickly 
 ### Prerequisites
 - [Java Development Kit (JDK)][jdk_link] with version 8 or above
 - [Azure Subscription][azure_subscription]
-- [Maven](http://maven.apache.org/) 3.0 and above
+- [Maven](https://maven.apache.org/) 3.0 and above
 
 ### Register the Application in Azure AD
 * **Register a new application**: Go to Azure Portal - Azure Active Directory - App registrations - New application registration to register the application in Azure Active Directory.  `Application ID` is `client-id` in `application.properties`.
@@ -16,10 +16,10 @@ With Spring Starter for Azure Active Directory, now you can get started quickly 
 * **Create a client secret key for the application**: Go to API ACCESS - Keys to create a secret key (`client-secret`).
 
 ### Include the package
-[//]: # "{x-version-update-start;com.azure:azure-spring-boot-starter-active-directory;current}"
+[//]: # "{x-version-update-start;com.azure.spring:azure-spring-boot-starter-active-directory;current}"
 ```xml
 <dependency>
-    <groupId>com.azure</groupId>
+    <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-active-directory</artifactId>
     <version>3.0.0-beta.1</version>
 </dependency>
@@ -33,6 +33,11 @@ The authorization flow is composed of 3 phrases:
 * Login with credentials and validate id_token from Azure AD 
 * Get On-Behalf-Of token and membership info from Azure AD Graph API
 * Evaluate the permission based on membership info to grant or deny access
+
+### Group membership
+The way to obtain group relationship that will determine which graph api will be used. You can change it using the `azure.activedirectory.user-group.group-relationship` configuration.
+* **direct**: the default value, get groups that the user is a direct member of. For details, see [list memberOf][graph-api-list-member-of] api.
+* **transitive**: Get groups that the user is a member of, and will also return all groups the user is a nested member of. For details, see [list transitive memberOf][graph-api-list-transitive-member-of] api.
 
 ### Authenticate in frontend
 Sends bearer authorization code to backend, in backend a Spring Security filter `AADAuthenticationFilter` validates the Jwt token from Azure AD and save authentication. The Jwt token is also used to acquire a On-Behalf-Of token for Azure AD Graph API so that authenticated user's membership information is available for authorization of access of API resources. 
@@ -61,9 +66,9 @@ Please refer to [azure-spring-boot-sample-active-directory-backend](https://gith
 
 ####  Configure application.properties:
 ```properties
-spring.security.oauth2.client.registration.azure.client-id=xxxxxx-your-client-id-xxxxxx
-spring.security.oauth2.client.registration.azure.client-secret=xxxxxx-your-client-secret-xxxxxx
 azure.activedirectory.tenant-id=xxxxxx-your-tenant-id-xxxxxx
+azure.activedirectory.client-id=xxxxxx-your-client-id-xxxxxx
+azure.activedirectory.client-secret=xxxxxx-your-client-secret-xxxxxx
 azure.activedirectory.user-group.allowed-groups=group1, group2
 ```
 
@@ -95,8 +100,8 @@ Please refer to [azure-active-directory-spring-boot-sample](https://github.com/A
 
 #### Configure application.properties:
 ```properties
-azure.activedirectory.client-id=Application-ID-in-AAD-App-registrations
-azure.activedirectory.client-secret=Key-in-AAD-API-ACCESS
+azure.activedirectory.client-id=xxxxxx-your-client-id-xxxxxx
+azure.activedirectory.client-secret=xxxxxx-your-client-secret-xxxxxx
 azure.activedirectory.user-group.allowed-groups=Aad-groups e.g. group1,group2,group3
 ```
 
@@ -198,14 +203,6 @@ azure.activedirectory.environment=cn-v2-graph
 
 Please refer to [azure-spring-boot-sample-active-directory-backend-v2](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-backend-v2/README.md) to see a sample configured to use the Microsoft Graph API.
 
-### Using Azure Active Directory endpoints
-This starter uses v2 version endpoints to do authorization and authentication by default. To use v1.0, please specify the following endpoints in properties.
-```
-spring.security.oauth2.client.provider.azure.authorization-uri=https://login.microsoftonline.com/common/oauth2/authorize
-spring.security.oauth2.client.provider.azure.token-uri=https://login.microsoftonline.com/common/oauth2/token
-spring.security.oauth2.client.provider.azure.user-info-uri=https://login.microsoftonline.com/common/openid/userinfo
-spring.security.oauth2.client.provider.azure.jwk-set-uri=https://login.microsoftonline.com/common/discovery/keys
-```
 
 ### AAD Conditional Access Policy
 Now azure-active-directory-spring-boot-starter has supported AAD conditional access policy, if you are using this policy, you need add **AADOAuth2AuthorizationRequestResolver** and **AADAuthenticationFailureHandler** to your WebSecurityConfigurerAdapter.
@@ -240,6 +237,13 @@ public class AADOAuth2LoginConditionalPolicyConfigSample extends WebSecurityConf
     }
 }
 ```
+### Customize scopes in authorize requests
+
+By default, `azure-spring-boot-starter-active-directory` configures scopes of `openid`, `profile` and `https://graph.microsoft.com/user.read` to implement OpenID Connect protocol and access of Microsoft Graph API. For customization of scope, developers need to configure in the `application.properties`:
+```yaml
+azure.activedirectory.scope = openid, profile, https://graph.microsoft.com/user.read, {your-customized-scope}
+``` 
+Note, if you don't configure the 3 mentioned permissions, this starter will add them automatically.
 
 ## Troubleshooting
 ### Enable client logging
@@ -279,3 +283,6 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [azure_subscription]: https://azure.microsoft.com/free
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+
+[graph-api-list-member-of]: https://docs.microsoft.com/graph/api/user-list-memberof?view=graph-rest-1.0
+[graph-api-list-transitive-member-of]: https://docs.microsoft.com/graph/api/user-list-transitivememberof?view=graph-rest-1.0

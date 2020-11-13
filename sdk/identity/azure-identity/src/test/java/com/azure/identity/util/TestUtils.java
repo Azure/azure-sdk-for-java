@@ -65,6 +65,11 @@ public final class TestUtils {
             }
 
             @Override
+            public ITenantProfile tenantProfile() {
+                return null;
+            }
+
+            @Override
             public String environment() {
                 return "http://login.microsoftonline.com";
             }

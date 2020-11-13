@@ -20,6 +20,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
+import com.azure.storage.file.share.implementation.models.DeleteSnapshotsOptionType;
 import com.azure.storage.file.share.implementation.models.SharePermission;
 import com.azure.storage.file.share.implementation.models.SharesAcquireLeaseResponse;
 import com.azure.storage.file.share.implementation.models.SharesBreakLeaseResponse;
@@ -39,7 +40,6 @@ import com.azure.storage.file.share.implementation.models.SharesSetAccessPolicyR
 import com.azure.storage.file.share.implementation.models.SharesSetMetadataResponse;
 import com.azure.storage.file.share.implementation.models.SharesSetPropertiesResponse;
 import com.azure.storage.file.share.models.ShareStorageException;
-import com.azure.storage.file.share.models.DeleteSnapshotsOptionType;
 import com.azure.storage.file.share.models.ShareAccessTier;
 import com.azure.storage.file.share.models.ShareSignedIdentifier;
 import java.util.List;
@@ -258,7 +258,7 @@ public final class SharesImpl {
      * @param shareName The name of the target share.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting Timeouts for File Service Operations.&lt;/a&gt;.
-     * @param deleteSnapshots Specifies the option include to delete the base share and all of its snapshots. Possible values include: 'include'.
+     * @param deleteSnapshots Specifies the option include to delete the base share and all of its snapshots. Possible values include: 'include', 'include-leased'.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

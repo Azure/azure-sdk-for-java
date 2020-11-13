@@ -9,15 +9,15 @@ import com.azure.core.amqp.models.AmqpBodyType;
 import com.azure.core.amqp.models.AmqpDataBody;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.experimental.util.BinaryData;
 
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 import static com.azure.core.amqp.AmqpMessageConstant.DEAD_LETTER_DESCRIPTION_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.DEAD_LETTER_REASON_ANNOTATION_NAME;
@@ -49,13 +49,28 @@ import static com.azure.core.amqp.AmqpMessageConstant.VIA_PARTITION_KEY_ANNOTATI
  * </p>
  *
  * @see ServiceBusMessageBatch
+ * @see BinaryData
  */
 public class ServiceBusMessage {
+    private static final int MAX_MESSAGE_ID_LENGTH = 128;
+    private static final int MAX_PARTITION_KEY_LENGTH = 128;
+    private static final int MAX_SESSION_ID_LENGTH = 128;
+
     private final AmqpAnnotatedMessage amqpAnnotatedMessage;
     private final ClientLogger logger = new ClientLogger(ServiceBusMessage.class);
 
-    private final byte[] binaryData;
     private Context context;
+
+    /**
+     * Creates a {@link ServiceBusMessage} with given byte array body.
+     *
+     * @param body The content of the Service bus message.
+     *
+     * @throws NullPointerException if {@code body} is null.
+     */
+    public ServiceBusMessage(byte[] body) {
+        this(BinaryData.fromBytes(Objects.requireNonNull(body, "'body' cannot be null.")));
+    }
 
     /**
      * Creates a {@link ServiceBusMessage} with a {@link java.nio.charset.StandardCharsets#UTF_8 UTF_8} encoded body.
@@ -65,20 +80,25 @@ public class ServiceBusMessage {
      * @throws NullPointerException if {@code body} is null.
      */
     public ServiceBusMessage(String body) {
-        this(Objects.requireNonNull(body, "'body' cannot be null.").getBytes(StandardCharsets.UTF_8));
+        this(BinaryData.fromString(Objects.requireNonNull(body, "'body' cannot be null.")));
     }
 
     /**
-     * Creates a {@link ServiceBusMessage} containing the {@code body}.
+     * Creates a {@link ServiceBusMessage} containing the {@code body}.The {@link BinaryData} provides various
+     * convenience API representing byte array. It also provides a way to serialize {@link Object} into
+     * {@link BinaryData}.
      *
      * @param body The data to set for this {@link ServiceBusMessage}.
      *
      * @throws NullPointerException if {@code body} is {@code null}.
+     *
+     * @see BinaryData
      */
-    public ServiceBusMessage(byte[] body) {
-        this.binaryData = Objects.requireNonNull(body, "'body' cannot be null.");
+    public ServiceBusMessage(BinaryData body) {
+        Objects.requireNonNull(body, "'body' cannot be null.");
         this.context = Context.NONE;
-        this.amqpAnnotatedMessage = new AmqpAnnotatedMessage(new AmqpDataBody(Collections.singletonList(binaryData)));
+        this.amqpAnnotatedMessage = new AmqpAnnotatedMessage(
+            new AmqpDataBody(Collections.singletonList(body.toBytes())));
     }
 
     /**
@@ -94,7 +114,6 @@ public class ServiceBusMessage {
 
         this.amqpAnnotatedMessage = new AmqpAnnotatedMessage(receivedMessage.getAmqpAnnotatedMessage());
         this.context = Context.NONE;
-        this.binaryData = receivedMessage.getBody();
 
         // clean up data which user is not allowed to set.
         amqpAnnotatedMessage.getHeader().setDeliveryCount(null);
@@ -132,6 +151,8 @@ public class ServiceBusMessage {
     /**
      * Gets the actual payload/data wrapped by the {@link ServiceBusMessage}.
      *
+     * <p>The {@link BinaryData} wraps byte array and is an abstraction over many different ways it can be represented.
+     * It provides many convenience API including APIs to serialize/deserialize object.
      * <p>
      * If the means for deserializing the raw data is not apparent to consumers, a common technique is to make use of
      * {@link #getApplicationProperties()} when creating the event, to associate serialization hints as an aid to
@@ -140,11 +161,21 @@ public class ServiceBusMessage {
      *
      * @return A byte array representing the data.
      */
-    public byte[] getBody() {
+    public BinaryData getBody() {
         final AmqpBodyType type = amqpAnnotatedMessage.getBody().getBodyType();
         switch (type) {
             case DATA:
-                return Arrays.copyOf(binaryData, binaryData.length);
+                Optional<byte[]> byteArrayData = ((AmqpDataBody) amqpAnnotatedMessage.getBody()).getData().stream()
+                    .findFirst();
+                final byte[] bytes;
+
+                if (byteArrayData.isPresent()) {
+                    bytes = byteArrayData.get();
+                } else {
+                    logger.warning("Data not present.");
+                    bytes = new byte[0];
+                }
+                return BinaryData.fromBytes(bytes);
             case SEQUENCE:
             case VALUE:
                 throw logger.logExceptionAsError(new UnsupportedOperationException("Not supported AmqpBodyType: "
@@ -238,8 +269,10 @@ public class ServiceBusMessage {
      * @param messageId to be set.
      *
      * @return The updated {@link ServiceBusMessage}.
+     * @throws IllegalArgumentException if {@code messageId} is too long.
      */
     public ServiceBusMessage setMessageId(String messageId) {
+        checkIdLength("messageId", messageId, MAX_MESSAGE_ID_LENGTH);
         amqpAnnotatedMessage.getProperties().setMessageId(messageId);
         return this;
     }
@@ -268,8 +301,13 @@ public class ServiceBusMessage {
      *
      * @return The updated {@link ServiceBusMessage}.
      * @see #getPartitionKey()
+     * @throws IllegalArgumentException if {@code partitionKey} is too long or if the {@code partitionKey}
+     * does not match the {@code sessionId}.
      */
     public ServiceBusMessage setPartitionKey(String partitionKey) {
+        checkIdLength("partitionKey", partitionKey, MAX_PARTITION_KEY_LENGTH);
+        checkPartitionKey(partitionKey);
+
         amqpAnnotatedMessage.getMessageAnnotations().put(PARTITION_KEY_ANNOTATION_NAME.getValue(), partitionKey);
         return this;
     }
@@ -464,8 +502,13 @@ public class ServiceBusMessage {
      * @param sessionId to be set.
      *
      * @return The updated {@link ServiceBusMessage}.
+     * @throws IllegalArgumentException if {@code sessionId} is too long or if the  {@code sessionId}
+     * does not match the {@code partitionKey}.
      */
     public ServiceBusMessage setSessionId(String sessionId) {
+        checkIdLength("sessionId", sessionId, MAX_SESSION_ID_LENGTH);
+        checkSessionId(sessionId);
+
         amqpAnnotatedMessage.getProperties().setGroupId(sessionId);
         return this;
     }
@@ -505,4 +548,54 @@ public class ServiceBusMessage {
             dataMap.remove(key.getValue());
         }
     }
+
+    /**
+     * Checks the length of ID fields.
+     *
+     * Some fields within the message will cause a failure in the service without enough context information.
+     */
+    private void checkIdLength(String fieldName, String value, int maxLength) {
+        if (value != null && value.length() > maxLength) {
+            final String message = String.format("%s cannot be longer than %d characters.", fieldName, maxLength);
+            throw logger.logExceptionAsError(new IllegalArgumentException(message));
+        }
+    }
+
+    /**
+     * Validates that the user can't set the partitionKey to a different value than the session ID.
+     * (this will eventually migrate to a service-side check)
+     */
+    private void checkSessionId(String proposedSessionId) {
+        if (proposedSessionId == null) {
+            return;
+        }
+
+        if (this.getPartitionKey() != null && this.getPartitionKey().compareTo(proposedSessionId) != 0) {
+            final String message = String.format(
+                "sessionId:%s cannot be set to a different value than partitionKey:%s.",
+                proposedSessionId,
+                this.getPartitionKey());
+            throw logger.logExceptionAsError(new IllegalArgumentException(message));
+        }
+    }
+
+    /**
+     * Validates that the user can't set the partitionKey to a different value than the session ID.
+     * (this will eventually migrate to a service-side check)
+     */
+    private void checkPartitionKey(String proposedPartitionKey) {
+        if (proposedPartitionKey == null) {
+            return;
+        }
+
+        if (this.getSessionId() != null && this.getSessionId().compareTo(proposedPartitionKey) != 0) {
+            final String message = String.format(
+                "partitionKey:%s cannot be set to a different value than sessionId:%s.",
+                proposedPartitionKey,
+                this.getSessionId());
+
+            throw logger.logExceptionAsError(new IllegalArgumentException(message));
+        }
+    }
+
 }

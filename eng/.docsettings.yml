@@ -3,7 +3,7 @@ omitted_paths:
   - profiles/*
   - loganalytics/data-plane/samples/*
   - sdk/*/azure-*/samples/*
-  - sdk/*/opentelemetry-exporters-azuremonitor/*/samples/*
+  - sdk/*/microsoft-opentelemetry-exporter-azuremonitor/*/samples/*
   - sdk/applicationinsights/microsoft-azure-applicationinsights-query/samples/*
   - sdk/spring/azure-spring-boot-samples/*
   - sdk/loganalytics/microsoft-azure-loganalytics/samples/*
@@ -142,7 +142,7 @@ known_content_issues:
   - ['sdk/metricsadvisor/azure-ai-metricsadvisor/swagger/README.md', '#3113']
   - ['sdk/keyvault/README.md', '#3113']
   - ['sdk/loganalytics/microsoft-azure-loganalytics/README.md', '#3113']
-  - ['sdk/monitor/opentelemetry-exporters-azuremonitor/swagger/README.md', '#3113' ]
+  - ['sdk/monitor/microsoft-opentelemetry-exporter-azuremonitor/swagger/README.md', '#3113' ]
   - ['sdk/parents/azure-client-sdk-parent/README.md', '#3113']
   - ['sdk/search/azure-search-documents/swagger/README.md', '#3113']
   - ['sdk/search/azure-search-documents/src/test/README.md', '#3113']

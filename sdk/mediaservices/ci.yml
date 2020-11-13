@@ -33,8 +33,9 @@ pr:
       - sdk/mediaservices/mgmt-v2019_05_01_preview
 
 extends:
-  template: ../../eng/pipelines/templates/stages/archetype-sdk-data.yml
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
+    SDKType: data
     ServiceDirectory: mediaservices
     Artifacts:
       - name: azure-media

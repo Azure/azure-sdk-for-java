@@ -28,8 +28,9 @@ pr:
       - sdk/cognitiveservices/mgmt-v2017_04_18
 
 extends:
-  template: ../../eng/pipelines/templates/stages/archetype-sdk-data.yml
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
+    SDKType: data
     ServiceDirectory: cognitiveservices
     Artifacts:
       - name: azure-cognitiveservices-autosuggest

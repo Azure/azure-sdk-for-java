@@ -5,6 +5,7 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.implementation.models.FormFieldsReport;
 import com.azure.ai.formrecognizer.implementation.models.Model;
+import com.azure.ai.formrecognizer.implementation.models.TrainResult;
 import com.azure.ai.formrecognizer.models.FormRecognizerError;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
@@ -24,7 +25,6 @@ import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
@@ -39,16 +39,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
-import static com.azure.ai.formrecognizer.FormRecognizerClientBuilder.DEFAULT_DURATION;
 import static com.azure.ai.formrecognizer.TestUtils.BLANK_PDF;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_RECEIPT_URL;
 import static com.azure.ai.formrecognizer.TestUtils.ONE_NANO_DURATION;
 import static com.azure.ai.formrecognizer.TestUtils.TEST_DATA_PNG;
 import static com.azure.ai.formrecognizer.TestUtils.getSerializerAdapter;
+import static com.azure.ai.formrecognizer.implementation.Utility.DEFAULT_POLL_INTERVAL;
 import static com.azure.ai.formrecognizer.implementation.models.ModelStatus.READY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -63,6 +65,8 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         "FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL";
     static final String FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL =
         "FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL";
+    static final String FORM_RECOGNIZER_SELECTION_MARK_BLOB_CONTAINER_SAS_URL =
+        "FORM_RECOGNIZER_SELECTION_MARK_BLOB_CONTAINER_SAS_URL";
     static final String PREFIX_SUBFOLDER = "subfolder";
     static final String INVALID_PREFIX_FILE_NAME = "XXXXX";
 
@@ -81,7 +85,7 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         if (interceptorManager.isPlaybackMode()) {
             durationTestMode = ONE_NANO_DURATION;
         } else {
-            durationTestMode = DEFAULT_DURATION;
+            durationTestMode = DEFAULT_POLL_INTERVAL;
         }
     }
 
@@ -106,7 +110,9 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new AzureKeyCredential(INVALID_KEY));
         } else {
-            builder.credential(new DefaultAzureCredentialBuilder().build());
+            // TODO: (savaity) switch back to AAD once fixed on service - side.
+            builder.credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get(AZURE_FORM_RECOGNIZER_API_KEY)));
+            // builder.credential(new DefaultAzureCredentialBuilder().build());
         }
         return builder;
     }
@@ -158,15 +164,12 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         }
     }
 
-    void validateCustomModelData(CustomFormModel actualCustomModel, boolean isLabeled) {
-        Model modelRawResponse = getRawModelResponse();
+    void validateCustomModelData(CustomFormModel actualCustomModel, boolean isLabeled, boolean isComposed) {
+        Model modelRawResponse = getRawModelResponse(isComposed);
         assertEquals(modelRawResponse.getModelInfo().getStatus().toString(),
             actualCustomModel.getModelStatus().toString());
-        validateErrorData(modelRawResponse.getTrainResult().getErrors(), actualCustomModel.getModelError());
         assertNotNull(actualCustomModel.getTrainingStartedOn());
         assertNotNull(actualCustomModel.getTrainingCompletedOn());
-        validateTrainingDocumentsData(modelRawResponse.getTrainResult().getTrainingDocuments(),
-            actualCustomModel.getTrainingDocuments());
         final List<CustomFormSubmodel> subModelList =
             new ArrayList<>(actualCustomModel.getSubmodels());
         if (isLabeled) {
@@ -177,15 +180,55 @@ public abstract class FormTrainingClientTestBase extends TestBase {
                 assertEquals(expectedField.getFieldName(), actualFormField.getName());
                 assertEquals(expectedField.getAccuracy(), actualFormField.getAccuracy());
             }
-            assertTrue(subModelList.get(0).getFormType().startsWith("form-"));
             assertEquals(modelRawResponse.getTrainResult().getAverageModelAccuracy(),
                 subModelList.get(0).getAccuracy());
+            assertFalse(actualCustomModel.getCustomModelProperties().isComposed());
+            validateTrainingDocumentsData(modelRawResponse.getTrainResult().getTrainingDocuments(),
+                actualCustomModel.getTrainingDocuments());
+            validateErrorData(modelRawResponse.getTrainResult().getErrors(), actualCustomModel.getModelError());
+        }  else if (modelRawResponse.getComposedTrainResults() != null) {
+
+            assertEquals(modelRawResponse.getComposedTrainResults().size(), subModelList.size());
+            for (int i = 0; i < subModelList.size(); i++) {
+                final CustomFormSubmodel actualSubmodel = subModelList.get(i);
+                final TrainResult expectedSubmodel = modelRawResponse.getComposedTrainResults().get(i);
+                assertEquals(expectedSubmodel.getAverageModelAccuracy(), actualSubmodel.getAccuracy());
+                assertEquals(expectedSubmodel.getModelId().toString(), actualSubmodel.getModelId());
+                final List<TrainingDocumentInfo> submodelTrainingDocuments =
+                    actualCustomModel.getTrainingDocuments()
+                    .stream()
+                    .filter(actualTrainingDocument ->
+                        expectedSubmodel.getModelId().toString().equals(actualTrainingDocument.getModelId()))
+                        .collect(Collectors.toList());
+
+                assertEquals(expectedSubmodel.getTrainingDocuments().size(), submodelTrainingDocuments.size());
+                assertTrue(actualCustomModel.getCustomModelProperties().isComposed());
+                validateTrainingDocumentsData(expectedSubmodel.getTrainingDocuments(), submodelTrainingDocuments);
+
+                for (final FormFieldsReport expectedField : expectedSubmodel.getFields()) {
+                    final CustomFormModelField actualFormField =
+                        actualSubmodel.getFields().get(expectedField.getFieldName());
+                    assertEquals(expectedField.getFieldName(), actualFormField.getName());
+                    assertEquals(expectedField.getAccuracy(), actualFormField.getAccuracy());
+                }
+            }
         } else {
-            modelRawResponse.getKeys().getClusters().forEach((clusterId, fields) -> {
-                assertTrue(subModelList.get(Integer.parseInt(clusterId)).getFormType().endsWith(clusterId));
-                subModelList.get(Integer.parseInt(clusterId)).getFields().values().forEach(customFormModelField ->
-                    assertTrue(fields.contains(customFormModelField.getLabel())));
-            });
+            modelRawResponse
+                .getKeys()
+                .getClusters()
+                .forEach((clusterId, fields) -> {
+                    assertEquals(subModelList.get(Integer.parseInt(clusterId)).getFormType(),
+                        "form-" + clusterId);
+                    subModelList.get(Integer.parseInt(clusterId))
+                        .getFields()
+                        .values()
+                        .forEach(customFormModelField ->
+                            assertTrue(fields.contains(customFormModelField.getLabel())));
+                });
+            assertFalse(actualCustomModel.getCustomModelProperties().isComposed());
+            validateTrainingDocumentsData(modelRawResponse.getTrainResult().getTrainingDocuments(),
+                actualCustomModel.getTrainingDocuments());
+            validateErrorData(modelRawResponse.getTrainResult().getErrors(), actualCustomModel.getModelError());
         }
     }
 
@@ -193,14 +236,24 @@ public abstract class FormTrainingClientTestBase extends TestBase {
      * Prepare the expected test data from service raw response.
      *
      * @return the {@link Model} test data
+     * @param isComposed boolean to indicate returning composed model data
      */
-    private Model getRawModelResponse() {
+    private Model getRawModelResponse(boolean isComposed) {
         final SerializerAdapter serializerAdapter = getSerializerAdapter();
-        final NetworkCallRecord networkCallRecord =
-            interceptorManager.getRecordedData().findFirstAndRemoveNetworkCall(record -> {
+        final NetworkCallRecord networkCallRecord;
+        if (isComposed) {
+            networkCallRecord = interceptorManager.getRecordedData().findFirstAndRemoveNetworkCall(record -> {
+                Model rawModelResponse = deserializeRawResponse(serializerAdapter, record, Model.class);
+                return rawModelResponse != null && rawModelResponse.getModelInfo().getStatus() == READY
+                    && rawModelResponse.getModelInfo().getAttributes() != null
+                    && rawModelResponse.getModelInfo().getAttributes().isComposed();
+            });
+        } else {
+            networkCallRecord = interceptorManager.getRecordedData().findFirstAndRemoveNetworkCall(record -> {
                 Model rawModelResponse = deserializeRawResponse(serializerAdapter, record, Model.class);
                 return rawModelResponse != null && rawModelResponse.getModelInfo().getStatus() == READY;
             });
+        }
         interceptorManager.getRecordedData().addNetworkCall(networkCallRecord);
         return deserializeRawResponse(serializerAdapter, networkCallRecord, Model.class);
     }
@@ -359,6 +412,20 @@ public abstract class FormTrainingClientTestBase extends TestBase {
         } else {
             try {
                 testRunner.accept(new FileInputStream(LOCAL_FILE_PATH + BLANK_PDF), fileLength);
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException("Local file not found.", e);
+            }
+        }
+    }
+
+    void dataRunner(BiConsumer<InputStream, Long> testRunner, String fileName) {
+        final long fileLength = new File(LOCAL_FILE_PATH + fileName).length();
+
+        if (interceptorManager.isPlaybackMode()) {
+            testRunner.accept(new ByteArrayInputStream(TEST_DATA_PNG.getBytes(StandardCharsets.UTF_8)), fileLength);
+        } else {
+            try {
+                testRunner.accept(new FileInputStream(LOCAL_FILE_PATH + fileName), fileLength);
             } catch (FileNotFoundException e) {
                 throw new RuntimeException("Local file not found.", e);
             }

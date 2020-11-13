@@ -6,13 +6,24 @@ package com.azure.digitaltwins.core;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.*;
+import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.JsonSerializer;
-import reactor.util.retry.Retry;
 
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -28,8 +39,6 @@ import java.util.regex.Pattern;
  */
 @ServiceClientBuilder(serviceClients = {DigitalTwinsClient.class, DigitalTwinsAsyncClient.class})
 public final class DigitalTwinsClientBuilder {
-
-    private static final Pattern ADT_PUBLIC_SCOPE_VALIDATION_PATTERN = Pattern.compile("(ppe|azure)\\.net");
     private static final String[] ADT_PUBLIC_SCOPE = new String[]{"https://digitaltwins.azure.net" + "/.default"};
 
     // This is the name of the properties file in this repo that contains the default properties
@@ -47,6 +56,7 @@ public final class DigitalTwinsClientBuilder {
 
     // optional/have default values
     private DigitalTwinsServiceVersion serviceVersion;
+    private ClientOptions clientOptions;
     private HttpPipeline httpPipeline;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
@@ -76,17 +86,28 @@ public final class DigitalTwinsClientBuilder {
         httpLogOptions = new HttpLogOptions();
     }
 
-    private static HttpPipeline buildPipeline(TokenCredential tokenCredential, String endpoint,
-                                              HttpLogOptions httpLogOptions, HttpClient httpClient,
-                                              List<HttpPipelinePolicy> additionalPolicies, RetryPolicy retryPolicy,
-                                              Configuration configuration, Map<String, String> properties) {
+    private static HttpPipeline buildPipeline(TokenCredential tokenCredential,
+                                              String endpoint,
+                                              HttpLogOptions httpLogOptions,
+                                              ClientOptions clientOptions,
+                                              HttpClient httpClient,
+                                              List<HttpPipelinePolicy> additionalPolicies,
+                                              RetryPolicy retryPolicy,
+                                              Configuration configuration,
+                                              Map<String, String> properties) {
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
 
-        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion, configuration));
+        // Give precedence to applicationId configured in clientOptions over the one configured in httpLogOptions.
+        // Azure.Core deprecated setting the applicationId in httpLogOptions, but we should still support it.
+        String applicationId = clientOptions == null
+            ? httpLogOptions.getApplicationId()
+            : clientOptions.getApplicationId();
+
+        policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, configuration));
 
         // Adds a "x-ms-client-request-id" header to each request. This header is useful for tracing requests through Azure ecosystems
         policies.add(new RequestIdPolicy());
@@ -101,10 +122,18 @@ public final class DigitalTwinsClientBuilder {
         policies.add(new AddDatePolicy());
 
         // Add authentication policy so that each HTTP request has authorization header
-        HttpPipelinePolicy credentialPolicy = new BearerTokenAuthenticationPolicy(tokenCredential, getAuthorizationScopes(endpoint));
+        HttpPipelinePolicy credentialPolicy = new BearerTokenAuthenticationPolicy(tokenCredential, ADT_PUBLIC_SCOPE);
         policies.add(credentialPolicy);
 
         policies.addAll(additionalPolicies);
+
+        // If client options has headers configured, add a policy for each
+        if (clientOptions != null) {
+            List<HttpHeader> httpHeaderList = new ArrayList<>();
+            clientOptions.getHeaders().forEach(header ->
+                httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+            policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
+        }
 
         // Custom policies, authentication policy, and add date policy all take place after the retry policy which means
         // they will be applied once per http request, and once for every retried http request. For instance, the
@@ -120,16 +149,6 @@ public final class DigitalTwinsClientBuilder {
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .build();
-    }
-
-    private static String[] getAuthorizationScopes(String endpoint) {
-        // If the endpoint is in Azure public cloud, the suffix will have "azure.net" or "ppe.net".
-        // Once ADT becomes available in other clouds, their corresponding scope has to be matched and set.
-        if (ADT_PUBLIC_SCOPE_VALIDATION_PATTERN.matcher(endpoint).find()) {
-            return ADT_PUBLIC_SCOPE;
-        }
-
-        throw new IllegalArgumentException(String.format("Azure digital twins instance endpoint %s is not valid.", endpoint));
     }
 
     /**
@@ -175,6 +194,7 @@ public final class DigitalTwinsClientBuilder {
                 this.tokenCredential,
                 this.endpoint,
                 this.httpLogOptions,
+                this.clientOptions,
                 this.httpClient,
                 this.additionalPolicies,
                 retryPolicy,
@@ -310,6 +330,21 @@ public final class DigitalTwinsClientBuilder {
      */
     public DigitalTwinsClientBuilder serializer(JsonSerializer jsonSerializer) {
         this.jsonSerializer = jsonSerializer;
+        return this;
+    }
+
+    /**
+     * Sets the {@link ClientOptions} which enables various options to be set on the client. For example setting an
+     * {@code applicationId} using {@link ClientOptions#setApplicationId(String)} to configure
+     * the {@link UserAgentPolicy} for telemetry/monitoring purposes.
+     *
+     * <p>More About <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">Azure Core: Telemetry policy</a>
+     *
+     * @param clientOptions the {@link ClientOptions} to be set on the client.
+     * @return The updated KeyClientBuilder object.
+     */
+    public DigitalTwinsClientBuilder clientOptions(ClientOptions clientOptions) {
+        this.clientOptions = clientOptions;
         return this;
     }
 }

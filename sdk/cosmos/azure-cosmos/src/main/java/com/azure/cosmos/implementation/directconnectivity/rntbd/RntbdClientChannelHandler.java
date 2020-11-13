@@ -94,7 +94,7 @@ public class RntbdClientChannelHandler extends ChannelInitializer<Channel> imple
     @Override
     protected void initChannel(final Channel channel) {
 
-        checkNotNull(channel);
+        checkNotNull(channel, "expected non-null channel");
 
         final RntbdRequestManager requestManager = new RntbdRequestManager(
             this.healthChecker,

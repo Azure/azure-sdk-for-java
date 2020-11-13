@@ -18,12 +18,16 @@ import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.experimental.util.BinaryData;
 import com.azure.core.util.ClientOptions;
+import com.azure.core.util.Context;
+import com.azure.core.util.tracing.ProcessKind;
+import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
-import com.azure.messaging.servicebus.models.CreateBatchOptions;
+import com.azure.messaging.servicebus.models.CreateMessageBatchOptions;
 import org.apache.qpid.proton.amqp.messaging.Section;
 import org.apache.qpid.proton.amqp.transaction.TransactionalState;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
@@ -51,15 +55,23 @@ import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
+import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
+import static com.azure.core.util.tracing.Tracer.SPAN_BUILDER_KEY;
 import static com.azure.messaging.servicebus.ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES;
-import static java.nio.charset.StandardCharsets.UTF_8;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_NAMESPACE_VALUE;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_SERVICE_NAME;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -81,7 +93,7 @@ class ServiceBusSenderAsyncClientTest {
     private static final String NAMESPACE = "my-namespace";
     private static final String ENTITY_NAME = "my-servicebus-entity";
     private static final String LINK_NAME = "my-link-name";
-    private static final String TEST_CONTENTS = "My message for service bus queue!";
+    private static final BinaryData TEST_CONTENTS = BinaryData.fromString("My message for service bus queue!");
     private static final  String TXN_ID_STRING = "1";
 
     @Mock
@@ -188,7 +200,7 @@ class ServiceBusSenderAsyncClientTest {
      */
     @Test
     void createBatchNull() {
-        StepVerifier.create(sender.createBatch(null))
+        StepVerifier.create(sender.createMessageBatch(null))
             .verifyErrorMatches(error -> error instanceof NullPointerException);
     }
 
@@ -203,7 +215,7 @@ class ServiceBusSenderAsyncClientTest {
         when(sendLink.getLinkSize()).thenReturn(Mono.just(MAX_MESSAGE_LENGTH_BYTES));
 
         // Act & Assert
-        StepVerifier.create(sender.createBatch())
+        StepVerifier.create(sender.createMessageBatch())
             .assertNext(batch -> {
                 Assertions.assertEquals(MAX_MESSAGE_LENGTH_BYTES, batch.getMaxSizeInBytes());
                 Assertions.assertEquals(0, batch.getCount());
@@ -227,16 +239,16 @@ class ServiceBusSenderAsyncClientTest {
             .thenReturn(Mono.just(link));
 
         // This event is 1024 bytes when serialized.
-        final CreateBatchOptions options = new CreateBatchOptions().setMaximumSizeInBytes(batchSize);
+        final CreateMessageBatchOptions options = new CreateMessageBatchOptions().setMaximumSizeInBytes(batchSize);
 
         // Act & Assert
-        StepVerifier.create(sender.createBatch(options))
+        StepVerifier.create(sender.createMessageBatch(options))
             .expectError(IllegalArgumentException.class)
             .verify();
     }
 
     /**
-     * Verifies that the producer can create a batch with a given {@link CreateBatchOptions#getMaximumSizeInBytes()}.
+     * Verifies that the producer can create a batch with a given {@link CreateMessageBatchOptions#getMaximumSizeInBytes()}.
      */
     @Test
     void createsMessageBatchWithSize() {
@@ -256,26 +268,50 @@ class ServiceBusSenderAsyncClientTest {
             .thenReturn(Mono.just(link));
 
         // This is 1024 bytes when serialized.
-        final ServiceBusMessage event = new ServiceBusMessage(new byte[maxEventPayload]);
+        final ServiceBusMessage event = new ServiceBusMessage(BinaryData.fromBytes(new byte[maxEventPayload]));
 
-        final ServiceBusMessage tooLargeEvent = new ServiceBusMessage(new byte[maxEventPayload + 1]);
-        final CreateBatchOptions options = new CreateBatchOptions().setMaximumSizeInBytes(batchSize);
+        final ServiceBusMessage tooLargeEvent = new ServiceBusMessage(BinaryData.fromBytes(new byte[maxEventPayload + 1]));
+        final CreateMessageBatchOptions options = new CreateMessageBatchOptions().setMaximumSizeInBytes(batchSize);
 
         // Act & Assert
-        StepVerifier.create(sender.createBatch(options))
+        StepVerifier.create(sender.createMessageBatch(options))
             .assertNext(batch -> {
                 Assertions.assertEquals(batchSize, batch.getMaxSizeInBytes());
-                Assertions.assertTrue(batch.tryAdd(event));
+                Assertions.assertTrue(batch.tryAddMessage(event));
             })
             .verifyComplete();
 
-        StepVerifier.create(sender.createBatch(options))
+        StepVerifier.create(sender.createMessageBatch(options))
             .assertNext(batch -> {
                 Assertions.assertEquals(batchSize, batch.getMaxSizeInBytes());
-                Assertions.assertFalse(batch.tryAdd(tooLargeEvent));
+                Assertions.assertFalse(batch.tryAddMessage(tooLargeEvent));
             })
             .verifyComplete();
     }
+
+    @Test
+    void scheduleMessageSizeTooBig() {
+        // Arrange
+        int maxLinkSize = 1024;
+        int batchSize = maxLinkSize + 10;
+
+        OffsetDateTime instant = mock(OffsetDateTime.class);
+        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(batchSize, UUID.randomUUID().toString());
+
+        final AmqpSendLink link = mock(AmqpSendLink.class);
+        when(link.getLinkSize()).thenReturn(Mono.just(maxLinkSize));
+
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), any(AmqpRetryOptions.class), isNull()))
+            .thenReturn(Mono.just(link));
+        when(link.getLinkSize()).thenReturn(Mono.just(maxLinkSize));
+
+        // Act & Assert
+        StepVerifier.create(sender.scheduleMessages(messages, instant))
+            .verifyError(IllegalArgumentException.class);
+
+        verify(managementNode, never()).schedule(any(), eq(instant), anyInt(), eq(LINK_NAME), isNull());
+    }
+
 
     /**
      * Verifies that sending multiple message will result in calling sender.send(MessageBatch, transaction).
@@ -284,13 +320,13 @@ class ServiceBusSenderAsyncClientTest {
     void sendMultipleMessagesWithTransaction() {
         // Arrange
         final int count = 4;
-        final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
+        final byte[] contents = TEST_CONTENTS.toBytes();
         final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(256 * 1024,
-            errorContextProvider, tracerProvider, serializer);
+            errorContextProvider, tracerProvider, serializer, null, null);
 
         IntStream.range(0, count).forEach(index -> {
-            final ServiceBusMessage message = new ServiceBusMessage(contents);
-            Assertions.assertTrue(batch.tryAdd(message));
+            final ServiceBusMessage message = new ServiceBusMessage(BinaryData.fromBytes(contents));
+            Assertions.assertTrue(batch.tryAddMessage(message));
         });
 
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull()))
@@ -323,13 +359,13 @@ class ServiceBusSenderAsyncClientTest {
     void sendMultipleMessages() {
         // Arrange
         final int count = 4;
-        final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
+        final byte[] contents = TEST_CONTENTS.toBytes();
         final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(256 * 1024,
-            errorContextProvider, tracerProvider, serializer);
+            errorContextProvider, tracerProvider, serializer, null, null);
 
         IntStream.range(0, count).forEach(index -> {
-            final ServiceBusMessage message = new ServiceBusMessage(contents);
-            Assertions.assertTrue(batch.tryAdd(message));
+            final ServiceBusMessage message = new ServiceBusMessage(BinaryData.fromBytes(contents));
+            Assertions.assertTrue(batch.tryAddMessage(message));
         });
 
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull()))
@@ -346,6 +382,70 @@ class ServiceBusSenderAsyncClientTest {
         Assertions.assertEquals(count, messagesSent.size());
 
         messagesSent.forEach(message -> Assertions.assertEquals(Section.SectionType.Data, message.getBody().getType()));
+    }
+
+    /**
+     * Verifies that sending multiple message will result in calling sender.send(MessageBatch).
+     */
+    @Test
+    void sendMultipleMessagesTracerSpans() {
+        // Arrange
+        final int count = 4;
+        final byte[] contents = TEST_CONTENTS.toBytes();
+        final Tracer tracer1 = mock(Tracer.class);
+        TracerProvider tracerProvider1 = new TracerProvider(Arrays.asList(tracer1));
+
+        final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(256 * 1024,
+            errorContextProvider, tracerProvider1, serializer, null, null);
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionProcessor,
+            retryOptions, tracerProvider1, serializer, onClientClose, null);
+
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull()))
+            .thenReturn(Mono.just(sendLink));
+        when(sendLink.send(anyList())).thenReturn(Mono.empty());
+        when(tracer1.start(eq(AZ_TRACING_SERVICE_NAME + "send"), any(Context.class), eq(ProcessKind.SEND)))
+            .thenAnswer(invocation -> {
+                Context passed = invocation.getArgument(1, Context.class);
+                assertEquals(passed.getData(AZ_TRACING_NAMESPACE_KEY).get(), AZ_TRACING_NAMESPACE_VALUE);
+                return passed.addData(PARENT_SPAN_KEY, "value");
+            });
+
+        when(tracer1.start(eq(AZ_TRACING_SERVICE_NAME + "message"), any(Context.class), eq(ProcessKind.MESSAGE)))
+            .thenAnswer(invocation -> {
+                Context passed = invocation.getArgument(1, Context.class);
+                assertEquals(passed.getData(AZ_TRACING_NAMESPACE_KEY).get(), AZ_TRACING_NAMESPACE_VALUE);
+                return passed.addData(PARENT_SPAN_KEY, "value").addData(DIAGNOSTIC_ID_KEY, "value2");
+            });
+
+        when(tracer1.getSharedSpanBuilder(eq(AZ_TRACING_SERVICE_NAME + "send"), any(Context.class))).thenAnswer(
+            invocation -> {
+                Context passed = invocation.getArgument(1, Context.class);
+                return passed.addData(SPAN_BUILDER_KEY, "value");
+            }
+        );
+
+        when(tracer1.getSharedSpanBuilder(eq(AZ_TRACING_SERVICE_NAME + "send"), any(Context.class))).thenAnswer(
+            invocation -> {
+                Context passed = invocation.getArgument(1, Context.class);
+                return passed.addData(SPAN_BUILDER_KEY, "value");
+            }
+        );
+
+        IntStream.range(0, count).forEach(index -> {
+            final ServiceBusMessage message = new ServiceBusMessage(BinaryData.fromBytes(contents));
+            Assertions.assertTrue(batch.tryAddMessage(message));
+        });
+
+        // Act
+        StepVerifier.create(sender.sendMessages(batch))
+            .verifyComplete();
+
+        // Assert
+        verify(tracer1, times(4))
+            .start(eq(AZ_TRACING_SERVICE_NAME + "message"), any(Context.class), eq(ProcessKind.MESSAGE));
+        verify(tracer1, times(1))
+            .start(eq(AZ_TRACING_SERVICE_NAME + "send"), any(Context.class), eq(ProcessKind.SEND));
+        verify(tracer1, times(5)).end(eq("success"), isNull(), any(Context.class));
     }
 
     /**
@@ -387,7 +487,7 @@ class ServiceBusSenderAsyncClientTest {
     void sendMessagesList() {
         // Arrange
         final int count = 4;
-        final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
+        final byte[] contents = TEST_CONTENTS.toBytes();
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString());
 
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull()))
@@ -435,7 +535,7 @@ class ServiceBusSenderAsyncClientTest {
     @Test
     void sendSingleMessageWithTransaction() {
         // Arrange
-        final ServiceBusMessage testData = new ServiceBusMessage(TEST_CONTENTS.getBytes(UTF_8));
+        final ServiceBusMessage testData = new ServiceBusMessage(TEST_CONTENTS);
 
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull()))
             .thenReturn(Mono.just(sendLink));
@@ -468,7 +568,7 @@ class ServiceBusSenderAsyncClientTest {
     void sendSingleMessage() {
         // Arrange
         final ServiceBusMessage testData =
-            new ServiceBusMessage(TEST_CONTENTS.getBytes(UTF_8));
+            new ServiceBusMessage(TEST_CONTENTS);
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull()))

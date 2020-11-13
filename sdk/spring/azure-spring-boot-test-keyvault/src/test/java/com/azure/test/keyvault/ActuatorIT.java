@@ -2,21 +2,21 @@
 // Licensed under the MIT License.
 package com.azure.test.keyvault;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import com.azure.test.management.ClientSecretAccess;
 import com.azure.test.utils.AppRunner;
 import org.junit.Test;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.client.RestTemplate;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class ActuatorIT {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ActuatorIT.class);
     private static final RestTemplate REST_TEMPLATE = new RestTemplate();
-
     private static final String AZURE_KEYVAULT_URI = System.getenv("AZURE_KEYVAULT_URI");
-
     private static final ClientSecretAccess CLIENT_SECRET_ACCESS = ClientSecretAccess.load();
 
     /**
@@ -24,7 +24,8 @@ public class ActuatorIT {
      */
     @Test
     public void testSpringBootActuatorHealth() {
-        try (AppRunner app = new AppRunner(ActuatorTestApp.class)) {
+        LOGGER.info("testSpringBootActuatorHealth begin.");
+        try (AppRunner app = new AppRunner(DummyApp.class)) {
             app.property("azure.keyvault.enabled", "true");
             app.property("azure.keyvault.uri", AZURE_KEYVAULT_URI);
             app.property("azure.keyvault.client-id", CLIENT_SECRET_ACCESS.clientId());
@@ -38,7 +39,9 @@ public class ActuatorIT {
             final String response = REST_TEMPLATE.getForObject(
                     "http://localhost:" + app.port() + "/actuator/health/keyVault", String.class);
             assertEquals("{\"status\":\"UP\"}", response);
+            LOGGER.info("response = {}", response);
         }
+        LOGGER.info("testSpringBootActuatorHealth end.");
     }
 
     /**
@@ -46,7 +49,8 @@ public class ActuatorIT {
      */
     @Test
     public void testSpringBootActuatorEnv() {
-        try (AppRunner app = new AppRunner(ActuatorTestApp.class)) {
+        LOGGER.info("testSpringBootActuatorEnv begin.");
+        try (AppRunner app = new AppRunner(DummyApp.class)) {
             app.property("azure.keyvault.enabled", "true");
             app.property("azure.keyvault.uri", AZURE_KEYVAULT_URI);
             app.property("azure.keyvault.client-id", CLIENT_SECRET_ACCESS.clientId());
@@ -60,12 +64,9 @@ public class ActuatorIT {
             final String response = REST_TEMPLATE.getForObject(
                     "http://localhost:" + app.port() + "/actuator/env", String.class);
             assert response != null;
+            LOGGER.info("response = {}", response);
             assertTrue(response.contains("azurekv"));
         }
-    }
-
-    @SpringBootApplication(scanBasePackages = {"com.microsoft.azure.keyvault.spring"})
-    public static class ActuatorTestApp {
-
+        LOGGER.info("testSpringBootActuatorEnv end.");
     }
 }

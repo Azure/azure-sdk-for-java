@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.digitaltwins.core.implementation.converters;
 
 import com.azure.digitaltwins.core.models.DigitalTwinsModelData;
@@ -29,13 +32,13 @@ public final class DigitalTwinsModelDataConverter {
             }
         }
 
-        return new DigitalTwinsModelData()
-            .setId(input.getId())
-            .setUploadTime(input.getUploadTime())
-            .setDisplayName(input.getDisplayName())
-            .setDescription(input.getDescription())
-            .setDecommissioned(input.isDecommissioned())
-            .setModel(modelStringValue);
+        return new DigitalTwinsModelData(
+            input.getId(),
+            modelStringValue,
+            input.getDisplayName(),
+            input.getDescription(),
+            input.getUploadTime(),
+            input.isDecommissioned());
     }
 
     private DigitalTwinsModelDataConverter() {}

@@ -373,7 +373,7 @@ public final class BlockBlobClient extends BlobClientBase {
         String leaseId, Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("data", data);
         Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length,
-            BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
+            BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, true);
 
         Mono<Response<Void>> response = client.stageBlockWithResponse(base64BlockId,
             fbb.subscribeOn(Schedulers.elastic()), length, contentMd5, leaseId, context);

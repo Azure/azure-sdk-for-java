@@ -23,9 +23,9 @@ import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.policy.RetryPolicyType
-import com.azure.storage.file.share.models.DeleteSnapshotsOptionType
 import com.azure.storage.file.share.models.LeaseStateType
 import com.azure.storage.file.share.models.ListSharesOptions
+import com.azure.storage.file.share.models.ShareSnapshotsDeleteOptionType
 import com.azure.storage.file.share.options.ShareAcquireLeaseOptions
 import com.azure.storage.file.share.options.ShareBreakLeaseOptions
 import com.azure.storage.file.share.options.ShareDeleteOptions
@@ -40,6 +40,9 @@ import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import java.time.Duration
 import java.time.OffsetDateTime
+import java.util.concurrent.ConcurrentHashMap
+import java.util.function.BiFunction
+import java.util.function.Function
 
 class APISpec extends Specification {
     // Field common used for all APIs.
@@ -134,7 +137,7 @@ class APISpec extends Specification {
                     createLeaseClient(shareClient).breakLeaseWithResponse(new ShareBreakLeaseOptions().setBreakPeriod(Duration.ofSeconds(0)), null, null)
                 }
 
-                shareClient.deleteWithResponse(new ShareDeleteOptions().setDeleteSnapshotsOptions(DeleteSnapshotsOptionType.INCLUDE), null, null)
+                shareClient.deleteWithResponse(new ShareDeleteOptions().setDeleteSnapshotsOptions(ShareSnapshotsDeleteOptionType.INCLUDE), null, null)
             }
         }
     }
@@ -554,6 +557,41 @@ class APISpec extends Specification {
             @Override
             HttpPipelinePosition getPipelinePosition() {
                 return HttpPipelinePosition.PER_CALL
+            }
+        }
+    }
+
+    /**
+     * Injects one retry-able IOException failure per url.
+     */
+    class TransientFailureInjectingHttpPipelinePolicy implements HttpPipelinePolicy {
+
+        private ConcurrentHashMap<String, Boolean> failureTracker = new ConcurrentHashMap<>();
+
+        @Override
+        Mono<HttpResponse> process(HttpPipelineCallContext httpPipelineCallContext, HttpPipelineNextPolicy httpPipelineNextPolicy) {
+            def request = httpPipelineCallContext.httpRequest
+            def key = request.url.toString()
+            // Make sure that failure happens once per url.
+            if (failureTracker.get(key, false)) {
+                return httpPipelineNextPolicy.process()
+            } else {
+                failureTracker.put(key, true)
+                return request.getBody().flatMap {
+                    byteBuffer ->
+                        // Read a byte from each buffer to simulate that failure occurred in the middle of transfer.
+                        byteBuffer.get()
+                        return Flux.just(byteBuffer)
+                }.reduce( 0L, {
+                        // Reduce in order to force processing of all buffers.
+                    a, byteBuffer ->
+                        return a + byteBuffer.remaining()
+                } as BiFunction<Long, ByteBuffer, Long>
+                ).flatMap ({
+                    aLong ->
+                        // Throw retry-able error.
+                        return Mono.error(new IOException("KABOOM!"))
+                } as Function<Long, Mono<HttpResponse>>)
             }
         }
     }

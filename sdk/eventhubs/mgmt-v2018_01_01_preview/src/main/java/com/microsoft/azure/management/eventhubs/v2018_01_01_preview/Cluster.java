@@ -25,9 +25,9 @@ import com.microsoft.azure.management.eventhubs.v2018_01_01_preview.implementati
  */
 public interface Cluster extends HasInner<ClusterInner>, Resource, GroupableResourceCore<EventHubsManager, ClusterInner>, HasResourceGroup, Refreshable<Cluster>, Updatable<Cluster.Update>, HasManager<EventHubsManager> {
     /**
-     * @return the created value.
+     * @return the createdAt value.
      */
-    String created();
+    String createdAt();
 
     /**
      * @return the metricId value.
@@ -45,9 +45,9 @@ public interface Cluster extends HasInner<ClusterInner>, Resource, GroupableReso
     String status();
 
     /**
-     * @return the updated value.
+     * @return the updatedAt value.
      */
-    String updated();
+    String updatedAt();
 
     /**
      * The entirety of the Cluster definition.
@@ -72,11 +72,23 @@ public interface Cluster extends HasInner<ClusterInner>, Resource, GroupableReso
         }
 
         /**
+         * The stage of the cluster definition allowing to specify Sku.
+         */
+        interface WithSku {
+            /**
+             * Specifies sku.
+             * @param sku Properties of the cluster SKU
+             * @return the next definition stage
+             */
+            WithCreate withSku(ClusterSku sku);
+        }
+
+        /**
          * The stage of the definition which contains all the minimum required inputs for
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<Cluster>, Resource.DefinitionWithTags<WithCreate> {
+        interface WithCreate extends Creatable<Cluster>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithSku {
         }
     }
     /**
