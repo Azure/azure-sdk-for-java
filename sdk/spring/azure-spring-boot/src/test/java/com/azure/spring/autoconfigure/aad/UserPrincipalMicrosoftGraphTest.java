@@ -170,32 +170,4 @@ public class UserPrincipalMicrosoftGraphTest {
             .withHeader(AUTHORIZATION, equalTo(String.format("Bearer %s", TestConstants.ACCESS_TOKEN)))
             .withHeader(ACCEPT, equalTo(APPLICATION_JSON_VALUE)));
     }
-
-    @Test
-    public void userPrincipalIsSerializable() throws ParseException, IOException, ClassNotFoundException {
-        final File tmpOutputFile = File.createTempFile("test-user-principal", "txt");
-
-        try (FileOutputStream fileOutputStream = new FileOutputStream(tmpOutputFile);
-             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-             FileInputStream fileInputStream = new FileInputStream(tmpOutputFile);
-             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
-
-            final JWSObject jwsObject = JWSObject.parse(MicrosoftGraphConstants.JWT_TOKEN);
-            final JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder().subject("fake-subject").build();
-            final UserPrincipal principal = new UserPrincipal("", jwsObject, jwtClaimsSet);
-
-            objectOutputStream.writeObject(principal);
-
-            final UserPrincipal serializedPrincipal = (UserPrincipal) objectInputStream.readObject();
-
-            Assert.assertNotNull("Serialized UserPrincipal not null", serializedPrincipal);
-            Assert.assertFalse("Serialized UserPrincipal kid not empty",
-                StringUtils.isEmpty(serializedPrincipal.getKid()));
-            Assert.assertNotNull("Serialized UserPrincipal claims not null.", serializedPrincipal.getClaims());
-            Assert.assertTrue("Serialized UserPrincipal claims not empty.",
-                    serializedPrincipal.getClaims().size() > 0);
-        } finally {
-            Files.deleteIfExists(tmpOutputFile.toPath());
-        }
-    }
 }
