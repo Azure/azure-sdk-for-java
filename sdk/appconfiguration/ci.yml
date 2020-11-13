@@ -55,3 +55,8 @@ extends:
       - name: azure-spring-cloud-test-appconfiguration-config
         groupId: com.azure.spring
         safeName: azurespringcloudtestappconfigurationconfig
+    SourceScanPath: sdk/appconfiguration/
+    IgnoreDirectories:
+      - sdk/appconfiguration/mgmt-v2019_02_01_preview
+      - sdk/appconfiguration/mgmt-v2019_10_01
+      - sdk/appconfiguration/mgmt-v2019_11_01_preview

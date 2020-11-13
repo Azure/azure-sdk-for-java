@@ -4,6 +4,8 @@ parameters:
   TestPipeline: false
   Artifacts: []
   AdditionalModules: []
+  SourceScanPath: null
+  IgnoreDirectories: []
   PreTestSteps: []
   TestOptions: '$(DefaultOptions) -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Dparallel-test-playback'
   TestGoals: verify
@@ -214,6 +216,9 @@ jobs:
         # builds should be sufficient.
         condition: and(succeededOrFailed(), ne(variables['Build.Reason'], 'PullRequest'))
         displayName: 'Component Detection'
+        inputs:
+          sourceScanPath: ${{parameters.SourceScanPath}}
+          ignoreDirectories: '${{ join(',', parameters.IgnoreDirectories) }}'
 
       - task: Maven@3
         displayName: 'Run SpotBugs, Checkstyle, RevApi, and Javadoc'
