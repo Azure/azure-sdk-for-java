@@ -17,11 +17,17 @@ object TestE2EMain {
       .key(cosmosEndpoint)
       .endpoint(cosmosMasterKey)
       .consistencyLevel(ConsistencyLevel.EVENTUAL)
-      .buildAsyncClient();
+      .buildAsyncClient()
 
     client.createDatabaseIfNotExists(cosmosDatabase).block()
-    client.getDatabase(cosmosDatabase).createContainerIfNotExists(cosmosContainer, "/id").block();
+    client.getDatabase(cosmosDatabase).createContainerIfNotExists(cosmosContainer, "/id").block()
     client.close()
+
+    val cfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey,
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> cosmosContainer
+    )
 
     val spark = SparkSession.builder()
       .appName("spark connector sample")
@@ -41,7 +47,7 @@ object TestE2EMain {
     ).toDF("number", "word")
     df.printSchema()
 
-    df.write.format("cosmos.items").mode("append").save()
+    df.write.format("cosmos.items").mode("append").options(cfg).save()
     df.show()
 
     spark.close()
