@@ -144,6 +144,7 @@ public class ReadmeSamples {
             .setPriority(ChatMessagePriority.NORMAL)
             .setSenderDisplayName("Sender Display Name");
 
+
         String chatMessageId = chatThreadClient.sendMessage(sendChatMessageOptions);
     }
 
