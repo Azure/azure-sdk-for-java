@@ -20,7 +20,7 @@ public class DecryptOptions {
     /**
      * The content to be decrypted.
      */
-    private final byte[] ciphertext;
+    private final byte[] cipherText;
 
     /**
      * Initialization vector to be used in the decryption operation using a symmetric algorithm.
@@ -41,51 +41,51 @@ public class DecryptOptions {
      * Factory method to create an instance of {@link DecryptOptions} with the given parameters for
      * {@link EncryptionAlgorithm#A128CBC}.
      *
-     * @param ciphertext The content to be decrypted.
+     * @param cipherText The content to be decrypted.
      * @param iv Initialization vector for the decryption operation.
      * @return The {@link DecryptOptions}.
      */
-    public static DecryptOptions createAes128CbcOptions(byte[] ciphertext, byte[] iv) {
-        return new DecryptOptions(EncryptionAlgorithm.A128CBC, ciphertext, iv, null, null);
+    public static DecryptOptions createAes128CbcOptions(byte[] cipherText, byte[] iv) {
+        return new DecryptOptions(EncryptionAlgorithm.A128CBC, cipherText, iv, null, null);
     }
     /**
      * Factory method to create an instance of {@link DecryptOptions} with the given parameters for
      * {@link EncryptionAlgorithm#A128CBCPAD}.
      *
-     * @param ciphertext The content to be decrypted.
+     * @param cipherText The content to be decrypted.
      * @param iv Initialization vector for the decryption operation.
      * @return The {@link DecryptOptions}.
      */
-    public static DecryptOptions createAes128CbcPadOptions(byte[] ciphertext, byte[] iv) {
-        return new DecryptOptions(EncryptionAlgorithm.A128CBCPAD, ciphertext, iv, null, null);
+    public static DecryptOptions createAes128CbcPadOptions(byte[] cipherText, byte[] iv) {
+        return new DecryptOptions(EncryptionAlgorithm.A128CBCPAD, cipherText, iv, null, null);
     }
 
     /**
      * Factory method to create an instance of {@link DecryptOptions} with the given parameters for
      * {@link EncryptionAlgorithm#A128GCM}.
      *
-     * @param ciphertext The content to be decrypted.
+     * @param cipherText The content to be decrypted.
      * @param iv Initialization vector for the decryption operation.
      * @param authenticationTag The tag to authenticate when performing decryption.
      * @return The {@link DecryptOptions}.
      */
-    public static DecryptOptions createAes128GcmOptions(byte[] ciphertext, byte[] iv, byte[] authenticationTag) {
-        return createAes128GcmOptions(ciphertext, iv, authenticationTag, null);
+    public static DecryptOptions createAes128GcmOptions(byte[] cipherText, byte[] iv, byte[] authenticationTag) {
+        return createAes128GcmOptions(cipherText, iv, authenticationTag, null);
     }
 
     /**
      * Factory method to create an instance of {@link DecryptOptions} with the given parameters for
      * {@link EncryptionAlgorithm#A128GCM}.
      *
-     * @param ciphertext The content to be decrypted.
+     * @param cipherText The content to be decrypted.
      * @param iv Initialization vector for the decryption operation.
      * @param authenticationTag The tag to authenticate when performing decryption.
      * @param additionalAuthenticatedData Additional data to authenticate when using authenticated crypto algorithms.
      * @return The {@link DecryptOptions}.
      */
-    public static DecryptOptions createAes128GcmOptions(byte[] ciphertext, byte[] iv, byte[] authenticationTag,
+    public static DecryptOptions createAes128GcmOptions(byte[] cipherText, byte[] iv, byte[] authenticationTag,
                                                         byte[] additionalAuthenticatedData) {
-        return new DecryptOptions(EncryptionAlgorithm.A128GCM, ciphertext, iv, authenticationTag,
+        return new DecryptOptions(EncryptionAlgorithm.A128GCM, cipherText, iv, authenticationTag,
             additionalAuthenticatedData);
     }
 
@@ -93,103 +93,103 @@ public class DecryptOptions {
      * Factory method to create an instance of {@link DecryptOptions} with the given parameters for
      * {@link EncryptionAlgorithm#A192CBC}.
      *
-     * @param ciphertext The content to be decrypted.
+     * @param cipherText The content to be decrypted.
      * @param iv Initialization vector for the decryption operation.
      * @return The {@link DecryptOptions}.
      */
-    public static DecryptOptions createAes192CbcOptions(byte[] ciphertext, byte[] iv) {
-        return new DecryptOptions(EncryptionAlgorithm.A192CBC, ciphertext, iv, null, null);
+    public static DecryptOptions createAes192CbcOptions(byte[] cipherText, byte[] iv) {
+        return new DecryptOptions(EncryptionAlgorithm.A192CBC, cipherText, iv, null, null);
     }
 
     /**
      * Factory method to create an instance of {@link DecryptOptions} with the given parameters for
      * {@link EncryptionAlgorithm#A192CBCPAD}.
      *
-     * @param ciphertext The content to be decrypted.
+     * @param cipherText The content to be decrypted.
      * @param iv Initialization vector for the decryption operation.
      * @return The {@link DecryptOptions}.
      */
-    public static DecryptOptions createAes192CbcPadOptions(byte[] ciphertext, byte[] iv) {
-        return new DecryptOptions(EncryptionAlgorithm.A192CBCPAD, ciphertext, iv, null, null);
+    public static DecryptOptions createAes192CbcPadOptions(byte[] cipherText, byte[] iv) {
+        return new DecryptOptions(EncryptionAlgorithm.A192CBCPAD, cipherText, iv, null, null);
     }
 
     /**
      * Factory method to create an instance of {@link DecryptOptions} with the given parameters for
      * {@link EncryptionAlgorithm#A192GCM}.
      *
-     * @param ciphertext The content to be decrypted.
+     * @param cipherText The content to be decrypted.
      * @param iv Initialization vector for the decryption operation.
      * @param authenticationTag The tag to authenticate when performing decryption.
      * @return The {@link DecryptOptions}.
      */
-    public static DecryptOptions createAes192GcmOptions(byte[] ciphertext, byte[] iv, byte[] authenticationTag) {
-        return createAes192GcmOptions(ciphertext, iv, authenticationTag, null);
+    public static DecryptOptions createAes192GcmOptions(byte[] cipherText, byte[] iv, byte[] authenticationTag) {
+        return createAes192GcmOptions(cipherText, iv, authenticationTag, null);
     }
 
     /**
      * Factory method to create an instance of {@link DecryptOptions} with the given parameters for
      * {@link EncryptionAlgorithm#A192GCM}.
      *
-     * @param ciphertext The content to be decrypted.
+     * @param cipherText The content to be decrypted.
      * @param iv Initialization vector for the decryption operation.
      * @param authenticationTag The tag to authenticate when performing decryption.
      * @param additionalAuthenticatedData Additional data to authenticate when using authenticated crypto algorithms.
      * @return The {@link DecryptOptions}.
      */
-    public static DecryptOptions createAes192GcmOptions(byte[] ciphertext, byte[] iv, byte[] authenticationTag,
+    public static DecryptOptions createAes192GcmOptions(byte[] cipherText, byte[] iv, byte[] authenticationTag,
                                                         byte[] additionalAuthenticatedData) {
-        return new DecryptOptions(EncryptionAlgorithm.A192GCM, ciphertext, iv, authenticationTag,
+        return new DecryptOptions(EncryptionAlgorithm.A192GCM, cipherText, iv, authenticationTag,
             additionalAuthenticatedData);
     }
     /**
      * Factory method to create an instance of {@link DecryptOptions} with the given parameters for
      * {@link EncryptionAlgorithm#A256CBC}.
      *
-     * @param ciphertext The content to be decrypted.
+     * @param cipherText The content to be decrypted.
      * @param iv Initialization vector for the decryption operation.
      * @return The {@link DecryptOptions}.
      */
-    public static DecryptOptions createAes256CbcOptions(byte[] ciphertext, byte[] iv) {
-        return new DecryptOptions(EncryptionAlgorithm.A256CBC, ciphertext, iv, null, null);
+    public static DecryptOptions createAes256CbcOptions(byte[] cipherText, byte[] iv) {
+        return new DecryptOptions(EncryptionAlgorithm.A256CBC, cipherText, iv, null, null);
     }
     /**
      * Factory method to create an instance of {@link DecryptOptions} with the given parameters for
      * {@link EncryptionAlgorithm#A256CBCPAD}.
      *
-     * @param ciphertext The content to be decrypted.
+     * @param cipherText The content to be decrypted.
      * @param iv Initialization vector for the decryption operation.
      * @return The {@link DecryptOptions}.
      */
-    public static DecryptOptions createAes256CbcPadOptions(byte[] ciphertext, byte[] iv) {
-        return new DecryptOptions(EncryptionAlgorithm.A256CBCPAD, ciphertext, iv, null, null);
+    public static DecryptOptions createAes256CbcPadOptions(byte[] cipherText, byte[] iv) {
+        return new DecryptOptions(EncryptionAlgorithm.A256CBCPAD, cipherText, iv, null, null);
     }
 
     /**
      * Factory method to create an instance of {@link DecryptOptions} with the given parameters for
      * {@link EncryptionAlgorithm#A256GCM}.
      *
-     * @param ciphertext The content to be decrypted.
+     * @param cipherText The content to be decrypted.
      * @param iv Initialization vector for the decryption operation.
      * @param authenticationTag The tag to authenticate when performing decryption.
      * @return The {@link DecryptOptions}.
      */
-    public static DecryptOptions createAes256GcmOptions(byte[] ciphertext, byte[] iv, byte[] authenticationTag) {
-        return createAes256GcmOptions(ciphertext, iv, authenticationTag, null);
+    public static DecryptOptions createAes256GcmOptions(byte[] cipherText, byte[] iv, byte[] authenticationTag) {
+        return createAes256GcmOptions(cipherText, iv, authenticationTag, null);
     }
 
     /**
      * Factory method to create an instance of {@link DecryptOptions} with the given parameters for
      * {@link EncryptionAlgorithm#A256GCM}.
      *
-     * @param ciphertext The content to be decrypted.
+     * @param cipherText The content to be decrypted.
      * @param iv Initialization vector for the decryption operation.
      * @param authenticationTag The tag to authenticate when performing decryption.
      * @param additionalAuthenticatedData Additional data to authenticate when using authenticated crypto algorithms.
      * @return The {@link DecryptOptions}.
      */
-    public static DecryptOptions createAes256GcmOptions(byte[] ciphertext, byte[] iv, byte[] authenticationTag,
+    public static DecryptOptions createAes256GcmOptions(byte[] cipherText, byte[] iv, byte[] authenticationTag,
                                                         byte[] additionalAuthenticatedData) {
-        return new DecryptOptions(EncryptionAlgorithm.A256GCM, ciphertext, iv, authenticationTag,
+        return new DecryptOptions(EncryptionAlgorithm.A256GCM, cipherText, iv, authenticationTag,
             additionalAuthenticatedData);
     }
 
@@ -197,18 +197,24 @@ public class DecryptOptions {
      * Creates an instance of {@link DecryptOptions} with the given parameters.
      *
      * @param algorithm The algorithm to be used for decryption.
-     * @param ciphertext The content to be decrypted.
+     * @param cipherText The content to be decrypted.
      * @param iv Initialization vector for the decryption operation.
      * @param authenticationTag The tag to authenticate when performing decryption.
      * @param additionalAuthenticatedData Additional data to authenticate when using authenticated crypto algorithms.
      */
-    DecryptOptions(EncryptionAlgorithm algorithm, byte[] ciphertext, byte[] iv, byte[] authenticationTag,
+    DecryptOptions(EncryptionAlgorithm algorithm, byte[] cipherText, byte[] iv, byte[] authenticationTag,
                    byte[] additionalAuthenticatedData) {
         Objects.requireNonNull(algorithm, "Encryption algorithm cannot be null.");
-        Objects.requireNonNull(ciphertext, "Cipher text content to be decrypted cannot be null.");
+        Objects.requireNonNull(cipherText, "Cipher text content to be decrypted cannot be null.");
+
+        if (algorithm == EncryptionAlgorithm.A128GCM || algorithm == EncryptionAlgorithm.A192GCM
+            || algorithm == EncryptionAlgorithm.A256GCM) {
+
+            Objects.requireNonNull(authenticationTag, "Authentication tag cannot be null for GCM encryption.");
+        }
 
         this.algorithm = algorithm;
-        this.ciphertext = CoreUtils.clone(ciphertext);
+        this.cipherText = CoreUtils.clone(cipherText);
         this.iv = CoreUtils.clone(iv);
         this.additionalAuthenticatedData = CoreUtils.clone(additionalAuthenticatedData);
         this.authenticationTag = CoreUtils.clone(authenticationTag);
@@ -228,8 +234,8 @@ public class DecryptOptions {
      *
      * @return The content to be decrypted.
      */
-    public byte[] getCiphertext() {
-        return CoreUtils.clone(ciphertext);
+    public byte[] getCipherText() {
+        return CoreUtils.clone(cipherText);
     }
 
     /**

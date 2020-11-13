@@ -56,7 +56,7 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
     Mono<EncryptResult> encryptAsync(EncryptOptions encryptOptions, Context context, JsonWebKey jsonWebKey) {
         Objects.requireNonNull(encryptOptions, "'encryptOptions' cannot be null.");
         Objects.requireNonNull(encryptOptions.getAlgorithm(), "Encryption algorithm cannot be null.");
-        Objects.requireNonNull(encryptOptions.getPlaintext(), "Plain text content to be encrypted cannot be null.");
+        Objects.requireNonNull(encryptOptions.getPlainText(), "Plain text content to be encrypted cannot be null.");
 
         keyPair = getKeyPair(jsonWebKey);
 
@@ -87,7 +87,7 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         try {
             transform = algo.createEncryptor(keyPair);
-            return Mono.just(new EncryptResult(transform.doFinal(encryptOptions.getPlaintext()), algorithm,
+            return Mono.just(new EncryptResult(transform.doFinal(encryptOptions.getPlainText()), algorithm,
                 jsonWebKey.getId()));
         } catch (InvalidKeyException
             | NoSuchAlgorithmException
@@ -102,7 +102,7 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
     Mono<DecryptResult> decryptAsync(DecryptOptions decryptOptions, Context context, JsonWebKey jsonWebKey) {
         Objects.requireNonNull(decryptOptions, "'decryptOptions' cannot be null.");
         Objects.requireNonNull(decryptOptions.getAlgorithm(), "Encryption algorithm cannot be null.");
-        Objects.requireNonNull(decryptOptions.getCiphertext(), "Cipher text content to be decrypted cannot be null.");
+        Objects.requireNonNull(decryptOptions.getCipherText(), "Cipher text content to be decrypted cannot be null.");
 
         keyPair = getKeyPair(jsonWebKey);
 
@@ -133,7 +133,7 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         try {
             transform = algo.createDecryptor(keyPair);
-            return Mono.just(new DecryptResult(transform.doFinal(decryptOptions.getCiphertext()), algorithm,
+            return Mono.just(new DecryptResult(transform.doFinal(decryptOptions.getCipherText()), algorithm,
                 jsonWebKey.getId()));
         } catch (InvalidKeyException
             | NoSuchAlgorithmException

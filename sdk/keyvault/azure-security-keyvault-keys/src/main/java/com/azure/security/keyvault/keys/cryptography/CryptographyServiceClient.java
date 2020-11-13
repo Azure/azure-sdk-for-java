@@ -133,7 +133,7 @@ class CryptographyServiceClient {
         byte[] authenticatedData = encryptOptions.getAdditionalAuthenticatedData();
         KeyOperationParameters parameters = new KeyOperationParameters()
             .setAlgorithm(algorithm)
-            .setValue(encryptOptions.getPlaintext())
+            .setValue(encryptOptions.getPlainText())
             .setIv(iv)
             .setAdditionalAuthenticatedData(authenticatedData);
         context = context == null ? Context.NONE : context;
@@ -158,7 +158,7 @@ class CryptographyServiceClient {
         byte[] authenticationTag = decryptOptions.getAuthenticationTag();
         KeyOperationParameters parameters = new KeyOperationParameters()
             .setAlgorithm(algorithm)
-            .setValue(decryptOptions.getCiphertext())
+            .setValue(decryptOptions.getCipherText())
             .setIv(iv)
             .setAdditionalAuthenticatedData(additionalAuthenticatedData)
             .setAuthenticationTag(authenticationTag);

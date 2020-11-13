@@ -20,7 +20,7 @@ public class EncryptOptions {
     /**
      * The content to be encrypted.
      */
-    private final byte[] plaintext;
+    private final byte[] plainText;
 
     /**
      * Initialization vector to be used in the encryption operation using a symmetric algorithm.
@@ -36,232 +36,232 @@ public class EncryptOptions {
      * Factory method to create an instance of {@link EncryptOptions} with the given parameters for
      * {@link EncryptionAlgorithm#A128CBC}.
      *
-     * @param plaintext The content to be encryption.
+     * @param plainText The content to be encryption.
      * @return The {@link EncryptOptions}.
      */
-    public static EncryptOptions createAes128CbcOptions(byte[] plaintext) {
-        return createAes128CbcOptions(plaintext, null);
+    public static EncryptOptions createAes128CbcOptions(byte[] plainText) {
+        return createAes128CbcOptions(plainText, null);
     }
 
     /**
      * Factory method to create an instance of {@link EncryptOptions} with the given parameters for
      * {@link EncryptionAlgorithm#A128CBC}.
      *
-     * @param plaintext The content to be encryption.
+     * @param plainText The content to be encryption.
      * @param iv Initialization vector for the encryption operation.
      * @return The {@link EncryptOptions}.
      */
-    public static EncryptOptions createAes128CbcOptions(byte[] plaintext, byte[] iv) {
-        return new EncryptOptions(EncryptionAlgorithm.A128CBC, plaintext, iv, null);
+    public static EncryptOptions createAes128CbcOptions(byte[] plainText, byte[] iv) {
+        return new EncryptOptions(EncryptionAlgorithm.A128CBC, plainText, iv, null);
     }
 
     /**
      * Factory method to create an instance of {@link EncryptOptions} with the given parameters for
      * {@link EncryptionAlgorithm#A128CBCPAD}.
      *
-     * @param plaintext The content to be encryption.
+     * @param plainText The content to be encryption.
      * @return The {@link EncryptOptions}.
      */
-    public static EncryptOptions createAes128CbcPadOptions(byte[] plaintext) {
-        return createAes128CbcPadOptions(plaintext, null);
+    public static EncryptOptions createAes128CbcPadOptions(byte[] plainText) {
+        return createAes128CbcPadOptions(plainText, null);
     }
 
     /**
      * Factory method to create an instance of {@link EncryptOptions} with the given parameters for
      * {@link EncryptionAlgorithm#A128CBCPAD}.
      *
-     * @param plaintext The content to be encryption.
+     * @param plainText The content to be encryption.
      * @param iv Initialization vector for the encryption operation.
      * @return The {@link EncryptOptions}.
      */
-    public static EncryptOptions createAes128CbcPadOptions(byte[] plaintext, byte[] iv) {
-        return new EncryptOptions(EncryptionAlgorithm.A128CBCPAD, plaintext, iv, null);
+    public static EncryptOptions createAes128CbcPadOptions(byte[] plainText, byte[] iv) {
+        return new EncryptOptions(EncryptionAlgorithm.A128CBCPAD, plainText, iv, null);
     }
 
     /**
      * Factory method to create an instance of {@link EncryptOptions} with the given parameters for
      * {@link EncryptionAlgorithm#A128GCM}.
      *
-     * @param plaintext The content to be encryption.
+     * @param plainText The content to be encryption.
      * @param iv Initialization vector for the encryption operation.
      * @return The {@link EncryptOptions}.
      */
-    public static EncryptOptions createAes128GcmOptions(byte[] plaintext, byte[] iv) {
-        return createAes128GcmOptions(plaintext, iv, null);
+    public static EncryptOptions createAes128GcmOptions(byte[] plainText, byte[] iv) {
+        return createAes128GcmOptions(plainText, iv, null);
     }
 
     /**
      * Factory method to create an instance of {@link EncryptOptions} with the given parameters for
      * {@link EncryptionAlgorithm#A128GCM}.
      *
-     * @param plaintext The content to be encryption.
+     * @param plainText The content to be encryption.
      * @param iv Initialization vector for the encryption operation.
      * @param additionalAuthenticatedData Additional data to authenticate when using authenticated crypto algorithms.
      * @return The {@link EncryptOptions}.
      */
-    public static EncryptOptions createAes128GcmOptions(byte[] plaintext, byte[] iv,
+    public static EncryptOptions createAes128GcmOptions(byte[] plainText, byte[] iv,
                                                         byte[] additionalAuthenticatedData) {
-        return new EncryptOptions(EncryptionAlgorithm.A128GCM, plaintext, iv, additionalAuthenticatedData);
+        return new EncryptOptions(EncryptionAlgorithm.A128GCM, plainText, iv, additionalAuthenticatedData);
     }
 
     /**
      * Factory method to create an instance of {@link EncryptOptions} with the given parameters for
      * {@link EncryptionAlgorithm#A192CBC}.
      *
-     * @param plaintext The content to be encryption.
+     * @param plainText The content to be encryption.
      * @return The {@link EncryptOptions}.
      */
-    public static EncryptOptions createAes192CbcOptions(byte[] plaintext) {
-        return createAes192CbcOptions(plaintext, null);
+    public static EncryptOptions createAes192CbcOptions(byte[] plainText) {
+        return createAes192CbcOptions(plainText, null);
     }
 
     /**
      * Factory method to create an instance of {@link EncryptOptions} with the given parameters for
      * {@link EncryptionAlgorithm#A192CBC}.
      *
-     * @param plaintext The content to be encryption.
+     * @param plainText The content to be encryption.
      * @param iv Initialization vector for the encryption operation.
      * @return The {@link EncryptOptions}.
      */
-    public static EncryptOptions createAes192CbcOptions(byte[] plaintext, byte[] iv) {
-        return new EncryptOptions(EncryptionAlgorithm.A192CBC, plaintext, iv, null);
+    public static EncryptOptions createAes192CbcOptions(byte[] plainText, byte[] iv) {
+        return new EncryptOptions(EncryptionAlgorithm.A192CBC, plainText, iv, null);
     }
 
     /**
      * Factory method to create an instance of {@link EncryptOptions} with the given parameters for
      * {@link EncryptionAlgorithm#A192CBCPAD}.
      *
-     * @param plaintext The content to be encryption.
+     * @param plainText The content to be encryption.
      * @return The {@link EncryptOptions}.
      */
-    public static EncryptOptions createAes192CbcPadOptions(byte[] plaintext) {
-        return createAes192CbcPadOptions(plaintext, null);
+    public static EncryptOptions createAes192CbcPadOptions(byte[] plainText) {
+        return createAes192CbcPadOptions(plainText, null);
     }
 
     /**
      * Factory method to create an instance of {@link EncryptOptions} with the given parameters for
      * {@link EncryptionAlgorithm#A192CBCPAD}.
      *
-     * @param plaintext The content to be encryption.
+     * @param plainText The content to be encryption.
      * @param iv Initialization vector for the encryption operation.
      * @return The {@link EncryptOptions}.
      */
-    public static EncryptOptions createAes192CbcPadOptions(byte[] plaintext, byte[] iv) {
-        return new EncryptOptions(EncryptionAlgorithm.A192CBCPAD, plaintext, iv, null);
+    public static EncryptOptions createAes192CbcPadOptions(byte[] plainText, byte[] iv) {
+        return new EncryptOptions(EncryptionAlgorithm.A192CBCPAD, plainText, iv, null);
     }
 
     /**
      * Factory method to create an instance of {@link EncryptOptions} with the given parameters for
      * {@link EncryptionAlgorithm#A192GCM}.
      *
-     * @param plaintext The content to be encryption.
+     * @param plainText The content to be encryption.
      * @param iv Initialization vector for the encryption operation.
      * @return The {@link EncryptOptions}.
      */
-    public static EncryptOptions createAes192GcmOptions(byte[] plaintext, byte[] iv) {
-        return createAes192GcmOptions(plaintext, iv, null);
+    public static EncryptOptions createAes192GcmOptions(byte[] plainText, byte[] iv) {
+        return createAes192GcmOptions(plainText, iv, null);
     }
 
     /**
      * Factory method to create an instance of {@link EncryptOptions} with the given parameters for
      * {@link EncryptionAlgorithm#A192GCM}.
      *
-     * @param plaintext The content to be encryption.
+     * @param plainText The content to be encryption.
      * @param iv Initialization vector for the encryption operation.
      * @param additionalAuthenticatedData Additional data to authenticate when using authenticated crypto algorithms.
      * @return The {@link EncryptOptions}.
      */
-    public static EncryptOptions createAes192GcmOptions(byte[] plaintext, byte[] iv,
+    public static EncryptOptions createAes192GcmOptions(byte[] plainText, byte[] iv,
                                                         byte[] additionalAuthenticatedData) {
-        return new EncryptOptions(EncryptionAlgorithm.A192GCM, plaintext, iv, additionalAuthenticatedData);
+        return new EncryptOptions(EncryptionAlgorithm.A192GCM, plainText, iv, additionalAuthenticatedData);
     }
 
     /**
      * Factory method to create an instance of {@link EncryptOptions} with the given parameters for
      * {@link EncryptionAlgorithm#A256CBC}.
      *
-     * @param plaintext The content to be encryption.
+     * @param plainText The content to be encryption.
      * @return The {@link EncryptOptions}.
      */
-    public static EncryptOptions createAes256CbcOptions(byte[] plaintext) {
-        return createAes256CbcOptions(plaintext, null);
+    public static EncryptOptions createAes256CbcOptions(byte[] plainText) {
+        return createAes256CbcOptions(plainText, null);
     }
 
     /**
      * Factory method to create an instance of {@link EncryptOptions} with the given parameters for
      * {@link EncryptionAlgorithm#A256CBC}.
      *
-     * @param plaintext The content to be encryption.
+     * @param plainText The content to be encryption.
      * @param iv Initialization vector for the encryption operation.
      * @return The {@link EncryptOptions}.
      */
-    public static EncryptOptions createAes256CbcOptions(byte[] plaintext, byte[] iv) {
-        return new EncryptOptions(EncryptionAlgorithm.A256CBC, plaintext, iv, null);
+    public static EncryptOptions createAes256CbcOptions(byte[] plainText, byte[] iv) {
+        return new EncryptOptions(EncryptionAlgorithm.A256CBC, plainText, iv, null);
     }
 
     /**
      * Factory method to create an instance of {@link EncryptOptions} with the given parameters for
      * {@link EncryptionAlgorithm#A256CBCPAD}.
      *
-     * @param plaintext The content to be encryption.
+     * @param plainText The content to be encryption.
      * @return The {@link EncryptOptions}.
      */
-    public static EncryptOptions createAes256CbcPadOptions(byte[] plaintext) {
-        return createAes256CbcPadOptions(plaintext, null);
+    public static EncryptOptions createAes256CbcPadOptions(byte[] plainText) {
+        return createAes256CbcPadOptions(plainText, null);
     }
 
     /**
      * Factory method to create an instance of {@link EncryptOptions} with the given parameters for
      * {@link EncryptionAlgorithm#A256CBCPAD}.
      *
-     * @param plaintext The content to be encryption.
+     * @param plainText The content to be encryption.
      * @param iv Initialization vector for the encryption operation.
      * @return The {@link EncryptOptions}.
      */
-    public static EncryptOptions createAes256CbcPadOptions(byte[] plaintext, byte[] iv) {
-        return new EncryptOptions(EncryptionAlgorithm.A256CBCPAD, plaintext, iv, null);
+    public static EncryptOptions createAes256CbcPadOptions(byte[] plainText, byte[] iv) {
+        return new EncryptOptions(EncryptionAlgorithm.A256CBCPAD, plainText, iv, null);
     }
 
     /**
      * Factory method to create an instance of {@link EncryptOptions} with the given parameters for
      * {@link EncryptionAlgorithm#A256GCM}.
      *
-     * @param plaintext The content to be encryption.
+     * @param plainText The content to be encryption.
      * @param iv Initialization vector for the encryption operation.
      * @return The {@link EncryptOptions}.
      */
-    public static EncryptOptions createAes256GcmOptions(byte[] plaintext, byte[] iv) {
-        return createAes256GcmOptions(plaintext, iv, null);
+    public static EncryptOptions createAes256GcmOptions(byte[] plainText, byte[] iv) {
+        return createAes256GcmOptions(plainText, iv, null);
     }
 
     /**
      * Factory method to create an instance of {@link EncryptOptions} with the given parameters for
      * {@link EncryptionAlgorithm#A256GCM}.
      *
-     * @param plaintext The content to be encryption.
+     * @param plainText The content to be encryption.
      * @param iv Initialization vector for the encryption operation.
      * @param additionalAuthenticatedData Additional data to authenticate when using authenticated crypto algorithms.
      * @return The {@link EncryptOptions}.
      */
-    public static EncryptOptions createAes256GcmOptions(byte[] plaintext, byte[] iv,
+    public static EncryptOptions createAes256GcmOptions(byte[] plainText, byte[] iv,
                                                         byte[] additionalAuthenticatedData) {
-        return new EncryptOptions(EncryptionAlgorithm.A256GCM, plaintext, iv, additionalAuthenticatedData);
+        return new EncryptOptions(EncryptionAlgorithm.A256GCM, plainText, iv, additionalAuthenticatedData);
     }
 
     /**
      * Creates an instance of {@link EncryptOptions} with the given parameters.
      *
      * @param algorithm The algorithm to be used for encryption.
-     * @param plaintext The content to be encrypted.
+     * @param plainText The content to be encrypted.
      * @param iv Initialization vector for the encryption operation.
      * @param additionalAuthenticatedData Additional data to authenticate when using authenticated crypto algorithms.
      */
-    EncryptOptions(EncryptionAlgorithm algorithm, byte[] plaintext, byte[] iv, byte[] additionalAuthenticatedData) {
+    EncryptOptions(EncryptionAlgorithm algorithm, byte[] plainText, byte[] iv, byte[] additionalAuthenticatedData) {
         Objects.requireNonNull(algorithm, "Encryption algorithm cannot be null.");
-        Objects.requireNonNull(plaintext, "Plain text content to be encrypted cannot be null.");
+        Objects.requireNonNull(plainText, "Plain text content to be encrypted cannot be null.");
 
         this.algorithm = algorithm;
-        this.plaintext = CoreUtils.clone(plaintext);
+        this.plainText = CoreUtils.clone(plainText);
         this.iv = CoreUtils.clone(iv);
         this.additionalAuthenticatedData = CoreUtils.clone(additionalAuthenticatedData);
     }
@@ -280,8 +280,8 @@ public class EncryptOptions {
      *
      * @return The content to be encrypted.
      */
-    public byte[] getPlaintext() {
-        return CoreUtils.clone(plaintext);
+    public byte[] getPlainText() {
+        return CoreUtils.clone(plainText);
     }
 
     /**

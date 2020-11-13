@@ -62,14 +62,14 @@ public class LocalCryptographyClient {
      * {@codesnippet com.azure.security.keyvault.keys.cryptography.LocalCryptographyClient.encrypt#EncryptionAlgorithm-byte}
      *
      * @param algorithm The algorithm to be used for encryption.
-     * @param plaintext The content to be encrypted.
+     * @param plainText The content to be encrypted.
      * @return The {@link EncryptResult} whose {@link EncryptResult#getCipherText() cipher text} contains the encrypted
      *     content.
      * @throws UnsupportedOperationException If the encrypt operation is not supported or configured on the key.
-     * @throws NullPointerException If {@code decryptOptions} or {@code plaintext} is {@code null}.
+     * @throws NullPointerException If {@code decryptOptions} or {@code plainText} is {@code null}.
      */
-    public EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plaintext) {
-        return client.encrypt(algorithm, plaintext).block();
+    public EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plainText) {
+        return client.encrypt(algorithm, plainText).block();
     }
 
     /**
@@ -131,13 +131,13 @@ public class LocalCryptographyClient {
      * {@codesnippet com.azure.security.keyvault.keys.cryptography.LocalCryptographyClient.decrypt#EncryptionAlgorithm-byte}
      *
      * @param algorithm The algorithm to be used for decryption.
-     * @param ciphertext The content to be decrypted.
+     * @param cipherText The content to be decrypted.
      * @return The decrypted blob.
      * @throws UnsupportedOperationException If the decrypt operation is not supported or configured on the key.
-     * @throws NullPointerException If {@code algorithm} or {@code ciphertext} is {@code null}.
+     * @throws NullPointerException If {@code algorithm} or {@code cipherText} is {@code null}.
      */
-    public DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] ciphertext) {
-        return client.decrypt(algorithm, ciphertext).block();
+    public DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] cipherText) {
+        return client.decrypt(algorithm, cipherText).block();
     }
 
     /**
