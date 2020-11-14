@@ -134,9 +134,9 @@ public class CommunicationIdentityBuilderTests {
     public void nullPipelineTest() {
         assertThrows(NullPointerException.class, () -> {
             builder
-            .connectionString(MOCK_CONNECTION_STRING)
-            .httpClient(new NoOpHttpClient())
-            .pipeline(null);
+                .connectionString(MOCK_CONNECTION_STRING)
+                .httpClient(new NoOpHttpClient())
+                .pipeline(null);
         });
     }
 
@@ -144,9 +144,9 @@ public class CommunicationIdentityBuilderTests {
     public void nullCustomPolicyTest() {
         assertThrows(NullPointerException.class, () -> {
             builder
-            .connectionString(MOCK_CONNECTION_STRING)
-            .httpClient(new NoOpHttpClient())
-            .addPolicy(null);
+                .connectionString(MOCK_CONNECTION_STRING)
+                .httpClient(new NoOpHttpClient())
+                .addPolicy(null);
         });
     }
 
@@ -154,9 +154,9 @@ public class CommunicationIdentityBuilderTests {
     public void nullConfigurationTest() {
         assertThrows(NullPointerException.class, () -> {
             builder
-            .connectionString(MOCK_CONNECTION_STRING)
-            .httpClient(new NoOpHttpClient())
-            .configuration(null);
+                .connectionString(MOCK_CONNECTION_STRING)
+                .httpClient(new NoOpHttpClient())
+                .configuration(null);
         });
     }
 
@@ -164,9 +164,9 @@ public class CommunicationIdentityBuilderTests {
     public void nullHttpLogOptionsTest() {
         assertThrows(NullPointerException.class, () -> {
             builder
-            .connectionString(MOCK_CONNECTION_STRING)
-            .httpClient(new NoOpHttpClient())
-            .httpLogOptions(null);
+                .connectionString(MOCK_CONNECTION_STRING)
+                .httpClient(new NoOpHttpClient())
+                .httpLogOptions(null);
         });
     }
 }

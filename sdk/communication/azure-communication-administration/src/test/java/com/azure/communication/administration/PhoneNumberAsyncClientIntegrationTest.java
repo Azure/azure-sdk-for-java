@@ -94,6 +94,16 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void listPhonePlanGroupsNullCountryCode(HttpClient httpClient) {
+        PagedFlux<PhonePlanGroup> pagedFlux =
+            this.getClient(httpClient).listPhonePlanGroups(null, LOCALE, true);
+
+        StepVerifier.create(pagedFlux.next())
+            .verifyError(NullPointerException.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void listPhonePlans(HttpClient httpClient) {
         PagedFlux<PhonePlan> pagedFlux =
             this.getClient(httpClient).listPhonePlans(COUNTRY_CODE, PHONE_PLAN_GROUP_ID, LOCALE);
@@ -103,6 +113,26 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
                 assertNotNull(item.getPhonePlanId());
             })
             .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void listPhonePlansNullCountryCode(HttpClient httpClient) {
+        PagedFlux<PhonePlan> pagedFlux =
+            this.getClient(httpClient).listPhonePlans(null, PHONE_PLAN_GROUP_ID, LOCALE);
+
+        StepVerifier.create(pagedFlux.next())
+            .verifyError(NullPointerException.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void listPhonePlansNullPhonePlanGroupId(HttpClient httpClient) {
+        PagedFlux<PhonePlan> pagedFlux =
+            this.getClient(httpClient).listPhonePlans(COUNTRY_CODE, null, LOCALE);
+
+        StepVerifier.create(pagedFlux.next())
+            .verifyError(NullPointerException.class);
     }
 
     @ParameterizedTest
@@ -156,6 +186,36 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getPhonePlanLocationOptionsWithResponseNullCountryCode(HttpClient httpClient) {
+        Mono<LocationOptionsResponse> mono =
+            this.getClient(httpClient).getPhonePlanLocationOptions(null, PHONE_PLAN_GROUP_ID, PHONE_PLAN_ID, LOCALE);
+
+        StepVerifier.create(mono)
+            .verifyError(NullPointerException.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getPhonePlanLocationOptionsWithResponseNullPhonePlanGroupId(HttpClient httpClient) {
+        Mono<LocationOptionsResponse> mono =
+            this.getClient(httpClient).getPhonePlanLocationOptions(COUNTRY_CODE, null, PHONE_PLAN_ID, LOCALE);
+
+        StepVerifier.create(mono)
+            .verifyError(NullPointerException.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getPhonePlanLocationOptionsWithResponseNullPhonePlanId(HttpClient httpClient) {
+        Mono<LocationOptionsResponse> mono =
+            this.getClient(httpClient).getPhonePlanLocationOptions(COUNTRY_CODE, PHONE_PLAN_GROUP_ID, null, LOCALE);
+
+        StepVerifier.create(mono)
+            .verifyError(NullPointerException.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getAllAreaCodes(HttpClient httpClient) {
         List<LocationOptionsQuery> locationOptions = new ArrayList<>();
         LocationOptionsQuery query = new LocationOptionsQuery();
@@ -205,6 +265,39 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getAllAreaCodesWithResponseNullLocationType(HttpClient httpClient) {
+        List<LocationOptionsQuery> locationOptions = new ArrayList<>();
+        Mono<Response<AreaCodes>> mono = this.getClient(httpClient).getAllAreaCodesWithResponse(
+            null, COUNTRY_CODE, PHONE_PLAN_ID, locationOptions, Context.NONE);
+
+        StepVerifier.create(mono)
+            .verifyError(NullPointerException.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getAllAreaCodesWithResponseNullCountryCode(HttpClient httpClient) {
+        List<LocationOptionsQuery> locationOptions = new ArrayList<>();
+        Mono<Response<AreaCodes>> mono = this.getClient(httpClient).getAllAreaCodesWithResponse(
+            "selection", null, PHONE_PLAN_ID, locationOptions, Context.NONE);
+
+        StepVerifier.create(mono)
+            .verifyError(NullPointerException.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getAllAreaCodesWithResponseNullPhonePlanId(HttpClient httpClient) {
+        List<LocationOptionsQuery> locationOptions = new ArrayList<>();
+        Mono<Response<AreaCodes>> mono = this.getClient(httpClient).getAllAreaCodesWithResponse(
+            "selection", COUNTRY_CODE, null, locationOptions, Context.NONE);
+
+        StepVerifier.create(mono)
+            .verifyError(NullPointerException.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void updateCapabilities(HttpClient httpClient) {
         List<Capability> capabilitiesToAdd = new ArrayList<>();
         capabilitiesToAdd.add(Capability.INBOUND_CALLING);
@@ -249,6 +342,16 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void updateCapabilitiesWithResponseNullPhoneNumberCapabilitiesUpdate(HttpClient httpClient) {
+        Mono<Response<UpdateNumberCapabilitiesResponse>> mono =
+            this.getClient(httpClient).updateCapabilitiesWithResponse(null, Context.NONE);
+
+        StepVerifier.create(mono)
+            .verifyError(NullPointerException.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getCapabilitiesUpdate(HttpClient httpClient) {
         Mono<UpdatePhoneNumberCapabilitiesResponse> mono =
             this.getClient(httpClient).getCapabilitiesUpdate(CAPABILITIES_ID);
@@ -272,6 +375,13 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
                 assertNotNull(item.getValue().getCapabilitiesUpdateId());
             })
             .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getCapabilitiesUpdateWithResponseNullCapabilitiesId(HttpClient httpClient) {
+        StepVerifier.create(this.getClient(httpClient).getCapabilitiesUpdateWithResponse(null, Context.NONE))
+            .verifyError(NullPointerException.class);
     }
 
     @ParameterizedTest
@@ -324,6 +434,16 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void createSearchWithResponseNullSearchOptions(HttpClient httpClient) {
+        Mono<Response<CreateSearchResponse>> mono =
+            this.getClient(httpClient).createSearchWithResponse(null, Context.NONE);
+
+        StepVerifier.create(mono)
+            .verifyError(NullPointerException.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getSearchById(HttpClient httpClient) {
         Mono<PhoneNumberSearch> mono = this.getClient(httpClient).getSearchById(SEARCH_ID);
 
@@ -349,6 +469,15 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getSearchByIdWithResponseNullSearchId(HttpClient httpClient) {
+        Mono<Response<PhoneNumberSearch>> mono = this.getClient(httpClient).getSearchByIdWithResponse(null, Context.NONE);
+
+        StepVerifier.create(mono)
+            .verifyError(NullPointerException.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void cancelSearch(HttpClient httpClient) {
         Mono<Void> mono = this.getClient(httpClient).cancelSearch(SEARCH_ID_TO_CANCEL);
 
@@ -365,6 +494,15 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
                 assertEquals(202, item.getStatusCode());
             })
             .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void cancelSearchWithResponseNullSearchId(HttpClient httpClient) {
+        Mono<Response<Void>> mono = this.getClient(httpClient).cancelSearchWithResponse(null, Context.NONE);
+
+        StepVerifier.create(mono)
+            .verifyError(NullPointerException.class);
     }
 
     @ParameterizedTest
@@ -399,6 +537,29 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void configureNumberWithResponseNullPhoneNumber(HttpClient httpClient) {
+        PstnConfiguration pstnConfiguration = new PstnConfiguration();
+        pstnConfiguration.setApplicationId("ApplicationId");
+        pstnConfiguration.setCallbackUrl("https://callbackurl");
+
+        Mono<Response<Void>> mono = this.getClient(httpClient).configureNumberWithResponse(null, pstnConfiguration, Context.NONE);
+
+        StepVerifier.create(mono)
+            .verifyError(NullPointerException.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void configureNumberWithResponseNullPstnConfig(HttpClient httpClient) {
+        PhoneNumber number = new PhoneNumber(PHONENUMBER_TO_CONFIGURE);
+        Mono<Response<Void>> mono = this.getClient(httpClient).configureNumberWithResponse(number, null, Context.NONE);
+
+        StepVerifier.create(mono)
+            .verifyError(NullPointerException.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getNumberConfiguration(HttpClient httpClient) {
         PhoneNumber number = new PhoneNumber(PHONENUMBER_TO_GET_CONFIG);
 
@@ -429,6 +590,16 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getNumberConfigurationWithResponseNullPhoneNumber(HttpClient httpClient) {
+        Mono<Response<NumberConfigurationResponse>> mono =
+            this.getClient(httpClient).getNumberConfigurationWithResponse(null, Context.NONE);
+
+        StepVerifier.create(mono)
+            .verifyError(NullPointerException.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void unconfigureNumber(HttpClient httpClient) {
         PhoneNumber number = new PhoneNumber(PHONENUMBER_TO_UNCONFIGURE);
 
@@ -449,6 +620,15 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
                 assertEquals(200, item.getStatusCode());
             })
             .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void unconfigureNumberWithResponseNullPhoneNumber(HttpClient httpClient) {
+        Mono<Response<Void>> mono = this.getClient(httpClient).unconfigureNumberWithResponse(null, Context.NONE);
+
+        StepVerifier.create(mono)
+            .verifyError(NullPointerException.class);
     }
 
     @ParameterizedTest
