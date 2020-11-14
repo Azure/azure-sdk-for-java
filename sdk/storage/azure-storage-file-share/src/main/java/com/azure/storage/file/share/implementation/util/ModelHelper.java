@@ -94,13 +94,15 @@ public class ModelHelper {
 
         ShareProtocols protocols = new ShareProtocols();
         for (String s : str.split(",")) {
-            switch(s) {
+            switch (s) {
                 case Constants.HeaderConstants.SMB_PROTOCOL:
                     protocols.setSmbEnabled(true);
                     break;
                 case Constants.HeaderConstants.NFS_PROTOCOL:
                     protocols.setNfsEnabled(true);
                     break;
+                default:
+                    // Ignore unknown options
             }
         }
         return protocols;
