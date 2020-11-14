@@ -3,6 +3,7 @@
 
 package com.azure.spring.autoconfigure.aad;
 
+import com.azure.spring.aad.implementation.AuthorizationProperties;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +16,9 @@ import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -32,6 +35,10 @@ public class AADAuthenticationProperties {
     private static final long DEFAULT_JWK_SET_CACHE_LIFESPAN = TimeUnit.MINUTES.toMillis(5);
     private static final String GROUP_RELATIONSHIP_DIRECT = "direct";
     private static final String GROUP_RELATIONSHIP_TRANSITIVE = "transitive";
+
+    private String uri;
+
+    private Map<String, AuthorizationProperties> authorization = new HashMap<>();
 
     /**
      * Default UserGroup configuration.
@@ -64,8 +71,10 @@ public class AADAuthenticationProperties {
     /**
      * Optional. scope doc:
      * https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-permissions-and-consent#scopes-and-permissions
+     * @deprecated Please use "azure.activedirectory.authorization.client-registration-id.scope" instead.
      */
-    private List<String> scope = Arrays.asList("openid", "https://graph.microsoft.com/user.read", "profile");
+    @Deprecated
+    private List<String> scope = Arrays.asList("openid", "profile", "https://graph.microsoft.com/user.read");
 
     /**
      * App ID URI which might be used in the <code>"aud"</code> claim of an <code>id_token</code>.
@@ -260,6 +269,22 @@ public class AADAuthenticationProperties {
         }
     }
 
+    public void setUri(String uri) {
+        this.uri = uri;
+    }
+
+    public String getUri() {
+        return uri;
+    }
+
+    public void setAuthorization(Map<String, AuthorizationProperties> authorization) {
+        this.authorization = authorization;
+    }
+
+    public Map<String, AuthorizationProperties> getAuthorization() {
+        return authorization;
+    }
+
     public UserGroupProperties getUserGroup() {
         return userGroup;
     }
@@ -300,10 +325,20 @@ public class AADAuthenticationProperties {
         this.redirectUriTemplate = redirectUriTemplate;
     }
 
+    /**
+     * @param scope scope
+     * @deprecated Please use "azure.activedirectory.authorization.client-registration-id.scope" instead.
+     */
+    @Deprecated
     public void setScope(List<String> scope) {
         this.scope = scope;
     }
 
+    /**
+     * @return scope
+     * @deprecated Please use "azure.activedirectory.authorization.client-registration-id.scope" instead.
+     */
+    @Deprecated
     public List<String> getScope() {
         return scope;
     }

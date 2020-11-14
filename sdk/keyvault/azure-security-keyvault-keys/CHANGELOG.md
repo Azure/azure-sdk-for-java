@@ -1,7 +1,10 @@
 # Release History
 
-## 4.3.0-beta.3 (Unreleased)
+## 4.3.0-beta.3 (2020-11-12)
 
+### New Features
+- Added support for encrypting and decrypting AES-GCM and AES-CBC keys.
+- Added `KeyType.OCT_HSM` to support "oct-HSM" key operations.
 
 ## 4.3.0-beta.2 (2020-10-09)
 

@@ -8,6 +8,7 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -33,7 +34,7 @@ public final class AmqpMessageBody {
     private final ClientLogger logger = new ClientLogger(AmqpMessageBody.class);
     private AmqpMessageBodyType bodyType;
 
-    private byte[] data;
+    private List<byte[]> data;
 
     AmqpMessageBody() {
         // package constructor so no one can create instance of this except classes im this package.
@@ -52,7 +53,7 @@ public final class AmqpMessageBody {
         Objects.requireNonNull(data, "'data' cannot be null.");
         AmqpMessageBody body = new AmqpMessageBody();
         body.bodyType = AmqpMessageBodyType.DATA;
-        body.data = data;
+        body.data = Collections.singletonList(Arrays.copyOf(data, data.length));
         return body;
     }
 
@@ -86,7 +87,7 @@ public final class AmqpMessageBody {
                 + "message which is of type %s.", getBodyType().toString())));
         }
 
-        return new IterableStream<>(Collections.singletonList(Arrays.copyOf(data, data.length)));
+        return new IterableStream<>(data);
     }
 
     /**
@@ -109,6 +110,6 @@ public final class AmqpMessageBody {
                 + "message which is of type %s.", getBodyType().toString())));
         }
 
-        return Arrays.copyOf(data, data.length);
+        return data.get(0);
     }
 }

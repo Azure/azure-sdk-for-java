@@ -19,6 +19,10 @@ and `FormTableCell` will also be populated with any selection marks found on the
 ### Breaking changes
 - Defaults to the latest supported API version, which currently is `2.1-preview.1`.
 
+## 3.0.3 (2020-11-10)
+### Dependency updates
+- Update dependency version, `azure-core`, `azure-core-http-netty` and `azure-identity`.
+
 ## 3.0.2 (2020-10-06)
 ### Dependency updates
 - Update dependency version, `azure-core` to 1.9.0 and `azure-core-http-netty` to 1.6.2.
