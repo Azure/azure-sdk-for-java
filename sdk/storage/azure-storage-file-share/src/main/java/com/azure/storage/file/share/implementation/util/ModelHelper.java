@@ -3,10 +3,11 @@
 
 package com.azure.storage.file.share.implementation.util;
 
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.file.share.implementation.models.DeleteSnapshotsOptionType;
 import com.azure.storage.file.share.implementation.models.ShareItemInternal;
 import com.azure.storage.file.share.implementation.models.SharePropertiesInternal;
-import com.azure.storage.file.share.models.ShareEnabledProtocols;
+import com.azure.storage.file.share.models.ShareProtocols;
 import com.azure.storage.file.share.models.ShareItem;
 import com.azure.storage.file.share.models.ShareProperties;
 import com.azure.storage.file.share.models.ShareSnapshotsDeleteOptionType;
@@ -73,10 +74,37 @@ public class ModelHelper {
         properties.setLeaseStatus(sharePropertiesInternal.getLeaseStatus());
         properties.setLeaseState(sharePropertiesInternal.getLeaseState());
         properties.setLeaseDuration(sharePropertiesInternal.getLeaseDuration());
-        properties.setEnabledProtocols(ShareEnabledProtocols.parse(sharePropertiesInternal.getEnabledProtocols()));
+        properties.setProtocols(parseShareProtocols(sharePropertiesInternal.getEnabledProtocols()));
         properties.setRootSquash(sharePropertiesInternal.getRootSquash());
         properties.setMetadata(sharePropertiesInternal.getMetadata());
 
         return properties;
+    }
+
+    /**
+     * Parses a {@code String} into a {@code ShareProtocols}. Unrecognized protocols will be ignored.
+     *
+     * @param str The string to parse.
+     * @return A {@code ShareProtocols} represented by the string.
+     */
+    public static ShareProtocols parseShareProtocols(String str) {
+        if (str == null) {
+            return null;
+        }
+
+        ShareProtocols protocols = new ShareProtocols();
+        for (String s : str.split(",")) {
+            switch (s) {
+                case Constants.HeaderConstants.SMB_PROTOCOL:
+                    protocols.setSmbEnabled(true);
+                    break;
+                case Constants.HeaderConstants.NFS_PROTOCOL:
+                    protocols.setNfsEnabled(true);
+                    break;
+                default:
+                    // Ignore unknown options
+            }
+        }
+        return protocols;
     }
 }

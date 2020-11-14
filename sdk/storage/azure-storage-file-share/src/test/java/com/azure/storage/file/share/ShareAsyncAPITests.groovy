@@ -6,8 +6,9 @@ package com.azure.storage.file.share
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
+import com.azure.storage.file.share.implementation.util.ModelHelper
 import com.azure.storage.file.share.models.NtfsFileAttributes
-import com.azure.storage.file.share.models.ShareEnabledProtocols
+import com.azure.storage.file.share.models.ShareProtocols
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareFileHttpHeaders
 import com.azure.storage.file.share.models.ShareRequestConditions
@@ -196,10 +197,10 @@ class ShareAsyncAPITests extends APISpec {
     @Unroll
     def "Get properties premium"() {
         given:
-        ShareEnabledProtocols enabledProtocol = ShareEnabledProtocols.parse(protocol)
+        ShareProtocols enabledProtocol = ModelHelper.parseShareProtocols(protocol)
 
         def premiumShare = premiumFileServiceAsyncClient.createShareWithResponse(generateShareName(),
-            new ShareCreateOptions().setMetadata(testMetadata).setEnabledProtocol(enabledProtocol)
+            new ShareCreateOptions().setMetadata(testMetadata).setProtocols(enabledProtocol)
             .setRootSquash(rootSquash), null).block().getValue()
         when:
         def getPropertiesVerifier = StepVerifier.create(premiumShare.getPropertiesWithResponse())
@@ -212,7 +213,7 @@ class ShareAsyncAPITests extends APISpec {
             assert it.getValue().getProvisionedIngressMBps()
             assert it.getValue().getProvisionedEgressMBps()
             assert it.getValue().getNextAllowedQuotaDowngradeTime()
-            assert it.getValue().getEnabledProtocols().toString() == enabledProtocol.toString()
+            assert it.getValue().getProtocols().toString() == enabledProtocol.toString()
             assert it.getValue().getRootSquash() == rootSquash
         }.verifyComplete()
 
@@ -228,7 +229,7 @@ class ShareAsyncAPITests extends APISpec {
     def "Set premium properties"() {
         setup:
         def premiumShareClient = premiumFileServiceAsyncClient.createShareWithResponse(generateShareName(),
-            new ShareCreateOptions().setEnabledProtocol(new ShareEnabledProtocols().setNfs(true)), null)
+            new ShareCreateOptions().setProtocols(new ShareProtocols().setNfsEnabled(true)), null)
             .block().getValue()
 
         when:

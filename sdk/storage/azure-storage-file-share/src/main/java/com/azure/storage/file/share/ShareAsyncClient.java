@@ -27,7 +27,6 @@ import com.azure.storage.file.share.implementation.models.SharesGetPropertiesRes
 import com.azure.storage.file.share.implementation.models.SharesGetStatisticsResponse;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
-import com.azure.storage.file.share.models.ShareEnabledProtocols;
 import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareInfo;
@@ -304,7 +303,7 @@ public class ShareAsyncClient {
     Mono<Response<ShareInfo>> createWithResponse(ShareCreateOptions options, Context context) {
         context = context == null ? Context.NONE : context;
         options = options == null ? new ShareCreateOptions() : options;
-        String enabledProtocol = options.getEnabledProtocol() == null ? null : options.getEnabledProtocol().toString();
+        String enabledProtocol = options.getProtocols() == null ? null : options.getProtocols().toString();
         enabledProtocol = "".equals(enabledProtocol) ? null : enabledProtocol;
         return azureFileStorageClient.shares()
             .createWithRestResponseAsync(shareName, null, options.getMetadata(), options.getQuotaInGb(),
@@ -1492,7 +1491,7 @@ public class ShareAsyncClient {
             .setAccessTier(headers.getAccessTier())
             .setAccessTierChangeTime(headers.getAccessTierChangeTime())
             .setAccessTierTransitionState(headers.getAccessTierTransitionState())
-            .setEnabledProtocols(ShareEnabledProtocols.parse(headers.getEnabledProtocols()))
+            .setProtocols(ModelHelper.parseShareProtocols(headers.getEnabledProtocols()))
             .setRootSquash(headers.getRootSquash());
 
         return new SimpleResponse<>(response, shareProperties);

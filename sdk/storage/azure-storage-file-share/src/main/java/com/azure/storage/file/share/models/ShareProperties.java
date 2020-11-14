@@ -112,7 +112,7 @@ public final class ShareProperties {
      * The enabledProtocols property.
      */
     @JsonProperty(value = "EnabledProtocols")
-    private ShareEnabledProtocols enabledProtocols;
+    private ShareProtocols protocols;
 
     /*
      * Possible values include: 'NoRootSquash', 'RootSquash', 'AllSquash'
@@ -479,18 +479,18 @@ public final class ShareProperties {
      *
      * @return the enabledProtocols value.
      */
-    public ShareEnabledProtocols getEnabledProtocols() {
-        return this.enabledProtocols;
+    public ShareProtocols getProtocols() {
+        return this.protocols;
     }
 
     /**
      * Set the enabledProtocols property: The enabledProtocols property.
      *
-     * @param enabledProtocols the enabledProtocols value to set.
+     * @param protocols the enabledProtocols value to set.
      * @return the ShareProperties object itself.
      */
-    public ShareProperties setEnabledProtocols(ShareEnabledProtocols enabledProtocols) {
-        this.enabledProtocols = enabledProtocols;
+    public ShareProperties setProtocols(ShareProtocols protocols) {
+        this.protocols = protocols;
         return this;
     }
 
