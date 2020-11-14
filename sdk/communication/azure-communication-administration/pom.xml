@@ -120,7 +120,7 @@
         <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
         <configuration>
           <properties>
-            <jacoco.min.linecoverage>0.75</jacoco.min.linecoverage>
+            <jacoco.min.linecoverage>0.50</jacoco.min.linecoverage>
           </properties>
         </configuration>
       </plugin>

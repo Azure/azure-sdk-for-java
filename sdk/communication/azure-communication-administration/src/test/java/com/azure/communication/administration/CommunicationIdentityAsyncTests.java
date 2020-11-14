@@ -286,11 +286,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         asyncClient = getCommunicationIdentityClient(httpClient).buildAsyncClient();
 
         // Action & Assert
-        StepVerifier.create(
-            asyncClient.createUser()
-                .flatMap(communicationUser -> {
-                    return asyncClient.issueToken(communicationUser, null);
-                }))
+        StepVerifier.create(asyncClient.issueToken(new CommunicationUser("testUser"), null))
             .verifyError(NullPointerException.class);
     }
 
