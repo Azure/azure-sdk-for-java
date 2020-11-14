@@ -35,6 +35,12 @@ parameters:
       JavaTestVersion: '1.11'
       DisplayName: 'Windows - Java 11'
       AZURE_TEST_HTTP_CLIENTS: okhttp
+    Linux From Source - Java 11:
+      OSVmImage: 'ubuntu-18.04'
+      JavaTestVersion: '1.11'
+      RunTitle: 'From Source: Linux on Java 1.11'
+      AZURE_TEST_HTTP_CLIENTS: netty
+      TestFromSource: true
   PreRunSteps: []
   PostRunSteps: []
   TestName: LiveTest
