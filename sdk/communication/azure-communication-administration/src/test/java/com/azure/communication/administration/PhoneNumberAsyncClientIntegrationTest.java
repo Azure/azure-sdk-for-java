@@ -624,6 +624,16 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getReleaseByIdWithResponseNullReleaseId(HttpClient httpClient) {
+        PhoneNumber number = new PhoneNumber(PHONENUMBER_TO_UNCONFIGURE);
+        Mono<Response<PhoneNumberRelease>> mono = this.getClient(httpClient).getReleaseByIdWithResponse(null, Context.NONE);
+
+        StepVerifier.create(mono)
+            .verifyError(NullPointerException.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void unconfigureNumberWithResponseNullPhoneNumber(HttpClient httpClient) {
         Mono<Response<Void>> mono = this.getClient(httpClient).unconfigureNumberWithResponse(null, Context.NONE);
 
