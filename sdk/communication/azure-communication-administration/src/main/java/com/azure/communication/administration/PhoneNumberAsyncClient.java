@@ -615,7 +615,7 @@ public final class PhoneNumberAsyncClient {
 
     Mono<Response<PhoneNumberReservation>> getReservationByIdWithResponse(String reservationId, Context context) {
         try {
-            Objects.requireNonNull(searchId, "'searchId' cannot be null.");
+            Objects.requireNonNull(reservationId, "'reservationId' cannot be null.");
             if (context == null) {
                 return phoneNumberAdministrations.getSearchByIdWithResponseAsync(reservationId);
             } else {
