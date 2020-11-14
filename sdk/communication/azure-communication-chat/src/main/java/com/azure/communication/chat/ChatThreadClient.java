@@ -19,7 +19,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 /**

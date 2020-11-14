@@ -191,6 +191,36 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void canAddSingleParticipantAsync(HttpClient httpClient) throws InterruptedException {
+        // Arrange
+        setupTest(httpClient);
+        CommunicationUser participant = communicationClient.createUser();
+
+        // Action & Assert
+        StepVerifier.create(chatThreadClient.addParticipant(new ChatParticipant().setUser(participant)))
+            .assertNext(noResp -> {
+                PagedIterable<ChatParticipant> participantsResponse = new PagedIterable<>(chatThreadClient.listParticipants());
+                assertTrue(participantsResponse.stream().anyMatch(p -> p.getUser().getId().equals(participant.getId())));
+            });
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void canAddSingleParticipantWithResponseAsync(HttpClient httpClient) throws InterruptedException {
+        // Arrange
+        setupTest(httpClient);
+        CommunicationUser participant = communicationClient.createUser();
+
+        // Action & Assert
+        StepVerifier.create(chatThreadClient.addParticipantWithResponse(new ChatParticipant().setUser(participant)))
+            .assertNext(noResp -> {
+                PagedIterable<ChatParticipant> participantsResponse = new PagedIterable<>(chatThreadClient.listParticipants());
+                assertTrue(participantsResponse.stream().anyMatch(p -> p.getUser().getId().equals(participant.getId())));
+            });
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void canSendThenGetMessage(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient);
