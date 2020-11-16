@@ -11,8 +11,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,22 +20,22 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtTimestampValidator;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.util.StringUtils;
 
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties(AADAuthenticationProperties.class)
 @ConditionalOnClass(name = {"org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken"})
-@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
-@ConditionalOnProperty(prefix = "azure.activedirectory", value = {"client-id", "client-secret", "tenant-id"})
 public class AzureResourceServerAutoConfiguration {
 
     @Autowired
     private AADAuthenticationProperties aadAuthenticationProperties;
 
     @Bean
-    @ConditionalOnProperty(prefix = "azure.activedirectory.resource", value = {"client-id", "tenant-id",
-        "app-id-uri"})
     @ConditionalOnMissingBean(JwtDecoder.class)
     JwtDecoder jwtDecoderByJwkKeySetUri() {
+        if (StringUtils.isEmpty(aadAuthenticationProperties.getTenantId())) {
+            aadAuthenticationProperties.setTenantId("common");
+        }
         IdentityEndpoints endpoints = new IdentityEndpoints(aadAuthenticationProperties.getUri());
         NimbusJwtDecoder nimbusJwtDecoder = NimbusJwtDecoder
             .withJwkSetUri(endpoints.jwkSetEndpoint(aadAuthenticationProperties.getTenantId())).build();
@@ -50,13 +48,16 @@ public class AzureResourceServerAutoConfiguration {
 
     private List<OAuth2TokenValidator<Jwt>> createDefaultValidator() {
         List<OAuth2TokenValidator<Jwt>> validators = new ArrayList<>();
-        List<String> validAudiences = new ArrayList<>();
-        validAudiences.add(aadAuthenticationProperties.getClientId());
-        validAudiences.add(aadAuthenticationProperties.getAppIdUri());
-        validators.add(new AzureJwtIssuerValidator(aadAuthenticationProperties.getTenantId(),
-            aadAuthenticationProperties.getAllowedTenantIds()));
-        validators.add(new AzureJwtAudienceValidator(validAudiences));
+        if (!StringUtils.isEmpty(aadAuthenticationProperties.getClientId()) || !StringUtils
+            .isEmpty(aadAuthenticationProperties.getAppIdUri())) {
+            List<String> validAudiences = new ArrayList<>();
+            validAudiences.add(aadAuthenticationProperties.getClientId());
+            validAudiences.add(aadAuthenticationProperties.getAppIdUri());
+            validators.add(new AzureJwtAudienceValidator(validAudiences));
+        }
         validators.add(new AzureJwtTenantValidator(aadAuthenticationProperties.getTenantId(),
+            aadAuthenticationProperties.getAllowedTenantIds()));
+        validators.add(new AzureJwtIssuerValidator(aadAuthenticationProperties.getTenantId(),
             aadAuthenticationProperties.getAllowedTenantIds()));
         validators.add(new JwtTimestampValidator());
         return validators;

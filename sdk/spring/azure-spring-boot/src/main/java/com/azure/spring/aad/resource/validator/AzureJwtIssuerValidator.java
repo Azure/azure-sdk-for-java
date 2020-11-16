@@ -10,27 +10,28 @@ import org.springframework.security.oauth2.core.OAuth2TokenValidatorResult;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtClaimValidator;
 import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 
 public class AzureJwtIssuerValidator implements OAuth2TokenValidator<Jwt> {
 
     private static final String LOGIN_MICROSOFT_ONLINE_ISSUER = "https://login.microsoftonline.com/";
     private static final String STS_WINDOWS_ISSUER = "https://sts.windows.net/";
     private static final String STS_CHINA_CLOUD_API_ISSUER = "https://sts.chinacloudapi.cn/";
+    private static final String COMMON = "common";
     private final JwtClaimValidator<String> validator;
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public AzureJwtIssuerValidator(String tenantId, Set<String> allowedTenantIds) {
         Assert.notNull(tenantId, "tenantId cannot be null");
         Assert.notNull(allowedTenantIds, "allowedTenantIds cannot be null");
-        if (allowedTenantIds.isEmpty()) {
-            if (StringUtils.isEmpty(tenantId)) {
+        if (tenantId.equals(COMMON)) {
+            if (allowedTenantIds.isEmpty()) {
                 this.validator = new JwtClaimValidator(AADTokenClaim.ISS, iss -> true);
             } else {
-                List<String> issuers = assembleIssuer(tenantId);
-                this.validator = new JwtClaimValidator(AADTokenClaim.ISS, issuers::contains);
+                this.validator = new JwtClaimValidator(AADTokenClaim.ISS, validIssuer(allowedTenantIds));
             }
         } else {
-            this.validator = new JwtClaimValidator(AADTokenClaim.ISS, validIssuer(allowedTenantIds));
+            List<String> issuers = assembleIssuer(tenantId);
+            this.validator = new JwtClaimValidator(AADTokenClaim.ISS, issuers::contains);
         }
     }
 

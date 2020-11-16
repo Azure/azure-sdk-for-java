@@ -10,9 +10,9 @@ import org.springframework.util.Assert;
 
 public class AzureJwtAudienceValidator implements OAuth2TokenValidator<Jwt> {
 
-
     private final JwtClaimValidator<List<String>> validator;
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public AzureJwtAudienceValidator(List<String> audiences) {
         Assert.notNull(audiences, "audiences cannot be null");
         this.validator = new JwtClaimValidator(AADTokenClaim.AUD, aud -> audiences.containsAll((List<String>) aud));
