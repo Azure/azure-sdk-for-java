@@ -160,18 +160,14 @@ String chatThreadId = "Id";
 ChatThreadClient chatThreadClient = chatClient.getChatThreadClient(chatThreadId);
 ```
 
-#### Update a chat thread
+#### Update a chat thread topic
 
-Use `updateChatThread` method to update a thread's properties
-`updateChatThreadOptions` is used to describe the property change of the chat thread.
+Use `updateTopic` method to update a thread's topic
+`topic` is used to hold the new topic of the thread.
 
-- Use `topic` to give chat thread a new topic;
-
-<!-- embedme ./src/samples/java/com/azure/communication/chat/ReadmeSamples.java#L131-L133 -->
+<!-- embedme ./src/samples/java/com/azure/communication/chat/ReadmeSamples.java#L131-L131 -->
 ```Java
-UpdateChatThreadOptions updateChatThreadOptions = new UpdateChatThreadOptions()
-    .setTopic("New Topic");
-chatThreadClient.updateChatThread(updateChatThreadOptions);
+chatThreadClient.updateTopic("New Topic");
 ```
 
 ### Chat Message Operations

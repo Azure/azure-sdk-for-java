@@ -76,13 +76,13 @@ public class ChatThreadClientTest extends ChatClientTestBase {
     public void canUpdateThread(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient);
-        UpdateChatThreadOptions threadRequest = ChatOptionsProvider.updateThreadOptions();
+        String newTopic = "Update Test";
 
         // Action & Assert
-        chatThreadClient.updateChatThread(threadRequest);
+        chatThreadClient.updateTopic(newTopic);
 
         ChatThread chatThread = client.getChatThread(threadId);
-        assertEquals(chatThread.getTopic(), threadRequest.getTopic());
+        assertEquals(chatThread.getTopic(), newTopic);
     }
 
     @ParameterizedTest
@@ -90,13 +90,13 @@ public class ChatThreadClientTest extends ChatClientTestBase {
     public void canUpdateThreadWithResponse(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient);
-        UpdateChatThreadOptions threadRequest = ChatOptionsProvider.updateThreadOptions();
+        String newTopic = "Update Test";
 
          // Action & Assert
-        chatThreadClient.updateChatThreadWithResponse(threadRequest, Context.NONE);
+        chatThreadClient.updateTopicWithResponse(newTopic, Context.NONE);
 
         ChatThread chatThread = client.getChatThread(threadId);
-        assertEquals(chatThread.getTopic(), threadRequest.getTopic());
+        assertEquals(chatThread.getTopic(), newTopic);
     }
 
     @ParameterizedTest
