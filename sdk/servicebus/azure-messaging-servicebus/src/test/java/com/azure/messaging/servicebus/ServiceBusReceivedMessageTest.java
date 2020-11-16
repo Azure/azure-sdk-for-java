@@ -102,7 +102,6 @@ public class ServiceBusReceivedMessageTest {
         originalMessage.setContentType("type");
         originalMessage.setCorrelationId("cid");
         originalMessage.setReplyTo("rto");
-        originalMessage.setViaPartitionKey("something");
         originalMessage.setTimeToLive(Duration.ofSeconds(10));
         originalMessage.setReplyToSessionId("rsessionid");
         originalMessage.setSubject("subject");
@@ -132,7 +131,6 @@ public class ServiceBusReceivedMessageTest {
         assertEquals(originalMessage.getContentType(), actual.getContentType());
         assertEquals(originalMessage.getCorrelationId(), actual.getCorrelationId());
         assertEquals(originalMessage.getReplyTo(), actual.getReplyTo());
-        assertEquals(originalMessage.getViaPartitionKey(), actual.getViaPartitionKey());
         assertEquals(originalMessage.getTimeToLive().toMillis(), actual.getTimeToLive().toMillis());
         assertEquals(originalMessage.getLabel(), actual.getSubject());
         assertEquals(originalMessage.getReplyToSessionId(), actual.getReplyToSessionId());

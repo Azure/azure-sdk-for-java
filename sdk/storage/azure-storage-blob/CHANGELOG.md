@@ -1,5 +1,8 @@
 # Release History
 
+## 12.10.0-beta.1 (Unreleased)
+
+
 ## 12.9.0 (2020-11-11)
 - Fixed a bug where interspersed element types returned by page listing would deserialize incorrectly.
 - Fixed a bug where BlobInputStream would not eTag lock on the blob, resulting in undesirable behavior if the blob was modified in the middle of reading. 
