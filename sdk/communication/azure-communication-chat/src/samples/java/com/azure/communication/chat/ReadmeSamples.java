@@ -13,7 +13,7 @@ import com.azure.communication.chat.models.ReadReceipt;
 import com.azure.communication.chat.models.SendChatMessageOptions;
 import com.azure.communication.chat.models.SendChatMessageResult;
 import com.azure.communication.chat.models.UpdateChatMessageOptions;
-import com.azure.communication.chat.models.UpdateChatThreadOptions;
+
 import com.azure.communication.common.CommunicationUser;
 import com.azure.communication.common.CommunicationUserCredential;
 import com.azure.core.http.HttpClient;
@@ -123,15 +123,15 @@ public class ReadmeSamples {
     }
 
     /**
-     * Sample code for updating a chat thread using the sync chat thread client.
+     * Sample code for updating a chat thread topic using the sync chat thread client.
      */
-    public void updateChatThread() {
+    public void updateTopic() {
         ChatThreadClient chatThreadClient = getChatThreadClient();
 
-        UpdateChatThreadOptions updateChatThreadOptions = new UpdateChatThreadOptions()
-            .setTopic("New Topic");
-        chatThreadClient.updateChatThread(updateChatThreadOptions);
+        chatThreadClient.updateTopic("New Topic");
     }
+
+
 
     /**
      * Sample code for sending a chat message using the sync chat thread client.

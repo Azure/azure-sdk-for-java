@@ -72,23 +72,23 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         chatThreadClient = client.createChatThread(threadRequest).block();
         threadId = chatThreadClient.getChatThreadId();
     }
-    
+
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void canUpdateThread(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient);
-        UpdateChatThreadOptions threadRequest = ChatOptionsProvider.updateThreadOptions();
+        String newTopic = "Update Test";
 
         // Act & Assert
         StepVerifier.create(
-                chatThreadClient.updateChatThread(threadRequest)
+                chatThreadClient.updateTopic(newTopic)
                     .flatMap(noResp -> {
                         return client.getChatThread(threadId);
                     })
             )
             .assertNext(chatThread -> {
-                assertEquals(chatThread.getTopic(), threadRequest.getTopic());
+                assertEquals(chatThread.getTopic(), newTopic);
             });
     }
 
@@ -97,19 +97,19 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
     public void canUpdateThreadWithResponse(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient);
-        UpdateChatThreadOptions threadRequest = ChatOptionsProvider.updateThreadOptions();
+        String newTopic = "Update Test";
 
         // Act & Assert
         StepVerifier.create(
-                chatThreadClient.updateChatThreadWithResponse(threadRequest)
+                chatThreadClient.updateTopicWithResponse(newTopic)
                     .flatMap(updateThreadResponse -> {
                         assertEquals(updateThreadResponse.getStatusCode(), 200);
                         return client.getChatThread(threadId);
                     })
-                
-            )       
+
+            )
             .assertNext(chatThread -> {
-                assertEquals(chatThread.getTopic(), threadRequest.getTopic());
+                assertEquals(chatThread.getTopic(), newTopic);
             })
             .verifyComplete();
     }
@@ -136,7 +136,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
                     assertEquals(resp.getStatusCode(), 200);
                     resp.getItems().forEach(item -> returnedMembers.add(item));
                 });
-        
+
                 for (ChatThreadMember member: options.getMembers()) {
                     assertTrue(checkMembersListContainsMemberId(returnedMembers, member.getUser().getId()));
                 }
@@ -172,11 +172,11 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
                     assertEquals(resp.getStatusCode(), 200);
                     resp.getItems().forEach(item -> returnedMembers.add(item));
                 });
-        
+
                 for (ChatThreadMember member: options.getMembers()) {
                     assertTrue(checkMembersListContainsMemberId(returnedMembers, member.getUser().getId()));
                 }
-        
+
                 assertTrue(returnedMembers.size() == 4);
             });
 
@@ -195,7 +195,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         // Arrange
         setupTest(httpClient);
         SendChatMessageOptions messageRequest = ChatOptionsProvider.sendMessageOptions();
-        
+
         // Action & Assert
         StepVerifier
             .create(chatThreadClient.sendMessage(messageRequest)
@@ -351,7 +351,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
                 });
 
                 assertTrue(returnedMessages.size() == 2);
-            });    
+            });
     }
 
     @ParameterizedTest
@@ -381,7 +381,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
                         }
                     });
                 });
-        
+
                 assertTrue(returnedMessages.size() == 2);
             });
     }
@@ -473,6 +473,6 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
                 assertTrue(returnedReadReceipts.size() > 0);
                 checkReadReceiptListContainsMessageId(returnedReadReceipts, messageResponseRef.get().getId());
             });
-            
+
     }
 }
