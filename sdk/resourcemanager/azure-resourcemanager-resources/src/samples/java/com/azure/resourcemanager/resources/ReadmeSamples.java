@@ -1,4 +1,3 @@
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -24,6 +23,7 @@ public class ReadmeSamples {
             .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
             .build();
         ResourceManager manager = ResourceManager
-            .authenticate(credential, profile);
+            .authenticate(credential, profile)
+            .withDefaultSubscription();
     }
 }
