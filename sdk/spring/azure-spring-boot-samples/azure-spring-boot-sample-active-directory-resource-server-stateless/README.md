@@ -91,7 +91,7 @@ First, we need to ensure that this [instruction] is completed before run.
 ```shell
 # Under sdk/spring project root directory
 mvn clean install -DskipTests
-cd azure-spring-boot-samples/azure-spring-boot-sample-active-directory-stateless
+cd azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-stateless
 mvn spring-boot:run
 ```
 

@@ -41,7 +41,7 @@ From your command line:
 ```command line
 git clone https://github.com/Azure/azure-sdk-for-java.git
 ```
-or download and extract the repository .zip file, and navigate to `azure-spring-boot-sample-active-directory` from the list of samples.
+or download and extract the repository .zip file, and navigate to `azure-spring-boot-sample-active-directory-resource-server` from the list of samples.
 
 ---
 ### Step 2:  Register the sample with your Azure Active Directory tenant
@@ -148,7 +148,7 @@ First, we need to ensure that this [instruction] is completed before run.
      ```
      # Under sdk/spring project root directory
      mvn clean install
-     cd azure-spring-boot-samples/azure-spring-boot-sample-active-directory
+     cd azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server
      mvn spring-boot:run
      ```
 
