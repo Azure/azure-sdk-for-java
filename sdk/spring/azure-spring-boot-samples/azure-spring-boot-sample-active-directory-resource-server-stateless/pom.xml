@@ -11,7 +11,7 @@
   </parent>
 
   <groupId>com.azure.spring</groupId>
-  <artifactId>azure-spring-boot-sample-active-directory-stateless</artifactId>
+  <artifactId>azure-spring-boot-sample-active-directory-resource-server-stateless</artifactId>
   <version>1.0.0</version>
 
   <name>Azure Spring Boot Starter Sample - Azure AD Stateless Spring Security Integration</name>
