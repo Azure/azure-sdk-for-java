@@ -96,7 +96,7 @@ public class AADOAuth2LoginConfigSample extends WebSecurityConfigurerAdapter {
 
 ### Authenticate in frontend
 
-Please refer to [azure-active-directory-spring-boot-sample](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory/README.md) for how to integrate Spring Security and Azure AD for authentication and authorization in a Single Page Application (SPA) scenario.
+Please refer to [azure-active-directory-spring-boot-sample](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server/README.md) for how to integrate Spring Security and Azure AD for authentication and authorization in a Single Page Application (SPA) scenario.
 
 #### Configure application.properties:
 ```properties
@@ -266,7 +266,7 @@ For more information about setting logging in spring, please refer to the [offic
 ## Next steps
 The following section provides sample projects illustrating how to use the starter in different cases.
 ### More sample code
-- [Azure Active Directory for Frontend](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory)
+- [Azure Active Directory for Frontend](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server)
 - [Azure Active Directory for Backend](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-backend)
 - [Azure Active Directory for Backend with Microsoft Graph API](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-backend-v2)
 
