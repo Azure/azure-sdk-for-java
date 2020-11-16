@@ -57,7 +57,7 @@ public class ReadmeSamples {
 
 
 
-    // this line should be at line no. 60
+    // THIS LINE MUST BE AT LINE NO. 60
     public void authenticate() {
         AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
         TokenCredential credential = new DefaultAzureCredentialBuilder()
