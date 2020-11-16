@@ -173,17 +173,33 @@ public class ServiceBusMessageTest {
     }
 
     /**
+     * Verify body is created.
+     */
+    @Test
+    void bodyAsBytes() {
+        // Arrange
+        byte[] expected = "some-contents".getBytes(UTF_8);
+
+        // Act
+        ServiceBusMessage message = new ServiceBusMessage(expected);
+
+        // Assert
+        assertArrayEquals(expected, message.getBody().toBytes());
+    }
+
+    /**
      * Verify that expected exceptions are thrown.
      */
     @Test
     void bodyNotNull() {
         assertThrows(NullPointerException.class, () -> new ServiceBusMessage((String) null));
         assertThrows(NullPointerException.class, () -> new ServiceBusMessage((BinaryData) null));
+        assertThrows(NullPointerException.class, () -> new ServiceBusMessage((byte[]) null));
     }
 
     @Test
     void messagePropertiesShouldNotBeNull() {
-        // Act
+        // Arrange
         final ServiceBusMessage serviceBusMessageData = new ServiceBusMessage(PAYLOAD_BINARY);
 
         // Assert
@@ -214,11 +230,81 @@ public class ServiceBusMessageTest {
      */
     @Test
     void canCreateWithBytePayload() {
-        // Act
+        // Arrange
         final ServiceBusMessage serviceBusMessageData = new ServiceBusMessage(PAYLOAD_BINARY);
 
         // Assert
         Assertions.assertNotNull(serviceBusMessageData.getBody());
         Assertions.assertEquals(PAYLOAD, serviceBusMessageData.getBody().toString());
+    }
+
+    @Test
+    void sessionIdMustMatchPartitionKeyAndViceVersa() {
+        // Arrange
+        final ServiceBusMessage serviceBusMessageData = new ServiceBusMessage("not-used-for-test");
+
+        // Setting them up to already be matching.
+        serviceBusMessageData.setSessionId("this must match with the other field");
+        serviceBusMessageData.setPartitionKey("this must match with the other field");
+
+        // Assert
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            serviceBusMessageData.setSessionId("something inconsistent!");
+        });
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            serviceBusMessageData.setPartitionKey("something inconsistent!");
+        });
+    }
+
+    @Test
+    void sessionIdAndPartitionIdCanBeSetToNull() {
+        // Arrange
+        final ServiceBusMessage serviceBusMessageData = new ServiceBusMessage("not-used-for-test");
+
+        // Act/Assert (ie, throw no exceptions)
+        serviceBusMessageData.setPartitionKey(null);
+        serviceBusMessageData.setSessionId(null);
+
+        // and the ordering doesn't matter
+        serviceBusMessageData.setPartitionKey("hello");
+        serviceBusMessageData.setSessionId(null);
+
+        // reset
+        serviceBusMessageData.setPartitionKey(null);
+        serviceBusMessageData.setSessionId(null);
+
+        serviceBusMessageData.setSessionId("hello");
+        serviceBusMessageData.setPartitionKey(null);
+    }
+
+    @Test
+    void idsCannotBeTooLong() {
+        // Arrange
+        final ServiceBusMessage serviceBusMessageData = new ServiceBusMessage("not-used-for-test");
+        final String longId = new String(new char[128 + 1]).replace("\0", "a");
+        final String justRightId = new String(new char[128]).replace("\0", "a");
+
+        // Assert
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            serviceBusMessageData.setMessageId(longId);
+        });
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            serviceBusMessageData.setPartitionKey(longId);
+        });
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            serviceBusMessageData.setSessionId(longId);
+        });
+
+        serviceBusMessageData.setMessageId(justRightId);
+        Assertions.assertEquals(justRightId, serviceBusMessageData.getMessageId());
+
+        serviceBusMessageData.setPartitionKey(justRightId);
+        Assertions.assertEquals(justRightId, serviceBusMessageData.getPartitionKey());
+
+        serviceBusMessageData.setSessionId(justRightId);
+        Assertions.assertEquals(justRightId, serviceBusMessageData.getSessionId());
     }
 }

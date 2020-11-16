@@ -600,7 +600,8 @@ class FunctionAppImpl
             }
             if (currentStorageAccount == null && storageAccountToSet == null && storageAccountCreatable == null) {
                 withNewStorageAccount(
-                    this.manager().resourceManager().internalContext().randomResourceName(name(), 20),
+                    this.manager().resourceManager().internalContext()
+                        .randomResourceName(getStorageAccountName(), 20),
                     StorageAccountSkuType.STANDARD_GRS);
             }
         }
@@ -714,6 +715,10 @@ class FunctionAppImpl
     private static class FunctionKeyListResult {
         @JsonProperty("keys")
         private List<NameValuePair> keys;
+    }
+
+    private String getStorageAccountName() {
+        return name().replaceAll("[^a-zA-Z0-9]", "");
     }
 
     /*

@@ -320,7 +320,8 @@ public final class BlobDownloadHeaders {
     private String errorCode;
 
     /*
-     * The isSealed property.
+     * The isSealed property. Whether or not the blob is sealed  (marked as read only).
+     * This is only returned for Append blobs.
      */
     @JsonProperty(value = "IsSealed")
     private Boolean sealed;
@@ -1267,7 +1268,7 @@ public final class BlobDownloadHeaders {
     /**
      * Get the sealed property: The sealed property.
      *
-     * @return the isSealed value.
+     * @return Whether or not the blob is sealed  (marked as read only). This is only applicable for Append blobs.
      */
     public Boolean isSealed() {
         return this.sealed;
@@ -1276,7 +1277,7 @@ public final class BlobDownloadHeaders {
     /**
      * Set the sealed property: The sealed property.
      *
-     * @param sealed the sealed value to set.
+     * @param sealed Whether or not the blob is sealed  (marked as read only). This is only applicable for Append blobs.
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders setSealed(Boolean sealed) {

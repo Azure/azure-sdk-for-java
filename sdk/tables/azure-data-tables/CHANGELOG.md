@@ -1,6 +1,17 @@
 # Release History
 
-## 12.0.0-beta.3 (Unreleased)
+## 12.0.0-beta.4 (Unreleased)
+
+
+## 12.0.0-beta.3 (2020-11-12)
+
+### New Features
+
+- Developers can now perform multiple insert, update, or delete entity operations as part of a transactional batch. For
+  more information on transactional batching with Azure Tables, see
+  [Performing entity group transactions](https://docs.microsoft.com/rest/api/storageservices/performing-entity-group-transactions).
+  Performing query operations as part of a transactional batch is not currently supported.
+  [#15091](https://github.com/Azure/azure-sdk-for-java/issues/15901)
 
 ### Key Bug Fixes
 
@@ -10,6 +21,12 @@
 - Passing a `TokenCredential` to a client builder mistakenly assumed it was always a shared key credential.
 - Client methods that accept a `timeout` and/or `context` parameter will use default values if either parameter is set
   to `null`. [#16386](https://github.com/Azure/azure-sdk-for-java/issues/16386)
+- Methods that perform upsert entity operations were mistakenly performing update operations instead.
+
+### Dependency Updates
+
+- Updated dependency version of `azure-core` to 1.10.0.
+- Updated dependency version of `azure-storage-common` to 12.9.0.
 
 ## 12.0.0-beta.2 (2020-10-06)
 

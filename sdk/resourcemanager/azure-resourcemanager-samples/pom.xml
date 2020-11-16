@@ -52,7 +52,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.1.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.2.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.jcraft</groupId>
@@ -78,7 +78,7 @@
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>
-      <version>4.5.12</version> <!-- {x-version-update;org.apache.httpcomponents:httpclient;external_dependency} -->
+      <version>4.5.13</version> <!-- {x-version-update;org.apache.httpcomponents:httpclient;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.github.cverges.expect4j</groupId>
@@ -98,7 +98,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.8.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <version>12.9.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -113,7 +113,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-servicebus</artifactId>
-      <version>7.0.0-beta.6</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;dependency} -->
+      <version>7.0.0-beta.7</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;dependency} -->
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
@@ -128,13 +128,13 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.6.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <version>5.6.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
-      <version>5.6.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+      <version>5.6.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -197,7 +197,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.apache.httpcomponents:httpclient:[4.5.12]</include> <!-- {x-include-update;org.apache.httpcomponents:httpclient;external_dependency} -->
+                <include>org.apache.httpcomponents:httpclient:[4.5.13]</include> <!-- {x-include-update;org.apache.httpcomponents:httpclient;external_dependency} -->
                 <include>io.fabric8:kubernetes-client:[4.10.3]</include> <!-- {x-include-update;io.fabric8:kubernetes-client;external_dependency} -->
                 <include>com.jcraft:jsch:[0.1.55]</include> <!-- {x-include-update;resourcemanager_com.jcraft:jsch;external_dependency} -->
                 <include>org.slf4j:slf4j-simple:[1.7.30]</include> <!-- {x-include-update;org.slf4j:slf4j-simple;external_dependency} -->

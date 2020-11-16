@@ -99,6 +99,17 @@ public class KeyProperties {
     private Integer recoverableDays;
 
     /**
+     * Indicates if the private key can be exported.
+     */
+    @JsonProperty(value = "exportable")
+    Boolean exportable;
+
+    /**
+     * The policy rules under which the key can be exported.
+     */
+    KeyReleasePolicy releasePolicy;
+
+    /**
      * Gets the number of days a key is retained before being deleted for a soft delete-enabled Key Vault.
      * @return the recoverable days.
      */
@@ -249,6 +260,46 @@ public class KeyProperties {
      */
     public String getVersion() {
         return this.version;
+    }
+
+    /**
+     * Indicates if the private key can be exported.
+     *
+     * @return The exportable value.
+     */
+    public Boolean isExportable() {
+        return this.exportable;
+    }
+
+    /**
+     * Set a value that indicates if the private key can be exported.
+     *
+     * @param exportable The exportable value to set.
+     * @return The updated {@link KeyProperties} object.
+     */
+    public KeyProperties setExportable(Boolean exportable) {
+        this.exportable = exportable;
+        return this;
+    }
+
+    /**
+     * Get the policy rules under which the key can be exported.
+     *
+     * @return The release policy.
+     */
+    public KeyReleasePolicy getReleasePolicy() {
+        return releasePolicy;
+    }
+
+    /**
+     * Set the policy rules under which the key can be exported.
+     *
+     * @param releasePolicy The release policy to set.
+     * @return The updated {@link KeyProperties} object.
+     */
+    public KeyProperties setReleasePolicy(KeyReleasePolicy releasePolicy) {
+        this.releasePolicy = releasePolicy;
+        return this;
     }
 
     /**

@@ -277,7 +277,7 @@ counterpart `ServiceBusReceiverAsyncClient`.
 ```java
 
 // Sample code that processes a single message
-Consumer<ServiceBusProcessorContext> processMessage = messageContext -> {
+Consumer<ServiceBusReceivedMessageContext> processMessage = messageContext -> {
     try {
         System.out.println(messageContext.getMessage().getMessageId());
         // other message processing code
@@ -323,7 +323,7 @@ The below code snippet shows you how to use the processor client to receive mess
 
 ```java
 // Sample code that processes a single message
-Consumer<ServiceBusProcessorContext> processMessage = messageContext -> {
+Consumer<ServiceBusReceivedMessageContext> processMessage = messageContext -> {
     try {
         System.out.println(messageContext.getMessage().getMessageId());
         // other message processing code

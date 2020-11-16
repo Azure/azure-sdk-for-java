@@ -2261,7 +2261,7 @@
   <!-- Exclude from spring related classes -->
   <Match>
     <Or>
-      <Class name="com.azure.spring.support.GetHashMac"/> <!-- false positive -->
+      <Class name="com.azure.spring.utils.GetHashMac"/> <!-- false positive -->
       <Class name="com.azure.spring.utils.PropertyLoader"/> <!-- false positive -->
     </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE,
@@ -2291,6 +2291,13 @@
     <Bug pattern="NP_NULL_ON_SOME_PATH"/>
   </Match>
 
+  <!-- The transient fields are not used if deserialization happens. -->
+  <Match>
+      <Class name="com.azure.identity.implementation.MsalAuthenticationAccount"/>
+      <Field name="authenticationRecord"/>
+      <Bug pattern="SE_TRANSIENT_FIELD_NOT_RESTORED"/>
+  </Match>
+  
   <!-- These fields are designed to be not written. They are for deserializing. -->
   <Match>
       <Class name="com.azure.identity.implementation.LinuxKeyRingAccessor$GError"/>
@@ -2384,81 +2391,6 @@
     <Bug pattern="NM_CONFUSING" />
   </Match>
 
-
-  <!-- id field is set in AnomalyDetectionConfiguration using PrivateFieldAccessHelper -->
-	<Match>
-		<Class name="com.azure.ai.metricsadvisor.models.AnomalyDetectionConfiguration"/>
-		<Field name="id"/>
-		<Bug pattern="UWF_UNWRITTEN_FIELD"/>
-	</Match>
-
-  <!-- metricId field is set in AnomalyDetectionConfiguration using PrivateFieldAccessHelper -->
-	<Match>
-		<Class name="com.azure.ai.metricsadvisor.models.AnomalyDetectionConfiguration"/>
-		<Field name="metricId"/>
-		<Bug pattern="UWF_UNWRITTEN_FIELD"/>
-	</Match>
-
-  <!-- id field is set in HookTransforms using PrivateFieldAccessHelper -->
-	<Match>
-		<Class name="com.azure.ai.metricsadvisor.models.WebHook"/>
-		<Field name="id"/>
-		<Bug pattern="UWF_UNWRITTEN_FIELD"/>
-	</Match>
-
-  <!-- admins field is set in HookTransforms using PrivateFieldAccessHelper -->
-  <Match>
-		<Class name="com.azure.ai.metricsadvisor.models.WebHook"/>
-		<Field name="admins"/>
-		<Bug pattern="UWF_UNWRITTEN_FIELD"/>
-	</Match>
-
-  <!-- id field is set in HookTransforms using PrivateFieldAccessHelper -->
-	<Match>
-		<Class name="com.azure.ai.metricsadvisor.models.EmailHook"/>
-		<Field name="id"/>
-		<Bug pattern="UWF_UNWRITTEN_FIELD"/>
-	</Match>
-
-  <!-- admins field is set in HookTransforms using PrivateFieldAccessHelper -->
-  <Match>
-		<Class name="com.azure.ai.metricsadvisor.models.EmailHook"/>
-		<Field name="admins"/>
-		<Bug pattern="UWF_UNWRITTEN_FIELD"/>
-	</Match>
-
-  <!-- All field in set in MetricSeriesData are set using PrivateFieldAccessHelper -->
-  <Match>
-    <Class name="com.azure.ai.metricsadvisor.models.MetricSeriesData" />
-    <Bug pattern="UWF_UNWRITTEN_FIELD" />
-  </Match>
-
-  <!-- id field is set in AnomalyAlertConfiguration using PrivateFieldAccessHelper -->
-  <Match>
-    <Class name="com.azure.ai.metricsadvisor.models.AnomalyAlertConfiguration" />
-    <Field name="id" />
-    <Bug pattern="UWF_UNWRITTEN_FIELD" />
-  </Match>
-
-  <!-- All fields in IncidentRootCause are set using PrivateFieldAccessHelper -->
-  <Match>
-    <Class name="com.azure.ai.metricsadvisor.models.IncidentRootCause" />
-    <Bug pattern="UWF_UNWRITTEN_FIELD" />
-  </Match>
-
-  <!-- All fields in MetricSeriesDefinition are set using PrivateFieldAccessHelper -->
-  <Match>
-    <Class name="com.azure.ai.metricsadvisor.models.MetricSeriesDefinition" />
-    <Bug pattern="UWF_UNWRITTEN_FIELD" />
-  </Match>
-
-  <!-- id field is set in MetricAnomalyFeedback using PrivateFieldAccessHelper -->
-  <Match>
-    <Class name="com.azure.ai.metricsadvisor.models.MetricAnomalyFeedback" />
-    <Field name="detectionConfiguration" />
-    <Bug pattern="UWF_UNWRITTEN_FIELD" />
-  </Match>
-
   <!-- Disabling false positives in azure-core -->
   <!-- This Issue has been resolved as per spotbugs's recommended solution but the static checker still flags it, its a known issue with this rule. -->
   <Match>
@@ -2488,5 +2420,14 @@
       <Class name="com.azure.security.keyvault.jca.LegacyRestClient" />
       <Method name="~(get|post)" />
       <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE" />
+  </Match>
+
+  <!-- Conflicting APIs have already been GA'd with incorrect capitalization  -->
+  <Match>
+    <Or>
+      <Class name="com.azure.security.keyvault.keys.cryptography.DecryptOptions" />
+      <Class name="com.azure.security.keyvault.keys.cryptography.EncryptOptions" />
+    </Or>
+    <Bug pattern="NM_CONFUSING" />
   </Match>
 </FindBugsFilter>

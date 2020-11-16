@@ -73,6 +73,23 @@ public class TableClient {
     }
 
     /**
+     * Creates a new {@link TableBatch} object. Batch objects allow you to enqueue multiple create, update, upsert,
+     * and/or delete operations on entities that share the same partition key. When the batch is executed, all of the
+     * operations will be performed as part of a single transaction. As a result, either all operations in the batch
+     * will succeed, or if a failure occurs, all operations in the batch will be rolled back. Each operation in a batch
+     * must operate on a distinct row key. Attempting to add multiple operations to a batch that share the same row key
+     * will cause an exception to be thrown.
+     *
+     * @param partitionKey The partition key shared by all operations in the batch.
+     *
+     * @return An object representing the batch, to which operations can be added.
+     * @throws IllegalArgumentException if the provided partition key is {@code null} or empty.
+     */
+    public TableBatch createBatch(String partitionKey) {
+        return new TableBatch(this.client.createBatch(partitionKey));
+    }
+
+    /**
      * Creates the table within the Tables service.
      *
      * @throws TableServiceErrorException if a table with the same name already exists within the service.
@@ -372,7 +389,7 @@ public class TableClient {
      * Deletes an entity from the table.
      *
      * @param partitionKey The partition key of the entity.
-     * @param rowKey The partition key of the entity.
+     * @param rowKey The row key of the entity.
      * @throws TableServiceErrorException if no entity with the provided partition key and row key exists within the
      *                                    table.
      * @throws IllegalArgumentException if the provided partition key or row key are {@code null} or empty.
@@ -386,7 +403,7 @@ public class TableClient {
      * Deletes an entity from the table.
      *
      * @param partitionKey The partition key of the entity.
-     * @param rowKey The partition key of the entity.
+     * @param rowKey The row key of the entity.
      * @param eTag The value to compare with the eTag of the entity in the Tables service. If the values do not match,
      *             the delete will not occur and an exception will be thrown.
      * @throws TableServiceErrorException if no entity with the provided partition key and row key exists within the
@@ -403,7 +420,7 @@ public class TableClient {
      * Deletes an entity from the table.
      *
      * @param partitionKey The partition key of the entity.
-     * @param rowKey The partition key of the entity.
+     * @param rowKey The row key of the entity.
      * @param eTag The value to compare with the eTag of the entity in the Tables service. If the values do not match,
      *             the delete will not occur and an exception will be thrown.
      * @param timeout Duration to wait for the operation to complete.
@@ -422,7 +439,7 @@ public class TableClient {
      * Deletes an entity from the table.
      *
      * @param partitionKey The partition key of the entity.
-     * @param rowKey The partition key of the entity.
+     * @param rowKey The row key of the entity.
      * @param eTag The value to compare with the eTag of the entity in the Tables service. If the values do not match,
      *             the delete will not occur and an exception will be thrown.
      * @param timeout Duration to wait for the operation to complete.

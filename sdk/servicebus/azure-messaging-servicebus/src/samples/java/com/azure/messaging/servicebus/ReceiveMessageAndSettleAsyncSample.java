@@ -43,15 +43,15 @@ public class ReceiveMessageAndSettleAsyncSample {
             .buildAsyncClient();
 
         Disposable subscription = receiver.receiveMessages()
-            .flatMap(context -> {
+            .flatMap(message -> {
                 boolean messageProcessed = false;
                 // Process the context and its message here.
                 // Change the `messageProcessed` according to you business logic and if you are able to process the
                 // message successfully.
                 if (messageProcessed) {
-                    return receiver.complete(context.getMessage());
+                    return receiver.complete(message);
                 } else {
-                    return receiver.abandon(context.getMessage());
+                    return receiver.abandon(message);
                 }
             }).subscribe();
 
