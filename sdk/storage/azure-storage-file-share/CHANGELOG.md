@@ -1,5 +1,8 @@
 # Release History
 
+## 12.8.0-beta.1 (Unreleased)
+
+
 ## 12.7.0 (2020-11-11)
 - Added support to specify whether or not a pipeline policy should be added per call or per retry.
 - Added support for setting access tier on a share through ShareClient.create, ShareClient.setAccessTier.

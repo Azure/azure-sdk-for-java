@@ -346,11 +346,6 @@ public class ManagementChannel implements ServiceBusManagementNode {
                     messageEntry.put(ManagementConstants.PARTITION_KEY, partitionKey);
                 }
 
-                final String viaPartitionKey = message.getViaPartitionKey();
-                if (!CoreUtils.isNullOrEmpty(viaPartitionKey)) {
-                    messageEntry.put(ManagementConstants.VIA_PARTITION_KEY, viaPartitionKey);
-                }
-
                 messageList.add(messageEntry);
             }
 
