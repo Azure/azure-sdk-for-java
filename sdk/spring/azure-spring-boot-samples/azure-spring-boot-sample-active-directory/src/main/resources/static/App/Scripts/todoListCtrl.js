@@ -10,7 +10,8 @@ angular.module('todoApp')
 
         $scope.editInProgressTodo = {
             Description: "",
-            ID: 0
+            ID: 0,
+            Owner: msalService.userInfo.userName
         };
 
 
