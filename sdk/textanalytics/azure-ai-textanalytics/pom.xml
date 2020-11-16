@@ -114,7 +114,6 @@
             <configuration>
               <argLine>
                 --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
-
                 --add-opens com.azure.ai.textanalytics/com.azure.ai.textanalytics=ALL-UNNAMED
                 --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
               </argLine>

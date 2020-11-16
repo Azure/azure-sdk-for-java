@@ -10,13 +10,13 @@ import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
 import java.util.Arrays;
 
-class AesKw256 extends AesKw {
+class Aes192Kw extends AesKw {
 
-    public static final String ALGORITHM_NAME = "A256KW";
+    public static final String ALGORITHM_NAME = "A192KW";
 
-    static final int KEY_SIZE_IN_BYTES = 256 >> 3;
+    static final int KEY_SIZE_IN_BYTES = 192 >> 3;
 
-    AesKw256() {
+    Aes192Kw() {
         super(ALGORITHM_NAME);
     }
 
@@ -24,6 +24,7 @@ class AesKw256 extends AesKw {
     public ICryptoTransform createEncryptor(byte[] key, byte[] iv, Provider provider)
         throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
         InvalidAlgorithmParameterException {
+
         CryptoUtil.validate(key, KEY_SIZE_IN_BYTES);
 
         return super.createEncryptor(Arrays.copyOfRange(key, 0, KEY_SIZE_IN_BYTES), iv, provider);
@@ -33,6 +34,7 @@ class AesKw256 extends AesKw {
     public ICryptoTransform createDecryptor(byte[] key, byte[] iv, Provider provider)
         throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
         InvalidAlgorithmParameterException {
+
         CryptoUtil.validate(key, KEY_SIZE_IN_BYTES);
 
         return super.createDecryptor(Arrays.copyOfRange(key, 0, KEY_SIZE_IN_BYTES), iv, provider);

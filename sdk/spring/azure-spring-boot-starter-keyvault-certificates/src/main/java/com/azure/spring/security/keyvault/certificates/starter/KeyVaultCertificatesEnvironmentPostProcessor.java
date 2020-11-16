@@ -26,7 +26,7 @@ public class KeyVaultCertificatesEnvironmentPostProcessor implements Environment
 
     @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment,
-                                       SpringApplication application) {
+            SpringApplication application) {
 
         Properties systemProperties = System.getProperties();
 
@@ -37,6 +37,11 @@ public class KeyVaultCertificatesEnvironmentPostProcessor implements Environment
             String tenantId = environment.getProperty("azure.keyvault.tenantId");
             if (tenantId != null) {
                 systemProperties.put("azure.keyvault.tenantId", tenantId);
+            }
+            
+            String aadAuthenticationUrl = environment.getProperty("azure.keyvault.aadAuthenticationUrl");
+            if (aadAuthenticationUrl != null) {
+                systemProperties.put("azure.keyvault.aadAuthenticationUrl", aadAuthenticationUrl);
             }
 
             String clientId = environment.getProperty("azure.keyvault.clientId");
@@ -67,8 +72,8 @@ public class KeyVaultCertificatesEnvironmentPostProcessor implements Environment
                 } catch (ClassNotFoundException ex) {
                 }
 
-                PropertiesPropertySource propertySource =
-                        new PropertiesPropertySource("KeyStorePropertySource", properties);
+                PropertiesPropertySource propertySource
+                        = new PropertiesPropertySource("KeyStorePropertySource", properties);
                 sources.addFirst(propertySource);
             }
 
@@ -85,8 +90,8 @@ public class KeyVaultCertificatesEnvironmentPostProcessor implements Environment
                 } catch (ClassNotFoundException ex) {
                 }
 
-                PropertiesPropertySource propertySource = 
-                        new PropertiesPropertySource("TrustStorePropertySource", properties);
+                PropertiesPropertySource propertySource
+                        = new PropertiesPropertySource("TrustStorePropertySource", properties);
                 sources.addFirst(propertySource);
             }
 
@@ -95,8 +100,8 @@ public class KeyVaultCertificatesEnvironmentPostProcessor implements Environment
 
             String enabled = environment.getProperty("azure.keyvault.jca.overrideTrustManagerFactory");
             if (Boolean.parseBoolean(enabled)) {
-                KeyVaultTrustManagerFactoryProvider factoryProvider =
-                    new KeyVaultTrustManagerFactoryProvider();
+                KeyVaultTrustManagerFactoryProvider factoryProvider
+                        = new KeyVaultTrustManagerFactoryProvider();
                 Security.insertProviderAt(factoryProvider, 1);
             }
 
