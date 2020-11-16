@@ -5,6 +5,8 @@ package com.azure.spring.autoconfigure.aad;
 
 import com.azure.spring.aad.implementation.AuthorizationProperties;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
+import java.util.HashSet;
+import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -39,6 +41,8 @@ public class AADAuthenticationProperties {
     private String uri;
 
     private Map<String, AuthorizationProperties> authorization = new HashMap<>();
+
+    private Set<String> allowedTenantIds = new HashSet<>();
 
     /**
      * Default UserGroup configuration.
@@ -418,6 +422,14 @@ public class AADAuthenticationProperties {
 
     public static String getTransitiveGroupRelationship() {
         return GROUP_RELATIONSHIP_TRANSITIVE;
+    }
+
+    public Set<String> getAllowedTenantIds() {
+        return allowedTenantIds;
+    }
+
+    public void setAllowedTenantIds(Set<String> allowedTenantIds) {
+        this.allowedTenantIds = allowedTenantIds;
     }
 
     public boolean isAllowedGroup(String group) {
