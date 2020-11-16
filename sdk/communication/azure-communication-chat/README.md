@@ -239,9 +239,9 @@ listMessages returns different types of messages which can be identified by `cha
 
 -`ThreadActivity/TopicUpdate`: System message that indicates the topic has been updated.
 
--`ThreadActivity/AddParticipant`: System message that indicates one or more participants have been added to the chat thread.
+-`ThreadActivity/AddMember`: System message that indicates one or more participants have been added to the chat thread.
 
--`ThreadActivity/DeleteParticipant`: System message that indicates a participant has been removed from the chat thread.
+-`ThreadActivity/DeleteMember`: System message that indicates a participant has been removed from the chat thread.
 
 For more details, see [Message Types](https://docs.microsoft.com/azure/communication-services/concepts/chat/concepts#message-types).
 
