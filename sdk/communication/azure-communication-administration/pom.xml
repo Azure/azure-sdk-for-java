@@ -49,6 +49,8 @@
   <properties>
     <src.dir>src/main</src.dir>
     <test.dir>src/test</test.dir>
+    <jacoco.min.branchcoverage>0.20</jacoco.min.branchcoverage>
+    <jacoco.min.linecoverage>0.40</jacoco.min.linecoverage>
   </properties>
 
   <dependencies>
@@ -119,7 +121,10 @@
         <artifactId>jacoco-maven-plugin</artifactId>
         <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
         <configuration>
-          <skip>true</skip>
+          <excludes>
+            <exclude>com/azure/communication/administration/models/**/*</exclude>
+            <exclude>com/azure/communication/administration/implementation/**/*</exclude>
+          </excludes>
         </configuration>
       </plugin>
       <plugin>
