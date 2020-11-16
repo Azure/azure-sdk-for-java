@@ -33,6 +33,7 @@ public class AADAuthenticationProperties {
     private static final Logger LOGGER = LoggerFactory.getLogger(AADAuthenticationProperties.class);
     private static final String DEFAULT_SERVICE_ENVIRONMENT = "global";
     private static final long DEFAULT_JWK_SET_CACHE_LIFESPAN = TimeUnit.MINUTES.toMillis(5);
+    private static final long DEFAULT_JWK_SET_CACHE_REFRESH_TIME = DEFAULT_JWK_SET_CACHE_LIFESPAN;
     private static final String GROUP_RELATIONSHIP_DIRECT = "direct";
     private static final String GROUP_RELATIONSHIP_TRANSITIVE = "transitive";
 
@@ -100,6 +101,11 @@ public class AADAuthenticationProperties {
      * The lifespan of the cached JWK set before it expires, default is 5 minutes.
      */
     private long jwkSetCacheLifespan = DEFAULT_JWK_SET_CACHE_LIFESPAN;
+
+    /**
+     * The refresh time of the cached JWK set before it expires, default is 5 minutes.
+     */
+    private long jwkSetCacheRefreshTime = DEFAULT_JWK_SET_CACHE_REFRESH_TIME;
 
     /**
      * Azure Tenant ID.
@@ -386,6 +392,14 @@ public class AADAuthenticationProperties {
 
     public void setJwkSetCacheLifespan(long jwkSetCacheLifespan) {
         this.jwkSetCacheLifespan = jwkSetCacheLifespan;
+    }
+
+    public long getJwkSetCacheRefreshTime() {
+        return jwkSetCacheRefreshTime;
+    }
+
+    public void setJwkSetCacheRefreshTime(long jwkSetCacheRefreshTime) {
+        this.jwkSetCacheRefreshTime = jwkSetCacheRefreshTime;
     }
 
     public String getTenantId() {
