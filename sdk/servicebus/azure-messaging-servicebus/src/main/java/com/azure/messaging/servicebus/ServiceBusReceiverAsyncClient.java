@@ -579,10 +579,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         // to auto-refill the prefetch buffer. A request will retrieve one message from this buffer.
         // If receiverOptions.prefetchCount is 0 (default value),
         // the request will add a link credit so one message is retrieved from the service.
-        return receiveMessagesNoConnect().limitRate(1);
+        return receiveMessagesNoBackPressure().limitRate(1);
     }
 
-    Flux<ServiceBusReceivedMessage> receiveMessagesNoConnect() {
+    Flux<ServiceBusReceivedMessage> receiveMessagesNoBackPressure() {
         return receiveMessagesWithContext()
             .handle((serviceBusMessageContext, sink) -> {
                 if (serviceBusMessageContext.hasError()) {

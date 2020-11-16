@@ -603,7 +603,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
                 SynchronousMessageSubscriber existing = synchronousMessageSubscriber.get();
                 existing.queueWork(work);
             } else {
-                asyncClient.receiveMessagesNoConnect().subscribeWith(newSubscriber);
+                asyncClient.receiveMessagesNoBackPressure().subscribeWith(newSubscriber);
             }
         } else {
             messageSubscriber.queueWork(work);
