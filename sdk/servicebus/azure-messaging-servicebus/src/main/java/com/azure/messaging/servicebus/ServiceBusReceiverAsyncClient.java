@@ -572,14 +572,14 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @return An <b>infinite</b> stream of messages from the Service Bus entity.
      */
     public Flux<ServiceBusReceivedMessage> receiveMessages() {
-        // Without publish->autoConnect, if the user calls receiveMessages().subscribe(), it will call
+        // Without limitRate(), if the user calls receiveMessages().subscribe(), it will call
         // ServiceBusReceiveLinkProcessor.request(long request) where request = Long.MAX_VALUE.
         // We turn this one-time non-backpressure request to continuous requests with backpressure.
         // If receiverOptions.prefetchCount is set to non-zero, it will be passed to ServiceBusReceiveLinkProcessor
-        // to auto-refill the prefetched account. So here for publish(), using 1 as prefetch. 0 is even better than 1
-        // but 0 is not allowed here.
-        return receiveMessagesNoConnect().publish(1)
-            .autoConnect(1).cast(ServiceBusReceivedMessage.class);
+        // to auto-refill the prefetch buffer. A request will retrieve one message from this buffer.
+        // If receiverOptions.prefetchCount is 0 (default value),
+        // the request will add a link credit so one message is retrieved from the service.
+        return receiveMessagesNoConnect().limitRate(1);
     }
 
     Flux<ServiceBusReceivedMessage> receiveMessagesNoConnect() {
