@@ -120,6 +120,8 @@
         <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
         <configuration>
           <properties>
+            <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
+            <jacoco.min.branchcoverage>0.10</jacoco.min.branchcoverage>
           </properties>
         </configuration>
       </plugin>
