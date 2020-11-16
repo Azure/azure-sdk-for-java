@@ -39,6 +39,7 @@ In addition, Azure subscription ID can be configured via environment variable `A
 
 With above configuration, `azure` client can be authenticated by following code:
 
+[//]: # ({x-version-update-start;com.azure.resourcemanager:azure-resourcemanager-resources-generated;current})
 ```java
 AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 TokenCredential credential = new DefaultAzureCredentialBuilder()
@@ -47,6 +48,7 @@ TokenCredential credential = new DefaultAzureCredentialBuilder()
 ResourceManager manager = ResourceManager
     .authenticate(credential, profile);
 ```
+[//]: # ({x-version-update-end})
 
 The sample code assumes global Azure. Please change `AzureEnvironment.AZURE` variable if otherwise.
 
