@@ -46,7 +46,7 @@ public final class TagDetailsImpl implements TagDetails {
                         .map(inner1 -> new TagValueImpl(inner1, this.manager()))
                         .collect(Collectors.toList()));
         } else {
-            return null;
+            return Collections.emptyList();
         }
     }
 

@@ -4,13 +4,11 @@
 
 package com.azure.resourcemanager.resources.generated.models;
 
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.resourcemanager.resources.generated.fluent.models.WhatIfOperationResultInner;
 import java.util.List;
 
 /** An immutable client-side representation of WhatIfOperationResult. */
-@Immutable
 public interface WhatIfOperationResult {
     /**
      * Gets the status property: Status of the What-If operation.

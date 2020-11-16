@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.resources.generated.models;
 
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.resourcemanager.resources.generated.fluent.models.DeploymentValidateResultInner;
 
 /** An immutable client-side representation of DeploymentValidateResult. */
-@Immutable
 public interface DeploymentValidateResult {
     /**
      * Gets the error property: The deployment validation error.

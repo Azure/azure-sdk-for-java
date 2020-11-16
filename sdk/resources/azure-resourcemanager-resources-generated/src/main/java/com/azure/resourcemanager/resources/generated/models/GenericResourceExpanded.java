@@ -4,13 +4,11 @@
 
 package com.azure.resourcemanager.resources.generated.models;
 
-import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.resources.generated.fluent.models.GenericResourceExpandedInner;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 /** An immutable client-side representation of GenericResourceExpanded. */
-@Immutable
 public interface GenericResourceExpanded {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.

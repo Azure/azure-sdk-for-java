@@ -4,14 +4,12 @@
 
 package com.azure.resourcemanager.resources.generated.models;
 
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.resources.generated.fluent.models.ResourceGroupInner;
 import java.util.Map;
 
 /** An immutable client-side representation of ResourceGroup. */
-@Immutable
 public interface ResourceGroup {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.

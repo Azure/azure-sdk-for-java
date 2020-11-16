@@ -8,6 +8,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.generated.ResourceManager;
 import com.azure.resourcemanager.resources.generated.fluent.ResourceGroupsClient;
 import com.azure.resourcemanager.resources.generated.fluent.models.ResourceGroupExportResultInner;
@@ -16,8 +17,11 @@ import com.azure.resourcemanager.resources.generated.models.ExportTemplateReques
 import com.azure.resourcemanager.resources.generated.models.ResourceGroup;
 import com.azure.resourcemanager.resources.generated.models.ResourceGroupExportResult;
 import com.azure.resourcemanager.resources.generated.models.ResourceGroups;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ResourceGroupsImpl implements ResourceGroups {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceGroupsImpl.class);
+
     private final ResourceGroupsClient innerClient;
 
     private final ResourceManager serviceManager;
@@ -93,6 +97,54 @@ public final class ResourceGroupsImpl implements ResourceGroups {
     public PagedIterable<ResourceGroup> list(String filter, Integer top, Context context) {
         PagedIterable<ResourceGroupInner> inner = this.serviceClient().list(filter, top, context);
         return inner.mapPage(inner1 -> new ResourceGroupImpl(inner1, this.manager()));
+    }
+
+    public ResourceGroup getById(String id) {
+        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        if (resourceGroupName == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String
+                            .format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
+        }
+        return this.getWithResponse(resourceGroupName, Context.NONE).getValue();
+    }
+
+    public Response<ResourceGroup> getByIdWithResponse(String id, Context context) {
+        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        if (resourceGroupName == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String
+                            .format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
+        }
+        return this.getWithResponse(resourceGroupName, context);
+    }
+
+    public void deleteById(String id) {
+        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        if (resourceGroupName == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String
+                            .format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
+        }
+        this.delete(resourceGroupName, Context.NONE);
+    }
+
+    public void deleteByIdWithResponse(String id, Context context) {
+        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        if (resourceGroupName == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        String
+                            .format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
+        }
+        this.delete(resourceGroupName, context);
     }
 
     private ResourceGroupsClient serviceClient() {

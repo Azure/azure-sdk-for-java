@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.resources.generated.models;
 
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.resourcemanager.resources.generated.fluent.models.ResourceGroupExportResultInner;
 
 /** An immutable client-side representation of ResourceGroupExportResult. */
-@Immutable
 public interface ResourceGroupExportResult {
     /**
      * Gets the template property: The template content.

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.resources.generated.models;
 
-import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.resources.generated.fluent.models.TagDetailsInner;
 import java.util.List;
 
 /** An immutable client-side representation of TagDetails. */
-@Immutable
 public interface TagDetails {
     /**
      * Gets the id property: The tag name ID.

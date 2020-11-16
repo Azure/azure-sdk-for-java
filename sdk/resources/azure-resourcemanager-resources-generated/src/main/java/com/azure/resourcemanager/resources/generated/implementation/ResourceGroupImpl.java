@@ -40,7 +40,7 @@ public final class ResourceGroupImpl implements ResourceGroup, ResourceGroup.Def
         if (inner != null) {
             return Collections.unmodifiableMap(inner);
         } else {
-            return null;
+            return Collections.emptyMap();
         }
     }
 
@@ -77,7 +77,7 @@ public final class ResourceGroupImpl implements ResourceGroup, ResourceGroup.Def
             serviceManager
                 .serviceClient()
                 .getResourceGroups()
-                .createOrUpdateWithResponse(resourceGroupName, innerObject, Context.NONE)
+                .createOrUpdateWithResponse(resourceGroupName, this.innerModel(), Context.NONE)
                 .getValue();
         return this;
     }
@@ -87,7 +87,7 @@ public final class ResourceGroupImpl implements ResourceGroup, ResourceGroup.Def
             serviceManager
                 .serviceClient()
                 .getResourceGroups()
-                .createOrUpdateWithResponse(resourceGroupName, innerObject, context)
+                .createOrUpdateWithResponse(resourceGroupName, this.innerModel(), context)
                 .getValue();
         return this;
     }

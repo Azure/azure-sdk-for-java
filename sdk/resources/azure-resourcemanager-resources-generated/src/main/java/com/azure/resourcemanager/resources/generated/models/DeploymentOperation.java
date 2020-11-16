@@ -4,11 +4,9 @@
 
 package com.azure.resourcemanager.resources.generated.models;
 
-import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.resources.generated.fluent.models.DeploymentOperationInner;
 
 /** An immutable client-side representation of DeploymentOperation. */
-@Immutable
 public interface DeploymentOperation {
     /**
      * Gets the id property: Full deployment operation ID.

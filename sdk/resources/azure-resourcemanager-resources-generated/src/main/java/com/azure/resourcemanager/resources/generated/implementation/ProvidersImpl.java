@@ -8,13 +8,17 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.generated.ResourceManager;
 import com.azure.resourcemanager.resources.generated.fluent.ProvidersClient;
 import com.azure.resourcemanager.resources.generated.fluent.models.ProviderInner;
 import com.azure.resourcemanager.resources.generated.models.Provider;
 import com.azure.resourcemanager.resources.generated.models.Providers;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ProvidersImpl implements Providers {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProvidersImpl.class);
+
     private final ProvidersClient innerClient;
 
     private final ResourceManager serviceManager;

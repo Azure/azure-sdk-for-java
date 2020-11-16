@@ -1200,6 +1200,62 @@ public interface Deployments {
     Response<TemplateHashResult> calculateTemplateHashWithResponse(Object template, Context context);
 
     /**
+     * Gets a deployment.
+     *
+     * @param id the resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a deployment.
+     */
+    DeploymentExtended getById(String id);
+
+    /**
+     * Gets a deployment.
+     *
+     * @param id the resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a deployment.
+     */
+    Response<DeploymentExtended> getByIdWithResponse(String id, Context context);
+
+    /**
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. Deleting a template deployment does not affect the state of the resource group.
+     * This is an asynchronous operation that returns a status of 202 until the template deployment is successfully
+     * deleted. The Location response header contains the URI that is used to obtain the status of the process. While
+     * the process is running, a call to the URI in the Location header returns a status of 202. When the process
+     * finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed,
+     * the URI in the Location header returns an error-level status code.
+     *
+     * @param id the resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deleteById(String id);
+
+    /**
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. Deleting a template deployment does not affect the state of the resource group.
+     * This is an asynchronous operation that returns a status of 202 until the template deployment is successfully
+     * deleted. The Location response header contains the URI that is used to obtain the status of the process. While
+     * the process is running, a call to the URI in the Location header returns a status of 202. When the process
+     * finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed,
+     * the URI in the Location header returns an error-level status code.
+     *
+     * @param id the resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deleteByIdWithResponse(String id, Context context);
+
+    /**
      * Begins definition for a new DeploymentExtended resource.
      *
      * @param name resource name.

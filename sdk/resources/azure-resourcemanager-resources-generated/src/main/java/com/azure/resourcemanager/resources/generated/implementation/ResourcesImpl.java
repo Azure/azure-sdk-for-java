@@ -8,6 +8,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.generated.ResourceManager;
 import com.azure.resourcemanager.resources.generated.fluent.ResourcesClient;
 import com.azure.resourcemanager.resources.generated.fluent.models.GenericResourceExpandedInner;
@@ -16,8 +17,11 @@ import com.azure.resourcemanager.resources.generated.models.GenericResource;
 import com.azure.resourcemanager.resources.generated.models.GenericResourceExpanded;
 import com.azure.resourcemanager.resources.generated.models.Resources;
 import com.azure.resourcemanager.resources.generated.models.ResourcesMoveInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ResourcesImpl implements Resources {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourcesImpl.class);
+
     private final ResourcesClient innerClient;
 
     private final ResourceManager serviceManager;

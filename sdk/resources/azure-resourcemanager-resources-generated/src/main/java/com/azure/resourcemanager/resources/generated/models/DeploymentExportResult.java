@@ -4,11 +4,9 @@
 
 package com.azure.resourcemanager.resources.generated.models;
 
-import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.resources.generated.fluent.models.DeploymentExportResultInner;
 
 /** An immutable client-side representation of DeploymentExportResult. */
-@Immutable
 public interface DeploymentExportResult {
     /**
      * Gets the template property: The template content.

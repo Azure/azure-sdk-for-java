@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.resources.generated.models;
 
-import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.resources.generated.fluent.models.ProviderInner;
 import java.util.List;
 
 /** An immutable client-side representation of Provider. */
-@Immutable
 public interface Provider {
     /**
      * Gets the id property: The provider ID.

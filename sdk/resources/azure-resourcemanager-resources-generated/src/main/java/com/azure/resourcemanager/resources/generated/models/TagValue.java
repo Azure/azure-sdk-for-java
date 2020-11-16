@@ -4,11 +4,9 @@
 
 package com.azure.resourcemanager.resources.generated.models;
 
-import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.resources.generated.fluent.models.TagValueInner;
 
 /** An immutable client-side representation of TagValue. */
-@Immutable
 public interface TagValue {
     /**
      * Gets the id property: The tag value ID.

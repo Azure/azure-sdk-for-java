@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.resources.generated.models;
 
-import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.resources.generated.fluent.models.GenericResourceInner;
 import java.util.Map;
 
 /** An immutable client-side representation of GenericResource. */
-@Immutable
 public interface GenericResource {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
