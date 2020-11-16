@@ -2,6 +2,7 @@ package com.azure.storage.file.datalake
 
 import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
+import com.azure.core.http.HttpPipelinePosition
 import com.azure.core.http.HttpRequest
 import com.azure.core.http.HttpResponse
 import com.azure.core.http.policy.HttpPipelinePolicy
@@ -272,6 +273,10 @@ class LargeFileTest extends APISpec{
 
         private boolean isFlushRequest(HttpRequest request) {
             return request.url.getQuery() != null && request.url.getQuery().contains("action=flush")
+        }
+
+        HttpPipelinePosition getPipelinePosition() {
+            return HttpPipelinePosition.PER_CALL;
         }
     }
 }
