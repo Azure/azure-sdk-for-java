@@ -185,13 +185,13 @@ Consumer<ServiceBusReceivedMessageContext> processMessage = messageContext -> {
     } catch (Exception ex) {
         messageContext.abandon(); 
     }
-}   
+};   
 
 // Sample code that gets called if there's an error
 Consumer<Throwable> processError = throwable -> {
     logError(throwable);
     metrics.recordError(throwable);
-}
+};
 
 // create the processor client via the builder and its sub-builder
 ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()
