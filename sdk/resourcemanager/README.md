@@ -259,7 +259,7 @@ You can operate on virtual machines in parallel.
 ```java
 azure.virtualMachines().listByResourceGroupAsync(rgName)
     .flatMap(VirtualMachine::restartAsync)
-    //..
+    //...
 ```
 
 ### Configurable client

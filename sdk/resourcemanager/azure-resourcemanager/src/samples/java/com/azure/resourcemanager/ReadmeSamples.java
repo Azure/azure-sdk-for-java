@@ -191,7 +191,7 @@ public class ReadmeSamples {
 
         azure.virtualMachines().listByResourceGroupAsync(rgName)
             .flatMap(VirtualMachine::restartAsync)
-            //..
+            //...
             .blockLast();
     }
 
