@@ -10,9 +10,15 @@ jobs:
       - name: azure-communication-chat
         groupId: com.azure
         safeName: azurecommunicationchat
+      - name: azure-communication-sms
+        groupId: com.azure
+        safeName: azurecommunicationsms
     ServiceDirectory: communication
     EnvVars:
       AZURE_TEST_MODE: LIVE
       SKIP_PHONENUMBER_INTEGRATION_TESTS: TRUE
       SKIP_LIVE_TEST: TRUE
+      AZURE_SUBSCRIPTION_ID: $(acs-subscription-id)
+      COMMUNICATION_CONNECTION_STRING: $(communication-livetest-connection-string)
+      SMS_SERVICE_PHONE_NUMBER: $(communication-livetest-phone-number) 
 
