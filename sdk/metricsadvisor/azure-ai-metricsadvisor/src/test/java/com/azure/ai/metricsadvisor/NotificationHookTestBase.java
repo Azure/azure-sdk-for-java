@@ -84,7 +84,7 @@ public abstract class NotificationHookTestBase extends MetricsAdvisorAdministrat
         Assertions.assertNotNull(webHook.getName());
         Assertions.assertEquals(CreateWebHookInput.INSTANCE.description, webHook.getDescription());
         Assertions.assertEquals(CreateWebHookInput.INSTANCE.externalLink, webHook.getExternalLink());
-        Assertions.assertEquals(CreateWebHookInput.INSTANCE.userName, webHook.getUsername());
+        Assertions.assertNotNull(webHook.getUsername());
         Assertions.assertNotNull(webHook.getPassword());
         HttpHeaders httpHeaders = webHook.getHttpHeaders();
         Assertions.assertNotNull(httpHeaders);

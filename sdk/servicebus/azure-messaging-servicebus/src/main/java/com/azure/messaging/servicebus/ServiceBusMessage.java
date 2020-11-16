@@ -28,7 +28,6 @@ import static com.azure.core.amqp.AmqpMessageConstant.LOCKED_UNTIL_KEY_ANNOTATIO
 import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SCHEDULED_ENQUEUE_UTC_TIME_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.VIA_PARTITION_KEY_ANNOTATION_NAME;
 
 /**
  * The data structure encapsulating the message being sent-to Service Bus.
@@ -52,6 +51,10 @@ import static com.azure.core.amqp.AmqpMessageConstant.VIA_PARTITION_KEY_ANNOTATI
  * @see BinaryData
  */
 public class ServiceBusMessage {
+    private static final int MAX_MESSAGE_ID_LENGTH = 128;
+    private static final int MAX_PARTITION_KEY_LENGTH = 128;
+    private static final int MAX_SESSION_ID_LENGTH = 128;
+
     private final AmqpAnnotatedMessage amqpAnnotatedMessage;
     private final ClientLogger logger = new ClientLogger(ServiceBusMessage.class);
 
@@ -265,8 +268,10 @@ public class ServiceBusMessage {
      * @param messageId to be set.
      *
      * @return The updated {@link ServiceBusMessage}.
+     * @throws IllegalArgumentException if {@code messageId} is too long.
      */
     public ServiceBusMessage setMessageId(String messageId) {
+        checkIdLength("messageId", messageId, MAX_MESSAGE_ID_LENGTH);
         amqpAnnotatedMessage.getProperties().setMessageId(messageId);
         return this;
     }
@@ -295,8 +300,13 @@ public class ServiceBusMessage {
      *
      * @return The updated {@link ServiceBusMessage}.
      * @see #getPartitionKey()
+     * @throws IllegalArgumentException if {@code partitionKey} is too long or if the {@code partitionKey}
+     * does not match the {@code sessionId}.
      */
     public ServiceBusMessage setPartitionKey(String partitionKey) {
+        checkIdLength("partitionKey", partitionKey, MAX_PARTITION_KEY_LENGTH);
+        checkPartitionKey(partitionKey);
+
         amqpAnnotatedMessage.getMessageAnnotations().put(PARTITION_KEY_ANNOTATION_NAME.getValue(), partitionKey);
         return this;
     }
@@ -449,34 +459,6 @@ public class ServiceBusMessage {
     }
 
     /**
-     * Gets the partition key for sending a message to a entity via another partitioned transfer entity.
-     *
-     * If a message is sent via a transfer queue in the scope of a transaction, this value selects the transfer queue
-     * partition: This is functionally equivalent to {@link #getPartitionKey()} and ensures that messages are kept
-     * together and in order as they are transferred.
-     *
-     * @return partition key on the via queue.
-     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-transactions#transfers-and-send-via">Transfers
-     *     and Send Via</a>
-     */
-    public String getViaPartitionKey() {
-        return (String) amqpAnnotatedMessage.getMessageAnnotations().get(VIA_PARTITION_KEY_ANNOTATION_NAME.getValue());
-    }
-
-    /**
-     * Sets a via-partition key for sending a message to a destination entity via another partitioned entity
-     *
-     * @param viaPartitionKey via-partition key of this message
-     *
-     * @return The updated {@link ServiceBusMessage}.
-     * @see #getViaPartitionKey()
-     */
-    public ServiceBusMessage setViaPartitionKey(String viaPartitionKey) {
-        amqpAnnotatedMessage.getMessageAnnotations().put(VIA_PARTITION_KEY_ANNOTATION_NAME.getValue(), viaPartitionKey);
-        return this;
-    }
-
-    /**
      * Gets the session id of the message.
      *
      * @return Session Id of the {@link ServiceBusMessage}.
@@ -491,8 +473,13 @@ public class ServiceBusMessage {
      * @param sessionId to be set.
      *
      * @return The updated {@link ServiceBusMessage}.
+     * @throws IllegalArgumentException if {@code sessionId} is too long or if the  {@code sessionId}
+     * does not match the {@code partitionKey}.
      */
     public ServiceBusMessage setSessionId(String sessionId) {
+        checkIdLength("sessionId", sessionId, MAX_SESSION_ID_LENGTH);
+        checkSessionId(sessionId);
+
         amqpAnnotatedMessage.getProperties().setGroupId(sessionId);
         return this;
     }
@@ -532,4 +519,54 @@ public class ServiceBusMessage {
             dataMap.remove(key.getValue());
         }
     }
+
+    /**
+     * Checks the length of ID fields.
+     *
+     * Some fields within the message will cause a failure in the service without enough context information.
+     */
+    private void checkIdLength(String fieldName, String value, int maxLength) {
+        if (value != null && value.length() > maxLength) {
+            final String message = String.format("%s cannot be longer than %d characters.", fieldName, maxLength);
+            throw logger.logExceptionAsError(new IllegalArgumentException(message));
+        }
+    }
+
+    /**
+     * Validates that the user can't set the partitionKey to a different value than the session ID.
+     * (this will eventually migrate to a service-side check)
+     */
+    private void checkSessionId(String proposedSessionId) {
+        if (proposedSessionId == null) {
+            return;
+        }
+
+        if (this.getPartitionKey() != null && this.getPartitionKey().compareTo(proposedSessionId) != 0) {
+            final String message = String.format(
+                "sessionId:%s cannot be set to a different value than partitionKey:%s.",
+                proposedSessionId,
+                this.getPartitionKey());
+            throw logger.logExceptionAsError(new IllegalArgumentException(message));
+        }
+    }
+
+    /**
+     * Validates that the user can't set the partitionKey to a different value than the session ID.
+     * (this will eventually migrate to a service-side check)
+     */
+    private void checkPartitionKey(String proposedPartitionKey) {
+        if (proposedPartitionKey == null) {
+            return;
+        }
+
+        if (this.getSessionId() != null && this.getSessionId().compareTo(proposedPartitionKey) != 0) {
+            final String message = String.format(
+                "partitionKey:%s cannot be set to a different value than sessionId:%s.",
+                proposedPartitionKey,
+                this.getSessionId());
+
+            throw logger.logExceptionAsError(new IllegalArgumentException(message));
+        }
+    }
+
 }

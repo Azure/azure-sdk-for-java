@@ -20,6 +20,8 @@ import io.opentelemetry.sdk.trace.export.SpanExporter;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -45,12 +47,12 @@ public final class AzureMonitorExporterBuilder {
      * @throws NullPointerException if {@code endpoint} is null.
      * @throws IllegalArgumentException if {@code endpoint} cannot be parsed into a valid URL.
      */
-    public AzureMonitorExporterBuilder endpoint(String endpoint) {
+    AzureMonitorExporterBuilder endpoint(String endpoint) {
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
 
         try {
             URL url = new URL(endpoint);
-            restServiceClientBuilder.host(url.getHost());
+            restServiceClientBuilder.host(url.getProtocol() + "://" + url.getHost());
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsWarning(
                 new IllegalArgumentException("'endpoint' must be a valid URL.", ex));
@@ -134,13 +136,37 @@ public final class AzureMonitorExporterBuilder {
     }
 
     /**
-     * Sets the instrumentation key to use for exporting telemetry events to Azure Monitor.
-     * @param instrumentationKey The instrumentation key of the Azure Monitor resource.
+     * The connection string to use for exporting telemetry events to Azure Monitor.
+     * @param connectionString The connection string for the Azure Monitor resource.
      * @return The updated {@link AzureMonitorExporterBuilder} object.
+     * @throws NullPointerException If the connection string is {@code null}.
+     * @throws IllegalArgumentException If the connection string is invalid.
      */
-    public AzureMonitorExporterBuilder instrumentationKey(String instrumentationKey) {
-        this.instrumentationKey = instrumentationKey;
+    public AzureMonitorExporterBuilder connectionString(String connectionString) {
+        Map<String, String> keyValues = extractKeyValuesFromConnectionString(connectionString);
+        if (!keyValues.containsKey("InstrumentationKey")) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("InstrumentationKey not found in connectionString"));
+        }
+        this.instrumentationKey = keyValues.get("InstrumentationKey");
+        String endpoint = keyValues.get("IngestionEndpoint");
+        if (endpoint != null) {
+            this.endpoint(endpoint);
+        }
         return this;
+    }
+
+    private Map<String, String> extractKeyValuesFromConnectionString(String connectionString) {
+        Objects.requireNonNull(connectionString);
+        Map<String, String> keyValues = new HashMap<>();
+        String[] splits = connectionString.split(";");
+        for (String split : splits) {
+            String[] keyValPair = split.split("=");
+            if (keyValPair.length == 2) {
+                keyValues.put(keyValPair[0], keyValPair[1]);
+            }
+        }
+        return keyValues;
     }
 
     /**
@@ -190,7 +216,9 @@ public final class AzureMonitorExporterBuilder {
      * @throws NullPointerException if the instrumentation key is not set.
      */
     public AzureMonitorExporter buildExporter() {
-        Objects.requireNonNull(instrumentationKey, "'instrumentationKey' cannot be null");
+        // instrumentationKey is extracted from connectionString, so, if instrumentationKey is null
+        // then the error message should read "connectionString cannot be null".
+        Objects.requireNonNull(instrumentationKey, "'connectionString' cannot be null");
         return new AzureMonitorExporter(buildClient(), instrumentationKey);
     }
 
