@@ -164,13 +164,13 @@ final class Transforms {
             }
 
             // add form lines
-            List<FormLine> perPageFormLineList = new ArrayList<>();
+            List<FormLine> perPageFormLineList = null;
             if (includeFieldElements && !CoreUtils.isNullOrEmpty(readResultItem.getLines())) {
                 perPageFormLineList = getReadResultFormLines(readResultItem);
             }
 
             // add selection marks
-            List<FormSelectionMark> perPageFormSelectionMarkList = new ArrayList<>();
+            List<FormSelectionMark> perPageFormSelectionMarkList = null;
             if (includeFieldElements && !CoreUtils.isNullOrEmpty(readResultItem.getSelectionMarks())) {
                 PageResult pageResultItem = pageResults.get(index);
                 perPageFormSelectionMarkList = getReadResultFormSelectionMarks(readResultItem,
