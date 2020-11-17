@@ -8,6 +8,7 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
 import com.azure.cosmos.TransactionalBatchResponse;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
@@ -651,11 +652,12 @@ public interface AsyncDocumentClient {
      * In case of failure the {@link Flux} will error.
      *
      * @param collectionLink    the link to the parent document collection.
-     * @param changeFeedOptions the change feed options.
+     * @param requestOptions the change feed request options.
      * @return a {@link Flux} containing one or several feed response pages of the obtained documents or an error.
      */
-    Flux<FeedResponse<Document>> queryDocumentChangeFeed(String collectionLink,
-                                                               ChangeFeedOptions changeFeedOptions);
+    Flux<FeedResponse<Document>> queryDocumentChangeFeed(
+        String collectionLink,
+        CosmosChangeFeedRequestOptions requestOptions);
 
     /**
      * Reads all partition key ranges in a document collection.

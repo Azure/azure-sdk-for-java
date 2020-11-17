@@ -3,8 +3,8 @@
 package com.azure.cosmos.implementation.changefeed.implementation;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.implementation.ChangeFeedOptions;
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
@@ -84,11 +84,11 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
 
     @Override
     public Flux<FeedResponse<JsonNode>> createDocumentChangeFeedQuery(CosmosAsyncContainer collectionLink,
-                                                                      ChangeFeedOptions feedOptions) {
+                                                                      CosmosChangeFeedRequestOptions requestOptions) {
         AsyncDocumentClient clientWrapper =
             CosmosBridgeInternal.getAsyncDocumentClient(collectionLink.getDatabase());
         Flux<FeedResponse<JsonNode>> feedResponseFlux =
-            clientWrapper.queryDocumentChangeFeed(BridgeInternal.extractContainerSelfLink(collectionLink), feedOptions)
+            clientWrapper.queryDocumentChangeFeed(BridgeInternal.extractContainerSelfLink(collectionLink), requestOptions)
                                                                     .map(response -> {
                                                                         List<JsonNode> results = response.getResults()
                                                                                                                      .stream()
