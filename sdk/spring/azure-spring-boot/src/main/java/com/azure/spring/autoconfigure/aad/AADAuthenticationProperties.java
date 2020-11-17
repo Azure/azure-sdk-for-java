@@ -61,20 +61,6 @@ public class AADAuthenticationProperties {
     private String clientSecret;
 
     /**
-     * Redirection Endpoint: Used by the authorization server
-     * to return responses containing authorization credentials to the client via the resource owner user-agent.
-     */
-    private String redirectUriTemplate;
-
-    /**
-     * Optional. scope doc:
-     * https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-permissions-and-consent#scopes-and-permissions
-     * @deprecated Please use "azure.activedirectory.authorization.client-registration-id.scope" instead.
-     */
-    @Deprecated
-    private List<String> scope = Arrays.asList("openid", "profile", "https://graph.microsoft.com/user.read");
-
-    /**
      * App ID URI which might be used in the <code>"aud"</code> claim of an <code>id_token</code>.
      */
     private String appIdUri;
@@ -310,32 +296,6 @@ public class AADAuthenticationProperties {
 
     public void setClientSecret(String clientSecret) {
         this.clientSecret = clientSecret;
-    }
-
-    public String getRedirectUriTemplate() {
-        return redirectUriTemplate;
-    }
-
-    public void setRedirectUriTemplate(String redirectUriTemplate) {
-        this.redirectUriTemplate = redirectUriTemplate;
-    }
-
-    /**
-     * @param scope scope
-     * @deprecated Please use "azure.activedirectory.authorization.client-registration-id.scope" instead.
-     */
-    @Deprecated
-    public void setScope(List<String> scope) {
-        this.scope = scope;
-    }
-
-    /**
-     * @return scope
-     * @deprecated Please use "azure.activedirectory.authorization.client-registration-id.scope" instead.
-     */
-    @Deprecated
-    public List<String> getScope() {
-        return scope;
     }
 
     @Deprecated
