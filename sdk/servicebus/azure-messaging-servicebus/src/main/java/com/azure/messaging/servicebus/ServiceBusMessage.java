@@ -18,8 +18,6 @@ import com.azure.core.experimental.util.BinaryData;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.Arrays;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -126,8 +124,8 @@ public class ServiceBusMessage {
         AmqpMessageBody amqpMessageBody;
         switch (bodyType) {
             case DATA:
-                final byte[] data = receivedMessage.getAmqpAnnotatedMessage().getBody().getFirstData();
-                amqpMessageBody = AmqpMessageBody.fromData(Arrays.copyOf(data, data.length));
+                amqpMessageBody = AmqpMessageBody.fromData(receivedMessage.getAmqpAnnotatedMessage().getBody()
+                    .getFirstData());
                 break;
             case SEQUENCE:
             case VALUE:
