@@ -1,8 +1,14 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.amqp.models.AmqpMessageBodyType;
 
+/**
+ * java doc sample for  {@link ServiceBusMessage}.
+ */
 public class ServiceBusMessageJavaDocCodeSamples {
     /**
      * Copy {@link AmqpAnnotatedMessage}.

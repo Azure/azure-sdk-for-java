@@ -167,7 +167,8 @@ public class ServiceBusMessage {
         newHeader.setFirstAcquirer(receivedHeader.isFirstAcquirer());
 
         // copy message annotations except for broker set ones
-        final Map<String, Object> receivedAnnotations = receivedMessage.getAmqpAnnotatedMessage().getMessageAnnotations();
+        final Map<String, Object> receivedAnnotations = receivedMessage.getAmqpAnnotatedMessage()
+            .getMessageAnnotations();
         final Map<String, Object> newAnnotations = amqpAnnotatedMessage.getMessageAnnotations();
 
         for (Map.Entry<String, Object> entry: receivedAnnotations.entrySet()) {
@@ -652,15 +653,6 @@ public class ServiceBusMessage {
         this.context = context.addData(key, value);
 
         return this;
-    }
-
-    /*
-     * Gets value from given map.
-     */
-    private void removeValues(Map<String, Object> dataMap, AmqpMessageConstant... keys) {
-        for (AmqpMessageConstant key : keys) {
-            dataMap.remove(key.getValue());
-        }
     }
 
     /**
