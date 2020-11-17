@@ -518,9 +518,10 @@ public class ManagementChannel implements ServiceBusManagementNode {
             .next()
             .handle((response, sink) -> {
                 if (response != AmqpResponseCode.ACCEPTED && response != AmqpResponseCode.OK) {
-                    final String message = String.format("User does not have authorization to perform operation [%s] on entity [%s]. Response: [%s]",
-                            operation, entityPath, response);
-                    final Throwable exc = new AmqpException(false, AmqpErrorCondition.UNAUTHORIZED_ACCESS, message, getErrorContext());
+                    final String message = String.format("User does not have authorization to perform operation "
+                        + "[%s] on entity [%s]. Response: [%s]", operation, entityPath, response);
+                    final Throwable exc = new AmqpException(false, AmqpErrorCondition.UNAUTHORIZED_ACCESS,
+                        message, getErrorContext());
                     sink.error(new ServiceBusException(exc, ServiceBusErrorSource.MANAGEMENT));
                 } else {
                     sink.complete();

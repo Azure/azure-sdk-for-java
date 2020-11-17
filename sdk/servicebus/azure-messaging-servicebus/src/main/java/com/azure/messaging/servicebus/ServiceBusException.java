@@ -18,7 +18,7 @@ public final class ServiceBusException extends AzureException {
     private final boolean isTransient;
 
     /**
-     * @param throwable   for the error happened.
+     * @param throwable for the error happened.
      * @param errorSource indicating which api caused the error.
      */
     public ServiceBusException(Throwable throwable, ServiceBusErrorSource errorSource) {
