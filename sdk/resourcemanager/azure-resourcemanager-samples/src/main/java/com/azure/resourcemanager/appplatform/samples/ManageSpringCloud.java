@@ -197,7 +197,7 @@ public class ManageSpringCloud {
             allowAllSSL();
             String cerPassword = Utils.password();
             String cerPath = ManageSpringCloud.class.getResource("/").getPath() + domainName + ".cer";
-            String pfxPath = ManageSpringCloud.class.getClass().getResource("/").getPath() + domainName + ".pfx";
+            String pfxPath = ManageSpringCloud.class.getResource("/").getPath() + domainName + ".pfx";
             Utils.createCertificate(cerPath, pfxPath, domainName, cerPassword, "ssl." + domainName, "ssl." + domainName);
 
             byte[] certificate = readAllBytes(new FileInputStream(pfxPath));
@@ -210,8 +210,9 @@ public class ManageSpringCloud {
             System.out.printf("Certificate Thumbprint: %s%n", thumbprint);
 
             System.out.printf("Creating key vault %s with access from %s, %s%n", vaultName, clientId, SPRING_CLOUD_SERVICE_PRINCIPAL);
-            Vault vault = azureResourceManager.vaults().getByResourceGroup(rgName, vaultName);
-            vault.update()
+            Vault vault = azureResourceManager.vaults().define(vaultName)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
                 .defineAccessPolicy()
                     .forServicePrincipal(clientId)
                     .allowSecretAllPermissions()
@@ -222,7 +223,7 @@ public class ManageSpringCloud {
                     .allowCertificatePermissions(CertificatePermissions.GET, CertificatePermissions.LIST)
                     .allowSecretPermissions(SecretPermissions.GET, SecretPermissions.LIST)
                     .attach()
-                .apply();
+                .create();
             System.out.printf("Created key vault %s%n", vault.name());
             Utils.print(vault);
 
