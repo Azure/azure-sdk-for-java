@@ -1191,7 +1191,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMap(channel -> channel.setSessionState(sessionId, sessionState, linkName))
-                .onErrorMap((err) -> mapError(err, ServiceBusErrorSource.RECEIVE));
+            .onErrorMap((err) -> mapError(err, ServiceBusErrorSource.RECEIVE));
     }
 
     Mono<byte[]> getSessionState(String sessionId) {
@@ -1219,7 +1219,6 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * Map the error to {@link ServiceBusException}
      */
     private Throwable mapError(Throwable throwable, ServiceBusErrorSource errorSource) {
-        // If it is already `ServiceBusReceiverException`, we can just throw it.
         if (!(throwable instanceof ServiceBusException)) {
             return new ServiceBusException(throwable, errorSource);
         }
