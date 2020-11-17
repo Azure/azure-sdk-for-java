@@ -55,8 +55,9 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
      * @param processorOptions Options to configure this instance of the processor.
      */
     ServiceBusProcessorClient(ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder sessionReceiverBuilder,
-                              Consumer<ServiceBusReceivedMessageContext> processMessage,
-                              Consumer<ServiceBusProcessErrorContext> processError, ServiceBusProcessorClientOptions processorOptions) {
+        Consumer<ServiceBusReceivedMessageContext> processMessage,
+        Consumer<ServiceBusProcessErrorContext> processError,
+        ServiceBusProcessorClientOptions processorOptions) {
         this.sessionReceiverBuilder = Objects.requireNonNull(sessionReceiverBuilder,
             "'sessionReceiverBuilder' cannot be null");
         this.processMessage = Objects.requireNonNull(processMessage, "'processMessage' cannot be null");
@@ -75,8 +76,8 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
      * @param processorOptions Options to configure this instance of the processor.
      */
     ServiceBusProcessorClient(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder,
-                              Consumer<ServiceBusReceivedMessageContext> processMessage,
-                              Consumer<ServiceBusProcessErrorContext> processError, ServiceBusProcessorClientOptions processorOptions) {
+        Consumer<ServiceBusReceivedMessageContext> processMessage,
+        Consumer<ServiceBusProcessErrorContext> processError, ServiceBusProcessorClientOptions processorOptions) {
         this.receiverBuilder = Objects.requireNonNull(receiverBuilder, "'receiverBuilder' cannot be null");
         this.processMessage = Objects.requireNonNull(processMessage, "'processMessage' cannot be null");
         this.processError = Objects.requireNonNull(processError, "'processError' cannot be null");

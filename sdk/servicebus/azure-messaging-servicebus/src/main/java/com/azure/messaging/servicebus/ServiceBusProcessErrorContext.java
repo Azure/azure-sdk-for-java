@@ -18,7 +18,7 @@ public class ServiceBusProcessErrorContext {
         this.entityPath = entityPath;
 
         if (throwable instanceof ServiceBusException) {
-            final ServiceBusException serviceBusException = ((ServiceBusException)throwable);
+            final ServiceBusException serviceBusException = ((ServiceBusException) throwable);
             this.errorSource = serviceBusException.getErrorSource();
         } else {
             this.errorSource = ServiceBusErrorSource.RECEIVE;

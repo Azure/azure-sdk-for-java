@@ -750,7 +750,8 @@ public final class ServiceBusClientBuilder {
          *
          * @return The updated {@link ServiceBusProcessorClientBuilder} object
          */
-        public ServiceBusSessionProcessorClientBuilder processError(Consumer<ServiceBusProcessErrorContext> processError) {
+        public ServiceBusSessionProcessorClientBuilder processError(
+            Consumer<ServiceBusProcessErrorContext> processError) {
             this.processError = processError;
             return this;
         }
