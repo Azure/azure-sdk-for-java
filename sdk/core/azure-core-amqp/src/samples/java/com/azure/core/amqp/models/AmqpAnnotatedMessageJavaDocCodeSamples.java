@@ -27,4 +27,25 @@ public class AmqpAnnotatedMessageJavaDocCodeSamples {
         }
         // END: com.azure.core.amqp.models.AmqpBodyType.checkBodyType
     }
+
+    /**
+     * Copy {@link AmqpAnnotatedMessage}.
+     */
+    public void copyAmqpAnnotatedMessage() {
+        AmqpAnnotatedMessage sourceAnnotatedMessage = null;
+        // BEGIN: com.azure.core.amqp.models.AmqpAnnotatedMessage.copyAmqpAnnotatedMessage
+        AmqpMessageBodyType bodyType = sourceAnnotatedMessage.getBody().getBodyType();
+        AmqpAnnotatedMessage copyAnnotatedMessage = null;
+        switch (bodyType) {
+            case DATA:
+                copyAnnotatedMessage = new AmqpAnnotatedMessage(sourceAnnotatedMessage);
+                break;
+            case SEQUENCE:
+            case VALUE:
+                throw new RuntimeException("Body type not supported yet.");
+            default:
+                throw new RuntimeException("Body type not valid.");
+        }
+        // END: com.azure.core.amqp.models.AmqpAnnotatedMessage.copyAmqpAnnotatedMessage
+    }
 }

@@ -5,15 +5,18 @@ package com.azure.core.amqp.models;
 
 import com.azure.core.util.logging.ClientLogger;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
 /**
  * The representation of message as defined by AMQP protocol.
  *
- * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#section-message-format">
- *     Amqp Message Format.</a>
+ * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#section-message-format" target="_blank">
+ *     Amqp Message Format</a>
+ * @see AmqpMessageBody
  */
 public final class AmqpAnnotatedMessage {
     private final ClientLogger logger = new ClientLogger(AmqpAnnotatedMessage.class);
@@ -45,12 +48,19 @@ public final class AmqpAnnotatedMessage {
 
     /**
      * Creates instance of {@link AmqpAnnotatedMessage} with given {@link AmqpAnnotatedMessage} instance.
+     * The Current implementation only support {@link AmqpMessageBodyType#DATA DATA} AMQP data type. Track this
+     * <a href="https://github.com/Azure/azure-sdk-for-java/issues/17614" target="_blank">issue</a> to find out support
+     * for other AMQP types.
      *
+     * <p><strong>How to check for {@link AmqpMessageBodyType} before calling this constructor</strong></p>
+     * {@codesnippet com.azure.core.amqp.models.AmqpAnnotatedMessage.copyAmqpAnnotatedMessage}
+
      * @param message used to create another instance of {@link AmqpAnnotatedMessage}.
      *
      * @throws NullPointerException if {@code message} or {@link AmqpAnnotatedMessage#getBody() body} is null.
      * @throws UnsupportedOperationException if {@link AmqpMessageBodyType} is {@link AmqpMessageBodyType#SEQUENCE} or
-     * {@link AmqpMessageBodyType#VALUE}.
+     * {@link AmqpMessageBodyType#VALUE}. See code sample above explaining how to check for {@link AmqpMessageBodyType}
+     * before calling this constructor.
      * @throws IllegalStateException for invalid {@link AmqpMessageBodyType}.
      */
     public AmqpAnnotatedMessage(AmqpAnnotatedMessage message) {
@@ -59,12 +69,15 @@ public final class AmqpAnnotatedMessage {
         AmqpMessageBodyType bodyType = message.getBody().getBodyType();
         switch (bodyType) {
             case DATA:
-                amqpMessageBody = AmqpMessageBody.fromData(message.getBody().getFirstData());
+                final byte[] data = message.getBody().getFirstData();
+                amqpMessageBody = AmqpMessageBody.fromData(Arrays.copyOf(data, data.length));
                 break;
             case SEQUENCE:
             case VALUE:
-                throw logger.logExceptionAsError(new UnsupportedOperationException("Body type not supported yet "
-                    + bodyType.toString()));
+                throw logger.logExceptionAsError(new UnsupportedOperationException(
+                    String.format(Locale.US, "This constructor only support body type [%s] at present. Track "
+                        + "this issue, https://github.com/Azure/azure-sdk-for-java/issues/17614 for other body type "
+                        + "support in future.", AmqpMessageBodyType.DATA.toString())));
             default:
                 throw logger.logExceptionAsError(new IllegalStateException("Body type not valid "
                     + bodyType.toString()));

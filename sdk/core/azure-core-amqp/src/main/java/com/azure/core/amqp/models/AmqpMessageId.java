@@ -33,6 +33,9 @@ public final class AmqpMessageId {
         this.messageId = Objects.requireNonNull(messageId, "'messageId' cannot be null.");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
         return messageId.hashCode();
@@ -59,9 +62,7 @@ public final class AmqpMessageId {
     }
 
     /**
-     * Gets string representation of the message id.
-     *
-     * @return string representation of the message id.
+     * {@inheritDoc}
      */
     @Override
     public String toString() {

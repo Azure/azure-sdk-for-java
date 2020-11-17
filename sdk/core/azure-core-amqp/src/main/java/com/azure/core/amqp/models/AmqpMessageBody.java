@@ -6,24 +6,19 @@ package com.azure.core.amqp.models;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 /**
- * This class encapsulates the body of a message. The {@link AmqpMessageBodyType} map to AMQP specification message body
- * types. Current implementation only support {@link AmqpMessageBodyType#DATA DATA}. Other types will be supported in
- * future releases.
- * <b>Amqp message body types:</b>
- * <ul>
- * <li><a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#type-data">DATA</a></li>
- * <li><a href="http://docs.oasis-open.org/amqp/core/v1.0/amqp-core-messaging-v1.0.html#type-amqp-sequence">SEQUENCE</a></li>
- * <li><a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#type-amqp-value">VALUE</a></li>
- * </ul>
+ * This class encapsulates the body of a message. The {@link AmqpMessageBodyType} map to an AMQP specification message
+ * body types. Current implementation only support {@link AmqpMessageBodyType#DATA DATA} AMQP data type. Track this
+ * <a href="https://github.com/Azure/azure-sdk-for-java/issues/17614" target="_blank">issue</a> to find out support for
+ * other AMQP types.
  *
- * <b>Client should test for {@link AmqpMessageBodyType} before calling corresponding get method.Get methods not
- * corresponding to the type of the body throws exception.</b>
+ * <p><b>Client should test for {@link AmqpMessageBodyType} before calling corresponding get method. Get methods not
+ * corresponding to the type of the body throws exception.</b></p>
  *
  * <p><strong>How to check for {@link AmqpMessageBodyType}</strong></p>
  * {@codesnippet com.azure.core.amqp.models.AmqpBodyType.checkBodyType}
@@ -36,7 +31,7 @@ public final class AmqpMessageBody {
 
     private List<byte[]> data;
 
-    AmqpMessageBody() {
+    private AmqpMessageBody() {
         // package constructor so no one can create instance of this except classes im this package.
     }
 
@@ -53,7 +48,7 @@ public final class AmqpMessageBody {
         Objects.requireNonNull(data, "'data' cannot be null.");
         AmqpMessageBody body = new AmqpMessageBody();
         body.bodyType = AmqpMessageBodyType.DATA;
-        body.data = Collections.singletonList(Arrays.copyOf(data, data.length));
+        body.data = Collections.singletonList(data);
         return body;
     }
 
@@ -69,11 +64,10 @@ public final class AmqpMessageBody {
 
     /**
      * Gets an {@link IterableStream} of byte array containing only first byte array set on this
-     * {@link AmqpMessageBody}. This library only support one byte array, so the returned list will have only one
-     * element. Look for future releases where we will support multiple byte array.
-     *
-     * <b>Client should test for {@link AmqpMessageBodyType} before calling corresponding get method.Get methods not
-     * corresponding to the type of the body throws exception.</b>
+     * {@link AmqpMessageBody}. This library only support one byte array at present, so the returned list will have only
+     *  one element.
+     * <p><b>Client should test for {@link AmqpMessageBodyType} before calling corresponding get method. Get methods not
+     * corresponding to the type of the body throws exception.</b></p>
      *
      * <p><strong>How to check for {@link AmqpMessageBodyType}</strong></p>
      * {@codesnippet com.azure.core.amqp.models.AmqpBodyType.checkBodyType}
@@ -83,8 +77,11 @@ public final class AmqpMessageBody {
      */
     public IterableStream<byte[]> getData() {
         if (bodyType != AmqpMessageBodyType.DATA) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(String.format("Cannot return data for a "
-                + "message which is of type %s.", getBodyType().toString())));
+
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format(Locale.US, "This method can only be called for body type [%s]. Track this issue, "
+                        + "https://github.com/Azure/azure-sdk-for-java/issues/17614 for other body type support in "
+                        + "future.", AmqpMessageBodyType.DATA.toString())));
         }
 
         return new IterableStream<>(data);
@@ -94,20 +91,24 @@ public final class AmqpMessageBody {
      * Gets first byte array set on this {@link AmqpMessageBody}. This library only support one byte array on Amqp
      * Message. Look for future releases where we will support multiple byte array and you can use
      * {@link AmqpMessageBody#getData()} API.
-     * <b>Client should test for {@link AmqpMessageBodyType} before calling corresponding get method.Get methods not
-     * corresponding to the type of the body throws exception.</b>
+     * <p><b>Client should test for {@link AmqpMessageBodyType} before calling corresponding get method. Get methods not
+     * corresponding to the type of the body throws exception.</b></p>
+     *
      * <p><strong>How to check for {@link AmqpMessageBodyType}</strong></p>
      * {@codesnippet com.azure.core.amqp.models.AmqpBodyType.checkBodyType}
      * @return data set on {@link AmqpMessageBody}.
      *
      * @throws IllegalArgumentException If {@link AmqpMessageBodyType} is not {@link AmqpMessageBodyType#DATA DATA}.
-     * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#section-message-format">
+     * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#section-message-format" target="_blank">
      *     Amqp Message Format.</a>
      */
     public byte[] getFirstData() {
         if (bodyType != AmqpMessageBodyType.DATA) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(String.format("Cannot return data for a "
-                + "message which is of type %s.", getBodyType().toString())));
+
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format(Locale.US, "This method can only be called for body type [%s]. Track this issue, "
+                    + "https://github.com/Azure/azure-sdk-for-java/issues/17614 for other body type support in "
+                    + "future.", AmqpMessageBodyType.DATA.toString())));
         }
 
         return data.get(0);

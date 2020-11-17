@@ -21,13 +21,16 @@ public final class AmqpAddress {
     /**
      * Creates the {@link AmqpAddress} with given {@code address}.
      *
-     * @param address to use.
+     * @param address The address to set for this instance.
      * @throws NullPointerException if {@code address} is null.
      */
     public AmqpAddress(String address) {
         this.address = Objects.requireNonNull(address, "'address' cannot be null.");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
         return address.hashCode();
@@ -54,9 +57,7 @@ public final class AmqpAddress {
     }
 
     /**
-     * Gets string representation of the address.
-     *
-     * @return string representation of the address.
+     * {@inheritDoc}
      */
     @Override
     public String toString() {

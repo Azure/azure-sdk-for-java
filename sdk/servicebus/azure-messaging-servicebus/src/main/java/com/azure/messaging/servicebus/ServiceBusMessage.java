@@ -18,7 +18,6 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 
 import static com.azure.core.amqp.AmqpMessageConstant.DEAD_LETTER_DESCRIPTION_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.DEAD_LETTER_REASON_ANNOTATION_NAME;
@@ -165,16 +164,7 @@ public class ServiceBusMessage {
         final AmqpMessageBodyType type = amqpAnnotatedMessage.getBody().getBodyType();
         switch (type) {
             case DATA:
-                Optional<byte[]> byteArrayData = amqpAnnotatedMessage.getBody().getData().stream().findFirst();
-                final byte[] bytes;
-
-                if (byteArrayData.isPresent()) {
-                    bytes = byteArrayData.get();
-                } else {
-                    logger.warning("Data not present.");
-                    bytes = new byte[0];
-                }
-                return BinaryData.fromBytes(bytes);
+                return BinaryData.fromBytes(amqpAnnotatedMessage.getBody().getFirstData());
             case SEQUENCE:
             case VALUE:
                 throw logger.logExceptionAsError(new UnsupportedOperationException("Not supported AmqpBodyType: "
