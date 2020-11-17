@@ -3682,7 +3682,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             throw new IllegalStateException("PartitionKeyRange list cannot be null");
         }
 
-        List<FeedRange> feedRanges = new ArrayList<FeedRange>();
+        List<FeedRange> feedRanges = new ArrayList<FeedRange>(partitionKeyRangeList.size());
         partitionKeyRangeList.forEach(pkRange -> {
             feedRanges.add(toFeedRange(pkRange));
         });

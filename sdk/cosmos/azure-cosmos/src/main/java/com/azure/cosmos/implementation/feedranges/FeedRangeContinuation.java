@@ -50,7 +50,7 @@ public abstract class FeedRangeContinuation {
     public abstract ShouldRetryResult handleChangeFeedNotModified(
         RxDocumentServiceResponse responseMessage);
 
-    public abstract Mono<ShouldRetryResult> handleSplitAsync(
+    public abstract Mono<ShouldRetryResult> handleSplit(
         RxDocumentClientImpl client,
         RxDocumentServiceResponse responseMessage);
 

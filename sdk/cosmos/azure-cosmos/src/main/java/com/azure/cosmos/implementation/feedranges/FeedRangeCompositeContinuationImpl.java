@@ -12,9 +12,12 @@ import com.azure.cosmos.implementation.ShouldRetryResult;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
+import com.azure.cosmos.implementation.directconnectivity.GatewayAddressCache;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 import com.azure.cosmos.implementation.routing.Range;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -32,6 +35,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  */
 final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
 
+    private final static Logger LOGGER = LoggerFactory.getLogger(FeedRangeCompositeContinuationImpl.class);
     private final static ShouldRetryResult NO_RETRY = ShouldRetryResult.noRetry();
     private final static ShouldRetryResult RETRY = ShouldRetryResult.retryAfter(Duration.ZERO);
     private final Queue<CompositeContinuationToken> compositeContinuationTokens;
@@ -139,10 +143,7 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
 
     @Override
     public ShouldRetryResult handleChangeFeedNotModified(final RxDocumentServiceResponse response) {
-        if (response == null) {
-            throw new NullPointerException("response");
-        }
-
+        checkNotNull(response, "Argument 'response' must not be null");
         final int statusCode = response.getStatusCode();
         if (statusCode >= HttpConstants.StatusCodes.MINIMUM_SUCCESS_STATUSCODE
             && statusCode <= HttpConstants.StatusCodes.MAXIMUM_SUCCESS_STATUSCODE) {
@@ -171,16 +172,11 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
     }
 
     @Override
-    public Mono<ShouldRetryResult> handleSplitAsync(final RxDocumentClientImpl client,
-                                                    final RxDocumentServiceResponse response) {
+    public Mono<ShouldRetryResult> handleSplit(final RxDocumentClientImpl client,
+                                               final RxDocumentServiceResponse response) {
 
-        if (client == null) {
-            throw new NullPointerException("client");
-        }
-
-        if (response == null) {
-            throw new NullPointerException("response");
-        }
+        checkNotNull(client, "Argument 'client' must not be null");
+        checkNotNull(response, "Argument 'response' must not be null");
 
         Integer nSubStatus = 0;
         final String valueSubStatus =
@@ -200,7 +196,7 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
 
         final RxPartitionKeyRangeCache partitionKeyRangeCache = client.getPartitionKeyRangeCache();
         final Mono<Utils.ValueHolder<List<PartitionKeyRange>>> resolvedRangesTask =
-            this.tryGetOverlappingRangesAsync(
+            this.tryGetOverlappingRanges(
                 partitionKeyRangeCache, this.currentToken.getRange().getMin(),
                 this.currentToken.getRange().getMax(),
                 true);
@@ -216,10 +212,7 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
 
     @Override
     public void accept(final FeedRangeContinuationVisitor visitor) {
-        if (visitor == null) {
-            throw new NullPointerException("visitor");
-        }
-
+        checkNotNull(visitor, "Argument 'visitor' must not be null");
         visitor.visit(this);
     }
 
@@ -248,12 +241,8 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
     }
 
     public static FeedRangeContinuation parse(final String jsonString) throws IOException {
-        if (jsonString == null) {
-            throw new NullPointerException("jsonString");
-        }
-
+        checkNotNull(jsonString, "Argument 'jsonString' must not be null");
         final ObjectMapper mapper = Utils.getSimpleObjectMapper();
-
         return mapper.readValue(jsonString, FeedRangeCompositeContinuationImpl.class);
     }
 
@@ -330,7 +319,7 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
         }
     }
 
-    private Mono<Utils.ValueHolder<List<PartitionKeyRange>>> tryGetOverlappingRangesAsync(
+    private Mono<Utils.ValueHolder<List<PartitionKeyRange>>> tryGetOverlappingRanges(
         final RxPartitionKeyRangeCache partitionKeyRangeCache, final String min, final String max,
         final Boolean forceRefresh) {
 
@@ -360,6 +349,10 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
 
             return null;
         } catch (final IOException ioError) {
+            LOGGER.debug(
+                "Failed to parse as composite continuation token JSON ",
+                providedContinuation,
+                ioError);
             return null;
         }
     }

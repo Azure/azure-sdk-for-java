@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.cosmos.implementation.feedranges;
 
 import com.azure.cosmos.implementation.HttpConstants;
@@ -79,7 +81,7 @@ public class FeedRangeTest {
         IRoutingMapProvider routingMapProviderMock = Mockito.mock(IRoutingMapProvider.class);
         StepVerifier
             .create(
-                FeedRangeEpk.getEffectiveRangesAsync(
+                FeedRangeEpk.getEffectiveRanges(
                     routingMapProviderMock,
                     null,
                     null))
@@ -118,7 +120,7 @@ public class FeedRangeTest {
         FeedRangeEpkImpl feedRangeEpk = new FeedRangeEpkImpl(range);
         StepVerifier
             .create(
-                feedRangeEpk.getPartitionKeyRangesAsync(
+                feedRangeEpk.getPartitionKeyRanges(
                     routingMapProviderMock,
                     null,
                     null))
@@ -212,7 +214,7 @@ public class FeedRangeTest {
 
         StepVerifier
             .create(
-                feedRangePartitionKeyRange.getEffectiveRangesAsync(
+                feedRangePartitionKeyRange.getEffectiveRanges(
                     routingMapProviderMock, null, null))
             .recordWith(ArrayList::new)
             .expectNextCount(1)
@@ -262,7 +264,7 @@ public class FeedRangeTest {
 
         StepVerifier
             .create(
-                feedRangePartitionKeyRange.getEffectiveRangesAsync(
+                feedRangePartitionKeyRange.getEffectiveRanges(
                     routingMapProviderMock, null, null))
             .recordWith(ArrayList::new)
             .expectErrorSatisfies((e) -> {
@@ -297,7 +299,7 @@ public class FeedRangeTest {
 
         StepVerifier
             .create(
-                feedRangePartitionKeyRange.getEffectiveRangesAsync(
+                feedRangePartitionKeyRange.getEffectiveRanges(
                     routingMapProviderMock, null, null))
             .recordWith(ArrayList::new)
             .expectNextCount(1)
@@ -339,7 +341,7 @@ public class FeedRangeTest {
         IRoutingMapProvider routingMapProviderMock = Mockito.mock(IRoutingMapProvider.class);
         StepVerifier
             .create(
-                feedRangPartitionKeyRange.getPartitionKeyRangesAsync(
+                feedRangPartitionKeyRange.getPartitionKeyRanges(
                     routingMapProviderMock,
                     null,
                     null))
@@ -407,7 +409,7 @@ public class FeedRangeTest {
         IRoutingMapProvider routingMapProviderMock = Mockito.mock(IRoutingMapProvider.class);
         StepVerifier
             .create(
-                feedRangePartitionKey.getEffectiveRangesAsync(
+                feedRangePartitionKey.getEffectiveRanges(
                     routingMapProviderMock,
                     null,
                     partitionKeyDefinition))
@@ -452,7 +454,7 @@ public class FeedRangeTest {
             new FeedRangePartitionKeyImpl(partitionKey);
         StepVerifier
             .create(
-                feedRangPartitionKey.getPartitionKeyRangesAsync(
+                feedRangPartitionKey.getPartitionKeyRanges(
                     routingMapProviderMock,
                     null,
                     partitionKeyDefinition))

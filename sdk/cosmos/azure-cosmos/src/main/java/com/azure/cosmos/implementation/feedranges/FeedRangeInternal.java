@@ -15,23 +15,25 @@ import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+
 public abstract class FeedRangeInternal extends JsonSerializable implements FeedRange {
+    private final static Logger LOGGER = LoggerFactory.getLogger(FeedRangeInternal.class);
 
     public abstract void accept(FeedRangeVisitor visitor);
 
     public abstract <TInput> void accept(GenericFeedRangeVisitor<TInput> visitor, TInput input);
 
-    public abstract <T> Mono<T> acceptAsync(FeedRangeAsyncVisitor<T> visitor);
+    public abstract <T> Mono<T> accept(FeedRangeAsyncVisitor<T> visitor);
 
     public static FeedRangeInternal convert(final FeedRange feedRange) {
-        if (feedRange == null) {
-            throw new NullPointerException("feedRange");
-        }
-
+        checkNotNull(feedRange, "Argument 'feedRange' must not be null");
         if (feedRange instanceof FeedRangeInternal) {
             return (FeedRangeInternal)feedRange;
         }
@@ -47,14 +49,7 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
      * @return A feed range
      */
     public static FeedRangeInternal fromJsonString(String json) {
-        FeedRangeInternal parsedRange;
-
-        try {
-            parsedRange = FeedRangeInternal.tryParse(json);
-        } catch (IOException e) {
-            throw new IllegalArgumentException(
-                String.format("Unable to parse JSON %s", json), e);
-        }
+        FeedRangeInternal parsedRange = FeedRangeInternal.tryParse(json);
 
         if (parsedRange == null) {
             throw new IllegalArgumentException(
@@ -66,12 +61,12 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
         return parsedRange;
     }
 
-    public abstract Mono<UnmodifiableList<Range<String>>> getEffectiveRangesAsync(
+    public abstract Mono<UnmodifiableList<Range<String>>> getEffectiveRanges(
         IRoutingMapProvider routingMapProvider,
         String containerRid,
         PartitionKeyDefinition partitionKeyDefinition);
 
-    public abstract Mono<UnmodifiableList<String>> getPartitionKeyRangesAsync(
+    public abstract Mono<UnmodifiableList<String>> getPartitionKeyRanges(
         IRoutingMapProvider routingMapProvider,
         String containerRid,
         PartitionKeyDefinition partitionKeyDefinition);
@@ -88,32 +83,36 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
         return this.toJson();
     }
 
-    public static FeedRangeInternal tryParse(final String jsonString) throws IOException {
-        if (jsonString == null) {
-            throw new NullPointerException("jsonString");
-        }
-
+    public static FeedRangeInternal tryParse(final String jsonString) {
+        checkNotNull(jsonString, "Argument 'jsonString' must not be null");
         final ObjectMapper mapper = Utils.getSimpleObjectMapper();
-        JsonNode rootNode = mapper.readTree(jsonString);
 
-        JsonNode rangeNode = rootNode.get(Constants.Properties.RANGE);
-        if (rangeNode != null && rangeNode.isObject()) {
-            Range<String> range = new Range<>((ObjectNode)rangeNode);
-            return new FeedRangeEpkImpl(range);
+        try {
+            JsonNode rootNode = mapper.readTree(jsonString);
+
+            JsonNode rangeNode = rootNode.get(Constants.Properties.RANGE);
+            if (rangeNode != null && rangeNode.isObject()) {
+                Range<String> range = new Range<>((ObjectNode)rangeNode);
+                return new FeedRangeEpkImpl(range);
+            }
+
+            JsonNode pkNode = rootNode.get(Constants.Properties.FEED_RANGE_PARTITION_KEY);
+            if (pkNode != null && pkNode.isArray()) {
+                PartitionKeyInternal pk = mapper.convertValue(pkNode, PartitionKeyInternal.class);
+                return new FeedRangePartitionKeyImpl(pk);
+            }
+
+            JsonNode pkRangeIdNode =
+                rootNode.get(Constants.Properties.FEED_RANGE_PARTITION_KEY_RANGE_ID);
+            if (pkRangeIdNode != null && pkRangeIdNode.isTextual()) {
+                return new FeedRangePartitionKeyRangeImpl(pkRangeIdNode.asText());
+            }
+
+            return null;
+
+        } catch (final IOException ioError) {
+            LOGGER.debug("Failed to parse feed range JSON %s", jsonString, ioError);
+            return null;
         }
-
-        JsonNode pkNode = rootNode.get(Constants.Properties.FEED_RANGE_PARTITION_KEY);
-        if (pkNode != null && pkNode.isArray()) {
-            PartitionKeyInternal pk = mapper.convertValue(pkNode, PartitionKeyInternal.class);
-            return new FeedRangePartitionKeyImpl(pk);
-        }
-
-        JsonNode pkRangeIdNode =
-            rootNode.get(Constants.Properties.FEED_RANGE_PARTITION_KEY_RANGE_ID);
-        if (pkRangeIdNode != null && pkRangeIdNode.isTextual()) {
-            return new FeedRangePartitionKeyRangeImpl(pkRangeIdNode.asText());
-        }
-
-        return null;
     }
 }

@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.azure.cosmos.BridgeInternal.setProperty;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 final class FeedRangeEpkImpl extends FeedRangeInternal {
     private static final FeedRangeEpkImpl fullRangeEPK =
@@ -27,10 +28,7 @@ final class FeedRangeEpkImpl extends FeedRangeInternal {
     private final UnmodifiableList<Range<String>> rangeList;
 
     public FeedRangeEpkImpl(final Range<String> range) {
-        if (range == null) {
-            throw new NullPointerException("range");
-        }
-
+        checkNotNull(range, "Argument 'range' must not be null");
         this.range = range;
         final ArrayList<Range<String>> temp = new ArrayList<>();
         temp.add(range);
@@ -48,33 +46,24 @@ final class FeedRangeEpkImpl extends FeedRangeInternal {
 
     @Override
     public void accept(final FeedRangeVisitor visitor) {
-        if (visitor == null) {
-            throw new NullPointerException("visitor");
-        }
-
+        checkNotNull(visitor, "Argument 'visitor' must not be null");
         visitor.visit(this);
     }
 
     @Override
     public <TInput> void accept(GenericFeedRangeVisitor<TInput> visitor, TInput input) {
-        if (visitor == null) {
-            throw new NullPointerException("visitor");
-        }
-
+        checkNotNull(visitor, "Argument 'visitor' must not be null");
         visitor.visit(this, input);
     }
 
     @Override
-    public <T> Mono<T> acceptAsync(final FeedRangeAsyncVisitor<T> visitor) {
-        if (visitor == null) {
-            throw new NullPointerException("visitor");
-        }
-
-        return visitor.visitAsync(this);
+    public <T> Mono<T> accept(final FeedRangeAsyncVisitor<T> visitor) {
+        checkNotNull(visitor, "Argument 'visitor' must not be null");
+        return visitor.visit(this);
     }
 
     @Override
-    public Mono<UnmodifiableList<Range<String>>> getEffectiveRangesAsync(
+    public Mono<UnmodifiableList<Range<String>>> getEffectiveRanges(
         final IRoutingMapProvider routingMapProvider,
         final String containerRid,
         final PartitionKeyDefinition partitionKeyDefinition) {
@@ -83,7 +72,7 @@ final class FeedRangeEpkImpl extends FeedRangeInternal {
     }
 
     @Override
-    public Mono<UnmodifiableList<String>> getPartitionKeyRangesAsync(
+    public Mono<UnmodifiableList<String>> getPartitionKeyRanges(
         final IRoutingMapProvider routingMapProvider,
         final String containerRid,
         final PartitionKeyDefinition partitionKeyDefinition) {
