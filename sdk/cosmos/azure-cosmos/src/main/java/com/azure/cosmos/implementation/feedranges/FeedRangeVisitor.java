@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation.feedranges;
 
-abstract class FeedRangeVisitor {
+public abstract class FeedRangeVisitor {
     public abstract void visit(FeedRangeEpkImpl feedRange);
 
     public abstract void visit(FeedRangePartitionKeyRangeImpl feedRange);

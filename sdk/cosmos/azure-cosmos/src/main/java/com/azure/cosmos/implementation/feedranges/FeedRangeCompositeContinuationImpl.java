@@ -247,16 +247,6 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
         return thisPtr;
     }
 
-    public static FeedRangeContinuation parse(final String jsonString) throws IOException {
-        if (jsonString == null) {
-            throw new NullPointerException("jsonString");
-        }
-
-        final ObjectMapper mapper = Utils.getSimpleObjectMapper();
-
-        return mapper.readValue(jsonString, FeedRangeCompositeContinuationImpl.class);
-    }
-
     @Override
     public String toString() {
         try {
@@ -314,7 +304,7 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
 
     private void moveToNextToken() {
         final CompositeContinuationToken recentToken = this.compositeContinuationTokens.poll();
-        if (recentToken.getToken() != null) {
+        if (recentToken != null && recentToken.getToken() != null) {
             // Normal ReadFeed can signal termination by CT null, not NotModified
             // Change Feed never lands here, as it always provides a CT
             // Consider current range done, if this FeedToken contains multiple ranges due
@@ -338,7 +328,7 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
             new Range<>(min, max, false, true), forceRefresh, null);
     }
 
-    private static CompositeContinuationToken tryParseAsCompositeContinuationToken(
+    static CompositeContinuationToken tryParseAsCompositeContinuationToken(
         final String providedContinuation) {
 
         try {
