@@ -74,10 +74,6 @@ public class AADResourceServerAutoConfiguration {
         return validators;
     }
 
-    /**
-     * Create a default WebSecurityConfigurerAdapter
-     * @return WebSecurityConfigurerAdapter bean
-     */
     @Configuration(proxyBeanMethods = false)
     @ConditionalOnMissingBean(WebSecurityConfigurerAdapter.class)
     @EnableWebSecurity
