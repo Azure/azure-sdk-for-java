@@ -12,7 +12,7 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class ChatParticipant {
     /*
-     * The user identity of the chat thread member
+     * The user identity of the chat participant
      * in the format `8:acs...`.
      */
     @JsonProperty(value = "user", required = true)

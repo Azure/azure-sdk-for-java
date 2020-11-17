@@ -86,7 +86,7 @@ public final class ChatThreadClient {
     }
 
     /**
-     * Adds participants to a thread. If Participants already exist, no change occurs.
+     * Adds participants to a thread. If participants already exist, no change occurs.
      *
      * @param options Options for adding participants.
      * @param context The context to associate with this operation.
