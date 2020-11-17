@@ -3,7 +3,6 @@
 
 package com.azure.spring.autoconfigure.aad;
 
-import com.azure.spring.aad.implementation.AuthorizationProperties;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +13,6 @@ import org.springframework.validation.annotation.Validated;
 import javax.annotation.PostConstruct;
 import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -36,8 +34,6 @@ public class AADAuthenticationProperties {
     private static final long DEFAULT_JWK_SET_CACHE_REFRESH_TIME = DEFAULT_JWK_SET_CACHE_LIFESPAN;
     private static final String GROUP_RELATIONSHIP_DIRECT = "direct";
     private static final String GROUP_RELATIONSHIP_TRANSITIVE = "transitive";
-
-    private String uri;
 
     private Map<String, AuthorizationProperties> authorization = new HashMap<>();
 
@@ -62,20 +58,6 @@ public class AADAuthenticationProperties {
      * Must be configured when OAuth2 authentication is done in front end
      */
     private String clientSecret;
-
-    /**
-     * Redirection Endpoint: Used by the authorization server
-     * to return responses containing authorization credentials to the client via the resource owner user-agent.
-     */
-    private String redirectUriTemplate;
-
-    /**
-     * Optional. scope doc:
-     * https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-permissions-and-consent#scopes-and-permissions
-     * @deprecated Please use "azure.activedirectory.authorization.client-registration-id.scope" instead.
-     */
-    @Deprecated
-    private List<String> scope = Arrays.asList("openid", "profile", "https://graph.microsoft.com/user.read");
 
     /**
      * App ID URI which might be used in the <code>"aud"</code> claim of an <code>id_token</code>.
@@ -275,14 +257,6 @@ public class AADAuthenticationProperties {
         }
     }
 
-    public void setUri(String uri) {
-        this.uri = uri;
-    }
-
-    public String getUri() {
-        return uri;
-    }
-
     public void setAuthorization(Map<String, AuthorizationProperties> authorization) {
         this.authorization = authorization;
     }
@@ -321,32 +295,6 @@ public class AADAuthenticationProperties {
 
     public void setClientSecret(String clientSecret) {
         this.clientSecret = clientSecret;
-    }
-
-    public String getRedirectUriTemplate() {
-        return redirectUriTemplate;
-    }
-
-    public void setRedirectUriTemplate(String redirectUriTemplate) {
-        this.redirectUriTemplate = redirectUriTemplate;
-    }
-
-    /**
-     * @param scope scope
-     * @deprecated Please use "azure.activedirectory.authorization.client-registration-id.scope" instead.
-     */
-    @Deprecated
-    public void setScope(List<String> scope) {
-        this.scope = scope;
-    }
-
-    /**
-     * @return scope
-     * @deprecated Please use "azure.activedirectory.authorization.client-registration-id.scope" instead.
-     */
-    @Deprecated
-    public List<String> getScope() {
-        return scope;
     }
 
     @Deprecated

@@ -1,7 +1,7 @@
 package com.azure.test.aad.auth;
 
-import com.azure.spring.aad.implementation.AzureClientRegistrationRepository;
-import com.azure.spring.aad.implementation.AzureOAuth2AuthorizedClientRepository;
+import com.azure.spring.autoconfigure.aad.AzureClientRegistrationRepository;
+import com.azure.spring.autoconfigure.aad.AzureOAuth2AuthorizedClientRepository;
 import com.azure.test.utils.AppRunner;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
