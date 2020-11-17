@@ -5,15 +5,12 @@ package com.azure.ai.textanalytics.lro;
 
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
+import com.azure.ai.textanalytics.models.AnalyzeTasksOptions;
 import com.azure.ai.textanalytics.models.EntitiesTask;
-import com.azure.ai.textanalytics.models.EntitiesTaskParameters;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
-import com.azure.ai.textanalytics.models.JobManifestTasks;
 import com.azure.ai.textanalytics.models.KeyPhrasesTask;
-import com.azure.ai.textanalytics.models.KeyPhrasesTaskParameters;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.PiiTask;
-import com.azure.ai.textanalytics.models.PiiTaskParameters;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
@@ -44,7 +41,7 @@ public class AnalyzeTasksAsync {
             .buildAsyncClient();
 
         List<TextDocumentInput> documents = Arrays.asList(
-            new TextDocumentInput("0", "Elon Musk is the CEO of SpaceX and Tesla.").setLanguage("en"),
+            new TextDocumentInput("0", "Elon Musk is the CEO of SpaceX and Tesla."),
             new TextDocumentInput("1",
                 "We went to Contoso Steakhouse located at midtown NYC last week for a dinner party, and we adore"
                     + " the spot! They provide marvelous food and they have a great menu. The chief cook happens to be"
@@ -53,14 +50,13 @@ public class AnalyzeTasksAsync {
                     + " and juicy, and the place was impeccably clean. You can even pre-order from their online menu at"
                     + " www.contososteakhouse.com, call 312-555-0176 or send email to order@contososteakhouse.com! The"
                     + " only complaint I have is the food didn't come fast enough. Overall I highly recommend it!")
-                .setLanguage("en")
         );
-        JobManifestTasks jobManifestTasks = new JobManifestTasks()
-            .setEntityRecognitionTasks(Arrays.asList(new EntitiesTask().setParameters(new EntitiesTaskParameters().setModelVersion("latest"))))
-            .setKeyPhraseExtractionTasks(Arrays.asList(new KeyPhrasesTask().setParameters(new KeyPhrasesTaskParameters().setModelVersion("latest"))))
-            .setEntityRecognitionPiiTasks(Arrays.asList(new PiiTask().setParameters(new PiiTaskParameters().setModelVersion("latest"))));
 
-        client.beginAnalyze(documents, "Test1", jobManifestTasks, null)
+        client.beginAnalyze(documents,
+            new AnalyzeTasksOptions().setDisplayName("{tasks_display_name}")
+                .setEntitiesRecognitionTasks(Arrays.asList(new EntitiesTask()))
+                .setKeyPhrasesExtractionTasks(Arrays.asList(new KeyPhrasesTask()))
+                .setPiiEntitiesRecognitionTasks(Arrays.asList(new PiiTask())))
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(analyzeTasksResultPagedFlux ->
                 analyzeTasksResultPagedFlux.subscribe(analyzeTasksResult -> {

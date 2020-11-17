@@ -11,7 +11,7 @@ public final class PiiTask {
     /*
      * The parameters property.
      */
-    private PiiTaskParameters parameters;
+    private PiiTaskParameters parameters = new PiiTaskParameters();
 
     /**
      * Get the parameters property: The parameters property.

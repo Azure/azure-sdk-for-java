@@ -12,7 +12,6 @@ import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.HealthcareTaskResult;
-import com.azure.ai.textanalytics.models.JobManifestTasks;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
@@ -941,11 +940,9 @@ public final class TextAnalyticsClient {
      * See <a href="https://aka.ms/talangs">this</a> supported languages in Text Analytics API.
      *
      * <p><strong>Code Sample</strong></p>
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.beginAnalyze#Iterable-String-JobManifestTasks-AnalyzeTasksOptions-Context}
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.beginAnalyze#Iterable-AnalyzeTasksOptions-Context}
      *
      * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
-     * @param displayName The analyze tasks' display name.
-     * @param jobManifestTasks A collection of analyze tasks, such as entity recognition, PII, and key phrase tasks.
      * @param options The additional configurable {@link AnalyzeTasksOptions options} that may be passed when
      * analyzing a collection of tasks.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -959,10 +956,7 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<TextAnalyticsOperationResult, PagedIterable<AnalyzeTasksResult>> beginAnalyze(
-        Iterable<TextDocumentInput> documents, String displayName, JobManifestTasks jobManifestTasks,
-        AnalyzeTasksOptions options, Context context) {
-        return client.analyzeTasksAsyncClient.beginAnalyzeIterable(documents, displayName, jobManifestTasks, options,
-            context).getSyncPoller();
+        Iterable<TextDocumentInput> documents, AnalyzeTasksOptions options, Context context) {
+        return client.analyzeTasksAsyncClient.beginAnalyzeIterable(documents, options, context).getSyncPoller();
     }
-
 }

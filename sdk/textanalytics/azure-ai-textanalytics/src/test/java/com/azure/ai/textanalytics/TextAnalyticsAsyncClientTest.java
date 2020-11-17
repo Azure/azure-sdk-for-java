@@ -1668,7 +1668,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         cancelHealthcareLroRunner((documents, options) -> {
             SyncPoller<TextAnalyticsOperationResult, PagedFlux<HealthcareTaskResult>>
                 syncPoller = client.beginAnalyzeHealthcare(documents, options).getSyncPoller();
-
             PollResponse<TextAnalyticsOperationResult> pollResponse = syncPoller.poll();
             client.beginCancelAnalyzeHealthcare(pollResponse.getValue().getResultId(), options);
             syncPoller.waitForCompletion();
@@ -1681,9 +1680,9 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeTasksWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
-        analyzeTasksLroRunner(documents -> (jobManifestTasks, options) -> {
+        analyzeTasksLroRunner((documents, options) -> {
             SyncPoller<TextAnalyticsOperationResult, PagedFlux<AnalyzeTasksResult>> syncPoller =
-                client.beginAnalyze(documents, "Test1", jobManifestTasks, options).getSyncPoller();
+                client.beginAnalyze(documents, options).getSyncPoller();
             syncPoller.waitForCompletion();
             PagedFlux<AnalyzeTasksResult> result = syncPoller.getFinalResult();
             validateAnalyzeTasksResultList(options.isIncludeStatistics(),
@@ -1699,9 +1698,9 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeTasksPagination(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
-        analyzeTasksPaginationRunner(documents -> (jobManifestTasks, options) -> {
+        analyzeTasksPaginationRunner((documents, options) -> {
             SyncPoller<TextAnalyticsOperationResult, PagedFlux<AnalyzeTasksResult>>
-                syncPoller = client.beginAnalyze(documents, "Test1", jobManifestTasks, options).getSyncPoller();
+                syncPoller = client.beginAnalyze(documents, options).getSyncPoller();
             syncPoller.waitForCompletion();
             PagedFlux<AnalyzeTasksResult> result = syncPoller.getFinalResult();
             validateAnalyzeTasksResultList(options.isIncludeStatistics(),
@@ -1714,10 +1713,9 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeTasksPaginationWithTopAndSkip(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
-        analyzeTasksPaginationRunner(documents -> (jobManifestTasks, options) -> {
+        analyzeTasksPaginationRunner((documents, options) -> {
             SyncPoller<TextAnalyticsOperationResult, PagedFlux<AnalyzeTasksResult>>
-                syncPoller = client.beginAnalyze(documents, "Test1", jobManifestTasks,
-                options.setSkip(3).setTop(10)).getSyncPoller();
+                syncPoller = client.beginAnalyze(documents, options.setSkip(3).setTop(10)).getSyncPoller();
             syncPoller.waitForCompletion();
             PagedFlux<AnalyzeTasksResult> result = syncPoller.getFinalResult();
             validateAnalyzeTasksResultList(options.isIncludeStatistics(),
@@ -1730,11 +1728,10 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeTasksEmptyInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
-        emptyListRunner((documents, errorMessage) -> {
-            StepVerifier.create(client.beginAnalyze(documents, "Test1", null, null))
+        emptyListRunner((documents, errorMessage) ->
+            StepVerifier.create(client.beginAnalyze(documents, null))
                 .expectErrorMatches(throwable -> throwable instanceof IllegalArgumentException
                     && errorMessage.equals(throwable.getMessage()))
-                .verify();
-        });
+                .verify());
     }
 }

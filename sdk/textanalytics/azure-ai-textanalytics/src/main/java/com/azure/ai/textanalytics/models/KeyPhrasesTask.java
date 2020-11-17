@@ -11,7 +11,7 @@ public final class KeyPhrasesTask {
     /*
      * The parameters property.
      */
-    private KeyPhrasesTaskParameters parameters;
+    private KeyPhrasesTaskParameters parameters = new KeyPhrasesTaskParameters();
 
     /**
      * Get the parameters property: The parameters property.

@@ -1615,9 +1615,9 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeTasksWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
-        analyzeTasksLroRunner(documents -> (jobManifestTasks, options) -> {
+        analyzeTasksLroRunner((documents, options) -> {
             SyncPoller<TextAnalyticsOperationResult, PagedIterable<AnalyzeTasksResult>> syncPoller =
-                client.beginAnalyze(documents, "Test1", jobManifestTasks, options, Context.NONE);
+                client.beginAnalyze(documents, options, Context.NONE);
             syncPoller.waitForCompletion();
             PagedIterable<AnalyzeTasksResult> result = syncPoller.getFinalResult();
             validateAnalyzeTasksResultList(options.isIncludeStatistics(),
@@ -1633,9 +1633,9 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeTasksPagination(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
-        analyzeTasksPaginationRunner(documents -> (jobManifestTasks, options) -> {
+        analyzeTasksPaginationRunner((documents, options) -> {
             SyncPoller<TextAnalyticsOperationResult, PagedIterable<AnalyzeTasksResult>>
-                syncPoller = client.beginAnalyze(documents, "Test1", jobManifestTasks, options, Context.NONE);
+                syncPoller = client.beginAnalyze(documents, options, Context.NONE);
             syncPoller.waitForCompletion();
             PagedIterable<AnalyzeTasksResult> result = syncPoller.getFinalResult();
             validateAnalyzeTasksResultList(options.isIncludeStatistics(),
@@ -1648,10 +1648,9 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeTasksPaginationWithTopAndSkip(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
-        analyzeTasksPaginationRunner(documents -> (jobManifestTasks, options) -> {
+        analyzeTasksPaginationRunner((documents, options) -> {
             SyncPoller<TextAnalyticsOperationResult, PagedIterable<AnalyzeTasksResult>>
-                syncPoller = client.beginAnalyze(documents, "Test1", jobManifestTasks,
-                options.setSkip(3).setTop(10), Context.NONE);
+                syncPoller = client.beginAnalyze(documents, options.setSkip(3).setTop(10), Context.NONE);
             syncPoller.waitForCompletion();
             PagedIterable<AnalyzeTasksResult> result = syncPoller.getFinalResult();
             validateAnalyzeTasksResultList(options.isIncludeStatistics(),
@@ -1666,7 +1665,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         emptyListRunner((documents, errorMessage) -> {
             final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-                () -> client.beginAnalyze(documents, "Test1", null, null, Context.NONE)
+                () -> client.beginAnalyze(documents, null, Context.NONE)
                     .getFinalResult());
             assertEquals(errorMessage, exception.getMessage());
         });

@@ -13,6 +13,7 @@ import com.azure.ai.textanalytics.implementation.models.AnalyzeBatchInput;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeJobState;
 import com.azure.ai.textanalytics.implementation.models.EntitiesTask;
 import com.azure.ai.textanalytics.implementation.models.EntitiesTaskParameters;
+import com.azure.ai.textanalytics.implementation.models.JobManifestTasks;
 import com.azure.ai.textanalytics.implementation.models.KeyPhrasesTask;
 import com.azure.ai.textanalytics.implementation.models.KeyPhrasesTaskParameters;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
@@ -25,7 +26,6 @@ import com.azure.ai.textanalytics.implementation.models.TasksStateTasksEntityRec
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasksKeyPhraseExtractionTasksItem;
 import com.azure.ai.textanalytics.models.AnalyzeTasksOptions;
 import com.azure.ai.textanalytics.models.AnalyzeTasksResult;
-import com.azure.ai.textanalytics.models.JobManifestTasks;
 import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
 import com.azure.ai.textanalytics.models.TextAnalyticsErrorInformation;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
@@ -48,6 +48,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.PollingContext;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -77,19 +78,22 @@ class AnalyzeTasksAsyncClient {
     }
 
     PollerFlux<TextAnalyticsOperationResult, PagedFlux<AnalyzeTasksResult>> beginAnalyze(
-        Iterable<TextDocumentInput> documents, String displayName, JobManifestTasks jobManifestTasks,
-        AnalyzeTasksOptions options, Context context) {
+        Iterable<TextDocumentInput> documents, AnalyzeTasksOptions options, Context context) {
         try {
             inputDocumentsValidation(documents);
             AnalyzeBatchInput analyzeBatchInput = new AnalyzeBatchInput()
                 .setAnalysisInput(new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)))
-                .setTasks(toJobManifestTasks(jobManifestTasks));
-            analyzeBatchInput.setDisplayName(displayName);
+                .setTasks(getJobManifestTasks(options));
+            Duration pollingInterval = DEFAULT_POLL_INTERVAL;
+            if (options != null) {
+                analyzeBatchInput.setDisplayName(options.getDisplayName());
+                pollingInterval = options.getPollInterval();
+            }
             final Boolean finalIncludeStatistics = options == null ? null : options.isIncludeStatistics();
             final Integer finalTop = options == null ? null : options.getTop();
             final Integer finalSkip = options == null ? null : options.getSkip();
             return new PollerFlux<>(
-                options == null ? DEFAULT_POLL_INTERVAL : options.getPollInterval(),
+                pollingInterval,
                 activationOperation(
                     service.analyzeWithResponseAsync(analyzeBatchInput,
                         context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
@@ -112,19 +116,22 @@ class AnalyzeTasksAsyncClient {
     }
 
     PollerFlux<TextAnalyticsOperationResult, PagedIterable<AnalyzeTasksResult>> beginAnalyzeIterable(
-        Iterable<TextDocumentInput> documents, String displayName, JobManifestTasks jobManifestTasks,
-        AnalyzeTasksOptions options, Context context) {
+        Iterable<TextDocumentInput> documents, AnalyzeTasksOptions options, Context context) {
         try {
             inputDocumentsValidation(documents);
             AnalyzeBatchInput analyzeBatchInput = new AnalyzeBatchInput()
                 .setAnalysisInput(new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)))
-                .setTasks(toJobManifestTasks(jobManifestTasks));
-            analyzeBatchInput.setDisplayName(displayName);
+                .setTasks(getJobManifestTasks(options));
+            Duration pollingInterval = DEFAULT_POLL_INTERVAL;
+            if (options != null) {
+                analyzeBatchInput.setDisplayName(options.getDisplayName());
+                pollingInterval = options.getPollInterval();
+            }
             final Boolean finalIncludeStatistics = options == null ? null : options.isIncludeStatistics();
             final Integer finalTop = options == null ? null : options.getTop();
             final Integer finalSkip = options == null ? null : options.getSkip();
             return new PollerFlux<>(
-                options == null ? DEFAULT_POLL_INTERVAL : options.getPollInterval(),
+                pollingInterval,
                 activationOperation(
                     service.analyzeWithResponseAsync(analyzeBatchInput,
                         context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
@@ -146,61 +153,60 @@ class AnalyzeTasksAsyncClient {
         }
     }
 
-    private com.azure.ai.textanalytics.implementation.models.JobManifestTasks toJobManifestTasks(
-        JobManifestTasks jobManifestTasks) {
-        return new com.azure.ai.textanalytics.implementation.models.JobManifestTasks()
-            .setEntityRecognitionTasks(
-                jobManifestTasks.getEntityRecognitionTasks() == null ? null
-                    : jobManifestTasks.getEntityRecognitionTasks()
-                    .stream()
-                    .map(entitiesTask -> {
+    private JobManifestTasks getJobManifestTasks(AnalyzeTasksOptions options) {
+        if (options == null) {
+            return null;
+        }
+        return new JobManifestTasks()
+            .setEntityRecognitionTasks(options.getEntitiesRecognitionTasks() == null ? null
+                : options.getEntitiesRecognitionTasks().stream().map(
+                    entitiesTask -> {
                         if (entitiesTask == null) {
                             return null;
                         }
+                        final EntitiesTask entitiesTaskImpl = new EntitiesTask();
                         final com.azure.ai.textanalytics.models.EntitiesTaskParameters entitiesTaskParameters =
                             entitiesTask.getParameters();
                         if (entitiesTaskParameters == null) {
-                            return null;
+                            return entitiesTaskImpl;
                         }
-                        final EntitiesTask entitiesTaskImpl = new EntitiesTask().setParameters(
+                        entitiesTaskImpl.setParameters(
                             new EntitiesTaskParameters().setModelVersion(entitiesTaskParameters.getModelVersion()));
                         return entitiesTaskImpl;
                     }).collect(Collectors.toList()))
-            .setEntityRecognitionPiiTasks(
-                jobManifestTasks.getEntityRecognitionPiiTasks() == null ? null
-                    : jobManifestTasks.getEntityRecognitionPiiTasks()
-                    .stream()
-                    .map(piiEntitiesTask -> {
+            .setEntityRecognitionPiiTasks(options.getPiiEntitiesRecognitionTasks() == null ? null
+                : options.getPiiEntitiesRecognitionTasks().stream().map(
+                    piiEntitiesTask -> {
                         if (piiEntitiesTask == null) {
                             return null;
                         }
+                        final PiiTask piiTaskImpl = new PiiTask();
                         final com.azure.ai.textanalytics.models.PiiTaskParameters piiTaskParameters =
                             piiEntitiesTask.getParameters();
                         if (piiTaskParameters == null) {
-                            return null;
+                            return piiTaskImpl;
                         }
-                        final PiiTask piiTaskImpl = new PiiTask()
-                            .setParameters(new PiiTaskParameters()
+                        piiTaskImpl.setParameters(
+                            new PiiTaskParameters()
                                 .setModelVersion(piiTaskParameters.getModelVersion())
                                 .setDomain(PiiTaskParametersDomain.fromString(
                                     piiTaskParameters.getDomain() == null ? null
                                         : piiTaskParameters.getDomain().toString())));
                         return piiTaskImpl;
                     }).collect(Collectors.toList()))
-            .setKeyPhraseExtractionTasks(
-                jobManifestTasks.getKeyPhraseExtractionTasks() == null ? null
-                    : jobManifestTasks.getKeyPhraseExtractionTasks()
-                    .stream()
-                    .map(keyPhrasesTask -> {
+            .setKeyPhraseExtractionTasks(options.getKeyPhrasesExtractionTasks() == null ? null
+                : options.getKeyPhrasesExtractionTasks().stream().map(
+                    keyPhrasesTask -> {
                         if (keyPhrasesTask == null) {
                             return null;
                         }
                         final com.azure.ai.textanalytics.models.KeyPhrasesTaskParameters keyPhrasesTaskParameters
                             = keyPhrasesTask.getParameters();
+                        final KeyPhrasesTask keyPhrasesTaskImpl = new KeyPhrasesTask();
                         if (keyPhrasesTaskParameters == null) {
-                            return null;
+                            return keyPhrasesTaskImpl;
                         }
-                        final KeyPhrasesTask keyPhrasesTaskImpl = new KeyPhrasesTask().setParameters(
+                        keyPhrasesTaskImpl.setParameters(
                             new KeyPhrasesTaskParameters().setModelVersion(keyPhrasesTaskParameters.getModelVersion()));
                         return keyPhrasesTaskImpl;
                     }).collect(Collectors.toList()));

@@ -11,7 +11,9 @@ public final class KeyPhrasesTaskParameters {
     /*
      * The model-version property.
      */
-    private String modelVersion;
+    // TODO: currently, service does not set their default values for model version, we temporally set the default
+    // value to 'latest' until service correct it. https://github.com/Azure/azure-sdk-for-java/issues/17625
+    private String modelVersion = "latest";
 
     /**
      * Get the modelVersion property: The model-version property.

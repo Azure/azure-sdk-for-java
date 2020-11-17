@@ -14,7 +14,6 @@ import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.HealthcareTaskResult;
-import com.azure.ai.textanalytics.models.JobManifestTasks;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
@@ -1076,11 +1075,9 @@ public final class TextAnalyticsAsyncClient {
      * See <a href="https://aka.ms/talangs">this</a> supported languages in Text Analytics API.
      *
      * <p><strong>Code Sample</strong></p>
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginAnalyze#Iterable-String-JobManifestTasks-AnalyzeTasksOptions}
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginAnalyze#Iterable-AnalyzeTasksOptions}
      *
      * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
-     * @param displayName The analyze tasks' display name.
-     * @param jobManifestTasks A collection of analyze tasks, such as entity recognition, PII, and key phrase tasks.
      * @param options The additional configurable {@link AnalyzeTasksOptions options} that may be passed when
      * analyzing a collection of tasks.
      *
@@ -1093,8 +1090,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<TextAnalyticsOperationResult, PagedFlux<AnalyzeTasksResult>> beginAnalyze(
-        Iterable<TextDocumentInput> documents, String displayName, JobManifestTasks jobManifestTasks,
-        AnalyzeTasksOptions options) {
-        return analyzeTasksAsyncClient.beginAnalyze(documents, displayName, jobManifestTasks, options, Context.NONE);
+        Iterable<TextDocumentInput> documents, AnalyzeTasksOptions options) {
+        return analyzeTasksAsyncClient.beginAnalyze(documents, options, Context.NONE);
     }
 }

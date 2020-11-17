@@ -11,12 +11,9 @@ import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.EntitiesTask;
-import com.azure.ai.textanalytics.models.EntitiesTaskParameters;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.HealthcareEntityCollection;
-import com.azure.ai.textanalytics.models.JobManifestTasks;
 import com.azure.ai.textanalytics.models.KeyPhrasesTask;
-import com.azure.ai.textanalytics.models.KeyPhrasesTaskParameters;
 import com.azure.ai.textanalytics.models.OpinionSentiment;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityDomainType;
@@ -882,20 +879,18 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
     // Analyze Tasks
     /**
-     * Code snippet for {@link TextAnalyticsAsyncClient#beginAnalyze(Iterable, String, JobManifestTasks, AnalyzeTasksOptions)}
+     * Code snippet for {@link TextAnalyticsAsyncClient#beginAnalyze(Iterable, AnalyzeTasksOptions)}
      */
     public void analyzeTasksMaxOverload() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginAnalyze#Iterable-String-JobManifestTasks-AnalyzeTasksOptions
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginAnalyze#Iterable-AnalyzeTasksOptions
         List<TextDocumentInput> documents = Arrays.asList(
             new TextDocumentInput("0", "Elon Musk is the CEO of SpaceX and Tesla.").setLanguage("en"),
             new TextDocumentInput("1", "My SSN is 859-98-0987").setLanguage("en")
         );
-        JobManifestTasks jobManifestTasks = new JobManifestTasks()
-            .setEntityRecognitionTasks(Arrays.asList(
-                new EntitiesTask().setParameters(new EntitiesTaskParameters().setModelVersion("latest"))))
-            .setKeyPhraseExtractionTasks(Arrays.asList(
-                new KeyPhrasesTask().setParameters(new KeyPhrasesTaskParameters().setModelVersion("latest"))));
-        textAnalyticsAsyncClient.beginAnalyze(documents, "Test1", jobManifestTasks, null)
+        textAnalyticsAsyncClient.beginAnalyze(documents,
+            new AnalyzeTasksOptions().setDisplayName("{tasks_display_name}")
+                .setEntitiesRecognitionTasks(Arrays.asList(new EntitiesTask()))
+                .setKeyPhrasesExtractionTasks(Arrays.asList(new KeyPhrasesTask())))
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(analyzeTasksResultPagedFlux ->
                 analyzeTasksResultPagedFlux.subscribe(analyzeTasksResult -> {
@@ -913,6 +908,6 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                                 .forEach(keyPhrases -> System.out.printf("\t%s.%n", keyPhrases));
                         }));
                 }));
-        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginAnalyze#Iterable-String-JobManifestTasks-AnalyzeTasksOptions
+        // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginAnalyze#Iterable-AnalyzeTasksOptions
     }
 }

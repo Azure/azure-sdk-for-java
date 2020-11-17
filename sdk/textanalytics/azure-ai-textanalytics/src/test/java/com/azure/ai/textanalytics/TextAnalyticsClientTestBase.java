@@ -12,13 +12,10 @@ import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.EntitiesTask;
-import com.azure.ai.textanalytics.models.EntitiesTaskParameters;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.HealthcareEntityLink;
 import com.azure.ai.textanalytics.models.HealthcareTaskResult;
-import com.azure.ai.textanalytics.models.JobManifestTasks;
 import com.azure.ai.textanalytics.models.KeyPhrasesTask;
-import com.azure.ai.textanalytics.models.KeyPhrasesTaskParameters;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.MinedOpinion;
@@ -27,7 +24,6 @@ import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityDomainType;
 import com.azure.ai.textanalytics.models.PiiTask;
-import com.azure.ai.textanalytics.models.PiiTaskParameters;
 import com.azure.ai.textanalytics.models.RecognizeHealthcareEntityOptions;
 import com.azure.ai.textanalytics.models.RecognizePiiEntityOptions;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
@@ -64,7 +60,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TestUtils.CATEGORIZED_ENTITY_INPUTS;
@@ -694,39 +689,28 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     // Analyze LRO
-    void analyzeTasksLroRunner(Function<List<TextDocumentInput>, BiConsumer<JobManifestTasks,
-        AnalyzeTasksOptions>> testRunner) {
-        JobManifestTasks jobManifestTasks = new JobManifestTasks()
-            .setEntityRecognitionTasks(Arrays.asList(
-                new EntitiesTask().setParameters(new EntitiesTaskParameters().setModelVersion("latest"))))
-            .setKeyPhraseExtractionTasks(Arrays.asList(
-                new KeyPhrasesTask().setParameters(new KeyPhrasesTaskParameters().setModelVersion("latest"))))
-            .setEntityRecognitionPiiTasks(Arrays.asList(
-                new PiiTask().setParameters(new PiiTaskParameters().setModelVersion("latest"))));
-
-        testRunner.apply(asList(
-            new TextDocumentInput("0", CATEGORIZED_ENTITY_INPUTS.get(0)),
-            new TextDocumentInput("1", PII_ENTITY_INPUTS.get(0))))
-            .accept(jobManifestTasks,
-                new AnalyzeTasksOptions().setIncludeStatistics(false).setPollInterval(durationTestMode));
+    void analyzeTasksLroRunner(BiConsumer<List<TextDocumentInput>, AnalyzeTasksOptions> testRunner) {
+        testRunner.accept(
+            asList(
+                new TextDocumentInput("0", CATEGORIZED_ENTITY_INPUTS.get(0)),
+                new TextDocumentInput("1", PII_ENTITY_INPUTS.get(0))),
+            new AnalyzeTasksOptions().setDisplayName("Test1").setIncludeStatistics(false).setPollInterval(durationTestMode)
+                .setEntitiesRecognitionTasks(Arrays.asList(new EntitiesTask()))
+                .setKeyPhrasesExtractionTasks(Arrays.asList(new KeyPhrasesTask()))
+                .setPiiEntitiesRecognitionTasks(Arrays.asList(new PiiTask())));
     }
 
-    void analyzeTasksPaginationRunner(Function<List<TextDocumentInput>, BiConsumer<JobManifestTasks,
-        AnalyzeTasksOptions>> testRunner, int totalDocument) {
-        JobManifestTasks jobManifestTasks = new JobManifestTasks()
-            .setEntityRecognitionTasks(Arrays.asList(
-                new EntitiesTask().setParameters(new EntitiesTaskParameters().setModelVersion("latest"))))
-            .setKeyPhraseExtractionTasks(Arrays.asList(
-                new KeyPhrasesTask().setParameters(new KeyPhrasesTaskParameters().setModelVersion("latest"))))
-            .setEntityRecognitionPiiTasks(Arrays.asList(
-                new PiiTask().setParameters(new PiiTaskParameters().setModelVersion("latest"))));
-
+    void analyzeTasksPaginationRunner(BiConsumer<List<TextDocumentInput>, AnalyzeTasksOptions> testRunner,
+        int totalDocument) {
         List<TextDocumentInput> documents = new ArrayList<>();
         for (int i = 0; i < totalDocument; i++) {
             documents.add(new TextDocumentInput(Integer.toString(i), PII_ENTITY_INPUTS.get(0)));
         }
-        testRunner.apply(documents).accept(jobManifestTasks,
-            new AnalyzeTasksOptions().setIncludeStatistics(false).setPollInterval(durationTestMode));
+        testRunner.accept(documents, new AnalyzeTasksOptions().setDisplayName("Test1")
+            .setIncludeStatistics(false).setPollInterval(durationTestMode)
+            .setEntitiesRecognitionTasks(Arrays.asList(new EntitiesTask()))
+            .setKeyPhrasesExtractionTasks(Arrays.asList(new KeyPhrasesTask()))
+            .setPiiEntitiesRecognitionTasks(Arrays.asList(new PiiTask())));
     }
 
     String getEndpoint() {

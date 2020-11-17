@@ -13,7 +13,7 @@ public final class EntitiesTask {
     /*
      * The parameters property.
      */
-    private EntitiesTaskParameters parameters;
+    private EntitiesTaskParameters parameters = new EntitiesTaskParameters();
 
     /**
      * Get the parameters property: The parameters property.
