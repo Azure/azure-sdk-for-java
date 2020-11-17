@@ -62,6 +62,7 @@ jobs:
             pwsh: true
             workingDirectory: $(Build.SourcesDirectory)
             filePath: eng/scripts/SetTestPipelineVersion.ps1
+            arguments: '-BuildNumber $(Build.BuildNumber)'
 
       - script: |
           echo "##vso[build.addbuildtag]Scheduled"

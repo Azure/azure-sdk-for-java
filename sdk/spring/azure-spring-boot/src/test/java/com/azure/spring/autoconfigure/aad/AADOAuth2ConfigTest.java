@@ -3,8 +3,6 @@
 
 package com.azure.spring.autoconfigure.aad;
 
-import com.azure.spring.aad.implementation.AzureActiveDirectoryAutoConfiguration;
-import com.azure.spring.aad.implementation.AzureClientRegistrationRepository;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -72,7 +70,7 @@ public class AADOAuth2ConfigTest {
 
     @Test
     public void noOAuth2UserServiceBeanCreatedIfTenantIdNotConfigured() {
-        testPropResource.getSource().remove(TestConstants.TENANT_ID_PROPERTY);
+        testPropResource.getSource().remove("azure.activedirectory.tenant-id");
         testContext = initTestContext();
 
         exception.expect(NoSuchBeanDefinitionException.class);
@@ -87,7 +85,6 @@ public class AADOAuth2ConfigTest {
             "azure.service.endpoints.global.aadKeyDiscoveryUri=https://test/",
             "azure.service.endpoints.global.aadMembershipRestUri=https://test/",
             TestConstants.ALLOW_TELEMETRY_PROPERTY + "=false");
-
 
         final Environment environment = testContext.getEnvironment();
         assertThat(environment.getProperty("azure.service.endpoints.global.aadSigninUri"))

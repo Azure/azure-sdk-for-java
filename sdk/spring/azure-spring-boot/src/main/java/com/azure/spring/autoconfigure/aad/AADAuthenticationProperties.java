@@ -3,7 +3,6 @@
 
 package com.azure.spring.autoconfigure.aad;
 
-import com.azure.spring.aad.implementation.AuthorizationProperties;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,8 +35,6 @@ public class AADAuthenticationProperties {
     private static final long DEFAULT_JWK_SET_CACHE_REFRESH_TIME = DEFAULT_JWK_SET_CACHE_LIFESPAN;
     private static final String GROUP_RELATIONSHIP_DIRECT = "direct";
     private static final String GROUP_RELATIONSHIP_TRANSITIVE = "transitive";
-
-    private String uri;
 
     private Map<String, AuthorizationProperties> authorization = new HashMap<>();
 
@@ -273,14 +270,6 @@ public class AADAuthenticationProperties {
             throw new IllegalArgumentException("Configuration 'azure.activedirectory.user-group.group-relationship' "
                 + "should be 'direct' or 'transitive'.");
         }
-    }
-
-    public void setUri(String uri) {
-        this.uri = uri;
-    }
-
-    public String getUri() {
-        return uri;
     }
 
     public void setAuthorization(Map<String, AuthorizationProperties> authorization) {
