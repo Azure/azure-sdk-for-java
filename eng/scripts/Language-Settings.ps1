@@ -86,6 +86,7 @@ function Get-java-PackageInfoFromPackageFile ($pkg, $workingDirectory) {
     PackageId      = $pkgId
     GroupId        = $groupId
     PackageVersion = $pkgVersion
+    ReleaseTag     = "$($pkgId)_$($pkgVersion)"
     Deployable     = $forceCreate -or !(IsMavenPackageVersionPublished -pkgId $pkgId -pkgVersion $pkgVersion -groupId $groupId.Replace(".", "/"))
     ReleaseNotes   = $releaseNotes
     ReadmeContent  = $readmeContent
@@ -137,7 +138,7 @@ function Publish-java-GithubIODocs ($DocLocation, $PublicArtifactLocation)
       Write-Host "DocDir $($UnjarredDocumentationPath)"
       Write-Host "PkgName $($ArtifactId)"
       Write-Host "DocVersion $($Version)"
-      $releaseTag = RetrieveReleaseTag "Maven" $PublicArtifactLocation 
+      $releaseTag = RetrieveReleaseTag $PublicArtifactLocation 
       Upload-Blobs -DocDir $UnjarredDocumentationPath -PkgName $ArtifactId -DocVersion $Version -ReleaseTag $releaseTag
 
     }

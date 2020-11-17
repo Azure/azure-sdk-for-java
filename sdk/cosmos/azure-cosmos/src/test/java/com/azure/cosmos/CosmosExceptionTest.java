@@ -77,14 +77,14 @@ public class CosmosExceptionTest {
 
     @Test(groups = { "unit" })
     public void headerNotNull3() {
-        CosmosException dce = BridgeInternal.createCosmosException(0, new RuntimeException());
+        CosmosException dce = BridgeInternal.createCosmosException(null, 0, new RuntimeException());
         assertThat(dce.getResponseHeaders()).isNotNull();
         assertThat(dce.getResponseHeaders()).isEmpty();
     }
 
     @Test(groups = { "unit" })
     public void headerNotNull4() {
-        CosmosException dce = BridgeInternal.createCosmosException(0, (CosmosError) null, (Map<String, String>) null);
+        CosmosException dce = BridgeInternal.createCosmosException(null, 0, (CosmosError) null, (Map<String, String>) null);
         assertThat(dce.getResponseHeaders()).isNotNull();
         assertThat(dce.getResponseHeaders()).isEmpty();
     }

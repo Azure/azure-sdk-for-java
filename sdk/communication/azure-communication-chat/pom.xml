@@ -34,6 +34,11 @@
   <scm>
     <url>https://github.com/Azure/azure-sdk-for-java</url>
   </scm>
+  
+  <properties>
+    <jacoco.min.linecoverage>0.50</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.35</jacoco.min.branchcoverage>
+  </properties>
 
   <dependencies>
     <dependency>
@@ -96,10 +101,10 @@
         <artifactId>jacoco-maven-plugin</artifactId>
         <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
         <configuration>
-          <properties>
-            <jacoco.min.linecoverage>0.75</jacoco.min.linecoverage>
-            <jacoco.min.branchcoverage>0.75</jacoco.min.branchcoverage>
-          </properties>
+          <excludes>
+            <exclude>com/azure/communication/chat/models/**/*</exclude>
+            <exclude>com/azure/communication/chat/implementation/**/*</exclude>
+          </excludes>
         </configuration>
       </plugin>
       <plugin>
