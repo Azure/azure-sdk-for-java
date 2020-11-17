@@ -515,6 +515,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
     private Mono<Void> isAuthorized(String operation) {
         return tokenManager.getAuthorizationResults()
+            .onErrorMap(this::mapError)
             .next()
             .handle((response, sink) -> {
                 if (response != AmqpResponseCode.ACCEPTED && response != AmqpResponseCode.OK) {
@@ -526,9 +527,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
                 } else {
                     sink.complete();
                 }
-            })
-            .onErrorMap(this::mapError)
-            .then();
+            });
     }
 
     /**
