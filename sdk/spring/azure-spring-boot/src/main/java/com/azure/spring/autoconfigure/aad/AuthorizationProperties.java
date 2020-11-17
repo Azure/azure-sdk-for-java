@@ -1,11 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.aad.implementation;
+package com.azure.spring.autoconfigure.aad;
 
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Properties for a authorized client.
+ */
 public class AuthorizationProperties {
 
     private String[] scope = new String[0];

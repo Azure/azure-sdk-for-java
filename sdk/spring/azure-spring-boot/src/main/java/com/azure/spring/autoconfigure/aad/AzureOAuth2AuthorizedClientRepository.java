@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.aad.implementation;
+package com.azure.spring.autoconfigure.aad;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
@@ -16,6 +16,9 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
+/**
+ * An OAuth2AuthorizedClientRepository that manage all AAD authorizedClients.
+ */
 public class AzureOAuth2AuthorizedClientRepository implements OAuth2AuthorizedClientRepository {
 
     private final AzureClientRegistrationRepository azureClientRegistrationRepository;

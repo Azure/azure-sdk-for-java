@@ -1,8 +1,8 @@
 package com.azure.test.aad.auth;
 
-import com.azure.spring.aad.implementation.AzureClientRegistrationRepository;
-import com.azure.spring.aad.implementation.DefaultClient;
-import com.azure.spring.aad.implementation.IdentityEndpoints;
+import com.azure.spring.autoconfigure.aad.AuthorizationServerEndpoints;
+import com.azure.spring.autoconfigure.aad.AzureClientRegistrationRepository;
+import com.azure.spring.autoconfigure.aad.DefaultClient;
 import com.azure.test.utils.AppRunner;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -34,17 +34,17 @@ public class AppAutoConfigTest {
             assertEquals("fake-client-id", azureClientRegistration.getClientId());
             assertEquals("fake-client-secret", azureClientRegistration.getClientSecret());
 
-            IdentityEndpoints identityEndpoints = new IdentityEndpoints();
+            AuthorizationServerEndpoints authorizationServerEndpoints = new AuthorizationServerEndpoints();
             assertEquals(
-                identityEndpoints.authorizationEndpoint("fake-tenant-id"),
+                authorizationServerEndpoints.authorizationEndpoint("fake-tenant-id"),
                 azureClientRegistration.getProviderDetails().getAuthorizationUri()
             );
             assertEquals(
-                identityEndpoints.tokenEndpoint("fake-tenant-id"),
+                authorizationServerEndpoints.tokenEndpoint("fake-tenant-id"),
                 azureClientRegistration.getProviderDetails().getTokenUri()
             );
             assertEquals(
-                identityEndpoints.jwkSetEndpoint("fake-tenant-id"),
+                authorizationServerEndpoints.jwkSetEndpoint("fake-tenant-id"),
                 azureClientRegistration.getProviderDetails().getJwkSetUri()
             );
             assertEquals(
@@ -58,7 +58,10 @@ public class AppAutoConfigTest {
     @Test
     public void clientRequiresPermissionRegistered() {
         try (AppRunner appRunner = createApp()) {
-            appRunner.property("azure.activedirectory.authorization.graph.scope", "Calendars.Read");
+            appRunner.property(
+                "azure.activedirectory.authorization.graph.scope",
+                "https://graph.microsoft.com/Calendars.Read"
+            );
             appRunner.start();
 
             ClientRegistrationRepository clientRegistrationRepository =
@@ -67,17 +70,23 @@ public class AppAutoConfigTest {
             ClientRegistration graphClientRegistration = clientRegistrationRepository.findByRegistrationId("graph");
 
             assertNotNull(azureClientRegistration);
-            assertDefaultScopes(azureClientRegistration, "openid", "profile", "offline_access", "Calendars.Read");
+            assertDefaultScopes(
+                azureClientRegistration,
+                "openid", "profile", "offline_access", "https://graph.microsoft.com/Calendars.Read"
+            );
 
             assertNotNull(graphClientRegistration);
-            assertDefaultScopes(graphClientRegistration, "Calendars.Read");
+            assertDefaultScopes(graphClientRegistration, "https://graph.microsoft.com/Calendars.Read");
         }
     }
 
     @Test
     public void clientRequiresMultiPermissions() {
         try (AppRunner appRunner = createApp()) {
-            appRunner.property("azure.activedirectory.authorization.graph.scope", "Calendars.Read");
+            appRunner.property(
+                "azure.activedirectory.authorization.graph.scope",
+                "https://graph.microsoft.com/Calendars.Read"
+            );
             appRunner.property(
                 "azure.activedirectory.authorization.arm.scope",
                 "https://management.core.windows.net/user_impersonation"
@@ -95,19 +104,22 @@ public class AppAutoConfigTest {
                 "openid",
                 "profile",
                 "offline_access",
-                "Calendars.Read",
+                "https://graph.microsoft.com/Calendars.Read",
                 "https://management.core.windows.net/user_impersonation"
             );
 
             assertNotNull(graphClientRegistration);
-            assertDefaultScopes(graphClientRegistration, "Calendars.Read");
+            assertDefaultScopes(graphClientRegistration, "https://graph.microsoft.com/Calendars.Read");
         }
     }
 
     @Test
     public void clientRequiresPermissionInDefaultClient() {
         try (AppRunner appRunner = createApp()) {
-            appRunner.property("azure.activedirectory.authorization.azure.scope", "Calendars.Read");
+            appRunner.property(
+                "azure.activedirectory.authorization.azure.scope",
+                "https://graph.microsoft.com/Calendars.Read"
+            );
             appRunner.start();
 
             ClientRegistrationRepository clientRegistrationRepository =
@@ -117,7 +129,7 @@ public class AppAutoConfigTest {
             assertNotNull(azureClientRegistration);
             assertDefaultScopes(
                 azureClientRegistration,
-                "openid", "profile", "offline_access", "Calendars.Read"
+                "openid", "profile", "offline_access", "https://graph.microsoft.com/Calendars.Read"
             );
         }
     }
@@ -125,7 +137,10 @@ public class AppAutoConfigTest {
     @Test
     public void aadAwareClientRepository() {
         try (AppRunner appRunner = createApp()) {
-            appRunner.property("azure.activedirectory.authorization.graph.scope", "Calendars.Read");
+            appRunner.property(
+                "azure.activedirectory.authorization.graph.scope",
+                "https://graph.microsoft.com/Calendars.Read")
+            ;
             appRunner.start();
 
             AzureClientRegistrationRepository azureClientRegistrationRepository =
@@ -155,22 +170,25 @@ public class AppAutoConfigTest {
     @Test
     public void defaultClientWithAuthzScope() {
         try (AppRunner appRunner = createApp()) {
-            appRunner.property("azure.activedirectory.authorization.azure.scope", "Calendars.Read");
+            appRunner.property(
+                "azure.activedirectory.authorization.azure.scope",
+                "https://graph.microsoft.com/Calendars.Read"
+            );
             appRunner.start();
 
             AzureClientRegistrationRepository azureClientRegistrationRepository =
                 appRunner.getBean(AzureClientRegistrationRepository.class);
             assertDefaultScopes(
                 azureClientRegistrationRepository.defaultClient(),
-                "openid", "profile", "offline_access", "Calendars.Read"
+                "openid", "profile", "offline_access", "https://graph.microsoft.com/Calendars.Read"
             );
         }
     }
 
     @Test
-    public void customizeUri() {
+    public void customizeEnvironment() {
         try (AppRunner appRunner = createApp()) {
-            appRunner.property("azure.activedirectory.uri", "http://localhost/");
+            appRunner.property("azure.activedirectory.environment", "cn-v2-graph");
             appRunner.start();
 
             AzureClientRegistrationRepository azureClientRegistrationRepository =
@@ -178,17 +196,18 @@ public class AppAutoConfigTest {
             ClientRegistration azureClientRegistration =
                 azureClientRegistrationRepository.findByRegistrationId("azure");
 
-            IdentityEndpoints endpoints = new IdentityEndpoints("http://localhost/");
+            AuthorizationServerEndpoints authorizationServerEndpoints =
+                new AuthorizationServerEndpoints("https://login.partner.microsoftonline.cn");
             assertEquals(
-                endpoints.authorizationEndpoint("fake-tenant-id"),
+                authorizationServerEndpoints.authorizationEndpoint("fake-tenant-id"),
                 azureClientRegistration.getProviderDetails().getAuthorizationUri()
             );
             assertEquals(
-                endpoints.tokenEndpoint("fake-tenant-id"),
+                authorizationServerEndpoints.tokenEndpoint("fake-tenant-id"),
                 azureClientRegistration.getProviderDetails().getTokenUri()
             );
             assertEquals(
-                endpoints.jwkSetEndpoint("fake-tenant-id"),
+                authorizationServerEndpoints.jwkSetEndpoint("fake-tenant-id"),
                 azureClientRegistration.getProviderDetails().getJwkSetUri()
             );
         }

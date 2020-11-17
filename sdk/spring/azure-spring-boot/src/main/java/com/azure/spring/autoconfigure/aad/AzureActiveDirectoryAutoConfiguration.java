@@ -1,11 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.aad.implementation;
+package com.azure.spring.autoconfigure.aad;
 
-import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
-import com.azure.spring.autoconfigure.aad.AADOAuth2UserService;
-import com.azure.spring.autoconfigure.aad.ServiceEndpointsProperties;
 import com.azure.spring.telemetry.TelemetrySender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -20,14 +17,18 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
+import org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.util.ClassUtils;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -38,10 +39,13 @@ import java.util.Map;
 import static com.azure.spring.telemetry.TelemetryData.SERVICE_NAME;
 import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName;
 
+/**
+ * Provide necessary beans used for AAD authentication and authorization.
+ */
 @Configuration
+@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnResource(resources = "classpath:aad.enable.config")
 @ConditionalOnClass(ClientRegistrationRepository.class)
-@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnProperty(prefix = "azure.activedirectory", value = {"client-id", "client-secret", "tenant-id"})
 @PropertySource(value = "classpath:service-endpoints.properties")
 @EnableConfigurationProperties({ AADAuthenticationProperties.class, ServiceEndpointsProperties.class })
@@ -55,18 +59,51 @@ public class AzureActiveDirectoryAutoConfiguration {
     private ServiceEndpointsProperties serviceEndpointsProperties;
 
     @Bean
-    @ConditionalOnProperty(prefix = "azure.activedirectory.user-group", value = "allowed-groups")
-    public OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService() {
-        return new AADOAuth2UserService(aadAuthenticationProperties, serviceEndpointsProperties);
-    }
-
-    @Bean
     @ConditionalOnMissingBean({ ClientRegistrationRepository.class, AzureClientRegistrationRepository.class })
     public AzureClientRegistrationRepository clientRegistrationRepository() {
         return new AzureClientRegistrationRepository(
             createDefaultClient(),
             createClientRegistrations()
         );
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public OAuth2AuthorizedClientRepository authorizedClientRepository(AzureClientRegistrationRepository repo) {
+        return new AzureOAuth2AuthorizedClientRepository(repo);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    WebClient webClient(
+        ClientRegistrationRepository clientRegistrationRepository,
+        OAuth2AuthorizedClientRepository oAuth2AuthorizedClientRepository
+    ) {
+        OAuth2AuthorizedClientManager oAuth2AuthorizedClientManager = new DefaultOAuth2AuthorizedClientManager(
+            clientRegistrationRepository,
+            oAuth2AuthorizedClientRepository
+        );
+        ServletOAuth2AuthorizedClientExchangeFilterFunction servletOAuth2AuthorizedClientExchangeFilterFunction =
+            new ServletOAuth2AuthorizedClientExchangeFilterFunction(oAuth2AuthorizedClientManager);
+        return WebClient.builder()
+                        .apply(servletOAuth2AuthorizedClientExchangeFilterFunction.oauth2Configuration())
+                        .build();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    GraphWebClient graphWebClient(WebClient webClient) {
+        return new GraphWebClient(
+            aadAuthenticationProperties,
+            serviceEndpointsProperties,
+            webClient
+        );
+    }
+
+    @Bean
+    @ConditionalOnProperty(prefix = "azure.activedirectory.user-group", value = "allowed-groups")
+    public OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService(GraphWebClient graphWebClient) {
+        return new AADOAuth2UserService(graphWebClient);
     }
 
     private DefaultClient createDefaultClient() {
@@ -124,7 +161,10 @@ public class AzureActiveDirectoryAutoConfiguration {
     }
 
     private ClientRegistration.Builder toClientRegistrationBuilder(String registrationId) {
-        IdentityEndpoints endpoints = new IdentityEndpoints(aadAuthenticationProperties.getUri());
+        String authorizationServerUri =
+            serviceEndpointsProperties.getServiceEndpoints(aadAuthenticationProperties.getEnvironment())
+                                      .getAadSigninUri();
+        AuthorizationServerEndpoints endpoints = new AuthorizationServerEndpoints(authorizationServerUri);
         String tenantId = aadAuthenticationProperties.getTenantId();
         return ClientRegistration.withRegistrationId(registrationId)
                                  .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
@@ -136,12 +176,15 @@ public class AzureActiveDirectoryAutoConfiguration {
                                  .jwkSetUri(endpoints.jwkSetEndpoint(tenantId));
     }
 
-    @Bean
-    @ConditionalOnMissingBean
-    public OAuth2AuthorizedClientRepository authorizedClientRepository(AzureClientRegistrationRepository repo) {
-        return new AzureOAuth2AuthorizedClientRepository(repo);
-    }
-
+    /**
+     * Default configuration class for using AAD authentication and authorization.
+     *
+     * User can write another configuration bean to override it.
+     * If user write another configuration bean, to make sure `AzureOAuth2AuthorizationCodeGrantRequestEntityConverter`
+     * take effect, please:
+     * 1. Extends AzureOAuth2WebSecurityConfigurerAdapter instead of WebSecurityConfigurerAdapter.
+     * 2. Call `super.configure(http)` in your configure()
+     */
     @Configuration
     @ConditionalOnMissingBean(WebSecurityConfigurerAdapter.class)
     @EnableWebSecurity
