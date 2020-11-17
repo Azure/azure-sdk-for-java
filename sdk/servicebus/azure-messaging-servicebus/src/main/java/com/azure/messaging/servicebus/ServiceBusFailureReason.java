@@ -56,8 +56,8 @@ public final class ServiceBusFailureReason extends ExpandableStringEnum<ServiceB
         ServiceBusFailureReason.class);
 
     /** There was a general communications error encountered when interacting with the Azure Service Bus service. */
-    public static final ServiceBusFailureReason SERVICE_COMMUNICATION_PROBLEM = fromString(
-        "SERVICE_COMMUNICATION_PROBLEM", ServiceBusFailureReason.class);
+    public static final ServiceBusFailureReason SERVICE_COMMUNICATION_ERROR = fromString(
+        "SERVICE_COMMUNICATION_ERROR", ServiceBusFailureReason.class);
 
     /** The requested session cannot be locked. */
     public static final ServiceBusFailureReason SESSION_CANNOT_BE_LOCKED = fromString("SESSION_CANNOT_BE_LOCKED",

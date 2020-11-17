@@ -94,7 +94,7 @@ public final class ServiceBusException extends AzureException {
             case UNAUTHORIZED_ACCESS:
                 return ServiceBusFailureReason.UNAUTHORIZED;
             case PROTON_IO:
-                return ServiceBusFailureReason.SERVICE_COMMUNICATION_PROBLEM;
+                return ServiceBusFailureReason.SERVICE_COMMUNICATION_ERROR;
             default:
                 return ServiceBusFailureReason.GENERAL_ERROR;
         }
