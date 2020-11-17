@@ -6,22 +6,20 @@ package com.azure.resourcemanager.appplatform.samples;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
+import com.azure.core.management.Region;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.appplatform.models.SpringApp;
 import com.azure.resourcemanager.appplatform.models.SpringService;
-import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrder;
 import com.azure.resourcemanager.appservice.models.AppServiceDomain;
 import com.azure.resourcemanager.dns.models.DnsZone;
 import com.azure.resourcemanager.keyvault.models.CertificatePermissions;
-import com.azure.resourcemanager.keyvault.models.Secret;
 import com.azure.resourcemanager.keyvault.models.SecretPermissions;
 import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryPhoneCode;
-import com.azure.core.management.Region;
-import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.security.keyvault.certificates.CertificateClient;
 import com.azure.security.keyvault.certificates.CertificateClientBuilder;
@@ -31,21 +29,28 @@ import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.compress.utils.IOUtils;
 
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import javax.xml.bind.DatatypeConverter;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.security.cert.CertificateException;
-import java.util.Base64;
 import java.util.Collections;
 
 /**
@@ -71,7 +76,7 @@ public class ManageSpringCloud {
      * @return true if sample runs successfully
      * @throws IllegalStateException unexcepted state
      */
-    public static boolean runSample(AzureResourceManager azureResourceManager, String clientId) throws IOException, KeyStoreException, CertificateException, NoSuchAlgorithmException {
+    public static boolean runSample(AzureResourceManager azureResourceManager, String clientId) throws IOException, KeyStoreException, CertificateException, NoSuchAlgorithmException, KeyManagementException {
         final String rgName = Utils.randomResourceName(azureResourceManager, "rg", 24);
         final String serviceName  = Utils.randomResourceName(azureResourceManager, "service", 24);
         final Region region = Region.US_EAST;
@@ -190,12 +195,19 @@ public class ManageSpringCloud {
             // Please use a trusted certificate for actual use
             System.out.printf("Generate a self-signed certificate for ssl.%s %n", domainName);
             allowAllSSL();
-            String cerPassword = password();
+            String cerPassword = Utils.password();
             String cerPath = ManageSpringCloud.class.getResource("/").getPath() + domainName + ".cer";
             String pfxPath = ManageSpringCloud.class.getClass().getResource("/").getPath() + domainName + ".pfx";
-            createCertificate(cerPath, pfxPath, domainName, cerPassword, "ssl." + domainName, "ssl." + domainName);
+            Utils.createCertificate(cerPath, pfxPath, domainName, cerPassword, "ssl." + domainName, "ssl." + domainName);
 
             byte[] certificate = readAllBytes(new FileInputStream(pfxPath));
+
+            KeyStore store = KeyStore.getInstance("PKCS12");
+            store.load(new ByteArrayInputStream(certificate), cerPassword.toCharArray());
+            String alias = Collections.list(store.aliases()).get(0);
+            String thumbprint = DatatypeConverter.printHexBinary(MessageDigest.getInstance("SHA-1").digest(store.getCertificate(alias).getEncoded()));
+
+            System.out.printf("Certificate Thumbprint: %s%n", thumbprint);
 
             System.out.printf("Creating key vault %s with access from %s, %s%n", vaultName, clientId, SPRING_CLOUD_SERVICE_PRINCIPAL);
             Vault vault = azureResourceManager.vaults().getByResourceGroup(rgName, vaultName);
@@ -213,14 +225,6 @@ public class ManageSpringCloud {
                 .apply();
             System.out.printf("Created key vault %s%n", vault.name());
             Utils.print(vault);
-
-            KeyStore store = KeyStore.getInstance("PKCS12");
-            store.load(new ByteArrayInputStream(certificate), cerPassword.toCharArray());
-            String alias = Collections.list(store.aliases()).get(0);
-            thumbprint = DatatypeConverter.printHexBinary(MessageDigest.getInstance("SHA-1").digest(store.getCertificate(alias).getEncoded()));
-
-            System.out.printf("Get certificate: %s%n", secret.getValue());
-            System.out.printf("Certificate Thumbprint: %s%n", thumbprint);
 
             // upload certificate
             CertificateClient certificateClient = new CertificateClientBuilder()
@@ -313,6 +317,20 @@ public class ManageSpringCloud {
             }
         } finally {
             connection.disconnect();
+        }
+    }
+
+    private static byte[] readAllBytes(InputStream inputStream) throws IOException {
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            byte[] data = new byte[4096];
+            while (true) {
+                int size = inputStream.read(data);
+                if (size > 0) {
+                    outputStream.write(data, 0, size);
+                } else {
+                    return outputStream.toByteArray();
+                }
+            }
         }
     }
 
