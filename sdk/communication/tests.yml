@@ -19,7 +19,7 @@ jobs:
       SKIP_PHONENUMBER_INTEGRATION_TESTS: TRUE
       SKIP_LIVE_TEST: TRUE
       AZURE_SUBSCRIPTION_ID: $(acs-subscription-id)
-      COMMUNICATION_CONNECTION_STRING: $(communication-livetest-connection-string)
+      COMMUNICATION_LIVETEST_CONNECTION_STRING: $(communication-livetest-connection-string)
       SMS_SERVICE_PHONE_NUMBER: $(communication-livetest-phone-number)
       AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
       AZURE_CLIENT_SECRET: $(aad-azure-sdk-test-client-secret)
