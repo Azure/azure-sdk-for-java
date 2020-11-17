@@ -14,10 +14,10 @@ import java.util.Objects;
  *
  * <b>Amqp message id types:</b>
  * <ul>
- * <li><a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#type-message-id-string">String</a></li>
- * <li><a href="http://docs.oasis-open.org/amqp/core/v1.0/amqp-core-messaging-v1.0.html#type-message-id-ulong">long</a></li>
- * <li><a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#type-message-id-uuid">Uuid</a></li>
- * <li><a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#type-message-id-binary">binary</a></li>
+ * <li><a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#type-message-id-string" target="_blank">String</a></li>
+ * <li><a href="http://docs.oasis-open.org/amqp/core/v1.0/amqp-core-messaging-v1.0.html#type-message-id-ulong" target="_blank">long</a></li>
+ * <li><a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#type-message-id-uuid" target="_blank">Uuid</a></li>
+ * <li><a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#type-message-id-binary" target="_blank">binary</a></li>
  * </ul>
  */
 public final class AmqpMessageId {
