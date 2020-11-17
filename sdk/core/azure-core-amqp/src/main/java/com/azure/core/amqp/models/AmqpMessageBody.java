@@ -28,7 +28,10 @@ public final class AmqpMessageBody {
     private final ClientLogger logger = new ClientLogger(AmqpMessageBody.class);
     private AmqpMessageBodyType bodyType;
 
-    private List<byte[]> data;
+    // We expect user to call `getFirstData()` more because we support one byte[] as present.
+    // This the priority here to store payload as `byte[] data` and
+    private byte[] data;
+    private List<byte[]> dataList;
 
     private AmqpMessageBody() {
         // package constructor so no one can create instance of this except classes im this package.
@@ -47,7 +50,7 @@ public final class AmqpMessageBody {
         Objects.requireNonNull(data, "'data' cannot be null.");
         AmqpMessageBody body = new AmqpMessageBody();
         body.bodyType = AmqpMessageBodyType.DATA;
-        body.data = Collections.singletonList(data);
+        body.data = data;
         return body;
     }
 
@@ -76,14 +79,15 @@ public final class AmqpMessageBody {
      */
     public IterableStream<byte[]> getData() {
         if (bodyType != AmqpMessageBodyType.DATA) {
-
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "This method can only be called for AMQP Data body type at present. Track this issue, "
                     + "https://github.com/Azure/azure-sdk-for-java/issues/17614 for other body type support in "
                     + "future."));
         }
-
-        return new IterableStream<>(data);
+        if (dataList ==  null) {
+            dataList = Collections.singletonList(data);
+        }
+        return new IterableStream<>(dataList);
     }
 
     /**
@@ -103,13 +107,11 @@ public final class AmqpMessageBody {
      */
     public byte[] getFirstData() {
         if (bodyType != AmqpMessageBodyType.DATA) {
-
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "This method can only be called for AMQP Data body type at present. Track this issue, "
                     + "https://github.com/Azure/azure-sdk-for-java/issues/17614 for other body type support in "
                     + "future."));
         }
-
-        return data.get(0);
+        return data;
     }
 }

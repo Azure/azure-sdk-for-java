@@ -10,7 +10,7 @@ import java.util.Objects;
  * {@link String} representation at present.
  *
  * <p><strong>Create and retrieve message id </strong></p>
- * {@codesnippet com.azure.core.amqp.models.AmqpBodyType.checkBodyType}
+ * {@codesnippet com.azure.core.amqp.models.AmqpMessageId.createAndGet}
  *
  * <b>Amqp message id types:</b>
  * <ul>

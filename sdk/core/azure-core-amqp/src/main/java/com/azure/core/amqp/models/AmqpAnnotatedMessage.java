@@ -17,7 +17,6 @@ import java.util.Objects;
  * @see AmqpMessageBody
  */
 public final class AmqpAnnotatedMessage {
-    private final ClientLogger logger = new ClientLogger(AmqpAnnotatedMessage.class);
     private final AmqpMessageBody amqpMessageBody;
     private final Map<String, Object> applicationProperties;
     private final Map<String, Object> deliveryAnnotations;
@@ -35,7 +34,6 @@ public final class AmqpAnnotatedMessage {
      */
     public AmqpAnnotatedMessage(AmqpMessageBody body) {
         amqpMessageBody = Objects.requireNonNull(body, "'body' cannot be null.");
-
         applicationProperties = new HashMap<>();
         deliveryAnnotations = new HashMap<>();
         messageAnnotations = new HashMap<>();
@@ -55,12 +53,9 @@ public final class AmqpAnnotatedMessage {
 
     /**
      * Gets the {@link AmqpMessageBody} of an amqp message.
-     * <b>Client should test for {@link AmqpMessageBodyType} before calling corresponding get method on
-     * {@link AmqpMessageBody}</b>
-     * <p><strong>How to check for {@link AmqpMessageBodyType}</strong></p>
-     * {@codesnippet com.azure.core.amqp.models.AmqpBodyType.checkBodyType}
      *
      * @return the {@link AmqpMessageBody} object.
+     * @see AmqpMessageBody
      */
     public AmqpMessageBody getBody() {
         return amqpMessageBody;
