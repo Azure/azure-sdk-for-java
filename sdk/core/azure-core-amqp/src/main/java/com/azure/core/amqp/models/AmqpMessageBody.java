@@ -8,7 +8,6 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -79,9 +78,9 @@ public final class AmqpMessageBody {
         if (bodyType != AmqpMessageBodyType.DATA) {
 
             throw logger.logExceptionAsError(new IllegalArgumentException(
-                String.format(Locale.US, "This method can only be called for body type [%s]. Track this issue, "
-                        + "https://github.com/Azure/azure-sdk-for-java/issues/17614 for other body type support in "
-                        + "future.", AmqpMessageBodyType.DATA.toString())));
+                "This method can only be called for AMQP Data body type at present. Track this issue, "
+                    + "https://github.com/Azure/azure-sdk-for-java/issues/17614 for other body type support in "
+                    + "future."));
         }
 
         return new IterableStream<>(data);
@@ -106,9 +105,9 @@ public final class AmqpMessageBody {
         if (bodyType != AmqpMessageBodyType.DATA) {
 
             throw logger.logExceptionAsError(new IllegalArgumentException(
-                String.format(Locale.US, "This method can only be called for body type [%s]. Track this issue, "
+                "This method can only be called for AMQP Data body type at present. Track this issue, "
                     + "https://github.com/Azure/azure-sdk-for-java/issues/17614 for other body type support in "
-                    + "future.", AmqpMessageBodyType.DATA.toString())));
+                    + "future."));
         }
 
         return data.get(0);
