@@ -6,13 +6,13 @@ package com.azure.messaging.servicebus;
 /**
  * Context for errors handled by the Service Bus processor.
  */
-public class ServiceBusProcessErrorContext {
+public final class ServiceBusErrorContext {
     private final Throwable exception;
     private final ServiceBusErrorSource errorSource;
     private final String fullyQualifiedNamespace;
     private final String entityPath;
 
-    ServiceBusProcessErrorContext(Throwable throwable, String fullyQualifiedNamespace, String entityPath) {
+    ServiceBusErrorContext(Throwable throwable, String fullyQualifiedNamespace, String entityPath) {
         this.exception = throwable;
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.entityPath = entityPath;

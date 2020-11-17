@@ -257,7 +257,7 @@ public class ServiceBusProcessorTest {
                 throw new IllegalStateException(); // throw error from user handler
             },
             serviceBusProcessErrorContext -> {
-                assertTrue(serviceBusProcessErrorContext instanceof ServiceBusProcessErrorContext);
+                assertTrue(serviceBusProcessErrorContext instanceof ServiceBusErrorContext);
                 ServiceBusException exception = (ServiceBusException) serviceBusProcessErrorContext.getException();
                 assertTrue(exception.getErrorSource() == ServiceBusErrorSource.USER_CALLBACK);
                 countDownLatch.countDown();
@@ -304,7 +304,7 @@ public class ServiceBusProcessorTest {
                 throw new IllegalStateException(); // throw error from user handler
             },
             serviceBusProcessErrorContext -> {
-                assertTrue(serviceBusProcessErrorContext instanceof ServiceBusProcessErrorContext);
+                assertTrue(serviceBusProcessErrorContext instanceof ServiceBusErrorContext);
                 ServiceBusException exception = (ServiceBusException) serviceBusProcessErrorContext.getException();
                 assertTrue(exception.getErrorSource() == ServiceBusErrorSource.USER_CALLBACK);
                 countDownLatch.countDown();

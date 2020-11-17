@@ -25,7 +25,7 @@ public class ServiceBusProcessorSample {
         };
 
         // Consumer that handles any errors that occur when receiving messages
-        Consumer<ServiceBusProcessErrorContext> errorHandler = errorContext -> {
+        Consumer<ServiceBusErrorContext> errorHandler = errorContext -> {
             System.out.println("Error when receiving messages " + errorContext.getException().getMessage());
             if (errorContext.getException() instanceof ServiceBusException) {
                 ServiceBusException serviceBusException = (ServiceBusException) errorContext.getException();

@@ -20,7 +20,7 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
             System.out.println("Received message " + message.getBody().toString());
         };
 
-        Consumer<ServiceBusProcessErrorContext> errorHandler = errorContext -> {
+        Consumer<ServiceBusErrorContext> errorHandler = errorContext -> {
             System.out.println("Error when receiving messages " + errorContext.getException().getMessage());
             if (errorContext.getException() instanceof ServiceBusException) {
                 ServiceBusException serviceBusException = (ServiceBusException) errorContext.getException();
@@ -50,7 +50,7 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
                 + " session: " + message.getSessionId());
         };
 
-        Consumer<ServiceBusProcessErrorContext> errorHandler = errorContext -> {
+        Consumer<ServiceBusErrorContext> errorHandler = errorContext -> {
             System.out.println("Error when receiving messages " + errorContext.getException().getMessage());
             if (errorContext.getException() instanceof ServiceBusException) {
                 ServiceBusException serviceBusException = (ServiceBusException) errorContext.getException();
@@ -81,7 +81,7 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
             System.out.println("Received message " + message.getBody().toString());
         };
 
-        Consumer<ServiceBusProcessErrorContext> errorHandler = errorContext -> {
+        Consumer<ServiceBusErrorContext> errorHandler = errorContext -> {
             System.out.println("Error when receiving messages " + errorContext.getException().getMessage());
             if (errorContext.getException() instanceof ServiceBusException) {
                 ServiceBusException serviceBusException = (ServiceBusException) errorContext.getException();
@@ -114,7 +114,7 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
                 + " session: " + message.getSessionId());
         };
 
-        Consumer<ServiceBusProcessErrorContext> errorHandler = errorContext -> {
+        Consumer<ServiceBusErrorContext> errorHandler = errorContext -> {
             System.out.println("Error when receiving messages " + errorContext.getException().getMessage());
             if (errorContext.getException() instanceof ServiceBusException) {
                 ServiceBusException serviceBusException = (ServiceBusException) errorContext.getException();
