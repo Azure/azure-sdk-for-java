@@ -72,6 +72,38 @@ private final BlobServiceAsyncClient blobServiceAsyncClient = blobServiceClientB
 
 ```
 
+#### Search for resources
+You can use implementation class `AzureStorageResourcePatternResolver` of `ResourcePatternResolver` to search resource, it supports `blob` or `file` type.
+* Inject the builder bean.
+
+    ```java
+    @Autowired
+    BlobServiceClientBuilder blobServiceClientBuilder;
+    
+    @Autowired
+    ShareServiceClientBuilder shareServiceClientBuilder;
+    ```
+  
+* Create pattern object, if only one storage type resource used, please call the corresponding constructor.
+    ```java
+    BlobServiceClient blobServiceClient = blobServiceClientBuilder.buildClient();
+    ShareServiceClient shareServiceClient = shareServiceClientBuilder.buildClient();
+    storageResourcePatternResolver = new AzureStorageResourcePatternResolver(blobServiceClient, shareServiceClient);
+    ```
+  
+* Pattern usage, the **searchPattern** should start with `azure-blob://` or `azure-file://`. Such as `azure-blob://*/*`, it means list all blobs in all containers; `azure-blob://demo-container/**`, it means list all blobs in the demo-container container, including any sub-folder.
+    
+    ```java
+    Resource[] resources = storageResourcePatternResolver.getResources(searchPattern);
+    ```
+  
+    >**Note:** If there are too many matching files, partial data will be returned.
+
+* Location usage, the **searchLocation** should start with `azure-blob://` or `azure-file://`, the remaing file path should exist, otherwise an exception will be thrown. Such as `azure-blob://*/*`, it means list all blobs in all containers; `azure-blob://demo-container/**`, it means list all blobs in the demo-container container, including any sub-folder.
+    ```java
+    Resource[] resources = storageResourcePatternResolver.getResource(searchLocation);
+    ```
+
 ## Troubleshooting
 ### Enable client logging
 Azure SDKs for Java offers a consistent logging story to help aid in troubleshooting application errors and expedite their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
