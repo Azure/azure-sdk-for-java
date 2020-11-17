@@ -87,7 +87,8 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
      * @throws NullPointerException if {@code retryPolicy} is null.
      * @throws IllegalArgumentException if {@code prefetch} is less than 0.
      */
-    public ServiceBusReceiveLinkProcessor(int prefetch, AmqpRetryPolicy retryPolicy, ServiceBusReceiveMode receiveMode) {
+    public ServiceBusReceiveLinkProcessor(int prefetch, AmqpRetryPolicy retryPolicy, ServiceBusReceiveMode
+        receiveMode) {
         this.retryPolicy = Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
         this.receiveMode = Objects.requireNonNull(receiveMode, "'receiveMode' cannot be null.");
 

@@ -248,7 +248,8 @@ public final class ServiceBusReceivedMessage {
      * href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Deferral API</a> and, with that,
      * take the message out of the regular delivery state flow. This property is read-only.
      *
-     * @return Lock-token for this message. Could return {@code null} for {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode.
+     * @return Lock-token for this message. Could return {@code null} for
+     * {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode.
      *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement">Message
      * transfers, locks, and settlement</a>

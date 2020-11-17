@@ -79,8 +79,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
      *
      * @throws NullPointerException if {@code message} is null.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE}
-     *     mode or if the message was received from peekMessage.
+     * @throws UnsupportedOperationException if the receiver was opened in
+     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from peekMessage.
      */
     public void abandon(ServiceBusReceivedMessage message) {
         asyncClient.abandon(message).block(operationTimeout);
@@ -100,8 +100,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *
      * @throws NullPointerException if {@code message} or {@code options} is null. Also if
      *     {@code transactionContext.transactionId} is null when {@code options.transactionContext} is specified.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE}
-     *     mode or if the message was received from peekMessage.
+     * @throws UnsupportedOperationException if the receiver was opened in
+     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from peekMessage.
      */
     public void abandon(ServiceBusReceivedMessage message, AbandonOptions options) {
         asyncClient.abandon(message, options).block(operationTimeout);
@@ -113,8 +113,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
      *
      * @throws NullPointerException if {@code message} is null.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE}
-     *     mode or if the message was received from peekMessage.
+     * @throws UnsupportedOperationException if the receiver was opened in
+     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from peekMessage.
      */
     public void complete(ServiceBusReceivedMessage message) {
         asyncClient.complete(message).block(operationTimeout);
@@ -131,8 +131,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *
      * @throws NullPointerException if {@code message} or {@code options} is null. Also if
      *     {@code transactionContext.transactionId} is null when {@code options.transactionContext} is specified.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE}
-     *     mode or if the message was received from peekMessage.
+     * @throws UnsupportedOperationException if the receiver was opened in
+     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from peekMessage.
      */
     public void complete(ServiceBusReceivedMessage message, CompleteOptions options) {
         asyncClient.complete(message, options).block(operationTimeout);
@@ -144,8 +144,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
      *
      * @throws NullPointerException if {@code message} is null.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE}
-     *     mode or if the message was received from peekMessage.
+     * @throws UnsupportedOperationException if the receiver was opened in
+     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from peekMessage.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
      */
     public void defer(ServiceBusReceivedMessage message) {
@@ -165,8 +165,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *
      * @throws NullPointerException if {@code message} or {@code options} is null. Also if
      *     {@code transactionContext.transactionId} is null when {@code options.transactionContext} is specified.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE}
-     *     mode or if the message was received from peekMessage.
+     * @throws UnsupportedOperationException if the receiver was opened in
+     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from peekMessage.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
      */
     public void defer(ServiceBusReceivedMessage message, DeferOptions options) {
@@ -179,8 +179,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
      *
      * @throws NullPointerException if {@code message} is null.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE}
-     *     mode or if the message was received from peekMessage.
+     * @throws UnsupportedOperationException if the receiver was opened in
+     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from peekMessage.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-dead-letter-queues">Dead letter
      *     queues</a>
      */
@@ -202,8 +202,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *
      * @throws NullPointerException if {@code message} or {@code options} is null. Also if
      *     {@code transactionContext.transactionId} is null when {@code options.transactionContext} is specified.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE}
-     *     mode or if the message was received from peekMessage.
+     * @throws UnsupportedOperationException if the receiver was opened in
+     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from peekMessage.
      */
     public void deadLetter(ServiceBusReceivedMessage message, DeadLetterOptions options) {
         asyncClient.deadLetter(message, options).block(operationTimeout);
@@ -457,17 +457,17 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
 
     /**
      * Renews the lock on the specified message. The lock will be renewed based on the setting specified on the entity.
-     * When a message is received in {@link ServiceBusReceiveMode#PEEK_LOCK} mode, the message is locked on the server for this
-     * receiver instance for a duration as specified during the Queue creation (LockDuration). If processing of the
-     * message requires longer than this duration, the lock needs to be renewed. For each renewal, the lock is reset to
-     * the entity's LockDuration value.
+     * When a message is received in {@link ServiceBusReceiveMode#PEEK_LOCK} mode, the message is locked on the
+     * server for this receiver instance for a duration as specified during the Queue creation (LockDuration). If
+     * processing of the message requires longer than this duration, the lock needs to be renewed. For each renewal,
+     * the lock is reset to the entity's LockDuration value.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform lock renewal.
      *
      * @return The new expiration time for the message.
      * @throws NullPointerException if {@code message} is null.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE}
-     *     mode.
+     * @throws UnsupportedOperationException if the receiver was opened in
+     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode.
      * @throws IllegalStateException if the receiver is a session receiver.
      */
     public OffsetDateTime renewMessageLock(ServiceBusReceivedMessage message) {

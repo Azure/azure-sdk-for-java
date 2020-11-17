@@ -60,7 +60,8 @@ import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPE
  * other terminal scenarios. See {@link #receiveMessages()} for more information.</p>
  * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#all}
  *
- * <p><strong>Receive messages in {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode from Service Bus resource</strong></p>
+ * <p><strong>Receive messages in {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode from Service Bus
+ * resource</strong></p>
  * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.receiveWithReceiveAndDeleteMode}
  *
  * <p><strong>Receive messages from a specific session</strong></p>
@@ -193,8 +194,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      *
      * @return A {@link Mono} that completes when the Service Bus abandon operation completes.
      * @throws NullPointerException if {@code message} is null.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE}
-     *     mode or if the message was received from peekMessage.
+     * @throws UnsupportedOperationException if the receiver was opened in
+     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from peekMessage.
      */
     public Mono<Void> abandon(ServiceBusReceivedMessage message) {
         return updateDisposition(message, DispositionStatus.ABANDONED, null, null,
@@ -217,8 +218,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @return A {@link Mono} that completes when the Service Bus operation finishes.
      * @throws NullPointerException if {@code message} or {@code options} is null. Also if
      *     {@code transactionContext.transactionId} is null when {@code options.transactionContext} is specified.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE}
-     *     mode or if the message was received from peekMessage.
+     * @throws UnsupportedOperationException if the receiver was opened in
+     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from peekMessage.
      */
     public Mono<Void> abandon(ServiceBusReceivedMessage message, AbandonOptions options) {
         if (Objects.isNull(options)) {
@@ -240,8 +241,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      *
      * @return A {@link Mono} that finishes when the message is completed on Service Bus.
      * @throws NullPointerException if {@code message} is null.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE}
-     *     mode or if the message was received from peekMessage.
+     * @throws UnsupportedOperationException if the receiver was opened in
+     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from peekMessage.
      */
     public Mono<Void> complete(ServiceBusReceivedMessage message) {
         return updateDisposition(message, DispositionStatus.COMPLETED, null, null,
@@ -261,8 +262,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @return A {@link Mono} that finishes when the message is completed on Service Bus.
      * @throws NullPointerException if {@code message} or {@code options} is null. Also if
      *     {@code transactionContext.transactionId} is null when {@code options.transactionContext} is specified.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE}
-     *     mode or if the message was received from peekMessage.
+     * @throws UnsupportedOperationException if the receiver was opened in
+     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from peekMessage.
      */
     public Mono<Void> complete(ServiceBusReceivedMessage message, CompleteOptions options) {
         if (Objects.isNull(options)) {
@@ -284,8 +285,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      *
      * @return A {@link Mono} that completes when the Service Bus defer operation finishes.
      * @throws NullPointerException if {@code message} is null.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode
-     * or if the message was received from peekMessage.
+     * @throws UnsupportedOperationException if the receiver was opened in
+     * {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from peekMessage.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
      */
     public Mono<Void> defer(ServiceBusReceivedMessage message) {
@@ -307,8 +308,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @return A {@link Mono} that completes when the defer operation finishes.
      * @throws NullPointerException if {@code message} or {@code options} is null. Also if
      *     {@code transactionContext.transactionId} is null when {@code options.transactionContext} is specified.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE}
-     *     mode or if the message was received from peekMessage.
+     * @throws UnsupportedOperationException if the receiver was opened in
+     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from peekMessage.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
      */
     public Mono<Void> defer(ServiceBusReceivedMessage message, DeferOptions options) {
@@ -331,8 +332,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      *
      * @return A {@link Mono} that completes when the dead letter operation finishes.
      * @throws NullPointerException if {@code message} is null.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE}
-     *     mode or if the message was received from peekMessage.
+     * @throws UnsupportedOperationException if the receiver was opened in
+     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from peekMessage.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-dead-letter-queues">Dead letter
      *     queues</a>
      */
@@ -353,8 +354,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @return A {@link Mono} that completes when the dead letter operation finishes.
      * @throws NullPointerException if {@code message} or {@code options} is null. Also if
      *     {@code transactionContext.transactionId} is null when {@code options.transactionContext} is specified.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE}
-     *     mode or if the message was received from peekMessage.
+     * @throws UnsupportedOperationException if the receiver was opened in
+     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from peekMessage.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-dead-letter-queues">Dead letter
      *     queues</a>
      */
@@ -711,17 +712,17 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
     /**
      * Asynchronously renews the lock on the message. The lock will be renewed based on the setting specified on the
-     * entity. When a message is received in {@link ServiceBusReceiveMode#PEEK_LOCK} mode, the message is locked on the server for
-     * this receiver instance for a duration as specified during the entity creation (LockDuration). If processing of
-     * the message requires longer than this duration, the lock needs to be renewed. For each renewal, the lock is reset
-     * to the entity's LockDuration value.
+     * entity. When a message is received in {@link ServiceBusReceiveMode#PEEK_LOCK} mode, the message is locked on
+     * the server for this receiver instance for a duration as specified during the entity creation (LockDuration).
+     * If processing of the message requires longer than this duration, the lock needs to be renewed. For each renewal,
+     * the lock is reset to the entity's LockDuration value.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform auto-lock renewal.
      *
      * @return The new expiration time for the message.
      * @throws NullPointerException if {@code message} or {@code message.getLockToken()} is null.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE}
-     *     mode or if the message was received from peekMessage.
+     * @throws UnsupportedOperationException if the receiver was opened in
+     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from peekMessage.
      * @throws IllegalStateException if the receiver is a session receiver.
      * @throws IllegalArgumentException if {@code message.getLockToken()} is an empty value.
      */
