@@ -6,7 +6,6 @@ package com.azure.spring.autoconfigure.aad;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -75,21 +74,20 @@ public class AADResourceServerAutoConfiguration {
         return validators;
     }
 
-    @Configuration(proxyBeanMethods = false)
+    /**
+     * Default configuration class for using AAD authentication and authorization. User can write another configuration
+     * bean to override it.
+     */
+    @Configuration
     @ConditionalOnMissingBean(WebSecurityConfigurerAdapter.class)
     @EnableWebSecurity
-    public static class DefaultAzureOAuth2WebSecurityConfigurerAdapter {
+    public static class DefaultAzureOAuth2ResourceServerWebSecurityConfigurerAdapter extends
+        WebSecurityConfigurerAdapter {
 
-        @Bean
-        @ConditionalOnBean(JwtDecoder.class)
-        public WebSecurityConfigurerAdapter jwtDecoderWebSecurityConfigurerAdapter() {
-            return new WebSecurityConfigurerAdapter() {
-                @Override
-                protected void configure(HttpSecurity http) throws Exception {
-                    http.authorizeRequests((requests) -> requests.anyRequest().authenticated());
-                    http.oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
-                }
-            };
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            http.authorizeRequests((requests) -> requests.anyRequest().authenticated());
+            http.oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
         }
     }
 }
