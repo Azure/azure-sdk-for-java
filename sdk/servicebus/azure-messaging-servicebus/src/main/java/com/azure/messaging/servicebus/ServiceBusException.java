@@ -93,7 +93,8 @@ public final class ServiceBusException extends AzureException {
                 return ServiceBusFailureReason.SESSION_LOCK_LOST;
             case UNAUTHORIZED_ACCESS:
                 return ServiceBusFailureReason.UNAUTHORIZED;
-            case PROTON_IO:         // does this mapping make sense?
+            case PROTON_IO:
+                return ServiceBusFailureReason.SERVICE_COMMUNICATION_PROBLEM;
             default:
                 return ServiceBusFailureReason.GENERAL_ERROR;
         }

@@ -660,7 +660,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
     private Throwable mapError(Throwable throwable) {
         if (!(throwable instanceof ServiceBusException)) {
-            return new ServiceBusException(throwable, ServiceBusErrorSource.SENDING);
+            return new ServiceBusException(throwable, ServiceBusErrorSource.SEND);
         }
         return throwable;
     }

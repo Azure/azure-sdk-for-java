@@ -1189,6 +1189,6 @@ class ServiceBusReceiverAsyncClientTest {
     private static Stream<Arguments> errorSourceNoneOnSettlement() {
         return Stream.of(
             Arguments.of(DispositionStatus.COMPLETED, DeliveryStateType.Accepted, ServiceBusErrorSource.COMPLETE),
-            Arguments.of(DispositionStatus.ABANDONED, DeliveryStateType.Modified, ServiceBusErrorSource.ABANDONED));
+            Arguments.of(DispositionStatus.ABANDONED, DeliveryStateType.Modified, ServiceBusErrorSource.ABANDON));
     }
 }

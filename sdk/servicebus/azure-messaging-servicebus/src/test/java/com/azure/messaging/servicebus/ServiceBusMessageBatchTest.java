@@ -54,7 +54,7 @@ public class ServiceBusMessageBatchTest {
 
         // Assert
         Assertions.assertFalse(thrownException.isTransient());
-        Assertions.assertEquals(ServiceBusErrorSource.SENDING, thrownException.getErrorSource());
+        Assertions.assertEquals(ServiceBusErrorSource.SEND, thrownException.getErrorSource());
         Assertions.assertEquals(ServiceBusFailureReason.MESSAGE_SIZE_EXCEEDED, thrownException.getReason());
     }
 

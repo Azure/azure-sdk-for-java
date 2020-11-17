@@ -1063,7 +1063,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                     case COMPLETED:
                         return new ServiceBusException(throwable, ServiceBusErrorSource.COMPLETE);
                     case ABANDONED:
-                        return new ServiceBusException(throwable, ServiceBusErrorSource.ABANDONED);
+                        return new ServiceBusException(throwable, ServiceBusErrorSource.ABANDON);
                     default:
                         return new ServiceBusException(throwable, ServiceBusErrorSource.UNKNOWN);
                 }

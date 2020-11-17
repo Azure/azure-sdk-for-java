@@ -104,7 +104,7 @@ public final class ServiceBusMessageBatch {
             final RuntimeException ex = new ServiceBusException(
                     new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
                         String.format(Locale.US, "Size of the payload exceeded maximum message size: %s kb",
-                            maxMessageSize / 1024), contextProvider.getErrorContext()), ServiceBusErrorSource.SENDING);
+                            maxMessageSize / 1024), contextProvider.getErrorContext()), ServiceBusErrorSource.SEND);
 
             throw logger.logExceptionAsWarning(ex);
         }
