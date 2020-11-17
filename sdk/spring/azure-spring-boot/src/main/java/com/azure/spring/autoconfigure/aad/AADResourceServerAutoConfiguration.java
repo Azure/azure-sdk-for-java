@@ -41,6 +41,7 @@ public class AADResourceServerAutoConfiguration {
 
     /**
      * Use JwkKeySetUri to create JwtDecoder
+     *
      * @return JwtDecoder bean
      */
     @Bean
@@ -78,6 +79,7 @@ public class AADResourceServerAutoConfiguration {
     @ConditionalOnMissingBean(WebSecurityConfigurerAdapter.class)
     @EnableWebSecurity
     public static class DefaultAzureOAuth2WebSecurityConfigurerAdapter {
+
         @Bean
         @ConditionalOnBean(JwtDecoder.class)
         public WebSecurityConfigurerAdapter jwtDecoderWebSecurityConfigurerAdapter() {

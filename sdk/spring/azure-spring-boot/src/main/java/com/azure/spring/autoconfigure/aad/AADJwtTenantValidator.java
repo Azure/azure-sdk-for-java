@@ -19,6 +19,7 @@ public class AADJwtTenantValidator implements OAuth2TokenValidator<Jwt> {
 
     /**
      * Constructs a {@link AADJwtIssuerValidator} using the provided parameters
+     *
      * @param tenantId - The tenant that each {@link Jwt} should have.
      * @param allowedTenantIds - Multi-tenant is allowed tenantIds
      */

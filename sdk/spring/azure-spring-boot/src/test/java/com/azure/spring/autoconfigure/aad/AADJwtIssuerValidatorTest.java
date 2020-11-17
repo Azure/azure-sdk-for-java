@@ -5,6 +5,7 @@ package com.azure.spring.autoconfigure.aad;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
 import java.util.Set;
 import org.junit.Test;
 import org.springframework.security.oauth2.core.OAuth2TokenValidatorResult;
@@ -22,7 +23,7 @@ public class AADJwtIssuerValidatorTest {
         String singleTenantId = aadAuthenticationProperties.getTenantId();
         Set<String> allowedTenantIds = aadAuthenticationProperties.getAllowedTenantIds();
 
-        AADJwtIssuerValidator aadJwtIssuerValidator = new AADJwtIssuerValidator(singleTenantId,allowedTenantIds);
+        AADJwtIssuerValidator aadJwtIssuerValidator = new AADJwtIssuerValidator(singleTenantId, allowedTenantIds);
         OAuth2TokenValidatorResult result = aadJwtIssuerValidator.validate(jwt);
 
         assertThat(result).isNotNull();
@@ -38,7 +39,7 @@ public class AADJwtIssuerValidatorTest {
         allowedTenantIds.add("fake-tenant-id");
         allowedTenantIds.add("fake-tenant-id2");
         allowedTenantIds.add("fake-tenant-id3");
-        AADJwtIssuerValidator aadJwtIssuerValidator = new AADJwtIssuerValidator(singleTenantId,allowedTenantIds);
+        AADJwtIssuerValidator aadJwtIssuerValidator = new AADJwtIssuerValidator(singleTenantId, allowedTenantIds);
         OAuth2TokenValidatorResult result = aadJwtIssuerValidator.validate(jwt);
 
         assertThat(result).isNotNull();
@@ -52,7 +53,7 @@ public class AADJwtIssuerValidatorTest {
         when(jwt.getClaim(AADTokenClaim.ISS)).thenReturn("https://sts.windows.net/fake-tenant-id/v2.0");
         String singleTenantId = aadAuthenticationProperties.getTenantId();
         Set<String> allowedTenantIds = aadAuthenticationProperties.getAllowedTenantIds();
-        AADJwtIssuerValidator aadJwtIssuerValidator = new AADJwtIssuerValidator(singleTenantId,allowedTenantIds);
+        AADJwtIssuerValidator aadJwtIssuerValidator = new AADJwtIssuerValidator(singleTenantId, allowedTenantIds);
         OAuth2TokenValidatorResult result = aadJwtIssuerValidator.validate(jwt);
 
         assertThat(result).isNotNull();

@@ -23,6 +23,7 @@ public class AADJwtIssuerValidator implements OAuth2TokenValidator<Jwt> {
 
     /**
      * Constructs a {@link AADJwtIssuerValidator} using the provided parameters
+     *
      * @param tenantId - The tenant that each {@link Jwt} should have.
      * @param allowedTenantIds - Multi-tenant is allowed tenantIds
      */
@@ -43,9 +44,9 @@ public class AADJwtIssuerValidator implements OAuth2TokenValidator<Jwt> {
 
     private Predicate<String> validIssuer(String tenantId) {
         return tid -> {
-            if (tid.startsWith(LOGIN_MICROSOFT_ONLINE_ISSUER) || tid.startsWith(STS_WINDOWS_ISSUER) ||
-                tid.startsWith(STS_CHINA_CLOUD_API_ISSUER)) {
-                if(tid.contains(tenantId)){
+            if (tid.startsWith(LOGIN_MICROSOFT_ONLINE_ISSUER) || tid.startsWith(STS_WINDOWS_ISSUER)
+                || tid.startsWith(STS_CHINA_CLOUD_API_ISSUER)) {
+                if (tid.contains(tenantId)) {
                     return true;
                 }
             }
@@ -55,8 +56,8 @@ public class AADJwtIssuerValidator implements OAuth2TokenValidator<Jwt> {
 
     private Predicate<String> validIssuer(Set<String> allowedTenantIds) {
         return tid -> {
-            if (tid.startsWith(LOGIN_MICROSOFT_ONLINE_ISSUER) || tid.startsWith(STS_WINDOWS_ISSUER) ||
-                tid.startsWith(STS_CHINA_CLOUD_API_ISSUER)) {
+            if (tid.startsWith(LOGIN_MICROSOFT_ONLINE_ISSUER) || tid.startsWith(STS_WINDOWS_ISSUER)
+                || tid.startsWith(STS_CHINA_CLOUD_API_ISSUER)) {
                 for (String allowedTenantId : allowedTenantIds) {
                     if (tid.contains(allowedTenantId)) {
                         return true;

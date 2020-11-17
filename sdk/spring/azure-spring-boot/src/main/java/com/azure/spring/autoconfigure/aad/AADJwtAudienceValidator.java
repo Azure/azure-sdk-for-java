@@ -18,6 +18,7 @@ public class AADJwtAudienceValidator implements OAuth2TokenValidator<Jwt> {
 
     /**
      * Constructs a {@link AADJwtAudienceValidator} using the provided parameters
+     *
      * @param audiences - The audience that each {@link Jwt} should have.
      */
     @SuppressWarnings({"unchecked", "rawtypes"})
