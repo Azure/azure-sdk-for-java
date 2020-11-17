@@ -7,7 +7,6 @@ import com.azure.core.annotation.Fluent;
 
 import java.time.OffsetDateTime;
 import java.util.Arrays;
-import java.util.Objects;
 
 /**
  * The representation of message properties as defined by AMQP protocol.
@@ -34,27 +33,6 @@ public class AmqpMessageProperties {
 
     AmqpMessageProperties() {
         // This class does not have any public constructors, and is not able to be instantiated using 'new'.
-    }
-
-    /**
-     * The constructor is used to clone the values.
-     */
-    AmqpMessageProperties(AmqpMessageProperties properties) {
-        super();
-        Objects.requireNonNull(properties, "'properties' cannot be null.");
-        absoluteExpiryTime = properties.getAbsoluteExpiryTime();
-        contentEncoding = properties.getContentEncoding();
-        contentType = properties.getContentType();
-        correlationId = properties.getCorrelationId();
-        creationTime = properties.getCreationTime();
-        groupId = properties.getGroupId();
-        groupSequence = properties.getGroupSequence();
-        messageId = properties.getMessageId();
-        replyToGroupId = properties.getReplyToGroupId();
-        replyTo = properties.getReplyTo();
-        to = properties.getTo();
-        subject = properties.getSubject();
-        userId = properties.getUserId();
     }
 
     /**

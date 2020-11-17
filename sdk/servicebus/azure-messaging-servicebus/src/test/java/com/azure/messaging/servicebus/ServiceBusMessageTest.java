@@ -103,59 +103,6 @@ public class ServiceBusMessageTest {
         assertNull(actual.getAmqpAnnotatedMessage().getHeader().getDeliveryCount());
     }
 
-
-    /**
-     * Verifies we correctly set values via copy constructor for {@link ServiceBusMessage}.
-     * 1. Ensure modifying original `ServiceBusReceivedMessage` object does not change values of new ServiceBusMessage
-     * object changes its values.
-     */
-    @Test
-    public void copyConstructorModifyAfterCopyTest() {
-        // Arrange
-        final String expectedSubject = "old-subject";
-        final String expectedTo = "old-to";
-        final String expectedReplyTo = "old-reply-to";
-        final String expectedReplyToSessionId = "old-reply-to-session-id";
-        final String expectedCorrelationId = "old-d-id";
-        final String expectedDeadLetterSource = "old-d-l-source";
-        final Duration expectedTimeToLive = Duration.ofSeconds(20);
-        final String expectedPartitionKey = "old-p-key";
-
-        final ServiceBusReceivedMessage originalMessage = new ServiceBusReceivedMessage(PAYLOAD_BINARY);
-        originalMessage.setSubject(expectedSubject);
-        originalMessage.setTo(expectedTo);
-        originalMessage.setReplyTo(expectedReplyTo);
-        originalMessage.setReplyToSessionId(expectedReplyToSessionId);
-        originalMessage.setCorrelationId(expectedCorrelationId);
-        originalMessage.setDeadLetterSource(expectedDeadLetterSource);
-        originalMessage.setTimeToLive(expectedTimeToLive);
-        originalMessage.setPartitionKey(expectedPartitionKey);
-
-        final ServiceBusMessage copiedMessage = new ServiceBusMessage(originalMessage);
-
-        // Act
-        // Modify the values after invoking copy constructor
-        copiedMessage.setSubject("new-subject");
-        copiedMessage.setTo("new-to");
-        copiedMessage.setReplyTo("new-reply-to");
-        copiedMessage.setReplyToSessionId("new-session-id");
-        copiedMessage.setCorrelationId("new-c-id");
-        copiedMessage.setTimeToLive(Duration.ofSeconds(40));
-        copiedMessage.setPartitionKey("new-p-key");
-
-        // Assert
-        // Validate updated values
-        assertEquals(expectedSubject, originalMessage.getAmqpAnnotatedMessage().getProperties().getSubject());
-        assertEquals(expectedTo, originalMessage.getAmqpAnnotatedMessage().getProperties().getTo().toString());
-        assertEquals(expectedReplyTo, originalMessage.getAmqpAnnotatedMessage().getProperties().getReplyTo().toString());
-        assertEquals(expectedReplyToSessionId, originalMessage.getAmqpAnnotatedMessage().getProperties().getReplyToGroupId());
-        assertEquals(expectedCorrelationId, originalMessage.getAmqpAnnotatedMessage().getProperties().getCorrelationId().toString());
-
-        assertEquals(expectedTimeToLive, originalMessage.getAmqpAnnotatedMessage().getHeader().getTimeToLive());
-
-        assertEquals(expectedPartitionKey, originalMessage.getAmqpAnnotatedMessage().getMessageAnnotations().get(PARTITION_KEY_ANNOTATION_NAME.getValue()));
-    }
-
     /**
      * Verify UTF_8 encoded body is created.
      */

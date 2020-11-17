@@ -8,7 +8,9 @@ import com.azure.core.amqp.models.AmqpAddress;
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.amqp.models.AmqpMessageBody;
 import com.azure.core.amqp.models.AmqpMessageBodyType;
+import com.azure.core.amqp.models.AmqpMessageHeader;
 import com.azure.core.amqp.models.AmqpMessageId;
+import com.azure.core.amqp.models.AmqpMessageProperties;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.experimental.util.BinaryData;
@@ -16,6 +18,8 @@ import com.azure.core.experimental.util.BinaryData;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.Arrays;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -107,23 +111,108 @@ public class ServiceBusMessage {
      * @param receivedMessage The received message to create new message from.
      *
      * @throws NullPointerException if {@code receivedMessage} is {@code null}.
+     * @throws UnsupportedOperationException if {@link AmqpMessageBodyType} is {@link AmqpMessageBodyType#SEQUENCE} or
+     * {@link AmqpMessageBodyType#VALUE}. See code sample above explaining how to check for {@link AmqpMessageBodyType}
+     * before calling this constructor.
+     * <p><strong>How to check for {@link AmqpMessageBodyType} before calling this constructor</strong></p>
+     * {@codesnippet com.azure.messaging.servicebus.ServiceBusMessage.copyServiceBusMessage}
+     * @throws IllegalStateException for invalid {@link AmqpMessageBodyType}.
+     * @see AmqpAnnotatedMessage
      */
     public ServiceBusMessage(ServiceBusReceivedMessage receivedMessage) {
         Objects.requireNonNull(receivedMessage, "'receivedMessage' cannot be null.");
 
-        this.amqpAnnotatedMessage = new AmqpAnnotatedMessage(receivedMessage.getAmqpAnnotatedMessage());
+        final AmqpMessageBodyType bodyType = receivedMessage.getAmqpAnnotatedMessage().getBody().getBodyType();
+        AmqpMessageBody amqpMessageBody;
+        switch (bodyType) {
+            case DATA:
+                final byte[] data = receivedMessage.getAmqpAnnotatedMessage().getBody().getFirstData();
+                amqpMessageBody = AmqpMessageBody.fromData(Arrays.copyOf(data, data.length));
+                break;
+            case SEQUENCE:
+            case VALUE:
+                throw logger.logExceptionAsError(new UnsupportedOperationException(
+                    String.format(Locale.US, "This constructor only support body type [%s] at present. Track "
+                        + "this issue, https://github.com/Azure/azure-sdk-for-java/issues/17614 for other body type "
+                        + "support in future.", AmqpMessageBodyType.DATA.toString())));
+            default:
+                throw logger.logExceptionAsError(new IllegalStateException("Body type not valid "
+                    + bodyType.toString()));
+        }
+        this.amqpAnnotatedMessage = new AmqpAnnotatedMessage(amqpMessageBody);
+
+        // set properties
+        final AmqpMessageProperties receivedProperties = receivedMessage.getAmqpAnnotatedMessage().getProperties();
+        final AmqpMessageProperties newProperties = amqpAnnotatedMessage.getProperties();
+        newProperties.setMessageId(receivedProperties.getMessageId());
+        newProperties.setUserId(receivedProperties.getUserId());
+        newProperties.setTo(receivedProperties.getTo());
+        newProperties.setSubject(receivedProperties.getSubject());
+        newProperties.setReplyTo(receivedProperties.getReplyTo());
+        newProperties.setCorrelationId(receivedProperties.getCorrelationId());
+        newProperties.setContentType(receivedProperties.getContentType());
+        newProperties.setContentEncoding(receivedProperties.getContentEncoding());
+        newProperties.setAbsoluteExpiryTime(receivedProperties.getAbsoluteExpiryTime());
+        newProperties.setCreationTime(receivedProperties.getCreationTime());
+        newProperties.setGroupId(receivedProperties.getGroupId());
+        newProperties.setGroupSequence(receivedProperties.getGroupSequence());
+        newProperties.setReplyToGroupId(receivedProperties.getReplyToGroupId());
+
+        // copy header except for delivery count which should be set to null
+        final AmqpMessageHeader receivedHeader = receivedMessage.getAmqpAnnotatedMessage().getHeader();
+        final AmqpMessageHeader newHeader = amqpAnnotatedMessage.getHeader();
+        newHeader.setPriority(receivedHeader.getPriority());
+        newHeader.setTimeToLive(receivedHeader.getTimeToLive());
+        newHeader.setDurable(receivedHeader.isDurable());
+        newHeader.setFirstAcquirer(receivedHeader.isFirstAcquirer());
+
+        // copy message annotations except for broker set ones
+        final Map<String, Object> receivedAnnotations = receivedMessage.getAmqpAnnotatedMessage().getMessageAnnotations();
+        final Map<String, Object> newAnnotations = amqpAnnotatedMessage.getMessageAnnotations();
+
+        for (Map.Entry<String, Object> entry: receivedAnnotations.entrySet()) {
+            if (AmqpMessageConstant.fromString(entry.getKey()) == LOCKED_UNTIL_KEY_ANNOTATION_NAME
+                || AmqpMessageConstant.fromString(entry.getKey()) == SEQUENCE_NUMBER_ANNOTATION_NAME
+                || AmqpMessageConstant.fromString(entry.getKey()) == DEAD_LETTER_SOURCE_KEY_ANNOTATION_NAME
+                || AmqpMessageConstant.fromString(entry.getKey()) == ENQUEUED_SEQUENCE_NUMBER_ANNOTATION_NAME
+                || AmqpMessageConstant.fromString(entry.getKey()) == ENQUEUED_TIME_UTC_ANNOTATION_NAME) {
+
+                continue;
+            }
+            newAnnotations.put(entry.getKey(), entry.getValue());
+        }
+
+        // copy delivery annotations
+        final Map<String, Object> receivedDelivery = receivedMessage.getAmqpAnnotatedMessage().getDeliveryAnnotations();
+        final Map<String, Object> newDelivery = amqpAnnotatedMessage.getMessageAnnotations();
+
+        for (Map.Entry<String, Object> entry: receivedDelivery.entrySet()) {
+            newDelivery.put(entry.getKey(), entry.getValue());
+        }
+
+        // copy Footer
+        final Map<String, Object> receivedFooter = receivedMessage.getAmqpAnnotatedMessage().getFooter();
+        final Map<String, Object> newFooter = amqpAnnotatedMessage.getMessageAnnotations();
+
+        for (Map.Entry<String, Object> entry: receivedFooter.entrySet()) {
+            newFooter.put(entry.getKey(), entry.getValue());
+        }
+
+        // copy application properties except for broker set ones
+        final Map<String, Object> receivedApplicationProperties = receivedMessage.getAmqpAnnotatedMessage()
+            .getApplicationProperties();
+        final Map<String, Object> newApplicationProperties = amqpAnnotatedMessage.getApplicationProperties();
+
+        for (Map.Entry<String, Object> entry: receivedApplicationProperties.entrySet()) {
+            if (AmqpMessageConstant.fromString(entry.getKey()) == DEAD_LETTER_DESCRIPTION_ANNOTATION_NAME
+                || AmqpMessageConstant.fromString(entry.getKey()) == DEAD_LETTER_REASON_ANNOTATION_NAME) {
+
+                continue;
+            }
+            newApplicationProperties.put(entry.getKey(), entry.getValue());
+        }
+
         this.context = Context.NONE;
-
-        // clean up data which user is not allowed to set.
-        amqpAnnotatedMessage.getHeader().setDeliveryCount(null);
-
-        removeValues(amqpAnnotatedMessage.getMessageAnnotations(), LOCKED_UNTIL_KEY_ANNOTATION_NAME,
-            SEQUENCE_NUMBER_ANNOTATION_NAME, DEAD_LETTER_SOURCE_KEY_ANNOTATION_NAME,
-            ENQUEUED_SEQUENCE_NUMBER_ANNOTATION_NAME, ENQUEUED_TIME_UTC_ANNOTATION_NAME);
-
-        removeValues(amqpAnnotatedMessage.getApplicationProperties(), DEAD_LETTER_DESCRIPTION_ANNOTATION_NAME,
-            DEAD_LETTER_REASON_ANNOTATION_NAME);
-
     }
 
     /**

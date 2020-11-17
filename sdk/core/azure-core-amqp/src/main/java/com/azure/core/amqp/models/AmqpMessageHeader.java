@@ -6,7 +6,6 @@ package com.azure.core.amqp.models;
 import com.azure.core.annotation.Fluent;
 
 import java.time.Duration;
-import java.util.Objects;
 
 /**
  * The representation of message header as defined by AMQP protocol.
@@ -24,19 +23,6 @@ public class AmqpMessageHeader {
 
     AmqpMessageHeader() {
         // This class does not have any public constructors, and is not able to be instantiated using 'new'.
-    }
-
-    /**
-     * The constructor is used to clone the values.
-     */
-    AmqpMessageHeader(AmqpMessageHeader header) {
-        super();
-        Objects.requireNonNull(header, "'header' cannot be null.");
-        deliveryCount = header.getDeliveryCount();
-        durable = header.isDurable();
-        firstAcquirer = header.isFirstAcquirer();
-        timeToLive = header.getTimeToLive();
-        priority = header.getPriority();
     }
 
     /**
