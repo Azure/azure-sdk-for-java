@@ -186,6 +186,7 @@ class AnalyzeHealthcareAsyncClient {
 
         final HealthcareTaskResult healthcareTaskResult = new HealthcareTaskResult(
             // TODO: [Service-Bug] change back to UUID after service support it.
+            //  https://github.com/Azure/azure-sdk-for-java/issues/17629
             healthcareJobState.getJobId(),
             healthcareJobState.getCreatedDateTime(),
             healthcareJobState.getLastUpdateDateTime(),

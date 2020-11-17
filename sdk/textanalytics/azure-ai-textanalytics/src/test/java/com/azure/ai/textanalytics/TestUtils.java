@@ -693,6 +693,7 @@ final class TestUtils {
     static RecognizeEntitiesResultCollection getRecognizeEntitiesResultCollection() {
         // Categorized Entities
         // TODO: [Service-bugs] after service fixes the null statistics, then use the values and turn on includeStatics.
+        // https://github.com/Azure/azure-sdk-for-java/issues/17564
         //TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics(44, 1);
         //TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics(44, 1);
         return new RecognizeEntitiesResultCollection(
@@ -712,6 +713,7 @@ final class TestUtils {
     static RecognizePiiEntitiesResultCollection getRecognizePiiEntitiesResultCollection() {
         // PII
         // TODO: [Service-bugs] after service fixes the null statistics, then use the values and turn on includeStatics.
+        // https://github.com/Azure/azure-sdk-for-java/issues/17564
         //TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics(67, 1);
         //TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics(67, 1);
         return new RecognizePiiEntitiesResultCollection(
@@ -734,6 +736,7 @@ final class TestUtils {
     static ExtractKeyPhrasesResultCollection getExtractKeyPhrasesResultCollection() {
         // Key Phrases
         // TODO: [Service-bugs] after service fixes the null statistics, then use the values and turn on includeStatics.
+        // https://github.com/Azure/azure-sdk-for-java/issues/17564
         //TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics(49, 1);
         //TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics(21, 1);
         return new ExtractKeyPhrasesResultCollection(
