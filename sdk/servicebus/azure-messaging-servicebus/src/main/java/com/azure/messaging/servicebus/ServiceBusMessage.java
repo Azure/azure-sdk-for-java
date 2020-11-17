@@ -132,9 +132,9 @@ public class ServiceBusMessage {
             case SEQUENCE:
             case VALUE:
                 throw logger.logExceptionAsError(new UnsupportedOperationException(
-                    String.format(Locale.US, "This constructor only support body type [%s] at present. Track "
-                        + "this issue, https://github.com/Azure/azure-sdk-for-java/issues/17614 for other body type "
-                        + "support in future.", AmqpMessageBodyType.DATA.toString())));
+                    "This constructor only supports the AMQP Data body type at present. Track this issue, "
+                        + "https://github.com/Azure/azure-sdk-for-java/issues/17614 for other body type support in "
+                        + "future."));
             default:
                 throw logger.logExceptionAsError(new IllegalStateException("Body type not valid "
                     + bodyType.toString()));
@@ -160,7 +160,7 @@ public class ServiceBusMessage {
 
         // copy header except for delivery count which should be set to null
         final AmqpMessageHeader receivedHeader = receivedMessage.getAmqpAnnotatedMessage().getHeader();
-        final AmqpMessageHeader newHeader = amqpAnnotatedMessage.getHeader();
+        final AmqpMessageHeader newHeader = this.amqpAnnotatedMessage.getHeader();
         newHeader.setPriority(receivedHeader.getPriority());
         newHeader.setTimeToLive(receivedHeader.getTimeToLive());
         newHeader.setDurable(receivedHeader.isDurable());
@@ -169,7 +169,7 @@ public class ServiceBusMessage {
         // copy message annotations except for broker set ones
         final Map<String, Object> receivedAnnotations = receivedMessage.getAmqpAnnotatedMessage()
             .getMessageAnnotations();
-        final Map<String, Object> newAnnotations = amqpAnnotatedMessage.getMessageAnnotations();
+        final Map<String, Object> newAnnotations = this.amqpAnnotatedMessage.getMessageAnnotations();
 
         for (Map.Entry<String, Object> entry: receivedAnnotations.entrySet()) {
             if (AmqpMessageConstant.fromString(entry.getKey()) == LOCKED_UNTIL_KEY_ANNOTATION_NAME
@@ -185,7 +185,7 @@ public class ServiceBusMessage {
 
         // copy delivery annotations
         final Map<String, Object> receivedDelivery = receivedMessage.getAmqpAnnotatedMessage().getDeliveryAnnotations();
-        final Map<String, Object> newDelivery = amqpAnnotatedMessage.getMessageAnnotations();
+        final Map<String, Object> newDelivery = this.amqpAnnotatedMessage.getDeliveryAnnotations();
 
         for (Map.Entry<String, Object> entry: receivedDelivery.entrySet()) {
             newDelivery.put(entry.getKey(), entry.getValue());
@@ -193,7 +193,7 @@ public class ServiceBusMessage {
 
         // copy Footer
         final Map<String, Object> receivedFooter = receivedMessage.getAmqpAnnotatedMessage().getFooter();
-        final Map<String, Object> newFooter = amqpAnnotatedMessage.getMessageAnnotations();
+        final Map<String, Object> newFooter = this.amqpAnnotatedMessage.getFooter();
 
         for (Map.Entry<String, Object> entry: receivedFooter.entrySet()) {
             newFooter.put(entry.getKey(), entry.getValue());
@@ -202,7 +202,7 @@ public class ServiceBusMessage {
         // copy application properties except for broker set ones
         final Map<String, Object> receivedApplicationProperties = receivedMessage.getAmqpAnnotatedMessage()
             .getApplicationProperties();
-        final Map<String, Object> newApplicationProperties = amqpAnnotatedMessage.getApplicationProperties();
+        final Map<String, Object> newApplicationProperties = this.amqpAnnotatedMessage.getApplicationProperties();
 
         for (Map.Entry<String, Object> entry: receivedApplicationProperties.entrySet()) {
             if (AmqpMessageConstant.fromString(entry.getKey()) == DEAD_LETTER_DESCRIPTION_ANNOTATION_NAME
