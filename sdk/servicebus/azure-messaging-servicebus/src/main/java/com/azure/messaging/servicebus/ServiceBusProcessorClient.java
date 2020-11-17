@@ -39,7 +39,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     private final ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder sessionReceiverBuilder;
     private final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder;
     private final Consumer<ServiceBusReceivedMessageContext> processMessage;
-    private final Consumer<Throwable> processError;
+    private final Consumer<ServiceBusProcessErrorContext> processError;
     private final ServiceBusProcessorClientOptions processorOptions;
     private final AtomicReference<Subscription> receiverSubscription = new AtomicReference<>();
     private final AtomicReference<ServiceBusReceiverAsyncClient> asyncClient = new AtomicReference<>();
@@ -56,7 +56,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
      */
     ServiceBusProcessorClient(ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder sessionReceiverBuilder,
                               Consumer<ServiceBusReceivedMessageContext> processMessage,
-                              Consumer<Throwable> processError, ServiceBusProcessorClientOptions processorOptions) {
+                              Consumer<ServiceBusProcessErrorContext> processError, ServiceBusProcessorClientOptions processorOptions) {
         this.sessionReceiverBuilder = Objects.requireNonNull(sessionReceiverBuilder,
             "'sessionReceiverBuilder' cannot be null");
         this.processMessage = Objects.requireNonNull(processMessage, "'processMessage' cannot be null");
@@ -76,7 +76,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
      */
     ServiceBusProcessorClient(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder,
                               Consumer<ServiceBusReceivedMessageContext> processMessage,
-                              Consumer<Throwable> processError, ServiceBusProcessorClientOptions processorOptions) {
+                              Consumer<ServiceBusProcessErrorContext> processError, ServiceBusProcessorClientOptions processorOptions) {
         this.receiverBuilder = Objects.requireNonNull(receiverBuilder, "'receiverBuilder' cannot be null");
         this.processMessage = Objects.requireNonNull(processMessage, "'processMessage' cannot be null");
         this.processError = Objects.requireNonNull(processError, "'processError' cannot be null");
@@ -211,7 +211,10 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
 
     private void handleError(Throwable throwable) {
         try {
-            processError.accept(throwable);
+            ServiceBusReceiverAsyncClient client = asyncClient.get();
+            final String fullyQualifiedNamespace = client.getFullyQualifiedNamespace();
+            final String entityPath = client.getEntityPath();
+            processError.accept(new ServiceBusProcessErrorContext(throwable, fullyQualifiedNamespace, entityPath));
         } catch (Exception ex) {
             logger.verbose("Error from error handler. Ignoring error.", ex);
         }

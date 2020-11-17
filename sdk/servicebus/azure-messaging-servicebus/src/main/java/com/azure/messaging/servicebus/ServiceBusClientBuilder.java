@@ -642,7 +642,7 @@ public final class ServiceBusClientBuilder {
         private final ServiceBusProcessorClientOptions processorClientOptions;
         private final ServiceBusSessionReceiverClientBuilder sessionReceiverClientBuilder;
         private Consumer<ServiceBusReceivedMessageContext> processMessage;
-        private Consumer<Throwable> processError;
+        private Consumer<ServiceBusProcessErrorContext> processError;
 
         private ServiceBusSessionProcessorClientBuilder() {
             sessionReceiverClientBuilder = new ServiceBusSessionReceiverClientBuilder();
@@ -750,7 +750,7 @@ public final class ServiceBusClientBuilder {
          *
          * @return The updated {@link ServiceBusProcessorClientBuilder} object
          */
-        public ServiceBusSessionProcessorClientBuilder processError(Consumer<Throwable> processError) {
+        public ServiceBusSessionProcessorClientBuilder processError(Consumer<ServiceBusProcessErrorContext> processError) {
             this.processError = processError;
             return this;
         }
@@ -1095,7 +1095,7 @@ public final class ServiceBusClientBuilder {
         private final ServiceBusReceiverClientBuilder serviceBusReceiverClientBuilder;
         private final ServiceBusProcessorClientOptions processorClientOptions;
         private Consumer<ServiceBusReceivedMessageContext> processMessage;
-        private Consumer<Throwable> processError;
+        private Consumer<ServiceBusProcessErrorContext> processError;
 
         private ServiceBusProcessorClientBuilder() {
             serviceBusReceiverClientBuilder = new ServiceBusReceiverClientBuilder();
@@ -1184,7 +1184,7 @@ public final class ServiceBusClientBuilder {
          *
          * @return The updated {@link ServiceBusProcessorClientBuilder} object
          */
-        public ServiceBusProcessorClientBuilder processError(Consumer<Throwable> processError) {
+        public ServiceBusProcessorClientBuilder processError(Consumer<ServiceBusProcessErrorContext> processError) {
             this.processError = processError;
             return this;
         }

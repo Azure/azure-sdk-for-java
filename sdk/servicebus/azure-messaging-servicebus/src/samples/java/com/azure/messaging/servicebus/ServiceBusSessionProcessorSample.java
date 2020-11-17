@@ -26,11 +26,11 @@ public class ServiceBusSessionProcessorSample {
         };
 
         // Consumer that handles any errors that occur when receiving messages
-        Consumer<Throwable> errorHandler = throwable -> {
-            System.out.println("Error when receiving messages " + throwable.getMessage());
-            if (throwable instanceof ServiceBusException) {
-                ServiceBusException serviceBusException = (ServiceBusException) throwable;
-                System.out.println("Error source " + serviceBusException.getErrorSource());
+        Consumer<ServiceBusProcessErrorContext> errorHandler = serviceBusProcessErrorContext -> {
+            System.out.println("Error when receiving messages " + serviceBusProcessErrorContext.getException().getMessage());
+            if (serviceBusProcessErrorContext.getException() instanceof ServiceBusException) {
+                ServiceBusException serviceBusException = (ServiceBusException) serviceBusProcessErrorContext.getException();
+                System.out.println("Error source " + serviceBusException.getErrorSource() + ", reason " + serviceBusException.getReason());
             }
         };
 
