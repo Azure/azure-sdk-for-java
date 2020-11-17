@@ -9,8 +9,6 @@
 package com.microsoft.azure.management.databoxedge.v2020_05_01_preview.implementation;
 
 import java.util.Map;
-
-import com.microsoft.azure.Resource;
 import com.microsoft.azure.management.databoxedge.v2020_05_01_preview.DataBoxEdgeDeviceStatus;
 import com.microsoft.azure.management.databoxedge.v2020_05_01_preview.DeviceType;
 import java.util.List;
@@ -23,7 +21,24 @@ import com.microsoft.azure.management.databoxedge.v2020_05_01_preview.ARMBaseMod
  * The Data Box Edge/Gateway device.
  */
 @JsonFlatten
-public class DataBoxEdgeDeviceInner extends Resource {
+public class DataBoxEdgeDeviceInner extends ARMBaseModel {
+    /**
+     * The location of the device. This is a supported and registered Azure
+     * geographical region (for example, West US, East US, or Southeast Asia).
+     * The geographical region of a device cannot be changed once it is
+     * created, but if an identical geographical region is specified on update,
+     * the request will succeed.
+     */
+    @JsonProperty(value = "location", required = true)
+    private String location;
+
+    /**
+     * The list of tags that describe the device. These tags can be used to
+     * view and group this device (across resource groups).
+     */
+    @JsonProperty(value = "tags")
+    private Map<String, String> tags;
+
     /**
      * The SKU type.
      */
@@ -122,6 +137,46 @@ public class DataBoxEdgeDeviceInner extends Resource {
      */
     @JsonProperty(value = "properties.nodeCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer nodeCount;
+
+    /**
+     * Get the location of the device. This is a supported and registered Azure geographical region (for example, West US, East US, or Southeast Asia). The geographical region of a device cannot be changed once it is created, but if an identical geographical region is specified on update, the request will succeed.
+     *
+     * @return the location value
+     */
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Set the location of the device. This is a supported and registered Azure geographical region (for example, West US, East US, or Southeast Asia). The geographical region of a device cannot be changed once it is created, but if an identical geographical region is specified on update, the request will succeed.
+     *
+     * @param location the location value to set
+     * @return the DataBoxEdgeDeviceInner object itself.
+     */
+    public DataBoxEdgeDeviceInner withLocation(String location) {
+        this.location = location;
+        return this;
+    }
+
+    /**
+     * Get the list of tags that describe the device. These tags can be used to view and group this device (across resource groups).
+     *
+     * @return the tags value
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the list of tags that describe the device. These tags can be used to view and group this device (across resource groups).
+     *
+     * @param tags the tags value to set
+     * @return the DataBoxEdgeDeviceInner object itself.
+     */
+    public DataBoxEdgeDeviceInner withTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
+    }
 
     /**
      * Get the SKU type.
