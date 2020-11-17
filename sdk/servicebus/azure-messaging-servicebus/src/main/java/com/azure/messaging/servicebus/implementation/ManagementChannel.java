@@ -20,7 +20,7 @@ import com.azure.messaging.servicebus.ServiceBusException;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusTransactionContext;
-import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.UnsignedInteger;
@@ -195,7 +195,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
      * {@inheritDoc}
      */
     @Override
-    public Flux<ServiceBusReceivedMessage> receiveDeferredMessages(ReceiveMode receiveMode, String sessionId,
+    public Flux<ServiceBusReceivedMessage> receiveDeferredMessages(ServiceBusReceiveMode receiveMode, String sessionId,
         String associatedLinkName, Iterable<Long> sequenceNumbers) {
         if (sequenceNumbers == null) {
             return fluxError(logger, new NullPointerException("'sequenceNumbers' cannot be null"));
@@ -219,7 +219,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
                 requestBodyMap.put(ManagementConstants.SEQUENCE_NUMBERS, numbers.toArray(new Long[0]));
 
                 requestBodyMap.put(ManagementConstants.RECEIVER_SETTLE_MODE,
-                    UnsignedInteger.valueOf(receiveMode == ReceiveMode.RECEIVE_AND_DELETE ? 0 : 1));
+                    UnsignedInteger.valueOf(receiveMode == ServiceBusReceiveMode.RECEIVE_AND_DELETE ? 0 : 1));
 
                 if (!CoreUtils.isNullOrEmpty(sessionId)) {
                     requestBodyMap.put(ManagementConstants.SESSION_ID, sessionId);

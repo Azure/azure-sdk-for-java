@@ -11,7 +11,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.*;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
-import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
@@ -506,14 +506,14 @@ class ManagementChannelTests {
     @Test
     void getDeferredMessagesWithEmptyArrayReturnsAnEmptyFlux() {
         // Arrange, act, assert
-        StepVerifier.create(managementChannel.receiveDeferredMessages(ReceiveMode.PEEK_LOCK, null, null, new ArrayList<>()))
+        StepVerifier.create(managementChannel.receiveDeferredMessages(ServiceBusReceiveMode.PEEK_LOCK, null, null, new ArrayList<>()))
             .verifyComplete();
     }
 
     @Test
     void getDeferredMessagesWithNullThrows() {
         // Arrange, act, assert
-        StepVerifier.create(managementChannel.receiveDeferredMessages(ReceiveMode.PEEK_LOCK, null, null, null))
+        StepVerifier.create(managementChannel.receiveDeferredMessages(ServiceBusReceiveMode.PEEK_LOCK, null, null, null))
             .verifyError(NullPointerException.class);
     }
 
