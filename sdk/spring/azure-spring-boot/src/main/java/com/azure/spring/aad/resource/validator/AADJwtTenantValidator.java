@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.spring.aad.resource.validator;
 
 import com.azure.spring.autoconfigure.aad.AADTokenClaim;
@@ -8,13 +10,21 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtClaimValidator;
 import org.springframework.util.Assert;
 
-public class AzureJwtTenantValidator implements OAuth2TokenValidator<Jwt> {
+/**
+ * Validates the "tid" claim in a {@link Jwt}, that is matches a configured value
+ */
+public class AADJwtTenantValidator implements OAuth2TokenValidator<Jwt> {
 
     private final JwtClaimValidator<String> validator;
     private static final String COMMON = "common";
 
+    /**
+     * Constructs a {@link AADJwtIssuerValidator} using the provided parameters
+     * @param tenantId - The tenant that each {@link Jwt} should have.
+     * @param allowedTenantIds - Multi-tenant is allowed tenantIds
+     */
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public AzureJwtTenantValidator(String tenantId, Set<String> allowedTenantIds) {
+    public AADJwtTenantValidator(String tenantId, Set<String> allowedTenantIds) {
         Assert.notNull(tenantId, "tenantId cannot be null");
         Assert.notNull(allowedTenantIds, "allowedTenantIds cannot be null");
         if (tenantId.equals(COMMON)) {
