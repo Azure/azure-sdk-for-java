@@ -39,7 +39,7 @@ public final class ServiceBusException extends AzureException {
      * Gets the {@link ServiceBusErrorSource} in case of any errors.
      * @return the {@link ServiceBusErrorSource}
      */
-    public ServiceBusErrorSource getErrorSource() {
+    ServiceBusErrorSource getErrorSource() {
         return errorSource;
     }
 

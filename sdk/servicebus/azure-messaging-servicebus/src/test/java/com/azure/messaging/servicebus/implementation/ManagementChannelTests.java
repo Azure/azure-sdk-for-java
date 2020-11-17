@@ -440,7 +440,7 @@ class ManagementChannelTests {
         StepVerifier.create(managementChannel.getSessionState(sessionId, LINK_NAME))
             .expectErrorSatisfies(error -> {
                 assertTrue(error instanceof ServiceBusException);
-                assertEquals(ServiceBusErrorSource.MANAGEMENT, ((ServiceBusException) error).getErrorSource());
+                assertEquals(ServiceBusErrorSource.MANAGEMENT, ServiceBusExceptionTestHelper.getInternalErrorSource((ServiceBusException) error));
                 assertEquals(ServiceBusFailureReason.UNAUTHORIZED, ((ServiceBusException) error).getReason());
                 assertFalse(((ServiceBusException) error).isTransient());
             })
@@ -449,7 +449,7 @@ class ManagementChannelTests {
         StepVerifier.create(managementChannel.renewMessageLock(sessionId, LINK_NAME))
                 .expectErrorSatisfies(error -> {
                     assertTrue(error instanceof ServiceBusException);
-                    assertEquals(ServiceBusErrorSource.MANAGEMENT, ((ServiceBusException) error).getErrorSource());
+                    assertEquals(ServiceBusErrorSource.MANAGEMENT, ServiceBusExceptionTestHelper.getInternalErrorSource((ServiceBusException) error));
                     assertEquals(ServiceBusFailureReason.UNAUTHORIZED, ((ServiceBusException) error).getReason());
                     assertFalse(((ServiceBusException) error).isTransient());
                 })
@@ -458,7 +458,7 @@ class ManagementChannelTests {
         StepVerifier.create(managementChannel.renewMessageLock(sessionId, LINK_NAME))
                 .expectErrorSatisfies(error -> {
                     assertTrue(error instanceof ServiceBusException);
-                    assertEquals(ServiceBusErrorSource.MANAGEMENT, ((ServiceBusException) error).getErrorSource());
+                    assertEquals(ServiceBusErrorSource.MANAGEMENT, ServiceBusExceptionTestHelper.getInternalErrorSource((ServiceBusException) error));
                     assertEquals(ServiceBusFailureReason.UNAUTHORIZED, ((ServiceBusException) error).getReason());
                     assertFalse(((ServiceBusException) error).isTransient());
                 })
@@ -467,7 +467,7 @@ class ManagementChannelTests {
         StepVerifier.create(managementChannel.renewSessionLock(sessionId, LINK_NAME))
                 .expectErrorSatisfies(error -> {
                     assertTrue(error instanceof ServiceBusException);
-                    assertEquals(ServiceBusErrorSource.MANAGEMENT, ((ServiceBusException) error).getErrorSource());
+                    assertEquals(ServiceBusErrorSource.MANAGEMENT, ServiceBusExceptionTestHelper.getInternalErrorSource((ServiceBusException) error));
                     assertEquals(ServiceBusFailureReason.UNAUTHORIZED, ((ServiceBusException) error).getReason());
                     assertFalse(((ServiceBusException) error).isTransient());
                 })
@@ -476,7 +476,7 @@ class ManagementChannelTests {
         StepVerifier.create(managementChannel.setSessionState(sessionId, new byte[0], LINK_NAME))
                 .expectErrorSatisfies(error -> {
                     assertTrue(error instanceof ServiceBusException);
-                    assertEquals(ServiceBusErrorSource.MANAGEMENT, ((ServiceBusException) error).getErrorSource());
+                    assertEquals(ServiceBusErrorSource.MANAGEMENT, ServiceBusExceptionTestHelper.getInternalErrorSource((ServiceBusException) error));
                     assertEquals(ServiceBusFailureReason.UNAUTHORIZED, ((ServiceBusException) error).getReason());
                     assertFalse(((ServiceBusException) error).isTransient());
                 })
@@ -485,7 +485,7 @@ class ManagementChannelTests {
         StepVerifier.create(managementChannel.schedule(new ArrayList<>(), OffsetDateTime.now(), 1, LINK_NAME, null))
                 .expectErrorSatisfies(error -> {
                     assertTrue(error instanceof ServiceBusException);
-                    assertEquals(ServiceBusErrorSource.MANAGEMENT, ((ServiceBusException) error).getErrorSource());
+                    assertEquals(ServiceBusErrorSource.MANAGEMENT, ServiceBusExceptionTestHelper.getInternalErrorSource((ServiceBusException) error));
                     assertEquals(ServiceBusFailureReason.UNAUTHORIZED, ((ServiceBusException) error).getReason());
                     assertFalse(((ServiceBusException) error).isTransient());
                 })
@@ -496,7 +496,7 @@ class ManagementChannelTests {
                 null, sessionId, LINK_NAME, null))
                 .expectErrorSatisfies(error -> {
                     assertTrue(error instanceof ServiceBusException);
-                    assertEquals(ServiceBusErrorSource.MANAGEMENT, ((ServiceBusException) error).getErrorSource());
+                    assertEquals(ServiceBusErrorSource.MANAGEMENT, ServiceBusExceptionTestHelper.getInternalErrorSource((ServiceBusException) error));
                     assertEquals(ServiceBusFailureReason.UNAUTHORIZED, ((ServiceBusException) error).getReason());
                     assertFalse(((ServiceBusException) error).isTransient());
                 })
