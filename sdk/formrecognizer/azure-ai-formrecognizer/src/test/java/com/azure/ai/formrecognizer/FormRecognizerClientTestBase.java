@@ -908,7 +908,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         assertEquals(0, receiptPage2.getFields().size());
         List<FormPage> receipt2Pages = receiptPage2.getPages();
         assertEquals(1, receipt2Pages.size());
-        assertNull(receipt2Pages.stream().findFirst().get().getLines());
+        assertEquals(0, receipt2Pages.stream().findFirst().get().getLines().size());
         assertEquals(2, receiptPage2.getPageRange().getFirstPageNumber());
         assertEquals(2, receiptPage2.getPageRange().getLastPageNumber());
 
