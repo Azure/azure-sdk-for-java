@@ -57,8 +57,9 @@ public final class RequestRetryOptions {
      */
     public RequestRetryOptions(RetryPolicyType retryPolicyType, Integer maxTries, Integer tryTimeoutInSeconds,
         Long retryDelayInMs, Long maxRetryDelayInMs, String secondaryHost) {
-        this(retryPolicyType, maxTries, Duration.ofSeconds(tryTimeoutInSeconds), Duration.ofMillis(retryDelayInMs),
-            Duration.ofMillis(maxRetryDelayInMs), secondaryHost);
+        this(retryPolicyType, maxTries, tryTimeoutInSeconds == null ? null : Duration.ofSeconds(tryTimeoutInSeconds),
+            retryDelayInMs == null ? null : Duration.ofMillis(retryDelayInMs),
+            maxRetryDelayInMs == null ? null : Duration.ofMillis(maxRetryDelayInMs), secondaryHost);
     }
 
     /**
