@@ -34,7 +34,7 @@ public class Permissions {
     private List<CertificatePermissions> certificates;
 
     /**
-     * Get the keys value.
+     * Get permissions to keys.
      *
      * @return the keys value
      */
@@ -43,7 +43,7 @@ public class Permissions {
     }
 
     /**
-     * Set the keys value.
+     * Set permissions to keys.
      *
      * @param keys the keys value to set
      * @return the Permissions object itself.
@@ -54,7 +54,7 @@ public class Permissions {
     }
 
     /**
-     * Get the secrets value.
+     * Get permissions to secrets.
      *
      * @return the secrets value
      */
@@ -63,7 +63,7 @@ public class Permissions {
     }
 
     /**
-     * Set the secrets value.
+     * Set permissions to secrets.
      *
      * @param secrets the secrets value to set
      * @return the Permissions object itself.
@@ -74,7 +74,7 @@ public class Permissions {
     }
 
     /**
-     * Get the certificates value.
+     * Get permissions to certificates.
      *
      * @return the certificates value
      */
@@ -83,7 +83,7 @@ public class Permissions {
     }
 
     /**
-     * Set the certificates value.
+     * Set permissions to certificates.
      *
      * @param certificates the certificates value to set
      * @return the Permissions object itself.
