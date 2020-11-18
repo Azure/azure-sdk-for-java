@@ -590,8 +590,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     private void queueWork(int maximumMessageCount, Duration maxWaitTime,
                            FluxSink<ServiceBusReceivedMessage> emitter) {
         final long id = idGenerator.getAndIncrement();
-        int prefetch = asyncClient.getReceiverOptions().getPrefetchCount();
-        int toRequest = prefetch != 0 ? Math.min(maximumMessageCount, prefetch) : maximumMessageCount;
+        final int prefetch = asyncClient.getReceiverOptions().getPrefetchCount();
+        final int toRequest = prefetch != 0 ? Math.min(maximumMessageCount, prefetch) : maximumMessageCount;
         final SynchronousReceiveWork work = new SynchronousReceiveWork(id,
             toRequest,
             maxWaitTime, emitter);
