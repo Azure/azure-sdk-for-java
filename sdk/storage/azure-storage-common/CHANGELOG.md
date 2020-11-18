@@ -1,7 +1,7 @@
 # Release History
 
 ## 12.10.0-beta.1 (Unreleased)
-
+- Added ability to specify timeout units in RequestRetryOptions.
 
 ## 12.9.0 (2020-11-11)
 - GA release
