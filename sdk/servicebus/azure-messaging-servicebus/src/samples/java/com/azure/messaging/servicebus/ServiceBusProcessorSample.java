@@ -37,7 +37,7 @@ public class ServiceBusProcessorSample {
                     || reason == ServiceBusFailureReason.MESSAGING_ENTITY_NOT_FOUND
                     || reason == ServiceBusFailureReason.UNAUTHORIZED) {
                     System.out.printf("An unrecoverable error occurred. Stopping processing with reason %s: %s\n",
-                        reason, serviceBusException.toString());
+                        reason, serviceBusException.getMessage());
                     countdownLatch.countDown();
                 } else if (reason == ServiceBusFailureReason.MESSAGE_LOCK_LOST) {
                     System.out.printf("Message lock lost for message: %s", errorContext.getException().toString());
