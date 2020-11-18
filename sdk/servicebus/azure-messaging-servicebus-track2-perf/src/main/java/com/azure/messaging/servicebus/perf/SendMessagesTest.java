@@ -4,7 +4,7 @@
 package com.azure.messaging.servicebus.perf;
 
 import com.azure.messaging.servicebus.ServiceBusMessage;
-import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ public class SendMessagesTest extends ServiceTest<ServiceBusStressOptions> {
      * @param options to set performance test options.
      */
     public SendMessagesTest(ServiceBusStressOptions options) {
-        super(options, ReceiveMode.PEEK_LOCK);
+        super(options, ServiceBusReceiveMode.PEEK_LOCK);
         messages = new ArrayList<>();
         for (int i = 0; i < options.getMessagesToSend(); ++i) {
             ServiceBusMessage message =  new ServiceBusMessage(CONTENTS);

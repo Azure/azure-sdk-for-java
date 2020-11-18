@@ -4,7 +4,7 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.experimental.util.BinaryData;
-import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
@@ -52,7 +52,7 @@ public class SendAndReceiveSessionMessageSample {
 
         // Instantiate a client that will be used to receive messages from the session.
         ServiceBusSessionReceiverAsyncClient sessionReceiver = builder.sessionReceiver()
-            .receiveMode(ReceiveMode.PEEK_LOCK)
+            .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
             .queueName(queueName)
             .buildAsyncClient();
 
