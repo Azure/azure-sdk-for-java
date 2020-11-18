@@ -51,6 +51,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.Collections;
 
 /**
@@ -81,7 +82,6 @@ public class ManageSpringCloud {
         final String serviceName  = Utils.randomResourceName(azureResourceManager, "service", 24);
         final Region region = Region.US_EAST;
         final String domainName = Utils.randomResourceName(azureResourceManager, "jsdkdemo-", 20) + ".com";
-        final String certOrderName = Utils.randomResourceName(azureResourceManager, "cert", 15);
         final String vaultName = Utils.randomResourceName(azureResourceManager, "vault", 15);
         final String certName = Utils.randomResourceName(azureResourceManager, "cert", 15);
 
@@ -339,7 +339,7 @@ public class ManageSpringCloud {
         TrustManager[] trustAllCerts = new TrustManager[]{
             new X509TrustManager() {
                 public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                    return null;
+                    return new X509Certificate[0];
                 }
                 public void checkClientTrusted(
                     java.security.cert.X509Certificate[] certs, String authType) {
