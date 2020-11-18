@@ -33,9 +33,7 @@ public final class AnalyzeJobState extends JobMetadata {
     /*
      * The @nextLink property.
      */
-    // TODO: [service bug] after service change the response's variable to @nextLink, then change it back.
-    // https://github.com/Azure/azure-sdk-for-java/issues/17630
-    @JsonProperty(value = "nextLink")
+    @JsonProperty(value = "@nextLink")
     private String nextLink;
 
     /**
