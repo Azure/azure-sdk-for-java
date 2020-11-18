@@ -53,7 +53,7 @@ public class ServiceBusConfiguration {
 
     @Bean
     public ServiceBusReceiverAsyncClient topicSubscriber() {
-        final ReceiveMode subscriptionReceiveMode = properties.getSubscriptionReceiveMode();
+        final ServiceBusReceiveMode subscriptionReceiveMode = properties.getSubscriptionReceiveMode();
 
         return new ServiceBusClientBuilder()
             .connectionString(properties.getConnectionString())
