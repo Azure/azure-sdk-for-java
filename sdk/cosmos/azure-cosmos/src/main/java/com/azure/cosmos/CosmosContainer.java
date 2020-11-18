@@ -10,6 +10,7 @@ import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -630,4 +631,23 @@ public class CosmosContainer {
         return UtilBridgeInternal.createCosmosPagedIterable(cosmosPagedFlux);
     }
 
+    /**
+     * Obtains a list of {@link FeedRange} that can be used to parallelize Feed
+     * operations.
+     *
+     * @return An unmodifiable list of {@link FeedRange}
+     */
+    @Beta(Beta.SinceVersion.V4_9_0)
+    public List<FeedRange> getFeedRanges() {
+        try {
+            return asyncContainer.getFeedRanges().block();
+        } catch (Exception ex) {
+            final Throwable throwable = Exceptions.unwrap(ex);
+            if (throwable instanceof CosmosException) {
+                throw (CosmosException) throwable;
+            } else {
+                throw ex;
+            }
+        }
+    }
 }

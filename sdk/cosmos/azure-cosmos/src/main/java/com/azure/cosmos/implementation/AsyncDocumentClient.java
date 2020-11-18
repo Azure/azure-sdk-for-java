@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -669,6 +670,14 @@ public interface AsyncDocumentClient {
      * @return a {@link Flux} containing one or several feed response pages of the obtained partition key ranges or an error.
      */
     Flux<FeedResponse<PartitionKeyRange>> readPartitionKeyRanges(String collectionLink, CosmosQueryRequestOptions options);
+
+    /**
+     * Gets the feed ranges of a container.
+     *
+     * @param collectionLink the link to the parent document collection.
+     * @return a {@link List} of @{link FeedRange} containing the feed ranges of a container.
+     */
+    Mono<List<FeedRange>> getFeedRanges(String collectionLink);
 
     /**
      * Creates a stored procedure.
