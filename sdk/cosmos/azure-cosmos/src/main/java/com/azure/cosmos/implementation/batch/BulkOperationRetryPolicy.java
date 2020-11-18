@@ -47,6 +47,7 @@ final class BulkOperationRetryPolicy extends RetryPolicyWithDiagnostics {
 
         // Create CosmosException for the next retry policy to understand:
         CosmosException exception = BridgeInternal.createCosmosException(
+            null,
             result.getStatusCode(),
             null,
             BulkExecutorUtil.getResponseHeadersFromBatchOperationResult(result));
