@@ -102,13 +102,13 @@ class VaultsImpl extends GroupableResourcesCoreImpl<Vault, VaultImpl, VaultInner
     @Override
     public PagedList<Vault> list() {
         VaultsInner client = this.inner();
-        return this.wrapList(client.listBySubscription());
+        return this.wrapList(client.list());
     }
 
     @Override
     public Observable<Vault> listAsync() {
         VaultsInner client = this.inner();
-        return client.listBySubscriptionAsync()
+        return client.listAsync()
         .flatMapIterable(new Func1<Page<VaultInner>, Iterable<VaultInner>>() {
             @Override
             public Iterable<VaultInner> call(Page<VaultInner> page) {
@@ -165,10 +165,14 @@ class VaultsImpl extends GroupableResourcesCoreImpl<Vault, VaultImpl, VaultInner
     public Observable<DeletedVault> getDeletedAsync(String vaultName, String location) {
         VaultsInner client = this.inner();
         return client.getDeletedAsync(vaultName, location)
-        .map(new Func1<DeletedVaultInner, DeletedVault>() {
+        .flatMap(new Func1<DeletedVaultInner, Observable<DeletedVault>>() {
             @Override
-            public DeletedVault call(DeletedVaultInner inner) {
-                return wrapDeletedVaultModel(inner);
+            public Observable<DeletedVault> call(DeletedVaultInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((DeletedVault)wrapDeletedVaultModel(inner));
+                }
             }
        });
     }
@@ -188,7 +192,8 @@ class VaultsImpl extends GroupableResourcesCoreImpl<Vault, VaultImpl, VaultInner
             public Iterable<DeletedVaultInner> call(Page<DeletedVaultInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<DeletedVaultInner, DeletedVault>() {
+        })
+        .map(new Func1<DeletedVaultInner, DeletedVault>() {
             @Override
             public DeletedVault call(DeletedVaultInner inner) {
                 return new DeletedVaultImpl(inner, manager());
