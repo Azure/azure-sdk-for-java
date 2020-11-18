@@ -39,6 +39,7 @@ public class GraphWebClientAzureADGraphTest {
 
     private GraphWebClient graphWebClient;
     private AADAuthenticationProperties aadAuthenticationProperties;
+    private ServiceEndpointsProperties serviceEndpointsProperties;
     private static String userGroupsJson;
 
     static {
@@ -62,9 +63,10 @@ public class GraphWebClientAzureADGraphTest {
     @Before
     public void setup() {
         aadAuthenticationProperties = new AADAuthenticationProperties();
-        ServiceEndpointsProperties serviceEndpointsProperties = new ServiceEndpointsProperties();
+        this.serviceEndpointsProperties = new ServiceEndpointsProperties();
         final ServiceEndpoints serviceEndpoints = new ServiceEndpoints();
         serviceEndpoints.setAadMembershipRestUri("http://localhost:9519/memberOf");
+        serviceEndpoints.setAadTransitiveMemberRestUri("http://localhost:9519/transitiveMemberOf");
         serviceEndpointsProperties.getEndpoints().put("global", serviceEndpoints);
         this.graphWebClient = new GraphWebClient(
             aadAuthenticationProperties,
@@ -112,6 +114,38 @@ public class GraphWebClientAzureADGraphTest {
             .containsExactlyInAnyOrder("ROLE_group1", "ROLE_group2", "ROLE_group3");
 
         verify(getRequestedFor(urlMatching("/memberOf"))
+            .withHeader(AUTHORIZATION, equalTo(String.format("Bearer %s", TestConstants.ACCESS_TOKEN)))
+            .withHeader(ACCEPT, equalTo("application/json;odata=minimalmetadata"))
+            .withHeader("api-version", equalTo("1.6")));
+    }
+
+    @Test
+    public void getTransitiveGroups() {
+        aadAuthenticationProperties.getUserGroup().setGroupRelationship("transitive");
+        AADAuthenticationProperties.UserGroupProperties userGroupProperties = aadAuthenticationProperties.getUserGroup();
+        userGroupProperties.setAllowedGroups(Arrays.asList("group1", "group2", "group3"));
+        aadAuthenticationProperties.setUserGroup(userGroupProperties);
+        GraphWebClient graphWebClient = new GraphWebClient(
+            aadAuthenticationProperties,
+            serviceEndpointsProperties,
+            GraphWebClientTestUtil.createWebClientForTest()
+        );
+
+        stubFor(get(urlEqualTo("/transitiveMemberOf"))
+            .withHeader(ACCEPT, equalTo("application/json;odata=minimalmetadata"))
+            .willReturn(aResponse()
+                .withStatus(200)
+                .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
+                .withBody(userGroupsJson)));
+
+        final Collection<? extends GrantedAuthority> authorities = graphWebClient.getGrantedAuthorities();
+
+        assertThat(authorities)
+            .isNotEmpty()
+            .extracting(GrantedAuthority::getAuthority)
+            .containsExactlyInAnyOrder("ROLE_group1", "ROLE_group2", "ROLE_group3");
+
+        verify(getRequestedFor(urlMatching("/transitiveMemberOf"))
             .withHeader(AUTHORIZATION, equalTo(String.format("Bearer %s", TestConstants.ACCESS_TOKEN)))
             .withHeader(ACCEPT, equalTo("application/json;odata=minimalmetadata"))
             .withHeader("api-version", equalTo("1.6")));

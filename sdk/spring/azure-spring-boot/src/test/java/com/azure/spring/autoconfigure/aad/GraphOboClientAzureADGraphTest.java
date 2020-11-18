@@ -66,6 +66,7 @@ public class GraphOboClientAzureADGraphTest {
         serviceEndpointsProperties = new ServiceEndpointsProperties();
         final ServiceEndpoints serviceEndpoints = new ServiceEndpoints();
         serviceEndpoints.setAadMembershipRestUri("http://localhost:9519/memberOf");
+        serviceEndpoints.setAadTransitiveMemberRestUri("http://localhost:9519/transitiveMemberOf");
         serviceEndpointsProperties.getEndpoints().put("global", serviceEndpoints);
     }
 
@@ -113,6 +114,36 @@ public class GraphOboClientAzureADGraphTest {
             .containsExactlyInAnyOrder("ROLE_group1", "ROLE_group2", "ROLE_group3");
 
         verify(getRequestedFor(urlMatching("/memberOf"))
+            .withHeader(AUTHORIZATION, equalTo(TestConstants.BEARER_TOKEN))
+            .withHeader(ACCEPT, equalTo("application/json;odata=minimalmetadata"))
+            .withHeader("api-version", equalTo("1.6")));
+    }
+
+    @Test
+    public void getTransitiveGroups() throws Exception {
+        aadAuthenticationProperties.getUserGroup().setGroupRelationship("transitive");
+        AADAuthenticationProperties.UserGroupProperties userGroupProperties =
+            aadAuthenticationProperties.getUserGroup();
+        userGroupProperties.setAllowedGroups(Arrays.asList("group1", "group2", "group3"));
+        aadAuthenticationProperties.setUserGroup(userGroupProperties);
+        GraphOboClient graphOboClient = new GraphOboClient(aadAuthenticationProperties, serviceEndpointsProperties);
+
+        stubFor(get(urlEqualTo("/transitiveMemberOf"))
+            .withHeader(ACCEPT, equalTo("application/json;odata=minimalmetadata"))
+            .willReturn(aResponse()
+                .withStatus(200)
+                .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
+                .withBody(userGroupsJson)));
+
+        final Collection<? extends GrantedAuthority> authorities = graphOboClient
+            .getGrantedAuthorities(TestConstants.ACCESS_TOKEN);
+
+        assertThat(authorities)
+            .isNotEmpty()
+            .extracting(GrantedAuthority::getAuthority)
+            .containsExactlyInAnyOrder("ROLE_group1", "ROLE_group2", "ROLE_group3");
+
+        verify(getRequestedFor(urlMatching("/transitiveMemberOf"))
             .withHeader(AUTHORIZATION, equalTo(TestConstants.BEARER_TOKEN))
             .withHeader(ACCEPT, equalTo("application/json;odata=minimalmetadata"))
             .withHeader("api-version", equalTo("1.6")));
