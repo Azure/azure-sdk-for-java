@@ -14,6 +14,10 @@ import rx.Observable;
 import java.util.List;
 
 class ZoneImpl extends GroupableResourceCoreImpl<Zone, ZoneInner, ZoneImpl, NetworkManager> implements Zone, Zone.Definition, Zone.Update {
+    private String cifMatch;
+    private String cifNoneMatch;
+    private String uifMatch;
+    private String uifNoneMatch;
     ZoneImpl(String name, ZoneInner inner, NetworkManager manager) {
         super(name, inner, manager);
     }
@@ -21,14 +25,14 @@ class ZoneImpl extends GroupableResourceCoreImpl<Zone, ZoneInner, ZoneImpl, Netw
     @Override
     public Observable<Zone> createResourceAsync() {
         ZonesInner client = this.manager().inner().zones();
-        return client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+        return client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner(), this.cifMatch, this.cifNoneMatch)
             .map(innerToFluentMap(this));
     }
 
     @Override
     public Observable<Zone> updateResourceAsync() {
         ZonesInner client = this.manager().inner().zones();
-        return client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+        return client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner(), this.uifMatch, this.uifNoneMatch)
             .map(innerToFluentMap(this));
     }
 
@@ -55,6 +59,11 @@ class ZoneImpl extends GroupableResourceCoreImpl<Zone, ZoneInner, ZoneImpl, Netw
     }
 
     @Override
+    public Long maxNumberOfRecordsPerRecordSet() {
+        return this.inner().maxNumberOfRecordsPerRecordSet();
+    }
+
+    @Override
     public List<String> nameServers() {
         return this.inner().nameServers();
     }
@@ -62,6 +71,26 @@ class ZoneImpl extends GroupableResourceCoreImpl<Zone, ZoneInner, ZoneImpl, Netw
     @Override
     public Long numberOfRecordSets() {
         return this.inner().numberOfRecordSets();
+    }
+
+    @Override
+    public ZoneImpl withIfMatch(String ifMatch) {
+        if (isInCreateMode()) {
+            this.cifMatch = ifMatch;
+        } else {
+            this.uifMatch = ifMatch;
+        }
+        return this;
+    }
+
+    @Override
+    public ZoneImpl withIfNoneMatch(String ifNoneMatch) {
+        if (isInCreateMode()) {
+            this.cifNoneMatch = ifNoneMatch;
+        } else {
+            this.uifNoneMatch = ifNoneMatch;
+        }
+        return this;
     }
 
     @Override

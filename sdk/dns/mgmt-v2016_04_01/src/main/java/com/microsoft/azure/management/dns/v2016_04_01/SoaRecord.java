@@ -58,7 +58,7 @@ public class SoaRecord {
     private Long minimumTtl;
 
     /**
-     * Get the host value.
+     * Get the domain name of the authoritative name server for this SOA record.
      *
      * @return the host value
      */
@@ -67,7 +67,7 @@ public class SoaRecord {
     }
 
     /**
-     * Set the host value.
+     * Set the domain name of the authoritative name server for this SOA record.
      *
      * @param host the host value to set
      * @return the SoaRecord object itself.
@@ -78,7 +78,7 @@ public class SoaRecord {
     }
 
     /**
-     * Get the email value.
+     * Get the email contact for this SOA record.
      *
      * @return the email value
      */
@@ -87,7 +87,7 @@ public class SoaRecord {
     }
 
     /**
-     * Set the email value.
+     * Set the email contact for this SOA record.
      *
      * @param email the email value to set
      * @return the SoaRecord object itself.
@@ -98,7 +98,7 @@ public class SoaRecord {
     }
 
     /**
-     * Get the serialNumber value.
+     * Get the serial number for this SOA record.
      *
      * @return the serialNumber value
      */
@@ -107,7 +107,7 @@ public class SoaRecord {
     }
 
     /**
-     * Set the serialNumber value.
+     * Set the serial number for this SOA record.
      *
      * @param serialNumber the serialNumber value to set
      * @return the SoaRecord object itself.
@@ -118,7 +118,7 @@ public class SoaRecord {
     }
 
     /**
-     * Get the refreshTime value.
+     * Get the refresh value for this SOA record.
      *
      * @return the refreshTime value
      */
@@ -127,7 +127,7 @@ public class SoaRecord {
     }
 
     /**
-     * Set the refreshTime value.
+     * Set the refresh value for this SOA record.
      *
      * @param refreshTime the refreshTime value to set
      * @return the SoaRecord object itself.
@@ -138,7 +138,7 @@ public class SoaRecord {
     }
 
     /**
-     * Get the retryTime value.
+     * Get the retry time for this SOA record.
      *
      * @return the retryTime value
      */
@@ -147,7 +147,7 @@ public class SoaRecord {
     }
 
     /**
-     * Set the retryTime value.
+     * Set the retry time for this SOA record.
      *
      * @param retryTime the retryTime value to set
      * @return the SoaRecord object itself.
@@ -158,7 +158,7 @@ public class SoaRecord {
     }
 
     /**
-     * Get the expireTime value.
+     * Get the expire time for this SOA record.
      *
      * @return the expireTime value
      */
@@ -167,7 +167,7 @@ public class SoaRecord {
     }
 
     /**
-     * Set the expireTime value.
+     * Set the expire time for this SOA record.
      *
      * @param expireTime the expireTime value to set
      * @return the SoaRecord object itself.
@@ -178,7 +178,7 @@ public class SoaRecord {
     }
 
     /**
-     * Get the minimumTtl value.
+     * Get the minimum value for this SOA record. By convention this is used to determine the negative caching duration.
      *
      * @return the minimumTtl value
      */
@@ -187,7 +187,7 @@ public class SoaRecord {
     }
 
     /**
-     * Set the minimumTtl value.
+     * Set the minimum value for this SOA record. By convention this is used to determine the negative caching duration.
      *
      * @param minimumTtl the minimumTtl value to set
      * @return the SoaRecord object itself.

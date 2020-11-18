@@ -59,6 +59,11 @@ class RecordSetImpl extends WrapperImpl<RecordSetInner> implements RecordSet {
     }
 
     @Override
+    public String fqdn() {
+        return this.inner().fqdn();
+    }
+
+    @Override
     public String id() {
         return this.inner().id();
     }

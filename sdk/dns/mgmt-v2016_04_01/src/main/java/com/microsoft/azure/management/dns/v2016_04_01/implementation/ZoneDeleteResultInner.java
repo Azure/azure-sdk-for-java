@@ -54,7 +54,7 @@ public class ZoneDeleteResultInner {
     private String requestId;
 
     /**
-     * Get the azureAsyncOperation value.
+     * Get users can perform a Get on Azure-AsyncOperation to get the status of their delete Zone operations.
      *
      * @return the azureAsyncOperation value
      */
@@ -63,7 +63,7 @@ public class ZoneDeleteResultInner {
     }
 
     /**
-     * Set the azureAsyncOperation value.
+     * Set users can perform a Get on Azure-AsyncOperation to get the status of their delete Zone operations.
      *
      * @param azureAsyncOperation the azureAsyncOperation value to set
      * @return the ZoneDeleteResultInner object itself.
@@ -74,7 +74,7 @@ public class ZoneDeleteResultInner {
     }
 
     /**
-     * Get the status value.
+     * Get possible values include: 'InProgress', 'Succeeded', 'Failed'.
      *
      * @return the status value
      */
@@ -83,7 +83,7 @@ public class ZoneDeleteResultInner {
     }
 
     /**
-     * Set the status value.
+     * Set possible values include: 'InProgress', 'Succeeded', 'Failed'.
      *
      * @param status the status value to set
      * @return the ZoneDeleteResultInner object itself.
@@ -94,7 +94,7 @@ public class ZoneDeleteResultInner {
     }
 
     /**
-     * Get the statusCode value.
+     * Get possible values include: 'Continue', 'SwitchingProtocols', 'OK', 'Created', 'Accepted', 'NonAuthoritativeInformation', 'NoContent', 'ResetContent', 'PartialContent', 'MultipleChoices', 'Ambiguous', 'MovedPermanently', 'Moved', 'Found', 'Redirect', 'SeeOther', 'RedirectMethod', 'NotModified', 'UseProxy', 'Unused', 'TemporaryRedirect', 'RedirectKeepVerb', 'BadRequest', 'Unauthorized', 'PaymentRequired', 'Forbidden', 'NotFound', 'MethodNotAllowed', 'NotAcceptable', 'ProxyAuthenticationRequired', 'RequestTimeout', 'Conflict', 'Gone', 'LengthRequired', 'PreconditionFailed', 'RequestEntityTooLarge', 'RequestUriTooLong', 'UnsupportedMediaType', 'RequestedRangeNotSatisfiable', 'ExpectationFailed', 'UpgradeRequired', 'InternalServerError', 'NotImplemented', 'BadGateway', 'ServiceUnavailable', 'GatewayTimeout', 'HttpVersionNotSupported'.
      *
      * @return the statusCode value
      */
@@ -103,7 +103,7 @@ public class ZoneDeleteResultInner {
     }
 
     /**
-     * Set the statusCode value.
+     * Set possible values include: 'Continue', 'SwitchingProtocols', 'OK', 'Created', 'Accepted', 'NonAuthoritativeInformation', 'NoContent', 'ResetContent', 'PartialContent', 'MultipleChoices', 'Ambiguous', 'MovedPermanently', 'Moved', 'Found', 'Redirect', 'SeeOther', 'RedirectMethod', 'NotModified', 'UseProxy', 'Unused', 'TemporaryRedirect', 'RedirectKeepVerb', 'BadRequest', 'Unauthorized', 'PaymentRequired', 'Forbidden', 'NotFound', 'MethodNotAllowed', 'NotAcceptable', 'ProxyAuthenticationRequired', 'RequestTimeout', 'Conflict', 'Gone', 'LengthRequired', 'PreconditionFailed', 'RequestEntityTooLarge', 'RequestUriTooLong', 'UnsupportedMediaType', 'RequestedRangeNotSatisfiable', 'ExpectationFailed', 'UpgradeRequired', 'InternalServerError', 'NotImplemented', 'BadGateway', 'ServiceUnavailable', 'GatewayTimeout', 'HttpVersionNotSupported'.
      *
      * @param statusCode the statusCode value to set
      * @return the ZoneDeleteResultInner object itself.
