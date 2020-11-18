@@ -9,7 +9,7 @@ import com.azure.core.util.IterableStream;
 /**
  * The {@link HealthcareEntityCollection} model.
  */
-public class HealthcareEntityCollection extends IterableStream<HealthcareEntity> {
+public final class HealthcareEntityCollection extends IterableStream<HealthcareEntity> {
     private IterableStream<TextAnalyticsWarning> warnings;
     private IterableStream<HealthcareEntityRelation> entityRelations;
 
