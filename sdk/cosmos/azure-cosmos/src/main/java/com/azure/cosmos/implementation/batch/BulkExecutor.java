@@ -109,9 +109,8 @@ public final class BulkExecutor<TContext> {
     public Flux<CosmosBulkOperationResponse<TContext>> execute() {
 
         Flux<CosmosBulkOperationResponse<TContext>> responseFlux = this.inputOperations
-            .onErrorResume((error) -> {
-                // eat up the error signals
-                return Mono.empty();
+            .onErrorContinue((throwable, o) -> {
+                logger.error("Skipping an error operation while processing {}. Cause: {}", o, throwable.getMessage());
             })
             .doOnNext((CosmosItemOperation cosmosItemOperation) -> {
 

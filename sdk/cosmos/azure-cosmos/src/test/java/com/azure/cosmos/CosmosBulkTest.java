@@ -565,7 +565,7 @@ public class CosmosBulkTest  extends BatchTestBase {
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
-    public void bulkSContentResponseOnWriteTest() {
+    public void bulkContentResponseOnWriteTest() {
         this.createJsonTestDocs(bulkContainer);
 
         TestDoc testDocToCreate = this.populateTestDoc(this.partitionKey1);

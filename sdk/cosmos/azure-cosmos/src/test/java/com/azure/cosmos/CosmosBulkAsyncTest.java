@@ -92,18 +92,17 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         assertThat(processedDoc.get()).isEqualTo(totalRequest * 2);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT * 100)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void createItemWithError_withBulk() {
-        int totalRequest = 2;
-
-        logger.info("Creating total request {}", totalRequest);
+        int totalRequest = getTotalRequest();
 
         Flux<CosmosItemOperation> cosmosItemOperationFlux = Flux.range(0, totalRequest).flatMap(i -> {
 
             String partitionKey = UUID.randomUUID().toString();
             TestDoc testDoc = this.populateTestDoc(partitionKey, i, 20);
 
-            if(i == 1) {
+            if (i == 20 || i == 40 || i == 60) {
+                // Three errors
                 return Mono.error(new Exception("ex"));
             }
 
@@ -146,7 +145,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
 
         // Right now we are eating up the error signals in input.
         assertThat(erroredDoc.get()).isEqualTo(0);
-        assertThat(processedDoc.get()).isEqualTo(1);
+        assertThat(processedDoc.get()).isEqualTo(totalRequest - 3);
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
@@ -166,10 +165,10 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
 
         BulkProcessingOptions<Object> bulkProcessingOptions = new BulkProcessingOptions<>();
         bulkProcessingOptions.setMaxMicroBatchSize(100);
-        bulkProcessingOptions.setMaxMicroBatchConcurrency(1);
+        bulkProcessingOptions.setMaxMicroBatchConcurrency(2);
 
         Flux<CosmosBulkOperationResponse<Object>> responseFlux = bulkAsyncContainer
-            .processBulkOperations(Flux.fromIterable(cosmosItemOperations));
+            .processBulkOperations(Flux.fromIterable(cosmosItemOperations), bulkProcessingOptions);
 
         AtomicInteger processedDoc = new AtomicInteger(0);
         responseFlux
@@ -451,7 +450,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
     }
 
     private int getTotalRequest() {
-        int countRequest = new Random().nextInt(100) + 120;
+        int countRequest = new Random().nextInt(100) + 200;
         logger.info("Total count of request for this test case: " + countRequest);
 
         return countRequest;
