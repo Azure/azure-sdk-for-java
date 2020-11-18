@@ -105,11 +105,25 @@ public class AADAuthenticationProperties {
      */
     private Boolean sessionStateless = false;
 
+    /**
+     * Redirection Endpoint: Used by the authorization server
+     * to return responses containing authorization credentials to the client via the resource owner user-agent.
+     */
+    private String redirectUri;
+
     @DeprecatedConfigurationProperty(
         reason = "Configuration moved to UserGroup class to keep UserGroup properties together",
         replacement = "azure.activedirectory.user-group.allowed-groups")
     public List<String> getActiveDirectoryGroups() {
         return userGroup.getAllowedGroups();
+    }
+
+    public String getRedirectUri() {
+        return redirectUri;
+    }
+
+    public void setRedirectUri(String redirectUri) {
+        this.redirectUri = redirectUri;
     }
 
     /**

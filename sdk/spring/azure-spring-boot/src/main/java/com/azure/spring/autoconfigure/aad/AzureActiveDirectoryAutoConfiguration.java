@@ -31,10 +31,7 @@ import org.springframework.util.ClassUtils;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.azure.spring.telemetry.TelemetryData.SERVICE_NAME;
 import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName;
@@ -107,8 +104,12 @@ public class AzureActiveDirectoryAutoConfiguration {
     }
 
     private DefaultClient createDefaultClient() {
+        String redirectUri = Optional.of(aadAuthenticationProperties)
+            .map(AADAuthenticationProperties::getRedirectUri)
+            .orElse("{baseUrl}/login/oauth2/code/{registrationId}");
         ClientRegistration clientRegistration = toClientRegistrationBuilder(DEFAULT_CLIENT)
             .scope(allScopes())
+            .redirectUriTemplate(redirectUri)
             .build();
         return new DefaultClient(clientRegistration, defaultScopes());
     }
