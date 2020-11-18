@@ -40,6 +40,11 @@ public interface RecordSet extends HasInner<RecordSetInner>, HasManager<NetworkM
     String etag();
 
     /**
+     * @return the fqdn value.
+     */
+    String fqdn();
+
+    /**
      * @return the id value.
      */
     String id();

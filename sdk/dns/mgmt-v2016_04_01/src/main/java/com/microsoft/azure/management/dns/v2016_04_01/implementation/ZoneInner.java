@@ -33,6 +33,14 @@ public class ZoneInner extends Resource {
     private Long maxNumberOfRecordSets;
 
     /**
+     * The maximum number of records per record set that can be created in this
+     * DNS zone.  This is a read-only property and any attempt to set this
+     * value will be ignored.
+     */
+    @JsonProperty(value = "properties.maxNumberOfRecordsPerRecordSet", access = JsonProperty.Access.WRITE_ONLY)
+    private Long maxNumberOfRecordsPerRecordSet;
+
+    /**
      * The current number of record sets in this DNS zone.  This is a read-only
      * property and any attempt to set this value will be ignored.
      */
@@ -47,7 +55,7 @@ public class ZoneInner extends Resource {
     private List<String> nameServers;
 
     /**
-     * Get the etag value.
+     * Get the etag of the zone.
      *
      * @return the etag value
      */
@@ -56,7 +64,7 @@ public class ZoneInner extends Resource {
     }
 
     /**
-     * Set the etag value.
+     * Set the etag of the zone.
      *
      * @param etag the etag value to set
      * @return the ZoneInner object itself.
@@ -67,7 +75,7 @@ public class ZoneInner extends Resource {
     }
 
     /**
-     * Get the maxNumberOfRecordSets value.
+     * Get the maximum number of record sets that can be created in this DNS zone.  This is a read-only property and any attempt to set this value will be ignored.
      *
      * @return the maxNumberOfRecordSets value
      */
@@ -76,7 +84,7 @@ public class ZoneInner extends Resource {
     }
 
     /**
-     * Set the maxNumberOfRecordSets value.
+     * Set the maximum number of record sets that can be created in this DNS zone.  This is a read-only property and any attempt to set this value will be ignored.
      *
      * @param maxNumberOfRecordSets the maxNumberOfRecordSets value to set
      * @return the ZoneInner object itself.
@@ -87,7 +95,16 @@ public class ZoneInner extends Resource {
     }
 
     /**
-     * Get the numberOfRecordSets value.
+     * Get the maximum number of records per record set that can be created in this DNS zone.  This is a read-only property and any attempt to set this value will be ignored.
+     *
+     * @return the maxNumberOfRecordsPerRecordSet value
+     */
+    public Long maxNumberOfRecordsPerRecordSet() {
+        return this.maxNumberOfRecordsPerRecordSet;
+    }
+
+    /**
+     * Get the current number of record sets in this DNS zone.  This is a read-only property and any attempt to set this value will be ignored.
      *
      * @return the numberOfRecordSets value
      */
@@ -96,7 +113,7 @@ public class ZoneInner extends Resource {
     }
 
     /**
-     * Set the numberOfRecordSets value.
+     * Set the current number of record sets in this DNS zone.  This is a read-only property and any attempt to set this value will be ignored.
      *
      * @param numberOfRecordSets the numberOfRecordSets value to set
      * @return the ZoneInner object itself.
@@ -107,7 +124,7 @@ public class ZoneInner extends Resource {
     }
 
     /**
-     * Get the nameServers value.
+     * Get the name servers for this DNS zone. This is a read-only property and any attempt to set this value will be ignored.
      *
      * @return the nameServers value
      */
