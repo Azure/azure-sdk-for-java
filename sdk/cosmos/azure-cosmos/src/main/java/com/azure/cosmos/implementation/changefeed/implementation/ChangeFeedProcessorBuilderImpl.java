@@ -4,8 +4,10 @@ package com.azure.cosmos.implementation.changefeed.implementation;
 
 import com.azure.cosmos.ChangeFeedProcessor;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
+import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.changefeed.Bootstrapper;
@@ -24,6 +26,8 @@ import com.azure.cosmos.implementation.changefeed.PartitionProcessorFactory;
 import com.azure.cosmos.implementation.changefeed.PartitionSupervisorFactory;
 import com.azure.cosmos.implementation.changefeed.RequestOptionsFactory;
 import com.azure.cosmos.models.ChangeFeedProcessorState;
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
+import com.azure.cosmos.models.FeedRange;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -157,18 +161,26 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
 
         return this.leaseStoreManager.getAllLeases()
             .flatMap(lease -> {
-                ChangeFeedOptions options = new ChangeFeedOptions()
-                    .setMaxItemCount(1)
-                    .setPartitionKeyRangeId(lease.getLeaseToken())
-                    .setStartFromBeginning(true)
-                    .setRequestContinuation(lease.getContinuationToken());
+                final CosmosChangeFeedRequestOptions options;
+                String requestContinuation = lease.getContinuationToken();
+                if (!Strings.isNullOrWhiteSpace(requestContinuation)) {
+                    options = CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(requestContinuation);
+                } else {
+                    final FeedRange feedRange = new FeedRangePartitionKeyRangeImpl(lease.getLeaseToken());
+                    options = CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(feedRange);
+                }
 
-                return this.feedContextClient.createDocumentChangeFeedQuery(this.feedContextClient.getContainerClient(), options)
+                options.setMaxItemCount(1);
+
+                return this.feedContextClient.createDocumentChangeFeedQuery(
+                        this.feedContextClient.getContainerClient(),
+                        options)
                     .take(1)
                     .map(feedResponse -> {
                         String ownerValue = lease.getOwner();
                         String sessionTokenLsn = feedResponse.getSessionToken();
-                        String parsedSessionToken = sessionTokenLsn.substring(sessionTokenLsn.indexOf(PK_RANGE_ID_SEPARATOR));
+                        String parsedSessionToken = sessionTokenLsn.substring(
+                            sessionTokenLsn.indexOf(PK_RANGE_ID_SEPARATOR));
                         String[] segments = StringUtils.split(parsedSessionToken, SEGMENT_SEPARATOR);
                         String latestLsn = segments[0];
 
@@ -189,7 +201,8 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
                         Integer currentLsn = 0;
                         Integer estimatedLag = 0;
                         try {
-                            currentLsn = Integer.valueOf(feedResponse.getResults().get(0).get(PROPERTY_NAME_LSN).asText("0"));
+                            currentLsn = Integer.valueOf(
+                                feedResponse.getResults().get(0).get(PROPERTY_NAME_LSN).asText("0"));
                             estimatedLag = Integer.valueOf(latestLsn);
                             estimatedLag = estimatedLag - currentLsn + 1;
                         } catch (NumberFormatException ex) {
@@ -197,7 +210,9 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
                             estimatedLag = -1;
                         }
 
-                        return Pair.of(ownerValue + "_" + lease.getLeaseToken() + "_" + currentLsn + "_" + latestLsn, estimatedLag);
+                        return Pair.of(
+                            ownerValue + "_" + lease.getLeaseToken() + "_" + currentLsn + "_" + latestLsn,
+                            estimatedLag);
                     });
             })
             .collectList()
@@ -228,17 +243,25 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
 
         return this.leaseStoreManager.getAllLeases()
             .flatMap(lease -> {
-                ChangeFeedOptions options = new ChangeFeedOptions()
-                    .setMaxItemCount(1)
-                    .setPartitionKeyRangeId(lease.getLeaseToken())
-                    .setStartFromBeginning(true)
-                    .setRequestContinuation(lease.getContinuationToken());
+                final CosmosChangeFeedRequestOptions options;
+                String requestContinuation = lease.getContinuationToken();
+                if (!Strings.isNullOrWhiteSpace(requestContinuation)) {
+                    options = CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(requestContinuation);
+                } else {
+                    final FeedRange feedRange = new FeedRangePartitionKeyRangeImpl(lease.getLeaseToken());
+                    options = CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(feedRange);
+                }
 
-                return this.feedContextClient.createDocumentChangeFeedQuery(this.feedContextClient.getContainerClient(), options)
+                options.setMaxItemCount(1);
+
+                return this.feedContextClient.createDocumentChangeFeedQuery(
+                        this.feedContextClient.getContainerClient(),
+                        options)
                     .take(1)
                     .map(feedResponse -> {
                         String sessionTokenLsn = feedResponse.getSessionToken();
-                        String parsedSessionToken = sessionTokenLsn.substring(sessionTokenLsn.indexOf(PK_RANGE_ID_SEPARATOR));
+                        String parsedSessionToken = sessionTokenLsn.substring(
+                            sessionTokenLsn.indexOf(PK_RANGE_ID_SEPARATOR));
                         String[] segments = StringUtils.split(parsedSessionToken, SEGMENT_SEPARATOR);
                         String latestLsn = segments[0];
 
@@ -247,7 +270,8 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
                             latestLsn = segments[1];
                         }
 
-                        // lease.getId() - the ID of the lease item representing the persistent state of a change feed processor worker.
+                        // lease.getId() - the ID of the lease item representing the persistent state of a
+                        // change feed processor worker.
                         // latestLsn - a marker representing the latest item that will be processed.
                         ChangeFeedProcessorState changeFeedProcessorState = new ChangeFeedProcessorState()
                             .setHostName(lease.getOwner())
@@ -261,7 +285,8 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
                             return changeFeedProcessorState;
                         }
 
-                        changeFeedProcessorState.setContinuationToken(feedResponse.getResults().get(0).get(PROPERTY_NAME_LSN).asText(null));
+                        changeFeedProcessorState.setContinuationToken(
+                            feedResponse.getResults().get(0).get(PROPERTY_NAME_LSN).asText(null));
 
                         // continuationTokenTimestamp - the system time for the last item that was processed.
 //                        try {
@@ -275,7 +300,8 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
                         Integer currentLsn = 0;
                         Integer estimatedLag = 0;
                         try {
-                            currentLsn = Integer.valueOf(feedResponse.getResults().get(0).get(PROPERTY_NAME_LSN).asText("0"));
+                            currentLsn = Integer.valueOf(
+                                feedResponse.getResults().get(0).get(PROPERTY_NAME_LSN).asText("0"));
                             estimatedLag = Integer.valueOf(latestLsn);
                             estimatedLag = estimatedLag - currentLsn + 1;
                             changeFeedProcessorState.setEstimatedLag(estimatedLag);

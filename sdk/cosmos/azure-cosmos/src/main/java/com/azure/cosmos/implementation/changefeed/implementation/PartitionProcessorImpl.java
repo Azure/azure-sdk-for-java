@@ -3,6 +3,10 @@
 package com.azure.cosmos.implementation.changefeed.implementation;
 
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
+import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.implementation.changefeed.CancellationToken;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
@@ -36,13 +40,12 @@ class PartitionProcessorImpl implements PartitionProcessor {
     private final ProcessorSettings settings;
     private final PartitionCheckpointer checkpointer;
     private final ChangeFeedObserver observer;
-    private final ChangeFeedOptions options;
+    private final CosmosChangeFeedRequestOptions options;
     private final ChangeFeedContextClient documentClient;
     private volatile RuntimeException resultException;
 
     private volatile String lastContinuation;
     private volatile boolean isFirstQueryForChangeFeeds;
-
 
     public PartitionProcessorImpl(ChangeFeedObserver observer, ChangeFeedContextClient documentClient, ProcessorSettings settings, PartitionCheckpointer checkpointer) {
         this.observer = observer;
@@ -50,13 +53,24 @@ class PartitionProcessorImpl implements PartitionProcessor {
         this.settings = settings;
         this.checkpointer = checkpointer;
 
-        this.options = new ChangeFeedOptions();
+        String requestContinuation = settings.getStartContinuation();
+        if (!Strings.isNullOrWhiteSpace(requestContinuation)) {
+            options = CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(requestContinuation);
+        }
+        else {
+            FeedRange feedRange = new FeedRangePartitionKeyRangeImpl(settings.getPartitionKeyRangeId());
+
+            if (settings.getStartTime() != null) {
+                this.options = CosmosChangeFeedRequestOptions.createForProcessingFromPointInTime(
+                    settings.getStartTime(),
+                    feedRange);
+            } else if (settings.isStartFromBeginning()) {
+                this.options = CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(feedRange);
+            } else {
+                this.options = CosmosChangeFeedRequestOptions.createForProcessingFromNow(feedRange);
+            }
+        }
         this.options.setMaxItemCount(settings.getMaxItemCount());
-        this.options.setPartitionKeyRangeId(settings.getPartitionKeyRangeId());
-        // this.setOptions.getSessionToken(getProperties.getSessionToken());
-        this.options.setStartFromBeginning(settings.isStartFromBeginning());
-        this.options.setRequestContinuation(settings.getStartContinuation());
-        this.options.setStartDateTime(settings.getStartTime());
     }
 
     @Override

@@ -10,7 +10,10 @@ import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.CosmosResourceType;
+import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyImpl;
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
@@ -389,10 +392,20 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
             Thread.sleep(1500);
 
             document1 = asyncClientWithTokenResolver
-                    .createDocument(createdCollection.getSelfLink(), document1, null, false).block()
+                    .createDocument(
+                        createdCollection.getSelfLink(),
+                        document1,
+                        null,
+                        false)
+                    .block()
                     .getResource();
             document2 = asyncClientWithTokenResolver
-                    .createDocument(createdCollection.getSelfLink(), document2, null, false).block()
+                    .createDocument(
+                        createdCollection.getSelfLink(),
+                        document2,
+                        null,
+                        false)
+                    .block()
                     .getResource();
             List<String> expectedIds = new ArrayList<String>();
             String rid1 = document1.getResourceId();
@@ -400,9 +413,10 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
             expectedIds.add(rid1);
             expectedIds.add(rid2);
 
-            ChangeFeedOptions options = new ChangeFeedOptions();
-            options.setPartitionKey(new PartitionKey(partitionKeyValue));
-            options.setStartDateTime(befTime);
+            FeedRange feedRange = new FeedRangePartitionKeyImpl(
+                ModelBridgeInternal.getPartitionKeyInternal(new PartitionKey(partitionKeyValue)));
+            CosmosChangeFeedRequestOptions options =
+                CosmosChangeFeedRequestOptions.createForProcessingFromPointInTime(befTime, feedRange);
 
             Thread.sleep(1000);
             Flux<FeedResponse<Document>> queryObservable = asyncClientWithTokenResolver

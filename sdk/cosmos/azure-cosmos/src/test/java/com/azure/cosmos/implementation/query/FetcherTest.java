@@ -3,6 +3,8 @@
 
 package com.azure.cosmos.implementation.query;
 
+import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.implementation.Document;
@@ -122,7 +124,9 @@ public class FetcherTest {
     @Test(groups = { "unit" })
     public void changeFeed() {
 
-        ChangeFeedOptions options = new ChangeFeedOptions();
+        CosmosChangeFeedRequestOptions options =
+            CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(
+                FeedRangeEpkImpl.forFullRange());
         options.setMaxItemCount(100);
 
         boolean isChangeFeed = true;
@@ -144,8 +148,6 @@ public class FetcherTest {
 
         BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc = (token, maxItemCount) -> {
             assertThat(maxItemCount).describedAs("max getItem count").isEqualTo(options.getMaxItemCount());
-            assertThat(token).describedAs("continuation token").isEqualTo(
-                    getExpectedContinuationTokenInRequest(options.getRequestContinuation(), feedResponseList, requestIndex.getAndIncrement()));
 
             return mock(RxDocumentServiceRequest.class);
         };
@@ -157,14 +159,14 @@ public class FetcherTest {
         };
 
         Fetcher<Document> fetcher =
-                new Fetcher<>(createRequestFunc, executeFunc, options.getRequestContinuation(), isChangeFeed, top,
+                new Fetcher<>(createRequestFunc, executeFunc, null, isChangeFeed, top,
                         options.getMaxItemCount());
 
         validateFetcher(fetcher, options, feedResponseList);
     }
 
     private void validateFetcher(Fetcher<Document> fetcher,
-                                 ChangeFeedOptions options,
+                                 CosmosChangeFeedRequestOptions options,
                                  List<FeedResponse<Document>> feedResponseList) {
 
 

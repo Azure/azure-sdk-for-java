@@ -91,11 +91,4 @@ class ChangeFeedQueryImpl<T extends Resource> {
         return client.readFeed(request)
                      .map(rsp -> BridgeInternal.toChangeFeedResponsePage(rsp, klass));
     }
-
-    private ChangeFeedOptions getChangeFeedOptions(ChangeFeedOptions options,
-                                                   String continuationToken) {
-        ChangeFeedOptions newOps = new ChangeFeedOptions(options);
-        newOps.setRequestContinuation(continuationToken);
-        return newOps;
-    }
 }
