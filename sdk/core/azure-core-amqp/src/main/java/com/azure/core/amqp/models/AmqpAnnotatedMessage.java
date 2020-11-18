@@ -3,8 +3,6 @@
 
 package com.azure.core.amqp.models;
 
-import com.azure.core.util.logging.ClientLogger;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
