@@ -81,7 +81,55 @@ You can use implementation class `AzureStorageResourcePatternResolver` of `Resou
 ```java
 AzureStorageResourcePatternResolver storageResourcePatternResolver = new AzureStorageResourcePatternResolver(blobServiceClientBuilder.buildClient());
 Resource[] resources = storageResourcePatternResolver.getResources(searchPattern);
-Resource resource = storageResourcePatternResolver.getResource(searchLocation)
+Resource resource = storageResourcePatternResolver.getResource(searchLocation);
+```
+
+#### Multipart upload
+There are two steps:
+* Upload to a block blob with `blockId`, the `blockId` must be less than or equal to 64 bytes in size, please note the Base64 string should be URL-encoded first. For a given blob, the length of the value specified for the `blockId` parameter must be the same size for each block. Learn more at [Put Block][put-block].
+* Commit the block list to save the block blob with block id list. Learn more at [Put Block List][put-block-list].
+
+```java
+/**
+ * Multiple block upload scenario.
+ * @throws UnsupportedEncodingException
+ */
+public void multipartUpload() throws UnsupportedEncodingException {
+    String containerName = "demo-container";
+    String blobName = "demo-block-name";
+
+    // First block information
+    String blockIdFirst = getBase64BlockId("demo-block-id-001");
+    String uploadDataFirst = "demo uploaded data first";
+
+    // Second block information
+    String blockIdSecond = getBase64BlockId("demo-block-id-002");
+    String uploadDataSecond = "demo uploaded data second";
+
+    // Construct BlockBlobClient instance
+    BlobServiceClient blobServiceClient = blobServiceClientBuilder.buildClient();
+    BlobContainerClient blobContainerClient = blobServiceClient.getBlobContainerClient(containerName);
+    BlockBlobClient blockBlobClient = blobContainerClient.getBlobClient(blobName).getBlockBlobClient();
+
+    // Upload difference blocks
+    blockBlobClient.stageBlock(blockIdFirst, new ByteArrayInputStream(uploadDataFirst.getBytes()), uploadDataFirst.length());
+    blockBlobClient.stageBlock(blockIdSecond, new ByteArrayInputStream(uploadDataSecond.getBytes()), uploadDataSecond.length());
+
+    // Commit block list
+    blockBlobClient.commitBlockList(Arrays.asList(blockIdFirst, blockIdSecond));
+}
+
+/**
+ * Encode block id, use URLEncoder encode first, then use Base64 encode
+ * @param blockId customized block id.
+ * @return encoded block id
+ * @throws UnsupportedEncodingException
+ */
+private String getBase64BlockId(String blockId) throws UnsupportedEncodingException {
+    return Base64.getEncoder()
+                 .encodeToString(URLEncoder.encode(blockId, StandardCharsets.UTF_8.toString())
+                                           .getBytes());
+}
 ```
 
 ## Troubleshooting
@@ -126,4 +174,7 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [azure_storage]: https://azure.microsoft.com/services/storage/blobs/
 [other_operation]: https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#resources
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+
+[put-block]: https://docs.microsoft.com/rest/api/storageservices/put-block
+[put-block-list]: https://docs.microsoft.com/rest/api/storageservices/put-block-list
 
