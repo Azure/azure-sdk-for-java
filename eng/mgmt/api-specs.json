@@ -30,6 +30,10 @@
       "\"moduleName\"": "\"AppService\""
     }
   },
+  "attestation/resource-manager": {
+    "source": "specification/attestation/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "automation/resource-manager": {
     "source": "specification/automation/resource-manager/readme.md",
     "args": "--multiapi --fluent"

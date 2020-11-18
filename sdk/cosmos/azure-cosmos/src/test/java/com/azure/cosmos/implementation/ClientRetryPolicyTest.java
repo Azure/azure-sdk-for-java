@@ -31,7 +31,7 @@ public class ClientRetryPolicyTest {
         ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(mockDiagnosticsClientContext(), endpointManager, true, throttlingRetryOptions);
 
         Exception exception = ReadTimeoutException.INSTANCE;
-        CosmosException cosmosException = BridgeInternal.createCosmosException(0, exception);
+        CosmosException cosmosException = BridgeInternal.createCosmosException(null, 0, exception);
         BridgeInternal.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE);
 
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
@@ -66,7 +66,7 @@ public class ClientRetryPolicyTest {
         Exception exception = ReadTimeoutException.INSTANCE;
         GoneException goneException = new GoneException(exception);
         CosmosException cosmosException =
-            BridgeInternal.createCosmosException(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+            BridgeInternal.createCosmosException(null, HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
                 goneException);
 
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
@@ -105,7 +105,7 @@ public class ClientRetryPolicyTest {
         ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(mockDiagnosticsClientContext(), endpointManager, true, throttlingRetryOptions);
 
         Exception exception = ReadTimeoutException.INSTANCE;
-        CosmosException cosmosException = BridgeInternal.createCosmosException(0, exception);
+        CosmosException cosmosException = BridgeInternal.createCosmosException(null, 0, exception);
         BridgeInternal.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE);
 
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
@@ -137,7 +137,7 @@ public class ClientRetryPolicyTest {
         //Non retribale exception for write
         Exception exception = ReadTimeoutException.INSTANCE;
         GoneException goneException = new GoneException(exception);
-        CosmosException cosmosException = BridgeInternal.createCosmosException(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE, goneException);
+        CosmosException cosmosException = BridgeInternal.createCosmosException(null, HttpConstants.StatusCodes.SERVICE_UNAVAILABLE, goneException);
 
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
             OperationType.Create, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
@@ -160,7 +160,7 @@ public class ClientRetryPolicyTest {
         // Retriable exception scenario
         exception = new SSLHandshakeException("test");
         goneException = new GoneException(exception);
-        cosmosException = BridgeInternal.createCosmosException(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE, goneException);
+        cosmosException = BridgeInternal.createCosmosException(null, HttpConstants.StatusCodes.SERVICE_UNAVAILABLE, goneException);
 
         Mockito.doReturn(true).when(endpointManager).canUseMultipleWriteLocations(Mockito.any(RxDocumentServiceRequest.class));
         clientRetryPolicy = new ClientRetryPolicy(mockDiagnosticsClientContext(), endpointManager, true, retryOptions);
@@ -196,7 +196,7 @@ public class ClientRetryPolicyTest {
         ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(mockDiagnosticsClientContext(), endpointManager, true, throttlingRetryOptions);
 
         Exception exception = ReadTimeoutException.INSTANCE;
-        CosmosException cosmosException = BridgeInternal.createCosmosException(0, exception);
+        CosmosException cosmosException = BridgeInternal.createCosmosException(null, 0, exception);
         BridgeInternal.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE);
 
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
@@ -227,7 +227,7 @@ public class ClientRetryPolicyTest {
 
         Exception exception = ReadTimeoutException.INSTANCE;
         GoneException goneException = new GoneException(exception);
-        CosmosException cosmosException = BridgeInternal.createCosmosException(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE, goneException);
+        CosmosException cosmosException = BridgeInternal.createCosmosException(null, HttpConstants.StatusCodes.SERVICE_UNAVAILABLE, goneException);
 
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
             OperationType.Upsert, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
@@ -257,7 +257,7 @@ public class ClientRetryPolicyTest {
         ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(mockDiagnosticsClientContext(), endpointManager, true, throttlingRetryOptions);
 
         Exception exception = ReadTimeoutException.INSTANCE;
-        CosmosException cosmosException = BridgeInternal.createCosmosException(0, exception);
+        CosmosException cosmosException = BridgeInternal.createCosmosException(null, 0, exception);
         BridgeInternal.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE);
 
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
@@ -288,7 +288,7 @@ public class ClientRetryPolicyTest {
 
         Exception exception = ReadTimeoutException.INSTANCE;
         GoneException goneException = new GoneException(exception);
-        CosmosException cosmosException = BridgeInternal.createCosmosException(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE, goneException);
+        CosmosException cosmosException = BridgeInternal.createCosmosException(null, HttpConstants.StatusCodes.SERVICE_UNAVAILABLE, goneException);
 
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
             OperationType.Delete, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
@@ -320,7 +320,7 @@ public class ClientRetryPolicyTest {
 
         Exception exception = ReadTimeoutException.INSTANCE;
         CosmosException cosmosException =
-            BridgeInternal.createCosmosException(0, exception);
+            BridgeInternal.createCosmosException(null, 0, exception);
         BridgeInternal.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT);
 
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
@@ -361,7 +361,7 @@ public class ClientRetryPolicyTest {
 
         Exception exception = ReadTimeoutException.INSTANCE;
         CosmosException cosmosException =
-            BridgeInternal.createCosmosException(0, exception);
+            BridgeInternal.createCosmosException(null, 0, exception);
         BridgeInternal.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT);
 
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
