@@ -2030,6 +2030,7 @@ class BlockBlobAPITest extends APISpec {
         def sourceBlob = primaryBlobServiceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName())
         sourceBlob.upload(defaultInputStream.get(), defaultDataSize)
         sourceBlob.setHttpHeaders(new BlobHttpHeaders().setContentLanguage("en-GB"))
+        byte[] sourceBlobMD5 = MessageDigest.getInstance("MD5").digest(defaultData.array())
         def sourceProperties = sourceBlob.getProperties()
         def sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)))
@@ -2038,7 +2039,7 @@ class BlockBlobAPITest extends APISpec {
 
         when:
         def options = new BlobUploadFromUrlOptions(sourceBlob.getBlobUrl() + "?" + sas)
-            .setContentMd5(sourceProperties.getContentMd5())
+            .setContentMd5(sourceBlobMD5)
             .setCopySourceBlobProperties(true)
             .setDestinationRequestConditions(new BlobRequestConditions().setIfMatch(destinationPropertiesBefore.getETag()))
             .setSourceRequestConditions(new BlobRequestConditions().setIfMatch(sourceProperties.getETag()))
@@ -2062,6 +2063,25 @@ class BlockBlobAPITest extends APISpec {
         destinationProperties.getContentLanguage() == "en-GB"
         destinationProperties.getContentType() == "text"
         destinationProperties.getAccessTier() == AccessTier.COOL
+    }
+
+    def "Upload from with invalid source MD5"() {
+        setup:
+        def sourceBlob = primaryBlobServiceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName())
+        sourceBlob.upload(defaultInputStream.get(), defaultDataSize)
+        byte[] sourceBlobMD5 = MessageDigest.getInstance("MD5").digest("garbage".getBytes(StandardCharsets.UTF_8))
+        def sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)))
+        blockBlobClient.upload(new ByteArrayInputStream(), 0, true)
+
+        when:
+        def options = new BlobUploadFromUrlOptions(sourceBlob.getBlobUrl() + "?" + sas)
+            .setContentMd5(sourceBlobMD5)
+        def response = blockBlobClient.uploadFromUrlWithResponse(options, null, null)
+
+        then:
+        def e = thrown(BlobStorageException)
+        e.getErrorCode() == BlobErrorCode.MD5MISMATCH
     }
 
     @Unroll

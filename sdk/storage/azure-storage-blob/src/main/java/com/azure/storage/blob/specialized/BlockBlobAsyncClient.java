@@ -369,7 +369,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         // TODO (kasobol-msft) add metadata back (https://github.com/Azure/azure-sdk-for-net/issues/15969)
         return this.azureBlobStorage.blockBlobs().putBlobFromUrlWithRestResponseAsync(
             null, null, 0,
-            url, null, options.getContentMd5(), null,
+            url, null, null, null,
             destinationRequestConditions.getLeaseId(), options.getTier(),
             destinationRequestConditions.getIfModifiedSince(), destinationRequestConditions.getIfUnmodifiedSince(),
             destinationRequestConditions.getIfMatch(), destinationRequestConditions.getIfNoneMatch(),
@@ -377,7 +377,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             sourceRequestConditions.getIfModifiedSince(), sourceRequestConditions.getIfUnmodifiedSince(),
             sourceRequestConditions.getIfMatch(), sourceRequestConditions.getIfNoneMatch(),
             sourceRequestConditions.getTagsConditions(),
-            null, tagsToString(options.getTags()),
+            null, options.getContentMd5(), tagsToString(options.getTags()),
             options.isCopySourceBlobProperties(), options.getHeaders(), getCustomerProvidedKey(), encryptionScope,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
