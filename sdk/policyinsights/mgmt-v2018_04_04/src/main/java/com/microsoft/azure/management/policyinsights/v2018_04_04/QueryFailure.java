@@ -21,7 +21,7 @@ public class QueryFailure {
     private QueryFailureError error;
 
     /**
-     * Get the error value.
+     * Get error definition.
      *
      * @return the error value
      */
@@ -30,7 +30,7 @@ public class QueryFailure {
     }
 
     /**
-     * Set the error value.
+     * Set error definition.
      *
      * @param error the error value to set
      * @return the QueryFailure object itself.
