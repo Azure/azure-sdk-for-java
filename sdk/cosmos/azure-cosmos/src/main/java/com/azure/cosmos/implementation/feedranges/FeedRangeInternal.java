@@ -111,7 +111,7 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
             return null;
 
         } catch (final IOException ioError) {
-            LOGGER.debug("Failed to parse feed range JSON %s", jsonString, ioError);
+            LOGGER.debug("Failed to parse feed range JSON {}", jsonString, ioError);
             return null;
         }
     }
