@@ -34,7 +34,7 @@ import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusSharedKeyCredential;
 import com.azure.messaging.servicebus.implementation.models.ServiceBusProcessorClientOptions;
-import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.messaging.servicebus.models.SubQueue;
 import org.apache.qpid.proton.engine.SslDomain;
 import reactor.core.publisher.Flux;
@@ -642,7 +642,7 @@ public final class ServiceBusClientBuilder {
         private final ServiceBusProcessorClientOptions processorClientOptions;
         private final ServiceBusSessionReceiverClientBuilder sessionReceiverClientBuilder;
         private Consumer<ServiceBusReceivedMessageContext> processMessage;
-        private Consumer<Throwable> processError;
+        private Consumer<ServiceBusErrorContext> processError;
 
         private ServiceBusSessionProcessorClientBuilder() {
             sessionReceiverClientBuilder = new ServiceBusSessionReceiverClientBuilder();
@@ -669,8 +669,8 @@ public final class ServiceBusClientBuilder {
         }
 
         /**
-         * Sets the prefetch count of the processor. For both {@link ReceiveMode#PEEK_LOCK PEEK_LOCK} and {@link
-         * ReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} modes the default value is 1.
+         * Sets the prefetch count of the processor. For both {@link ServiceBusReceiveMode#PEEK_LOCK PEEK_LOCK} and
+         * {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} modes the default value is 1.
          *
          * Prefetch speeds up the message flow by aiming to have a message readily available for local retrieval when
          * and before the application starts the processor.
@@ -702,7 +702,7 @@ public final class ServiceBusClientBuilder {
          *
          * @return The modified {@link ServiceBusSessionProcessorClientBuilder} object.
          */
-        public ServiceBusSessionProcessorClientBuilder receiveMode(ReceiveMode receiveMode) {
+        public ServiceBusSessionProcessorClientBuilder receiveMode(ServiceBusReceiveMode receiveMode) {
             sessionReceiverClientBuilder.receiveMode(receiveMode);
             return this;
         }
@@ -750,7 +750,8 @@ public final class ServiceBusClientBuilder {
          *
          * @return The updated {@link ServiceBusProcessorClientBuilder} object
          */
-        public ServiceBusSessionProcessorClientBuilder processError(Consumer<Throwable> processError) {
+        public ServiceBusSessionProcessorClientBuilder processError(
+            Consumer<ServiceBusErrorContext> processError) {
             this.processError = processError;
             return this;
         }
@@ -820,7 +821,7 @@ public final class ServiceBusClientBuilder {
         private Integer maxConcurrentSessions = null;
         private int prefetchCount = DEFAULT_PREFETCH_COUNT;
         private String queueName;
-        private ReceiveMode receiveMode = ReceiveMode.PEEK_LOCK;
+        private ServiceBusReceiveMode receiveMode = ServiceBusReceiveMode.PEEK_LOCK;
         private String subscriptionName;
         private String topicName;
         private Duration maxAutoLockRenewDuration = MAX_LOCK_RENEW_DEFAULT_DURATION;
@@ -843,8 +844,8 @@ public final class ServiceBusClientBuilder {
 
         /**
          * Sets the amount of time to continue auto-renewing the session lock. Setting {@link Duration#ZERO} or
-         * {@code null} disables auto-renewal. For {@link ReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} mode,
-         * auto-renewal is disabled.
+         * {@code null} disables auto-renewal. For {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE}
+         * mode, auto-renewal is disabled.
          *
          * @param maxAutoLockRenewDuration the amount of time to continue auto-renewing the session lock.
          * {@link Duration#ZERO} or {@code null} indicates that auto-renewal is disabled.
@@ -877,8 +878,8 @@ public final class ServiceBusClientBuilder {
         }
 
         /**
-         * Sets the prefetch count of the receiver. For both {@link ReceiveMode#PEEK_LOCK PEEK_LOCK} and {@link
-         * ReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} modes the default value is 1.
+         * Sets the prefetch count of the receiver. For both {@link ServiceBusReceiveMode#PEEK_LOCK PEEK_LOCK} and
+         * {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} modes the default value is 1.
          *
          * Prefetch speeds up the message flow by aiming to have a message readily available for local retrieval when
          * and before the application asks for one using {@link ServiceBusReceiverAsyncClient#receiveMessages()}.
@@ -915,7 +916,7 @@ public final class ServiceBusClientBuilder {
          *
          * @return The modified {@link ServiceBusSessionReceiverClientBuilder} object.
          */
-        public ServiceBusSessionReceiverClientBuilder receiveMode(ReceiveMode receiveMode) {
+        public ServiceBusSessionReceiverClientBuilder receiveMode(ServiceBusReceiveMode receiveMode) {
             this.receiveMode = receiveMode;
             return this;
         }
@@ -992,12 +993,12 @@ public final class ServiceBusClientBuilder {
                 logger.warning(
                     "'enableAutoComplete' is not supported in synchronous client except through callback receive.");
                 enableAutoComplete = false;
-            } else if (enableAutoComplete && receiveMode == ReceiveMode.RECEIVE_AND_DELETE) {
+            } else if (enableAutoComplete && receiveMode == ServiceBusReceiveMode.RECEIVE_AND_DELETE) {
                 logger.warning("'enableAutoComplete' is not needed in for RECEIVE_AND_DELETE mode.");
                 enableAutoComplete = false;
             }
 
-            if (receiveMode == ReceiveMode.RECEIVE_AND_DELETE) {
+            if (receiveMode == ServiceBusReceiveMode.RECEIVE_AND_DELETE) {
                 maxAutoLockRenewDuration = Duration.ZERO;
             }
 
@@ -1059,12 +1060,12 @@ public final class ServiceBusClientBuilder {
                 logger.warning(
                     "'enableAutoComplete' is not supported in synchronous client except through callback receive.");
                 enableAutoComplete = false;
-            } else if (enableAutoComplete && receiveMode == ReceiveMode.RECEIVE_AND_DELETE) {
+            } else if (enableAutoComplete && receiveMode == ServiceBusReceiveMode.RECEIVE_AND_DELETE) {
                 logger.warning("'enableAutoComplete' is not needed in for RECEIVE_AND_DELETE mode.");
                 enableAutoComplete = false;
             }
 
-            if (receiveMode == ReceiveMode.RECEIVE_AND_DELETE) {
+            if (receiveMode == ServiceBusReceiveMode.RECEIVE_AND_DELETE) {
                 maxAutoLockRenewDuration = Duration.ZERO;
             }
 
@@ -1095,7 +1096,7 @@ public final class ServiceBusClientBuilder {
         private final ServiceBusReceiverClientBuilder serviceBusReceiverClientBuilder;
         private final ServiceBusProcessorClientOptions processorClientOptions;
         private Consumer<ServiceBusReceivedMessageContext> processMessage;
-        private Consumer<Throwable> processError;
+        private Consumer<ServiceBusErrorContext> processError;
 
         private ServiceBusProcessorClientBuilder() {
             serviceBusReceiverClientBuilder = new ServiceBusReceiverClientBuilder();
@@ -1103,8 +1104,8 @@ public final class ServiceBusClientBuilder {
         }
 
         /**
-         * Sets the prefetch count of the processor. For both {@link ReceiveMode#PEEK_LOCK PEEK_LOCK} and {@link
-         * ReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} modes the default value is 1.
+         * Sets the prefetch count of the processor. For both {@link ServiceBusReceiveMode#PEEK_LOCK PEEK_LOCK} and
+         * {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} modes the default value is 1.
          *
          * Prefetch speeds up the message flow by aiming to have a message readily available for local retrieval when
          * and before the application starts the processor.
@@ -1136,7 +1137,7 @@ public final class ServiceBusClientBuilder {
          *
          * @return The modified {@link ServiceBusProcessorClientBuilder} object.
          */
-        public ServiceBusProcessorClientBuilder receiveMode(ReceiveMode receiveMode) {
+        public ServiceBusProcessorClientBuilder receiveMode(ServiceBusReceiveMode receiveMode) {
             serviceBusReceiverClientBuilder.receiveMode(receiveMode);
             return this;
         }
@@ -1184,7 +1185,7 @@ public final class ServiceBusClientBuilder {
          *
          * @return The updated {@link ServiceBusProcessorClientBuilder} object
          */
-        public ServiceBusProcessorClientBuilder processError(Consumer<Throwable> processError) {
+        public ServiceBusProcessorClientBuilder processError(Consumer<ServiceBusErrorContext> processError) {
             this.processError = processError;
             return this;
         }
@@ -1254,7 +1255,7 @@ public final class ServiceBusClientBuilder {
         private int prefetchCount = DEFAULT_PREFETCH_COUNT;
         private String queueName;
         private SubQueue subQueue;
-        private ReceiveMode receiveMode = ReceiveMode.PEEK_LOCK;
+        private ServiceBusReceiveMode receiveMode = ServiceBusReceiveMode.PEEK_LOCK;
         private String subscriptionName;
         private String topicName;
         private Duration maxAutoLockRenewDuration = MAX_LOCK_RENEW_DEFAULT_DURATION;
@@ -1277,8 +1278,8 @@ public final class ServiceBusClientBuilder {
 
         /**
          * Sets the amount of time to continue auto-renewing the lock. Setting {@link Duration#ZERO} or {@code null}
-         * disables auto-renewal. For {@link ReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} mode, auto-renewal is
-         * disabled.
+         * disables auto-renewal. For {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} mode,
+         * auto-renewal is disabled.
          *
          * @param maxAutoLockRenewDuration the amount of time to continue auto-renewing the lock. {@link Duration#ZERO}
          * or {@code null} indicates that auto-renewal is disabled.
@@ -1293,8 +1294,8 @@ public final class ServiceBusClientBuilder {
         }
 
         /**
-         * Sets the prefetch count of the receiver. For both {@link ReceiveMode#PEEK_LOCK PEEK_LOCK} and {@link
-         * ReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} modes the default value is 1.
+         * Sets the prefetch count of the receiver. For both {@link ServiceBusReceiveMode#PEEK_LOCK PEEK_LOCK} and
+         * {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} modes the default value is 1.
          *
          * Prefetch speeds up the message flow by aiming to have a message readily available for local retrieval when
          * and before the application asks for one using {@link ServiceBusReceiverAsyncClient#receiveMessages()}.
@@ -1331,7 +1332,7 @@ public final class ServiceBusClientBuilder {
          *
          * @return The modified {@link ServiceBusReceiverClientBuilder} object.
          */
-        public ServiceBusReceiverClientBuilder receiveMode(ReceiveMode receiveMode) {
+        public ServiceBusReceiverClientBuilder receiveMode(ServiceBusReceiveMode receiveMode) {
             this.receiveMode = receiveMode;
             return this;
         }
@@ -1421,12 +1422,12 @@ public final class ServiceBusClientBuilder {
                 logger.warning(
                     "'enableAutoComplete' is not supported in synchronous client except through callback receive.");
                 enableAutoComplete = false;
-            } else if (enableAutoComplete && receiveMode == ReceiveMode.RECEIVE_AND_DELETE) {
+            } else if (enableAutoComplete && receiveMode == ServiceBusReceiveMode.RECEIVE_AND_DELETE) {
                 logger.warning("'enableAutoComplete' is not needed in for RECEIVE_AND_DELETE mode.");
                 enableAutoComplete = false;
             }
 
-            if (receiveMode == ReceiveMode.RECEIVE_AND_DELETE) {
+            if (receiveMode == ServiceBusReceiveMode.RECEIVE_AND_DELETE) {
                 maxAutoLockRenewDuration = Duration.ZERO;
             }
 

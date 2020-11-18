@@ -249,7 +249,6 @@ public class FeedbackTest extends FeedbackTestBase {
     /**
      * Verifies valid anomaly metric feedback created for required metric feedback details.
      */
-    // TODO (savaity) update this to include detection configuration
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     public void createAnomalyFeedback(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {

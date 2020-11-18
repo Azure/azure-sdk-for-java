@@ -5,7 +5,6 @@ package com.azure.spring.autoconfigure.aad;
 
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.proc.BadJOSEException;
-import org.junit.Assume;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -30,6 +29,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 public class AADAuthenticationFilterTest {
     private static final String TOKEN = "dummy-token";
@@ -51,12 +51,6 @@ public class AADAuthenticationFilterTest {
         );
     }
 
-    @Ignore
-    public void beforeEveryMethod() {
-        Assume.assumeTrue(!TestConstants.CLIENT_ID.contains("real_client_id"));
-        Assume.assumeTrue(!TestConstants.CLIENT_SECRET.contains("real_client_secret"));
-        Assume.assumeTrue(!TestConstants.BEARER_TOKEN.contains("real_jtw_bearer_token"));
-    }
 
     //TODO (Zhou Liu): current test case is out of date, a new test case need to cover here, do it later.
     @Test
@@ -70,7 +64,7 @@ public class AADAuthenticationFilterTest {
 
         this.contextRunner.run(context -> {
             final HttpServletRequest request = mock(HttpServletRequest.class);
-            when(request.getHeader(TestConstants.TOKEN_HEADER)).thenReturn(TestConstants.BEARER_TOKEN);
+            when(request.getHeader(AUTHORIZATION)).thenReturn(TestConstants.BEARER_TOKEN);
 
             final HttpServletResponse response = mock(HttpServletResponse.class);
             final FilterChain filterChain = mock(FilterChain.class);

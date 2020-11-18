@@ -21,6 +21,7 @@ import java.time.Duration;
 import static com.azure.ai.metricsadvisor.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 
 public final class AlertTest extends AlertTestBase {
+
     @BeforeAll
     static void beforeAll() {
         TestBase.setupClass();

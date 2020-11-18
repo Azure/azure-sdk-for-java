@@ -112,7 +112,6 @@ public class FeedbackAsyncTest extends FeedbackTestBase {
             .verifyComplete();
     }
 
-
     // /**
     //  * Verifies the result of the list metric feedback  method using skip options.
     //  */
@@ -137,7 +136,6 @@ public class FeedbackAsyncTest extends FeedbackTestBase {
     //     assertEquals(expectedList.size() - 3, actualMetricFeedbackList.size());
     // }
 
-    // TODO (savaity): Currently, the service returns a result that satisfies either of the seriesKey not both.
     /**
      * Verifies the result of the list metric feedback  method to filter results using
      * {@link ListMetricFeedbackFilter#setDimensionFilter(DimensionKey)}.

@@ -57,7 +57,6 @@ public class EnvironmentCredential implements TokenCredential {
         String username = configuration.get(Configuration.PROPERTY_AZURE_USERNAME);
         String password = configuration.get(Configuration.PROPERTY_AZURE_PASSWORD);
         ValidationUtil.validateTenantIdCharacterRange(getClass().getSimpleName(), tenantId);
-        ValidationUtil.validateClientIdCharacterRange(getClass().getSimpleName(), clientId);
         LoggingUtil.logAvailableEnvironmentVariables(logger, configuration);
         if (verifyNotNull(clientId)) {
             // 1 - Attempt ClientSecretCredential or ClientCertificateCredential
@@ -70,7 +69,6 @@ public class EnvironmentCredential implements TokenCredential {
                 } else if (verifyNotNull(certPath)) {
                     // 1.2 Attempt ClientCertificateCredential
                     logger.info("Azure Identity => EnvironmentCredential invoking ClientCertificateCredential");
-                    ValidationUtil.validateFilePath(getClass().getSimpleName(), certPath, "Pem Certificate Path");
                     targetCredential = new ClientCertificateCredential(tenantId, clientId, certPath, null, null,
                             identityClientOptions);
                 } else {
