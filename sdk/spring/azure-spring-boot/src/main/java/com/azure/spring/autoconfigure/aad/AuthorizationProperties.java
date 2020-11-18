@@ -3,6 +3,7 @@
 
 package com.azure.spring.autoconfigure.aad;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,17 +12,13 @@ import java.util.List;
  */
 public class AuthorizationProperties {
 
-    private String[] scope = new String[0];
+    private List<String> scope = new ArrayList<>();
 
-    public void setScope(String[] scope) {
-        this.scope = scope.clone();
+    public List<String> getScope() {
+        return scope;
     }
 
-    public String[] getScope() {
-        return scope.clone();
-    }
-
-    public List<String> scopes() {
-        return Arrays.asList(scope);
+    public void setScope(List<String> scope) {
+        this.scope = scope;
     }
 }

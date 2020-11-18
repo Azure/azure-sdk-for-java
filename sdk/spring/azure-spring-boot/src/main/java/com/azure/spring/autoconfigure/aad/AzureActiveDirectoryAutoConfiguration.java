@@ -116,7 +116,7 @@ public class AzureActiveDirectoryAutoConfiguration {
     private String[] allScopes() {
         List<String> result = openidScopes();
         for (AuthorizationProperties properties : aadAuthenticationProperties.getAuthorization().values()) {
-            result.addAll(properties.scopes());
+            result.addAll(properties.getScope());
         }
         return result.toArray(new String[0]);
     }
@@ -126,7 +126,7 @@ public class AzureActiveDirectoryAutoConfiguration {
         AuthorizationProperties authorizationProperties =
             aadAuthenticationProperties.getAuthorization().get(DEFAULT_CLIENT);
         if (authorizationProperties != null) {
-            result.addAll(authorizationProperties.scopes());
+            result.addAll(authorizationProperties.getScope());
         }
         return result.toArray(new String[0]);
     }
