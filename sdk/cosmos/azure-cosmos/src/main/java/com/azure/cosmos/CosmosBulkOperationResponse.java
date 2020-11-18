@@ -15,7 +15,7 @@ public final class CosmosBulkOperationResponse<TContext> {
 
     private final CosmosItemOperation operation;
     private final CosmosBulkItemResponse response;
-    private final Throwable throwable;
+    private final Exception exception;
     private final TContext batchContext;
 
     /**
@@ -28,7 +28,7 @@ public final class CosmosBulkOperationResponse<TContext> {
     CosmosBulkOperationResponse(CosmosItemOperation operation, CosmosBulkItemResponse response, TContext batchContext) {
         this.operation = operation;
         this.response = response;
-        this.throwable = null;
+        this.exception = null;
         this.batchContext = batchContext;
     }
 
@@ -36,13 +36,13 @@ public final class CosmosBulkOperationResponse<TContext> {
      * Initialises a new instance of {@link CosmosBulkOperationResponse}.
      *
      * @param operation the {@link CosmosItemOperation} for which this response object has values.
-     * @param throwable the {@link Throwable} for this request.
+     * @param exception the {@link Throwable} for this request.
      * @param batchContext the context of this bulk request.
      */
-    CosmosBulkOperationResponse(CosmosItemOperation operation, Throwable throwable, TContext batchContext) {
+    CosmosBulkOperationResponse(CosmosItemOperation operation, Exception exception, TContext batchContext) {
         this.operation = operation;
         this.response = null;
-        this.throwable = throwable;
+        this.exception = exception;
         this.batchContext = batchContext;
     }
 
@@ -54,8 +54,8 @@ public final class CosmosBulkOperationResponse<TContext> {
         return response;
     }
 
-    public Throwable getThrowable() {
-        return throwable;
+    public Exception getException() {
+        return exception;
     }
 
     public TContext getBatchContext() {

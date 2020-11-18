@@ -19,6 +19,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxProcessor;
 import reactor.core.publisher.FluxSink;
@@ -205,8 +206,14 @@ public final class BulkExecutor<TContext> {
             })
             .onErrorResume((Throwable throwable) -> {
 
+                if (!(throwable instanceof Exception)) {
+                    throw Exceptions.propagate(throwable);
+                }
+
+                Exception exception = (Exception) throwable;
+
                 return Flux.fromIterable(serverRequest.getOperations()).flatMap((CosmosItemOperation itemOperation) -> {
-                    return handleTransactionalBatchExecutionException(itemOperation, throwable, groupSink);
+                    return handleTransactionalBatchExecutionException(itemOperation, exception, groupSink);
                 });
             });
     }
@@ -248,11 +255,11 @@ public final class BulkExecutor<TContext> {
 
     private Mono<CosmosBulkOperationResponse<TContext>> handleTransactionalBatchExecutionException(
         CosmosItemOperation itemOperation,
-        Throwable throwable,
+        Exception exception,
         FluxSink<CosmosItemOperation> groupSink) {
 
-        if (throwable instanceof CosmosException && itemOperation instanceof ItemBulkOperation<?>) {
-            CosmosException cosmosException = (CosmosException) throwable;
+        if (exception instanceof CosmosException && itemOperation instanceof ItemBulkOperation<?>) {
+            CosmosException cosmosException = (CosmosException) exception;
             ItemBulkOperation<?> itemBulkOperation = (ItemBulkOperation<?>) itemOperation;
 
             // First check if it failed due to split, so the operations need to go in a different pk range group. So
@@ -273,13 +280,13 @@ public final class BulkExecutor<TContext> {
                     } else {
 
                         return Mono.just(BridgeInternal.createCosmosBulkOperationResponse(
-                            itemOperation, throwable, this.batchContext));
+                            itemOperation, exception, this.batchContext));
                     }
                 });
             }
         }
 
-        return Mono.just(BridgeInternal.createCosmosBulkOperationResponse(itemOperation, throwable, this.batchContext));
+        return Mono.just(BridgeInternal.createCosmosBulkOperationResponse(itemOperation, exception, this.batchContext));
     }
 
     private Mono<TransactionalBatchResponse> executeBatchRequest(PartitionKeyRangeServerBatchRequest serverRequest) {

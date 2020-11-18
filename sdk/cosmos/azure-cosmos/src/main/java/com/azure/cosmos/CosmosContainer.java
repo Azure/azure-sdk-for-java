@@ -571,12 +571,12 @@ public class CosmosContainer {
      *     successfully, the value returned by {@link CosmosBulkItemResponse#isSuccessStatusCode()} will be true. To get
      *     actual status use {@link CosmosBulkItemResponse#getStatusCode()}.
      * </p>
-     * To check if the operation had any exception, use {@link CosmosBulkOperationResponse#getThrowable()} to
+     * To check if the operation had any exception, use {@link CosmosBulkOperationResponse#getException()} to
      * get the exception.
      */
     @Beta(Beta.SinceVersion.V4_9_0)
     public <TContext> List<CosmosBulkOperationResponse<TContext>> processBulkOperations(
-        List<CosmosItemOperation> operations) {
+        Iterable<CosmosItemOperation> operations) {
 
         return this.blockBulkResponse(asyncContainer.processBulkOperations(Flux.fromIterable(operations)));
     }
@@ -601,12 +601,12 @@ public class CosmosContainer {
      *     successfully, the value returned by {@link CosmosBulkItemResponse#isSuccessStatusCode()} will be true. To get
      *     actual status use {@link CosmosBulkItemResponse#getStatusCode()}.
      * </p>
-     * To check if the operation had any exception, use {@link CosmosBulkOperationResponse#getThrowable()} to
+     * To check if the operation had any exception, use {@link CosmosBulkOperationResponse#getException()} to
      * get the exception.
      */
     @Beta(Beta.SinceVersion.V4_9_0)
     public <TContext> List<CosmosBulkOperationResponse<TContext>> processBulkOperations(
-        List<CosmosItemOperation> operations,
+        Iterable<CosmosItemOperation> operations,
         BulkProcessingOptions<TContext> bulkOptions) {
 
         return this.blockBulkResponse(asyncContainer.processBulkOperations(Flux.fromIterable(operations), bulkOptions));

@@ -78,7 +78,13 @@ final class BulkExecutorUtil {
         return headers;
     }
 
-    // TODO: metaDataDiagnosticContext is passed as null. Better way is to add this context to the cosmos diagnostic.
+    /**
+     * Resolve partition key range id of a operation and set the partition key json value in operation.
+     *
+     * TODO(rakkuma): Diagnostic support should be added operation wise and the value here should be merged in the
+     *  individual diagnostic. Initialize a new metaDataDiagnosticContext here and merge it later.
+     * Issue: https://github.com/Azure/azure-sdk-for-java/issues/17647
+     */
     static Mono<String> resolvePartitionKeyRangeId(
         AsyncDocumentClient docClientWrapper,
         CosmosAsyncContainer container,
@@ -126,6 +132,11 @@ final class BulkExecutorUtil {
         }
     }
 
+    /**
+     * TODO(rakkuma): Diagnostic support should be added operation wise and the value here should be merged in the
+     *  individual diagnostic
+     * Issue: https://github.com/Azure/azure-sdk-for-java/issues/17647
+     */
     private static Mono<DocumentCollection> getCollectionInfoAsync(
         AsyncDocumentClient documentClient,
         CosmosAsyncContainer container) {

@@ -603,7 +603,7 @@ public class CosmosAsyncContainer {
      *     successfully, the value returned by {@link CosmosBulkItemResponse#isSuccessStatusCode()} will be true. To get
      *     actual status use {@link CosmosBulkItemResponse#getStatusCode()}.
      * </p>
-     * To check if the operation had any exception, use {@link CosmosBulkOperationResponse#getThrowable()} to
+     * To check if the operation had any exception, use {@link CosmosBulkOperationResponse#getException()} to
      * get the exception.
      */
     @Beta(Beta.SinceVersion.V4_9_0)
@@ -633,7 +633,7 @@ public class CosmosAsyncContainer {
      *     successfully, the value returned by {@link CosmosBulkItemResponse#isSuccessStatusCode()} will be true. To get
      *     actual status use {@link CosmosBulkItemResponse#getStatusCode()}.
      * </p>
-     * To check if the operation had any exception, use {@link CosmosBulkOperationResponse#getThrowable()} to
+     * To check if the operation had any exception, use {@link CosmosBulkOperationResponse#getException()} to
      * get the exception.
      */
     @Beta(Beta.SinceVersion.V4_9_0)

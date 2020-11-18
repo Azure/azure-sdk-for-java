@@ -670,12 +670,12 @@ public final class BridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <TContext> CosmosBulkOperationResponse<TContext> createCosmosBulkOperationResponse(
         CosmosItemOperation operation,
-        Throwable throwable,
+        Exception exception,
         TContext batchContext) {
 
         return new CosmosBulkOperationResponse<>(
             operation,
-            throwable,
+            exception,
             batchContext);
     }
 
