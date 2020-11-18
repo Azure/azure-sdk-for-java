@@ -77,16 +77,15 @@ class AnalyzeTasksAsyncClient {
         this.service = service;
     }
 
-    PollerFlux<TextAnalyticsOperationResult, PagedFlux<AnalyzeTasksResult>> beginAnalyze(
+    PollerFlux<TextAnalyticsOperationResult, PagedFlux<AnalyzeTasksResult>> beginAnalyzeTasks(
         Iterable<TextDocumentInput> documents, AnalyzeTasksOptions options, Context context) {
         try {
             inputDocumentsValidation(documents);
             AnalyzeBatchInput analyzeBatchInput = new AnalyzeBatchInput()
-                .setAnalysisInput(new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)))
-                .setTasks(getJobManifestTasks(options));
+                .setAnalysisInput(new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)));
             Duration pollingInterval = DEFAULT_POLL_INTERVAL;
             if (options != null) {
-                analyzeBatchInput.setDisplayName(options.getDisplayName());
+                analyzeBatchInput.setTasks(getJobManifestTasks(options)).setDisplayName(options.getDisplayName());
                 pollingInterval = options.getPollInterval();
             }
             final Boolean finalIncludeStatistics = options == null ? null : options.isIncludeStatistics();
@@ -106,7 +105,8 @@ class AnalyzeTasksAsyncClient {
                         })),
                 pollingOperation(resultID -> service.analyzeStatusWithResponseAsync(resultID,
                     finalIncludeStatistics, finalTop, finalSkip, context)),
-                (activationResponse, pollingContext) -> null,
+                (activationResponse, pollingContext) ->
+                    Mono.error(new RuntimeException("Cancellation is not supported.")),
                 fetchingOperation(resultId -> Mono.just(getAnalyzeOperationFluxPage(
                     resultId, finalTop, finalSkip, finalIncludeStatistics, context)))
             );
@@ -115,16 +115,15 @@ class AnalyzeTasksAsyncClient {
         }
     }
 
-    PollerFlux<TextAnalyticsOperationResult, PagedIterable<AnalyzeTasksResult>> beginAnalyzeIterable(
+    PollerFlux<TextAnalyticsOperationResult, PagedIterable<AnalyzeTasksResult>> beginAnalyzeTasksIterable(
         Iterable<TextDocumentInput> documents, AnalyzeTasksOptions options, Context context) {
         try {
             inputDocumentsValidation(documents);
             AnalyzeBatchInput analyzeBatchInput = new AnalyzeBatchInput()
-                .setAnalysisInput(new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)))
-                .setTasks(getJobManifestTasks(options));
+                .setAnalysisInput(new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)));
             Duration pollingInterval = DEFAULT_POLL_INTERVAL;
             if (options != null) {
-                analyzeBatchInput.setDisplayName(options.getDisplayName());
+                analyzeBatchInput.setTasks(getJobManifestTasks(options)).setDisplayName(options.getDisplayName());
                 pollingInterval = options.getPollInterval();
             }
             final Boolean finalIncludeStatistics = options == null ? null : options.isIncludeStatistics();
@@ -144,7 +143,8 @@ class AnalyzeTasksAsyncClient {
                         })),
                 pollingOperation(resultID -> service.analyzeStatusWithResponseAsync(resultID,
                     options == null ? null : options.isIncludeStatistics(), null, null, context)),
-                (activationResponse, pollingContext) -> null,
+                (activationResponse, pollingContext) ->
+                    Mono.error(new RuntimeException("Cancellation is not supported.")),
                 fetchingOperationIterable(resultId -> Mono.just(new PagedIterable<>(getAnalyzeOperationFluxPage(
                     resultId, finalTop, finalSkip, finalIncludeStatistics, context))))
             );
@@ -154,9 +154,6 @@ class AnalyzeTasksAsyncClient {
     }
 
     private JobManifestTasks getJobManifestTasks(AnalyzeTasksOptions options) {
-        if (options == null) {
-            return null;
-        }
         return new JobManifestTasks()
             .setEntityRecognitionTasks(options.getEntitiesRecognitionTasks() == null ? null
                 : options.getEntitiesRecognitionTasks().stream().map(
@@ -229,6 +226,8 @@ class AnalyzeTasksAsyncClient {
             try {
                 final PollResponse<TextAnalyticsOperationResult> operationResultPollResponse =
                     pollingContext.getLatestResponse();
+                // TODO: [Service-Bug] change back to UUID after service support it.
+                //  https://github.com/Azure/azure-sdk-for-java/issues/17629
 //                final UUID resultUUID = UUID.fromString(operationResultPollResponse.getValue().getResultId());
                 final String resultID = operationResultPollResponse.getValue().getResultId();
                 return pollingFunction.apply(resultID)
@@ -244,6 +243,8 @@ class AnalyzeTasksAsyncClient {
         fetchingOperation(Function<String, Mono<PagedFlux<AnalyzeTasksResult>>> fetchingFunction) {
         return pollingContext -> {
             try {
+                // TODO: [Service-Bug] change back to UUID after service support it.
+                //  https://github.com/Azure/azure-sdk-for-java/issues/17629
 //                final UUID resultUUID = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
                 final String resultUUID = pollingContext.getLatestResponse().getValue().getResultId();
                 return fetchingFunction.apply(resultUUID);
@@ -257,6 +258,8 @@ class AnalyzeTasksAsyncClient {
         fetchingOperationIterable(Function<String, Mono<PagedIterable<AnalyzeTasksResult>>> fetchingFunction) {
         return pollingContext -> {
             try {
+                // TODO: [Service-Bug] change back to UUID after service support it.
+                //  https://github.com/Azure/azure-sdk-for-java/issues/17629
 //                final UUID resultUUID = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
                 final String resultUUID = pollingContext.getLatestResponse().getValue().getResultId();
                 return fetchingFunction.apply(resultUUID);

@@ -58,7 +58,7 @@ public class AnalyzeTasks {
         );
 
         SyncPoller<TextAnalyticsOperationResult, PagedIterable<AnalyzeTasksResult>> syncPoller =
-            client.beginAnalyze(documents,
+            client.beginAnalyzeTasks(documents,
                 new AnalyzeTasksOptions().setDisplayName("{tasks_display_name}")
                     .setEntitiesRecognitionTasks(Arrays.asList(new EntitiesTask()))
                     .setKeyPhrasesExtractionTasks(Arrays.asList(new KeyPhrasesTask()))

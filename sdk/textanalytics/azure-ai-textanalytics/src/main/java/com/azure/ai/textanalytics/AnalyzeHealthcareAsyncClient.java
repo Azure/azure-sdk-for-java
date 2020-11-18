@@ -80,7 +80,6 @@ class AnalyzeHealthcareAsyncClient {
                 modelVersion = options.getModelVersion();
                 pollInterval = options.getPollInterval();
             }
-            // the variable used in the lambda function has to be 'final' or 'effective final'.
             final Boolean finalIncludeStatistics = options == null ? null : options.isIncludeStatistics();
             final Integer finalTop = options == null ? null : options.getTop();
             final Integer finalSkip = options == null ? null : options.getSkip();
@@ -98,7 +97,7 @@ class AnalyzeHealthcareAsyncClient {
                             parseModelId(healthResponse.getDeserializedHeaders().getOperationLocation()));
                         return textAnalyticsOperationResult;
                     })),
-                pollingOperation(jobId -> service.healthStatusWithResponseAsync(jobId,
+                pollingOperation(healthcareTaskId -> service.healthStatusWithResponseAsync(healthcareTaskId,
                     finalTop, finalSkip, finalIncludeStatistics, context)),
                 (activationResponse, pollingContext) ->
                     monoError(logger, new RuntimeException("Use the `beginCancelHealthcareJob` to cancel the job")),
@@ -137,8 +136,8 @@ class AnalyzeHealthcareAsyncClient {
                             parseModelId(healthResponse.getDeserializedHeaders().getOperationLocation()));
                         return textAnalyticsOperationResult;
                     })),
-                pollingOperation(jobId -> service.healthStatusWithResponseAsync(jobId, null, null,
-                    finalIncludeStatistics, context)),
+                pollingOperation(healthcareTaskId -> service.healthStatusWithResponseAsync(healthcareTaskId, null,
+                    null, finalIncludeStatistics, context)),
                 (activationResponse, pollingContext) ->
                     monoError(logger, new RuntimeException("Use the `beginCancelHealthcareJob` to cancel the job")),
                 fetchingOperationIterable(resultId -> Mono.just(new PagedIterable<>(getHealthcareFluxPage(resultId,
@@ -149,25 +148,25 @@ class AnalyzeHealthcareAsyncClient {
         }
     }
 
-    PagedFlux<HealthcareTaskResult> getHealthcareFluxPage(UUID jobID, Integer top, Integer skip, Boolean showStats,
-        Context context) {
+    PagedFlux<HealthcareTaskResult> getHealthcareFluxPage(UUID healthcareTaskId, Integer top, Integer skip,
+        Boolean showStats, Context context) {
         return new PagedFlux<>(
-            () -> getPage(null, jobID, top, skip, showStats, context),
-            continuationToken -> getPage(continuationToken, jobID, top, skip, showStats, context));
+            () -> getPage(null, healthcareTaskId, top, skip, showStats, context),
+            continuationToken -> getPage(continuationToken, healthcareTaskId, top, skip, showStats, context));
     }
 
-    Mono<PagedResponse<HealthcareTaskResult>> getPage(String continuationToken, UUID jobID, Integer top, Integer skip,
-        Boolean showStats, Context context) {
+    Mono<PagedResponse<HealthcareTaskResult>> getPage(String continuationToken, UUID healthcareTaskId, Integer top,
+        Integer skip, Boolean showStats, Context context) {
         try {
             if (continuationToken != null) {
                 final Map<String, Integer> continuationTokenMap = parseNextLink(continuationToken);
                 final Integer topValue = continuationTokenMap.getOrDefault("$top", null);
                 final Integer skipValue = continuationTokenMap.getOrDefault("$skip", null);
-                return service.healthStatusWithResponseAsync(jobID, topValue, skipValue, showStats, context)
+                return service.healthStatusWithResponseAsync(healthcareTaskId, topValue, skipValue, showStats, context)
                     .map(this::toTextAnalyticsPagedResponse)
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
             } else {
-                return service.healthStatusWithResponseAsync(jobID, top, skip, showStats, context)
+                return service.healthStatusWithResponseAsync(healthcareTaskId, top, skip, showStats, context)
                     .map(this::toTextAnalyticsPagedResponse)
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
             }

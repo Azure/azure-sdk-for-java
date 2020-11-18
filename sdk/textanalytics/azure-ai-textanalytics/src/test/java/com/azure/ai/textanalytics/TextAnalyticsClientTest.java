@@ -1604,7 +1604,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                 syncPoller = client.beginAnalyzeHealthcare(documents, options, Context.NONE);
 
             PollResponse<TextAnalyticsOperationResult> pollResponse = syncPoller.poll();
-            client.beginCancelAnalyzeHealthcare(pollResponse.getValue().getResultId(), options, Context.NONE);
+            client.beginCancelHealthcareTask(pollResponse.getValue().getResultId(), options, Context.NONE);
             syncPoller.waitForCompletion();
         });
     }
@@ -1617,7 +1617,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         analyzeTasksLroRunner((documents, options) -> {
             SyncPoller<TextAnalyticsOperationResult, PagedIterable<AnalyzeTasksResult>> syncPoller =
-                client.beginAnalyze(documents, options, Context.NONE);
+                client.beginAnalyzeTasks(documents, options, Context.NONE);
             syncPoller.waitForCompletion();
             PagedIterable<AnalyzeTasksResult> result = syncPoller.getFinalResult();
             validateAnalyzeTasksResultList(options.isIncludeStatistics(),
@@ -1635,7 +1635,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         analyzeTasksPaginationRunner((documents, options) -> {
             SyncPoller<TextAnalyticsOperationResult, PagedIterable<AnalyzeTasksResult>>
-                syncPoller = client.beginAnalyze(documents, options, Context.NONE);
+                syncPoller = client.beginAnalyzeTasks(documents, options, Context.NONE);
             syncPoller.waitForCompletion();
             PagedIterable<AnalyzeTasksResult> result = syncPoller.getFinalResult();
             validateAnalyzeTasksResultList(options.isIncludeStatistics(),
@@ -1650,7 +1650,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         analyzeTasksPaginationRunner((documents, options) -> {
             SyncPoller<TextAnalyticsOperationResult, PagedIterable<AnalyzeTasksResult>>
-                syncPoller = client.beginAnalyze(documents, options.setSkip(3).setTop(10), Context.NONE);
+                syncPoller = client.beginAnalyzeTasks(documents, options.setSkip(3).setTop(10), Context.NONE);
             syncPoller.waitForCompletion();
             PagedIterable<AnalyzeTasksResult> result = syncPoller.getFinalResult();
             validateAnalyzeTasksResultList(options.isIncludeStatistics(),
@@ -1665,7 +1665,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         emptyListRunner((documents, errorMessage) -> {
             final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-                () -> client.beginAnalyze(documents, null, Context.NONE)
+                () -> client.beginAnalyzeTasks(documents, null, Context.NONE)
                     .getFinalResult());
             assertEquals(errorMessage, exception.getMessage());
         });

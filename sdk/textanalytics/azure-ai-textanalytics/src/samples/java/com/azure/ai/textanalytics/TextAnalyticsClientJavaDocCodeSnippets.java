@@ -897,32 +897,32 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 
     // Healthcare - Cancellation
     /**
-     * Code snippet for {@link TextAnalyticsClient#beginCancelAnalyzeHealthcare(String, RecognizeHealthcareEntityOptions, Context)}
+     * Code snippet for {@link TextAnalyticsClient#beginCancelHealthcareTask(String, RecognizeHealthcareEntityOptions, Context)}
      */
     public void cancelAnalyzeHealthcareMaxOverload() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.beginCancelAnalyzeHealthcare#String-RecognizeHealthcareEntityOptions-Context
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.beginCancelHealthcareTask#String-RecognizeHealthcareEntityOptions-Context
         final SyncPoller<TextAnalyticsOperationResult, Void> textAnalyticsOperationResultVoidSyncPoller
-            = textAnalyticsClient.beginCancelAnalyzeHealthcare("{job_id_to_cancel}",
+            = textAnalyticsClient.beginCancelHealthcareTask("{job_id_to_cancel}",
             new RecognizeHealthcareEntityOptions().setPollInterval(Duration.ofSeconds(10)), Context.NONE);
 
         final PollResponse<TextAnalyticsOperationResult> poll = textAnalyticsOperationResultVoidSyncPoller.poll();
         System.out.printf("Task status: %s.%n", poll.getStatus());
-        // END: com.azure.ai.textanalytics.TextAnalyticsClient.beginCancelAnalyzeHealthcare#String-RecognizeHealthcareEntityOptions-Context
+        // END: com.azure.ai.textanalytics.TextAnalyticsClient.beginCancelHealthcareTask#String-RecognizeHealthcareEntityOptions-Context
     }
 
     // Analyze Tasks
     /**
-     * Code snippet for {@link TextAnalyticsClient#beginAnalyze(Iterable, AnalyzeTasksOptions, Context)}
+     * Code snippet for {@link TextAnalyticsClient#beginAnalyzeTasks(Iterable, AnalyzeTasksOptions, Context)}
      */
     public void analyzeTasksMaxOverload() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.beginAnalyze#Iterable-AnalyzeTasksOptions-Context
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.beginAnalyzeTasks#Iterable-AnalyzeTasksOptions-Context
         List<TextDocumentInput> documents = Arrays.asList(
             new TextDocumentInput("0", "Elon Musk is the CEO of SpaceX and Tesla.").setLanguage("en"),
             new TextDocumentInput("1", "My SSN is 859-98-0987").setLanguage("en")
         );
 
         SyncPoller<TextAnalyticsOperationResult, PagedIterable<AnalyzeTasksResult>> syncPoller =
-            textAnalyticsClient.beginAnalyze(
+            textAnalyticsClient.beginAnalyzeTasks(
                 documents,
                 new AnalyzeTasksOptions()
                     .setDisplayName("{tasks_display_name}")
@@ -945,6 +945,6 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                         .forEach(keyPhrases -> System.out.printf("\t%s.%n", keyPhrases));
                 }));
         });
-        // END: com.azure.ai.textanalytics.TextAnalyticsClient.beginAnalyze#Iterable-AnalyzeTasksOptions-Context
+        // END: com.azure.ai.textanalytics.TextAnalyticsClient.beginAnalyzeTasks#Iterable-AnalyzeTasksOptions-Context
     }
 }

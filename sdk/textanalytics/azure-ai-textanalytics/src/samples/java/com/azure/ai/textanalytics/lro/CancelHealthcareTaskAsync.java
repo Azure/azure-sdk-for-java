@@ -3,37 +3,37 @@
 
 package com.azure.ai.textanalytics.lro;
 
-import com.azure.ai.textanalytics.TextAnalyticsClient;
+import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.HealthcareTaskResult;
 import com.azure.ai.textanalytics.models.RecognizeHealthcareEntityOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsOperationResult;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.util.Context;
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
- * Sample demonstrates how to cancel a healthcare job.
+ * Sample demonstrates how to asynchronously cancel a healthcare job.
  */
-public class CancelHealthcareJob {
+public class CancelHealthcareTaskAsync {
     /**
      * Main method to invoke this demo about how to cancel the healthcare long-running operation.
      *
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
-        TextAnalyticsClient client =
+        TextAnalyticsAsyncClient client =
             new TextAnalyticsClientBuilder()
                 .credential(new AzureKeyCredential("{key}"))
                 .endpoint("{endpoint}")
-                .buildClient();
+                .buildAsyncClient();
 
         List<TextDocumentInput> documents = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
@@ -53,20 +53,31 @@ public class CancelHealthcareJob {
                     + "for revascularization with open heart surgery."));
         }
 
-        SyncPoller<TextAnalyticsOperationResult, PagedIterable<HealthcareTaskResult>> syncPoller =
-            client.beginAnalyzeHealthcare(documents, null, Context.NONE);
+        SyncPoller<TextAnalyticsOperationResult, PagedFlux<HealthcareTaskResult>> syncPoller =
+            client.beginAnalyzeHealthcare(documents, null)
+                .getSyncPoller();
 
         PollResponse<TextAnalyticsOperationResult> pollResponse = syncPoller.poll();
 
         System.out.printf("The Job ID that is cancelling is %s.%n", pollResponse.getValue().getResultId());
 
-        final SyncPoller<TextAnalyticsOperationResult, Void> textAnalyticsOperationResultVoidSyncPoller
-            = client.beginCancelAnalyzeHealthcare(pollResponse.getValue().getResultId(),
-            new RecognizeHealthcareEntityOptions().setPollInterval(Duration.ofSeconds(10)), Context.NONE);
-
-        final PollResponse<TextAnalyticsOperationResult> poll = textAnalyticsOperationResultVoidSyncPoller.poll();
-        System.out.printf("Task status: %s.%n", poll.getStatus());
+        client.beginCancelHealthcareTask(pollResponse.getValue().getResultId(),
+            new RecognizeHealthcareEntityOptions().setPollInterval(Duration.ofSeconds(10)))
+            .map(response -> {
+                System.out.println(response.getStatus());
+                return response;
+            })
+            .subscribe(dummyVar -> System.out.println("Job is successfully cancelled."));
 
         syncPoller.waitForCompletion();
+
+        // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
+        // the thread so the program does not end before the send operation is complete. Using .block() instead of
+        // .subscribe() will turn this into a synchronous call.
+        try {
+            TimeUnit.MINUTES.sleep(20);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

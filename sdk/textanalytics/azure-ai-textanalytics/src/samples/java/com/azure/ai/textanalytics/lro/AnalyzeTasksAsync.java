@@ -52,7 +52,7 @@ public class AnalyzeTasksAsync {
                     + " only complaint I have is the food didn't come fast enough. Overall I highly recommend it!")
         );
 
-        client.beginAnalyze(documents,
+        client.beginAnalyzeTasks(documents,
             new AnalyzeTasksOptions().setDisplayName("{tasks_display_name}")
                 .setEntitiesRecognitionTasks(Arrays.asList(new EntitiesTask()))
                 .setKeyPhrasesExtractionTasks(Arrays.asList(new KeyPhrasesTask()))

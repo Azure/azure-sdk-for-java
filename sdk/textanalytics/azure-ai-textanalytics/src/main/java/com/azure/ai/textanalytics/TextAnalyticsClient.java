@@ -874,8 +874,6 @@ public final class TextAnalyticsClient {
         return client.analyzeSentimentAsyncClient.analyzeSentimentBatchWithContext(documents, options, context).block();
     }
 
-    // Health Care
-
     /**
      * Analyze healthcare entities, entity linking, and entity relations in a list of
      * {@link TextDocumentInput document} with provided request options.
@@ -898,7 +896,6 @@ public final class TextAnalyticsClient {
      * or has been cancelled. The completed operation returns a {@link PagedIterable} of {@link HealthcareTaskResult}.
      *
      * @throws TextAnalyticsException If analyze operation fails.
-     * @throws NullPointerException If {@code jobId} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<TextAnalyticsOperationResult, PagedIterable<HealthcareTaskResult>> beginAnalyzeHealthcare(
@@ -911,7 +908,7 @@ public final class TextAnalyticsClient {
      * Cancel a long-running operation healthcare task by given a healthcare task identification number.
      *
      * <p><strong>Code Sample</strong></p>
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.beginCancelAnalyzeHealthcare#String-RecognizeHealthcareEntityOptions-Context}
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.beginCancelHealthcareTask#String-RecognizeHealthcareEntityOptions-Context}
      *
      * @param healthcareTaskId The healthcare task identification number.
      * @param options The additional configurable {@link RecognizeHealthcareEntityOptions options} that may be passed
@@ -925,13 +922,11 @@ public final class TextAnalyticsClient {
      * @throws NullPointerException If {@code healthcareTaskId} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<TextAnalyticsOperationResult, Void> beginCancelAnalyzeHealthcare(String healthcareTaskId,
+    public SyncPoller<TextAnalyticsOperationResult, Void> beginCancelHealthcareTask(String healthcareTaskId,
         RecognizeHealthcareEntityOptions options, Context context) {
         return client.analyzeHealthcareAsyncClient.beginCancelAnalyzeHealthcare(healthcareTaskId, options, context)
                    .getSyncPoller();
     }
-
-    // Analyze
 
     /**
      * Analyze tasks, such as, entity recognition, PII entity recognition and key phrases extraction in a list of
@@ -940,7 +935,7 @@ public final class TextAnalyticsClient {
      * See <a href="https://aka.ms/talangs">this</a> supported languages in Text Analytics API.
      *
      * <p><strong>Code Sample</strong></p>
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.beginAnalyze#Iterable-AnalyzeTasksOptions-Context}
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.beginAnalyzeTasks#Iterable-AnalyzeTasksOptions-Context}
      *
      * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
      * @param options The additional configurable {@link AnalyzeTasksOptions options} that may be passed when
@@ -952,11 +947,10 @@ public final class TextAnalyticsClient {
      * {@link AnalyzeTasksResult}.
      *
      * @throws TextAnalyticsException If analyze operation fails.
-     * @throws NullPointerException If {@code jobId} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<TextAnalyticsOperationResult, PagedIterable<AnalyzeTasksResult>> beginAnalyze(
+    public SyncPoller<TextAnalyticsOperationResult, PagedIterable<AnalyzeTasksResult>> beginAnalyzeTasks(
         Iterable<TextDocumentInput> documents, AnalyzeTasksOptions options, Context context) {
-        return client.analyzeTasksAsyncClient.beginAnalyzeIterable(documents, options, context).getSyncPoller();
+        return client.analyzeTasksAsyncClient.beginAnalyzeTasksIterable(documents, options, context).getSyncPoller();
     }
 }
