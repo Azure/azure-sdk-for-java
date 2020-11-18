@@ -33,7 +33,7 @@ public class LogSpecification {
     private String blobDuration;
 
     /**
-     * Get the name value.
+     * Get name of log specification.
      *
      * @return the name value
      */
@@ -42,7 +42,7 @@ public class LogSpecification {
     }
 
     /**
-     * Set the name value.
+     * Set name of log specification.
      *
      * @param name the name value to set
      * @return the LogSpecification object itself.
@@ -53,7 +53,7 @@ public class LogSpecification {
     }
 
     /**
-     * Get the displayName value.
+     * Get display name of log specification.
      *
      * @return the displayName value
      */
@@ -62,7 +62,7 @@ public class LogSpecification {
     }
 
     /**
-     * Set the displayName value.
+     * Set display name of log specification.
      *
      * @param displayName the displayName value to set
      * @return the LogSpecification object itself.
@@ -73,7 +73,7 @@ public class LogSpecification {
     }
 
     /**
-     * Get the blobDuration value.
+     * Get blob duration of specification.
      *
      * @return the blobDuration value
      */
@@ -82,7 +82,7 @@ public class LogSpecification {
     }
 
     /**
-     * Set the blobDuration value.
+     * Set blob duration of specification.
      *
      * @param blobDuration the blobDuration value to set
      * @return the LogSpecification object itself.

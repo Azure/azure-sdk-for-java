@@ -40,7 +40,7 @@ public class DeletedVaultInner {
     private DeletedVaultProperties properties;
 
     /**
-     * Get the id value.
+     * Get the resource ID for the deleted key vault.
      *
      * @return the id value
      */
@@ -49,7 +49,7 @@ public class DeletedVaultInner {
     }
 
     /**
-     * Get the name value.
+     * Get the name of the key vault.
      *
      * @return the name value
      */
@@ -58,7 +58,7 @@ public class DeletedVaultInner {
     }
 
     /**
-     * Get the type value.
+     * Get the resource type of the key vault.
      *
      * @return the type value
      */
@@ -67,7 +67,7 @@ public class DeletedVaultInner {
     }
 
     /**
-     * Get the properties value.
+     * Get properties of the vault.
      *
      * @return the properties value
      */
@@ -76,7 +76,7 @@ public class DeletedVaultInner {
     }
 
     /**
-     * Set the properties value.
+     * Set properties of the vault.
      *
      * @param properties the properties value to set
      * @return the DeletedVaultInner object itself.
