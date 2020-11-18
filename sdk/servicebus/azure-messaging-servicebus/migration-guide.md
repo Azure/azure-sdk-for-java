@@ -289,13 +289,8 @@ counterpart `ServiceBusReceiverAsyncClient`.
 
 // Sample code that processes a single message
 Consumer<ServiceBusReceivedMessageContext> processMessage = messageContext -> {
-    try {
-        System.out.println(messageContext.getMessage().getMessageId());
-        // other message processing code
-        messageContext.complete(); 
-    } catch (Exception ex) {
-        messageContext.abandon(); 
-    }
+    System.out.println(messageContext.getMessage().getMessageId());
+    // other message processing code
 }   
 
 // Sample code that gets called if there's an error
@@ -334,13 +329,8 @@ The below code snippet shows you how to use the processor client to receive mess
 ```java
 // Sample code that processes a single message
 Consumer<ServiceBusReceivedMessageContext> processMessage = messageContext -> {
-    try {
-        System.out.println(messageContext.getMessage().getMessageId());
-        // other message processing code
-        messageContext.complete(); 
-    } catch (Exception ex) {
-        messageContext.abandon(); 
-    }
+    System.out.println(messageContext.getMessage().getMessageId());
+    // other message processing code
 }   
 
 // Sample code that gets called if there's an error
