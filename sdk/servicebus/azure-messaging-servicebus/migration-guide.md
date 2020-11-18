@@ -291,13 +291,13 @@ counterpart `ServiceBusReceiverAsyncClient`.
 Consumer<ServiceBusReceivedMessageContext> processMessage = messageContext -> {
     System.out.println(messageContext.getMessage().getMessageId());
     // other message processing code
-}   
+};
 
 // Sample code that gets called if there's an error
 Consumer<ServiceBusErrorContext> processError = errorContext -> {
     logError(errorContext.getException());
     metrics.recordError(errorContext.getException());
-}
+};
 
 // create the processor client via the builder and its sub-builder
 ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()
@@ -331,13 +331,13 @@ The below code snippet shows you how to use the processor client to receive mess
 Consumer<ServiceBusReceivedMessageContext> processMessage = messageContext -> {
     System.out.println(messageContext.getMessage().getMessageId());
     // other message processing code
-}   
+};
 
 // Sample code that gets called if there's an error
 Consumer<ServiceBusErrorContext> processError = errorContext -> {
     logError(errorContext.getException());
     metrics.recordError(errorContext.getException());
-}
+};
 
 // create the processor client via the builder and its sub-builder
 ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()
