@@ -4,8 +4,7 @@ package com.azure.spring.autoconfigure.aad;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.azure.spring.autoconfigure.aad.AADResourceServerAutoConfiguration.
-    DefaultAzureOAuth2ResourceServerWebSecurityConfigurerAdapter;
+import com.azure.spring.autoconfigure.aad.AADResourceServerAutoConfiguration.DefaultAzureOAuth2ResourceServerWebSecurityConfigurerAdapter;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
@@ -19,7 +18,9 @@ public class AADResourceServerAutoConfigurationTest {
         .withConfiguration(AutoConfigurations.of(AADResourceServerAutoConfiguration.class))
         .withPropertyValues("azure.activedirectory.client-id=fake-client-id",
             "azure.activedirectory.user-group.allowed-groups=fake-group",
-            TestConstants.ALLOW_TELEMETRY_PROPERTY + "=false");
+            TestConstants.ALLOW_TELEMETRY_PROPERTY + "=false",
+            "azure.service.endpoints.global.aadSigninUri=https://login.microsoftonline.com/");
+
 
     @Test
     public void testCreateJwtDecoderByJwkKeySetUri() {

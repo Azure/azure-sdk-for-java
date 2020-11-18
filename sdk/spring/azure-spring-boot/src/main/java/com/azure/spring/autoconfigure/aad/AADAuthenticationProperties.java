@@ -8,12 +8,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.PostConstruct;
 import javax.validation.constraints.NotEmpty;
@@ -54,11 +52,6 @@ public class AADAuthenticationProperties {
      * Must be configured when OAuth2 authentication is done in front end
      */
     private String clientId;
-
-    /**
-     * Tenant ID that is allowed under multi-tenant
-     */
-    private Set<String> allowedTenantIds = new HashSet<>();
 
     /**
      * API Access Key of the registered application.
@@ -427,14 +420,6 @@ public class AADAuthenticationProperties {
 
     public static String getTransitiveGroupRelationship() {
         return GROUP_RELATIONSHIP_TRANSITIVE;
-    }
-
-    public Set<String> getAllowedTenantIds() {
-        return allowedTenantIds;
-    }
-
-    public void setAllowedTenantIds(Set<String> allowedTenantIds) {
-        this.allowedTenantIds = allowedTenantIds;
     }
 
     public boolean isAllowedGroup(String group) {

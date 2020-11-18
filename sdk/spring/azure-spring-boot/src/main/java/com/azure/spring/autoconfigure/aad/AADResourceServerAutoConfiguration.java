@@ -31,12 +31,14 @@ import org.springframework.util.StringUtils;
  * By default, creating a JwtDecoder through JwkKeySetUri will be auto-configured.
  */
 @Configuration(proxyBeanMethods = false)
-@EnableConfigurationProperties(AADAuthenticationProperties.class)
+@EnableConfigurationProperties({AADAuthenticationProperties.class, ServiceEndpointsProperties.class})
 @ConditionalOnClass(BearerTokenAuthenticationToken.class)
 public class AADResourceServerAutoConfiguration {
 
     @Autowired
     private AADAuthenticationProperties aadAuthenticationProperties;
+    @Autowired
+    private ServiceEndpointsProperties serviceEndpointsProperties;
 
     /**
      * Use JwkKeySetUri to create JwtDecoder
@@ -49,7 +51,10 @@ public class AADResourceServerAutoConfiguration {
         if (StringUtils.isEmpty(aadAuthenticationProperties.getTenantId())) {
             aadAuthenticationProperties.setTenantId("common");
         }
-        AuthorizationServerEndpoints endpoints = new AuthorizationServerEndpoints();
+        String authorizationServerUri =
+            serviceEndpointsProperties.getServiceEndpoints(aadAuthenticationProperties.getEnvironment())
+                .getAadSigninUri();
+        AuthorizationServerEndpoints endpoints = new AuthorizationServerEndpoints(authorizationServerUri);
         NimbusJwtDecoder nimbusJwtDecoder = NimbusJwtDecoder
             .withJwkSetUri(endpoints.jwkSetEndpoint(aadAuthenticationProperties.getTenantId())).build();
         List<OAuth2TokenValidator<Jwt>> validators = createDefaultValidator();
@@ -59,17 +64,12 @@ public class AADResourceServerAutoConfiguration {
 
     public List<OAuth2TokenValidator<Jwt>> createDefaultValidator() {
         List<OAuth2TokenValidator<Jwt>> validators = new ArrayList<>();
-        if (!StringUtils.isEmpty(aadAuthenticationProperties.getClientId()) || !StringUtils
-            .isEmpty(aadAuthenticationProperties.getAppIdUri())) {
+        if (!StringUtils.isEmpty(aadAuthenticationProperties.getAppIdUri())) {
             List<String> validAudiences = new ArrayList<>();
-            validAudiences.add(aadAuthenticationProperties.getClientId());
             validAudiences.add(aadAuthenticationProperties.getAppIdUri());
             validators.add(new AADJwtAudienceValidator(validAudiences));
         }
-        validators.add(new AADJwtTenantValidator(aadAuthenticationProperties.getTenantId(),
-            aadAuthenticationProperties.getAllowedTenantIds()));
-        validators.add(new AADJwtIssuerValidator(aadAuthenticationProperties.getTenantId(),
-            aadAuthenticationProperties.getAllowedTenantIds()));
+        validators.add(new AADJwtIssuerValidator());
         validators.add(new JwtTimestampValidator());
         return validators;
     }

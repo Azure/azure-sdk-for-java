@@ -6,7 +6,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.util.Set;
 import org.junit.Test;
 import org.springframework.security.oauth2.core.OAuth2TokenValidatorResult;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -17,47 +16,25 @@ public class AADJwtIssuerValidatorTest {
     final Jwt jwt = mock(Jwt.class);
 
     @Test
-    public void testSingleTenantExistAndIssuerSuccessVerify() {
+    public void testIssuerSuccessVerify() {
         when(aadAuthenticationProperties.getTenantId()).thenReturn("fake-tenant-id");
         when(jwt.getClaim(AADTokenClaim.ISS)).thenReturn("https://sts.windows.net/fake-tenant-id/v2.0");
-        String singleTenantId = aadAuthenticationProperties.getTenantId();
-        Set<String> allowedTenantIds = aadAuthenticationProperties.getAllowedTenantIds();
 
-        AADJwtIssuerValidator aadJwtIssuerValidator = new AADJwtIssuerValidator(singleTenantId, allowedTenantIds);
+        AADJwtIssuerValidator aadJwtIssuerValidator = new AADJwtIssuerValidator();
         OAuth2TokenValidatorResult result = aadJwtIssuerValidator.validate(jwt);
-
         assertThat(result).isNotNull();
         assertThat(result.getErrors()).isEmpty();
     }
 
     @Test
-    public void testMultiTenantExistAndIssuerSuccessVerify() {
+    public void testIssuerFailureVerify() {
         when(aadAuthenticationProperties.getTenantId()).thenReturn("common");
-        when(jwt.getClaim(AADTokenClaim.ISS)).thenReturn("https://sts.windows.net/fake-tenant-id/v2.0");
-        String singleTenantId = aadAuthenticationProperties.getTenantId();
-        Set<String> allowedTenantIds = aadAuthenticationProperties.getAllowedTenantIds();
-        allowedTenantIds.add("fake-tenant-id");
-        allowedTenantIds.add("fake-tenant-id2");
-        allowedTenantIds.add("fake-tenant-id3");
-        AADJwtIssuerValidator aadJwtIssuerValidator = new AADJwtIssuerValidator(singleTenantId, allowedTenantIds);
+        when(jwt.getClaim(AADTokenClaim.ISS)).thenReturn("https://sts.failure.net/fake-tenant-id/v2.0");
+
+        AADJwtIssuerValidator aadJwtIssuerValidator = new AADJwtIssuerValidator();
         OAuth2TokenValidatorResult result = aadJwtIssuerValidator.validate(jwt);
-
         assertThat(result).isNotNull();
-        assertThat(result.getErrors()).isEmpty();
-    }
-
-
-    @Test
-    public void testTenantDefaultAndAllowedTenantIdsEmptyAndSkipIssuerVerify() {
-        when(aadAuthenticationProperties.getTenantId()).thenReturn("common");
-        when(jwt.getClaim(AADTokenClaim.ISS)).thenReturn("https://sts.windows.net/fake-tenant-id/v2.0");
-        String singleTenantId = aadAuthenticationProperties.getTenantId();
-        Set<String> allowedTenantIds = aadAuthenticationProperties.getAllowedTenantIds();
-        AADJwtIssuerValidator aadJwtIssuerValidator = new AADJwtIssuerValidator(singleTenantId, allowedTenantIds);
-        OAuth2TokenValidatorResult result = aadJwtIssuerValidator.validate(jwt);
-
-        assertThat(result).isNotNull();
-        assertThat(result.getErrors()).isEmpty();
+        assertThat(result.getErrors()).isNotEmpty();
     }
 
 }
