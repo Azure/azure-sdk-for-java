@@ -9,7 +9,7 @@ import com.azure.core.annotation.Fluent;
  * The {@link RecognizePiiEntityOptions} model.
  */
 @Fluent
-public class RecognizePiiEntityOptions extends TextAnalyticsRequestOptions {
+public final class RecognizePiiEntityOptions extends TextAnalyticsRequestOptions {
     private PiiEntityDomainType domainFilter;
 
     /**

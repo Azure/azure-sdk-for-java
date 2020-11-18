@@ -13,7 +13,7 @@ import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_INT
  * The {@link RecognizePiiEntityOptions} model.
  */
 @Fluent
-public class RecognizeHealthcareEntityOptions extends TextAnalyticsRequestOptions {
+public final class RecognizeHealthcareEntityOptions extends TextAnalyticsRequestOptions {
     private Integer skip;
     private Integer top;
     private Duration pollInterval = DEFAULT_POLL_INTERVAL;
