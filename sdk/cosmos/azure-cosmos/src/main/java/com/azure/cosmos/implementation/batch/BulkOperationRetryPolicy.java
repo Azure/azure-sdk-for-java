@@ -8,9 +8,9 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.TransactionalBatchOperationResult;
 import com.azure.cosmos.implementation.HttpConstants.StatusCodes;
 import com.azure.cosmos.implementation.HttpConstants.SubStatusCodes;
-import com.azure.cosmos.implementation.IRetryPolicy;
 import com.azure.cosmos.implementation.ResourceThrottleRetryPolicy;
 import com.azure.cosmos.implementation.RetryPolicyWithDiagnostics;
+import com.azure.cosmos.implementation.ShouldRetryResult;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import reactor.core.publisher.Mono;
@@ -41,7 +41,7 @@ final class BulkOperationRetryPolicy extends RetryPolicyWithDiagnostics {
         this.resourceThrottleRetryPolicy = resourceThrottleRetryPolicy;
     }
 
-    final Mono<IRetryPolicy.ShouldRetryResult> shouldRetry(final TransactionalBatchOperationResult result) {
+    final Mono<ShouldRetryResult> shouldRetry(final TransactionalBatchOperationResult result) {
 
         checkNotNull(result, "expected non-null result");
 
@@ -53,17 +53,17 @@ final class BulkOperationRetryPolicy extends RetryPolicyWithDiagnostics {
             BulkExecutorUtil.getResponseHeadersFromBatchOperationResult(result));
 
         if (this.resourceThrottleRetryPolicy == null) {
-            return Mono.just(IRetryPolicy.ShouldRetryResult.noRetry());
+            return Mono.just(ShouldRetryResult.noRetry());
         }
 
         return this.resourceThrottleRetryPolicy.shouldRetry(exception);
     }
 
     @Override
-    public Mono<IRetryPolicy.ShouldRetryResult> shouldRetry(Exception exception) {
+    public Mono<ShouldRetryResult> shouldRetry(Exception exception) {
 
         if (this.resourceThrottleRetryPolicy == null) {
-            return Mono.just(IRetryPolicy.ShouldRetryResult.noRetry());
+            return Mono.just(ShouldRetryResult.noRetry());
         }
 
         return this.resourceThrottleRetryPolicy.shouldRetry(exception);
