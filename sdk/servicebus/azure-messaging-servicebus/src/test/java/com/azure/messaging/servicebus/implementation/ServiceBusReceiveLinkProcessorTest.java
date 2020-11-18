@@ -77,6 +77,7 @@ class ServiceBusReceiveLinkProcessorTest {
     private final EmitterProcessor<Message> messageProcessor = EmitterProcessor.create();
     private final FluxSink<Message> messageProcessorSink = messageProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
     private ServiceBusReceiveLinkProcessor linkProcessor;
+    private ServiceBusReceiveLinkProcessor linkProcessorNoPrefetch;
 
     @BeforeAll
     static void beforeAll() {
@@ -93,6 +94,7 @@ class ServiceBusReceiveLinkProcessorTest {
         MockitoAnnotations.initMocks(this);
 
         linkProcessor = new ServiceBusReceiveLinkProcessor(PREFETCH, retryPolicy, ReceiveMode.PEEK_LOCK);
+        linkProcessorNoPrefetch = new ServiceBusReceiveLinkProcessor(0, retryPolicy, ReceiveMode.PEEK_LOCK);
 
         when(link1.getEndpointStates()).thenReturn(endpointProcessor);
         when(link1.receive()).thenReturn(messageProcessor);
@@ -139,16 +141,7 @@ class ServiceBusReceiveLinkProcessorTest {
         assertFalse(processor.hasError());
         assertNull(processor.getError());
 
-        verify(link1).addCredits(eq(PREFETCH));
-        verify(link1).setEmptyCreditListener(creditSupplierCaptor.capture());
-
-        Supplier<Integer> value = creditSupplierCaptor.getValue();
-        assertNotNull(value);
-
-        final Integer creditValue = value.get();
-        // Expecting 5 because it is Long.MAX_VALUE and there are no credits (since we invoked the empty credit
-        // listener).
-        assertEquals(PREFETCH, creditValue);
+        verify(link1).addCreditsInstantly(eq(PREFETCH - 1));
     }
 
     /**
@@ -160,7 +153,7 @@ class ServiceBusReceiveLinkProcessorTest {
         final int backpressure = 15;
         // Because one message was emitted.
         ServiceBusReceiveLinkProcessor processor = Flux.<ServiceBusReceiveLink>create(sink -> sink.next(link1))
-            .subscribeWith(linkProcessor);
+            .subscribeWith(linkProcessorNoPrefetch);
 
         // Act & Assert
         StepVerifier.create(processor, backpressure)
@@ -169,15 +162,7 @@ class ServiceBusReceiveLinkProcessorTest {
             .thenCancel()
             .verify();
 
-        verify(link1).addCredits(eq(backpressure));
-        verify(link1).setEmptyCreditListener(creditSupplierCaptor.capture());
-
-        Supplier<Integer> value = creditSupplierCaptor.getValue();
-        assertNotNull(value);
-
-        final Integer creditValue = value.get();
-        final int emittedOne = backpressure - 1;
-        assertTrue(creditValue == emittedOne || creditValue == backpressure);
+        verify(link1).addCreditsInstantly(backpressure);  // request up to PREFETCH
     }
 
     /**
@@ -534,7 +519,7 @@ class ServiceBusReceiveLinkProcessorTest {
         ServiceBusReceiveLinkProcessor processor = Flux.just(link1).subscribeWith(linkProcessor);
         FluxSink<AmqpEndpointState> sink = endpointProcessor.sink();
 
-        when(link1.getCredits()).thenReturn(1);
+        when(link1.getCredits()).thenReturn(0);
 
         // Act & Assert
         StepVerifier.create(processor)
@@ -553,16 +538,15 @@ class ServiceBusReceiveLinkProcessorTest {
         assertFalse(processor.hasError());
         assertNull(processor.getError());
 
-        verify(link1).addCredits(eq(PREFETCH));
-        verify(link1).setEmptyCreditListener(creditSupplierCaptor.capture());
+        verify(link1).addCreditsInstantly(eq(PREFETCH));
+        verify(link1).setEmptyCreditListener(creditSupplierCaptor.capture());  // Add 0
 
         Supplier<Integer> value = creditSupplierCaptor.getValue();
         assertNotNull(value);
 
         final Integer creditValue = value.get();
-        // Expecting 5 because it is Long.MAX_VALUE and there are no credits (since we invoked the empty credit
-        // listener).
-        assertEquals(PREFETCH, creditValue);
+
+        assertEquals(0, creditValue);
     }
 
     @Test
@@ -571,7 +555,7 @@ class ServiceBusReceiveLinkProcessorTest {
         ServiceBusReceiveLinkProcessor processor = Flux.just(link1).subscribeWith(linkProcessor);
         FluxSink<AmqpEndpointState> sink = endpointProcessor.sink();
 
-        when(link1.getCredits()).thenReturn(1);
+        when(link1.getCredits()).thenReturn(0);
 
         // Act & Assert
         StepVerifier.create(processor)
@@ -589,16 +573,15 @@ class ServiceBusReceiveLinkProcessorTest {
         assertFalse(processor.hasError());
         assertNull(processor.getError());
 
-        verify(link1).addCredits(eq(PREFETCH));
-        verify(link1).setEmptyCreditListener(creditSupplierCaptor.capture());
+        verify(link1).addCreditsInstantly(eq(PREFETCH));
+        verify(link1).setEmptyCreditListener(creditSupplierCaptor.capture());  // Add 0.
 
         Supplier<Integer> value = creditSupplierCaptor.getValue();
         assertNotNull(value);
 
         final Integer creditValue = value.get();
-        // Expecting 5 because it is Long.MAX_VALUE and there are no credits (since we invoked the empty credit
-        // listener).
-        assertEquals(PREFETCH, creditValue);
+
+        assertEquals(0, creditValue);
     }
 
     /**
@@ -608,7 +591,7 @@ class ServiceBusReceiveLinkProcessorTest {
     @Test
     void backpressureRequestOnlyEmitsThatAmount() {
         // Arrange
-        final int backpressure = 10;
+        final int backpressure = PREFETCH;
         final int existingCredits = 1;
         final int expectedCredits = backpressure - existingCredits;
         ServiceBusReceiveLinkProcessor processor = Flux.just(link1).subscribeWith(linkProcessor);
@@ -634,7 +617,7 @@ class ServiceBusReceiveLinkProcessorTest {
         assertFalse(processor.hasError());
         assertNull(processor.getError());
 
-        verify(link1).addCredits(expectedCredits);
+        verify(link1).addCreditsInstantly(expectedCredits);
         verify(link1).setEmptyCreditListener(any());
     }
 
