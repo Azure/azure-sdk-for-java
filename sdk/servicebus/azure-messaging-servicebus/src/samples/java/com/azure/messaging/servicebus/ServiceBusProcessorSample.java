@@ -50,7 +50,7 @@ public class ServiceBusProcessorSample {
                     }
                 } else {
                     System.out.printf("Error source %s, reason %s, message: %s\n", serviceBusException.getErrorSource(),
-                        reason, errorContext.getException().toString());
+                        reason, errorContext.getException().getMessage());
                 }
             } else {
                 System.out.printf("Exception: %s\n", errorContext.getException().toString());
