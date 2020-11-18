@@ -36,7 +36,6 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.models.NetworkCallRecord;
-import com.azure.core.test.models.RecordedData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.SerializerAdapter;
 import org.junit.jupiter.api.Test;
@@ -52,7 +51,6 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -165,7 +163,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             builder.credential(new AzureKeyCredential(INVALID_KEY));
         } else {
             // TODO: (savaity) switch back to AAD once fixed on service - side.
-//            builder.credential(new DefaultAzureCredentialBuilder().build());
+            // builder.credential(new DefaultAzureCredentialBuilder().build());
             builder.credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_FORM_RECOGNIZER_API_KEY")));
         }
         return builder;
@@ -899,7 +897,6 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             .getValue().asString());
         assertEquals(EXPECTED_MULTIPAGE_PHONE_NUMBER_VALUE, receiptPage1Fields.get("MerchantPhoneNumber")
             .getValue().asPhoneNumber());
-        // service issue total returned as null?
         // assertNotNull(receiptPage1Fields.get("Total").getValue().asFloat());
         assertNotNull(receiptPage1.getPages());
         assertEquals(ITEMIZED_RECEIPT_VALUE, receiptPage1Fields.get("ReceiptType").getValue().asString());
@@ -918,11 +915,8 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         assertEquals(EXPECTED_MULTIPAGE_ADDRESS_VALUE, receiptPage3Fields.get("MerchantAddress").getValue().asString());
         assertEquals("Frodo Baggins", receiptPage3Fields.get("MerchantName").getValue().asString());
         assertEquals(EXPECTED_MULTIPAGE_PHONE_NUMBER_VALUE, receiptPage3Fields.get("MerchantPhoneNumber").getValue().asPhoneNumber());
-        // service issue total returned as null?
         // assertNotNull(receiptPage3Fields.get("Total").getValue().asFloat());
-        // why isn't tip returned by service?
-        // service bug subtotal value and tax value swapped
-        // assertEquals(3000.0f, receiptPage3Fields.get("Subtotal").getValue().asFloat());
+        assertEquals(150.66f, receiptPage3Fields.get("Subtotal").getValue().asFloat());
         assertEquals(ITEMIZED_RECEIPT_VALUE, receiptPage3Fields.get("ReceiptType").getValue().asString());
     }
 
@@ -1034,26 +1028,30 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     }
 
     void validateNetworkCallRecord(String requestParam, String value) {
-        final RecordedData copyRecordedData = interceptorManager.getRecordedData();
-        final NetworkCallRecord networkCallRecord =
-            copyRecordedData.findFirstAndRemoveNetworkCall(record -> true);
-        copyRecordedData.addNetworkCall(networkCallRecord);
-        URL url = null;
-        try {
-            url = new URL(networkCallRecord.getUri());
-        } catch (MalformedURLException e) {
-            assertFalse(false, e.getMessage());
-        }
-        Pattern.compile("&").splitAsStream(url.getQuery())
-            .map(s -> Arrays.copyOf(s.split("="), 2))
-            .map(o -> new AbstractMap.SimpleEntry<String, String>(o[0], o[1] == null ? "" : o[1]))
-            .map(entry -> {
-                if (entry.getKey().equals(requestParam)) {
-                    assertEquals(value, entry.getValue());
-                    return true;
-                } else {
+        final NetworkCallRecord networkCallRecord1 =
+            interceptorManager.getRecordedData().findFirstAndRemoveNetworkCall(networkCallRecord -> {
+                URL url = null;
+                try {
+                    url = new URL(networkCallRecord.getUri());
+                } catch (MalformedURLException e) {
+                    assertFalse(false, e.getMessage());
+                }
+
+                if (url.getQuery() != null) {
+                    String[] params = url.getQuery().split("&");
+                    for (String param : params) {
+                        String name = param.split("=")[0];
+                        String queryValue = param.split("=")[1];
+                        if (name.equals(requestParam) && value.equals(queryValue)) {
+                            return true;
+                        }
+                    }
                     return false;
                 }
+                return false;
             });
+
+        assertNotNull(networkCallRecord1);
+        interceptorManager.getRecordedData().addNetworkCall(networkCallRecord1);
     }
 }

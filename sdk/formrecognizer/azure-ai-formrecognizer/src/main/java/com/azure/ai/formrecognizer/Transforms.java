@@ -456,7 +456,9 @@ final class Transforms {
             .map(fieldValue -> {
                 FieldData valueData = null;
                 // ARRAY has ho value data, such as bounding box.
-                if (ARRAY != fieldValue.getType()) {
+                if (ARRAY != fieldValue.getType()
+                    && (fieldValue.getPage() != null && fieldValue.getBoundingBox() != null
+                    && fieldValue.getText() != null)) {
                     valueData = new FieldData(fieldValue.getText(), toBoundingBox(fieldValue.getBoundingBox()),
                         fieldValue.getPage(),
                         setReferenceElements(fieldValue.getElements(), readResults));
