@@ -74,35 +74,102 @@ private final BlobServiceAsyncClient blobServiceAsyncClient = blobServiceClientB
 
 #### Search for resources
 You can use implementation class `AzureStorageResourcePatternResolver` of `ResourcePatternResolver` to search resource, it supports `blob` or `file` type.
-* Inject the builder bean.
+```java
+import com.azure.spring.autoconfigure.storage.resource.AzureStorageResourcePatternResolver;
+import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.BlobServiceClientBuilder;
+import com.azure.storage.file.share.ShareServiceClient;
+import com.azure.storage.file.share.ShareServiceClientBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-    ```java
-    @Autowired
-    BlobServiceClientBuilder blobServiceClientBuilder;
-    
-    @Autowired
-    ShareServiceClientBuilder shareServiceClientBuilder;
-    ```
-  
-* Create pattern object, if only one storage type resource used, please call the corresponding constructor.
-    ```java
-    BlobServiceClient blobServiceClient = blobServiceClientBuilder.buildClient();
-    ShareServiceClient shareServiceClient = shareServiceClientBuilder.buildClient();
-    storageResourcePatternResolver = new AzureStorageResourcePatternResolver(blobServiceClient, shareServiceClient);
-    ```
-  
-* Pattern usage, the **searchPattern** should start with `azure-blob://` or `azure-file://`. Such as `azure-blob://*/*`, it means list all blobs in all containers; `azure-blob://demo-container/**`, it means list all blobs in the demo-container container, including any sub-folder.
-    
-    ```java
-    Resource[] resources = storageResourcePatternResolver.getResources(searchPattern);
-    ```
-  
-    >**Note:** If there are too many matching files, partial data will be returned.
+import java.io.IOException;
+import java.util.Arrays;
 
-* Location usage, the **searchLocation** should start with `azure-blob://` or `azure-file://`, the remaing file path should exist, otherwise an exception will be thrown. Such as `azure-blob://*/*`, it means list all blobs in all containers; `azure-blob://demo-container/**`, it means list all blobs in the demo-container container, including any sub-folder.
-    ```java
-    Resource[] resources = storageResourcePatternResolver.getResource(searchLocation);
-    ```
+@RestController
+@RequestMapping("search")
+public class BlobOrFileSearchController {
+
+    @Autowired
+    private BlobServiceClientBuilder blobServiceClientBuilder;
+
+    @Autowired(required = false)
+    private ShareServiceClientBuilder shareServiceClientBuilder;
+
+    private AzureStorageResourcePatternResolver storageResourcePatternResolver;
+
+    @GetMapping("pattern")
+    public String pattern(@RequestParam String pattern){
+        StringBuffer sb = new StringBuffer();
+        Resource[] resources = searchResourcesByPattern(pattern);
+        if (null != resources) {
+            Arrays.stream(resources).forEach(res -> {
+                sb.append(res.getFilename() + "\t");
+            });
+        }
+        return sb.toString();
+    }
+
+    @GetMapping("location")
+    public String location(@RequestParam String location){
+        StringBuffer sb = new StringBuffer();
+        Resource resource = searchResourceByLocation(location);
+        if (null != resource) {
+            sb.append(resource.getFilename());
+        }
+        return sb.toString();
+    }
+
+    /**
+     * Create singleton pattern resolver object, if only one storage type resource used, please call the corresponding constructor.
+     * @return AzureStorageResourcePatternResolver instance.
+     */
+    private AzureStorageResourcePatternResolver getStorageResourcePatternResolver() {
+        if (null == storageResourcePatternResolver) {
+            synchronized (AzureStorageResourcePatternResolver.class) {
+                BlobServiceClient blobServiceClient = blobServiceClientBuilder.buildClient();
+                ShareServiceClient shareServiceClient = null;
+                if (null != shareServiceClientBuilder) {
+                    shareServiceClient = shareServiceClientBuilder.buildClient();
+                }
+                storageResourcePatternResolver = new AzureStorageResourcePatternResolver(blobServiceClient, shareServiceClient);
+            }
+        }
+        return storageResourcePatternResolver;
+    }
+
+    /**
+     * Pattern search, the 'searchPattern' should start with 'azure-blob://' or 'azure-file://'.
+     * Such as 'azure-blob://*&#47*', it means list all blobs in all containers
+     * 'azure-blob://demo-container/**', it means list all blobs in the demo-container container, including any sub-folder.
+     * @param searchPattern pattern expression
+     * @return Matching resource array
+     */
+    public Resource[] searchResourcesByPattern(String searchPattern){
+        Resource[] resources = null;
+        try {
+            resources = getStorageResourcePatternResolver().getResources(searchPattern);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return resources;
+    }
+
+    /**
+     * Location search, the 'searchLocation' should start with 'azure-blob://' or 'azure-file://',
+     * the remaining file path should exist, otherwise an exception will be thrown.
+     * @param searchLocation file full path
+     * @return Query resource
+     */
+    public Resource searchResourceByLocation(String searchLocation){
+        return getStorageResourcePatternResolver().getResource(searchLocation);
+    }
+}
+```
 
 ## Troubleshooting
 ### Enable client logging
