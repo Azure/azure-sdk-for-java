@@ -21,7 +21,7 @@ public class PtrRecord {
     private String ptrdname;
 
     /**
-     * Get the ptrdname value.
+     * Get the PTR target domain name for this PTR record.
      *
      * @return the ptrdname value
      */
@@ -30,7 +30,7 @@ public class PtrRecord {
     }
 
     /**
-     * Set the ptrdname value.
+     * Set the PTR target domain name for this PTR record.
      *
      * @param ptrdname the ptrdname value to set
      * @return the PtrRecord object itself.
