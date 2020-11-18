@@ -2,6 +2,7 @@
 
 ## 12.10.0-beta.1 (Unreleased)
 - Added ability to specify timeout units in RequestRetryOptions.
+- Fixed bug where query params were being parsed incorrectly if an encoded comma was the query value.
 
 ## 12.9.0 (2020-11-11)
 - GA release
