@@ -11,7 +11,7 @@ import java.util.Map;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-public final class FeedRangeRxDocumentServiceRequestPopulatorVisitorImpl
+final class FeedRangeRxDocumentServiceRequestPopulatorVisitorImpl
     extends GenericFeedRangeVisitor<RxDocumentServiceRequest> {
 
     public final static FeedRangeRxDocumentServiceRequestPopulatorVisitorImpl SINGLETON =

@@ -101,10 +101,12 @@ public final class ServiceBusMessageBatch {
         try {
             size = getSize(serviceBusMessageUpdated, serviceBusMessageList.isEmpty());
         } catch (BufferOverflowException exception) {
-            throw logger.logExceptionAsWarning(new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
-                String.format(Locale.US, "Size of the payload exceeded maximum message size: %s kb",
-                    maxMessageSize / 1024),
-                contextProvider.getErrorContext()));
+            final RuntimeException ex = new ServiceBusException(
+                    new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
+                        String.format(Locale.US, "Size of the payload exceeded maximum message size: %s kb",
+                            maxMessageSize / 1024), contextProvider.getErrorContext()), ServiceBusErrorSource.SEND);
+
+            throw logger.logExceptionAsWarning(ex);
         }
 
         synchronized (lock) {

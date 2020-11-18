@@ -15,15 +15,13 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import static com.azure.cosmos.BridgeInternal.setProperty;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
     private final PartitionKeyInternal partitionKey;
 
     public FeedRangePartitionKeyImpl(PartitionKeyInternal partitionKey) {
-        if (partitionKey == null) {
-            throw new NullPointerException("partitionKey");
-        }
-
+        checkNotNull(partitionKey, "Argument 'partitionKey' must not be null");
         this.partitionKey = partitionKey;
     }
 
@@ -33,33 +31,24 @@ final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
 
     @Override
     public void accept(FeedRangeVisitor visitor) {
-        if (visitor == null) {
-            throw new NullPointerException("visitor");
-        }
-
+        checkNotNull(visitor, "Argument 'visitor' must not be null");
         visitor.visit(this);
     }
 
     @Override
     public <TInput> void accept(GenericFeedRangeVisitor<TInput> visitor, TInput input) {
-        if (visitor == null) {
-            throw new NullPointerException("visitor");
-        }
-
+        checkNotNull(visitor, "Argument 'visitor' must not be null");
         visitor.visit(this, input);
     }
 
     @Override
-    public <T> Mono<T> acceptAsync(FeedRangeAsyncVisitor<T> visitor) {
-        if (visitor == null) {
-            throw new NullPointerException("visitor");
-        }
-
-        return visitor.visitAsync(this);
+    public <T> Mono<T> accept(FeedRangeAsyncVisitor<T> visitor) {
+        checkNotNull(visitor, "Argument 'visitor' must not be null");
+        return visitor.visit(this);
     }
 
     @Override
-    public Mono<UnmodifiableList<Range<String>>> getEffectiveRangesAsync(
+    public Mono<UnmodifiableList<Range<String>>> getEffectiveRanges(
         IRoutingMapProvider routingMapProvider,
         String containerRid,
         PartitionKeyDefinition partitionKeyDefinition) {
@@ -75,7 +64,7 @@ final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
     }
 
     @Override
-    public Mono<UnmodifiableList<String>> getPartitionKeyRangesAsync(
+    public Mono<UnmodifiableList<String>> getPartitionKeyRanges(
         IRoutingMapProvider routingMapProvider,
         String containerRid,
         PartitionKeyDefinition partitionKeyDefinition) {

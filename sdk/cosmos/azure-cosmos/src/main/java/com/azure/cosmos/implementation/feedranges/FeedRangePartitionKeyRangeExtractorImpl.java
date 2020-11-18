@@ -36,7 +36,7 @@ final class FeedRangePartitionKeyRangeExtractorImpl extends FeedRangeAsyncVisito
     }
 
     @Override
-    public Mono<List<Range<String>>> visitAsync(FeedRangePartitionKeyImpl feedRange) {
+    public Mono<List<Range<String>>> visit(FeedRangePartitionKeyImpl feedRange) {
         final RxPartitionKeyRangeCache partitionKeyRangeCache =
             this.client.getPartitionKeyRangeCache();
         final Mono<ResourceResponse<DocumentCollection>> collectionResponseObservable = this.client
@@ -44,14 +44,14 @@ final class FeedRangePartitionKeyRangeExtractorImpl extends FeedRangeAsyncVisito
 
         return collectionResponseObservable.flatMap(collectionResponse -> {
             final DocumentCollection collection = collectionResponse.getResource();
-            return feedRange.getEffectiveRangesAsync(partitionKeyRangeCache,
+            return feedRange.getEffectiveRanges(partitionKeyRangeCache,
                 collection.getResourceId(),
                 collection.getPartitionKey());
         });
     }
 
     @Override
-    public Mono<List<Range<String>>> visitAsync(FeedRangePartitionKeyRangeImpl feedRange) {
+    public Mono<List<Range<String>>> visit(FeedRangePartitionKeyRangeImpl feedRange) {
         final RxPartitionKeyRangeCache partitionKeyRangeCache =
             this.client.getPartitionKeyRangeCache();
         final Mono<ResourceResponse<DocumentCollection>> collectionResponseObservable = this.client
@@ -59,13 +59,13 @@ final class FeedRangePartitionKeyRangeExtractorImpl extends FeedRangeAsyncVisito
 
         return collectionResponseObservable.flatMap(collectionResponse -> {
             final DocumentCollection collection = collectionResponse.getResource();
-            return feedRange.getEffectiveRangesAsync(partitionKeyRangeCache,
+            return feedRange.getEffectiveRanges(partitionKeyRangeCache,
                 collection.getResourceId(), null);
         });
     }
 
     @Override
-    public Mono<List<Range<String>>> visitAsync(FeedRangeEpkImpl feedRange) {
+    public Mono<List<Range<String>>> visit(FeedRangeEpkImpl feedRange) {
         final RxPartitionKeyRangeCache partitionKeyRangeCache =
             this.client.getPartitionKeyRangeCache();
         final Mono<ResourceResponse<DocumentCollection>> collectionResponseObservable = this.client

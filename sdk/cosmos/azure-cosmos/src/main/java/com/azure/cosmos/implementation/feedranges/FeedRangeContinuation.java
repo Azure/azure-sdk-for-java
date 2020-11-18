@@ -6,12 +6,7 @@ package com.azure.cosmos.implementation.feedranges;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.ShouldRetryResult;
-import com.azure.cosmos.implementation.Strings;
-import com.azure.cosmos.implementation.Utils;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
-
-import java.io.IOException;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -47,41 +42,15 @@ public abstract class FeedRangeContinuation {
 
     public abstract void validateContainer(String containerRid);
 
-    public static FeedRangeContinuation tryParse(String jsonString) {
-        if (jsonString == null) {
-            return null;
-        }
-
-        try {
-            final ObjectMapper mapper = Utils.getSimpleObjectMapper();
-
-            return mapper.readValue(jsonString, FeedRangeCompositeContinuationImpl.class);
-
-        } catch (final IOException ioError) {
-            return null;
-        }
-    }
-
-    public static FeedRangeContinuation convert(final String continuationToken) {
-        if (Strings.isNullOrWhiteSpace(continuationToken)) {
-            throw new NullPointerException("continuationToken");
-        }
-
-        FeedRangeContinuation returnValue = tryParse(continuationToken);
-        if (returnValue != null) {
-            return returnValue;
-        }
-
-        throw new IllegalArgumentException(
-            String.format(
-                "Invalid Feed range continuation token '%s'",
-                continuationToken));
-    }
+    /* TODO fabianm - infinite recursion
+    public static FeedRangeContinuation tryParse(String toStringValue) {
+        return FeedRangeCompositeContinuationImpl.tryParse(toStringValue);
+    }*/
 
     public abstract ShouldRetryResult handleChangeFeedNotModified(
         RxDocumentServiceResponse responseMessage);
 
-    public abstract Mono<ShouldRetryResult> handleSplitAsync(
+    public abstract Mono<ShouldRetryResult> handleSplit(
         RxDocumentClientImpl client,
         RxDocumentServiceResponse responseMessage);
 
