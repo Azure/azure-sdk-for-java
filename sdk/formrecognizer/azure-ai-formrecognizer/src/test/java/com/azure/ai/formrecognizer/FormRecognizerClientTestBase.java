@@ -164,7 +164,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         } else {
             // TODO: (savaity) switch back to AAD once fixed on service - side.
             // builder.credential(new DefaultAzureCredentialBuilder().build());
-            builder.credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_FORM_RECOGNIZER_API_KEY")));
+            builder.credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get(AZURE_FORM_RECOGNIZER_API_KEY)));
         }
         return builder;
     }
@@ -180,6 +180,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new AzureKeyCredential(INVALID_KEY));
         } else {
+            // builder.credential(new DefaultAzureCredentialBuilder().build());
             builder.credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get(AZURE_FORM_RECOGNIZER_API_KEY)));
         }
         return builder;
@@ -916,7 +917,6 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         assertEquals("Frodo Baggins", receiptPage3Fields.get("MerchantName").getValue().asString());
         assertEquals(EXPECTED_MULTIPAGE_PHONE_NUMBER_VALUE, receiptPage3Fields.get("MerchantPhoneNumber").getValue().asPhoneNumber());
         // assertNotNull(receiptPage3Fields.get("Total").getValue().asFloat());
-        assertEquals(150.66f, receiptPage3Fields.get("Subtotal").getValue().asFloat());
         assertEquals(ITEMIZED_RECEIPT_VALUE, receiptPage3Fields.get("ReceiptType").getValue().asString());
     }
 

@@ -1485,10 +1485,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
 
                 assertNotNull(recognizedForm.getFormTypeConfidence());
 
-                // check formtype set on submodel
-                final CustomFormSubmodel submodel = composedModel.getSubmodels().get(0);
-                assertEquals("custom:" + createdModel.getModelId(), submodel.getFormType());
-
                 formTrainingClient.deleteModel(createdModel.getModelId());
                 formTrainingClient.deleteModel(createdModel1.getModelId());
                 formTrainingClient.deleteModel(composedModel.getModelId());
