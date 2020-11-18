@@ -22,7 +22,7 @@ public class ZoneUpdate {
     private Map<String, String> tags;
 
     /**
-     * Get the tags value.
+     * Get resource tags.
      *
      * @return the tags value
      */
@@ -31,7 +31,7 @@ public class ZoneUpdate {
     }
 
     /**
-     * Set the tags value.
+     * Set resource tags.
      *
      * @param tags the tags value to set
      * @return the ZoneUpdate object itself.

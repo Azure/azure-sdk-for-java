@@ -22,7 +22,7 @@ public class RecordSetUpdateParameters {
     private RecordSetInner recordSet;
 
     /**
-     * Get the recordSet value.
+     * Get specifies information about the record set being updated.
      *
      * @return the recordSet value
      */
@@ -31,7 +31,7 @@ public class RecordSetUpdateParameters {
     }
 
     /**
-     * Set the recordSet value.
+     * Set specifies information about the record set being updated.
      *
      * @param recordSet the recordSet value to set
      * @return the RecordSetUpdateParameters object itself.
