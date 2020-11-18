@@ -64,10 +64,14 @@ class VirtualNetworkLinksImpl extends WrapperImpl<VirtualNetworkLinksInner> impl
     public Observable<VirtualNetworkLink> getAsync(String resourceGroupName, String privateZoneName, String virtualNetworkLinkName) {
         VirtualNetworkLinksInner client = this.inner();
         return client.getAsync(resourceGroupName, privateZoneName, virtualNetworkLinkName)
-        .map(new Func1<VirtualNetworkLinkInner, VirtualNetworkLink>() {
+        .flatMap(new Func1<VirtualNetworkLinkInner, Observable<VirtualNetworkLink>>() {
             @Override
-            public VirtualNetworkLink call(VirtualNetworkLinkInner inner) {
-                return wrapModel(inner);
+            public Observable<VirtualNetworkLink> call(VirtualNetworkLinkInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((VirtualNetworkLink)wrapModel(inner));
+                }
             }
        });
     }
