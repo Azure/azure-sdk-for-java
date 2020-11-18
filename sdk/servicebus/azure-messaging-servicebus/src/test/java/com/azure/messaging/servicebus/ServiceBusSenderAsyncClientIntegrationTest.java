@@ -6,7 +6,7 @@ package com.azure.messaging.servicebus;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.models.CreateMessageBatchOptions;
-import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
@@ -172,7 +172,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
             .buildAsyncClient();
         final ServiceBusReceiverAsyncClient destination1Receiver = getReceiverBuilder(useCredentials, entityType,
             destinationEntity, shareConnection)
-            .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
+            .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
             .disableAutoComplete()
             .buildAsyncClient();
 
@@ -257,7 +257,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
 
         final ServiceBusReceiverAsyncClient destination1Receiver = getReceiverBuilder(useCredentials, entityType,
             destinationEntity, shareConnection)
-            .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
+            .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
             .disableAutoComplete()
             .buildAsyncClient();
 
@@ -515,7 +515,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         this.sender = getSenderBuilder(useCredentials, entityType, entityIndex, isSessionAware, sharedConnection)
             .buildAsyncClient();
         this.receiver = getReceiverBuilder(useCredentials, entityType, entityIndex, sharedConnection)
-            .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
+            .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
             .disableAutoComplete()
             .buildAsyncClient();
     }

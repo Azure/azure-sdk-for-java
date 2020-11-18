@@ -6,7 +6,7 @@ package com.azure.messaging.servicebus.models;
 /**
  *  Defines the Receive modes.
  */
-public enum ReceiveMode {
+public enum ServiceBusReceiveMode {
     /**
      * In this mode, received message is not deleted from the queue or subscription, instead it is temporarily locked
      * to the receiver, making it invisible to other receivers. Then the service waits for one of the three events

@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * {@link EntityHelper} tests.
  */
-class EntityHelperTest {
+class EntityServiceBusExceptionTestHelperTest {
     @Test
     void createTopic() {
         // Arrange
