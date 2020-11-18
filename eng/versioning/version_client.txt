@@ -177,7 +177,8 @@ com.microsoft:microsoft-opentelemetry-exporter-azuremonitor;1.0.0-beta.1;1.0.0-b
 # unreleased_<groupId>:<artifactId>;dependency-version
 # note: The unreleased dependencies will not be manipulated with the automatic PR creation code.
 unreleased_com.azure:azure-core-experimental;1.0.0-beta.9
-unreleased_com.azure:azure-messaging-servicebus;7.0.0-beta.7
+unreleased_com.azure:azure-messaging-servicebus;7.0.0-beta.8
+unreleased_com.azure:azure-core-amqp;1.7.0-beta.3
 
 # Released Beta dependencies: Copy the entry from above, prepend "beta_", remove the current
 # version and set the version to the released beta. Released beta dependencies are only valid
