@@ -70,7 +70,9 @@ class ServiceBusSessionReceiver implements AutoCloseable {
             .publishOn(scheduler)
             .doOnSubscribe(subscription -> {
                 logger.verbose("Adding prefetch to receive link.");
-                receiveLink.addCreditsInstantly(prefetch);
+                if (prefetch > 0) {
+                    receiveLink.addCreditsInstantly(prefetch);
+                }
             })
             .doOnRequest(request -> {  // request is of type long.
                 if (prefetch == 0) {  //  add "request" number of credits
@@ -79,8 +81,6 @@ class ServiceBusSessionReceiver implements AutoCloseable {
                     receiveLink.addCreditsInstantly(Math.max(0, prefetch - receiveLink.getCredits()));
                 }
             })
-            .limitRate(1)  // One request at a time so link credit is added one by one
-            // if no prefetch in doOnRequest above.
             .takeUntilOther(cancelReceiveProcessor)
             .map(message -> {
                 final ServiceBusReceivedMessage deserialized = messageSerializer.deserialize(message,
