@@ -19,42 +19,6 @@ public class PhoneNumberIntegrationTestBase extends TestBase {
         Configuration.getGlobalConfiguration().get("COUNTRY_CODE", "US");
     protected static final String LOCALE =
         Configuration.getGlobalConfiguration().get("LOCALE", "en-us");
-    protected static final String PHONE_PLAN_GROUP_ID =
-        Configuration.getGlobalConfiguration().get(
-            "PHONE_PLAN_GROUP_ID", "phone-plan-group-id-1");
-    protected static final String PHONE_PLAN_ID =
-        Configuration.getGlobalConfiguration().get(
-            "PHONE_PLAN_ID", "phone-plan-id-1");
-    protected static final String AREA_CODE_FOR_SEARCH =
-        Configuration.getGlobalConfiguration().get(
-            "AREA_CODE_FOR_SEARCH", "777");
-    protected static final String RESERVATION_ID =
-        Configuration.getGlobalConfiguration().get(
-            "RESERVATION_ID", "reservation-id-1");
-    protected static final String RESERVATION_ID_TO_PURCHASE =
-        Configuration.getGlobalConfiguration().get(
-            "RESERVATION_ID_TO_PURCHASE", "reservation-id-1");
-    protected static final String RESERVATION_ID_TO_CANCEL =
-        Configuration.getGlobalConfiguration().get(
-            "RESERVATION_ID_TO_CANCEL", "reservation-id-2");
-    protected static final String PHONENUMBER_TO_CONFIGURE =
-        Configuration.getGlobalConfiguration().get(
-            "PHONENUMBER_TO_CONFIGURE", "+17771234567");
-    protected static final String PHONENUMBER_TO_GET_CONFIG =
-        Configuration.getGlobalConfiguration().get(
-            "PHONENUMBER_TO_GET_CONFIG", "+17771234567");
-    protected static final String PHONENUMBER_TO_UNCONFIGURE =
-        Configuration.getGlobalConfiguration().get(
-            "PHONENUMBER_TO_UNCONFIGURE", "+17771234567");
-    protected static final String PHONENUMBER_TO_RELEASE =
-        Configuration.getGlobalConfiguration().get(
-            "PHONENUMBER_TO_RELEASE", "+17771234567");
-    protected static final String PHONENUMBER_FOR_CAPABILITIES =
-        Configuration.getGlobalConfiguration().get(
-            "PHONENUMBER_FOR_CAPABILITIES", "+17771234567");
-    protected static final String CAPABILITIES_ID =
-        Configuration.getGlobalConfiguration().get(
-            "CAPABILITIES_ID", "capabilities-id-1");
     protected static final String LOCATION_OPTION_STATE =
         Configuration.getGlobalConfiguration().get("LOCATION_OPTION_STATE", "CA");
     protected static final String LOCATION_OPTION_CITY =

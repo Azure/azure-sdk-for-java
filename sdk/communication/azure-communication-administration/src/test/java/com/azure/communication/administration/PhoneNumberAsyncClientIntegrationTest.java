@@ -359,6 +359,7 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
                                     .flatMap((Response<NumberConfigurationResponse> getConfigResponse) -> {
                                         assertEquals(200, getConfigResponse.getStatusCode());
                                         assertNotNull(getConfigResponse.getValue().getPstnConfiguration().getApplicationId());
+                                        assertNotNull(getConfigResponse.getValue().getPstnConfiguration().getCallbackUrl());
                                         // Unconfigure the purchased number
                                         return this.getClient(httpClient).unconfigureNumberWithResponse(number, Context.NONE)
                                         .flatMap((Response<Void> unconfigureResponse) -> {
