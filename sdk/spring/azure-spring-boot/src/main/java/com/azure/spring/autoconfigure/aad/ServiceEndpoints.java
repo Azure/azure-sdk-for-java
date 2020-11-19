@@ -12,6 +12,7 @@ public class ServiceEndpoints {
     private String aadGraphApiUri;
     private String aadKeyDiscoveryUri;
     private String aadMembershipRestUri;
+    private String aadTransitiveMemberRestUri;
 
     public String getAadSigninUri() {
         return aadSigninUri;
@@ -43,5 +44,13 @@ public class ServiceEndpoints {
 
     public void setAadMembershipRestUri(String aadMembershipRestUri) {
         this.aadMembershipRestUri = aadMembershipRestUri;
+    }
+
+    public String getAadTransitiveMemberRestUri() {
+        return aadTransitiveMemberRestUri;
+    }
+
+    public void setAadTransitiveMemberRestUri(String aadTransitiveMemberRestUri) {
+        this.aadTransitiveMemberRestUri = aadTransitiveMemberRestUri;
     }
 }

@@ -30,6 +30,9 @@ public class AADAuthenticationProperties {
     private static final Logger LOGGER = LoggerFactory.getLogger(AADAuthenticationProperties.class);
     private static final String DEFAULT_SERVICE_ENVIRONMENT = "global";
     private static final long DEFAULT_JWK_SET_CACHE_LIFESPAN = TimeUnit.MINUTES.toMillis(5);
+    private static final long DEFAULT_JWK_SET_CACHE_REFRESH_TIME = DEFAULT_JWK_SET_CACHE_LIFESPAN;
+    private static final String GROUP_RELATIONSHIP_DIRECT = "direct";
+    private static final String GROUP_RELATIONSHIP_TRANSITIVE = "transitive";
 
     /**
      * Default UserGroup configuration.
@@ -89,6 +92,11 @@ public class AADAuthenticationProperties {
     private long jwkSetCacheLifespan = DEFAULT_JWK_SET_CACHE_LIFESPAN;
 
     /**
+     * The refresh time of the cached JWK set before it expires, default is 5 minutes.
+     */
+    private long jwkSetCacheRefreshTime = DEFAULT_JWK_SET_CACHE_REFRESH_TIME;
+
+    /**
      * Azure Tenant ID.
      */
     private String tenantId;
@@ -99,8 +107,8 @@ public class AADAuthenticationProperties {
     private boolean allowTelemetry = true;
 
     /**
-     * If <code>true</code> activates the stateless auth filter {@link AADAppRoleStatelessAuthenticationFilter}. The
-     * default is <code>false</code> which activates {@link AADAuthenticationFilter}.
+     * If <code>true</code> activates the stateless auth filter {@link AADAppRoleStatelessAuthenticationFilter}.
+     * The default is <code>false</code> which activates {@link AADAuthenticationFilter}.
      */
     private Boolean sessionStateless = false;
 
@@ -143,6 +151,15 @@ public class AADAuthenticationProperties {
         @NotEmpty
         private String objectIDKey = "objectId";
 
+
+        /**
+         * The way to obtain group relationship.<br/> direct: the default value, get groups that the user is a direct
+         * member of;<br/> transitive: Get groups that the user is a member of, and will also return all groups the user
+         * is a nested member of;
+         */
+        @NotEmpty
+        private String groupRelationship = GROUP_RELATIONSHIP_DIRECT;
+
         public List<String> getAllowedGroups() {
             return allowedGroups;
         }
@@ -175,6 +192,14 @@ public class AADAuthenticationProperties {
             this.objectIDKey = objectIDKey;
         }
 
+        public String getGroupRelationship() {
+            return groupRelationship;
+        }
+
+        public void setGroupRelationship(String groupRelationship) {
+            this.groupRelationship = groupRelationship;
+        }
+
         @Override
         public String toString() {
             return "UserGroupProperties{"
@@ -182,6 +207,7 @@ public class AADAuthenticationProperties {
                 + ", key='" + key + '\''
                 + ", value='" + value + '\''
                 + ", objectIDKey='" + objectIDKey + '\''
+                + ", groupRelationship='" + groupRelationship + '\''
                 + '}';
         }
 
@@ -197,7 +223,8 @@ public class AADAuthenticationProperties {
             return Objects.equals(allowedGroups, that.allowedGroups)
                 && Objects.equals(key, that.key)
                 && Objects.equals(value, that.value)
-                && Objects.equals(objectIDKey, that.objectIDKey);
+                && Objects.equals(objectIDKey, that.objectIDKey)
+                && Objects.equals(groupRelationship, that.groupRelationship);
         }
 
         @Override
@@ -228,6 +255,11 @@ public class AADAuthenticationProperties {
         } else if (!allowedGroupsConfigured()) {
             throw new IllegalArgumentException("One of the User Group Properties must be populated. "
                 + "Please populate azure.activedirectory.user-group.allowed-groups");
+        }
+        if (!GROUP_RELATIONSHIP_DIRECT.equalsIgnoreCase(userGroup.groupRelationship)
+            && !GROUP_RELATIONSHIP_TRANSITIVE.equalsIgnoreCase(userGroup.groupRelationship)) {
+            throw new IllegalArgumentException("Configuration 'azure.activedirectory.user-group.group-relationship' "
+                + "should be 'direct' or 'transitive'.");
         }
     }
 
@@ -324,6 +356,14 @@ public class AADAuthenticationProperties {
         this.jwkSetCacheLifespan = jwkSetCacheLifespan;
     }
 
+    public long getJwkSetCacheRefreshTime() {
+        return jwkSetCacheRefreshTime;
+    }
+
+    public void setJwkSetCacheRefreshTime(long jwkSetCacheRefreshTime) {
+        this.jwkSetCacheRefreshTime = jwkSetCacheRefreshTime;
+    }
+
     public String getTenantId() {
         return tenantId;
     }
@@ -346,6 +386,14 @@ public class AADAuthenticationProperties {
 
     public void setSessionStateless(Boolean sessionStateless) {
         this.sessionStateless = sessionStateless;
+    }
+
+    public static String getDirectGroupRelationship() {
+        return GROUP_RELATIONSHIP_DIRECT;
+    }
+
+    public static String getTransitiveGroupRelationship() {
+        return GROUP_RELATIONSHIP_TRANSITIVE;
     }
 
     public boolean isAllowedGroup(String group) {
