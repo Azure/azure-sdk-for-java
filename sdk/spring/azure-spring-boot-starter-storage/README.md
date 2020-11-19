@@ -130,5 +130,5 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [other_operation]: https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#resources
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 
-[storage-blob-scalable-app-upload-files]: https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blob-scalable-app-upload-files
+[storage-blob-scalable-app-upload-files]: https://docs.microsoft.com/azure/storage/blobs/storage-blob-scalable-app-upload-files
 
