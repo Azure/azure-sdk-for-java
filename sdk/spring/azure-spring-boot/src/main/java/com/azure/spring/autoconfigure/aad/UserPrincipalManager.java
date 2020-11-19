@@ -163,13 +163,6 @@ public class UserPrincipalManager {
     }
 
     public boolean isTokenIssuedByAAD(String token) {
-        return staticIsTokenIssuedByAAD(token);
-    }
-
-    public static boolean staticIsTokenIssuedByAAD(String token) {
-        if (token == null) {
-            return false;
-        }
         try {
             final JWT jwt = JWTParser.parse(token);
             return isAADIssuer(jwt.getJWTClaimsSet().getIssuer());

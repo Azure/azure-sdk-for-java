@@ -45,6 +45,7 @@ import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName
 @ConditionalOnProperty(prefix = AADAuthenticationFilterAutoConfiguration.PROPERTY_PREFIX, value = { "client-id" })
 @EnableConfigurationProperties({ AADAuthenticationProperties.class, ServiceEndpointsProperties.class })
 @PropertySource(value = "classpath:service-endpoints.properties")
+@ConditionalOnExpression("#{'${azure.activedirectory.uri:notExist}' == 'notExist'}")
 public class AADAuthenticationFilterAutoConfiguration {
     public static final String PROPERTY_PREFIX = "azure.activedirectory";
     private static final Logger LOG = LoggerFactory.getLogger(AADAuthenticationProperties.class);
@@ -109,8 +110,7 @@ public class AADAuthenticationFilterAutoConfiguration {
     @ConditionalOnMissingBean(JWKSetCache.class)
     public JWKSetCache getJWKSetCache() {
         long lifespan = aadAuthenticationProperties.getJwkSetCacheLifespan();
-        long refreshTime = aadAuthenticationProperties.getJwkSetCacheRefreshTime();
-        return new DefaultJWKSetCache(lifespan, refreshTime, TimeUnit.MILLISECONDS);
+        return new DefaultJWKSetCache(lifespan, lifespan, TimeUnit.MILLISECONDS);
     }
 
     @PostConstruct
