@@ -76,11 +76,10 @@ final class Transforms {
      * @param includeFieldElements Boolean to indicate if to set reference elements data on fields.
      *
      * @param modelId the unlabeled model Id used for recognition.
-     * @param isBusinessCard boolean indicating if its recognizing a business card.
      * @return The List of {@code RecognizedForm}.
      */
     static List<RecognizedForm> toRecognizedForm(AnalyzeResult analyzeResult, boolean includeFieldElements,
-        String modelId, boolean isBusinessCard) {
+                                                 String modelId) {
         List<ReadResult> readResults = analyzeResult.getReadResults();
         List<DocumentResult> documentResults = analyzeResult.getDocumentResults();
         List<PageResult> pageResults = analyzeResult.getPageResults();
@@ -99,8 +98,7 @@ final class Transforms {
                     formPageRange = new FormPageRange(1, 1);
                 }
 
-                Map<String, FormField> extractedFieldMap = getLabeledFieldMap(documentResultItem, readResults,
-                    isBusinessCard);
+                Map<String, FormField> extractedFieldMap = getLabeledFieldMap(documentResultItem, readResults);
                 final RecognizedForm recognizedForm = new RecognizedForm(
                     extractedFieldMap,
                     documentResultItem.getDocType(),
@@ -153,7 +151,7 @@ final class Transforms {
         boolean pageResultsIsNullOrEmpty = CoreUtils.isNullOrEmpty(pageResults);
 
         forEachWithIndex(readResults, ((index, readResultItem) -> {
-            List<FormTable> perPageTableList = null;
+            List<FormTable> perPageTableList = new ArrayList<>();
 
             // add form tables
             if (!pageResultsIsNullOrEmpty) {
@@ -198,7 +196,7 @@ final class Transforms {
                 final FormSelectionMark formSelectionMark = new FormSelectionMark(
                     null, toBoundingBox(selectionMark.getBoundingBox()), pageNumber);
                 final SelectionMarkState selectionMarkStateImpl = selectionMark.getState();
-                com.azure.ai.formrecognizer.models.SelectionMarkState selectionMarkState = null;
+                com.azure.ai.formrecognizer.models.SelectionMarkState selectionMarkState;
                 if (SelectionMarkState.SELECTED.equals(selectionMarkStateImpl)) {
                     selectionMarkState = com.azure.ai.formrecognizer.models.SelectionMarkState.SELECTED;
                 } else if (SelectionMarkState.UNSELECTED.equals(selectionMarkStateImpl)) {
@@ -298,11 +296,10 @@ final class Transforms {
      *
      * @param documentResultItem The extracted document level information.
      * @param readResults The text extraction result returned by the service.
-     * @param isBusinessCard boolean indicating if its recognizing a business card.
      * @return The {@link RecognizedForm#getFields}.
      */
     private static Map<String, FormField> getLabeledFieldMap(DocumentResult documentResultItem,
-        List<ReadResult> readResults, boolean isBusinessCard) {
+                                                             List<ReadResult> readResults) {
         Map<String, FormField> recognizedFieldMap = new LinkedHashMap<>();
         // add receipt fields
         if (!CoreUtils.isNullOrEmpty(documentResultItem.getFields())) {
@@ -316,7 +313,7 @@ final class Transforms {
                         valueData = new FieldData(fieldValue.getText(), toBoundingBox(fieldValue.getBoundingBox()),
                             fieldValue.getPage(), formElementList);
                     }
-                    recognizedFieldMap.put(key, setFormField(key, valueData, fieldValue, readResults, isBusinessCard));
+                    recognizedFieldMap.put(key, setFormField(key, valueData, fieldValue, readResults));
                 } else {
                     recognizedFieldMap.put(key, new FormField(key, null, null, null,
                         DEFAULT_CONFIDENCE_VALUE));
@@ -335,11 +332,10 @@ final class Transforms {
      * @param fieldValue The named field values returned by the service.
      * @param readResults The text extraction result returned by the service.
      *
-     * @param isBusinessCard boolean indicating if its recognizing a business card.
      * @return The strongly typed {@link FormField} for the field input.
      */
     private static FormField setFormField(String name, FieldData valueData, FieldValue fieldValue,
-        List<ReadResult> readResults, boolean isBusinessCard) {
+                                          List<ReadResult> readResults) {
         com.azure.ai.formrecognizer.models.FieldValue value;
         switch (fieldValue.getType()) {
             case PHONE_NUMBER:
@@ -377,14 +373,14 @@ final class Transforms {
                 break;
             case ARRAY:
                 value = new com.azure.ai.formrecognizer.models.FieldValue(
-                    toFieldValueArray(fieldValue.getValueArray(), readResults, isBusinessCard), FieldValueType.LIST);
+                    toFieldValueArray(fieldValue.getValueArray(), readResults), FieldValueType.LIST);
                 break;
             case OBJECT:
                 value = new com.azure.ai.formrecognizer.models.FieldValue(
-                    toFieldValueObject(fieldValue.getValueObject(), readResults, isBusinessCard), FieldValueType.MAP);
+                    toFieldValueObject(fieldValue.getValueObject(), readResults), FieldValueType.MAP);
                 break;
             case SELECTION_MARK:
-                com.azure.ai.formrecognizer.models.SelectionMarkState selectionMarkState = null;
+                com.azure.ai.formrecognizer.models.SelectionMarkState selectionMarkState;
                 final FieldValueSelectionMark fieldValueSelectionMarkState = fieldValue.getValueSelectionMark();
                 if (FieldValueSelectionMark.SELECTED.equals(fieldValueSelectionMarkState)) {
                     selectionMarkState = com.azure.ai.formrecognizer.models.SelectionMarkState.SELECTED;
@@ -428,11 +424,10 @@ final class Transforms {
      *
      * @param valueObject The array of field values returned by the service in {@link FieldValue#getValueObject()}.
      *
-     * @param isBusinessCard boolean indicating if its recognizing a business card.
      * @return The Map of {@link FormField}.
      */
     private static Map<String, FormField> toFieldValueObject(Map<String, FieldValue> valueObject,
-        List<ReadResult> readResults, boolean isBusinessCard) {
+                                                             List<ReadResult> readResults) {
         Map<String, FormField> fieldValueObjectMap = new TreeMap<>();
         valueObject.forEach((key, fieldValue) ->
             fieldValueObjectMap.put(key,
@@ -442,7 +437,7 @@ final class Transforms {
                         fieldValue.getPage(),
                         setReferenceElements(fieldValue.getElements(), readResults)),
                     fieldValue,
-                    readResults, isBusinessCard)
+                    readResults)
             ));
         return fieldValueObjectMap;
     }
@@ -454,32 +449,21 @@ final class Transforms {
      *
      * @param valueArray The array of field values returned by the service in {@link FieldValue#getValueArray()}.
      * @param readResults The text extraction result returned by the service.
-     * @param isBusinessCard boolean indicating if its recognizing a business card.
      * @return The List of {@link FormField}.
      */
-    private static List<FormField> toFieldValueArray(List<FieldValue> valueArray, List<ReadResult> readResults,
-        boolean isBusinessCard) {
+    private static List<FormField> toFieldValueArray(List<FieldValue> valueArray, List<ReadResult> readResults) {
         return valueArray.stream()
             .map(fieldValue -> {
                 FieldData valueData = null;
                 // ARRAY has ho value data, such as bounding box.
-                if (ARRAY != fieldValue.getType() && OBJECT != fieldValue.getType()) {
+                if (ARRAY != fieldValue.getType()
+                    && (fieldValue.getPage() != null && fieldValue.getBoundingBox() != null
+                    && fieldValue.getText() != null)) {
                     valueData = new FieldData(fieldValue.getText(), toBoundingBox(fieldValue.getBoundingBox()),
                         fieldValue.getPage(),
                         setReferenceElements(fieldValue.getElements(), readResults));
-                } else if (isBusinessCard && OBJECT.equals(fieldValue.getType())) {
-                    // TODO: (savaity) Service bug, update after fixed.
-                    if (fieldValue.getValueObject().get("FirstName") != null
-                        && fieldValue.getValueObject().get("LastName") != null) {
-                        if (fieldValue.getValueObject().get("FirstName").getPage()
-                            .equals(fieldValue.getValueObject().get("LastName").getPage())) {
-                            valueData = new FieldData(fieldValue.getText(), toBoundingBox(fieldValue.getBoundingBox()),
-                                fieldValue.getValueObject().get("FirstName").getPage(),
-                                setReferenceElements(fieldValue.getElements(), readResults));
-                        }
-                    }
                 }
-                return setFormField(null, valueData, fieldValue, readResults, isBusinessCard);
+                return setFormField(null, valueData, fieldValue, readResults);
             })
             .collect(Collectors.toList());
     }
@@ -525,8 +509,8 @@ final class Transforms {
         Map<String, FormField> formFieldMap = new LinkedHashMap<>();
         List<KeyValuePair> keyValuePairs = pageResultItem.getKeyValuePairs();
         forEachWithIndex(keyValuePairs, ((index, keyValuePair) -> {
-            List<FormElement> formKeyContentList = null;
-            List<FormElement> formValueContentList = null;
+            List<FormElement> formKeyContentList = new ArrayList<>();
+            List<FormElement> formValueContentList = new ArrayList<>();
             if (includeFieldElements) {
                 formKeyContentList = setReferenceElements(keyValuePair.getKey().getElements(), readResults);
                 formValueContentList = setReferenceElements(keyValuePair.getValue().getElements(), readResults
