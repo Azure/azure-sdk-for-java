@@ -497,7 +497,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     }
 
     /**
-     * Returns a reactive Publisher emitting all the files/directories in this account lazily as needed. For more
+     * Returns a reactive Publisher emitting all the files/directories in this directory lazily as needed. For more
      * information, see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/filesystem/list">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -511,7 +511,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     }
 
     /**
-     * Returns a reactive Publisher emitting all the files/directories in this account lazily as needed. For more
+     * Returns a reactive Publisher emitting all the files/directories in this directory lazily as needed. For more
      * information, see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/filesystem/list">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>

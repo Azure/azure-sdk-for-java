@@ -427,7 +427,7 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
     }
 
     /**
-     * Returns a lazy loaded list of files/directories in this account. The returned {@link PagedIterable} can be
+     * Returns a lazy loaded list of files/directories in this directory. The returned {@link PagedIterable} can be
      * consumed while new items are automatically retrieved as needed. For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/filesystem/list#filesystem">Azure Docs</a>.
      *
@@ -442,7 +442,7 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
     }
 
     /**
-     * Returns a lazy loaded list of files/directories in this account. The returned {@link PagedIterable} can be
+     * Returns a lazy loaded list of files/directories in this directory. The returned {@link PagedIterable} can be
      * consumed while new items are automatically retrieved as needed. For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/filesystem/list#filesystem">Azure Docs</a>.
      *
