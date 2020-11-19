@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * The queue build request parameters for a quick build.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", defaultImpl = QuickBuildRequest.class)
 @JsonTypeName("QuickBuild")
 public class QuickBuildRequest extends QueueBuildRequest {
     /**
@@ -28,7 +28,7 @@ public class QuickBuildRequest extends QueueBuildRequest {
 
     /**
      * The URL(absolute or relative) of the source that needs to be built. For
-     * Docker build, it can be an URL to a tar or github repoistory as
+     * Docker build, it can be an URL to a tar or github repository as
      * supported by Docker.
      * If it is relative URL, the relative path should be obtained from calling
      * getSourceUploadUrl API.
@@ -95,7 +95,7 @@ public class QuickBuildRequest extends QueueBuildRequest {
     }
 
     /**
-     * Get the URL(absolute or relative) of the source that needs to be built. For Docker build, it can be an URL to a tar or github repoistory as supported by Docker.
+     * Get the URL(absolute or relative) of the source that needs to be built. For Docker build, it can be an URL to a tar or github repository as supported by Docker.
      If it is relative URL, the relative path should be obtained from calling getSourceUploadUrl API.
      *
      * @return the sourceLocation value
@@ -105,7 +105,7 @@ public class QuickBuildRequest extends QueueBuildRequest {
     }
 
     /**
-     * Set the URL(absolute or relative) of the source that needs to be built. For Docker build, it can be an URL to a tar or github repoistory as supported by Docker.
+     * Set the URL(absolute or relative) of the source that needs to be built. For Docker build, it can be an URL to a tar or github repository as supported by Docker.
      If it is relative URL, the relative path should be obtained from calling getSourceUploadUrl API.
      *
      * @param sourceLocation the sourceLocation value to set
