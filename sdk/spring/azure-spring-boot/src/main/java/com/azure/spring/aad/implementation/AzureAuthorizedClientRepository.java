@@ -3,19 +3,17 @@
 
 package com.azure.spring.aad.implementation;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.web.HttpSessionOAuth2AuthorizedClientRepository;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
+import org.springframework.security.oauth2.core.OAuth2AccessToken;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.client.InMemoryOAuth2AuthorizedClientService;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
-import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.security.oauth2.client.web.AuthenticatedPrincipalOAuth2AuthorizedClientRepository;
-import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
-import org.springframework.security.oauth2.core.OAuth2AccessToken;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 
 public class AzureAuthorizedClientRepository implements OAuth2AuthorizedClientRepository {
 
@@ -23,8 +21,7 @@ public class AzureAuthorizedClientRepository implements OAuth2AuthorizedClientRe
     private OAuth2AuthorizedClientRepository delegate;
 
     private static OAuth2AuthorizedClientRepository createDefaultDelegate(ClientRegistrationRepository repo) {
-        return new AuthenticatedPrincipalOAuth2AuthorizedClientRepository(
-            new InMemoryOAuth2AuthorizedClientService(repo));
+        return new HttpSessionOAuth2AuthorizedClientRepository();
     }
 
     public AzureAuthorizedClientRepository(AzureClientRegistrationRepository repo) {
