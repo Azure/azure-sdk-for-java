@@ -1,20 +1,56 @@
 {
   "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.communication.azure.com/administration/phonenumbers/countries/US/areacodes?locationType=selection&phonePlanId=phone-plan-id-1&api-version=2020-07-20-preview1",
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.communication.azure.com/administration/phonenumbers/countries/US/phoneplangroups?locale=en-us&includeRateInformation=true&api-version=2020-07-20-preview1",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-administration/1.0.0-beta.3 (15.0.1; Windows 10; 10.0)",
+      "User-Agent" : "azsdk-java-azure-communication-administration/1.0.0-beta.4 (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Processing-Time" : "3146ms",
+      "MS-CV" : "p+XC445o+E+iUni+va3ePg.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0ocO1XwAAAABGjA+8AXHVRZQENFm2eBBRWVZSMzBFREdFMDQwNwA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "StatusCode" : "200",
+      "Body" : "{\"phonePlanGroups\":[{\"phonePlanGroupId\":\"55bc1415-9fe6-42d7-9ed4-5ea28c6a17cf\",\"phoneNumberType\":\"Geographic\",\"localizedName\":\"Azure- User - Geographic\",\"localizedDescription\":\"These are numbers used by Azure resources.\",\"rateInformation\":{\"monthlyRate\":1.0,\"currencyType\":\"USD\",\"rateErrorMessage\":null}},{\"phonePlanGroupId\":\"671ee064-662f-4c3b-82a9-af2ab200dd5c\",\"phoneNumberType\":\"Geographic\",\"localizedName\":\"Azure - Geographic\",\"localizedDescription\":\"These are numbers used by Azure resources.\",\"rateInformation\":{\"monthlyRate\":1.0,\"currencyType\":\"USD\",\"rateErrorMessage\":null}},{\"phonePlanGroupId\":\"d47a0cdc-8dc1-4e82-a29b-39067f7fc317\",\"phoneNumberType\":\"TollFree\",\"localizedName\":\"Azure - Toll Free\",\"localizedDescription\":\"These are toll free numbers used by Azure resources.\",\"rateInformation\":{\"monthlyRate\":2.0,\"currencyType\":\"USD\",\"rateErrorMessage\":null}}],\"nextLink\":null}",
+      "Date" : "Thu, 19 Nov 2020 01:00:20 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.communication.azure.com/administration/phonenumbers/countries/US/phoneplangroups/55bc1415-9fe6-42d7-9ed4-5ea28c6a17cf/phoneplans?locale=en-us&api-version=2020-07-20-preview1",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-administration/1.0.0-beta.4 (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Processing-Time" : "1832ms",
+      "MS-CV" : "9uQL2U7sOkqDm+CPpW4Tqg.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0pMO1XwAAAABdjApjz9SRQ6HlFCkir8IQWVZSMzBFREdFMDMxNAA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "StatusCode" : "200",
+      "Body" : "{\"phonePlans\":[{\"phonePlanId\":\"01432411-5169-4665-b13e-3fa56c10e1d1\",\"localizedName\":\"Outbound Only PSTN For User - Geographic\",\"locationType\":\"Selection\",\"areaCodes\":[],\"capabilities\":[\"Azure\",\"OutboundCalling\",\"UserAssignment\",\"Geographic\"],\"maximumSearchSize\":20},{\"phonePlanId\":\"b528a997-03bb-446e-af98-3d99877cf0ba\",\"localizedName\":\"Inbound Only PSTN For User - Geographic\",\"locationType\":\"Selection\",\"areaCodes\":[],\"capabilities\":[\"Azure\",\"InboundCalling\",\"UserAssignment\",\"Geographic\"],\"maximumSearchSize\":20}],\"nextLink\":null}",
+      "Date" : "Thu, 19 Nov 2020 01:00:22 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.communication.azure.com/administration/phonenumbers/countries/US/areacodes?locationType=Selection&phonePlanId=01432411-5169-4665-b13e-3fa56c10e1d1&api-version=2020-07-20-preview1",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-administration/1.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "X-Processing-Time" : "383ms",
-      "MS-CV" : "CNYJjQzS+UCN1I+2ZCcwsw.0",
+      "X-Processing-Time" : "189ms",
+      "MS-CV" : "4R8WycD+TUiqvyELtMQxbw.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0QeysXwAAAAA7lP3MwYy7SYTqJJF24OLXTEFYRURHRTEyMTMAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
+      "X-Azure-Ref" : "0psO1XwAAAACU/mnNCfboR4Mrs3E8jLCXWVZSMzBFREdFMDQwNwA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
       "StatusCode" : "200",
-      "Body" : "{\"primaryAreaCodes\":[\"323\"],\"secondaryAreaCodes\":[],\"nextLink\":null}",
-      "Date" : "Thu, 12 Nov 2020 08:03:13 GMT",
+      "Body" : "{\"primaryAreaCodes\":[\"213\"],\"secondaryAreaCodes\":[],\"nextLink\":null}",
+      "Date" : "Thu, 19 Nov 2020 01:00:22 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
