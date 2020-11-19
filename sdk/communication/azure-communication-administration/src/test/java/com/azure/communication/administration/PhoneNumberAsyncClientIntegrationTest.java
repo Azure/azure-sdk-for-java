@@ -221,7 +221,7 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void e2EBeginCreateReservationGetReservationByIdCancelReservation(HttpClient httpClient) {
+    public void beginCreateReservationGetReservationByIdCancelReservation(HttpClient httpClient) {
         StepVerifier.create(
             // Setting up for phone number reservation creation
             this.getClient(httpClient).listPhonePlanGroups(COUNTRY_CODE, LOCALE, true).next()
@@ -248,7 +248,7 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void e2EBeginCreateReservationGetReservationByIdCancelReservationWithResponse(HttpClient httpClient) {
+    public void beginCreateReservationGetReservationByIdCancelReservationWithResponse(HttpClient httpClient) {
         StepVerifier.create(
             // Setting up for phone number reservation creation
             this.getClient(httpClient).listPhonePlanGroups(COUNTRY_CODE, LOCALE, true).next()
@@ -279,7 +279,7 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void e2EBeginCreateReservationBeginPurchaseReservationTestCapabilitiesWithResponseBeginReleasePhoneNumber(HttpClient httpClient) {
+    public void beginCreateReservationBeginPurchaseReservationTestCapabilitiesWithResponseBeginReleasePhoneNumber(HttpClient httpClient) {
         StepVerifier.create(
             // Setting up for phone number reservation creation
             this.getClient(httpClient).listPhonePlanGroups(COUNTRY_CODE, LOCALE, true).next()
@@ -330,7 +330,7 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void e2EBeginCreateReservationBeginPurchaseReservationTestConfigurationWithResponseBeginReleasePhoneNumber(HttpClient httpClient) {
+    public void beginCreateReservationBeginPurchaseReservationTestConfigurationWithResponseBeginReleasePhoneNumber(HttpClient httpClient) {
         StepVerifier.create(
             // Setting up for phone number reservation creation
             this.getClient(httpClient).listPhonePlanGroups(COUNTRY_CODE, LOCALE, true).next()
