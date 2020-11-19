@@ -429,7 +429,7 @@ public final class ServiceBusReceivedMessage {
      * @return The updated {@link ServiceBusMessage}.
      * @throws NullPointerException if {@code key} or {@code value} is null.
      */
-    public ServiceBusReceivedMessage addContext(String key, Object value) {
+    ServiceBusReceivedMessage addContext(String key, Object value) {
         Objects.requireNonNull(key, "The 'key' parameter cannot be null.");
         Objects.requireNonNull(value, "The 'value' parameter cannot be null.");
         this.context = context.addData(key, value);
