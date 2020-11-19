@@ -567,6 +567,13 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
             if (r <= Integer.MAX_VALUE) {
                 expectedTotalCredit = (int) r;
             } else {
+                //This won't really happen in reality.
+                //For async client, receiveMessages() calls "return receiveMessagesNoBackPressure().limitRate(1, 0);".
+                //So it will request one by one from this link processor, even though the user's request has no
+                //back pressure.
+                //For sync client, the sync subscriber has back pressure.
+                //The request count uses the the argument of method receiveMessages(int maxMessages).
+                //It's at most Integer.MAX_VALUE.
                 expectedTotalCredit = Integer.MAX_VALUE;
             }
         } else {
