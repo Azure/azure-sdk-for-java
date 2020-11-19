@@ -58,7 +58,7 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
                         HttpConstants.HttpHeaders.SUB_STATUS,
                         Integer.toString(HttpConstants.SubStatusCodes.PARTITION_KEY_MISMATCH));
 
-                return Mono.error(BridgeInternal.createCosmosException(HttpConstants.StatusCodes.BADREQUEST, new CosmosError() , header));
+                return Mono.error(BridgeInternal.createCosmosException(req.requestContext.resourcePhysicalAddress, HttpConstants.StatusCodes.BADREQUEST, new CosmosError() , header));
             } else {
                 return client.getOrigGatewayStoreModel().processMessage(req);
             }
@@ -89,7 +89,7 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
                         HttpConstants.HttpHeaders.SUB_STATUS,
                         Integer.toString(2));
 
-                return Mono.error(BridgeInternal.createCosmosException(1, new CosmosError() , header));
+                return Mono.error(BridgeInternal.createCosmosException(req.requestContext.resourcePhysicalAddress, 1, new CosmosError() , header));
             }
         }).when(client.getSpyGatewayStoreModel()).processMessage(anyObject());
 
@@ -124,7 +124,7 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
                         HttpConstants.HttpHeaders.SUB_STATUS,
                         Integer.toString(2));
 
-                return Mono.error(BridgeInternal.createCosmosException(1, new CosmosError() , header));
+                return Mono.error(BridgeInternal.createCosmosException(req.requestContext.resourcePhysicalAddress, 1, new CosmosError() , header));
             } else {
                 return client.getOrigGatewayStoreModel().processMessage(req);
             }

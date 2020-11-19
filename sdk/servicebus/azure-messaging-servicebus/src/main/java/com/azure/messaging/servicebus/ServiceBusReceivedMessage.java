@@ -9,7 +9,7 @@ import com.azure.core.amqp.models.AmqpBodyType;
 import com.azure.core.amqp.models.AmqpDataBody;
 import com.azure.core.experimental.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -239,7 +239,7 @@ public final class ServiceBusReceivedMessage {
      * Gets the lock token for the current message.
      * <p>
      * The lock token is a reference to the lock that is being held by the broker in
-     * {@link ReceiveMode#PEEK_LOCK} mode.
+     * {@link ServiceBusReceiveMode#PEEK_LOCK} mode.
      * Locks are used to explicitly settle messages as explained in the
      * <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement">product
      * documentation in more detail</a>. The token can also be used to pin the lock permanently
@@ -247,7 +247,8 @@ public final class ServiceBusReceivedMessage {
      * href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Deferral API</a> and, with that,
      * take the message out of the regular delivery state flow. This property is read-only.
      *
-     * @return Lock-token for this message. Could return {@code null} for {@link ReceiveMode#RECEIVE_AND_DELETE} mode.
+     * @return Lock-token for this message. Could return {@code null} for
+     * {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode.
      *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement">Message
      * transfers, locks, and settlement</a>
@@ -265,7 +266,7 @@ public final class ServiceBusReceivedMessage {
      * is read-only.
      *
      * @return the datetime at which the lock of this message expires if the message is received using {@link
-     *     ReceiveMode#PEEK_LOCK} mode. Otherwise it returns null.
+     *     ServiceBusReceiveMode#PEEK_LOCK} mode. Otherwise it returns null.
      *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement">Message
      *     transfers, locks, and settlement</a>

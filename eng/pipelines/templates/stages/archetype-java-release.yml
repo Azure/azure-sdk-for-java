@@ -70,7 +70,7 @@ stages:
                     pwsh: true
                     workingDirectory: $(Build.SourcesDirectory)
                     filePath: eng/scripts/SetTestPipelineVersion.ps1
-                    arguments: '-BuildNumber $(Build.BuildNumber)'
+                    arguments: '-BuildID $(Build.BuildId)'
 
               - task: UsePythonVersion@0
                 displayName: 'Use Python 3.6'

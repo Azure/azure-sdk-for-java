@@ -11,7 +11,7 @@ import com.azure.messaging.servicebus.models.AbandonOptions;
 import com.azure.messaging.servicebus.models.CompleteOptions;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.DeferOptions;
-import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -821,14 +821,14 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
                 .buildClient().acceptSession(sessionId);
             this.receiveAndDeleteReceiverMono = Mono.fromCallable(() -> getSessionReceiverBuilder(false, entityType, entityIndex,
                 sharedConnection)
-                .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
+                .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
                 .buildClient().acceptSession(sessionId));
         } else {
             this.receiver = getReceiverBuilder(false, entityType, entityIndex, sharedConnection)
                 .buildClient();
             this.receiveAndDeleteReceiver = getReceiverBuilder(false, entityType, entityIndex,
                 sharedConnection)
-                .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
+                .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
                 .buildClient();
         }
     }
