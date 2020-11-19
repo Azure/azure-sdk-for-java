@@ -160,7 +160,8 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
                 }))
             .assertNext(item -> {
                 assertNotNull(item.getLocationOptions().getLabelId());
-            });
+            })
+            .verifyComplete();
     }
 
     @ParameterizedTest
