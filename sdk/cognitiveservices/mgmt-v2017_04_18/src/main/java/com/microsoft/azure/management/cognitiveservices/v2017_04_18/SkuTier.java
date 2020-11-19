@@ -8,49 +8,40 @@
 
 package com.microsoft.azure.management.cognitiveservices.v2017_04_18;
 
+import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.microsoft.rest.ExpandableStringEnum;
 
 /**
  * Defines values for SkuTier.
  */
-public enum SkuTier {
-    /** Enum value Free. */
-    FREE("Free"),
+public final class SkuTier extends ExpandableStringEnum<SkuTier> {
+    /** Static value Free for SkuTier. */
+    public static final SkuTier FREE = fromString("Free");
 
-    /** Enum value Standard. */
-    STANDARD("Standard"),
+    /** Static value Standard for SkuTier. */
+    public static final SkuTier STANDARD = fromString("Standard");
 
-    /** Enum value Premium. */
-    PREMIUM("Premium");
+    /** Static value Premium for SkuTier. */
+    public static final SkuTier PREMIUM = fromString("Premium");
 
-    /** The actual serialized value for a SkuTier instance. */
-    private String value;
+    /** Static value Enterprise for SkuTier. */
+    public static final SkuTier ENTERPRISE = fromString("Enterprise");
 
-    SkuTier(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a SkuTier from its string representation.
+     * @param name a name to look for
+     * @return the corresponding SkuTier
+     */
+    @JsonCreator
+    public static SkuTier fromString(String name) {
+        return fromString(name, SkuTier.class);
     }
 
     /**
-     * Parses a serialized value to a SkuTier instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed SkuTier object, or null if unable to parse.
+     * @return known SkuTier values
      */
-    @JsonCreator
-    public static SkuTier fromString(String value) {
-        SkuTier[] items = SkuTier.values();
-        for (SkuTier item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<SkuTier> values() {
+        return values(SkuTier.class);
     }
 }

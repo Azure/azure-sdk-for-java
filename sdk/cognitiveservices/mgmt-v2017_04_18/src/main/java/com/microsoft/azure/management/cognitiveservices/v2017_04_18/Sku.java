@@ -23,7 +23,7 @@ public class Sku {
 
     /**
      * Gets the sku tier. This is based on the SKU name. Possible values
-     * include: 'Free', 'Standard', 'Premium'.
+     * include: 'Free', 'Standard', 'Premium', 'Enterprise'.
      */
     @JsonProperty(value = "tier", access = JsonProperty.Access.WRITE_ONLY)
     private SkuTier tier;
@@ -49,7 +49,7 @@ public class Sku {
     }
 
     /**
-     * Get gets the sku tier. This is based on the SKU name. Possible values include: 'Free', 'Standard', 'Premium'.
+     * Get gets the sku tier. This is based on the SKU name. Possible values include: 'Free', 'Standard', 'Premium', 'Enterprise'.
      *
      * @return the tier value
      */

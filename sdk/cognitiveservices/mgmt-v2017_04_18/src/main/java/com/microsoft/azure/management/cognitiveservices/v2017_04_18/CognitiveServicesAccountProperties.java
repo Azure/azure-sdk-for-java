@@ -91,6 +91,12 @@ public class CognitiveServicesAccountProperties {
     private CognitiveServicesAccountApiProperties apiProperties;
 
     /**
+     * Gets the date of cognitive services account creation.
+     */
+    @JsonProperty(value = "dateCreated", access = JsonProperty.Access.WRITE_ONLY)
+    private String dateCreated;
+
+    /**
      * Get gets the status of the cognitive services account at the time the operation was called. Possible values include: 'Creating', 'ResolvingDNS', 'Moving', 'Deleting', 'Succeeded', 'Failed'.
      *
      * @return the provisioningState value
@@ -264,6 +270,15 @@ public class CognitiveServicesAccountProperties {
     public CognitiveServicesAccountProperties withApiProperties(CognitiveServicesAccountApiProperties apiProperties) {
         this.apiProperties = apiProperties;
         return this;
+    }
+
+    /**
+     * Get gets the date of cognitive services account creation.
+     *
+     * @return the dateCreated value
+     */
+    public String dateCreated() {
+        return this.dateCreated;
     }
 
 }
