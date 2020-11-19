@@ -110,12 +110,8 @@ public class ServiceBusMessage {
      *
      * @throws NullPointerException if {@code receivedMessage} is {@code null}.
      * @throws UnsupportedOperationException if {@link AmqpMessageBodyType} is {@link AmqpMessageBodyType#SEQUENCE} or
-     * {@link AmqpMessageBodyType#VALUE}. See code sample above explaining how to check for {@link AmqpMessageBodyType}
-     * before calling this constructor.
-     * <p><strong>How to check for {@link AmqpMessageBodyType} before calling this constructor</strong></p>
-     * {@codesnippet com.azure.messaging.servicebus.ServiceBusMessage.copyServiceBusMessage}
+     * {@link AmqpMessageBodyType#VALUE}.
      * @throws IllegalStateException for invalid {@link AmqpMessageBodyType}.
-     * @see AmqpAnnotatedMessage
      */
     public ServiceBusMessage(ServiceBusReceivedMessage receivedMessage) {
         Objects.requireNonNull(receivedMessage, "'receivedMessage' cannot be null.");
@@ -129,6 +125,7 @@ public class ServiceBusMessage {
                 break;
             case SEQUENCE:
             case VALUE:
+                // This should not happen because we will not create `ServiceBusReceivedMessage` with these types.
                 throw logger.logExceptionAsError(new UnsupportedOperationException(
                     "This constructor only supports the AMQP Data body type at present. Track this issue, "
                         + "https://github.com/Azure/azure-sdk-for-java/issues/17614 for other body type support in "

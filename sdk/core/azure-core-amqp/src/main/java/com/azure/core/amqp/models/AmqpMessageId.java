@@ -12,13 +12,8 @@ import java.util.Objects;
  * <p><strong>Create and retrieve message id </strong></p>
  * {@codesnippet com.azure.core.amqp.models.AmqpMessageId.createAndGet}
  *
- * <b>Amqp message id types:</b>
- * <ul>
- * <li><a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#type-message-id-string" target="_blank">String</a></li>
- * <li><a href="http://docs.oasis-open.org/amqp/core/v1.0/amqp-core-messaging-v1.0.html#type-message-id-ulong" target="_blank">long</a></li>
- * <li><a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#type-message-id-uuid" target="_blank">Uuid</a></li>
- * <li><a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#type-message-id-binary" target="_blank">binary</a></li>
- * </ul>
+ * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#type-message-id-string" target="_blank">
+ *     String </a>
  */
 public final class AmqpMessageId {
     private final String messageId;

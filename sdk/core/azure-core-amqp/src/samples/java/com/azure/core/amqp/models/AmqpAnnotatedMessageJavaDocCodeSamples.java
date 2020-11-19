@@ -33,4 +33,26 @@ public class AmqpAnnotatedMessageJavaDocCodeSamples {
         System.out.println(new String(payload));
         // END: com.azure.core.amqp.models.AmqpBodyType.checkBodyType
     }
+
+    public void address() {
+        // BEGIN: com.azure.core.amqp.models.AmqpAddress.createAndGet
+        AmqpAddress amqpAddress = new AmqpAddress("my-address");
+        // Retrieve Adderss
+        String address = amqpAddress.toString();
+        System.out.println("Address " + address);
+        // END: com.azure.core.amqp.models.AmqpAddress.createAndGet
+    }
+
+    /**
+     * Get message body from {@link AmqpMessageId}.
+     */
+    public void messageId() {
+        // BEGIN: com.azure.core.amqp.models.AmqpMessageId.createAndGet
+        AmqpMessageId messageId = new AmqpMessageId("my-message-id");
+        // Retrieve Message id
+        String id = messageId.toString();
+        System.out.println("Message Id " + id);
+        // END: com.azure.core.amqp.models.AmqpMessageId.createAndGet
+    }
+
 }

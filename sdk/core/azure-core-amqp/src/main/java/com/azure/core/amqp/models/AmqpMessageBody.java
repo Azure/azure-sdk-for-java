@@ -34,7 +34,7 @@ public final class AmqpMessageBody {
     private List<byte[]> dataList;
 
     private AmqpMessageBody() {
-        // package constructor so no one can create instance of this except classes im this package.
+        // private constructor so no one outside can create instance of this except classes im this package.
     }
 
     /**
@@ -92,8 +92,7 @@ public final class AmqpMessageBody {
 
     /**
      * Gets first byte array set on this {@link AmqpMessageBody}. This library only support one byte array on Amqp
-     * Message. Look for future releases where we will support multiple byte array and you can use
-     * {@link AmqpMessageBody#getData()} API.
+     * Message at present.
      * <p><b>Client should test for {@link AmqpMessageBodyType} before calling corresponding get method. Get methods not
      * corresponding to the type of the body throws exception.</b></p>
      *
