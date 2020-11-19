@@ -5,7 +5,10 @@ package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient;
 import com.azure.ai.metricsadvisor.models.DataFeed;
+import com.azure.ai.metricsadvisor.models.DataFeedGranularity;
 import com.azure.ai.metricsadvisor.models.DataFeedGranularityType;
+import com.azure.ai.metricsadvisor.models.DataFeedMetric;
+import com.azure.ai.metricsadvisor.models.DataFeedSchema;
 import com.azure.ai.metricsadvisor.models.DataFeedSourceType;
 import com.azure.ai.metricsadvisor.models.DataFeedStatus;
 import com.azure.ai.metricsadvisor.models.ErrorCode;
@@ -13,6 +16,7 @@ import com.azure.ai.metricsadvisor.models.ErrorCodeException;
 import com.azure.ai.metricsadvisor.models.ListDataFeedFilter;
 import com.azure.ai.metricsadvisor.models.ListDataFeedOptions;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
+import com.azure.ai.metricsadvisor.models.PostgreSqlDataFeedSource;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
@@ -28,6 +32,7 @@ import reactor.test.StepVerifier;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -84,9 +89,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
             listDataFeedRunner(inputDataFeedList -> {
                 List<DataFeed> actualDataFeedList = new ArrayList<>();
                 List<DataFeed> expectedDataFeedList =
-                    inputDataFeedList.stream().map(dataFeed -> client.createDataFeed(dataFeed.getName(),
-                        dataFeed.getSource(), dataFeed.getGranularity(),
-                        dataFeed.getSchema(), dataFeed.getIngestionSettings(), dataFeed.getOptions()))
+                    inputDataFeedList.stream().map(dataFeed -> client.createDataFeed(dataFeed))
                         .collect(Collectors.toList());
 
                 // Act & Assert
@@ -147,9 +150,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
             client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
             creatDataFeedRunner(expectedDataFeed -> {
                 // Act & Assert
-                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed.getName(),
-                    expectedDataFeed.getSource(), expectedDataFeed.getGranularity(),
-                    expectedDataFeed.getSchema(), expectedDataFeed.getIngestionSettings(), expectedDataFeed.getOptions());
+                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed);
 
                 assertNotNull(createdDataFeed);
                 dataFeedId.set(createdDataFeed.getId());
@@ -169,25 +170,26 @@ public class DataFeedClientTest extends DataFeedTestBase {
         }
     }
 
-    /**
-     * Verifies the result of the list data feed method using skip and top options.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
-    void testListDataFeedSkip(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-        // Arrange
-        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
-        final ArrayList<DataFeed> actualDataFeedList = new ArrayList<>();
-        final ArrayList<DataFeed> expectedList = new ArrayList<>();
-
-        client.listDataFeeds().stream().iterator().forEachRemaining(expectedList::add);
-
-        // Act & Assert
-        client.listDataFeeds(new ListDataFeedOptions().setSkip(3), Context.NONE)
-            .stream().iterator().forEachRemaining(actualDataFeedList::add);
-
-        assertEquals(expectedList.size(), actualDataFeedList.size() + 3);
-    }
+    // TODO (savaity) flaky test
+    // /**
+    //  * Verifies the result of the list data feed method using skip and top options.
+    //  */
+    // @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    // @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
+    // void testListDataFeedSkip(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
+    //     // Arrange
+    //     client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+    //     final ArrayList<DataFeed> actualDataFeedList = new ArrayList<>();
+    //     final ArrayList<DataFeed> expectedList = new ArrayList<>();
+    //
+    //     client.listDataFeeds().stream().iterator().forEachRemaining(expectedList::add);
+    //
+    //     // Act & Assert
+    //     client.listDataFeeds(new ListDataFeedOptions().setSkip(3), Context.NONE)
+    //         .stream().iterator().forEachRemaining(actualDataFeedList::add);
+    //
+    //     assertEquals(expectedList.size(), actualDataFeedList.size() + 3);
+    // }
 
     /**
      * Verifies the result of the list data feed method to filter results using
@@ -254,12 +256,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
             // Arrange
             client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
             creatDataFeedRunner(inputDataFeed -> {
-                final DataFeed createdDataFeed = client.createDataFeed(filterName,
-                    inputDataFeed.getSource(),
-                    inputDataFeed.getGranularity(),
-                    inputDataFeed.getSchema(),
-                    inputDataFeed.getIngestionSettings(),
-                    inputDataFeed.getOptions());
+                final DataFeed createdDataFeed = client.createDataFeed(inputDataFeed.setName(filterName));
 
                 assertNotNull(createdDataFeed);
                 dataFeedId.set(createdDataFeed.getId());
@@ -321,12 +318,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
             // Arrange
             client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
             creatDataFeedRunner(dataFeed -> {
-                final DataFeed createdDataFeed = client.createDataFeed(dataFeed.getName(),
-                    dataFeed.getSource(),
-                    dataFeed.getGranularity(),
-                    dataFeed.getSchema(),
-                    dataFeed.getIngestionSettings(),
-                    dataFeed.getOptions());
+                final DataFeed createdDataFeed = client.createDataFeed(dataFeed);
 
                 assertNotNull(createdDataFeed);
                 dataFeedId.set(createdDataFeed.getId());
@@ -358,12 +350,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
             client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
             creatDataFeedRunner(expectedDataFeed -> {
                 // Act & Assert
-                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed.getName(),
-                    expectedDataFeed.getSource(),
-                    expectedDataFeed.getGranularity(),
-                    expectedDataFeed.getSchema(),
-                    expectedDataFeed.getIngestionSettings(),
-                    expectedDataFeed.getOptions());
+                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed);
 
                 assertNotNull(createdDataFeed);
                 dataFeedId.set(createdDataFeed.getId());
@@ -389,12 +376,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
             // Arrange
             creatDataFeedRunner(expectedDataFeed -> {
                 // Act & Assert
-                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed.getName(),
-                    expectedDataFeed.getSource(),
-                    expectedDataFeed.getGranularity(),
-                    expectedDataFeed.getSchema(),
-                    expectedDataFeed.getIngestionSettings(),
-                    expectedDataFeed.getOptions());
+                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed);
 
                 assertNotNull(createdDataFeed);
                 dataFeedId.set(createdDataFeed.getId());
@@ -421,12 +403,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
             creatDataFeedRunner(expectedDataFeed -> {
 
                 // Act & Assert
-                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed.getName(),
-                    expectedDataFeed.getSource(),
-                    expectedDataFeed.getGranularity(),
-                    expectedDataFeed.getSchema(),
-                    expectedDataFeed.getIngestionSettings(),
-                    expectedDataFeed.getOptions());
+                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed);
 
                 assertNotNull(createdDataFeed);
                 dataFeedId.set(createdDataFeed.getId());
@@ -453,12 +430,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
             creatDataFeedRunner(expectedDataFeed -> {
 
                 // Act & Assert
-                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed.getName(),
-                    expectedDataFeed.getSource(),
-                    expectedDataFeed.getGranularity(),
-                    expectedDataFeed.getSchema(),
-                    expectedDataFeed.getIngestionSettings(),
-                    expectedDataFeed.getOptions());
+                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed);
 
                 assertNotNull(createdDataFeed);
                 dataFeedId.set(createdDataFeed.getId());
@@ -484,12 +456,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
             // Arrange
             creatDataFeedRunner(expectedDataFeed -> {
                 // Act & Assert
-                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed.getName(),
-                    expectedDataFeed.getSource(),
-                    expectedDataFeed.getGranularity(),
-                    expectedDataFeed.getSchema(),
-                    expectedDataFeed.getIngestionSettings(),
-                    expectedDataFeed.getOptions());
+                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed);
 
                 assertNotNull(createdDataFeed);
                 dataFeedId.set(createdDataFeed.getId());
@@ -515,12 +482,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
             // Arrange
             creatDataFeedRunner(expectedDataFeed -> {
                 // Act & Assert
-                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed.getName(),
-                    expectedDataFeed.getSource(),
-                    expectedDataFeed.getGranularity(),
-                    expectedDataFeed.getSchema(),
-                    expectedDataFeed.getIngestionSettings(),
-                    expectedDataFeed.getOptions());
+                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed);
 
                 assertNotNull(createdDataFeed);
                 dataFeedId.set(createdDataFeed.getId());
@@ -546,12 +508,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
             // Arrange
             creatDataFeedRunner(expectedDataFeed -> {
                 // Act & Assert
-                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed.getName(),
-                    expectedDataFeed.getSource(),
-                    expectedDataFeed.getGranularity(),
-                    expectedDataFeed.getSchema(),
-                    expectedDataFeed.getIngestionSettings(),
-                    expectedDataFeed.getOptions());
+                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed);
 
                 assertNotNull(createdDataFeed);
                 dataFeedId.set(createdDataFeed.getId());
@@ -577,12 +534,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
             // Arrange
             creatDataFeedRunner(expectedDataFeed -> {
                 // Act & Assert
-                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed.getName(),
-                    expectedDataFeed.getSource(),
-                    expectedDataFeed.getGranularity(),
-                    expectedDataFeed.getSchema(),
-                    expectedDataFeed.getIngestionSettings(),
-                    expectedDataFeed.getOptions());
+                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed);
 
                 assertNotNull(createdDataFeed);
                 dataFeedId.set(createdDataFeed.getId());
@@ -608,12 +560,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
             // Arrange
             creatDataFeedRunner(expectedDataFeed -> {
                 // Act & Assert
-                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed.getName(),
-                    expectedDataFeed.getSource(),
-                    expectedDataFeed.getGranularity(),
-                    expectedDataFeed.getSchema(),
-                    expectedDataFeed.getIngestionSettings(),
-                    expectedDataFeed.getOptions());
+                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed);
 
                 assertNotNull(createdDataFeed);
                 dataFeedId.set(createdDataFeed.getId());
@@ -640,12 +587,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
 
             creatDataFeedRunner(expectedDataFeed -> {
                 // Act & Assert
-                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed.getName(),
-                    expectedDataFeed.getSource(),
-                    expectedDataFeed.getGranularity(),
-                    expectedDataFeed.getSchema(),
-                    expectedDataFeed.getIngestionSettings(),
-                    expectedDataFeed.getOptions());
+                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed);
 
                 assertNotNull(createdDataFeed);
                 dataFeedId.set(createdDataFeed.getId());
@@ -671,12 +613,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
             client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
             creatDataFeedRunner(expectedDataFeed -> {
                 // Act & Assert
-                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed.getName(),
-                    expectedDataFeed.getSource(),
-                    expectedDataFeed.getGranularity(),
-                    expectedDataFeed.getSchema(),
-                    expectedDataFeed.getIngestionSettings(),
-                    expectedDataFeed.getOptions());
+                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed);
 
                 assertNotNull(createdDataFeed);
                 dataFeedId.set(createdDataFeed.getId());
@@ -702,12 +639,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
             client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
             creatDataFeedRunner(expectedDataFeed -> {
                 // Act & Assert
-                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed.getName(),
-                    expectedDataFeed.getSource(),
-                    expectedDataFeed.getGranularity(),
-                    expectedDataFeed.getSchema(),
-                    expectedDataFeed.getIngestionSettings(),
-                    expectedDataFeed.getOptions());
+                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed);
 
                 assertNotNull(createdDataFeed);
                 dataFeedId.set(createdDataFeed.getId());
@@ -733,12 +665,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
             client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
             creatDataFeedRunner(expectedDataFeed -> {
                 // Act & Assert
-                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed.getName(),
-                    expectedDataFeed.getSource(),
-                    expectedDataFeed.getGranularity(),
-                    expectedDataFeed.getSchema(),
-                    expectedDataFeed.getIngestionSettings(),
-                    expectedDataFeed.getOptions());
+                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed);
 
                 assertNotNull(createdDataFeed);
                 dataFeedId.set(createdDataFeed.getId());
@@ -762,30 +689,32 @@ public class DataFeedClientTest extends DataFeedTestBase {
         client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
         creatDataFeedRunner(expectedDataFeed -> {
             // Act & Assert
-            Exception ex = assertThrows(NullPointerException.class, () -> client.createDataFeed(null,
-                expectedDataFeed.getSource(), expectedDataFeed.getGranularity(),
-                expectedDataFeed.getSchema(), expectedDataFeed.getIngestionSettings(), expectedDataFeed.getOptions()));
-            assertEquals("'dataFeedName' cannot be null or empty.", ex.getMessage());
+            Exception ex = assertThrows(NullPointerException.class, () -> client.createDataFeed(null));
+            assertEquals("'dataFeed' is required and cannot be null.", ex.getMessage());
 
-            ex = assertThrows(NullPointerException.class, () -> client.createDataFeed(expectedDataFeed.getName(),
-                null, expectedDataFeed.getGranularity(),
-                expectedDataFeed.getSchema(), expectedDataFeed.getIngestionSettings(), expectedDataFeed.getOptions()));
-            assertEquals("'dataFeedSource' cannot be null or empty.", ex.getMessage());
+            ex = assertThrows(NullPointerException.class, () -> client.createDataFeed(
+                new DataFeed().setName("name")));
+            assertEquals("'dataFeedSource' is required and cannot be null.", ex.getMessage());
 
-            ex = assertThrows(NullPointerException.class, () -> client.createDataFeed(expectedDataFeed.getName(),
-                expectedDataFeed.getSource(), null,
-                expectedDataFeed.getSchema(), expectedDataFeed.getIngestionSettings(), expectedDataFeed.getOptions()));
-            assertEquals("'dataFeedGranularity.granularityType' cannot be null or empty.", ex.getMessage());
-
-            ex = assertThrows(NullPointerException.class, () -> client.createDataFeed(expectedDataFeed.getName(),
-                expectedDataFeed.getSource(), expectedDataFeed.getGranularity(),
-                null, expectedDataFeed.getIngestionSettings(), expectedDataFeed.getOptions()));
+            ex = assertThrows(NullPointerException.class, () -> client.createDataFeed(
+                new DataFeed().setName("name")
+                    .setSource(new PostgreSqlDataFeedSource("conn-string", "query"))));
             assertEquals("'dataFeedSchema.metrics' cannot be null or empty.", ex.getMessage());
 
-            ex = assertThrows(NullPointerException.class, () -> client.createDataFeed(expectedDataFeed.getName(),
-                expectedDataFeed.getSource(), expectedDataFeed.getGranularity(),
-                expectedDataFeed.getSchema(), null, expectedDataFeed.getOptions()));
-            assertEquals("'dataFeedIngestionSettings.ingestionStartTime' cannot be null or empty.",
+            ex = assertThrows(NullPointerException.class, () -> client.createDataFeed(
+                new DataFeed()
+                    .setName("name")
+                    .setSource(new PostgreSqlDataFeedSource("conn-string", "query"))
+                    .setSchema(new DataFeedSchema(Collections.singletonList(new DataFeedMetric().setName("name"))))));
+            assertEquals("'dataFeedGranularity.granularityType' is required and cannot be null.", ex.getMessage());
+
+            ex = assertThrows(NullPointerException.class, () -> client.createDataFeed(
+                new DataFeed()
+                    .setName("name")
+                    .setSource(new PostgreSqlDataFeedSource("conn-string", "query"))
+                    .setSchema(new DataFeedSchema(Collections.singletonList(new DataFeedMetric().setName("name"))))
+                    .setGranularity(new DataFeedGranularity().setGranularityType(DAILY))));
+            assertEquals("'dataFeedIngestionSettings.ingestionStartTime' is required and cannot be null.",
                 ex.getMessage());
 
         }, SQL_SERVER_DB);
@@ -817,12 +746,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
         // Arrange
         client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
         creatDataFeedRunner(dataFeed -> {
-            final DataFeed createdDataFeed = client.createDataFeed(dataFeed.getName(),
-                dataFeed.getSource(),
-                dataFeed.getGranularity(),
-                dataFeed.getSchema(),
-                dataFeed.getIngestionSettings(),
-                dataFeed.getOptions());
+            final DataFeed createdDataFeed = client.createDataFeed(dataFeed);
 
             assertEquals(HttpResponseStatus.NO_CONTENT.code(),
                 client.deleteDataFeedWithResponse(createdDataFeed.getId(), Context.NONE).getStatusCode());
@@ -850,12 +774,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
             client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
             // Arrange
             creatDataFeedRunner(expectedDataFeed -> {
-                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed.getName(),
-                    expectedDataFeed.getSource(),
-                    expectedDataFeed.getGranularity(),
-                    expectedDataFeed.getSchema(),
-                    expectedDataFeed.getIngestionSettings(),
-                    expectedDataFeed.getOptions());
+                final DataFeed createdDataFeed = client.createDataFeed(expectedDataFeed);
 
                 assertNotNull(createdDataFeed);
                 dataFeedId.set(createdDataFeed.getId());

@@ -7,7 +7,7 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.message.Message;
 import org.reactivestreams.Subscription;
@@ -60,7 +60,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
     private final AtomicInteger wip = new AtomicInteger();
 
     private final AmqpRetryPolicy retryPolicy;
-    private final ReceiveMode receiveMode;
+    private final ServiceBusReceiveMode receiveMode;
 
     private volatile Throwable lastError;
     private volatile boolean isCancelled;
@@ -87,7 +87,8 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
      * @throws NullPointerException if {@code retryPolicy} is null.
      * @throws IllegalArgumentException if {@code prefetch} is less than 0.
      */
-    public ServiceBusReceiveLinkProcessor(int prefetch, AmqpRetryPolicy retryPolicy, ReceiveMode receiveMode) {
+    public ServiceBusReceiveLinkProcessor(int prefetch, AmqpRetryPolicy retryPolicy, ServiceBusReceiveMode
+        receiveMode) {
         this.retryPolicy = Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
         this.receiveMode = Objects.requireNonNull(receiveMode, "'receiveMode' cannot be null.");
 
@@ -495,7 +496,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
 
                     // These don't have to be settled because they're automatically settled by the link, so we
                     // decrement the count.
-                    if (receiveMode != ReceiveMode.PEEK_LOCK) {
+                    if (receiveMode != ServiceBusReceiveMode.PEEK_LOCK) {
                         pendingMessages.decrementAndGet();
                     }
                 } catch (Exception e) {

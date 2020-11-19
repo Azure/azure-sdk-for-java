@@ -28,15 +28,15 @@ public class PhoneNumberIntegrationTestBase extends TestBase {
     protected static final String AREA_CODE_FOR_SEARCH =
         Configuration.getGlobalConfiguration().get(
             "AREA_CODE_FOR_SEARCH", "777");
-    protected static final String SEARCH_ID =
+    protected static final String RESERVATION_ID =
         Configuration.getGlobalConfiguration().get(
-            "SEARCH_ID", "search-id-1");
-    protected static final String SEARCH_ID_TO_PURCHASE =
+            "RESERVATION_ID", "reservation-id-1");
+    protected static final String RESERVATION_ID_TO_PURCHASE =
         Configuration.getGlobalConfiguration().get(
-            "SEARCH_ID_TO_PURCHASE", "search-id-1");
-    protected static final String SEARCH_ID_TO_CANCEL =
+            "RESERVATION_ID_TO_PURCHASE", "reservation-id-1");
+    protected static final String RESERVATION_ID_TO_CANCEL =
         Configuration.getGlobalConfiguration().get(
-            "SEARCH_ID_TO_CANCEL", "search-id-2");
+            "RESERVATION_ID_TO_CANCEL", "reservation-id-2");
     protected static final String PHONENUMBER_TO_CONFIGURE =
         Configuration.getGlobalConfiguration().get(
             "PHONENUMBER_TO_CONFIGURE", "+17771234567");
@@ -59,10 +59,10 @@ public class PhoneNumberIntegrationTestBase extends TestBase {
         Configuration.getGlobalConfiguration().get("LOCATION_OPTION_STATE", "CA");
     protected static final String LOCATION_OPTION_CITY =
         Configuration.getGlobalConfiguration().get("LOCATION_OPTION_CITY", "NOAM-US-CA-LA");
-    protected static final String SEARCH_OPTIONS_DESCRIPTION =
-        Configuration.getGlobalConfiguration().get("SEARCH_OPTIONS_DESCRIPTION", "testsearch20200014");
-    protected static final String SEARCH_OPTIONS_NAME =
-        Configuration.getGlobalConfiguration().get("SEARCH_OPTIONS_NAME", "testsearch20200014");
+    protected static final String RESERVATION_OPTIONS_DESCRIPTION =
+        Configuration.getGlobalConfiguration().get("RESERVATION_OPTIONS_DESCRIPTION", "testReservation20200014");
+    protected static final String RESERVATION_OPTIONS_NAME =
+        Configuration.getGlobalConfiguration().get("RESERVATION_OPTIONS_NAME", "testReservation20200014");
 
     protected PhoneNumberClientBuilder getClientBuilder(HttpClient httpClient) {
         if (getTestMode() == TestMode.PLAYBACK) {

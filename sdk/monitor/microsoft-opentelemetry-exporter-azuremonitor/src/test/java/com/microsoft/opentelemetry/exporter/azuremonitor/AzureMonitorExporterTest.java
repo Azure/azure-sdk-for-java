@@ -34,7 +34,7 @@ public class AzureMonitorExporterTest extends MonitorExporterClientTestBase {
     @Test
     public void testExportRequestData() {
         AzureMonitorExporter azureMonitorExporter = getClientBuilder()
-            .instrumentationKey("{instrumentation-key}")
+            .connectionString("InstrumentationKey=ikey;IngestionEndpoint=https://testendpoint.com")
             .buildExporter();
         CompletableResultCode export = azureMonitorExporter.export(Collections.singleton(new RequestSpanData()));
         Assertions.assertTrue(export.isDone());

@@ -143,7 +143,7 @@ public final class CreateVirtualMachinesAsyncTrackingRelatedResources {
                         .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                         .withRootUsername(userName)
                         .withRootPassword(Utils.password())
-                        .withSize(VirtualMachineSizeTypes.STANDARD_DS1_V2)
+                        .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                         .withNewAvailabilitySet(availabilitySetDefinition);
 
                 // Keep track of all the related resource definitions based on the VM definition

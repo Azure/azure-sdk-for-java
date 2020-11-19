@@ -3,11 +3,11 @@
 
 package com.azure.ai.metricsadvisor;
 
-import com.azure.ai.metricsadvisor.models.Anomaly;
+import com.azure.ai.metricsadvisor.models.AnomalySeverity;
+import com.azure.ai.metricsadvisor.models.DataPointAnomaly;
 import com.azure.ai.metricsadvisor.models.ListAnomaliesDetectedFilter;
 import com.azure.ai.metricsadvisor.models.ListAnomaliesDetectedOptions;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
-import com.azure.ai.metricsadvisor.models.Severity;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.api.Assertions;
 
@@ -28,17 +28,17 @@ public abstract class AnomalyForDetectionConfigTestBase extends MetricsAdvisorCl
         final OffsetDateTime startTime = TIME_SERIES_START_TIME;
         final OffsetDateTime endTime = TIME_SERIES_END_TIME;
         final ListAnomaliesDetectedFilter filter = new ListAnomaliesDetectedFilter()
-            .setSeverity(Severity.LOW, Severity.MEDIUM);
-        final ListAnomaliesDetectedOptions options = new ListAnomaliesDetectedOptions(startTime, endTime)
+            .setSeverityRange(AnomalySeverity.LOW, AnomalySeverity.MEDIUM);
+        final ListAnomaliesDetectedOptions options = new ListAnomaliesDetectedOptions()
             .setTop(10)
             .setFilter(filter);
     }
 
-    protected void assertListAnomaliesDetectionConfigOutput(Anomaly anomaly) {
-        Assertions.assertNotNull(anomaly);
-        Assertions.assertNotNull(anomaly.getSeverity());
-        Assertions.assertNotNull(anomaly.getTimestamp());
-        Assertions.assertNotNull(anomaly.getSeriesKey());
-        Assertions.assertFalse(anomaly.getSeriesKey().asMap().isEmpty());
+    protected void assertListAnomaliesDetectionConfigOutput(DataPointAnomaly dataPointAnomaly) {
+        Assertions.assertNotNull(dataPointAnomaly);
+        Assertions.assertNotNull(dataPointAnomaly.getSeverity());
+        Assertions.assertNotNull(dataPointAnomaly.getTimestamp());
+        Assertions.assertNotNull(dataPointAnomaly.getSeriesKey());
+        Assertions.assertFalse(dataPointAnomaly.getSeriesKey().asMap().isEmpty());
     }
 }

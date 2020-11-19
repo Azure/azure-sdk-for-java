@@ -57,6 +57,9 @@ extends:
       - name: azure-spring-boot-starter-servicebus-jms
         groupId: com.azure.spring
         safeName: azurespringbootstarterservicebusjms
+      - name: azure-spring-boot-starter-storage
+        groupId: com.azure.spring
+        safeName: azurespringbootstarterstorage
       - name: azure-spring-cloud-context
         groupId: com.azure.spring
         safeName: azurespringcloudcontext
@@ -99,9 +102,6 @@ extends:
       - name: azure-spring-cloud-starter-servicebus
         groupId: com.azure.spring
         safeName: azurespringcloudstarterservicebus
-      - name: azure-spring-starter-storage
-        groupId: com.azure.spring
-        safeName: azurespringstarterstorage
       - name: azure-spring-cloud-starter-storage-queue
         groupId: com.azure.spring
         safeName: azurespringcloudstarterstoragequeue
@@ -121,7 +121,7 @@ extends:
         groupId: com.azure.spring
         safeName: azurespringcloudeventhubsstreambinder
     AdditionalModules:
-      - name: azure-spring-boot-sample-active-directory
+      - name: azure-spring-boot-sample-active-directory-resource-server
         groupId: com.azure.spring
       - name: azure-spring-boot-sample-active-directory-b2c-oidc
         groupId: com.azure.spring
@@ -129,7 +129,7 @@ extends:
         groupId: com.azure.spring
       - name: azure-spring-boot-sample-active-directory-backend-v2
         groupId: com.azure.spring
-      - name: azure-spring-boot-sample-active-directory-stateless
+      - name: azure-spring-boot-sample-active-directory-resource-server-stateless
         groupId: com.azure.spring
       - name: azure-spring-boot-sample-cosmos
         groupId: com.azure.spring
@@ -145,7 +145,7 @@ extends:
         groupId: com.azure.spring
       - name: azure-spring-boot-sample-servicebus-jms-topic
         groupId: com.azure.spring
-      - name: azure-spring-boot-sample-storage-blob
+      - name: azure-spring-boot-sample-storage-resource
         groupId: com.azure.spring
       - name: azure-spring-data-sample-gremlin
         groupId: com.azure.spring
@@ -190,6 +190,4 @@ extends:
       - name: azure-spring-integration-sample-storage-queue
         groupId: com.azure.spring
       - name: azure-spring-cloud-sample-storage-queue-operation
-        groupId: com.azure.spring
-      - name: azure-spring-cloud-sample-storage-resource
         groupId: com.azure.spring

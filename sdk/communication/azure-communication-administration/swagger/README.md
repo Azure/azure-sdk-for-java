@@ -45,6 +45,52 @@ input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/257f060
 override-client-name: PhoneNumberAdminClient
 ```
 
+### Rename searchId to reservationId in CreateSearchResponse
+
+``` yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.CreateSearchResponse.properties.searchId
+    transform: >
+      $["x-ms-client-name"] = "reservationId";
+```
+### Rename searchId to reservationId in PhoneNumberSearch 
+
+``` yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.PhoneNumberSearch.properties.searchId
+    transform: >
+      $["x-ms-client-name"] = "reservationId";
+```
+
+### Rename PhoneNumberSearch to PhoneNumberReservation
+
+``` yaml
+directive:
+    - rename-model:
+        from: PhoneNumberSearch
+        to: PhoneNumberReservation
+```
+
+### Rename CreateSearchOptions to CreateReservationOptions
+
+``` yaml
+directive:
+    - rename-model:
+        from: CreateSearchOptions
+        to: CreateReservationOptions
+```
+
+### Rename CreateSearchResponse to CreateReservationResponse
+
+``` yaml
+directive:
+    - rename-model:
+        from: CreateSearchResponse
+        to: CreateReservationResponse
+```
+
 ### Code generation settings
 
 ``` yaml

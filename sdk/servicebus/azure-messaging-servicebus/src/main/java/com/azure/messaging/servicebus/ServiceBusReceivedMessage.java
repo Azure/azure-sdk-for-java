@@ -3,24 +3,13 @@
 
 package com.azure.messaging.servicebus;
 
-import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.SCHEDULED_ENQUEUE_UTC_TIME_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.VIA_PARTITION_KEY_ANNOTATION_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.LOCKED_UNTIL_KEY_ANNOTATION_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.DEAD_LETTER_SOURCE_KEY_ANNOTATION_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_SEQUENCE_NUMBER_ANNOTATION_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.DEAD_LETTER_DESCRIPTION_ANNOTATION_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.DEAD_LETTER_REASON_ANNOTATION_NAME;
-
 import com.azure.core.amqp.AmqpMessageConstant;
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.amqp.models.AmqpBodyType;
 import com.azure.core.amqp.models.AmqpDataBody;
 import com.azure.core.experimental.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -31,6 +20,16 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
+import static com.azure.core.amqp.AmqpMessageConstant.DEAD_LETTER_DESCRIPTION_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.DEAD_LETTER_REASON_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.DEAD_LETTER_SOURCE_KEY_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_SEQUENCE_NUMBER_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.LOCKED_UNTIL_KEY_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.SCHEDULED_ENQUEUE_UTC_TIME_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
+
 /**
  * This class represents a received message from Service Bus.
  */
@@ -39,6 +38,12 @@ public final class ServiceBusReceivedMessage {
 
     private final AmqpAnnotatedMessage amqpAnnotatedMessage;
     private UUID lockToken;
+    private boolean isSettled = false;
+
+    ServiceBusReceivedMessage(BinaryData body) {
+        Objects.requireNonNull(body, "'body' cannot be null.");
+        amqpAnnotatedMessage = new AmqpAnnotatedMessage(new AmqpDataBody(Collections.singletonList(body.toBytes())));
+    }
 
     /**
      * The representation of message as defined by AMQP protocol.
@@ -50,11 +55,6 @@ public final class ServiceBusReceivedMessage {
      */
     public AmqpAnnotatedMessage getAmqpAnnotatedMessage() {
         return amqpAnnotatedMessage;
-    }
-
-    ServiceBusReceivedMessage(BinaryData body) {
-        Objects.requireNonNull(body, "'body' cannot be null.");
-        amqpAnnotatedMessage = new AmqpAnnotatedMessage(new AmqpDataBody(Collections.singletonList(body.toBytes())));
     }
 
     /**
@@ -239,7 +239,7 @@ public final class ServiceBusReceivedMessage {
      * Gets the lock token for the current message.
      * <p>
      * The lock token is a reference to the lock that is being held by the broker in
-     * {@link ReceiveMode#PEEK_LOCK} mode.
+     * {@link ServiceBusReceiveMode#PEEK_LOCK} mode.
      * Locks are used to explicitly settle messages as explained in the
      * <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement">product
      * documentation in more detail</a>. The token can also be used to pin the lock permanently
@@ -247,7 +247,8 @@ public final class ServiceBusReceivedMessage {
      * href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Deferral API</a> and, with that,
      * take the message out of the regular delivery state flow. This property is read-only.
      *
-     * @return Lock-token for this message. Could return {@code null} for {@link ReceiveMode#RECEIVE_AND_DELETE} mode.
+     * @return Lock-token for this message. Could return {@code null} for
+     * {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode.
      *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement">Message
      * transfers, locks, and settlement</a>
@@ -265,7 +266,7 @@ public final class ServiceBusReceivedMessage {
      * is read-only.
      *
      * @return the datetime at which the lock of this message expires if the message is received using {@link
-     *     ReceiveMode#PEEK_LOCK} mode. Otherwise it returns null.
+     *     ServiceBusReceiveMode#PEEK_LOCK} mode. Otherwise it returns null.
      *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement">Message
      *     transfers, locks, and settlement</a>
@@ -417,19 +418,12 @@ public final class ServiceBusReceivedMessage {
     }
 
     /**
-     * Gets the partition key for sending a message to a entity via another partitioned transfer entity.
+     * Gets whether the message has been settled.
      *
-     * If a message is sent via a transfer queue in the scope of a transaction, this value selects the
-     * transfer queue partition: This is functionally equivalent to {@link #getPartitionKey()} and ensures that
-     * messages are kept together and in order as they are transferred.
-     *
-     * @return partition key on the via queue.
-     *
-     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-transactions#transfers-and-send-via">Transfers and Send Via</a>
+     * @return True if the message has been settled, false otherwise.
      */
-    public String getViaPartitionKey() {
-        return getStringValue(amqpAnnotatedMessage.getMessageAnnotations(),
-            VIA_PARTITION_KEY_ANNOTATION_NAME.getValue());
+    boolean isSettled() {
+        return this.isSettled;
     }
 
     /**
@@ -493,6 +487,11 @@ public final class ServiceBusReceivedMessage {
         amqpAnnotatedMessage.getHeader().setDeliveryCount(deliveryCount);
     }
 
+    /**
+     * Sets the message's sequence number.
+     *
+     * @param enqueuedSequenceNumber The message's sequence number.
+     */
     void setEnqueuedSequenceNumber(long enqueuedSequenceNumber) {
         amqpAnnotatedMessage.getMessageAnnotations().put(ENQUEUED_SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(),
             enqueuedSequenceNumber);
@@ -508,12 +507,11 @@ public final class ServiceBusReceivedMessage {
     }
 
     /**
-     * Sets the subject for the message.
+     * Sets whether the message has been settled.
      *
-     * @param subject The subject to set.
      */
-    void setSubject(String subject) {
-        amqpAnnotatedMessage.getProperties().setSubject(subject);
+    void setIsSettled() {
+        this.isSettled = true;
     }
 
     /**
@@ -584,6 +582,15 @@ public final class ServiceBusReceivedMessage {
     }
 
     /**
+     * Sets the subject for the message.
+     *
+     * @param subject The subject to set.
+     */
+    void setSubject(String subject) {
+        amqpAnnotatedMessage.getProperties().setSubject(subject);
+    }
+
+    /**
      * Sets the duration of time before this message expires.
      *
      * @param timeToLive Time to Live duration of this message
@@ -626,17 +633,6 @@ public final class ServiceBusReceivedMessage {
      */
     void setTo(String to) {
         amqpAnnotatedMessage.getProperties().setTo(to);
-    }
-
-    /**
-     * Sets a via-partition key for sending a message to a destination entity via another partitioned entity
-     *
-     * @param viaPartitionKey via-partition key of this message
-     *
-     * @see #getViaPartitionKey()
-     */
-    void setViaPartitionKey(String viaPartitionKey) {
-        amqpAnnotatedMessage.getMessageAnnotations().put(VIA_PARTITION_KEY_ANNOTATION_NAME.getValue(), viaPartitionKey);
     }
 
     /*

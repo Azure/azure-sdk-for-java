@@ -2,6 +2,7 @@
 
 ## 3.0.0-beta.1 (Unreleased)
 ### Breaking Changes
+- Conditional access policy is not supported temporary, we may recover it in the future.
 - Configuration items like `spring.security.oauth2.client.xxx` is not supported anymore. Please use the following configuration items instead:
     ```
     azure.activedirectory.tenant-id=xxxxxx-your-tenant-id-xxxxxx
