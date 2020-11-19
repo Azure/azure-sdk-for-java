@@ -48,7 +48,6 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.PollingContext;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -56,7 +55,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
-import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_INTERVAL;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.parseModelId;
 import static com.azure.ai.textanalytics.implementation.Utility.parseNextLink;
@@ -81,18 +79,19 @@ class AnalyzeTasksAsyncClient {
         Iterable<TextDocumentInput> documents, AnalyzeTasksOptions options, Context context) {
         try {
             inputDocumentsValidation(documents);
-            AnalyzeBatchInput analyzeBatchInput = new AnalyzeBatchInput()
-                .setAnalysisInput(new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)));
-            Duration pollingInterval = DEFAULT_POLL_INTERVAL;
-            if (options != null) {
-                analyzeBatchInput.setTasks(getJobManifestTasks(options)).setDisplayName(options.getDisplayName());
-                pollingInterval = options.getPollInterval();
+            if (options == null) {
+                options = new AnalyzeTasksOptions();
             }
-            final Boolean finalIncludeStatistics = options == null ? null : options.isIncludeStatistics();
-            final Integer finalTop = options == null ? null : options.getTop();
-            final Integer finalSkip = options == null ? null : options.getSkip();
+            final AnalyzeBatchInput analyzeBatchInput =
+                new AnalyzeBatchInput()
+                    .setAnalysisInput(new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)))
+                    .setTasks(getJobManifestTasks(options));
+            analyzeBatchInput.setDisplayName(options.getDisplayName()); // setDisplayName() returns JobDescriptor
+            final boolean finalIncludeStatistics = options.isIncludeStatistics();
+            final Integer finalTop = options.getTop();
+            final Integer finalSkip = options.getSkip();
             return new PollerFlux<>(
-                pollingInterval,
+                options.getPollInterval(),
                 activationOperation(
                     service.analyzeWithResponseAsync(analyzeBatchInput,
                         context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
@@ -119,18 +118,19 @@ class AnalyzeTasksAsyncClient {
         Iterable<TextDocumentInput> documents, AnalyzeTasksOptions options, Context context) {
         try {
             inputDocumentsValidation(documents);
-            AnalyzeBatchInput analyzeBatchInput = new AnalyzeBatchInput()
-                .setAnalysisInput(new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)));
-            Duration pollingInterval = DEFAULT_POLL_INTERVAL;
-            if (options != null) {
-                analyzeBatchInput.setTasks(getJobManifestTasks(options)).setDisplayName(options.getDisplayName());
-                pollingInterval = options.getPollInterval();
+            if (options == null) {
+                options = new AnalyzeTasksOptions();
             }
-            final Boolean finalIncludeStatistics = options == null ? null : options.isIncludeStatistics();
-            final Integer finalTop = options == null ? null : options.getTop();
-            final Integer finalSkip = options == null ? null : options.getSkip();
+            final AnalyzeBatchInput analyzeBatchInput =
+                new AnalyzeBatchInput()
+                    .setAnalysisInput(new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)))
+                    .setTasks(getJobManifestTasks(options));
+            analyzeBatchInput.setDisplayName(options.getDisplayName()); // setDisplayName() returns JobDescriptor
+            final boolean finalIncludeStatistics = options.isIncludeStatistics();
+            final Integer finalTop = options.getTop();
+            final Integer finalSkip = options.getSkip();
             return new PollerFlux<>(
-                pollingInterval,
+                options.getPollInterval(),
                 activationOperation(
                     service.analyzeWithResponseAsync(analyzeBatchInput,
                         context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
@@ -142,7 +142,7 @@ class AnalyzeTasksAsyncClient {
                             return textAnalyticsOperationResult;
                         })),
                 pollingOperation(resultID -> service.analyzeStatusWithResponseAsync(resultID,
-                    options == null ? null : options.isIncludeStatistics(), null, null, context)),
+                    finalIncludeStatistics, finalTop, finalSkip, context)),
                 (activationResponse, pollingContext) ->
                     Mono.error(new RuntimeException("Cancellation is not supported.")),
                 fetchingOperationIterable(resultId -> Mono.just(new PagedIterable<>(getAnalyzeOperationFluxPage(
@@ -270,14 +270,14 @@ class AnalyzeTasksAsyncClient {
     }
 
     PagedFlux<AnalyzeTasksResult> getAnalyzeOperationFluxPage(String analyzeTasksId, Integer top, Integer skip,
-        Boolean showStats, Context context) {
+        boolean showStats, Context context) {
         return new PagedFlux<>(
             () -> getPage(null, analyzeTasksId, top, skip, showStats, context),
             continuationToken -> getPage(continuationToken, analyzeTasksId, top, skip, showStats, context));
     }
 
     Mono<PagedResponse<AnalyzeTasksResult>> getPage(String continuationToken, String analyzeTasksId, Integer top,
-        Integer skip, Boolean showStats, Context context) {
+        Integer skip, boolean showStats, Context context) {
         if (continuationToken != null) {
             final Map<String, Integer> continuationTokenMap = parseNextLink(continuationToken);
             final Integer topValue = continuationTokenMap.getOrDefault("$top", null);

@@ -35,7 +35,6 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.PollingContext;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -74,20 +73,17 @@ class AnalyzeHealthcareAsyncClient {
         Iterable<TextDocumentInput> documents, RecognizeHealthcareEntityOptions options, Context context) {
         try {
             inputDocumentsValidation(documents);
-            String modelVersion = null;
-            Duration pollInterval = DEFAULT_POLL_INTERVAL;
-            if (options != null) {
-                modelVersion = options.getModelVersion();
-                pollInterval = options.getPollInterval();
+            if (options == null) {
+                options = new RecognizeHealthcareEntityOptions();
             }
-            final Boolean finalIncludeStatistics = options == null ? null : options.isIncludeStatistics();
-            final Integer finalTop = options == null ? null : options.getTop();
-            final Integer finalSkip = options == null ? null : options.getSkip();
+            final boolean finalIncludeStatistics = options.isIncludeStatistics();
+            final Integer finalTop = options.getTop();
+            final Integer finalSkip = options.getSkip();
             return new PollerFlux<>(
-                pollInterval,
+                options.getPollInterval(),
                 activationOperation(service.healthWithResponseAsync(
                     new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-                    modelVersion,
+                    options.getModelVersion(),
                     StringIndexType.UTF16CODE_UNIT, // Currently StringIndexType is not explored, we use it internally
                     context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
                     .map(healthResponse -> {
@@ -113,20 +109,17 @@ class AnalyzeHealthcareAsyncClient {
         Iterable<TextDocumentInput> documents, RecognizeHealthcareEntityOptions options, Context context) {
         try {
             inputDocumentsValidation(documents);
-            String modelVersion = null;
-            Duration pollInterval = DEFAULT_POLL_INTERVAL;
-            if (options != null) {
-                modelVersion = options.getModelVersion();
-                pollInterval = options.getPollInterval();
+            if (options == null) {
+                options = new RecognizeHealthcareEntityOptions();
             }
-            final Boolean finalIncludeStatistics = options == null ? null : options.isIncludeStatistics();
-            final Integer finalTop = options == null ? null : options.getTop();
-            final Integer finalSkip = options == null ? null : options.getSkip();
+            final boolean finalIncludeStatistics = options.isIncludeStatistics();
+            final Integer finalTop = options.getTop();
+            final Integer finalSkip = options.getSkip();
             return new PollerFlux<>(
-                pollInterval,
+                options.getPollInterval(),
                 activationOperation(service.healthWithResponseAsync(
                     new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-                    modelVersion,
+                    options.getModelVersion(),
                     StringIndexType.UTF16CODE_UNIT, // Currently StringIndexType is not explored, we use it internally
                     context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
                     .map(healthResponse -> {
@@ -149,14 +142,14 @@ class AnalyzeHealthcareAsyncClient {
     }
 
     PagedFlux<HealthcareTaskResult> getHealthcareFluxPage(UUID healthcareTaskId, Integer top, Integer skip,
-        Boolean showStats, Context context) {
+        boolean showStats, Context context) {
         return new PagedFlux<>(
             () -> getPage(null, healthcareTaskId, top, skip, showStats, context),
             continuationToken -> getPage(continuationToken, healthcareTaskId, top, skip, showStats, context));
     }
 
     Mono<PagedResponse<HealthcareTaskResult>> getPage(String continuationToken, UUID healthcareTaskId, Integer top,
-        Integer skip, Boolean showStats, Context context) {
+        Integer skip, boolean showStats, Context context) {
         try {
             if (continuationToken != null) {
                 final Map<String, Integer> continuationTokenMap = parseNextLink(continuationToken);
