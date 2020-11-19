@@ -1019,7 +1019,8 @@ public final class ServiceBusClientBuilder {
          * Creates an <b>asynchronous</b>, <b>session-aware</b> Service Bus receiver responsible for reading {@link
          * ServiceBusMessage messages} from a specific queue or subscription.
          *
-         * @return An new {@link ServiceBusSessionReceiverAsyncClient} that receives messages from a queue or subscription.
+         * @return An new {@link ServiceBusSessionReceiverAsyncClient} that receives messages from a queue or
+         *      subscription.
          * @throws IllegalStateException if {@link #queueName(String) queueName} or {@link #topicName(String)
          *     topicName} are not set or, both of these fields are set. It is also thrown if the Service Bus {@link
          *     #connectionString(String) connectionString} contains an {@code EntityPath} that does not match one set in
