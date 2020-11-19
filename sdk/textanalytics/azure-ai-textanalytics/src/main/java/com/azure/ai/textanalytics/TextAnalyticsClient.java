@@ -895,6 +895,8 @@ public final class TextAnalyticsClient {
      * @return A {@link SyncPoller} that polls the analyze healthcare operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a {@link PagedIterable} of {@link HealthcareTaskResult}.
      *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -918,8 +920,8 @@ public final class TextAnalyticsClient {
      * @return A {@link SyncPoller} that polls the analyze healthcare operation until it has completed, has failed,
      * or has been cancelled.
      *
-     * @throws TextAnalyticsException If analyze operation fails.
      * @throws NullPointerException If {@code healthcareTaskId} is null.
+     * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<TextAnalyticsOperationResult, Void> beginCancelHealthcareTask(String healthcareTaskId,
@@ -946,6 +948,8 @@ public final class TextAnalyticsClient {
      * has failed, or has been cancelled. The completed operation returns a {@link PagedIterable} of
      * {@link AnalyzeTasksResult}.
      *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)

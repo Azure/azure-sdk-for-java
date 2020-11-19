@@ -1035,6 +1035,8 @@ public final class TextAnalyticsAsyncClient {
      * @return A {@link PollerFlux} that polls the analyze healthcare operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a {@link PagedFlux} of {@link HealthcareTaskResult}.
      *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1056,8 +1058,8 @@ public final class TextAnalyticsAsyncClient {
      * @return A {@link PollerFlux} that polls the analyze healthcare operation until it has completed, has failed,
      * or has been cancelled.
      *
-     * @throws TextAnalyticsException If analyze operation fails.
      * @throws NullPointerException If {@code healthcareTaskId} is null.
+     * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<TextAnalyticsOperationResult, Void> beginCancelHealthcareTask(String healthcareTaskId,
@@ -1082,6 +1084,8 @@ public final class TextAnalyticsAsyncClient {
      * has failed, or has been cancelled. The completed operation returns a {@link PagedFlux} of
      * {@link AnalyzeTasksResult}.
      *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
