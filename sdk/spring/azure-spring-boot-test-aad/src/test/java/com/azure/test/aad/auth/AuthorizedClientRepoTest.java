@@ -52,12 +52,12 @@ public class AuthorizedClientRepoTest {
     }
 
     private AppRunner createApp() {
-        AppRunner result = new AppRunner(AppAutoConfigTest.DumbApp.class);
-        result.property("azure.activedirectory.uri", "fake-uri");
-        result.property("azure.activedirectory.tenant-id", "fake-tenant-id");
-        result.property("azure.activedirectory.client-id", "fake-client-id");
-        result.property("azure.activedirectory.client-secret", "fake-client-secret");
-        result.property("azure.activedirectory.authorization.graph.scopes", "Calendars.Read");
+        AppRunner result = new AppRunner(AzureActiveDirectoryConfigurationTest.DumbApp.class);
+        result.property("azure.active.directory.uri", "fake-uri");
+        result.property("azure.active.directory.tenant-id", "fake-tenant-id");
+        result.property("azure.active.directory.client-id", "fake-client-id");
+        result.property("azure.active.directory.client-secret", "fake-client-secret");
+        result.property("azure.active.directory.authorization.graph.scopes", "Calendars.Read");
         return result;
     }
 

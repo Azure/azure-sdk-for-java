@@ -8,8 +8,8 @@ import java.util.Map;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties("azure.activedirectory")
-public class AppProperties {
+@ConfigurationProperties("azure.active.directory")
+public class AzureActiveDirectoryProperties {
 
     private String uri;
     private String tenantId;

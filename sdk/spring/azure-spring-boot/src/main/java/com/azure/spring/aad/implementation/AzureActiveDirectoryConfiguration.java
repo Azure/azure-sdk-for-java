@@ -24,15 +24,15 @@ import org.springframework.security.oauth2.core.AuthorizationGrantType;
 
 @Configuration
 @ConditionalOnClass(ClientRegistrationRepository.class)
-@EnableConfigurationProperties(AppProperties.class)
+@EnableConfigurationProperties(AzureActiveDirectoryProperties.class)
 @AutoConfigureAfter(AADOAuth2AutoConfiguration.class)
-@ConditionalOnExpression("#{'${azure.activedirectory.uri:notExist}' != 'notExist'}")
-public class AppAutoConfiguration {
+@ConditionalOnExpression("#{'${azure.active.directory.uri:notExist}' != 'notExist'}")
+public class AzureActiveDirectoryConfiguration {
 
     private static final String DEFAULT_CLIENT = "azure";
 
     @Autowired
-    private AppProperties config;
+    private AzureActiveDirectoryProperties config;
 
     @Bean
     @ConditionalOnMissingBean({ClientRegistrationRepository.class, AzureClientRegistrationRepository.class})

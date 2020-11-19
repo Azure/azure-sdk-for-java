@@ -1,8 +1,5 @@
 package com.azure.test.aad.auth;
 
-import java.util.List;
-
-import com.azure.spring.aad.implementation.AppAutoConfiguration;
 import com.azure.spring.aad.implementation.AuthzCodeGrantRequestEntityConverter;
 import com.azure.spring.aad.implementation.AzureClientRegistrationRepository;
 import com.azure.test.utils.AppRunner;
@@ -12,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.RequestEntity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
@@ -45,11 +41,11 @@ public class AuthzCodeGrantRequestEntityConverterTest {
 
     private AppRunner createApp() {
         AppRunner result = new AppRunner(DumbApp.class);
-        result.property("azure.activedirectory.uri", "fake-uri");
-        result.property("azure.activedirectory.tenant-id", "fake-tenant-id");
-        result.property("azure.activedirectory.client-id", "fake-client-id");
-        result.property("azure.activedirectory.client-secret", "fake-client-secret");
-        result.property("azure.activedirectory.authorization.graph.scopes", "Calendars.Read");
+        result.property("azure.active.directory.uri", "fake-uri");
+        result.property("azure.active.directory.tenant-id", "fake-tenant-id");
+        result.property("azure.active.directory.client-id", "fake-client-id");
+        result.property("azure.active.directory.client-secret", "fake-client-secret");
+        result.property("azure.active.directory.authorization.graph.scopes", "Calendars.Read");
         return result;
     }
 

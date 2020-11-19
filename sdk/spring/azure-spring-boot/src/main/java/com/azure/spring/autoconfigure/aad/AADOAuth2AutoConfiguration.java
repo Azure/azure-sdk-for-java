@@ -54,7 +54,7 @@ import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName
 @ConditionalOnProperty(prefix = "azure.activedirectory", value = {"client-id", "client-secret", "tenant-id"})
 @PropertySource(value = "classpath:service-endpoints.properties")
 @EnableConfigurationProperties({ AADAuthenticationProperties.class, ServiceEndpointsProperties.class })
-@ConditionalOnExpression("#{'${azure.activedirectory.uri:notExist}' == 'notExist'}")
+@ConditionalOnExpression("#{'${azure.active.directory.uri:notExist}' == 'notExist'}")
 public class AADOAuth2AutoConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AADOAuth2AutoConfiguration.class);

@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class AppAutoConfigTest {
+public class AzureActiveDirectoryConfigurationTest {
 
     @Test
     public void clientRegistered() {
@@ -46,7 +46,7 @@ public class AppAutoConfigTest {
     @Test
     public void clientRequiresPermissionRegistered() {
         try (AppRunner runner = createApp()) {
-            runner.property("azure.activedirectory.authorization.graph.scopes", "Calendars.Read");
+            runner.property("azure.active.directory.authorization.graph.scopes", "Calendars.Read");
             runner.start();
 
             ClientRegistrationRepository repo = runner.getBean(ClientRegistrationRepository.class);
@@ -64,8 +64,8 @@ public class AppAutoConfigTest {
     @Test
     public void clientRequiresMultiPermissions() {
         try (AppRunner runner = createApp()) {
-            runner.property("azure.activedirectory.authorization.graph.scopes", "Calendars.Read");
-            runner.property("azure.activedirectory.authorization.arm.scopes", "https://management.core.windows.net/user_impersonation");
+            runner.property("azure.active.directory.authorization.graph.scopes", "Calendars.Read");
+            runner.property("azure.active.directory.authorization.arm.scopes", "https://management.core.windows.net/user_impersonation");
             runner.start();
 
             ClientRegistrationRepository repo = runner.getBean(ClientRegistrationRepository.class);
@@ -89,7 +89,7 @@ public class AppAutoConfigTest {
     @Test
     public void clientRequiresPermissionInDefaultClient() {
         try (AppRunner runner = createApp()) {
-            runner.property("azure.activedirectory.authorization.azure.scopes", "Calendars.Read");
+            runner.property("azure.active.directory.authorization.azure.scopes", "Calendars.Read");
             runner.start();
 
             ClientRegistrationRepository repo = runner.getBean(ClientRegistrationRepository.class);
@@ -103,7 +103,7 @@ public class AppAutoConfigTest {
     @Test
     public void aadAwareClientRepository() {
         try (AppRunner runner = createApp()) {
-            runner.property("azure.activedirectory.authorization.graph.scopes", "Calendars.Read");
+            runner.property("azure.active.directory.authorization.graph.scopes", "Calendars.Read");
             runner.start();
 
             AzureClientRegistrationRepository repo = (AzureClientRegistrationRepository) runner.getBean(ClientRegistrationRepository.class);
@@ -127,7 +127,7 @@ public class AppAutoConfigTest {
     @Test
     public void defaultClientWithAuthzScope() {
         try (AppRunner runner = createApp()) {
-            runner.property("azure.activedirectory.authorization.azure.scopes", "Calendars.Read");
+            runner.property("azure.active.directory.authorization.azure.scopes", "Calendars.Read");
             runner.start();
 
             AzureClientRegistrationRepository repo = runner.getBean(AzureClientRegistrationRepository.class);
@@ -138,7 +138,7 @@ public class AppAutoConfigTest {
     @Test
     public void customizeUri() {
         try (AppRunner runner = createApp()) {
-            runner.property("azure.activedirectory.uri", "http://localhost/");
+            runner.property("azure.active.directory.uri", "http://localhost/");
             runner.start();
 
             AzureClientRegistrationRepository repo = runner.getBean(AzureClientRegistrationRepository.class);
@@ -153,11 +153,11 @@ public class AppAutoConfigTest {
 
     private AppRunner createApp() {
         AppRunner result = new AppRunner(DumbApp.class);
-        result.property("azure.activedirectory.uri", "https://login.microsoftonline.com");
-        result.property("azure.activedirectory.tenant-id", "fake-tenant-id");
-        result.property("azure.activedirectory.client-id", "fake-client-id");
-        result.property("azure.activedirectory.client-secret", "fake-client-secret");
-        result.property("azure.activedirectory.user-group.allowed-groups", "groupA, groupB");
+        result.property("azure.active.directory.uri", "https://login.microsoftonline.com");
+        result.property("azure.active.directory.tenant-id", "fake-tenant-id");
+        result.property("azure.active.directory.client-id", "fake-client-id");
+        result.property("azure.active.directory.client-secret", "fake-client-secret");
+        result.property("azure.active.directory.user-group.allowed-groups", "groupA, groupB");
         return result;
     }
 
