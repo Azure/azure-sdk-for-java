@@ -42,9 +42,9 @@ import static com.azure.spring.autoconfigure.aad.Constants.ROLE_PREFIX;
 /**
  * Microsoft Graph client encapsulation.
  */
-public class GraphOboClient {
+public class AzureADGraphClient {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(GraphOboClient.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AzureADGraphClient.class);
     private static final String MICROSOFT_GRAPH_SCOPE = "https://graph.microsoft.com/user.read";
     private static final String AAD_GRAPH_API_SCOPE = "https://graph.windows.net/user.read";
     // We use "aadfeed5" as suffix when client library is ADAL, upgrade to "aadfeed6" for MSAL
@@ -55,14 +55,14 @@ public class GraphOboClient {
     private final AADAuthenticationProperties aadAuthenticationProperties;
     private final boolean graphApiVersionIsV2;
 
-    public GraphOboClient(AADAuthenticationProperties aadAuthenticationProperties,
-                          ServiceEndpointsProperties serviceEndpointsProps) {
+    public AzureADGraphClient(AADAuthenticationProperties aadAuthenticationProperties,
+                              ServiceEndpointsProperties serviceEndpointsProps) {
         this.aadAuthenticationProperties = aadAuthenticationProperties;
         this.serviceEndpoints = serviceEndpointsProps.getServiceEndpoints(aadAuthenticationProperties.getEnvironment());
         this.graphApiVersionIsV2 = Optional.of(aadAuthenticationProperties)
-                .map(AADAuthenticationProperties::getEnvironment)
-                .map(environment -> environment.contains(V2_VERSION_ENV_FLAG))
-                .orElse(false);
+                                           .map(AADAuthenticationProperties::getEnvironment)
+                                           .map(environment -> environment.contains(V2_VERSION_ENV_FLAG))
+                                           .orElse(false);
     }
 
     private String getUserMemberships(String accessToken, String urlString) throws IOException {
@@ -119,7 +119,7 @@ public class GraphOboClient {
     public Set<String> getGroups(String graphApiToken) throws IOException {
         final Set<String> groups = new LinkedHashSet<>();
         final ObjectMapper objectMapper = JacksonObjectMapperFactory.getInstance();
-        String aadMembershipRestUri = getAadMembershipRestUri();
+        String aadMembershipRestUri = serviceEndpoints.getAadMembershipRestUri();
         while (aadMembershipRestUri != null) {
             String membershipsJson = getUserMemberships(graphApiToken, aadMembershipRestUri);
             Memberships memberships = objectMapper.readValue(membershipsJson, Memberships.class);
@@ -134,20 +134,6 @@ public class GraphOboClient {
                                            .orElse(null);
         }
         return groups;
-    }
-
-    /**
-     * Get the rest url to get the groups that the user is a member of.
-     * @return rest url
-     */
-    private String getAadMembershipRestUri() {
-        if (AADAuthenticationProperties.getDirectGroupRelationship()
-                                       .equalsIgnoreCase(aadAuthenticationProperties
-                                           .getUserGroup().getGroupRelationship())) {
-            return serviceEndpoints.getAadMembershipRestUri();
-        } else {
-            return serviceEndpoints.getAadTransitiveMemberRestUri();
-        }
     }
 
     private boolean isGroupObject(final Membership membership) {
@@ -176,6 +162,7 @@ public class GraphOboClient {
 
     /**
      * Acquire access token for calling Graph API.
+     *
      * @param idToken The token used to perform an OBO request.
      * @param tenantId The tenant id.
      * @return The access token for Graph service.

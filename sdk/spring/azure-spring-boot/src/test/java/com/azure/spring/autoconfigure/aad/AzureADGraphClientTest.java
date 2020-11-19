@@ -19,9 +19,11 @@ import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(MockitoJUnitRunner.class)
-public class GraphWebClientTest {
+public class AzureADGraphClientTest {
 
-    private GraphWebClient adGraphClient;
+    private AzureADGraphClient adGraphClient;
+
+    private AADAuthenticationProperties aadAuthenticationProperties;
 
     @Mock
     private ServiceEndpointsProperties endpointsProps;
@@ -30,9 +32,9 @@ public class GraphWebClientTest {
     public void setup() {
         final List<String> activeDirectoryGroups = new ArrayList<>();
         activeDirectoryGroups.add("Test_Group");
-        AADAuthenticationProperties aadAuthenticationProperties = new AADAuthenticationProperties();
+        aadAuthenticationProperties = new AADAuthenticationProperties();
         aadAuthenticationProperties.getUserGroup().setAllowedGroups(activeDirectoryGroups);
-        adGraphClient = new GraphWebClient(aadAuthenticationProperties, endpointsProps, null);
+        adGraphClient = new AzureADGraphClient(aadAuthenticationProperties, endpointsProps);
     }
 
     @Test
