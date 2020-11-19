@@ -9,6 +9,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import okhttp3.Call;
 import okhttp3.Headers;
@@ -47,6 +48,11 @@ class OkHttpAsyncHttpClient implements HttpClient {
 
     @Override
     public Mono<HttpResponse> send(HttpRequest request) {
+        return send(request, Context.NONE);
+    }
+
+    @Override
+    public Mono<HttpResponse> send(HttpRequest request, Context context) {
         return Mono.create(sink -> sink.onRequest(value -> {
             // Using MonoSink::onRequest for back pressure support.
 

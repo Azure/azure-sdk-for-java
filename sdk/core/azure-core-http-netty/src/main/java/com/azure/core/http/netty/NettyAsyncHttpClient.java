@@ -9,7 +9,9 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.FluxUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.EventLoopGroup;
@@ -65,16 +67,30 @@ class NettyAsyncHttpClient implements HttpClient {
      * {@inheritDoc}
      */
     @Override
-    public Mono<HttpResponse> send(final HttpRequest request) {
+    public Mono<HttpResponse> send(HttpRequest request) {
+        return send(request, Context.NONE);
+    }
+
+    @Override
+    public Mono<HttpResponse> send(HttpRequest request, Context context) {
         Objects.requireNonNull(request.getHttpMethod(), "'request.getHttpMethod()' cannot be null.");
         Objects.requireNonNull(request.getUrl(), "'request.getUrl()' cannot be null.");
         Objects.requireNonNull(request.getUrl().getProtocol(), "'request.getUrl().getProtocol()' cannot be null.");
+
+        boolean eagerlyReadResponse = context.getData("eagerly-read-response")
+            .map(data -> Boolean.parseBoolean(data.toString()))
+            .orElse(false);
+
         return nettyClient
             .request(HttpMethod.valueOf(request.getHttpMethod().toString()))
             .uri(request.getUrl().toString())
             .send(bodySendDelegate(request))
             .responseConnection(responseDelegate(request, disableBufferCopy))
-            .single();
+            .single()
+            .flatMap(response -> eagerlyReadResponse
+                ? FluxUtil.collectBytesInByteBufferStream(response.getBody())
+                    .map(bytes -> new BufferedReactorNettyResponse(response, bytes))
+                : Mono.just(response));
     }
 
     /**
@@ -197,6 +213,52 @@ class NettyAsyncHttpClient implements HttpClient {
             byteBuf.readBytes(buffer);
             buffer.rewind();
             return buffer;
+        }
+    }
+
+    static final class BufferedReactorNettyResponse extends HttpResponse {
+        private final HttpResponse response;
+        private final byte[] body;
+
+        BufferedReactorNettyResponse(HttpResponse response, byte[] body) {
+            super(response.getRequest());
+            this.response = response;
+            this.body = body;
+        }
+
+        @Override
+        public int getStatusCode() {
+            return response.getStatusCode();
+        }
+
+        @Override
+        public String getHeaderValue(String name) {
+            return response.getHeaderValue(name);
+        }
+
+        @Override
+        public HttpHeaders getHeaders() {
+            return response.getHeaders();
+        }
+
+        @Override
+        public Flux<ByteBuffer> getBody() {
+            return Flux.defer(() -> Flux.just(ByteBuffer.wrap(body)));
+        }
+
+        @Override
+        public Mono<byte[]> getBodyAsByteArray() {
+            return Mono.defer(() -> Mono.just(body));
+        }
+
+        @Override
+        public Mono<String> getBodyAsString() {
+            return Mono.defer(() -> Mono.just(CoreUtils.bomAwareToString(body, getHeaderValue("Content-Type"))));
+        }
+
+        @Override
+        public Mono<String> getBodyAsString(Charset charset) {
+            return Mono.defer(() -> Mono.just(new String(body, charset)));
         }
     }
 }
