@@ -3,12 +3,7 @@
 
 package com.azure.spring.aad.implementation;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.azure.spring.autoconfigure.aad.AADOAuth2AutoConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -22,10 +17,12 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Configuration
 @ConditionalOnClass(ClientRegistrationRepository.class)
 @EnableConfigurationProperties(AzureActiveDirectoryProperties.class)
-@AutoConfigureAfter(AADOAuth2AutoConfiguration.class)
 @ConditionalOnExpression("#{'${azure.active.directory.uri:notExist}' != 'notExist'}")
 public class AzureActiveDirectoryConfiguration {
 
