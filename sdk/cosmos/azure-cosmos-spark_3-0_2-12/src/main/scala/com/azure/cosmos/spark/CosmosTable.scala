@@ -17,11 +17,11 @@ import scala.collection.JavaConverters._
  * CosmosTable is the entry point this is registered in the spark
  * @param userProvidedSchema
  * @param transforms
- * @param map
+ * @param userConfig
  */
 class CosmosTable(val userProvidedSchema: StructType,
                   val transforms: Array[Transform],
-                  val map: util.Map[String, String])
+                  val userConfig: util.Map[String, String])
   extends Table with SupportsWrite with CosmosLoggingTrait {
   logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
@@ -35,6 +35,6 @@ class CosmosTable(val userProvidedSchema: StructType,
 
   override def capabilities(): util.Set[TableCapability] = Set(TableCapability.BATCH_WRITE).asJava
 
-  override def newWriteBuilder(logicalWriteInfo: LogicalWriteInfo): WriteBuilder = new CosmosWriterBuilder
+  override def newWriteBuilder(logicalWriteInfo: LogicalWriteInfo): WriteBuilder = new CosmosWriterBuilder(userConfig.asScala.toMap)
 
 }

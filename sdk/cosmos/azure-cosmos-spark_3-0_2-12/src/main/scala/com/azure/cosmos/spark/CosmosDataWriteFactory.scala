@@ -10,7 +10,7 @@ import org.apache.spark.sql.catalyst.InternalRow
 import org.apache.spark.sql.connector.write.{DataWriter, DataWriterFactory, WriterCommitMessage}
 import org.apache.spark.sql.types.{IntegerType, StringType, StructField, StructType}
 
-class CosmosDataWriteFactory extends DataWriterFactory with CosmosLoggingTrait {
+class CosmosDataWriteFactory(userConfig: Map[String, String]) extends DataWriterFactory with CosmosLoggingTrait {
   logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
   override def createWriter(i: Int, l: Long): DataWriter[InternalRow] = new CosmosWriter()
@@ -18,14 +18,15 @@ class CosmosDataWriteFactory extends DataWriterFactory with CosmosLoggingTrait {
   class CosmosWriter() extends DataWriter[InternalRow] {
     logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
-    // TODO moderakh account config and databaseName, containerName need to passed down from the user
+    val cosmosAccountConfig = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
+    val cosmosTargetContainerConfig = CosmosContainerConfig.parseCosmosContainerConfig(userConfig)
+
+    // TODO moderakh: this needs to be shared to avoid creating multiple clients
     val client = new CosmosClientBuilder()
-      .key(TestConfigurations.MASTER_KEY)
-      .endpoint(TestConfigurations.HOST)
+      .key(cosmosAccountConfig.key)
+      .endpoint(cosmosAccountConfig.endpoint)
       .consistencyLevel(ConsistencyLevel.EVENTUAL)
       .buildAsyncClient();
-    val databaseName = "testDB"
-    val containerName = "testContainer"
 
     override def write(internalRow: InternalRow): Unit = {
       // TODO moderakh: schema is hard coded for now to make end to end TestE2EMain work implement schema inference code
@@ -36,8 +37,8 @@ class CosmosDataWriteFactory extends DataWriterFactory with CosmosLoggingTrait {
       if (!objectNode.has("id")) {
         objectNode.put("id", UUID.randomUUID().toString)
       }
-      client.getDatabase(databaseName)
-        .getContainer(containerName)
+      client.getDatabase(cosmosTargetContainerConfig.database)
+        .getContainer(cosmosTargetContainerConfig.container)
         .createItem(objectNode)
         .block()
     }
