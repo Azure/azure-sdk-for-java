@@ -41,7 +41,7 @@ public class AuthzCodeGrantRequestEntityConverterTest {
 
     private AppRunner createApp() {
         AppRunner result = new AppRunner(DumbApp.class);
-        result.property("azure.active.directory.uri", "fake-uri");
+        result.property("azure.active.directory.uri", "http://localhost");
         result.property("azure.active.directory.tenant-id", "fake-tenant-id");
         result.property("azure.active.directory.client-id", "fake-client-id");
         result.property("azure.active.directory.client-secret", "fake-client-secret");
