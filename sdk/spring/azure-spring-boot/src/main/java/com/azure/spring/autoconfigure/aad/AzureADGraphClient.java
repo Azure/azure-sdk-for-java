@@ -60,9 +60,9 @@ public class AzureADGraphClient {
         this.aadAuthenticationProperties = aadAuthenticationProperties;
         this.serviceEndpoints = serviceEndpointsProps.getServiceEndpoints(aadAuthenticationProperties.getEnvironment());
         this.graphApiVersionIsV2 = Optional.of(aadAuthenticationProperties)
-                .map(AADAuthenticationProperties::getEnvironment)
-                .map(environment -> environment.contains(V2_VERSION_ENV_FLAG))
-                .orElse(false);
+                                           .map(AADAuthenticationProperties::getEnvironment)
+                                           .map(environment -> environment.contains(V2_VERSION_ENV_FLAG))
+                                           .orElse(false);
     }
 
     private String getUserMemberships(String accessToken, String urlString) throws IOException {
@@ -162,6 +162,7 @@ public class AzureADGraphClient {
 
     /**
      * Acquire access token for calling Graph API.
+     *
      * @param idToken The token used to perform an OBO request.
      * @param tenantId The tenant id.
      * @return The access token for Graph service.

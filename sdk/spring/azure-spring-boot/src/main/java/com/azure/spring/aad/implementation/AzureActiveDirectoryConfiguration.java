@@ -32,7 +32,7 @@ public class AzureActiveDirectoryConfiguration {
     private AzureActiveDirectoryProperties config;
 
     @Bean
-    @ConditionalOnMissingBean({ClientRegistrationRepository.class, AzureClientRegistrationRepository.class})
+    @ConditionalOnMissingBean({ ClientRegistrationRepository.class, AzureClientRegistrationRepository.class })
     public AzureClientRegistrationRepository clientRegistrationRepository() {
         return new AzureClientRegistrationRepository(
             createDefaultClient(),

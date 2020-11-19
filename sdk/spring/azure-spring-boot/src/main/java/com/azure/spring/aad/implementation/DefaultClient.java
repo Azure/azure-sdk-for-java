@@ -3,9 +3,9 @@
 
 package com.azure.spring.aad.implementation;
 
-import java.util.List;
-
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
+
+import java.util.List;
 
 public class DefaultClient {
 

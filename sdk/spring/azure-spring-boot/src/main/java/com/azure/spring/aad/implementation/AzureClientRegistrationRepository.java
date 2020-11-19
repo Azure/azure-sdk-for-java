@@ -3,17 +3,16 @@
 
 package com.azure.spring.aad.implementation;
 
+import org.jetbrains.annotations.NotNull;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import org.jetbrains.annotations.NotNull;
-
-import org.springframework.security.oauth2.client.registration.ClientRegistration;
-import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 
 public class AzureClientRegistrationRepository implements ClientRegistrationRepository, Iterable<ClientRegistration> {
 
@@ -58,6 +57,6 @@ public class AzureClientRegistrationRepository implements ClientRegistrationRepo
 
     public boolean isAuthzClient(String id) {
         ClientRegistration client = findByRegistrationId(id);
-        return client == null ? false : isAuthzClient(client);
+        return client != null && isAuthzClient(client);
     }
 }

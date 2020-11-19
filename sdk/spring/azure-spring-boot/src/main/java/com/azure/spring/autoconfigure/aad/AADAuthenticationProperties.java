@@ -42,26 +42,24 @@ public class AADAuthenticationProperties {
     private String environment = DEFAULT_SERVICE_ENVIRONMENT;
 
     /**
-     * Registered application ID in Azure AD.
-     * Must be configured when OAuth2 authentication is done in front end
+     * Registered application ID in Azure AD. Must be configured when OAuth2 authentication is done in front end
      */
     private String clientId;
 
     /**
-     * API Access Key of the registered application.
-     * Must be configured when OAuth2 authentication is done in front end
+     * API Access Key of the registered application. Must be configured when OAuth2 authentication is done in front end
      */
     private String clientSecret;
 
     /**
-     * Redirection Endpoint: Used by the authorization server
-     * to return responses containing authorization credentials to the client via the resource owner user-agent.
+     * Redirection Endpoint: Used by the authorization server to return responses containing authorization credentials
+     * to the client via the resource owner user-agent.
      */
     private String redirectUriTemplate;
 
     /**
-     * Optional. scope doc:
-     * https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-permissions-and-consent#scopes-and-permissions
+     * Optional. scope doc: https://docs.microsoft
+     * .com/en-us/azure/active-directory/develop/v2-permissions-and-consent#scopes-and-permissions
      */
     private List<String> scope = Arrays.asList("openid", "https://graph.microsoft.com/user.read", "profile");
 
@@ -101,8 +99,8 @@ public class AADAuthenticationProperties {
     private boolean allowTelemetry = true;
 
     /**
-     * If <code>true</code> activates the stateless auth filter {@link AADAppRoleStatelessAuthenticationFilter}.
-     * The default is <code>false</code> which activates {@link AADAuthenticationFilter}.
+     * If <code>true</code> activates the stateless auth filter {@link AADAppRoleStatelessAuthenticationFilter}. The
+     * default is <code>false</code> which activates {@link AADAuthenticationFilter}.
      */
     private Boolean sessionStateless = false;
 
@@ -112,6 +110,7 @@ public class AADAuthenticationProperties {
     public List<String> getActiveDirectoryGroups() {
         return userGroup.getAllowedGroups();
     }
+
     /**
      * Properties dedicated to changing the behavior of how the groups are mapped from the Azure AD response. Depending
      * on the graph API used the object will not be the same.
@@ -179,11 +178,11 @@ public class AADAuthenticationProperties {
         @Override
         public String toString() {
             return "UserGroupProperties{"
-                +  "allowedGroups=" + allowedGroups
-                +  ", key='" + key + '\''
-                +  ", value='" + value + '\''
-                +  ", objectIDKey='" + objectIDKey + '\''
-                +  '}';
+                + "allowedGroups=" + allowedGroups
+                + ", key='" + key + '\''
+                + ", value='" + value + '\''
+                + ", objectIDKey='" + objectIDKey + '\''
+                + '}';
         }
 
         @Override
