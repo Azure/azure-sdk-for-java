@@ -108,7 +108,7 @@ public class PhoneNumberClientIntegrationTest extends PhoneNumberIntegrationTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getAllAreaCodes(HttpClient httpClient) {
         PagedIterable<PhonePlanGroup> phonePlanGroupsPagedIterable =
-        this.getClient(httpClient).listPhonePlanGroups(COUNTRY_CODE, LOCALE, true);
+            this.getClient(httpClient).listPhonePlanGroups(COUNTRY_CODE, LOCALE, true);
         String phonePlanGroupId = phonePlanGroupsPagedIterable.iterator().next().getPhonePlanGroupId();
         PagedIterable<PhonePlan> phonePlanPagedIterable =
             this.getClient(httpClient).listPhonePlans(COUNTRY_CODE, phonePlanGroupId, LOCALE);
@@ -134,7 +134,7 @@ public class PhoneNumberClientIntegrationTest extends PhoneNumberIntegrationTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getAllAreaCodesWithResponse(HttpClient httpClient) {
         PagedIterable<PhonePlanGroup> phonePlanGroupsPagedIterable =
-        this.getClient(httpClient).listPhonePlanGroups(COUNTRY_CODE, LOCALE, true);
+            this.getClient(httpClient).listPhonePlanGroups(COUNTRY_CODE, LOCALE, true);
         String phonePlanGroupId = phonePlanGroupsPagedIterable.iterator().next().getPhonePlanGroupId();
         PagedIterable<PhonePlan> phonePlanPagedIterable =
             this.getClient(httpClient).listPhonePlans(COUNTRY_CODE, phonePlanGroupId, LOCALE);
