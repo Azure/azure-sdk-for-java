@@ -291,7 +291,7 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
                         return beginCreateReservation(httpClient, phonePlan).last()
                         .flatMap((AsyncPollResponse<PhoneNumberReservation, PhoneNumberReservation> createdRes) -> {
                             assertEquals(createdRes.getValue().getPhoneNumbers().size(), 1);
-                            var purchasedNumber = createdRes.getValue().getPhoneNumbers().get(0);
+                            String purchasedNumber = createdRes.getValue().getPhoneNumbers().get(0);
                             // Purchase Reservation
                             return beginPurchaseReservation(httpClient, createdRes.getValue().getReservationId()).last()
                             .flatMap((AsyncPollResponse<Void, Void> response) -> {
@@ -309,7 +309,7 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
                                 .flatMap((Response<UpdateNumberCapabilitiesResponse> updateResponse) -> {
                                     assertEquals(200, updateResponse.getStatusCode());
                                     // Get capabilities update
-                                    var capabilitiesUpdateId = updateResponse.getValue().getCapabilitiesUpdateId();
+                                    String capabilitiesUpdateId = updateResponse.getValue().getCapabilitiesUpdateId();
                                     assertNotNull(capabilitiesUpdateId);
                                     return this.getClient(httpClient).getCapabilitiesUpdateWithResponse(capabilitiesUpdateId, Context.NONE)
                                     .flatMap((Response<UpdatePhoneNumberCapabilitiesResponse> retrievedUpdateResponse) -> {
@@ -342,7 +342,7 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
                         return beginCreateReservation(httpClient, phonePlan).last()
                         .flatMap((AsyncPollResponse<PhoneNumberReservation, PhoneNumberReservation> createdRes) -> {
                             assertEquals(createdRes.getValue().getPhoneNumbers().size(), 1);
-                            var purchasedNumber = createdRes.getValue().getPhoneNumbers().get(0);
+                            String purchasedNumber = createdRes.getValue().getPhoneNumbers().get(0);
                             // Purchase Reservation
                             return beginPurchaseReservation(httpClient, createdRes.getValue().getReservationId()).last()
                             .flatMap((AsyncPollResponse<Void, Void> response) -> {
