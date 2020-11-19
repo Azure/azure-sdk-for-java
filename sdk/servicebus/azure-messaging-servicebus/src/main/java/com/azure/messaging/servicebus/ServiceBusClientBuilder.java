@@ -646,9 +646,10 @@ public final class ServiceBusClientBuilder {
 
         private ServiceBusSessionProcessorClientBuilder() {
             sessionReceiverClientBuilder = new ServiceBusSessionReceiverClientBuilder();
-            processorClientOptions = new ServiceBusProcessorClientOptions();
+            processorClientOptions = new ServiceBusProcessorClientOptions()
+                .setMaxConcurrentCalls(1)
+                .setTracerProvider(tracerProvider);
             sessionReceiverClientBuilder.maxConcurrentSessions(1);
-            processorClientOptions.setMaxConcurrentCalls(1);
         }
 
         /**
@@ -1100,7 +1101,9 @@ public final class ServiceBusClientBuilder {
 
         private ServiceBusProcessorClientBuilder() {
             serviceBusReceiverClientBuilder = new ServiceBusReceiverClientBuilder();
-            processorClientOptions = new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1);
+            processorClientOptions = new ServiceBusProcessorClientOptions()
+                .setMaxConcurrentCalls(1)
+                .setTracerProvider(tracerProvider);
         }
 
         /**
