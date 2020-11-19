@@ -108,6 +108,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     // Starting at -1 because that is before the beginning of the stream.
     private final AtomicLong lastPeekedSequenceNumber = new AtomicLong(-1);
     private final AtomicReference<ServiceBusAsyncConsumer> consumer = new AtomicReference<>();
+    private final AtomicReference<Flux<ServiceBusReceivedMessage>> receiveMessagesFlux = new AtomicReference<>();
 
     /**
      * Creates a receiver that listens to a Service Bus resource.
@@ -580,7 +581,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         // to auto-refill the prefetch buffer. A request will retrieve one message from this buffer.
         // If receiverOptions.prefetchCount is 0 (default value),
         // the request will add a link credit so one message is retrieved from the service.
-        return receiveMessagesNoBackPressure().limitRate(1, 0);
+        receiveMessagesFlux.compareAndSet(null, receiveMessagesNoBackPressure().limitRate(1, 0)
+            .publish(1)
+            .autoConnect(1));
+        return receiveMessagesFlux.get();
     }
 
     Flux<ServiceBusReceivedMessage> receiveMessagesNoBackPressure() {
