@@ -13,7 +13,7 @@ public final class TasksStateTasksKeyPhraseExtractionTasksItem extends TaskState
     /*
      * The results property.
      */
-    @JsonProperty(value = "results")
+    @JsonProperty(value = "results", required = true)
     private KeyPhraseResult results;
 
     /**

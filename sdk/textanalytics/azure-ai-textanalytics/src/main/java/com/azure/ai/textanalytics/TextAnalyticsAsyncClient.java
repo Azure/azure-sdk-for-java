@@ -6,6 +6,8 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
+import com.azure.ai.textanalytics.models.AnalyzeTasksOptions;
+import com.azure.ai.textanalytics.models.AnalyzeTasksResult;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
@@ -41,7 +43,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.Collections;
 import java.util.Objects;
-import java.util.UUID;
 
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.mapByIndex;
@@ -78,6 +79,7 @@ public final class TextAnalyticsAsyncClient {
     final RecognizePiiEntityAsyncClient recognizePiiEntityAsyncClient;
     final RecognizeLinkedEntityAsyncClient recognizeLinkedEntityAsyncClient;
     final AnalyzeHealthcareAsyncClient analyzeHealthcareAsyncClient;
+    final AnalyzeTasksAsyncClient analyzeTasksAsyncClient;
 
     /**
      * Create a {@link TextAnalyticsAsyncClient} that sends requests to the Text Analytics services's endpoint. Each
@@ -101,6 +103,7 @@ public final class TextAnalyticsAsyncClient {
         this.recognizePiiEntityAsyncClient = new RecognizePiiEntityAsyncClient(service);
         this.recognizeLinkedEntityAsyncClient = new RecognizeLinkedEntityAsyncClient(service);
         this.analyzeHealthcareAsyncClient = new AnalyzeHealthcareAsyncClient(service);
+        this.analyzeTasksAsyncClient = new AnalyzeTasksAsyncClient(service);
     }
 
     /**
@@ -1012,7 +1015,6 @@ public final class TextAnalyticsAsyncClient {
         return analyzeSentimentAsyncClient.analyzeSentimentBatch(documents, options);
     }
 
-    // Health Care
     /**
      * Analyze healthcare entities, entity linking, and entity relations in a list of
      * {@link TextDocumentInput document} with provided request options.
@@ -1027,14 +1029,15 @@ public final class TextAnalyticsAsyncClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginAnalyzeHealthcare#Iterable-RecognizeHealthcareEntityOptions}
      *
      * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
-     * @param options The additional configurable {@link AnalyzeSentimentOptions options} that may be passed when
-     * analyzing sentiments.
+     * @param options The additional configurable {@link RecognizeHealthcareEntityOptions options} that may be passed
+     * when analyzing healthcare task.
      *
      * @return A {@link PollerFlux} that polls the analyze healthcare operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns a {@link PagedFlux} of {@link HealthcareTaskResult}.
      *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
      * @throws TextAnalyticsException If analyze operation fails.
-     * @throws NullPointerException If {@code jobId} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<TextAnalyticsOperationResult, PagedFlux<HealthcareTaskResult>> beginAnalyzeHealthcare(
@@ -1043,21 +1046,51 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
-     * Cancel a long-running operation healthcare task by given job ID.
+     * Cancel a long-running operation healthcare task by given a healthcare task identification number.
      *
      * <p><strong>Code Sample</strong></p>
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginCancelAnalyzeHealthcare#UUID}
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginCancelHealthcareTask#String-RecognizeHealthcareEntityOptions}
      *
-     * @param jobId A job identification number.
+     * @param healthcareTaskId The healthcare task identification number.
+     * @param options The additional configurable {@link RecognizeHealthcareEntityOptions options} that may be passed
+     * when cancelling healthcare task.
      *
      * @return A {@link PollerFlux} that polls the analyze healthcare operation until it has completed, has failed,
      * or has been cancelled.
      *
+     * @throws NullPointerException If {@code healthcareTaskId} is null.
      * @throws TextAnalyticsException If analyze operation fails.
-     * @throws NullPointerException If {@code jobId} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<TextAnalyticsOperationResult, Void> beginCancelAnalyzeHealthcare(UUID jobId) {
-        return analyzeHealthcareAsyncClient.beginCancelAnalyzeHealthcare(jobId, Context.NONE);
+    public PollerFlux<TextAnalyticsOperationResult, Void> beginCancelHealthcareTask(String healthcareTaskId,
+        RecognizeHealthcareEntityOptions options) {
+        return analyzeHealthcareAsyncClient.beginCancelAnalyzeHealthcare(healthcareTaskId, options, Context.NONE);
+    }
+
+    /**
+     * Analyze tasks, such as, entity recognition, PII entity recognition and key phrases extraction in a list of
+     * {@link TextDocumentInput document} with provided request options.
+     *
+     * See <a href="https://aka.ms/talangs">this</a> supported languages in Text Analytics API.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginAnalyzeTasks#Iterable-AnalyzeTasksOptions}
+     *
+     * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
+     * @param options The additional configurable {@link AnalyzeTasksOptions options} that may be passed when
+     * analyzing a collection of tasks.
+     *
+     * @return A {@link PollerFlux} that polls the analyze a collection of tasks operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a {@link PagedFlux} of
+     * {@link AnalyzeTasksResult}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws TextAnalyticsException If analyze operation fails.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PollerFlux<TextAnalyticsOperationResult, PagedFlux<AnalyzeTasksResult>> beginAnalyzeTasks(
+        Iterable<TextDocumentInput> documents, AnalyzeTasksOptions options) {
+        return analyzeTasksAsyncClient.beginAnalyzeTasks(documents, options, Context.NONE);
     }
 }

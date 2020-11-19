@@ -3,25 +3,39 @@
 
 package com.azure.ai.textanalytics.implementation;
 
+import com.azure.ai.textanalytics.implementation.models.DocumentError;
+import com.azure.ai.textanalytics.implementation.models.DocumentKeyPhrases;
 import com.azure.ai.textanalytics.implementation.models.DocumentStatistics;
+import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.ErrorCodeValue;
 import com.azure.ai.textanalytics.implementation.models.ErrorResponseException;
 import com.azure.ai.textanalytics.implementation.models.HealthcareResult;
 import com.azure.ai.textanalytics.implementation.models.InnerError;
 import com.azure.ai.textanalytics.implementation.models.InnerErrorCodeValue;
+import com.azure.ai.textanalytics.implementation.models.KeyPhraseResult;
 import com.azure.ai.textanalytics.implementation.models.LanguageInput;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageInput;
+import com.azure.ai.textanalytics.implementation.models.PiiResult;
 import com.azure.ai.textanalytics.implementation.models.RequestStatistics;
 import com.azure.ai.textanalytics.implementation.models.State;
 import com.azure.ai.textanalytics.implementation.models.TextAnalyticsError;
+import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
+import com.azure.ai.textanalytics.models.CategorizedEntity;
+import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.EntityCategory;
+import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.HealthcareEntityCollection;
 import com.azure.ai.textanalytics.models.HealthcareEntityLink;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelation;
 import com.azure.ai.textanalytics.models.JobState;
+import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
+import com.azure.ai.textanalytics.models.PiiEntity;
+import com.azure.ai.textanalytics.models.PiiEntityCollection;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizeHealthcareEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
@@ -29,7 +43,10 @@ import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextDocumentStatistics;
 import com.azure.ai.textanalytics.models.WarningCode;
+import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
+import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeHealthcareEntitiesResultCollection;
+import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpResponse;
@@ -57,7 +74,7 @@ import java.util.stream.Collectors;
 import static com.azure.ai.textanalytics.implementation.models.State.CANCELLED;
 import static com.azure.ai.textanalytics.implementation.models.State.CANCELLING;
 import static com.azure.ai.textanalytics.implementation.models.State.FAILED;
-import static com.azure.ai.textanalytics.implementation.models.State.NOTSTARTED;
+import static com.azure.ai.textanalytics.implementation.models.State.NOT_STARTED;
 import static com.azure.ai.textanalytics.implementation.models.State.PARTIALLY_COMPLETED;
 import static com.azure.ai.textanalytics.implementation.models.State.RUNNING;
 import static com.azure.ai.textanalytics.implementation.models.State.SUCCEEDED;
@@ -68,7 +85,7 @@ import static com.azure.ai.textanalytics.implementation.models.State.SUCCEEDED;
 public final class Utility {
     private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
     // default time interval for polling
-    public static final Duration DEFAULT_POLL_DURATION = Duration.ofSeconds(5);
+    public static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(5);
 
     private Utility() {
     }
@@ -309,6 +326,107 @@ public final class Utility {
         //        nextLink)));
     }
 
+    public static RecognizeEntitiesResultCollection toRecognizeEntitiesResultCollectionResponse(
+        final EntitiesResult entitiesResult) {
+        // List of documents results
+        List<RecognizeEntitiesResult> recognizeEntitiesResults = new ArrayList<>();
+        entitiesResult.getDocuments().forEach(documentEntities ->
+            recognizeEntitiesResults.add(new RecognizeEntitiesResult(
+                documentEntities.getId(),
+                documentEntities.getStatistics() == null ? null
+                    : toTextDocumentStatistics(documentEntities.getStatistics()),
+                null,
+                new CategorizedEntityCollection(
+                    new IterableStream<>(documentEntities.getEntities().stream().map(entity ->
+                        new CategorizedEntity(entity.getText(), EntityCategory.fromString(entity.getCategory()),
+                            entity.getSubcategory(), entity.getConfidenceScore(), entity.getOffset()
+                        ))
+                        .collect(Collectors.toList())),
+                    new IterableStream<>(documentEntities.getWarnings().stream()
+                        .map(warning -> {
+                            final WarningCodeValue warningCodeValue = warning.getCode();
+                            return new TextAnalyticsWarning(
+                                WarningCode.fromString(warningCodeValue == null ? null : warningCodeValue.toString()),
+                                warning.getMessage());
+                        }).collect(Collectors.toList())))
+            )));
+        // Document errors
+        for (DocumentError documentError : entitiesResult.getErrors()) {
+            recognizeEntitiesResults.add(new RecognizeEntitiesResult(documentError.getId(), null,
+                toTextAnalyticsError(documentError.getError()), null));
+        }
+
+        return new RecognizeEntitiesResultCollection(recognizeEntitiesResults, entitiesResult.getModelVersion(),
+            entitiesResult.getStatistics() == null ? null : toBatchStatistics(entitiesResult.getStatistics()));
+    }
+
+    public static RecognizePiiEntitiesResultCollection toRecognizePiiEntitiesResultCollection(
+        final PiiResult piiEntitiesResult) {
+        // List of documents results
+        final List<RecognizePiiEntitiesResult> recognizeEntitiesResults = new ArrayList<>();
+        piiEntitiesResult.getDocuments().forEach(documentEntities -> {
+            // Pii entities list
+            final List<PiiEntity> piiEntities = documentEntities.getEntities().stream().map(entity ->
+                new PiiEntity(entity.getText(), EntityCategory.fromString(entity.getCategory()),
+                    entity.getSubcategory(), entity.getConfidenceScore(), entity.getOffset()))
+                .collect(Collectors.toList());
+            // Warnings
+            final List<TextAnalyticsWarning> warnings = documentEntities.getWarnings().stream()
+                .map(warning -> {
+                    final WarningCodeValue warningCodeValue = warning.getCode();
+                    return new TextAnalyticsWarning(
+                        WarningCode.fromString(warningCodeValue == null ? null : warningCodeValue.toString()),
+                        warning.getMessage());
+                }).collect(Collectors.toList());
+
+            recognizeEntitiesResults.add(new RecognizePiiEntitiesResult(
+                documentEntities.getId(),
+                documentEntities.getStatistics() == null ? null
+                    : toTextDocumentStatistics(documentEntities.getStatistics()),
+                null,
+                new PiiEntityCollection(new IterableStream<>(piiEntities), documentEntities.getRedactedText(),
+                    new IterableStream<>(warnings))
+            ));
+        });
+        // Document errors
+        for (DocumentError documentError : piiEntitiesResult.getErrors()) {
+            recognizeEntitiesResults.add(new RecognizePiiEntitiesResult(documentError.getId(), null,
+                toTextAnalyticsError(documentError.getError()), null));
+        }
+
+        return new RecognizePiiEntitiesResultCollection(recognizeEntitiesResults, piiEntitiesResult.getModelVersion(),
+            piiEntitiesResult.getStatistics() == null ? null : toBatchStatistics(piiEntitiesResult.getStatistics()));
+    }
+
+    public static ExtractKeyPhrasesResultCollection toExtractKeyPhrasesResultCollection(
+        final KeyPhraseResult keyPhraseResult) {
+        // List of documents results
+        final List<ExtractKeyPhraseResult> keyPhraseResultList = new ArrayList<>();
+        for (DocumentKeyPhrases documentKeyPhrases : keyPhraseResult.getDocuments()) {
+            final String documentId = documentKeyPhrases.getId();
+            keyPhraseResultList.add(new ExtractKeyPhraseResult(
+                documentId,
+                documentKeyPhrases.getStatistics() == null ? null
+                    : toTextDocumentStatistics(documentKeyPhrases.getStatistics()), null,
+                new KeyPhrasesCollection(
+                    new IterableStream<>(documentKeyPhrases.getKeyPhrases()),
+                    new IterableStream<>(documentKeyPhrases.getWarnings().stream().map(warning -> {
+                        final WarningCodeValue warningCodeValue = warning.getCode();
+                        return new TextAnalyticsWarning(
+                            WarningCode.fromString(warningCodeValue == null ? null : warningCodeValue.toString()),
+                            warning.getMessage());
+                    }).collect(Collectors.toList())))));
+        }
+        // Document errors
+        for (DocumentError documentError : keyPhraseResult.getErrors()) {
+            keyPhraseResultList.add(new ExtractKeyPhraseResult(documentError.getId(), null,
+                toTextAnalyticsError(documentError.getError()), null));
+        }
+
+        return new ExtractKeyPhrasesResultCollection(keyPhraseResultList, keyPhraseResult.getModelVersion(),
+            keyPhraseResult.getStatistics() == null ? null : toBatchStatistics(keyPhraseResult.getStatistics()));
+    }
+
     /**
      * Transfer {@link HealthcareResult} into {@link RecognizeHealthcareEntitiesResultCollection}
      *
@@ -416,7 +534,7 @@ public final class Utility {
      * @return the client side explored model, JobState.
      */
     public static JobState toJobState(State jobState) {
-        if (jobState == NOTSTARTED) {
+        if (jobState == NOT_STARTED) {
             return JobState.CANCELLED;
         } else if (jobState == RUNNING) {
             return JobState.RUNNING;

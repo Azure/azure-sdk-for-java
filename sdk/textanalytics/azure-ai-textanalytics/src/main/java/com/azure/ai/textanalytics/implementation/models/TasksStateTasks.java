@@ -15,7 +15,7 @@ public final class TasksStateTasks {
      * The details property.
      */
     @JsonProperty(value = "details")
-    private TasksStateTasksDetails details;
+    private TaskState details;
 
     /*
      * The completed property.
@@ -64,7 +64,7 @@ public final class TasksStateTasks {
      *
      * @return the details value.
      */
-    public TasksStateTasksDetails getDetails() {
+    public TaskState getDetails() {
         return this.details;
     }
 
@@ -74,7 +74,7 @@ public final class TasksStateTasks {
      * @param details the details value to set.
      * @return the TasksStateTasks object itself.
      */
-    public TasksStateTasks setDetails(TasksStateTasksDetails details) {
+    public TasksStateTasks setDetails(TaskState details) {
         this.details = details;
         return this;
     }

@@ -4,15 +4,19 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
+import com.azure.ai.textanalytics.models.AnalyzeTasksOptions;
+import com.azure.ai.textanalytics.models.AnalyzeTasksResult;
 import com.azure.ai.textanalytics.models.AspectSentiment;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
+import com.azure.ai.textanalytics.models.EntitiesTask;
 import com.azure.ai.textanalytics.models.HealthcareEntityCollection;
 import com.azure.ai.textanalytics.models.HealthcareEntityLink;
 import com.azure.ai.textanalytics.models.HealthcareTaskResult;
+import com.azure.ai.textanalytics.models.KeyPhrasesTask;
 import com.azure.ai.textanalytics.models.OpinionSentiment;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
@@ -40,10 +44,10 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -893,15 +897,54 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 
     // Healthcare - Cancellation
     /**
-     * Code snippet for {@link TextAnalyticsClient#beginCancelAnalyzeHealthcare(UUID, Context)}
+     * Code snippet for {@link TextAnalyticsClient#beginCancelHealthcareTask(String, RecognizeHealthcareEntityOptions, Context)}
      */
     public void cancelAnalyzeHealthcareMaxOverload() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.beginCancelAnalyzeHealthcare#UUID-Context
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.beginCancelHealthcareTask#String-RecognizeHealthcareEntityOptions-Context
         final SyncPoller<TextAnalyticsOperationResult, Void> textAnalyticsOperationResultVoidSyncPoller
-            = textAnalyticsClient.beginCancelAnalyzeHealthcare(UUID.fromString("{job_id_to_cancel}"), Context.NONE);
+            = textAnalyticsClient.beginCancelHealthcareTask("{job_id_to_cancel}",
+            new RecognizeHealthcareEntityOptions().setPollInterval(Duration.ofSeconds(10)), Context.NONE);
 
         final PollResponse<TextAnalyticsOperationResult> poll = textAnalyticsOperationResultVoidSyncPoller.poll();
         System.out.printf("Task status: %s.%n", poll.getStatus());
-        // END: com.azure.ai.textanalytics.TextAnalyticsClient.beginCancelAnalyzeHealthcare#UUID-Context
+        // END: com.azure.ai.textanalytics.TextAnalyticsClient.beginCancelHealthcareTask#String-RecognizeHealthcareEntityOptions-Context
+    }
+
+    // Analyze Tasks
+    /**
+     * Code snippet for {@link TextAnalyticsClient#beginAnalyzeTasks(Iterable, AnalyzeTasksOptions, Context)}
+     */
+    public void analyzeTasksMaxOverload() {
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.beginAnalyzeTasks#Iterable-AnalyzeTasksOptions-Context
+        List<TextDocumentInput> documents = Arrays.asList(
+            new TextDocumentInput("0", "Elon Musk is the CEO of SpaceX and Tesla.").setLanguage("en"),
+            new TextDocumentInput("1", "My SSN is 859-98-0987").setLanguage("en")
+        );
+
+        SyncPoller<TextAnalyticsOperationResult, PagedIterable<AnalyzeTasksResult>> syncPoller =
+            textAnalyticsClient.beginAnalyzeTasks(
+                documents,
+                new AnalyzeTasksOptions()
+                    .setDisplayName("{tasks_display_name}")
+                    .setEntitiesRecognitionTasks(Arrays.asList(new EntitiesTask()))
+                    .setKeyPhrasesExtractionTasks(Arrays.asList(new KeyPhrasesTask())),
+                Context.NONE);
+        syncPoller.waitForCompletion();
+        PagedIterable<AnalyzeTasksResult> result = syncPoller.getFinalResult();
+        result.forEach(analyzeJobState -> {
+            analyzeJobState.getEntityRecognitionTasks().forEach(taskResult ->
+                taskResult.forEach(entitiesResult ->
+                    entitiesResult.getEntities().forEach(entity -> System.out.printf(
+                        "Recognized entity: %s, entity category: %s, entity subcategory: %s, confidence score: %f.%n",
+                        entity.getText(), entity.getCategory(), entity.getSubcategory(),
+                        entity.getConfidenceScore()))));
+            analyzeJobState.getKeyPhraseExtractionTasks().forEach(taskResult ->
+                taskResult.forEach(extractKeyPhraseResult -> {
+                    System.out.println("Extracted phrases:");
+                    extractKeyPhraseResult.getKeyPhrases()
+                        .forEach(keyPhrases -> System.out.printf("\t%s.%n", keyPhrases));
+                }));
+        });
+        // END: com.azure.ai.textanalytics.TextAnalyticsClient.beginAnalyzeTasks#Iterable-AnalyzeTasksOptions-Context
     }
 }

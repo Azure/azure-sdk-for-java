@@ -13,7 +13,7 @@ public final class TasksStateTasksEntityRecognitionPiiTasksItem extends TaskStat
     /*
      * The results property.
      */
-    @JsonProperty(value = "results")
+    @JsonProperty(value = "results", required = true)
     private PiiResult results;
 
     /**

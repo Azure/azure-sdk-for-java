@@ -4,14 +4,18 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
+import com.azure.ai.textanalytics.models.AnalyzeTasksOptions;
+import com.azure.ai.textanalytics.models.AnalyzeTasksResult;
 import com.azure.ai.textanalytics.models.AspectSentiment;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
+import com.azure.ai.textanalytics.models.EntitiesTask;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.HealthcareEntityLink;
 import com.azure.ai.textanalytics.models.HealthcareTaskResult;
+import com.azure.ai.textanalytics.models.KeyPhrasesTask;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.MinedOpinion;
@@ -19,6 +23,7 @@ import com.azure.ai.textanalytics.models.OpinionSentiment;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityDomainType;
+import com.azure.ai.textanalytics.models.PiiTask;
 import com.azure.ai.textanalytics.models.RecognizeHealthcareEntityOptions;
 import com.azure.ai.textanalytics.models.RecognizePiiEntityOptions;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
@@ -46,7 +51,9 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.IterableStream;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -66,6 +73,7 @@ import static com.azure.ai.textanalytics.TestUtils.SENTIMENT_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.TOO_LONG_INPUT;
 import static com.azure.ai.textanalytics.TestUtils.getDuplicateTextDocumentInputs;
 import static com.azure.ai.textanalytics.TestUtils.getWarningsTextDocumentInputs;
+import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_INTERVAL;
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -78,6 +86,20 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     static final String INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE = "'documents' cannot be empty.";
     static final String INVALID_DOCUMENT_NPE_MESSAGE = "'document' cannot be null.";
     static final String WARNING_TOO_LONG_DOCUMENT_INPUT_MESSAGE = "The document contains very long words (longer than 64 characters). These words will be truncated and may result in unreliable model predictions.";
+
+    Duration durationTestMode;
+
+    /**
+     * Use duration of nearly zero value for PLAYBACK test mode, otherwise, use default duration value for LIVE mode.
+     */
+    @Override
+    protected void beforeTest() {
+        if (interceptorManager.isPlaybackMode()) {
+            durationTestMode = Duration.ofNanos(1);
+        } else {
+            durationTestMode = DEFAULT_POLL_INTERVAL;
+        }
+    }
 
     // Detect Language
     @Test
@@ -302,9 +324,28 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     @Test
     abstract void healthcareLroPagination(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
+    @Test
+    abstract void healthcareLroPaginationWithTopAndSkip(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void healthcareLroEmptyInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
     // Healthcare LRO - Cancellation
     @Test
-    abstract void cancelHealthcareLroRunner(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void cancelHealthcareLro(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    // Analyze LRO
+    @Test
+    abstract void analyzeTasksWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void analyzeTasksPagination(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void analyzeTasksPaginationWithTopAndSkip(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void analyzeTasksEmptyInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     // Detect Language runner
     void detectLanguageShowStatisticsRunner(BiConsumer<List<DetectLanguageInput>,
@@ -556,6 +597,10 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         testRunner.accept("");
     }
 
+    void emptyListRunner(BiConsumer<List<TextDocumentInput>, String> testRunner) {
+        testRunner.accept(new ArrayList<>(), "'documents' cannot be empty.");
+    }
+
     void faultyTextRunner(Consumer<String> testRunner) {
         testRunner.accept("!@#%%");
     }
@@ -620,26 +665,52 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             asList(
                 new TextDocumentInput("0", HEALTHCARE_INPUTS.get(0)),
                 new TextDocumentInput("1", HEALTHCARE_INPUTS.get(1))),
-            new RecognizeHealthcareEntityOptions().setIncludeStatistics(true));
+            new RecognizeHealthcareEntityOptions().setIncludeStatistics(true).setPollInterval(durationTestMode));
     }
 
     void healthcareLroPaginationRunner(
-        BiConsumer<List<TextDocumentInput>, RecognizeHealthcareEntityOptions> testRunner) {
+        BiConsumer<List<TextDocumentInput>, RecognizeHealthcareEntityOptions> testRunner, int totalDocuments) {
         List<TextDocumentInput> documents = new ArrayList<>();
-        // Service has 20 as the default size per page. So there will be 2 remaining page in the next page link
-        for (int i = 0; i < 22; i++) {
+        // Service has 10 as the default size per page. So there will be 2 remaining page in the next page link
+        for (int i = 0; i < totalDocuments; i++) {
             documents.add(new TextDocumentInput(Integer.toString(i), HEALTHCARE_INPUTS.get(0)));
         }
-        testRunner.accept(documents, new RecognizeHealthcareEntityOptions().setIncludeStatistics(true));
+        testRunner.accept(documents,
+            new RecognizeHealthcareEntityOptions().setIncludeStatistics(true).setPollInterval(durationTestMode));
     }
 
     // Healthcare LRO runner- Cancellation
-    void cancelHealthcareLroRunner(Consumer<List<TextDocumentInput>> testRunner) {
+    void cancelHealthcareLroRunner(BiConsumer<List<TextDocumentInput>, RecognizeHealthcareEntityOptions> testRunner) {
         List<TextDocumentInput> documents = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             documents.add(new TextDocumentInput(Integer.toString(i), HEALTHCARE_INPUTS.get(0)));
         }
-        testRunner.accept(documents);
+        testRunner.accept(documents, new RecognizeHealthcareEntityOptions().setPollInterval(durationTestMode));
+    }
+
+    // Analyze LRO
+    void analyzeTasksLroRunner(BiConsumer<List<TextDocumentInput>, AnalyzeTasksOptions> testRunner) {
+        testRunner.accept(
+            asList(
+                new TextDocumentInput("0", CATEGORIZED_ENTITY_INPUTS.get(0)),
+                new TextDocumentInput("1", PII_ENTITY_INPUTS.get(0))),
+            new AnalyzeTasksOptions().setDisplayName("Test1").setIncludeStatistics(false).setPollInterval(durationTestMode)
+                .setEntitiesRecognitionTasks(Arrays.asList(new EntitiesTask()))
+                .setKeyPhrasesExtractionTasks(Arrays.asList(new KeyPhrasesTask()))
+                .setPiiEntitiesRecognitionTasks(Arrays.asList(new PiiTask())));
+    }
+
+    void analyzeTasksPaginationRunner(BiConsumer<List<TextDocumentInput>, AnalyzeTasksOptions> testRunner,
+        int totalDocument) {
+        List<TextDocumentInput> documents = new ArrayList<>();
+        for (int i = 0; i < totalDocument; i++) {
+            documents.add(new TextDocumentInput(Integer.toString(i), PII_ENTITY_INPUTS.get(0)));
+        }
+        testRunner.accept(documents, new AnalyzeTasksOptions().setDisplayName("Test1")
+            .setIncludeStatistics(false).setPollInterval(durationTestMode)
+            .setEntitiesRecognitionTasks(Arrays.asList(new EntitiesTask()))
+            .setKeyPhrasesExtractionTasks(Arrays.asList(new KeyPhrasesTask()))
+            .setPiiEntitiesRecognitionTasks(Arrays.asList(new PiiTask())));
     }
 
     String getEndpoint() {
@@ -1042,6 +1113,52 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         for (int i = 0; i < actual.size(); i++) {
             validateRecognizeHealthcareEntitiesResultCollection(showStatistics,
                 expected.get(i).getResult(), actual.get(i).getResult());
+        }
+    }
+
+    // Analyze tasks
+    static void validateAnalyzeTasksResultList(boolean showStatistics, List<AnalyzeTasksResult> expected,
+        List<AnalyzeTasksResult> actual) {
+        assertEquals(expected.size(), actual.size());
+        for (int i = 0; i < actual.size(); i++) {
+            validateAnalyzeTasksResult(showStatistics, expected.get(i), actual.get(i));
+        }
+    }
+
+    static void validateAnalyzeTasksResult(boolean showStatistics, AnalyzeTasksResult expected,
+        AnalyzeTasksResult actual) {
+        assertEquals(expected.getCompleted(), actual.getCompleted());
+        assertEquals(expected.getFailed(), actual.getFailed());
+        assertEquals(expected.getInProgress(), actual.getInProgress());
+        assertEquals(expected.getTotal(), actual.getTotal());
+        assertEquals(expected.getDisplayName(), actual.getDisplayName());
+
+        validateEntityRecognitionTasks(showStatistics, expected.getEntityRecognitionTasks(), actual.getEntityRecognitionTasks());
+        validateEntityRecognitionPiiTasks(showStatistics, expected.getEntityRecognitionPiiTasks(), actual.getEntityRecognitionPiiTasks());
+        validateKeyPhrasesExtractionTasks(showStatistics, expected.getKeyPhraseExtractionTasks(), actual.getKeyPhraseExtractionTasks());
+    }
+
+    static void validateEntityRecognitionTasks(boolean showStatistics,
+        List<RecognizeEntitiesResultCollection> expected, List<RecognizeEntitiesResultCollection> actual) {
+        assertEquals(expected.size(), actual.size());
+        for (int i = 0; i < actual.size(); i++) {
+            validateCategorizedEntitiesResultCollection(showStatistics, expected.get(i), actual.get(i));
+        }
+    }
+
+    static void validateEntityRecognitionPiiTasks(boolean showStatistics,
+        List<RecognizePiiEntitiesResultCollection> expected, List<RecognizePiiEntitiesResultCollection> actual) {
+        assertEquals(expected.size(), actual.size());
+        for (int i = 0; i < actual.size(); i++) {
+            validatePiiEntitiesResultCollection(showStatistics, expected.get(i), actual.get(i));
+        }
+    }
+
+    static void validateKeyPhrasesExtractionTasks(boolean showStatistics,
+        List<ExtractKeyPhrasesResultCollection> expected, List<ExtractKeyPhrasesResultCollection> actual) {
+        assertEquals(expected.size(), actual.size());
+        for (int i = 0; i < actual.size(); i++) {
+            validateExtractKeyPhrasesResultCollection(showStatistics, expected.get(i), actual.get(i));
         }
     }
 

@@ -1,7 +1,9 @@
 # Release History
 ## 5.1.0-beta.3 (Unreleased)
-**New features**
-- Added support for Healthcare analysis, it is a long-running operation, and the cancellation supported. 
+### New features
+- Added support for healthcare analysis feature. It is represented as a long-running operation. Cancellation supported. 
+- Added support for analyze tasks feature, It analyzes multiple tasks (such as, entity recognition, PII entity recognition 
+and key phrases extraction) simultaneously in a list of document.
 
 ## 5.1.0-beta.2 (2020-10-06)
 ### Breaking changes
@@ -17,7 +19,7 @@
   - `length` is the number of characters in the text of these models
   - `offset` is the offset of the text from the start of the document
   
-**New features**
+### New features
 - Updated Text Analytics SDK's default service API version to `v3.1-preview.2` from `v3.0`.
 - Added support for Personally Identifiable Information(PII) entity recognition feature.
   To use this feature, you need to make sure you are using the service's v3.1-preview.1 API.
@@ -38,14 +40,14 @@ about the returned entity.
 - First stable release of `azure-ai-textanalytics`.
 
 ## 1.0.0-beta.5 (2020-05-27)
-**New features**
+### New features
 - Added Text property and `getText()` to `SentenceSentiment`.
 - `Warnings` property added to each document-level response object returned from the endpoints. It is a list of `TextAnalyticsWarnings`.
 - Added `CategorizedEntityCollection`, `KeyPhrasesCollection`, `LinkedEntityCollection` for having `getWarnings()` to retrieve warnings. 
 - Added a new enum value `ADDRESS` to `EntityCategory`.
 - Text analytics SDK update the service to version `v3.0` from `v3.0-preview.1`.
 
-**Breaking changes**
+### Breaking changes
 - Removed pagination feature, which removed `TextAnalyticsPagedIterable`, `TextAnalyticsPagedFlux` and `TextAnalyticsPagedResponse`
 - Removed overload methods for API that takes a list of String, only keep max-overload API that has a list of String, language or country hint, and `TextAnalyticsRequestOption`.
 - Renamed `apiKey()` to `credential()` on TextAnalyticsClientBuilder.
@@ -73,18 +75,18 @@ about the returned entity.
 ## 1.0.0-beta.4 (2020-04-07)
 - Throws an illegal argument exception when the given list of documents is an empty list.
 
-**Breaking changes**
+### Breaking changes
 - Renamed all input parameters `text` to `document`, and `inputTexts` to `documents`.
 - Removed all PII endpoints and update with related changes, such as remove related models, samples, codesnippets, docstrings, etc from this library. 
 - Replaced `TextAnalyticsApiKeyCredential` with `AzureKeyCredential`.
 
 ## 1.0.0-beta.3 (2020-03-10)
-**New features**
+### New features
 - Introduced `TextAnalyticsPagedFlux`, `TextAnalyticsPagedIterable`, and `TextAnalyticsPagedResponse` type. Moved `modelVersion` amd `TextDocumentBatchStatistics` into `TextAnalyticsPagedResponse`. All collection APIs are return `TextAnalyticsPagedFlux` and `TextAnalyticsPagedIterable` in the asynchronous and synchronous client, respectively. So `DocumentResultCollection` is no longer required. Most of existing API surface are changes. Please check up `TextAnalyticsAsyncClient` and `TextAnalyticsClient` for more detail.
 - Introduced `EntityCategory` class to support major entity categories that the service supported.
 - Added `getDefaultCountryHint()`, `getDefaultLanguage()` and `getServiceVersion()` to `TextAnalyticsClient`
 
-**Breaking changes**
+### Breaking changes
 - Supported `Iterable<T>` instead of `List<T>` text inputs.
 - Default language and country hint can only be assigned value when building a Text Analytics client.
 - Renamed `showStatistics()` to `isIncludeStatistics()` in the `TextAnalyticsRequestOptions`.
@@ -97,7 +99,7 @@ about the returned entity.
 
 ## 1.0.0-beta.2 (2020-02-12)
 
-**Breaking changes**
+### Breaking changes
 
 - The single text, module-level operations return an atomic type of the operation result. For example, `detectLanguage(String text)` returns a `DetectedLanguage` rather than a `DetectLanguageResult`.
 
@@ -137,11 +139,11 @@ about the returned entity.
 - `getLinkedEntities()` to `getEntities()` and variable `linkedEntities` to `entities`.
 - Added suffix of `batch` to all operations' method name that takes a collection of input.
  
-**New features**
+### New features
 
 - Credential class `TextAnalyticsApiKeyCredential` provides an `updateCredential()` method which allows you to update the API key for long-lived clients.
 
-**Fixes and improvements**
+### Breaking changes
 
 - If you try to access a result attribute on a `DocumentError` object, a `TextAnalyticsException` is raised with a custom error message that provides the document ID and error of the invalid document.
 

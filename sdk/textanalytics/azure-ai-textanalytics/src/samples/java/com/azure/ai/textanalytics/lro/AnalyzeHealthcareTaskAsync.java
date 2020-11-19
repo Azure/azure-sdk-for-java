@@ -46,7 +46,7 @@ public class AnalyzeHealthcareTaskAsync {
 
         client.beginAnalyzeHealthcare(documents, options)
             .flatMap(AsyncPollResponse::getFinalResult)
-            .subscribe(healthcareTaskResultPagedFlux -> {
+            .subscribe(healthcareTaskResultPagedFlux ->
                 healthcareTaskResultPagedFlux.subscribe(
                     healthcareTaskResult -> {
                         System.out.printf("Job display name: %s, job ID: %s.%n", healthcareTaskResult.getDisplayName(),
@@ -64,7 +64,7 @@ public class AnalyzeHealthcareTaskAsync {
                             batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
                         healthcareEntitiesResultCollection.forEach(healthcareEntitiesResult -> {
-                            System.out.println("document id = " + healthcareEntitiesResult.getId());
+                            System.out.println("Document id = " + healthcareEntitiesResult.getId());
                             System.out.println("Document entities: ");
                             HealthcareEntityCollection healthcareEntities = healthcareEntitiesResult.getEntities();
                             AtomicInteger ct = new AtomicInteger();
@@ -84,9 +84,7 @@ public class AnalyzeHealthcareTaskAsync {
                                         healthcareEntityRelation.getRelationType()));
                         });
                     }
-                );
-            });
-
+                ));
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
         // the thread so the program does not end before the send operation is complete. Using .block() instead of

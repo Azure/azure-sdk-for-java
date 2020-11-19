@@ -6,8 +6,8 @@ package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.OffsetDateTime;
-import java.util.UUID;
 
 /** The JobMetadata model. */
 @Fluent
@@ -34,7 +34,7 @@ public class JobMetadata {
      * The jobId property.
      */
     @JsonProperty(value = "jobId", required = true)
-    private UUID jobId;
+    private String jobId;
 
     /*
      * The lastUpdateDateTime property.
@@ -113,7 +113,7 @@ public class JobMetadata {
      *
      * @return the jobId value.
      */
-    public UUID getJobId() {
+    public String getJobId() {
         return this.jobId;
     }
 
@@ -123,7 +123,7 @@ public class JobMetadata {
      * @param jobId the jobId value to set.
      * @return the JobMetadata object itself.
      */
-    public JobMetadata setJobId(UUID jobId) {
+    public JobMetadata setJobId(String jobId) {
         this.jobId = jobId;
         return this;
     }

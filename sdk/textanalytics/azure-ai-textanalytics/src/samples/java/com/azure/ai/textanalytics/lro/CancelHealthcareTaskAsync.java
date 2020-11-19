@@ -6,6 +6,7 @@ package com.azure.ai.textanalytics.lro;
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.HealthcareTaskResult;
+import com.azure.ai.textanalytics.models.RecognizeHealthcareEntityOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsOperationResult;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.credential.AzureKeyCredential;
@@ -13,15 +14,15 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 /**
  * Sample demonstrates how to asynchronously cancel a healthcare job.
  */
-public class CancelHealthcareJobAsync {
+public class CancelHealthcareTaskAsync {
     /**
      * Main method to invoke this demo about how to cancel the healthcare long-running operation.
      *
@@ -60,7 +61,8 @@ public class CancelHealthcareJobAsync {
 
         System.out.printf("The Job ID that is cancelling is %s.%n", pollResponse.getValue().getResultId());
 
-        client.beginCancelAnalyzeHealthcare(UUID.fromString(pollResponse.getValue().getResultId()))
+        client.beginCancelHealthcareTask(pollResponse.getValue().getResultId(),
+            new RecognizeHealthcareEntityOptions().setPollInterval(Duration.ofSeconds(10)))
             .map(response -> {
                 System.out.println(response.getStatus());
                 return response;

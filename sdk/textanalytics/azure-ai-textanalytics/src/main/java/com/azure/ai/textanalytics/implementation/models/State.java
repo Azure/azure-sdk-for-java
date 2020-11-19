@@ -9,8 +9,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 /** Defines values for State. */
 public enum State {
-    /** Enum value notstarted. */
-    NOTSTARTED("notstarted"),
+    /** Enum value notStarted. */
+    NOT_STARTED("notStarted"),
 
     /** Enum value running. */
     RUNNING("running"),
@@ -21,14 +21,14 @@ public enum State {
     /** Enum value failed. */
     FAILED("failed"),
 
+    /** Enum value rejected. */
+    REJECTED("rejected"),
+
     /** Enum value cancelled. */
     CANCELLED("cancelled"),
 
     /** Enum value cancelling. */
     CANCELLING("cancelling"),
-
-    /** Enum value notStarted. */
-    NOT_STARTED("notStarted"),
 
     /** Enum value partiallyCompleted. */
     PARTIALLY_COMPLETED("partiallyCompleted");
