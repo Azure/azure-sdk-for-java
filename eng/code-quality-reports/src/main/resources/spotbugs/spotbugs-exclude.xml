@@ -1351,6 +1351,13 @@
     <Bug pattern="UWF_UNWRITTEN_FIELD" />
   </Match>
 
+  <!-- TextAnalyticsException fields re serializable -->
+  <Match>
+    <Class name="com.azure.ai.textanalytics.models.TextAnalyticsException" />
+    <Field name="errorInformationList" />
+    <Bug pattern="SE_BAD_FIELD" />
+  </Match>
+
   <!-- Exception is required to catch, ref: code comment in the OrderbyRowComparer::compare() method  -->
   <Match>
     <Class name="com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer"/>

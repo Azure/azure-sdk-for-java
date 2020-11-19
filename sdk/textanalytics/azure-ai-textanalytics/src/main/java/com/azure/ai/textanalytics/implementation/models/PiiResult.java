@@ -8,9 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The PiiEntitiesResult model. */
+/** The PiiResult model. */
 @Fluent
-public final class PiiEntitiesResult {
+public final class PiiResult {
     /*
      * Response by document
      */
@@ -49,9 +49,9 @@ public final class PiiEntitiesResult {
      * Set the documents property: Response by document.
      *
      * @param documents the documents value to set.
-     * @return the PiiEntitiesResult object itself.
+     * @return the PiiResult object itself.
      */
-    public PiiEntitiesResult setDocuments(List<PiiDocumentEntities> documents) {
+    public PiiResult setDocuments(List<PiiDocumentEntities> documents) {
         this.documents = documents;
         return this;
     }
@@ -69,9 +69,9 @@ public final class PiiEntitiesResult {
      * Set the errors property: Errors by document id.
      *
      * @param errors the errors value to set.
-     * @return the PiiEntitiesResult object itself.
+     * @return the PiiResult object itself.
      */
-    public PiiEntitiesResult setErrors(List<DocumentError> errors) {
+    public PiiResult setErrors(List<DocumentError> errors) {
         this.errors = errors;
         return this;
     }
@@ -91,9 +91,9 @@ public final class PiiEntitiesResult {
      * about the request payload.
      *
      * @param statistics the statistics value to set.
-     * @return the PiiEntitiesResult object itself.
+     * @return the PiiResult object itself.
      */
-    public PiiEntitiesResult setStatistics(RequestStatistics statistics) {
+    public PiiResult setStatistics(RequestStatistics statistics) {
         this.statistics = statistics;
         return this;
     }
@@ -111,9 +111,9 @@ public final class PiiEntitiesResult {
      * Set the modelVersion property: This field indicates which model is used for scoring.
      *
      * @param modelVersion the modelVersion value to set.
-     * @return the PiiEntitiesResult object itself.
+     * @return the PiiResult object itself.
      */
-    public PiiEntitiesResult setModelVersion(String modelVersion) {
+    public PiiResult setModelVersion(String modelVersion) {
         this.modelVersion = modelVersion;
         return this;
     }
