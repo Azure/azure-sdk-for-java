@@ -4,8 +4,12 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
@@ -14,16 +18,23 @@ import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.file.datalake.implementation.models.FileSystemsListPathsResponse;
+import com.azure.storage.file.datalake.implementation.models.Path;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
+import com.azure.storage.file.datalake.models.ListPathsOptions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
+import com.azure.storage.file.datalake.models.PathItem;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
 
 /**
@@ -483,6 +494,63 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
+    }
+
+    /**
+     * Returns a reactive Publisher emitting all the files/directories in this account lazily as needed. For more
+     * information, see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/filesystem/list">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.listPaths}
+     *
+     * @return A reactive response emitting the list of files/directories.
+     */
+    public PagedFlux<PathItem> listPaths() {
+        try {
+            return this.listPaths(false, false, null);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
+    }
+
+    /**
+     * Returns a reactive Publisher emitting all the files/directories in this account lazily as needed. For more
+     * information, see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/filesystem/list">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.listPaths#ListPathsOptions}
+     *
+     * @param recursive
+     * @return A reactive response emitting the list of files/directories.
+     */
+    public PagedFlux<PathItem> listPaths(boolean recursive, boolean userPrincipleNameReturned, Integer maxResults) {
+        return listPathsWithOptionalTimeout(recursive, userPrincipleNameReturned, maxResults, null);
+    }
+
+    PagedFlux<PathItem> listPathsWithOptionalTimeout(boolean recursive, boolean userPrincipleNameReturned,
+        Integer maxResults, Duration timeout) {
+        Function<String, Mono<PagedResponse<Path>>> func =
+            marker -> listPathsSegment(marker, recursive, userPrincipleNameReturned, maxResults, timeout)
+                .map(response -> new PagedResponseBase<>(
+                    response.getRequest(),
+                    response.getStatusCode(),
+                    response.getHeaders(),
+                    response.getValue().getPaths(),
+                    response.getDeserializedHeaders().getContinuation(),
+                    response.getDeserializedHeaders()));
+
+        return new PagedFlux<>(() -> func.apply(null), func).mapPage(Transforms::toPathItem);
+    }
+
+    private Mono<FileSystemsListPathsResponse> listPathsSegment(String marker, boolean recursive,
+        boolean userPrincipleNameReturned, Integer maxResults, Duration timeout) {
+
+        return StorageImplUtils.applyOptionalTimeout(
+            this.fileSystemDataLakeStorage.fileSystems().listPathsWithRestResponseAsync(
+                recursive, marker, getDirectoryPath(), maxResults, userPrincipleNameReturned, null,
+                null, Context.NONE), timeout);
     }
 
     /**

@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.datalake;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -11,8 +12,10 @@ import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
+import com.azure.storage.file.datalake.models.ListPathsOptions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathInfo;
+import com.azure.storage.file.datalake.models.PathItem;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -421,5 +424,38 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
 
         Response<DataLakePathClient> resp = StorageImplUtils.blockWithOptionalTimeout(response, timeout);
         return new SimpleResponse<>(resp, new DataLakeDirectoryClient(resp.getValue()));
+    }
+
+    /**
+     * Returns a lazy loaded list of files/directories in this account. The returned {@link PagedIterable} can be
+     * consumed while new items are automatically retrieved as needed. For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/filesystem/list#filesystem">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.listPaths}
+     *
+     * @return The list of files/directories.
+     */
+    public PagedIterable<PathItem> listPaths() {
+        return this.listPaths(false, false, null, null);
+    }
+
+    /**
+     * Returns a lazy loaded list of files/directories in this account. The returned {@link PagedIterable} can be
+     * consumed while new items are automatically retrieved as needed. For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/filesystem/list#filesystem">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.listPaths#ListPathsOptions-Duration}
+     *
+     * @param options A {@link ListPathsOptions} which specifies what data should be returned by the service.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @return The list of files/directories.
+     */
+    public PagedIterable<PathItem> listPaths(boolean recursive, boolean userPrincipleNameReturned, Integer maxResults,
+        Duration timeout) {
+        return new PagedIterable<>(dataLakeDirectoryAsyncClient.listPathsWithOptionalTimeout(recursive, userPrincipleNameReturned, maxResults, timeout));
     }
 }
