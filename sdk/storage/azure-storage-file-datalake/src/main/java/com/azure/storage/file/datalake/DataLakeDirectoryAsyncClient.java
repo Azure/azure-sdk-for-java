@@ -507,11 +507,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * @return A reactive response emitting the list of files/directories.
      */
     public PagedFlux<PathItem> listPaths() {
-        try {
-            return this.listPaths(false, false, null);
-        } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
-        }
+        return this.listPaths(false, false, null);
     }
 
     /**
@@ -520,13 +516,25 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.listPaths#ListPathsOptions}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.listPaths#boolean-boolean-Integer}
      *
-     * @param recursive
+     * @param recursive Specifies if the call should recursively include all paths.
+     * @param userPrincipleNameReturned If "true", the user identity values returned in the x-ms-owner, x-ms-group,
+     * and x-ms-acl response headers will be transformed from Azure Active Directory Object IDs to User Principal Names.
+     * If "false", the values will be returned as Azure Active Directory Object IDs.
+     * The default value is false. Note that group and application Object IDs are not translated because they do not
+     * have unique friendly names.
+     * @param maxResults Specifies the maximum number of blobs to return, including all BlobPrefix elements. If the
+     * request does not specify maxResults or specifies a value greater than 5,000, the server will return up to
+     * 5,000 items.
      * @return A reactive response emitting the list of files/directories.
      */
     public PagedFlux<PathItem> listPaths(boolean recursive, boolean userPrincipleNameReturned, Integer maxResults) {
-        return listPathsWithOptionalTimeout(recursive, userPrincipleNameReturned, maxResults, null);
+        try {
+            return listPathsWithOptionalTimeout(recursive, userPrincipleNameReturned, maxResults, null);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
     }
 
     PagedFlux<PathItem> listPathsWithOptionalTimeout(boolean recursive, boolean userPrincipleNameReturned,

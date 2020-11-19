@@ -448,9 +448,17 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.listPaths#ListPathsOptions-Duration}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.listPaths#boolean-boolean-Integer-Duration}
      *
-     * @param options A {@link ListPathsOptions} which specifies what data should be returned by the service.
+     * @param recursive Specifies if the call should recursively include all paths.
+     * @param userPrincipleNameReturned If "true", the user identity values returned in the x-ms-owner, x-ms-group,
+     * and x-ms-acl response headers will be transformed from Azure Active Directory Object IDs to User Principal Names.
+     * If "false", the values will be returned as Azure Active Directory Object IDs.
+     * The default value is false. Note that group and application Object IDs are not translated because they do not
+     * have unique friendly names.
+     * @param maxResults Specifies the maximum number of blobs to return, including all BlobPrefix elements. If the
+     * request does not specify maxResults or specifies a value greater than 5,000, the server will return up to
+     * 5,000 items.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return The list of files/directories.
      */
