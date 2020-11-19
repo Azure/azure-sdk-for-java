@@ -59,10 +59,12 @@ public class PhoneNumberClientIntegrationTest extends PhoneNumberIntegrationTest
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void listPhonePlans(HttpClient httpClient) {
-        PagedIterable<PhonePlan> pagedIterable =
-            this.getClient(httpClient).listPhonePlans(COUNTRY_CODE, PHONE_PLAN_GROUP_ID, LOCALE);
+        PagedIterable<PhonePlanGroup> phonePlanGroupsPagedIterable =
+            this.getClient(httpClient).listPhonePlanGroups(COUNTRY_CODE, LOCALE, true);
+        PagedIterable<PhonePlan> phonePlanPagedIterable =
+            this.getClient(httpClient).listPhonePlans(COUNTRY_CODE, phonePlanGroupsPagedIterable.iterator().next().getPhonePlanGroupId(), LOCALE);
 
-        assertNotNull(pagedIterable.iterator().next().getPhonePlanId());
+        assertNotNull(phonePlanPagedIterable.iterator().next().getPhonePlanId());
     }
 
     @ParameterizedTest
@@ -92,15 +94,25 @@ public class PhoneNumberClientIntegrationTest extends PhoneNumberIntegrationTest
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getPhonePlanLocationOptions(HttpClient httpClient) {
+        PagedIterable<PhonePlanGroup> phonePlanGroupsPagedIterable =
+            this.getClient(httpClient).listPhonePlanGroups(COUNTRY_CODE, LOCALE, true);
+        String phonePlanGroupId = phonePlanGroupsPagedIterable.iterator().next().getPhonePlanGroupId();
+        PagedIterable<PhonePlan> phonePlanPagedIterable =
+            this.getClient(httpClient).listPhonePlans(COUNTRY_CODE, phonePlanGroupId, LOCALE);
         LocationOptionsResponse response =
-            this.getClient(httpClient).getPhonePlanLocationOptions(COUNTRY_CODE, PHONE_PLAN_GROUP_ID, PHONE_PLAN_ID, LOCALE);
-
+            this.getClient(httpClient).getPhonePlanLocationOptions(COUNTRY_CODE, phonePlanGroupId, phonePlanPagedIterable.iterator().next().getPhonePlanId(), LOCALE);
         assertNotNull(response.getLocationOptions().getLabelId());
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getAllAreaCodes(HttpClient httpClient) {
+        PagedIterable<PhonePlanGroup> phonePlanGroupsPagedIterable =
+        this.getClient(httpClient).listPhonePlanGroups(COUNTRY_CODE, LOCALE, true);
+        String phonePlanGroupId = phonePlanGroupsPagedIterable.iterator().next().getPhonePlanGroupId();
+        PagedIterable<PhonePlan> phonePlanPagedIterable =
+            this.getClient(httpClient).listPhonePlans(COUNTRY_CODE, phonePlanGroupId, LOCALE);
+
         List<LocationOptionsQuery> locationOptions = new ArrayList<>();
         LocationOptionsQuery query = new LocationOptionsQuery();
         query.setLabelId("state");
@@ -113,7 +125,7 @@ public class PhoneNumberClientIntegrationTest extends PhoneNumberIntegrationTest
         locationOptions.add(query);
 
         AreaCodes areaCodes =
-            this.getClient(httpClient).getAllAreaCodes("selection", COUNTRY_CODE, PHONE_PLAN_ID, locationOptions);
+            this.getClient(httpClient).getAllAreaCodes("selection", COUNTRY_CODE, phonePlanPagedIterable.iterator().next().getPhonePlanId(), locationOptions);
 
         assertTrue(areaCodes.getPrimaryAreaCodes().size() > 0);
     }
@@ -121,6 +133,12 @@ public class PhoneNumberClientIntegrationTest extends PhoneNumberIntegrationTest
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getAllAreaCodesWithResponse(HttpClient httpClient) {
+        PagedIterable<PhonePlanGroup> phonePlanGroupsPagedIterable =
+        this.getClient(httpClient).listPhonePlanGroups(COUNTRY_CODE, LOCALE, true);
+        String phonePlanGroupId = phonePlanGroupsPagedIterable.iterator().next().getPhonePlanGroupId();
+        PagedIterable<PhonePlan> phonePlanPagedIterable =
+            this.getClient(httpClient).listPhonePlans(COUNTRY_CODE, phonePlanGroupId, LOCALE);
+
         List<LocationOptionsQuery> locationOptions = new ArrayList<>();
         LocationOptionsQuery query = new LocationOptionsQuery();
         query.setLabelId("state");
@@ -133,7 +151,7 @@ public class PhoneNumberClientIntegrationTest extends PhoneNumberIntegrationTest
         locationOptions.add(query);
 
         Response<AreaCodes> areaCodesResponse = this.getClient(httpClient).getAllAreaCodesWithResponse(
-            "selection", COUNTRY_CODE, PHONE_PLAN_ID, locationOptions, Context.NONE);
+            "selection", COUNTRY_CODE, phonePlanPagedIterable.iterator().next().getPhonePlanId(), locationOptions, Context.NONE);
 
         assertEquals(200, areaCodesResponse.getStatusCode());
         assertTrue(areaCodesResponse.getValue().getPrimaryAreaCodes().size() > 0);
