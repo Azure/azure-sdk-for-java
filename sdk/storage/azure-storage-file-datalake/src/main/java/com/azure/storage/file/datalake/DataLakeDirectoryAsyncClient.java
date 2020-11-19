@@ -502,7 +502,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.listPaths}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.listPaths}
      *
      * @return A reactive response emitting the list of files/directories.
      */
@@ -516,7 +516,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.listPaths#boolean-boolean-Integer}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.listPaths#boolean-boolean-Integer}
      *
      * @param recursive Specifies if the call should recursively include all paths.
      * @param userPrincipleNameReturned If "true", the user identity values returned in the x-ms-owner, x-ms-group,

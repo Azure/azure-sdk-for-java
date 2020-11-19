@@ -433,7 +433,7 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.listPaths}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryClient.listPaths}
      *
      * @return The list of files/directories.
      */
@@ -448,7 +448,7 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.listPaths#boolean-boolean-Integer-Duration}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryClient.listPaths#boolean-boolean-Integer-Duration}
      *
      * @param recursive Specifies if the call should recursively include all paths.
      * @param userPrincipleNameReturned If "true", the user identity values returned in the x-ms-owner, x-ms-group,
