@@ -35,9 +35,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@DisabledIfEnvironmentVariable(
-    named = "SKIP_PHONENUMBER_INTEGRATION_TESTS",
-    matches = "(?i)(true)")
 public class PhoneNumberClientIntegrationTest extends PhoneNumberIntegrationTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
@@ -307,6 +304,6 @@ public class PhoneNumberClientIntegrationTest extends PhoneNumberIntegrationTest
     }
 
     private PhoneNumberClient getClient(HttpClient httpClient) {
-        return super.getClientBuilder(httpClient).buildClient();
+        return super.getClientBuilderWithConnectionString(httpClient).buildClient();
     }
 }

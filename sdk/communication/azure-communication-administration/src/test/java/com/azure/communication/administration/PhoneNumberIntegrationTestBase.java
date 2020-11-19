@@ -13,7 +13,7 @@ public class PhoneNumberIntegrationTestBase extends TestBase {
     private static final String ENV_ENDPOINT =
         Configuration.getGlobalConfiguration().get("COMMUNICATION_SERVICE_ENDPOINT", "https://REDACTED.communication.azure.com");
     private static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
+        .get("COMMUNICATION_LIVETEST_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
 
     protected static final String COUNTRY_CODE =
         Configuration.getGlobalConfiguration().get("COUNTRY_CODE", "US");
