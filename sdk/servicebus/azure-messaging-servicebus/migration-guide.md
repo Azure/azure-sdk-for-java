@@ -172,7 +172,7 @@ message directly without having to convert it to bytes first. The snippet below 
 
 // create the sync sender via the builder and its sub-builder
 ServiceBusSenderClient sender = new ServiceBusClientBuilder()
-    .connectionString("connection string")
+    .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
     .sender()
     .queueName("my-queue")
     .buildClient();
@@ -197,7 +197,7 @@ send. This uses the sync sender as well.
 ```java
 // create the sync sender via the builder and its sub-builder
 ServiceBusSenderClient sender = new ServiceBusClientBuilder()
-    .connectionString("connection string")
+    .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
     .sender()
     .queueName("my-queue")
     .buildClient();
@@ -301,7 +301,7 @@ Consumer<ServiceBusErrorContext> processError = errorContext -> {
 
 // create the processor client via the builder and its sub-builder
 ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()
-                                .connectionString("connection-string")
+                                .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
                                 .processor()
                                 .queueName("queue-name")
                                 .processMessage(processMessage)
@@ -341,7 +341,7 @@ Consumer<ServiceBusErrorContext> processError = errorContext -> {
 
 // create the processor client via the builder and its sub-builder
 ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()
-                                .connectionString("connection-string")
+                                .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
                                 .sessionProcessor()
                                 .queueName("queue-name")
                                 .maxConcurrentSessions(3)
@@ -363,7 +363,7 @@ While the below code uses `acceptSession()` that takes a sessionId, you can also
 
 ```java
 ServiceBusSessionReceiverClient sessionClient = new ServiceBusClientBuilder()
-    .connectionString("connection string")
+    .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
     .sessionReceiver()
     .queueName("queue")
     .buildClient();
