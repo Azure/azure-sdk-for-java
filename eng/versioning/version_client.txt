@@ -104,7 +104,7 @@ com.azure.spring:azure-spring-boot-starter-cosmos;3.0.0-beta.1;3.0.0-beta.1
 com.azure.spring:azure-spring-boot-starter-data-gremlin;3.0.0-beta.1;3.0.0-beta.1
 com.azure.spring:azure-spring-boot-starter-keyvault-certificates;3.0.0-beta.1;3.0.0-beta.2
 com.azure.spring:azure-spring-boot-starter-keyvault-secrets;3.0.0-beta.1;3.0.0-beta.1
-com.azure.spring:azure-spring-boot-starter-servicebus-jms;3.0.0-beta.1;3.0.0-beta.1
+com.azure.spring:azure-spring-boot-starter-servicebus-jms;3.0.0-beta.1;3.0.0-beta.2
 com.azure.spring:azure-spring-boot-starter-storage;3.0.0-beta.1;3.0.0-beta.1
 com.azure.spring:azure-spring-boot-starter;3.0.0-beta.1;3.0.0-beta.1
 com.azure.spring:azure-spring-boot;3.0.0-beta.1;3.0.0-beta.1
