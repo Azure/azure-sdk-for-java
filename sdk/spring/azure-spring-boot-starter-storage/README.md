@@ -74,18 +74,18 @@ private final BlobServiceAsyncClient blobServiceAsyncClient = blobServiceClientB
 
 #### Search for resources
 You can use implementation class `AzureStorageResourcePatternResolver` of `ResourcePatternResolver` to search resource, it supports `blob` or `file` type.
-* Create pattern resolver object, if only one storage type resource used, please call the corresponding constructor.
 * Pattern search, the **searchPattern** should start with `azure-blob://` or `azure-file://`. Such as `azure-blob://*/*`, it means list all blobs in all containers; `azure-blob://demo-container/**`, it means list all blobs in the demo-container container, including any sub-folder.
 * Location search, the **searchLocation** should start with `azure-blob://` or `azure-file://`, the remaining file path should exist, otherwise an exception will be thrown.
 
 ```java
 AzureStorageResourcePatternResolver storageResourcePatternResolver = new AzureStorageResourcePatternResolver(blobServiceClientBuilder.buildClient());
+
 Resource[] resources = storageResourcePatternResolver.getResources(searchPattern);
 Resource resource = storageResourcePatternResolver.getResource(searchLocation);
 ```
 
 #### Multipart upload
-Files larger than 4 MiB will be uploaded to Azure Storage in parallel. Learn more at [Upload in parallel][storage-blob-scalable-app-upload-files].
+Files larger than 4 MiB will be uploaded to Azure Storage in parallel.
 
 ## Troubleshooting
 ### Enable client logging
@@ -129,6 +129,3 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [azure_storage]: https://azure.microsoft.com/services/storage/blobs/
 [other_operation]: https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#resources
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
-
-[storage-blob-scalable-app-upload-files]: https://docs.microsoft.com/azure/storage/blobs/storage-blob-scalable-app-upload-files
-
