@@ -277,7 +277,7 @@ public class TracerProvider {
             reportPayload.setGreaterThan1Kb(objectSize > ClientTelemetry.ONE_KB_TO_BYTES);
         }
 
-        reportPayload.setDatabasesName(databaseId);
+        reportPayload.setDatabaseName(databaseId);
         reportPayload.setContainerName(containerId);
         reportPayload.setOperation(operationType);
         reportPayload.setResource(resourceType);

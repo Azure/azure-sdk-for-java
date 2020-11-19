@@ -231,7 +231,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
             BridgeInternal.getContextClient(cosmosAsyncClient).getConsistencyLevel() :
             consistencyLevel);
 
-        reportPayload.setDatabasesName(databaseId);
+        reportPayload.setDatabaseName(databaseId);
         reportPayload.setContainerName(containerId);
         reportPayload.setOperation(operationType);
         reportPayload.setResource(resourceType);
