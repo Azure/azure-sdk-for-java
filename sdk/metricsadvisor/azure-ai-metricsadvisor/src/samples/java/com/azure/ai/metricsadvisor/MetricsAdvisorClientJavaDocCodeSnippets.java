@@ -340,7 +340,6 @@ public class MetricsAdvisorClientJavaDocCodeSnippets {
         final String alertConfigurationId = "ff3014a0-bbbb-41ec-a637-677e77b81299";
         final OffsetDateTime startTime = OffsetDateTime.parse("2020-01-01T00:00:00Z");
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
-        final AlertQueryTimeMode timeMode = AlertQueryTimeMode.ANOMALY_TIME;
 
         PagedIterable<AnomalyAlert> alertsIterable
             = metricsAdvisorClient.listAlerts(alertConfigurationId, startTime, endTime);
@@ -392,9 +391,6 @@ public class MetricsAdvisorClientJavaDocCodeSnippets {
         final String dimensionName = "Dim1";
         final OffsetDateTime startTime = OffsetDateTime.parse("2020-01-01T00:00:00Z");
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
-        final ListDimensionValuesWithAnomaliesOptions options
-            = new ListDimensionValuesWithAnomaliesOptions()
-            .setTop(10);
 
         PagedIterable<String> dimensionValueIterable
             = metricsAdvisorClient.listDimensionValuesWithAnomalies(detectionConfigurationId,
@@ -446,8 +442,6 @@ public class MetricsAdvisorClientJavaDocCodeSnippets {
         final String detectionConfigurationId = "c0f2539f-b804-4ab9-a70f-0da0c89c76d8";
         final OffsetDateTime startTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T12:00:00Z");
-        final ListIncidentsDetectedOptions options = new ListIncidentsDetectedOptions()
-            .setTop(1000);
 
         PagedIterable<AnomalyIncident> incidentsIterable
             = metricsAdvisorClient.listIncidentsForDetectionConfig(detectionConfigurationId, startTime, endTime);
@@ -514,7 +508,8 @@ public class MetricsAdvisorClientJavaDocCodeSnippets {
             .setTop(10)
             .setFilter(filter);
         PagedIterable<DataPointAnomaly> anomaliesIterable
-            = metricsAdvisorClient.listAnomaliesForDetectionConfig(detectionConfigurationId, startTime, endTime);
+            = metricsAdvisorClient.listAnomaliesForDetectionConfig(detectionConfigurationId, startTime, endTime,
+            options, Context.NONE);
 
         for (DataPointAnomaly dataPointAnomaly : anomaliesIterable) {
             System.out.printf("DataPointAnomaly AnomalySeverity: %s%n", dataPointAnomaly.getSeverity());
@@ -603,7 +598,8 @@ public class MetricsAdvisorClientJavaDocCodeSnippets {
         final Response<MetricFeedback> metricFeedbackResponse
             = metricsAdvisorClient.createMetricFeedbackWithResponse(metricId, metricChangePointFeedback, Context.NONE);
 
-        System.out.printf("Data Feed Metric feedback creation operation status %s%n", metricFeedbackResponse.getStatusCode());
+        System.out.printf("Data Feed Metric feedback creation operation status %s%n",
+            metricFeedbackResponse.getStatusCode());
         MetricChangePointFeedback createdMetricChangePointFeedback
             = (MetricChangePointFeedback) metricFeedbackResponse.getValue();
         System.out.printf("Data Feed Metric feedback Id: %s%n", createdMetricChangePointFeedback.getId());
@@ -824,7 +820,7 @@ public class MetricsAdvisorClientJavaDocCodeSnippets {
         final OffsetDateTime startTime = OffsetDateTime.parse("2020-01-01T00:00:00Z");
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
         final String metricId = "d3gh4i4-b804-4ab9-a70f-0da0c89cft3l";
-        final ListMetricEnrichmentStatusOptions options = new ListMetricEnrichmentStatusOptions().setTop(10);
+
         metricsAdvisorClient.listMetricEnrichmentStatus(metricId, startTime, endTime)
             .forEach(enrichmentStatus -> {
                 System.out.printf("Data Feed Metric enrichment status : %s%n", enrichmentStatus.getStatus());

@@ -51,7 +51,7 @@ public class TestUtils {
     static final int USE_CASE_MULTIPLE_RECEIVE_ONE_TIMEOUT = 5;
     static final int USE_CASE_PEEK_BATCH_MESSAGES = 6;
     static final int USE_CASE_SEND_READ_BACK_MESSAGES = 7;
-    static final int USE_CASE_MULTIPLE_SESSION = 8;
+    static final int USE_CASE_DEFERRED_MESSAGE_BY_SEQUENCE_NUMBER = 8;
     static final int USE_CASE_PEEK_MESSAGE_FROM_SEQUENCE = 9;
     static final int USE_CASE_PEEK_RECEIVE_AND_DEFER = 10;
     static final int USE_CASE_PEEK_TRANSACTION_SENDRECEIVE_AND_COMPLETE = 11;

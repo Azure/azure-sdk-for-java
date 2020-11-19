@@ -301,7 +301,7 @@ public final class ManageInternetFacingLoadBalancer {
                         .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                         .withRootUsername(userName)
                         .withSsh(sshKey)
-                        .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                        .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                         .withNewAvailabilitySet(availSet1Definition));
             }
 

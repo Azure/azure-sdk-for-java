@@ -5,15 +5,15 @@ package com.azure.communication.administration;
 import com.azure.communication.administration.models.AcquiredPhoneNumber;
 import com.azure.communication.administration.models.AreaCodes;
 import com.azure.communication.administration.models.Capability;
-import com.azure.communication.administration.models.CreateSearchOptions;
-import com.azure.communication.administration.models.CreateSearchResponse;
+import com.azure.communication.administration.models.CreateReservationOptions;
+import com.azure.communication.administration.models.CreateReservationResponse;
 import com.azure.communication.administration.models.LocationOptionsQuery;
 import com.azure.communication.administration.models.LocationOptionsResponse;
 import com.azure.communication.administration.models.NumberConfigurationResponse;
 import com.azure.communication.administration.models.NumberUpdateCapabilities;
 import com.azure.communication.administration.models.PhoneNumberCountry;
 import com.azure.communication.administration.models.PhoneNumberEntity;
-import com.azure.communication.administration.models.PhoneNumberSearch;
+import com.azure.communication.administration.models.PhoneNumberReservation;
 import com.azure.communication.administration.models.PhonePlan;
 import com.azure.communication.administration.models.PhonePlanGroup;
 import com.azure.communication.administration.models.PstnConfiguration;
@@ -77,8 +77,8 @@ public class PhoneNumberClientIntegrationTest extends PhoneNumberIntegrationTest
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void listAllSearches(HttpClient httpClient) {
-        PagedIterable<PhoneNumberEntity> pagedIterable = this.getClient(httpClient).listAllSearches();
+    public void listAllReservations(HttpClient httpClient) {
+        PagedIterable<PhoneNumberEntity> pagedIterable = this.getClient(httpClient).listAllReservations();
 
         assertNotNull(pagedIterable.iterator().next().getId());
     }
@@ -198,71 +198,71 @@ public class PhoneNumberClientIntegrationTest extends PhoneNumberIntegrationTest
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void createSearch(HttpClient httpClient) {
+    public void createReservation(HttpClient httpClient) {
         List<String> phonePlanIds = new ArrayList<>();
         phonePlanIds.add(PHONE_PLAN_ID);
 
-        CreateSearchOptions createSearchOptions = new CreateSearchOptions();
-        createSearchOptions
+        CreateReservationOptions createReservationOptions = new CreateReservationOptions();
+        createReservationOptions
             .setAreaCode(AREA_CODE_FOR_SEARCH)
             .setDescription("318362fa-2b19-4062-92af-fa0673914f30")
             .setDisplayName("318362fa-2b19-4062-92af-fa0673914f30")
             .setPhonePlanIds(phonePlanIds)
             .setQuantity(1);
 
-        CreateSearchResponse createSearchResponse = this.getClient(httpClient).createSearch(createSearchOptions);
+        CreateReservationResponse createReservationResponse = this.getClient(httpClient).createReservation(createReservationOptions);
 
-        assertNotNull(createSearchResponse.getSearchId());
+        assertNotNull(createReservationResponse.getReservationId());
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void createSearchWithResponse(HttpClient httpClient) {
+    public void createReservationWithResponse(HttpClient httpClient) {
         List<String> phonePlanIds = new ArrayList<>();
         phonePlanIds.add(PHONE_PLAN_ID);
 
-        CreateSearchOptions createSearchOptions = new CreateSearchOptions();
-        createSearchOptions
+        CreateReservationOptions createReservationOptions = new CreateReservationOptions();
+        createReservationOptions
             .setAreaCode(AREA_CODE_FOR_SEARCH)
             .setDescription("318362fa-2b19-4062-92af-fa0673914f30")
             .setDisplayName("318362fa-2b19-4062-92af-fa0673914f30")
             .setPhonePlanIds(phonePlanIds)
             .setQuantity(1);
 
-        Response<CreateSearchResponse> response =
-            this.getClient(httpClient).createSearchWithResponse(createSearchOptions, Context.NONE);
+        Response<CreateReservationResponse> response =
+            this.getClient(httpClient).createReservationWithResponse(createReservationOptions, Context.NONE);
 
         assertEquals(201, response.getStatusCode());
-        assertNotNull(response.getValue().getSearchId());
+        assertNotNull(response.getValue().getReservationId());
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getSearchById(HttpClient httpClient) {
-        PhoneNumberSearch search = this.getClient(httpClient).getSearchById(SEARCH_ID);
+    public void getReservationById(HttpClient httpClient) {
+        PhoneNumberReservation search = this.getClient(httpClient).getReservationById(RESERVATION_ID);
 
-        assertEquals(SEARCH_ID, search.getSearchId());
+        assertEquals(RESERVATION_ID, search.getReservationId());
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getSearchByIdWithResponse(HttpClient httpClient) {
-        Response<PhoneNumberSearch> response = this.getClient(httpClient).getSearchByIdWithResponse(SEARCH_ID, Context.NONE);
+    public void getReservationByIdWithResponse(HttpClient httpClient) {
+        Response<PhoneNumberReservation> response = this.getClient(httpClient).getReservationByIdWithResponse(RESERVATION_ID, Context.NONE);
 
         assertEquals(200, response.getStatusCode());
-        assertEquals(SEARCH_ID, response.getValue().getSearchId());
+        assertEquals(RESERVATION_ID, response.getValue().getReservationId());
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void cancelSearch(HttpClient httpClient) {
-        this.getClient(httpClient).cancelSearch(SEARCH_ID_TO_CANCEL);
+    public void cancelReservation(HttpClient httpClient) {
+        this.getClient(httpClient).cancelReservation(RESERVATION_ID_TO_CANCEL);
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void cancelSearchWithResponse(HttpClient httpClient) {
-        Response<Void> response = this.getClient(httpClient).cancelSearchWithResponse(SEARCH_ID_TO_CANCEL, Context.NONE);
+    public void cancelReservationWithResponse(HttpClient httpClient) {
+        Response<Void> response = this.getClient(httpClient).cancelReservationWithResponse(RESERVATION_ID_TO_CANCEL, Context.NONE);
 
         assertEquals(202, response.getStatusCode());
     }

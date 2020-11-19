@@ -25,12 +25,6 @@ public class Constants {
     public static final String SPRING_CLOUD_VERSION = SNAPSHOT_VERSION;
 
     // the max length of application id is 24
-    public static final String SPRING_CLOUD_STORAGE_BLOB_APPLICATION_ID =
-        String.join("-", AZURE, SPRING_CLOUD, STORAGE_BLOBS) + "/" + SPRING_CLOUD_VERSION;
-
-    public static final String SPRING_CLOUD_STORAGE_FILE_SHARE_APPLICATION_ID =
-        String.join("-", AZURE, SPRING_CLOUD, STORAGE_FILE_SHARE) + "/" + SPRING_CLOUD_VERSION;
-
     public static final String SPRING_INTEGRATION_STORAGE_QUEUE_APPLICATION_ID =
         String.join("-", AZURE, SPRING_INTEGRATION, STORAGE_QUEUE) + "/" + SPRING_CLOUD_VERSION;
 
