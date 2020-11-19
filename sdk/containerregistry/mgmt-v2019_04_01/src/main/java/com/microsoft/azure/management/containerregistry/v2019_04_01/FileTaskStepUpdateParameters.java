@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * The properties of updating a task step.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", defaultImpl = FileTaskStepUpdateParameters.class)
 @JsonTypeName("FileTask")
 public class FileTaskStepUpdateParameters extends TaskStepUpdateParameters {
     /**

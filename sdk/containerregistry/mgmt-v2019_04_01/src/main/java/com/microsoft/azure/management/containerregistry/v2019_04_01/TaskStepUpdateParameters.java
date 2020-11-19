@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * Base properties for updating any task step.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", defaultImpl = TaskStepUpdateParameters.class)
 @JsonTypeName("TaskStepUpdateParameters")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Docker", value = DockerBuildStepUpdateParameters.class),

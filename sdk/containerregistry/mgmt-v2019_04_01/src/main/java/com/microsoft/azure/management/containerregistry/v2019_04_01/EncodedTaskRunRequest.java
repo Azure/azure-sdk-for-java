@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * The parameters for a quick task run request.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", defaultImpl = EncodedTaskRunRequest.class)
 @JsonTypeName("EncodedTaskRunRequest")
 public class EncodedTaskRunRequest extends RunRequest {
     /**
