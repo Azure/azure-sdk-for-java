@@ -584,7 +584,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     Flux<ServiceBusReceivedMessage> receiveMessagesNoBackPressure() {
-        return receiveMessagesWithContext()
+        return receiveMessagesWithContext(0)
             .handle((serviceBusMessageContext, sink) -> {
                 if (serviceBusMessageContext.hasError()) {
                     sink.error(serviceBusMessageContext.getThrowable());
@@ -609,6 +609,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @return An <b>infinite</b> stream of messages from the Service Bus entity.
      */
     Flux<ServiceBusMessageContext> receiveMessagesWithContext() {
+        return receiveMessagesWithContext(1);
+    }
+
+    Flux<ServiceBusMessageContext> receiveMessagesWithContext(int highTide) {
         final Flux<ServiceBusMessageContext> messageFlux = sessionManager != null
             ? sessionManager.receive()
             : getOrCreateConsumer().receive().map(ServiceBusMessageContext::new);
@@ -621,16 +625,19 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             withAutoLockRenewal = messageFlux;
         }
 
-        final Flux<ServiceBusMessageContext> withAutoComplete;
+        Flux<ServiceBusMessageContext> result;
         if (receiverOptions.isEnableAutoComplete()) {
-            withAutoComplete = new FluxAutoComplete(withAutoLockRenewal, completionLock,
+            result = new FluxAutoComplete(withAutoLockRenewal, completionLock,
                 context -> context.getMessage() != null ? complete(context.getMessage()) : Mono.empty(),
                 context -> context.getMessage() != null ? abandon(context.getMessage()) : Mono.empty());
         } else {
-            withAutoComplete = withAutoLockRenewal;
+            result = withAutoLockRenewal;
         }
 
-        return withAutoComplete
+        if (highTide > 0) {
+            result = result.limitRate(highTide, 0);
+        }
+        return result
             .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RECEIVE));
     }
 
