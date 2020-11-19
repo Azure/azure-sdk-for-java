@@ -7,7 +7,6 @@ import com.azure.communication.administration.models.AreaCodes;
 import com.azure.communication.administration.models.Capability;
 import com.azure.communication.administration.models.CreateReservationOptions;
 import com.azure.communication.administration.models.LocationOptionsQuery;
-import com.azure.communication.administration.models.LocationOptionsResponse;
 import com.azure.communication.administration.models.LocationType;
 import com.azure.communication.administration.models.NumberConfigurationResponse;
 import com.azure.communication.administration.models.NumberUpdateCapabilities;
