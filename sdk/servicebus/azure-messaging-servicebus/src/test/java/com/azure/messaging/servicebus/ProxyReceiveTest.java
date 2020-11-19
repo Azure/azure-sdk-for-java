@@ -7,7 +7,7 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.jproxy.ProxyServer;
 import com.azure.messaging.servicebus.jproxy.SimpleProxy;
-import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -93,7 +93,7 @@ public class ProxyReceiveTest extends IntegrationTestBase {
             .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
             .connectionString(getConnectionString())
             .receiver()
-            .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
+            .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
             .queueName(queueName)
             .buildAsyncClient();
 

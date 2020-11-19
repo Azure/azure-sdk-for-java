@@ -59,22 +59,22 @@
     <dependency>
     <groupId>com.azure</groupId>
       <artifactId>azure-communication-administration</artifactId>
-      <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-communication-administration;current} -->
+      <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-communication-administration;current} -->
     </dependency>
     <dependency>
     <groupId>com.azure</groupId>
       <artifactId>azure-communication-chat</artifactId>
-      <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-communication-chat;current} -->
+      <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-communication-chat;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-common</artifactId>
-      <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-communication-common;current} -->
+      <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-communication-common;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-sms</artifactId>
-      <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-communication-sms;current} -->
+      <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-communication-sms;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -84,7 +84,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-amqp</artifactId>
-      <version>1.7.0-beta.2</version> <!-- {x-version-update;com.azure:azure-core-amqp;current} -->
+      <version>1.7.0-beta.3</version> <!-- {x-version-update;com.azure:azure-core-amqp;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -179,12 +179,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs</artifactId>
-      <version>5.4.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;current} -->
+      <version>5.4.0-beta.2</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
-      <version>1.4.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;current} -->
+      <version>1.4.0-beta.2</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -199,7 +199,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-administration</artifactId>
-      <version>4.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-security-keyvault-administration;current} -->
+      <version>4.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-security-keyvault-administration;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>

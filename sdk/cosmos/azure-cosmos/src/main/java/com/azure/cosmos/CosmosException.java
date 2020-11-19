@@ -300,7 +300,7 @@ public class CosmosException extends AzureException {
     @Override
     public String toString() {
         return getClass().getSimpleName() + "{" + "userAgent=" + USER_AGENT + ", error=" + cosmosError + ", resourceAddress='"
-                   + resourceAddress  +  "', requestUri='" + (requestUri != null ? requestUri.getURIAsString() : null) +  "', statusCode=" + statusCode + ", message=" + getMessage()
+                   + resourceAddress  +  ", statusCode=" + statusCode + ", message=" + getMessage()
                    + ", causeInfo=" + causeInfo() + ", responseHeaders=" + responseHeaders + ", requestHeaders="
                    + filterSensitiveData(requestHeaders) + '}';
     }

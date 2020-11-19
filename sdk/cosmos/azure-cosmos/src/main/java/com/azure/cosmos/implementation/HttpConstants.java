@@ -326,5 +326,6 @@ public class HttpConstants {
     public static class HeaderValues {
         public static final String NO_CACHE = "no-cache";
         public static final String PREFER_RETURN_MINIMAL = "return=minimal";
+        public static final String IF_NONE_MATCH_ALL = "*";
     }
 }

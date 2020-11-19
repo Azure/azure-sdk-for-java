@@ -99,6 +99,7 @@ org.springframework.boot:spring-boot-starter-logging;2.3.5.RELEASE
 org.springframework.boot:spring-boot-starter-test;2.3.5.RELEASE
 org.springframework.boot:spring-boot-starter-validation;2.3.5.RELEASE
 org.springframework.boot:spring-boot-starter-web;2.3.5.RELEASE
+org.springframework.boot:spring-boot-starter-webflux;2.3.5.RELEASE
 org.springframework.boot:spring-boot-starter;2.3.5.RELEASE
 org.springframework.boot:spring-boot;2.3.5.RELEASE
 org.springframework.data:spring-data-commons;2.3.5.RELEASE

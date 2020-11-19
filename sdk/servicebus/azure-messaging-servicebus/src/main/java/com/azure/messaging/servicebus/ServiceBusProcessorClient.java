@@ -39,7 +39,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     private final ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder sessionReceiverBuilder;
     private final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder;
     private final Consumer<ServiceBusReceivedMessageContext> processMessage;
-    private final Consumer<Throwable> processError;
+    private final Consumer<ServiceBusErrorContext> processError;
     private final ServiceBusProcessorClientOptions processorOptions;
     private final AtomicReference<Subscription> receiverSubscription = new AtomicReference<>();
     private final AtomicReference<ServiceBusReceiverAsyncClient> asyncClient = new AtomicReference<>();
@@ -55,8 +55,9 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
      * @param processorOptions Options to configure this instance of the processor.
      */
     ServiceBusProcessorClient(ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder sessionReceiverBuilder,
-                              Consumer<ServiceBusReceivedMessageContext> processMessage,
-                              Consumer<Throwable> processError, ServiceBusProcessorClientOptions processorOptions) {
+        Consumer<ServiceBusReceivedMessageContext> processMessage,
+        Consumer<ServiceBusErrorContext> processError,
+        ServiceBusProcessorClientOptions processorOptions) {
         this.sessionReceiverBuilder = Objects.requireNonNull(sessionReceiverBuilder,
             "'sessionReceiverBuilder' cannot be null");
         this.processMessage = Objects.requireNonNull(processMessage, "'processMessage' cannot be null");
@@ -75,8 +76,8 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
      * @param processorOptions Options to configure this instance of the processor.
      */
     ServiceBusProcessorClient(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder,
-                              Consumer<ServiceBusReceivedMessageContext> processMessage,
-                              Consumer<Throwable> processError, ServiceBusProcessorClientOptions processorOptions) {
+        Consumer<ServiceBusReceivedMessageContext> processMessage,
+        Consumer<ServiceBusErrorContext> processError, ServiceBusProcessorClientOptions processorOptions) {
         this.receiverBuilder = Objects.requireNonNull(receiverBuilder, "'receiverBuilder' cannot be null");
         this.processMessage = Objects.requireNonNull(processMessage, "'processMessage' cannot be null");
         this.processError = Objects.requireNonNull(processError, "'processError' cannot be null");
@@ -168,7 +169,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
                                 new ServiceBusReceivedMessageContext(receiverClient, serviceBusMessageContext);
                             processMessage.accept(serviceBusReceivedMessageContext);
                         } catch (Exception ex) {
-                            handleError(new ServiceBusReceiverException(ex, ServiceBusErrorSource.USER_CALLBACK));
+                            handleError(new ServiceBusException(ex, ServiceBusErrorSource.USER_CALLBACK));
                             if (!processorOptions.isDisableAutoComplete()) {
                                 logger.warning("Error when processing message. Abandoning message.", ex);
                                 abandonMessage(serviceBusMessageContext, receiverClient);
@@ -211,7 +212,10 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
 
     private void handleError(Throwable throwable) {
         try {
-            processError.accept(throwable);
+            ServiceBusReceiverAsyncClient client = asyncClient.get();
+            final String fullyQualifiedNamespace = client.getFullyQualifiedNamespace();
+            final String entityPath = client.getEntityPath();
+            processError.accept(new ServiceBusErrorContext(throwable, fullyQualifiedNamespace, entityPath));
         } catch (Exception ex) {
             logger.verbose("Error from error handler. Ignoring error.", ex);
         }

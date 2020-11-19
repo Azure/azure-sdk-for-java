@@ -7,7 +7,7 @@ import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -92,7 +92,7 @@ class ServiceBusReceiveLinkProcessorTest {
     void setup() {
         MockitoAnnotations.initMocks(this);
 
-        linkProcessor = new ServiceBusReceiveLinkProcessor(PREFETCH, retryPolicy, ReceiveMode.PEEK_LOCK);
+        linkProcessor = new ServiceBusReceiveLinkProcessor(PREFETCH, retryPolicy, ServiceBusReceiveMode.PEEK_LOCK);
 
         when(link1.getEndpointStates()).thenReturn(endpointProcessor);
         when(link1.receive()).thenReturn(messageProcessor);
@@ -106,9 +106,9 @@ class ServiceBusReceiveLinkProcessorTest {
     @Test
     void constructor() {
         assertThrows(NullPointerException.class, () -> new ServiceBusReceiveLinkProcessor(PREFETCH, null,
-            ReceiveMode.PEEK_LOCK));
+            ServiceBusReceiveMode.PEEK_LOCK));
         assertThrows(IllegalArgumentException.class, () -> new ServiceBusReceiveLinkProcessor(-1, retryPolicy,
-            ReceiveMode.PEEK_LOCK));
+            ServiceBusReceiveMode.PEEK_LOCK));
         assertThrows(NullPointerException.class, () -> new ServiceBusReceiveLinkProcessor(PREFETCH, retryPolicy,
             null));
     }
