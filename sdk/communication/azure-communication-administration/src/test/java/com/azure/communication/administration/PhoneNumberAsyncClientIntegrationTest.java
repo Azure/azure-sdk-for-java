@@ -3,7 +3,6 @@
 package com.azure.communication.administration;
 
 import com.azure.communication.administration.models.AcquiredPhoneNumber;
-import com.azure.communication.administration.models.AreaCodes;
 import com.azure.communication.administration.models.Capability;
 import com.azure.communication.administration.models.CreateReservationOptions;
 import com.azure.communication.administration.models.LocationOptionsQuery;
@@ -31,7 +30,6 @@ import com.azure.core.util.Context;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
@@ -223,7 +221,7 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void E2EBeginCreateReservationGetReservationByIdCancelReservation(HttpClient httpClient) {
+    public void e2EBeginCreateReservationGetReservationByIdCancelReservation(HttpClient httpClient) {
         StepVerifier.create(
             // Setting up for phone number reservation creation
             this.getClient(httpClient).listPhonePlanGroups(COUNTRY_CODE, LOCALE, true).next()
@@ -250,7 +248,7 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void E2EBeginCreateReservationGetReservationByIdCancelReservationWithResponse(HttpClient httpClient) {
+    public void e2EBeginCreateReservationGetReservationByIdCancelReservationWithResponse(HttpClient httpClient) {
         StepVerifier.create(
             // Setting up for phone number reservation creation
             this.getClient(httpClient).listPhonePlanGroups(COUNTRY_CODE, LOCALE, true).next()
@@ -281,7 +279,7 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void E2EBeginCreateReservationBeginPurchaseReservationTestCapabilitiesWithResponseBeginReleasePhoneNumber(HttpClient httpClient) {
+    public void e2EBeginCreateReservationBeginPurchaseReservationTestCapabilitiesWithResponseBeginReleasePhoneNumber(HttpClient httpClient) {
         StepVerifier.create(
             // Setting up for phone number reservation creation
             this.getClient(httpClient).listPhonePlanGroups(COUNTRY_CODE, LOCALE, true).next()
@@ -332,7 +330,7 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void E2EBeginCreateReservationBeginPurchaseReservationTestConfigurationWithResponseBeginReleasePhoneNumber(HttpClient httpClient) {
+    public void e2EBeginCreateReservationBeginPurchaseReservationTestConfigurationWithResponseBeginReleasePhoneNumber(HttpClient httpClient) {
         StepVerifier.create(
             // Setting up for phone number reservation creation
             this.getClient(httpClient).listPhonePlanGroups(COUNTRY_CODE, LOCALE, true).next()
