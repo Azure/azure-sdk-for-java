@@ -1,14 +1,15 @@
 package com.azure.test.aad.auth;
 
-import com.azure.spring.autoconfigure.aad.AzureClientRegistrationRepository;
-import com.azure.spring.autoconfigure.aad.AzureOAuth2AuthorizationCodeGrantRequestEntityConverter;
+import com.azure.spring.aad.implementation.AuthzCodeGrantRequestEntityConverter;
+import com.azure.spring.aad.implementation.AzureClientRegistrationRepository;
 import com.azure.test.utils.AppRunner;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpEntity;
+import org.springframework.http.RequestEntity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
@@ -17,102 +18,89 @@ import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequ
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationResponse;
 import org.springframework.util.MultiValueMap;
 
-import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AuthzCodeGrantRequestEntityConverterTest {
 
-    private AppRunner appRunner;
-    private AzureClientRegistrationRepository azureClientRegistrationRepository;
-    private ClientRegistration azureClientRegistration;
-    private ClientRegistration graphClientRegistration;
+    private AppRunner runner;
+    private AzureClientRegistrationRepository repo;
+    private ClientRegistration azure;
+    private ClientRegistration graph;
 
     @BeforeEach
     public void setupApp() {
-        appRunner = createApp();
-        appRunner.start();
+        runner = createApp();
+        runner.start();
 
-        azureClientRegistrationRepository = appRunner.getBean(AzureClientRegistrationRepository.class);
-        azureClientRegistration = azureClientRegistrationRepository.findByRegistrationId("azure");
-        graphClientRegistration = azureClientRegistrationRepository.findByRegistrationId("graph");
+        repo = runner.getBean(AzureClientRegistrationRepository.class);
+        azure = repo.findByRegistrationId("azure");
+        graph = repo.findByRegistrationId("graph");
     }
 
     private AppRunner createApp() {
         AppRunner result = new AppRunner(DumbApp.class);
-        result.property("azure.activedirectory.tenant-id", "fake-tenant-id");
-        result.property("azure.activedirectory.client-id", "fake-client-id");
-        result.property("azure.activedirectory.client-secret", "fake-client-secret");
-        result.property("azure.activedirectory.user-group.allowed-groups", "group1");
-        result.property("azure.activedirectory.authorization.graph.scope", "Calendars.Read");
+        result.property("azure.active.directory.uri", "http://localhost");
+        result.property("azure.active.directory.tenant-id", "fake-tenant-id");
+        result.property("azure.active.directory.client-id", "fake-client-id");
+        result.property("azure.active.directory.client-secret", "fake-client-secret");
+        result.property("azure.active.directory.authorization.graph.scopes", "Calendars.Read");
         return result;
     }
 
     @AfterEach
     public void tearDownApp() {
-        appRunner.stop();
+        runner.stop();
     }
 
     @Test
     public void addScopeForDefaultClient() {
-        MultiValueMap<String, String> multiValueMap = toMultiValueMap(createCodeGrantRequest(azureClientRegistration));
-        assertEquals("openid profile offline_access", multiValueMap.getFirst("scope"));
+        MultiValueMap<String, String> body = convertedBodyOf(createCodeGrantRequest(azure));
+        assertEquals("openid profile offline_access", body.getFirst("scope"));
     }
 
     @Test
     public void noScopeParamForOtherClient() {
-        MultiValueMap<String, String> multiValueMap = toMultiValueMap(createCodeGrantRequest(graphClientRegistration));
-        assertNull(multiValueMap.get("scope"));
+        MultiValueMap<String, String> body = convertedBodyOf(createCodeGrantRequest(graph));
+        assertNull(body.get("scope"));
     }
 
-    @SuppressWarnings("unchecked")
-    private MultiValueMap<String, String> toMultiValueMap(OAuth2AuthorizationCodeGrantRequest request) {
-        return (MultiValueMap<String, String>)
-            Optional.ofNullable(azureClientRegistrationRepository)
-                    .map(AzureClientRegistrationRepository::defaultClient)
-                    .map(AzureOAuth2AuthorizationCodeGrantRequestEntityConverter::new)
-                    .map(converter -> converter.convert(request))
-                    .map(HttpEntity::getBody)
-                    .orElse(null);
+    private MultiValueMap<String, String> convertedBodyOf(OAuth2AuthorizationCodeGrantRequest request) {
+        AuthzCodeGrantRequestEntityConverter converter = new AuthzCodeGrantRequestEntityConverter(repo.defaultClient());
+        RequestEntity<?> entity = converter.convert(request);
+        return (MultiValueMap<String, String>) entity.getBody();
     }
 
-    private OAuth2AuthorizationCodeGrantRequest createCodeGrantRequest(ClientRegistration clientRegistration) {
-        return new OAuth2AuthorizationCodeGrantRequest(
-            clientRegistration,
-            toOAuth2AuthorizationExchange(clientRegistration)
-        );
+    private OAuth2AuthorizationCodeGrantRequest createCodeGrantRequest(ClientRegistration client) {
+        return new OAuth2AuthorizationCodeGrantRequest(client, createExchange(client));
     }
 
-    private OAuth2AuthorizationExchange toOAuth2AuthorizationExchange(ClientRegistration clientRegistration) {
+    private OAuth2AuthorizationExchange createExchange(ClientRegistration client) {
         return new OAuth2AuthorizationExchange(
-            toOAuth2AuthorizationRequest(clientRegistration),
-            toOAuth2AuthorizationResponse()
-        );
+            createAuthorizationRequest(client),
+            createAuthorizationResponse());
     }
 
-    private OAuth2AuthorizationRequest toOAuth2AuthorizationRequest(ClientRegistration clientRegistration) {
-        return OAuth2AuthorizationRequest.authorizationCode()
-                                         .authorizationUri(
-                                             clientRegistration.getProviderDetails().getAuthorizationUri()
-                                         )
-                                         .clientId(clientRegistration.getClientId())
-                                         .scopes(clientRegistration.getScopes())
-                                         .state("fake-state")
-                                         .redirectUri("http://localhost")
-                                         .build();
+    private OAuth2AuthorizationRequest createAuthorizationRequest(ClientRegistration client) {
+        OAuth2AuthorizationRequest.Builder builder = OAuth2AuthorizationRequest.authorizationCode();
+        builder.authorizationUri(client.getProviderDetails().getAuthorizationUri());
+        builder.clientId(client.getClientId());
+        builder.scopes(client.getScopes());
+        builder.state("fake-state");
+        builder.redirectUri("http://localhost");
+        return builder.build();
     }
 
-    private OAuth2AuthorizationResponse toOAuth2AuthorizationResponse() {
-        return OAuth2AuthorizationResponse.success("fake-code")
-                                          .redirectUri("http://localhost")
-                                          .state("fake-state")
-                                          .build();
+    private OAuth2AuthorizationResponse createAuthorizationResponse() {
+        OAuth2AuthorizationResponse.Builder builder = OAuth2AuthorizationResponse.success("fake-code");
+        builder.redirectUri("http://localhost");
+        builder.state("fake-state");
+        return builder.build();
     }
 
     @Configuration
     @EnableAutoConfiguration
     @EnableWebSecurity
-    public static class DumbApp {
-    }
+    public static class DumbApp {}
 }
