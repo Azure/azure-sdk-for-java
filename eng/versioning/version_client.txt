@@ -127,7 +127,7 @@ com.azure.spring:azure-spring-data-gremlin;2.3.1-beta.1;2.3.1-beta.1
 com.azure.spring:azure-spring-integration-core;2.0.0-beta.1;2.0.0-beta.1
 com.azure.spring:azure-spring-integration-eventhubs;2.0.0-beta.1;2.0.0-beta.1
 com.azure.spring:azure-spring-integration-servicebus;2.0.0-beta.1;2.0.0-beta.1
-com.azure.spring:azure-spring-integration-storage-queue;2.0.0-beta.1;2.0.0-beta.1
+com.azure.spring:azure-spring-integration-storage-queue;2.0.0-beta.1;2.0.0-beta.2
 com.azure.spring:azure-spring-integration-test;2.0.0-beta.1;2.0.0-beta.2
 com.azure.spring:azure-spring-cloud-appconfiguration-config-web;1.2.8-beta.1;1.2.8-beta.1
 com.azure.spring:azure-spring-cloud-appconfiguration-config;1.2.8-beta.1;1.2.8-beta.1
