@@ -108,7 +108,6 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     // Starting at -1 because that is before the beginning of the stream.
     private final AtomicLong lastPeekedSequenceNumber = new AtomicLong(-1);
     private final AtomicReference<ServiceBusAsyncConsumer> consumer = new AtomicReference<>();
-    private final AtomicReference<Flux<ServiceBusMessageContext>> receiveMessagesContextFlux = new AtomicReference<>();
 
     /**
      * Creates a receiver that listens to a Service Bus resource.
@@ -581,14 +580,11 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         // to auto-refill the prefetch buffer. A request will retrieve one message from this buffer.
         // If receiverOptions.prefetchCount is 0 (default value),
         // the request will add a link credit so one message is retrieved from the service.
-        return receiveMessagesNoBackPressure(true).limitRate(1, 0);
+        return receiveMessagesNoBackPressure().limitRate(1, 0);
     }
 
     Flux<ServiceBusReceivedMessage> receiveMessagesNoBackPressure() {
-        return receiveMessagesNoBackPressure(false);
-    }
-    Flux<ServiceBusReceivedMessage> receiveMessagesNoBackPressure(boolean autoConnect) {
-        return receiveMessagesWithContext(0, autoConnect)
+        return receiveMessagesWithContext(0)
             .handle((serviceBusMessageContext, sink) -> {
                 if (serviceBusMessageContext.hasError()) {
                     sink.error(serviceBusMessageContext.getThrowable());
@@ -613,27 +609,14 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @return An <b>infinite</b> stream of messages from the Service Bus entity.
      */
     Flux<ServiceBusMessageContext> receiveMessagesWithContext() {
-        return receiveMessagesWithContext(1, true);
+        return receiveMessagesWithContext(1);
     }
 
-    Flux<ServiceBusMessageContext> receiveMessagesWithContext(int highTide, boolean autoConnect) {
-        final Flux<ServiceBusMessageContext> messageFlux;
-        if (sessionManager != null) {
-            messageFlux = sessionManager.receive();
-        } else {
-            if (receiveMessagesContextFlux.get() == null) {
-                Flux<ServiceBusReceivedMessage> consumerFlux = getOrCreateConsumer().receive();
-                if (autoConnect) {
-                    // In PEEK_LOCK mode, prefetch 1 may cause receiving stuck. 2 works fine and replenish is also 1.
-                    final int publishPefetch = receiverOptions.getReceiveMode() == ServiceBusReceiveMode.PEEK_LOCK
-                        ? 2 : 1;
-                    consumerFlux = consumerFlux.publish(publishPefetch).autoConnect(1);
-                }
-                Flux<ServiceBusMessageContext> contextFlux = consumerFlux.map(ServiceBusMessageContext::new);
-                receiveMessagesContextFlux.compareAndSet(null, contextFlux);
-            }
-            messageFlux = receiveMessagesContextFlux.get();
-        }
+    Flux<ServiceBusMessageContext> receiveMessagesWithContext(int highTide) {
+        final Flux<ServiceBusMessageContext> messageFlux = sessionManager != null
+            ? sessionManager.receive()
+            : getOrCreateConsumer().receive().map(ServiceBusMessageContext::new);
+
         final Flux<ServiceBusMessageContext> withAutoLockRenewal;
         if (receiverOptions.isAutoLockRenewEnabled()) {
             withAutoLockRenewal = new FluxAutoLockRenew(messageFlux, receiverOptions.getMaxLockRenewDuration(),
