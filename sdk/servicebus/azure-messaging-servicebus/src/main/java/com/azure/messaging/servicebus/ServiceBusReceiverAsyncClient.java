@@ -625,8 +625,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 Flux<ServiceBusReceivedMessage> consumerFlux = getOrCreateConsumer().receive();
                 if (autoConnect) {
                     // In PEEK_LOCK mode, prefetch 1 may cause receiving stuck. 2 works fine and replenish is also 1.
-                    final int publishPefetch = receiverOptions.getReceiveMode() ==
-                        ServiceBusReceiveMode.PEEK_LOCK ? 2 : 1;
+                    final int publishPefetch = receiverOptions.getReceiveMode() == ServiceBusReceiveMode.PEEK_LOCK
+                        ? 2 : 1;
                     consumerFlux = consumerFlux.publish(publishPefetch).autoConnect(1);
                 }
                 Flux<ServiceBusMessageContext> contextFlux = consumerFlux.map(ServiceBusMessageContext::new);
