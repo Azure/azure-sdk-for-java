@@ -1,11 +1,14 @@
 package com.azure.test.aad.auth;
 
-import com.azure.spring.autoconfigure.aad.AzureClientRegistrationRepository;
-import com.azure.spring.autoconfigure.aad.AzureOAuth2AuthorizedClientRepository;
+import java.time.Instant;
+
+import com.azure.spring.aad.implementation.AzureAuthorizedClientRepository;
+import com.azure.spring.aad.implementation.AzureClientRegistrationRepository;
 import com.azure.test.utils.AppRunner;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -15,13 +18,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
-import org.springframework.security.oauth2.core.AbstractOAuth2Token;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2RefreshToken;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
-
-import java.time.Instant;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -29,100 +28,94 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AuthorizedClientRepoTest {
 
-    private AppRunner appRunner;
+    private AppRunner runner;
 
-    private ClientRegistration azureClientRegistration;
-    private ClientRegistration graphClientRegistration;
+    private ClientRegistration azure;
+    private ClientRegistration graph;
 
-    private OAuth2AuthorizedClientRepository oAuth2AuthorizedClientRepository;
-    private MockHttpServletRequest mockHttpServletRequest;
-    private MockHttpServletResponse mockHttpServletResponse;
+    private OAuth2AuthorizedClientRepository repo;
+    private MockHttpServletRequest request;
+    private MockHttpServletResponse response;
 
     @BeforeEach
     public void setup() {
-        appRunner = createApp();
-        appRunner.start();
+        runner = createApp();
+        runner.start();
 
-        AzureClientRegistrationRepository azureClientRegistrationRepository =
-            appRunner.getBean(AzureClientRegistrationRepository.class);
-        azureClientRegistration = azureClientRegistrationRepository.findByRegistrationId("azure");
-        graphClientRegistration = azureClientRegistrationRepository.findByRegistrationId("graph");
+        AzureClientRegistrationRepository clientRepo = runner.getBean(AzureClientRegistrationRepository.class);
+        azure = clientRepo.findByRegistrationId("azure");
+        graph = clientRepo.findByRegistrationId("graph");
 
-        oAuth2AuthorizedClientRepository = new AzureOAuth2AuthorizedClientRepository(azureClientRegistrationRepository);
-        mockHttpServletRequest = new MockHttpServletRequest();
-        mockHttpServletResponse = new MockHttpServletResponse();
+        repo = new AzureAuthorizedClientRepository(clientRepo);
+        request = new MockHttpServletRequest();
+        response = new MockHttpServletResponse();
     }
 
     private AppRunner createApp() {
-        AppRunner result = new AppRunner(AppAutoConfigTest.DumbApp.class);
-        result.property("azure.activedirectory.tenant-id", "fake-tenant-id");
-        result.property("azure.activedirectory.client-id", "fake-client-id");
-        result.property("azure.activedirectory.client-secret", "fake-client-secret");
-        result.property("azure.activedirectory.user-group.allowed-groups", "group1");
-        result.property("azure.activedirectory.authorization.graph.scope", "Calendars.Read");
+        AppRunner result = new AppRunner(AzureActiveDirectoryConfigurationTest.DumbApp.class);
+        result.property("azure.active.directory.uri", "fake-uri");
+        result.property("azure.active.directory.tenant-id", "fake-tenant-id");
+        result.property("azure.active.directory.client-id", "fake-client-id");
+        result.property("azure.active.directory.client-secret", "fake-client-secret");
+        result.property("azure.active.directory.authorization.graph.scopes", "Calendars.Read");
         return result;
     }
 
     @AfterEach
     public void tearDown() {
-        appRunner.stop();
+        runner.stop();
     }
 
     @Test
     public void loadInitAzureAuthzClient() {
-        oAuth2AuthorizedClientRepository.saveAuthorizedClient(
-            toOAuthAuthorizedClient(azureClientRegistration),
+        repo.saveAuthorizedClient(
+            createAuthorizedClient(azure),
             createAuthentication(),
-            mockHttpServletRequest,
-            mockHttpServletResponse
-        );
+            request,
+            response);
 
-        OAuth2AuthorizedClient oAuth2AuthorizedClient =
-            oAuth2AuthorizedClientRepository.loadAuthorizedClient(
-                "graph",
-                createAuthentication(),
-                mockHttpServletRequest
-            );
+        OAuth2AuthorizedClient client = repo.loadAuthorizedClient(
+            "graph",
+            createAuthentication(),
+            request);
 
-        assertNotNull(oAuth2AuthorizedClient);
-        assertNotNull(oAuth2AuthorizedClient.getAccessToken());
-        assertNotNull(oAuth2AuthorizedClient.getRefreshToken());
+        assertNotNull(client);
+        assertNotNull(client.getAccessToken());
+        assertNotNull(client.getRefreshToken());
 
-        assertTrue(isTokenExpired(oAuth2AuthorizedClient.getAccessToken()));
-        assertEquals("fake-refresh-token", oAuth2AuthorizedClient.getRefreshToken().getTokenValue());
+        assertTrue(isTokenExpired(client.getAccessToken()));
+        assertEquals("fake-refresh-token", client.getRefreshToken().getTokenValue());
     }
 
     @Test
     public void saveAndLoadAzureAuthzClient() {
-        oAuth2AuthorizedClientRepository.saveAuthorizedClient(
-            toOAuthAuthorizedClient(graphClientRegistration),
+        repo.saveAuthorizedClient(
+            createAuthorizedClient(graph),
             createAuthentication(),
-            mockHttpServletRequest,
-            mockHttpServletResponse
-        );
+            request,
+            response);
 
-        OAuth2AuthorizedClient oAuth2AuthorizedClient =
-            oAuth2AuthorizedClientRepository.loadAuthorizedClient(
-                "graph",
-                createAuthentication(),
-                mockHttpServletRequest
-            );
+        OAuth2AuthorizedClient client = repo.loadAuthorizedClient(
+            "graph",
+            createAuthentication(),
+            request);
 
-        assertNotNull(oAuth2AuthorizedClient);
-        assertNotNull(oAuth2AuthorizedClient.getAccessToken());
-        assertNotNull(oAuth2AuthorizedClient.getRefreshToken());
+        assertNotNull(client);
+        assertNotNull(client.getAccessToken());
+        assertNotNull(client.getRefreshToken());
 
-        assertEquals("fake-access-token", oAuth2AuthorizedClient.getAccessToken().getTokenValue());
-        assertEquals("fake-refresh-token", oAuth2AuthorizedClient.getRefreshToken().getTokenValue());
+        assertEquals("fake-access-token", client.getAccessToken().getTokenValue());
+        assertEquals("fake-refresh-token", client.getRefreshToken().getTokenValue());
     }
 
-    private OAuth2AuthorizedClient toOAuthAuthorizedClient(ClientRegistration clientRegistration) {
-        return new OAuth2AuthorizedClient(
-            clientRegistration,
+    private OAuth2AuthorizedClient createAuthorizedClient(ClientRegistration client) {
+        OAuth2AuthorizedClient result = new OAuth2AuthorizedClient(
+            client,
             "fake-principal-name",
             createAccessToken(),
-            createRefreshToken()
-        );
+            createRefreshToken());
+
+        return result;
     }
 
     private OAuth2AccessToken createAccessToken() {
@@ -142,16 +135,12 @@ public class AuthorizedClientRepoTest {
         return new PreAuthenticatedAuthenticationToken("fake-user", "fake-crednetial");
     }
 
-    private boolean isTokenExpired(OAuth2AccessToken oAuth2AccessToken) {
-        return Optional.ofNullable(oAuth2AccessToken)
-                       .map(AbstractOAuth2Token::getExpiresAt)
-                       .map(expiredAt -> expiredAt.isBefore(Instant.now()))
-                       .orElse(false);
+    private boolean isTokenExpired(OAuth2AccessToken token) {
+        return token.getExpiresAt().isBefore(Instant.now());
     }
 
     @Configuration
     @EnableAutoConfiguration
     @EnableWebSecurity
-    public static class DumbApp {
-    }
+    public static class DumbApp {}
 }

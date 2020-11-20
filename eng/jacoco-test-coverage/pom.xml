@@ -54,7 +54,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-ai-textanalytics</artifactId>
-      <version>5.1.0-beta.3</version> <!-- {x-version-update;com.azure:azure-ai-textanalytics;current} -->
+      <version>5.1.0-beta.4</version> <!-- {x-version-update;com.azure:azure-ai-textanalytics;current} -->
     </dependency>
     <dependency>
     <groupId>com.azure</groupId>
@@ -209,7 +209,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-keys</artifactId>
-      <version>4.3.0-beta.3</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;current} -->
+      <version>4.3.0-beta.4</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
