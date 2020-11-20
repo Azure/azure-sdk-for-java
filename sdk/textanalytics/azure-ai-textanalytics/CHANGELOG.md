@@ -1,4 +1,7 @@
 # Release History
+## 5.1.0-beta.4 (Unreleased)
+
+
 ## 5.1.0-beta.3 (2020-11-19)
 ### New features
 - Added support for healthcare recognition feature. It is represented as a long-running operation. Cancellation supported. 
