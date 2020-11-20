@@ -160,7 +160,7 @@ function Publish-java-GithubIODocs ($DocLocation, $PublicArtifactLocation)
 
 function Get-java-GithubIoDocIndex() {
   # Fill in language specific information using script.
-  Mutate-Files -appTitle $AppTitle -lang $Language -indexhtmlloc $IndexHtmlLoc
+  UpdateDocIndexFiles -appTitle $AppTitle -lang $Language -indexhtmlloc $IndexHtmlLoc
   # Fetch out all package metadata from csv file.
   $metadata = Get-CSVMetadata -MetadataUri $MetadataUri
   # Leave the track 2 packages if multiple packages fetched out.
