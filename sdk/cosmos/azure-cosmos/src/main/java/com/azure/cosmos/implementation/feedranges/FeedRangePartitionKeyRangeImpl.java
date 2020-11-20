@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.feedranges;
 
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.IRoutingMapProvider;
+import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
@@ -119,12 +120,22 @@ public final class FeedRangePartitionKeyRangeImpl extends FeedRangeInternal {
             (UnmodifiableList<String>)UnmodifiableList.unmodifiableList(temp));
     }
 
+    @Override
     public void populatePropertyBag() {
         super.populatePropertyBag();
+        setProperties(this, false);
+    }
+
+    @Override
+    public void setProperties(JsonSerializable serializable, boolean populateProperties) {
+        checkNotNull(serializable, "Argument 'serializable' must not be null.");
+        if (populateProperties) {
+            super.populatePropertyBag();
+        }
 
         if (this.partitionKeyRangeId != null) {
             setProperty(
-                this,
+                serializable,
                 Constants.Properties.FEED_RANGE_PARTITION_KEY_RANGE_ID,
                 this.partitionKeyRangeId);
         }

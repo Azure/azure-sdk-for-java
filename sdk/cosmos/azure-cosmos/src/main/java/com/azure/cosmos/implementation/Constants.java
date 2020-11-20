@@ -203,8 +203,13 @@ public final class Constants {
 
         // Feed Ranges
         public static final String RANGE = "Range";
-        public static final String FEED_RANGE_PARTITION_KEY = "PartitionKey";
+        public static final String FEED_RANGE_PARTITION_KEY = "PK";
         public static final String FEED_RANGE_PARTITION_KEY_RANGE_ID = "PKRangeId";
+
+        // Feed Range Composite Continuation Token
+        public static final String FEED_RANGE_COMPOSITE_CONTINUATION_VERSION = "V";
+        public static final String FEED_RANGE_COMPOSITE_CONTINUATION_RESOURCE_ID = "Rid";
+        public static final String FEED_RANGE_COMPOSITE_CONTINUATION_CONTINUATION = "Continuation";
 
     }
 

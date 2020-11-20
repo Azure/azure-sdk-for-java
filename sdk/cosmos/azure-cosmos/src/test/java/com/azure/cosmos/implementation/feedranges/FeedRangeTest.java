@@ -150,6 +150,8 @@ public class FeedRangeTest {
         Range<String> range = new Range<>("AA", "BB", true, false);
         FeedRangeEpkImpl feedRange = new FeedRangeEpkImpl(range);
         String representation = feedRange.toJson();
+        assertThat(representation)
+            .isEqualTo("{\"Range\":{\"min\":\"AA\",\"max\":\"BB\"}}");
         assertThat(FeedRange.fromJsonString(representation))
             .isNotNull()
             .isInstanceOf(FeedRangeEpkImpl.class);
@@ -362,6 +364,7 @@ public class FeedRangeTest {
         String pkRangeId = UUID.randomUUID().toString();
         FeedRangePartitionKeyRangeImpl feedRange = new FeedRangePartitionKeyRangeImpl(pkRangeId);
         String representation = feedRange.toJson();
+        assertThat(representation).isEqualTo("{\"PKRangeId\":\"" + pkRangeId + "\"}");
         assertThat(FeedRange.fromJsonString(representation))
             .isNotNull()
             .isInstanceOf(FeedRangePartitionKeyRangeImpl.class);
@@ -476,6 +479,7 @@ public class FeedRangeTest {
             "Test");
         FeedRangePartitionKeyImpl feedRange = new FeedRangePartitionKeyImpl(partitionKey);
         String representation = feedRange.toJson();
+        assertThat(representation).isEqualTo("{\"PK\":[\"Test\"]}");
         assertThat(FeedRange.fromJsonString(representation))
             .isNotNull()
             .isInstanceOf(FeedRangePartitionKeyImpl.class);

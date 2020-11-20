@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.feedranges;
 
+import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Integers;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -15,6 +16,7 @@ import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.directconnectivity.GatewayAddressCache;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +29,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import static com.azure.cosmos.BridgeInternal.setProperty;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
@@ -74,6 +77,35 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
         }
 
         this.currentToken = this.getCompositeContinuationTokens().peek();
+    }
+
+    public void populatePropertyBag() {
+        super.populatePropertyBag();
+
+        setProperty(
+            this,
+            Constants.Properties.FEED_RANGE_COMPOSITE_CONTINUATION_VERSION,
+            FeedRangeContinuationVersions.V1);
+
+        setProperty(
+            this,
+            Constants.Properties.FEED_RANGE_COMPOSITE_CONTINUATION_RESOURCE_ID,
+            this.getContainerRid());
+
+        if (this.compositeContinuationTokens.size() > 0) {
+            for (CompositeContinuationToken token : this.compositeContinuationTokens) {
+                ModelBridgeInternal.populatePropertyBag(token);
+            }
+
+            setProperty(
+                this,
+                Constants.Properties.FEED_RANGE_COMPOSITE_CONTINUATION_CONTINUATION,
+                this.compositeContinuationTokens);
+        }
+
+        if (this.feedRange != null) {
+            this.feedRange.setProperties(this, true);
+        }
     }
 
     private FeedRangeCompositeContinuationImpl(String containerRid, FeedRangeInternal feedRange) {
@@ -243,7 +275,7 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
     public static FeedRangeContinuation parse(final String jsonString) throws IOException {
         checkNotNull(jsonString, "Argument 'jsonString' must not be null");
         final ObjectMapper mapper = Utils.getSimpleObjectMapper();
-        return mapper.readValue(jsonString, FeedRangeCompositeContinuationImpl.class);
+        return mapper.readValue(jsonString, FeedRangeContinuation.class);
     }
 
     @Override

@@ -72,7 +72,7 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
         PartitionKeyDefinition partitionKeyDefinition);
 
     public void populatePropertyBag() {
-        super.populatePropertyBag();
+        setProperties(this, false);
     }
 
     @Override
@@ -83,33 +83,21 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
         return this.toJson();
     }
 
+    public void setProperties(
+        JsonSerializable serializable,
+        boolean populateProperties) {
+
+        if (populateProperties) {
+            super.populatePropertyBag();
+        }
+    }
+
     public static FeedRangeInternal tryParse(final String jsonString) {
         checkNotNull(jsonString, "Argument 'jsonString' must not be null");
         final ObjectMapper mapper = Utils.getSimpleObjectMapper();
 
         try {
-            JsonNode rootNode = mapper.readTree(jsonString);
-
-            JsonNode rangeNode = rootNode.get(Constants.Properties.RANGE);
-            if (rangeNode != null && rangeNode.isObject()) {
-                Range<String> range = new Range<>((ObjectNode)rangeNode);
-                return new FeedRangeEpkImpl(range);
-            }
-
-            JsonNode pkNode = rootNode.get(Constants.Properties.FEED_RANGE_PARTITION_KEY);
-            if (pkNode != null && pkNode.isArray()) {
-                PartitionKeyInternal pk = mapper.convertValue(pkNode, PartitionKeyInternal.class);
-                return new FeedRangePartitionKeyImpl(pk);
-            }
-
-            JsonNode pkRangeIdNode =
-                rootNode.get(Constants.Properties.FEED_RANGE_PARTITION_KEY_RANGE_ID);
-            if (pkRangeIdNode != null && pkRangeIdNode.isTextual()) {
-                return new FeedRangePartitionKeyRangeImpl(pkRangeIdNode.asText());
-            }
-
-            return null;
-
+            return mapper.readValue(jsonString, FeedRangeInternal.class);
         } catch (final IOException ioError) {
             LOGGER.debug("Failed to parse feed range JSON {}", jsonString, ioError);
             return null;

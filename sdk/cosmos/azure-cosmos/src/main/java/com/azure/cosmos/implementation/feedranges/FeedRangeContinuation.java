@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.feedranges;
 
+import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.ShouldRetryResult;
@@ -17,10 +18,10 @@ import java.io.IOException;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-public abstract class FeedRangeContinuation {
+public abstract class FeedRangeContinuation extends JsonSerializable {
     private final static Logger LOGGER = LoggerFactory.getLogger(FeedRangeContinuation.class);
 
-    protected final FeedRangeInternal feedRange;
+    protected final  FeedRangeInternal feedRange;
     private final String containerRid;
 
     // for mocking
@@ -51,17 +52,20 @@ public abstract class FeedRangeContinuation {
 
     public abstract void validateContainer(String containerRid);
 
+    public void populatePropertyBag() {
+        super.populatePropertyBag();
+    }
+
     public static FeedRangeContinuation tryParse(String jsonString) {
         if (jsonString == null) {
             return null;
         }
 
-        try {
-            final ObjectMapper mapper = Utils.getSimpleObjectMapper();
-
-            return mapper.readValue(jsonString, FeedRangeCompositeContinuationImpl.class);
-
-        } catch (final IOException ioError) {
+        try
+        {
+            return FeedRangeCompositeContinuationImpl.parse(jsonString);
+        }
+        catch (final IOException ioError) {
             LOGGER.debug(
                 "Failed to parse feed range continuation JSON {}",
                 jsonString,

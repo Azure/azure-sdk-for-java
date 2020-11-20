@@ -5,9 +5,11 @@ package com.azure.cosmos.implementation.feedranges;
 
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.IRoutingMapProvider;
+import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import reactor.core.publisher.Mono;
 
@@ -91,11 +93,21 @@ public final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
             });
     }
 
+    @Override
     public void populatePropertyBag() {
         super.populatePropertyBag();
+        setProperties(this, false);
+    }
+
+    @Override
+    public void setProperties(JsonSerializable serializable, boolean populateProperties) {
+        checkNotNull(serializable, "Argument 'serializable' must not be null.");
+        if (populateProperties) {
+            super.populatePropertyBag();
+        }
 
         if (this.partitionKey != null) {
-            setProperty(this, Constants.Properties.FEED_RANGE_PARTITION_KEY, this.partitionKey);
+            setProperty(serializable, Constants.Properties.FEED_RANGE_PARTITION_KEY, this.partitionKey);
         }
     }
 
