@@ -141,7 +141,7 @@ class ServiceBusReceiveLinkProcessorTest {
         assertFalse(processor.hasError());
         assertNull(processor.getError());
 
-        verify(link1).addCreditsInstantly(eq(PREFETCH - 1));
+        verify(link1).addCredits(eq(PREFETCH - 1));
     }
 
     /**
@@ -162,7 +162,7 @@ class ServiceBusReceiveLinkProcessorTest {
             .thenCancel()
             .verify();
 
-        verify(link1).addCreditsInstantly(backpressure);  // request up to PREFETCH
+        verify(link1).addCredits(backpressure);  // request up to PREFETCH
     }
 
     /**
@@ -538,7 +538,7 @@ class ServiceBusReceiveLinkProcessorTest {
         assertFalse(processor.hasError());
         assertNull(processor.getError());
 
-        verify(link1).addCreditsInstantly(eq(PREFETCH));
+        verify(link1).addCredits(eq(PREFETCH));
         verify(link1).setEmptyCreditListener(creditSupplierCaptor.capture());  // Add 0
 
         Supplier<Integer> value = creditSupplierCaptor.getValue();
@@ -573,7 +573,7 @@ class ServiceBusReceiveLinkProcessorTest {
         assertFalse(processor.hasError());
         assertNull(processor.getError());
 
-        verify(link1).addCreditsInstantly(eq(PREFETCH));
+        verify(link1).addCredits(eq(PREFETCH));
         verify(link1).setEmptyCreditListener(creditSupplierCaptor.capture());  // Add 0.
 
         Supplier<Integer> value = creditSupplierCaptor.getValue();
@@ -617,7 +617,7 @@ class ServiceBusReceiveLinkProcessorTest {
         assertFalse(processor.hasError());
         assertNull(processor.getError());
 
-        verify(link1).addCreditsInstantly(expectedCredits);
+        verify(link1).addCredits(expectedCredits);
         verify(link1).setEmptyCreditListener(any());
     }
 
