@@ -111,7 +111,7 @@ public class ServiceBusMessage {
     public ServiceBusMessage(ServiceBusReceivedMessage receivedMessage) {
         Objects.requireNonNull(receivedMessage, "'receivedMessage' cannot be null.");
 
-        this.amqpAnnotatedMessage = new AmqpAnnotatedMessage(receivedMessage.getAmqpAnnotatedMessage());
+        this.amqpAnnotatedMessage = new AmqpAnnotatedMessage(receivedMessage.getRawAmqpMessage());
         this.context = Context.NONE;
 
         // clean up data which user is not allowed to set.
@@ -131,7 +131,7 @@ public class ServiceBusMessage {
      *
      * @return the amqp message.
      */
-    public AmqpAnnotatedMessage getAmqpAnnotatedMessage() {
+    public AmqpAnnotatedMessage getRawAmqpMessage() {
         return amqpAnnotatedMessage;
     }
 
