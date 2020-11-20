@@ -62,6 +62,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     private final AtomicReference<Subscription> receiverSubscription = new AtomicReference<>();
     private final AtomicReference<ServiceBusReceiverAsyncClient> asyncClient = new AtomicReference<>();
     private final AtomicBoolean isRunning = new AtomicBoolean();
+    private final AtomicBoolean isClosed = new AtomicBoolean();
     private final TracerProvider tracerProvider;
     private ScheduledExecutorService scheduledExecutor;
 
@@ -116,14 +117,14 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
      * a new set of sessions will be processed.
      */
     public synchronized void start() {
-        if (isRunning.getAndSet(true)) {
+        if (isRunning.getAndSet(true) && !isClosed.getAndSet(false)) {
             logger.info("Processor is already running");
             return;
         }
         receiveMessages();
 
         // Start an executor to periodically check if the client's connection is active
-        if (this.scheduledExecutor != null) {
+        if (this.scheduledExecutor == null) {
             this.scheduledExecutor = Executors.newSingleThreadScheduledExecutor();
             scheduledExecutor.scheduleWithFixedDelay(() -> {
                 if (this.asyncClient.get().isConnectionClosed()) {
@@ -147,14 +148,17 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
      */
     @Override
     public synchronized void close() {
-        isRunning.set(false);
-        if (receiverSubscription.get() != null) {
-            receiverSubscription.get().cancel();
-            receiverSubscription.set(null);
+        if (!isClosed.get()) {
+            isRunning.set(false);
+            if (receiverSubscription.get() != null) {
+                receiverSubscription.get().cancel();
+                receiverSubscription.set(null);
+            }
+            scheduledExecutor.shutdown();
+            scheduledExecutor = null;
+            asyncClient.get().close();
+            isClosed.set(true);
         }
-        scheduledExecutor.shutdown();
-        scheduledExecutor = null;
-        asyncClient.get().close();
     }
 
     /**
