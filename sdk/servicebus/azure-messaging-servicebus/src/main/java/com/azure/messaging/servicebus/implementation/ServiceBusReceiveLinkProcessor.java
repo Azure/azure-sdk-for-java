@@ -543,12 +543,12 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
         }
 
         synchronized (lock) {
-            final int credits = getCreditsToAdd(link.getCredits());
-
-            logger.info("Link credits to add. Credits: '{}'", credits);
+            final int linkCredits = link.getCredits();
+            final int credits = getCreditsToAdd(linkCredits);
+            logger.info("Link credits='{}', Link credits to add: '{}'", linkCredits, credits);
 
             if (credits > 0) {
-                link.addCreditsInstantly(credits);
+                link.addCredits(credits);
             }
         }
     }
@@ -581,6 +581,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
         } else {
             expectedTotalCredit = prefetch;
         }
+        logger.info("linkCredits: '{}', expectedTotalCredit: '{}'", linkCredits, expectedTotalCredit);
 
         synchronized (queueLock) {
             final int queuedMessages = pendingMessages.get();
@@ -594,6 +595,9 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
                     ? Math.max(expectedTotalCredit - pending, 0)
                     : 0;
             }
+            logger.info("prefetch: '{}', requested: '{}', linkCredits: '{}', expectedTotalCredit: '{}', queuedMessages:"
+                    + "'{}', creditsToAdd: '{}', messageQueue.size(): '{}'" , getPrefetch(), r, linkCredits,
+                expectedTotalCredit, queuedMessages, creditsToAdd, messageQueue.size());
         }
 
         return creditsToAdd;
