@@ -102,12 +102,11 @@ public class ServiceBusReceivedMessageTest {
         originalMessage.setContentType("type");
         originalMessage.setCorrelationId("cid");
         originalMessage.setReplyTo("rto");
-        originalMessage.setViaPartitionKey("something");
         originalMessage.setTimeToLive(Duration.ofSeconds(10));
         originalMessage.setReplyToSessionId("rsessionid");
         originalMessage.setSubject("subject");
         originalMessage.setTo("to");
-        final Map<String, Object> originalMessageAnnotations = originalMessage.getAmqpAnnotatedMessage().getMessageAnnotations();
+        final Map<String, Object> originalMessageAnnotations = originalMessage.getRawAmqpMessage().getMessageAnnotations();
         originalMessageAnnotations.put(DEAD_LETTER_SOURCE_KEY_ANNOTATION_NAME.getValue(), "message annotations");
         originalMessageAnnotations.put(ENQUEUED_SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), Long.valueOf(3));
         originalMessageAnnotations.put(LOCKED_UNTIL_KEY_ANNOTATION_NAME.getValue(), new Date(Instant.now().toEpochMilli()));
@@ -115,11 +114,11 @@ public class ServiceBusReceivedMessageTest {
 
         originalMessageAnnotations.put(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), Long.valueOf(3));
 
-        final Map<String, Object> originalApplicationProperties = originalMessage.getAmqpAnnotatedMessage().getApplicationProperties();
+        final Map<String, Object> originalApplicationProperties = originalMessage.getRawAmqpMessage().getApplicationProperties();
         originalApplicationProperties.put(DEAD_LETTER_DESCRIPTION_ANNOTATION_NAME.getValue(), "description");
         originalApplicationProperties.put(DEAD_LETTER_REASON_ANNOTATION_NAME.getValue(), "description");
 
-        originalMessage.getAmqpAnnotatedMessage().getHeader().setDeliveryCount(Long.valueOf(5));
+        originalMessage.getRawAmqpMessage().getHeader().setDeliveryCount(Long.valueOf(5));
 
         // Act
         final ServiceBusMessage actual = new ServiceBusMessage(originalMessage);
@@ -132,21 +131,20 @@ public class ServiceBusReceivedMessageTest {
         assertEquals(originalMessage.getContentType(), actual.getContentType());
         assertEquals(originalMessage.getCorrelationId(), actual.getCorrelationId());
         assertEquals(originalMessage.getReplyTo(), actual.getReplyTo());
-        assertEquals(originalMessage.getViaPartitionKey(), actual.getViaPartitionKey());
         assertEquals(originalMessage.getTimeToLive().toMillis(), actual.getTimeToLive().toMillis());
         assertEquals(originalMessage.getLabel(), actual.getSubject());
         assertEquals(originalMessage.getReplyToSessionId(), actual.getReplyToSessionId());
         assertEquals(originalMessage.getTo(), actual.getTo());
 
         // Following values should be cleaned up.
-        assertNullValues(actual.getAmqpAnnotatedMessage().getMessageAnnotations(), DEAD_LETTER_SOURCE_KEY_ANNOTATION_NAME,
+        assertNullValues(actual.getRawAmqpMessage().getMessageAnnotations(), DEAD_LETTER_SOURCE_KEY_ANNOTATION_NAME,
             ENQUEUED_SEQUENCE_NUMBER_ANNOTATION_NAME, LOCKED_UNTIL_KEY_ANNOTATION_NAME,
             SEQUENCE_NUMBER_ANNOTATION_NAME, ENQUEUED_TIME_UTC_ANNOTATION_NAME);
 
-        assertNullValues(actual.getAmqpAnnotatedMessage().getApplicationProperties(), DEAD_LETTER_DESCRIPTION_ANNOTATION_NAME,
+        assertNullValues(actual.getRawAmqpMessage().getApplicationProperties(), DEAD_LETTER_DESCRIPTION_ANNOTATION_NAME,
             DEAD_LETTER_REASON_ANNOTATION_NAME);
 
-        assertNull(actual.getAmqpAnnotatedMessage().getHeader().getDeliveryCount());
+        assertNull(actual.getRawAmqpMessage().getHeader().getDeliveryCount());
     }
 
     public void assertNullValues(Map<String, Object> dataMap, AmqpMessageConstant... keys) {
