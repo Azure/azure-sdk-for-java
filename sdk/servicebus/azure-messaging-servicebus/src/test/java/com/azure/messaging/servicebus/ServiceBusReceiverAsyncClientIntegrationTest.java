@@ -428,12 +428,28 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void peekFromSequenceNumberMessage(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
-        setSenderAndReceiver(entityType, 3, isSessionEnabled);
+        final boolean shareConnection = false;
+        final boolean useCredentials = false;
+        final int entityIndex = 3;
 
+        this.sender = getSenderBuilder(useCredentials, entityType, entityIndex, isSessionEnabled, shareConnection)
+            .buildAsyncClient();
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
 
         sendMessage(message).block(TIMEOUT);
+
+        // Now create receiver
+        if (isSessionEnabled) {
+            assertNotNull(sessionId, "'sessionId' should have been set.");
+            this.receiver = getSessionReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
+                .disableAutoComplete()
+                .buildAsyncClient().acceptSession(sessionId).block();
+        } else {
+            this.receiver = getReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
+                .disableAutoComplete()
+                .buildAsyncClient();
+        }
 
         final ServiceBusReceivedMessage receivedMessage = receiver.receiveMessages().next().block(TIMEOUT);
         assertNotNull(receivedMessage);
@@ -1012,8 +1028,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         deliveryAnnotation.put("delivery-annotations-key-1", "delivery-annotations-value-1");
         deliveryAnnotation.put("delivery-annotations-key-2", "delivery-annotations-value-2");
 
-        setSenderAndReceiver(entityType, TestUtils.USE_CASE_VALIDATE_AMQP_PROPERTIES, isSessionEnabled);
-
         final String messageId = UUID.randomUUID().toString();
         final AmqpAnnotatedMessage expectedAmqpProperties = new AmqpAnnotatedMessage(
             AmqpMessageBody.fromData(CONTENTS_BYTES));
@@ -1065,6 +1079,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         amqpMessageProperties.setAbsoluteExpiryTime(expectedAmqpProperties.getProperties().getAbsoluteExpiryTime());
         amqpMessageProperties.setCreationTime(expectedAmqpProperties.getProperties().getCreationTime());
         amqpMessageProperties.setReplyToGroupId(expectedAmqpProperties.getProperties().getReplyToGroupId());
+
+        setSenderAndReceiver(entityType, TestUtils.USE_CASE_VALIDATE_AMQP_PROPERTIES, isSessionEnabled);
 
         // Send the message
         sendMessage(message).block(TIMEOUT);
