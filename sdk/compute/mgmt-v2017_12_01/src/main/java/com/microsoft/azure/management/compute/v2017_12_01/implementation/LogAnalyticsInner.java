@@ -28,6 +28,8 @@ import retrofit2.http.Query;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
+import com.microsoft.azure.LongRunningFinalState;
+import com.microsoft.azure.LongRunningOperationOptions;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -140,7 +142,7 @@ public class LogAnalyticsInner {
         }
         Validator.validate(parameters);
         Observable<Response<ResponseBody>> observable = service.exportRequestRateByInterval(location, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<LogAnalyticsOperationResultInner>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.AZURE_ASYNC_OPERATION), new TypeToken<LogAnalyticsOperationResultInner>() { }.getType());
     }
 
     /**
@@ -298,7 +300,7 @@ public class LogAnalyticsInner {
         }
         Validator.validate(parameters);
         Observable<Response<ResponseBody>> observable = service.exportThrottledRequests(location, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<LogAnalyticsOperationResultInner>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.AZURE_ASYNC_OPERATION), new TypeToken<LogAnalyticsOperationResultInner>() { }.getType());
     }
 
     /**
