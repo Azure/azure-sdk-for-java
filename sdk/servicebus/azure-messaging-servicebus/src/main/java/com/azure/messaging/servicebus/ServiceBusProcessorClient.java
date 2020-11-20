@@ -123,13 +123,14 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         receiveMessages();
 
         // Start an executor to periodically check if the client's connection is active
-        this.scheduledExecutor = Executors.newSingleThreadScheduledExecutor();
-        scheduledExecutor.scheduleWithFixedDelay(() -> {
-            if (this.asyncClient.get().isConnectionClosed()) {
-                restartMessageReceiver();
-            }
-        }, SCHEDULER_INTERVAL_IN_SECONDS, SCHEDULER_INTERVAL_IN_SECONDS, TimeUnit.SECONDS);
-
+        if (this.scheduledExecutor != null) {
+            this.scheduledExecutor = Executors.newSingleThreadScheduledExecutor();
+            scheduledExecutor.scheduleWithFixedDelay(() -> {
+                if (this.asyncClient.get().isConnectionClosed()) {
+                    restartMessageReceiver();
+                }
+            }, SCHEDULER_INTERVAL_IN_SECONDS, SCHEDULER_INTERVAL_IN_SECONDS, TimeUnit.SECONDS);
+        }
     }
 
     /**
@@ -149,9 +150,11 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         isRunning.set(false);
         if (receiverSubscription.get() != null) {
             receiverSubscription.get().cancel();
+            receiverSubscription.set(null);
         }
-        asyncClient.get().close();
         scheduledExecutor.shutdown();
+        scheduledExecutor = null;
+        asyncClient.get().close();
     }
 
     /**
@@ -301,6 +304,9 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     }
 
     private void restartMessageReceiver() {
+        if (!isRunning()) {
+            return;
+        }
         receiverSubscription.set(null);
         ServiceBusReceiverAsyncClient receiverClient = asyncClient.get();
         receiverClient.close();
