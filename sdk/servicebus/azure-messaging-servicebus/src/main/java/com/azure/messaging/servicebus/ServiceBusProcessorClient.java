@@ -62,7 +62,6 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     private final AtomicReference<Subscription> receiverSubscription = new AtomicReference<>();
     private final AtomicReference<ServiceBusReceiverAsyncClient> asyncClient = new AtomicReference<>();
     private final AtomicBoolean isRunning = new AtomicBoolean();
-    private final AtomicBoolean isClosed = new AtomicBoolean();
     private final TracerProvider tracerProvider;
     private ScheduledExecutorService scheduledExecutor;
 
@@ -117,10 +116,18 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
      * a new set of sessions will be processed.
      */
     public synchronized void start() {
-        if (isRunning.getAndSet(true) && !isClosed.getAndSet(false)) {
+        if (isRunning.getAndSet(true)) {
             logger.info("Processor is already running");
             return;
         }
+
+        if (asyncClient.get() == null) {
+            ServiceBusReceiverAsyncClient newReceiverClient = this.receiverBuilder == null
+                ? this.sessionReceiverBuilder.buildAsyncClientForProcessor()
+                : this.receiverBuilder.buildAsyncClient();
+            asyncClient.set(newReceiverClient);
+        }
+
         receiveMessages();
 
         // Start an executor to periodically check if the client's connection is active
@@ -148,16 +155,18 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
      */
     @Override
     public synchronized void close() {
-        if (!isClosed.get()) {
-            isRunning.set(false);
-            if (receiverSubscription.get() != null) {
-                receiverSubscription.get().cancel();
-                receiverSubscription.set(null);
-            }
+        isRunning.set(false);
+        if (receiverSubscription.get() != null) {
+            receiverSubscription.get().cancel();
+            receiverSubscription.set(null);
+        }
+        if (scheduledExecutor != null) {
             scheduledExecutor.shutdown();
             scheduledExecutor = null;
+        }
+        if (asyncClient.get() != null) {
             asyncClient.get().close();
-            isClosed.set(true);
+            asyncClient.set(null);
         }
     }
 
