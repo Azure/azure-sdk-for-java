@@ -80,7 +80,7 @@ public class OSDisk {
 
     /**
      * Specifies the size of an empty data disk in gigabytes. This element can
-     * be used to overwrite the name of the disk in a virtual machine image.
+     * be used to overwrite the size of the disk in a virtual machine image.
      * &lt;br&gt;&lt;br&gt; This value cannot be larger than 1023 GB.
      */
     @JsonProperty(value = "diskSizeGB")
@@ -93,7 +93,7 @@ public class OSDisk {
     private ManagedDiskParameters managedDisk;
 
     /**
-     * Get the osType value.
+     * Get this property allows you to specify the type of the OS that is included in the disk if creating a VM from user-image or a specialized VHD. &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **Windows** &lt;br&gt;&lt;br&gt; **Linux**. Possible values include: 'Windows', 'Linux'.
      *
      * @return the osType value
      */
@@ -102,7 +102,7 @@ public class OSDisk {
     }
 
     /**
-     * Set the osType value.
+     * Set this property allows you to specify the type of the OS that is included in the disk if creating a VM from user-image or a specialized VHD. &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **Windows** &lt;br&gt;&lt;br&gt; **Linux**. Possible values include: 'Windows', 'Linux'.
      *
      * @param osType the osType value to set
      * @return the OSDisk object itself.
@@ -113,7 +113,7 @@ public class OSDisk {
     }
 
     /**
-     * Get the encryptionSettings value.
+     * Get specifies the encryption settings for the OS Disk. &lt;br&gt;&lt;br&gt; Minimum api-version: 2015-06-15.
      *
      * @return the encryptionSettings value
      */
@@ -122,7 +122,7 @@ public class OSDisk {
     }
 
     /**
-     * Set the encryptionSettings value.
+     * Set specifies the encryption settings for the OS Disk. &lt;br&gt;&lt;br&gt; Minimum api-version: 2015-06-15.
      *
      * @param encryptionSettings the encryptionSettings value to set
      * @return the OSDisk object itself.
@@ -133,7 +133,7 @@ public class OSDisk {
     }
 
     /**
-     * Get the name value.
+     * Get the disk name.
      *
      * @return the name value
      */
@@ -142,7 +142,7 @@ public class OSDisk {
     }
 
     /**
-     * Set the name value.
+     * Set the disk name.
      *
      * @param name the name value to set
      * @return the OSDisk object itself.
@@ -153,7 +153,7 @@ public class OSDisk {
     }
 
     /**
-     * Get the vhd value.
+     * Get the virtual hard disk.
      *
      * @return the vhd value
      */
@@ -162,7 +162,7 @@ public class OSDisk {
     }
 
     /**
-     * Set the vhd value.
+     * Set the virtual hard disk.
      *
      * @param vhd the vhd value to set
      * @return the OSDisk object itself.
@@ -173,7 +173,7 @@ public class OSDisk {
     }
 
     /**
-     * Get the image value.
+     * Get the source user image virtual hard disk. The virtual hard disk will be copied before being attached to the virtual machine. If SourceImage is provided, the destination virtual hard drive must not exist.
      *
      * @return the image value
      */
@@ -182,7 +182,7 @@ public class OSDisk {
     }
 
     /**
-     * Set the image value.
+     * Set the source user image virtual hard disk. The virtual hard disk will be copied before being attached to the virtual machine. If SourceImage is provided, the destination virtual hard drive must not exist.
      *
      * @param image the image value to set
      * @return the OSDisk object itself.
@@ -193,7 +193,7 @@ public class OSDisk {
     }
 
     /**
-     * Get the caching value.
+     * Get specifies the caching requirements. &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **None** &lt;br&gt;&lt;br&gt; **ReadOnly** &lt;br&gt;&lt;br&gt; **ReadWrite** &lt;br&gt;&lt;br&gt; Default: **None for Standard storage. ReadOnly for Premium storage**. Possible values include: 'None', 'ReadOnly', 'ReadWrite'.
      *
      * @return the caching value
      */
@@ -202,7 +202,7 @@ public class OSDisk {
     }
 
     /**
-     * Set the caching value.
+     * Set specifies the caching requirements. &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **None** &lt;br&gt;&lt;br&gt; **ReadOnly** &lt;br&gt;&lt;br&gt; **ReadWrite** &lt;br&gt;&lt;br&gt; Default: **None for Standard storage. ReadOnly for Premium storage**. Possible values include: 'None', 'ReadOnly', 'ReadWrite'.
      *
      * @param caching the caching value to set
      * @return the OSDisk object itself.
@@ -213,7 +213,7 @@ public class OSDisk {
     }
 
     /**
-     * Get the createOption value.
+     * Get specifies how the virtual machine should be created.&lt;br&gt;&lt;br&gt; Possible values are:&lt;br&gt;&lt;br&gt; **Attach** \u2013 This value is used when you are using a specialized disk to create the virtual machine.&lt;br&gt;&lt;br&gt; **FromImage** \u2013 This value is used when you are using an image to create the virtual machine. If you are using a platform image, you also use the imageReference element described above. If you are using a marketplace image, you  also use the plan element previously described. Possible values include: 'FromImage', 'Empty', 'Attach'.
      *
      * @return the createOption value
      */
@@ -222,7 +222,7 @@ public class OSDisk {
     }
 
     /**
-     * Set the createOption value.
+     * Set specifies how the virtual machine should be created.&lt;br&gt;&lt;br&gt; Possible values are:&lt;br&gt;&lt;br&gt; **Attach** \u2013 This value is used when you are using a specialized disk to create the virtual machine.&lt;br&gt;&lt;br&gt; **FromImage** \u2013 This value is used when you are using an image to create the virtual machine. If you are using a platform image, you also use the imageReference element described above. If you are using a marketplace image, you  also use the plan element previously described. Possible values include: 'FromImage', 'Empty', 'Attach'.
      *
      * @param createOption the createOption value to set
      * @return the OSDisk object itself.
@@ -233,7 +233,7 @@ public class OSDisk {
     }
 
     /**
-     * Get the diskSizeGB value.
+     * Get specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the size of the disk in a virtual machine image. &lt;br&gt;&lt;br&gt; This value cannot be larger than 1023 GB.
      *
      * @return the diskSizeGB value
      */
@@ -242,7 +242,7 @@ public class OSDisk {
     }
 
     /**
-     * Set the diskSizeGB value.
+     * Set specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the size of the disk in a virtual machine image. &lt;br&gt;&lt;br&gt; This value cannot be larger than 1023 GB.
      *
      * @param diskSizeGB the diskSizeGB value to set
      * @return the OSDisk object itself.
@@ -253,7 +253,7 @@ public class OSDisk {
     }
 
     /**
-     * Get the managedDisk value.
+     * Get the managed disk parameters.
      *
      * @return the managedDisk value
      */
@@ -262,7 +262,7 @@ public class OSDisk {
     }
 
     /**
-     * Set the managedDisk value.
+     * Set the managed disk parameters.
      *
      * @param managedDisk the managedDisk value to set
      * @return the OSDisk object itself.

@@ -40,7 +40,7 @@ public class ImageInner extends Resource {
     private String provisioningState;
 
     /**
-     * Get the sourceVirtualMachine value.
+     * Get the source virtual machine from which Image is created.
      *
      * @return the sourceVirtualMachine value
      */
@@ -49,7 +49,7 @@ public class ImageInner extends Resource {
     }
 
     /**
-     * Set the sourceVirtualMachine value.
+     * Set the source virtual machine from which Image is created.
      *
      * @param sourceVirtualMachine the sourceVirtualMachine value to set
      * @return the ImageInner object itself.
@@ -60,7 +60,7 @@ public class ImageInner extends Resource {
     }
 
     /**
-     * Get the storageProfile value.
+     * Get specifies the storage settings for the virtual machine disks.
      *
      * @return the storageProfile value
      */
@@ -69,7 +69,7 @@ public class ImageInner extends Resource {
     }
 
     /**
-     * Set the storageProfile value.
+     * Set specifies the storage settings for the virtual machine disks.
      *
      * @param storageProfile the storageProfile value to set
      * @return the ImageInner object itself.
@@ -80,7 +80,7 @@ public class ImageInner extends Resource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get the provisioning state.
      *
      * @return the provisioningState value
      */

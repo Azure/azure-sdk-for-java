@@ -17,17 +17,17 @@ public class BootDiagnosticsInstanceView {
     /**
      * The console screenshot blob URI.
      */
-    @JsonProperty(value = "consoleScreenshotBlobUri")
+    @JsonProperty(value = "consoleScreenshotBlobUri", access = JsonProperty.Access.WRITE_ONLY)
     private String consoleScreenshotBlobUri;
 
     /**
      * The Linux serial console log blob Uri.
      */
-    @JsonProperty(value = "serialConsoleLogBlobUri")
+    @JsonProperty(value = "serialConsoleLogBlobUri", access = JsonProperty.Access.WRITE_ONLY)
     private String serialConsoleLogBlobUri;
 
     /**
-     * Get the consoleScreenshotBlobUri value.
+     * Get the console screenshot blob URI.
      *
      * @return the consoleScreenshotBlobUri value
      */
@@ -36,34 +36,12 @@ public class BootDiagnosticsInstanceView {
     }
 
     /**
-     * Set the consoleScreenshotBlobUri value.
-     *
-     * @param consoleScreenshotBlobUri the consoleScreenshotBlobUri value to set
-     * @return the BootDiagnosticsInstanceView object itself.
-     */
-    public BootDiagnosticsInstanceView withConsoleScreenshotBlobUri(String consoleScreenshotBlobUri) {
-        this.consoleScreenshotBlobUri = consoleScreenshotBlobUri;
-        return this;
-    }
-
-    /**
-     * Get the serialConsoleLogBlobUri value.
+     * Get the Linux serial console log blob Uri.
      *
      * @return the serialConsoleLogBlobUri value
      */
     public String serialConsoleLogBlobUri() {
         return this.serialConsoleLogBlobUri;
-    }
-
-    /**
-     * Set the serialConsoleLogBlobUri value.
-     *
-     * @param serialConsoleLogBlobUri the serialConsoleLogBlobUri value to set
-     * @return the BootDiagnosticsInstanceView object itself.
-     */
-    public BootDiagnosticsInstanceView withSerialConsoleLogBlobUri(String serialConsoleLogBlobUri) {
-        this.serialConsoleLogBlobUri = serialConsoleLogBlobUri;
-        return this;
     }
 
 }
