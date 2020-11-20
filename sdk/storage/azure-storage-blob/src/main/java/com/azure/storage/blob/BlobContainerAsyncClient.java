@@ -31,6 +31,7 @@ import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CpkInfo;
+import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.ListBlobsIncludeItem;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.PublicAccessType;
@@ -215,6 +216,27 @@ public final class BlobContainerAsyncClient {
      */
     public String getAccountName() {
         return this.accountName;
+    }
+
+    /**
+     * Get an async client pointing to the account.
+     *
+     * @return {@link BlobServiceAsyncClient}
+     */
+    public BlobServiceAsyncClient getServiceAsyncClient() {
+        return getServiceClientBuilder().buildAsyncClient();
+    }
+
+    BlobServiceClientBuilder getServiceClientBuilder() {
+        CustomerProvidedKey encryptionKey = this.customerProvidedKey == null ? null :
+            new CustomerProvidedKey(this.customerProvidedKey.getEncryptionKey());
+        return new BlobServiceClientBuilder()
+            .endpoint(this.getBlobContainerUrl())
+            .pipeline(this.getHttpPipeline())
+            .serviceVersion(this.serviceVersion)
+            .blobContainerEncryptionScope(this.blobContainerEncryptionScope)
+            .encryptionScope(this.getEncryptionScope())
+            .customerProvidedKey(encryptionKey);
     }
 
     /**
