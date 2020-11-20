@@ -4,6 +4,7 @@
 
 package com.azure.ai.formrecognizer.implementation.models;
 
+import com.azure.ai.formrecognizer.models.TextStyle;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

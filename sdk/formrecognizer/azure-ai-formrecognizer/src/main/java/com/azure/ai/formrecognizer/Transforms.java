@@ -54,7 +54,6 @@ import java.util.stream.Collectors;
 
 import static com.azure.ai.formrecognizer.implementation.Utility.forEachWithIndex;
 import static com.azure.ai.formrecognizer.implementation.models.FieldValueType.ARRAY;
-import static com.azure.ai.formrecognizer.implementation.models.FieldValueType.OBJECT;
 
 /**
  * Helper class to convert service level models to SDK exposed models.
