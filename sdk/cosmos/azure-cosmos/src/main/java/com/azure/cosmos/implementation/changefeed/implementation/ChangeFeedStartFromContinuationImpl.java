@@ -4,15 +4,15 @@ package com.azure.cosmos.implementation.changefeed.implementation;
 
 import com.azure.cosmos.implementation.Strings;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+
 class ChangeFeedStartFromContinuationImpl extends ChangeFeedStartFromInternal {
     private final String continuation;
 
     public ChangeFeedStartFromContinuationImpl(String continuation) {
         super();
 
-        if (continuation == null) {
-            throw new NullPointerException("continuation");
-        }
+        checkNotNull(continuation, "Argument 'continuation' must not be null");
 
         if (Strings.isNullOrWhiteSpace(continuation)) {
             throw new IllegalArgumentException(

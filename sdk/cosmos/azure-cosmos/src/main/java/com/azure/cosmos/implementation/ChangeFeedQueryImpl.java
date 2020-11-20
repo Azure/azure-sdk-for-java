@@ -3,6 +3,8 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
+import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.query.Paginator;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
@@ -30,6 +32,7 @@ class ChangeFeedQueryImpl<T extends Resource> {
     private final Class<T> klass;
     private final CosmosChangeFeedRequestOptions options;
     private final ResourceType resourceType;
+    private final FeedRangeContinuation continuation;
 
     public ChangeFeedQueryImpl(
         RxDocumentClientImpl client,
@@ -55,6 +58,13 @@ class ChangeFeedQueryImpl<T extends Resource> {
         this.klass = klass;
         this.documentsLink = Utils.joinPath(collectionLink, Paths.DOCUMENTS_PATH_SEGMENT);
         this.options = requestOptions;
+
+        FeedRangeInternal feedRange = (FeedRangeInternal)this.options.getFeedRange();
+
+        this.continuation = FeedRangeContinuation
+            .createForFullFeedRange(
+                collectionLink,
+                feedRange);
     }
 
     public Flux<FeedResponse<T>> executeAsync() {
@@ -62,18 +72,20 @@ class ChangeFeedQueryImpl<T extends Resource> {
         final int maxPageSize = this.options.getMaxItemCount() != null ?
             options.getMaxItemCount() : -1;
 
-        return Paginator.getPaginatedQueryResultAsObservable(
-            INITIAL_EMPTY_CONTINUATION_TOKEN,
+        return Paginator.getChangeFeedQueryResultAsObservable(
+            this.continuation,
             this.createRequestFunc,
             this.executeFunc,
             this.klass,
             INITIAL_TOP_VALUE,
-            maxPageSize,
-            true);
+            maxPageSize);
     }
 
     private RxDocumentServiceRequest createDocumentServiceRequest(String continuationToken,
                                                                   int pageSize) {
+
+        // TODO fabianm bullshit ????
+
         Map<String, String> headers = new HashMap<>();
         RxDocumentServiceRequest req = RxDocumentServiceRequest.create(clientContext,
             OperationType.ReadFeed,
@@ -88,7 +100,14 @@ class ChangeFeedQueryImpl<T extends Resource> {
     }
 
     private Mono<FeedResponse<T>> executeRequestAsync(RxDocumentServiceRequest request) {
+        // TODO fabianm bullshit - wire up handleNoChanges
         return client.readFeed(request)
-                     .map(rsp -> BridgeInternal.toChangeFeedResponsePage(rsp, klass));
+                     .map(rsp -> BridgeInternal.toChangeFeedResponsePage(rsp, klass))
+                     .map(rsp -> updateContinuation(rsp));
+    }
+
+    private <T> FeedResponse<T> updateContinuation(FeedResponse<T> response) {
+        // TODO fabianm bullshit
+        return response;
     }
 }

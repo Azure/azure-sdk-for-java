@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.feedranges.FeedRangeRxDocumentServiceRequestPopulatorVisitorImpl;
 
 class PopulateStartFromRequestOptionVisitorImpl extends ChangeFeedStartFromVisitor {
     private static final long START_FROM_BEGINNING_EPOCH_SECONDS = -62135596800L;
@@ -52,6 +53,21 @@ class PopulateStartFromRequestOptionVisitorImpl extends ChangeFeedStartFromVisit
         this.request.getHeaders().put(
             HttpConstants.HttpHeaders.IF_NONE_MATCH,
             startFromContinuation.getContinuation());
+    }
+
+    @Override
+    public void Visit(ChangeFeedStartFromEtagAndFeedRangeImpl startFromEtagAndFeedRange) {
+
+        if (startFromEtagAndFeedRange.getEtag() != null) {
+            // On REST level, change feed is using IfNoneMatch/ETag instead of continuation
+            this.request.getHeaders().put(
+                HttpConstants.HttpHeaders.IF_NONE_MATCH,
+                startFromEtagAndFeedRange.getEtag());
+        }
+
+        startFromEtagAndFeedRange.getFeedRange().accept(
+            FeedRangeRxDocumentServiceRequestPopulatorVisitorImpl.SINGLETON,
+            this.request);
     }
 
     @Override

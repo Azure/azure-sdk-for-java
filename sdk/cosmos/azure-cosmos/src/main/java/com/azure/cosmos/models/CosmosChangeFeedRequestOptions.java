@@ -130,6 +130,21 @@ public final class CosmosChangeFeedRequestOptions {
             ChangeFeedStartFromInternal.createFromBeginning());
     }
 
+    static CosmosChangeFeedRequestOptions createForProcessingFromEtagAndFeedRange(
+        String etag,
+        FeedRange feedRange) {
+
+        if (etag != null) {
+            return new CosmosChangeFeedRequestOptions(
+                FeedRangeInternal.convert(feedRange),
+                ChangeFeedStartFromInternal.createFromContinuation(etag));
+        }
+
+        return new CosmosChangeFeedRequestOptions(
+            FeedRangeInternal.convert(feedRange),
+            ChangeFeedStartFromInternal.createFromBeginning());
+    }
+
     public static CosmosChangeFeedRequestOptions createForProcessingFromNow(FeedRange feedRange) {
         if (feedRange == null) {
             throw new NullPointerException("feedRange");

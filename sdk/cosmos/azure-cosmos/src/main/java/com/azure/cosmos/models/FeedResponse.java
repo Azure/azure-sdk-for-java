@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.QueryMetricsConstants;
+import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.query.QueryInfo;
 
@@ -285,6 +286,23 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
                                 ? HttpConstants.HttpHeaders.E_TAG
                                 : HttpConstants.HttpHeaders.CONTINUATION;
         return getValueOrNull(header, headerName);
+    }
+
+    /**
+     * Sets the continuation token to be used for continuing the enumeration.
+     *
+     * @param continuationToken updates the continuation token header of the response
+     */
+    void setContinuationToken(String continuationToken) {
+        String headerName = useEtagAsContinuation
+            ? HttpConstants.HttpHeaders.E_TAG
+            : HttpConstants.HttpHeaders.CONTINUATION;
+
+        if (!Strings.isNullOrWhiteSpace(continuationToken)) {
+            this.header.put(headerName, continuationToken);
+        } else {
+            this.header.remove(headerName);
+        }
     }
 
     /**

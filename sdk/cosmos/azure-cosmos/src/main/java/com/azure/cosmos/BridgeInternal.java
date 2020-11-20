@@ -19,7 +19,6 @@ import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.ResourceResponse;
-import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;

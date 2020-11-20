@@ -3,18 +3,26 @@
 
 package com.azure.cosmos.implementation.feedranges;
 
+import com.azure.cosmos.implementation.IRoutingMapProvider;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.ShouldRetryResult;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
+import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.implementation.routing.RoutingMapProvider;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -88,6 +96,27 @@ public abstract class FeedRangeContinuation extends JsonSerializable {
             String.format(
                 "Invalid Feed range continuation token '%s'",
                 continuationToken));
+    }
+
+    public static FeedRangeContinuation createForFullFeedRange(
+        String containerRid,
+        FeedRangeInternal feedRange) {
+
+        checkNotNull(containerRid, "Argument 'collectionLink' must not be null");
+        checkNotNull(feedRange, "Argument 'feedRange' must not be null");
+
+        List<Range<String>> ranges = new ArrayList<>();
+        ranges.add(
+            new Range<>(
+                PartitionKeyInternalHelper.MinimumInclusiveEffectivePartitionKey,
+                PartitionKeyInternalHelper.MaximumExclusiveEffectivePartitionKey,
+                true,
+                false));
+
+        return new FeedRangeCompositeContinuationImpl(
+            containerRid,
+            feedRange,
+            ranges);
     }
 
     public abstract ShouldRetryResult handleChangeFeedNotModified(

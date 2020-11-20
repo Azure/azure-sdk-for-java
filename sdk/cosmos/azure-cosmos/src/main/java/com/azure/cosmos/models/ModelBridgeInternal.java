@@ -54,6 +54,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 
 import static com.azure.cosmos.implementation.Warning.INTERNAL_USE_ONLY_WARNING;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * DO NOT USE.
@@ -731,5 +732,19 @@ public final class ModelBridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> int getPayloadLength(CosmosItemResponse<T> cosmosItemResponse) {
         return cosmosItemResponse.responseBodyAsByteArray != null ? cosmosItemResponse.responseBodyAsByteArray.length : 0;
+    }
+
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static CosmosChangeFeedRequestOptions createChangeFeedRequestOptionsForEtagAndFeedRange(
+        String etag, FeedRange feedRange) {
+
+        return CosmosChangeFeedRequestOptions.createForProcessingFromEtagAndFeedRange(etag, feedRange);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <T> void setFeedResponseContinuationToken(String continuationToken, FeedResponse<T> response) {
+        checkNotNull(response, "Argument 'response' must not be null.");
+        response.setContinuationToken(continuationToken);
     }
 }

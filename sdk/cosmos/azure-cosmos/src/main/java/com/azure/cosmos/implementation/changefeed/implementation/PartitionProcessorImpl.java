@@ -19,6 +19,7 @@ import com.azure.cosmos.implementation.changefeed.exceptions.LeaseLostException;
 import com.azure.cosmos.implementation.changefeed.exceptions.PartitionNotFoundException;
 import com.azure.cosmos.implementation.changefeed.exceptions.PartitionSplitException;
 import com.azure.cosmos.implementation.changefeed.exceptions.TaskCancelledException;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,12 +55,13 @@ class PartitionProcessorImpl implements PartitionProcessor {
         this.checkpointer = checkpointer;
 
         String requestContinuation = settings.getStartContinuation();
+        FeedRange feedRange = new FeedRangePartitionKeyRangeImpl(settings.getPartitionKeyRangeId());
         if (!Strings.isNullOrWhiteSpace(requestContinuation)) {
-            options = CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(requestContinuation);
+            options = ModelBridgeInternal.createChangeFeedRequestOptionsForEtagAndFeedRange(
+                requestContinuation,
+                feedRange);
         }
         else {
-            FeedRange feedRange = new FeedRangePartitionKeyRangeImpl(settings.getPartitionKeyRangeId());
-
             if (settings.getStartTime() != null) {
                 this.options = CosmosChangeFeedRequestOptions.createForProcessingFromPointInTime(
                     settings.getStartTime(),

@@ -28,6 +28,7 @@ import com.azure.cosmos.implementation.changefeed.RequestOptionsFactory;
 import com.azure.cosmos.models.ChangeFeedProcessorState;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.FeedRange;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -163,13 +164,10 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
             .flatMap(lease -> {
                 final CosmosChangeFeedRequestOptions options;
                 String requestContinuation = lease.getContinuationToken();
-                if (!Strings.isNullOrWhiteSpace(requestContinuation)) {
-                    options = CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(requestContinuation);
-                } else {
-                    final FeedRange feedRange = new FeedRangePartitionKeyRangeImpl(lease.getLeaseToken());
-                    options = CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(feedRange);
-                }
-
+                final FeedRange feedRange = new FeedRangePartitionKeyRangeImpl(lease.getLeaseToken());
+                options = ModelBridgeInternal.createChangeFeedRequestOptionsForEtagAndFeedRange(
+                    requestContinuation,
+                    feedRange);
                 options.setMaxItemCount(1);
 
                 return this.feedContextClient.createDocumentChangeFeedQuery(
@@ -245,13 +243,10 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
             .flatMap(lease -> {
                 final CosmosChangeFeedRequestOptions options;
                 String requestContinuation = lease.getContinuationToken();
-                if (!Strings.isNullOrWhiteSpace(requestContinuation)) {
-                    options = CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(requestContinuation);
-                } else {
-                    final FeedRange feedRange = new FeedRangePartitionKeyRangeImpl(lease.getLeaseToken());
-                    options = CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(feedRange);
-                }
-
+                final FeedRange feedRange = new FeedRangePartitionKeyRangeImpl(lease.getLeaseToken());
+                options = ModelBridgeInternal.createChangeFeedRequestOptionsForEtagAndFeedRange(
+                    requestContinuation,
+                    feedRange);
                 options.setMaxItemCount(1);
 
                 return this.feedContextClient.createDocumentChangeFeedQuery(

@@ -18,6 +18,7 @@ public final class ChangeFeedRequestOptionsImpl {
         ChangeFeedStartFromInternal startFromInternal,
         FeedRangeInternal feedRange,
         String continuation) {
+
         if (requestOptions == null) {
             throw new NullPointerException("requestOptions");
         }
@@ -45,9 +46,8 @@ public final class ChangeFeedRequestOptionsImpl {
             effectiveStartFrom = startFromInternal;
         }
         else {
-            final FeedRangeContinuation feedRangeContinuation = FeedRangeContinuation.convert(continuation);
-            effectiveFeedRange = feedRangeContinuation.getFeedRange();
-            effectiveStartFrom = ChangeFeedStartFromInternal.createFromContinuation(feedRangeContinuation.getContinuation());
+            effectiveFeedRange = feedRange;
+            effectiveStartFrom = new ChangeFeedStartFromEtagAndFeedRangeImpl(continuation, feedRange);
         }
 
         final PopulateStartFromRequestOptionVisitorImpl populateRequestOptionsVisitor =

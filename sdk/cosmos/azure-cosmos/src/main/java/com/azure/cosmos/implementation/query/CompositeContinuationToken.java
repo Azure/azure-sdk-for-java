@@ -95,7 +95,7 @@ public final class CompositeContinuationToken extends JsonSerializable {
             // So keeping the option to parse json with that old model here
             // but converting it to the cleaner format
             if (rangeNode.isTextual()) {
-                Range parsedRange = new Range<String>(rangeNode.textValue());
+                Range<String> parsedRange = new Range<>(rangeNode.textValue());
                 setProperty(this, RangePropertyName, parsedRange);
                 return parsedRange;
             }

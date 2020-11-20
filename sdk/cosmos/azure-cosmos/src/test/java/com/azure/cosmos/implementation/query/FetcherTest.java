@@ -94,14 +94,14 @@ public class FetcherTest {
                 return Mono.just(rsp);
         };
 
-        Fetcher<Document> fetcher =
-                new Fetcher<>(createRequestFunc, executeFunc, ModelBridgeInternal.getRequestContinuationFromQueryRequestOptions(options), false, top,
+        ServerSideOnlyContinuationFetcherImpl<Document> fetcher =
+                new ServerSideOnlyContinuationFetcherImpl<>(createRequestFunc, executeFunc, ModelBridgeInternal.getRequestContinuationFromQueryRequestOptions(options), false, top,
                         ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(options));
 
         validateFetcher(fetcher, options, top, feedResponseList);
     }
 
-    private void validateFetcher(Fetcher<Document> fetcher,
+    private void validateFetcher(ServerSideOnlyContinuationFetcherImpl<Document> fetcher,
                                  CosmosQueryRequestOptions options,
                                  int top,
                                  List<FeedResponse<Document>> feedResponseList) {
@@ -158,14 +158,14 @@ public class FetcherTest {
             return Mono.just(feedResponseList.get(executeIndex.getAndIncrement()));
         };
 
-        Fetcher<Document> fetcher =
-                new Fetcher<>(createRequestFunc, executeFunc, null, isChangeFeed, top,
+        ServerSideOnlyContinuationFetcherImpl<Document> fetcher =
+                new ServerSideOnlyContinuationFetcherImpl<>(createRequestFunc, executeFunc, null, isChangeFeed, top,
                         options.getMaxItemCount());
 
         validateFetcher(fetcher, options, feedResponseList);
     }
 
-    private void validateFetcher(Fetcher<Document> fetcher,
+    private void validateFetcher(ServerSideOnlyContinuationFetcherImpl<Document> fetcher,
                                  CosmosChangeFeedRequestOptions options,
                                  List<FeedResponse<Document>> feedResponseList) {
 
