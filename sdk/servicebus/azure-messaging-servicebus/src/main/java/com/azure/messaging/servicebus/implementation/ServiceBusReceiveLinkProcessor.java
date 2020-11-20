@@ -542,12 +542,14 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
             return;
         }
 
-        final int credits = getCreditsToAdd(link.getCredits());
+        synchronized (lock) {
+            final int credits = getCreditsToAdd(link.getCredits());
 
-        logger.info("Link credits to add. Credits: '{}'", credits);
+            logger.info("Link credits to add. Credits: '{}'", credits);
 
-        if (credits > 0) {
-            link.addCreditsInstantly(credits);
+            if (credits > 0) {
+                link.addCreditsInstantly(credits);
+            }
         }
     }
 
