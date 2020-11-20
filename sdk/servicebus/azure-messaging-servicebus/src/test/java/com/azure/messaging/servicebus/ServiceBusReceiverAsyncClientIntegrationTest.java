@@ -22,6 +22,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
@@ -41,6 +42,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.azure.messaging.servicebus.TestUtils.MESSAGE_POSITION_ID;
 import static com.azure.messaging.servicebus.TestUtils.getServiceBusMessages;
@@ -255,6 +257,11 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         this.sender = getSenderBuilder(useCredentials, entityType, entityIndex, isSessionEnabled, shareConnection)
             .buildAsyncClient();
 
+        final String messageId = UUID.randomUUID().toString();
+        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
+        Mono.when(sendMessage(message), sendMessage(message)).block(TIMEOUT);
+
+        // Now create receiver
         if (isSessionEnabled) {
             assertNotNull(sessionId, "'sessionId' should have been set.");
             this.receiver = getSessionReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
@@ -263,10 +270,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             this.receiver = getReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
                 .buildAsyncClient();
         }
-
-        final String messageId = UUID.randomUUID().toString();
-        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
-        Mono.when(sendMessage(message), sendMessage(message)).block(TIMEOUT);
 
         // Assert & Act
         StepVerifier.create(receiver.receiveMessages())
