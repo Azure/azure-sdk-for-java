@@ -11,5 +11,3 @@ jobs:
           safeName: azureaiformrecognizer
       EnvVars:
         AZURE_TEST_MODE: RECORD
-
-  

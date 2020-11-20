@@ -23,18 +23,13 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import reactor.test.StepVerifier;
 
 import java.io.InputStream;
-import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.BUSINESS_CARD;
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.INVOICE;
@@ -58,17 +53,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
 
     private FormRecognizerClient client;
-
-    @BeforeAll
-    static void beforeAll() throws InterruptedException {
-        TimeUnit.MINUTES.sleep(10);
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
 
     private FormRecognizerClient getFormRecognizerClient(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion) {
