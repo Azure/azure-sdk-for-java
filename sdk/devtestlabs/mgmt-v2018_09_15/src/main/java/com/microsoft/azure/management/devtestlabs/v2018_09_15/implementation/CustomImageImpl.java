@@ -231,7 +231,7 @@ class CustomImageImpl extends CreatableUpdatableImpl<CustomImage, CustomImageInn
     }
 
     @Override
-    public CustomImageImpl withDataDiskStorageInfoFragment(List<DataDiskStorageTypeInfoFragment> dataDiskStorageInfo) {
+    public CustomImageImpl withDataDiskStorageInfo(List<DataDiskStorageTypeInfoFragment> dataDiskStorageInfo) {
         this.updateParameter.withDataDiskStorageInfo(dataDiskStorageInfo);
         return this;
     }

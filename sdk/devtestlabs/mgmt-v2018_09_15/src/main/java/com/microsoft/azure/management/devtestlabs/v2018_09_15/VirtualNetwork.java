@@ -218,7 +218,7 @@ public interface VirtualNetwork extends HasInner<VirtualNetworkInner>, Indexable
              * @param allowedSubnets The allowed subnets of the virtual network
              * @return the next update stage
              */
-            Update withAllowedSubnetFragments(List<SubnetFragment> allowedSubnets);
+            Update withAllowedSubnets(List<SubnetFragment> allowedSubnets);
         }
 
         /**
@@ -254,7 +254,7 @@ public interface VirtualNetwork extends HasInner<VirtualNetworkInner>, Indexable
              * @param subnetOverrides The subnet overrides of the virtual network
              * @return the next update stage
              */
-            Update withSubnetOverrideFragments(List<SubnetOverrideFragment> subnetOverrides);
+            Update withSubnetOverrides(List<SubnetOverrideFragment> subnetOverrides);
         }
 
         /**

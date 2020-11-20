@@ -254,7 +254,7 @@ public interface NotificationChannel extends HasInner<NotificationChannelInner>,
              * @param events The list of event for which this notification is enabled
              * @return the next update stage
              */
-            Update withEventFragments(List<EventFragment> events);
+            Update withEvents(List<EventFragment> events);
         }
 
         /**

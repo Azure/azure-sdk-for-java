@@ -181,7 +181,7 @@ class NotificationChannelImpl extends CreatableUpdatableImpl<NotificationChannel
     }
 
     @Override
-    public NotificationChannelImpl withEventFragments(List<EventFragment> events) {
+    public NotificationChannelImpl withEvents(List<EventFragment> events) {
         this.updateParameter.withEvents(events);
         return this;
     }

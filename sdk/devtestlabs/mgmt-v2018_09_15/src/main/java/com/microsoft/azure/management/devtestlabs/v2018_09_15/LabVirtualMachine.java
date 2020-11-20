@@ -701,7 +701,7 @@ public interface LabVirtualMachine extends HasInner<LabVirtualMachineInner>, Ind
              * @param artifacts The artifacts to be installed on the virtual machine
              * @return the next update stage
              */
-            Update withArtifactFragments(List<ArtifactInstallPropertiesFragment> artifacts);
+            Update withArtifacts(List<ArtifactInstallPropertiesFragment> artifacts);
         }
 
         /**
@@ -773,7 +773,7 @@ public interface LabVirtualMachine extends HasInner<LabVirtualMachineInner>, Ind
              * @param dataDiskParameters New or existing data disks to attach to the virtual machine after creation
              * @return the next update stage
              */
-            Update withDataDiskParameterFragments(List<DataDiskPropertiesFragment> dataDiskParameters);
+            Update withDataDiskParameters(List<DataDiskPropertiesFragment> dataDiskParameters);
         }
 
         /**
@@ -977,7 +977,7 @@ public interface LabVirtualMachine extends HasInner<LabVirtualMachineInner>, Ind
              * @param scheduleParameters Virtual Machine schedules to be created
              * @return the next update stage
              */
-            Update withScheduleParameterFragments(List<ScheduleCreationParameterFragment> scheduleParameters);
+            Update withScheduleParameters(List<ScheduleCreationParameterFragment> scheduleParameters);
         }
 
         /**

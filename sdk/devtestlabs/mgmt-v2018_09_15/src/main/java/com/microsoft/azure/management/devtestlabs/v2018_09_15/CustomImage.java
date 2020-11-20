@@ -322,7 +322,7 @@ public interface CustomImage extends HasInner<CustomImageInner>, Indexable, Refr
              * @param dataDiskStorageInfo Storage information about the data disks present in the custom image
              * @return the next update stage
              */
-            Update withDataDiskStorageInfoFragment(List<DataDiskStorageTypeInfoFragment> dataDiskStorageInfo);
+            Update withDataDiskStorageInfo(List<DataDiskStorageTypeInfoFragment> dataDiskStorageInfo);
         }
 
         /**
