@@ -763,6 +763,7 @@ public final class ServiceBusClientBuilder {
          * @param maxConcurrentCalls max concurrent messages that this processor should process.
          *
          * @return The updated {@link ServiceBusSessionProcessorClientBuilder} object.
+         * @throws IllegalArgumentException if {@code maxConcurrentCalls} is less than 1.
          */
         public ServiceBusSessionProcessorClientBuilder maxConcurrentCalls(int maxConcurrentCalls) {
             if (maxConcurrentCalls < 1) {
