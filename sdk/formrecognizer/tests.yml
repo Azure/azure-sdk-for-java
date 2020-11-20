@@ -8,6 +8,9 @@ jobs:
         - name: azure-ai-formrecognizer
           groupId: com.azure
           safeName: azureaiformrecognizer
+      # resource creation is disabled because we are trying to test the stable endpoint.	
+      # Will enable it when service rolls out AAD to all region.	
+      DisableAzureResourceCreation: true
       EnvVars:
         AZURE_TEST_MODE: RECORD
         AZURE_FORM_RECOGNIZER_API_KEY: $(java-formrecognizer-test-api-key)
