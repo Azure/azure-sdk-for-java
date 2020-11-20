@@ -14,6 +14,7 @@ import com.microsoft.azure.arm.resources.collection.SupportsBatchDeletion;
 import com.microsoft.azure.arm.resources.collection.SupportsGettingByResourceGroup;
 import rx.Observable;
 import com.microsoft.azure.arm.resources.collection.SupportsListingByResourceGroup;
+import com.microsoft.azure.arm.collection.SupportsListing;
 import com.microsoft.azure.management.compute.v2017_12_01.implementation.AvailabilitySetsInner;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.compute.v2017_12_01.AvailabilitySetVirtualMachineSize;
@@ -21,7 +22,7 @@ import com.microsoft.azure.management.compute.v2017_12_01.AvailabilitySetVirtual
 /**
  * Type representing AvailabilitySets.
  */
-public interface AvailabilitySets extends SupportsCreating<AvailabilitySet.DefinitionStages.Blank>, SupportsDeletingByResourceGroup, SupportsBatchDeletion, SupportsGettingByResourceGroup<AvailabilitySet>, SupportsListingByResourceGroup<AvailabilitySet>, HasInner<AvailabilitySetsInner> {
+public interface AvailabilitySets extends SupportsCreating<AvailabilitySet.DefinitionStages.Blank>, SupportsDeletingByResourceGroup, SupportsBatchDeletion, SupportsGettingByResourceGroup<AvailabilitySet>, SupportsListingByResourceGroup<AvailabilitySet>, SupportsListing<AvailabilitySet>, HasInner<AvailabilitySetsInner> {
     /**
      * Lists all available virtual machine sizes that can be used to create a new virtual machine in an existing availability set.
      *

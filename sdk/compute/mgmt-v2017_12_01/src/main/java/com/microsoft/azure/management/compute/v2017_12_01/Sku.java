@@ -11,7 +11,9 @@ package com.microsoft.azure.management.compute.v2017_12_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Describes a virtual machine scale set sku.
+ * Describes a virtual machine scale set sku. NOTE: If the new VM SKU is not
+ * supported on the hardware the scale set is currently on, you need to
+ * deallocate the VMs in the scale set before you modify the SKU name.
  */
 public class Sku {
     /**
@@ -35,7 +37,7 @@ public class Sku {
     private Long capacity;
 
     /**
-     * Get the name value.
+     * Get the sku name.
      *
      * @return the name value
      */
@@ -44,7 +46,7 @@ public class Sku {
     }
 
     /**
-     * Set the name value.
+     * Set the sku name.
      *
      * @param name the name value to set
      * @return the Sku object itself.
@@ -55,7 +57,7 @@ public class Sku {
     }
 
     /**
-     * Get the tier value.
+     * Get specifies the tier of virtual machines in a scale set.&lt;br /&gt;&lt;br /&gt; Possible Values:&lt;br /&gt;&lt;br /&gt; **Standard**&lt;br /&gt;&lt;br /&gt; **Basic**.
      *
      * @return the tier value
      */
@@ -64,7 +66,7 @@ public class Sku {
     }
 
     /**
-     * Set the tier value.
+     * Set specifies the tier of virtual machines in a scale set.&lt;br /&gt;&lt;br /&gt; Possible Values:&lt;br /&gt;&lt;br /&gt; **Standard**&lt;br /&gt;&lt;br /&gt; **Basic**.
      *
      * @param tier the tier value to set
      * @return the Sku object itself.
@@ -75,7 +77,7 @@ public class Sku {
     }
 
     /**
-     * Get the capacity value.
+     * Get specifies the number of virtual machines in the scale set.
      *
      * @return the capacity value
      */
@@ -84,7 +86,7 @@ public class Sku {
     }
 
     /**
-     * Set the capacity value.
+     * Set specifies the number of virtual machines in the scale set.
      *
      * @param capacity the capacity value to set
      * @return the Sku object itself.
