@@ -31,6 +31,7 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.BUSINESS_CARD;
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.INVOICE;
@@ -56,7 +57,8 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     private FormRecognizerAsyncClient client;
 
     @BeforeAll
-    static void beforeAll() {
+    static void beforeAll() throws InterruptedException {
+        TimeUnit.MINUTES.sleep(10);
         StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
     }
 

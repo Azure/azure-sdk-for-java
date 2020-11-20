@@ -4,25 +4,12 @@ jobs:
   - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: formrecognizer
+      timeoutInMinutes: 220
       Artifacts:
         - name: azure-ai-formrecognizer
           groupId: com.azure
           safeName: azureaiformrecognizer
-      # resource creation is disabled because we are trying to test the stable endpoint.	
-      # Will enable it when service rolls out AAD to all region.	
-      # DisableAzureResourceCreation: true
       EnvVars:
         AZURE_TEST_MODE: RECORD
-        AZURE_FORM_RECOGNIZER_API_KEY: $(java-formrecognizer-test-api-key)
-        AZURE_FORM_RECOGNIZER_ENDPOINT: $(java-formrecognizer-test-endpoint)
-        FORM_RECOGNIZER_TARGET_RESOURCE_REGION: $(java-formrecognizer-test-target-resource-region)
-        FORM_RECOGNIZER_TARGET_RESOURCE_ID: $(java-formrecognizer-test-target-resource-id)
-        FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL: $(java-formrecognizer-multipage-training-blob-url)
-        FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL: $(java-formrecognizer-testing-blob-url)
-        FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL: $(java-formrecognizer-training-blob-url)
-        FORM_RECOGNIZER_SELECTION_MARK_BLOB_CONTAINER_SAS_URL: $(java-formrecognizer-selection-mark-blob-url)
-        AZURE_CLIENT_ID: $(aad-azure-sdk-test-client-id)
-        AZURE_CLIENT_SECRET: $(aad-azure-sdk-test-client-secret)
-        AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
 
   

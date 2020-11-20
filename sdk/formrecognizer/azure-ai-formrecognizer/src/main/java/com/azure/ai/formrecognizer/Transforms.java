@@ -276,15 +276,14 @@ final class Transforms {
      */
     private static Appearance getAppearance(TextLine textLine) {
         Style style = new Style();
-        if (textLine.getAppearance() != null) {
-            if (textLine.getAppearance().getStyle() != null) {
-                if (textLine.getAppearance().getStyle().getName() != null) {
-                    StyleHelper.setName(style,
-                        TextStyle.fromString(textLine.getAppearance().getStyle().getName().toString()));
-                }
-                StyleHelper.setConfidence(style, textLine.getAppearance().getStyle().getConfidence());
+        if (textLine.getAppearance() != null && textLine.getAppearance().getStyle() != null) {
+            if (textLine.getAppearance().getStyle().getName() != null) {
+                StyleHelper.setName(style,
+                    TextStyle.fromString(textLine.getAppearance().getStyle().getName().toString()));
             }
+            StyleHelper.setConfidence(style, textLine.getAppearance().getStyle().getConfidence());
         }
+        
         Appearance appearance = new Appearance();
         AppearanceHelper.setStyle(appearance, style);
         return appearance;
