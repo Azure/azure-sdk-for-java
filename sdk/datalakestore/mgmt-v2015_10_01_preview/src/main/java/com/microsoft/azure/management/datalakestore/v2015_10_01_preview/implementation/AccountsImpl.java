@@ -167,10 +167,14 @@ class AccountsImpl extends GroupableResourcesCoreImpl<DataLakeStoreAccount, Data
     public Observable<FirewallRule> getFirewallRuleAsync(String resourceGroupName, String accountName, String firewallRuleName) {
         AccountsInner client = this.inner();
         return client.getFirewallRuleAsync(resourceGroupName, accountName, firewallRuleName)
-        .map(new Func1<FirewallRuleInner, FirewallRule>() {
+        .flatMap(new Func1<FirewallRuleInner, Observable<FirewallRule>>() {
             @Override
-            public FirewallRule call(FirewallRuleInner inner) {
-                return wrapFirewallRuleModel(inner);
+            public Observable<FirewallRule> call(FirewallRuleInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((FirewallRule)wrapFirewallRuleModel(inner));
+                }
             }
        });
     }
