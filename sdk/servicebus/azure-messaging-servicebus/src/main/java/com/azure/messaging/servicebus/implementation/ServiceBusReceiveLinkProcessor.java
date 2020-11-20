@@ -596,7 +596,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
                     : 0;
             }
             logger.info("prefetch: '{}', requested: '{}', linkCredits: '{}', expectedTotalCredit: '{}', queuedMessages:"
-                    + "'{}', creditsToAdd: '{}', messageQueue.size(): '{}'" , getPrefetch(), r, linkCredits,
+                    + "'{}', creditsToAdd: '{}', messageQueue.size(): '{}'", getPrefetch(), r, linkCredits,
                 expectedTotalCredit, queuedMessages, creditsToAdd, messageQueue.size());
         }
 
