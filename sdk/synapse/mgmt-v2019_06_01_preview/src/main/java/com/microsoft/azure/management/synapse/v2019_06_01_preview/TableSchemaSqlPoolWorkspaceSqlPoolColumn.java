@@ -14,9 +14,9 @@ import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.implementation.SynapseManager;
 
 /**
- * Type representing SqlPoolColumn.
+ * Type representing TableSchemaSqlPoolWorkspaceSqlPoolColumn.
  */
-public interface SqlPoolColumn extends HasInner<SqlPoolColumnInner>, HasManager<SynapseManager> {
+public interface TableSchemaSqlPoolWorkspaceSqlPoolColumn extends HasInner<SqlPoolColumnInner>, HasManager<SynapseManager> {
     /**
      * @return the columnType value.
      */
