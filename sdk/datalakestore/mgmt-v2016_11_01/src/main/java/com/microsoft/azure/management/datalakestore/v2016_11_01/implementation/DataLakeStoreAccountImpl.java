@@ -220,7 +220,7 @@ class DataLakeStoreAccountImpl extends GroupableResourceCoreImpl<DataLakeStoreAc
     }
 
     @Override
-    public DataLakeStoreAccountImpl withFirewallRulesForCreate(List<CreateFirewallRuleWithAccountParameters> firewallRules) {
+    public DataLakeStoreAccountImpl withFirewallRules(List<CreateFirewallRuleWithAccountParameters> firewallRules) {
         this.createParameter.withFirewallRules(firewallRules);
         return this;
     }
@@ -232,13 +232,13 @@ class DataLakeStoreAccountImpl extends GroupableResourceCoreImpl<DataLakeStoreAc
     }
 
     @Override
-    public DataLakeStoreAccountImpl withTrustedIdProvidersForCreate(List<CreateTrustedIdProviderWithAccountParameters> trustedIdProviders) {
+    public DataLakeStoreAccountImpl withTrustedIdProviders(List<CreateTrustedIdProviderWithAccountParameters> trustedIdProviders) {
         this.createParameter.withTrustedIdProviders(trustedIdProviders);
         return this;
     }
 
     @Override
-    public DataLakeStoreAccountImpl withVirtualNetworkRulesForCreate(List<CreateVirtualNetworkRuleWithAccountParameters> virtualNetworkRules) {
+    public DataLakeStoreAccountImpl withVirtualNetworkRules(List<CreateVirtualNetworkRuleWithAccountParameters> virtualNetworkRules) {
         this.createParameter.withVirtualNetworkRules(virtualNetworkRules);
         return this;
     }
@@ -250,19 +250,19 @@ class DataLakeStoreAccountImpl extends GroupableResourceCoreImpl<DataLakeStoreAc
     }
 
     @Override
-    public DataLakeStoreAccountImpl withFirewallRulesForUpdate(List<UpdateFirewallRuleWithAccountParameters> firewallRules) {
+    public DataLakeStoreAccountImpl withFirewallRules(List<UpdateFirewallRuleWithAccountParameters> firewallRules) {
         this.updateParameter.withFirewallRules(firewallRules);
         return this;
     }
 
     @Override
-    public DataLakeStoreAccountImpl withTrustedIdProvidersForUpdate(List<UpdateTrustedIdProviderWithAccountParameters> trustedIdProviders) {
+    public DataLakeStoreAccountImpl withTrustedIdProviders(List<UpdateTrustedIdProviderWithAccountParameters> trustedIdProviders) {
         this.updateParameter.withTrustedIdProviders(trustedIdProviders);
         return this;
     }
 
     @Override
-    public DataLakeStoreAccountImpl withVirtualNetworkRulesForUpdate(List<UpdateVirtualNetworkRuleWithAccountParameters> virtualNetworkRules) {
+    public DataLakeStoreAccountImpl withVirtualNetworkRules(List<UpdateVirtualNetworkRuleWithAccountParameters> virtualNetworkRules) {
         this.updateParameter.withVirtualNetworkRules(virtualNetworkRules);
         return this;
     }

@@ -17,6 +17,15 @@ import com.microsoft.azure.arm.model.HasInner;
  */
 public interface Locations extends HasInner<LocationsInner> {
     /**
+     * Gets the current usage count and the limit for the resources of the location under the subscription.
+     *
+     * @param location The resource location without whitespace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<Usage> getUsageAsync(String location);
+
+    /**
      * Gets subscription-level properties and limits for Data Lake Store specified by resource location.
      *
      * @param location The resource location without whitespace.

@@ -38,7 +38,7 @@ class VirtualNetworkRuleImpl extends CreatableUpdatableImpl<VirtualNetworkRule, 
         this.manager = manager;
         // Set resource name
         this.virtualNetworkRuleName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.accountName = IdParsingUtils.getValueFromIdByName(inner.id(), "accounts");
         this.virtualNetworkRuleName = IdParsingUtils.getValueFromIdByName(inner.id(), "virtualNetworkRules");

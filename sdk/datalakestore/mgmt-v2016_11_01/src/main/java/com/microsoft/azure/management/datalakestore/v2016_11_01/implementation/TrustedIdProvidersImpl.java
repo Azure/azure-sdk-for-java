@@ -64,10 +64,14 @@ class TrustedIdProvidersImpl extends WrapperImpl<TrustedIdProvidersInner> implem
     public Observable<TrustedIdProvider> getAsync(String resourceGroupName, String accountName, String trustedIdProviderName) {
         TrustedIdProvidersInner client = this.inner();
         return client.getAsync(resourceGroupName, accountName, trustedIdProviderName)
-        .map(new Func1<TrustedIdProviderInner, TrustedIdProvider>() {
+        .flatMap(new Func1<TrustedIdProviderInner, Observable<TrustedIdProvider>>() {
             @Override
-            public TrustedIdProvider call(TrustedIdProviderInner inner) {
-                return wrapModel(inner);
+            public Observable<TrustedIdProvider> call(TrustedIdProviderInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((TrustedIdProvider)wrapModel(inner));
+                }
             }
        });
     }
