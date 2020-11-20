@@ -14,6 +14,7 @@ public class AzureActiveDirectoryProperties {
     private String uri;
     private String tenantId;
     private String clientId;
+    private String appIdUri;
     private String clientSecret;
 
     private Map<String, AuthorizationProperties> authorization = new HashMap<>();
@@ -52,6 +53,14 @@ public class AzureActiveDirectoryProperties {
 
     public void setAuthorization(Map<String, AuthorizationProperties> authorization) {
         this.authorization = authorization;
+    }
+
+    public String getAppIdUri() {
+        return appIdUri;
+    }
+
+    public void setAppIdUri(String appIdUri) {
+        this.appIdUri = appIdUri;
     }
 
     public Map<String, AuthorizationProperties> getAuthorization() {

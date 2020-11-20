@@ -1,12 +1,15 @@
-package com.azure.spring.autoconfigure.aad;
+package com.azure.spring.aad.resource;
 
+import com.azure.spring.autoconfigure.aad.UserPrincipal;
+import com.azure.spring.autoconfigure.aad.UserPrincipalManager;
 import com.nimbusds.jose.JWSObject;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.JWTClaimsSet.Builder;
 import java.text.ParseException;
 import java.util.Collection;
-import java.util.Map;
 import java.util.Map.Entry;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,10 +20,11 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 
 /**
- *  A {@link Converter} that takes a {@link Jwt} and converts it into a {@link PreAuthenticatedAuthenticationToken}.
+ * A {@link Converter} that takes a {@link Jwt} and converts it into a {@link PreAuthenticatedAuthenticationToken}.
  */
 public class AzureJwtBearerTokenAuthenticationConverter implements Converter<Jwt, AbstractAuthenticationToken> {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserPrincipalManager.class);
     private final JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
 
     public AzureJwtBearerTokenAuthenticationConverter() {
@@ -31,18 +35,18 @@ public class AzureJwtBearerTokenAuthenticationConverter implements Converter<Jwt
         Collection<GrantedAuthority> authorities = token.getAuthorities();
         OAuth2AccessToken accessToken = new OAuth2AccessToken(TokenType.BEARER, jwt.getTokenValue(), jwt.getIssuedAt(),
             jwt.getExpiresAt());
-        Map<String, Object> attributes = jwt.getClaims();
         JWTClaimsSet.Builder builder = new Builder();
-        for (Entry<String, Object> entry : attributes.entrySet()) {
+        for (Entry<String, Object> entry : jwt.getClaims().entrySet()) {
             builder.claim(entry.getKey(), entry.getValue());
         }
+        JWTClaimsSet jwtClaimsSet = builder.build();
         JWSObject jwsObject = null;
         try {
             jwsObject = JWSObject.parse(accessToken.getTokenValue());
         } catch (ParseException e) {
-            e.printStackTrace();
+            LOGGER.error("When create an instance of JWSObject, an exception is resolved on the access token.");
         }
-        UserPrincipal userPrincipal = new UserPrincipal(accessToken.getTokenValue(), jwsObject, builder.build());
+        UserPrincipal userPrincipal = new UserPrincipal(accessToken.getTokenValue(), jwsObject, jwtClaimsSet);
         return new PreAuthenticatedAuthenticationToken(userPrincipal, null, authorities);
     }
 }

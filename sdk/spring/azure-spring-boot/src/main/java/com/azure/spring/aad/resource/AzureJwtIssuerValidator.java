@@ -1,7 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.autoconfigure.aad;
+package com.azure.spring.aad.resource;
 
+import com.azure.spring.autoconfigure.aad.AADTokenClaim;
 import java.util.function.Predicate;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2TokenValidatorResult;
@@ -12,7 +13,7 @@ import org.springframework.util.Assert;
 /**
  * Validates the "iss" claim in a {@link Jwt}, that is matches a configured value
  */
-public class AADJwtIssuerValidator implements OAuth2TokenValidator<Jwt> {
+public class AzureJwtIssuerValidator implements OAuth2TokenValidator<Jwt> {
 
     private static final String LOGIN_MICROSOFT_ONLINE_ISSUER = "https://login.microsoftonline.com/";
     private static final String STS_WINDOWS_ISSUER = "https://sts.windows.net/";
@@ -20,10 +21,10 @@ public class AADJwtIssuerValidator implements OAuth2TokenValidator<Jwt> {
     private final JwtClaimValidator<String> validator;
 
     /**
-     * Constructs a {@link AADJwtIssuerValidator} using the provided parameters
+     * Constructs a {@link AzureJwtIssuerValidator} using the provided parameters
      */
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public AADJwtIssuerValidator() {
+    public AzureJwtIssuerValidator() {
         this.validator = new JwtClaimValidator(AADTokenClaim.ISS, validIssuer());
     }
 

@@ -1,8 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.autoconfigure.aad;
+package com.azure.spring.aad.resource;
 
 
+import com.azure.spring.aad.implementation.AzureActiveDirectoryProperties;
+import com.azure.spring.aad.implementation.IdentityEndpoints;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,14 +32,12 @@ import org.springframework.util.StringUtils;
  * By default, creating a JwtDecoder through JwkKeySetUri will be auto-configured.
  */
 @Configuration(proxyBeanMethods = false)
-@EnableConfigurationProperties({AADAuthenticationProperties.class, ServiceEndpointsProperties.class})
+@EnableConfigurationProperties({AzureActiveDirectoryProperties.class})
 @ConditionalOnClass(BearerTokenAuthenticationToken.class)
-public class AADResourceServerAutoConfiguration {
+public class AzureActiveDirectoryResourceConfiguration {
 
     @Autowired
-    private AADAuthenticationProperties aadAuthenticationProperties;
-    @Autowired
-    private ServiceEndpointsProperties serviceEndpointsProperties;
+    public AzureActiveDirectoryProperties azureActiveDirectoryProperties;
 
     /**
      * Use JwkKeySetUri to create JwtDecoder
@@ -47,15 +47,12 @@ public class AADResourceServerAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean(JwtDecoder.class)
     public JwtDecoder jwtDecoderByJwkKeySetUri() {
-        if (StringUtils.isEmpty(aadAuthenticationProperties.getTenantId())) {
-            aadAuthenticationProperties.setTenantId("common");
+        if (StringUtils.isEmpty(azureActiveDirectoryProperties.getTenantId())) {
+            azureActiveDirectoryProperties.setTenantId("common");
         }
-        String authorizationServerUri =
-            serviceEndpointsProperties.getServiceEndpoints(aadAuthenticationProperties.getEnvironment())
-                .getAadSigninUri();
-        AuthorizationServerEndpoints endpoints = new AuthorizationServerEndpoints(authorizationServerUri);
+        IdentityEndpoints identityEndpoints = new IdentityEndpoints(azureActiveDirectoryProperties.getUri());
         NimbusJwtDecoder nimbusJwtDecoder = NimbusJwtDecoder
-            .withJwkSetUri(endpoints.jwkSetEndpoint(aadAuthenticationProperties.getTenantId())).build();
+            .withJwkSetUri(identityEndpoints.jwkSetEndpoint(azureActiveDirectoryProperties.getTenantId())).build();
         List<OAuth2TokenValidator<Jwt>> validators = createDefaultValidator();
         nimbusJwtDecoder.setJwtValidator(new DelegatingOAuth2TokenValidator<>(validators));
         return nimbusJwtDecoder;
@@ -63,12 +60,12 @@ public class AADResourceServerAutoConfiguration {
 
     public List<OAuth2TokenValidator<Jwt>> createDefaultValidator() {
         List<OAuth2TokenValidator<Jwt>> validators = new ArrayList<>();
-        if (!StringUtils.isEmpty(aadAuthenticationProperties.getAppIdUri())) {
+        if (!StringUtils.isEmpty(azureActiveDirectoryProperties.getAppIdUri())) {
             List<String> validAudiences = new ArrayList<>();
-            validAudiences.add(aadAuthenticationProperties.getAppIdUri());
-            validators.add(new AADJwtAudienceValidator(validAudiences));
+            validAudiences.add(azureActiveDirectoryProperties.getAppIdUri());
+            validators.add(new AzureJwtAudienceValidator(validAudiences));
         }
-        validators.add(new AADJwtIssuerValidator());
+        validators.add(new AzureJwtIssuerValidator());
         validators.add(new JwtTimestampValidator());
         return validators;
     }
