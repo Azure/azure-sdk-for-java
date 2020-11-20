@@ -1211,7 +1211,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     Mono<Void> renewSessionLock(String sessionId, Duration maxLockRenewalDuration) {
         if (isDisposed.get()) {
             return monoError(logger, new IllegalStateException(
-                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "getAutoRenewSessionLock")));
+                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "renewSessionLock")));
         } else if (!receiverOptions.isSessionReceiver()) {
             return monoError(logger, new IllegalStateException(
                 "Cannot renew session lock on a non-session receiver."));
