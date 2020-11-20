@@ -57,7 +57,7 @@ public final class ServiceBusReceivedMessage {
      *
      * @return the {@link AmqpAnnotatedMessage} representing amqp message.
      */
-    public AmqpAnnotatedMessage getAmqpAnnotatedMessage() {
+    public AmqpAnnotatedMessage getRawAmqpMessage() {
         return amqpAnnotatedMessage;
     }
 
@@ -407,7 +407,7 @@ public final class ServiceBusReceivedMessage {
      * @return Session Id of the {@link ServiceBusReceivedMessage}.
      */
     public String getSessionId() {
-        return getAmqpAnnotatedMessage().getProperties().getGroupId();
+        return getRawAmqpMessage().getProperties().getGroupId();
     }
 
     /**
