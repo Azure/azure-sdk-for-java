@@ -13,17 +13,9 @@ variables:
 steps:
 - task: Cache@2
   inputs:
-    key: 'maven | "$(Agent.OS)" | **/pom.xml'
-    restoreKeys: |
-      maven | "$(Agent.OS)"
-      maven
+    key: 'maven | "$(Agent.OS)"'
     path: $(MAVEN_CACHE_FOLDER)
-  displayName: Cache Maven local repo
-
-- bash: |
-    git config --global user.name "Azure-Fluent"
-    git config --global user.email "azfluent@microsoft.com"
-  displayName: Base Config
+  displayName: Cache Maven Local Repo
 
 - bash: |
     sudo apt-get install -y --upgrade python3-pip python3-setuptools
@@ -44,18 +36,12 @@ steps:
 - bash: |
     export PATH=$JAVA_HOME_11_X64/bin:$PATH
     java -version
-    ./eng/mgmt/automation/generate.py --readme "$(README)" --tag "$(TAG)" --service "$(SERVICE)" --version "$(VERSION)" --auto-commit-generated-code
+    ./eng/mgmt/automation/generate.py --readme "$(README)" --tag "$(TAG)" --service "$(SERVICE)" --version "$(VERSION)" --auto-commit-generated-code --user-name "azure-sdk" --user-email "azuresdk@microsoft.com"
   displayName: Generation and Compile
 
-- bash: |
-    export MESSAGE="[Automation] Generate Fluent Lite from $(README)#$(TAG)"
-    export BRANCH="Fluent-lite-generation-$(Build.BuildId)"
-    git add -A
-    git commit -m "[Automation] Update other files outside generation folder"
-    git log -2
-    git push https://$(GITHUB_TOKEN)@github.com/azure-fluent/azure-sdk-for-java HEAD:refs/heads/$BRANCH -f
-    python3 eng/mgmt/pull-request.py chentanyi azure-sdk-for-java "$MESSAGE" "azure-fluent:$BRANCH"
-  displayName: Create pull request
-  env:
-    GITHUB_TOKEN: $(GITHUB_TOKEN)
-  condition: always()
+- template: /eng/common/pipelines/templates/steps/create-pull-request.yml
+  parameters:
+    PRBranchName: Fluent-lite-generation-$(Build.BuildId)
+    CommitMsg: '[Automation] Update other files outside generation folder'
+    PRTitle: '[Automation] Generate Fluent Lite from $(README)#$(TAG)'
+    PRLabels: 'Mgmt - Track 2'

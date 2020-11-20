@@ -324,6 +324,8 @@ def parse_args() -> argparse.Namespace:
         action = 'store_true',
         help = 'Automatic commit the generated code',
     )
+    parser.add_argument('--user-name', help = 'User Name for commit')
+    parser.add_argument('--user-email', help = 'User Email for commit')
     parser.add_argument(
         'config',
         nargs = '*',
@@ -459,17 +461,19 @@ def main():
     args['readme'] = readme
     args['spec'] = spec
 
-    args['service'] = get_and_update_api_specs(api_specs_file, spec,
-                                               args['service'])
+    service = get_and_update_api_specs(api_specs_file, spec, args['service'])
+    args['service'] = service
     set_or_increase_version_and_generate(sdk_root, **args)
 
-    if args.get('auto_commit_generated_code'):
+    if args.get('auto_commit_generated_code') and args.get(
+            'user_name') and args.get('user_email'):
         os.system('git add {0}'.format(
             os.path.abspath(
                 os.path.join(sdk_root, OUTPUT_FOLDER_FORMAT.format(service)))))
         os.system(
-            'git commit -m "[Automation] Generate Fluent Lite from {0}#{1}"'.
-            format(spec, args.get('tag', '')))
+            'git -c user.name={0} -c user.email={1} commit -m "[Automation] Generate Fluent Lite from {2}#{3}"'
+            .format(args['user_name'], args['user_email'], spec,
+                    args.get('tag', '')))
 
 
 if __name__ == '__main__':
