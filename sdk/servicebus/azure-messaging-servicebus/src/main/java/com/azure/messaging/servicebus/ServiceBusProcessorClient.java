@@ -3,19 +3,37 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.amqp.implementation.TracerProvider;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.tracing.ProcessKind;
 import com.azure.messaging.servicebus.implementation.models.ServiceBusProcessorClientOptions;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
+import reactor.core.publisher.Signal;
 import reactor.core.scheduler.Schedulers;
 
+import java.io.Closeable;
+import java.io.IOException;
+import java.util.Locale;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
+
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
+import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
+import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
+import static com.azure.core.util.tracing.Tracer.MESSAGE_ENQUEUED_TIME;
+import static com.azure.core.util.tracing.Tracer.SCOPE_KEY;
+import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_NAMESPACE_VALUE;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_SERVICE_NAME;
 
 /**
  *  The processor client for processing Service Bus messages. {@link ServiceBusProcessorClient
@@ -44,6 +62,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     private final AtomicReference<Subscription> receiverSubscription = new AtomicReference<>();
     private final AtomicReference<ServiceBusReceiverAsyncClient> asyncClient = new AtomicReference<>();
     private final AtomicBoolean isRunning = new AtomicBoolean();
+    private final TracerProvider tracerProvider;
     private ScheduledExecutorService scheduledExecutor;
 
     /**
@@ -65,6 +84,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         this.processorOptions = Objects.requireNonNull(processorOptions, "'processorOptions' cannot be null");
         this.asyncClient.set(sessionReceiverBuilder.buildAsyncClientForProcessor());
         this.receiverBuilder = null;
+        this.tracerProvider = processorOptions.getTracerProvider();
     }
 
     /**
@@ -84,6 +104,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         this.processorOptions = Objects.requireNonNull(processorOptions, "'processorOptions' cannot be null");
         this.asyncClient.set(receiverBuilder.buildAsyncClient());
         this.sessionReceiverBuilder = null;
+        this.tracerProvider = processorOptions.getTracerProvider();
     }
 
     /**
@@ -164,12 +185,22 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
                     if (serviceBusMessageContext.hasError()) {
                         handleError(serviceBusMessageContext.getThrowable());
                     } else {
+                        Context processSpanContext = null;
                         try {
                             ServiceBusReceivedMessageContext serviceBusReceivedMessageContext =
                                 new ServiceBusReceivedMessageContext(receiverClient, serviceBusMessageContext);
+
+                            processSpanContext =
+                                startProcessTracingSpan(serviceBusMessageContext.getMessage(),
+                                receiverClient.getEntityPath(), receiverClient.getFullyQualifiedNamespace());
+                            if (processSpanContext.getData(SPAN_CONTEXT_KEY).isPresent()) {
+                                serviceBusMessageContext.getMessage().addContext(SPAN_CONTEXT_KEY, processSpanContext);
+                            }
                             processMessage.accept(serviceBusReceivedMessageContext);
+                            endProcessTracingSpan(processSpanContext, Signal.complete());
                         } catch (Exception ex) {
                             handleError(new ServiceBusException(ex, ServiceBusErrorSource.USER_CALLBACK));
+                            endProcessTracingSpan(processSpanContext, Signal.error(ex));
                             if (!processorOptions.isDisableAutoComplete()) {
                                 logger.warning("Error when processing message. Abandoning message.", ex);
                                 abandonMessage(serviceBusMessageContext, receiverClient);
@@ -199,6 +230,54 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
                     }
                 }
             });
+    }
+
+    private void endProcessTracingSpan(Context processSpanContext, Signal<Void> signal) {
+        if (processSpanContext == null) {
+            return;
+        }
+
+        Optional<Object> spanScope = processSpanContext.getData(SCOPE_KEY);
+        // Disposes of the scope when the trace span closes.
+        if (!spanScope.isPresent() || !tracerProvider.isEnabled()) {
+            return;
+        }
+        if (spanScope.get() instanceof Closeable) {
+            Closeable close = (Closeable) processSpanContext.getData(SCOPE_KEY).get();
+            try {
+                close.close();
+                tracerProvider.endSpan(processSpanContext, signal);
+            } catch (IOException ioException) {
+                logger.error("endTracingSpan().close() failed with an error %s", ioException);
+            }
+
+        } else {
+            logger.warning(String.format(Locale.US,
+                "Process span scope type is not of type Closeable, but type: %s. Not closing the scope and span",
+                spanScope.get() != null ? spanScope.getClass() : "null"));
+        }
+    }
+
+    private Context startProcessTracingSpan(ServiceBusReceivedMessage receivedMessage, String entityPath,
+                                            String fullyQualifiedNamespace) {
+
+        Object diagnosticId = receivedMessage.getApplicationProperties().get(DIAGNOSTIC_ID_KEY);
+        if (diagnosticId == null || !tracerProvider.isEnabled()) {
+            return Context.NONE;
+        }
+
+        Context spanContext = tracerProvider.extractContext(diagnosticId.toString(), Context.NONE);
+
+        spanContext = spanContext
+            .addData(ENTITY_PATH_KEY, entityPath)
+            .addData(HOST_NAME_KEY, fullyQualifiedNamespace)
+            .addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
+        spanContext = receivedMessage.getEnqueuedTime() == null
+            ? spanContext
+            : spanContext.addData(MESSAGE_ENQUEUED_TIME,
+            receivedMessage.getEnqueuedTime().toInstant().getEpochSecond());
+
+        return tracerProvider.startSpan(AZ_TRACING_SERVICE_NAME, spanContext, ProcessKind.PROCESS);
     }
 
     private void abandonMessage(ServiceBusMessageContext serviceBusMessageContext,
