@@ -190,13 +190,13 @@ class VirtualNetworkImpl extends CreatableUpdatableImpl<VirtualNetwork, VirtualN
     }
 
     @Override
-    public VirtualNetworkImpl withAllowedSubnetFragments(List<SubnetFragment> allowedSubnets) {
+    public VirtualNetworkImpl withAllowedSubnets(List<SubnetFragment> allowedSubnets) {
         this.updateParameter.withAllowedSubnets(allowedSubnets);
         return this;
     }
 
     @Override
-    public VirtualNetworkImpl withSubnetOverrideFragments(List<SubnetOverrideFragment> subnetOverrides) {
+    public VirtualNetworkImpl withSubnetOverrides(List<SubnetOverrideFragment> subnetOverrides) {
         this.updateParameter.withSubnetOverrides(subnetOverrides);
         return this;
     }

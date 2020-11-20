@@ -370,13 +370,13 @@ class LabVirtualMachineImpl extends CreatableUpdatableImpl<LabVirtualMachine, La
     }
 
     @Override
-    public LabVirtualMachineImpl withArtifactFragments(List<ArtifactInstallPropertiesFragment> artifacts) {
+    public LabVirtualMachineImpl withArtifacts(List<ArtifactInstallPropertiesFragment> artifacts) {
         this.updateParameter.withArtifacts(artifacts);
         return this;
     }
 
     @Override
-    public LabVirtualMachineImpl withDataDiskParameterFragments(List<DataDiskPropertiesFragment> dataDiskParameters) {
+    public LabVirtualMachineImpl withDataDiskParameters(List<DataDiskPropertiesFragment> dataDiskParameters) {
         this.updateParameter.withDataDiskParameters(dataDiskParameters);
         return this;
     }
@@ -394,7 +394,7 @@ class LabVirtualMachineImpl extends CreatableUpdatableImpl<LabVirtualMachine, La
     }
 
     @Override
-    public LabVirtualMachineImpl withScheduleParameterFragments(List<ScheduleCreationParameterFragment> scheduleParameters) {
+    public LabVirtualMachineImpl withScheduleParameters(List<ScheduleCreationParameterFragment> scheduleParameters) {
         this.updateParameter.withScheduleParameters(scheduleParameters);
         return this;
     }
