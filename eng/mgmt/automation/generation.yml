@@ -11,12 +11,6 @@ variables:
   NodeVersion: '14.x'
 
 steps:
-- task: Cache@2
-  inputs:
-    key: 'maven | "$(Agent.OS)"'
-    path: $(MAVEN_CACHE_FOLDER)
-  displayName: Cache Maven Local Repo
-
 - bash: |
     sudo apt-get install -y --upgrade python3-pip python3-setuptools
     pip3 install --upgrade wheel
@@ -45,3 +39,4 @@ steps:
     CommitMsg: '[Automation] Update other files outside generation folder'
     PRTitle: '[Automation] Generate Fluent Lite from $(README)#$(TAG)'
     PRLabels: 'Mgmt - Track 2'
+    SkipCheckingForChanges: true

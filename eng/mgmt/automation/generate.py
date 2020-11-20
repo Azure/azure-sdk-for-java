@@ -26,6 +26,7 @@ def generate(
     use: str,
     tag: str = None,
     version: str = None,
+    compile: bool = True,
     **kwargs,
 ):
     module = ARTIFACT_FORMAT.format(service)
@@ -61,11 +62,13 @@ def generate(
     update_service_ci_and_pom(sdk_root, service)
     update_root_pom(sdk_root, service)
     update_version(sdk_root, service)
-    if os.system(
-            'mvn clean verify package -f {0}/pom.xml -pl {1}:{2} -am'.format(
-                sdk_root, GROUP_ID, module)) != 0:
-        logging.error('[GENERATE] Maven build fail')
-        return False
+
+    if compile:
+        if os.system(
+                'mvn clean verify package -f {0}/pom.xml -pl {1}:{2} -am'.format(
+                    sdk_root, GROUP_ID, module)) != 0:
+            logging.error('[GENERATE] Maven build fail')
+            return False
 
     return True
 
@@ -318,6 +321,11 @@ def parse_args() -> argparse.Namespace:
         '--autorest',
         default = AUTOREST_CORE_VERSION,
         help = 'Autorest version',
+    )
+    parser.add_argument(
+        '--compile',
+        action = 'store_true',
+        help = 'Do compile after generation or not',
     )
     parser.add_argument(
         '--auto-commit-generated-code',
