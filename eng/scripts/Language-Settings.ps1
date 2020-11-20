@@ -3,6 +3,8 @@ $PackageRepository = "Maven"
 $packagePattern = "*.pom"
 $MetadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/master/_data/releases/latest/java-packages.csv"
 $BlobStorageUrl = "https://azuresdkdocs.blob.core.windows.net/%24web?restype=container&comp=list&prefix=java%2F&delimiter=%2F"
+$IndexHtmlLoc = "index.html"
+$AppTitle = "Azure SDK for Java"
 
 function Get-java-PackageInfoFromRepo ($pkgPath, $serviceDirectory, $pkgName)
 {
@@ -156,6 +158,7 @@ function Publish-java-GithubIODocs ($DocLocation, $PublicArtifactLocation)
 }
 
 function Get-java-GithubIoDocIndex() {
+  Mutate-Files -appTitle $AppTitle -lang $Language -indexhtmlloc $IndexHtmlLoc
   # Fetch out all package metadata from csv file.
   $metadata = Get-CSVMetadata -MetadataUri $MetadataUri
   # Leave the track 2 packages if multiple packages fetched out.
