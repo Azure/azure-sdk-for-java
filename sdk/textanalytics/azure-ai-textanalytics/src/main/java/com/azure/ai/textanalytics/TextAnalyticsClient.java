@@ -878,6 +878,10 @@ public final class TextAnalyticsClient {
      * Analyze healthcare entities, entity linking, and entity relations in a list of
      * {@link TextDocumentInput document} with provided request options.
      *
+     * Note: In order to use this functionality, request to access public preview is required.
+     * Azure Active Directory (AAD) is not currently supported. For more information see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/how-tos/text-analytics-for-health?tabs=ner#request-access-to-the-public-preview">this</a>.
+     *
      * See <a href="https://aka.ms/talangs">this</a> supported languages in Text Analytics API.
      *
      * <p><strong>Code Sample</strong></p>
@@ -908,6 +912,10 @@ public final class TextAnalyticsClient {
 
     /**
      * Cancel a long-running operation healthcare task by given a healthcare task identification number.
+     *
+     * Note: In order to use this functionality, request to access public preview is required.
+     * Azure Active Directory (AAD) is not currently supported. For more information see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/how-tos/text-analytics-for-health?tabs=ner#request-access-to-the-public-preview">this</a>.
      *
      * <p><strong>Code Sample</strong></p>
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.beginCancelHealthcareTask#String-RecognizeHealthcareEntityOptions-Context}

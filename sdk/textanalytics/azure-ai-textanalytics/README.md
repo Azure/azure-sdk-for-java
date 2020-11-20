@@ -313,7 +313,8 @@ Please refer to the service documentation for a conceptual discussion of [entity
 ### Recognize healthcare entities
 Text Analytics for health is a containerized service that extracts and labels relevant medical information from 
 unstructured texts such as doctor's notes, discharge summaries, clinical documents, and electronic health records.
-For more information see [How to: Use Text Analytics for health][healthcare].
+Currently, Azure Active Directory (AAD) is not supported in the Healthcare recognition feature. In order to use this 
+functionality, request to access public preview is required. For more information see [How to: Use Text Analytics for health][healthcare].
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L189-L232 -->
 ```java
 List<TextDocumentInput> documents = Arrays.asList(new TextDocumentInput("0",
