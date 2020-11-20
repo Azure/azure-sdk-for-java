@@ -8,15 +8,15 @@
 
 package com.microsoft.azure.management.synapse.v2019_06_01_preview.implementation;
 
-import com.microsoft.azure.management.synapse.v2019_06_01_preview.SqlPoolColumn;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.TableSchemaSqlPoolWorkspaceSqlPoolColumn;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import rx.Observable;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.ColumnDataType;
 
-class SqlPoolColumnImpl extends WrapperImpl<SqlPoolColumnInner> implements SqlPoolColumn {
+class TableSchemaSqlPoolWorkspaceSqlPoolColumnImpl extends WrapperImpl<SqlPoolColumnInner> implements TableSchemaSqlPoolWorkspaceSqlPoolColumn {
     private final SynapseManager manager;
 
-    SqlPoolColumnImpl(SqlPoolColumnInner inner,  SynapseManager manager) {
+    TableSchemaSqlPoolWorkspaceSqlPoolColumnImpl(SqlPoolColumnInner inner,  SynapseManager manager) {
         super(inner);
         this.manager = manager;
     }
