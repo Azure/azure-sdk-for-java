@@ -3,7 +3,6 @@
 
 package com.azure.spring.autoconfigure.aad;
 
-import com.azure.spring.aad.implementation.AuthorizationProperties;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,9 +15,7 @@ import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -33,12 +30,9 @@ public class AADAuthenticationProperties {
     private static final Logger LOGGER = LoggerFactory.getLogger(AADAuthenticationProperties.class);
     private static final String DEFAULT_SERVICE_ENVIRONMENT = "global";
     private static final long DEFAULT_JWK_SET_CACHE_LIFESPAN = TimeUnit.MINUTES.toMillis(5);
+    private static final long DEFAULT_JWK_SET_CACHE_REFRESH_TIME = DEFAULT_JWK_SET_CACHE_LIFESPAN;
     private static final String GROUP_RELATIONSHIP_DIRECT = "direct";
     private static final String GROUP_RELATIONSHIP_TRANSITIVE = "transitive";
-
-    private String uri;
-
-    private Map<String, AuthorizationProperties> authorization = new HashMap<>();
 
     /**
      * Default UserGroup configuration.
@@ -51,30 +45,26 @@ public class AADAuthenticationProperties {
     private String environment = DEFAULT_SERVICE_ENVIRONMENT;
 
     /**
-     * Registered application ID in Azure AD.
-     * Must be configured when OAuth2 authentication is done in front end
+     * Registered application ID in Azure AD. Must be configured when OAuth2 authentication is done in front end
      */
     private String clientId;
 
     /**
-     * API Access Key of the registered application.
-     * Must be configured when OAuth2 authentication is done in front end
+     * API Access Key of the registered application. Must be configured when OAuth2 authentication is done in front end
      */
     private String clientSecret;
 
     /**
-     * Redirection Endpoint: Used by the authorization server
-     * to return responses containing authorization credentials to the client via the resource owner user-agent.
+     * Redirection Endpoint: Used by the authorization server to return responses containing authorization credentials
+     * to the client via the resource owner user-agent.
      */
     private String redirectUriTemplate;
 
     /**
-     * Optional. scope doc:
-     * https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-permissions-and-consent#scopes-and-permissions
-     * @deprecated Please use "azure.activedirectory.authorization.client-registration-id.scope" instead.
+     * Optional. scope doc: https://docs.microsoft
+     * .com/en-us/azure/active-directory/develop/v2-permissions-and-consent#scopes-and-permissions
      */
-    @Deprecated
-    private List<String> scope = Arrays.asList("openid", "profile", "https://graph.microsoft.com/user.read");
+    private List<String> scope = Arrays.asList("openid", "https://graph.microsoft.com/user.read", "profile");
 
     /**
      * App ID URI which might be used in the <code>"aud"</code> claim of an <code>id_token</code>.
@@ -100,6 +90,11 @@ public class AADAuthenticationProperties {
      * The lifespan of the cached JWK set before it expires, default is 5 minutes.
      */
     private long jwkSetCacheLifespan = DEFAULT_JWK_SET_CACHE_LIFESPAN;
+
+    /**
+     * The refresh time of the cached JWK set before it expires, default is 5 minutes.
+     */
+    private long jwkSetCacheRefreshTime = DEFAULT_JWK_SET_CACHE_REFRESH_TIME;
 
     /**
      * Azure Tenant ID.
@@ -158,10 +153,9 @@ public class AADAuthenticationProperties {
 
 
         /**
-         * The way to obtain group relationship.<br/>
-         * direct: the default value, get groups that the user is a direct member of;<br/>
-         * transitive: Get groups that the user is a member of, and will also return all
-         *  groups the user is a nested member of;
+         * The way to obtain group relationship.<br/> direct: the default value, get groups that the user is a direct
+         * member of;<br/> transitive: Get groups that the user is a member of, and will also return all groups the user
+         * is a nested member of;
          */
         @NotEmpty
         private String groupRelationship = GROUP_RELATIONSHIP_DIRECT;
@@ -209,12 +203,12 @@ public class AADAuthenticationProperties {
         @Override
         public String toString() {
             return "UserGroupProperties{"
-                +  "allowedGroups=" + allowedGroups
-                +  ", key='" + key + '\''
-                +  ", value='" + value + '\''
-                +  ", objectIDKey='" + objectIDKey + '\''
-                +  ", groupRelationship='" + groupRelationship + '\''
-                +  '}';
+                + "allowedGroups=" + allowedGroups
+                + ", key='" + key + '\''
+                + ", value='" + value + '\''
+                + ", objectIDKey='" + objectIDKey + '\''
+                + ", groupRelationship='" + groupRelationship + '\''
+                + '}';
         }
 
         @Override
@@ -269,22 +263,6 @@ public class AADAuthenticationProperties {
         }
     }
 
-    public void setUri(String uri) {
-        this.uri = uri;
-    }
-
-    public String getUri() {
-        return uri;
-    }
-
-    public void setAuthorization(Map<String, AuthorizationProperties> authorization) {
-        this.authorization = authorization;
-    }
-
-    public Map<String, AuthorizationProperties> getAuthorization() {
-        return authorization;
-    }
-
     public UserGroupProperties getUserGroup() {
         return userGroup;
     }
@@ -325,20 +303,10 @@ public class AADAuthenticationProperties {
         this.redirectUriTemplate = redirectUriTemplate;
     }
 
-    /**
-     * @param scope scope
-     * @deprecated Please use "azure.activedirectory.authorization.client-registration-id.scope" instead.
-     */
-    @Deprecated
     public void setScope(List<String> scope) {
         this.scope = scope;
     }
 
-    /**
-     * @return scope
-     * @deprecated Please use "azure.activedirectory.authorization.client-registration-id.scope" instead.
-     */
-    @Deprecated
     public List<String> getScope() {
         return scope;
     }
@@ -386,6 +354,14 @@ public class AADAuthenticationProperties {
 
     public void setJwkSetCacheLifespan(long jwkSetCacheLifespan) {
         this.jwkSetCacheLifespan = jwkSetCacheLifespan;
+    }
+
+    public long getJwkSetCacheRefreshTime() {
+        return jwkSetCacheRefreshTime;
+    }
+
+    public void setJwkSetCacheRefreshTime(long jwkSetCacheRefreshTime) {
+        this.jwkSetCacheRefreshTime = jwkSetCacheRefreshTime;
     }
 
     public String getTenantId() {

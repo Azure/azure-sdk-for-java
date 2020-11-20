@@ -18,6 +18,12 @@ public final class PiiDocumentEntities {
     private String id;
 
     /*
+     * Returns redacted text.
+     */
+    @JsonProperty(value = "redactedText", required = true)
+    private String redactedText;
+
+    /*
      * Recognized entities in the document.
      */
     @JsonProperty(value = "entities", required = true)
@@ -36,12 +42,6 @@ public final class PiiDocumentEntities {
     @JsonProperty(value = "statistics")
     private DocumentStatistics statistics;
 
-    /*
-     * Returns redacted text.
-     */
-    @JsonProperty(value = "redactedText")
-    private String redactedText;
-
     /**
      * Get the id property: Unique, non-empty document identifier.
      *
@@ -59,6 +59,26 @@ public final class PiiDocumentEntities {
      */
     public PiiDocumentEntities setId(String id) {
         this.id = id;
+        return this;
+    }
+
+    /**
+     * Get the redactedText property: Returns redacted text.
+     *
+     * @return the redactedText value.
+     */
+    public String getRedactedText() {
+        return this.redactedText;
+    }
+
+    /**
+     * Set the redactedText property: Returns redacted text.
+     *
+     * @param redactedText the redactedText value to set.
+     * @return the PiiDocumentEntities object itself.
+     */
+    public PiiDocumentEntities setRedactedText(String redactedText) {
+        this.redactedText = redactedText;
         return this;
     }
 
@@ -121,26 +141,6 @@ public final class PiiDocumentEntities {
      */
     public PiiDocumentEntities setStatistics(DocumentStatistics statistics) {
         this.statistics = statistics;
-        return this;
-    }
-
-    /**
-     * Get the redactedText property: Returns redacted text.
-     *
-     * @return the redactedText value.
-     */
-    public String getRedactedText() {
-        return this.redactedText;
-    }
-
-    /**
-     * Set the redactedText property: Returns redacted text.
-     *
-     * @param redactedText the redactedText value to set.
-     * @return the PiiDocumentEntities object itself.
-     */
-    public PiiDocumentEntities setRedactedText(String redactedText) {
-        this.redactedText = redactedText;
         return this;
     }
 }

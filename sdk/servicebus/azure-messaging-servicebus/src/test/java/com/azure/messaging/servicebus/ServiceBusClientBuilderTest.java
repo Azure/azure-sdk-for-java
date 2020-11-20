@@ -9,7 +9,7 @@ import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.util.Configuration;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSenderClientBuilder;
-import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.messaging.servicebus.models.SubQueue;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -27,7 +27,6 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.*;
 
 class ServiceBusClientBuilderTest {
     private static final String NAMESPACE_NAME = "dummyNamespaceName";
@@ -200,10 +199,10 @@ class ServiceBusClientBuilderTest {
             .connectionString(NAMESPACE_CONNECTION_STRING)
             .receiver()
             .topicName("baz").subscriptionName("bar")
-            .receiveMode(ReceiveMode.PEEK_LOCK);
+            .receiveMode(ServiceBusReceiveMode.PEEK_LOCK);
 
         // Act & Assert
-        assertThrows(IllegalArgumentException.class, () -> receiverBuilder.prefetchCount(0));
+        assertThrows(IllegalArgumentException.class, () -> receiverBuilder.prefetchCount(-1));
     }
 
     @MethodSource("getProxyConfigurations")
@@ -218,7 +217,7 @@ class ServiceBusClientBuilderTest {
                 .configuration(configuration)
                 .receiver()
                 .topicName("baz").subscriptionName("bar")
-                .receiveMode(ReceiveMode.PEEK_LOCK)
+                .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
                 .buildClient();
 
             clientCreated = true;

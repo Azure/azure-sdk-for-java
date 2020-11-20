@@ -7,7 +7,7 @@ import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
-import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
      * @param options to set performance test options.
      */
     public ReceiveAndDeleteMessageTest(ServiceBusStressOptions options) {
-        super(options, ReceiveMode.RECEIVE_AND_DELETE);
+        super(options, ServiceBusReceiveMode.RECEIVE_AND_DELETE);
         this.options = options;
     }
 
