@@ -46,6 +46,7 @@ public final class ServiceBusReceivedMessage {
     ServiceBusReceivedMessage(BinaryData body) {
         Objects.requireNonNull(body, "'body' cannot be null.");
         amqpAnnotatedMessage = new AmqpAnnotatedMessage(AmqpMessageBody.fromData(body.toBytes()));
+        context = Context.NONE;
     }
 
     /**
