@@ -12,7 +12,6 @@ import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
-import com.azure.storage.file.datalake.models.ListPathsOptions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathItem;
@@ -464,6 +463,7 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      */
     public PagedIterable<PathItem> listPaths(boolean recursive, boolean userPrincipleNameReturned, Integer maxResults,
         Duration timeout) {
-        return new PagedIterable<>(dataLakeDirectoryAsyncClient.listPathsWithOptionalTimeout(recursive, userPrincipleNameReturned, maxResults, timeout));
+        return new PagedIterable<>(dataLakeDirectoryAsyncClient.listPathsWithOptionalTimeout(recursive,
+            userPrincipleNameReturned, maxResults, timeout));
     }
 }
