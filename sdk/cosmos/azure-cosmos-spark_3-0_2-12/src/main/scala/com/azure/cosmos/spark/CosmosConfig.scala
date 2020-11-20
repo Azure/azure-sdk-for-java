@@ -3,8 +3,9 @@
 
 package com.azure.cosmos.spark
 
-import java.net.URI
+import java.net.URL
 import java.util.Locale
+
 
 // each config category will be a case class:
 // TODO moderakh more configs
@@ -17,7 +18,7 @@ object CosmosAccountConfig {
   val CosmosAccountEndpointUri = CosmosConfigEntry[String](key = "spark.cosmos.accountEndpoint",
     mandatory = true,
     parseFromStringFunction = accountEndpointUri => {
-      new URI(accountEndpointUri)
+      new URL(accountEndpointUri)
       accountEndpointUri
     },
     helpMessage = "Cosmos DB Account Endpoint Uri")
@@ -68,20 +69,29 @@ case class CosmosConfigEntry[T](key: String,
                                 mandatory: Boolean,
                                 defaultValue: Option[String] = Option.empty,
                                 parseFromStringFunction: String => T,
-                                helpMessage: String)
+                                helpMessage: String) {
 
+  def parse(paramAsString: String) : T = {
+    try {
+      parseFromStringFunction(paramAsString)
+    } catch {
+      case e: Exception => throw new RuntimeException(s"invalid configuration for ${key}:${paramAsString}. Config description: ${helpMessage}",  e)
+    }
+  }
+}
 
+// TODO: moderakh how to merge user config with SparkConf application config?
 object CosmosConfigEntry {
   def parse[T](configuration: Map[String, String], configEntry: CosmosConfigEntry[T]): Option[T] = {
     // TODO moderakh: where should we handle case sensitivity?
     // we are doing this here per config parsing for now
     val opt = configuration.map { case (key, value) => (key.toLowerCase(Locale.ROOT), value) }.get(configEntry.key.toLowerCase(Locale.ROOT))
     if (opt.isDefined) {
-      Option.apply(configEntry.parseFromStringFunction(opt.get))
+      Option.apply(configEntry.parse(opt.get))
     }
     else {
       if (configEntry.mandatory) {
-        throw new RuntimeException(s"mandatory option ${configEntry.key} is missing. Details : ${configEntry.helpMessage}")
+        throw new RuntimeException(s"mandatory option ${configEntry.key} is missing. Config description: ${configEntry.helpMessage}")
       } else {
         Option.empty
       }
