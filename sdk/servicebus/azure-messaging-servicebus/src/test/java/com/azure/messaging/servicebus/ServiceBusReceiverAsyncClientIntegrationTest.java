@@ -476,7 +476,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void peekMessages(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
-        setSenderAndReceiver(entityType, TestUtils.USE_CASE_PEEK_BATCH_MESSAGES, isSessionEnabled);
+        setSender(entityType, TestUtils.USE_CASE_PEEK_BATCH_MESSAGES, isSessionEnabled);
 
         final BiConsumer<ServiceBusReceivedMessage, Integer> checkCorrectMessage = (message, index) -> {
             final Map<String, Object> properties = message.getApplicationProperties();
@@ -498,6 +498,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 logger.info("Number of messages sent: {}", number);
             })
             .block(TIMEOUT);
+
+        setReceiver(entityType, TestUtils.USE_CASE_PEEK_BATCH_MESSAGES, isSessionEnabled);
 
         // Assert & Act
         try {
@@ -1016,6 +1018,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     void receiveAndValidateProperties(MessagingEntityType entityType) {
         // Arrange
         final boolean isSessionEnabled = false;
+        final int totalMessages = 1;
         final String subject = "subject";
         final Map<String, Object> footer = new HashMap<>();
         footer.put("footer-key-1", "footer-value-1");
@@ -1086,7 +1089,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         // Send the message
         sendMessage(message).block(TIMEOUT);
 
-        StepVerifier.create(receiver.receiveMessages())
+        StepVerifier.create(receiver.receiveMessages().take(totalMessages))
             .assertNext(received -> {
                 assertNotNull(received.getLockToken());
                 AmqpAnnotatedMessage actual = received.getRawAmqpMessage();
@@ -1119,8 +1122,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                     messagesPending.decrementAndGet();
                 }
             })
-            .thenCancel()
-            .verify(Duration.ofMinutes(2));
+            .expectComplete();
     }
 
     /**
