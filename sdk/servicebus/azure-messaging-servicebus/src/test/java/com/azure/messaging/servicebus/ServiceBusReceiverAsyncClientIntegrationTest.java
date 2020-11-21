@@ -343,13 +343,15 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         setReceiver(entityType, 1, isSessionEnabled);
 
         // Assert & Act
+        boolean finalIsSessionEnabled = isSessionEnabled;
         StepVerifier.create(receiver.peekMessage())
             .assertNext(receivedMessage -> assertMessageEquals(receivedMessage, messageId, isSessionEnabled))
             .verifyComplete();
 
         // cleanup
-        StepVerifier.create(receiver.receiveMessages())
-            .assertNext(receivedMessage -> receiver.complete(receivedMessage).block(OPERATION_TIMEOUT))
+        StepVerifier.create(receiver.receiveMessages().concatMap(receivedMessage -> receiver.complete(receivedMessage).thenReturn(receivedMessage))
+            .next())
+            .expectNextCount(1)
             .thenCancel()
             .verify();
     }
