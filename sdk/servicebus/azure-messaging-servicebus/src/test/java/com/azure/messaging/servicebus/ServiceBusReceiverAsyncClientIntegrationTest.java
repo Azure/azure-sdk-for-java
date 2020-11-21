@@ -330,12 +330,13 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void peekMessage(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
-        setSenderAndReceiver(entityType, 1, isSessionEnabled);
+        setSender(entityType, 1, isSessionEnabled);
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
 
         sendMessage(message).block(TIMEOUT);
+        setReceiver(entityType, 1, isSessionEnabled);
 
         // Assert & Act
         StepVerifier.create(receiver.peekMessage())
@@ -372,24 +373,19 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void sendScheduledMessageAndReceive(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
-        setSender(entityType, 0, isSessionEnabled);
-
+        setSenderAndReceiver(entityType, 0, isSessionEnabled);
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
         final OffsetDateTime scheduledEnqueueTime = OffsetDateTime.now().plusSeconds(2);
-
         sender.scheduleMessage(message, scheduledEnqueueTime).block(TIMEOUT);
-
-        setReceiver(entityType, 0, isSessionEnabled);
         // Assert & Act
-        StepVerifier.create(Mono.delay(Duration.ofSeconds(4)).then(receiver.receiveMessages().next()))
+        StepVerifier.create(Mono.delay(Duration.ofSeconds(4)).then(receiver.receiveMessages()
+            .concatMap(receivedMessage -> receiver.complete(receivedMessage).thenReturn(receivedMessage))
+            .next()))
             .assertNext(receivedMessage -> {
                 assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
-                receiver.complete(receivedMessage).block(OPERATION_TIMEOUT);
                 messagesPending.decrementAndGet();
-            })
-            .thenAwait(Duration.ofSeconds(2))
-            .verifyComplete();
+            }).verifyComplete();
     }
 
     /**
