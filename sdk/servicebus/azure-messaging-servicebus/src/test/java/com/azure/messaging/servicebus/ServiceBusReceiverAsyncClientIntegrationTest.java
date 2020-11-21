@@ -876,7 +876,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void setAndGetSessionState(MessagingEntityType entityType) {
         // Arrange
-        setSenderAndReceiver(entityType, 0, true);
+        final int index = 0;
+        setSender(entityType, index, true);
 
         final byte[] sessionState = "Finished".getBytes(UTF_8);
         final String messageId = UUID.randomUUID().toString();
@@ -886,13 +887,15 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // Act
         AtomicReference<ServiceBusReceivedMessage> receivedMessage = new AtomicReference<>();
-        //AtomicReference<String> session = new AtomicReference<>();
+        setReceiver(entityType, index, true);
+
         StepVerifier.create(receiver.receiveMessages()
             .take(1)
             .flatMap(message -> {
                 logger.info("SessionId: {}. LockToken: {}. LockedUntil: {}. Message received.",
                     message.getSessionId(), message.getLockToken(), message.getLockedUntil());
-                receivedMessage.set(message);
+                receiver.complete(message).block(Duration.ofSeconds(15));
+                messagesPending.decrementAndGet();
                 return receiver.setSessionState(sessionState);
             }))
             .expectComplete()
@@ -904,9 +907,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 assertArrayEquals(sessionState, state);
             })
             .verifyComplete();
-
-        receiver.complete(receivedMessage.get()).block(Duration.ofSeconds(15));
-        messagesPending.decrementAndGet();
     }
 
     /**
