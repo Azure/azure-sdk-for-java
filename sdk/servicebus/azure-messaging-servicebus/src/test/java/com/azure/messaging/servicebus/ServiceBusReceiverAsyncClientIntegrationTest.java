@@ -293,6 +293,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final int entityIndex = 0;
         final boolean shareConnection = false;
         final boolean useCredentials = false;
+        final Duration shortWait = Duration.ofSeconds(5);
 
         this.sender = getSenderBuilder(useCredentials, entityType, entityIndex, isSessionEnabled, shareConnection)
             .buildAsyncClient();
@@ -313,12 +314,15 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // Assert
         StepVerifier.create(receiver.receiveMessages())
-            .assertNext(receivedMessage -> assertMessageEquals(receivedMessage, messageId, isSessionEnabled))
+            .assertNext(receivedMessage -> {
+                assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+            })
+            .thenAwait(shortWait) // Give time for autoComplete to finish
             .thenCancel()
             .verify();
 
         StepVerifier.create(receiver.receiveMessages())
-            .thenAwait(Duration.ofSeconds(35))
+            .thenAwait(shortWait)
             .thenCancel()
             .verify();
     }
