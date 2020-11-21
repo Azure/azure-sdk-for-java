@@ -10,6 +10,7 @@ import com.azure.core.amqp.models.AmqpMessageBody;
 import com.azure.core.amqp.models.AmqpMessageBodyType;
 import com.azure.core.amqp.models.AmqpMessageId;
 import com.azure.core.experimental.util.BinaryData;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 
@@ -40,10 +41,12 @@ public final class ServiceBusReceivedMessage {
     private final AmqpAnnotatedMessage amqpAnnotatedMessage;
     private UUID lockToken;
     private boolean isSettled = false;
+    private Context context;
 
     ServiceBusReceivedMessage(BinaryData body) {
         Objects.requireNonNull(body, "'body' cannot be null.");
         amqpAnnotatedMessage = new AmqpAnnotatedMessage(AmqpMessageBody.fromData(body.toBytes()));
+        context = Context.NONE;
     }
 
     /**
@@ -54,7 +57,7 @@ public final class ServiceBusReceivedMessage {
      *
      * @return the {@link AmqpAnnotatedMessage} representing amqp message.
      */
-    public AmqpAnnotatedMessage getAmqpAnnotatedMessage() {
+    public AmqpAnnotatedMessage getRawAmqpMessage() {
         return amqpAnnotatedMessage;
     }
 
@@ -404,7 +407,7 @@ public final class ServiceBusReceivedMessage {
      * @return Session Id of the {@link ServiceBusReceivedMessage}.
      */
     public String getSessionId() {
-        return getAmqpAnnotatedMessage().getProperties().getGroupId();
+        return getRawAmqpMessage().getProperties().getGroupId();
     }
 
     /**
@@ -436,6 +439,22 @@ public final class ServiceBusReceivedMessage {
             to = amqpAddress.toString();
         }
         return to;
+    }
+
+    /**
+     * Adds a new key value pair to the existing context on Message.
+     *
+     * @param key The key for this context object
+     * @param value The value for this context object.
+     *
+     * @return The updated {@link ServiceBusMessage}.
+     * @throws NullPointerException if {@code key} or {@code value} is null.
+     */
+    ServiceBusReceivedMessage addContext(String key, Object value) {
+        Objects.requireNonNull(key, "The 'key' parameter cannot be null.");
+        Objects.requireNonNull(value, "The 'value' parameter cannot be null.");
+        this.context = context.addData(key, value);
+        return this;
     }
 
     /**

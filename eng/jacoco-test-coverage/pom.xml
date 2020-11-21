@@ -54,7 +54,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-ai-textanalytics</artifactId>
-      <version>5.1.0-beta.3</version> <!-- {x-version-update;com.azure:azure-ai-textanalytics;current} -->
+      <version>5.1.0-beta.4</version> <!-- {x-version-update;com.azure:azure-ai-textanalytics;current} -->
     </dependency>
     <dependency>
     <groupId>com.azure</groupId>
@@ -209,7 +209,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-keys</artifactId>
-      <version>4.3.0-beta.3</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;current} -->
+      <version>4.3.0-beta.4</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -531,6 +531,22 @@
   </dependencies>
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <configuration>
+          <rules>
+            <bannedDependencies>
+              <includes>
+                <!-- Track 2 library with a non-standard groupId -->
+                <include>com.microsoft:microsoft-opentelemetry-exporter-azuremonitor:[1.0.0-beta.2]</include> <!-- {x-include-update;com.microsoft:microsoft-opentelemetry-exporter-azuremonitor;current} -->
+              </includes>
+            </bannedDependencies>
+          </rules>
+        </configuration>
+      </plugin>
+
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
