@@ -337,13 +337,14 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void peekMessage(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
-        setSender(entityType, 1, isSessionEnabled);
+        setSender(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
 
         sendMessage(message).block(TIMEOUT);
-        setReceiver(entityType, 1, isSessionEnabled);
+
+        setReceiver(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
 
         // Assert & Act
         StepVerifier.create(receiver.peekMessage())
@@ -363,7 +364,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void peekMessageEmptyEntity(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
-        setSenderAndReceiver(entityType, TestUtils.USE_CASE_EMPTY_ENTITY, isSessionEnabled);
+        setReceiver(entityType, TestUtils.USE_CASE_EMPTY_ENTITY, isSessionEnabled);
 
         final int fromSequenceNumber = 1;
 
@@ -592,7 +593,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void peekMessagesFromSequenceEmptyEntity(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
-        setSenderAndReceiver(entityType, TestUtils.USE_CASE_EMPTY_ENTITY, isSessionEnabled);
+        setReceiver(entityType, TestUtils.USE_CASE_EMPTY_ENTITY, isSessionEnabled);
 
         final int maxMessages = 10;
         final int fromSequenceNumber = 1;
@@ -1173,26 +1174,31 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void autoComplete(MessagingEntityType entityType) {
         // Arrange
-        final int index = TestUtils.USE_CASE_VALIDATE_AMQP_PROPERTIES;
-        setSenderAndReceiver(entityType, index, false);
-        final ServiceBusReceiverAsyncClient autoCompleteReceiver =
-            getReceiverBuilder(false, entityType, index, false)
-                .buildAsyncClient();
+        final Duration shortWait = Duration.ofSeconds(2);
+        final int index = TestUtils.USE_CASE_AUTO_COMPLETE;
+        setSender(entityType, index, false);
 
         final int numberOfEvents = 3;
         final String messageId = UUID.randomUUID().toString();
         final List<ServiceBusMessage> messages = getServiceBusMessages(numberOfEvents, messageId);
+
+        // lastMessage: This is to make sure, if there is left over from previous run.
+        setReceiver(entityType, index, false);
         final ServiceBusReceivedMessage lastMessage = receiver.peekMessage().block(TIMEOUT);
 
-        // Send the three messages.
+        // Send messages.
         Mono.when(messages.stream().map(this::sendMessage)
             .collect(Collectors.toList()))
             .block(TIMEOUT);
 
+        final ServiceBusReceiverAsyncClient autoCompleteReceiver =
+            getReceiverBuilder(false, entityType, index, false)
+                .buildAsyncClient();
+
         // Act
         // Expecting that as we receive these messages, they'll be completed.
         try {
-            StepVerifier.create(autoCompleteReceiver.receiveMessages())
+            StepVerifier.create(autoCompleteReceiver.receiveMessages().take(numberOfEvents))
                 .assertNext(receivedMessage -> {
                     if (lastMessage != null) {
                         assertEquals(lastMessage.getMessageId(), receivedMessage.getMessageId());
@@ -1210,8 +1216,10 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                         assertEquals(messageId, context.getMessageId());
                     }
                 })
+                .thenAwait(shortWait) // Give time for autoComplete to finish
                 .thenCancel()
-                .verify(TIMEOUT);
+                .verify();
+
         } finally {
             autoCompleteReceiver.close();
         }
