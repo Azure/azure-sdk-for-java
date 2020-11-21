@@ -124,12 +124,13 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             })
             .verifyComplete();
 
-        final ServiceBusReceivedMessage receivedMessage = receiver.receiveMessages().next().block(OPERATION_TIMEOUT);
-        assertNotNull(receivedMessage);
+        StepVerifier.create(receiver.receiveMessages()
+            .concatMap(receivedMessage -> receiver.complete(receivedMessage).thenReturn(receivedMessage)).next())
+            .assertNext(receivedMessage -> {
+                assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+                messagesPending.decrementAndGet();
+            }).verifyComplete();
 
-        // Assert & Act
-        StepVerifier.create(receiver.complete(receivedMessage, new CompleteOptions().setTransactionContext(transaction.get())))
-            .verifyComplete();
 
         StepVerifier.create(receiver.rollbackTransaction(transaction.get()))
             .verifyComplete();
@@ -377,11 +378,16 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void sendScheduledMessageAndReceive(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
-        setSenderAndReceiver(entityType, 0, isSessionEnabled);
+        final int entityIndex = 0;
+        setSender(entityType, entityIndex, isSessionEnabled);
+
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
         final OffsetDateTime scheduledEnqueueTime = OffsetDateTime.now().plusSeconds(2);
         sender.scheduleMessage(message, scheduledEnqueueTime).block(TIMEOUT);
+
+        setReceiver(entityType, entityIndex, isSessionEnabled);
+
         // Assert & Act
         StepVerifier.create(Mono.delay(Duration.ofSeconds(4)).then(receiver.receiveMessages()
             .concatMap(receivedMessage -> receiver.complete(receivedMessage).thenReturn(receivedMessage))
@@ -953,7 +959,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final boolean isSessionEnabled = false;
         final int entityIndex = 0;
 
-        setSenderAndReceiver(entityType, entityIndex, isSessionEnabled);
+        setSender(entityType, entityIndex, isSessionEnabled);
 
         final ServiceBusReceiverAsyncClient deadLetterReceiver;
         switch (entityType) {
@@ -987,6 +993,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final List<ServiceBusReceivedMessage> receivedMessages = new ArrayList<>();
 
         sendMessage(message).block(TIMEOUT);
+
+        setReceiver(entityType, entityIndex, isSessionEnabled);
 
         final ServiceBusReceivedMessage receivedMessage = receiver.receiveMessages().next()
             .block(OPERATION_TIMEOUT);
