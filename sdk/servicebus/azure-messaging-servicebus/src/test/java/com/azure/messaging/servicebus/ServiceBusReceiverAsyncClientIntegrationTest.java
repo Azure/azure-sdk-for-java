@@ -249,11 +249,11 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     void receiveTwoMessagesAutoComplete(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         final int entityIndex = 0;
+        final Duration shortWait = Duration.ofSeconds(2);
         final boolean shareConnection = false;
         final boolean useCredentials = false;
-
-        this.sender = getSenderBuilder(useCredentials, entityType, entityIndex, isSessionEnabled, shareConnection)
-            .buildAsyncClient();
+        this.sender = getSenderBuilder(useCredentials, entityType, entityIndex, isSessionEnabled,
+            shareConnection).buildAsyncClient();
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
@@ -277,6 +277,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .assertNext(receivedMessage -> {
                 assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
             })
+            .thenAwait(shortWait) // Give time for autoComplete to finish
             .thenCancel()
             .verify();
     }
