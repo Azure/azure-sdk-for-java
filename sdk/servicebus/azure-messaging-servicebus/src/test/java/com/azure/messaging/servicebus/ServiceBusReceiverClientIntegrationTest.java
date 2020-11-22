@@ -51,6 +51,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
 
     private ServiceBusReceiverClient receiver;
     private ServiceBusSenderClient sender;
+    private ServiceBusSessionReceiverClient sessionReceiverClient;
 
     protected ServiceBusReceiverClientIntegrationTest() {
         super(new ClientLogger(ServiceBusReceiverClientIntegrationTest.class));
@@ -63,47 +64,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void afterTest() {
-        dispose(receiver, sender);
-        /*final int pending = messagesPending.get();
-        if (pending < 1 && messagesDeferred.get().size() < 1) {
-            dispose(receiver, sender, receiveAndDeleteReceiver);
-            if (receiveAndDeleteReceiverMono != null) {
-                dispose(receiveAndDeleteReceiverMono.block());
-            }
-            return;
-        }
-
-        // In the case that this test failed... we're going to drain the queue or subscription.
-        if (pending > 0) {
-            dispose(receiver, sender);
-            if (receiveAndDeleteReceiverMono != null) {
-                receiveAndDeleteReceiver = receiveAndDeleteReceiverMono.block();
-            }
-            try {
-                IterableStream<ServiceBusReceivedMessage> removedMessage = receiveAndDeleteReceiver.receiveMessages(
-                    pending, Duration.ofSeconds(15));
-
-                removedMessage.stream().forEach(message -> {
-                    logger.info("Removed Message Seq: {} ", message.getSequenceNumber());
-                });
-            } catch (Exception e) {
-                logger.warning("Error occurred when draining queue.", e);
-            }
-        }
-
-        if (messagesDeferred.get().size() > 0) {
-            try {
-                List<Long> listOfDeferredMessages = messagesDeferred.get();
-                for (Long seqNumber : listOfDeferredMessages) {
-                    ServiceBusReceivedMessage deferredMessages = receiver.receiveDeferredMessage(seqNumber);
-                    receiver.complete(deferredMessages);
-                }
-            } catch (Exception e) {
-                logger.warning("Error occurred when draining deferred messages Entity: {} ", receiver.getEntityPath(), e);
-            }
-        }
-
-        dispose(receiveAndDeleteReceiver);*/
+        dispose(receiver, sender, sessionReceiverClient);
     }
 
     /**
@@ -852,8 +813,9 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
 
         if (isSessionEnabled) {
             assertNotNull(sessionId, "'sessionId' should have been set.");
-            this.receiver = getSessionReceiverBuilder(false, entityType, entityIndex, sharedConnection)
-                .buildClient().acceptSession(sessionId);
+            this.sessionReceiverClient = getSessionReceiverBuilder(false, entityType, entityIndex, sharedConnection)
+                .buildClient();
+            this.receiver = this.sessionReceiverClient.acceptSession(sessionId);
         } else {
             this.receiver = getReceiverBuilder(false, entityType, entityIndex, sharedConnection)
                 .buildClient();
@@ -869,8 +831,9 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
 
         if (isSessionEnabled) {
             assertNotNull(sessionId, "'sessionId' should have been set.");
-            this.receiver = getSessionReceiverBuilder(false, entityType, entityIndex, sharedConnection)
-                .buildClient().acceptSession(sessionId);
+            this.sessionReceiverClient = getSessionReceiverBuilder(false, entityType, entityIndex, sharedConnection)
+                .buildClient();
+            this.receiver =  this.sessionReceiverClient.acceptSession(sessionId);
         } else {
             this.receiver = getReceiverBuilder(false, entityType, entityIndex, sharedConnection)
                 .buildClient();

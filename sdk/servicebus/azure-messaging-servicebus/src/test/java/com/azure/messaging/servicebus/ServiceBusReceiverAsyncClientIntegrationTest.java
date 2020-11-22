@@ -718,6 +718,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void autoRenewLockOnReceiveMessage(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
+        final AtomicInteger lockRenewCount = new AtomicInteger();
         setSender(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
 
         final String messageId = UUID.randomUUID().toString();
@@ -729,34 +730,32 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         setReceiver(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
 
         // Act & Assert
-        StepVerifier.create(receiver.receiveMessages().next())
-            .assertNext(received -> {
-                assertNotNull(received.getLockedUntil());
-                assertNotNull(received.getLockToken());
+        StepVerifier.create(receiver.receiveMessages().concatMap(received -> {
+            logger.info("{}: lockToken[{}]. lockedUntil[{}]. now[{}]", received.getSequenceNumber(),
+                received.getLockToken(), received.getLockedUntil(), OffsetDateTime.now());
 
-                logger.info("{}: lockToken[{}]. lockedUntil[{}]. now[{}]", received.getSequenceNumber(),
-                    received.getLockToken(), received.getLockedUntil(), OffsetDateTime.now());
+            final OffsetDateTime initial = received.getLockedUntil();
+            final OffsetDateTime timeToStop = initial.plusSeconds(20);
 
-                final OffsetDateTime initial = received.getLockedUntil();
-                final OffsetDateTime timeToStop = initial.plusSeconds(20);
-
-                // Simulate some sort of long processing.
-                final AtomicInteger iteration = new AtomicInteger();
-                while (iteration.get() < 4) {
-                    logger.info("Iteration {}: {}. Time to stop: {}", iteration.incrementAndGet(), OffsetDateTime.now(), timeToStop);
-                    try {
-                        TimeUnit.SECONDS.sleep(5);
-                    } catch (InterruptedException error) {
-                        logger.error("Error occurred while sleeping: " + error);
-                    }
+            // Simulate some sort of long processing.
+            while (lockRenewCount.get() < 4) {
+                lockRenewCount.incrementAndGet();
+                logger.info("Iteration {}: {}. Time to stop: {}", lockRenewCount.get(), OffsetDateTime.now(), timeToStop);
+                try {
+                    TimeUnit.SECONDS.sleep(5);
+                } catch (InterruptedException error) {
+                    logger.error("Error occurred while sleeping: " + error);
                 }
-
-                logger.info(new Date() + " . Completing message after delay .....");
-                receiver.complete(received).block(Duration.ofSeconds(15));
+            }
+            return receiver.complete(received).thenReturn(received);
+        }))
+            .assertNext(received -> {
+                assertTrue(lockRenewCount.get() > 0);
                 messagesPending.decrementAndGet();
-
             })
-            .verifyComplete();
+            .thenCancel()
+            .verify();
+
     }
 
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
@@ -864,15 +863,12 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityProvider")
     @ParameterizedTest
-    @Disabled
     void sendReceiveMessageWithVariousPropertyTypes(MessagingEntityType entityType) {
         // Arrange
         final boolean isSessionEnabled = true;
         setSender(entityType, TestUtils.USE_CASE_SEND_RECEIVE_WITH_PROPERTIES, isSessionEnabled);
-
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage messageToSend = getMessage(messageId, isSessionEnabled);
-
         Map<String, Object> sentProperties = messageToSend.getApplicationProperties();
         sentProperties.put("NullProperty", null);
         sentProperties.put("BooleanProperty", true);
@@ -885,34 +881,28 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         sentProperties.put("CharProperty", 'z');
         sentProperties.put("UUIDProperty", UUID.randomUUID());
         sentProperties.put("StringProperty", "string");
-
         sendMessage(messageToSend).block(TIMEOUT);
-
         setReceiver(entityType, TestUtils.USE_CASE_SEND_RECEIVE_WITH_PROPERTIES, isSessionEnabled);
-
         // Assert & Act
-        StepVerifier.create(receiver.receiveMessages())
+        StepVerifier.create(receiver.receiveMessages().concatMap(receivedMessage -> {
+            return receiver.complete(receivedMessage).thenReturn(receivedMessage);
+        }))
             .assertNext(receivedMessage -> {
                 messagesPending.decrementAndGet();
                 assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
-
                 final Map<String, Object> received = receivedMessage.getApplicationProperties();
-
                 assertEquals(sentProperties.size(), received.size());
-
                 for (Map.Entry<String, Object> sentEntry : sentProperties.entrySet()) {
                     if (sentEntry.getValue() != null && sentEntry.getValue().getClass().isArray()) {
                         assertArrayEquals((Object[]) sentEntry.getValue(), (Object[]) received.get(sentEntry.getKey()));
                     } else {
                         final Object expected = sentEntry.getValue();
                         final Object actual = received.get(sentEntry.getKey());
-
                         assertEquals(expected, actual, String.format(
                             "Key '%s' does not match. Expected: '%s'. Actual: '%s'", sentEntry.getKey(), expected,
                             actual));
                     }
                 }
-                receiver.complete(receivedMessage).block(OPERATION_TIMEOUT);
             })
             .thenCancel()
             .verify();
