@@ -18,7 +18,6 @@ import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.DeferOptions;
 import com.azure.messaging.servicebus.models.SubQueue;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -31,7 +30,6 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -719,6 +717,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     void autoRenewLockOnReceiveMessage(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         final AtomicInteger lockRenewCount = new AtomicInteger();
+
         setSender(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
 
         final String messageId = UUID.randomUUID().toString();
@@ -734,13 +733,10 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             logger.info("{}: lockToken[{}]. lockedUntil[{}]. now[{}]", received.getSequenceNumber(),
                 received.getLockToken(), received.getLockedUntil(), OffsetDateTime.now());
 
-            final OffsetDateTime initial = received.getLockedUntil();
-            final OffsetDateTime timeToStop = initial.plusSeconds(20);
-
             // Simulate some sort of long processing.
             while (lockRenewCount.get() < 4) {
                 lockRenewCount.incrementAndGet();
-                logger.info("Iteration {}: {}. Time to stop: {}", lockRenewCount.get(), OffsetDateTime.now(), timeToStop);
+                logger.info("Iteration {}: Curren time {}.", lockRenewCount.get(), OffsetDateTime.now());
                 try {
                     TimeUnit.SECONDS.sleep(5);
                 } catch (InterruptedException error) {
@@ -755,7 +751,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             })
             .thenCancel()
             .verify();
-
     }
 
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
@@ -867,6 +862,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         // Arrange
         final boolean isSessionEnabled = true;
         setSender(entityType, TestUtils.USE_CASE_SEND_RECEIVE_WITH_PROPERTIES, isSessionEnabled);
+
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage messageToSend = getMessage(messageId, isSessionEnabled);
         Map<String, Object> sentProperties = messageToSend.getApplicationProperties();
@@ -879,14 +875,15 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         sentProperties.put("FloatProperty", 5.5f);
         sentProperties.put("DoubleProperty", 6.6f);
         sentProperties.put("CharProperty", 'z');
-        sentProperties.put("UUIDProperty", UUID.randomUUID());
+        sentProperties.put("UUIDProperty", UUID.fromString("38400000-8cf0-11bd-b23e-10b96e4ef00d"));
         sentProperties.put("StringProperty", "string");
+
         sendMessage(messageToSend).block(TIMEOUT);
+
         setReceiver(entityType, TestUtils.USE_CASE_SEND_RECEIVE_WITH_PROPERTIES, isSessionEnabled);
+
         // Assert & Act
-        StepVerifier.create(receiver.receiveMessages().concatMap(receivedMessage -> {
-            return receiver.complete(receivedMessage).thenReturn(receivedMessage);
-        }))
+        StepVerifier.create(receiver.receiveMessages().concatMap(receivedMessage -> receiver.complete(receivedMessage).thenReturn(receivedMessage)).next())
             .assertNext(receivedMessage -> {
                 messagesPending.decrementAndGet();
                 assertMessageEquals(receivedMessage, messageId, isSessionEnabled);

@@ -696,37 +696,29 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     void receiveAndDefer(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
-        System.out.println("!!!! receiveAndDefer start ");
         setSender(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
         final int maxMessages = 1;
-        System.out.println("!!!! receiveAndDefer sendMessage ");
         sendMessage(message);
-        System.out.println("!!!! receiveAndDefer setReceiver ");
+
         setReceiver(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
-        System.out.println("!!!! receiveAndDefer got setReceiver ");
         final IterableStream<ServiceBusReceivedMessage> context = receiver.receiveMessages(maxMessages, TIMEOUT);
         assertNotNull(context);
 
         final List<ServiceBusReceivedMessage> asList = context.stream().collect(Collectors.toList());
         assertEquals(maxMessages, asList.size());
-        System.out.println("!!!! receiveAndDefer getting first message ");
         final ServiceBusReceivedMessage receivedMessage = asList.get(0);
         assertNotNull(receivedMessage);
 
         // Act & Assert
-        System.out.println("!!!! receiveAndDefer calling .defer ");
         receiver.defer(receivedMessage);
-        System.out.println("!!!! receiveAndDefer calling .receiveDeferredMessage ");
         // cleanup
         final ServiceBusReceivedMessage deferred;
         deferred = receiver.receiveDeferredMessage(receivedMessage.getSequenceNumber());
-        System.out.println("!!!! receiveAndDefer calling receiver.complete ");
         receiver.complete(deferred);
         messagesPending.addAndGet(-maxMessages);
-        System.out.println("!!!! receiveAndDefer DONE !!!! ");
     }
 
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
@@ -749,7 +741,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         sentProperties.put("FloatProperty", 5.5f);
         sentProperties.put("DoubleProperty", 6.6f);
         sentProperties.put("CharProperty", 'z');
-        sentProperties.put("UUIDProperty", UUID.randomUUID());
+        sentProperties.put("UUIDProperty", UUID.fromString("38400000-8cf0-11bd-b23e-10b96e4ef00d"));
         sentProperties.put("StringProperty", "string");
 
         sendMessage(messageToSend);
