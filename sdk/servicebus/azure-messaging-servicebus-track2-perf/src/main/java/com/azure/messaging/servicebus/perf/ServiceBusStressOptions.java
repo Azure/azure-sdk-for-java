@@ -3,7 +3,7 @@
 
 package com.azure.messaging.servicebus.perf;
 
-import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.beust.jcommander.Parameter;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder(alphabetic = true)
 public class ServiceBusStressOptions extends PerfStressOptions {
     @Parameter(names = { "--mode" }, description = "The receive mode.")
-    private ReceiveMode receiveMode = ReceiveMode.PEEK_LOCK;
+    private ServiceBusReceiveMode receiveMode = ServiceBusReceiveMode.PEEK_LOCK;
 
     @Parameter(names = { "--autocomplete" }, description = "Enables autocomplete when receiving messages.")
     private boolean autoComplete = false;
@@ -27,7 +27,7 @@ public class ServiceBusStressOptions extends PerfStressOptions {
      *
      * @return The receive mode for a test.
      */
-    public ReceiveMode getReceiveMode() {
+    public ServiceBusReceiveMode getReceiveMode() {
         return receiveMode;
     }
 
