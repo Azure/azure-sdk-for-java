@@ -55,7 +55,7 @@ abstract class LinkHandler extends Handler {
         final Link link = event.getLink();
         final ErrorCondition condition = link.getCondition();
 
-        logger.info("onLinkRemoteDetach connectionId[{}], linkName[{}], errorCondition[{}], errorDescription[{}]",
+        logger.info("onLinkRemoteClose connectionId[{}], linkName[{}], errorCondition[{}], errorDescription[{}]",
             getConnectionId(), link.getName(),
             condition != null ? condition.getCondition() : NOT_APPLICABLE,
             condition != null ? condition.getDescription() : NOT_APPLICABLE);
