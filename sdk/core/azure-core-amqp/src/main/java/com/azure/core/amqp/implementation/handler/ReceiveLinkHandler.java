@@ -26,6 +26,7 @@ public class ReceiveLinkHandler extends LinkHandler {
     private final FluxSink<Delivery> deliverySink;
     private final Set<Delivery> queuedDeliveries = Collections.newSetFromMap(new ConcurrentHashMap<>());
     private final String entityPath;
+    private final ClientLogger logger = new ClientLogger(ReceiveLinkHandler.class);
 
     public ReceiveLinkHandler(String connectionId, String hostname, String linkName, String entityPath) {
         super(connectionId, hostname, entityPath, new ClientLogger(ReceiveLinkHandler.class));
@@ -45,8 +46,8 @@ public class ReceiveLinkHandler extends LinkHandler {
 
     @Override
     public void close() {
-        deliverySink.complete();
-        super.close();
+        logger.verbose("Closing and cleaning.");
+
 
         queuedDeliveries.forEach(delivery -> {
             // abandon the queued deliveries as the receive link handler is closed
@@ -54,6 +55,9 @@ public class ReceiveLinkHandler extends LinkHandler {
             delivery.settle();
         });
         queuedDeliveries.clear();
+
+        //deliverySink.complete();
+        super.close();
     }
 
     @Override
@@ -137,6 +141,7 @@ public class ReceiveLinkHandler extends LinkHandler {
 
     @Override
     public void onLinkRemoteClose(Event event) {
+        logger.verbose("onLinkRemoteClose called ");
         deliverySink.complete();
         super.onLinkRemoteClose(event);
     }

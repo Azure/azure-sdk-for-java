@@ -3,6 +3,7 @@
 
 package com.azure.core.amqp.implementation.handler;
 
+import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.EndpointState;
 import reactor.core.publisher.Flux;
@@ -13,6 +14,7 @@ import java.io.Closeable;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public abstract class Handler extends BaseHandler implements Closeable {
+    private final ClientLogger logger = new ClientLogger(Handler.class);
     private final AtomicBoolean isTerminal = new AtomicBoolean();
     private final ReplayProcessor<EndpointState> endpointStateProcessor =
         ReplayProcessor.cacheLastOrDefault(EndpointState.UNINITIALIZED);
@@ -52,6 +54,7 @@ public abstract class Handler extends BaseHandler implements Closeable {
 
     @Override
     public void close() {
+        logger.verbose("Closing and cleaning.");
         if (isTerminal.getAndSet(true)) {
             return;
         }
