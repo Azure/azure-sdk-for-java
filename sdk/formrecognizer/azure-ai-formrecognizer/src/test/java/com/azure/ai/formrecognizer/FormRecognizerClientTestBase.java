@@ -38,6 +38,7 @@ import com.azure.core.test.TestMode;
 import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
@@ -61,7 +62,6 @@ import java.util.regex.Pattern;
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.BUSINESS_CARD;
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.INVOICE;
 import static com.azure.ai.formrecognizer.FormRecognizerClientTestBase.PrebuiltType.RECEIPT;
-import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_API_KEY;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_ENDPOINT;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_SELECTION_MARK_BLOB_CONTAINER_SAS_URL;
@@ -162,9 +162,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new AzureKeyCredential(INVALID_KEY));
         } else {
-            // TODO: (savaity) switch back to AAD once fixed on service - side.
-            // builder.credential(new DefaultAzureCredentialBuilder().build());
-            builder.credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get(AZURE_FORM_RECOGNIZER_API_KEY)));
+            builder.credential(new DefaultAzureCredentialBuilder().build());
         }
         return builder;
     }
@@ -180,8 +178,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new AzureKeyCredential(INVALID_KEY));
         } else {
-            // builder.credential(new DefaultAzureCredentialBuilder().build());
-            builder.credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get(AZURE_FORM_RECOGNIZER_API_KEY)));
+            builder.credential(new DefaultAzureCredentialBuilder().build());
         }
         return builder;
     }
@@ -246,13 +243,11 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             if (expectedTableCell.getColumnSpan() != null) {
                 assertEquals(expectedTableCell.getColumnSpan(), actualTableCell.getColumnSpan());
             }
-            assertNotNull(actualTableCell.getColumnSpan());
 
             assertEquals(expectedTableCell.getRowIndex(), actualTableCell.getRowIndex());
             if (expectedTableCell.getRowSpan() != null) {
                 assertEquals(expectedTableCell.getRowSpan(), actualTableCell.getRowSpan());
             }
-            assertNotNull(actualTableCell.getRowSpan());
             validateBoundingBoxData(expectedTableCell.getBoundingBox(), actualTableCell.getBoundingBox());
             if (includeFieldElements) {
                 validateReferenceElementsData(expectedTableCell.getElements(), actualTableCell.getFieldElements(),
@@ -303,6 +298,9 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     }
 
     private static void validateBoundingBoxData(List<Float> expectedBoundingBox, FieldBoundingBox actualFieldBoundingBox) {
+        // TODO (Service Bug) To be fixed in preview 3
+        // assertNotNull(actualFieldBoundingBox);
+        // assertNotNull(actualFieldBoundingBox.getPoints());
         if (actualFieldBoundingBox != null && actualFieldBoundingBox.getPoints() != null) {
             int i = 0;
             for (Point point : actualFieldBoundingBox.getPoints()) {
@@ -313,7 +311,6 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         }
     }
 
-    @SuppressWarnings("unchecked")
     private static void validateFieldValueTransforms(FieldValue expectedFieldValue, FormField actualFormField,
         List<ReadResult> readResults, boolean includeFieldElements) {
         if (expectedFieldValue != null) {
@@ -865,8 +862,8 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
 
         // assert contact name page number
         FormField contactNameField = businessCard1Fields.get("ContactNames").getValue().asList().get(0);
-        assertEquals(contactNameField.getValueData().getPageNumber(), 1);
-        assertEquals(contactNameField.getValueData().getText(), "JOHN SINGER");
+        assertEquals(1, contactNameField.getValueData().getPageNumber());
+        assertEquals("JOHN SINGER", contactNameField.getValueData().getText());
 
         assertEquals(2, businessCard2.getPageRange().getFirstPageNumber());
         assertEquals(2, businessCard2.getPageRange().getLastPageNumber());
@@ -879,8 +876,8 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
 
         // assert contact name page number
         FormField contactName2Field = businessCard2Fields.get("ContactNames").getValue().asList().get(0);
-        assertEquals(contactName2Field.getValueData().getPageNumber(), 2);
-        assertEquals(contactName2Field.getValueData().getText(), "Dr. Avery Smith");
+        assertEquals(2, contactName2Field.getValueData().getPageNumber());
+        assertEquals("Dr. Avery Smith", contactName2Field.getValueData().getText());
     }
 
     static void validateMultipageReceiptData(List<RecognizedForm> recognizedReceipts) {
@@ -1037,7 +1034,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
                     assertFalse(false, e.getMessage());
                 }
 
-                if (url.getQuery() != null) {
+                if (url != null && url.getQuery() != null) {
                     String[] params = url.getQuery().split("&");
                     for (String param : params) {
                         String name = param.split("=")[0];

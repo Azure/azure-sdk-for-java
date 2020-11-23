@@ -54,7 +54,6 @@ import java.util.stream.Collectors;
 
 import static com.azure.ai.formrecognizer.implementation.Utility.forEachWithIndex;
 import static com.azure.ai.formrecognizer.implementation.models.FieldValueType.ARRAY;
-import static com.azure.ai.formrecognizer.implementation.models.FieldValueType.OBJECT;
 
 /**
  * Helper class to convert service level models to SDK exposed models.
@@ -277,15 +276,14 @@ final class Transforms {
      */
     private static Appearance getAppearance(TextLine textLine) {
         Style style = new Style();
-        if (textLine.getAppearance() != null) {
-            if (textLine.getAppearance().getStyle() != null) {
-                if (textLine.getAppearance().getStyle().getName() != null) {
-                    StyleHelper.setName(style,
-                        TextStyle.fromString(textLine.getAppearance().getStyle().getName().toString()));
-                }
-                StyleHelper.setConfidence(style, textLine.getAppearance().getStyle().getConfidence());
+        if (textLine.getAppearance() != null && textLine.getAppearance().getStyle() != null) {
+            if (textLine.getAppearance().getStyle().getName() != null) {
+                StyleHelper.setName(style,
+                    TextStyle.fromString(textLine.getAppearance().getStyle().getName().toString()));
             }
+            StyleHelper.setConfidence(style, textLine.getAppearance().getStyle().getConfidence());
         }
+        
         Appearance appearance = new Appearance();
         AppearanceHelper.setStyle(appearance, style);
         return appearance;

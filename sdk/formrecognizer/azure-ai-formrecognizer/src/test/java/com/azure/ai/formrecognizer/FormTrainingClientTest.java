@@ -256,7 +256,7 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
         client = getFormTrainingClient(httpClient, serviceVersion);
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.beginTraining(null, false));
-        assertEquals(exception.getMessage(), NULL_SOURCE_URL_ERROR);
+        assertEquals(NULL_SOURCE_URL_ERROR, exception.getMessage());
     }
 
     /**
@@ -317,7 +317,6 @@ public class FormTrainingClientTest extends FormTrainingClientTestBase {
     /**
      * Verifies {@link FormRecognizerException} is thrown for invalid region input to copy operation.
      */
-    @SuppressWarnings("unchecked")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void beginCopyIncorrectRegion(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
