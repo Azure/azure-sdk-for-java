@@ -372,7 +372,8 @@ def get_and_update_api_specs(
         if api_spec:
             service = api_spec.get('service')
         if not service:
-            service = valid_service(spec)
+            service = spec
+    service = valid_service(service)
 
     if service != spec:
         api_specs[spec] = dict() if not api_spec else api_spec
@@ -382,7 +383,7 @@ def get_and_update_api_specs(
         fout.write(comment)
         fout.write(yaml.safe_dump(api_specs, sort_keys = False))
 
-    return valid_service(service)
+    return service
 
 
 def sdk_automation(input_file: str, output_file: str):
