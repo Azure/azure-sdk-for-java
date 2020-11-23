@@ -48,9 +48,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
 
     @Override
     public Mono<HttpResponse> send(HttpRequest request, Context context) {
-        boolean eagerlyReadResponse = context.getData("eagerly-read-response")
-            .map(data -> Boolean.parseBoolean(data.toString()))
-            .orElse(false);
+        boolean eagerlyReadResponse = (boolean) context.getData("eagerly-read-response").orElse(false);
 
         return Mono.create(sink -> sink.onRequest(value -> {
             // Using MonoSink::onRequest for back pressure support.
