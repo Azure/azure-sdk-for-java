@@ -168,6 +168,7 @@ com.azure.resourcemanager:azure-resourcemanager-sql;2.0.0-beta.5;2.0.0-beta.6
 com.azure.resourcemanager:azure-resourcemanager-storage;2.0.0;2.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-trafficmanager;2.0.0-beta.5;2.0.0-beta.6
 com.azure.resourcemanager:azure-resourcemanager-test;2.0.0-beta.1;2.0.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-compute-generated;1.0.0-beta.1;1.0.0-beta.1
 com.microsoft:microsoft-opentelemetry-exporter-azuremonitor;1.0.0-beta.1;1.0.0-beta.2
 
 
