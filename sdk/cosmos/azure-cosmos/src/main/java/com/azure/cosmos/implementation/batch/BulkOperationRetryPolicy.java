@@ -90,6 +90,11 @@ final class BulkOperationRetryPolicy extends RetryPolicyWithDiagnostics {
         return false;
     }
 
+    /**
+     * TODO(rakkuma): metaDataDiagnosticContext is passed null in collectionCache.refresh function. Fix it while adding
+     *  support for an operation wise Diagnostic. The value here should be merged in the individual diagnostic.
+     * Issue: https://github.com/Azure/azure-sdk-for-java/issues/17647
+     */
     private void refreshCollectionCache() {
         this.collectionCache.refresh(
             null,

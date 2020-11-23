@@ -81,8 +81,8 @@ final class BulkExecutorUtil {
     /**
      * Resolve partition key range id of a operation and set the partition key json value in operation.
      *
-     * TODO(rakkuma): Diagnostic support should be added operation wise and the value here should be merged in the
-     *  individual diagnostic. Initialize a new metaDataDiagnosticContext here and merge it later.
+     * TODO(rakkuma): metaDataDiagnosticContext is passed null in tryLookupAsync function. Fix it while adding
+     *  support for an operation wise Diagnostic. The value here should be merged in the individual diagnostic.
      * Issue: https://github.com/Azure/azure-sdk-for-java/issues/17647
      */
     static Mono<String> resolvePartitionKeyRangeId(
@@ -133,8 +133,8 @@ final class BulkExecutorUtil {
     }
 
     /**
-     * TODO(rakkuma): Diagnostic support should be added operation wise and the value here should be merged in the
-     *  individual diagnostic
+     * TODO(rakkuma): metaDataDiagnosticContext is passed null in resolveByNameAsync function. Fix it while adding
+     *  support for an operation wise Diagnostic. The value here should be merged in the individual diagnostic.
      * Issue: https://github.com/Azure/azure-sdk-for-java/issues/17647
      */
     private static Mono<DocumentCollection> getCollectionInfoAsync(

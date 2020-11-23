@@ -51,8 +51,9 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  *    to re-calculation of partition key range id.
  * 6. At the end and this is very essential, we close all the sinks as the sink continues to waits for more and the
  *    execution isn't finished even if all the operations have been executed(figured out by completion call of source)
- *    Sink will more to a new interface from 3.5 and this is documentation for it:
- *    * https://github.com/reactor/reactor-core/blob/master/docs/asciidoc/processors.adoc
+ *
+ * Note: Sink will move to a new interface from 3.5 and this is documentation for it:
+ *    - https://github.com/reactor/reactor-core/blob/master/docs/asciidoc/processors.adoc
  *
  *    For our use case, Sinks.many().unicast() will work.
  */

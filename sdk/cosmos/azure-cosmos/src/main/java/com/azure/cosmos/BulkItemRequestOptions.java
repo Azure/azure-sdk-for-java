@@ -12,6 +12,7 @@ import com.azure.cosmos.util.Beta;
  */
 @Beta(Beta.SinceVersion.V4_9_0)
 public final class BulkItemRequestOptions {
+
     private String ifMatchETag;
     private String ifNoneMatchETag;
     private Boolean contentResponseOnWriteEnabled;
