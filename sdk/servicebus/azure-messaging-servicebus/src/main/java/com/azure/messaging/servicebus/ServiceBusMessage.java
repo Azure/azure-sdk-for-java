@@ -13,7 +13,7 @@ import com.azure.core.amqp.models.AmqpMessageId;
 import com.azure.core.amqp.models.AmqpMessageProperties;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.experimental.util.BinaryData;
+import com.azure.core.util.BinaryData;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
