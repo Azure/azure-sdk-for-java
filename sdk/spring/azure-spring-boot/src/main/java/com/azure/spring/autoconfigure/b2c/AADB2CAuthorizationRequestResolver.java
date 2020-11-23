@@ -15,6 +15,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -51,7 +52,7 @@ public class AADB2CAuthorizationRequestResolver implements OAuth2AuthorizationRe
     }
 
     public AADB2CAuthorizationRequestResolver(@NonNull ClientRegistrationRepository repository,
-                                              @Nullable AADB2CProperties properties) {
+                                              @NonNull AADB2CProperties properties) {
         this.properties = properties;
         this.passwordResetUserFlow = this.properties.getUserFlows().getPasswordReset();
         this.defaultResolver = new DefaultOAuth2AuthorizationRequestResolver(repository, REQUEST_BASE_URI);
@@ -92,9 +93,10 @@ public class AADB2CAuthorizationRequestResolver implements OAuth2AuthorizationRe
 
         cleanupSecurityContextAuthentication();
 
-        final Map<String, Object> additional = this.properties.getAdditional();
-        this.properties.getAdditional().put("p", userFlow);
-        this.properties.getAdditional().put(PARAMETER_X_CLIENT_SKU, AAD_B2C_USER_AGENT);
+        final Map<String, Object> additional = new HashMap<>();
+        additional.putAll(properties.getAdditional());
+        additional.put("p", userFlow);
+        additional.put(PARAMETER_X_CLIENT_SKU, AAD_B2C_USER_AGENT);
 
         return OAuth2AuthorizationRequest.from(request).additionalParameters(additional).build();
     }
