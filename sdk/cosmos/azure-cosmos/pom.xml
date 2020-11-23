@@ -206,6 +206,16 @@ Licensed under the MIT License.
           <skip>true</skip>
         </configuration>
       </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
+        <configuration>
+          <excludes>**/apachecommons/**/*,**/guava25/**/*,**/guava27/**/*,**/uuid/**/*</excludes>
+        </configuration>
+      </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
