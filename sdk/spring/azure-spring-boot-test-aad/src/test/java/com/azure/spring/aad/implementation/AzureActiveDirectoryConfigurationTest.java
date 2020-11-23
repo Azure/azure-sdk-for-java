@@ -1,19 +1,15 @@
-package com.azure.test.aad.auth;
+package com.azure.spring.aad.implementation;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.azure.spring.aad.implementation.AzureClientRegistrationRepository;
-import com.azure.spring.aad.implementation.DefaultClient;
-import com.azure.spring.aad.implementation.IdentityEndpoints;
 import com.azure.test.utils.AppRunner;
 import org.junit.jupiter.api.Test;
-
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -182,7 +178,7 @@ public class AzureActiveDirectoryConfigurationTest {
     }
 
     @Configuration
-    @EnableAutoConfiguration
     @EnableWebSecurity
+    @SpringBootApplication
     public static class DumbApp {}
 }
