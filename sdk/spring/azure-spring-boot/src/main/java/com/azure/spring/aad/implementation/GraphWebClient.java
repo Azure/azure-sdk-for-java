@@ -9,7 +9,6 @@ import com.azure.spring.autoconfigure.aad.Membership;
 import com.azure.spring.autoconfigure.aad.Memberships;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nimbusds.oauth2.sdk.http.HTTPResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -54,8 +53,11 @@ public class GraphWebClient {
         Set<String> groups = new LinkedHashSet<>();
         String aadMembershipRestUri = aadAuthenticationProperties.getGraphMembershipUri();
         while (aadMembershipRestUri != null) {
-            String membershipsJson = getUserMembershipsJson(aadMembershipRestUri);
             Memberships memberships;
+            String membershipsJson = getUserMembershipsJson(aadMembershipRestUri);
+            if (membershipsJson.isEmpty()) {
+                break;
+            }
             try {
                 memberships = objectMapper.readValue(membershipsJson, Memberships.class);
             } catch (JsonProcessingException e) {
@@ -75,18 +77,20 @@ public class GraphWebClient {
     }
 
     private String getUserMembershipsJson(String urlString) {
-        String responseInJson = webClient
-            .get()
-            .uri(urlString)
-            .attributes(clientRegistrationId("graph"))
-            .accept(MediaType.APPLICATION_JSON)
-            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-            .retrieve()
-            .bodyToMono(String.class)
-            .block();
-        if (responseInJson == null || responseInJson.isEmpty()) {
-            throw new IllegalStateException(
-                "Response is not " + HTTPResponse.SC_OK + ", response json: " + responseInJson);
+        String responseInJson = "";
+        try {
+            responseInJson = webClient
+                .get()
+                .uri(urlString)
+                .attributes(clientRegistrationId("graph"))
+                .accept(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+        } catch (IllegalArgumentException exception) {
+            // If there is no authorizedClient 'graph', return empty string.
+            LOGGER.debug("Could not find ClientRegistration with id 'graph'.", exception);
         }
         return responseInJson;
     }
