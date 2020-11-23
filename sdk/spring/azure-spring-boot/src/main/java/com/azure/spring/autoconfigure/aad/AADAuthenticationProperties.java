@@ -113,9 +113,9 @@ public class AADAuthenticationProperties {
      */
     private Boolean sessionStateless = false;
 
-    private String authorizationServerUri;
+    private String authorizationServerUri = "https://login.microsoftonline.com/";
 
-    private String graphMembershipUri;
+    private String graphMembershipUri = "https://graph.microsoft.com/v1.0/me/memberOf";
 
     private Map<String, AuthorizationProperties> authorization = new HashMap<>();
 
