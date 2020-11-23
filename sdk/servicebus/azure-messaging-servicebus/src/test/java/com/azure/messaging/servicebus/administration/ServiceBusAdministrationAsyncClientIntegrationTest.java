@@ -827,7 +827,6 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
                 assertNotNull(response.getAction());
                 assertTrue(response.getAction() instanceof EmptyRuleAction);
             })
-            .expectNextCount(1)
             .thenCancel()
             .verify();
     }
