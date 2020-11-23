@@ -62,11 +62,11 @@ public class GraphWebClient {
                 LOGGER.error("Can not get groups.", e);
                 return Collections.emptySet();
             }
-            groups = memberships.getValue()
-                                .stream()
-                                .filter(this::isGroupObject)
-                                .map(Membership::getDisplayName)
-                                .collect(Collectors.toSet());
+            memberships.getValue()
+                       .stream()
+                       .filter(this::isGroupObject)
+                       .map(Membership::getDisplayName)
+                       .forEach(groups::add);
             aadMembershipRestUri = Optional.of(memberships)
                                            .map(Memberships::getOdataNextLink)
                                            .orElse(null);
