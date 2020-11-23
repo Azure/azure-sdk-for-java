@@ -164,10 +164,18 @@ public class AzureActiveDirectoryConfiguration {
     @ConditionalOnMissingBean(WebSecurityConfigurerAdapter.class)
     public static class DefaultAzureOAuth2Configuration extends AzureOAuth2Configuration {
 
+        @Autowired
+        private OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService;
+
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             super.configure(http);
-            http.authorizeRequests().anyRequest().authenticated();
+            http.authorizeRequests()
+                .anyRequest().authenticated()
+                .and()
+                .oauth2Login()
+                .userInfoEndpoint()
+                .oidcUserService(oidcUserService);
         }
     }
 }
