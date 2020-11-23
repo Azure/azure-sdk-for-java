@@ -22,13 +22,13 @@ import com.microsoft.azure.management.synapse.v2019_06_01_preview.implementation
 @JsonFlatten
 public class SelfHostedIntegrationRuntime extends IntegrationRuntimeInner {
     /**
-     * The linkedInfo property.
+     * Linked integration runtime type from data factory.
      */
     @JsonProperty(value = "typeProperties.linkedInfo")
     private LinkedIntegrationRuntimeType linkedInfo;
 
     /**
-     * Get the linkedInfo value.
+     * Get linked integration runtime type from data factory.
      *
      * @return the linkedInfo value
      */
@@ -37,7 +37,7 @@ public class SelfHostedIntegrationRuntime extends IntegrationRuntimeInner {
     }
 
     /**
-     * Set the linkedInfo value.
+     * Set linked integration runtime type from data factory.
      *
      * @param linkedInfo the linkedInfo value to set
      * @return the SelfHostedIntegrationRuntime object itself.

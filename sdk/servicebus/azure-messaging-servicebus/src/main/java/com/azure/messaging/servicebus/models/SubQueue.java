@@ -7,7 +7,7 @@ import com.azure.messaging.servicebus.ServiceBusReceiverAsyncClient;
 import com.azure.messaging.servicebus.ServiceBusReceiverClient;
 
 /**
- * Azure Service Bus queues and topic subscriptions provide a secondary subqueue, called a dead-letter queue (DLQ).
+ * Azure Service Bus queues and subscriptions provide a secondary subqueue, called a dead-letter queue (DLQ).
  * The dead-letter queue doesn't need to be explicitly created and can't be deleted or otherwise managed
  * independent of the main entity.
  *
@@ -20,7 +20,7 @@ public enum SubQueue {
     NONE,
 
     /**
-     * This value to indicate dead-letter queue.
+     * Connect to a queue or subscription's dead-letter queue.
      * <p>
      * This is builder for creating  {@link ServiceBusReceiverClient} and {@link ServiceBusReceiverAsyncClient} to
      * consume dead-letter messages from Service Bus entity.
@@ -28,7 +28,7 @@ public enum SubQueue {
      DEAD_LETTER_QUEUE,
 
     /**
-     * This value to indicate transfer dead-letter queue.
+     * Connect to a queue or subscription's transfer dead-letter queue.
      *<p>
      * This is builder for creating  {@link ServiceBusReceiverClient} and {@link ServiceBusReceiverAsyncClient} to
      * consume transfer dead-letter messages from Service Bus entity.
