@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.spring.aad.resource;
 
 import com.azure.spring.autoconfigure.aad.UserPrincipal;

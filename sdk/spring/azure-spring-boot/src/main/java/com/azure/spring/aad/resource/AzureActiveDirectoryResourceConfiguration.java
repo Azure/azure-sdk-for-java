@@ -37,7 +37,7 @@ import org.springframework.util.StringUtils;
 public class AzureActiveDirectoryResourceConfiguration {
 
     @Autowired
-    public AzureActiveDirectoryProperties azureActiveDirectoryProperties;
+    private AzureActiveDirectoryProperties azureActiveDirectoryProperties;
 
     /**
      * Use JwkKeySetUri to create JwtDecoder

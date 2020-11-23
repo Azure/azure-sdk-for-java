@@ -21,28 +21,6 @@ public class AzureActiveDirectoryResourceConfigurationTest {
     private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(AzureActiveDirectoryResourceConfiguration.class));
 
-    @Test
-    public void testTenantIdIsEmpty() {
-        this.contextRunner
-            .run(context -> {
-                AzureActiveDirectoryResourceConfiguration bean = context
-                    .getBean(AzureActiveDirectoryResourceConfiguration.class);
-                assertThat(bean.azureActiveDirectoryProperties).isNotNull();
-                assertThat(bean.azureActiveDirectoryProperties.getTenantId()).isEqualTo("common");
-            });
-    }
-
-    @Test
-    public void testTenantIdNotEmpty() {
-        this.contextRunner
-            .withPropertyValues("azure.active.directory.tenant-id=fake-tenant-id")
-            .run(context -> {
-                AzureActiveDirectoryResourceConfiguration bean = context
-                    .getBean(AzureActiveDirectoryResourceConfiguration.class);
-                assertThat(bean.azureActiveDirectoryProperties).isNotNull();
-                assertThat(bean.azureActiveDirectoryProperties.getTenantId()).isEqualTo("fake-tenant-id");
-            });
-    }
 
     @Test
     public void testCreateJwtDecoderByJwkKeySetUri() {
