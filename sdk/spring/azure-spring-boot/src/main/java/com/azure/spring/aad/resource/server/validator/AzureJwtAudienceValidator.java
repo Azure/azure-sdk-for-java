@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.aad.resource;
+package com.azure.spring.aad.resource.server.validator;
 
 import com.azure.spring.autoconfigure.aad.AADTokenClaim;
 import java.util.List;

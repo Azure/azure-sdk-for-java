@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import com.azure.spring.aad.resource.AzureJwtBearerTokenAuthenticationConverter;
+import com.azure.spring.aad.resource.server.AzureJwtBearerTokenAuthenticationConverter;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,7 +26,7 @@ public class AzureJwtBearerTokenAuthenticationConverterTest {
         when(jwt.getClaim("scp")).thenReturn("Order.read Order.write");
         when(jwt.getTokenValue()).thenReturn("fake-token-value");
         when(jwt.getIssuedAt()).thenReturn(Instant.now());
-        when(jwt.getExpiresAt()).thenReturn(Instant.now());
+        when(jwt.getExpiresAt()).thenReturn(Instant.MAX);
         when(jwt.getClaims()).thenReturn(map);
 
         AzureJwtBearerTokenAuthenticationConverter azureJwtBearerTokenAuthenticationConverter

@@ -1,10 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.aad.resource;
+package com.azure.spring.aad.resource.server;
 
 
 import com.azure.spring.aad.implementation.AzureActiveDirectoryProperties;
 import com.azure.spring.aad.implementation.IdentityEndpoints;
+import com.azure.spring.aad.resource.server.validator.AzureJwtAudienceValidator;
+import com.azure.spring.aad.resource.server.validator.AzureJwtIssuerValidator;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +36,7 @@ import org.springframework.util.StringUtils;
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties({AzureActiveDirectoryProperties.class})
 @ConditionalOnClass(BearerTokenAuthenticationToken.class)
-public class AzureActiveDirectoryResourceConfiguration {
+public class AzureActiveDirectoryResourceServerConfiguration {
 
     @Autowired
     private AzureActiveDirectoryProperties azureActiveDirectoryProperties;
@@ -82,8 +84,7 @@ public class AzureActiveDirectoryResourceConfiguration {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http
-                .authorizeRequests((requests) -> requests.anyRequest().authenticated())
+            http.authorizeRequests((requests) -> requests.anyRequest().authenticated())
                 .oauth2ResourceServer()
                 .jwt()
                 .jwtAuthenticationConverter(new AzureJwtBearerTokenAuthenticationConverter());

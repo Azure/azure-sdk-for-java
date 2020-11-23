@@ -4,8 +4,8 @@ package com.azure.spring.autoconfigure.aad;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.azure.spring.aad.resource.AzureActiveDirectoryResourceConfiguration;
-import com.azure.spring.aad.resource.AzureActiveDirectoryResourceConfiguration.DefaultAzureOAuth2ResourceServerWebSecurityConfigurerAdapter;
+import com.azure.spring.aad.resource.server.AzureActiveDirectoryResourceServerConfiguration;
+import com.azure.spring.aad.resource.server.AzureActiveDirectoryResourceServerConfiguration.DefaultAzureOAuth2ResourceServerWebSecurityConfigurerAdapter;
 import java.util.List;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -16,10 +16,10 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 
-public class AzureActiveDirectoryResourceConfigurationTest {
+public class AzureActiveDirectoryResourceServerConfigurationTest {
 
     private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
-        .withConfiguration(AutoConfigurations.of(AzureActiveDirectoryResourceConfiguration.class));
+        .withConfiguration(AutoConfigurations.of(AzureActiveDirectoryResourceServerConfiguration.class));
 
 
     @Test
@@ -36,8 +36,8 @@ public class AzureActiveDirectoryResourceConfigurationTest {
     public void testNotAudienceDefaultValidator() {
         this.contextRunner
             .run(context -> {
-                AzureActiveDirectoryResourceConfiguration bean = context
-                    .getBean(AzureActiveDirectoryResourceConfiguration.class);
+                AzureActiveDirectoryResourceServerConfiguration bean = context
+                    .getBean(AzureActiveDirectoryResourceServerConfiguration.class);
                 List<OAuth2TokenValidator<Jwt>> defaultValidator = bean.createDefaultValidator();
                 assertThat(defaultValidator).isNotNull();
                 assertThat(defaultValidator).hasSize(2);
@@ -49,8 +49,8 @@ public class AzureActiveDirectoryResourceConfigurationTest {
         this.contextRunner
             .withPropertyValues("azure.active.directory.app-id-uri=fake-app-id-uri")
             .run(context -> {
-                AzureActiveDirectoryResourceConfiguration bean = context
-                    .getBean(AzureActiveDirectoryResourceConfiguration.class);
+                AzureActiveDirectoryResourceServerConfiguration bean = context
+                    .getBean(AzureActiveDirectoryResourceServerConfiguration.class);
                 List<OAuth2TokenValidator<Jwt>> defaultValidator = bean.createDefaultValidator();
                 assertThat(defaultValidator).isNotNull();
                 assertThat(defaultValidator).hasSize(3);
