@@ -32,7 +32,7 @@ class ServiceBusSessionManagerIntegrationTest extends IntegrationTestBase {
 
     private ServiceBusReceiverAsyncClient receiver;
     private ServiceBusSenderAsyncClient sender;
-    private ServiceBusSessionReceiverAsyncClient sessionReceiverClient;
+    private ServiceBusSessionReceiverAsyncClient sessionReceiver;
 
     ServiceBusSessionManagerIntegrationTest() {
         super(new ClientLogger(ServiceBusSessionManagerIntegrationTest.class));
@@ -48,7 +48,7 @@ class ServiceBusSessionManagerIntegrationTest extends IntegrationTestBase {
         final int pending = messagesPending.get();
         logger.info("Pending messages: {}", pending);
         try {
-            dispose(receiver, sender, sessionReceiverClient);
+            dispose(receiver, sender, sessionReceiver);
         } catch (Exception e) {
             logger.warning("Error occurred when draining queue.", e);
         }
@@ -110,8 +110,8 @@ class ServiceBusSessionManagerIntegrationTest extends IntegrationTestBase {
         ServiceBusSessionReceiverClientBuilder sessionBuilder = getSessionReceiverBuilder(false,
             entityType, entityIndex, false).disableAutoComplete();
 
-        this.sessionReceiverClient = onBuild.apply(sessionBuilder).buildAsyncClient();
-        this.receiver = this.sessionReceiverClient.acceptSession(sessionId).block();
+        this.sessionReceiver = onBuild.apply(sessionBuilder).buildAsyncClient();
+        this.receiver = this.sessionReceiver.acceptSession(sessionId).block();
     }
 
     private static void assertMessageEquals(String sessionId, String messageId, String contents, ServiceBusReceivedMessage message) {

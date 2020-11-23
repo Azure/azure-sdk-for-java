@@ -48,7 +48,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
 
     private ServiceBusReceiverClient receiver;
     private ServiceBusSenderClient sender;
-    private ServiceBusSessionReceiverClient sessionReceiverClient;
+    private ServiceBusSessionReceiverClient sessionReceiver;
 
     protected ServiceBusReceiverClientIntegrationTest() {
         super(new ClientLogger(ServiceBusReceiverClientIntegrationTest.class));
@@ -61,7 +61,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void afterTest() {
-        dispose(receiver, sender, sessionReceiverClient);
+        dispose(receiver, sender, sessionReceiver);
     }
 
     /**
@@ -106,7 +106,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     }
 
     /**
-     * Verifies that we can only call receive() multiple times. 
+     * Verifies that we can only call receive() multiple times.
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
     @ParameterizedTest
@@ -801,9 +801,9 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
 
         if (isSessionEnabled) {
             assertNotNull(sessionId, "'sessionId' should have been set.");
-            this.sessionReceiverClient = getSessionReceiverBuilder(false, entityType, entityIndex, sharedConnection)
+            this.sessionReceiver = getSessionReceiverBuilder(false, entityType, entityIndex, sharedConnection)
                 .buildClient();
-            this.receiver = this.sessionReceiverClient.acceptSession(sessionId);
+            this.receiver = this.sessionReceiver.acceptSession(sessionId);
         } else {
             this.receiver = getReceiverBuilder(false, entityType, entityIndex, sharedConnection)
                 .buildClient();
@@ -819,9 +819,9 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
 
         if (isSessionEnabled) {
             assertNotNull(sessionId, "'sessionId' should have been set.");
-            this.sessionReceiverClient = getSessionReceiverBuilder(false, entityType, entityIndex, sharedConnection)
+            this.sessionReceiver = getSessionReceiverBuilder(false, entityType, entityIndex, sharedConnection)
                 .buildClient();
-            this.receiver =  this.sessionReceiverClient.acceptSession(sessionId);
+            this.receiver =  this.sessionReceiver.acceptSession(sessionId);
         } else {
             this.receiver = getReceiverBuilder(false, entityType, entityIndex, sharedConnection)
                 .buildClient();
