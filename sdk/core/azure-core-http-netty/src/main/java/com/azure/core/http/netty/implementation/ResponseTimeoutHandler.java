@@ -23,6 +23,7 @@ public final class ResponseTimeoutHandler extends ChannelInboundHandlerAdapter {
 
     private final long timeoutMillis;
 
+    private boolean closed;
     private ScheduledFuture<?> responseTimeoutWatcher;
 
     /**
@@ -51,6 +52,10 @@ public final class ResponseTimeoutHandler extends ChannelInboundHandlerAdapter {
     }
 
     private void responseTimedOut(ChannelHandlerContext ctx) {
-        ctx.fireExceptionCaught(new TimeoutException(String.format(RESPONSE_TIMED_OUT_MESSAGE, timeoutMillis)));
+        if (!closed) {
+            ctx.fireExceptionCaught(new TimeoutException(String.format(RESPONSE_TIMED_OUT_MESSAGE, timeoutMillis)));
+            ctx.close();
+            closed = true;
+        }
     }
 }

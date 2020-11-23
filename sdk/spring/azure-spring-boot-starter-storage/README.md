@@ -72,6 +72,21 @@ private final BlobServiceAsyncClient blobServiceAsyncClient = blobServiceClientB
 
 ```
 
+#### Search for resources
+You can use implementation class `AzureStorageResourcePatternResolver` of `ResourcePatternResolver` to search resource, it supports `blob` or `file` type.
+* Pattern search, the **searchPattern** should start with `azure-blob://` or `azure-file://`. Such as `azure-blob://*/*`, it means list all blobs in all containers; `azure-blob://demo-container/**`, it means list all blobs in the demo-container container, including any sub-folder.
+* Location search, the **searchLocation** should start with `azure-blob://` or `azure-file://`, the remaining file path should exist, otherwise an exception will be thrown.
+
+```java
+AzureStorageResourcePatternResolver storageResourcePatternResolver = new AzureStorageResourcePatternResolver(blobServiceClientBuilder.buildClient());
+
+Resource[] resources = storageResourcePatternResolver.getResources(searchPattern);
+Resource resource = storageResourcePatternResolver.getResource(searchLocation);
+```
+
+#### Multipart upload
+Files larger than 4 MiB will be uploaded to Azure Storage in parallel.
+
 ## Troubleshooting
 ### Enable client logging
 Azure SDKs for Java offers a consistent logging story to help aid in troubleshooting application errors and expedite their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
@@ -114,4 +129,3 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [azure_storage]: https://azure.microsoft.com/services/storage/blobs/
 [other_operation]: https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#resources
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
-
