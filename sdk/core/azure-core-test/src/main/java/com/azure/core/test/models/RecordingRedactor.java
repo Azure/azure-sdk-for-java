@@ -45,9 +45,7 @@ public class RecordingRedactor {
         .add("url")
         .add("host")
         .add("password")
-        .add("userName")
-        .add("phonePlanGroupId")
-        .add("phonePlanId");
+        .add("userName");
 
     private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
         = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()),

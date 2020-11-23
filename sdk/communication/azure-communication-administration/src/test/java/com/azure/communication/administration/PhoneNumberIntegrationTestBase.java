@@ -2,10 +2,18 @@
 // Licensed under the MIT License.
 package com.azure.communication.administration;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringJoiner;
+import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 
 public class PhoneNumberIntegrationTestBase extends TestBase {
     private static final String ENV_ACCESS_KEY =
@@ -28,6 +36,15 @@ public class PhoneNumberIntegrationTestBase extends TestBase {
     protected static final String RESERVATION_OPTIONS_NAME =
         Configuration.getGlobalConfiguration().get("RESERVATION_OPTIONS_NAME", "testReservation20200014");
 
+    private static final StringJoiner JSON_PROPERTIES_TO_REDACT
+        = new StringJoiner("\":\"|\"", "\"", "\":\"")
+        .add("phonePlanGroupId")
+        .add("phonePlanId");
+
+    private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
+        = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()),
+        Pattern.CASE_INSENSITIVE);
+
     protected PhoneNumberClientBuilder getClientBuilder(HttpClient httpClient) {
         if (getTestMode() == TestMode.PLAYBACK) {
             httpClient = interceptorManager.getPlaybackClient();
@@ -40,7 +57,9 @@ public class PhoneNumberIntegrationTestBase extends TestBase {
             .accessKey(ENV_ACCESS_KEY);
 
         if (getTestMode() == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy());
+            List<Function<String, String>> redactors = new ArrayList<>();
+            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "\"REDACTED\""));
+            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
         }
 
         return builder;
@@ -58,9 +77,22 @@ public class PhoneNumberIntegrationTestBase extends TestBase {
             .connectionString(CONNECTION_STRING);
 
         if (getTestMode() == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy());
+            List<Function<String, String>> redactors = new ArrayList<>();
+            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "\"REDACTED\""));
+            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
+        }
+        
+        return builder;
+    }
+
+    private String redact(String content, Matcher matcher, String replacement) {
+        while (matcher.find()) {
+            String captureGroup = matcher.group(1);
+            if (!CoreUtils.isNullOrEmpty(captureGroup)) {
+                content = content.replace(matcher.group(1), replacement);
+            }
         }
 
-        return builder;
+        return content;
     }
 }
