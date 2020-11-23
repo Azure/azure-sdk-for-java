@@ -1,13 +1,10 @@
-package com.azure.test.aad.auth;
+package com.azure.spring.aad.implementation;
 
-import com.azure.spring.aad.implementation.AuthzCodeGrantRequestEntityConverter;
-import com.azure.spring.aad.implementation.AzureClientRegistrationRepository;
 import com.azure.test.utils.AppRunner;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.RequestEntity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -20,7 +17,6 @@ import org.springframework.util.MultiValueMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AuthzCodeGrantRequestEntityConverterTest {
 
@@ -100,7 +96,7 @@ public class AuthzCodeGrantRequestEntityConverterTest {
     }
 
     @Configuration
-    @EnableAutoConfiguration
+    @SpringBootApplication
     @EnableWebSecurity
     public static class DumbApp {}
 }

@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.models;
 
+import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.ConsistencyPolicy;
 import com.azure.cosmos.implementation.CosmosResourceType;
@@ -69,6 +70,11 @@ public final class ModelBridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosConflictResponse createCosmosConflictResponse(ResourceResponse<Conflict> response) {
         return new CosmosConflictResponse(response);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static ConsistencyLevel getConsistencyLevel(CosmosItemRequestOptions options) {
+        return options.getConsistencyLevel();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
