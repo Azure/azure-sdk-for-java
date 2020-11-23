@@ -16,7 +16,6 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.storage.blob.BlobContainerAsyncClient;
-import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
@@ -292,8 +291,8 @@ public class BlobAsyncClientBase {
     }
 
     final BlobContainerClientBuilder getContainerClientBuilder() {
-        CustomerProvidedKey encryptionKey = this.customerProvidedKey == null ? null :
-            new CustomerProvidedKey(this.customerProvidedKey.getEncryptionKey());
+        CustomerProvidedKey encryptionKey = this.customerProvidedKey == null ? null
+            : new CustomerProvidedKey(this.customerProvidedKey.getEncryptionKey());
         return new BlobContainerClientBuilder()
             .endpoint(this.getBlobUrl())
             .pipeline(this.getHttpPipeline())

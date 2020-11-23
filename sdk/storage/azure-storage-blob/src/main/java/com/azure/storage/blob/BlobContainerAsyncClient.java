@@ -228,8 +228,8 @@ public final class BlobContainerAsyncClient {
     }
 
     BlobServiceClientBuilder getServiceClientBuilder() {
-        CustomerProvidedKey encryptionKey = this.customerProvidedKey == null ? null :
-            new CustomerProvidedKey(this.customerProvidedKey.getEncryptionKey());
+        CustomerProvidedKey encryptionKey = this.customerProvidedKey == null ? null
+            : new CustomerProvidedKey(this.customerProvidedKey.getEncryptionKey());
         return new BlobServiceClientBuilder()
             .endpoint(this.getBlobContainerUrl())
             .pipeline(this.getHttpPipeline())
