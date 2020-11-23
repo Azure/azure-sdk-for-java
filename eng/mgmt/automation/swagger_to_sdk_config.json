@@ -1,0 +1,23 @@
+{
+  "initOptions": {
+    "initScript": {
+      "path": "./eng/mgmt/automation/init.sh",
+      "envs": [
+        "JAVA_HOME_11_X64"
+      ]
+    }
+  },
+  "generateOptions": {
+    "generateScript": {
+      "path": "./eng/mgmt/automation/generate.py"
+    }
+  },
+  "artifactOptions": {
+    "installInstructionScript": {
+      "path": "./eng/mgmt/automation/install_instruction.py"
+    }
+  },
+  "advanceOptions": {
+    "generationCallMode": "one-per-config"
+  }
+}

@@ -573,7 +573,18 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @return An <b>infinite</b> stream of messages from the Service Bus entity.
      */
     public Flux<ServiceBusReceivedMessage> receiveMessages() {
-        return receiveMessagesWithContext()
+        // Without limitRate(), if the user calls receiveMessages().subscribe(), it will call
+        // ServiceBusReceiveLinkProcessor.request(long request) where request = Long.MAX_VALUE.
+        // We turn this one-time non-backpressure request to continuous requests with backpressure.
+        // If receiverOptions.prefetchCount is set to non-zero, it will be passed to ServiceBusReceiveLinkProcessor
+        // to auto-refill the prefetch buffer. A request will retrieve one message from this buffer.
+        // If receiverOptions.prefetchCount is 0 (default value),
+        // the request will add a link credit so one message is retrieved from the service.
+        return receiveMessagesNoBackPressure().limitRate(1, 0);
+    }
+
+    Flux<ServiceBusReceivedMessage> receiveMessagesNoBackPressure() {
+        return receiveMessagesWithContext(0)
             .handle((serviceBusMessageContext, sink) -> {
                 if (serviceBusMessageContext.hasError()) {
                     sink.error(serviceBusMessageContext.getThrowable());
@@ -598,6 +609,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @return An <b>infinite</b> stream of messages from the Service Bus entity.
      */
     Flux<ServiceBusMessageContext> receiveMessagesWithContext() {
+        return receiveMessagesWithContext(1);
+    }
+
+    Flux<ServiceBusMessageContext> receiveMessagesWithContext(int highTide) {
         final Flux<ServiceBusMessageContext> messageFlux = sessionManager != null
             ? sessionManager.receive()
             : getOrCreateConsumer().receive().map(ServiceBusMessageContext::new);
@@ -610,16 +625,19 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             withAutoLockRenewal = messageFlux;
         }
 
-        final Flux<ServiceBusMessageContext> withAutoComplete;
+        Flux<ServiceBusMessageContext> result;
         if (receiverOptions.isEnableAutoComplete()) {
-            withAutoComplete = new FluxAutoComplete(withAutoLockRenewal, completionLock,
+            result = new FluxAutoComplete(withAutoLockRenewal, completionLock,
                 context -> context.getMessage() != null ? complete(context.getMessage()) : Mono.empty(),
                 context -> context.getMessage() != null ? abandon(context.getMessage()) : Mono.empty());
         } else {
-            withAutoComplete = withAutoLockRenewal;
+            result = withAutoLockRenewal;
         }
 
-        return withAutoComplete
+        if (highTide > 0) {
+            result = result.limitRate(highTide, 0);
+        }
+        return result
             .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RECEIVE));
     }
 

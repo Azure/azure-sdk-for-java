@@ -34,9 +34,7 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
         this.linkProcessor = linkProcessor;
         this.messageSerializer = messageSerializer;
         this.processor = linkProcessor
-            .map(message -> this.messageSerializer.deserialize(message, ServiceBusReceivedMessage.class))
-            .publish(receiverOptions.getPrefetchCount())
-            .autoConnect(1);
+            .map(message -> this.messageSerializer.deserialize(message, ServiceBusReceivedMessage.class));
     }
 
     /**

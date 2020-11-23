@@ -1351,6 +1351,13 @@
     <Bug pattern="UWF_UNWRITTEN_FIELD" />
   </Match>
 
+  <!-- TextAnalyticsException fields re serializable -->
+  <Match>
+    <Class name="com.azure.ai.textanalytics.models.TextAnalyticsException" />
+    <Field name="errorInformationList" />
+    <Bug pattern="SE_BAD_FIELD" />
+  </Match>
+
   <!-- Exception is required to catch, ref: code comment in the OrderbyRowComparer::compare() method  -->
   <Match>
     <Class name="com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer"/>
@@ -1990,6 +1997,13 @@
     <Bug pattern="EQ_UNUSUAL"/>
   </Match>
 
+   <!-- False positive, equals method is implemented correctly by using equality of member variables  -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.clientTelemetry.ReportPayload"/>
+    <Method name="equals"/>
+    <Bug pattern="EQ_UNUSUAL"/>
+  </Match>
+
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9106 -->
   <Match>
     <Class name="com.azure.cosmos.implementation.PathsHelper"/>
@@ -2297,7 +2311,7 @@
       <Field name="authenticationRecord"/>
       <Bug pattern="SE_TRANSIENT_FIELD_NOT_RESTORED"/>
   </Match>
-  
+
   <!-- These fields are designed to be not written. They are for deserializing. -->
   <Match>
       <Class name="com.azure.identity.implementation.LinuxKeyRingAccessor$GError"/>
@@ -2429,5 +2443,13 @@
       <Class name="com.azure.security.keyvault.keys.cryptography.EncryptOptions" />
     </Or>
     <Bug pattern="NM_CONFUSING" />
+  </Match>
+  <!-- Returning a new copy of the object is not necessary for queuing system use cases.
+  Client do not change content of message once message is created. Array copy would degrade the performance.
+  https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core-amqp/src/main/java/com/azure/core/amqp/models/AmqpMessageBody.java#L115 -->
+  <Match>
+    <Class name="com.azure.core.amqp.models.AmqpMessageBody"/>
+    <Field name="data"/>
+    <Bug pattern="EI_EXPOSE_REP"/>
   </Match>
 </FindBugsFilter>

@@ -74,7 +74,7 @@ public class IntegrationRuntimeNodesInner {
      * Get an integration runtime node.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @param nodeName Integration runtime node name
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -91,7 +91,7 @@ public class IntegrationRuntimeNodesInner {
      * Get an integration runtime node.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @param nodeName Integration runtime node name
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -107,7 +107,7 @@ public class IntegrationRuntimeNodesInner {
      * Get an integration runtime node.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @param nodeName Integration runtime node name
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -127,7 +127,7 @@ public class IntegrationRuntimeNodesInner {
      * Get an integration runtime node.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @param nodeName Integration runtime node name
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -178,7 +178,7 @@ public class IntegrationRuntimeNodesInner {
      * Create an integration runtime node.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @param nodeName Integration runtime node name
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -195,7 +195,7 @@ public class IntegrationRuntimeNodesInner {
      * Create an integration runtime node.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @param nodeName Integration runtime node name
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -211,7 +211,7 @@ public class IntegrationRuntimeNodesInner {
      * Create an integration runtime node.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @param nodeName Integration runtime node name
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -231,7 +231,7 @@ public class IntegrationRuntimeNodesInner {
      * Create an integration runtime node.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @param nodeName Integration runtime node name
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -278,7 +278,7 @@ public class IntegrationRuntimeNodesInner {
      * Create an integration runtime node.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @param nodeName Integration runtime node name
      * @param concurrentJobsLimit The number of concurrent jobs permitted to run on the integration runtime node. Values between 1 and maxConcurrentJobs(inclusive) are allowed.
@@ -296,7 +296,7 @@ public class IntegrationRuntimeNodesInner {
      * Create an integration runtime node.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @param nodeName Integration runtime node name
      * @param concurrentJobsLimit The number of concurrent jobs permitted to run on the integration runtime node. Values between 1 and maxConcurrentJobs(inclusive) are allowed.
@@ -313,7 +313,7 @@ public class IntegrationRuntimeNodesInner {
      * Create an integration runtime node.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @param nodeName Integration runtime node name
      * @param concurrentJobsLimit The number of concurrent jobs permitted to run on the integration runtime node. Values between 1 and maxConcurrentJobs(inclusive) are allowed.
@@ -334,7 +334,7 @@ public class IntegrationRuntimeNodesInner {
      * Create an integration runtime node.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @param nodeName Integration runtime node name
      * @param concurrentJobsLimit The number of concurrent jobs permitted to run on the integration runtime node. Values between 1 and maxConcurrentJobs(inclusive) are allowed.
@@ -388,7 +388,7 @@ public class IntegrationRuntimeNodesInner {
      * Delete an integration runtime node.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @param nodeName Integration runtime node name
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -404,7 +404,7 @@ public class IntegrationRuntimeNodesInner {
      * Delete an integration runtime node.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @param nodeName Integration runtime node name
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -420,7 +420,7 @@ public class IntegrationRuntimeNodesInner {
      * Delete an integration runtime node.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @param nodeName Integration runtime node name
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -440,7 +440,7 @@ public class IntegrationRuntimeNodesInner {
      * Delete an integration runtime node.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @param nodeName Integration runtime node name
      * @throws IllegalArgumentException thrown if parameters fail the validation

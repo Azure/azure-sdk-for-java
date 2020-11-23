@@ -35,9 +35,8 @@ import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName
  * <p>
  * The configuration will not be activated if no {@literal azure.activedirectory.client-id} property provided.
  * <p>
- * A stateless filter {@link AADAppRoleStatelessAuthenticationFilter} will be auto-configured by specifying
- * {@literal azure.activedirectory.session-stateless=true}. Otherwise, {@link AADAuthenticationFilter} will be
- * configured.
+ * A stateless filter {@link AADAppRoleStatelessAuthenticationFilter} will be auto-configured by specifying {@literal
+ * azure.activedirectory.session-stateless=true}. Otherwise, {@link AADAuthenticationFilter} will be configured.
  */
 @Configuration
 @ConditionalOnWebApplication
@@ -45,6 +44,7 @@ import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName
 @ConditionalOnProperty(prefix = AADAuthenticationFilterAutoConfiguration.PROPERTY_PREFIX, value = { "client-id" })
 @EnableConfigurationProperties({ AADAuthenticationProperties.class, ServiceEndpointsProperties.class })
 @PropertySource(value = "classpath:service-endpoints.properties")
+@ConditionalOnExpression("#{'${azure.active.directory.uri:notExist}' == 'notExist'}")
 public class AADAuthenticationFilterAutoConfiguration {
     public static final String PROPERTY_PREFIX = "azure.activedirectory";
     private static final Logger LOG = LoggerFactory.getLogger(AADAuthenticationProperties.class);
@@ -67,7 +67,7 @@ public class AADAuthenticationFilterAutoConfiguration {
     @ConditionalOnMissingBean(AADAuthenticationFilter.class)
     @ConditionalOnExpression("${azure.activedirectory.session-stateless:false} == false")
     // client-id and client-secret used to: get graphApiToken -> groups
-    @ConditionalOnProperty(prefix = PROPERTY_PREFIX, value = {"client-id", "client-secret"})
+    @ConditionalOnProperty(prefix = PROPERTY_PREFIX, value = { "client-id", "client-secret" })
     public AADAuthenticationFilter azureADJwtTokenFilter() {
         LOG.info("AzureADJwtTokenFilter Constructor.");
         return new AADAuthenticationFilter(
@@ -82,7 +82,7 @@ public class AADAuthenticationFilterAutoConfiguration {
     @ConditionalOnMissingBean(AADAppRoleStatelessAuthenticationFilter.class)
     @ConditionalOnExpression("${azure.activedirectory.session-stateless:false} == true")
     // client-id used to: userPrincipalManager.getValidator
-    @ConditionalOnProperty(prefix = PROPERTY_PREFIX, value = {"client-id"})
+    @ConditionalOnProperty(prefix = PROPERTY_PREFIX, value = { "client-id" })
     public AADAppRoleStatelessAuthenticationFilter azureADStatelessAuthFilter(ResourceRetriever resourceRetriever) {
         LOG.info("Creating AzureADStatelessAuthFilter bean.");
         return new AADAppRoleStatelessAuthenticationFilter(

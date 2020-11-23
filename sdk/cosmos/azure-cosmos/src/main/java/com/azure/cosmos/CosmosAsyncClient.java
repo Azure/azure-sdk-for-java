@@ -59,6 +59,7 @@ public final class CosmosAsyncClient implements Closeable {
     private final TokenCredential tokenCredential;
     private final boolean sessionCapturingOverride;
     private final boolean enableTransportClientSharing;
+    private final boolean clientTelemetryEnabled;
     private final TracerProvider tracerProvider;
     private final boolean contentResponseOnWriteEnabled;
     private static final Tracer TRACER;
@@ -85,6 +86,7 @@ public final class CosmosAsyncClient implements Closeable {
         this.tokenCredential = builder.getTokenCredential();
         this.sessionCapturingOverride = builder.isSessionCapturingOverrideEnabled();
         this.enableTransportClientSharing = builder.isConnectionSharingAcrossClientsEnabled();
+        this.clientTelemetryEnabled = builder.isClientTelemetryEnabled();
         this.contentResponseOnWriteEnabled = builder.isContentResponseOnWriteEnabled();
         this.tracerProvider = new TracerProvider(TRACER);
         this.asyncDocumentClient = new AsyncDocumentClient.Builder()
@@ -205,6 +207,10 @@ public final class CosmosAsyncClient implements Closeable {
      */
     boolean isContentResponseOnWriteEnabled() {
         return contentResponseOnWriteEnabled;
+    }
+
+    boolean isClientTelemetryEnabled() {
+        return clientTelemetryEnabled;
     }
 
     /**

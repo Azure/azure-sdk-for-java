@@ -10,8 +10,10 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.ItemDeserializer;
 import com.azure.cosmos.implementation.Offer;
+import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -36,7 +38,6 @@ import com.azure.cosmos.models.ThroughputResponse;
 import com.azure.cosmos.util.Beta;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
-
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -263,8 +264,12 @@ public class CosmosAsyncContainer {
         return database.getClient().getTracerProvider().traceEnabledCosmosItemResponsePublisher(responseMono,
             context,
             this.createItemSpanName,
+            getId(),
             database.getId(),
-            database.getClient().getServiceEndpoint());
+            database.getClient(),
+            ModelBridgeInternal.getConsistencyLevel(options),
+            OperationType.Create,
+            ResourceType.Document);
     }
 
     private <T> Mono<CosmosItemResponse<T>> createItemInternal(T item, CosmosItemRequestOptions options) {
@@ -362,9 +367,8 @@ public class CosmosAsyncContainer {
      */
     <T> CosmosPagedFlux<T> readAllItems(CosmosQueryRequestOptions options, Class<T> classType) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
-            pagedFluxOptions.setTracerInformation(this.getDatabase().getClient().getTracerProvider(),
-                this.readAllItemsSpanName,
-                this.getDatabase().getClient().getServiceEndpoint(), database.getId());
+            pagedFluxOptions.setTracerAndTelemetryInformation(this.readAllItemsSpanName, database.getId(),
+                this.getId(), OperationType.ReadFeed, ResourceType.Document, this.getDatabase().getClient());
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDatabase().getDocClientWrapper().readDocuments(getLink(), options).map(
                 response -> prepareFeedResponse(response, classType));
@@ -458,8 +462,8 @@ public class CosmosAsyncContainer {
         SqlQuerySpec sqlQuerySpec, CosmosQueryRequestOptions cosmosQueryRequestOptions, Class<T> classType) {
         Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> pagedFluxOptionsFluxFunction = (pagedFluxOptions -> {
             String spanName = this.queryItemsSpanName;
-            pagedFluxOptions.setTracerInformation(this.getDatabase().getClient().getTracerProvider(), spanName,
-                this.getDatabase().getClient().getServiceEndpoint(), database.getId());
+            pagedFluxOptions.setTracerAndTelemetryInformation(spanName, database.getId(),
+                this.getId(), OperationType.Query, ResourceType.Document, this.getDatabase().getClient());
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, cosmosQueryRequestOptions);
 
                 return getDatabase().getDocClientWrapper()
@@ -770,18 +774,17 @@ public class CosmosAsyncContainer {
      * @param partitionKey the partition key value of the documents that need to be read
      * @param options the feed options.
      * @param classType the class type.
-     * @return a {@link CosmosPagedFlux} containing one or several feed response pages 
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages
      * of the read Cosmos items or an error.
      */
     public <T> CosmosPagedFlux<T> readAllItems(
         PartitionKey partitionKey,
         CosmosQueryRequestOptions options,
         Class<T> classType) {
-            
+
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
-            pagedFluxOptions.setTracerInformation(this.getDatabase().getClient().getTracerProvider(),
-                this.readAllItemsSpanName,
-                this.getDatabase().getClient().getServiceEndpoint(), database.getId());
+            pagedFluxOptions.setTracerAndTelemetryInformation(this.readAllItemsSpanName, database.getId(),
+                this.getId(), OperationType.ReadFeed, ResourceType.Document, this.getDatabase().getClient());
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDatabase()
                 .getDocClientWrapper()
@@ -926,6 +929,7 @@ public class CosmosAsyncContainer {
             pagedFluxOptions.setTracerInformation(this.getDatabase().getClient().getTracerProvider(),
                 this.readAllConflictsSpanName,
                 this.getDatabase().getClient().getServiceEndpoint(), database.getId());
+
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, requestOptions);
             return database.getDocClientWrapper().readConflicts(getLink(), requestOptions)
                 .map(response -> BridgeInternal.createFeedResponse(
@@ -1030,8 +1034,12 @@ public class CosmosAsyncContainer {
         return database.getClient().getTracerProvider().traceEnabledCosmosItemResponsePublisher(responseMono,
             context,
             this.deleteItemSpanName,
+            this.getId(),
             database.getId(),
-            database.getClient().getServiceEndpoint());
+            database.getClient(),
+            requestOptions.getConsistencyLevel(),
+            OperationType.Delete,
+            ResourceType.Document);
     }
 
     private <T> Mono<CosmosItemResponse<T>> replaceItemInternal(
@@ -1046,7 +1054,14 @@ public class CosmosAsyncContainer {
             .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType, getItemDeserializer()))
             .single();
         return database.getClient().getTracerProvider().traceEnabledCosmosItemResponsePublisher(responseMono,
-            context, this.replaceItemSpanName, database.getId(), database.getClient().getServiceEndpoint());
+            context,
+            this.replaceItemSpanName,
+            this.getId(),
+            database.getId(),
+            database.getClient(),
+            ModelBridgeInternal.getConsistencyLevel(options),
+            OperationType.Replace,
+            ResourceType.Document);
     }
 
     private <T> Mono<CosmosItemResponse<T>> upsertItemInternal(T item, CosmosItemRequestOptions options, Context context) {
@@ -1061,8 +1076,12 @@ public class CosmosAsyncContainer {
         return database.getClient().getTracerProvider().traceEnabledCosmosItemResponsePublisher(responseMono,
             context,
             this.upsertItemSpanName,
+            this.getId(),
             database.getId(),
-            database.getClient().getServiceEndpoint());
+            database.getClient(),
+            ModelBridgeInternal.getConsistencyLevel(options),
+            OperationType.Upsert,
+            ResourceType.Document);
     }
 
     private <T> Mono<CosmosItemResponse<T>> readItemInternal(
@@ -1076,8 +1095,12 @@ public class CosmosAsyncContainer {
         return database.getClient().getTracerProvider().traceEnabledCosmosItemResponsePublisher(responseMono,
             context,
             this.readItemSpanName,
+            this.getId(),
             database.getId(),
-            database.getClient().getServiceEndpoint());
+            database.getClient(),
+            requestOptions.getConsistencyLevel(),
+            OperationType.Read,
+            ResourceType.Document);
     }
 
     Mono<CosmosContainerResponse> read(CosmosContainerRequestOptions options, Context context) {
