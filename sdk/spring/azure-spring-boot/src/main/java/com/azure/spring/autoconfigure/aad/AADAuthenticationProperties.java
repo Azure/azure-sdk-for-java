@@ -3,6 +3,7 @@
 
 package com.azure.spring.autoconfigure.aad;
 
+import com.azure.spring.aad.implementation.AuthorizationProperties;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +16,9 @@ import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -31,8 +34,6 @@ public class AADAuthenticationProperties {
     private static final String DEFAULT_SERVICE_ENVIRONMENT = "global";
     private static final long DEFAULT_JWK_SET_CACHE_LIFESPAN = TimeUnit.MINUTES.toMillis(5);
     private static final long DEFAULT_JWK_SET_CACHE_REFRESH_TIME = DEFAULT_JWK_SET_CACHE_LIFESPAN;
-    private static final String GROUP_RELATIONSHIP_DIRECT = "direct";
-    private static final String GROUP_RELATIONSHIP_TRANSITIVE = "transitive";
 
     /**
      * Default UserGroup configuration.
@@ -112,6 +113,12 @@ public class AADAuthenticationProperties {
      */
     private Boolean sessionStateless = false;
 
+    private String authorizationServerUri;
+
+    private String graphMembershipUri;
+
+    private Map<String, AuthorizationProperties> authorization = new HashMap<>();
+
     @DeprecatedConfigurationProperty(
         reason = "Configuration moved to UserGroup class to keep UserGroup properties together",
         replacement = "azure.activedirectory.user-group.allowed-groups")
@@ -151,15 +158,6 @@ public class AADAuthenticationProperties {
         @NotEmpty
         private String objectIDKey = "objectId";
 
-
-        /**
-         * The way to obtain group relationship.<br/> direct: the default value, get groups that the user is a direct
-         * member of;<br/> transitive: Get groups that the user is a member of, and will also return all groups the user
-         * is a nested member of;
-         */
-        @NotEmpty
-        private String groupRelationship = GROUP_RELATIONSHIP_DIRECT;
-
         public List<String> getAllowedGroups() {
             return allowedGroups;
         }
@@ -192,14 +190,6 @@ public class AADAuthenticationProperties {
             this.objectIDKey = objectIDKey;
         }
 
-        public String getGroupRelationship() {
-            return groupRelationship;
-        }
-
-        public void setGroupRelationship(String groupRelationship) {
-            this.groupRelationship = groupRelationship;
-        }
-
         @Override
         public String toString() {
             return "UserGroupProperties{"
@@ -207,7 +197,6 @@ public class AADAuthenticationProperties {
                 + ", key='" + key + '\''
                 + ", value='" + value + '\''
                 + ", objectIDKey='" + objectIDKey + '\''
-                + ", groupRelationship='" + groupRelationship + '\''
                 + '}';
         }
 
@@ -223,8 +212,7 @@ public class AADAuthenticationProperties {
             return Objects.equals(allowedGroups, that.allowedGroups)
                 && Objects.equals(key, that.key)
                 && Objects.equals(value, that.value)
-                && Objects.equals(objectIDKey, that.objectIDKey)
-                && Objects.equals(groupRelationship, that.groupRelationship);
+                && Objects.equals(objectIDKey, that.objectIDKey);
         }
 
         @Override
@@ -255,11 +243,6 @@ public class AADAuthenticationProperties {
         } else if (!allowedGroupsConfigured()) {
             throw new IllegalArgumentException("One of the User Group Properties must be populated. "
                 + "Please populate azure.activedirectory.user-group.allowed-groups");
-        }
-        if (!GROUP_RELATIONSHIP_DIRECT.equalsIgnoreCase(userGroup.groupRelationship)
-            && !GROUP_RELATIONSHIP_TRANSITIVE.equalsIgnoreCase(userGroup.groupRelationship)) {
-            throw new IllegalArgumentException("Configuration 'azure.activedirectory.user-group.group-relationship' "
-                + "should be 'direct' or 'transitive'.");
         }
     }
 
@@ -388,12 +371,28 @@ public class AADAuthenticationProperties {
         this.sessionStateless = sessionStateless;
     }
 
-    public static String getDirectGroupRelationship() {
-        return GROUP_RELATIONSHIP_DIRECT;
+    public String getAuthorizationServerUri() {
+        return authorizationServerUri;
     }
 
-    public static String getTransitiveGroupRelationship() {
-        return GROUP_RELATIONSHIP_TRANSITIVE;
+    public void setAuthorizationServerUri(String authorizationServerUri) {
+        this.authorizationServerUri = authorizationServerUri;
+    }
+
+    public String getGraphMembershipUri() {
+        return graphMembershipUri;
+    }
+
+    public void setGraphMembershipUri(String graphMembershipUri) {
+        this.graphMembershipUri = graphMembershipUri;
+    }
+
+    public Map<String, AuthorizationProperties> getAuthorization() {
+        return authorization;
+    }
+
+    public void setAuthorization(Map<String, AuthorizationProperties> authorization) {
+        this.authorization = authorization;
     }
 
     public boolean isAllowedGroup(String group) {
