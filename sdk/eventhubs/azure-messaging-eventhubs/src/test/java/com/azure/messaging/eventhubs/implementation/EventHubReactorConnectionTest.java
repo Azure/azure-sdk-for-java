@@ -161,10 +161,10 @@ public class EventHubReactorConnectionTest {
             .assertNext(node -> Assertions.assertTrue(node instanceof ManagementChannel))
             .verifyComplete();
 
-        StepVerifier.create(connection.createSendLink("send-name","test-entity-path",new AmqpRetryOptions()))
+        StepVerifier.create(connection.createSendLink("send-name", "test-entity-path", new AmqpRetryOptions()))
             .verifyError();
 
-        StepVerifier.create(connection.createReceiveLink("receiver-name","test-entity-path", EventPosition.latest(), new ReceiveOptions()))
+        StepVerifier.create(connection.createReceiveLink("receiver-name", "test-entity-path", EventPosition.latest(), new ReceiveOptions()))
             .verifyError();
 
     }

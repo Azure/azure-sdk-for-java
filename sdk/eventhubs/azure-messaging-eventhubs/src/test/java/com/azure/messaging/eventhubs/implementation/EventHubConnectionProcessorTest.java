@@ -287,21 +287,20 @@ class EventHubConnectionProcessorTest {
     }
 
     @Test
-    public void getFullyQualifiedNamespaceTest(){
+    public void getFullyQualifiedNamespaceTest() {
         String testFullyQualifiedNamespace = eventHubConnectionProcessor.getFullyQualifiedNamespace();
-        Assertions.assertEquals("test-namespace.eventhubs.com" ,testFullyQualifiedNamespace);
+        Assertions.assertEquals("test-namespace.eventhubs.com", testFullyQualifiedNamespace);
     }
 
     @Test
-    public void getEventHubNameTest(){
+    public void getEventHubNameTest() {
         String testEventHubName = eventHubConnectionProcessor.getEventHubName();
-        Assertions.assertEquals("test-event-hub-name" ,testEventHubName);
+        Assertions.assertEquals("test-event-hub-name", testEventHubName);
     }
 
     @Test
-    public void getRetryOptionsTest(){
+    public void getRetryOptionsTest() {
         AmqpRetryOptions testRetryOption = eventHubConnectionProcessor.getRetryOptions();
-        System.out.println("------------------------"+testRetryOption);
         Assertions.assertNotNull(testRetryOption);
     }
 
