@@ -35,11 +35,6 @@
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-core</artifactId>
-      <version>1.10.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
       <artifactId>azure-storage-common</artifactId>
       <version>12.10.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
     </dependency>
@@ -47,12 +42,6 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
       <version>1.5.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-http-netty</artifactId>
-      <version>1.6.3</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
       <scope>test</scope>
     </dependency>
     <!-- https://mvnrepository.com/artifact/org.spockframework/spock-core -->
