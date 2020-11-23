@@ -8,6 +8,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.jproxy.ProxyServer;
 import com.azure.messaging.servicebus.jproxy.SimpleProxy;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
+import org.apache.qpid.proton.engine.SslDomain;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -84,13 +85,16 @@ public class ProxyReceiveTest extends IntegrationTestBase {
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(NUMBER_OF_EVENTS, messageTracking);
         final ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
             .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
+            .verifyMode(SslDomain.VerifyMode.ANONYMOUS_PEER)
             .connectionString(getConnectionString())
+
             .sender()
             .queueName(queueName)
             .buildAsyncClient();
 
         final ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
             .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
+            .verifyMode(SslDomain.VerifyMode.ANONYMOUS_PEER)
             .connectionString(getConnectionString())
             .receiver()
             .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)

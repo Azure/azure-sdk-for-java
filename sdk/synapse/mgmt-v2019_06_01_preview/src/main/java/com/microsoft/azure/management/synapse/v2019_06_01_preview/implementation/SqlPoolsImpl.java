@@ -55,12 +55,6 @@ class SqlPoolsImpl extends WrapperImpl<SqlPoolsInner> implements SqlPools {
     ;}
 
     @Override
-    public Completable renameAsync(String resourceGroupName, String workspaceName, String sqlPoolName, String id) {
-        SqlPoolsInner client = this.inner();
-        return client.renameAsync(resourceGroupName, workspaceName, sqlPoolName, id).toCompletable();
-    }
-
-    @Override
     public Observable<SqlPool> listByWorkspaceAsync(final String resourceGroupName, final String workspaceName) {
         SqlPoolsInner client = this.inner();
         return client.listByWorkspaceAsync(resourceGroupName, workspaceName)
