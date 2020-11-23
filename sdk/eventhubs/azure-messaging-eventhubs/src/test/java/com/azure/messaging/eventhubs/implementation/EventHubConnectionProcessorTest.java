@@ -286,6 +286,25 @@ class EventHubConnectionProcessorTest {
             () -> eventHubConnectionProcessor.onError(null));
     }
 
+    @Test
+    public void getFullyQualifiedNamespaceTest(){
+        String testFullyQualifiedNamespace = eventHubConnectionProcessor.getFullyQualifiedNamespace();
+        Assertions.assertEquals("test-namespace.eventhubs.com" ,testFullyQualifiedNamespace);
+    }
+
+    @Test
+    public void getEventHubNameTest(){
+        String testEventHubName = eventHubConnectionProcessor.getEventHubName();
+        Assertions.assertEquals("test-event-hub-name" ,testEventHubName);
+    }
+
+    @Test
+    public void getRetryOptionsTest(){
+        AmqpRetryOptions testRetryOption = eventHubConnectionProcessor.getRetryOptions();
+        System.out.println("------------------------"+testRetryOption);
+        Assertions.assertNotNull(testRetryOption);
+    }
+
     private static Flux<EventHubAmqpConnection> createSink(EventHubAmqpConnection[] connections) {
         return Flux.create(emitter -> {
             final AtomicInteger counter = new AtomicInteger();

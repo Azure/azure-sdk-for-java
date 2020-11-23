@@ -20,6 +20,8 @@ import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.CoreUtils;
+import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.engine.Record;
@@ -158,6 +160,13 @@ public class EventHubReactorConnectionTest {
         StepVerifier.create(connection.getManagementNode())
             .assertNext(node -> Assertions.assertTrue(node instanceof ManagementChannel))
             .verifyComplete();
+
+        StepVerifier.create(connection.createSendLink("send-name","test-entity-path",new AmqpRetryOptions()))
+            .verifyError();
+
+        StepVerifier.create(connection.createReceiveLink("receiver-name","test-entity-path", EventPosition.latest(), new ReceiveOptions()))
+            .verifyError();
+
     }
 
     @AfterEach
