@@ -185,7 +185,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
             });
         } else if (contentType.contains("json") || response.getHeaderValue(CONTENT_ENCODING) == null) {
             return response.getBodyAsString(StandardCharsets.UTF_8).switchIfEmpty(Mono.just("")).map(content -> {
-                responseData.put(BODY, new RecordingRedactor().redact(content));
+                responseData.put(BODY, redactor.redact(content));
                 return responseData;
             });
         } else {
