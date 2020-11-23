@@ -386,7 +386,7 @@ public final class BlobContainerClientBuilder {
      * Sets the client options for all the requests made through the client.
      *
      * @param clientOptions {@link ClientOptions}.
-     * @return the updated BlobServiceClientBuilder object
+     * @return the updated BlobContainerClientBuilder object
      * @throws NullPointerException If {@code clientOptions} is {@code null}.
      */
     public BlobContainerClientBuilder clientOptions(ClientOptions clientOptions) {
