@@ -20,8 +20,9 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
-import com.azure.cosmos.implementation.cpu.CpuListener;
-import com.azure.cosmos.implementation.cpu.CpuMonitor;
+import com.azure.cosmos.implementation.clientTelemetry.ClientTelemetry;
+import com.azure.cosmos.implementation.cpu.CpuMemoryListener;
+import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
 import com.azure.cosmos.implementation.directconnectivity.GatewayServiceConfigurationReader;
 import com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver;
 import com.azure.cosmos.implementation.directconnectivity.ServerStoreModel;
@@ -62,6 +63,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.lang.management.ManagementFactory;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
@@ -96,7 +98,8 @@ import static com.azure.cosmos.models.ModelBridgeInternal.toDatabaseAccount;
  * While this class is public, it is not part of our published public APIs.
  * This is meant to be internally used only by our sdk.
  */
-public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorizationTokenProvider, CpuListener, DiagnosticsClientContext {
+public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorizationTokenProvider, CpuMemoryListener,
+    DiagnosticsClientContext {
     private static final AtomicInteger activeClientsCnt = new AtomicInteger(0);
     private static final AtomicInteger clientIdGenerator = new AtomicInteger(0);
     private static final Range<String> RANGE_INCLUDING_ALL_PARTITION_KEY_RANGES = new Range<String>(
@@ -135,6 +138,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private final AtomicBoolean closed = new AtomicBoolean(false);
     private final int clientId;
+    private ClientTelemetry clientTelemetry;
 
     // RetryPolicy retries a request when it encounters session unavailable (see ClientRetryPolicy).
     // Once it exhausts all write regions it clears the session container, then it uses RxClientCollectionCache
@@ -335,7 +339,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.globalEndpointManager = new GlobalEndpointManager(asDatabaseAccountManagerInternal(), this.connectionPolicy, /**/configs);
             this.retryPolicy = new RetryPolicy(this, this.globalEndpointManager, this.connectionPolicy);
             this.resetSessionTokenRetryPolicy = retryPolicy;
-            CpuMonitor.register(this);
+            CpuMemoryMonitor.register(this);
         } catch (RuntimeException e) {
             logger.error("unexpected failure in initializing client.", e);
             close();
@@ -396,6 +400,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             } else {
                 this.initializeDirectConnectivity();
             }
+            clientTelemetry = new ClientTelemetry(null, UUID.randomUUID().toString(),
+                ManagementFactory.getRuntimeMXBean().getName(), userAgentContainer.getUserAgent(),
+                connectionPolicy.getConnectionMode(), globalEndpointManager.getLatestDatabaseAccount().getId(),
+                null, null, httpClient(), connectionPolicy.isClientTelemetryEnabled());
+            clientTelemetry.init();
         } catch (Exception e) {
             logger.error("unexpected failure in initializing client.", e);
             close();
@@ -529,6 +538,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public ConsistencyLevel getConsistencyLevel() {
         return consistencyLevel;
+    }
+
+    @Override
+    public ClientTelemetry getClientTelemetry() {
+        return this.clientTelemetry;
     }
 
     @Override
@@ -3479,7 +3493,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public Mono<DatabaseAccount> getDatabaseAccount() {
         DocumentClientRetryPolicy documentClientRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy();
-        return ObservableHelper.inlineIfPossibleAsObs(() -> getDatabaseAccountInternal(documentClientRetryPolicy), documentClientRetryPolicy);
+        return ObservableHelper.inlineIfPossibleAsObs(() -> getDatabaseAccountInternal(documentClientRetryPolicy),
+         documentClientRetryPolicy);
+    }
+
+    @Override
+    public DatabaseAccount getLatestDatabaseAccount() {
+        return this.globalEndpointManager.getLatestDatabaseAccount();
     }
 
     private Mono<DatabaseAccount> getDatabaseAccountInternal(DocumentClientRetryPolicy documentClientRetryPolicy) {
@@ -3611,7 +3631,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             logger.info("Shutting down reactorHttpClient ...");
             LifeCycleUtils.closeQuietly(this.reactorHttpClient);
             logger.info("Shutting down CpuMonitor ...");
-            CpuMonitor.unregister(this);
+            CpuMemoryMonitor.unregister(this);
             logger.info("Shutting down completed.");
         } else {
             logger.warn("Already shutdown!");
