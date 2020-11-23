@@ -256,7 +256,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final int entityIndex = 0;
         final boolean shareConnection = false;
         final boolean useCredentials = false;
-        final Duration shortWait = Duration.ofSeconds(2);
+        final Duration shortWait = Duration.ofSeconds(3);
 
         this.sender = getSenderBuilder(useCredentials, entityType, entityIndex, isSessionEnabled,
             shareConnection).buildAsyncClient();
@@ -268,7 +268,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         // Now create receiver
         if (isSessionEnabled) {
             assertNotNull(sessionId, "'sessionId' should have been set.");
-            sessionReceiverClient = getSessionReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
+            this.sessionReceiverClient = getSessionReceiverBuilder(useCredentials, entityType, entityIndex, shareConnection)
                 .buildAsyncClient();
 
             this.receiver = sessionReceiverClient.acceptSession(sessionId).block();
@@ -1188,7 +1188,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         // Act
         // Expecting that as we receive these messages, they'll be completed.
         try {
-            StepVerifier.create(autoCompleteReceiver.receiveMessages().take(numberOfEvents))
+            StepVerifier.create(autoCompleteReceiver.receiveMessages())
                 .assertNext(receivedMessage -> {
                     if (lastMessage != null) {
                         assertEquals(lastMessage.getMessageId(), receivedMessage.getMessageId());
