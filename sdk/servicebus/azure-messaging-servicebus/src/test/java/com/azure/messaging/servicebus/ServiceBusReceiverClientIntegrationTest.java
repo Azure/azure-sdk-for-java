@@ -106,7 +106,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     }
 
     /**
-     * Verifies that we can only call receive() multiple times.
+     * Verifies that we can only call receive() multiple times. 
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
     @ParameterizedTest
