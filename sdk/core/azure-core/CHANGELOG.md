@@ -4,7 +4,7 @@
 
 ### New Features
 
-- Moved `BinaryData` from `azure-core-experimental` to `azure-core`.
+- Added `BinaryData` which allows for a format agnostic representation of binary information.
 
 
 ## 1.10.0 (2020-10-29)
