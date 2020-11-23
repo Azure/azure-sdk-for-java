@@ -286,7 +286,7 @@ public class BlobAsyncClientBase {
      *
      * @return {@link BlobContainerAsyncClient}
      */
-    public final BlobContainerAsyncClient getContainerAsyncClient() {
+    public BlobContainerAsyncClient getContainerAsyncClient() {
         return getContainerClientBuilder().buildAsyncClient();
     }
 

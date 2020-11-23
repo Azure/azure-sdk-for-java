@@ -147,7 +147,7 @@ public class BlobClientBase {
      *
      * @return {@link BlobContainerClient}
      */
-    public final BlobContainerClient getContainerClient() {
+    public BlobContainerClient getContainerClient() {
         return client.getContainerClientBuilder().buildClient();
     }
 
