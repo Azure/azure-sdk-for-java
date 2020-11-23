@@ -1,6 +1,9 @@
 # Release History
 
-## 3.0.0-beta.1 (Unreleased)
+## 3.0.0-beta.2 (Unreleased)
+
+
+## 3.0.0-beta.1 (2020-11-18)
 ### Breaking Changes
 - Conditional access policy is not supported temporary, we may recover it in the future.
 - Configuration items like `spring.security.oauth2.client.xxx` is not supported anymore. Please use the following configuration items instead:

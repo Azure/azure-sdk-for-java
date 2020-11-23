@@ -3,16 +3,15 @@
 
 package com.azure.messaging.servicebus.implementation;
 
-import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseChannel;
 import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.ServiceBusTransactionContext;
+import com.azure.messaging.servicebus.*;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
-import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
@@ -42,6 +41,7 @@ import reactor.test.StepVerifier;
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.HashMap;
@@ -88,6 +88,7 @@ class ManagementChannelTests {
     // Mocked response values from the RequestResponseChannel.
     private final Message responseMessage = Proton.message();
     private final Map<String, Object> applicationProperties = new HashMap<>();
+    private AmqpResponseCode authorizationResponseCode;
 
     private ManagementChannel managementChannel;
 
@@ -118,9 +119,11 @@ class ManagementChannelTests {
 
         MockitoAnnotations.initMocks(this);
 
+        authorizationResponseCode = AmqpResponseCode.OK;
+
         Flux<AmqpResponseCode> results = Flux.create(sink -> sink.onRequest(requested -> {
             logger.info("Requested {} authorization results.", requested);
-            sink.next(AmqpResponseCode.OK);
+            sink.next(authorizationResponseCode);
         }));
 
         applicationProperties.put(STATUS_CODE_KEY, AmqpResponseCode.OK.getValue());
@@ -431,28 +434,86 @@ class ManagementChannelTests {
     void unauthorized() {
         // Arrange
         final String sessionId = "A session-id";
-        applicationProperties.put(STATUS_CODE_KEY, AmqpResponseCode.NOT_FOUND.getValue());
+        authorizationResponseCode = AmqpResponseCode.UNAUTHORIZED;
 
         // Act & Assert
         StepVerifier.create(managementChannel.getSessionState(sessionId, LINK_NAME))
             .expectErrorSatisfies(error -> {
-                assertTrue(error instanceof AmqpException);
-                assertFalse(((AmqpException) error).isTransient());
+                assertTrue(error instanceof ServiceBusException);
+                assertEquals(ServiceBusErrorSource.MANAGEMENT, ServiceBusExceptionTestHelper.getInternalErrorSource((ServiceBusException) error));
+                assertEquals(ServiceBusFailureReason.UNAUTHORIZED, ((ServiceBusException) error).getReason());
+                assertFalse(((ServiceBusException) error).isTransient());
             })
             .verify();
+
+        StepVerifier.create(managementChannel.renewMessageLock(sessionId, LINK_NAME))
+                .expectErrorSatisfies(error -> {
+                    assertTrue(error instanceof ServiceBusException);
+                    assertEquals(ServiceBusErrorSource.MANAGEMENT, ServiceBusExceptionTestHelper.getInternalErrorSource((ServiceBusException) error));
+                    assertEquals(ServiceBusFailureReason.UNAUTHORIZED, ((ServiceBusException) error).getReason());
+                    assertFalse(((ServiceBusException) error).isTransient());
+                })
+                .verify();
+
+        StepVerifier.create(managementChannel.renewMessageLock(sessionId, LINK_NAME))
+                .expectErrorSatisfies(error -> {
+                    assertTrue(error instanceof ServiceBusException);
+                    assertEquals(ServiceBusErrorSource.MANAGEMENT, ServiceBusExceptionTestHelper.getInternalErrorSource((ServiceBusException) error));
+                    assertEquals(ServiceBusFailureReason.UNAUTHORIZED, ((ServiceBusException) error).getReason());
+                    assertFalse(((ServiceBusException) error).isTransient());
+                })
+                .verify();
+
+        StepVerifier.create(managementChannel.renewSessionLock(sessionId, LINK_NAME))
+                .expectErrorSatisfies(error -> {
+                    assertTrue(error instanceof ServiceBusException);
+                    assertEquals(ServiceBusErrorSource.MANAGEMENT, ServiceBusExceptionTestHelper.getInternalErrorSource((ServiceBusException) error));
+                    assertEquals(ServiceBusFailureReason.UNAUTHORIZED, ((ServiceBusException) error).getReason());
+                    assertFalse(((ServiceBusException) error).isTransient());
+                })
+                .verify();
+
+        StepVerifier.create(managementChannel.setSessionState(sessionId, new byte[0], LINK_NAME))
+                .expectErrorSatisfies(error -> {
+                    assertTrue(error instanceof ServiceBusException);
+                    assertEquals(ServiceBusErrorSource.MANAGEMENT, ServiceBusExceptionTestHelper.getInternalErrorSource((ServiceBusException) error));
+                    assertEquals(ServiceBusFailureReason.UNAUTHORIZED, ((ServiceBusException) error).getReason());
+                    assertFalse(((ServiceBusException) error).isTransient());
+                })
+                .verify();
+
+        StepVerifier.create(managementChannel.schedule(new ArrayList<>(), OffsetDateTime.now(), 1, LINK_NAME, null))
+                .expectErrorSatisfies(error -> {
+                    assertTrue(error instanceof ServiceBusException);
+                    assertEquals(ServiceBusErrorSource.MANAGEMENT, ServiceBusExceptionTestHelper.getInternalErrorSource((ServiceBusException) error));
+                    assertEquals(ServiceBusFailureReason.UNAUTHORIZED, ((ServiceBusException) error).getReason());
+                    assertFalse(((ServiceBusException) error).isTransient());
+                })
+                .verify();
+
+        StepVerifier.create(managementChannel.updateDisposition(UUID.randomUUID().toString(),
+                DispositionStatus.ABANDONED, "", "",
+                null, sessionId, LINK_NAME, null))
+                .expectErrorSatisfies(error -> {
+                    assertTrue(error instanceof ServiceBusException);
+                    assertEquals(ServiceBusErrorSource.MANAGEMENT, ServiceBusExceptionTestHelper.getInternalErrorSource((ServiceBusException) error));
+                    assertEquals(ServiceBusFailureReason.UNAUTHORIZED, ((ServiceBusException) error).getReason());
+                    assertFalse(((ServiceBusException) error).isTransient());
+                })
+                .verify();
     }
 
     @Test
     void getDeferredMessagesWithEmptyArrayReturnsAnEmptyFlux() {
         // Arrange, act, assert
-        StepVerifier.create(managementChannel.receiveDeferredMessages(ReceiveMode.PEEK_LOCK, null, null, new ArrayList<>()))
+        StepVerifier.create(managementChannel.receiveDeferredMessages(ServiceBusReceiveMode.PEEK_LOCK, null, null, new ArrayList<>()))
             .verifyComplete();
     }
 
     @Test
     void getDeferredMessagesWithNullThrows() {
         // Arrange, act, assert
-        StepVerifier.create(managementChannel.receiveDeferredMessages(ReceiveMode.PEEK_LOCK, null, null, null))
+        StepVerifier.create(managementChannel.receiveDeferredMessages(ServiceBusReceiveMode.PEEK_LOCK, null, null, null))
             .verifyError(NullPointerException.class);
     }
 

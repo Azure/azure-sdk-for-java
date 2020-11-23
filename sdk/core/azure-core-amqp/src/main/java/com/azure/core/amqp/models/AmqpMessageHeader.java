@@ -6,11 +6,10 @@ package com.azure.core.amqp.models;
 import com.azure.core.annotation.Fluent;
 
 import java.time.Duration;
-import java.util.Objects;
 
 /**
  * The representation of message header as defined by AMQP protocol.
- * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#section-message-format">
+ * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#section-message-format" target="_blank">
  * Amqp Message Format.</a>
  */
 @Fluent
@@ -24,19 +23,6 @@ public class AmqpMessageHeader {
 
     AmqpMessageHeader() {
         // This class does not have any public constructors, and is not able to be instantiated using 'new'.
-    }
-
-    /**
-     * The constructor is used to clone the values.
-     */
-    AmqpMessageHeader(AmqpMessageHeader header) {
-        super();
-        Objects.requireNonNull(header, "'header' cannot be null.");
-        deliveryCount = header.getDeliveryCount();
-        durable = header.isDurable();
-        firstAcquirer = header.isFirstAcquirer();
-        timeToLive = header.getTimeToLive();
-        priority = header.getPriority();
     }
 
     /**

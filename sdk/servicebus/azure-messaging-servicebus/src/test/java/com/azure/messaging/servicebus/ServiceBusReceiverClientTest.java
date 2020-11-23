@@ -9,7 +9,7 @@ import com.azure.messaging.servicebus.models.AbandonOptions;
 import com.azure.messaging.servicebus.models.CompleteOptions;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.DeferOptions;
-import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -80,7 +80,7 @@ class ServiceBusReceiverClientTest {
         MockitoAnnotations.initMocks(this);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
-        when(asyncClient.getReceiverOptions()).thenReturn(new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, null, false));
+        when(asyncClient.getReceiverOptions()).thenReturn(new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
         when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
         client = new ServiceBusReceiverClient(asyncClient, OPERATION_TIMEOUT);
     }
@@ -658,7 +658,7 @@ class ServiceBusReceiverClientTest {
                 sink.complete();
             });
         });
-        when(asyncClient.receiveMessages()).thenReturn(messageSink);
+        when(asyncClient.receiveMessagesNoBackPressure()).thenReturn(messageSink);
 
         // Act
         final IterableStream<ServiceBusReceivedMessage> actual = client.receiveMessages(maxMessages, receiveTimeout);
@@ -704,7 +704,7 @@ class ServiceBusReceiverClientTest {
             });
         });
 
-        when(asyncClient.receiveMessages()).thenReturn(messageSink);
+        when(asyncClient.receiveMessagesNoBackPressure()).thenReturn(messageSink);
 
         // Act
         final IterableStream<ServiceBusReceivedMessage> actual = client.receiveMessages(maxMessages);
@@ -750,7 +750,7 @@ class ServiceBusReceiverClientTest {
                 sink.complete();
             });
         });
-        when(asyncClient.receiveMessages()).thenReturn(messageSink);
+        when(asyncClient.receiveMessagesNoBackPressure()).thenReturn(messageSink);
 
         // Act
         final IterableStream<ServiceBusReceivedMessage> actual = client.receiveMessages(maxMessages);

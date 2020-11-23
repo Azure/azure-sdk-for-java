@@ -39,6 +39,7 @@ final class TestUtils {
     static final String FORM_JPG = "Form_1.jpg";
     static final String TEST_DATA_PNG = "testData.png";
     static final String SELECTION_MARK_PDF = "selectionMarkForm.pdf";
+    static final String CONTENT_GERMAN_PDF = "content_german.pdf";
     // Other resources
     static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
     static final String FAKE_ENCODED_EMPTY_SPACE_URL = "https://fakeuri.com/blank%20space";
