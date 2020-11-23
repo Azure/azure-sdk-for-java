@@ -32,6 +32,7 @@ public final class BulkOperations {
      *
      * @return the bulk operation.
      */
+    @Beta(Beta.SinceVersion.V4_9_0)
     public static <T> CosmosItemOperation newCreateItemOperation(T item, PartitionKey partitionKey) {
         checkNotNull(item, "expected non-null item");
         checkNotNull(partitionKey, "expected non-null partitionKey");
@@ -49,6 +50,7 @@ public final class BulkOperations {
      *
      * @return the bulk operation.
      */
+    @Beta(Beta.SinceVersion.V4_9_0)
     public static <T> CosmosItemOperation newCreateItemOperation(
         T item,
         PartitionKey partitionKey,
@@ -78,6 +80,7 @@ public final class BulkOperations {
      *
      * @return the bulk operation.
      */
+    @Beta(Beta.SinceVersion.V4_9_0)
     public static CosmosItemOperation newDeleteItemOperation(String id, PartitionKey partitionKey) {
         checkNotNull(id, "expected non-null id");
         checkNotNull(partitionKey, "expected non-null partitionKey");
@@ -94,6 +97,7 @@ public final class BulkOperations {
      *
      * @return the bulk operation.
      */
+    @Beta(Beta.SinceVersion.V4_9_0)
     public static CosmosItemOperation newDeleteItemOperation(
         String id,
         PartitionKey partitionKey,
@@ -123,6 +127,7 @@ public final class BulkOperations {
      *
      * @return the bulk operation.
      */
+    @Beta(Beta.SinceVersion.V4_9_0)
     public static CosmosItemOperation newReadItemOperation(String id, PartitionKey partitionKey) {
         checkNotNull(id, "expected non-null id");
         checkNotNull(partitionKey, "expected non-null partitionKey");
@@ -139,6 +144,7 @@ public final class BulkOperations {
      *
      * @return the bulk operation.
      */
+    @Beta(Beta.SinceVersion.V4_9_0)
     public static CosmosItemOperation newReadItemOperation(
         String id,
         PartitionKey partitionKey,
@@ -171,6 +177,7 @@ public final class BulkOperations {
      *
      * @return the bulk operation.
      */
+    @Beta(Beta.SinceVersion.V4_9_0)
     public static <T> CosmosItemOperation newReplaceItemOperation(String id, T item, PartitionKey partitionKey) {
         checkNotNull(item, "expected non-null item");
         checkNotNull(id, "expected non-null id");
@@ -191,6 +198,7 @@ public final class BulkOperations {
      *
      * @return the bulk operation.
      */
+    @Beta(Beta.SinceVersion.V4_9_0)
     public static <T> CosmosItemOperation newReplaceItemOperation(
         String id,
         T item,
@@ -224,6 +232,7 @@ public final class BulkOperations {
      *
      * @return the bulk operation.
      */
+    @Beta(Beta.SinceVersion.V4_9_0)
     public static <T> CosmosItemOperation newUpsertItemOperation(T item, PartitionKey partitionKey) {
         checkNotNull(item, "expected non-null item");
         checkNotNull(partitionKey, "expected non-null partitionKey");
@@ -242,6 +251,7 @@ public final class BulkOperations {
      *
      * @return the bulk operation.
      */
+    @Beta(Beta.SinceVersion.V4_9_0)
     public static <T> CosmosItemOperation newUpsertItemOperation(
         T item,
         PartitionKey partitionKey,

@@ -29,6 +29,7 @@ public final class BulkProcessingOptions<TContext> {
         this(null);
     }
 
+    @Beta(Beta.SinceVersion.V4_9_0)
     public int getMaxMicroBatchSize() {
         return maxMicroBatchSize;
     }
@@ -49,13 +50,15 @@ public final class BulkProcessingOptions<TContext> {
      *
      * @param maxMicroBatchSize batching size.
      *
-     * @return the bulk processing operations.
+     * @return the bulk processing options.
      */
+    @Beta(Beta.SinceVersion.V4_9_0)
     public BulkProcessingOptions<TContext> setMaxMicroBatchSize(int maxMicroBatchSize) {
         this.maxMicroBatchSize = maxMicroBatchSize;
         return this;
     }
 
+    @Beta(Beta.SinceVersion.V4_9_0)
     public int getMaxMicroBatchConcurrency() {
         return maxMicroBatchConcurrency;
     }
@@ -65,13 +68,15 @@ public final class BulkProcessingOptions<TContext> {
      *
      * @param maxMicroBatchConcurrency maximum concurrency.
      *
-     * @return the bulk processing operations.
+     * @return the bulk processing options.
      */
+    @Beta(Beta.SinceVersion.V4_9_0)
     public BulkProcessingOptions<TContext> setMaxMicroBatchConcurrency(int maxMicroBatchConcurrency) {
         this.maxMicroBatchConcurrency = maxMicroBatchConcurrency;
         return this;
     }
 
+    @Beta(Beta.SinceVersion.V4_9_0)
     public Duration getMaxMicroBatchInterval() {
         return maxMicroBatchInterval;
     }
@@ -81,13 +86,15 @@ public final class BulkProcessingOptions<TContext> {
      *
      * @param maxMicroBatchInterval duration after which operations will be flushed to form a new batch to be executed.
      *
-     * @return the bulk processing operations.
+     * @return the bulk processing options.
      */
+    @Beta(Beta.SinceVersion.V4_9_0)
     public BulkProcessingOptions<TContext> setMaxMicroBatchInterval(Duration maxMicroBatchInterval) {
         this.maxMicroBatchInterval = maxMicroBatchInterval;
         return this;
     }
 
+    @Beta(Beta.SinceVersion.V4_9_0)
     public TContext getBatchContext() {
         return batchContext;
     }

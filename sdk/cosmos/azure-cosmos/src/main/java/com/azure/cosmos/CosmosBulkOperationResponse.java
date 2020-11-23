@@ -46,18 +46,22 @@ public final class CosmosBulkOperationResponse<TContext> {
         this.batchContext = batchContext;
     }
 
+    @Beta(Beta.SinceVersion.V4_9_0)
     public CosmosItemOperation getOperation() {
         return operation;
     }
 
+    @Beta(Beta.SinceVersion.V4_9_0)
     public CosmosBulkItemResponse getResponse() {
         return response;
     }
 
+    @Beta(Beta.SinceVersion.V4_9_0)
     public Exception getException() {
         return exception;
     }
 
+    @Beta(Beta.SinceVersion.V4_9_0)
     public TContext getBatchContext() {
         return batchContext;
     }
