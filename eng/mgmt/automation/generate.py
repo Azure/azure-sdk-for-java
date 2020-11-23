@@ -64,9 +64,8 @@ def generate(
     update_version(sdk_root, service)
 
     if compile:
-        if os.system(
-                'mvn clean verify package -f {0}/pom.xml -pl {1}:{2} -am'.format(
-                    sdk_root, GROUP_ID, module)) != 0:
+        if os.system('mvn clean verify package -f {0}/pom.xml -pl {1}:{2} -am'.
+                     format(sdk_root, GROUP_ID, module)) != 0:
             logging.error('[GENERATE] Maven build fail')
             return False
 
@@ -328,7 +327,7 @@ def parse_args() -> argparse.Namespace:
         help = 'Do compile after generation or not',
     )
     parser.add_argument(
-        '--auto-commit-generated-code',
+        '--auto-commit-external-change',
         action = 'store_true',
         help = 'Automatic commit the generated code',
     )
@@ -473,15 +472,19 @@ def main():
     args['service'] = service
     set_or_increase_version_and_generate(sdk_root, **args)
 
-    if args.get('auto_commit_generated_code') and args.get(
+    if args.get('auto_commit_external_change') and args.get(
             'user_name') and args.get('user_email'):
-        os.system('git add {0}'.format(
-            os.path.abspath(
-                os.path.join(sdk_root, OUTPUT_FOLDER_FORMAT.format(service)))))
-        os.system(
-            'git -c user.name={0} -c user.email={1} commit -m "[Automation] Generate Fluent Lite from {2}#{3}"'
-            .format(args['user_name'], args['user_email'], spec,
-                    args.get('tag', '')))
+        pwd = os.getcwd()
+        try:
+            os.chdir(sdk_root)
+            os.system('git add eng/versioning pom.xml {0} {1}'.format(
+                CI_FILE_FORMAT.format(service),
+                POM_FILE_FORMAT.format(service)))
+            os.system(
+                'git -c user.name={0} -c user.email={1} commit -m "[Automation] External Change"'
+                .format(args['user_name'], args['user_email']))
+        finally:
+            os.chdir(pwd)
 
 
 if __name__ == '__main__':
