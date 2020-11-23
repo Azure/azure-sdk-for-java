@@ -2,6 +2,9 @@
 
 ## 1.7.0-beta.1 (Unreleased)
 
+### Bug Fixes
+
+- Fixed a bug where a connection would remain active when timed out instead of being closed.
 
 ## 1.6.3 (2020-10-29)
 

@@ -99,6 +99,11 @@ class BigDataPoolResourceInfoImpl extends CreatableUpdatableImpl<BigDataPoolReso
     }
 
     @Override
+    public Boolean haveLibraryRequirementsChanged() {
+        return this.inner().haveLibraryRequirementsChanged();
+    }
+
+    @Override
     public String id() {
         return this.inner().id();
     }
@@ -141,6 +146,16 @@ class BigDataPoolResourceInfoImpl extends CreatableUpdatableImpl<BigDataPoolReso
     @Override
     public String provisioningState() {
         return this.inner().provisioningState();
+    }
+
+    @Override
+    public Boolean sessionLevelPackagesEnabled() {
+        return this.inner().sessionLevelPackagesEnabled();
+    }
+
+    @Override
+    public LibraryRequirements sparkConfigProperties() {
+        return this.inner().sparkConfigProperties();
     }
 
     @Override
@@ -211,6 +226,12 @@ class BigDataPoolResourceInfoImpl extends CreatableUpdatableImpl<BigDataPoolReso
     }
 
     @Override
+    public BigDataPoolResourceInfoImpl withHaveLibraryRequirementsChanged(Boolean haveLibraryRequirementsChanged) {
+        this.inner().withHaveLibraryRequirementsChanged(haveLibraryRequirementsChanged);
+        return this;
+    }
+
+    @Override
     public BigDataPoolResourceInfoImpl withIsComputeIsolationEnabled(Boolean isComputeIsolationEnabled) {
         this.inner().withIsComputeIsolationEnabled(isComputeIsolationEnabled);
         return this;
@@ -243,6 +264,18 @@ class BigDataPoolResourceInfoImpl extends CreatableUpdatableImpl<BigDataPoolReso
     @Override
     public BigDataPoolResourceInfoImpl withProvisioningState(String provisioningState) {
         this.inner().withProvisioningState(provisioningState);
+        return this;
+    }
+
+    @Override
+    public BigDataPoolResourceInfoImpl withSessionLevelPackagesEnabled(Boolean sessionLevelPackagesEnabled) {
+        this.inner().withSessionLevelPackagesEnabled(sessionLevelPackagesEnabled);
+        return this;
+    }
+
+    @Override
+    public BigDataPoolResourceInfoImpl withSparkConfigProperties(LibraryRequirements sparkConfigProperties) {
+        this.inner().withSparkConfigProperties(sparkConfigProperties);
         return this;
     }
 
