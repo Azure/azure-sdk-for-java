@@ -6,13 +6,15 @@ package com.azure.messaging.servicebus.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.messaging.servicebus.ServiceBusMessageBatch;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
+import com.azure.messaging.servicebus.ServiceBusSenderClient;
 
 /**
  * The set of options that can be specified when creating an batch of messages. This wrapper will help to limit
  * the messages with maximum allowed size.
  *
  * @see ServiceBusMessageBatch
- * @see ServiceBusSenderAsyncClient
+ * @see ServiceBusSenderAsyncClient#createMessageBatch(CreateMessageBatchOptions)
+ * @see ServiceBusSenderClient#createMessageBatch(CreateMessageBatchOptions)
  */
 @Fluent
 public final class CreateMessageBatchOptions {
