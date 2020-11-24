@@ -10,10 +10,12 @@ import com.azure.communication.administration.implementation.CommunicationIdenti
 import com.azure.communication.administration.implementation.CommunicationIdentityClientImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AzureKeyCredentialPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -42,7 +44,8 @@ public final class CommunicationIdentityClientBuilder {
     private final ClientLogger logger = new ClientLogger(CommunicationIdentityClientBuilder.class);
     private String endpoint;
     private CommunicationClientCredential credential;
-    private AzureKeyCredential azureKeyCredential;
+    private AzureKeyCredential keyCredential;
+    private TokenCredential tokenCredential;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions = new HttpLogOptions();
     private HttpPipeline pipeline;
@@ -74,13 +77,29 @@ public final class CommunicationIdentityClientBuilder {
     }
 
     /**
-     * Set AzureKeyCredential
-     * @param credential AzureKeyCredential to use
-     * @return CommunicationIdentityClientBuilder
+     * Sets the {@link AzureKeyCredential} to use when authenticating HTTP requests for this
+     * {@link CommunicationIdentityClientBuilder}.
+     *
+     * @param keyCredential {@link AzureKeyCredential} API key credential
+     * @return The updated {@link CommunicationIdentityClientBuilder} object.
+     * @throws NullPointerException If {@code keyCredential} is null
      */
 
-    public CommunicationIdentityClientBuilder credential(AzureKeyCredential credential) {
-        this.azureKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
+    public CommunicationIdentityClientBuilder credential(AzureKeyCredential keyCredential) {
+        this.keyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
+        return this;
+    }
+
+    /**
+     * Sets the {@link TokenCredential} used to authenticate HTTP requests.
+     *
+     * @param tokenCredential {@link TokenCredential} used to authenticate HTTP requests.
+     * @return The updated {@link CommunicationIdentityClientBuilder} object.
+     * @throws NullPointerException If {@code tokenCredential} is null.
+     */
+
+    public CommunicationIdentityClientBuilder credential(TokenCredential tokenCredential) {
+        this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
         return this;
     }
 
@@ -206,24 +225,9 @@ public final class CommunicationIdentityClientBuilder {
 
         HttpPipeline builderPipeline = this.pipeline;
         if (this.pipeline == null) {
-            if(this.azureKeyCredential != null) { 
-                AzureKeyCredentialPolicy azureKeyCredentialPolicy = new AzureKeyCredentialPolicy("name", this.azureKeyCredential);            
-                builderPipeline = createHttpPipeline(httpClient,
-                    azureKeyCredentialPolicy,
-                    customPolicies);
-            }
-            else if(this.credential != null) {
-                    HmacAuthenticationPolicy hmacAuthenticationPolicy = new HmacAuthenticationPolicy(credential);            
-                    builderPipeline = createHttpPipeline(httpClient,
-                        hmacAuthenticationPolicy,
-                        customPolicies);
-            }
-            else {
-                throw logger.logExceptionAsError(
-                    new IllegalArgumentException("Missing credential information while building a client."));
-            }
-            
-
+            builderPipeline = createHttpPipeline(httpClient, 
+                createHttpPipelineAuthPolicy(), 
+                customPolicies);
         }
 
         CommunicationIdentityClientImplBuilder clientBuilder = new CommunicationIdentityClientImplBuilder();
@@ -231,6 +235,24 @@ public final class CommunicationIdentityClientBuilder {
             .pipeline(builderPipeline);
         
         return clientBuilder.buildClient();
+    }
+
+    private HttpPipelinePolicy createHttpPipelineAuthPolicy() {
+        HttpPipelinePolicy authPolicy;
+        if (this.tokenCredential != null) { 
+            authPolicy = new BearerTokenAuthenticationPolicy(this.tokenCredential, "");          
+        }
+        else if (this.keyCredential != null) {
+            authPolicy = new AzureKeyCredentialPolicy("", this.keyCredential);
+        }
+        else if (this.credential != null) {
+            authPolicy = new HmacAuthenticationPolicy(this.credential);            
+        }
+        else {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing credential information while building a client."));
+        }
+        return authPolicy;
     }
 
     private HttpPipeline createHttpPipeline(HttpClient httpClient,

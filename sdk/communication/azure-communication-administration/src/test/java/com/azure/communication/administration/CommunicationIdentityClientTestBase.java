@@ -3,11 +3,13 @@
 
 package com.azure.communication.administration;
 
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.Configuration;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.util.Base64;
 import java.util.Locale;
@@ -33,6 +35,21 @@ public class CommunicationIdentityClientTestBase extends TestBase {
 
         if (getTestMode() == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+
+        return builder;
+    }
+
+    protected CommunicationIdentityClientBuilder getCommunicationIdentityClientBuilderUsingManagedIdentity(HttpClient httpClient) {
+        CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
+        builder
+            .endpoint(ENDPOINT)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+
+        if (getTestMode() == TestMode.PLAYBACK) {
+                builder.credential(new AzureKeyCredential("FAKE_API_KEY"));
+        } else {
+                builder.credential(new DefaultAzureCredentialBuilder().build());
         }
 
         return builder;
