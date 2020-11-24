@@ -212,6 +212,10 @@ Licensed under the MIT License.
         <artifactId>maven-checkstyle-plugin</artifactId>
         <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
         <configuration>
+          <!--
+          This excludes all files contained within parent folders 'apachecommons', 'guava25', 'guava27', and 'uuid'.
+          These folders contain code that has been shaded into azure-cosmos and shouldn't be checked by Checkstyle.
+          -->
           <excludes>**/apachecommons/**/*,**/guava25/**/*,**/guava27/**/*,**/uuid/**/*</excludes>
         </configuration>
       </plugin>
