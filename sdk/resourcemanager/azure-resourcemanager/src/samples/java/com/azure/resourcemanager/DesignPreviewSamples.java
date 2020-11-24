@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.resourcemanager;
 
 import com.azure.core.management.Region;
@@ -24,9 +27,6 @@ public class DesignPreviewSamples {
     private final String parametersUri = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vnet-two-subnets/azuredeploy.parameters.json";
 
     // extra empty lines to compensate import lines
-
-
-
 
 
 
