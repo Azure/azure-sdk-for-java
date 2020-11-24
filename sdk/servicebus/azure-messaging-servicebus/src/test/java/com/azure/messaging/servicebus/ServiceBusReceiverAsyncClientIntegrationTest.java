@@ -981,14 +981,19 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         }
 
         // Assert & Act
-        StepVerifier.create(deadLetterReceiver.receiveMessages())
-            .assertNext(serviceBusReceivedMessage -> {
-                receivedMessages.add(serviceBusReceivedMessage);
-                assertMessageEquals(serviceBusReceivedMessage, messageId, isSessionEnabled);
-            })
-            .thenAwait(shortWait) // Give  some time auto complete to finish.
-            .thenCancel()
-            .verify();
+        try {
+            StepVerifier.create(deadLetterReceiver.receiveMessages())
+                .assertNext(serviceBusReceivedMessage -> {
+                    receivedMessages.add(serviceBusReceivedMessage);
+                    assertMessageEquals(serviceBusReceivedMessage, messageId, isSessionEnabled);
+                })
+                .thenAwait(shortWait) // Give  some time auto complete to finish.
+                .thenCancel()
+                .verify();
+        }finally {
+            // close dead letter receiver.
+            deadLetterReceiver.close();
+        }
 
     }
 
