@@ -3,6 +3,7 @@
 ## 2.1.0 (2020-11-24)
 
 - Changed `ProviderRegistrationPolicy` using `Providers` endpoint directly.
+- Changed `Tenants::list` to return new interface `Tenant` instead of `TenantIdDescriptionInner`.
 
 ## 2.0.0 (2020-10-19)
 
