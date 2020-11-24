@@ -71,19 +71,28 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
      *
      * <p>
      * The constructor uses System.getProperty for
-     * <code>azure.keyvault.uri</code>, <code>azure.keyvault.tenantId</code>,
+     * <code>azure.keyvault.uri</code>, 
+     * <code>azure.keyvault.aadAuthenticationUrl</code>, 
+     * <code>azure.keyvault.tenantId</code>,
      * <code>azure.keyvault.clientId</code>,
-     * <code>azure.keyvault.clientSecret</code> to initialize the keyvault
-     * client.
+     * <code>azure.keyvault.clientSecret</code> and
+     * <code>azure.keyvault.managedIdentity</code> to initialize the
+     * Key Vault client.
      * </p>
      */
     public KeyVaultKeyStore() {
         creationDate = new Date();
         String keyVaultUri = System.getProperty("azure.keyvault.uri");
+        String aadAuthenticationUrl = System.getProperty("azure.keyvault.aadAuthenticationUrl");
         String tenantId = System.getProperty("azure.keyvault.tenantId");
         String clientId = System.getProperty("azure.keyvault.clientId");
         String clientSecret = System.getProperty("azure.keyvault.clientSecret");
-        keyVaultClient = new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret);
+        String managedIdentity = System.getProperty("azure.keyvault.managedIdentity");
+        if (clientId != null) {
+            keyVaultClient = new KeyVaultClient(keyVaultUri, aadAuthenticationUrl, tenantId, clientId, clientSecret);
+        } else {
+            keyVaultClient = new KeyVaultClient(keyVaultUri, managedIdentity);
+        }
     }
 
     @Override
@@ -173,6 +182,9 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
             key = keyVaultClient.getKey(alias, password);
             if (key != null) {
                 certificateKeys.put(alias, key);
+                if (aliases == null) {
+                    aliases = keyVaultClient.getAliases();
+                }
                 if (!aliases.contains(alias)) {
                     aliases.add(alias);
                 }
@@ -198,11 +210,21 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     public void engineLoad(KeyStore.LoadStoreParameter param) {
         if (param instanceof KeyVaultLoadStoreParameter) {
             KeyVaultLoadStoreParameter parameter = (KeyVaultLoadStoreParameter) param;
-            keyVaultClient = new KeyVaultClient(
-                    parameter.getUri(),
-                    parameter.getTenantId(),
-                    parameter.getClientId(),
-                    parameter.getClientSecret());
+            if (parameter.getClientId() != null) {
+                keyVaultClient = new KeyVaultClient(
+                        parameter.getUri(),
+                        parameter.getAadAuthenticationUrl(),
+                        parameter.getTenantId(),
+                        parameter.getClientId(),
+                        parameter.getClientSecret());
+            } else if (parameter.getManagedIdentity() != null) {
+                keyVaultClient = new KeyVaultClient(
+                        parameter.getUri(),
+                        parameter.getManagedIdentity()
+                );
+            } else {
+                keyVaultClient = new KeyVaultClient(parameter.getUri());
+            }
         }
         sideLoad();
     }

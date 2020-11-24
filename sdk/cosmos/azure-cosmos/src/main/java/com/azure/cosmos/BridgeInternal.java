@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.CosmosError;
@@ -25,6 +26,7 @@ import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.StoredProcedureResponse;
+import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.Warning;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
@@ -33,6 +35,7 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointSta
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.query.metrics.ClientSideMetrics;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosStoredProcedureProperties;
 import com.azure.cosmos.models.FeedResponse;
@@ -68,6 +71,26 @@ public final class BridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosDiagnostics createCosmosDiagnostics(DiagnosticsClientContext diagnosticsClientContext) {
         return new CosmosDiagnostics(diagnosticsClientContext);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static Set<URI> getRegionsContacted(CosmosDiagnostics cosmosDiagnostics) {
+        return cosmosDiagnostics.clientSideRequestStatistics().getRegionsContacted();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static AsyncDocumentClient getContextClient(CosmosAsyncClient cosmosAsyncClient) {
+        return cosmosAsyncClient.getContextClient();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static String getServiceEndpoint(CosmosAsyncClient cosmosAsyncClient) {
+        return cosmosAsyncClient.getServiceEndpoint();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static boolean isClientTelemetryEnabled(CosmosAsyncClient cosmosAsyncClient) {
+        return cosmosAsyncClient.isClientTelemetryEnabled();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -387,14 +410,8 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosException createCosmosException(int statusCode, Exception innerException) {
-        return new CosmosException(statusCode, null, null, innerException);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosException createCosmosException(int statusCode, CosmosError cosmosErrorResource,
-                                                        Map<String, String> responseHeaders) {
-        return new CosmosException(/* resourceAddress */ null, statusCode, cosmosErrorResource, responseHeaders);
+    public static CosmosException createCosmosException(String resourceAddress, int statusCode, Exception innerException) {
+        return new CosmosException(resourceAddress, statusCode, null, null, innerException);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -582,6 +599,11 @@ public final class BridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosDatabase createCosmosDatabase(String id, CosmosClient client, CosmosAsyncDatabase database) {
         return new CosmosDatabase(id, client, database);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static TracerProvider getTracerProvider(CosmosAsyncClient client) {
+        return client.getTracerProvider();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

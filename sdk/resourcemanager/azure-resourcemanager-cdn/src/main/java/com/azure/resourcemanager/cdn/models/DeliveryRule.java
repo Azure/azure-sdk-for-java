@@ -16,6 +16,12 @@ public final class DeliveryRule {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DeliveryRule.class);
 
     /*
+     * Name of the rule
+     */
+    @JsonProperty(value = "name")
+    private String name;
+
+    /*
      * The order in which the rules are applied for the endpoint. Possible
      * values {0,1,2,3,………}. A rule with a lesser order will be applied before
      * a rule with a greater order. Rule with order 0 is a special rule. It
@@ -26,17 +32,37 @@ public final class DeliveryRule {
     private int order;
 
     /*
+     * A list of conditions that must be matched for the actions to be executed
+     */
+    @JsonProperty(value = "conditions")
+    private List<DeliveryRuleCondition> conditions;
+
+    /*
      * A list of actions that are executed when all the conditions of a rule
      * are satisfied.
      */
     @JsonProperty(value = "actions", required = true)
     private List<DeliveryRuleAction> actions;
 
-    /*
-     * A list of conditions that must be matched for the actions to be executed
+    /**
+     * Get the name property: Name of the rule.
+     *
+     * @return the name value.
      */
-    @JsonProperty(value = "conditions")
-    private List<DeliveryRuleCondition> conditions;
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Set the name property: Name of the rule.
+     *
+     * @param name the name value to set.
+     * @return the DeliveryRule object itself.
+     */
+    public DeliveryRule withName(String name) {
+        this.name = name;
+        return this;
+    }
 
     /**
      * Get the order property: The order in which the rules are applied for the endpoint. Possible values {0,1,2,3,………}.
@@ -63,26 +89,6 @@ public final class DeliveryRule {
     }
 
     /**
-     * Get the actions property: A list of actions that are executed when all the conditions of a rule are satisfied.
-     *
-     * @return the actions value.
-     */
-    public List<DeliveryRuleAction> actions() {
-        return this.actions;
-    }
-
-    /**
-     * Set the actions property: A list of actions that are executed when all the conditions of a rule are satisfied.
-     *
-     * @param actions the actions value to set.
-     * @return the DeliveryRule object itself.
-     */
-    public DeliveryRule withActions(List<DeliveryRuleAction> actions) {
-        this.actions = actions;
-        return this;
-    }
-
-    /**
      * Get the conditions property: A list of conditions that must be matched for the actions to be executed.
      *
      * @return the conditions value.
@@ -103,20 +109,40 @@ public final class DeliveryRule {
     }
 
     /**
+     * Get the actions property: A list of actions that are executed when all the conditions of a rule are satisfied.
+     *
+     * @return the actions value.
+     */
+    public List<DeliveryRuleAction> actions() {
+        return this.actions;
+    }
+
+    /**
+     * Set the actions property: A list of actions that are executed when all the conditions of a rule are satisfied.
+     *
+     * @param actions the actions value to set.
+     * @return the DeliveryRule object itself.
+     */
+    public DeliveryRule withActions(List<DeliveryRuleAction> actions) {
+        this.actions = actions;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (conditions() != null) {
+            conditions().forEach(e -> e.validate());
+        }
         if (actions() == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property actions in model DeliveryRule"));
         } else {
             actions().forEach(e -> e.validate());
-        }
-        if (conditions() != null) {
-            conditions().forEach(e -> e.validate());
         }
     }
 }

@@ -86,6 +86,7 @@ function Get-java-PackageInfoFromPackageFile ($pkg, $workingDirectory) {
     PackageId      = $pkgId
     GroupId        = $groupId
     PackageVersion = $pkgVersion
+    ReleaseTag     = "$($pkgId)_$($pkgVersion)"
     Deployable     = $forceCreate -or !(IsMavenPackageVersionPublished -pkgId $pkgId -pkgVersion $pkgVersion -groupId $groupId.Replace(".", "/"))
     ReleaseNotes   = $releaseNotes
     ReadmeContent  = $readmeContent
@@ -137,7 +138,7 @@ function Publish-java-GithubIODocs ($DocLocation, $PublicArtifactLocation)
       Write-Host "DocDir $($UnjarredDocumentationPath)"
       Write-Host "PkgName $($ArtifactId)"
       Write-Host "DocVersion $($Version)"
-      $releaseTag = RetrieveReleaseTag "Maven" $PublicArtifactLocation 
+      $releaseTag = RetrieveReleaseTag $PublicArtifactLocation 
       Upload-Blobs -DocDir $UnjarredDocumentationPath -PkgName $ArtifactId -DocVersion $Version -ReleaseTag $releaseTag
 
     }
@@ -168,4 +169,48 @@ function Get-java-GithubIoDocIndex() {
   $tocContent = Get-TocMapping -metadata $uniquePackages -artifacts $artifacts
   # Generate yml/md toc files and build site.
   GenerateDocfxTocContent -tocContent $tocContent -lang "Java"
+}
+
+# a "package.json configures target packages for all the monikers in a Repository, it also has a slightly different
+# schema than the moniker-specific json config that is seen in python and js
+function Update-java-CIConfig($pkgs, $ciRepo, $locationInDocRepo, $monikerId=$null){
+  $pkgJsonLoc = (Join-Path -Path $ciRepo -ChildPath $locationInDocRepo)
+  
+  if (-not (Test-Path $pkgJsonLoc)) {
+    Write-Error "Unable to locate package json at location $pkgJsonLoc, exiting."
+    exit(1)
+  }
+
+  $allJsonData = Get-Content $pkgJsonLoc | ConvertFrom-Json
+
+  $visibleInCI = @{}
+
+  for ($i=0; $i -lt $allJsonData[$monikerId].packages.Length; $i++) {
+    $pkgDef = $allJsonData[$monikerId].packages[$i]
+    $visibleInCI[$pkgDef.packageArtifactId] = $i
+  }
+
+  foreach ($releasingPkg in $pkgs) {
+    if ($visibleInCI.ContainsKey($releasingPkg.PackageId)) {
+      $packagesIndex = $visibleInCI[$releasingPkg.PackageId]
+      $existingPackageDef = $allJsonData[$monikerId].packages[$packagesIndex]
+      $existingPackageDef.packageVersion = $releasingPkg.PackageVersion
+    }
+    else {
+      $newItem = New-Object PSObject -Property @{ 
+        packageDownloadUrl = "https://repo1.maven.org/maven2"
+        packageGroupId = $releasingPkg.GroupId
+        packageArtifactId = $releasingPkg.PackageId
+        packageVersion = $releasingPkg.PackageVersion
+        inputPath = @()
+        excludePath = @()
+      }
+
+      $allJsonData[$monikerId].packages += $newItem
+    }
+  }
+
+  $jsonContent = $allJsonData | ConvertTo-Json -Depth 10 | % {$_ -replace "(?m)  (?<=^(?:  )*)", "    " }
+
+  Set-Content -Path $pkgJsonLoc -Value $jsonContent
 }

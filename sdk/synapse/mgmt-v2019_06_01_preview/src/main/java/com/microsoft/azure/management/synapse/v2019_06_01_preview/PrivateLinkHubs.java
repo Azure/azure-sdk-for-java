@@ -13,6 +13,7 @@ import com.microsoft.azure.arm.resources.collection.SupportsDeletingByResourceGr
 import com.microsoft.azure.arm.resources.collection.SupportsBatchDeletion;
 import com.microsoft.azure.arm.resources.collection.SupportsGettingByResourceGroup;
 import rx.Observable;
+import com.microsoft.azure.arm.resources.collection.SupportsListingByResourceGroup;
 import com.microsoft.azure.arm.collection.SupportsListing;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.implementation.PrivateLinkHubsInner;
 import com.microsoft.azure.arm.model.HasInner;
@@ -20,14 +21,5 @@ import com.microsoft.azure.arm.model.HasInner;
 /**
  * Type representing PrivateLinkHubs.
  */
-public interface PrivateLinkHubs extends SupportsCreating<PrivateLinkHub.DefinitionStages.Blank>, SupportsDeletingByResourceGroup, SupportsBatchDeletion, SupportsGettingByResourceGroup<PrivateLinkHub>, SupportsListing<PrivateLinkHub>, HasInner<PrivateLinkHubsInner> {
-    /**
-     * Returns a list of privateLinkHubs in a resource group.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<PrivateLinkHub> listByResourceGroupAsync(final String resourceGroupName);
-
+public interface PrivateLinkHubs extends SupportsCreating<PrivateLinkHub.DefinitionStages.Blank>, SupportsDeletingByResourceGroup, SupportsBatchDeletion, SupportsGettingByResourceGroup<PrivateLinkHub>, SupportsListingByResourceGroup<PrivateLinkHub>, SupportsListing<PrivateLinkHub>, HasInner<PrivateLinkHubsInner> {
 }

@@ -21,14 +21,13 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.test.context.support.TestPropertySourceUtils;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AADOAuth2ConfigTest {
     private static final String AAD_OAUTH2_MINIMUM_PROPS = "aad-backend-oauth2-minimum.properties";
@@ -56,7 +55,6 @@ public class AADOAuth2ConfigTest {
     @Test
     public void noOAuth2UserServiceBeanCreatedIfPropsNotConfigured() {
         final AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
-        context.register(AADOAuth2AutoConfiguration.class);
         context.refresh();
 
         exception.expect(NoSuchBeanDefinitionException.class);
@@ -86,7 +84,6 @@ public class AADOAuth2ConfigTest {
             "azure.service.endpoints.global.aadKeyDiscoveryUri=https://test/",
             "azure.service.endpoints.global.aadMembershipRestUri=https://test/",
             TestConstants.ALLOW_TELEMETRY_PROPERTY + "=false");
-
 
         final Environment environment = testContext.getEnvironment();
         assertThat(environment.getProperty("azure.service.endpoints.global.aadSigninUri"))

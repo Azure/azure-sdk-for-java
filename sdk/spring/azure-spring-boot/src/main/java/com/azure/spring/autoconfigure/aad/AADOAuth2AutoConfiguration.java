@@ -50,7 +50,7 @@ import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName
 @Configuration
 @ConditionalOnResource(resources = "classpath:aad.enable.config")
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
-@ConditionalOnProperty(prefix = "azure.activedirectory", value = {"client-id", "client-secret", "tenant-id"})
+@ConditionalOnProperty(prefix = "azure.activedirectory", value = { "client-id", "client-secret", "tenant-id" })
 @PropertySource(value = "classpath:service-endpoints.properties")
 @EnableConfigurationProperties({ AADAuthenticationProperties.class, ServiceEndpointsProperties.class })
 public class AADOAuth2AutoConfiguration {

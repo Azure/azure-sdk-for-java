@@ -74,6 +74,7 @@ public final class KeyVaultAccessControlClientBuilder {
     private RetryPolicy retryPolicy;
     private Configuration configuration;
     private ClientOptions clientOptions;
+    private KeyVaultAdministrationServiceVersion serviceVersion;
 
     /**
      * Creates a {@link KeyVaultAccessControlClientBuilder} instance that is able to configure and construct
@@ -125,8 +126,10 @@ public final class KeyVaultAccessControlClientBuilder {
                     KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED)));
         }
 
+        serviceVersion = serviceVersion != null ? serviceVersion : KeyVaultAdministrationServiceVersion.getLatest();
+
         if (pipeline != null) {
-            return new KeyVaultAccessControlAsyncClient(vaultUrl, pipeline);
+            return new KeyVaultAccessControlAsyncClient(vaultUrl, pipeline, serviceVersion);
         }
 
         // Closest to API goes first, closest to wire goes last.
@@ -158,7 +161,7 @@ public final class KeyVaultAccessControlClientBuilder {
             .httpClient(httpClient)
             .build();
 
-        return new KeyVaultAccessControlAsyncClient(vaultUrl, buildPipeline);
+        return new KeyVaultAccessControlAsyncClient(vaultUrl, buildPipeline, serviceVersion);
     }
 
     /**
@@ -295,10 +298,25 @@ public final class KeyVaultAccessControlClientBuilder {
      * <p>More About <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">Azure Core: Telemetry policy</a>
      *
      * @param clientOptions the {@link ClientOptions} to be set on the client.
-     * @return The updated KeyVaultAccessControlClientBuilder object.
+     * @return The updated {@link KeyVaultAccessControlClientBuilder} object.
      */
     public KeyVaultAccessControlClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+        return this;
+    }
+
+    /**
+     * Sets the {@link KeyVaultAdministrationServiceVersion} that is used when making API requests.
+     * <p>
+     * If a service version is not provided, the service version that will be used will be the latest known service
+     * version based on the version of the client library being used. If no service version is specified, updating to a
+     * newer version the client library will have the result of potentially moving to a newer service version.
+     *
+     * @param serviceVersion {@link KeyVaultAdministrationServiceVersion} of the service API used when making requests.
+     * @return The updated {@link KeyVaultAccessControlClientBuilder} object.
+     */
+    public KeyVaultAccessControlClientBuilder serviceVersion(KeyVaultAdministrationServiceVersion serviceVersion) {
+        this.serviceVersion = serviceVersion;
         return this;
     }
 

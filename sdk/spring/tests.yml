@@ -31,6 +31,9 @@ jobs:
           - name: azure-spring-cloud-test-eventhubs
             groupId: com.azure.spring
             safeName: azurespringcloudtesteventhubs
+          - name: azure-spring-boot-test-storage
+            groupId: com.azure.spring
+            safeName: azurespringbootteststorage
 
         EnvVars:
           AZURE_TEST_MODE: LIVE

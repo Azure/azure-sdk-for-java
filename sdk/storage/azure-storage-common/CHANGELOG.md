@@ -1,7 +1,11 @@
 # Release History
 
-## 12.9.0-beta.3 (Unreleased)
+## 12.10.0-beta.1 (Unreleased)
+- Added ability to specify timeout units in RequestRetryOptions.
+- Fixed bug where query params were being parsed incorrectly if an encoded comma was the query value.
 
+## 12.9.0 (2020-11-11)
+- GA release
 
 ## 12.9.0-beta.2 (2020-10-08)
 - Updated `azure-core` version to `1.9.0` to pick up fixes related to listBlobs.

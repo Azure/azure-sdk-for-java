@@ -14,7 +14,7 @@ public final class DeferOptions extends SettlementOptions {
     private Map<String, Object> propertiesToModify;
 
     /**
-     * Sets the message properties to modify while abandoning message.
+     * Sets the message properties to modify while deferring the message.
      *
      * @param propertiesToModify Message properties to modify.
      *
@@ -26,9 +26,9 @@ public final class DeferOptions extends SettlementOptions {
     }
 
     /**
-     * Gets the message properties to modify while putting put message in dead letter sub-queue.
+     * Gets the message properties to modify while deferring the message.
      *
-     * @return The message properties to modify while putting message in dead letter sub-queue.
+     * @return The message properties to modify while deferring the message.
      */
     public Map<String, Object> getPropertiesToModify() {
         return propertiesToModify;

@@ -107,6 +107,8 @@
 
   <!-- Remove this after fixing: https://github.com/Azure/azure-sdk-for-java/issues/5030 -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files=".*CredentialBuilderBase.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files=".*DeviceCodeCredentialBuilder.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files=".*InteractiveBrowserCredentialBuilder.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files=".*SearchIndexClientBuilder.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
             files=".*SearchServiceClientBuilder.java"/>
@@ -346,6 +348,14 @@
   <!-- InvalidKeyException is not a runtime exception, issue link: https://github.com/Azure/azure-sdk-for-java/issues/5178 -->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
             files="com.azure.security.keyvault.keys.cryptography.AesCbc.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
+            files="com.azure.security.keyvault.keys.cryptography.AesCbcPad.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
+            files="com.azure.security.keyvault.keys.cryptography.AesGcm.java"/>
+
+  <!-- suppress the runtime exception in the KeyVaultClient class-->
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
+            files="com.azure.security.keyvault.jca.KeyVaultClient.java"/>
 
   <!-- MSAL extension temporarily living in our package. Will not take dependency on azure-core once migrated to MSAL repo -->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
@@ -461,6 +471,9 @@
   <suppress checks="[a-zA-Z0-9]*" files="com.azure.data.schemaregistry.implementation.*"/>
   <suppress checks="[a-zA-Z0-9]*" files="com.microsoft.opentelemetry.exporter.azuremonitor.implementation.*"/>
 
+  <!-- Use the logger in a Utility static method. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.ai.textanalytics.implementation.Utility.java"/>
+
   <!-- Suppress the check on code-gen classes -->
   <suppress checks="LineLength" files="com.azure.ai.formrecognizer.implementation.FormRecognizerClientImplBuilder"/>
   <suppress checks="LineLength" files="com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl"/>
@@ -542,6 +555,8 @@
   <!-- The variables are assigned by jcommander annotation injection framework, cannot be made final. -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
             files="com.azure.perf.test.core.PerfStressOptions.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"
+            files="com.azure.messaging.servicebus.perf.ServiceBusStressOptions.java"/>
 
   <!-- Nested blocks are still readable in the switch statements in Avro. -->
   <suppress checks="AvoidNestedBlocks" files="com.azure.storage.internal.avro.implementation.schema.AvroSchema.java"/>
@@ -606,10 +621,8 @@
   <suppress checks="MissingJavadocType|JavadocThrowsChecks|EnforceFinalFields" files=".*[/\\]com[/\\]azure[/\\]spring[/\\]integration[/\\]test.*"/>
 
   <!--BlacklistedWordsCheck: URL is the name -->
-  <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck"
-            files="com.azure.spring.cloud.storage.BlobStorageResource.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck"
-            files="com.azure.spring.cloud.storage.FileStorageResource.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck" files="com.azure.spring.autoconfigure.storage.resource.BlobStorageResource.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck" files="com.azure.spring.autoconfigure.storage.resource.FileStorageResource.java"/>
 
   <!--BlacklistedWordsCheck: B2C is the product name -->
   <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck" files="com.azure.spring.autoconfigure.b2c.AADB2CURL"/>
