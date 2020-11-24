@@ -3,11 +3,15 @@
 
 package com.azure.messaging.servicebus;
 
+import java.time.Duration;
+
 /**
  * Sample demonstrates how to receive a batch of {@link ServiceBusReceivedMessage} from an Azure Service Bus Queue using
  * sync client.
+ *
+ * Messages <b>must</b> be manually settled.
  */
-public class ReceiveMessageSyncSample {
+public class ReceiveMessageSample {
     /**
      * Main method to invoke this demo on how to receive a set of {@link ServiceBusMessage messages} from an Azure
      * Service Bus Queue.
@@ -27,9 +31,11 @@ public class ReceiveMessageSyncSample {
         // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
         // "<<queue-name>>" will be the name of the Service Bus queue instance you created
         // inside the Service Bus namespace.
+        // Each message's lock is renewed up to 1 minute.
         ServiceBusReceiverClient receiver = new ServiceBusClientBuilder()
             .connectionString(connectionString)
             .receiver()
+            .maxAutoLockRenewDuration(Duration.ofMinutes(1))
             .queueName("<<queue-name>>")
             .buildClient();
 
@@ -38,9 +44,10 @@ public class ReceiveMessageSyncSample {
         for (int i = 0; i < 10; i++) {
 
             receiver.receiveMessages(5).stream().forEach(message -> {
-                System.out.println("Received Message Id: " + message.getMessageId());
-                System.out.println("Received Message: " + message.getBody().toString());
+                // Process message. The message lock is renewed for up to 1 minute.
+                System.out.printf("Sequence #: %s. Contents: %s%n", message.getSequenceNumber(), message.getBody());
 
+                // Messages from the sync receiver MUST be settled explicitly.
                 receiver.complete(message);
             });
         }
