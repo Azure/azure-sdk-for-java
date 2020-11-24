@@ -315,7 +315,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    public void recoverDeletedSecretNotFoundWithPoller(HttpClient httpClient, SecretServiceVersion serviceVersion) {
+    public void recoverDeletedSecretNotFoundWithPollingDuration(HttpClient httpClient, SecretServiceVersion serviceVersion) {
         initializeClient(httpClient, serviceVersion);
         StepVerifier.create(client.beginRecoverDeletedSecret("non-existing", Duration.ofSeconds(1)))
             .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));

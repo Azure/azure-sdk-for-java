@@ -249,7 +249,7 @@ public abstract class SecretClientTestBase extends TestBase {
     public abstract void recoverDeletedSecretNotFound(HttpClient httpClient, SecretServiceVersion serviceVersion);
 
     @Test
-    public abstract void recoverDeletedSecretNotFoundWithPoller(HttpClient httpClient, SecretServiceVersion serviceVersion);
+    public abstract void recoverDeletedSecretNotFoundWithPollingDuration(HttpClient httpClient, SecretServiceVersion serviceVersion);
 
     @Test
     public abstract void backupSecret(HttpClient httpClient, SecretServiceVersion serviceVersion);

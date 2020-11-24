@@ -267,7 +267,7 @@ public class SecretClientTest extends SecretClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    public void recoverDeletedSecretNotFoundWithPoller(HttpClient httpClient, SecretServiceVersion serviceVersion) {
+    public void recoverDeletedSecretNotFoundWithPollingDuration(HttpClient httpClient, SecretServiceVersion serviceVersion) {
         initializeClient(httpClient, serviceVersion);
         assertRestException(() -> client.beginRecoverDeletedSecret("non-existing", Duration.ofSeconds(1)), ResourceNotFoundException.class, HttpResponseStatus.NOT_FOUND.code());
     }
