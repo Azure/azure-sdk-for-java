@@ -990,7 +990,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 .thenAwait(shortWait) // Give  some time auto complete to finish.
                 .thenCancel()
                 .verify();
-        }finally {
+        } finally {
             // close dead letter receiver.
             deadLetterReceiver.close();
         }
