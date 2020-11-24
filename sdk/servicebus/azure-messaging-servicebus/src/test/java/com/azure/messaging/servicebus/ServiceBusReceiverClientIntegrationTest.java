@@ -157,8 +157,8 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         // Arrange
         setSender(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
         final int maxMessagesEachReceive = 3;
-        final int totalReceiver = 6;
-        final Duration shortTimeOut = Duration.ofSeconds(8);
+        final int totalReceiver = 3;
+        final Duration shortTimeOut = Duration.ofSeconds(4);
 
         final String messageId = UUID.randomUUID().toString();
         final List<ServiceBusMessage> messageList = new ArrayList<>();
@@ -188,7 +188,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
                     ++receivedMessageCount;
                 }
                 totalReceivedMessages.addAndGet(receivedMessageCount);
-                assertTrue(receivedMessageCount > 1);
+                assertTrue(receivedMessageCount >= 1);
             });
             receiverThreads.add(thread);
         }
@@ -202,7 +202,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
                 fail("Error in receiving messages: " + e.getMessage());
             }
         });
-        assertTrue(totalReceivedMessages.get() > totalReceiver);
+        assertTrue(totalReceivedMessages.get() >= totalReceiver);
     }
 
     /**
