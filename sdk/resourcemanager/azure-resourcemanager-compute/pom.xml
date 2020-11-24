@@ -167,7 +167,7 @@
               <argLine>
                 <!-- tests fail without these exports. -->
                 --add-exports com.azure.resourcemanager.resources/com.azure.resourcemanager.resources.fluentcore.arm.implementation=ALL-UNNAMED
-                
+
                 --add-opens com.azure.resourcemanager.authorization/com.azure.resourcemanager.authorization=ALL-UNNAMED
                 --add-opens com.azure.resourcemanager.msi/com.azure.resourcemanager.msi=ALL-UNNAMED
                 --add-opens com.azure.resourcemanager.network/com.azure.resourcemanager.network=ALL-UNNAMED
@@ -209,6 +209,14 @@
             <exclude>com/azure/resourcemanager/**/implementation/*ClientImpl*</exclude>
             <exclude>com/azure/resourcemanager/**/implementation/*ClientBuilder*</exclude>
           </excludes>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.revapi</groupId>
+        <artifactId>revapi-maven-plugin</artifactId>
+        <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+        <configuration>
+          <skip>true</skip>
         </configuration>
       </plugin>
     </plugins>
