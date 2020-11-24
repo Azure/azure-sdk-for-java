@@ -4,7 +4,6 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.experimental.util.BinaryData;
-import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 
 import java.util.Arrays;
 import java.util.List;
@@ -49,12 +48,6 @@ public class SendSessionMessageAsyncSample {
             .queueName(queueName)
             .buildAsyncClient();
 
-        // Instantiate a client that will be used to receive messages from the session.
-        ServiceBusSessionReceiverAsyncClient sessionReceiver = builder.sessionReceiver()
-            .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
-            .queueName(queueName)
-            .buildAsyncClient();
-
         // Setting the sessionId parameter ensures all messages end up in the same session and are received in order.
         List<ServiceBusMessage> messages = Arrays.asList(
             new ServiceBusMessage(BinaryData.fromBytes("Hello".getBytes(UTF_8))).setSessionId(sessionId),
@@ -73,8 +66,7 @@ public class SendSessionMessageAsyncSample {
         // subscribe() is not a blocking call. We sleep here so the program does not end before the send is complete.
         TimeUnit.SECONDS.sleep(10);
 
-        // Close the sender and receiver.
+        // Close the sender.
         sender.close();
-        sessionReceiver.close();
     }
 }
