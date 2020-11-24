@@ -29,20 +29,20 @@ import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in CommunicationIdentitys. */
-public final class CommunicationIdentitysImpl {
+public final class CommunicationIdentityImpl {
     /** The proxy service used to perform REST calls. */
-    private final CommunicationIdentitysService service;
+    private final CommunicationIdentityService service;
 
     /** The service client containing this operation class. */
     private final CommunicationIdentityClientImpl client;
 
     /**
-     * Initializes an instance of CommunicationIdentitysImpl.
+     * Initializes an instance of CommunicationIdentityImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    CommunicationIdentitysImpl(CommunicationIdentityClientImpl client) {
-        this.service = RestProxy.create(CommunicationIdentitysService.class, client.getHttpPipeline());
+    CommunicationIdentityImpl(CommunicationIdentityClientImpl client) {
+        this.service = RestProxy.create(CommunicationIdentityService.class, client.getHttpPipeline());
         this.client = client;
     }
 
@@ -51,8 +51,8 @@ public final class CommunicationIdentitysImpl {
      * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "CommunicationIdentit")
-    private interface CommunicationIdentitysService {
+    @ServiceInterface(name = "CommunicationIdentity")
+    private interface CommunicationIdentityService {
         @Post("/identities")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)

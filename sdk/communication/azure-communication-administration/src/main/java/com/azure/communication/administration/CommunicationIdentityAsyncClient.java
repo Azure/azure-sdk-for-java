@@ -5,7 +5,7 @@ package com.azure.communication.administration;
 
 import com.azure.communication.administration.implementation.CommunicationIdentityClientImpl;
 import com.azure.communication.administration.implementation.CommunicationIdentityImpl;
-import com.azure.communication.administration.models.CommunicationIdentity; 
+import com.azure.communication.administration.models.CommunicationIdentity;
 import com.azure.communication.administration.models.CommunicationTokenRequest;
 import com.azure.communication.administration.models.CommunicationIdentityUpdateRequest;
 import com.azure.communication.common.CommunicationUser;
@@ -87,9 +87,9 @@ public final class CommunicationIdentityAsyncClient {
                 (Response<CommunicationIdentity> res) -> {
                     if (res.getValue() != null) {
                         CommunicationUser user = new CommunicationUser(res.getValue().getId());
-                        return Mono.just(new ResponseBase<HttpHeaders, CommunicationUser>(res.getRequest(), 
+                        return Mono.just(new ResponseBase<HttpHeaders, CommunicationUser>(res.getRequest(),
                         res.getStatusCode(), res.getHeaders(), user, null));
-                    } 
+                    }
                     return Mono.empty();
                 });
     }
@@ -110,7 +110,7 @@ public final class CommunicationIdentityAsyncClient {
                     }));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
-        }    
+        }
     }
 
     /**
@@ -125,7 +125,7 @@ public final class CommunicationIdentityAsyncClient {
             return withContext(context -> deleteUser(communicationUser, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
-        }    
+        }
     }
 
     /**
@@ -175,7 +175,7 @@ public final class CommunicationIdentityAsyncClient {
             return withContext(context -> revokeTokens(communicationUser, issuedBefore, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
-        }    
+        }
     }
 
     /**
@@ -224,7 +224,7 @@ public final class CommunicationIdentityAsyncClient {
     /**
      * Generates a new token for an identity.
      *
-     * @param communicationUser The CommunicationUser from whom to issue a token. 
+     * @param communicationUser The CommunicationUser from whom to issue a token.
      * @param scopes The scopes that the token should have.
      * @return the object with the issued token.
      */
@@ -235,14 +235,14 @@ public final class CommunicationIdentityAsyncClient {
             return withContext(context -> issueToken(communicationUser, scopes, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
-        }    
+        }
     }
 
 
     /**
      * Generates a new token for an identity.
      *
-     * @param communicationUser The CommunicationUser from whom to issue a token. 
+     * @param communicationUser The CommunicationUser from whom to issue a token.
      * @param scopes The scopes that the token should have.
      * @param context the context of the request. Can also be null or Context.NONE.
      * @return the object with the issued token.
@@ -260,9 +260,9 @@ public final class CommunicationIdentityAsyncClient {
                 userToken.setUser(new CommunicationUser(res.getValue().getId()))
                     .setToken(res.getValue().getToken())
                     .setExpiresOn(res.getValue().getExpiresOn());
-                return Mono.just(new ResponseBase<HttpHeaders, CommunicationUserToken>(res.getRequest(), 
+                return Mono.just(new ResponseBase<HttpHeaders, CommunicationUserToken>(res.getRequest(),
                     res.getStatusCode(), res.getHeaders(), userToken, null));
-            } 
+            }
             return Mono.empty();
         });
     }

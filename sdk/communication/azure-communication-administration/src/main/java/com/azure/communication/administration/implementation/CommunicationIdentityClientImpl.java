@@ -48,25 +48,25 @@ public final class CommunicationIdentityClientImpl {
         return this.httpPipeline;
     }
 
-    /** The CommunicationIdentitysImpl object to access its operations. */
-    private final CommunicationIdentitysImpl communicationIdentitys;
+    /** The CommunicationIdentityImpl object to access its operations. */
+    private final CommunicationIdentityImpl communicationIdentity;
 
     /**
-     * Gets the CommunicationIdentitysImpl object to access its operations.
+     * Gets the CommunicationIdentityImpl object to access its operations.
      *
-     * @return the CommunicationIdentitysImpl object.
+     * @return the CommunicationIdentityImpl object.
      */
-    public CommunicationIdentitysImpl getCommunicationIdentitys() {
-        return this.communicationIdentitys;
+    public CommunicationIdentityImpl getCommunicationIdentity() {
+        return this.communicationIdentity;
     }
 
     /** Initializes an instance of CommunicationIdentityClient client. */
     CommunicationIdentityClientImpl(String endpoint) {
         this(
-                new HttpPipelineBuilder()
-                        .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
-                        .build(),
-                endpoint);
+            new HttpPipelineBuilder()
+                .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
+                .build(),
+            endpoint);
     }
 
     /**
@@ -78,6 +78,6 @@ public final class CommunicationIdentityClientImpl {
         this.httpPipeline = httpPipeline;
         this.endpoint = endpoint;
         this.apiVersion = "2020-07-20-preview2";
-        this.communicationIdentitys = new CommunicationIdentitysImpl(this);
+        this.communicationIdentity = new CommunicationIdentityImpl(this);
     }
 }
