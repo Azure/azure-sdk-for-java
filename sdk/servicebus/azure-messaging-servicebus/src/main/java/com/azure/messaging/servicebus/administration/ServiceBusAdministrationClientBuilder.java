@@ -83,9 +83,10 @@ public class ServiceBusAdministrationClientBuilder {
      *
      * @return A {@link ServiceBusAdministrationAsyncClient} with the options set in the builder.
      * @throws NullPointerException if {@code endpoint} has not been set. This is automatically set when {@link
-     *     #connectionString(String) connectionString} is set. Or, explicitly through {@link #endpoint(String)}.
-     * @throws IllegalStateException If {@link #connectionString(String) connectionString} has not been set or
-     * applicationId if set in both {@code httpLogOptions} and {@code clientOptions} and not same.
+     *     #connectionString(String) connectionString} is set. Explicitly through {@link #endpoint(String)}, or through
+     *     {@link #credential(String, TokenCredential)}.
+     * @throws IllegalStateException If applicationId if set in both {@code httpLogOptions} and {@code clientOptions}
+     *     and not same.
      */
     public ServiceBusAdministrationAsyncClient buildAsyncClient() {
         if (endpoint == null) {
@@ -108,7 +109,7 @@ public class ServiceBusAdministrationClientBuilder {
 
     /**
      * Creates a {@link ServiceBusAdministrationClient} based on options set in the builder. Every time {@code
-     * buildAsyncClient} is invoked, a new instance of the client is created.
+     * buildClient} is invoked, a new instance of the client is created.
      *
      * <p>If {@link #pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
      * {@link #endpoint(String) endpoint} are used to create the {@link ServiceBusAdministrationClient client}. All
@@ -116,9 +117,10 @@ public class ServiceBusAdministrationClientBuilder {
      *
      * @return A {@link ServiceBusAdministrationClient} with the options set in the builder.
      * @throws NullPointerException if {@code endpoint} has not been set. This is automatically set when {@link
-     *     #connectionString(String) connectionString} is set. Or it can be set explicitly through {@link
-     *     #endpoint(String)}.
-     * @throws IllegalStateException If {@link #connectionString(String) connectionString} has not been set.
+     *     #connectionString(String) connectionString} is set. Explicitly through {@link #endpoint(String)}, or through
+     *     {@link #credential(String, TokenCredential)}.
+     * @throws IllegalStateException If applicationId if set in both {@code httpLogOptions} and {@code clientOptions}
+     *     and not same.
      */
     public ServiceBusAdministrationClient buildClient() {
         return new ServiceBusAdministrationClient(buildAsyncClient());
@@ -263,12 +265,13 @@ public class ServiceBusAdministrationClientBuilder {
      * {@code applicationId} using {@link ClientOptions#setApplicationId(String)} to configure {@link UserAgentPolicy}
      * for telemetry/monitoring purpose.
      * <p>
-     * More About <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">Azure Core: Telemetry policy</a>
      *
      * @param clientOptions to be set on the client.
      *
      * @return The updated {@link ServiceBusAdministrationClientBuilder} object.
-     * @see ClientOptions
+     *
+     * @see <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">Azure Core: Telemetry
+     *      policy</a>
      */
     public ServiceBusAdministrationClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
@@ -301,7 +304,7 @@ public class ServiceBusAdministrationClientBuilder {
      * The default retry policy will be used if not provided {@link #buildAsyncClient()}
      * to build {@link ServiceBusAdministrationClient} or {@link ServiceBusAdministrationAsyncClient}.
      *
-     * @param retryPolicy user's retry policy applied to each request.
+     * @param retryPolicy The user's retry policy applied to each request.
      *
      * @return The updated {@link ServiceBusAdministrationClientBuilder} object.
      */

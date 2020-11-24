@@ -44,8 +44,8 @@ public enum ServiceBusReceiveMode {
 
     /**
      * In this mode, received message is removed from the queue or subscription and immediately deleted. This option is
-     * simple, but if the receiver crashes before it finishes processing the message, the message is lost. Because it's
-     * been removed from the queue, no other receiver can access it.
+     * simple, but if the receiver crashes before it finishes processing the message, the message is lost. Because it
+     * has been removed from the queue, no other receiver can access it.
      */
     RECEIVE_AND_DELETE
 }
