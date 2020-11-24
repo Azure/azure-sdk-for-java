@@ -74,7 +74,7 @@ public final class DeploymentExtendedImpl
 
     private Deployment updateParameters;
 
-    public DeploymentExtendedImpl withExistingResourcegroup(String resourceGroupName) {
+    public DeploymentExtendedImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
         return this;
     }

@@ -95,7 +95,7 @@ public interface DeploymentExtended {
              *     insensitive. The resource group must already exist.
              * @return the next definition stage.
              */
-            WithProperties withExistingResourcegroup(String resourceGroupName);
+            WithProperties withExistingResourceGroup(String resourceGroupName);
         }
         /** The stage of the DeploymentExtended definition allowing to specify properties. */
         interface WithProperties {
