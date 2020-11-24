@@ -13,27 +13,25 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
-import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
-import org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Configuration
 @ConditionalOnClass(ClientRegistrationRepository.class)
 @EnableConfigurationProperties(AADAuthenticationProperties.class)
 public class AzureActiveDirectoryConfiguration {
 
-    private static final String DEFAULT_CLIENT = "azure";
+    private static final String AZURE_CLIENT_REGISTRATION_ID = "azure";
 
     @Autowired
     private AADAuthenticationProperties properties;
@@ -53,68 +51,46 @@ public class AzureActiveDirectoryConfiguration {
     }
 
     @Bean
-    @ConditionalOnMissingBean
-    WebClient webClient(
-        ClientRegistrationRepository clientRegistrationRepository,
-        OAuth2AuthorizedClientRepository oAuth2AuthorizedClientRepository
-    ) {
-        OAuth2AuthorizedClientManager oAuth2AuthorizedClientManager = new DefaultOAuth2AuthorizedClientManager(
-            clientRegistrationRepository,
-            oAuth2AuthorizedClientRepository
-        );
-        ServletOAuth2AuthorizedClientExchangeFilterFunction servletOAuth2AuthorizedClientExchangeFilterFunction =
-            new ServletOAuth2AuthorizedClientExchangeFilterFunction(oAuth2AuthorizedClientManager);
-        return WebClient.builder()
-                        .apply(servletOAuth2AuthorizedClientExchangeFilterFunction.oauth2Configuration())
-                        .build();
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    GraphWebClient graphWebClient(WebClient webClient) {
-        return new GraphWebClient(
-            properties,
-            webClient
-        );
-    }
-
-    @Bean
     @ConditionalOnProperty(prefix = "azure.activedirectory.user-group", value = "allowed-groups")
-    public OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService(GraphWebClient graphWebClient) {
-        return new AzureActiveDirectoryOAuth2UserService(graphWebClient);
+    public OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService(AADAuthenticationProperties properties) {
+        return new AzureActiveDirectoryOAuth2UserService(properties);
     }
 
-    private DefaultClient createDefaultClient() {
-        ClientRegistration.Builder builder = createClientBuilder(DEFAULT_CLIENT);
+    private AzureClientRegistration createDefaultClient() {
+        ClientRegistration.Builder builder = createClientBuilder(AZURE_CLIENT_REGISTRATION_ID);
         builder.scope(allScopes());
         ClientRegistration client = builder.build();
 
-        return new DefaultClient(client, defaultScopes());
+        return new AzureClientRegistration(client, accessTokenScopes());
     }
 
-    private String[] allScopes() {
-        List<String> result = openidScopes();
-        for (AuthorizationProperties authz : properties.getAuthorization().values()) {
-            result.addAll(authz.getScopes());
+    private Set<String> allScopes() {
+        Set<String> result = openidScopes();
+        for (AuthorizationProperties authProperties : properties.getAuthorization().values()) {
+            result.addAll(authProperties.getScopes());
         }
-        return result.toArray(new String[0]);
-    }
-
-    private List<String> defaultScopes() {
-        List<String> result = openidScopes();
-        addAuthzDefaultScope(result);
         return result;
     }
 
-    private void addAuthzDefaultScope(List<String> result) {
-        AuthorizationProperties authz = properties.getAuthorization().get(DEFAULT_CLIENT);
-        if (authz != null) {
-            result.addAll(authz.getScopes());
+    private Set<String> accessTokenScopes() {
+        Set<String> result = openidScopes();
+        if (properties.allowedGroupsConfigured()) {
+            result.add("https://graph.microsoft.com/Directory.AccessAsUser.All");
+            result.add("https://graph.microsoft.com/User.Read");
+        }
+        addAzureConfiguredScopes(result);
+        return result;
+    }
+
+    private void addAzureConfiguredScopes(Set<String> result) {
+        AuthorizationProperties azureProperties = properties.getAuthorization().get(AZURE_CLIENT_REGISTRATION_ID);
+        if (azureProperties != null) {
+            result.addAll(azureProperties.getScopes());
         }
     }
 
-    private List<String> openidScopes() {
-        List<String> result = new ArrayList<>();
+    private Set<String> openidScopes() {
+        Set<String> result = new HashSet<>();
         result.add("openid");
         result.add("profile");
 
@@ -127,7 +103,7 @@ public class AzureActiveDirectoryConfiguration {
     private List<ClientRegistration> createAuthzClients() {
         List<ClientRegistration> result = new ArrayList<>();
         for (String name : properties.getAuthorization().keySet()) {
-            if (DEFAULT_CLIENT.equals(name)) {
+            if (AZURE_CLIENT_REGISTRATION_ID.equals(name)) {
                 continue;
             }
 

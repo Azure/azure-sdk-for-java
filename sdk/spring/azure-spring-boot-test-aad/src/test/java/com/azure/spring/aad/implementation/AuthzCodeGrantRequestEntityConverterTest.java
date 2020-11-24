@@ -1,19 +1,16 @@
 package com.azure.spring.aad.implementation;
 
 import com.azure.test.utils.AppRunner;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.RequestEntity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationExchange;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationResponse;
 import org.springframework.util.MultiValueMap;
+
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -62,10 +59,14 @@ public class AuthzCodeGrantRequestEntityConverterTest {
         assertNull(body.get("scope"));
     }
 
+    @SuppressWarnings("unchecked")
     private MultiValueMap<String, String> convertedBodyOf(OAuth2AuthorizationCodeGrantRequest request) {
-        AuthzCodeGrantRequestEntityConverter converter = new AuthzCodeGrantRequestEntityConverter(repo.defaultClient());
+        AuthzCodeGrantRequestEntityConverter converter =
+            new AuthzCodeGrantRequestEntityConverter(repo.getAzureClient());
         RequestEntity<?> entity = converter.convert(request);
-        return (MultiValueMap<String, String>) entity.getBody();
+        return (MultiValueMap<String, String>) Optional.ofNullable(entity)
+                                                       .map(HttpEntity::getBody)
+                                                       .orElse(null);
     }
 
     private OAuth2AuthorizationCodeGrantRequest createCodeGrantRequest(ClientRegistration client) {

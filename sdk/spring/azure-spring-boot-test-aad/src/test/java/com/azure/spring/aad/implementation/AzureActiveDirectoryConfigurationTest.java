@@ -1,10 +1,6 @@
 package com.azure.spring.aad.implementation;
 
 import com.azure.test.utils.AppRunner;
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 
@@ -19,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class AzureActiveDirectoryConfigurationTest {
 
     //@Test
+    // TODO: Enable these tests after add AzureActiveDirectoryConfiguration in spring.factories.
     public void clientRegistered() {
         try (AppRunner runner = createApp()) {
             runner.start();
@@ -106,15 +103,15 @@ public class AzureActiveDirectoryConfigurationTest {
             ClientRegistration azure = repo.findByRegistrationId("azure");
             ClientRegistration graph = repo.findByRegistrationId("graph");
 
-            assertDefaultScopes(repo.defaultClient(), "openid", "profile", "offline_access");
-            assertEquals(repo.defaultClient().client(), azure);
+            assertDefaultScopes(repo.getAzureClient(), "openid", "profile", "offline_access");
+            assertEquals(repo.getAzureClient().getClient(), azure);
 
             assertFalse(repo.isAuthzClient(azure));
             assertTrue(repo.isAuthzClient(graph));
             assertFalse(repo.isAuthzClient("azure"));
             assertTrue(repo.isAuthzClient("graph"));
 
-            List<ClientRegistration> clients = collectClients((Iterable<ClientRegistration>) repo);
+            List<ClientRegistration> clients = collectClients(repo);
             assertEquals(1, clients.size());
             assertEquals("azure", clients.get(0).getRegistrationId());
         }
@@ -127,7 +124,7 @@ public class AzureActiveDirectoryConfigurationTest {
             runner.start();
 
             AzureClientRegistrationRepository repo = runner.getBean(AzureClientRegistrationRepository.class);
-            assertDefaultScopes(repo.defaultClient(), "openid", "profile", "offline_access", "Calendars.Read");
+            assertDefaultScopes(repo.getAzureClient(), "openid", "profile", "offline_access", "Calendars.Read");
         }
     }
 
@@ -164,16 +161,16 @@ public class AzureActiveDirectoryConfigurationTest {
         }
     }
 
-    private void assertDefaultScopes(DefaultClient client, String ... expected) {
-        assertEquals(expected.length, client.scopes().size());
+    private void assertDefaultScopes(AzureClientRegistration client, String ... expected) {
+        assertEquals(expected.length, client.getAccessTokenScopes().size());
         for (String e : expected) {
-            assertTrue(client.scopes().contains(e));
+            assertTrue(client.getAccessTokenScopes().contains(e));
         }
     }
 
     private List<ClientRegistration> collectClients(Iterable<ClientRegistration> itr) {
         List<ClientRegistration> result = new ArrayList<>();
-        itr.forEach(c -> result.add(c));
+        itr.forEach(result::add);
         return result;
     }
 

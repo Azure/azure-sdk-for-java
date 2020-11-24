@@ -13,10 +13,10 @@ import java.util.Optional;
 
 public class AuthzCodeGrantRequestEntityConverter extends OAuth2AuthorizationCodeGrantRequestEntityConverter {
 
-    private final DefaultClient defaultClient;
+    private final AzureClientRegistration azureClient;
 
-    public AuthzCodeGrantRequestEntityConverter(DefaultClient client) {
-        defaultClient = client;
+    public AuthzCodeGrantRequestEntityConverter(AzureClientRegistration client) {
+        azureClient = client;
     }
 
     @Override
@@ -33,10 +33,10 @@ public class AuthzCodeGrantRequestEntityConverter extends OAuth2AuthorizationCod
     }
 
     private boolean isRequestForDefaultClient(OAuth2AuthorizationCodeGrantRequest request) {
-        return request.getClientRegistration().equals(defaultClient.client());
+        return request.getClientRegistration().equals(azureClient.getClient());
     }
 
     private String scopeValue() {
-        return String.join(" ", defaultClient.scope());
+        return String.join(" ", azureClient.getAccessTokenScopes());
     }
 }
