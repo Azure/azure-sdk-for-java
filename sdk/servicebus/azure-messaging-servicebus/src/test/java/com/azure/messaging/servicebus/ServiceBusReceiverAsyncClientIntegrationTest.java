@@ -127,7 +127,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .verifyComplete();
 
         StepVerifier.create(receiver.receiveMessages()
-            .concatMap(receivedMessage -> receiver.complete(receivedMessage).thenReturn(receivedMessage)).next())
+            .flatMap(receivedMessage -> receiver.complete(receivedMessage).thenReturn(receivedMessage)).next())
             .assertNext(receivedMessage -> {
                 assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
                 messagesPending.decrementAndGet();
@@ -354,7 +354,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .verifyComplete();
 
         // cleanup
-        StepVerifier.create(receiver.receiveMessages().concatMap(receivedMessage -> receiver.complete(receivedMessage).thenReturn(receivedMessage)).next())
+        StepVerifier.create(receiver.receiveMessages().flatMap(receivedMessage -> receiver.complete(receivedMessage).thenReturn(receivedMessage)).next())
             .assertNext(receivedMessage -> assertMessageEquals(receivedMessage, messageId, isSessionEnabled))
             .verifyComplete();
     }
@@ -395,7 +395,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // Assert & Act
         StepVerifier.create(Mono.delay(shortDelay).then(receiver.receiveMessages()
-            .concatMap(receivedMessage -> receiver.complete(receivedMessage).thenReturn(receivedMessage)).next()))
+            .flatMap(receivedMessage -> receiver.complete(receivedMessage).thenReturn(receivedMessage)).next()))
             .assertNext(receivedMessage -> {
                 assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
                 messagesPending.decrementAndGet();
@@ -469,7 +469,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
             // Cleanup
             StepVerifier.create(receiver.receiveMessages()
-                .concatMap(receivedMessage -> receiver.complete(receivedMessage).thenReturn(receivedMessage))
+                .flatMap(receivedMessage -> receiver.complete(receivedMessage).thenReturn(receivedMessage))
                 .next())
                 .expectNextCount(1)
                 .verifyComplete();
@@ -611,7 +611,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // Assert & Act
         StepVerifier.create(receiver.receiveMessages()
-            .concatMap(receivedMessage -> receiver.deadLetter(receivedMessage).thenReturn(receivedMessage))
+            .flatMap(receivedMessage -> receiver.deadLetter(receivedMessage).thenReturn(receivedMessage))
             .next())
             .assertNext(receivedMessage -> {
                 assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
@@ -637,7 +637,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // Assert & Act
         StepVerifier.create(receiver.receiveMessages()
-            .concatMap(receivedMessage -> receiver.complete(receivedMessage).thenReturn(receivedMessage))
+            .flatMap(receivedMessage -> receiver.complete(receivedMessage).thenReturn(receivedMessage))
             .next())
             .assertNext(receivedMessage -> {
                 assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
@@ -711,7 +711,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         setReceiver(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
 
         // Act & Assert
-        StepVerifier.create(receiver.receiveMessages().concatMap(received -> {
+        StepVerifier.create(receiver.receiveMessages().flatMap(received -> {
             logger.info("{}: lockToken[{}]. lockedUntil[{}]. now[{}]", received.getSequenceNumber(),
                 received.getLockToken(), received.getLockedUntil(), OffsetDateTime.now());
 
@@ -748,12 +748,10 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         setReceiver(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
         StepVerifier.create(receiver.receiveMessages()
-            .concatMap(receivedMessage -> receiver.abandon(receivedMessage).thenReturn(receivedMessage))
-            .next())
-            .assertNext(receivedMessage -> {
-                assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
-                messagesPending.decrementAndGet();
-            }).verifyComplete();
+            .flatMap(receivedMessage -> receiver.abandon(receivedMessage).thenReturn(receivedMessage)))
+            .assertNext(receivedMessage -> assertMessageEquals(receivedMessage, messageId, isSessionEnabled))
+            .verifyComplete();
+
     }
 
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
@@ -772,7 +770,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // Act & Assert
         StepVerifier.create(receiver.receiveMessages()
-            .concatMap(receivedMessage -> receiver.defer(receivedMessage).thenReturn(receivedMessage))
+            .flatMap(receivedMessage -> receiver.defer(receivedMessage).thenReturn(receivedMessage))
             .next())
             .assertNext(m -> {
                 received.set(m);
@@ -865,7 +863,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         setReceiver(entityType, TestUtils.USE_CASE_SEND_RECEIVE_WITH_PROPERTIES, isSessionEnabled);
 
         // Assert & Act
-        StepVerifier.create(receiver.receiveMessages().concatMap(receivedMessage -> receiver.complete(receivedMessage).thenReturn(receivedMessage)).next())
+        StepVerifier.create(receiver.receiveMessages().flatMap(receivedMessage -> receiver.complete(receivedMessage).thenReturn(receivedMessage)).next())
             .assertNext(receivedMessage -> {
                 messagesPending.decrementAndGet();
                 assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
@@ -947,7 +945,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         setReceiver(entityType, entityIndex, isSessionEnabled);
 
-        StepVerifier.create(receiver.receiveMessages().concatMap(receivedMessage -> receiver.deadLetter(receivedMessage).thenReturn(receivedMessage)).next())
+        StepVerifier.create(receiver.receiveMessages().flatMap(receivedMessage -> receiver.deadLetter(receivedMessage).thenReturn(receivedMessage)).next())
             .assertNext(receivedMessage -> {
                 assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
                 messagesPending.decrementAndGet();
