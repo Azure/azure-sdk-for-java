@@ -19,6 +19,12 @@ public class PartitionKeyInternalHelper {
     public static final String MinimumInclusiveEffectivePartitionKey = toHexEncodedBinaryString(PartitionKeyInternal.EmptyPartitionKey.components);
     public static final String MaximumExclusiveEffectivePartitionKey = toHexEncodedBinaryString(PartitionKeyInternal.InfinityPartitionKey.components);
 
+    public static final Range<String> FullRange = new Range<String>(
+        PartitionKeyInternalHelper.MinimumInclusiveEffectivePartitionKey,
+        PartitionKeyInternalHelper.MaximumExclusiveEffectivePartitionKey,
+        true,
+        false);
+
     static final int MaxPartitionKeyBinarySize =
             (1 /*type marker */ +
                     9 /* hash value*/ +

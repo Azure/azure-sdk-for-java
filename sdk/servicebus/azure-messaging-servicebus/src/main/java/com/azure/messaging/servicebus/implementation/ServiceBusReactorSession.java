@@ -18,7 +18,7 @@ import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.UnsignedInteger;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
@@ -79,7 +79,7 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
 
     @Override
     public Mono<ServiceBusReceiveLink> createConsumer(String linkName, String entityPath,
-        MessagingEntityType entityType, Duration timeout, AmqpRetryPolicy retry, ReceiveMode receiveMode) {
+        MessagingEntityType entityType, Duration timeout, AmqpRetryPolicy retry, ServiceBusReceiveMode receiveMode) {
         final Map<Symbol, Object> filter = new HashMap<>();
 
         return createConsumer(linkName, entityPath, entityType, timeout, retry, receiveMode, filter);
@@ -87,7 +87,7 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
 
     @Override
     public Mono<ServiceBusReceiveLink> createConsumer(String linkName, String entityPath,
-        MessagingEntityType entityType, Duration timeout, AmqpRetryPolicy retry, ReceiveMode receiveMode,
+        MessagingEntityType entityType, Duration timeout, AmqpRetryPolicy retry, ServiceBusReceiveMode receiveMode,
         String sessionId) {
 
         final Map<Symbol, Object> filter = new HashMap<>();
@@ -132,7 +132,7 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
     }
 
     private Mono<ServiceBusReceiveLink> createConsumer(String linkName, String entityPath,
-        MessagingEntityType entityType, Duration timeout, AmqpRetryPolicy retry, ReceiveMode receiveMode,
+        MessagingEntityType entityType, Duration timeout, AmqpRetryPolicy retry, ServiceBusReceiveMode receiveMode,
         Map<Symbol, Object> filter) {
         Objects.requireNonNull(linkName, "'linkName' cannot be null.");
         Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");

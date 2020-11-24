@@ -8,7 +8,7 @@ import com.azure.core.amqp.AmqpLink;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.implementation.ReactorSession;
-import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -28,12 +28,12 @@ public interface ServiceBusSession extends AmqpSession {
      * @param entityPath The entity path this link connects to, so that it may read events from the message broker.
      * @param timeout Timeout required for creating and opening an AMQP link.
      * @param retryPolicy The retry policy to use when consuming messages.
-     * @param receiveMode The {@link ReceiveMode} for the messages to be received.
+     * @param receiveMode The {@link ServiceBusReceiveMode} for the messages to be received.
      *
      * @return A newly created AMQP link.
      */
     Mono<ServiceBusReceiveLink> createConsumer(String linkName, String entityPath, MessagingEntityType entityType,
-        Duration timeout, AmqpRetryPolicy retryPolicy, ReceiveMode receiveMode);
+        Duration timeout, AmqpRetryPolicy retryPolicy, ServiceBusReceiveMode receiveMode);
 
     /**
      * Creates a new AMQP link that consumes events from the message broker.
@@ -42,14 +42,14 @@ public interface ServiceBusSession extends AmqpSession {
      * @param entityPath The entity path this link connects to, so that it may read events from the message broker.
      * @param timeout Timeout required for creating and opening an AMQP link.
      * @param retryPolicy The retry policy to use when consuming messages.
-     * @param receiveMode The {@link ReceiveMode} for the messages to be received.
+     * @param receiveMode The {@link ServiceBusReceiveMode} for the messages to be received.
      * @param sessionId The sessionId for the messages to be received. If {@code null}, then the next, unnamed session
      *     is retrieved.
      *
      * @return A newly created AMQP link.
      */
     Mono<ServiceBusReceiveLink> createConsumer(String linkName, String entityPath, MessagingEntityType entityType,
-        Duration timeout, AmqpRetryPolicy retryPolicy, ReceiveMode receiveMode, String sessionId);
+        Duration timeout, AmqpRetryPolicy retryPolicy, ServiceBusReceiveMode receiveMode, String sessionId);
 
     /**
      * Creates a new {@link AmqpLink} that can send events to the message broker.

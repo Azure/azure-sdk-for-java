@@ -10,7 +10,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.URI;
 import java.time.Duration;
+import java.util.Set;
 
 /**
  * This class represents response diagnostic statistics associated with a request to Azure Cosmos DB
@@ -75,6 +77,14 @@ public final class CosmosDiagnostics {
         }
 
         return this.clientSideRequestStatistics.getDuration();
+    }
+
+    /**
+     * Regions contacted for this request
+     * @return set of regions contacted for this request
+     */
+    public Set<URI> getRegionsContacted() {
+        return this.clientSideRequestStatistics.getRegionsContacted();
     }
 
     FeedResponseDiagnostics getFeedResponseDiagnostics() {

@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The KeysResult model. */
+/** Keys extracted by the custom model. */
 @Fluent
 public final class KeysResult {
     /*

@@ -25,9 +25,9 @@ public class AADAuthenticationAutoConfigurationTest {
     @Test
     public void createAADAuthenticationFilter() {
         this.contextRunner.run(context -> {
-            final AADAuthenticationFilter azureADJwtTokenFilter = context.getBean(AADAuthenticationFilter.class);
-            assertThat(azureADJwtTokenFilter).isNotNull();
-            assertThat(azureADJwtTokenFilter).isExactlyInstanceOf(AADAuthenticationFilter.class);
+            final AADAuthenticationFilter aadAuthenticationFilter = context.getBean(AADAuthenticationFilter.class);
+            assertThat(aadAuthenticationFilter).isNotNull();
+            assertThat(aadAuthenticationFilter).isExactlyInstanceOf(AADAuthenticationFilter.class);
         });
     }
 

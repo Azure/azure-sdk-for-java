@@ -68,6 +68,18 @@ class IntegrationRuntimesImpl extends WrapperImpl<IntegrationRuntimesInner> impl
     }
 
     @Override
+    public Completable enableInteractiveQueryAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+        IntegrationRuntimesInner client = this.inner();
+        return client.enableInteractiveQueryAsync(resourceGroupName, workspaceName, integrationRuntimeName).toCompletable();
+    }
+
+    @Override
+    public Completable disableInteractiveQueryAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+        IntegrationRuntimesInner client = this.inner();
+        return client.disableInteractiveQueryAsync(resourceGroupName, workspaceName, integrationRuntimeName).toCompletable();
+    }
+
+    @Override
     public Observable<IntegrationRuntimeResource> listByWorkspaceAsync(final String resourceGroupName, final String workspaceName) {
         IntegrationRuntimesInner client = this.inner();
         return client.listByWorkspaceAsync(resourceGroupName, workspaceName)

@@ -4,17 +4,19 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpMessageConstant;
+import com.azure.core.amqp.models.AmqpAddress;
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
-import com.azure.core.amqp.models.AmqpBodyType;
-import com.azure.core.amqp.models.AmqpDataBody;
+import com.azure.core.amqp.models.AmqpMessageBody;
+import com.azure.core.amqp.models.AmqpMessageBodyType;
+import com.azure.core.amqp.models.AmqpMessageId;
 import com.azure.core.experimental.util.BinaryData;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
@@ -39,10 +41,12 @@ public final class ServiceBusReceivedMessage {
     private final AmqpAnnotatedMessage amqpAnnotatedMessage;
     private UUID lockToken;
     private boolean isSettled = false;
+    private Context context;
 
     ServiceBusReceivedMessage(BinaryData body) {
         Objects.requireNonNull(body, "'body' cannot be null.");
-        amqpAnnotatedMessage = new AmqpAnnotatedMessage(new AmqpDataBody(Collections.singletonList(body.toBytes())));
+        amqpAnnotatedMessage = new AmqpAnnotatedMessage(AmqpMessageBody.fromData(body.toBytes()));
+        context = Context.NONE;
     }
 
     /**
@@ -53,7 +57,7 @@ public final class ServiceBusReceivedMessage {
      *
      * @return the {@link AmqpAnnotatedMessage} representing amqp message.
      */
-    public AmqpAnnotatedMessage getAmqpAnnotatedMessage() {
+    public AmqpAnnotatedMessage getRawAmqpMessage() {
         return amqpAnnotatedMessage;
     }
 
@@ -71,10 +75,10 @@ public final class ServiceBusReceivedMessage {
      * @return A byte array representing the data.
      */
     public BinaryData getBody() {
-        final AmqpBodyType bodyType = amqpAnnotatedMessage.getBody().getBodyType();
+        final AmqpMessageBodyType bodyType = amqpAnnotatedMessage.getBody().getBodyType();
         switch (bodyType) {
             case DATA:
-                return BinaryData.fromBytes(((AmqpDataBody) amqpAnnotatedMessage.getBody())
+                return BinaryData.fromBytes(amqpAnnotatedMessage.getBody()
                     .getData().stream().findFirst().get());
             case SEQUENCE:
             case VALUE:
@@ -117,7 +121,12 @@ public final class ServiceBusReceivedMessage {
      *     Routing and Correlation</a>
      */
     public String getCorrelationId() {
-        return amqpAnnotatedMessage.getProperties().getCorrelationId();
+        String correlationId = null;
+        AmqpMessageId amqpCorrelationId = amqpAnnotatedMessage.getProperties().getCorrelationId();
+        if (amqpCorrelationId != null) {
+            correlationId = amqpCorrelationId.toString();
+        }
+        return correlationId;
     }
 
     /**
@@ -239,7 +248,7 @@ public final class ServiceBusReceivedMessage {
      * Gets the lock token for the current message.
      * <p>
      * The lock token is a reference to the lock that is being held by the broker in
-     * {@link ReceiveMode#PEEK_LOCK} mode.
+     * {@link ServiceBusReceiveMode#PEEK_LOCK} mode.
      * Locks are used to explicitly settle messages as explained in the
      * <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement">product
      * documentation in more detail</a>. The token can also be used to pin the lock permanently
@@ -247,7 +256,8 @@ public final class ServiceBusReceivedMessage {
      * href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Deferral API</a> and, with that,
      * take the message out of the regular delivery state flow. This property is read-only.
      *
-     * @return Lock-token for this message. Could return {@code null} for {@link ReceiveMode#RECEIVE_AND_DELETE} mode.
+     * @return Lock-token for this message. Could return {@code null} for
+     * {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode.
      *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement">Message
      * transfers, locks, and settlement</a>
@@ -265,7 +275,7 @@ public final class ServiceBusReceivedMessage {
      * is read-only.
      *
      * @return the datetime at which the lock of this message expires if the message is received using {@link
-     *     ReceiveMode#PEEK_LOCK} mode. Otherwise it returns null.
+     *     ServiceBusReceiveMode#PEEK_LOCK} mode. Otherwise it returns null.
      *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement">Message
      *     transfers, locks, and settlement</a>
@@ -279,7 +289,12 @@ public final class ServiceBusReceivedMessage {
      * @return Id of the {@link ServiceBusReceivedMessage}.
      */
     public String getMessageId() {
-        return amqpAnnotatedMessage.getProperties().getMessageId();
+        String messageId = null;
+        AmqpMessageId amqpMessageId = amqpAnnotatedMessage.getProperties().getMessageId();
+        if (amqpMessageId != null) {
+            messageId = amqpMessageId.toString();
+        }
+        return messageId;
     }
 
     /**
@@ -326,7 +341,12 @@ public final class ServiceBusReceivedMessage {
      *     Routing and Correlation</a>
      */
     public String getReplyTo() {
-        return amqpAnnotatedMessage.getProperties().getReplyTo();
+        String replyTo = null;
+        AmqpAddress amqpAddress = amqpAnnotatedMessage.getProperties().getReplyTo();
+        if (amqpAddress != null) {
+            replyTo = amqpAddress.toString();
+        }
+        return replyTo;
     }
 
     /**
@@ -387,7 +407,7 @@ public final class ServiceBusReceivedMessage {
      * @return Session Id of the {@link ServiceBusReceivedMessage}.
      */
     public String getSessionId() {
-        return getAmqpAnnotatedMessage().getProperties().getGroupId();
+        return getRawAmqpMessage().getProperties().getGroupId();
     }
 
     /**
@@ -413,7 +433,28 @@ public final class ServiceBusReceivedMessage {
      * @return "To" property value of this message
      */
     public String getTo() {
-        return amqpAnnotatedMessage.getProperties().getTo();
+        String to = null;
+        AmqpAddress amqpAddress = amqpAnnotatedMessage.getProperties().getTo();
+        if (amqpAddress != null) {
+            to = amqpAddress.toString();
+        }
+        return to;
+    }
+
+    /**
+     * Adds a new key value pair to the existing context on Message.
+     *
+     * @param key The key for this context object
+     * @param value The value for this context object.
+     *
+     * @return The updated {@link ServiceBusMessage}.
+     * @throws NullPointerException if {@code key} or {@code value} is null.
+     */
+    ServiceBusReceivedMessage addContext(String key, Object value) {
+        Objects.requireNonNull(key, "The 'key' parameter cannot be null.");
+        Objects.requireNonNull(value, "The 'value' parameter cannot be null.");
+        this.context = context.addData(key, value);
+        return this;
     }
 
     /**
@@ -433,7 +474,11 @@ public final class ServiceBusReceivedMessage {
      * @see #getCorrelationId()
      */
     void setCorrelationId(String correlationId) {
-        amqpAnnotatedMessage.getProperties().setCorrelationId(correlationId);
+        AmqpMessageId id = null;
+        if (correlationId != null) {
+            id = new AmqpMessageId(correlationId);
+        }
+        amqpAnnotatedMessage.getProperties().setCorrelationId(id);
     }
 
     /**
@@ -537,7 +582,11 @@ public final class ServiceBusReceivedMessage {
      * @param messageId to be set.
      */
     void setMessageId(String messageId) {
-        amqpAnnotatedMessage.getProperties().setMessageId(messageId);
+        AmqpMessageId id = null;
+        if (messageId != null) {
+            id = new AmqpMessageId(messageId);
+        }
+        amqpAnnotatedMessage.getProperties().setMessageId(id);
     }
 
     /**
@@ -608,7 +657,12 @@ public final class ServiceBusReceivedMessage {
      * @see #getReplyTo()
      */
     void setReplyTo(String replyTo) {
-        amqpAnnotatedMessage.getProperties().setReplyTo(replyTo);
+        AmqpAddress replyToAddress = null;
+        if (replyTo != null) {
+            replyToAddress = new AmqpAddress(replyTo);
+        }
+        amqpAnnotatedMessage.getProperties().setReplyTo(replyToAddress);
+
     }
 
     /**
@@ -631,7 +685,11 @@ public final class ServiceBusReceivedMessage {
      * @param to To property value of this message
      */
     void setTo(String to) {
-        amqpAnnotatedMessage.getProperties().setTo(to);
+        AmqpAddress toAddress = null;
+        if (to != null) {
+            toAddress = new AmqpAddress(to);
+        }
+        amqpAnnotatedMessage.getProperties().setTo(toAddress);
     }
 
     /*

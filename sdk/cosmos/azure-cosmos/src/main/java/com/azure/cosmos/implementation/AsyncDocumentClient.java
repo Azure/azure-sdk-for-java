@@ -8,8 +8,10 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
 import com.azure.cosmos.TransactionalBatchResponse;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.clientTelemetry.ClientTelemetry;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -309,6 +311,13 @@ public interface AsyncDocumentClient {
      * @return the consistency level
      */
     ConsistencyLevel getConsistencyLevel();
+
+    /**
+     * Gets the client telemetry
+     *
+     * @return the client telemetry
+     */
+    ClientTelemetry getClientTelemetry();
 
     /**
      * Gets the boolean which indicates whether to only return the headers and status code in Cosmos DB response
@@ -667,6 +676,14 @@ public interface AsyncDocumentClient {
      * @return a {@link Flux} containing one or several feed response pages of the obtained partition key ranges or an error.
      */
     Flux<FeedResponse<PartitionKeyRange>> readPartitionKeyRanges(String collectionLink, CosmosQueryRequestOptions options);
+
+    /**
+     * Gets the feed ranges of a container.
+     *
+     * @param collectionLink the link to the parent document collection.
+     * @return a {@link List} of @{link FeedRange} containing the feed ranges of a container.
+     */
+    Mono<List<FeedRange>> getFeedRanges(String collectionLink);
 
     /**
      * Creates a stored procedure.
@@ -1400,6 +1417,13 @@ public interface AsyncDocumentClient {
      * @return a {@link Mono} containing the single resource response with the database account or an error.
      */
     Mono<DatabaseAccount> getDatabaseAccount();
+
+    /**
+     * Gets latest cached database account information from GlobalEndpointManager.
+     *
+     * @return the database account.
+     */
+    DatabaseAccount getLatestDatabaseAccount();
 
     /**
      * Reads many documents at once

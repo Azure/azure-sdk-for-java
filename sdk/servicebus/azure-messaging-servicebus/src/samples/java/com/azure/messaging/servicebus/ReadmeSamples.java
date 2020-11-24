@@ -6,7 +6,7 @@ package com.azure.messaging.servicebus;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.IterableStream;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.messaging.servicebus.models.SubQueue;
 import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
@@ -139,7 +139,7 @@ public class ReadmeSamples {
             .receiver()
             .topicName("<< TOPIC NAME >>")
             .subscriptionName("<< SUBSCRIPTION NAME >>")
-            .receiveMode(ReceiveMode.PEEK_LOCK)
+            .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
             .buildClient();
 
         // This fetches a batch of 10 messages or until the default operation timeout has elapsed.

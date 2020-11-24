@@ -16,7 +16,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-administration</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-communication-administration;current} -->
+  <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-communication-administration;current} -->
 
   <name>Microsoft Azure client administration library for communication</name>
   <description>
@@ -49,6 +49,8 @@
   <properties>
     <src.dir>src/main</src.dir>
     <test.dir>src/test</test.dir>
+    <jacoco.min.branchcoverage>0.10</jacoco.min.branchcoverage>
+    <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
   </properties>
 
   <dependencies>
@@ -60,7 +62,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-common</artifactId>
-      <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-communication-common;current} -->
+      <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-communication-common;current} -->
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -95,7 +97,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.5.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.6.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-test;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -119,10 +121,10 @@
         <artifactId>jacoco-maven-plugin</artifactId>
         <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
         <configuration>
-          <properties>
-            <jacoco.min.linecoverage>0.75</jacoco.min.linecoverage>
-            <jacoco.min.branchcoverage>0.75</jacoco.min.branchcoverage>
-          </properties>
+          <excludes>
+            <exclude>com/azure/communication/administration/models/**/*</exclude>
+            <exclude>com/azure/communication/administration/implementation/**/*</exclude>
+          </excludes>
         </configuration>
       </plugin>
       <plugin>

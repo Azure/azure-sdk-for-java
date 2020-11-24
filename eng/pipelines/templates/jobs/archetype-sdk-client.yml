@@ -62,6 +62,7 @@ jobs:
             pwsh: true
             workingDirectory: $(Build.SourcesDirectory)
             filePath: eng/scripts/SetTestPipelineVersion.ps1
+            arguments: '-BuildID $(Build.BuildId)'
 
       - script: |
           echo "##vso[build.addbuildtag]Scheduled"
@@ -208,12 +209,6 @@ jobs:
           jdkVersionOption: $(JavaBuildVersion)
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
-
-      - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
-        # ComponentGovernance is currently unable to run on pull requests of public projects. Running on non-PR
-        # builds should be sufficient.
-        condition: and(succeededOrFailed(), ne(variables['Build.Reason'], 'PullRequest'))
-        displayName: 'Component Detection'
 
       - task: Maven@3
         displayName: 'Run SpotBugs, Checkstyle, RevApi, and Javadoc'
