@@ -9,6 +9,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -88,6 +89,7 @@ public final class QueueClientBuilder {
     private RequestRetryOptions retryOptions = new RequestRetryOptions();
     private HttpPipeline httpPipeline;
 
+    private ClientOptions clientOptions = new ClientOptions();
     private Configuration configuration;
     private QueueServiceVersion version;
 
@@ -139,7 +141,7 @@ public final class QueueClientBuilder {
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             storageSharedKeyCredential, tokenCredential, sasTokenCredential, endpoint, retryOptions, logOptions,
-            httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
+            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
 
         AzureQueueStorageImpl azureQueueStorage = new AzureQueueStorageBuilder()
             .url(endpoint)
@@ -353,6 +355,18 @@ public final class QueueClientBuilder {
         }
 
         this.httpPipeline = httpPipeline;
+        return this;
+    }
+
+    /**
+     * Sets the client options for all the requests made through the client.
+     *
+     * @param clientOptions {@link ClientOptions}.
+     * @return the updated QueueClientBuilder object
+     * @throws NullPointerException If {@code clientOptions} is {@code null}.
+     */
+    public QueueClientBuilder clientOptions(ClientOptions clientOptions) {
+        this.clientOptions = Objects.requireNonNull(clientOptions, "'clientOptions' cannot be null.");
         return this;
     }
 
