@@ -2,6 +2,9 @@
 
 ## 1.4.0-beta.1 (Unreleased)
 
+### New Features
+
+- Added functionality to eagerly read HTTP response bodies into memory when they will be deserialized into a POJO.
 
 ## 1.3.3 (2020-10-29)
 

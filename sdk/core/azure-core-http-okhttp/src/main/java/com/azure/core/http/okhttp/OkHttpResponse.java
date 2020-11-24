@@ -33,7 +33,6 @@ final class OkHttpResponse extends OkHttpResponseBase {
         // [a]. if response is built manually with null body (e.g for mocking)
         // [b]. for the cases described here
         // [ref](https://square.github.io/okhttp/4.x/okhttp/okhttp3/-response/body/).
-        //
         this.responseBody = response.body();
     }
 

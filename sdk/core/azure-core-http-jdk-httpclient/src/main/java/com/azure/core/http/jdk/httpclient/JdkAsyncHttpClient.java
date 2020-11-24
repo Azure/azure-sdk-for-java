@@ -57,7 +57,7 @@ class JdkAsyncHttpClient implements HttpClient {
 
     @Override
     public Mono<HttpResponse> send(HttpRequest request, Context context) {
-        boolean eagerlyReadResponse = (boolean) context.getData("eagerly-read-response").orElse(false);
+        boolean eagerlyReadResponse = (boolean) context.getData(EAGERLY_READ_RESPONSE_CONTEXT_KEY).orElse(false);
 
         return toJdkHttpRequest(request)
             .flatMap(jdkRequest -> Mono.fromCompletionStage(jdkHttpClient.sendAsync(jdkRequest, ofPublisher()))

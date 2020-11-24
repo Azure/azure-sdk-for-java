@@ -10,6 +10,9 @@ import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
 
+/**
+ * A JDK response where the response body has been buffered into memory.
+ */
 final class BufferedJdkHttpResponse extends JdkHttpResponseBase {
     private final byte[] body;
 

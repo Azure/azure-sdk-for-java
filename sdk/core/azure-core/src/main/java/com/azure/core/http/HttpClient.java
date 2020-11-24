@@ -12,6 +12,12 @@ import reactor.core.publisher.Mono;
  */
 public interface HttpClient {
     /**
+     * Key for {@link Context} where the value is a boolean flag that indicates whether the {@link HttpResponse} body
+     * should be eagerly read and buffered into memory.
+     */
+    String EAGERLY_READ_RESPONSE_CONTEXT_KEY = "azure-eagerly-read-response";
+
+    /**
      * Send the provided request asynchronously.
      *
      * @param request The HTTP request to send.
