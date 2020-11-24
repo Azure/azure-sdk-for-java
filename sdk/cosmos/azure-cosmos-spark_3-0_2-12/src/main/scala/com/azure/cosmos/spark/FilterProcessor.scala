@@ -98,15 +98,15 @@ case class FilterProcessor() {
         queryBuilder.append(")")
 
       case StringStartsWith(attr, value: String) =>
-        queryBuilder.append(canonicalCosmosFieldPath(attr)).append("STARTSWITH").append(pName)
+        queryBuilder.append("STARTSWITH(").append(canonicalCosmosFieldPath(attr)).append(pName).append(")")
         list.append((pName, value))
 
       case StringEndsWith(attr, value: String) =>
-        queryBuilder.append(canonicalCosmosFieldPath(attr)).append("ENDSWITH").append(pName)
+        queryBuilder.append("ENDSWITH(").append(canonicalCosmosFieldPath(attr)).append(pName).append(")")
         list.append((pName, value))
 
       case StringContains(attr, value: String) =>
-        queryBuilder.append(canonicalCosmosFieldPath(attr)).append("CONTAINS").append(pName)
+        queryBuilder.append("CONTAINS(").append(canonicalCosmosFieldPath(attr)).append(pName).append(")")
         list.append((pName, value))
 
       case IsNull(attr) =>
