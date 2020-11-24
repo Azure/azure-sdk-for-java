@@ -5,7 +5,6 @@ package com.azure.spring.aad.implementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -23,7 +22,6 @@ import java.util.List;
 @Configuration
 @ConditionalOnClass(ClientRegistrationRepository.class)
 @EnableConfigurationProperties(AzureActiveDirectoryProperties.class)
-@ConditionalOnExpression("#{'${azure.active.directory.uri:notExist}' != 'notExist'}")
 public class AzureActiveDirectoryConfiguration {
 
     private static final String DEFAULT_CLIENT = "azure";

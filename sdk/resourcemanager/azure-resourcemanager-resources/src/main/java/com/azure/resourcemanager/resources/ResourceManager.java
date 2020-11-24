@@ -6,6 +6,7 @@ package com.azure.resourcemanager.resources;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.resources.fluent.FeatureClient;
+import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import com.azure.resourcemanager.resources.implementation.FeatureClientBuilder;
 import com.azure.resourcemanager.resources.fluent.PolicyClient;
 import com.azure.resourcemanager.resources.implementation.PolicyClientBuilder;
@@ -224,6 +225,15 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient();
+
+        for (int i = 0; i < httpPipeline.getPolicyCount(); ++i) {
+            if (httpPipeline.getPolicy(i) instanceof ProviderRegistrationPolicy) {
+                ProviderRegistrationPolicy policy = (ProviderRegistrationPolicy) httpPipeline.getPolicy(i);
+                if (policy.getProviders() == null) {
+                    policy.setProviders(providers());
+                }
+            }
+        }
     }
 
     /**

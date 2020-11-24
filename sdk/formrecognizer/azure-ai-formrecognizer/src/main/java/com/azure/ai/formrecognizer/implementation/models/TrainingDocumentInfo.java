@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The TrainingDocumentInfo model. */
+/** Report for a custom model training document. */
 @Fluent
 public final class TrainingDocumentInfo {
     /*

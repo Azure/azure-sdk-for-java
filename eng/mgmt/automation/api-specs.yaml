@@ -1,0 +1,28 @@
+# !!! Note: only comment before data will be kept
+# Keys: specification path of spec repository
+# Args:
+  # service: name of service, used for namespace and artifact id
+azure-kusto:
+  service: kusto
+cosmos-db:
+  service: cosmos
+cost-management:
+  service: costmanagement
+customer-insights:
+  service: customerinsights
+datalake-analytics:
+  service: datalakeanalytics
+datalake-store:
+  service: datalakestore
+dnc:
+  service: delegatednetwork
+eventhub:
+  service: eventhubs
+operationalinsights:
+  service: loganalytics
+service-map:
+  service: servicemap
+vmware:
+  service: avs
+web:
+  service: appservice

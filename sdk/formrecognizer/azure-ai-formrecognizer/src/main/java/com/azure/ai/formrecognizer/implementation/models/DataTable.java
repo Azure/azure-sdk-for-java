@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The DataTable model. */
+/** Information about the extracted table contained in a page. */
 @Fluent
 public final class DataTable {
     /*
@@ -28,6 +28,12 @@ public final class DataTable {
      */
     @JsonProperty(value = "cells", required = true)
     private List<DataTableCell> cells;
+
+    /*
+     * Bounding box of the table.
+     */
+    @JsonProperty(value = "boundingBox", required = true)
+    private List<Float> boundingBox;
 
     /**
      * Get the rows property: Number of rows.
@@ -86,6 +92,26 @@ public final class DataTable {
      */
     public DataTable setCells(List<DataTableCell> cells) {
         this.cells = cells;
+        return this;
+    }
+
+    /**
+     * Get the boundingBox property: Bounding box of the table.
+     *
+     * @return the boundingBox value.
+     */
+    public List<Float> getBoundingBox() {
+        return this.boundingBox;
+    }
+
+    /**
+     * Set the boundingBox property: Bounding box of the table.
+     *
+     * @param boundingBox the boundingBox value to set.
+     * @return the DataTable object itself.
+     */
+    public DataTable setBoundingBox(List<Float> boundingBox) {
+        this.boundingBox = boundingBox;
         return this;
     }
 }
