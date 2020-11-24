@@ -93,14 +93,14 @@ public class AADB2CAuthorizationRequestResolver implements OAuth2AuthorizationRe
 
         cleanupSecurityContextAuthentication();
 
-        final Map<String, Object> additional = new HashMap<>();
-        if (properties.getAdditional() != null) {
-            additional.putAll(properties.getAdditional());
+        final Map<String, Object> additionalParameters = new HashMap<>();
+        if (properties.getAuthenticateAdditionalParameters() != null) {
+            additionalParameters.putAll(properties.getAuthenticateAdditionalParameters());
         }
-        additional.put("p", userFlow);
-        additional.put(PARAMETER_X_CLIENT_SKU, AAD_B2C_USER_AGENT);
+        additionalParameters.put("p", userFlow);
+        additionalParameters.put(PARAMETER_X_CLIENT_SKU, AAD_B2C_USER_AGENT);
 
-        return OAuth2AuthorizationRequest.from(request).additionalParameters(additional).build();
+        return OAuth2AuthorizationRequest.from(request).additionalParameters(additionalParameters).build();
     }
 
     private String getRegistrationId(HttpServletRequest request) {

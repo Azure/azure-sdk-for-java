@@ -66,7 +66,7 @@ public class AADB2CProperties {
     @URL(message = "logout success should be valid URL")
     private String logoutSuccessUrl = DEFAULT_LOGOUT_SUCCESS_URL;
 
-    private Map<String, Object> additional;
+    private Map<String, Object> authenticateAdditionalParameters;
 
     /**
      * The all user flows which is created under b2c tenant.
@@ -187,12 +187,12 @@ public class AADB2CProperties {
         this.logoutSuccessUrl = logoutSuccessUrl;
     }
 
-    public Map<String, Object> getAdditional() {
-        return additional;
+    public Map<String, Object> getAuthenticateAdditionalParameters() {
+        return authenticateAdditionalParameters;
     }
 
-    public void setAdditional(Map<String, Object> additional) {
-        this.additional = additional;
+    public void setAuthenticateAdditionalParameters(Map<String, Object> authenticateAdditionalParameters) {
+        this.authenticateAdditionalParameters = authenticateAdditionalParameters;
     }
 
     public UserFlows getUserFlows() {
