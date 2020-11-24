@@ -28,7 +28,7 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
 
             if (context.getException() instanceof ServiceBusException) {
                 ServiceBusException exception = (ServiceBusException) context.getException();
-                System.out.printf("Error source: %s, reason %s%n", exception.getErrorSource(),
+                System.out.printf("Error source: %s, reason %s%n", context.getErrorSource(),
                     exception.getReason());
             } else {
                 System.out.printf("Error occurred: %s%n", context.getException());
@@ -65,7 +65,7 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
 
             if (context.getException() instanceof ServiceBusException) {
                 ServiceBusException exception = (ServiceBusException) context.getException();
-                System.out.printf("Error source: %s, reason %s%n", exception.getErrorSource(),
+                System.out.printf("Error source: %s, reason %s%n", context.getErrorSource(),
                     exception.getReason());
             } else {
                 System.out.printf("Error occurred: %s%n", context.getException());
