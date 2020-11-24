@@ -750,7 +750,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         StepVerifier.create(receiver.receiveMessages()
             .flatMap(receivedMessage -> receiver.abandon(receivedMessage).thenReturn(receivedMessage)))
             .assertNext(receivedMessage -> assertMessageEquals(receivedMessage, messageId, isSessionEnabled))
-            .verifyComplete();
+            .thenCancel()
+            .verify();
 
     }
 
