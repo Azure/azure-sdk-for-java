@@ -275,8 +275,7 @@ def set_or_increase_version_and_generate(
                       stable_version, current_version)
         generate(sdk_root, service, version = current_version, **kwargs)
     else:
-        ##### Update version later
-        ##### currently there always isn't stable version
+        # TODO: auto-increase for stable version and beta version if possible
         current_version = version_format.format(*current_versions)
         if not stable_version:
             stable_version = current_version
@@ -407,13 +406,26 @@ def sdk_automation(input_file: str, output_file: str):
         else:
             spec = match.group(1)
             service = get_and_update_api_specs(api_specs_file, spec)
+
+            # TODO: use specific function to detect tag in "resources"
+            tag = None
+            if service == 'resources':
+                with open(os.path.join(config['specFolder'], readme)) as fin:
+                    tag_match = re.search('tag: (package-resources-[\S]+)',
+                                          fin.read())
+                    if tag_match:
+                        tag = tag_match.group(1)
+                    else:
+                        tag = 'package-resources-2020-10'
+
             set_or_increase_version_and_generate(
                 sdk_root,
                 service,
                 spec_root = config['specFolder'],
                 readme = readme,
                 autorest = AUTOREST_CORE_VERSION,
-                use = AUTOREST_JAVA)
+                use = AUTOREST_JAVA,
+                tag = tag)
 
             generated_folder = OUTPUT_FOLDER_FORMAT.format(service)
             packages.append({
