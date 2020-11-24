@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.models
 
+// SqlQuerySpec is not serializable we need a serializable wrapper
 case class CosmosParametrizedQuery(val queryTest: String,
                                    val parameterNames: List[String],
                                    val parameterValues: List[Any])
