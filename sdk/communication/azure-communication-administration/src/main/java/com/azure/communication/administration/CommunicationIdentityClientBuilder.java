@@ -219,7 +219,8 @@ public final class CommunicationIdentityClientBuilder {
     private HttpPipelinePolicy createHttpPipelineAuthPolicy() {
         HttpPipelinePolicy authPolicy;
         if (this.tokenCredential != null) { 
-            authPolicy = new BearerTokenAuthenticationPolicy(this.tokenCredential, "https://communication.azure.com//.default");          
+            authPolicy = new BearerTokenAuthenticationPolicy(
+                this.tokenCredential, "https://communication.azure.com//.default");          
         } else if (this.credential != null) {
             authPolicy = new HmacAuthenticationPolicy(this.credential);            
         } else {
