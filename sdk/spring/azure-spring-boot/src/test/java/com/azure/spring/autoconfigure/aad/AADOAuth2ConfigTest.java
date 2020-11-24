@@ -119,40 +119,6 @@ public class AADOAuth2ConfigTest {
 
     }
 
-    @Test
-    public void testScopePropertyConfiguredWithDynamicPermissions() {
-        testContext = initTestContext("azure.activedirectory.scope=email");
-
-        final Environment environment = testContext.getEnvironment();
-        assertThat(environment.getProperty("azure.activedirectory.scope"))
-            .isEqualTo("email");
-
-        final ClientRegistrationRepository clientRegistrationRepository =
-            testContext.getBean(ClientRegistrationRepository.class);
-        final ClientRegistration clientRegistration = clientRegistrationRepository.findByRegistrationId("azure");
-        final Set<String> createdScopes = clientRegistration.getScopes();
-        final Set<String> expectedScopes = new HashSet<>(Arrays.asList("email", "openid", "profile",
-            "https://graph.microsoft.com/user.read"));
-        assertTrue(createdScopes.equals(expectedScopes));
-
-    }
-
-    @Test
-    public void testScopePropertyConfiguredWithStaticPermissions() {
-        testContext = initTestContext("azure.activedirectory.scope=1111/.default");
-
-        final Environment environment = testContext.getEnvironment();
-        assertThat(environment.getProperty("azure.activedirectory.scope"))
-            .isEqualTo("1111/.default");
-
-        final ClientRegistrationRepository clientRegistrationRepository =
-            testContext.getBean(ClientRegistrationRepository.class);
-        final ClientRegistration clientRegistration = clientRegistrationRepository.findByRegistrationId("azure");
-        final Set<String> createdScopes = clientRegistration.getScopes();
-        final Set<String> expectedScopes = new HashSet<>(Arrays.asList("1111/.default"));
-        assertTrue(createdScopes.equals(expectedScopes));
-
-    }
 
     private AnnotationConfigWebApplicationContext initTestContext(String... environment) {
         final AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();

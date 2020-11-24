@@ -50,7 +50,8 @@ import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName
 @Configuration
 @ConditionalOnResource(resources = "classpath:aad.enable.config")
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
-@ConditionalOnProperty(prefix = "azure.activedirectory", value = { "client-id", "client-secret", "tenant-id" })
+@ConditionalOnProperty(prefix = "azure.activedirectory", value = "tenant-id")
+@PropertySource(value = "classpath:aad-oauth2-common.properties")
 @PropertySource(value = "classpath:service-endpoints.properties")
 @EnableConfigurationProperties({ AADAuthenticationProperties.class, ServiceEndpointsProperties.class })
 public class AADOAuth2AutoConfiguration {
@@ -69,70 +70,6 @@ public class AADOAuth2AutoConfiguration {
     @ConditionalOnProperty(prefix = "azure.activedirectory.user-group", value = "allowed-groups")
     public OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService() {
         return new AADOAuth2UserService(aadAuthenticationProperties, serviceEndpointsProperties);
-    }
-
-    @Bean
-    public ClientRegistrationRepository clientRegistrationRepository() {
-        return new InMemoryClientRegistrationRepository(azureClientRegistration());
-    }
-
-    private ClientRegistration azureClientRegistration() {
-        String tenantId = aadAuthenticationProperties.getTenantId().trim();
-        Assert.hasText(tenantId, "azure.activedirectory.tenant-id should have text.");
-        Assert.doesNotContain(tenantId, " ", "azure.activedirectory.tenant-id should not contain ' '.");
-        Assert.doesNotContain(tenantId, "/", "azure.activedirectory.tenant-id should not contain '/'.");
-
-        String redirectUriTemplate = Optional.of(aadAuthenticationProperties)
-                                             .map(AADAuthenticationProperties::getRedirectUriTemplate)
-                                             .orElse("{baseUrl}/login/oauth2/code/{registrationId}");
-
-        List<String> scope = aadAuthenticationProperties.getScope();
-        if (!scope.toString().contains(".default")) {
-            if (aadAuthenticationProperties.allowedGroupsConfigured()
-                && !scope.contains("https://graph.microsoft.com/user.read")
-            ) {
-                scope.add("https://graph.microsoft.com/user.read");
-                LOGGER.warn("scope 'https://graph.microsoft.com/user.read' has been added.");
-            }
-            if (!scope.contains("openid")) {
-                scope.add("openid");
-                LOGGER.warn("scope 'openid' has been added.");
-            }
-            if (!scope.contains("profile")) {
-                scope.add("profile");
-                LOGGER.warn("scope 'profile' has been added.");
-            }
-        }
-
-        return ClientRegistration.withRegistrationId("azure")
-                                 .clientId(aadAuthenticationProperties.getClientId())
-                                 .clientSecret(aadAuthenticationProperties.getClientSecret())
-                                 .clientAuthenticationMethod(ClientAuthenticationMethod.POST)
-                                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                                 .redirectUriTemplate(redirectUriTemplate)
-                                 .scope(scope)
-                                 .authorizationUri(
-                                     String.format(
-                                         "https://login.microsoftonline.com/%s/oauth2/v2.0/authorize",
-                                         tenantId
-                                     )
-                                 )
-                                 .tokenUri(
-                                     String.format(
-                                         "https://login.microsoftonline.com/%s/oauth2/v2.0/token",
-                                         tenantId
-                                     )
-                                 )
-                                 .userInfoUri("https://graph.microsoft.com/oidc/userinfo")
-                                 .userNameAttributeName(AADTokenClaim.NAME)
-                                 .jwkSetUri(
-                                     String.format(
-                                         "https://login.microsoftonline.com/%s/discovery/v2.0/keys",
-                                         tenantId
-                                     )
-                                 )
-                                 .clientName("Azure")
-                                 .build();
     }
 
     @PostConstruct
