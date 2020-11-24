@@ -4,8 +4,8 @@
 
 ### New Features
 
-- Added `BinaryData` which allows for a format agnostic representation of binary information.
-
+- Added `BinaryData` which allows for a format agnostic representation of binary information and supports
+ `ObjectSerializer` for serialization and deserialization.
 
 ## 1.10.0 (2020-10-29)
 
