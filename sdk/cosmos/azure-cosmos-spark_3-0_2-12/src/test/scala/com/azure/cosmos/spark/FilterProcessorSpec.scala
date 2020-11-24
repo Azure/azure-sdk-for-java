@@ -49,7 +49,7 @@ class FilterProcessorSpec extends UnitSpec {
     assertThat(query.parameterValues.toIterable.asJava).containsOnly("خوارزمی", "Schrödinger", "Hawking")
   }
 
-  // TODO: moderakhs, once integrated to the query pipleline DataSource V2 we should add unit test for all spark filters
+  // TODO: moderakhs, once integrated to the query pipeline DataSource V2 we should add unit test for all spark filters
 
   //scalastyle:on magic.number
   //scalastyle:on multiple.string.literals
