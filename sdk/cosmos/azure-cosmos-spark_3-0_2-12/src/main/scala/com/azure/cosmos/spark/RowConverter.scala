@@ -3,18 +3,24 @@
 package com.azure.cosmos.spark
 
 import java.sql.{Date, Timestamp}
+import java.util
 
 import com.fasterxml.jackson.databind.node.{ArrayNode, ObjectNode}
 import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
+import com.microsoft.azure.cosmosdb.spark.schema.JsonSupport
 import org.apache.spark.sql.Row
 import org.apache.spark.sql.catalyst.InternalRow
-import org.apache.spark.sql.catalyst.expressions.UnsafeMapData
+import org.apache.spark.sql.catalyst.encoders.RowEncoder
+import org.apache.spark.sql.catalyst.expressions.{GenericRowWithSchema, UnsafeMapData}
 import org.apache.spark.sql.catalyst.util.ArrayData
+
+import scala.collection.immutable.HashMap
 // scalastyle:off underscore.import
 import org.apache.spark.sql.types._
+import scala.collection.JavaConverters._
+
 // scalastyle:on underscore.import
 import org.apache.spark.unsafe.types.UTF8String
-
 
 // TODO: moderakh more discussion is required to decide how to do row conversion
 // see https://github.com/Azure/azure-sdk-for-java/pull/17532#discussion_r522749612 for more info
@@ -24,10 +30,91 @@ import org.apache.spark.unsafe.types.UTF8String
 // scalastyle:off multiple.string.literals
 object CosmosRowConverter
   extends Serializable
+  with JsonSupport
     with CosmosLoggingTrait {
+
+  def toInternalRow(schema: StructType, objectNode: ObjectNode): InternalRow = {
+    val row = recordAsRow(documentToMap(objectNode), schema)
+
+    RowEncoder(schema).createSerializer().apply(row)
+  }
 
   // TODO moderakh make this configurable
   val objectMapper = new ObjectMapper();
+
+  // TODO: moderakh this method requires a rewrite
+  // this is borrowed from old OLTP spark connector
+  def getMap(objectNode: ObjectNode): java.util.HashMap[String, AnyRef] = {
+     objectMapper.convertValue(objectNode, classOf[java.util.HashMap[String, AnyRef]])
+  }
+
+  // TODO: moderakh this method requires a rewrite
+  // this is borrowed from old OLTP spark connector
+  def documentToMap(document: ObjectNode): Map[String, AnyRef] = {
+    if (document == null)
+      new HashMap[String, AnyRef]
+    else
+      getMap(document).asScala.toMap
+  }
+
+  // TODO: moderakh this method requires a rewrite
+  // this is borrowed from old OLTP spark connector
+  def recordAsRow(
+                   json: Map[String, AnyRef],
+                   schema: StructType): Row = {
+
+    val values: Seq[Any] = schema.fields.map {
+      case StructField(name, et, _, mdata)
+        if mdata.contains("idx") && mdata.contains("colname") =>
+        val colName = mdata.getString("colname")
+        val idx = mdata.getLong("idx").toInt
+        json.get(colName).flatMap(v => Option(v)).map(toSQL(_, ArrayType(et, containsNull = true))).collect {
+          case elemsList: Seq[_] if elemsList.indices contains idx => elemsList(idx)
+        } orNull
+      case StructField(name, dataType, _, _) =>
+        json.get(name).flatMap(v => Option(v)).map(toSQL(_, dataType)).orNull
+    }
+    new GenericRowWithSchema(values.toArray, schema)
+  }
+
+  // TODO: moderakh this method requires a rewrite
+  // this is borrowed from old OLTP spark connector
+  def toSQL(value: Any, dataType: DataType): Any = {
+    Option(value).map { value =>
+      (value, dataType) match {
+        case (list: List[AnyRef@unchecked], ArrayType(elementType, _)) =>
+          null
+        case (_, struct: StructType) =>
+//          if(JSONObject.NULL.equals(value)) return null // TODO
+
+          val jsonMap: Map[String, AnyRef] = value match {
+            case doc: ObjectNode => documentToMap(doc)
+            case hm: util.HashMap[_, _] => hm.asInstanceOf[util.HashMap[String, AnyRef]].asScala.toMap
+          }
+          recordAsRow(jsonMap, struct)
+        case (_, map: MapType) =>
+          (value match {
+            case document: ObjectNode => documentToMap(document)
+            case _ => value.asInstanceOf[java.util.HashMap[String, AnyRef]].asScala.toMap
+          }).map(element => (toSQL(element._1, map.keyType), toSQL(element._2, map.valueType)))
+        case (_, array: ArrayType) =>
+          // TODO fixme
+          null
+//          if(!JSONObject.NULL.equals(value))
+//            value.asInstanceOf[java.util.ArrayList[AnyRef]].asScala.map(element => toSQL(element, array.elementType)).toArray
+//          else
+//            null
+        case (_, binaryType: BinaryType) =>
+          value.asInstanceOf[java.util.ArrayList[Int]].asScala.map(x => x.toByte).toArray
+        case _ =>
+          //Assure value is mapped to schema constrained type.
+          enforceCorrectType(value, dataType)
+      }
+    }.orNull
+  }
+
+  ////
+
 
   def rowToObjectNode(row: Row): ObjectNode = {
     val objectNode: ObjectNode = objectMapper.createObjectNode();
