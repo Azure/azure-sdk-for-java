@@ -14,12 +14,12 @@ import com.azure.cosmos.models.PartitionKey;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
- * Represents an operation on an item which will be executed as part of a batch request on a container. This will be
+ * Represents an operation on an item which will be executed as part of a bulk request on a container. This will be
  * serialized and sent in the request.
  *
  * @param <TInternal> The type of item.
  */
-public final class ItemBatchOperation<TInternal> implements CosmosItemOperation {
+public final class ItemBulkOperation<TInternal> implements CosmosItemOperation {
 
     private TInternal item;
 
@@ -27,13 +27,15 @@ public final class ItemBatchOperation<TInternal> implements CosmosItemOperation 
     private final PartitionKey partitionKey;
     private final CosmosItemOperationType operationType;
     private final RequestOptions requestOptions;
+    private String partitionKeyJson;
+    private BulkOperationRetryPolicy bulkOperationRetryPolicy;
 
-    public ItemBatchOperation(
-        final CosmosItemOperationType operationType,
-        final String id,
-        final PartitionKey partitionKey,
-        final RequestOptions requestOptions,
-        final TInternal item) {
+    public ItemBulkOperation(
+        CosmosItemOperationType operationType,
+        String id,
+        PartitionKey partitionKey,
+        RequestOptions requestOptions,
+        TInternal item) {
 
         checkNotNull(operationType, "expected non-null operationType");
 
@@ -58,6 +60,10 @@ public final class ItemBatchOperation<TInternal> implements CosmosItemOperation 
             BatchRequestResponseConstants.FIELD_OPERATION_TYPE,
             BridgeInternal.getOperationValueForCosmosItemOperationType(this.getOperationType()));
 
+        if (StringUtils.isNotEmpty(this.getPartitionKeyJson())) {
+            jsonSerializable.set(BatchRequestResponseConstants.FIELD_PARTITION_KEY, this.getPartitionKeyJson());
+        }
+
         if (StringUtils.isNotEmpty(this.getId())) {
             jsonSerializable.set(BatchRequestResponseConstants.FIELD_ID, this.getId());
         }
@@ -75,6 +81,15 @@ public final class ItemBatchOperation<TInternal> implements CosmosItemOperation 
 
             if (StringUtils.isNotEmpty(requestOptions.getIfNoneMatchETag())) {
                 jsonSerializable.set(BatchRequestResponseConstants.FIELD_IF_NONE_MATCH, requestOptions.getIfNoneMatchETag());
+            }
+
+            //  If content response on write is not enabled, and operation is document write - then add
+            //  minimalReturnPreference field, Otherwise don't add this field, which means return the full response.
+            if (requestOptions.isContentResponseOnWriteEnabled() != null) {
+                if (!requestOptions.isContentResponseOnWriteEnabled() && BulkExecutorUtil.isWriteOperation(operationType)) {
+                    jsonSerializable.set(BatchRequestResponseConstants.FIELD_MINIMAL_RETURN_PREFERENCE, true);
+                }
+
             }
         }
 
@@ -102,7 +117,23 @@ public final class ItemBatchOperation<TInternal> implements CosmosItemOperation 
         return this.operationType;
     }
 
-    public RequestOptions getRequestOptions() {
+    private RequestOptions getRequestOptions() {
         return this.requestOptions;
+    }
+
+    private String getPartitionKeyJson() {
+        return partitionKeyJson;
+    }
+
+    void setPartitionKeyJson(String value) {
+        partitionKeyJson = value;
+    }
+
+    BulkOperationRetryPolicy getRetryPolicy() {
+        return bulkOperationRetryPolicy;
+    }
+
+    void setRetryPolicy(BulkOperationRetryPolicy bulkOperationRetryPolicy) {
+        this.bulkOperationRetryPolicy = bulkOperationRetryPolicy;
     }
 }
