@@ -444,10 +444,10 @@ SqlDatabase database = azure.sqlServers().databases().define("myNewDatabase")
 <li><a href="https://github.com/Azure-Samples/aks-java-deploy-image-from-acr-to-kubernetes">Deploy an image from container registry to Kubernetes cluster (AKS)</a></li>
 <li><a href="https://github.com/Azure-Samples/aks-java-manage-kubernetes-cluster-with-advanced-networking">Manage Kubernetes clusters with advanced networking</a></li>
 
-<!--li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager//containerinstance/samples/ManageContainerInstanceWithAzureFileShareMount.java">Manage Azure Container Instances with new Azure File Share</li>
+<li><a href="https://github.com/Azure-Samples/aci-java-manage-container-instances-1">Manage Azure Container Instances with new Azure File Share</li>
 <li><a href="https://github.com/Azure-Samples/aci-java-manage-container-instances-2">Manage Azure Container Instances with an existing Azure File Share</li>
 <li><a href="https://github.com/Azure-Samples/aci-java-create-container-groups">Create Container Group with multiple instances and container images</li>
-<li><a href="https://github.com/Azure-Samples/aci-java-scale-up-containers-using-acs">Create Container Group and scale up containers using Kubernetes in ACS</li-->
+<li><a href="https://github.com/Azure-Samples/aci-java-scale-up-containers-using-acs">Create Container Group and scale up containers using Kubernetes in ACS</li>
 </ul></td>
   </tr>
   <tr>
@@ -463,12 +463,12 @@ SqlDatabase database = azure.sqlServers().databases().define("myNewDatabase")
 <li><a href="https://github.com/Azure-Samples/resources-java-deploy-virtual-machine-with-managed-disks-using-arm-template">Deploy a virtual machine with managed disks using an ARM template</li></ul></td>
   </tr>
 
-  <!--tr>
+  <tr>
     <td>Redis Cache</td>
     <td><ul style="list-style-type:circle">
 <li><a href="https://github.com/Azure-Samples/redis-java-manage-cache">Manage Redis Cache</a></li>
 </ul></td>
-</tr-->
+  </tr>
 
   <tr>
     <td>Key Vault</td>
@@ -486,6 +486,12 @@ SqlDatabase database = azure.sqlServers().databases().define("myNewDatabase")
 <li><a href="https://github.com/Azure-Samples/monitor-java-metric-alerts-on-critical-performance">Configuring metric alerts to be triggered on potential performance downgrade.</a></li>
 <li><a href="https://github.com/Azure-Samples/monitor-java-autoscale-based-on-performance">Configuring autoscale settings to scale out based on webapp request count statistic.</a></li>
 </ul></td>
+  </tr>
+
+  <tr>
+    <td>App Platform</td>
+    <td><ul style="list-style-type:circle">
+    <li><a href="https://github.com/azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/appplatform/samples/ManageSpringCloud.java">Manage Spring Cloud</a></li>
   </tr>
 
 </table>
