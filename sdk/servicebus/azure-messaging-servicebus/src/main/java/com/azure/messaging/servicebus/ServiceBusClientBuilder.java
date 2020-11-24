@@ -94,7 +94,7 @@ public final class ServiceBusClientBuilder {
 
     // Using 0 pre-fetch count for both receive modes, to avoid message lock lost exceptions in application
     // receiving messages at a slow rate. Applications can set it to a higher value if they need better performance.
-    private static final int DEFAULT_PREFETCH_COUNT = 1;
+    private static final int DEFAULT_PREFETCH_COUNT = 0;
     private static final String NAME_KEY = "name";
     private static final String VERSION_KEY = "version";
     private static final String UNKNOWN = "UNKNOWN";
@@ -116,6 +116,7 @@ public final class ServiceBusClientBuilder {
     private AmqpRetryOptions retryOptions;
     private Scheduler scheduler;
     private AmqpTransportType transport = AmqpTransportType.AMQP;
+    private SslDomain.VerifyMode verifyMode;
 
     /**
      * Keeps track of the open clients that were created from this builder when there is a shared connection.
@@ -230,6 +231,16 @@ public final class ServiceBusClientBuilder {
         return this;
     }
 
+    /**
+     * Package-private method that sets the verify mode for this connection.
+     *
+     * @param verifyMode The verification mode.
+     * @return The updated {@link ServiceBusClientBuilder} object.
+     */
+    ServiceBusClientBuilder verifyMode(SslDomain.VerifyMode verifyMode) {
+        this.verifyMode = verifyMode;
+        return this;
+    }
     /**
      * Sets the retry options for Service Bus clients. If not specified, the default retry options are used.
      *
@@ -407,8 +418,12 @@ public final class ServiceBusClientBuilder {
             : CbsAuthorizationType.JSON_WEB_TOKEN;
         final ClientOptions options = clientOptions != null ? clientOptions : new ClientOptions();
 
+        final SslDomain.VerifyMode verificationMode = verifyMode != null
+            ? verifyMode
+            : SslDomain.VerifyMode.VERIFY_PEER_NAME;
+
         return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType, transport, retryOptions,
-            proxyOptions, scheduler, options, SslDomain.VerifyMode.VERIFY_PEER_NAME);
+            proxyOptions, scheduler, options, verificationMode);
     }
 
     private ProxyOptions getDefaultProxyConfiguration(Configuration configuration) {
@@ -671,11 +686,13 @@ public final class ServiceBusClientBuilder {
 
         /**
          * Sets the prefetch count of the processor. For both {@link ServiceBusReceiveMode#PEEK_LOCK PEEK_LOCK} and
-         * {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} modes the default value is 1.
+         * {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} modes the default value is 0.
          *
          * Prefetch speeds up the message flow by aiming to have a message readily available for local retrieval when
          * and before the application starts the processor.
          * Setting a non-zero value will prefetch that number of messages. Setting the value to zero turns prefetch off.
+         * Using a non-zero prefetch risks of losing messages even though it has better performance.
+         * @see <a href="https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-prefetch">Service Bus Prefetch</a>
          *
          * @param prefetchCount The prefetch count.
          *
@@ -1447,9 +1464,9 @@ public final class ServiceBusClientBuilder {
     }
 
     private void validateAndThrow(int prefetchCount) {
-        if (prefetchCount < 1) {
+        if (prefetchCount < 0) {
             throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
-                "prefetchCount (%s) cannot be less than 1.", prefetchCount)));
+                "prefetchCount (%s) cannot be less than 0.", prefetchCount)));
         }
     }
 

@@ -615,12 +615,12 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      */
     @Override
     public void close() {
-        asyncClient.close();
-
         SynchronousMessageSubscriber messageSubscriber = synchronousMessageSubscriber.getAndSet(null);
         if (messageSubscriber != null && !messageSubscriber.isDisposed()) {
             messageSubscriber.dispose();
         }
+
+        asyncClient.close();
     }
 
     /**
@@ -630,19 +630,20 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     private void queueWork(int maximumMessageCount, Duration maxWaitTime,
                            FluxSink<ServiceBusReceivedMessage> emitter) {
         final long id = idGenerator.getAndIncrement();
-        final SynchronousReceiveWork work = new SynchronousReceiveWork(id, maximumMessageCount, maxWaitTime, emitter);
-
+        final int prefetch = asyncClient.getReceiverOptions().getPrefetchCount();
+        final int toRequest = prefetch != 0 ? Math.min(maximumMessageCount, prefetch) : maximumMessageCount;
+        final SynchronousReceiveWork work = new SynchronousReceiveWork(id,
+            toRequest,
+            maxWaitTime, emitter);
         SynchronousMessageSubscriber messageSubscriber = synchronousMessageSubscriber.get();
         if (messageSubscriber == null) {
-            long prefetch = asyncClient.getReceiverOptions().getPrefetchCount();
-            SynchronousMessageSubscriber newSubscriber = new SynchronousMessageSubscriber(prefetch, work);
-
+            SynchronousMessageSubscriber newSubscriber = new SynchronousMessageSubscriber(toRequest, work);
             if (!synchronousMessageSubscriber.compareAndSet(null, newSubscriber)) {
                 newSubscriber.dispose();
                 SynchronousMessageSubscriber existing = synchronousMessageSubscriber.get();
                 existing.queueWork(work);
             } else {
-                asyncClient.receiveMessages().subscribeWith(newSubscriber);
+                asyncClient.receiveMessagesNoBackPressure().subscribeWith(newSubscriber);
             }
         } else {
             messageSubscriber.queueWork(work);

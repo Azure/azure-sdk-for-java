@@ -148,7 +148,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         amqpMessage.setReplyToGroupId(brokeredMessage.getReplyToSessionId());
         amqpMessage.setGroupId(brokeredMessage.getSessionId());
 
-        final AmqpMessageProperties brokeredProperties = brokeredMessage.getAmqpAnnotatedMessage().getProperties();
+        final AmqpMessageProperties brokeredProperties = brokeredMessage.getRawAmqpMessage().getProperties();
 
         amqpMessage.setContentEncoding(brokeredProperties.getContentEncoding());
         if (brokeredProperties.getGroupSequence() != null) {
@@ -166,10 +166,10 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         }
 
         //set footer
-        amqpMessage.setFooter(new Footer(brokeredMessage.getAmqpAnnotatedMessage().getFooter()));
+        amqpMessage.setFooter(new Footer(brokeredMessage.getRawAmqpMessage().getFooter()));
 
         //set header
-        AmqpMessageHeader header = brokeredMessage.getAmqpAnnotatedMessage().getHeader();
+        AmqpMessageHeader header = brokeredMessage.getRawAmqpMessage().getHeader();
         if (header.getDeliveryCount() != null) {
             amqpMessage.setDeliveryCount(header.getDeliveryCount());
         }
@@ -203,7 +203,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         // Set Delivery Annotations.
         final Map<Symbol, Object> deliveryAnnotationsMap = new HashMap<>();
 
-        final Map<String, Object> deliveryAnnotations = brokeredMessage.getAmqpAnnotatedMessage()
+        final Map<String, Object> deliveryAnnotations = brokeredMessage.getRawAmqpMessage()
             .getDeliveryAnnotations();
         for (Map.Entry<String, Object> deliveryEntry : deliveryAnnotations.entrySet()) {
             deliveryAnnotationsMap.put(Symbol.valueOf(deliveryEntry.getKey()), deliveryEntry.getValue());
@@ -355,7 +355,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
             bytes = EMPTY_BYTE_ARRAY;
         }
         final ServiceBusReceivedMessage brokeredMessage = new ServiceBusReceivedMessage(BinaryData.fromBytes(bytes));
-        AmqpAnnotatedMessage brokeredAmqpAnnotatedMessage = brokeredMessage.getAmqpAnnotatedMessage();
+        AmqpAnnotatedMessage brokeredAmqpAnnotatedMessage = brokeredMessage.getRawAmqpMessage();
 
         // Application properties
         ApplicationProperties applicationProperties = amqpMessage.getApplicationProperties();

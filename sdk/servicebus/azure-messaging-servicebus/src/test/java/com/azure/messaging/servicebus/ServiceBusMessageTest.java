@@ -59,12 +59,12 @@ public class ServiceBusMessageTest {
 
 
         final ServiceBusReceivedMessage expected = new ServiceBusReceivedMessage(PAYLOAD_BINARY);
-        expected.getAmqpAnnotatedMessage().getMessageAnnotations().put(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), "10");
-        expected.getAmqpAnnotatedMessage().getMessageAnnotations().put(DEAD_LETTER_SOURCE_KEY_ANNOTATION_NAME.getValue(), "abc");
-        expected.getAmqpAnnotatedMessage().getMessageAnnotations().put(ENQUEUED_SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), "11");
-        expected.getAmqpAnnotatedMessage().getMessageAnnotations().put(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), "11");
-        expected.getAmqpAnnotatedMessage().getApplicationProperties().put(DEAD_LETTER_DESCRIPTION_ANNOTATION_NAME.getValue(), "abc");
-        expected.getAmqpAnnotatedMessage().getApplicationProperties().put(DEAD_LETTER_REASON_ANNOTATION_NAME.getValue(), "abc");
+        expected.getRawAmqpMessage().getMessageAnnotations().put(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), "10");
+        expected.getRawAmqpMessage().getMessageAnnotations().put(DEAD_LETTER_SOURCE_KEY_ANNOTATION_NAME.getValue(), "abc");
+        expected.getRawAmqpMessage().getMessageAnnotations().put(ENQUEUED_SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), "11");
+        expected.getRawAmqpMessage().getMessageAnnotations().put(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), "11");
+        expected.getRawAmqpMessage().getApplicationProperties().put(DEAD_LETTER_DESCRIPTION_ANNOTATION_NAME.getValue(), "abc");
+        expected.getRawAmqpMessage().getApplicationProperties().put(DEAD_LETTER_REASON_ANNOTATION_NAME.getValue(), "abc");
         expected.setSubject(expectedSubject);
         expected.setTo(expectedTo);
         expected.setReplyTo(expectedReplyTo);
@@ -74,12 +74,12 @@ public class ServiceBusMessageTest {
         expected.setTimeToLive(expectedTimeToLive);
         expected.setPartitionKey(expectedPartitionKey);
 
-        expected.getAmqpAnnotatedMessage().getHeader().setPriority(expectedPriority);
+        expected.getRawAmqpMessage().getHeader().setPriority(expectedPriority);
 
-        final Map<String, Object> expectedFooter = expected.getAmqpAnnotatedMessage().getFooter();
+        final Map<String, Object> expectedFooter = expected.getRawAmqpMessage().getFooter();
         expectedFooter.put("foo-1", expectedFooterValue);
 
-        final Map<String, Object> expectedDeliveryAnnotations = expected.getAmqpAnnotatedMessage().getDeliveryAnnotations();
+        final Map<String, Object> expectedDeliveryAnnotations = expected.getRawAmqpMessage().getDeliveryAnnotations();
         expectedDeliveryAnnotations.put("da-1", expectedDeliveryAnnotationsValue);
 
         final Map<String, Object> expectedApplicationProperties = expected.getApplicationProperties();
@@ -98,14 +98,14 @@ public class ServiceBusMessageTest {
         expected.setPartitionKey("new-p-key");
 
         // Change original values
-        expected.getAmqpAnnotatedMessage().getHeader().setPriority((short) (expectedPriority + 1));
+        expected.getRawAmqpMessage().getHeader().setPriority((short) (expectedPriority + 1));
         expectedFooter.put("foo-1", expectedFooterValue + "-changed");
-        expected.getAmqpAnnotatedMessage().getDeliveryAnnotations().put("da-1", expectedDeliveryAnnotationsValue + "-changed");
-        expected.getAmqpAnnotatedMessage().getApplicationProperties().put("ap-1", expectedApplicationValue + "-changed");
+        expected.getRawAmqpMessage().getDeliveryAnnotations().put("da-1", expectedDeliveryAnnotationsValue + "-changed");
+        expected.getRawAmqpMessage().getApplicationProperties().put("ap-1", expectedApplicationValue + "-changed");
 
 
         // Assert
-        assertNotSame(expected.getAmqpAnnotatedMessage(), actual.getAmqpAnnotatedMessage());
+        assertNotSame(expected.getRawAmqpMessage(), actual.getRawAmqpMessage());
 
         // Validate updated values
         assertEquals(expectedSubject, actual.getSubject());
@@ -117,21 +117,21 @@ public class ServiceBusMessageTest {
         assertEquals(expectedPartitionKey, actual.getPartitionKey());
 
         // Following values should be reset.
-        assertNull(actual.getAmqpAnnotatedMessage().getMessageAnnotations().get(LOCKED_UNTIL_KEY_ANNOTATION_NAME.getValue()));
-        assertNull(actual.getAmqpAnnotatedMessage().getMessageAnnotations().get(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()));
-        assertNull(actual.getAmqpAnnotatedMessage().getMessageAnnotations().get(DEAD_LETTER_SOURCE_KEY_ANNOTATION_NAME.getValue()));
-        assertNull(actual.getAmqpAnnotatedMessage().getMessageAnnotations().get(ENQUEUED_SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()));
-        assertNull(actual.getAmqpAnnotatedMessage().getMessageAnnotations().get(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue()));
+        assertNull(actual.getRawAmqpMessage().getMessageAnnotations().get(LOCKED_UNTIL_KEY_ANNOTATION_NAME.getValue()));
+        assertNull(actual.getRawAmqpMessage().getMessageAnnotations().get(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()));
+        assertNull(actual.getRawAmqpMessage().getMessageAnnotations().get(DEAD_LETTER_SOURCE_KEY_ANNOTATION_NAME.getValue()));
+        assertNull(actual.getRawAmqpMessage().getMessageAnnotations().get(ENQUEUED_SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()));
+        assertNull(actual.getRawAmqpMessage().getMessageAnnotations().get(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue()));
 
-        assertNull(actual.getAmqpAnnotatedMessage().getApplicationProperties().get(DEAD_LETTER_DESCRIPTION_ANNOTATION_NAME.getValue()));
-        assertNull(actual.getAmqpAnnotatedMessage().getApplicationProperties().get(DEAD_LETTER_REASON_ANNOTATION_NAME.getValue()));
-        assertNull(actual.getAmqpAnnotatedMessage().getHeader().getDeliveryCount());
+        assertNull(actual.getRawAmqpMessage().getApplicationProperties().get(DEAD_LETTER_DESCRIPTION_ANNOTATION_NAME.getValue()));
+        assertNull(actual.getRawAmqpMessage().getApplicationProperties().get(DEAD_LETTER_REASON_ANNOTATION_NAME.getValue()));
+        assertNull(actual.getRawAmqpMessage().getHeader().getDeliveryCount());
 
         // Testing , updating original message did not change copied message values..
-        assertEquals(expectedPriority, actual.getAmqpAnnotatedMessage().getHeader().getPriority());
-        assertEquals(expectedFooterValue, actual.getAmqpAnnotatedMessage().getFooter().get("foo-1").toString());
-        assertEquals(expectedDeliveryAnnotationsValue, actual.getAmqpAnnotatedMessage().getDeliveryAnnotations().get("da-1").toString());
-        assertEquals(expectedApplicationValue, actual.getAmqpAnnotatedMessage().getApplicationProperties().get("ap-1").toString());
+        assertEquals(expectedPriority, actual.getRawAmqpMessage().getHeader().getPriority());
+        assertEquals(expectedFooterValue, actual.getRawAmqpMessage().getFooter().get("foo-1").toString());
+        assertEquals(expectedDeliveryAnnotationsValue, actual.getRawAmqpMessage().getDeliveryAnnotations().get("da-1").toString());
+        assertEquals(expectedApplicationValue, actual.getRawAmqpMessage().getApplicationProperties().get("ap-1").toString());
 
     }
 
@@ -176,15 +176,15 @@ public class ServiceBusMessageTest {
 
         // Assert
         // Validate updated values
-        assertEquals(expectedSubject, originalMessage.getAmqpAnnotatedMessage().getProperties().getSubject());
-        assertEquals(expectedTo, originalMessage.getAmqpAnnotatedMessage().getProperties().getTo().toString());
-        assertEquals(expectedReplyTo, originalMessage.getAmqpAnnotatedMessage().getProperties().getReplyTo().toString());
-        assertEquals(expectedReplyToSessionId, originalMessage.getAmqpAnnotatedMessage().getProperties().getReplyToGroupId());
-        assertEquals(expectedCorrelationId, originalMessage.getAmqpAnnotatedMessage().getProperties().getCorrelationId().toString());
+        assertEquals(expectedSubject, originalMessage.getRawAmqpMessage().getProperties().getSubject());
+        assertEquals(expectedTo, originalMessage.getRawAmqpMessage().getProperties().getTo().toString());
+        assertEquals(expectedReplyTo, originalMessage.getRawAmqpMessage().getProperties().getReplyTo().toString());
+        assertEquals(expectedReplyToSessionId, originalMessage.getRawAmqpMessage().getProperties().getReplyToGroupId());
+        assertEquals(expectedCorrelationId, originalMessage.getRawAmqpMessage().getProperties().getCorrelationId().toString());
 
-        assertEquals(expectedTimeToLive, originalMessage.getAmqpAnnotatedMessage().getHeader().getTimeToLive());
+        assertEquals(expectedTimeToLive, originalMessage.getRawAmqpMessage().getHeader().getTimeToLive());
 
-        assertEquals(expectedPartitionKey, originalMessage.getAmqpAnnotatedMessage().getMessageAnnotations().get(PARTITION_KEY_ANNOTATION_NAME.getValue()));
+        assertEquals(expectedPartitionKey, originalMessage.getRawAmqpMessage().getMessageAnnotations().get(PARTITION_KEY_ANNOTATION_NAME.getValue()));
     }
 
     /**

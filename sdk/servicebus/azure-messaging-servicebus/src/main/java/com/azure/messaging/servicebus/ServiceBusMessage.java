@@ -115,11 +115,11 @@ public class ServiceBusMessage {
     public ServiceBusMessage(ServiceBusReceivedMessage receivedMessage) {
         Objects.requireNonNull(receivedMessage, "'receivedMessage' cannot be null.");
 
-        final AmqpMessageBodyType bodyType = receivedMessage.getAmqpAnnotatedMessage().getBody().getBodyType();
+        final AmqpMessageBodyType bodyType = receivedMessage.getRawAmqpMessage().getBody().getBodyType();
         AmqpMessageBody amqpMessageBody;
         switch (bodyType) {
             case DATA:
-                amqpMessageBody = AmqpMessageBody.fromData(receivedMessage.getAmqpAnnotatedMessage().getBody()
+                amqpMessageBody = AmqpMessageBody.fromData(receivedMessage.getRawAmqpMessage().getBody()
                     .getFirstData());
                 break;
             case SEQUENCE:
@@ -136,7 +136,7 @@ public class ServiceBusMessage {
         this.amqpAnnotatedMessage = new AmqpAnnotatedMessage(amqpMessageBody);
 
         // set properties
-        final AmqpMessageProperties receivedProperties = receivedMessage.getAmqpAnnotatedMessage().getProperties();
+        final AmqpMessageProperties receivedProperties = receivedMessage.getRawAmqpMessage().getProperties();
         final AmqpMessageProperties newProperties = amqpAnnotatedMessage.getProperties();
         newProperties.setMessageId(receivedProperties.getMessageId());
         newProperties.setUserId(receivedProperties.getUserId());
@@ -153,7 +153,7 @@ public class ServiceBusMessage {
         newProperties.setReplyToGroupId(receivedProperties.getReplyToGroupId());
 
         // copy header except for delivery count which should be set to null
-        final AmqpMessageHeader receivedHeader = receivedMessage.getAmqpAnnotatedMessage().getHeader();
+        final AmqpMessageHeader receivedHeader = receivedMessage.getRawAmqpMessage().getHeader();
         final AmqpMessageHeader newHeader = this.amqpAnnotatedMessage.getHeader();
         newHeader.setPriority(receivedHeader.getPriority());
         newHeader.setTimeToLive(receivedHeader.getTimeToLive());
@@ -161,7 +161,7 @@ public class ServiceBusMessage {
         newHeader.setFirstAcquirer(receivedHeader.isFirstAcquirer());
 
         // copy message annotations except for broker set ones
-        final Map<String, Object> receivedAnnotations = receivedMessage.getAmqpAnnotatedMessage()
+        final Map<String, Object> receivedAnnotations = receivedMessage.getRawAmqpMessage()
             .getMessageAnnotations();
         final Map<String, Object> newAnnotations = this.amqpAnnotatedMessage.getMessageAnnotations();
 
@@ -178,7 +178,7 @@ public class ServiceBusMessage {
         }
 
         // copy delivery annotations
-        final Map<String, Object> receivedDelivery = receivedMessage.getAmqpAnnotatedMessage().getDeliveryAnnotations();
+        final Map<String, Object> receivedDelivery = receivedMessage.getRawAmqpMessage().getDeliveryAnnotations();
         final Map<String, Object> newDelivery = this.amqpAnnotatedMessage.getDeliveryAnnotations();
 
         for (Map.Entry<String, Object> entry: receivedDelivery.entrySet()) {
@@ -186,7 +186,7 @@ public class ServiceBusMessage {
         }
 
         // copy Footer
-        final Map<String, Object> receivedFooter = receivedMessage.getAmqpAnnotatedMessage().getFooter();
+        final Map<String, Object> receivedFooter = receivedMessage.getRawAmqpMessage().getFooter();
         final Map<String, Object> newFooter = this.amqpAnnotatedMessage.getFooter();
 
         for (Map.Entry<String, Object> entry: receivedFooter.entrySet()) {
@@ -194,7 +194,7 @@ public class ServiceBusMessage {
         }
 
         // copy application properties except for broker set ones
-        final Map<String, Object> receivedApplicationProperties = receivedMessage.getAmqpAnnotatedMessage()
+        final Map<String, Object> receivedApplicationProperties = receivedMessage.getRawAmqpMessage()
             .getApplicationProperties();
         final Map<String, Object> newApplicationProperties = this.amqpAnnotatedMessage.getApplicationProperties();
 
@@ -215,7 +215,7 @@ public class ServiceBusMessage {
      *
      * @return the amqp message.
      */
-    public AmqpAnnotatedMessage getAmqpAnnotatedMessage() {
+    public AmqpAnnotatedMessage getRawAmqpMessage() {
         return amqpAnnotatedMessage;
     }
 
