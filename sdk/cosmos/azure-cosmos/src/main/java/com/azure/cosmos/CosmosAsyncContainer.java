@@ -600,7 +600,7 @@ public class CosmosAsyncContainer {
      * @return A Flux of {@link CosmosBulkOperationResponse} which contains operation and it's response or exception.
      * <p>
      *     To create a operation which can be executed here, use {@link BulkOperations}. For eg.
-     *     for a upsert operation use {@link BulkOperations#newUpsertItemOperation(Object, PartitionKey)}
+     *     for a upsert operation use {@link BulkOperations#getUpsertItemOperation(Object, PartitionKey)}
      * </p>
      * <p>
      *     We can get the corresponding operation using {@link CosmosBulkOperationResponse#getOperation()} and
@@ -630,7 +630,7 @@ public class CosmosAsyncContainer {
      * @return A Flux of {@link CosmosBulkOperationResponse} which contains operation and it's response or exception.
      * <p>
      *     To create a operation which can be executed here, use {@link BulkOperations}. For eg.
-     *     for a upsert operation use {@link BulkOperations#newUpsertItemOperation(Object, PartitionKey)}
+     *     for a upsert operation use {@link BulkOperations#getUpsertItemOperation(Object, PartitionKey)}
      * </p>
      * <p>
      *     We can get the corresponding operation using {@link CosmosBulkOperationResponse#getOperation()} and

@@ -57,11 +57,11 @@ public class CosmosBulkTest  extends BatchTestBase {
         for (int i = 0; i < totalRequest; i++) {
             String partitionKey = UUID.randomUUID().toString();
             TestDoc testDoc = this.populateTestDoc(partitionKey);
-            cosmosItemOperations.add(BulkOperations.newCreateItemOperation(testDoc, new PartitionKey(partitionKey)));
+            cosmosItemOperations.add(BulkOperations.getCreateItemOperation(testDoc, new PartitionKey(partitionKey)));
 
             partitionKey = UUID.randomUUID().toString();
             EventDoc eventDoc = new EventDoc(UUID.randomUUID().toString(), 2, 4, "type1", partitionKey);
-            cosmosItemOperations.add(BulkOperations.newCreateItemOperation(eventDoc, new PartitionKey(partitionKey)));
+            cosmosItemOperations.add(BulkOperations.getCreateItemOperation(eventDoc, new PartitionKey(partitionKey)));
         }
 
         BulkProcessingOptions<CosmosBulkAsyncTest> bulkProcessingOptions = new BulkProcessingOptions<>();
@@ -96,7 +96,7 @@ public class CosmosBulkTest  extends BatchTestBase {
 
             // use i as a identifier for re check.
             TestDoc testDoc = this.populateTestDoc(partitionKey, i, 20);
-            cosmosItemOperations.add(BulkOperations.newUpsertItemOperation(testDoc, new PartitionKey(partitionKey)));
+            cosmosItemOperations.add(BulkOperations.getUpsertItemOperation(testDoc, new PartitionKey(partitionKey)));
         }
 
         BulkProcessingOptions<Object> bulkProcessingOptions = new BulkProcessingOptions<>();
@@ -137,7 +137,7 @@ public class CosmosBulkTest  extends BatchTestBase {
 
             // use i as a identifier for re check.
             TestDoc testDoc = this.populateTestDoc(partitionKey, i, 20);
-            cosmosItemOperations.add(BulkOperations.newCreateItemOperation(testDoc, new PartitionKey(partitionKey)));
+            cosmosItemOperations.add(BulkOperations.getCreateItemOperation(testDoc, new PartitionKey(partitionKey)));
         }
         createItemsAndVerify(cosmosItemOperations);
 
@@ -146,7 +146,7 @@ public class CosmosBulkTest  extends BatchTestBase {
         for(CosmosItemOperation cosmosItemOperation : cosmosItemOperations) {
             TestDoc testDoc = cosmosItemOperation.getItem();
             deleteCosmosItemOperation.add(
-                BulkOperations.newDeleteItemOperation(testDoc.getId(), cosmosItemOperation.getPartitionKeyValue()));
+                BulkOperations.getDeleteItemOperation(testDoc.getId(), cosmosItemOperation.getPartitionKeyValue()));
         }
 
         BulkProcessingOptions<TestDoc> bulkProcessingOptions = new BulkProcessingOptions<>();
@@ -181,7 +181,7 @@ public class CosmosBulkTest  extends BatchTestBase {
 
             // use i as a identifier for re check.
             TestDoc testDoc = this.populateTestDoc(partitionKey, i, 20);
-            cosmosItemOperations.add(BulkOperations.newUpsertItemOperation(testDoc, new PartitionKey(partitionKey)));
+            cosmosItemOperations.add(BulkOperations.getUpsertItemOperation(testDoc, new PartitionKey(partitionKey)));
         }
 
         createItemsAndVerify(cosmosItemOperations);
@@ -191,7 +191,7 @@ public class CosmosBulkTest  extends BatchTestBase {
         for(CosmosItemOperation cosmosItemOperation : cosmosItemOperations) {
             TestDoc testDoc = cosmosItemOperation.getItem();
             readCosmosItemOperations.add(
-                BulkOperations.newReadItemOperation(testDoc.getId(), cosmosItemOperation.getPartitionKeyValue()));
+                BulkOperations.getReadItemOperation(testDoc.getId(), cosmosItemOperation.getPartitionKeyValue()));
         }
 
         BulkProcessingOptions<Object> bulkProcessingOptions = new BulkProcessingOptions<>(Object.class);
@@ -229,7 +229,7 @@ public class CosmosBulkTest  extends BatchTestBase {
 
             // use i as a identifier for re check.
             TestDoc testDoc = this.populateTestDoc(partitionKey, i, 20);
-            cosmosItemOperations.add(BulkOperations.newCreateItemOperation(testDoc, new PartitionKey(partitionKey)));
+            cosmosItemOperations.add(BulkOperations.getCreateItemOperation(testDoc, new PartitionKey(partitionKey)));
         }
 
         createItemsAndVerify(cosmosItemOperations);
@@ -238,7 +238,7 @@ public class CosmosBulkTest  extends BatchTestBase {
 
         for(CosmosItemOperation cosmosItemOperation : cosmosItemOperations) {
             TestDoc testDoc = cosmosItemOperation.getItem();
-            replaceCosmosItemOperations.add(BulkOperations.newReplaceItemOperation(
+            replaceCosmosItemOperations.add(BulkOperations.getReplaceItemOperation(
                 testDoc.getId(),
                 cosmosItemOperation.getItem(),
                 cosmosItemOperation.getPartitionKeyValue()));
@@ -331,8 +331,8 @@ public class CosmosBulkTest  extends BatchTestBase {
             firstReplaceOptions.setIfMatchETag(response.getETag());
 
             List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
-            cosmosItemOperations.add(BulkOperations.newCreateItemOperation(testDocToCreate, new PartitionKey(this.partitionKey1)));
-            cosmosItemOperations.add(BulkOperations.newReplaceItemOperation(
+            cosmosItemOperations.add(BulkOperations.getCreateItemOperation(testDocToCreate, new PartitionKey(this.partitionKey1)));
+            cosmosItemOperations.add(BulkOperations.getReplaceItemOperation(
                 testDocToReplace.getId(), testDocToReplace, new PartitionKey(this.partitionKey1), firstReplaceOptions));
 
             List<CosmosBulkOperationResponse<Object>> bulkResponses = bulkContainer
@@ -356,7 +356,7 @@ public class CosmosBulkTest  extends BatchTestBase {
             replaceOptions.setIfMatchETag(String.valueOf(this.getRandom().nextInt()));
 
             List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
-            cosmosItemOperations.add(BulkOperations.newReplaceItemOperation(
+            cosmosItemOperations.add(BulkOperations.getReplaceItemOperation(
                 testDocToReplace.getId(), testDocToReplace, new PartitionKey(this.partitionKey1), replaceOptions));
 
             List<CosmosBulkOperationResponse<Object>> bulkResponses = bulkContainer
@@ -385,11 +385,11 @@ public class CosmosBulkTest  extends BatchTestBase {
             BatchTestBase.TestDoc testDocToCreate = this.populateTestDoc(this.partitionKey1);
 
             List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
-            cosmosItemOperations.add(BulkOperations.newReadItemOperation(
+            cosmosItemOperations.add(BulkOperations.getReadItemOperation(
                 this.TestDocPk1ExistingA.getId(),
                 this.getPartitionKey(this.partitionKey1),
                 readOptions));
-            cosmosItemOperations.add(BulkOperations.newCreateItemOperation(testDocToCreate, new PartitionKey(this.partitionKey1)));
+            cosmosItemOperations.add(BulkOperations.getCreateItemOperation(testDocToCreate, new PartitionKey(this.partitionKey1)));
 
             List<CosmosBulkOperationResponse<Object>> bulkResponses = bulkContainer
                 .processBulkOperations(cosmosItemOperations);
@@ -408,7 +408,7 @@ public class CosmosBulkTest  extends BatchTestBase {
     public void bulkWithInvalidCreateTest() {
         // partition key mismatch between doc and and value passed in to the operation
         CosmosItemOperation operation =
-            BulkOperations.newCreateItemOperation(
+            BulkOperations.getCreateItemOperation(
                 this.populateTestDoc(UUID.randomUUID().toString()), new PartitionKey(this.partitionKey1));
 
         this.runWithError(
@@ -419,7 +419,7 @@ public class CosmosBulkTest  extends BatchTestBase {
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void bulkWithReadOfNonExistentEntityTest() {
-        CosmosItemOperation operation = BulkOperations.newReadItemOperation(
+        CosmosItemOperation operation = BulkOperations.getReadItemOperation(
             UUID.randomUUID().toString(),
             new PartitionKey(this.partitionKey1));
 
@@ -439,7 +439,7 @@ public class CosmosBulkTest  extends BatchTestBase {
         BulkItemRequestOptions staleReplaceOptions = new BulkItemRequestOptions();
         staleReplaceOptions.setIfMatchETag(UUID.randomUUID().toString());
 
-        CosmosItemOperation operation = BulkOperations.newReplaceItemOperation(
+        CosmosItemOperation operation = BulkOperations.getReplaceItemOperation(
             staleTestDocToReplace.getId(),
             staleTestDocToReplace,
             new PartitionKey(this.partitionKey1),
@@ -455,10 +455,10 @@ public class CosmosBulkTest  extends BatchTestBase {
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
-    public void bulkithDeleteOfNonExistentEntity() {
+    public void bulkWithDeleteOfNonExistentEntity() {
 
         CosmosItemOperation operation =
-            BulkOperations.newDeleteItemOperation(
+            BulkOperations.getDeleteItemOperation(
                 UUID.randomUUID().toString(), new PartitionKey(this.partitionKey1));
 
         this.runWithError(
@@ -475,7 +475,7 @@ public class CosmosBulkTest  extends BatchTestBase {
         TestDoc conflictingTestDocToCreate = this.getTestDocCopy(this.TestDocPk1ExistingA);
         conflictingTestDocToCreate.setCost(conflictingTestDocToCreate.getCost());
 
-        CosmosItemOperation operation = BulkOperations.newCreateItemOperation(
+        CosmosItemOperation operation = BulkOperations.getCreateItemOperation(
             conflictingTestDocToCreate,
             new PartitionKey(this.partitionKey1));
 
@@ -497,11 +497,11 @@ public class CosmosBulkTest  extends BatchTestBase {
         TestDoc anotherTestDocToCreate = this.populateTestDoc(this.partitionKey1);
 
         List<CosmosItemOperation> operations = new ArrayList<>();
-        operations.add(BulkOperations.newCreateItemOperation(testDocToCreate, new PartitionKey(this.partitionKey1)));
+        operations.add(BulkOperations.getCreateItemOperation(testDocToCreate, new PartitionKey(this.partitionKey1)));
 
         appendOperation.apply(operations);
 
-        operations.add(BulkOperations.newCreateItemOperation(anotherTestDocToCreate, new PartitionKey(this.partitionKey1)));
+        operations.add(BulkOperations.getCreateItemOperation(anotherTestDocToCreate, new PartitionKey(this.partitionKey1)));
 
         List<CosmosBulkOperationResponse<Object>> bulkResponses = bulkContainer.processBulkOperations(operations);
 
@@ -535,13 +535,13 @@ public class CosmosBulkTest  extends BatchTestBase {
 
         List<CosmosItemOperation> operations = new ArrayList<>();
         operations.add(
-            BulkOperations.newCreateItemOperation(testDocToCreate, new PartitionKey(this.partitionKey1)));
+            BulkOperations.getCreateItemOperation(testDocToCreate, new PartitionKey(this.partitionKey1)));
         operations.add(
-            BulkOperations.newReplaceItemOperation(testDocToReplace.getId(), testDocToReplace, new PartitionKey(this.partitionKey1)));
+            BulkOperations.getReplaceItemOperation(testDocToReplace.getId(), testDocToReplace, new PartitionKey(this.partitionKey1)));
         operations.add(
-            BulkOperations.newUpsertItemOperation(testDocToUpsert, new PartitionKey(this.partitionKey1)));
+            BulkOperations.getUpsertItemOperation(testDocToUpsert, new PartitionKey(this.partitionKey1)));
         operations.add(
-            BulkOperations.newDeleteItemOperation(this.TestDocPk1ExistingC.getId(), new PartitionKey(this.partitionKey1)));
+            BulkOperations.getDeleteItemOperation(this.TestDocPk1ExistingC.getId(), new PartitionKey(this.partitionKey1)));
 
         List<CosmosBulkOperationResponse<Object>> bulkResponses = bulkContainer.processBulkOperations(operations);
 
@@ -578,30 +578,30 @@ public class CosmosBulkTest  extends BatchTestBase {
 
         List<CosmosItemOperation> operations = new ArrayList<>();
         operations.add(
-            BulkOperations.newCreateItemOperation(testDocToCreate, new PartitionKey(this.partitionKey1)));
+            BulkOperations.getCreateItemOperation(testDocToCreate, new PartitionKey(this.partitionKey1)));
 
         operations.add(
-            BulkOperations.newReplaceItemOperation(
+            BulkOperations.getReplaceItemOperation(
                 testDocToReplace.getId(),
                 testDocToReplace,
                 new PartitionKey(this.partitionKey1),
                 contentResponseDisableRequestOption));
 
         operations.add(
-            BulkOperations.newUpsertItemOperation(
+            BulkOperations.getUpsertItemOperation(
                 testDocToUpsert,
                 new PartitionKey(this.partitionKey1),
                 contentResponseDisableRequestOption));
 
         operations.add(
-            BulkOperations.newDeleteItemOperation(this.TestDocPk1ExistingC.getId(), new PartitionKey(this.partitionKey1)));
+            BulkOperations.getDeleteItemOperation(this.TestDocPk1ExistingC.getId(), new PartitionKey(this.partitionKey1)));
 
-        operations.add(BulkOperations.newReadItemOperation(
+        operations.add(BulkOperations.getReadItemOperation(
             this.TestDocPk1ExistingD.getId(),
             new PartitionKey(this.partitionKey1),
             contentResponseDisableRequestOption));
 
-        operations.add(BulkOperations.newReadItemOperation(this.TestDocPk1ExistingB.getId(), new PartitionKey(this.partitionKey1)));
+        operations.add(BulkOperations.getReadItemOperation(this.TestDocPk1ExistingB.getId(), new PartitionKey(this.partitionKey1)));
 
         List<CosmosBulkOperationResponse<Object>> bulkResponses = bulkContainer.processBulkOperations(operations);
         assertThat(bulkResponses.size()).isEqualTo(operations.size());

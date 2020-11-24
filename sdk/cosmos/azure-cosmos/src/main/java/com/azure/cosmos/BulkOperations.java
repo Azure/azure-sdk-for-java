@@ -33,10 +33,10 @@ public final class BulkOperations {
      * @return the bulk operation.
      */
     @Beta(Beta.SinceVersion.V4_9_0)
-    public static <T> CosmosItemOperation newCreateItemOperation(T item, PartitionKey partitionKey) {
+    public static <T> CosmosItemOperation getCreateItemOperation(T item, PartitionKey partitionKey) {
         checkNotNull(item, "expected non-null item");
         checkNotNull(partitionKey, "expected non-null partitionKey");
-        return newCreateItemOperation(item, partitionKey, new BulkItemRequestOptions());
+        return getCreateItemOperation(item, partitionKey, new BulkItemRequestOptions());
     }
 
     /**
@@ -51,7 +51,7 @@ public final class BulkOperations {
      * @return the bulk operation.
      */
     @Beta(Beta.SinceVersion.V4_9_0)
-    public static <T> CosmosItemOperation newCreateItemOperation(
+    public static <T> CosmosItemOperation getCreateItemOperation(
         T item,
         PartitionKey partitionKey,
         BulkItemRequestOptions requestOptions) {
@@ -81,11 +81,11 @@ public final class BulkOperations {
      * @return the bulk operation.
      */
     @Beta(Beta.SinceVersion.V4_9_0)
-    public static CosmosItemOperation newDeleteItemOperation(String id, PartitionKey partitionKey) {
+    public static CosmosItemOperation getDeleteItemOperation(String id, PartitionKey partitionKey) {
         checkNotNull(id, "expected non-null id");
         checkNotNull(partitionKey, "expected non-null partitionKey");
 
-        return newDeleteItemOperation(id, partitionKey, new BulkItemRequestOptions());
+        return getDeleteItemOperation(id, partitionKey, new BulkItemRequestOptions());
     }
 
     /**
@@ -98,7 +98,7 @@ public final class BulkOperations {
      * @return the bulk operation.
      */
     @Beta(Beta.SinceVersion.V4_9_0)
-    public static CosmosItemOperation newDeleteItemOperation(
+    public static CosmosItemOperation getDeleteItemOperation(
         String id,
         PartitionKey partitionKey,
         BulkItemRequestOptions requestOptions) {
@@ -128,11 +128,11 @@ public final class BulkOperations {
      * @return the bulk operation.
      */
     @Beta(Beta.SinceVersion.V4_9_0)
-    public static CosmosItemOperation newReadItemOperation(String id, PartitionKey partitionKey) {
+    public static CosmosItemOperation getReadItemOperation(String id, PartitionKey partitionKey) {
         checkNotNull(id, "expected non-null id");
         checkNotNull(partitionKey, "expected non-null partitionKey");
 
-        return newReadItemOperation(id, partitionKey, new BulkItemRequestOptions());
+        return getReadItemOperation(id, partitionKey, new BulkItemRequestOptions());
     }
 
     /**
@@ -145,7 +145,7 @@ public final class BulkOperations {
      * @return the bulk operation.
      */
     @Beta(Beta.SinceVersion.V4_9_0)
-    public static CosmosItemOperation newReadItemOperation(
+    public static CosmosItemOperation getReadItemOperation(
         String id,
         PartitionKey partitionKey,
         BulkItemRequestOptions requestOptions) {
@@ -178,12 +178,12 @@ public final class BulkOperations {
      * @return the bulk operation.
      */
     @Beta(Beta.SinceVersion.V4_9_0)
-    public static <T> CosmosItemOperation newReplaceItemOperation(String id, T item, PartitionKey partitionKey) {
+    public static <T> CosmosItemOperation getReplaceItemOperation(String id, T item, PartitionKey partitionKey) {
         checkNotNull(item, "expected non-null item");
         checkNotNull(id, "expected non-null id");
         checkNotNull(partitionKey, "expected non-null partitionKey");
 
-        return newReplaceItemOperation(id, item, partitionKey, new BulkItemRequestOptions());
+        return getReplaceItemOperation(id, item, partitionKey, new BulkItemRequestOptions());
     }
 
     /**
@@ -199,7 +199,7 @@ public final class BulkOperations {
      * @return the bulk operation.
      */
     @Beta(Beta.SinceVersion.V4_9_0)
-    public static <T> CosmosItemOperation newReplaceItemOperation(
+    public static <T> CosmosItemOperation getReplaceItemOperation(
         String id,
         T item,
         PartitionKey partitionKey,
@@ -233,11 +233,11 @@ public final class BulkOperations {
      * @return the bulk operation.
      */
     @Beta(Beta.SinceVersion.V4_9_0)
-    public static <T> CosmosItemOperation newUpsertItemOperation(T item, PartitionKey partitionKey) {
+    public static <T> CosmosItemOperation getUpsertItemOperation(T item, PartitionKey partitionKey) {
         checkNotNull(item, "expected non-null item");
         checkNotNull(partitionKey, "expected non-null partitionKey");
 
-        return newUpsertItemOperation(item, partitionKey, new BulkItemRequestOptions());
+        return getUpsertItemOperation(item, partitionKey, new BulkItemRequestOptions());
     }
 
     /**
@@ -252,7 +252,7 @@ public final class BulkOperations {
      * @return the bulk operation.
      */
     @Beta(Beta.SinceVersion.V4_9_0)
-    public static <T> CosmosItemOperation newUpsertItemOperation(
+    public static <T> CosmosItemOperation getUpsertItemOperation(
         T item,
         PartitionKey partitionKey,
         BulkItemRequestOptions requestOptions) {
