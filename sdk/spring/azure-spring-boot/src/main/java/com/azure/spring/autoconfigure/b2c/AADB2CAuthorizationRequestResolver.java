@@ -17,6 +17,7 @@ import org.springframework.util.StringUtils;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * This class handles the OAuth2 request procession for AAD B2C authorization.
@@ -44,12 +45,6 @@ public class AADB2CAuthorizationRequestResolver implements OAuth2AuthorizationRe
     private final String passwordResetUserFlow;
 
     private final AADB2CProperties properties;
-
-    public AADB2CAuthorizationRequestResolver(@NonNull ClientRegistrationRepository repository) {
-        this.properties = null;
-        this.passwordResetUserFlow = null;
-        this.defaultResolver = new DefaultOAuth2AuthorizationRequestResolver(repository, REQUEST_BASE_URI);
-    }
 
     public AADB2CAuthorizationRequestResolver(@NonNull ClientRegistrationRepository repository,
                                               @NonNull AADB2CProperties properties) {
@@ -94,9 +89,9 @@ public class AADB2CAuthorizationRequestResolver implements OAuth2AuthorizationRe
         cleanupSecurityContextAuthentication();
 
         final Map<String, Object> additionalParameters = new HashMap<>();
-        if (properties.getAuthenticateAdditionalParameters() != null) {
-            additionalParameters.putAll(properties.getAuthenticateAdditionalParameters());
-        }
+        Optional.ofNullable(this.properties)
+                .map(AADB2CProperties::getAuthenticateAdditionalParameters)
+                .ifPresent(additionalParameters::putAll);
         additionalParameters.put("p", userFlow);
         additionalParameters.put(PARAMETER_X_CLIENT_SKU, AAD_B2C_USER_AGENT);
 
