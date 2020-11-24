@@ -44,15 +44,21 @@ public class ReceiveNamedSessionSample {
             .sessionReceiver()
             .queueName("<<queue-name>>")
             .buildClient();
-        ServiceBusReceiverClient receiver = sessionReceiver.acceptSession("greetings");
+
+        // Receiving messages that have the sessionId "greetings-id" set. This can be set via
+        // ServiceBusMessage.setMessageId(String) when sending a message.
+
+        // A receiver is returned when a lock on the session is acquired, otherwise, it throws an exception.
+        ServiceBusReceiverClient receiver = sessionReceiver.acceptSession("greetings-id");
         while (isRunning.get()) {
             IterableStream<ServiceBusReceivedMessage> messages = receiver.receiveMessages(10, Duration.ofSeconds(30));
 
             for (ServiceBusReceivedMessage message : messages) {
-                System.out.println("Processing message from session: " + message.getSessionId());
-
+                // Process message.
                 boolean isSuccessfullyProcessed = processMessage(message);
 
+                // Messages from the sync receiver MUST be settled explicitly. In this case, we complete the message if
+                // it was successfully
                 if (isSuccessfullyProcessed) {
                     receiver.complete(message);
                 } else {
@@ -66,7 +72,8 @@ public class ReceiveNamedSessionSample {
     }
 
     private static boolean processMessage(ServiceBusReceivedMessage message) {
-        System.out.println("Processing message: " + message.getMessageId());
+        System.out.printf("Session: %s. Sequence #: %s. Contents: %s%n", message.getSessionId(),
+            message.getSequenceNumber(), message.getBody());
         return true;
     }
 }

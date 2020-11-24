@@ -37,22 +37,25 @@ public class ReceiveMessageAzureIdentityAsyncSample {
             .build();
 
         // Create a receiver.
-        // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
-        // "<<topic-name>>" will be the name of the Service Bus topic you created inside the Service Bus namespace.
-        // "<<subscription-name>> will be the name of the Subscription you created inside the <<topic-name>>."
-        ServiceBusReceiverAsyncClient receiverAsyncClient = new ServiceBusClientBuilder()
+        // 1. "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
+        // 2. "<<topic-name>>" will be the name of the Service Bus topic you created inside the Service Bus namespace.
+        // 3. "<<subscription-name>> will be the name of the Subscription you created inside the <<topic-name>>."
+        // 4. Disables auto complete, so messages MUST be settled explicitly.
+        ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
             .credential("<<fully-qualified-namespace>>", credential)
             .receiver()
             .topicName("<<topic-name>>")
             .subscriptionName("<<subscription-name>>")
+            .disableAutoComplete()
             .buildAsyncClient();
 
-        Disposable subscription = receiverAsyncClient.receiveMessages()
+        Disposable subscription = receiver.receiveMessages()
             .flatMap(message -> {
-                System.out.println("Received Message Id:" + message.getMessageId());
-                System.out.println("Received Message:" + message.getBody().toString());
+                System.out.printf("Processing message. Sequence #: %s. Contents: %s%n", message.getSequenceNumber(),
+                    message.getBody());
 
-                return receiverAsyncClient.complete(message);
+                // Auto complete was disabled when constructing the receiver. So, messages must be settled manually.
+                return receiver.complete(message);
             })
             .subscribe(aVoid -> System.out.println("Processed message."),
                 error -> System.err.println("Error occurred while receiving message: " + error),
@@ -67,6 +70,6 @@ public class ReceiveMessageAzureIdentityAsyncSample {
         subscription.dispose();
 
         // Close the receiver.
-        receiverAsyncClient.close();
+        receiver.close();
     }
 }

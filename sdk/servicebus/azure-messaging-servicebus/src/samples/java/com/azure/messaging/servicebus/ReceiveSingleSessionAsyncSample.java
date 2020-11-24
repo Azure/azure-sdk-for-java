@@ -40,14 +40,22 @@ public class ReceiveSingleSessionAsyncSample {
             .subscriptionName("<<subscription-name>>")
             .buildAsyncClient();
 
+        // Receiving messages from the first available sessions. It waits up to the AmqpRetryOptions.getTryTimeout().
+        // If no session is available within that operation timeout, it completes with an error. Otherwise, a receiver
+        // is returned when a lock on the session is acquired.
         Mono<ServiceBusReceiverAsyncClient> receiverMono = sessionReceiver.acceptNextSession();
-        Disposable subscription = receiverMono.flatMapMany(receiver -> receiver.receiveMessages()
-            .flatMap(message -> {
-                System.out.println("Processing message from session: " + message.getSessionId());
 
-                // Process message
-                return receiver.complete(message);
-            })).subscribe(aVoid -> {
+        // If the session is successfully accepted, begin receiving messages from it.
+        Disposable subscription = receiverMono.flatMapMany(receiver -> receiver.receiveMessages())
+            .subscribe(message -> {
+                // Process message.
+                System.out.printf("Session: %s. Sequence #: %s. Contents: %s%n", message.getSessionId(),
+                    message.getSequenceNumber(), message.getBody());
+
+                // When this message function completes, the message is automatically completed. If an exception is
+                // thrown in here, the message is abandoned.
+                // To disable this behaviour, toggle ServiceBusSessionReceiverClientBuilder.disableAutoComplete()
+                // when building the session receiver.
             }, error -> System.err.println("Error occurred: " + error));
 
         // Subscribe is not a blocking call so we sleep here so the program does not end.
