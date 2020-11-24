@@ -49,8 +49,8 @@
   <properties>
     <src.dir>src/main</src.dir>
     <test.dir>src/test</test.dir>
-    <jacoco.min.branchcoverage>0.10</jacoco.min.branchcoverage>
-    <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
+    <jacoco.min.linecoverage>0.85</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.70</jacoco.min.branchcoverage>
   </properties>
 
   <dependencies>
@@ -97,7 +97,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.5.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.6.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-test;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>
