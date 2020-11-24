@@ -8,14 +8,14 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The AcquiredPhoneNumbers model. */
+/** The GeographicAreaCodes model. */
 @Fluent
-public final class AcquiredPhoneNumbers {
+public final class GeographicAreaCodes {
     /*
-     * Represents a list of acquired phone numbers.
+     * Represents the list of area codes.
      */
-    @JsonProperty(value = "phoneNumbers", required = true)
-    private List<AcquiredPhoneNumber> phoneNumbers;
+    @JsonProperty(value = "cityAreaCodes")
+    private List<CityAreaCodes> cityAreaCodes;
 
     /*
      * Represents the URL link to the next page
@@ -24,22 +24,22 @@ public final class AcquiredPhoneNumbers {
     private String nextLink;
 
     /**
-     * Get the phoneNumbers property: Represents a list of acquired phone numbers.
+     * Get the cityAreaCodes property: Represents the list of area codes.
      *
-     * @return the phoneNumbers value.
+     * @return the cityAreaCodes value.
      */
-    public List<AcquiredPhoneNumber> getPhoneNumbers() {
-        return this.phoneNumbers;
+    public List<CityAreaCodes> getCityAreaCodes() {
+        return this.cityAreaCodes;
     }
 
     /**
-     * Set the phoneNumbers property: Represents a list of acquired phone numbers.
+     * Set the cityAreaCodes property: Represents the list of area codes.
      *
-     * @param phoneNumbers the phoneNumbers value to set.
-     * @return the AcquiredPhoneNumbers object itself.
+     * @param cityAreaCodes the cityAreaCodes value to set.
+     * @return the GeographicAreaCodes object itself.
      */
-    public AcquiredPhoneNumbers setPhoneNumbers(List<AcquiredPhoneNumber> phoneNumbers) {
-        this.phoneNumbers = phoneNumbers;
+    public GeographicAreaCodes setCityAreaCodes(List<CityAreaCodes> cityAreaCodes) {
+        this.cityAreaCodes = cityAreaCodes;
         return this;
     }
 
@@ -56,9 +56,9 @@ public final class AcquiredPhoneNumbers {
      * Set the nextLink property: Represents the URL link to the next page.
      *
      * @param nextLink the nextLink value to set.
-     * @return the AcquiredPhoneNumbers object itself.
+     * @return the GeographicAreaCodes object itself.
      */
-    public AcquiredPhoneNumbers setNextLink(String nextLink) {
+    public GeographicAreaCodes setNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
     }

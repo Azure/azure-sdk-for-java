@@ -8,14 +8,14 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The AcquiredPhoneNumbers model. */
+/** The TollFreeAreaCodes model. */
 @Fluent
-public final class AcquiredPhoneNumbers {
+public final class TollFreeAreaCodes {
     /*
-     * Represents a list of acquired phone numbers.
+     * Represents the list of primary area codes.
      */
-    @JsonProperty(value = "phoneNumbers", required = true)
-    private List<AcquiredPhoneNumber> phoneNumbers;
+    @JsonProperty(value = "areaCodes")
+    private List<String> areaCodes;
 
     /*
      * Represents the URL link to the next page
@@ -24,22 +24,22 @@ public final class AcquiredPhoneNumbers {
     private String nextLink;
 
     /**
-     * Get the phoneNumbers property: Represents a list of acquired phone numbers.
+     * Get the areaCodes property: Represents the list of primary area codes.
      *
-     * @return the phoneNumbers value.
+     * @return the areaCodes value.
      */
-    public List<AcquiredPhoneNumber> getPhoneNumbers() {
-        return this.phoneNumbers;
+    public List<String> getAreaCodes() {
+        return this.areaCodes;
     }
 
     /**
-     * Set the phoneNumbers property: Represents a list of acquired phone numbers.
+     * Set the areaCodes property: Represents the list of primary area codes.
      *
-     * @param phoneNumbers the phoneNumbers value to set.
-     * @return the AcquiredPhoneNumbers object itself.
+     * @param areaCodes the areaCodes value to set.
+     * @return the TollFreeAreaCodes object itself.
      */
-    public AcquiredPhoneNumbers setPhoneNumbers(List<AcquiredPhoneNumber> phoneNumbers) {
-        this.phoneNumbers = phoneNumbers;
+    public TollFreeAreaCodes setAreaCodes(List<String> areaCodes) {
+        this.areaCodes = areaCodes;
         return this;
     }
 
@@ -56,9 +56,9 @@ public final class AcquiredPhoneNumbers {
      * Set the nextLink property: Represents the URL link to the next page.
      *
      * @param nextLink the nextLink value to set.
-     * @return the AcquiredPhoneNumbers object itself.
+     * @return the TollFreeAreaCodes object itself.
      */
-    public AcquiredPhoneNumbers setNextLink(String nextLink) {
+    public TollFreeAreaCodes setNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
     }

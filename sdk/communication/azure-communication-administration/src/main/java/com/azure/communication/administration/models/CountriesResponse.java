@@ -8,14 +8,14 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The AcquiredPhoneNumbers model. */
+/** The CountriesResponse model. */
 @Fluent
-public final class AcquiredPhoneNumbers {
+public final class CountriesResponse {
     /*
-     * Represents a list of acquired phone numbers.
+     * Represents the underlying list of countries.
      */
-    @JsonProperty(value = "phoneNumbers", required = true)
-    private List<AcquiredPhoneNumber> phoneNumbers;
+    @JsonProperty(value = "countries")
+    private List<PhoneNumberCountry> countries;
 
     /*
      * Represents the URL link to the next page
@@ -24,22 +24,22 @@ public final class AcquiredPhoneNumbers {
     private String nextLink;
 
     /**
-     * Get the phoneNumbers property: Represents a list of acquired phone numbers.
+     * Get the countries property: Represents the underlying list of countries.
      *
-     * @return the phoneNumbers value.
+     * @return the countries value.
      */
-    public List<AcquiredPhoneNumber> getPhoneNumbers() {
-        return this.phoneNumbers;
+    public List<PhoneNumberCountry> getCountries() {
+        return this.countries;
     }
 
     /**
-     * Set the phoneNumbers property: Represents a list of acquired phone numbers.
+     * Set the countries property: Represents the underlying list of countries.
      *
-     * @param phoneNumbers the phoneNumbers value to set.
-     * @return the AcquiredPhoneNumbers object itself.
+     * @param countries the countries value to set.
+     * @return the CountriesResponse object itself.
      */
-    public AcquiredPhoneNumbers setPhoneNumbers(List<AcquiredPhoneNumber> phoneNumbers) {
-        this.phoneNumbers = phoneNumbers;
+    public CountriesResponse setCountries(List<PhoneNumberCountry> countries) {
+        this.countries = countries;
         return this;
     }
 
@@ -56,9 +56,9 @@ public final class AcquiredPhoneNumbers {
      * Set the nextLink property: Represents the URL link to the next page.
      *
      * @param nextLink the nextLink value to set.
-     * @return the AcquiredPhoneNumbers object itself.
+     * @return the CountriesResponse object itself.
      */
-    public AcquiredPhoneNumbers setNextLink(String nextLink) {
+    public CountriesResponse setNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
     }

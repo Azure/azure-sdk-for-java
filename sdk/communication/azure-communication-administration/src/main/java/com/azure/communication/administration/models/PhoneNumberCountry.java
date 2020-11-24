@@ -17,7 +17,13 @@ public final class PhoneNumberCountry {
     private String localizedName;
 
     /*
-     * Represents the abbreviated name of the country.
+     * Locale used for localization
+     */
+    @JsonProperty(value = "locale")
+    private String locale;
+
+    /*
+     * The ISO 3166-2 country code.
      */
     @JsonProperty(value = "countryCode", required = true)
     private String countryCode;
@@ -43,7 +49,27 @@ public final class PhoneNumberCountry {
     }
 
     /**
-     * Get the countryCode property: Represents the abbreviated name of the country.
+     * Get the locale property: Locale used for localization.
+     *
+     * @return the locale value.
+     */
+    public String getLocale() {
+        return this.locale;
+    }
+
+    /**
+     * Set the locale property: Locale used for localization.
+     *
+     * @param locale the locale value to set.
+     * @return the PhoneNumberCountry object itself.
+     */
+    public PhoneNumberCountry setLocale(String locale) {
+        this.locale = locale;
+        return this;
+    }
+
+    /**
+     * Get the countryCode property: The ISO 3166-2 country code.
      *
      * @return the countryCode value.
      */
@@ -52,7 +78,7 @@ public final class PhoneNumberCountry {
     }
 
     /**
-     * Set the countryCode property: Represents the abbreviated name of the country.
+     * Set the countryCode property: The ISO 3166-2 country code.
      *
      * @param countryCode the countryCode value to set.
      * @return the PhoneNumberCountry object itself.

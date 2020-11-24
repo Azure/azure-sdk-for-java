@@ -1,0 +1,1090 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "PhoneNumberAdministrationClient",
+    "description": "The phone number administration client uses the Communication Services to acquire and manage phone numbers.",
+    "contact": {
+      "email": "acsdevexdisc@microsoft.com"
+    },
+    "version": "2020-07-20-preview1"
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/availablePhoneNumbers/countries": {
+      "get": {
+        "tags": [
+          "List available countries"
+        ],
+        "operationId": "PhoneNumberAdministration_GetCountries",
+        "summary": "Lists all countries with available phone numbers.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/Locale"
+          },
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/CountriesResponse"
+            }
+          }
+        },
+        "x-ms-examples": {
+          "List acquired phone numbers": {
+            "$ref": "./examples/GetCountries.json"
+          }
+        }
+      }
+    },
+    "/availablePhoneNumbers/countries/{countryCode}/areaCodes/tollFree": {
+      "get": {
+        "tags": [
+          "List available area codes"
+        ],
+        "operationId": "PhoneNumberAdministration_GetTollFreeAreaCodes",
+        "summary": "Lists available toll-free area codes for a country.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/CountryCode"
+          },
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/TollFreeAreaCodes"
+            }
+          }
+        },
+        "x-ms-examples": {
+          "Get Toll Free area codes": {
+            "$ref": "./examples/GetAreaCodesTollFree.json"
+          }
+        }
+      }
+    },
+    "/availablePhoneNumbers/countries/{countryCode}/areaCodes/geographic": {
+      "get": {
+        "tags": [
+          "List available area codes"
+        ],
+        "operationId": "PhoneNumberAdministration_GetGeographicAreaCodes",
+        "summary": "Lists available geographic area codes for a country.",
+        "description": "Pass a component-url-encoded location to narrow down to a region.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/CountryCode"
+          },
+          {
+            "$ref": "#/parameters/Locale"
+          },
+          {
+            "in": "query",
+            "name": "locationPath",
+            "description": "A URL-encoded location path starting with the region/state/province and optionally narrowed down to municipality. Examples: Ontario, Washington%20State%2FRedmond",
+            "type": "string",
+            "required": false
+          },
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/GeographicAreaCodes"
+            }
+          }
+        },
+        "x-ms-examples": {
+          "Get Geographic area codes": {
+            "$ref": "./examples/GetAreaCodesGeographic.json"
+          }
+        }
+      }
+    },
+    "/availablePhoneNumbers/countries/{countryCode}/offerings": {
+      "get": {
+        "tags": [
+          "List available offerings"
+        ],
+        "summary": "List available offerings for the given country",
+        "operationId": "PhoneNumberAdministration_GetOfferings",
+        "parameters": [
+          {
+            "$ref": "#/parameters/CountryCode"
+          },
+          {
+            "in": "query",
+            "name": "numberType",
+            "description": "Filter by numberType",
+            "type": "string",
+            "enum": [
+              "tollFree",
+              "geographic"
+            ],
+            "x-ms-enum": {
+              "name": "PhoneNumberType",
+              "modelAsString": true
+            },
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "assignmentType",
+            "description": "Filter by assignmentType",
+            "type": "string",
+            "enum": [
+              "person",
+              "application"
+            ],
+            "x-ms-enum": {
+              "name": "AssignmentType",
+              "modelAsString": true
+            },
+            "required": false
+          },
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/OfferingsResponse"
+            }
+          },
+          "default": {
+            "description": "Failure",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "x-ms-examples": {
+          "Get available offerings": {
+            "$ref": "./examples/GetOfferings.json"
+          }
+        }
+      }
+    },
+    "/availablePhoneNumbers/countries/{countryCode}/~search": {
+      "parameters": [
+        {
+          "$ref": "#/parameters/CountryCode"
+        },
+        {
+          "$ref": "#/parameters/ApiVersionParameter"
+        }
+      ],
+      "post": {
+        "tags": [
+          "Find and purchase available phone numbers"
+        ],
+        "summary": "Search for available phone numbers to purchase.",
+        "operationId": "PhoneNumberAdministration_SearchAvailablePhoneNumbers",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "search",
+            "description": "The search request.",
+            "x-ms-client-flatten": true,
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SearchRequest"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "The service has accepted the request and will start processing later. It will return 'Accepted' immediately and include an 'Operation-Location' header. Client side should further query the operation status using the URL specified in this header.",
+            "headers": {
+              "Operation-Location": {
+                "description": "URL to query for status of the operation.",
+                "type": "string"
+              }
+            }
+          },
+          "default": {
+            "description": "Failure",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "x-ms-long-running-operation": true,
+        "x-ms-examples": {
+          "Search for phone numbers": {
+            "$ref": "./examples/PostSearch.json"
+          }
+        }
+      }
+    },
+    "/availablePhoneNumbers/searchResults/{searchId}": {
+      "get": {
+        "tags": [
+          "Find and purchase available phone numbers"
+        ],
+        "summary": "Get a search result by its id.",
+        "operationId": "PhoneNumberAdministration_GetSearchResult",
+        "parameters": [
+          {
+            "$ref": "#/parameters/SearchId"
+          },
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/SearchResult"
+            }
+          },
+          "default": {
+            "description": "Failure",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "x-ms-examples": {
+          "Get PhoneNumber Search Details": {
+            "$ref": "./examples/GetSearchResult.json"
+          }
+        }
+      }
+    },
+    "/availablePhoneNumbers/~purchase": {
+      "post": {
+        "tags": [
+          "Find and purchase available phone numbers"
+        ],
+        "summary": "Purchase phone numbers.",
+        "operationId": "PhoneNumberAdministration_PurchasePhoneNumbers",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "purchase",
+            "description": "The purchase.",
+            "required": false,
+            "x-ms-client-flatten": true,
+            "schema": {
+              "$ref": "#/definitions/PurchaseRequest"
+            }
+          },
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "The service has accepted the request and will start processing later. It will return 'Accepted' immediately and include an 'Operation-Location' header. Client side should further query the operation status using the URL specified in this header.",
+            "headers": {
+              "Operation-Location": {
+                "description": "URL to query for status of the operation.",
+                "type": "string"
+              }
+            }
+          },
+          "default": {
+            "description": "Failure",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "x-ms-long-running-operation": true,
+        "x-ms-examples": {
+          "Purchase a phone numbers search": {
+            "$ref": "./examples/PostPurchase.json"
+          }
+        }
+      }
+    },
+    "/phoneNumbers/operations/{operationId}": {
+      "get": {
+        "tags": [
+          "Long running operations"
+        ],
+        "summary": "Get an operation by its id.",
+        "operationId": "PhoneNumberAdministration_GetOperation",
+        "parameters": [
+          {
+            "$ref": "#/parameters/OperationId"
+          },
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Operation"
+            }
+          },
+          "default": {
+            "description": "Failure",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "x-ms-examples": {
+          "Get long-runnning operation": {
+            "$ref": "./examples/GetOperation.json"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Long running operations"
+        ],
+        "summary": "Cancels the operation if cancellation is supported for the operation type.",
+        "operationId": "PhoneNumberAdministration_CancelOperation",
+        "parameters": [
+          {
+            "$ref": "#/parameters/OperationId"
+          },
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "default": {
+            "description": "Failure",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "x-ms-examples": {
+          "Cancel long-runnning operation": {
+            "$ref": "./examples/DeleteOperation.json"
+          }
+        }
+      }
+    },
+    "/phoneNumbers": {
+      "get": {
+        "tags": [
+          "Manage acquired phone numbers"
+        ],
+        "operationId": "PhoneNumberAdministration_GetPhoneNumbers",
+        "summary": "Lists acquired phone numbers.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/AcquiredPhoneNumbers"
+            }
+          },
+          "default": {
+            "description": "Failure",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "x-ms-examples": {
+          "Get acquired phone numbers": {
+            "$ref": "./examples/GetPhoneNumbers.json"
+          }
+        }
+      }
+    },
+    "/phoneNumbers/{phoneNumber}": {
+      "parameters": [
+        {
+          "$ref": "#/parameters/PhoneNumberId"
+        },
+        {
+          "$ref": "#/parameters/ApiVersionParameter"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Manage acquired phone numbers"
+        ],
+        "operationId": "PhoneNumberAdministration_GetPhoneNumber",
+        "summary": "Gets information about an acquired phone number.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/AcquiredPhoneNumber"
+            }
+          },
+          "default": {
+            "description": "Failure",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "x-ms-examples": {
+          "Get acquired phone number": {
+            "$ref": "./examples/GetPhoneNumber.json"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Manage acquired phone numbers"
+        ],
+        "operationId": "PhoneNumberAdministration_UpdatePhoneNumber",
+        "summary": "Update an acquired phone number.",
+        "consumes": [
+          "application/merge-patch+json"
+        ],
+        "parameters": [
+          {
+            "name": "update",
+            "in": "body",
+            "required": true,
+            "x-ms-client-flatten": true,
+            "schema": {
+              "$ref": "#/definitions/AcquiredPhoneNumberUpdate"
+            },
+            "description": "Update to an acquired phone number."
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "The service has accepted the request and will start processing later. It will return 'Accepted' immediately and include an 'Operation-Location' header. Client side should further query the operation status using the URL specified in this header.",
+            "schema": {
+              "$ref": "#/definitions/AcquiredPhoneNumber"
+            },
+            "headers": {
+              "Operation-Location": {
+                "description": "URL to query for status of the operation.",
+                "type": "string"
+              }
+            }
+          },
+          "default": {
+            "description": "Failure",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "x-ms-long-running-operation": true,
+        "x-ms-examples": {
+          "Update acquired phone number": {
+            "$ref": "./examples/PatchPhoneNumber.json"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Manage acquired phone numbers"
+        ],
+        "operationId": "PhoneNumberAdministration_ReleasePhoneNumber",
+        "summary": "Releases an acquired phone number.",
+        "responses": {
+          "202": {
+            "description": "The service has accepted the request and will start processing later. It will return 'Accepted' immediately and include an 'Operation-Location' header. Client side should further query the operation status using the URL specified in this header.",
+            "headers": {
+              "Operation-Location": {
+                "description": "URL to query for status of the operation.",
+                "type": "string"
+              }
+            }
+          },
+          "default": {
+            "description": "Failure",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "x-ms-long-running-operation": true,
+        "x-ms-examples": {
+          "Release acquired phone number": {
+            "$ref": "./examples/DeletePhoneNumber.json"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "CapabilityValue": {
+      "description": "The possible values for a phone number capability.",
+      "type": "string",
+      "enum": [
+        "inbound",
+        "outbound",
+        "inbound+outbound",
+        "none"
+      ],
+      "x-ms-enum": {
+        "name": "CapabilityValue",
+        "modelAsString": true
+      }
+    },
+    "Capabilities": {
+      "description": "The capabilities of a phone number.",
+      "type": "object",
+      "properties": {
+        "sms": {
+          "description": "Available Sms capabilities.",
+          "$ref": "#/definitions/CapabilityValue"
+        },
+        "calling": {
+          "description": "Available Calling capabilities.",
+          "$ref": "#/definitions/CapabilityValue"
+        }
+      }
+    },
+    "AvailableCapabilities": {
+      "description": "The capabilities of a phone number that are available.",
+      "type": "object",
+      "properties": {
+        "sms": {
+          "description": "Available Sms capabilities.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CapabilityValue"
+          }
+        },
+        "calling": {
+          "description": "Available Calling capabilities.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CapabilityValue"
+          }
+        }
+      }
+    },
+    "PhoneNumberType": {
+      "description": "The type of a phone number.",
+      "type": "string",
+      "enum": [
+        "tollFree",
+        "geographic"
+      ],
+      "x-ms-enum": {
+        "name": "PhoneNumberType",
+        "modelAsString": true
+      }
+    },
+    "AcquiredPhoneNumber": {
+      "description": "The acquired phone number and its metadata and configuration.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "The id, which is the phone number in E.164 format without the leading +.",
+          "type": "string"
+        },
+        "phoneNumber": {
+          "description": "The phoneNumber in E.164 format.",
+          "type": "string"
+        },
+        "countryCode": {
+          "description": "The ISO 3166-2 country code of the country that the phone number belongs to.",
+          "type": "string"
+        },
+        "numberType": {
+          "description": "The type of the phone number.",
+          "$ref": "#/definitions/PhoneNumberType"
+        },
+        "assignmentType": {
+          "description": "The assignment type of the phone number, people or application.",
+          "$ref": "#/definitions/AssignmentType"
+        },
+        "purchaseDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "capabilities": {
+          "description": "The phone number's capabilities.",
+          "$ref": "#/definitions/Capabilities"
+        },
+        "callbackUrl": {
+          "description": "The webhook URL for receiving incoming events.",
+          "type": "string"
+        },
+        "applicationId": {
+          "description": "The application id the number has been assigned to.",
+          "type": "string"
+        },
+        "monthlyRate": {
+          "description": "The monthly cost of the phone number.",
+          "$ref": "#/definitions/MonthlyRate"
+        }
+      }
+    },
+    "AcquiredPhoneNumberUpdate": {
+      "description": "The properties of a phone number that can be changed.",
+      "type": "object",
+      "properties": {
+        "callbackUrl": {
+          "description": "The webhook URL for receiving incoming events.",
+          "type": "string"
+        },
+        "applicationId": {
+          "description": "The application id the number has been assigned to.",
+          "type": "string"
+        },
+        "capabilities": {
+          "description": "The new set of enabled capabilities.",
+          "$ref": "#/definitions/Capabilities"
+        }
+      }
+    },
+    "AcquiredPhoneNumbers": {
+      "description": "The list of acquired phone numbers.",
+      "type": "object",
+      "required": [
+        "phoneNumbers"
+      ],
+      "properties": {
+        "phoneNumbers": {
+          "description": "Represents a list of acquired phone numbers.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AcquiredPhoneNumber"
+          }
+        },
+        "nextLink": {
+          "description": "Represents the URL link to the next page",
+          "type": "string"
+        }
+      }
+    },
+    "AssignmentType": {
+      "description": "The type that the phone number can be assigned to.",
+      "type": "string",
+      "enum": [
+        "person",
+        "application"
+      ],
+      "x-ms-enum": {
+        "name": "AssignmentType",
+        "modelAsString": true
+      }
+    },
+    "MonthlyRate": {
+      "description": "Represents a wrapper of rate information",
+      "type": "object",
+      "properties": {
+        "value": {
+          "format": "double",
+          "description": "The monthly rate of a phone plan group",
+          "type": "number"
+        },
+        "currency": {
+          "description": "The currency of a phone plan group",
+          "enum": [
+            "USD"
+          ],
+          "type": "string",
+          "x-ms-enum": {
+            "name": "Currency",
+            "modelAsString": true
+          }
+        }
+      }
+    },
+    "SearchRequest": {
+      "description": "The desired properties of a phone number for search.",
+      "required": [
+        "numberType",
+        "assignmentType",
+        "capabilities"
+      ],
+      "type": "object",
+      "properties": {
+        "numberType": {
+          "description": "The phone number type.",
+          "$ref": "#/definitions/PhoneNumberType"
+        },
+        "assignmentType": {
+          "description": "The phone number's assignment type.",
+          "$ref": "#/definitions/AssignmentType"
+        },
+        "capabilities": {
+          "description": "The phone number's capabilities.",
+          "$ref": "#/definitions/Capabilities"
+        },
+        "areaCode": {
+          "description": "The desired area code.",
+          "type": "string"
+        },
+        "quantity": {
+          "format": "int32",
+          "description": "The desired quantity of phone numbers.",
+          "type": "integer",
+          "default": 1
+        }
+      }
+    },
+    "SearchResult": {
+      "description": "The result of a phone number search operation.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "The search id.",
+          "type": "string"
+        },
+        "phoneNumbers": {
+          "description": "The phone numbers that are available. Can be fewer than the desired search quantity.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "numberType": {
+          "description": "The phoner number type.",
+          "$ref": "#/definitions/PhoneNumberType"
+        },
+        "assignmentType": {
+          "description": "The phone number's assignment type.",
+          "$ref": "#/definitions/AssignmentType"
+        },
+        "capabilities": {
+          "description": "The phone number's capabilities.",
+          "$ref": "#/definitions/Capabilities"
+        },
+        "monthlyRate": {
+          "description": "The monthly cost for an individual phone number.",
+          "$ref": "#/definitions/MonthlyRate"
+        },
+        "searchExpiresBy": {
+          "format": "date-time",
+          "description": "The date that this search result expires and phone numbers are no longer on hold. A search result expires in less than 15min.",
+          "type": "string"
+        }
+      }
+    },
+    "CountryOffering": {
+      "description": "The offerings for a given country. An offering is a bundle of phone number characteristics and available capabilities.",
+      "type": "object",
+      "properties": {
+        "numberType": {
+          "description": "The phoner number type.",
+          "$ref": "#/definitions/PhoneNumberType"
+        },
+        "assignmentType": {
+          "description": "The phone number's assignment type.",
+          "$ref": "#/definitions/AssignmentType"
+        },
+        "countryCode": {
+          "description": "The ISO 3166-2 country code.",
+          "type": "string"
+        },
+        "availableCapabilities": {
+          "description": "The capabilities that are available in this offering.",
+          "$ref": "#/definitions/AvailableCapabilities"
+        },
+        "monthlyRate": {
+          "description": "The montly cost for an individual phone number in this offering.",
+          "$ref": "#/definitions/MonthlyRate"
+        }
+      }
+    },
+    "OfferingsResponse": {
+      "description": "List of available offerings.",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/CountryOffering"
+      }
+    },
+    "PurchaseRequest": {
+      "description": "Request to purchase phone numbers",
+      "type": "object",
+      "properties": {
+        "searchId": {
+          "description": "The id of the search result to purchase.",
+          "type": "string"
+        }
+      }
+    },
+    "PhoneNumberCountry": {
+      "description": "Represents a country.",
+      "required": [
+        "countryCode",
+        "localizedName"
+      ],
+      "type": "object",
+      "properties": {
+        "localizedName": {
+          "description": "Represents the name of the country.",
+          "type": "string"
+        },
+        "locale": {
+          "description": "Locale used for localization",
+          "type": "string"
+        },
+        "countryCode": {
+          "description": "The ISO 3166-2 country code.",
+          "type": "string"
+        }
+      }
+    },
+    "CountriesResponse": {
+      "description": "Represents a wrapper around a list of countries.",
+      "type": "object",
+      "properties": {
+        "countries": {
+          "description": "Represents the underlying list of countries.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PhoneNumberCountry"
+          }
+        },
+        "nextLink": {
+          "description": "Represents the URL link to the next page",
+          "type": "string"
+        }
+      }
+    },
+    "OperationStatus": {
+      "type": "string",
+      "description": "Status code of the operation.",
+      "enum": [
+        "notStarted",
+        "running",
+        "succeeded",
+        "failed"
+      ],
+      "x-ms-enum": {
+        "name": "OperationStatusCodes",
+        "modelAsString": false
+      },
+      "x-nullable": false
+    },
+    "Operation": {
+      "type": "object",
+      "description": "Long running operation.",
+      "properties": {
+        "status": {
+          "description": "Status of operation.",
+          "$ref": "#/definitions/OperationStatus"
+        },
+        "id": {
+          "description": "Id of the operation.",
+          "type": "string"
+        },
+        "kind": {
+          "type": "string",
+          "description": "Kind of the operation.",
+          "enum": [
+            "search",
+            "purchase",
+            "releasePhoneNumber",
+            "updatePhoneNumber"
+          ],
+          "x-ms-enum": {
+            "name": "OperationKind",
+            "modelAsString": true
+          }
+        },
+        "createdDateTime": {
+          "description": "The date that the operation was created.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "lastActionDateTime": {
+          "description": "The most recent date that the operation was changed.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "resourceLocation": {
+          "description": "Url for retrieving the result of the operation if any",
+          "type": "string"
+        },
+        "error": {
+          "$ref": "#/definitions/ErrorBody"
+        }
+      },
+      "required": [
+        "status",
+        "kind",
+        "id",
+        "createdDateTime",
+        "lastActionDateTime"
+      ]
+    },
+    "TollFreeAreaCodes": {
+      "description": "Represents a list of Toll-Free area codes.",
+      "type": "object",
+      "properties": {
+        "areaCodes": {
+          "description": "Represents the list of primary area codes.",
+          "type": "array",
+          "items": {
+            "description": "Stores a single area code.",
+            "type": "string"
+          }
+        },
+        "nextLink": {
+          "description": "Represents the URL link to the next page",
+          "type": "string"
+        }
+      }
+    },
+    "GeographicAreaCodes": {
+      "description": "Represents a list of geographic area codes.",
+      "type": "object",
+      "properties": {
+        "cityAreaCodes": {
+          "description": "Represents the list of area codes.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/CityAreaCodes"
+          }
+        },
+        "nextLink": {
+          "description": "Represents the URL link to the next page",
+          "type": "string"
+        }
+      }
+    },
+    "CityAreaCodes": {
+      "description": "Represents a list of area codes for a city.",
+      "type": "object",
+      "properties": {
+        "localizedCityName": {
+          "description": "Name of the city.",
+          "type": "string"
+        },
+        "areaCodes": {
+          "description": "Available area codes for the city",
+          "type": "array",
+          "items": {
+            "description": "An area code.",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "ErrorBody": {
+      "description": "Represents a service error response body.",
+      "type": "object",
+      "properties": {
+        "code": {
+          "description": "The error code in the error response.",
+          "type": "string"
+        },
+        "message": {
+          "description": "The error message in the error response.",
+          "type": "string"
+        }
+      }
+    },
+    "ErrorResponse": {
+      "description": "Represents a service error response.",
+      "type": "object",
+      "properties": {
+        "error": {
+          "$ref": "#/definitions/ErrorBody"
+        }
+      }
+    }
+  },
+  "parameters": {
+    "ApiVersionParameter": {
+      "in": "query",
+      "name": "api-version",
+      "description": "Version of API to invoke",
+      "required": true,
+      "type": "string"
+    },
+    "SearchId": {
+      "in": "path",
+      "name": "searchId",
+      "description": "The search Id.",
+      "required": true,
+      "type": "string",
+      "x-ms-parameter-location": "method"
+    },
+    "PhoneNumberId": {
+      "in": "path",
+      "name": "phoneNumber",
+      "description": "The phone number id, this is the phone number in E.164 format without the leading +.",
+      "required": true,
+      "type": "string",
+      "x-ms-parameter-location": "method"
+    },
+    "OperationId": {
+      "in": "path",
+      "name": "operationId",
+      "description": "The operation Id.",
+      "required": true,
+      "type": "string",
+      "x-ms-parameter-location": "method"
+    },
+    "CountryCode": {
+      "in": "path",
+      "name": "countryCode",
+      "description": "The ISO 3166-2 country code.",
+      "required": true,
+      "type": "string",
+      "x-ms-parameter-location": "method"
+    },
+    "Locale": {
+      "in": "query",
+      "name": "locale",
+      "description": "Language locale for localizing location names.",
+      "type": "string",
+      "default": "en-US",
+      "x-ms-parameter-location": "method"
+    },
+    "Endpoint": {
+      "in": "path",
+      "name": "endpoint",
+      "description": "The endpoint of the Azure Communication resource.",
+      "required": true,
+      "type": "string",
+      "x-ms-skip-url-encoding": true,
+      "x-ms-parameter-location": "client"
+    }
+  },
+  "securityDefinitions": {
+    "azure_auth": {
+      "type": "oauth2",
+      "authorizationUrl": "https://login.microsoftonline.com/common/oauth2/authorize",
+      "flow": "implicit",
+      "description": "Azure Active Directory OAuth2 Flow",
+      "scopes": {
+        "user_impersonation": "impersonate your user account"
+      }
+    }
+  },
+  "x-ms-parameterized-host": {
+    "hostTemplate": "{endpoint}",
+    "useSchemePrefix": false,
+    "parameters": [
+      {
+        "$ref": "#/parameters/Endpoint"
+      }
+    ]
+  }
+}

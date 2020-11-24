@@ -25,8 +25,6 @@ autorest --use=@autorest/java@4.0.1 --tag=identity
 autorest --use=@autorest/java@4.0.1 --tag=phonenumber
 ```
 
-
-
 ### Tag: identity
 
 These settings apply only when `--tag=identity` is specified on the command line.
@@ -41,54 +39,8 @@ add-context-parameter: true
 These settings apply only when `--tag=phonenumber` is specified on the command line.
 
 ``` yaml $(tag) == 'phonenumber'
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/257f060be8b60d8468584682aa2d71b1faa5f82c/specification/communication/data-plane/Microsoft.CommunicationServicesAdministration/preview/2020-07-20-preview1/communicationservicesadministration.json
+input-file: PhoneNumber.json
 override-client-name: PhoneNumberAdminClient
-```
-
-### Rename searchId to reservationId in CreateSearchResponse
-
-``` yaml
-directive:
-  - from: swagger-document
-    where: $.definitions.CreateSearchResponse.properties.searchId
-    transform: >
-      $["x-ms-client-name"] = "reservationId";
-```
-### Rename searchId to reservationId in PhoneNumberSearch 
-
-``` yaml
-directive:
-  - from: swagger-document
-    where: $.definitions.PhoneNumberSearch.properties.searchId
-    transform: >
-      $["x-ms-client-name"] = "reservationId";
-```
-
-### Rename PhoneNumberSearch to PhoneNumberReservation
-
-``` yaml
-directive:
-    - rename-model:
-        from: PhoneNumberSearch
-        to: PhoneNumberReservation
-```
-
-### Rename CreateSearchOptions to CreateReservationOptions
-
-``` yaml
-directive:
-    - rename-model:
-        from: CreateSearchOptions
-        to: CreateReservationOptions
-```
-
-### Rename CreateSearchResponse to CreateReservationResponse
-
-``` yaml
-directive:
-    - rename-model:
-        from: CreateSearchResponse
-        to: CreateReservationResponse
 ```
 
 ### Code generation settings
