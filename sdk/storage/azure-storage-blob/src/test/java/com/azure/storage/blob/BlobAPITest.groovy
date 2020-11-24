@@ -2643,6 +2643,22 @@ class BlobAPITest extends APISpec {
         containerName == bc.getContainerName()
     }
 
+    def "Get Container Client"() {
+        setup:
+        def sasToken = cc.generateSas(
+            new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(2),
+                new BlobSasPermission().setReadPermission(true)))
+
+        // Ensure a sas token is also persisted
+        cc = getContainerClient(sasToken, cc.getBlobContainerUrl())
+
+        expect:
+        // Ensure the correct endpoint
+        cc.getBlobContainerUrl() == bc.getContainerClient().getBlobContainerUrl()
+        // Ensure it is a functional client
+        bc.getContainerClient().getProperties() != null
+    }
+
     def "Get Blob Name"() {
         expect:
         blobName == bc.getBlobName()

@@ -101,6 +101,10 @@ application to use the Spring annotations and classes to protect the web app.
            sign-up-or-sign-in: ${your-sign-up-or-in-user-flow}
            profile-edit: ${your-profile-edit-user-flow}     # optional
            password-reset: ${your-password-reset-user-flow} # optional
+         authenticate-additional-parameters: 
+           prompt: [login,none,consent]   # optional
+           login_hint: xxxxxxxxx          # optional
+           domain_hint: xxxxxxxxx         # optional
    ```
    Where:
 
