@@ -10,8 +10,6 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-
 /**
  * Sample demonstrates how to schedule a {@link ServiceBusMessage} to an Azure Service Bus queue and cancel a scheduled
  * message.
@@ -38,9 +36,9 @@ public class SendScheduledMessageAndCancelAsyncSample {
             .queueName("<< QUEUE NAME >>")
             .buildAsyncClient();
 
-        final ServiceBusMessage message = new ServiceBusMessage(BinaryData.fromBytes("Hello World!!".getBytes(UTF_8)));
-        final AtomicLong messageSequenceNumber = new AtomicLong();
-        final Semaphore completedSemaphore = new Semaphore(1);
+        ServiceBusMessage message = new ServiceBusMessage(BinaryData.fromString("Hello World!!"));
+        AtomicLong messageSequenceNumber = new AtomicLong();
+        Semaphore completedSemaphore = new Semaphore(1);
         completedSemaphore.acquire();
 
         // Scheduling the message to appear in the queue one minute from now.

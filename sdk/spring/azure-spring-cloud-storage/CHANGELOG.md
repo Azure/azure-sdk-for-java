@@ -1,5 +1,8 @@
 # Release History
 
+## 2.0.0-beta.2 (Unreleased)
+
+
 ## 2.0.0-beta.1 (2020-11-19)
 ### Breaking Changes
 - Change group id from `com.microsoft.azure` to `com.azure.spring`.

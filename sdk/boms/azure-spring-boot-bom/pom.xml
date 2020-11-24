@@ -5,7 +5,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-boot-bom</artifactId>
-  <version>3.0.0-beta.1</version>
+  <version>3.0.0-beta.2</version>
   <packaging>pom</packaging>
 
   <name>Azure Spring Boot BOM</name>
@@ -57,6 +57,11 @@
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>azure-spring-boot-starter</artifactId>
+        <version>${azure.spring.boot.integration.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure.spring</groupId>
+        <artifactId>azure-spring-boot-starter-active-directory</artifactId>
         <version>${azure.spring.boot.integration.version}</version>
       </dependency>
       <dependency>
