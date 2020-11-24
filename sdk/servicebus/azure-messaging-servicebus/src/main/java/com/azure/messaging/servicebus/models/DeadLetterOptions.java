@@ -26,7 +26,7 @@ public final class DeadLetterOptions extends SettlementOptions {
      *
      * @param deadLetterReason while putting message in dead letter sub-queue.
      *
-     * @return {@link DeadLetterOptions} object.
+     * @return The updated {@link DeadLetterOptions} object.
      */
     public DeadLetterOptions setDeadLetterReason(String deadLetterReason) {
         this.deadLetterReason = deadLetterReason;
@@ -38,7 +38,7 @@ public final class DeadLetterOptions extends SettlementOptions {
      *
      * @param deadLetterErrorDescription while putting message in dead letter sub-queue.
      *
-     * @return {@link DeadLetterOptions} object.
+     * @return The updated {@link DeadLetterOptions} object.
      */
     public DeadLetterOptions setDeadLetterErrorDescription(String deadLetterErrorDescription) {
         this.deadLetterErrorDescription = deadLetterErrorDescription;
@@ -50,7 +50,7 @@ public final class DeadLetterOptions extends SettlementOptions {
      *
      * @param propertiesToModify Message properties to modify.
      *
-     * @return {@link DeadLetterOptions} object.
+     * @return The updated {@link DeadLetterOptions} object.
      */
     public DeadLetterOptions setPropertiesToModify(Map<String, Object> propertiesToModify) {
         this.propertiesToModify = propertiesToModify;

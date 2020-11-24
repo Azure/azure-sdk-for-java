@@ -24,7 +24,7 @@ public final class DeferOptions extends SettlementOptions {
      *
      * @param propertiesToModify Message properties to modify.
      *
-     * @return {@link AbandonOptions} object.
+     * @return The updated {@link DeferOptions} object.
      */
     public DeferOptions setPropertiesToModify(Map<String, Object> propertiesToModify) {
         this.propertiesToModify = propertiesToModify;

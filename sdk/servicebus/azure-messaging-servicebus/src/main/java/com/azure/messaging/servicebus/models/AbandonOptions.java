@@ -33,7 +33,7 @@ public final class AbandonOptions extends SettlementOptions {
      *
      * @param propertiesToModify Message properties to modify.
      *
-     * @return {@link AbandonOptions} object.
+     * @return The updated {@link AbandonOptions} object.
      */
     public AbandonOptions setPropertiesToModify(Map<String, Object> propertiesToModify) {
         this.propertiesToModify = propertiesToModify;
