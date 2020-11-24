@@ -4,8 +4,12 @@ package com.microsoft.azure.cosmosdb.spark.schema
 
 import java.sql.{Date, Timestamp}
 
+// TODO: moderakh this class requires a rewrite
+// scalastyle:off
+// scalastyle:off underscore.import
 import org.apache.spark.sql.types._
-
+import scala.collection.JavaConverters._
+// scalastyle:on underscore.import
 
 // TODO: moderakh this class requires a rewrite
 // this is borrowed from old OLTP spark connector
@@ -170,3 +174,4 @@ trait JsonSupport {
     }
   }
 }
+// scalastyle:on

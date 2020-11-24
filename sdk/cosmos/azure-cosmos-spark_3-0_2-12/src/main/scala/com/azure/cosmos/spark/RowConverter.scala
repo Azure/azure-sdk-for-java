@@ -18,8 +18,8 @@ import scala.collection.immutable.HashMap
 // scalastyle:off underscore.import
 import org.apache.spark.sql.types._
 import scala.collection.JavaConverters._
-
 // scalastyle:on underscore.import
+
 import org.apache.spark.unsafe.types.UTF8String
 
 // TODO: moderakh more discussion is required to decide how to do row conversion
@@ -28,6 +28,7 @@ import org.apache.spark.unsafe.types.UTF8String
 // TODO add more unit tests for this class to CosmosRowConverterSpec.
 
 // scalastyle:off multiple.string.literals
+// scalastyle:off null
 object CosmosRowConverter
   extends Serializable
   with JsonSupport
@@ -51,10 +52,11 @@ object CosmosRowConverter
   // TODO: moderakh this method requires a rewrite
   // this is borrowed from old OLTP spark connector
   def documentToMap(document: ObjectNode): Map[String, AnyRef] = {
-    if (document == null)
+    if (document == null) {
       new HashMap[String, AnyRef]
-    else
+    } else {
       getMap(document).asScala.toMap
+    }
   }
 
   // TODO: moderakh this method requires a rewrite
@@ -78,6 +80,7 @@ object CosmosRowConverter
   }
 
   // TODO: moderakh this method requires a rewrite
+  // scalastyle:off
   // this is borrowed from old OLTP spark connector
   def toSQL(value: Any, dataType: DataType): Any = {
     Option(value).map { value =>
@@ -112,7 +115,7 @@ object CosmosRowConverter
       }
     }.orNull
   }
-
+  // scalastyle:on
   ////
 
 
@@ -242,3 +245,5 @@ object CosmosRowConverter
   }
 }
 // scalastyle:on multiple.string.literals
+// scalastyle:on null
+
