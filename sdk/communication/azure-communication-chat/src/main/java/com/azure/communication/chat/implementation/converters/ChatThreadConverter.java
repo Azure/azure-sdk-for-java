@@ -26,9 +26,9 @@ public final class ChatThreadConverter {
             .setTopic(obj.getTopic())
             .setCreatedOn(obj.getCreatedOn())
             .setCreatedBy(new CommunicationUser(obj.getCreatedBy()))
-            .setMembers(obj.getMembers()
+            .setMembers(obj.getParticipants()
                 .stream()
-                .map(member -> ChatThreadMemberConverter.convert(member))
+                .map(participant -> ChatParticipantConverter.convert(participant))
                 .collect(Collectors.toList()));
 
         return chatThread;

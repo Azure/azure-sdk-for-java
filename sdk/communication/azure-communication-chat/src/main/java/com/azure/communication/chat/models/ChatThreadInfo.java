@@ -30,6 +30,13 @@ public final class ChatThreadInfo {
     private Boolean isDeleted;
 
     /*
+     * The timestamp when the chat thread was deleted. The timestamp is in
+     * ISO8601 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     */
+    @JsonProperty(value = "deletedOn")
+    private OffsetDateTime deletedOn;
+
+    /*
      * The timestamp when the last message arrived at the server. The timestamp
      * is in ISO8601 format: `yyyy-MM-ddTHH:mm:ssZ`.
      */
@@ -82,6 +89,28 @@ public final class ChatThreadInfo {
      */
     public ChatThreadInfo setIsDeleted(Boolean isDeleted) {
         this.isDeleted = isDeleted;
+        return this;
+    }
+
+    /**
+     * Get the deletedOn property: The timestamp when the chat thread was deleted. The timestamp is in ISO8601 format:
+     * `yyyy-MM-ddTHH:mm:ssZ`.
+     *
+     * @return the deletedOn value.
+     */
+    public OffsetDateTime getDeletedOn() {
+        return this.deletedOn;
+    }
+
+    /**
+     * Set the deletedOn property: The timestamp when the chat thread was deleted. The timestamp is in ISO8601 format:
+     * `yyyy-MM-ddTHH:mm:ssZ`.
+     *
+     * @param deletedOn the deletedOn value to set.
+     * @return the ChatThreadInfo object itself.
+     */
+    public ChatThreadInfo setDeletedOn(OffsetDateTime deletedOn) {
+        this.deletedOn = deletedOn;
         return this;
     }
 

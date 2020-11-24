@@ -1,0 +1,85 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.dev.communication.azure.net/identities?api-version=2020-07-20-preview2",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-administration/1.0.0-beta.3 (11.0.9; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "api-supported-versions" : "2020-01-15-preview3, 2020-07-20-preview1, 2020-07-20-preview2",
+      "X-Processing-Time" : "152ms",
+      "MS-CV" : "L8rIF9Zh30ecVm9ADih+og.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0sLiuXwAAAAA2nCnKPXlrQ7yG6bD+24G8WVZSMzBFREdFMDMwNgA3MDU0Mzk1ZS1jZTFkLTQ1NWUtYWU1ZC0yMzNjYTgzOTA1NTQ=",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"8:acs:9b665d53-8164-4923-ad5d-5e983b07d2e7_00000006-6263-14a0-8a72-5a3a0d0000a5\"}",
+      "Date" : "Fri, 13 Nov 2020 16:47:44 GMT",
+      "x-ms-client-request-id" : "d8523ea6-9484-475f-a6fe-208063d5a531",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.dev.communication.azure.net/identities?api-version=2020-07-20-preview2",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-administration/1.0.0-beta.3 (11.0.9; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "api-supported-versions" : "2020-01-15-preview3, 2020-07-20-preview1, 2020-07-20-preview2",
+      "X-Processing-Time" : "140ms",
+      "MS-CV" : "ZBKShuRF/kmK5GKYkvSF3g.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0sLiuXwAAAAAzWU536wFFRp8I+spJHBs9WVZSMzBFREdFMDMxMQA3MDU0Mzk1ZS1jZTFkLTQ1NWUtYWU1ZC0yMzNjYTgzOTA1NTQ=",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"8:acs:9b665d53-8164-4923-ad5d-5e983b07d2e7_00000006-6263-154f-b274-5a3a0d000030\"}",
+      "Date" : "Fri, 13 Nov 2020 16:47:43 GMT",
+      "x-ms-client-request-id" : "b9c6abd5-ed1c-4a48-a2da-c874deb5bd7a",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.dev.communication.azure.net/identities/8:acs:9b665d53-8164-4923-ad5d-5e983b07d2e7_00000006-6263-14a0-8a72-5a3a0d0000a5/token?api-version=2020-07-20-preview2",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-administration/1.0.0-beta.3 (11.0.9; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "api-supported-versions" : "2020-01-15-preview3, 2020-07-20-preview1, 2020-07-20-preview2",
+      "X-Processing-Time" : "307ms",
+      "MS-CV" : "YrdipZVdC0m0ymB6Thy5lg.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0sLiuXwAAAABdDSBLBKLeTpk2hAIP3aPYWVZSMzBFREdFMDMwNgA3MDU0Mzk1ZS1jZTFkLTQ1NWUtYWU1ZC0yMzNjYTgzOTA1NTQ=",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"8:acs:9b665d53-8164-4923-ad5d-5e983b07d2e7_00000006-6263-14a0-8a72-5a3a0d0000a5\",\"token\":\"REDACTED\",\"expiresOn\":\"2020-11-14T16:47:43.8118693+00:00\"}",
+      "Date" : "Fri, 13 Nov 2020 16:47:44 GMT",
+      "x-ms-client-request-id" : "4000139e-0ec1-4699-9fd7-85c97f9d546e",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.dev.communication.azure.net/chat/threads/19:020082a8df7b44dd8c722bea8fe7167f@thread.v2?api-version=2020-11-01-preview3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-chat/1.0.0-beta.3 (11.0.9; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "api-supported-versions" : "2020-09-21-preview2, 2020-11-01-preview3",
+      "X-Processing-Time" : "265ms",
+      "MS-CV" : "zX8zC0tbzkW54EiJ4tRneA.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0sLiuXwAAAADc1lZLSNS2SatpM7kgSsDDWVZSMzBFREdFMDMxMQA3MDU0Mzk1ZS1jZTFkLTQ1NWUtYWU1ZC0yMzNjYTgzOTA1NTQ=",
+      "StatusCode" : "403",
+      "Body" : "{\r\n  \"Code\": \"Forbidden\",\r\n  \"Message\": \"The initiator is not a participant of the specified thread.\"\r\n}",
+      "Date" : "Fri, 13 Nov 2020 16:47:44 GMT",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
