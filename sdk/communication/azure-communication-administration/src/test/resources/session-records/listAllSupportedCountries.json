@@ -3,17 +3,17 @@
     "Method" : "GET",
     "Uri" : "https://REDACTED.communication.azure.com/administration/phonenumbers/countries?locale=en-us&api-version=2020-07-20-preview1",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-administration/1.0.0-beta.3 (15.0.1; Windows 10; 10.0)"
+      "User-Agent" : "azsdk-java-azure-communication-administration/1.0.0-beta.4 (11.0.8; Windows 10; 10.0)"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "X-Processing-Time" : "455ms",
-      "MS-CV" : "Uxh7Y8U0c02fozYuDrmUoQ.0",
+      "X-Processing-Time" : "484ms",
+      "MS-CV" : "v2TTfJx7c06p3xVxSuVlAg.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0Q+ysXwAAAAAmuWgKkeQ2R5NV45OWujVHTEFYRURHRTEyMTkAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
+      "X-Azure-Ref" : "0Nl64XwAAAAAD6f21bNLwQrFP1i5oy9xJWVZSMzBFREdFMDQwNwA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
       "StatusCode" : "200",
-      "Body" : "{\"countries\":[{\"localizedName\":\"United States\",\"countryCode\":\"US\"}],\"nextLink\":null}",
-      "Date" : "Thu, 12 Nov 2020 08:03:15 GMT",
+      "Body" : "{\"countries\":[{\"localizedName\":\"Canada\",\"countryCode\":\"CA\"},{\"localizedName\":\"United States\",\"countryCode\":\"US\"}],\"nextLink\":null}",
+      "Date" : "Sat, 21 Nov 2020 00:24:22 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
