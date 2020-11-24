@@ -131,24 +131,24 @@ public class ChatClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getNotFoundOnNonExistingChatThread(HttpClient httpClient) {
+    public void getForbiddenOnNonExistingChatThread(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "getNotFoundOnNonExistingChatThreadSync");
 
         // Action & Assert
         assertRestException(
-            () -> client.getChatThread("19:020082a8df7b44dd8c722bea8fe7167f@thread.v2"), 404);
+            () -> client.getChatThread("19:020082a8df7b44dd8c722bea8fe7167f@thread.v2"), 403);
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getNotFoundOnNonExistingChatThreadWithResponse(HttpClient httpClient) {
+    public void getForbiddenOnNonExistingChatThreadWithResponse(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "getNotFoundOnNonExistingChatThreadWithResponseSync");
 
         // Action & Assert
         assertRestException(
-            () -> client.getChatThreadWithResponse("19:020082a8df7b44dd8c722bea8fe7167f@thread.v2", Context.NONE), 404);
+            () -> client.getChatThreadWithResponse("19:020082a8df7b44dd8c722bea8fe7167f@thread.v2", Context.NONE), 403);
     }
 
     @ParameterizedTest

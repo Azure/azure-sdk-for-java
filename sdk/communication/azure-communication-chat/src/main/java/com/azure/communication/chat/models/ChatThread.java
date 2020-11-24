@@ -42,7 +42,7 @@ public final class ChatThread {
      * Chat thread members.
      */
     @JsonProperty(value = "members")
-    private List<ChatThreadMember> members;
+    private List<ChatParticipant> members;
 
     /**
      * Get the id property: Chat thread id.
@@ -131,7 +131,7 @@ public final class ChatThread {
      *
      * @return the members value.
      */
-    public List<ChatThreadMember> getMembers() {
+    public List<ChatParticipant> getMembers() {
         return this.members;
     }
 
@@ -141,7 +141,7 @@ public final class ChatThread {
      * @param members the members value to set.
      * @return the ChatThread object itself.
      */
-    public ChatThread setMembers(List<ChatThreadMember> members) {
+    public ChatThread setMembers(List<ChatParticipant> members) {
         this.members = members;
         return this;
     }

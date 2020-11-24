@@ -26,7 +26,7 @@ Azure Communication Chat contains the APIs used in chat applications for Azure C
 
 ## Key concepts
 
-A chat conversation is represented by a chat thread. Each user in the chat thread is called a thread member. Thread members can chat with one another privately in a 1:1 chat or huddle up in a 1:N group chat.
+A chat conversation is represented by a chat thread. Each user in the chat thread is called a participant. Participants can chat with one another privately in a 1:1 chat or huddle up in a 1:N group chat.
 
 Once you initialized a `ChatClient` and a `ChatThreadClient` class, you can do the following chat operations:
 
@@ -34,7 +34,7 @@ Once you initialized a `ChatClient` and a `ChatThreadClient` class, you can do t
 
 ### Send, get, list, update, and delete chat messages
 
-### Get, add, and remove members
+### Get, add, and remove participants
 
 ### Send and get read receipts
 
@@ -100,29 +100,29 @@ Use the `createChatThread` method to create a chat thread.
 `createChatThreadOptions` is used to describe the thread request, an example is shown in the code snippet below.
 
 - Use `topic` to give a thread topic;
-- Use `members` to list the thread members to be added to the thread;
+- Use `participants` to list the thread participants to be added to the thread;
 
-`chatThreadClient` is the response returned from creating a thread. It can be used for performing operations on the created thread: add members, send message, etc.
+`chatThreadClient` is the response returned from creating a thread. It can be used for performing operations on the created thread: add participants, send message, etc.
 It contains a `chatThreadId` property which is the unique ID of the thread. The property is accessible by the public method getChatThreadId().
 
 <!-- embedme ./src/samples/java/com/azure/communication/chat/ReadmeSamples.java#L71-L88 -->
 ```Java
-List<ChatThreadMember> members = new ArrayList<ChatThreadMember>();
+List<ChatParticipant> participants = new ArrayList<ChatParticipant>();
 
-ChatThreadMember firstThreadMember = new ChatThreadMember()
+ChatParticipant firstParticipant = new ChatParticipant()
     .setUser(user1)
-    .setDisplayName("Member Display Name 1");
+    .setDisplayName("Participant Display Name 1");
 
-ChatThreadMember secondThreadMember = new ChatThreadMember()
+ChatParticipant secondParticipant = new ChatParticipant()
     .setUser(user2)
-    .setDisplayName("Member Display Name 2");
+    .setDisplayName("Participant Display Name 2");
 
-members.add(firstThreadMember);
-members.add(secondThreadMember);
+participants.add(firstParticipant);
+participants.add(secondParticipant);
 
 CreateChatThreadOptions createChatThreadOptions = new CreateChatThreadOptions()
     .setTopic("Topic")
-    .setMembers(members);
+    .setParticipants(participants);
 ChatThreadClient chatThreadClient = chatClient.createChatThread(createChatThreadOptions);
 String chatThreadId = chatThreadClient.getChatThreadId();
 ```
@@ -151,7 +151,7 @@ chatClient.deleteChatThread(chatThreadId);
 
 #### Get a chat thread client
 
-The `getChatThreadClient` method returns a thread client for a thread that already exists. It can be used for performing operations on the created thread: add members, send message, etc.
+The `getChatThreadClient` method returns a thread client for a thread that already exists. It can be used for performing operations on the created thread: add participants, send message, etc.
 `chatThreadId` is the unique ID of the existing chat thread.
 
 <!-- embedme ./src/samples/java/com/azure/communication/chat/ReadmeSamples.java#L119-L120 -->
@@ -185,7 +185,7 @@ Use the `sendMessage` method to sends a chat message to a chat thread identified
 - Use `priority` to specify the chat message priority level, such as 'Normal' or 'High';
 - Use `senderDisplayName` to specify the display name of the sender;
 
-`sendChatMessageResult` is the response returned from sending a chat message, it contains an id, which is the unique ID of the message.
+A `String` response returned from sending a chat message, it contains an id, which is the unique ID of the message.
 
 <!-- embedme ./src/samples/java/com/azure/communication/chat/ReadmeSamples.java#L142-L148 -->
 ```Java
@@ -194,8 +194,8 @@ SendChatMessageOptions sendChatMessageOptions = new SendChatMessageOptions()
     .setPriority(ChatMessagePriority.NORMAL)
     .setSenderDisplayName("Sender Display Name");
 
-SendChatMessageResult sendChatMessageResult = chatThreadClient.sendMessage(sendChatMessageOptions);
-String chatMessageId = sendChatMessageResult.getId();
+
+String chatMessageId = chatThreadClient.sendMessage(sendChatMessageOptions);
 ```
 
 #### Get a chat message
@@ -239,9 +239,9 @@ listMessages returns different types of messages which can be identified by `cha
 
 -`ThreadActivity/TopicUpdate`: System message that indicates the topic has been updated.
 
--`ThreadActivity/AddMember`: System message that indicates one or more members have been added to the chat thread.
+-`ThreadActivity/AddMember`: System message that indicates one or more participants have been added to the chat thread.
 
--`ThreadActivity/DeleteMember`: System message that indicates a member has been removed from the chat thread.
+-`ThreadActivity/DeleteMember`: System message that indicates a participant has been removed from the chat thread.
 
 For more details, see [Message Types](https://docs.microsoft.com/azure/communication-services/concepts/chat/concepts#message-types).
 
@@ -275,26 +275,26 @@ chatThreadClient.deleteMessage(chatMessageId);
 
 ### Chat Thread Member Operations
 
-#### List chat thread members
+#### List chat participants
 
-Use `listMembers` to retrieve a paged collection containing the members of the chat thread identified by chatThreadId.
+Use `listParticipants` to retrieve a paged collection containing the participants of the chat thread identified by chatThreadId.
 
 <!-- embedme ./src/samples/java/com/azure/communication/chat/ReadmeSamples.java#L206-L213 -->
 ```Java
-PagedIterable<ChatThreadMember> chatThreadMembersResponse = chatThreadClient.listMembers();
-chatThreadMembersResponse.iterableByPage().forEach(resp -> {
+PagedIterable<ChatParticipant> chatParticipantsResponse = chatThreadClient.listParticipants();
+chatParticipantsResponse.iterableByPage().forEach(resp -> {
     System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.getHeaders(),
         resp.getRequest().getUrl(), resp.getStatusCode());
-    resp.getItems().forEach(chatMember -> {
-        System.out.printf("Member id is %s.", chatMember.getUser().getId());
+    resp.getItems().forEach(chatParticipant -> {
+        System.out.printf("Participant id is %s.", chatParticipant.getUser().getId());
     });
 });
 ```
 
-#### Add thread members
+#### Add participants
 
-Use `addMembers` method to add thread members to the thread identified by threadId.
-`addChatThreadMembersOptions` describes the request object containing the members to be added; Use `.setMembers()` to set the thread members to be added to the thread;
+Use `addParticipants` method to add participants to the thread identified by threadId.
+`addChatParticipantsOptions` describes the request object containing the members to be added; Use `.setParticipants()` to set the participants to be added to the thread;
 
 - `user`, required, is the CommunicationUser you've created by using the CommunicationIdentityClient. More info at: [Create A User](https://docs.microsoft.com/azure/communication-services/quickstarts/access-tokens?pivots=programming-language-java#create-a-user).
 - `display_name`, optional, is the display name for the thread member.
@@ -302,32 +302,32 @@ Use `addMembers` method to add thread members to the thread identified by thread
 
 <!-- embedme ./src/samples/java/com/azure/communication/chat/ReadmeSamples.java#L225-L240 -->
 ```Java
-List<ChatThreadMember> members = new ArrayList<ChatThreadMember>();
+List<ChatParticipant> participants = new ArrayList<ChatParticipant>();
 
-ChatThreadMember firstThreadMember = new ChatThreadMember()
+ChatParticipant firstParticipant = new ChatParticipant()
     .setUser(user1)
     .setDisplayName("Display Name 1");
 
-ChatThreadMember secondThreadMember = new ChatThreadMember()
+ChatParticipant secondParticipant = new ChatParticipant()
     .setUser(user2)
     .setDisplayName("Display Name 2");
 
-members.add(firstThreadMember);
-members.add(secondThreadMember);
+participants.add(firstParticipant);
+participants.add(secondParticipant);
 
-AddChatThreadMembersOptions addChatThreadMembersOptions = new AddChatThreadMembersOptions()
-    .setMembers(members);
-chatThreadClient.addMembers(addChatThreadMembersOptions);
+AddChatParticipantsOptions addChatParticipantsOptions = new AddChatParticipantsOptions()
+    .setParticipants(participants);
+chatThreadClient.addParticipants(addChatParticipantsOptions);
 ```
 
-#### Remove chat thread member
+#### Remove participant
 
-Use `removeMember` method to remove chat thread member from the chat thread identified by chatThreadId.
+Use `removeParticipant` method to remove a participant from the chat thread identified by chatThreadId.
 `user` is the CommunicationUser you've created.
 
 <!-- embedme ./src/samples/java/com/azure/communication/chat/ReadmeSamples.java#L251-L251 -->
 ```Java
-chatThreadClient.removeMember(user);
+chatThreadClient.removeParticipant(user);
 ```
 
 ### Read Receipt Operations
@@ -345,11 +345,11 @@ chatThreadClient.sendReadReceipt(chatMessageId);
 
 #### Get read receipts
 
-`getReadReceipts` method retreives read receipts for a chat thread.
+`getReadReceipts` method retrieves read receipts for a chat thread.
 
 <!-- embedme ./src/samples/java/com/azure/communication/chat/ReadmeSamples.java#L270-L277 -->
 ```Java
-PagedIterable<ReadReceipt> readReceiptsResponse = chatThreadClient.listReadReceipts();
+PagedIterable<ChatMessageReadReceipt> readReceiptsResponse = chatThreadClient.listReadReceipts();
 readReceiptsResponse.iterableByPage().forEach(resp -> {
     System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.getHeaders(),
         resp.getRequest().getUrl(), resp.getStatusCode());
