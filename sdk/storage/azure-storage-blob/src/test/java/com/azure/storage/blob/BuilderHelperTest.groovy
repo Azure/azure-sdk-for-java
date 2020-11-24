@@ -290,7 +290,6 @@ class BuilderHelperTest extends Specification {
             .assertNext({ it.getStatusCode() == 200 })
             .verifyComplete()
 
-
         where:
         logOptionsUA     | clientOptionsUA     || expectedUA
         "log-options-id" | null                || "log-options-id"
