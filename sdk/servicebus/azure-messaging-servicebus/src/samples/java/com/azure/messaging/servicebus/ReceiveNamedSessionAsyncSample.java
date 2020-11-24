@@ -5,6 +5,7 @@ package com.azure.messaging.servicebus;
 
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import reactor.core.Disposable;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.concurrent.TimeUnit;
@@ -48,7 +49,10 @@ public class ReceiveNamedSessionAsyncSample {
         Mono<ServiceBusReceiverAsyncClient> receiverMono = sessionReceiver.acceptSession("greetings-id");
 
         // If the session is successfully accepted, begin receiving messages from it.
-        Disposable subscription = receiverMono.flatMapMany(receiver -> receiver.receiveMessages())
+        // Flux.usingWhen is used to dispose of the receiver after consuming messages completes.
+        Disposable subscription = Flux.usingWhen(receiverMono,
+            receiver -> receiver.receiveMessages(),
+            receiver -> Mono.fromRunnable(() -> receiver.close()))
             .subscribe(message -> {
                 // Process message.
                 System.out.printf("Session: %s. Sequence #: %s. Contents: %s%n", message.getSessionId(),

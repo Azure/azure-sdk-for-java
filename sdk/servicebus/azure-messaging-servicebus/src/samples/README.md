@@ -32,7 +32,7 @@ connection string value can be obtained by:
 
 ### Asynchronously sending and receiving
 
-- [Send messages][SendMessageAsyncSample]
+- [Send a message][SendMessageAsyncSample]
 - [Send messages using Azure Identity][SendMessageWithAzureIdentityAsyncSample]
 - [Process all messages using processor][ServiceBusProcessorSample]
 - [Receive and auto-complete messages][ReceiveMessageAsyncSample]

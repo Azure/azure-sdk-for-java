@@ -50,22 +50,29 @@ public class ReceiveNamedSessionSample {
 
         // A receiver is returned when a lock on the session is acquired, otherwise, it throws an exception.
         ServiceBusReceiverClient receiver = sessionReceiver.acceptSession("greetings-id");
-        while (isRunning.get()) {
-            IterableStream<ServiceBusReceivedMessage> messages = receiver.receiveMessages(10, Duration.ofSeconds(30));
 
-            for (ServiceBusReceivedMessage message : messages) {
-                // Process message.
-                boolean isSuccessfullyProcessed = processMessage(message);
+        try {
+            while (isRunning.get()) {
+                IterableStream<ServiceBusReceivedMessage> messages = receiver.receiveMessages(10, Duration.ofSeconds(30));
 
-                // Messages from the sync receiver MUST be settled explicitly. In this case, we complete the message if
-                // it was successfully
-                if (isSuccessfullyProcessed) {
-                    receiver.complete(message);
-                } else {
-                    receiver.abandon(message, null);
+                for (ServiceBusReceivedMessage message : messages) {
+                    // Process message.
+                    boolean isSuccessfullyProcessed = processMessage(message);
+
+                    // Messages from the sync receiver MUST be settled explicitly. In this case, we complete the message if
+                    // it was successfully
+                    if (isSuccessfullyProcessed) {
+                        receiver.complete(message);
+                    } else {
+                        receiver.abandon(message, null);
+                    }
                 }
             }
+        } finally {
+            // Dispose of our resources.
+            receiver.close();
         }
+
 
         // Close the receiver.
         sessionReceiver.close();
