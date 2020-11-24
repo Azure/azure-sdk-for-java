@@ -474,7 +474,8 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
                 messagesPending.decrementAndGet();
             })
             .thenAwait(shortWait)
-            .verifyComplete();
+            .thenCancel()
+            .verify();
     }
 
     /**

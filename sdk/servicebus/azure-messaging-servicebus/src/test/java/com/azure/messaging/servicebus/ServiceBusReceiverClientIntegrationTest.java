@@ -188,7 +188,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
                     ++receivedMessageCount;
                 }
                 totalReceivedMessages.addAndGet(receivedMessageCount);
-                assertEquals(maxMessagesEachReceive, receivedMessageCount);
+                assertTrue(receivedMessageCount > 1);
             });
             receiverThreads.add(thread);
         }
@@ -202,7 +202,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
                 fail("Error in receiving messages: " + e.getMessage());
             }
         });
-        assertEquals(totalReceiver * maxMessagesEachReceive, totalReceivedMessages.get());
+        assertTrue(totalReceivedMessages.get() > totalReceiver);
     }
 
     /**
