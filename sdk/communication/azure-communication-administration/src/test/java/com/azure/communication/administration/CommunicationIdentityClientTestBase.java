@@ -63,6 +63,21 @@ public class CommunicationIdentityClientTestBase extends TestBase {
         return builder;
     }
 
+    protected CommunicationIdentityClientBuilder getCommunicationIdentityClientBuilderUsingManagedIdentity(HttpClient httpClient) {
+        CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
+        builder
+            .endpoint(ENDPOINT)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+
+        if (getTestMode() == TestMode.PLAYBACK) {
+                builder.credential(new AzureKeyCredential("FAKE_API_KEY"));
+        } else {
+                builder.credential(new DefaultAzureCredentialBuilder().build());
+        }
+
+        return builder;
+    }
+
     protected CommunicationIdentityClientBuilder getCommunicationIdentityClientUsingConnectionString(HttpClient httpClient) {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
         builder
