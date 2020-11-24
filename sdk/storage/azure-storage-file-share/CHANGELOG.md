@@ -2,6 +2,7 @@
 
 ## 12.8.0-beta.1 (Unreleased)
 - Fixed a bug where snapshot would be appended to a share snapshot instead of sharesnapshot.
+- Fixed a bug where the sharesnapshot query parameter would be ignored in share and share file client builders.
 
 ## 12.7.0 (2020-11-11)
 - Added support to specify whether or not a pipeline policy should be added per call or per retry.
