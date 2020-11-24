@@ -10,17 +10,17 @@ import java.util.*;
 public class ChatOptionsProvider {
 
     public static CreateChatThreadOptions createThreadOptions(String userId1, String userId2) {
-        List<ChatThreadMember> members = new ArrayList<ChatThreadMember>();
-        members.add(generateThreadMember(
+        List<ChatParticipant> participants = new ArrayList<ChatParticipant>();
+        participants.add(generateParticipant(
             userId1,
             "Tester 1"));
-        members.add(generateThreadMember(
+        participants.add(generateParticipant(
             userId2,
             "Tester 2"));
 
         CreateChatThreadOptions options = new CreateChatThreadOptions()
             .setTopic("Test")
-            .setMembers(members);
+            .setParticipants(participants);
 
         return options;
     }
@@ -32,17 +32,17 @@ public class ChatOptionsProvider {
         return options;
     }
 
-    public static AddChatThreadMembersOptions addThreadMembersOptions(String userId1, String userId2) {
-        List<ChatThreadMember> members = new ArrayList<ChatThreadMember>();
-        members.add(generateThreadMember(
+    public static AddChatParticipantsOptions addParticipantsOptions(String userId1, String userId2) {
+        List<ChatParticipant> participants = new ArrayList<ChatParticipant>();
+        participants.add(generateParticipant(
             userId1,
             "Added Tester 1"));
-        members.add(generateThreadMember(
+        participants.add(generateParticipant(
             userId2,
             "Added Tester 2"));
 
-        AddChatThreadMembersOptions options = new AddChatThreadMembersOptions();
-        options.setMembers(members);
+        AddChatParticipantsOptions options = new AddChatParticipantsOptions();
+        options.setParticipants(participants);
         return options;
     }
 
@@ -62,11 +62,11 @@ public class ChatOptionsProvider {
         return options;
     }
 
-    private static ChatThreadMember generateThreadMember(String id, String displayName) {
-        ChatThreadMember threadMember = new ChatThreadMember();
-        threadMember.setUser(new CommunicationUser(id));
-        threadMember.setDisplayName(displayName);
+    private static ChatParticipant generateParticipant(String id, String displayName) {
+        ChatParticipant chatParticipant = new ChatParticipant();
+        chatParticipant.setUser(new CommunicationUser(id));
+        chatParticipant.setDisplayName(displayName);
 
-        return threadMember;
+        return chatParticipant;
     }
 }

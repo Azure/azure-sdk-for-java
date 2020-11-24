@@ -6,8 +6,6 @@ import reactor.core.publisher.Mono;
 
 import com.azure.communication.chat.implementation.converters.ChatThreadConverter;
 import com.azure.communication.chat.implementation.converters.CreateChatThreadOptionsConverter;
-import com.azure.communication.chat.implementation.models.IndividualStatusResponse;
-import com.azure.communication.chat.implementation.models.MultiStatusResponse;
 import com.azure.communication.chat.implementation.AzureCommunicationChatServiceImpl;
 import com.azure.communication.chat.models.CreateChatThreadOptions;
 import com.azure.communication.chat.models.ListChatThreadsOptions;
@@ -23,7 +21,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Objects;
-import java.util.List;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -108,7 +105,7 @@ public final class ChatAsyncClient {
         return this.chatServiceClient.createChatThreadWithResponseAsync(
             CreateChatThreadOptionsConverter.convert(options), context).map(
                 result -> new SimpleResponse<ChatThreadAsyncClient>(
-                    result, getChatThreadClient(getThreadIdFromMultiStatusResponse(result.getValue()))));
+                    result, getChatThreadClient(result.getValue().getId())));
     }
 
     /**
@@ -274,23 +271,4 @@ public final class ChatAsyncClient {
         return this.chatServiceClient.deleteChatThreadWithResponseAsync(chatThreadId, context);
     }
 
-    private String getThreadIdFromMultiStatusResponse(MultiStatusResponse multiStatusResponse) {
-
-        List<IndividualStatusResponse> individualStatusResponses = multiStatusResponse.getMultipleStatus();
-        for (IndividualStatusResponse individualStatusResponse : individualStatusResponses) {
-            if (individualStatusResponse.getType().equalsIgnoreCase(THREAD_RESOURCE_STATUS_TYPE)) {
-                if (individualStatusResponse.getStatusCode() == 201) {
-                    return individualStatusResponse.getId();
-                }
-
-                throw logger.logExceptionAsError(new RuntimeException(
-                    String.format(
-                        "%s. Status code: %s.",
-                        individualStatusResponse.getMessage(),
-                        individualStatusResponse.getStatusCode())));
-            }
-        }
-
-        throw logger.logExceptionAsError(new RuntimeException("Failed to create thread."));
-    }
 }

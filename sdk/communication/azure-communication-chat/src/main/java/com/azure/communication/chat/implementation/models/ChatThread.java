@@ -38,10 +38,17 @@ public final class ChatThread {
     private String createdBy;
 
     /*
-     * Chat thread members.
+     * The timestamp when the chat thread was deleted. The timestamp is in
+     * ISO8601 format: `yyyy-MM-ddTHH:mm:ssZ`.
      */
-    @JsonProperty(value = "members")
-    private List<ChatThreadMember> members;
+    @JsonProperty(value = "deletedOn")
+    private OffsetDateTime deletedOn;
+
+    /*
+     * Chat participants.
+     */
+    @JsonProperty(value = "participants")
+    private List<ChatParticipant> participants;
 
     /**
      * Get the id property: Chat thread id.
@@ -92,22 +99,44 @@ public final class ChatThread {
     }
 
     /**
-     * Get the members property: Chat thread members.
+     * Get the deletedOn property: The timestamp when the chat thread was deleted. The timestamp is in ISO8601 format:
+     * `yyyy-MM-ddTHH:mm:ssZ`.
      *
-     * @return the members value.
+     * @return the deletedOn value.
      */
-    public List<ChatThreadMember> getMembers() {
-        return this.members;
+    public OffsetDateTime getDeletedOn() {
+        return this.deletedOn;
     }
 
     /**
-     * Set the members property: Chat thread members.
+     * Set the deletedOn property: The timestamp when the chat thread was deleted. The timestamp is in ISO8601 format:
+     * `yyyy-MM-ddTHH:mm:ssZ`.
      *
-     * @param members the members value to set.
+     * @param deletedOn the deletedOn value to set.
      * @return the ChatThread object itself.
      */
-    public ChatThread setMembers(List<ChatThreadMember> members) {
-        this.members = members;
+    public ChatThread setDeletedOn(OffsetDateTime deletedOn) {
+        this.deletedOn = deletedOn;
+        return this;
+    }
+
+    /**
+     * Get the participants property: Chat participants.
+     *
+     * @return the participants value.
+     */
+    public List<ChatParticipant> getParticipants() {
+        return this.participants;
+    }
+
+    /**
+     * Set the participants property: Chat participants.
+     *
+     * @param participants the participants value to set.
+     * @return the ChatThread object itself.
+     */
+    public ChatThread setParticipants(List<ChatParticipant> participants) {
+        this.participants = participants;
         return this;
     }
 }

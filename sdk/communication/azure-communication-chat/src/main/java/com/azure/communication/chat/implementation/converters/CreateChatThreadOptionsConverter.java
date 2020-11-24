@@ -26,9 +26,9 @@ public final class CreateChatThreadOptionsConverter {
         com.azure.communication.chat.implementation.models.CreateChatThreadOptions createChatThreadOptions
             = new com.azure.communication.chat.implementation.models.CreateChatThreadOptions()
                 .setTopic(obj.getTopic())
-                .setMembers(obj.getMembers()
+                .setParticipants(obj.getParticipants()
                     .stream()
-                    .map(member -> ChatThreadMemberConverter.convert(member))
+                    .map(member -> ChatParticipantConverter.convert(member))
                     .collect(Collectors.toList()));
 
         return createChatThreadOptions;

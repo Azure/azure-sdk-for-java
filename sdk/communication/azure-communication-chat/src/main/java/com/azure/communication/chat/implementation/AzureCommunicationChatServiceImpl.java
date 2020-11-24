@@ -4,22 +4,21 @@
 
 package com.azure.communication.chat.implementation;
 
-import com.azure.communication.chat.implementation.models.AddChatThreadMembersOptions;
+import com.azure.communication.chat.implementation.models.AddChatParticipantsOptions;
 import com.azure.communication.chat.implementation.models.ChatMessage;
+import com.azure.communication.chat.implementation.models.ChatMessageReadReceipt;
+import com.azure.communication.chat.implementation.models.ChatMessageReadReceiptsCollection;
 import com.azure.communication.chat.implementation.models.ChatMessagesCollection;
+import com.azure.communication.chat.implementation.models.ChatParticipant;
+import com.azure.communication.chat.implementation.models.ChatParticipantsCollection;
 import com.azure.communication.chat.implementation.models.ChatThread;
-import com.azure.communication.chat.implementation.models.ChatThreadMember;
-import com.azure.communication.chat.implementation.models.ChatThreadMembersCollection;
 import com.azure.communication.chat.implementation.models.ChatThreadsInfoCollection;
 import com.azure.communication.chat.implementation.models.CreateChatThreadOptions;
-import com.azure.communication.chat.implementation.models.MultiStatusResponse;
-import com.azure.communication.chat.implementation.models.ReadReceipt;
-import com.azure.communication.chat.implementation.models.ReadReceiptsCollection;
+import com.azure.communication.chat.implementation.models.SendChatMessageResult;
 import com.azure.communication.chat.implementation.models.SendReadReceiptRequest;
 import com.azure.communication.chat.models.ChatThreadInfo;
 import com.azure.communication.chat.models.ErrorException;
 import com.azure.communication.chat.models.SendChatMessageOptions;
-import com.azure.communication.chat.models.SendChatMessageResult;
 import com.azure.communication.chat.models.UpdateChatMessageOptions;
 import com.azure.communication.chat.models.UpdateChatThreadOptions;
 import com.azure.core.annotation.BodyParam;
@@ -136,7 +135,7 @@ public final class AzureCommunicationChatServiceImpl {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
-        this.apiVersion = "2020-09-21-preview2";
+        this.apiVersion = "2020-11-01-preview3";
         this.service =
                 RestProxy.create(
                         AzureCommunicationChatServiceService.class, this.httpPipeline, this.getSerializerAdapter());
@@ -152,7 +151,7 @@ public final class AzureCommunicationChatServiceImpl {
         @Get("/chat/threads/{chatThreadId}/readreceipts")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<ReadReceiptsCollection>> listChatReadReceipts(
+        Mono<Response<ChatMessageReadReceiptsCollection>> listChatReadReceipts(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("chatThreadId") String chatThreadId,
                 @QueryParam("api-version") String apiVersion,
@@ -165,7 +164,7 @@ public final class AzureCommunicationChatServiceImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("chatThreadId") String chatThreadId,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") SendReadReceiptRequest body,
+                @BodyParam("application/json") SendReadReceiptRequest sendReadReceiptRequest,
                 Context context);
 
         @Post("/chat/threads/{chatThreadId}/messages")
@@ -175,7 +174,7 @@ public final class AzureCommunicationChatServiceImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("chatThreadId") String chatThreadId,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") SendChatMessageOptions body,
+                @BodyParam("application/json") SendChatMessageOptions sendChatMessageRequest,
                 Context context);
 
         @Get("/chat/threads/{chatThreadId}/messages")
@@ -207,7 +206,7 @@ public final class AzureCommunicationChatServiceImpl {
                 @PathParam("chatThreadId") String chatThreadId,
                 @PathParam("chatMessageId") String chatMessageId,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") UpdateChatMessageOptions body,
+                @BodyParam("application/json") UpdateChatMessageOptions updateChatMessageRequest,
                 Context context);
 
         @Delete("/chat/threads/{chatThreadId}/messages/{chatMessageId}")
@@ -229,42 +228,42 @@ public final class AzureCommunicationChatServiceImpl {
                 @QueryParam("api-version") String apiVersion,
                 Context context);
 
-        @Get("/chat/threads/{chatThreadId}/members")
+        @Get("/chat/threads/{chatThreadId}/participants")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<ChatThreadMembersCollection>> listChatThreadMembers(
+        Mono<Response<ChatParticipantsCollection>> listChatParticipants(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("chatThreadId") String chatThreadId,
                 @QueryParam("api-version") String apiVersion,
                 Context context);
 
-        @Post("/chat/threads/{chatThreadId}/members")
-        @ExpectedResponses({207})
+        @Post("/chat/threads/{chatThreadId}/participants")
+        @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<Void>> addChatThreadMembers(
+        Mono<Response<Void>> addChatParticipants(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("chatThreadId") String chatThreadId,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") AddChatThreadMembersOptions body,
+                @BodyParam("application/json") AddChatParticipantsOptions addChatParticipantsRequest,
                 Context context);
 
-        @Delete("/chat/threads/{chatThreadId}/members/{chatMemberId}")
+        @Delete("/chat/threads/{chatThreadId}/participants/{chatParticipantId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<Void>> removeChatThreadMember(
+        Mono<Response<Void>> removeChatParticipant(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("chatThreadId") String chatThreadId,
-                @PathParam("chatMemberId") String chatMemberId,
+                @PathParam("chatParticipantId") String chatParticipantId,
                 @QueryParam("api-version") String apiVersion,
                 Context context);
 
         @Post("/chat/threads")
-        @ExpectedResponses({207})
+        @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<MultiStatusResponse>> createChatThread(
+        Mono<Response<ChatThread>> createChatThread(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") CreateChatThreadOptions body,
+                @BodyParam("application/json") CreateChatThreadOptions createChatThreadRequest,
                 Context context);
 
         @Get("/chat/threads")
@@ -284,7 +283,7 @@ public final class AzureCommunicationChatServiceImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("chatThreadId") String chatThreadId,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") UpdateChatThreadOptions body,
+                @BodyParam("application/json") UpdateChatThreadOptions updateChatThreadRequest,
                 Context context);
 
         @Get("/chat/threads/{chatThreadId}")
@@ -308,7 +307,7 @@ public final class AzureCommunicationChatServiceImpl {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<ReadReceiptsCollection>> listChatReadReceiptsNext(
+        Mono<Response<ChatMessageReadReceiptsCollection>> listChatReadReceiptsNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Get("{nextLink}")
@@ -320,7 +319,7 @@ public final class AzureCommunicationChatServiceImpl {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<ChatThreadMembersCollection>> listChatThreadMembersNext(
+        Mono<Response<ChatParticipantsCollection>> listChatParticipantsNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Get("{nextLink}")
@@ -331,16 +330,16 @@ public final class AzureCommunicationChatServiceImpl {
     }
 
     /**
-     * Gets read receipts for a thread.
+     * Gets chat message read receipts for a thread.
      *
-     * @param chatThreadId Thread id to get the read receipts for.
+     * @param chatThreadId Thread id to get the chat message read receipts for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return read receipts for a thread.
+     * @return chat message read receipts for a thread.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ReadReceipt>> listChatReadReceiptsSinglePageAsync(String chatThreadId) {
+    public Mono<PagedResponse<ChatMessageReadReceipt>> listChatReadReceiptsSinglePageAsync(String chatThreadId) {
         return FluxUtil.withContext(
                         context ->
                                 service.listChatReadReceipts(
@@ -357,17 +356,18 @@ public final class AzureCommunicationChatServiceImpl {
     }
 
     /**
-     * Gets read receipts for a thread.
+     * Gets chat message read receipts for a thread.
      *
-     * @param chatThreadId Thread id to get the read receipts for.
+     * @param chatThreadId Thread id to get the chat message read receipts for.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return read receipts for a thread.
+     * @return chat message read receipts for a thread.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ReadReceipt>> listChatReadReceiptsSinglePageAsync(String chatThreadId, Context context) {
+    public Mono<PagedResponse<ChatMessageReadReceipt>> listChatReadReceiptsSinglePageAsync(
+            String chatThreadId, Context context) {
         return service.listChatReadReceipts(this.getEndpoint(), chatThreadId, this.getApiVersion(), context)
                 .map(
                         res ->
@@ -381,64 +381,64 @@ public final class AzureCommunicationChatServiceImpl {
     }
 
     /**
-     * Gets read receipts for a thread.
+     * Gets chat message read receipts for a thread.
      *
-     * @param chatThreadId Thread id to get the read receipts for.
+     * @param chatThreadId Thread id to get the chat message read receipts for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return read receipts for a thread.
+     * @return chat message read receipts for a thread.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ReadReceipt> listChatReadReceiptsAsync(String chatThreadId) {
+    public PagedFlux<ChatMessageReadReceipt> listChatReadReceiptsAsync(String chatThreadId) {
         return new PagedFlux<>(
                 () -> listChatReadReceiptsSinglePageAsync(chatThreadId),
                 nextLink -> listChatReadReceiptsNextSinglePageAsync(nextLink));
     }
 
     /**
-     * Gets read receipts for a thread.
+     * Gets chat message read receipts for a thread.
      *
-     * @param chatThreadId Thread id to get the read receipts for.
+     * @param chatThreadId Thread id to get the chat message read receipts for.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return read receipts for a thread.
+     * @return chat message read receipts for a thread.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ReadReceipt> listChatReadReceiptsAsync(String chatThreadId, Context context) {
+    public PagedFlux<ChatMessageReadReceipt> listChatReadReceiptsAsync(String chatThreadId, Context context) {
         return new PagedFlux<>(
                 () -> listChatReadReceiptsSinglePageAsync(chatThreadId, context),
                 nextLink -> listChatReadReceiptsNextSinglePageAsync(nextLink, context));
     }
 
     /**
-     * Gets read receipts for a thread.
+     * Gets chat message read receipts for a thread.
      *
-     * @param chatThreadId Thread id to get the read receipts for.
+     * @param chatThreadId Thread id to get the chat message read receipts for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return read receipts for a thread.
+     * @return chat message read receipts for a thread.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ReadReceipt> listChatReadReceipts(String chatThreadId) {
+    public PagedIterable<ChatMessageReadReceipt> listChatReadReceipts(String chatThreadId) {
         return new PagedIterable<>(listChatReadReceiptsAsync(chatThreadId));
     }
 
     /**
-     * Gets read receipts for a thread.
+     * Gets chat message read receipts for a thread.
      *
-     * @param chatThreadId Thread id to get the read receipts for.
+     * @param chatThreadId Thread id to get the chat message read receipts for.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return read receipts for a thread.
+     * @return chat message read receipts for a thread.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ReadReceipt> listChatReadReceipts(String chatThreadId, Context context) {
+    public PagedIterable<ChatMessageReadReceipt> listChatReadReceipts(String chatThreadId, Context context) {
         return new PagedIterable<>(listChatReadReceiptsAsync(chatThreadId, context));
     }
 
@@ -446,25 +446,30 @@ public final class AzureCommunicationChatServiceImpl {
      * Sends a read receipt event to a thread, on behalf of a user.
      *
      * @param chatThreadId Thread id to send the read receipt event to.
-     * @param body Request payload for sending a read receipt.
+     * @param sendReadReceiptRequest Request payload for sending a read receipt.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> sendChatReadReceiptWithResponseAsync(String chatThreadId, SendReadReceiptRequest body) {
+    public Mono<Response<Void>> sendChatReadReceiptWithResponseAsync(
+            String chatThreadId, SendReadReceiptRequest sendReadReceiptRequest) {
         return FluxUtil.withContext(
                 context ->
                         service.sendChatReadReceipt(
-                                this.getEndpoint(), chatThreadId, this.getApiVersion(), body, context));
+                                this.getEndpoint(),
+                                chatThreadId,
+                                this.getApiVersion(),
+                                sendReadReceiptRequest,
+                                context));
     }
 
     /**
      * Sends a read receipt event to a thread, on behalf of a user.
      *
      * @param chatThreadId Thread id to send the read receipt event to.
-     * @param body Request payload for sending a read receipt.
+     * @param sendReadReceiptRequest Request payload for sending a read receipt.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -473,39 +478,24 @@ public final class AzureCommunicationChatServiceImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendChatReadReceiptWithResponseAsync(
-            String chatThreadId, SendReadReceiptRequest body, Context context) {
-        return service.sendChatReadReceipt(this.getEndpoint(), chatThreadId, this.getApiVersion(), body, context);
+            String chatThreadId, SendReadReceiptRequest sendReadReceiptRequest, Context context) {
+        return service.sendChatReadReceipt(
+                this.getEndpoint(), chatThreadId, this.getApiVersion(), sendReadReceiptRequest, context);
     }
 
     /**
      * Sends a read receipt event to a thread, on behalf of a user.
      *
      * @param chatThreadId Thread id to send the read receipt event to.
-     * @param body Request payload for sending a read receipt.
+     * @param sendReadReceiptRequest Request payload for sending a read receipt.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> sendChatReadReceiptAsync(String chatThreadId, SendReadReceiptRequest body) {
-        return sendChatReadReceiptWithResponseAsync(chatThreadId, body).flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Sends a read receipt event to a thread, on behalf of a user.
-     *
-     * @param chatThreadId Thread id to send the read receipt event to.
-     * @param body Request payload for sending a read receipt.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> sendChatReadReceiptAsync(String chatThreadId, SendReadReceiptRequest body, Context context) {
-        return sendChatReadReceiptWithResponseAsync(chatThreadId, body, context)
+    public Mono<Void> sendChatReadReceiptAsync(String chatThreadId, SendReadReceiptRequest sendReadReceiptRequest) {
+        return sendChatReadReceiptWithResponseAsync(chatThreadId, sendReadReceiptRequest)
                 .flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -513,36 +503,55 @@ public final class AzureCommunicationChatServiceImpl {
      * Sends a read receipt event to a thread, on behalf of a user.
      *
      * @param chatThreadId Thread id to send the read receipt event to.
-     * @param body Request payload for sending a read receipt.
+     * @param sendReadReceiptRequest Request payload for sending a read receipt.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void sendChatReadReceipt(String chatThreadId, SendReadReceiptRequest body) {
-        sendChatReadReceiptAsync(chatThreadId, body).block();
+    public Mono<Void> sendChatReadReceiptAsync(
+            String chatThreadId, SendReadReceiptRequest sendReadReceiptRequest, Context context) {
+        return sendChatReadReceiptWithResponseAsync(chatThreadId, sendReadReceiptRequest, context)
+                .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
      * Sends a read receipt event to a thread, on behalf of a user.
      *
      * @param chatThreadId Thread id to send the read receipt event to.
-     * @param body Request payload for sending a read receipt.
+     * @param sendReadReceiptRequest Request payload for sending a read receipt.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void sendChatReadReceipt(String chatThreadId, SendReadReceiptRequest sendReadReceiptRequest) {
+        sendChatReadReceiptAsync(chatThreadId, sendReadReceiptRequest).block();
+    }
+
+    /**
+     * Sends a read receipt event to a thread, on behalf of a user.
+     *
+     * @param chatThreadId Thread id to send the read receipt event to.
+     * @param sendReadReceiptRequest Request payload for sending a read receipt.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void sendChatReadReceipt(String chatThreadId, SendReadReceiptRequest body, Context context) {
-        sendChatReadReceiptAsync(chatThreadId, body, context).block();
+    public void sendChatReadReceipt(
+            String chatThreadId, SendReadReceiptRequest sendReadReceiptRequest, Context context) {
+        sendChatReadReceiptAsync(chatThreadId, sendReadReceiptRequest, context).block();
     }
 
     /**
      * Sends a message to a thread.
      *
      * @param chatThreadId The thread id to send the message to.
-     * @param body Details of the message to send.
+     * @param sendChatMessageRequest Details of the message to send.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -550,17 +559,22 @@ public final class AzureCommunicationChatServiceImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SendChatMessageResult>> sendChatMessageWithResponseAsync(
-            String chatThreadId, SendChatMessageOptions body) {
+            String chatThreadId, SendChatMessageOptions sendChatMessageRequest) {
         return FluxUtil.withContext(
                 context ->
-                        service.sendChatMessage(this.getEndpoint(), chatThreadId, this.getApiVersion(), body, context));
+                        service.sendChatMessage(
+                                this.getEndpoint(),
+                                chatThreadId,
+                                this.getApiVersion(),
+                                sendChatMessageRequest,
+                                context));
     }
 
     /**
      * Sends a message to a thread.
      *
      * @param chatThreadId The thread id to send the message to.
-     * @param body Details of the message to send.
+     * @param sendChatMessageRequest Details of the message to send.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -569,23 +583,25 @@ public final class AzureCommunicationChatServiceImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SendChatMessageResult>> sendChatMessageWithResponseAsync(
-            String chatThreadId, SendChatMessageOptions body, Context context) {
-        return service.sendChatMessage(this.getEndpoint(), chatThreadId, this.getApiVersion(), body, context);
+            String chatThreadId, SendChatMessageOptions sendChatMessageRequest, Context context) {
+        return service.sendChatMessage(
+                this.getEndpoint(), chatThreadId, this.getApiVersion(), sendChatMessageRequest, context);
     }
 
     /**
      * Sends a message to a thread.
      *
      * @param chatThreadId The thread id to send the message to.
-     * @param body Details of the message to send.
+     * @param sendChatMessageRequest Details of the message to send.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the send message operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SendChatMessageResult> sendChatMessageAsync(String chatThreadId, SendChatMessageOptions body) {
-        return sendChatMessageWithResponseAsync(chatThreadId, body)
+    public Mono<SendChatMessageResult> sendChatMessageAsync(
+            String chatThreadId, SendChatMessageOptions sendChatMessageRequest) {
+        return sendChatMessageWithResponseAsync(chatThreadId, sendChatMessageRequest)
                 .flatMap(
                         (Response<SendChatMessageResult> res) -> {
                             if (res.getValue() != null) {
@@ -600,7 +616,7 @@ public final class AzureCommunicationChatServiceImpl {
      * Sends a message to a thread.
      *
      * @param chatThreadId The thread id to send the message to.
-     * @param body Details of the message to send.
+     * @param sendChatMessageRequest Details of the message to send.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -609,8 +625,8 @@ public final class AzureCommunicationChatServiceImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SendChatMessageResult> sendChatMessageAsync(
-            String chatThreadId, SendChatMessageOptions body, Context context) {
-        return sendChatMessageWithResponseAsync(chatThreadId, body, context)
+            String chatThreadId, SendChatMessageOptions sendChatMessageRequest, Context context) {
+        return sendChatMessageWithResponseAsync(chatThreadId, sendChatMessageRequest, context)
                 .flatMap(
                         (Response<SendChatMessageResult> res) -> {
                             if (res.getValue() != null) {
@@ -625,22 +641,22 @@ public final class AzureCommunicationChatServiceImpl {
      * Sends a message to a thread.
      *
      * @param chatThreadId The thread id to send the message to.
-     * @param body Details of the message to send.
+     * @param sendChatMessageRequest Details of the message to send.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the send message operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SendChatMessageResult sendChatMessage(String chatThreadId, SendChatMessageOptions body) {
-        return sendChatMessageAsync(chatThreadId, body).block();
+    public SendChatMessageResult sendChatMessage(String chatThreadId, SendChatMessageOptions sendChatMessageRequest) {
+        return sendChatMessageAsync(chatThreadId, sendChatMessageRequest).block();
     }
 
     /**
      * Sends a message to a thread.
      *
      * @param chatThreadId The thread id to send the message to.
-     * @param body Details of the message to send.
+     * @param sendChatMessageRequest Details of the message to send.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -648,8 +664,9 @@ public final class AzureCommunicationChatServiceImpl {
      * @return result of the send message operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SendChatMessageResult sendChatMessage(String chatThreadId, SendChatMessageOptions body, Context context) {
-        return sendChatMessageAsync(chatThreadId, body, context).block();
+    public SendChatMessageResult sendChatMessage(
+            String chatThreadId, SendChatMessageOptions sendChatMessageRequest, Context context) {
+        return sendChatMessageAsync(chatThreadId, sendChatMessageRequest, context).block();
     }
 
     /**
@@ -948,7 +965,7 @@ public final class AzureCommunicationChatServiceImpl {
      *
      * @param chatThreadId The thread id to which the message was sent.
      * @param chatMessageId The message id.
-     * @param body Details of the request to update the message.
+     * @param updateChatMessageRequest Details of the request to update the message.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -956,11 +973,16 @@ public final class AzureCommunicationChatServiceImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateChatMessageWithResponseAsync(
-            String chatThreadId, String chatMessageId, UpdateChatMessageOptions body) {
+            String chatThreadId, String chatMessageId, UpdateChatMessageOptions updateChatMessageRequest) {
         return FluxUtil.withContext(
                 context ->
                         service.updateChatMessage(
-                                this.getEndpoint(), chatThreadId, chatMessageId, this.getApiVersion(), body, context));
+                                this.getEndpoint(),
+                                chatThreadId,
+                                chatMessageId,
+                                this.getApiVersion(),
+                                updateChatMessageRequest,
+                                context));
     }
 
     /**
@@ -968,7 +990,7 @@ public final class AzureCommunicationChatServiceImpl {
      *
      * @param chatThreadId The thread id to which the message was sent.
      * @param chatMessageId The message id.
-     * @param body Details of the request to update the message.
+     * @param updateChatMessageRequest Details of the request to update the message.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -977,9 +999,17 @@ public final class AzureCommunicationChatServiceImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateChatMessageWithResponseAsync(
-            String chatThreadId, String chatMessageId, UpdateChatMessageOptions body, Context context) {
+            String chatThreadId,
+            String chatMessageId,
+            UpdateChatMessageOptions updateChatMessageRequest,
+            Context context) {
         return service.updateChatMessage(
-                this.getEndpoint(), chatThreadId, chatMessageId, this.getApiVersion(), body, context);
+                this.getEndpoint(),
+                chatThreadId,
+                chatMessageId,
+                this.getApiVersion(),
+                updateChatMessageRequest,
+                context);
     }
 
     /**
@@ -987,15 +1017,16 @@ public final class AzureCommunicationChatServiceImpl {
      *
      * @param chatThreadId The thread id to which the message was sent.
      * @param chatMessageId The message id.
-     * @param body Details of the request to update the message.
+     * @param updateChatMessageRequest Details of the request to update the message.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateChatMessageAsync(String chatThreadId, String chatMessageId, UpdateChatMessageOptions body) {
-        return updateChatMessageWithResponseAsync(chatThreadId, chatMessageId, body)
+    public Mono<Void> updateChatMessageAsync(
+            String chatThreadId, String chatMessageId, UpdateChatMessageOptions updateChatMessageRequest) {
+        return updateChatMessageWithResponseAsync(chatThreadId, chatMessageId, updateChatMessageRequest)
                 .flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -1004,7 +1035,7 @@ public final class AzureCommunicationChatServiceImpl {
      *
      * @param chatThreadId The thread id to which the message was sent.
      * @param chatMessageId The message id.
-     * @param body Details of the request to update the message.
+     * @param updateChatMessageRequest Details of the request to update the message.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -1013,8 +1044,11 @@ public final class AzureCommunicationChatServiceImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updateChatMessageAsync(
-            String chatThreadId, String chatMessageId, UpdateChatMessageOptions body, Context context) {
-        return updateChatMessageWithResponseAsync(chatThreadId, chatMessageId, body, context)
+            String chatThreadId,
+            String chatMessageId,
+            UpdateChatMessageOptions updateChatMessageRequest,
+            Context context) {
+        return updateChatMessageWithResponseAsync(chatThreadId, chatMessageId, updateChatMessageRequest, context)
                 .flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -1023,14 +1057,15 @@ public final class AzureCommunicationChatServiceImpl {
      *
      * @param chatThreadId The thread id to which the message was sent.
      * @param chatMessageId The message id.
-     * @param body Details of the request to update the message.
+     * @param updateChatMessageRequest Details of the request to update the message.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateChatMessage(String chatThreadId, String chatMessageId, UpdateChatMessageOptions body) {
-        updateChatMessageAsync(chatThreadId, chatMessageId, body).block();
+    public void updateChatMessage(
+            String chatThreadId, String chatMessageId, UpdateChatMessageOptions updateChatMessageRequest) {
+        updateChatMessageAsync(chatThreadId, chatMessageId, updateChatMessageRequest).block();
     }
 
     /**
@@ -1038,7 +1073,7 @@ public final class AzureCommunicationChatServiceImpl {
      *
      * @param chatThreadId The thread id to which the message was sent.
      * @param chatMessageId The message id.
-     * @param body Details of the request to update the message.
+     * @param updateChatMessageRequest Details of the request to update the message.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -1046,8 +1081,11 @@ public final class AzureCommunicationChatServiceImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void updateChatMessage(
-            String chatThreadId, String chatMessageId, UpdateChatMessageOptions body, Context context) {
-        updateChatMessageAsync(chatThreadId, chatMessageId, body, context).block();
+            String chatThreadId,
+            String chatMessageId,
+            UpdateChatMessageOptions updateChatMessageRequest,
+            Context context) {
+        updateChatMessageAsync(chatThreadId, chatMessageId, updateChatMessageRequest, context).block();
     }
 
     /**
@@ -1238,19 +1276,19 @@ public final class AzureCommunicationChatServiceImpl {
     }
 
     /**
-     * Gets the members of a thread.
+     * Gets the participants of a thread.
      *
-     * @param chatThreadId Thread id to get members for.
+     * @param chatThreadId Thread id to get participants for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the members of a thread.
+     * @return the participants of a thread.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ChatThreadMember>> listChatThreadMembersSinglePageAsync(String chatThreadId) {
+    public Mono<PagedResponse<ChatParticipant>> listChatParticipantsSinglePageAsync(String chatThreadId) {
         return FluxUtil.withContext(
                         context ->
-                                service.listChatThreadMembers(
+                                service.listChatParticipants(
                                         this.getEndpoint(), chatThreadId, this.getApiVersion(), context))
                 .map(
                         res ->
@@ -1264,19 +1302,19 @@ public final class AzureCommunicationChatServiceImpl {
     }
 
     /**
-     * Gets the members of a thread.
+     * Gets the participants of a thread.
      *
-     * @param chatThreadId Thread id to get members for.
+     * @param chatThreadId Thread id to get participants for.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the members of a thread.
+     * @return the participants of a thread.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ChatThreadMember>> listChatThreadMembersSinglePageAsync(
+    public Mono<PagedResponse<ChatParticipant>> listChatParticipantsSinglePageAsync(
             String chatThreadId, Context context) {
-        return service.listChatThreadMembers(this.getEndpoint(), chatThreadId, this.getApiVersion(), context)
+        return service.listChatParticipants(this.getEndpoint(), chatThreadId, this.getApiVersion(), context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -1289,91 +1327,95 @@ public final class AzureCommunicationChatServiceImpl {
     }
 
     /**
-     * Gets the members of a thread.
+     * Gets the participants of a thread.
      *
-     * @param chatThreadId Thread id to get members for.
+     * @param chatThreadId Thread id to get participants for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the members of a thread.
+     * @return the participants of a thread.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ChatThreadMember> listChatThreadMembersAsync(String chatThreadId) {
+    public PagedFlux<ChatParticipant> listChatParticipantsAsync(String chatThreadId) {
         return new PagedFlux<>(
-                () -> listChatThreadMembersSinglePageAsync(chatThreadId),
-                nextLink -> listChatThreadMembersNextSinglePageAsync(nextLink));
+                () -> listChatParticipantsSinglePageAsync(chatThreadId),
+                nextLink -> listChatParticipantsNextSinglePageAsync(nextLink));
     }
 
     /**
-     * Gets the members of a thread.
+     * Gets the participants of a thread.
      *
-     * @param chatThreadId Thread id to get members for.
+     * @param chatThreadId Thread id to get participants for.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the members of a thread.
+     * @return the participants of a thread.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ChatThreadMember> listChatThreadMembersAsync(String chatThreadId, Context context) {
+    public PagedFlux<ChatParticipant> listChatParticipantsAsync(String chatThreadId, Context context) {
         return new PagedFlux<>(
-                () -> listChatThreadMembersSinglePageAsync(chatThreadId, context),
-                nextLink -> listChatThreadMembersNextSinglePageAsync(nextLink, context));
+                () -> listChatParticipantsSinglePageAsync(chatThreadId, context),
+                nextLink -> listChatParticipantsNextSinglePageAsync(nextLink, context));
     }
 
     /**
-     * Gets the members of a thread.
+     * Gets the participants of a thread.
      *
-     * @param chatThreadId Thread id to get members for.
+     * @param chatThreadId Thread id to get participants for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the members of a thread.
+     * @return the participants of a thread.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ChatThreadMember> listChatThreadMembers(String chatThreadId) {
-        return new PagedIterable<>(listChatThreadMembersAsync(chatThreadId));
+    public PagedIterable<ChatParticipant> listChatParticipants(String chatThreadId) {
+        return new PagedIterable<>(listChatParticipantsAsync(chatThreadId));
     }
 
     /**
-     * Gets the members of a thread.
+     * Gets the participants of a thread.
      *
-     * @param chatThreadId Thread id to get members for.
+     * @param chatThreadId Thread id to get participants for.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the members of a thread.
+     * @return the participants of a thread.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ChatThreadMember> listChatThreadMembers(String chatThreadId, Context context) {
-        return new PagedIterable<>(listChatThreadMembersAsync(chatThreadId, context));
+    public PagedIterable<ChatParticipant> listChatParticipants(String chatThreadId, Context context) {
+        return new PagedIterable<>(listChatParticipantsAsync(chatThreadId, context));
     }
 
     /**
-     * Adds thread members to a thread. If members already exist, no change occurs.
+     * Adds thread participants to a thread. If participants already exist, no change occurs.
      *
-     * @param chatThreadId Id of the thread to add members to.
-     * @param body Thread members to be added to the thread.
+     * @param chatThreadId Id of the thread to add participants to.
+     * @param addChatParticipantsRequest Participants to be added to the thread.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> addChatThreadMembersWithResponseAsync(
-            String chatThreadId, AddChatThreadMembersOptions body) {
+    public Mono<Response<Void>> addChatParticipantsWithResponseAsync(
+            String chatThreadId, AddChatParticipantsOptions addChatParticipantsRequest) {
         return FluxUtil.withContext(
                 context ->
-                        service.addChatThreadMembers(
-                                this.getEndpoint(), chatThreadId, this.getApiVersion(), body, context));
+                        service.addChatParticipants(
+                                this.getEndpoint(),
+                                chatThreadId,
+                                this.getApiVersion(),
+                                addChatParticipantsRequest,
+                                context));
     }
 
     /**
-     * Adds thread members to a thread. If members already exist, no change occurs.
+     * Adds thread participants to a thread. If participants already exist, no change occurs.
      *
-     * @param chatThreadId Id of the thread to add members to.
-     * @param body Thread members to be added to the thread.
+     * @param chatThreadId Id of the thread to add participants to.
+     * @param addChatParticipantsRequest Participants to be added to the thread.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -1381,96 +1423,100 @@ public final class AzureCommunicationChatServiceImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> addChatThreadMembersWithResponseAsync(
-            String chatThreadId, AddChatThreadMembersOptions body, Context context) {
-        return service.addChatThreadMembers(this.getEndpoint(), chatThreadId, this.getApiVersion(), body, context);
+    public Mono<Response<Void>> addChatParticipantsWithResponseAsync(
+            String chatThreadId, AddChatParticipantsOptions addChatParticipantsRequest, Context context) {
+        return service.addChatParticipants(
+                this.getEndpoint(), chatThreadId, this.getApiVersion(), addChatParticipantsRequest, context);
     }
 
     /**
-     * Adds thread members to a thread. If members already exist, no change occurs.
+     * Adds thread participants to a thread. If participants already exist, no change occurs.
      *
-     * @param chatThreadId Id of the thread to add members to.
-     * @param body Thread members to be added to the thread.
+     * @param chatThreadId Id of the thread to add participants to.
+     * @param addChatParticipantsRequest Participants to be added to the thread.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> addChatThreadMembersAsync(String chatThreadId, AddChatThreadMembersOptions body) {
-        return addChatThreadMembersWithResponseAsync(chatThreadId, body).flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Adds thread members to a thread. If members already exist, no change occurs.
-     *
-     * @param chatThreadId Id of the thread to add members to.
-     * @param body Thread members to be added to the thread.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> addChatThreadMembersAsync(
-            String chatThreadId, AddChatThreadMembersOptions body, Context context) {
-        return addChatThreadMembersWithResponseAsync(chatThreadId, body, context)
+    public Mono<Void> addChatParticipantsAsync(
+            String chatThreadId, AddChatParticipantsOptions addChatParticipantsRequest) {
+        return addChatParticipantsWithResponseAsync(chatThreadId, addChatParticipantsRequest)
                 .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
-     * Adds thread members to a thread. If members already exist, no change occurs.
+     * Adds thread participants to a thread. If participants already exist, no change occurs.
      *
-     * @param chatThreadId Id of the thread to add members to.
-     * @param body Thread members to be added to the thread.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void addChatThreadMembers(String chatThreadId, AddChatThreadMembersOptions body) {
-        addChatThreadMembersAsync(chatThreadId, body).block();
-    }
-
-    /**
-     * Adds thread members to a thread. If members already exist, no change occurs.
-     *
-     * @param chatThreadId Id of the thread to add members to.
-     * @param body Thread members to be added to the thread.
+     * @param chatThreadId Id of the thread to add participants to.
+     * @param addChatParticipantsRequest Participants to be added to the thread.
      * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void addChatThreadMembers(String chatThreadId, AddChatThreadMembersOptions body, Context context) {
-        addChatThreadMembersAsync(chatThreadId, body, context).block();
-    }
-
-    /**
-     * Remove a member from a thread.
-     *
-     * @param chatThreadId Thread id to remove the member from.
-     * @param chatMemberId Id of the thread member to remove from the thread.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> removeChatThreadMemberWithResponseAsync(String chatThreadId, String chatMemberId) {
+    public Mono<Void> addChatParticipantsAsync(
+            String chatThreadId, AddChatParticipantsOptions addChatParticipantsRequest, Context context) {
+        return addChatParticipantsWithResponseAsync(chatThreadId, addChatParticipantsRequest, context)
+                .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Adds thread participants to a thread. If participants already exist, no change occurs.
+     *
+     * @param chatThreadId Id of the thread to add participants to.
+     * @param addChatParticipantsRequest Participants to be added to the thread.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void addChatParticipants(String chatThreadId, AddChatParticipantsOptions addChatParticipantsRequest) {
+        addChatParticipantsAsync(chatThreadId, addChatParticipantsRequest).block();
+    }
+
+    /**
+     * Adds thread participants to a thread. If participants already exist, no change occurs.
+     *
+     * @param chatThreadId Id of the thread to add participants to.
+     * @param addChatParticipantsRequest Participants to be added to the thread.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void addChatParticipants(
+            String chatThreadId, AddChatParticipantsOptions addChatParticipantsRequest, Context context) {
+        addChatParticipantsAsync(chatThreadId, addChatParticipantsRequest, context).block();
+    }
+
+    /**
+     * Remove a participant from a thread.
+     *
+     * @param chatThreadId Thread id to remove the participant from.
+     * @param chatParticipantId Id of the thread participant to remove from the thread.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> removeChatParticipantWithResponseAsync(String chatThreadId, String chatParticipantId) {
         return FluxUtil.withContext(
                 context ->
-                        service.removeChatThreadMember(
-                                this.getEndpoint(), chatThreadId, chatMemberId, this.getApiVersion(), context));
+                        service.removeChatParticipant(
+                                this.getEndpoint(), chatThreadId, chatParticipantId, this.getApiVersion(), context));
     }
 
     /**
-     * Remove a member from a thread.
+     * Remove a participant from a thread.
      *
-     * @param chatThreadId Thread id to remove the member from.
-     * @param chatMemberId Id of the thread member to remove from the thread.
+     * @param chatThreadId Thread id to remove the participant from.
+     * @param chatParticipantId Id of the thread participant to remove from the thread.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -1478,33 +1524,33 @@ public final class AzureCommunicationChatServiceImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> removeChatThreadMemberWithResponseAsync(
-            String chatThreadId, String chatMemberId, Context context) {
-        return service.removeChatThreadMember(
-                this.getEndpoint(), chatThreadId, chatMemberId, this.getApiVersion(), context);
+    public Mono<Response<Void>> removeChatParticipantWithResponseAsync(
+            String chatThreadId, String chatParticipantId, Context context) {
+        return service.removeChatParticipant(
+                this.getEndpoint(), chatThreadId, chatParticipantId, this.getApiVersion(), context);
     }
 
     /**
-     * Remove a member from a thread.
+     * Remove a participant from a thread.
      *
-     * @param chatThreadId Thread id to remove the member from.
-     * @param chatMemberId Id of the thread member to remove from the thread.
+     * @param chatThreadId Thread id to remove the participant from.
+     * @param chatParticipantId Id of the thread participant to remove from the thread.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> removeChatThreadMemberAsync(String chatThreadId, String chatMemberId) {
-        return removeChatThreadMemberWithResponseAsync(chatThreadId, chatMemberId)
+    public Mono<Void> removeChatParticipantAsync(String chatThreadId, String chatParticipantId) {
+        return removeChatParticipantWithResponseAsync(chatThreadId, chatParticipantId)
                 .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
-     * Remove a member from a thread.
+     * Remove a participant from a thread.
      *
-     * @param chatThreadId Thread id to remove the member from.
-     * @param chatMemberId Id of the thread member to remove from the thread.
+     * @param chatThreadId Thread id to remove the participant from.
+     * @param chatParticipantId Id of the thread participant to remove from the thread.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -1512,59 +1558,62 @@ public final class AzureCommunicationChatServiceImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> removeChatThreadMemberAsync(String chatThreadId, String chatMemberId, Context context) {
-        return removeChatThreadMemberWithResponseAsync(chatThreadId, chatMemberId, context)
+    public Mono<Void> removeChatParticipantAsync(String chatThreadId, String chatParticipantId, Context context) {
+        return removeChatParticipantWithResponseAsync(chatThreadId, chatParticipantId, context)
                 .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
-     * Remove a member from a thread.
+     * Remove a participant from a thread.
      *
-     * @param chatThreadId Thread id to remove the member from.
-     * @param chatMemberId Id of the thread member to remove from the thread.
+     * @param chatThreadId Thread id to remove the participant from.
+     * @param chatParticipantId Id of the thread participant to remove from the thread.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void removeChatThreadMember(String chatThreadId, String chatMemberId) {
-        removeChatThreadMemberAsync(chatThreadId, chatMemberId).block();
+    public void removeChatParticipant(String chatThreadId, String chatParticipantId) {
+        removeChatParticipantAsync(chatThreadId, chatParticipantId).block();
     }
 
     /**
-     * Remove a member from a thread.
+     * Remove a participant from a thread.
      *
-     * @param chatThreadId Thread id to remove the member from.
-     * @param chatMemberId Id of the thread member to remove from the thread.
+     * @param chatThreadId Thread id to remove the participant from.
+     * @param chatParticipantId Id of the thread participant to remove from the thread.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void removeChatThreadMember(String chatThreadId, String chatMemberId, Context context) {
-        removeChatThreadMemberAsync(chatThreadId, chatMemberId, context).block();
+    public void removeChatParticipant(String chatThreadId, String chatParticipantId, Context context) {
+        removeChatParticipantAsync(chatThreadId, chatParticipantId, context).block();
     }
 
     /**
      * Creates a chat thread.
      *
-     * @param body Request payload for creating a chat thread.
+     * @param createChatThreadRequest Request payload for creating a chat thread.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<MultiStatusResponse>> createChatThreadWithResponseAsync(CreateChatThreadOptions body) {
+    public Mono<Response<ChatThread>> createChatThreadWithResponseAsync(
+            CreateChatThreadOptions createChatThreadRequest) {
         return FluxUtil.withContext(
-                context -> service.createChatThread(this.getEndpoint(), this.getApiVersion(), body, context));
+                context ->
+                        service.createChatThread(
+                                this.getEndpoint(), this.getApiVersion(), createChatThreadRequest, context));
     }
 
     /**
      * Creates a chat thread.
      *
-     * @param body Request payload for creating a chat thread.
+     * @param createChatThreadRequest Request payload for creating a chat thread.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -1572,25 +1621,25 @@ public final class AzureCommunicationChatServiceImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<MultiStatusResponse>> createChatThreadWithResponseAsync(
-            CreateChatThreadOptions body, Context context) {
-        return service.createChatThread(this.getEndpoint(), this.getApiVersion(), body, context);
+    public Mono<Response<ChatThread>> createChatThreadWithResponseAsync(
+            CreateChatThreadOptions createChatThreadRequest, Context context) {
+        return service.createChatThread(this.getEndpoint(), this.getApiVersion(), createChatThreadRequest, context);
     }
 
     /**
      * Creates a chat thread.
      *
-     * @param body Request payload for creating a chat thread.
+     * @param createChatThreadRequest Request payload for creating a chat thread.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MultiStatusResponse> createChatThreadAsync(CreateChatThreadOptions body) {
-        return createChatThreadWithResponseAsync(body)
+    public Mono<ChatThread> createChatThreadAsync(CreateChatThreadOptions createChatThreadRequest) {
+        return createChatThreadWithResponseAsync(createChatThreadRequest)
                 .flatMap(
-                        (Response<MultiStatusResponse> res) -> {
+                        (Response<ChatThread> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -1602,7 +1651,7 @@ public final class AzureCommunicationChatServiceImpl {
     /**
      * Creates a chat thread.
      *
-     * @param body Request payload for creating a chat thread.
+     * @param createChatThreadRequest Request payload for creating a chat thread.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -1610,10 +1659,10 @@ public final class AzureCommunicationChatServiceImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MultiStatusResponse> createChatThreadAsync(CreateChatThreadOptions body, Context context) {
-        return createChatThreadWithResponseAsync(body, context)
+    public Mono<ChatThread> createChatThreadAsync(CreateChatThreadOptions createChatThreadRequest, Context context) {
+        return createChatThreadWithResponseAsync(createChatThreadRequest, context)
                 .flatMap(
-                        (Response<MultiStatusResponse> res) -> {
+                        (Response<ChatThread> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -1625,21 +1674,21 @@ public final class AzureCommunicationChatServiceImpl {
     /**
      * Creates a chat thread.
      *
-     * @param body Request payload for creating a chat thread.
+     * @param createChatThreadRequest Request payload for creating a chat thread.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MultiStatusResponse createChatThread(CreateChatThreadOptions body) {
-        return createChatThreadAsync(body).block();
+    public ChatThread createChatThread(CreateChatThreadOptions createChatThreadRequest) {
+        return createChatThreadAsync(createChatThreadRequest).block();
     }
 
     /**
      * Creates a chat thread.
      *
-     * @param body Request payload for creating a chat thread.
+     * @param createChatThreadRequest Request payload for creating a chat thread.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -1647,8 +1696,8 @@ public final class AzureCommunicationChatServiceImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MultiStatusResponse createChatThread(CreateChatThreadOptions body, Context context) {
-        return createChatThreadAsync(body, context).block();
+    public ChatThread createChatThread(CreateChatThreadOptions createChatThreadRequest, Context context) {
+        return createChatThreadAsync(createChatThreadRequest, context).block();
     }
 
     /**
@@ -1815,25 +1864,30 @@ public final class AzureCommunicationChatServiceImpl {
      * Updates a thread's properties.
      *
      * @param chatThreadId The id of the thread to update.
-     * @param body Request payload for updating a chat thread.
+     * @param updateChatThreadRequest Request payload for updating a chat thread.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateChatThreadWithResponseAsync(String chatThreadId, UpdateChatThreadOptions body) {
+    public Mono<Response<Void>> updateChatThreadWithResponseAsync(
+            String chatThreadId, UpdateChatThreadOptions updateChatThreadRequest) {
         return FluxUtil.withContext(
                 context ->
                         service.updateChatThread(
-                                this.getEndpoint(), chatThreadId, this.getApiVersion(), body, context));
+                                this.getEndpoint(),
+                                chatThreadId,
+                                this.getApiVersion(),
+                                updateChatThreadRequest,
+                                context));
     }
 
     /**
      * Updates a thread's properties.
      *
      * @param chatThreadId The id of the thread to update.
-     * @param body Request payload for updating a chat thread.
+     * @param updateChatThreadRequest Request payload for updating a chat thread.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -1842,39 +1896,24 @@ public final class AzureCommunicationChatServiceImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateChatThreadWithResponseAsync(
-            String chatThreadId, UpdateChatThreadOptions body, Context context) {
-        return service.updateChatThread(this.getEndpoint(), chatThreadId, this.getApiVersion(), body, context);
+            String chatThreadId, UpdateChatThreadOptions updateChatThreadRequest, Context context) {
+        return service.updateChatThread(
+                this.getEndpoint(), chatThreadId, this.getApiVersion(), updateChatThreadRequest, context);
     }
 
     /**
      * Updates a thread's properties.
      *
      * @param chatThreadId The id of the thread to update.
-     * @param body Request payload for updating a chat thread.
+     * @param updateChatThreadRequest Request payload for updating a chat thread.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateChatThreadAsync(String chatThreadId, UpdateChatThreadOptions body) {
-        return updateChatThreadWithResponseAsync(chatThreadId, body).flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Updates a thread's properties.
-     *
-     * @param chatThreadId The id of the thread to update.
-     * @param body Request payload for updating a chat thread.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateChatThreadAsync(String chatThreadId, UpdateChatThreadOptions body, Context context) {
-        return updateChatThreadWithResponseAsync(chatThreadId, body, context)
+    public Mono<Void> updateChatThreadAsync(String chatThreadId, UpdateChatThreadOptions updateChatThreadRequest) {
+        return updateChatThreadWithResponseAsync(chatThreadId, updateChatThreadRequest)
                 .flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -1882,29 +1921,48 @@ public final class AzureCommunicationChatServiceImpl {
      * Updates a thread's properties.
      *
      * @param chatThreadId The id of the thread to update.
-     * @param body Request payload for updating a chat thread.
+     * @param updateChatThreadRequest Request payload for updating a chat thread.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateChatThread(String chatThreadId, UpdateChatThreadOptions body) {
-        updateChatThreadAsync(chatThreadId, body).block();
+    public Mono<Void> updateChatThreadAsync(
+            String chatThreadId, UpdateChatThreadOptions updateChatThreadRequest, Context context) {
+        return updateChatThreadWithResponseAsync(chatThreadId, updateChatThreadRequest, context)
+                .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
      * Updates a thread's properties.
      *
      * @param chatThreadId The id of the thread to update.
-     * @param body Request payload for updating a chat thread.
+     * @param updateChatThreadRequest Request payload for updating a chat thread.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void updateChatThread(String chatThreadId, UpdateChatThreadOptions updateChatThreadRequest) {
+        updateChatThreadAsync(chatThreadId, updateChatThreadRequest).block();
+    }
+
+    /**
+     * Updates a thread's properties.
+     *
+     * @param chatThreadId The id of the thread to update.
+     * @param updateChatThreadRequest Request payload for updating a chat thread.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateChatThread(String chatThreadId, UpdateChatThreadOptions body, Context context) {
-        updateChatThreadAsync(chatThreadId, body, context).block();
+    public void updateChatThread(
+            String chatThreadId, UpdateChatThreadOptions updateChatThreadRequest, Context context) {
+        updateChatThreadAsync(chatThreadId, updateChatThreadRequest, context).block();
     }
 
     /**
@@ -2107,7 +2165,7 @@ public final class AzureCommunicationChatServiceImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ReadReceipt>> listChatReadReceiptsNextSinglePageAsync(String nextLink) {
+    public Mono<PagedResponse<ChatMessageReadReceipt>> listChatReadReceiptsNextSinglePageAsync(String nextLink) {
         return FluxUtil.withContext(context -> service.listChatReadReceiptsNext(nextLink, context))
                 .map(
                         res ->
@@ -2131,7 +2189,8 @@ public final class AzureCommunicationChatServiceImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ReadReceipt>> listChatReadReceiptsNextSinglePageAsync(String nextLink, Context context) {
+    public Mono<PagedResponse<ChatMessageReadReceipt>> listChatReadReceiptsNextSinglePageAsync(
+            String nextLink, Context context) {
         return service.listChatReadReceiptsNext(nextLink, context)
                 .map(
                         res ->
@@ -2198,11 +2257,11 @@ public final class AzureCommunicationChatServiceImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of thread members belong to a particular thread.
+     * @return collection of participants belong to a particular thread.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ChatThreadMember>> listChatThreadMembersNextSinglePageAsync(String nextLink) {
-        return FluxUtil.withContext(context -> service.listChatThreadMembersNext(nextLink, context))
+    public Mono<PagedResponse<ChatParticipant>> listChatParticipantsNextSinglePageAsync(String nextLink) {
+        return FluxUtil.withContext(context -> service.listChatParticipantsNext(nextLink, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -2222,12 +2281,12 @@ public final class AzureCommunicationChatServiceImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of thread members belong to a particular thread.
+     * @return collection of participants belong to a particular thread.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ChatThreadMember>> listChatThreadMembersNextSinglePageAsync(
+    public Mono<PagedResponse<ChatParticipant>> listChatParticipantsNextSinglePageAsync(
             String nextLink, Context context) {
-        return service.listChatThreadMembersNext(nextLink, context)
+        return service.listChatParticipantsNext(nextLink, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
