@@ -47,7 +47,7 @@ import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPE
 
 /**
  * An <b>asynchronous</b> receiver responsible for receiving {@link ServiceBusReceivedMessage} from a specific queue or
- * topic on Azure Service Bus.
+ * topic subscription on Azure Service Bus.
  *
  * <p><strong>Create an instance of receiver</strong></p>
  * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation}
@@ -56,28 +56,29 @@ import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPE
  * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiateWithDefaultCredential}
  *
  * <p><strong>Receive all messages from Service Bus resource</strong></p>
- * <p>This returns an infinite stream of messages from Service Bus. The stream ends when the subscription is disposed or
- * other terminal scenarios. See {@link #receiveMessages()} for more information.</p>
+ * <p>This returns an infinite stream of messages from Service Bus. The stream ends when the subscription is disposed
+ * or other terminal scenarios. See {@link #receiveMessages()} for more information.</p>
  * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#all}
  *
- * <p><strong>Receive messages in {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode from Service Bus
- * resource</strong></p>
+ * <p><strong>Receive messages in {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode from a Service Bus
+ * entity</strong></p>
  * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.receiveWithReceiveAndDeleteMode}
  *
  * <p><strong>Receive messages from a specific session</strong></p>
  * <p>To fetch messages from a specific session, switch to {@link ServiceBusSessionReceiverClientBuilder} and
- * build the session receiver client. Use {@link ServiceBusSessionReceiverAsyncClient#acceptSession(String)} to create a
- * session-bound {@link ServiceBusReceiverAsyncClient}.
+ * build the session receiver client. Use {@link ServiceBusSessionReceiverAsyncClient#acceptSession(String)} to create
+ * a session-bound {@link ServiceBusReceiverAsyncClient}.
  * </p>
  * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#sessionId}
  *
- * <p><strong>Process messages from the first available session</strong></p>
- * <p>To process messages from the first available session, switch to {@link ServiceBusSessionReceiverClientBuilder} and
- * build the session receiver client. Use {@link ServiceBusSessionReceiverAsyncClient#acceptNextSession()} to
- * find the first available session to process messages from.</p>
+ * <p><strong>Receive messages from the first available session</strong></p>
+ * <p>To process messages from the first available session, switch to {@link ServiceBusSessionReceiverClientBuilder}
+ * and build the session receiver client. Use
+ * {@link ServiceBusSessionReceiverAsyncClient#acceptNextSession() acceptNextSession()} to find the first available
+ * session to process messages from.</p>
  * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#nextsession}
  *
- * <p><strong>Rate limiting consumption of messages from Service Bus resource</strong></p>
+ * <p><strong>Rate limiting consumption of messages from a Service Bus entity</strong></p>
  * <p>For message receivers that need to limit the number of messages they receive at a given time, they can use
  * {@link BaseSubscriber#request(long)}.</p>
  * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#basesubscriber}
@@ -187,15 +188,15 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Abandon a {@link ServiceBusReceivedMessage message}. This will make the message available
-     * again for processing. Abandoning a message will increase the delivery count on the message.
+     * Abandon a {@link ServiceBusReceivedMessage message}. This will make the message available again for processing.
+     * Abandoning a message will increase the delivery count on the message.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
      *
      * @return A {@link Mono} that completes when the Service Bus abandon operation completes.
      * @throws NullPointerException if {@code message} is null.
-     * @throws UnsupportedOperationException if the receiver was opened in
-     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from peekMessage.
+     * @throws UnsupportedOperationException if the receiver was opened in {@link
+     *     ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from peekMessage.
      */
     public Mono<Void> abandon(ServiceBusReceivedMessage message) {
         return updateDisposition(message, DispositionStatus.ABANDONED, null, null,
@@ -203,23 +204,21 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Abandon a {@link ServiceBusReceivedMessage message} updates the message's properties.
-     * This will make the message available again for processing. Abandoning a message will increase the delivery count
-     * on the message.
+     * Abandon a {@link ServiceBusReceivedMessage message} updates the message's properties. This will make the message
+     * available again for processing. Abandoning a message will increase the delivery count on the message.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
-     * @param options to abandon the message. You can specify
-     *     {@link AbandonOptions#setPropertiesToModify(Map) properties} to modify on the Message. The
-     *     {@code transactionContext} can be set using
-     *     {@link AbandonOptions#setTransactionContext(ServiceBusTransactionContext)}. The transaction should be
-     *     created first by {@link ServiceBusReceiverAsyncClient#createTransaction()} or
+     * @param options to abandon the message. You can specify {@link AbandonOptions#setPropertiesToModify(Map)
+     *     properties} to modify on the Message. The {@code transactionContext} can be set using {@link
+     *     AbandonOptions#setTransactionContext(ServiceBusTransactionContext)}. The transaction should be created first
+     *     by {@link ServiceBusReceiverAsyncClient#createTransaction()} or
      *     {@link ServiceBusSenderAsyncClient#createTransaction()}.
      *
      * @return A {@link Mono} that completes when the Service Bus operation finishes.
-     * @throws NullPointerException if {@code message} or {@code options} is null. Also if
-     *     {@code transactionContext.transactionId} is null when {@code options.transactionContext} is specified.
-     * @throws UnsupportedOperationException if the receiver was opened in
-     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from peekMessage.
+     * @throws NullPointerException if {@code message} or {@code options} is null. Also if {@code
+     *     transactionContext.transactionId} is null when {@code options.transactionContext} is specified.
+     * @throws UnsupportedOperationException if the receiver was opened in {@link
+     *     ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from peekMessage.
      */
     public Mono<Void> abandon(ServiceBusReceivedMessage message, AbandonOptions options) {
         if (Objects.isNull(options)) {
@@ -241,8 +240,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      *
      * @return A {@link Mono} that finishes when the message is completed on Service Bus.
      * @throws NullPointerException if {@code message} is null.
-     * @throws UnsupportedOperationException if the receiver was opened in
-     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from peekMessage.
+     * @throws UnsupportedOperationException if the receiver was opened in {@link
+     *     ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from peekMessage.
      */
     public Mono<Void> complete(ServiceBusReceivedMessage message) {
         return updateDisposition(message, DispositionStatus.COMPLETED, null, null,
@@ -250,20 +249,19 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Completes a {@link ServiceBusReceivedMessage message}. This will delete the message from the
-     * service.
+     * Completes a {@link ServiceBusReceivedMessage message}. This will delete the message from the service.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
-     * @param options to complete the message. The {@code transactionContext} can be set using
-     *     {@link CompleteOptions#setTransactionContext(ServiceBusTransactionContext)}. The transaction should be
-     *     created first by {@link ServiceBusReceiverAsyncClient#createTransaction()} or
+     * @param options to complete the message. The {@code transactionContext} can be set using {@link
+     *     CompleteOptions#setTransactionContext(ServiceBusTransactionContext)}. The transaction should be created first
+     *     by {@link ServiceBusReceiverAsyncClient#createTransaction()} or
      *     {@link ServiceBusSenderAsyncClient#createTransaction()}.
      *
      * @return A {@link Mono} that finishes when the message is completed on Service Bus.
-     * @throws NullPointerException if {@code message} or {@code options} is null. Also if
-     *     {@code transactionContext.transactionId} is null when {@code options.transactionContext} is specified.
-     * @throws UnsupportedOperationException if the receiver was opened in
-     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from peekMessage.
+     * @throws NullPointerException if {@code message} or {@code options} is null. Also if {@code
+     *     transactionContext.transactionId} is null when {@code options.transactionContext} is specified.
+     * @throws UnsupportedOperationException if the receiver was opened in {@link
+     *     ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from peekMessage.
      */
     public Mono<Void> complete(ServiceBusReceivedMessage message, CompleteOptions options) {
         if (Objects.isNull(options)) {
@@ -285,8 +283,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      *
      * @return A {@link Mono} that completes when the Service Bus defer operation finishes.
      * @throws NullPointerException if {@code message} is null.
-     * @throws UnsupportedOperationException if the receiver was opened in
-     * {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from peekMessage.
+     * @throws UnsupportedOperationException if the receiver was opened in {@link
+     *     ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from peekMessage.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
      */
     public Mono<Void> defer(ServiceBusReceivedMessage message) {
@@ -299,17 +297,17 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * the deferred subqueue.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
-     * @param options to defer the message. You can specify {@link DeferOptions#setPropertiesToModify(Map) properties}
-     *     to modify on the Message. The {@code transactionContext} can be set using
-     *     {@link DeferOptions#setTransactionContext(ServiceBusTransactionContext)}. The transaction should be
-     *     created first by {@link ServiceBusReceiverAsyncClient#createTransaction()} or
+     * @param options to defer the message. You can specify {@link DeferOptions#setPropertiesToModify(Map)
+     *     properties} to modify on the Message. The {@code transactionContext} can be set using {@link
+     *     DeferOptions#setTransactionContext(ServiceBusTransactionContext)}. The transaction should be created first by
+     *     {@link ServiceBusReceiverAsyncClient#createTransaction()} or
      *     {@link ServiceBusSenderAsyncClient#createTransaction()}.
      *
      * @return A {@link Mono} that completes when the defer operation finishes.
-     * @throws NullPointerException if {@code message} or {@code options} is null. Also if
-     *     {@code transactionContext.transactionId} is null when {@code options.transactionContext} is specified.
-     * @throws UnsupportedOperationException if the receiver was opened in
-     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from peekMessage.
+     * @throws NullPointerException if {@code message} or {@code options} is null. Also if {@code
+     *     transactionContext.transactionId} is null when {@code options.transactionContext} is specified.
+     * @throws UnsupportedOperationException if the receiver was opened in {@link
+     *     ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from peekMessage.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
      */
     public Mono<Void> defer(ServiceBusReceivedMessage message, DeferOptions options) {
@@ -332,8 +330,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      *
      * @return A {@link Mono} that completes when the dead letter operation finishes.
      * @throws NullPointerException if {@code message} is null.
-     * @throws UnsupportedOperationException if the receiver was opened in
-     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from peekMessage.
+     * @throws UnsupportedOperationException if the receiver was opened in {@link
+     *     ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from peekMessage.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-dead-letter-queues">Dead letter
      *     queues</a>
      */
@@ -345,17 +343,17 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * Moves a {@link ServiceBusReceivedMessage message} to the deadletter sub-queue.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
-     * @param options to deadLetter the message. You can specify
-     *     {@link DeadLetterOptions#setPropertiesToModify(Map) properties} to modify on the Message. The
-     *     {@code transactionContext} can be set using
-     *     {@link DeadLetterOptions#setTransactionContext(ServiceBusTransactionContext)}. The transaction should be
-     *     created first by {@link ServiceBusReceiverAsyncClient#createTransaction()} or
-     *     {@link ServiceBusSenderAsyncClient#createTransaction()}.
+     * @param options to deadLetter the message. You can specify {@link DeadLetterOptions#setPropertiesToModify(Map)
+     *     properties} to modify on the Message. The {@code transactionContext} can be set using {@link
+     *     DeadLetterOptions#setTransactionContext(ServiceBusTransactionContext)}. The transaction should be created
+     *     first by {@link ServiceBusReceiverAsyncClient#createTransaction()} or {@link
+     *     ServiceBusSenderAsyncClient#createTransaction()}.
+     *
      * @return A {@link Mono} that completes when the dead letter operation finishes.
-     * @throws NullPointerException if {@code message} or {@code options} is null. Also if
-     *     {@code transactionContext.transactionId} is null when {@code options.transactionContext} is specified.
-     * @throws UnsupportedOperationException if the receiver was opened in
-     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from peekMessage.
+     * @throws NullPointerException if {@code message} or {@code options} is null. Also if {@code
+     *     transactionContext.transactionId} is null when {@code options.transactionContext} is specified.
+     * @throws UnsupportedOperationException if the receiver was opened in {@link
+     *     ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from peekMessage.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-dead-letter-queues">Dead letter
      *     queues</a>
      */
@@ -730,17 +728,17 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
     /**
      * Asynchronously renews the lock on the message. The lock will be renewed based on the setting specified on the
-     * entity. When a message is received in {@link ServiceBusReceiveMode#PEEK_LOCK} mode, the message is locked on
-     * the server for this receiver instance for a duration as specified during the entity creation (LockDuration).
-     * If processing of the message requires longer than this duration, the lock needs to be renewed. For each renewal,
-     * the lock is reset to the entity's LockDuration value.
+     * entity. When a message is received in {@link ServiceBusReceiveMode#PEEK_LOCK} mode, the message is locked on the
+     * server for this receiver instance for a duration as specified during the entity creation (LockDuration). If
+     * processing of the message requires longer than this duration, the lock needs to be renewed. For each renewal, the
+     * lock is reset to the entity's LockDuration value.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform auto-lock renewal.
      *
      * @return The new expiration time for the message.
      * @throws NullPointerException if {@code message} or {@code message.getLockToken()} is null.
-     * @throws UnsupportedOperationException if the receiver was opened in
-     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from peekMessage.
+     * @throws UnsupportedOperationException if the receiver was opened in {@link
+     *     ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from peekMessage.
      * @throws IllegalStateException if the receiver is a session receiver.
      * @throws IllegalArgumentException if {@code message.getLockToken()} is an empty value.
      */
@@ -858,13 +856,14 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Starts a new service side transaction. The {@link ServiceBusTransactionContext} should be passed to all
-     * operations that needs to be in this transaction.
+     * Starts a new service side transaction. The {@link ServiceBusTransactionContext transaction context} should be
+     * passed to all operations that needs to be in this transaction.
      *
-     * <p><strong>Create a transaction</strong></p>
-     * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.createTransaction}
+     * <p><strong>Creating and using a transaction</strong></p>
+     * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverasyncclient.committransaction#servicebustransactioncontextcom.azure.messaging.servicebus.servicebusreceiverasyncclient.committransaction#servicebustransactioncontext}
      *
-     * @return The {@link Mono} that finishes this operation on service bus resource.
+     * @return A {@link Mono} that completes with the created transaction. An error if the transaction could not be
+     *     created.
      */
     public Mono<ServiceBusTransactionContext> createTransaction() {
         if (isDisposed.get()) {
@@ -879,13 +878,14 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Commits the transaction given {@link ServiceBusTransactionContext}. This will make a call to Service Bus.
-     * <p><strong>Commit a transaction</strong></p>
-     * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.commitTransaction}
+     * Commits the transaction and all the operations associated with it.
      *
-     * @param transactionContext to be committed.
+     * <p><strong>Creating and using a transaction</strong></p>
+     * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverasyncclient.committransaction#servicebustransactioncontextcom.azure.messaging.servicebus.servicebusreceiverasyncclient.committransaction#servicebustransactioncontext}
      *
-     * @return The {@link Mono} that finishes this operation on service bus resource.
+     * @param transactionContext The transaction to be committed.
+     *
+     * @return A {@link Mono} that completes when the transaction is committed.
      * @throws NullPointerException if {@code transactionContext} or {@code transactionContext.transactionId} is
      *     null.
      */
@@ -908,10 +908,11 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
     /**
      * Rollbacks the transaction given {@link ServiceBusTransactionContext}. This will make a call to Service Bus.
-     * <p><strong>Rollback a transaction</strong></p>
-     * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.rollbackTransaction}
      *
-     * @param transactionContext to be rollbacked.
+     * <p><strong>Creating and using a transaction</strong></p>
+     * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverasyncclient.committransaction#servicebustransactioncontextcom.azure.messaging.servicebus.servicebusreceiverasyncclient.committransaction#servicebustransactioncontext}
+     *
+     * @param transactionContext The transaction to rollback.
      *
      * @return The {@link Mono} that finishes this operation on service bus resource.
      * @throws NullPointerException if {@code transactionContext} or {@code transactionContext.transactionId} is
@@ -1220,9 +1221,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         Mono<byte[]> result;
 
         if (sessionManager != null) {
-            result =  sessionManager.getSessionState(sessionId);
+            result = sessionManager.getSessionState(sessionId);
         } else {
-            result =  connectionProcessor
+            result = connectionProcessor
                 .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
                 .flatMap(channel -> channel.getSessionState(sessionId, getLinkName(sessionId)));
         }
