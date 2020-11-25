@@ -37,7 +37,7 @@ case class FilterAnalyzer() {
         filtersNotSupportedByCosmos.append(filter)
       }
     }
-    
+
     if (whereClauseBuilder.length > 0) {
       queryBuilder.append(" WHERE ")
       queryBuilder.append(whereClauseBuilder)
@@ -168,8 +168,7 @@ case class FilterAnalyzer() {
         isInnerCosmosPredicate
 
       case _: Filter =>
-        // TODO: moderakh we should collect unsupported ones and pass to DataSource v2
-        // as unsupported filters, then the filters will be applied by the spark platform itself
+        // the unsupported filter will be applied by the spark platform itself.
         false
     }
   }
