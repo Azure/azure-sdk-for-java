@@ -20,68 +20,35 @@ case class CosmosScanBuilder(config: CaseInsensitiveStringMap)
     with CosmosLoggingTrait {
   logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
-  var filtersToBePushDownToCosmos: Array[Filter] = Array.empty
-  var filtersToBeEvaluatedBySpark: Array[Filter] = Array.empty
+  var processedPredicates : Option[AnalyzedFilters] = Option.empty
 
   /**
     * Pushes down filters, and returns filters that need to be evaluated after scanning.
-    * @param filters
-    * @return filters to be evaluated after scanning
+    * @param filters pushed down filters.
+    * @return the filters that spark need to evaluate
     */
   override def pushFilters(filters: Array[Filter]): Array[Filter] = {
-    // TODO moderakh we need to build the push down filter translation to Cosmos query
-    // for now leave it to spark to filter
+    processedPredicates = Option.apply(FilterAnalyzer().analyze(filters))
 
-    // TODO: moderakh identify all the filters which are relevant to cosmos db
-    this.filtersToBePushDownToCosmos = filters.filter(
-      filter => filter match {
-        case EqualTo(attribute, value) => true
-        case _ => false
-      }
-    )
-    this.filtersToBeEvaluatedBySpark = filters
-
-    // return all filter so spark also applies the filters
-    filters
+    // return the filters that spark need to evaluate
+    this.processedPredicates.get.filtersNotSupportedByCosmos
   }
 
   /**
-    * Returns the filters that are pushed to the data source via {@link #pushFilters ( Filter[ ] )}.
-    * @return
+    * Returns the filters that are pushed to Cosmos as query predicates
+    * @return filters to be pushed to cosmos db.
     */
   override def pushedFilters: Array[Filter] = {
-    this.filtersToBePushDownToCosmos
+    if (this.processedPredicates.isDefined) {
+      this.processedPredicates.get.filtersToBePushedDownToCosmos
+    } else {
+      Array[Filter]()
+    }
   }
 
   override def build(): Scan = {
-    CosmosScan(config.asScala.toMap, buildQuery())
-  }
-
-  // TODO moderakh: the build query only supports the most trivial query
-  def buildQuery(): String = {
-    // TODO moderakh solidify the query builder
-    val queryBuilder = new StringBuilder
-
-    queryBuilder.append("SELECT * FROM r")
-
-    if (filtersToBePushDownToCosmos.nonEmpty) {
-      queryBuilder.append(" WHERE ")
-    }
-
-    // TODO: moderakh we should user parametrized query
-    // SQL query injection attack
-
-    for (filter <- filtersToBePushDownToCosmos) {
-      filter match {
-        case EqualTo(attribute, value) => {
-          // TODO: moderakh how to handle column names? column names with special names?
-
-          queryBuilder.append("r.").append(attribute).append(" = ").append(s"$value")
-        }
-        case _ => throw new Exception("unsupported")
-      }
-    }
-    queryBuilder.toString
+    assert(this.processedPredicates.isDefined)
+    CosmosScan(config.asScala.toMap, this.processedPredicates.get.cosmosParametrizedQuery)
   }
 
   override def pruneColumns(requiredSchema: StructType): Unit = {
