@@ -31,8 +31,8 @@ public final class BlobStorageException extends HttpResponseException {
      * @param value the error code of the exception.
      */
     public BlobStorageException(String message, HttpResponse response, Object value) {
-        super(response.getRequest().getHttpMethod().equals(HttpMethod.HEAD) ?
-            message.replaceFirst("(empty body)", response.getHeaders().getValue(ERROR_CODE))
+        super(response.getRequest().getHttpMethod().equals(HttpMethod.HEAD)
+            ? message.replaceFirst("(empty body)", response.getHeaders().getValue(ERROR_CODE))
             : message, response, value);
     }
 
