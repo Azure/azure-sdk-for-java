@@ -40,6 +40,11 @@ public final class PhoneNumberClientBuilder {
         return this;
     }
 
+    public PhoneNumberClientBuilder accessKey(String accessKey) {
+        // implementation
+        return this;
+    }
+
     /**
      * Set endpoint of the service
      *
