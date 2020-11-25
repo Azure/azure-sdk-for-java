@@ -860,7 +860,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * passed to all operations that needs to be in this transaction.
      *
      * <p><strong>Creating and using a transaction</strong></p>
-     * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverasyncclient.committransaction#servicebustransactioncontextcom.azure.messaging.servicebus.servicebusreceiverasyncclient.committransaction#servicebustransactioncontext}
+     * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverasyncclient.committransaction#servicebustransactioncontext}
      *
      * @return A {@link Mono} that completes with the created transaction. An error if the transaction could not be
      *     created.
@@ -881,7 +881,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * Commits the transaction and all the operations associated with it.
      *
      * <p><strong>Creating and using a transaction</strong></p>
-     * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverasyncclient.committransaction#servicebustransactioncontextcom.azure.messaging.servicebus.servicebusreceiverasyncclient.committransaction#servicebustransactioncontext}
+     * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverasyncclient.committransaction#servicebustransactioncontext}
      *
      * @param transactionContext The transaction to be committed.
      *
@@ -907,10 +907,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Rollbacks the transaction given {@link ServiceBusTransactionContext}. This will make a call to Service Bus.
+     * Rollbacks the transaction given and all operations associated with it.
      *
      * <p><strong>Creating and using a transaction</strong></p>
-     * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverasyncclient.committransaction#servicebustransactioncontextcom.azure.messaging.servicebus.servicebusreceiverasyncclient.committransaction#servicebustransactioncontext}
+     * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverasyncclient.committransaction#servicebustransactioncontext}
      *
      * @param transactionContext The transaction to rollback.
      *
@@ -936,7 +936,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Disposes of the consumer by closing the underlying connection to the service.
+     * Disposes of the consumer by closing the underlying links to the service.
      */
     @Override
     public void close() {

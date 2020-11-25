@@ -244,6 +244,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     ServiceBusReceivedMessage peekMessage(String sessionId) {
         return asyncClient.peekMessage(sessionId).block(operationTimeout);
     }
+
     /**
      * Starting from the given sequence number, reads next the active message without changing the state of the receiver
      * or the message source.
@@ -538,6 +539,9 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * Starts a new transaction on Service Bus. The {@link ServiceBusTransactionContext} should be passed along with
      * {@link ServiceBusReceivedMessage} or {@code lockToken} to all operations that needs to be in this transaction.
      *
+     * <p><strong>Creating and using a transaction</strong></p>
+     * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverclient.committransaction#servicebustransactioncontext}
+     *
      * @return a new {@link ServiceBusTransactionContext}.
      * @throws NullPointerException if {@code transactionContext} or {@code transactionContext.transactionId} is
      *     null.
@@ -547,9 +551,12 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     }
 
     /**
-     * Commits the transaction given {@link ServiceBusTransactionContext}. This will make a call to Service Bus.
+     * Commits the transaction and all the operations associated with it.
      *
-     * @param transactionContext to be committed.
+     * <p><strong>Creating and using a transaction</strong></p>
+     * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverclient.committransaction#servicebustransactioncontext}
+     *
+     * @param transactionContext The transaction to be commit.
      *
      * @throws NullPointerException if {@code transactionContext} or {@code transactionContext.transactionId} is
      *     null.
@@ -559,9 +566,12 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     }
 
     /**
-     * Rollbacks the transaction given {@link ServiceBusTransactionContext}. This will make a call to Service Bus.
+     * Rollbacks the transaction given and all operations associated with it.
      *
-     * @param transactionContext to be rollbacked.
+     * <p><strong>Creating and using a transaction</strong></p>
+     * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverclient.committransaction#servicebustransactioncontext}
+     *
+     * @param transactionContext The transaction to be rollback.
      *
      * @throws NullPointerException if {@code transactionContext} or {@code transactionContext.transactionId} is
      *     null.
@@ -571,7 +581,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     }
 
     /**
-     * {@inheritDoc}
+     * Disposes of the consumer by closing the underlying links to the service.
      */
     @Override
     public void close() {

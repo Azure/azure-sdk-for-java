@@ -202,7 +202,7 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
         long sequenceNumber = 1000L;
         ServiceBusReceivedMessage receivedMessage = new ServiceBusReceivedMessage(null);
 
-        // BEGIN: com.azure.messaging.servicebus.servicebusreceiverasyncclient.committransaction#servicebustransactioncontextcom.azure.messaging.servicebus.servicebusreceiverasyncclient.committransaction#servicebustransactioncontext
+        // BEGIN: com.azure.messaging.servicebus.servicebusreceiverasyncclient.committransaction#servicebustransactioncontext
         // This mono creates a transaction and caches the output value, so we can associate operations with the
         // transaction. It does not cache the value if it is an error or completes with no items, effectively retrying
         // the operation.
@@ -212,7 +212,7 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
                 () -> Duration.ZERO);
 
         transactionContext.flatMap(transaction -> {
-            // Process message and associate operations with the transaction.
+            // Process messages and associate operations with the transaction.
             Mono<Void> operations = Mono.when(
                 receiver.receiveDeferredMessage(sequenceNumber).flatMap(message ->
                     receiver.complete(message, new CompleteOptions().setTransactionContext(transaction))),
@@ -221,7 +221,7 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
             // Finally, either commit or rollback the transaction once all the operations are associated with it.
             return operations.flatMap(transactionOperations -> receiver.commitTransaction(transaction));
         });
-        // END: com.azure.messaging.servicebus.servicebusreceiverasyncclient.committransaction#servicebustransactioncontextcom.azure.messaging.servicebus.servicebusreceiverasyncclient.committransaction#servicebustransactioncontext
+        // END: com.azure.messaging.servicebus.servicebusreceiverasyncclient.committransaction#servicebustransactioncontext
 
         receiver.close();
     }
