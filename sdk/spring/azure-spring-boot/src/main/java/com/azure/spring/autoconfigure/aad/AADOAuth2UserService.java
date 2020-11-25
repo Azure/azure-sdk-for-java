@@ -27,7 +27,8 @@ import static com.azure.spring.autoconfigure.aad.AADOAuth2ErrorCode.INVALID_REQU
 import static com.azure.spring.autoconfigure.aad.AADOAuth2ErrorCode.SERVER_SERVER;
 
 /**
- * This implementation will retrieve group info of user from Microsoft Graph and map groups to {@link GrantedAuthority}.
+ * This implementation will retrieve group info of user from Microsoft Graph and map groups to {@link
+ * GrantedAuthority}.
  */
 public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, OidcUser> {
     private final AADAuthenticationProperties aadAuthenticationProperties;
@@ -49,7 +50,10 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
         try {
             // https://github.com/MicrosoftDocs/azure-docs/issues/8121#issuecomment-387090099
             // In AAD App Registration configure oauth2AllowImplicitFlow to true
+            final ClientRegistration registration = userRequest.getClientRegistration();
             final AzureADGraphClient azureADGraphClient = new AzureADGraphClient(
+                registration.getClientId(),
+                registration.getClientSecret(),
                 aadAuthenticationProperties,
                 serviceEndpointsProperties
             );

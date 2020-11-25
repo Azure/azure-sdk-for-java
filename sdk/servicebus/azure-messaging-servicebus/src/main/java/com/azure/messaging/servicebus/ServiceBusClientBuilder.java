@@ -116,6 +116,7 @@ public final class ServiceBusClientBuilder {
     private AmqpRetryOptions retryOptions;
     private Scheduler scheduler;
     private AmqpTransportType transport = AmqpTransportType.AMQP;
+    private SslDomain.VerifyMode verifyMode;
 
     /**
      * Keeps track of the open clients that were created from this builder when there is a shared connection.
@@ -230,6 +231,16 @@ public final class ServiceBusClientBuilder {
         return this;
     }
 
+    /**
+     * Package-private method that sets the verify mode for this connection.
+     *
+     * @param verifyMode The verification mode.
+     * @return The updated {@link ServiceBusClientBuilder} object.
+     */
+    ServiceBusClientBuilder verifyMode(SslDomain.VerifyMode verifyMode) {
+        this.verifyMode = verifyMode;
+        return this;
+    }
     /**
      * Sets the retry options for Service Bus clients. If not specified, the default retry options are used.
      *
@@ -407,8 +418,12 @@ public final class ServiceBusClientBuilder {
             : CbsAuthorizationType.JSON_WEB_TOKEN;
         final ClientOptions options = clientOptions != null ? clientOptions : new ClientOptions();
 
+        final SslDomain.VerifyMode verificationMode = verifyMode != null
+            ? verifyMode
+            : SslDomain.VerifyMode.VERIFY_PEER_NAME;
+
         return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType, transport, retryOptions,
-            proxyOptions, scheduler, options, SslDomain.VerifyMode.VERIFY_PEER_NAME);
+            proxyOptions, scheduler, options, verificationMode);
     }
 
     private ProxyOptions getDefaultProxyConfiguration(Configuration configuration) {
@@ -966,24 +981,6 @@ public final class ServiceBusClientBuilder {
          */
         ServiceBusReceiverAsyncClient buildAsyncClientForProcessor() {
             return buildAsyncClientForProcessor(true);
-        }
-
-        /**
-         * Creates a <b>synchronous</b>, <b>session-aware</b> Service Bus receiver responsible for reading {@link
-         * ServiceBusMessage messages} from a specific queue or subscription.
-         *
-         * @return An new {@link ServiceBusReceiverClient} that receives messages from a queue or subscription.
-         * @throws IllegalStateException if {@link #queueName(String) queueName} or {@link #topicName(String)
-         *     topicName} are not set or, both of these fields are set. It is also thrown if the Service Bus {@link
-         *     #connectionString(String) connectionString} contains an {@code EntityPath} that does not match one set in
-         *     {@link #queueName(String) queueName} or {@link #topicName(String) topicName}. Lastly, if a {@link
-         *     #topicName(String) topicName} is set, but {@link #subscriptionName(String) subscriptionName} is not.
-         * @throws IllegalArgumentException Queue or topic name are not set via {@link #queueName(String)
-         *     queueName()} or {@link #topicName(String) topicName()}, respectively.
-         */
-        ServiceBusReceiverClient buildClientForProcessor() {
-            return new ServiceBusReceiverClient(buildAsyncClientForProcessor(false),
-                MessageUtils.getTotalTimeout(retryOptions));
         }
 
         private ServiceBusReceiverAsyncClient buildAsyncClientForProcessor(boolean isAutoCompleteAllowed) {
