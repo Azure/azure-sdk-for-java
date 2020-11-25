@@ -50,7 +50,6 @@ The following section provides sample projects illustrating how to use the Azure
 - [Event Hubs][event_hubs_sample]
 - [Event Hubs Kafka][event_hubs_kafka_sample]
 - [Service Bus][service_bus_sample]
-- [Storage][storage_sample]
 - [Storage Queue][storage_queue_sample]
 
 ## Troubleshooting
@@ -81,7 +80,6 @@ The following section provides sample projects illustrating how to use the Azure
 - [Event Hubs][event_hubs_sample]
 - [Event Hubs Kafka][event_hubs_kafka_sample]
 - [Service Bus][service_bus_sample]
-- [Storage][storage_sample]
 - [Storage Queue][storage_queue_sample]
 
 ## Contributing
@@ -113,6 +111,5 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [event_hubs_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-eventhubs
 [event_hubs_kafka_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-kafka
 [service_bus_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-servicebus
-[storage_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-storage-resource
 [storage_queue_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-storage-queue
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable

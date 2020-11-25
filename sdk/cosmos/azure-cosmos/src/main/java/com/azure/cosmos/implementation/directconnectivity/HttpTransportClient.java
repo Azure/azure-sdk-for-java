@@ -218,7 +218,7 @@ public class HttpTransportClient extends TransportClient {
                                 null);
                     });
 
-            return httpResponseMono.flatMap(rsp -> processHttpResponse(request.getResourceAddress(),
+            return httpResponseMono.flatMap(rsp -> processHttpResponse(request.requestContext.resourcePhysicalAddress,
                     httpRequest, activityId, rsp, physicalAddress));
 
         } catch (Exception e) {
@@ -863,15 +863,19 @@ public class HttpTransportClient extends TransportClient {
                                 break;
                             } else {
                                 // Have the request URL in the exception message for debugging purposes.
-                                exception = new GoneException(
+                                GoneException goneExceptionFromService = new GoneException(
                                         String.format(
                                                 RMResources.ExceptionMessage,
                                                 RMResources.Gone),
                                         response.headers(),
                                         request.uri());
+                                goneExceptionFromService.setIsBasedOn410ResponseFromService();
 
-                                exception.getResponseHeaders().put(HttpConstants.HttpHeaders.ACTIVITY_ID,
-                                        activityId);
+                                goneExceptionFromService.getResponseHeaders().put(
+                                    HttpConstants.HttpHeaders.ACTIVITY_ID,
+                                    activityId);
+
+                                exception = goneExceptionFromService;
                                 break;
                             }
                         }

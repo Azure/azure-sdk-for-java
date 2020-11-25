@@ -52,7 +52,7 @@ public class AzureServiceBusQueueAutoConfiguration {
         if (resourceManagerProvider != null) {
             clientFactory.setResourceManagerProvider(resourceManagerProvider);
             clientFactory.setNamespace(serviceBusProperties.getNamespace());
-        } else {
+        } else if (connectionString != null) {
             TelemetryCollector.getInstance().addProperty(SERVICE_BUS_QUEUE, NAMESPACE,
                 ServiceBusUtils.getNamespace(connectionString));
         }

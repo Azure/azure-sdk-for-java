@@ -84,6 +84,10 @@ public class BlobSasImplUtil {
 
     private String contentType;
 
+    private String authorizedAadObjectId;
+
+    private String correlationId;
+
     /**
      * Creates a new {@link BlobSasImplUtil} with the specified parameters
      *
@@ -126,6 +130,8 @@ public class BlobSasImplUtil {
         this.contentEncoding = sasValues.getContentEncoding();
         this.contentLanguage = sasValues.getContentLanguage();
         this.contentType = sasValues.getContentType();
+        this.authorizedAadObjectId = sasValues.getPreauthorizedAgentObjectId();
+        this.correlationId = sasValues.getCorrelationId();
     }
 
     /**
@@ -199,6 +205,10 @@ public class BlobSasImplUtil {
                 userDelegationKey.getSignedService());
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_VERSION,
                 userDelegationKey.getSignedVersion());
+
+            /* Only parameters relevant for user delegation SAS. */
+            tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_PREAUTHORIZED_AGENT_OBJECT_ID, this.authorizedAadObjectId);
+            tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CORRELATION_ID, this.correlationId);
         }
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_RESOURCE, this.resource);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_PERMISSIONS, this.permissions);
@@ -314,9 +324,9 @@ public class BlobSasImplUtil {
             key.getSignedExpiry() == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(key.getSignedExpiry()),
             key.getSignedService() == null ? "" : key.getSignedService(),
             key.getSignedVersion() == null ? "" : key.getSignedVersion(),
-            "", /* saoid - empty since this applies to HNS only accounts. */
+            this.authorizedAadObjectId == null ? "" : this.authorizedAadObjectId,
             "", /* suoid - empty since this applies to HNS only accounts. */
-            "", /* cid - empty since this applies to HNS only accounts. */
+            this.correlationId == null ? "" : this.correlationId,
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),
             this.protocol == null ? "" : this.protocol.toString(),
             version,

@@ -27,7 +27,8 @@ import static com.azure.spring.autoconfigure.aad.AADOAuth2ErrorCode.INVALID_REQU
 import static com.azure.spring.autoconfigure.aad.AADOAuth2ErrorCode.SERVER_SERVER;
 
 /**
- * This implementation will retrieve group info of user from Microsoft Graph and map groups to {@link GrantedAuthority}.
+ * This implementation will retrieve group info of user from Microsoft Graph and map groups to {@link
+ * GrantedAuthority}.
  */
 public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, OidcUser> {
     private final AADAuthenticationProperties aadAuthenticationProperties;
@@ -49,7 +50,10 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
         try {
             // https://github.com/MicrosoftDocs/azure-docs/issues/8121#issuecomment-387090099
             // In AAD App Registration configure oauth2AllowImplicitFlow to true
+            final ClientRegistration registration = userRequest.getClientRegistration();
             final AzureADGraphClient azureADGraphClient = new AzureADGraphClient(
+                registration.getClientId(),
+                registration.getClientSecret(),
                 aadAuthenticationProperties,
                 serviceEndpointsProperties
             );
@@ -75,13 +79,14 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
                 throw e;
             }
         }
-        String nameAttributeKey = Optional.of(userRequest)
-            .map(OAuth2UserRequest::getClientRegistration)
-            .map(ClientRegistration::getProviderDetails)
-            .map(ClientRegistration.ProviderDetails::getUserInfoEndpoint)
-            .map(ClientRegistration.ProviderDetails.UserInfoEndpoint::getUserNameAttributeName)
-            .filter(s -> !s.isEmpty())
-            .orElse(AADTokenClaim.NAME);
+        String nameAttributeKey =
+            Optional.of(userRequest)
+                    .map(OAuth2UserRequest::getClientRegistration)
+                    .map(ClientRegistration::getProviderDetails)
+                    .map(ClientRegistration.ProviderDetails::getUserInfoEndpoint)
+                    .map(ClientRegistration.ProviderDetails.UserInfoEndpoint::getUserNameAttributeName)
+                    .filter(s -> !s.isEmpty())
+                    .orElse(AADTokenClaim.NAME);
         // Create a copy of oidcUser but use the mappedAuthorities instead
         return new DefaultOidcUser(mappedAuthorities, oidcUser.getIdToken(), nameAttributeKey);
     }

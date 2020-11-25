@@ -704,7 +704,7 @@ public final class RntbdTransportClient extends TransportClient {
 
                 this.bufferPageSize = DEFAULT_OPTIONS.bufferPageSize;
                 this.connectionAcquisitionTimeout = DEFAULT_OPTIONS.connectionAcquisitionTimeout;
-                this.connectionEndpointRediscoveryEnabled = DEFAULT_OPTIONS.connectionEndpointRediscoveryEnabled;
+                this.connectionEndpointRediscoveryEnabled = connectionPolicy.isTcpConnectionEndpointRediscoveryEnabled();
                 this.connectTimeout = connectionPolicy.getConnectTimeout();
                 this.idleChannelTimeout = connectionPolicy.getIdleTcpConnectionTimeout();
                 this.idleChannelTimerResolution = DEFAULT_OPTIONS.idleChannelTimerResolution;

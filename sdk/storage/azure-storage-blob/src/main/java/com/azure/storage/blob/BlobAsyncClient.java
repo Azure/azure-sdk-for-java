@@ -442,7 +442,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             Flux<ByteBuffer> data = options.getDataFlux() == null ? Utility.convertStreamToByteBuffer(
                 options.getDataStream(), options.getLength(),
                 // We can only buffer up to max int due to restrictions in ByteBuffer.
-                (int) Math.min(Integer.MAX_VALUE, parallelTransferOptions.getBlockSizeLong()))
+                (int) Math.min(Integer.MAX_VALUE, parallelTransferOptions.getBlockSizeLong()), false)
                 : options.getDataFlux();
             return UploadUtils.uploadFullOrChunked(data, ModelHelper.wrapBlobOptions(parallelTransferOptions),
                 uploadInChunksFunction, uploadFullBlobFunction);

@@ -31,6 +31,10 @@ public final class BlobContainerSasPermission {
 
     private boolean tagsPermission;
 
+    private boolean movePermission;
+
+    private boolean executePermission;
+
     /**
      * Initializes an {@code BlobContainerSasPermission} object with all fields set to false.
      */
@@ -74,6 +78,12 @@ public final class BlobContainerSasPermission {
                     break;
                 case 't':
                     permissions.tagsPermission = true;
+                    break;
+                case 'm':
+                    permissions.movePermission = true;
+                    break;
+                case 'e':
+                    permissions.executePermission = true;
                     break;
                 default:
                     throw new IllegalArgumentException(
@@ -229,6 +239,42 @@ public final class BlobContainerSasPermission {
     }
 
     /**
+     * @return the move permission status.
+     */
+    public boolean hasMovePermission() {
+        return movePermission;
+    }
+
+    /**
+     * Sets the move permission status.
+     *
+     * @param hasMovePermission Permission status to set
+     * @return the updated BlobContainerSasPermission object.
+     */
+    public BlobContainerSasPermission setMovePermission(boolean hasMovePermission) {
+        this.movePermission = hasMovePermission;
+        return this;
+    }
+
+    /**
+     * @return the execute permission status.
+     */
+    public boolean hasExecutePermission() {
+        return executePermission;
+    }
+
+    /**
+     * Sets the execute permission status.
+     *
+     * @param hasExecutePermission Permission status to set
+     * @return the updated BlobContainerSasPermission object.
+     */
+    public BlobContainerSasPermission setExecutePermission(boolean hasExecutePermission) {
+        this.executePermission = hasExecutePermission;
+        return this;
+    }
+
+    /**
      * Converts the given permissions to a {@code String}. Using this method will guarantee the permissions are in an
      * order accepted by the service.
      *
@@ -270,6 +316,14 @@ public final class BlobContainerSasPermission {
 
         if (this.tagsPermission) {
             builder.append('t');
+        }
+
+        if (this.movePermission) {
+            builder.append('m');
+        }
+
+        if (this.executePermission) {
+            builder.append('e');
         }
 
         return builder.toString();

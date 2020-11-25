@@ -56,19 +56,19 @@ public final class ItemBatchOperation<TInternal> implements CosmosItemOperation 
         final JsonSerializable jsonSerializable = new JsonSerializable();
 
         jsonSerializable.set(
-            BatchRequestResponseConstant.FIELD_OPERATION_TYPE,
+            BatchRequestResponseConstants.FIELD_OPERATION_TYPE,
             BridgeInternal.getOperationValueForCosmosItemOperationType(this.getOperationType()));
 
         if (StringUtils.isNotEmpty(this.getId())) {
-            jsonSerializable.set(BatchRequestResponseConstant.FIELD_ID, this.getId());
+            jsonSerializable.set(BatchRequestResponseConstants.FIELD_ID, this.getId());
         }
 
         if (this.getItemInternal() != null) {
             if (this.getOperationType() == CosmosItemOperationType.PATCH) {
-                jsonSerializable.set(BatchRequestResponseConstant.FIELD_RESOURCE_BODY,
+                jsonSerializable.set(BatchRequestResponseConstants.FIELD_RESOURCE_BODY,
                     PatchUtil.serializableBatchPatchOperation(this.getItemInternal()));
             } else {
-                jsonSerializable.set(BatchRequestResponseConstant.FIELD_RESOURCE_BODY, this.getItemInternal());
+                jsonSerializable.set(BatchRequestResponseConstants.FIELD_RESOURCE_BODY, this.getItemInternal());
             }
         }
 
@@ -76,18 +76,18 @@ public final class ItemBatchOperation<TInternal> implements CosmosItemOperation 
             RequestOptions requestOptions = this.getRequestOptions();
 
             if (StringUtils.isNotEmpty(requestOptions.getIfMatchETag())) {
-                jsonSerializable.set(BatchRequestResponseConstant.FIELD_IF_MATCH, requestOptions.getIfMatchETag());
+                jsonSerializable.set(BatchRequestResponseConstants.FIELD_IF_MATCH, requestOptions.getIfMatchETag());
             }
 
             if (StringUtils.isNotEmpty(requestOptions.getIfNoneMatchETag())) {
-                jsonSerializable.set(BatchRequestResponseConstant.FIELD_IF_NONE_MATCH, requestOptions.getIfNoneMatchETag());
+                jsonSerializable.set(BatchRequestResponseConstants.FIELD_IF_NONE_MATCH, requestOptions.getIfNoneMatchETag());
             }
         }
 
         return jsonSerializable;
     }
 
-    private TInternal getItemInternal() {
+    TInternal getItemInternal() {
         return this.item;
     }
 
@@ -108,7 +108,7 @@ public final class ItemBatchOperation<TInternal> implements CosmosItemOperation 
         return this.operationType;
     }
 
-    private RequestOptions getRequestOptions() {
+    public RequestOptions getRequestOptions() {
         return this.requestOptions;
     }
 }

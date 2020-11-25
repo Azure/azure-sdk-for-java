@@ -30,6 +30,10 @@
       "\"moduleName\"": "\"AppService\""
     }
   },
+  "attestation/resource-manager": {
+    "source": "specification/attestation/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "automation/resource-manager": {
     "source": "specification/automation/resource-manager/readme.md",
     "args": "--multiapi --fluent"
@@ -156,6 +160,10 @@
   },
   "eventhub/resource-manager": {
     "source": "specification/eventhub/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "frontdoor/resource-manager": {
+    "source": "specification/frontdoor/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
   "hanaonazure/resource-manager": {

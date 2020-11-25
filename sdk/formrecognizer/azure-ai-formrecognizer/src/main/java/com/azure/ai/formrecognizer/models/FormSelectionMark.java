@@ -25,6 +25,7 @@ public final class FormSelectionMark extends FormElement {
             }
         });
     }
+
     /**
      * Creates a FormSelectionMark.
      *

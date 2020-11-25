@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.util.BinaryData;
 import com.azure.messaging.servicebus.models.CreateMessageBatchOptions;
 
 import java.util.Arrays;
@@ -48,8 +49,8 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
 
         // BEGIN: com.azure.messaging.servicebus.servicebussenderclient.createMessageBatch
 
-        List<ServiceBusMessage> messages = Arrays.asList(new ServiceBusMessage("test-1".getBytes(UTF_8)),
-            new ServiceBusMessage("test-2".getBytes(UTF_8)));
+        List<ServiceBusMessage> messages = Arrays.asList(new ServiceBusMessage(BinaryData.fromBytes("test-1".getBytes(UTF_8))),
+            new ServiceBusMessage(BinaryData.fromBytes("test-2".getBytes(UTF_8))));
 
         final CreateMessageBatchOptions options = new CreateMessageBatchOptions().setMaximumSizeInBytes(10 * 1024);
         // Creating a batch without options set.
@@ -79,11 +80,11 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
             .queueName("<< QUEUE NAME >>")
             .buildClient();
 
-        final ServiceBusMessage firstMessage = new ServiceBusMessage("message-1".getBytes(UTF_8));
+        final ServiceBusMessage firstMessage = new ServiceBusMessage(BinaryData.fromBytes("message-1".getBytes(UTF_8)));
         firstMessage.getApplicationProperties().put("telemetry", "latency");
-        final ServiceBusMessage secondMessage = new ServiceBusMessage("message-2".getBytes(UTF_8));
+        final ServiceBusMessage secondMessage = new ServiceBusMessage(BinaryData.fromBytes("message-2".getBytes(UTF_8)));
         secondMessage.getApplicationProperties().put("telemetry", "cpu-temperature");
-        final ServiceBusMessage thirdMessage = new ServiceBusMessage("message-3".getBytes(UTF_8));
+        final ServiceBusMessage thirdMessage = new ServiceBusMessage(BinaryData.fromBytes("message-3".getBytes(UTF_8)));
         thirdMessage.getApplicationProperties().put("telemetry", "fps");
 
         // BEGIN: com.azure.messaging.servicebus.servicebussenderclient.createMessageBatch#CreateMessageBatchOptions-int

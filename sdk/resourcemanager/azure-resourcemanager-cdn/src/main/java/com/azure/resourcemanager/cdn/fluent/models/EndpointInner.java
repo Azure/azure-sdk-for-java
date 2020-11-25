@@ -9,14 +9,19 @@ import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.models.DeepCreatedOrigin;
+import com.azure.resourcemanager.cdn.models.DeepCreatedOriginGroup;
 import com.azure.resourcemanager.cdn.models.EndpointPropertiesUpdateParametersDeliveryPolicy;
+import com.azure.resourcemanager.cdn.models.EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink;
 import com.azure.resourcemanager.cdn.models.EndpointResourceState;
 import com.azure.resourcemanager.cdn.models.GeoFilter;
 import com.azure.resourcemanager.cdn.models.OptimizationType;
 import com.azure.resourcemanager.cdn.models.QueryStringCachingBehavior;
+import com.azure.resourcemanager.cdn.models.ResourceReference;
+import com.azure.resourcemanager.cdn.models.UrlSigningKey;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /**
  * CDN endpoint is the entity within a CDN profile containing configuration information such as origin, protocol,
@@ -26,15 +31,6 @@ import java.util.List;
 @Fluent
 public class EndpointInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EndpointInner.class);
-
-    /*
-     * The host header value sent to the origin with each request. If you leave
-     * this blank, the request hostname determines this value. Azure CDN
-     * origins, such as Web Apps, Blob Storage, and Cloud Services require this
-     * host header value to match the origin hostname by default.
-     */
-    @JsonProperty(value = "properties.originHostHeader")
-    private String originHostHeader;
 
     /*
      * A directory path on the origin that CDN can use to retrieve content
@@ -49,6 +45,17 @@ public class EndpointInner extends Resource {
      */
     @JsonProperty(value = "properties.contentTypesToCompress")
     private List<String> contentTypesToCompress;
+
+    /*
+     * The host header value sent to the origin with each request. This
+     * property at Endpoint is only allowed when endpoint uses single origin
+     * and can be overridden by the same property specified at origin.If you
+     * leave this blank, the request hostname determines this value. Azure CDN
+     * origins, such as Web Apps, Blob Storage, and Cloud Services require this
+     * host header value to match the origin hostname by default.
+     */
+    @JsonProperty(value = "properties.originHostHeader")
+    private String originHostHeader;
 
     /*
      * Indicates whether content compression is enabled on CDN. Default value
@@ -94,7 +101,8 @@ public class EndpointInner extends Resource {
     /*
      * Path to a file hosted on the origin which helps accelerate delivery of
      * the dynamic content and calculate the most optimal routes for the CDN.
-     * This is relative to the origin path.
+     * This is relative to the origin path. This property is only relevant when
+     * using a single origin.
      */
     @JsonProperty(value = "properties.probePath")
     private String probePath;
@@ -108,10 +116,29 @@ public class EndpointInner extends Resource {
     private List<GeoFilter> geoFilters;
 
     /*
+     * A reference to the origin group.
+     */
+    @JsonProperty(value = "properties.defaultOriginGroup")
+    private ResourceReference defaultOriginGroup;
+
+    /*
+     * List of keys used to validate the signed URL hashes.
+     */
+    @JsonProperty(value = "properties.urlSigningKeys")
+    private List<UrlSigningKey> urlSigningKeys;
+
+    /*
      * A policy that specifies the delivery rules to be used for an endpoint.
      */
     @JsonProperty(value = "properties.deliveryPolicy")
     private EndpointPropertiesUpdateParametersDeliveryPolicy deliveryPolicy;
+
+    /*
+     * Defines the Web Application Firewall policy for the endpoint (if
+     * applicable)
+     */
+    @JsonProperty(value = "properties.webApplicationFirewallPolicyLink")
+    private EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink webApplicationFirewallPolicyLink;
 
     /*
      * The host name of the endpoint structured as {endpointName}.{DNSZone},
@@ -127,6 +154,13 @@ public class EndpointInner extends Resource {
     private List<DeepCreatedOrigin> origins;
 
     /*
+     * The origin groups comprising of origins that are used for load balancing
+     * the traffic based on availability.
+     */
+    @JsonProperty(value = "properties.originGroups")
+    private List<DeepCreatedOriginGroup> originGroups;
+
+    /*
      * Resource status of the endpoint.
      */
     @JsonProperty(value = "properties.resourceState", access = JsonProperty.Access.WRITE_ONLY)
@@ -137,30 +171,6 @@ public class EndpointInner extends Resource {
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
-
-    /**
-     * Get the originHostHeader property: The host header value sent to the origin with each request. If you leave this
-     * blank, the request hostname determines this value. Azure CDN origins, such as Web Apps, Blob Storage, and Cloud
-     * Services require this host header value to match the origin hostname by default.
-     *
-     * @return the originHostHeader value.
-     */
-    public String originHostHeader() {
-        return this.originHostHeader;
-    }
-
-    /**
-     * Set the originHostHeader property: The host header value sent to the origin with each request. If you leave this
-     * blank, the request hostname determines this value. Azure CDN origins, such as Web Apps, Blob Storage, and Cloud
-     * Services require this host header value to match the origin hostname by default.
-     *
-     * @param originHostHeader the originHostHeader value to set.
-     * @return the EndpointInner object itself.
-     */
-    public EndpointInner withOriginHostHeader(String originHostHeader) {
-        this.originHostHeader = originHostHeader;
-        return this;
-    }
 
     /**
      * Get the originPath property: A directory path on the origin that CDN can use to retrieve content from, e.g.
@@ -203,6 +213,32 @@ public class EndpointInner extends Resource {
      */
     public EndpointInner withContentTypesToCompress(List<String> contentTypesToCompress) {
         this.contentTypesToCompress = contentTypesToCompress;
+        return this;
+    }
+
+    /**
+     * Get the originHostHeader property: The host header value sent to the origin with each request. This property at
+     * Endpoint is only allowed when endpoint uses single origin and can be overridden by the same property specified at
+     * origin.If you leave this blank, the request hostname determines this value. Azure CDN origins, such as Web Apps,
+     * Blob Storage, and Cloud Services require this host header value to match the origin hostname by default.
+     *
+     * @return the originHostHeader value.
+     */
+    public String originHostHeader() {
+        return this.originHostHeader;
+    }
+
+    /**
+     * Set the originHostHeader property: The host header value sent to the origin with each request. This property at
+     * Endpoint is only allowed when endpoint uses single origin and can be overridden by the same property specified at
+     * origin.If you leave this blank, the request hostname determines this value. Azure CDN origins, such as Web Apps,
+     * Blob Storage, and Cloud Services require this host header value to match the origin hostname by default.
+     *
+     * @param originHostHeader the originHostHeader value to set.
+     * @return the EndpointInner object itself.
+     */
+    public EndpointInner withOriginHostHeader(String originHostHeader) {
+        this.originHostHeader = originHostHeader;
         return this;
     }
 
@@ -322,7 +358,8 @@ public class EndpointInner extends Resource {
 
     /**
      * Get the probePath property: Path to a file hosted on the origin which helps accelerate delivery of the dynamic
-     * content and calculate the most optimal routes for the CDN. This is relative to the origin path.
+     * content and calculate the most optimal routes for the CDN. This is relative to the origin path. This property is
+     * only relevant when using a single origin.
      *
      * @return the probePath value.
      */
@@ -332,7 +369,8 @@ public class EndpointInner extends Resource {
 
     /**
      * Set the probePath property: Path to a file hosted on the origin which helps accelerate delivery of the dynamic
-     * content and calculate the most optimal routes for the CDN. This is relative to the origin path.
+     * content and calculate the most optimal routes for the CDN. This is relative to the origin path. This property is
+     * only relevant when using a single origin.
      *
      * @param probePath the probePath value to set.
      * @return the EndpointInner object itself.
@@ -365,6 +403,46 @@ public class EndpointInner extends Resource {
     }
 
     /**
+     * Get the defaultOriginGroup property: A reference to the origin group.
+     *
+     * @return the defaultOriginGroup value.
+     */
+    public ResourceReference defaultOriginGroup() {
+        return this.defaultOriginGroup;
+    }
+
+    /**
+     * Set the defaultOriginGroup property: A reference to the origin group.
+     *
+     * @param defaultOriginGroup the defaultOriginGroup value to set.
+     * @return the EndpointInner object itself.
+     */
+    public EndpointInner withDefaultOriginGroup(ResourceReference defaultOriginGroup) {
+        this.defaultOriginGroup = defaultOriginGroup;
+        return this;
+    }
+
+    /**
+     * Get the urlSigningKeys property: List of keys used to validate the signed URL hashes.
+     *
+     * @return the urlSigningKeys value.
+     */
+    public List<UrlSigningKey> urlSigningKeys() {
+        return this.urlSigningKeys;
+    }
+
+    /**
+     * Set the urlSigningKeys property: List of keys used to validate the signed URL hashes.
+     *
+     * @param urlSigningKeys the urlSigningKeys value to set.
+     * @return the EndpointInner object itself.
+     */
+    public EndpointInner withUrlSigningKeys(List<UrlSigningKey> urlSigningKeys) {
+        this.urlSigningKeys = urlSigningKeys;
+        return this;
+    }
+
+    /**
      * Get the deliveryPolicy property: A policy that specifies the delivery rules to be used for an endpoint.
      *
      * @return the deliveryPolicy value.
@@ -381,6 +459,29 @@ public class EndpointInner extends Resource {
      */
     public EndpointInner withDeliveryPolicy(EndpointPropertiesUpdateParametersDeliveryPolicy deliveryPolicy) {
         this.deliveryPolicy = deliveryPolicy;
+        return this;
+    }
+
+    /**
+     * Get the webApplicationFirewallPolicyLink property: Defines the Web Application Firewall policy for the endpoint
+     * (if applicable).
+     *
+     * @return the webApplicationFirewallPolicyLink value.
+     */
+    public EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink webApplicationFirewallPolicyLink() {
+        return this.webApplicationFirewallPolicyLink;
+    }
+
+    /**
+     * Set the webApplicationFirewallPolicyLink property: Defines the Web Application Firewall policy for the endpoint
+     * (if applicable).
+     *
+     * @param webApplicationFirewallPolicyLink the webApplicationFirewallPolicyLink value to set.
+     * @return the EndpointInner object itself.
+     */
+    public EndpointInner withWebApplicationFirewallPolicyLink(
+        EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink webApplicationFirewallPolicyLink) {
+        this.webApplicationFirewallPolicyLink = webApplicationFirewallPolicyLink;
         return this;
     }
 
@@ -415,6 +516,28 @@ public class EndpointInner extends Resource {
     }
 
     /**
+     * Get the originGroups property: The origin groups comprising of origins that are used for load balancing the
+     * traffic based on availability.
+     *
+     * @return the originGroups value.
+     */
+    public List<DeepCreatedOriginGroup> originGroups() {
+        return this.originGroups;
+    }
+
+    /**
+     * Set the originGroups property: The origin groups comprising of origins that are used for load balancing the
+     * traffic based on availability.
+     *
+     * @param originGroups the originGroups value to set.
+     * @return the EndpointInner object itself.
+     */
+    public EndpointInner withOriginGroups(List<DeepCreatedOriginGroup> originGroups) {
+        this.originGroups = originGroups;
+        return this;
+    }
+
+    /**
      * Get the resourceState property: Resource status of the endpoint.
      *
      * @return the resourceState value.
@@ -432,6 +555,20 @@ public class EndpointInner extends Resource {
         return this.provisioningState;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public EndpointInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EndpointInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
@@ -441,11 +578,23 @@ public class EndpointInner extends Resource {
         if (geoFilters() != null) {
             geoFilters().forEach(e -> e.validate());
         }
+        if (defaultOriginGroup() != null) {
+            defaultOriginGroup().validate();
+        }
+        if (urlSigningKeys() != null) {
+            urlSigningKeys().forEach(e -> e.validate());
+        }
         if (deliveryPolicy() != null) {
             deliveryPolicy().validate();
         }
+        if (webApplicationFirewallPolicyLink() != null) {
+            webApplicationFirewallPolicyLink().validate();
+        }
         if (origins() != null) {
             origins().forEach(e -> e.validate());
+        }
+        if (originGroups() != null) {
+            originGroups().forEach(e -> e.validate());
         }
     }
 }

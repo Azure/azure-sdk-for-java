@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The TextWord model. */
+/** An object representing a word. */
 @Fluent
 public final class TextWord {
     /*

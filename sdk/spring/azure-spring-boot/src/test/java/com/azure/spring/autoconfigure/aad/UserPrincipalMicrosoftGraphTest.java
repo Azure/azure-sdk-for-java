@@ -48,6 +48,8 @@ public class UserPrincipalMicrosoftGraphTest {
     public WireMockRule wireMockRule = new WireMockRule(9519);
 
     private AzureADGraphClient graphClientMock;
+    private String clientId;
+    private String clientSecret;
     private AADAuthenticationProperties aadAuthenticationProperties;
     private ServiceEndpointsProperties serviceEndpointsProperties;
     private String accessToken;
@@ -58,7 +60,8 @@ public class UserPrincipalMicrosoftGraphTest {
             final ObjectMapper objectMapper = new ObjectMapper();
             final Map<String, Object> json = objectMapper.readValue(UserPrincipalMicrosoftGraphTest.class
                     .getClassLoader().getResourceAsStream("aad/microsoft-graph-user-groups.json"),
-                new TypeReference<HashMap<String, Object>>() { });
+                new TypeReference<HashMap<String, Object>>() {
+                });
             userGroupsJson = objectMapper.writeValueAsString(json);
         } catch (IOException e) {
             e.printStackTrace();
@@ -79,12 +82,16 @@ public class UserPrincipalMicrosoftGraphTest {
         final ServiceEndpoints serviceEndpoints = new ServiceEndpoints();
         serviceEndpoints.setAadMembershipRestUri("http://localhost:9519/memberOf");
         serviceEndpointsProperties.getEndpoints().put("global-v2-graph", serviceEndpoints);
+
+        clientId = "client";
+        clientSecret = "pass";
     }
 
     @Test
     public void getAuthoritiesByUserGroups() throws Exception {
         aadAuthenticationProperties.getUserGroup().setAllowedGroups(Collections.singletonList("group1"));
-        this.graphClientMock = new AzureADGraphClient(aadAuthenticationProperties, serviceEndpointsProperties);
+        this.graphClientMock = new AzureADGraphClient(clientId, clientSecret, aadAuthenticationProperties,
+            serviceEndpointsProperties);
 
         stubFor(get(urlEqualTo("/memberOf"))
             .withHeader(ACCEPT, equalTo(APPLICATION_JSON_VALUE))
@@ -106,7 +113,8 @@ public class UserPrincipalMicrosoftGraphTest {
     @Test
     public void getGroups() throws Exception {
         aadAuthenticationProperties.setActiveDirectoryGroups(Arrays.asList("group1", "group2", "group3"));
-        this.graphClientMock = new AzureADGraphClient(aadAuthenticationProperties, serviceEndpointsProperties);
+        this.graphClientMock = new AzureADGraphClient(clientId, clientSecret, aadAuthenticationProperties,
+            serviceEndpointsProperties);
 
         stubFor(get(urlEqualTo("/memberOf"))
             .withHeader(ACCEPT, equalTo(APPLICATION_JSON_VALUE))
@@ -150,7 +158,7 @@ public class UserPrincipalMicrosoftGraphTest {
                 StringUtils.isEmpty(serializedPrincipal.getKid()));
             Assert.assertNotNull("Serialized UserPrincipal claims not null.", serializedPrincipal.getClaims());
             Assert.assertTrue("Serialized UserPrincipal claims not empty.",
-                    serializedPrincipal.getClaims().size() > 0);
+                serializedPrincipal.getClaims().size() > 0);
         } finally {
             Files.deleteIfExists(tmpOutputFile.toPath());
         }

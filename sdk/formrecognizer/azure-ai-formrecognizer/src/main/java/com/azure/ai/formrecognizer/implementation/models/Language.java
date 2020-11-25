@@ -16,6 +16,24 @@ public final class Language extends ExpandableStringEnum<Language> {
     /** Static value es for Language. */
     public static final Language ES = fromString("es");
 
+    /** Static value de for Language. */
+    public static final Language DE = fromString("de");
+
+    /** Static value fr for Language. */
+    public static final Language FR = fromString("fr");
+
+    /** Static value it for Language. */
+    public static final Language IT = fromString("it");
+
+    /** Static value nl for Language. */
+    public static final Language NL = fromString("nl");
+
+    /** Static value pt for Language. */
+    public static final Language PT = fromString("pt");
+
+    /** Static value zh-Hans for Language. */
+    public static final Language ZH_HANS = fromString("zh-Hans");
+
     /**
      * Creates or finds a Language from its string representation.
      *

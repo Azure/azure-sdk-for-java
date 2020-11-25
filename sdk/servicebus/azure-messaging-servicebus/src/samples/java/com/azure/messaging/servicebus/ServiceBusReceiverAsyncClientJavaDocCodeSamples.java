@@ -6,7 +6,7 @@ package com.azure.messaging.servicebus;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.models.AbandonOptions;
 import com.azure.messaging.servicebus.models.CompleteOptions;
-import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.reactivestreams.Subscription;
 import reactor.core.Disposable;
 import reactor.core.publisher.BaseSubscriber;
@@ -15,8 +15,6 @@ import reactor.core.publisher.Mono;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * Code snippets demonstrating various {@link ServiceBusReceiverAsyncClient} scenarios.
@@ -57,7 +55,7 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
         ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
             .connectionString("fake-string")
             .receiver()
-            .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
+            .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
             .queueName("<< QUEUE NAME >>")
             .buildAsyncClient();
         // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.receiveWithReceiveAndDeleteMode
@@ -65,10 +63,9 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
         // Keep a reference to `subscription`. When the program is finished receiving messages, call
         // subscription.dispose(). This will stop fetching messages from the Service Bus.
         Disposable subscription = receiver.receiveMessages()
-            .subscribe(context -> {
-                ServiceBusReceivedMessage message = context.getMessage();
+            .subscribe(message -> {
                 System.out.printf("Received message id: %s%n", message.getMessageId());
-                System.out.printf("Contents of message as string: %s%n", new String(message.getBody(), UTF_8));
+                System.out.printf("Contents of message as string: %s%n", message.getBody().toString());
             }, error -> System.err.print(error));
         // END: com.azure.messaging.servicebus.servicebusasyncreceiverclient.receiveWithReceiveAndDeleteMode
 
@@ -89,7 +86,7 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
             .buildAsyncClient();
 
         // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#basesubscriber
-        receiver.receiveMessages().subscribe(new BaseSubscriber<ServiceBusReceivedMessageContext>() {
+        receiver.receiveMessages().subscribe(new BaseSubscriber<ServiceBusReceivedMessage>() {
             private static final int NUMBER_OF_MESSAGES = 5;
             private final AtomicInteger currentNumberOfMessages = new AtomicInteger();
 
@@ -100,10 +97,8 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
             }
 
             @Override
-            protected void hookOnNext(ServiceBusReceivedMessageContext value) {
+            protected void hookOnNext(ServiceBusReceivedMessage message) {
                 // Process the ServiceBusReceivedMessage
-                ServiceBusReceivedMessage message = value.getMessage();
-
                 // If the number of messages we have currently received is a multiple of 5, that means we have reached
                 // the last message the Subscriber will provide to us. Invoking request(long) here, tells the Publisher
                 // that the subscriber is ready to get more messages from upstream.
@@ -127,10 +122,9 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
             .buildAsyncClient();
 
         // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#all
-        Disposable subscription = receiver.receiveMessages().flatMap(context -> {
-            ServiceBusReceivedMessage message = context.getMessage();
+        Disposable subscription = receiver.receiveMessages().flatMap(message -> {
             System.out.printf("Received message id: %s%n", message.getMessageId());
-            System.out.printf("Contents of message as string: %s%n", new String(message.getBody(), UTF_8));
+            System.out.printf("Contents of message as string: %s%n", message.getBody().toString());
             return receiver.complete(message);
         }).subscribe(aVoid -> System.out.println("Processed message."),
             error -> System.out.println("Error occurred: " + error));
@@ -145,52 +139,34 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
      * Demonstrates how to create a session receiver for a single, first available session.
      */
     public void sessionReceiverSingleInstantiation() {
-        // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#singlesession
-        ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
+        // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#nextsession
+        ServiceBusSessionReceiverAsyncClient sessionReceiver = new ServiceBusClientBuilder()
             .connectionString("Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};"
                 + "SharedAccessKey={key};EntityPath={eh-name}")
             .sessionReceiver()
             .queueName("<< QUEUE NAME >>")
             .buildAsyncClient();
-        // END: com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#singlesession
+        Mono<ServiceBusReceiverAsyncClient> receiverMono = sessionReceiver.acceptNextSession();
+        // END: com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#nextsession
 
-        receiver.close();
+        sessionReceiver.close();
     }
 
     /**
-     * Demonstrates how to create a session receiver for a specific session.
+     * Demonstrates how to create a session receiver for a single know session id.
      */
-    public void sessionReceiverNamedInstantiation() {
+    public void sessionReceiverSessionIdInstantiation() {
         // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#sessionId
-        ServiceBusReceiverAsyncClient consumer = new ServiceBusClientBuilder()
+        ServiceBusSessionReceiverAsyncClient sessionReceiver = new ServiceBusClientBuilder()
             .connectionString("Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};"
                 + "SharedAccessKey={key};EntityPath={eh-name}")
             .sessionReceiver()
-            .topicName("<< TOPIC NAME >>")
-            .subscriptionName("<< SUBSCRIPTION NAME >>")
-            .sessionId("<< my-session-id >>")
+            .queueName("<< QUEUE NAME >>")
             .buildAsyncClient();
+        Mono<ServiceBusReceiverAsyncClient> receiverMono = sessionReceiver.acceptSession("<< my-session-id >>");
         // END: com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#sessionId
 
-        consumer.close();
-    }
-
-    /**
-     * Demonstrates how to create a session receiver for processing multiple sessions.
-     */
-    public void sessionReceiverMultipleInstantiation() {
-        // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#multiplesessions
-        ServiceBusReceiverAsyncClient consumer = new ServiceBusClientBuilder()
-            .connectionString("Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};"
-                + "SharedAccessKey={key};EntityPath={eh-name}")
-            .sessionReceiver()
-            .topicName("<< TOPIC NAME >>")
-            .subscriptionName("<< SUBSCRIPTION NAME >>")
-            .maxConcurrentSessions(3)
-            .buildAsyncClient();
-        // END: com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#multiplesessions
-
-        consumer.close();
+        sessionReceiver.close();
     }
 
     public void createTransaction() {
@@ -276,16 +252,15 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
             .buildAsyncClient();
 
         ServiceBusTransactionContext transactionContext = null;
-        ServiceBusReceivedMessageContext messageContext = null;
+        ServiceBusReceivedMessage message = null;
 
         // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.completeMessageWithTransaction
 
-        // messageContext: This is instance `ServiceBusReceivedMessageContext` which you have received previously.
         // transactionContext: This is the transaction which you have created previously.
 
         // Keep a reference to `subscription`. When the program is finished receiving messages, call
         // subscription.dispose(). This will dispose it cleanly.
-        Disposable subscriber = receiver.complete(messageContext.getMessage(), new CompleteOptions()
+        Disposable subscriber = receiver.complete(message, new CompleteOptions()
             .setTransactionContext(transactionContext))
             .subscribe();
 
@@ -305,18 +280,17 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
             .buildAsyncClient();
 
         ServiceBusTransactionContext transactionContext = null;
-        ServiceBusReceivedMessageContext messageContext = null;
+        ServiceBusReceivedMessage message = null;
         Map<String, Object> propertiesToModify = null;
 
         // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.abandonMessageWithTransaction
 
-        // messageContext: This is instance `ServiceBusReceivedMessageContext` which you have received previously.
         // propertiesToModify : This is Map of any properties to modify while abandoning the message.
         // transactionContext: This is the transaction which you have created previously.
 
         // Keep a reference to `subscription`. When the program is finished receiving messages, call
         // subscription.dispose(). This will dispose it cleanly.
-        Disposable subscriber = receiver.abandon(messageContext.getMessage(), new AbandonOptions()
+        Disposable subscriber = receiver.abandon(message, new AbandonOptions()
             .setTransactionContext(transactionContext)
             .setPropertiesToModify(propertiesToModify)).subscribe();
 

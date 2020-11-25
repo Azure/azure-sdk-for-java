@@ -32,7 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
-import java.util.Set;
+import java.net.URI;
 import java.util.concurrent.Callable;
 import java.util.function.Function;
 
@@ -64,11 +64,6 @@ public class AddressResolver implements IAddressResolver {
         this.collectionRoutingMapCache = collectionRoutingMapCache;
     }
 
-    @Override
-    public void remove(RxDocumentServiceRequest request, Set<PartitionKeyRangeIdentity> partitionKeyRangeIdentitySet) {
-        throw new NotImplementedException("remove() is not supported in AddressResolver");
-    }
-
     public Mono<AddressInformation[]> resolveAsync(
         RxDocumentServiceRequest request,
         boolean forceRefreshPartitionAddresses) {
@@ -87,6 +82,11 @@ public class AddressResolver implements IAddressResolver {
 
             return Mono.just(result.Addresses);
         });
+    }
+
+    @Override
+    public void updateAddresses(RxDocumentServiceRequest request, URI serverKey) {
+        throw new NotImplementedException("updateAddresses() is not supported in AddressResolver");
     }
 
     private static boolean isSameCollection(PartitionKeyRange initiallyResolved, PartitionKeyRange newlyResolved) {
@@ -155,7 +155,7 @@ public class AddressResolver implements IAddressResolver {
             }
 
             request.requestContext.resolvedPartitionKeyRange = null;
-            throw new InvalidPartitionException(RMResources.InvalidTarget, request.getResourceAddress());
+            throw new InvalidPartitionException(RMResources.InvalidTarget, request.requestContext.resourcePhysicalAddress);
         }
     }
 
@@ -176,7 +176,7 @@ public class AddressResolver implements IAddressResolver {
                     request.getPartitionKeyRangeIdentity().toHeader());
             }
             InvalidPartitionException invalidPartitionException = new InvalidPartitionException();
-            BridgeInternal.setResourceAddress(invalidPartitionException, request.getResourceAddress());
+            BridgeInternal.setResourceAddress(invalidPartitionException, request.requestContext.resourcePhysicalAddress);
             throw invalidPartitionException;
         }
 
@@ -188,7 +188,7 @@ public class AddressResolver implements IAddressResolver {
             }
             // Routing map not found although collection was resolved correctly.
             NotFoundException e = new NotFoundException();
-            BridgeInternal.setResourceAddress(e, request.getResourceAddress());
+            BridgeInternal.setResourceAddress(e, request.requestContext.resourcePhysicalAddress);
             throw e;
         }
     }
@@ -223,7 +223,7 @@ public class AddressResolver implements IAddressResolver {
                     request.getResourceType(),
                     request.getOperationType(),
                     request.getResourceAddress());
-                return Mono.error(BridgeInternal.setResourceAddress(new InternalServerErrorException(RMResources.InternalServerError), request.getResourceAddress()));
+                return Mono.error(BridgeInternal.setResourceAddress(new InternalServerErrorException(RMResources.InternalServerError), request.requestContext.resourcePhysicalAddress));
             }
 
             PartitionKeyRange range;
@@ -293,7 +293,7 @@ public class AddressResolver implements IAddressResolver {
 
         logger.debug("tryResolveSinglePartitionCollection: collectionCacheIsUptoDate = {}", collectionCacheIsUptoDate);
         if (collectionCacheIsUptoDate) {
-            throw BridgeInternal.setResourceAddress(new BadRequestException(RMResources.MissingPartitionKeyValue), request.getResourceAddress());
+            throw BridgeInternal.setResourceAddress(new BadRequestException(RMResources.MissingPartitionKeyValue), request.requestContext.resourcePhysicalAddress);
         } else {
             return null;
         }
@@ -314,7 +314,7 @@ public class AddressResolver implements IAddressResolver {
 
                 // return Observable.getError()
                 NotFoundException e = new NotFoundException();
-                BridgeInternal.setResourceAddress(e, request.getResourceAddress());
+                BridgeInternal.setResourceAddress(e, request.requestContext.resourcePhysicalAddress);
                 return Mono.error(e);
             }
 
@@ -507,7 +507,7 @@ public class AddressResolver implements IAddressResolver {
                             // The only reason we will get here is if collection doesn't exist.
                             // Case when partition-key-range doesn't exist is handled in the corresponding method.
 
-                            return Mono.error(BridgeInternal.setResourceAddress(new NotFoundException(), request.getResourceAddress()));
+                            return Mono.error(BridgeInternal.setResourceAddress(new NotFoundException(), request.requestContext.resourcePhysicalAddress));
                         }
 
                         return Mono.just(funcResolutionResult.v);
@@ -568,7 +568,7 @@ public class AddressResolver implements IAddressResolver {
                 RMResources.PartitionKeyRangeNotFound,
                 request.getPartitionKeyRangeIdentity().getPartitionKeyRangeId(),
                 request.getPartitionKeyRangeIdentity().getCollectionRid());
-            throw BridgeInternal.setResourceAddress(new PartitionKeyRangeGoneException(errorMessage), request.getResourceAddress());
+            throw BridgeInternal.setResourceAddress(new PartitionKeyRangeGoneException(errorMessage), request.requestContext.resourcePhysicalAddress);
         }
         logger.debug("handleRangeAddressResolutionFailure returns null");
         return null;
@@ -649,7 +649,7 @@ public class AddressResolver implements IAddressResolver {
                 } catch (Exception ex) {
                     throw BridgeInternal.setResourceAddress(new BadRequestException(
                         String.format(RMResources.InvalidPartitionKey, partitionKeyString),
-                        ex), request.getResourceAddress());
+                        ex), request.requestContext.resourcePhysicalAddress);
                 }
             }
         }
@@ -670,7 +670,8 @@ public class AddressResolver implements IAddressResolver {
         }
 
         if (collectionCacheUptoDate) {
-            BadRequestException badRequestException = BridgeInternal.setResourceAddress(new BadRequestException(RMResources.PartitionKeyMismatch), request.getResourceAddress());
+            BadRequestException badRequestException = BridgeInternal.setResourceAddress(new BadRequestException(RMResources.PartitionKeyMismatch),
+                request.requestContext.resourcePhysicalAddress);
             badRequestException.getResponseHeaders().put(WFConstants.BackendHeaders.SUB_STATUS, Integer.toString(HttpConstants.SubStatusCodes.PARTITION_KEY_MISMATCH));
 
             throw badRequestException;

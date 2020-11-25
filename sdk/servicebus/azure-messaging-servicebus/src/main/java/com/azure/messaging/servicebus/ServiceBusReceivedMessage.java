@@ -3,33 +3,34 @@
 
 package com.azure.messaging.servicebus;
 
-import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.SCHEDULED_ENQUEUE_UTC_TIME_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.VIA_PARTITION_KEY_ANNOTATION_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.LOCKED_UNTIL_KEY_ANNOTATION_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.DEAD_LETTER_SOURCE_KEY_ANNOTATION_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_SEQUENCE_NUMBER_ANNOTATION_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.DEAD_LETTER_DESCRIPTION_ANNOTATION_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.DEAD_LETTER_REASON_ANNOTATION_NAME;
-
 import com.azure.core.amqp.AmqpMessageConstant;
+import com.azure.core.amqp.models.AmqpAddress;
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
-import com.azure.core.amqp.models.AmqpBodyType;
-import com.azure.core.amqp.models.AmqpDataBody;
+import com.azure.core.amqp.models.AmqpMessageBody;
+import com.azure.core.amqp.models.AmqpMessageBodyType;
+import com.azure.core.amqp.models.AmqpMessageId;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+
+import static com.azure.core.amqp.AmqpMessageConstant.DEAD_LETTER_DESCRIPTION_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.DEAD_LETTER_REASON_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.DEAD_LETTER_SOURCE_KEY_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_SEQUENCE_NUMBER_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.LOCKED_UNTIL_KEY_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.SCHEDULED_ENQUEUE_UTC_TIME_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 
 /**
  * This class represents a received message from Service Bus.
@@ -38,8 +39,15 @@ public final class ServiceBusReceivedMessage {
     private final ClientLogger logger = new ClientLogger(ServiceBusReceivedMessage.class);
 
     private final AmqpAnnotatedMessage amqpAnnotatedMessage;
-    private final byte[] binaryData;
     private UUID lockToken;
+    private boolean isSettled = false;
+    private Context context;
+
+    ServiceBusReceivedMessage(BinaryData body) {
+        Objects.requireNonNull(body, "'body' cannot be null.");
+        amqpAnnotatedMessage = new AmqpAnnotatedMessage(AmqpMessageBody.fromData(body.toBytes()));
+        context = Context.NONE;
+    }
 
     /**
      * The representation of message as defined by AMQP protocol.
@@ -49,19 +57,15 @@ public final class ServiceBusReceivedMessage {
      *
      * @return the {@link AmqpAnnotatedMessage} representing amqp message.
      */
-    public AmqpAnnotatedMessage getAmqpAnnotatedMessage() {
+    public AmqpAnnotatedMessage getRawAmqpMessage() {
         return amqpAnnotatedMessage;
-    }
-
-    ServiceBusReceivedMessage(byte[] body) {
-        binaryData = Objects.requireNonNull(body, "'body' cannot be null.");
-        amqpAnnotatedMessage = new AmqpAnnotatedMessage(new AmqpDataBody(Collections.singletonList(
-            binaryData)));
     }
 
     /**
      * Gets the actual payload/data wrapped by the {@link ServiceBusReceivedMessage}.
      *
+     * <p>The {@link BinaryData} wraps byte array and is an abstraction over many different ways it can be represented.
+     * It provides many convenience API including APIs to serialize/deserialize object.
      * <p>
      * If the means for deserializing the raw data is not apparent to consumers, a common technique is to make use of
      * {@link #getApplicationProperties()} when creating the event, to associate serialization hints as an aid to
@@ -70,20 +74,29 @@ public final class ServiceBusReceivedMessage {
      *
      * @return A byte array representing the data.
      */
-    public byte[] getBody() {
-        final AmqpBodyType bodyType = amqpAnnotatedMessage.getBody().getBodyType();
+    public BinaryData getBody() {
+        final AmqpMessageBodyType bodyType = amqpAnnotatedMessage.getBody().getBodyType();
         switch (bodyType) {
             case DATA:
-                return Arrays.copyOf(binaryData, binaryData.length);
+                return BinaryData.fromBytes(amqpAnnotatedMessage.getBody()
+                    .getData().stream().findFirst().get());
             case SEQUENCE:
             case VALUE:
                 throw logger.logExceptionAsError(new UnsupportedOperationException("Body type not supported yet "
                     + bodyType.toString()));
             default:
-                logger.warning("Invalid body type {}.", bodyType);
                 throw logger.logExceptionAsError(new IllegalStateException("Body type not valid "
                     + bodyType.toString()));
         }
+    }
+
+    /**
+     * Gets the actual payload/data wrapped by the {@link ServiceBusReceivedMessage}.
+     *
+     * @return A byte array representing the data.
+     */
+    public byte[] getBodyAsBytes() {
+        return getBody().toBytes();
     }
 
     /**
@@ -108,7 +121,12 @@ public final class ServiceBusReceivedMessage {
      *     Routing and Correlation</a>
      */
     public String getCorrelationId() {
-        return amqpAnnotatedMessage.getProperties().getCorrelationId();
+        String correlationId = null;
+        AmqpMessageId amqpCorrelationId = amqpAnnotatedMessage.getProperties().getCorrelationId();
+        if (amqpCorrelationId != null) {
+            correlationId = amqpCorrelationId.toString();
+        }
+        return correlationId;
     }
 
     /**
@@ -230,7 +248,7 @@ public final class ServiceBusReceivedMessage {
      * Gets the lock token for the current message.
      * <p>
      * The lock token is a reference to the lock that is being held by the broker in
-     * {@link ReceiveMode#PEEK_LOCK} mode.
+     * {@link ServiceBusReceiveMode#PEEK_LOCK} mode.
      * Locks are used to explicitly settle messages as explained in the
      * <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement">product
      * documentation in more detail</a>. The token can also be used to pin the lock permanently
@@ -238,7 +256,8 @@ public final class ServiceBusReceivedMessage {
      * href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Deferral API</a> and, with that,
      * take the message out of the regular delivery state flow. This property is read-only.
      *
-     * @return Lock-token for this message. Could return {@code null} for {@link ReceiveMode#RECEIVE_AND_DELETE} mode.
+     * @return Lock-token for this message. Could return {@code null} for
+     * {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode.
      *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement">Message
      * transfers, locks, and settlement</a>
@@ -256,7 +275,7 @@ public final class ServiceBusReceivedMessage {
      * is read-only.
      *
      * @return the datetime at which the lock of this message expires if the message is received using {@link
-     *     ReceiveMode#PEEK_LOCK} mode. Otherwise it returns null.
+     *     ServiceBusReceiveMode#PEEK_LOCK} mode. Otherwise it returns null.
      *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement">Message
      *     transfers, locks, and settlement</a>
@@ -270,7 +289,12 @@ public final class ServiceBusReceivedMessage {
      * @return Id of the {@link ServiceBusReceivedMessage}.
      */
     public String getMessageId() {
-        return amqpAnnotatedMessage.getProperties().getMessageId();
+        String messageId = null;
+        AmqpMessageId amqpMessageId = amqpAnnotatedMessage.getProperties().getMessageId();
+        if (amqpMessageId != null) {
+            messageId = amqpMessageId.toString();
+        }
+        return messageId;
     }
 
     /**
@@ -317,7 +341,12 @@ public final class ServiceBusReceivedMessage {
      *     Routing and Correlation</a>
      */
     public String getReplyTo() {
-        return amqpAnnotatedMessage.getProperties().getReplyTo();
+        String replyTo = null;
+        AmqpAddress amqpAddress = amqpAnnotatedMessage.getProperties().getReplyTo();
+        if (amqpAddress != null) {
+            replyTo = amqpAddress.toString();
+        }
+        return replyTo;
     }
 
     /**
@@ -378,7 +407,7 @@ public final class ServiceBusReceivedMessage {
      * @return Session Id of the {@link ServiceBusReceivedMessage}.
      */
     public String getSessionId() {
-        return amqpAnnotatedMessage.getProperties().getGroupId();
+        return getRawAmqpMessage().getProperties().getGroupId();
     }
 
     /**
@@ -404,23 +433,37 @@ public final class ServiceBusReceivedMessage {
      * @return "To" property value of this message
      */
     public String getTo() {
-        return amqpAnnotatedMessage.getProperties().getTo();
+        String to = null;
+        AmqpAddress amqpAddress = amqpAnnotatedMessage.getProperties().getTo();
+        if (amqpAddress != null) {
+            to = amqpAddress.toString();
+        }
+        return to;
     }
 
     /**
-     * Gets the partition key for sending a message to a entity via another partitioned transfer entity.
+     * Adds a new key value pair to the existing context on Message.
      *
-     * If a message is sent via a transfer queue in the scope of a transaction, this value selects the
-     * transfer queue partition: This is functionally equivalent to {@link #getPartitionKey()} and ensures that
-     * messages are kept together and in order as they are transferred.
+     * @param key The key for this context object
+     * @param value The value for this context object.
      *
-     * @return partition key on the via queue.
-     *
-     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-transactions#transfers-and-send-via">Transfers and Send Via</a>
+     * @return The updated {@link ServiceBusMessage}.
+     * @throws NullPointerException if {@code key} or {@code value} is null.
      */
-    public String getViaPartitionKey() {
-        return getStringValue(amqpAnnotatedMessage.getMessageAnnotations(),
-            VIA_PARTITION_KEY_ANNOTATION_NAME.getValue());
+    ServiceBusReceivedMessage addContext(String key, Object value) {
+        Objects.requireNonNull(key, "The 'key' parameter cannot be null.");
+        Objects.requireNonNull(value, "The 'value' parameter cannot be null.");
+        this.context = context.addData(key, value);
+        return this;
+    }
+
+    /**
+     * Gets whether the message has been settled.
+     *
+     * @return True if the message has been settled, false otherwise.
+     */
+    boolean isSettled() {
+        return this.isSettled;
     }
 
     /**
@@ -431,7 +474,11 @@ public final class ServiceBusReceivedMessage {
      * @see #getCorrelationId()
      */
     void setCorrelationId(String correlationId) {
-        amqpAnnotatedMessage.getProperties().setCorrelationId(correlationId);
+        AmqpMessageId id = null;
+        if (correlationId != null) {
+            id = new AmqpMessageId(correlationId);
+        }
+        amqpAnnotatedMessage.getProperties().setCorrelationId(id);
     }
 
     /**
@@ -484,6 +531,11 @@ public final class ServiceBusReceivedMessage {
         amqpAnnotatedMessage.getHeader().setDeliveryCount(deliveryCount);
     }
 
+    /**
+     * Sets the message's sequence number.
+     *
+     * @param enqueuedSequenceNumber The message's sequence number.
+     */
     void setEnqueuedSequenceNumber(long enqueuedSequenceNumber) {
         amqpAnnotatedMessage.getMessageAnnotations().put(ENQUEUED_SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(),
             enqueuedSequenceNumber);
@@ -499,12 +551,11 @@ public final class ServiceBusReceivedMessage {
     }
 
     /**
-     * Sets the subject for the message.
+     * Sets whether the message has been settled.
      *
-     * @param subject The subject to set.
      */
-    void setSubject(String subject) {
-        amqpAnnotatedMessage.getProperties().setSubject(subject);
+    void setIsSettled() {
+        this.isSettled = true;
     }
 
     /**
@@ -531,7 +582,11 @@ public final class ServiceBusReceivedMessage {
      * @param messageId to be set.
      */
     void setMessageId(String messageId) {
-        amqpAnnotatedMessage.getProperties().setMessageId(messageId);
+        AmqpMessageId id = null;
+        if (messageId != null) {
+            id = new AmqpMessageId(messageId);
+        }
+        amqpAnnotatedMessage.getProperties().setMessageId(id);
     }
 
     /**
@@ -575,6 +630,15 @@ public final class ServiceBusReceivedMessage {
     }
 
     /**
+     * Sets the subject for the message.
+     *
+     * @param subject The subject to set.
+     */
+    void setSubject(String subject) {
+        amqpAnnotatedMessage.getProperties().setSubject(subject);
+    }
+
+    /**
      * Sets the duration of time before this message expires.
      *
      * @param timeToLive Time to Live duration of this message
@@ -593,7 +657,12 @@ public final class ServiceBusReceivedMessage {
      * @see #getReplyTo()
      */
     void setReplyTo(String replyTo) {
-        amqpAnnotatedMessage.getProperties().setReplyTo(replyTo);
+        AmqpAddress replyToAddress = null;
+        if (replyTo != null) {
+            replyToAddress = new AmqpAddress(replyTo);
+        }
+        amqpAnnotatedMessage.getProperties().setReplyTo(replyToAddress);
+
     }
 
     /**
@@ -616,18 +685,11 @@ public final class ServiceBusReceivedMessage {
      * @param to To property value of this message
      */
     void setTo(String to) {
-        amqpAnnotatedMessage.getProperties().setTo(to);
-    }
-
-    /**
-     * Sets a via-partition key for sending a message to a destination entity via another partitioned entity
-     *
-     * @param viaPartitionKey via-partition key of this message
-     *
-     * @see #getViaPartitionKey()
-     */
-    void setViaPartitionKey(String viaPartitionKey) {
-        amqpAnnotatedMessage.getMessageAnnotations().put(VIA_PARTITION_KEY_ANNOTATION_NAME.getValue(), viaPartitionKey);
+        AmqpAddress toAddress = null;
+        if (to != null) {
+            toAddress = new AmqpAddress(to);
+        }
+        amqpAnnotatedMessage.getProperties().setTo(toAddress);
     }
 
     /*

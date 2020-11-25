@@ -1,7 +1,24 @@
 # Release History
 
-## 1.10.0-beta.1 (Unreleased)
+## 1.11.0 (2020-11-24)
 
+### New Features
+
+- Added `BinaryData` which allows for a format agnostic representation of binary information and supports
+ `ObjectSerializer` for serialization and deserialization.
+- Added functionality to eagerly read HTTP response bodies into memory when they will be deserialized into a POJO.
+
+## 1.10.0 (2020-10-29)
+
+### New Features
+
+- Added `JsonPatchDocument` to support `json-patch` functionality.
+- Added new Identity `Configuration` properties.
+
+### Bug Fixes
+
+- Modified `ContinuablePagedFlux` implementation to prevent `OutOfMemoryError` when retrieving many pages. [#12453](https://github.com/Azure/azure-sdk-for-java/issues/12453)
+- Fixed a bug where request retrying didn't consume the network response potentially leading to resource leaking.
 
 ## 1.9.0 (2020-10-01)
 

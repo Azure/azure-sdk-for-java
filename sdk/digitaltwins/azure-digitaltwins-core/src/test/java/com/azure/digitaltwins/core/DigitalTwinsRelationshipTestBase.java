@@ -4,7 +4,6 @@
 package com.azure.digitaltwins.core;
 
 import com.azure.core.http.HttpClient;
-import com.azure.digitaltwins.core.models.BasicDigitalTwin;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Test;
 
@@ -40,6 +39,24 @@ public abstract class DigitalTwinsRelationshipTestBase extends DigitalTwinsTestB
 
     @Test
     public abstract void relationshipListOperationWithMultiplePages(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException;
+
+    @Test
+    public abstract void createOrReplaceRelationshipFailsWhenIfNoneMatchStar(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException;
+
+    @Test
+    public abstract void createOrReplaceRelationshipSucceedsWhenNoIfNoneHeader(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException;
+
+    @Test
+    public abstract void patchRelationshipFailsWhenETagDoesNotMatch(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException;
+
+    @Test
+    public abstract void patchRelationshipSucceedsWhenETagMatches(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException;
+
+    @Test
+    public abstract void deleteRelationshipFailsWhenETagDoesNotMatch(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException;
+
+    @Test
+    public abstract void deleteRelationshipSucceedsWhenETagMatches(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException;
 
     void createModelsRunner(String floorModelId, String roomModelId, String hvacModelId, Consumer<List<String>> createModelsTestRunner) {
         String floorModel = getFloorModelPayload(floorModelId, roomModelId, hvacModelId);

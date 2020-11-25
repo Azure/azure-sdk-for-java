@@ -3,12 +3,11 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
-import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
+import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -48,14 +47,15 @@ public class ServiceBusMessageBatchTest {
         when(errorContextProvider.getErrorContext()).thenReturn(new AmqpErrorContext("test-namespace"));
 
         final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(1024, errorContextProvider, tracerProvider, serializer, null, null);
-        final ServiceBusMessage tooBig = new ServiceBusMessage(new byte[1024 * 1024 * 2]);
+        final ServiceBusMessage tooBig = new ServiceBusMessage(BinaryData.fromBytes(new byte[1024 * 1024 * 2]));
 
         // Act
-        AmqpException amqpException = assertThrows(AmqpException.class, () -> batch.tryAddMessage(tooBig));
+        ServiceBusException thrownException = assertThrows(ServiceBusException.class, () -> batch.tryAddMessage(tooBig));
 
         // Assert
-        Assertions.assertFalse(amqpException.isTransient());
-        Assertions.assertEquals(AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, amqpException.getErrorCondition());
+        Assertions.assertFalse(thrownException.isTransient());
+        Assertions.assertEquals(ServiceBusErrorSource.SEND, thrownException.getErrorSource());
+        Assertions.assertEquals(ServiceBusFailureReason.MESSAGE_SIZE_EXCEEDED, thrownException.getReason());
     }
 
     /**
@@ -66,7 +66,7 @@ public class ServiceBusMessageBatchTest {
         final int maxSize = MAX_MESSAGE_LENGTH_BYTES;
         final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(maxSize, errorContextProvider, tracerProvider,
             serializer, null, null);
-        final ServiceBusMessage within = new ServiceBusMessage(new byte[1024]);
+        final ServiceBusMessage within = new ServiceBusMessage(BinaryData.fromBytes(new byte[1024]));
 
         Assertions.assertEquals(maxSize, batch.getMaxSizeInBytes());
         Assertions.assertTrue(maxSize > batch.getSizeInBytes());

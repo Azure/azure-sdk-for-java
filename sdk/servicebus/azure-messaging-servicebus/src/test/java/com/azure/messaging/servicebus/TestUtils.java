@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.exception.AmqpResponseCode;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.messaging.servicebus.administration.models.AccessRights;
 import com.azure.messaging.servicebus.administration.models.AuthorizationRule;
@@ -50,7 +51,7 @@ public class TestUtils {
     static final int USE_CASE_MULTIPLE_RECEIVE_ONE_TIMEOUT = 5;
     static final int USE_CASE_PEEK_BATCH_MESSAGES = 6;
     static final int USE_CASE_SEND_READ_BACK_MESSAGES = 7;
-    static final int USE_CASE_MULTIPLE_SESSION = 8;
+    static final int USE_CASE_DEFERRED_MESSAGE_BY_SEQUENCE_NUMBER = 8;
     static final int USE_CASE_PEEK_MESSAGE_FROM_SEQUENCE = 9;
     static final int USE_CASE_PEEK_RECEIVE_AND_DEFER = 10;
     static final int USE_CASE_PEEK_TRANSACTION_SENDRECEIVE_AND_COMPLETE = 11;
@@ -62,6 +63,7 @@ public class TestUtils {
     static final int USE_CASE_VALIDATE_AMQP_PROPERTIES = 17;
     static final int USE_CASE_EMPTY_ENTITY = 18;
     static final int USE_CASE_CANCEL_MESSAGES = 19;
+    static final int USE_CASE_AUTO_COMPLETE = 20;
 
     // An application property key to identify where in the stream this message was created.
     static final String MESSAGE_POSITION_ID = "message-position";
@@ -237,7 +239,7 @@ public class TestUtils {
     }
 
     public static ServiceBusMessage getServiceBusMessage(byte[] body, String messageId) {
-        final ServiceBusMessage message = new ServiceBusMessage(body);
+        final ServiceBusMessage message = new ServiceBusMessage(BinaryData.fromBytes(body));
         message.setMessageId(messageId);
         return message;
     }

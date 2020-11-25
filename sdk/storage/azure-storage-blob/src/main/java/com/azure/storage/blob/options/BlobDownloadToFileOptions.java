@@ -24,7 +24,7 @@ public class BlobDownloadToFileOptions {
     private ParallelTransferOptions parallelTransferOptions;
     private DownloadRetryOptions downloadRetryOptions;
     private BlobRequestConditions requestConditions;
-    private boolean rangeGetContentMd5;
+    private boolean retrieveContentRangeMd5;
     private Set<OpenOption> openOptions;
 
     /**
@@ -75,8 +75,8 @@ public class BlobDownloadToFileOptions {
     /**
      * @return Whether the contentMD5 for the specified blob range should be returned.
      */
-    public boolean isRangeGetContentMd5() {
-        return rangeGetContentMd5;
+    public boolean isRetrieveContentRangeMd5() {
+        return retrieveContentRangeMd5;
     }
 
     /**
@@ -123,11 +123,11 @@ public class BlobDownloadToFileOptions {
     }
 
     /**
-     * @param rangeGetContentMd5 Whether the contentMD5 for the specified blob range should be returned.
+     * @param retrieveContentRangeMd5 Whether the contentMD5 for the specified blob range should be returned.
      * @return The updated options.
      */
-    public BlobDownloadToFileOptions setRangeGetContentMd5(boolean rangeGetContentMd5) {
-        this.rangeGetContentMd5 = rangeGetContentMd5;
+    public BlobDownloadToFileOptions setRetrieveContentRangeMd5(boolean retrieveContentRangeMd5) {
+        this.retrieveContentRangeMd5 = retrieveContentRangeMd5;
         return this;
     }
 
