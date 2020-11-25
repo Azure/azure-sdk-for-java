@@ -641,7 +641,8 @@ public final class ServiceBusClientBuilder {
     /**
      * Builder for creating {@link ServiceBusProcessorClient} to consume messages from a session-based Service Bus
      * entity. {@link ServiceBusProcessorClient} processes messages and errors via {@link #processMessage(Consumer)}
-     * and {@link #processError(Consumer)}.
+     * and {@link #processError(Consumer)}. When the processor finishes processing a session, it tries to fetch the
+     * next session to process.
      *
      * <p>
      * By default, the processor:
@@ -651,9 +652,6 @@ public final class ServiceBusClientBuilder {
      *     <li>Invokes 1 instance of {@link #processMessage(Consumer) processMessage consumer}. Configured via
      *     {@link #maxConcurrentCalls(int)}</li>
      * </ul>
-     * {@link #maxConcurrentCalls(int)} (int) sessions concurrently}. By default, the
-     * processor will receive messages from a single session with rollover.
-     * </p>
      *
      * <p><strong>Instantiate a session-enabled processor client</strong></p>
      * {@codesnippet com.azure.messaging.servicebus.servicebusprocessorclient#session-instantiation}
