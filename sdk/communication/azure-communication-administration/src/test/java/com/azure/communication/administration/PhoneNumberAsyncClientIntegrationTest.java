@@ -393,7 +393,7 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
 
         CreateReservationOptions createReservationOptions = new CreateReservationOptions();
         createReservationOptions
-            .setAreaCode("213")
+            .setAreaCode(AREA_CODE)
             .setDescription(RESERVATION_OPTIONS_DESCRIPTION)
             .setDisplayName(RESERVATION_OPTIONS_NAME)
             .setPhonePlanIds(phonePlanIds)
