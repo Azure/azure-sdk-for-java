@@ -22,6 +22,8 @@ import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -212,6 +214,29 @@ public class BinaryDataTest {
             .verifyComplete();
     }
 
+    @Test
+    public void createFromObjectAsyncWithGenerics() {
+        // Arrange
+        final Person person1 = new Person().setName("Jon").setAge(50);
+        final Person person2 = new Person().setName("Jack").setAge(25);
+        List<Person> personList = new ArrayList<>();
+        personList.add(person1);
+        personList.add(person2);
+
+        final BinaryData expectedBinaryData = BinaryData.fromObjectAsync(personList, DEFAULT_SERIALIZER).block();
+
+        // Act & Assert
+        StepVerifier.create(expectedBinaryData
+            .toObjectAsync(new TypeReference<List<Person>>() { }, DEFAULT_SERIALIZER))
+            .assertNext(persons -> {
+                assertEquals(2, persons.size());
+                assertEquals("Jon", persons.get(0).getName());
+                assertEquals("Jack", persons.get(1).getName());
+                assertEquals(50, persons.get(0).getAge());
+                assertEquals(25, persons.get(1).getAge());
+            })
+            .verifyComplete();
+    }
 
     @Test
     public void createFromEmptyString() {
