@@ -122,6 +122,41 @@ public class BinaryDataJavaDocCodeSnippet {
     /**
      * Codesnippets for {@link BinaryData#fromObject(Object, ObjectSerializer)}.
      */
+    public void createFromObjectAsync() {
+        // BEGIN: com.azure.core.util.BinaryData.fromObjectAsync
+        class Person {
+            @JsonProperty
+            private String name;
+
+            @JsonSetter
+            public Person setName(String name) {
+                this.name = name;
+                return this;
+            }
+
+            @JsonGetter
+            public String getName() {
+                return name;
+            }
+        }
+        final Person data = new Person().setName("John");
+
+        // Provide your custom serializer or use Azure provided serializers.
+        // https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-jackson or
+        // https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-gson
+        BinaryData.fromObjectAsync(data)
+            .subscribe(binaryData -> sendToService(binaryData));
+
+        // END: com.azure.core.util.BinaryData.fromObjectAsync
+    }
+
+    private void sendToService(BinaryData binaryData) {
+        // no implementation here, only serves as placeholder for a method a customer would call
+    }
+
+    /**
+     * Codesnippets for {@link BinaryData#fromObject(Object, ObjectSerializer)}.
+     */
     public void createFromObjectWithSerializer() {
         // BEGIN: com.azure.core.util.BinaryData.fromObject#Object-ObjectSerializer
         class Person {

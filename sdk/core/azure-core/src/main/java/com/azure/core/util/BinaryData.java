@@ -194,7 +194,7 @@ public final class  BinaryData {
      * The serializer on classpath must implement {@link JsonSerializer} interface. If the given Object is {@code null},
      * an empty {@link BinaryData} will be returned.
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.core.util.BinaryData.fromObject}
+     * {@codesnippet com.azure.core.util.BinaryData.fromObjectAsync}
 
      * @param data The object to use as data backing the instance of {@link BinaryData}.
      * @throws IllegalStateException If a {@link JsonSerializer} cannot be found on the classpath.
