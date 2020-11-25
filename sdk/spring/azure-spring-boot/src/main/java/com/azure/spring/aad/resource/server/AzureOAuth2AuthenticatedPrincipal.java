@@ -16,7 +16,7 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.util.Assert;
 
 /**
- * entity class of OAuth2AuthenticatedPrincipal
+ * entity class of AzureOAuth2AuthenticatedPrincipal
  */
 public class AzureOAuth2AuthenticatedPrincipal implements OAuth2AuthenticatedPrincipal, Serializable {
 
@@ -28,9 +28,9 @@ public class AzureOAuth2AuthenticatedPrincipal implements OAuth2AuthenticatedPri
 
     private final Map<String, Object> attributes;
 
-    private JWTClaimsSet jwtClaimsSet;
+    private final String tokenValue;
 
-    private String tokenValue;
+    private JWTClaimsSet jwtClaimsSet;
 
     public AzureOAuth2AuthenticatedPrincipal(Map<String, Object> headers, Map<String, Object> attributes,
         Collection<GrantedAuthority> authorities, String tokenValue) {
@@ -97,6 +97,5 @@ public class AzureOAuth2AuthenticatedPrincipal implements OAuth2AuthenticatedPri
     public String getTenantId() {
         return jwtClaimsSet == null ? null : (String) jwtClaimsSet.getClaim("tid");
     }
-
 
 }

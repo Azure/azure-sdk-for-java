@@ -19,7 +19,8 @@ import org.springframework.security.oauth2.server.resource.BearerTokenAuthentica
 
 public class AzureActiveDirectoryResourceServerConfigurationTest {
 
-    private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner();
+    private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
+        .withPropertyValues("azure.activedirectory.user-group.allowed-groups=User");
 
     @Test
     public void testNotExistBearerTokenAuthenticationToken() {
@@ -59,7 +60,7 @@ public class AzureActiveDirectoryResourceServerConfigurationTest {
     public void testExistAudienceDefaultValidator() {
         this.contextRunner
             .withUserConfiguration(AzureActiveDirectoryResourceServerConfiguration.class)
-            .withPropertyValues("azure.active.directory.app-id-uri=fake-app-id-uri")
+            .withPropertyValues("azure.activedirectory.app-id-uri=fake-app-id-uri")
             .run(context -> {
                 AzureActiveDirectoryResourceServerConfiguration bean = context
                     .getBean(AzureActiveDirectoryResourceServerConfiguration.class);

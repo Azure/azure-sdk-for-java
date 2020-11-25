@@ -6,14 +6,19 @@ import java.util.Collection;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.server.resource.authentication.BearerTokenAuthentication;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
+import org.springframework.util.Assert;
 
 /**
  * A {@link Converter} that takes a {@link Jwt} and converts it into a {@link PreAuthenticatedAuthenticationToken}.
  */
 public class AzureJwtBearerTokenAuthenticationConverter implements Converter<Jwt, AbstractAuthenticationToken> {
+
+    private static final String DEFAULT_AUTHORITY_PREFIX = "SCOPE_";
 
     private Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedConverter
         = new JwtGrantedAuthoritiesConverter();
@@ -22,8 +27,15 @@ public class AzureJwtBearerTokenAuthenticationConverter implements Converter<Jwt
     }
 
     public AzureJwtBearerTokenAuthenticationConverter(String authoritiesClaimName) {
+        this(authoritiesClaimName, DEFAULT_AUTHORITY_PREFIX);
+    }
+
+    public AzureJwtBearerTokenAuthenticationConverter(String authoritiesClaimName, String authorityPrefix) {
+        Assert.notNull(authoritiesClaimName, "authoritiesClaimName cannot be null");
+        Assert.notNull(authorityPrefix, "authorityPrefix cannot be null");
         JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
         jwtGrantedAuthoritiesConverter.setAuthoritiesClaimName(authoritiesClaimName);
+        jwtGrantedAuthoritiesConverter.setAuthorityPrefix(authorityPrefix);
         this.jwtGrantedConverter = jwtGrantedAuthoritiesConverter;
     }
 
@@ -33,10 +45,12 @@ public class AzureJwtBearerTokenAuthenticationConverter implements Converter<Jwt
 
     @Override
     public AbstractAuthenticationToken convert(Jwt jwt) {
+        OAuth2AccessToken accessToken = new OAuth2AccessToken(
+            OAuth2AccessToken.TokenType.BEARER, jwt.getTokenValue(), jwt.getIssuedAt(), jwt.getExpiresAt());
         Collection<GrantedAuthority> authorities = extractAuthorities(jwt);
-        AzureOAuth2AuthenticatedPrincipal authenticatedPrincipal = new AzureOAuth2AuthenticatedPrincipal(
+        AzureOAuth2AuthenticatedPrincipal principal = new AzureOAuth2AuthenticatedPrincipal(
             jwt.getHeaders(), jwt.getClaims(), authorities, jwt.getTokenValue());
-        return new PreAuthenticatedAuthenticationToken(authenticatedPrincipal, null, authorities);
+        return new BearerTokenAuthentication(principal, accessToken, authorities);
     }
 
     public void setJwtGrantedAuthoritiesConverter(
