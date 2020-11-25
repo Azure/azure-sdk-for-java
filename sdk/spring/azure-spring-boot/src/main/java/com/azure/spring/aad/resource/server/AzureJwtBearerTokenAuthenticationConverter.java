@@ -2,15 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.aad.resource.server;
 
-import com.azure.spring.autoconfigure.aad.UserPrincipal;
-import com.nimbusds.jose.JWSObject;
-import com.nimbusds.jwt.JWTClaimsSet;
-import com.nimbusds.jwt.JWTClaimsSet.Builder;
-import java.text.ParseException;
 import java.util.Collection;
-import java.util.Map.Entry;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -23,38 +15,32 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
  */
 public class AzureJwtBearerTokenAuthenticationConverter implements Converter<Jwt, AbstractAuthenticationToken> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AzureJwtBearerTokenAuthenticationConverter.class);
-    private Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedAuthoritiesConverter
+    private Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedConverter
         = new JwtGrantedAuthoritiesConverter();
 
     public AzureJwtBearerTokenAuthenticationConverter() {
     }
 
+    public AzureJwtBearerTokenAuthenticationConverter(String authoritiesClaimName) {
+        JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
+        jwtGrantedAuthoritiesConverter.setAuthoritiesClaimName(authoritiesClaimName);
+        this.jwtGrantedConverter = jwtGrantedAuthoritiesConverter;
+    }
+
     protected Collection<GrantedAuthority> extractAuthorities(Jwt jwt) {
-        return this.jwtGrantedAuthoritiesConverter.convert(jwt);
+        return this.jwtGrantedConverter.convert(jwt);
     }
 
     @Override
     public AbstractAuthenticationToken convert(Jwt jwt) {
         Collection<GrantedAuthority> authorities = extractAuthorities(jwt);
-        JWTClaimsSet.Builder builder = new Builder();
-        for (Entry<String, Object> entry : jwt.getClaims().entrySet()) {
-            builder.claim(entry.getKey(), entry.getValue());
-        }
-        JWTClaimsSet jwtClaimsSet = builder.build();
-        JWSObject jwsObject = null;
-        try {
-            jwsObject = JWSObject.parse(jwt.getTokenValue());
-        } catch (ParseException e) {
-            LOGGER.error(
-                e.getMessage() + ". When create an instance of JWSObject, an exception is resolved on the token.");
-        }
-        UserPrincipal userPrincipal = new UserPrincipal(jwt.getTokenValue(), jwsObject, jwtClaimsSet);
-        return new PreAuthenticatedAuthenticationToken(userPrincipal, null, authorities);
+        AzureOAuth2AuthenticatedPrincipal authenticatedPrincipal = new AzureOAuth2AuthenticatedPrincipal(
+            jwt.getHeaders(), jwt.getClaims(), authorities, jwt.getTokenValue());
+        return new PreAuthenticatedAuthenticationToken(authenticatedPrincipal, null, authorities);
     }
 
     public void setJwtGrantedAuthoritiesConverter(
         Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedAuthoritiesConverter) {
-        this.jwtGrantedAuthoritiesConverter = jwtGrantedAuthoritiesConverter;
+        this.jwtGrantedConverter = jwtGrantedAuthoritiesConverter;
     }
 }

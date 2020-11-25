@@ -8,23 +8,33 @@ import com.azure.spring.aad.resource.server.AzureActiveDirectoryResourceServerCo
 import com.azure.spring.aad.resource.server.AzureActiveDirectoryResourceServerConfiguration.DefaultAzureOAuth2ResourceServerWebSecurityConfigurerAdapter;
 import java.util.List;
 import org.junit.Test;
-import org.springframework.boot.autoconfigure.AutoConfigurations;
+import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
 
 public class AzureActiveDirectoryResourceServerConfigurationTest {
 
-    private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
-        .withConfiguration(AutoConfigurations.of(AzureActiveDirectoryResourceServerConfiguration.class));
+    private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner();
 
+    @Test
+    public void testNotExistBearerTokenAuthenticationToken() {
+        this.contextRunner
+            .withUserConfiguration(AzureActiveDirectoryResourceServerConfiguration.class)
+            .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
+            .run(context -> {
+                assertThat(context).doesNotHaveBean("jwtDecoderByJwkKeySetUri");
+            });
+    }
 
     @Test
     public void testCreateJwtDecoderByJwkKeySetUri() {
         this.contextRunner
+            .withUserConfiguration(AzureActiveDirectoryResourceServerConfiguration.class)
             .run(context -> {
                 final JwtDecoder jwtDecoder = context.getBean(JwtDecoder.class);
                 assertThat(jwtDecoder).isNotNull();
@@ -35,6 +45,7 @@ public class AzureActiveDirectoryResourceServerConfigurationTest {
     @Test
     public void testNotAudienceDefaultValidator() {
         this.contextRunner
+            .withUserConfiguration(AzureActiveDirectoryResourceServerConfiguration.class)
             .run(context -> {
                 AzureActiveDirectoryResourceServerConfiguration bean = context
                     .getBean(AzureActiveDirectoryResourceServerConfiguration.class);
@@ -47,6 +58,7 @@ public class AzureActiveDirectoryResourceServerConfigurationTest {
     @Test
     public void testExistAudienceDefaultValidator() {
         this.contextRunner
+            .withUserConfiguration(AzureActiveDirectoryResourceServerConfiguration.class)
             .withPropertyValues("azure.active.directory.app-id-uri=fake-app-id-uri")
             .run(context -> {
                 AzureActiveDirectoryResourceServerConfiguration bean = context
@@ -60,6 +72,7 @@ public class AzureActiveDirectoryResourceServerConfigurationTest {
     @Test
     public void testCreateWebSecurityConfigurerAdapter() {
         this.contextRunner
+            .withUserConfiguration(AzureActiveDirectoryResourceServerConfiguration.class)
             .run(context -> {
                 WebSecurityConfigurerAdapter webSecurityConfigurerAdapter = context
                     .getBean(DefaultAzureOAuth2ResourceServerWebSecurityConfigurerAdapter.class);

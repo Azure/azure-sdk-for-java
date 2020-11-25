@@ -7,6 +7,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.azure.spring.aad.resource.server.AzureJwtBearerTokenAuthenticationConverter;
+import com.azure.spring.aad.resource.server.AzureOAuth2AuthenticatedPrincipal;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,24 +21,25 @@ public class AzureJwtBearerTokenAuthenticationConverterTest {
 
     @Test
     public void testCreateUserPrincipal() {
-        Map<String, Object> map = new HashMap<>();
-        map.put("iss", "fake-issuer");
-        map.put("tid", "fake-tid");
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("iss", "fake-issuer");
+        claims.put("tid", "fake-tid");
+        Map<String, Object> headers = new HashMap<>();
+        headers.put("kid", "kg2LYs2T0CTjIfj4rt6JIynen38");
         when(jwt.getClaim("scp")).thenReturn("Order.read Order.write");
         when(jwt.getTokenValue()).thenReturn("fake-token-value");
         when(jwt.getIssuedAt()).thenReturn(Instant.now());
+        when(jwt.getHeaders()).thenReturn(headers);
         when(jwt.getExpiresAt()).thenReturn(Instant.MAX);
-        when(jwt.getClaims()).thenReturn(map);
-
+        when(jwt.getClaims()).thenReturn(claims);
         AzureJwtBearerTokenAuthenticationConverter azureJwtBearerTokenAuthenticationConverter
             = new AzureJwtBearerTokenAuthenticationConverter();
         AbstractAuthenticationToken authenticationToken = azureJwtBearerTokenAuthenticationConverter.convert(jwt);
-
-        assertThat(authenticationToken.getPrincipal()).isExactlyInstanceOf(UserPrincipal.class);
-        UserPrincipal userPrincipal = (UserPrincipal) authenticationToken.getPrincipal();
-
-        assertThat(userPrincipal.getClaims()).isNotEmpty();
-        assertThat(userPrincipal.getIssuer()).isEqualTo(map.get("iss"));
-        assertThat(userPrincipal.getTenantId()).isEqualTo(map.get("tid"));
+        assertThat(authenticationToken.getPrincipal()).isExactlyInstanceOf(AzureOAuth2AuthenticatedPrincipal.class);
+        AzureOAuth2AuthenticatedPrincipal principal = (AzureOAuth2AuthenticatedPrincipal) authenticationToken
+            .getPrincipal();
+        assertThat(principal.getClaims()).isNotEmpty();
+        assertThat(principal.getIssuer()).isEqualTo(claims.get("iss"));
+        assertThat(principal.getTenantId()).isEqualTo(claims.get("tid"));
     }
 }
