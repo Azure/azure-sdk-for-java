@@ -12,6 +12,9 @@ import org.apache.spark.sql.sources.{
 import scala.collection.mutable.ListBuffer
 
 case class FilterAnalyzer() {
+  // TODO: moderakh it is worth looking at DOM/AST:
+  // https://github.com/Azure/azure-cosmos-dotnet-v3/tree/master/Microsoft.Azure.Cosmos/src/SqlObjects
+  // https://github.com/Azure/azure-sdk-for-java/pull/17789#discussion_r530574888
   def analyze(filters: Array[Filter]): AnalyzedFilters = {
     val queryBuilder = new StringBuilder
     queryBuilder.append("SELECT * FROM r")
@@ -167,6 +170,8 @@ case class FilterAnalyzer() {
 
       case _: Filter =>
         // the unsupported filter will be applied by the spark platform itself.
+        // TODO: moderakh how count, avg, min, max are pushed down? or orderby?
+        // are they provided in the projected push down columns?
         false
     }
   }
