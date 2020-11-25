@@ -75,7 +75,7 @@ public class ServiceBusSessionProcessorSample {
         }
 
         ServiceBusException exception = (ServiceBusException) context.getException();
-        System.out.printf("ServiceBusException source: %s. Reason: %s%n", exception.getErrorSource(),
-            exception.getReason());
+        System.out.printf("ServiceBusException source: %s. Reason: %s. Is transient? %s%n", context.getErrorSource(),
+            exception.getReason(), exception.isTransient());
     }
 }

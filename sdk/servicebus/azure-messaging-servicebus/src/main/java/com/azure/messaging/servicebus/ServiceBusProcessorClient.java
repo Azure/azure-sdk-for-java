@@ -42,11 +42,11 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  *  {@link ServiceBusProcessorClient} can be created to process messages for a session-enabled Service Bus entity or
  *  a non session-enabled Service Bus entity.
  *
- * <p><strong>Sample code to start a processor client</strong></p>
- * {@codesnippet com.azure.messaging.servicebus.servicebusprocessorclient.start}
+ * <p><strong>Create and run a processor</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.servicebusprocessorclient#instantiation}
  *
- * <p><strong>Sample code to start a session-enabled processor client</strong></p>
- * {@codesnippet com.azure.messaging.servicebus.servicebusprocessorclient.startsession}
+ * <p><strong>Create and run a session-enabled processor</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.servicebusprocessorclient#session-instantiation}
  *
  * @see ServiceBusClientBuilder
  */
