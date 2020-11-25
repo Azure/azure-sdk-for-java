@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.experimental.util;
+package com.azure.core.util;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
@@ -28,47 +28,47 @@ import java.util.concurrent.TimeUnit;
 /**
  * Codesnippets for {@link BinaryData}.
  */
-public class BinaryDateJavaDocCodeSnippet {
+public class BinaryDataJavaDocCodeSnippet {
 
     /**
      * Codesnippets for {@link BinaryData#fromBytes(byte[])}.
      */
     public void createFromBytes() {
-        // BEGIN: com.azure.core.experimental.util.BinaryDocument.from#bytes
+        // BEGIN: com.azure.core.util.BinaryDocument.from#bytes
         final byte[] data = "Some Data".getBytes(StandardCharsets.UTF_8);
         BinaryData binaryData = BinaryData.fromBytes(data);
         System.out.println(new String(binaryData.toBytes(), StandardCharsets.UTF_8));
-        // END: com.azure.core.experimental.util.BinaryDocument.from#bytes
+        // END: com.azure.core.util.BinaryDocument.from#bytes
     }
 
     /**
      * Codesnippets for {@link BinaryData#fromString(String)}.
      */
     public void createFromString() {
-        // BEGIN: com.azure.core.experimental.util.BinaryDocument.from#String
+        // BEGIN: com.azure.core.util.BinaryDocument.from#String
         final String data = "Some Data";
         // Following will use default character set as StandardCharsets.UTF_8
         BinaryData binaryData = BinaryData.fromString(data);
         System.out.println(binaryData.toString());
-        // END: com.azure.core.experimental.util.BinaryDocument.from#String
+        // END: com.azure.core.util.BinaryDocument.from#String
     }
 
     /**
      * Codesnippets for {@link BinaryData#fromStream(InputStream)}.
      */
     public void createFromStream() {
-        // BEGIN: com.azure.core.experimental.util.BinaryDocument.from#Stream
+        // BEGIN: com.azure.core.util.BinaryDocument.from#Stream
         final ByteArrayInputStream inputStream = new ByteArrayInputStream("Some Data".getBytes(StandardCharsets.UTF_8));
         BinaryData binaryData = BinaryData.fromStream(inputStream);
         System.out.println(binaryData.toString());
-        // END: com.azure.core.experimental.util.BinaryDocument.from#Stream
+        // END: com.azure.core.util.BinaryDocument.from#Stream
     }
 
     /**
      * Codesnippets for {@link BinaryData#fromStream(InputStream)}.
      */
     public void createFromFlux() throws InterruptedException {
-        // BEGIN: com.azure.core.experimental.util.BinaryDocument.from#Flux
+        // BEGIN: com.azure.core.util.BinaryDocument.from#Flux
         final byte[] data = "Some Data".getBytes(StandardCharsets.UTF_8);
         final Flux<ByteBuffer> dataFlux = Flux.just(ByteBuffer.wrap(data));
 
@@ -85,14 +85,14 @@ public class BinaryDateJavaDocCodeSnippet {
         // So that your program wait for above subscribe to complete.
         TimeUnit.SECONDS.sleep(5);
         subscriber.dispose();
-        // END: com.azure.core.experimental.util.BinaryDocument.from#Flux
+        // END: com.azure.core.util.BinaryDocument.from#Flux
     }
 
     /**
      * Codesnippets for {@link BinaryData#fromObject(Object, ObjectSerializer)}.
      */
     public void createFromObject() {
-        // BEGIN: com.azure.core.experimental.util.BinaryDocument.from#Object
+        // BEGIN: com.azure.core.util.BinaryDocument.from#Object
         // Lets say we have Person object which could be serialized into json.
         class Person {
             @JsonProperty
@@ -119,27 +119,27 @@ public class BinaryDateJavaDocCodeSnippet {
             new MyJsonSerializer(); // Replace this with your Serializer or from above libraries.
         BinaryData binaryData = BinaryData.fromObject(data, serializer);
         System.out.println(binaryData.toString());
-        // END: com.azure.core.experimental.util.BinaryDocument.from#Object
+        // END: com.azure.core.util.BinaryDocument.from#Object
     }
 
     /**
      * Codesnippets for {@link BinaryData#toStream()}.
      */
     public void toStream() throws IOException {
-        // BEGIN: com.azure.core.experimental.util.BinaryDocument.to#Stream
+        // BEGIN: com.azure.core.util.BinaryDocument.to#Stream
         final byte[] data = "Some Data".getBytes(StandardCharsets.UTF_8);
         BinaryData binaryData = BinaryData.fromStream(new ByteArrayInputStream(data));
         final byte[] bytes = new byte[data.length];
         (binaryData.toStream()).read(bytes, 0, data.length);
         System.out.println(new String(bytes));
-        // END: com.azure.core.experimental.util.BinaryDocument.to#Stream
+        // END: com.azure.core.util.BinaryDocument.to#Stream
     }
 
     /**
      * Codesnippets for {@link BinaryData#toObjectAsync(Class, ObjectSerializer)}.
      */
     public void createToObjectAsync() throws InterruptedException {
-        // BEGIN: com.azure.core.experimental.util.BinaryDocument.to#ObjectAsync
+        // BEGIN: com.azure.core.util.BinaryDocument.to#ObjectAsync
         // Lets say we have Person object which could be serialized into json.
         class Person {
             @JsonProperty
@@ -177,14 +177,14 @@ public class BinaryDateJavaDocCodeSnippet {
         // So that your program wait for above subscribe to complete.
         TimeUnit.SECONDS.sleep(5);
         subscriber.dispose();
-        // END: com.azure.core.experimental.util.BinaryDocument.to#ObjectAsync
+        // END: com.azure.core.util.BinaryDocument.to#ObjectAsync
     }
 
     /**
      * Codesnippets for {@link BinaryData#toObject(Class, ObjectSerializer)}.
      */
     public void createToObject() {
-        // BEGIN: com.azure.core.experimental.util.BinaryDocument.to#Object
+        // BEGIN: com.azure.core.util.BinaryDocument.to#Object
         // Lets say we have Person object which could be serialized into json.
         class Person {
             @JsonProperty
@@ -215,14 +215,14 @@ public class BinaryDateJavaDocCodeSnippet {
         // Lets print the name
         System.out.println("Name : " + person.getName());
 
-        // END: com.azure.core.experimental.util.BinaryDocument.to#Object
+        // END: com.azure.core.util.BinaryDocument.to#Object
     }
 
     /**
      * Codesnippets for {@link BinaryData#fromObject(Object)}.
      */
     public void createFromObjectDefaultSerializer() {
-        // BEGIN: com.azure.core.experimental.util.BinaryDocument.from.default.serializer#Object
+        // BEGIN: com.azure.core.util.BinaryDocument.from.default.serializer#Object
         // Lets say we have Person object which could be serialized into json.
         class Person {
             @JsonProperty
@@ -249,7 +249,7 @@ public class BinaryDateJavaDocCodeSnippet {
 
         BinaryData binaryData = BinaryData.fromObject(data);
         System.out.println(binaryData.toString());
-        // END: com.azure.core.experimental.util.BinaryDocument.from.default.serializer#Object
+        // END: com.azure.core.util.BinaryDocument.from.default.serializer#Object
     }
 
     public static class MyJsonSerializer implements JsonSerializer {
