@@ -984,24 +984,6 @@ public final class ServiceBusClientBuilder {
             return buildAsyncClientForProcessor(true);
         }
 
-        /**
-         * Creates a <b>synchronous</b>, <b>session-aware</b> Service Bus receiver responsible for reading {@link
-         * ServiceBusMessage messages} from a specific queue or subscription.
-         *
-         * @return An new {@link ServiceBusReceiverClient} that receives messages from a queue or subscription.
-         * @throws IllegalStateException if {@link #queueName(String) queueName} or {@link #topicName(String)
-         *     topicName} are not set or, both of these fields are set. It is also thrown if the Service Bus {@link
-         *     #connectionString(String) connectionString} contains an {@code EntityPath} that does not match one set in
-         *     {@link #queueName(String) queueName} or {@link #topicName(String) topicName}. Lastly, if a {@link
-         *     #topicName(String) topicName} is set, but {@link #subscriptionName(String) subscriptionName} is not.
-         * @throws IllegalArgumentException Queue or topic name are not set via {@link #queueName(String)
-         *     queueName()} or {@link #topicName(String) topicName()}, respectively.
-         */
-        ServiceBusReceiverClient buildClientForProcessor() {
-            return new ServiceBusReceiverClient(buildAsyncClientForProcessor(false),
-                MessageUtils.getTotalTimeout(retryOptions));
-        }
-
         private ServiceBusReceiverAsyncClient buildAsyncClientForProcessor(boolean isAutoCompleteAllowed) {
             final MessagingEntityType entityType = validateEntityPaths(logger, connectionStringEntityName, topicName,
                 queueName);

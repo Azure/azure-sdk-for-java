@@ -15,6 +15,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.storage.blob.BlobContainerAsyncClient;
+import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.HttpGetterInfo;
@@ -37,6 +39,7 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.ArchiveStatus;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions;
+import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.models.BlobCopyInfo;
@@ -272,6 +275,30 @@ public class BlobAsyncClientBase {
      */
     public final String getContainerName() {
         return containerName;
+    }
+
+    /**
+     * Get an async client pointing to the parent container.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.getContainerAsyncClient}
+     *
+     * @return {@link BlobContainerAsyncClient}
+     */
+    public BlobContainerAsyncClient getContainerAsyncClient() {
+        return getContainerClientBuilder().buildAsyncClient();
+    }
+
+    final BlobContainerClientBuilder getContainerClientBuilder() {
+        CustomerProvidedKey encryptionKey = this.customerProvidedKey == null ? null
+            : new CustomerProvidedKey(this.customerProvidedKey.getEncryptionKey());
+        return new BlobContainerClientBuilder()
+            .endpoint(this.getBlobUrl())
+            .pipeline(this.getHttpPipeline())
+            .serviceVersion(this.serviceVersion)
+            .customerProvidedKey(encryptionKey)
+            .encryptionScope(this.getEncryptionScope());
     }
 
     /**

@@ -8,6 +8,8 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
 import com.azure.cosmos.TransactionalBatchResponse;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
+import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.clientTelemetry.ClientTelemetry;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -1456,6 +1458,20 @@ public interface AsyncDocumentClient {
         PartitionKey partitionKey,
         CosmosQueryRequestOptions options
     );
+
+    /**
+     * Gets the collection cache.
+     *
+     * @return the collection Cache
+     */
+    RxClientCollectionCache getCollectionCache();
+
+    /**
+     * Gets the partition key range cache.
+     *
+     * @return the partition key range cache
+     */
+    RxPartitionKeyRangeCache getPartitionKeyRangeCache();
 
     /**
      * Close this {@link AsyncDocumentClient} instance and cleans up the resources.

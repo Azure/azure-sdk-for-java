@@ -52,6 +52,9 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import static com.azure.core.http.HttpClient.EAGERLY_READ_RESPONSE_CONTEXT_KEY;
+import static com.azure.core.implementation.serializer.HttpResponseBodyDecoder.isReturnTypeDecodable;
+
 /**
  * Type to create a proxy implementation for an interface describing REST API methods.
  *
@@ -120,7 +123,8 @@ public final class RestProxy implements InvocationHandler {
             final SwaggerMethodParser methodParser = getMethodParser(method);
             final HttpRequest request = createHttpRequest(methodParser, args);
             Context context = methodParser.setContext(args)
-                .addData("caller-method", methodParser.getFullyQualifiedMethodName());
+                .addData("caller-method", methodParser.getFullyQualifiedMethodName())
+                .addData(EAGERLY_READ_RESPONSE_CONTEXT_KEY, isReturnTypeDecodable(methodParser.getReturnType()));
             context = startTracingSpan(method, context);
 
             if (request.getBody() != null) {

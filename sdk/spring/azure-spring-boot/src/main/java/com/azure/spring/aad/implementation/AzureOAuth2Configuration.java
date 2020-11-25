@@ -22,7 +22,7 @@ public abstract class AzureOAuth2Configuration extends WebSecurityConfigurerAdap
 
     protected OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient() {
         DefaultAuthorizationCodeTokenResponseClient result = new DefaultAuthorizationCodeTokenResponseClient();
-        result.setRequestEntityConverter(new AuthzCodeGrantRequestEntityConverter(repo.defaultClient()));
+        result.setRequestEntityConverter(new AuthzCodeGrantRequestEntityConverter(repo.getAzureClient()));
         return result;
     }
 }

@@ -16,43 +16,42 @@ import java.util.Map;
 
 public class AzureClientRegistrationRepository implements ClientRegistrationRepository, Iterable<ClientRegistration> {
 
-    private DefaultClient defaultClient;
-    private List<ClientRegistration> authzClients;
+    private final AzureClientRegistration azureClient;
+    private final List<ClientRegistration> otherClients;
+    private final Map<String, ClientRegistration> allClients;
 
-    private Map<String, ClientRegistration> clients;
-
-    public AzureClientRegistrationRepository(DefaultClient defaultClient, List<ClientRegistration> authzClients) {
-        this.defaultClient = defaultClient;
-        this.authzClients = new ArrayList<>(authzClients);
-
-        clients = new HashMap<>();
-        addClientRegistration(defaultClient.client());
-        for (ClientRegistration c : authzClients) {
+    public AzureClientRegistrationRepository(AzureClientRegistration azureClient,
+                                             List<ClientRegistration> otherClients) {
+        this.azureClient = azureClient;
+        this.otherClients = new ArrayList<>(otherClients);
+        allClients = new HashMap<>();
+        addClientRegistration(azureClient.getClient());
+        for (ClientRegistration c : otherClients) {
             addClientRegistration(c);
         }
     }
 
     private void addClientRegistration(ClientRegistration client) {
-        clients.put(client.getRegistrationId(), client);
+        allClients.put(client.getRegistrationId(), client);
     }
 
     @Override
     public ClientRegistration findByRegistrationId(String registrationId) {
-        return clients.get(registrationId);
+        return allClients.get(registrationId);
     }
 
     @NotNull
     @Override
     public Iterator<ClientRegistration> iterator() {
-        return Collections.singleton(defaultClient.client()).iterator();
+        return Collections.singleton(azureClient.getClient()).iterator();
     }
 
-    public DefaultClient defaultClient() {
-        return defaultClient;
+    public AzureClientRegistration getAzureClient() {
+        return azureClient;
     }
 
     public boolean isAuthzClient(ClientRegistration client) {
-        return authzClients.contains(client);
+        return otherClients.contains(client);
     }
 
     public boolean isAuthzClient(String id) {
