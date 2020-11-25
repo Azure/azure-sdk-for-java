@@ -31,8 +31,6 @@ case class FilterAnalyzer() {
         }
         filtersToBePushedDownToCosmos.append(filter)
         whereClauseBuilder.append(filterAsCosmosPredicate)
-
-
       } else {
         filtersNotSupportedByCosmos.append(filter)
       }
