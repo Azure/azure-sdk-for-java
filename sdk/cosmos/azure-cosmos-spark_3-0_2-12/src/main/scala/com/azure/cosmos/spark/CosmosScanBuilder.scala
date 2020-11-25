@@ -35,8 +35,8 @@ case class CosmosScanBuilder(config: CaseInsensitiveStringMap)
   }
 
   /**
-    * Returns the filters that are pushed to the data source via {@link #pushFilters ( Filter[ ] )}.
-    * @return
+    * Returns the filters that are pushed to Cosmos as query predicates
+    * @return filters to be pushed to cosmos db.
     */
   override def pushedFilters: Array[Filter] = {
     if (this.processedPredicates.isDefined) {
