@@ -143,7 +143,7 @@ com.azure.spring:azure-spring-cloud-test-eventhubs;1.0.0;1.0.0
 com.azure.spring:azure-spring-cloud-test-storage;1.0.0;1.0.0
 com.azure.spring:azure-spring-cloud-test-appconfiguration-config;1.0.0;1.0.0
 com.azure.resourcemanager:azure-resourcemanager;2.0.0;2.1.0
-com.azure.resourcemanager:azure-resourcemanager-appplatform;2.0.0-beta.5;2.1.0
+com.azure.resourcemanager:azure-resourcemanager-appplatform;2.1.0;2.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-appservice;2.0.0;2.1.0
 com.azure.resourcemanager:azure-resourcemanager-authorization;2.0.0;2.1.0
 com.azure.resourcemanager:azure-resourcemanager-cdn;2.1.0;2.2.0-beta.1
