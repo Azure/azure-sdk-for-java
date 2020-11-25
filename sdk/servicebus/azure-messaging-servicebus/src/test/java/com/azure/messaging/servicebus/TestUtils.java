@@ -63,6 +63,7 @@ public class TestUtils {
     static final int USE_CASE_VALIDATE_AMQP_PROPERTIES = 17;
     static final int USE_CASE_EMPTY_ENTITY = 18;
     static final int USE_CASE_CANCEL_MESSAGES = 19;
+    static final int USE_CASE_AUTO_COMPLETE = 20;
 
     // An application property key to identify where in the stream this message was created.
     static final String MESSAGE_POSITION_ID = "message-position";
