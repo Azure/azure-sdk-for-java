@@ -13,7 +13,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-boot</artifactId>
-  <version>3.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot;current} -->
+  <version>3.0.0-beta.2</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot;current} -->
   <packaging>jar</packaging>
 
   <name>Azure Spring Boot AutoConfigure</name>
@@ -159,7 +159,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-secrets</artifactId>
-      <version>4.2.2</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
+      <version>4.2.3</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -296,6 +296,7 @@
                 <include>org.springframework.boot:spring-boot-configuration-processor:[2.3.5.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter-test:[2.3.5.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter-web:[2.3.5.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter-webflux:[2.3.5.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-webflux;external_dependency} -->
                 <include>org.springframework.security:spring-security-config:[5.3.5.RELEASE]</include> <!-- {x-include-update;org.springframework.security:spring-security-config;external_dependency} -->
                 <include>org.springframework.security:spring-security-core:[5.3.5.RELEASE]</include> <!-- {x-include-update;org.springframework.security:spring-security-core;external_dependency} -->
                 <include>org.springframework.security:spring-security-oauth2-client:[5.3.5.RELEASE]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-client;external_dependency} -->

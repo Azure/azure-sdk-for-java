@@ -13,53 +13,49 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 public class AzureClientRegistrationRepository implements ClientRegistrationRepository, Iterable<ClientRegistration> {
 
-    private final DefaultClient defaultClient;
-    private final List<ClientRegistration> authorizedClientRegistrations;
+    private final AzureClientRegistration azureClient;
+    private final List<ClientRegistration> otherClients;
+    private final Map<String, ClientRegistration> allClients;
 
-    private final Map<String, ClientRegistration> clientRegistrations;
-
-    public AzureClientRegistrationRepository(DefaultClient defaultClient,
-                                             List<ClientRegistration> authorizedClientRegistrations) {
-        this.defaultClient = defaultClient;
-        this.authorizedClientRegistrations = new ArrayList<>(authorizedClientRegistrations);
-        clientRegistrations = new HashMap<>();
-        addClientRegistration(defaultClient.getClientRegistration());
-        for (ClientRegistration clientRegistration : authorizedClientRegistrations) {
-            addClientRegistration(clientRegistration);
+    public AzureClientRegistrationRepository(AzureClientRegistration azureClient,
+                                             List<ClientRegistration> otherClients) {
+        this.azureClient = azureClient;
+        this.otherClients = new ArrayList<>(otherClients);
+        allClients = new HashMap<>();
+        addClientRegistration(azureClient.getClient());
+        for (ClientRegistration c : otherClients) {
+            addClientRegistration(c);
         }
     }
 
-    private void addClientRegistration(ClientRegistration clientRegistration) {
-        clientRegistrations.put(clientRegistration.getRegistrationId(), clientRegistration);
+    private void addClientRegistration(ClientRegistration client) {
+        allClients.put(client.getRegistrationId(), client);
     }
 
     @Override
     public ClientRegistration findByRegistrationId(String registrationId) {
-        return clientRegistrations.get(registrationId);
+        return allClients.get(registrationId);
     }
 
     @NotNull
     @Override
     public Iterator<ClientRegistration> iterator() {
-        return Collections.singleton(defaultClient.getClientRegistration()).iterator();
+        return Collections.singleton(azureClient.getClient()).iterator();
     }
 
-    public DefaultClient defaultClient() {
-        return defaultClient;
+    public AzureClientRegistration getAzureClient() {
+        return azureClient;
     }
 
-    public boolean isAuthorizedClient(ClientRegistration clientRegistration) {
-        return authorizedClientRegistrations.contains(clientRegistration);
+    public boolean isAuthzClient(ClientRegistration client) {
+        return otherClients.contains(client);
     }
 
-    public boolean isAuthorizedClient(String id) {
-        return Optional.of(id)
-                       .map(this::findByRegistrationId)
-                       .map(this::isAuthorizedClient)
-                       .orElse(false);
+    public boolean isAuthzClient(String id) {
+        ClientRegistration client = findByRegistrationId(id);
+        return client != null && isAuthzClient(client);
     }
 }

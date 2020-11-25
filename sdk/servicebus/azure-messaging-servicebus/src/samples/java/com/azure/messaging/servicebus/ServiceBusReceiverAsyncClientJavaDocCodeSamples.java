@@ -6,7 +6,7 @@ package com.azure.messaging.servicebus;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.models.AbandonOptions;
 import com.azure.messaging.servicebus.models.CompleteOptions;
-import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.reactivestreams.Subscription;
 import reactor.core.Disposable;
 import reactor.core.publisher.BaseSubscriber;
@@ -55,7 +55,7 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
         ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
             .connectionString("fake-string")
             .receiver()
-            .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
+            .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
             .queueName("<< QUEUE NAME >>")
             .buildAsyncClient();
         // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.receiveWithReceiveAndDeleteMode

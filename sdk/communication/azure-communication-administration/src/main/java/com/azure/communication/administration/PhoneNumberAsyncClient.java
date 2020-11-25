@@ -656,7 +656,7 @@ public final class PhoneNumberAsyncClient {
         return createReservationWithResponse(reservationOptions, null);
     }
 
-    Mono<Response<CreateReservationResponse>> createReservationWithResponse(
+    private Mono<Response<CreateReservationResponse>> createReservationWithResponse(
         CreateReservationOptions reservationOptions, Context context) {
         Objects.requireNonNull(reservationOptions, "'reservationOptions' cannot be null.");
 

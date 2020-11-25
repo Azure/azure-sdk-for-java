@@ -3,22 +3,28 @@
 
 package com.azure.messaging.servicebus.models;
 
+import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
+import com.azure.messaging.servicebus.ServiceBusReceiverAsyncClient;
+import com.azure.messaging.servicebus.ServiceBusReceiverClient;
 import com.azure.messaging.servicebus.ServiceBusTransactionContext;
 
 import java.util.Map;
 
 /**
  * Options to specify while deferring message.
+ *
+ * @see ServiceBusReceiverAsyncClient#defer(ServiceBusReceivedMessage, DeferOptions)
+ * @see ServiceBusReceiverClient#defer(ServiceBusReceivedMessage, DeferOptions)
  */
 public final class DeferOptions extends SettlementOptions {
     private Map<String, Object> propertiesToModify;
 
     /**
-     * Sets the message properties to modify while abandoning message.
+     * Sets the message properties to modify while deferring the message.
      *
      * @param propertiesToModify Message properties to modify.
      *
-     * @return {@link AbandonOptions} object.
+     * @return The updated {@link DeferOptions} object.
      */
     public DeferOptions setPropertiesToModify(Map<String, Object> propertiesToModify) {
         this.propertiesToModify = propertiesToModify;
@@ -26,9 +32,9 @@ public final class DeferOptions extends SettlementOptions {
     }
 
     /**
-     * Gets the message properties to modify while putting put message in dead letter sub-queue.
+     * Gets the message properties to modify while deferring the message.
      *
-     * @return The message properties to modify while putting message in dead letter sub-queue.
+     * @return The message properties to modify while deferring the message.
      */
     public Map<String, Object> getPropertiesToModify() {
         return propertiesToModify;
@@ -39,7 +45,7 @@ public final class DeferOptions extends SettlementOptions {
      *
      * @param transactionContext The {@link ServiceBusTransactionContext} that will be used to defer a message.
      *
-     * @return The Updated {@link DeferOptions} object.
+     * @return The updated {@link DeferOptions} object.
      */
     @Override
     public DeferOptions setTransactionContext(ServiceBusTransactionContext transactionContext) {

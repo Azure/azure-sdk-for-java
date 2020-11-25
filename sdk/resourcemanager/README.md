@@ -28,7 +28,7 @@ If you are an existing user of the older version of Azure management library for
 <dependency>
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager</artifactId>
-  <version>2.0.0</version>
+  <version>2.1.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -46,7 +46,7 @@ Azure Management Libraries require a `TokenCredential` implementation for authen
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-identity</artifactId>
-  <version>1.1.3</version>
+  <version>1.2.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -58,7 +58,7 @@ Azure Management Libraries require a `TokenCredential` implementation for authen
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-http-netty</artifactId>
-  <version>1.6.2</version>
+  <version>1.6.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -286,7 +286,7 @@ For example, here is sample maven dependency for Compute package.
 <dependency>
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-compute</artifactId>
-  <version>2.0.0</version>
+  <version>2.1.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -338,8 +338,7 @@ For details, please refer to [Guidance on ARM throttling][throttling].
 
 ## Contributing
 
-If you would like to become an active contributor to this project please follow the instructions provided in
-[Microsoft Azure Projects Contribution Guidelines](https://azure.github.io/guidelines.html).
+For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING.md).
 
 1. Fork it
 2. Create your feature branch (`git checkout -b my-new-feature`)

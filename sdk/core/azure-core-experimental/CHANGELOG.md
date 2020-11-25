@@ -2,6 +2,8 @@
 
 ## 1.0.0-beta.9 (Unreleased)
 
+### Breaking Changes
+- Moved `BinaryData` to `azure-core`.
 
 ## 1.0.0-beta.8 (2020-10-29)
 

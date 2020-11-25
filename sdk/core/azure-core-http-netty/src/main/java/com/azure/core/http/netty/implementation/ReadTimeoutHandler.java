@@ -23,6 +23,7 @@ public final class ReadTimeoutHandler extends ChannelInboundHandlerAdapter {
 
     private final long timeoutMillis;
 
+    private boolean closed;
     private long lastReadMillis;
     private ScheduledFuture<?> readTimeoutWatcher;
 
@@ -65,6 +66,10 @@ public final class ReadTimeoutHandler extends ChannelInboundHandlerAdapter {
         }
 
         // No progress has been made since the last timeout event, channel has timed out.
-        ctx.fireExceptionCaught(new TimeoutException(String.format(READ_TIMED_OUT_MESSAGE, timeoutMillis)));
+        if (!closed) {
+            ctx.fireExceptionCaught(new TimeoutException(String.format(READ_TIMED_OUT_MESSAGE, timeoutMillis)));
+            ctx.close();
+            closed = true;
+        }
     }
 }

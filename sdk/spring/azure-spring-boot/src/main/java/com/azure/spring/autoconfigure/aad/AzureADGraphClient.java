@@ -51,18 +51,24 @@ public class AzureADGraphClient {
     private static final String REQUEST_ID_SUFFIX = "aadfeed6";
     private static final String V2_VERSION_ENV_FLAG = "v2-graph";
 
+    private final String clientId;
+    private final String clientSecret;
     private final ServiceEndpoints serviceEndpoints;
     private final AADAuthenticationProperties aadAuthenticationProperties;
     private final boolean graphApiVersionIsV2;
 
-    public AzureADGraphClient(AADAuthenticationProperties aadAuthenticationProperties,
+    public AzureADGraphClient(String clientId,
+                              String clientSecret,
+        AADAuthenticationProperties aadAuthenticationProperties,
                               ServiceEndpointsProperties serviceEndpointsProps) {
+        this.clientId = clientId;
+        this.clientSecret = clientSecret;
         this.aadAuthenticationProperties = aadAuthenticationProperties;
         this.serviceEndpoints = serviceEndpointsProps.getServiceEndpoints(aadAuthenticationProperties.getEnvironment());
         this.graphApiVersionIsV2 = Optional.of(aadAuthenticationProperties)
-                .map(AADAuthenticationProperties::getEnvironment)
-                .map(environment -> environment.contains(V2_VERSION_ENV_FLAG))
-                .orElse(false);
+                                           .map(AADAuthenticationProperties::getEnvironment)
+                                           .map(environment -> environment.contains(V2_VERSION_ENV_FLAG))
+                                           .orElse(false);
     }
 
     private String getUserMemberships(String accessToken, String urlString) throws IOException {
@@ -119,7 +125,7 @@ public class AzureADGraphClient {
     public Set<String> getGroups(String graphApiToken) throws IOException {
         final Set<String> groups = new LinkedHashSet<>();
         final ObjectMapper objectMapper = JacksonObjectMapperFactory.getInstance();
-        String aadMembershipRestUri = getAadMembershipRestUri();
+        String aadMembershipRestUri = serviceEndpoints.getAadMembershipRestUri();
         while (aadMembershipRestUri != null) {
             String membershipsJson = getUserMemberships(graphApiToken, aadMembershipRestUri);
             Memberships memberships = objectMapper.readValue(membershipsJson, Memberships.class);
@@ -134,20 +140,6 @@ public class AzureADGraphClient {
                                            .orElse(null);
         }
         return groups;
-    }
-
-    /**
-     * Get the rest url to get the groups that the user is a member of.
-     * @return rest url
-     */
-    private String getAadMembershipRestUri() {
-        if (AADAuthenticationProperties.getDirectGroupRelationship()
-                                       .equalsIgnoreCase(aadAuthenticationProperties
-                                           .getUserGroup().getGroupRelationship())) {
-            return serviceEndpoints.getAadMembershipRestUri();
-        } else {
-            return serviceEndpoints.getAadTransitiveMemberRestUri();
-        }
     }
 
     private boolean isGroupObject(final Membership membership) {
@@ -176,6 +168,7 @@ public class AzureADGraphClient {
 
     /**
      * Acquire access token for calling Graph API.
+     *
      * @param idToken The token used to perform an OBO request.
      * @param tenantId The tenant id.
      * @return The access token for Graph service.
@@ -185,12 +178,12 @@ public class AzureADGraphClient {
     public IAuthenticationResult acquireTokenForGraphApi(String idToken, String tenantId)
         throws ServiceUnavailableException {
         final IClientCredential clientCredential =
-            ClientCredentialFactory.createFromSecret(aadAuthenticationProperties.getClientSecret());
+            ClientCredentialFactory.createFromSecret(clientSecret);
         final UserAssertion assertion = new UserAssertion(idToken);
         IAuthenticationResult result = null;
         try {
             final ConfidentialClientApplication application = ConfidentialClientApplication
-                .builder(aadAuthenticationProperties.getClientId(), clientCredential)
+                .builder(clientId, clientCredential)
                 .authority(serviceEndpoints.getAadSigninUri() + tenantId + "/")
                 .correlationId(getCorrelationId())
                 .build();
@@ -211,7 +204,7 @@ public class AzureADGraphClient {
         }
         if (result == null) {
             throw new ServiceUnavailableException("unable to acquire on-behalf-of token for client "
-                + aadAuthenticationProperties.getClientId());
+                + clientId);
         }
         return result;
     }

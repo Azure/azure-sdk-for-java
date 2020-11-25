@@ -3,7 +3,7 @@
 
 package com.azure.ai.formrecognizer.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.ai.formrecognizer.implementation.FormTableHelper;
 
 import java.util.Collections;
 import java.util.List;
@@ -11,7 +11,6 @@ import java.util.List;
 /**
  * The FormTable model.
  */
-@Immutable
 public final class FormTable {
 
     /*
@@ -33,6 +32,17 @@ public final class FormTable {
      * The 1 based page number.
      */
     private final int pageNumber;
+
+    private FieldBoundingBox fieldBoundingBox;
+
+    static {
+        FormTableHelper.setAccessor(new FormTableHelper.FormTableAccessor() {
+            @Override
+            public void setBoundingBox(FormTable formTable, FieldBoundingBox fieldBoundingBox) {
+                formTable.setFieldBoundingBox(fieldBoundingBox);
+            }
+        });
+    }
 
     /**
      * Constructs a FormTable object.
@@ -84,5 +94,25 @@ public final class FormTable {
      */
     public int getPageNumber() {
         return this.pageNumber;
+    }
+
+    /**
+     * The private setter to set the appearance property
+     * via {@link FormTableHelper.FormTableAccessor}.
+     *
+     * @param fieldBoundingBox the bounding box of the form table.
+     * @return the updated FormTable object.
+     */
+    private FormTable setFieldBoundingBox(FieldBoundingBox fieldBoundingBox) {
+        this.fieldBoundingBox = fieldBoundingBox;
+        return this;
+    }
+
+    /**
+     * Get the bounding box information for the the form table.
+     * @return the bounding box information for the the form table.
+     */
+    public FieldBoundingBox getFieldBoundingBox() {
+        return fieldBoundingBox;
     }
 }

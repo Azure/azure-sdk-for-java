@@ -3,20 +3,26 @@
 
 package com.azure.messaging.servicebus.models;
 
+import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
+import com.azure.messaging.servicebus.ServiceBusReceiverAsyncClient;
+import com.azure.messaging.servicebus.ServiceBusReceiverClient;
 import com.azure.messaging.servicebus.ServiceBusTransactionContext;
 
 import java.util.Map;
 
 /**
  * Options to specify while abandoning message.
+ *
+ * @see ServiceBusReceiverAsyncClient#abandon(ServiceBusReceivedMessage, AbandonOptions)
+ * @see ServiceBusReceiverClient#abandon(ServiceBusReceivedMessage, AbandonOptions)
  */
 public final class AbandonOptions extends SettlementOptions {
     private Map<String, Object> propertiesToModify;
 
     /**
-     * Gets the message properties to modify while putting put message in dead letter sub-queue.
+     * Gets the message properties to modify while abandoning the message.
      *
-     * @return The message properties to modify while putting message in dead letter sub-queue.
+     * @return The message properties to modify while abandoning the message.
      */
     public Map<String, Object> getPropertiesToModify() {
         return propertiesToModify;
@@ -27,7 +33,7 @@ public final class AbandonOptions extends SettlementOptions {
      *
      * @param propertiesToModify Message properties to modify.
      *
-     * @return {@link AbandonOptions} object.
+     * @return The updated {@link AbandonOptions} object.
      */
     public AbandonOptions setPropertiesToModify(Map<String, Object> propertiesToModify) {
         this.propertiesToModify = propertiesToModify;
@@ -39,9 +45,8 @@ public final class AbandonOptions extends SettlementOptions {
      *
      * @param transactionContext The {@link ServiceBusTransactionContext} that will be used to abandon a message.
      *
-     * @return The Updated {@link AbandonOptions} object.
+     * @return The updated {@link AbandonOptions} object.
      */
-    @Override
     public AbandonOptions setTransactionContext(ServiceBusTransactionContext transactionContext) {
         super.setTransactionContext(transactionContext);
         return this;

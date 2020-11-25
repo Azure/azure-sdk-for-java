@@ -4,7 +4,6 @@
 package com.azure.messaging.servicebus;
 
 import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
 
 /**
  * Sample to demonstrate the creation of a session-enabled {@link ServiceBusProcessorClient} and starting the processor
@@ -18,22 +17,6 @@ public class ServiceBusSessionProcessorSample {
      * @throws InterruptedException If the application is interrupted.
      */
     public static void main(String[] args) throws InterruptedException {
-        // Consumer that processes a single message received from Service Bus
-        Consumer<ServiceBusReceivedMessageContext> messageProcessor = context -> {
-            ServiceBusReceivedMessage message = context.getMessage();
-            System.out.println("Received message " + message.getBody().toString()
-                + " session: " + message.getSessionId());
-        };
-
-        // Consumer that handles any errors that occur when receiving messages
-        Consumer<Throwable> errorHandler = throwable -> {
-            System.out.println("Error when receiving messages " + throwable.getMessage());
-            if (throwable instanceof ServiceBusReceiverException) {
-                ServiceBusReceiverException serviceBusReceiverException = (ServiceBusReceiverException) throwable;
-                System.out.println("Error source " + serviceBusReceiverException.getErrorSource());
-            }
-        };
-
         // Create an instance of session-enabled processor through the ServiceBusClientBuilder that processes
         // two sessions concurrently.
         ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()
@@ -41,8 +24,8 @@ public class ServiceBusSessionProcessorSample {
             .sessionProcessor()
             .queueName("<< session-enabled queue name >>")
             .maxConcurrentSessions(2)
-            .processMessage(messageProcessor)
-            .processError(errorHandler)
+            .processMessage(ServiceBusSessionProcessorSample::processMessage)
+            .processError(ServiceBusSessionProcessorSample::processError)
             .buildProcessorClient();
 
         System.out.println("Starting the processor");
@@ -59,5 +42,40 @@ public class ServiceBusSessionProcessorSample {
         TimeUnit.SECONDS.sleep(10);
         System.out.println("Closing the processor");
         processorClient.close();
+    }
+
+    /**
+     * Processes each message from the Service Bus entity.
+     *
+     * @param context Received message context.
+     */
+    private static void processMessage(ServiceBusReceivedMessageContext context) {
+        ServiceBusReceivedMessage message = context.getMessage();
+        System.out.printf("Processing message. Session: %s, Sequence #: %s. Contents: %s%n", message.getMessageId(),
+            message.getSequenceNumber(), message.getBody());
+
+        // When this message function completes, the message is automatically completed. If an exception is
+        // thrown in here, the message is abandoned.
+        // To disable this behaviour, toggle ServiceBusSessionProcessorClientBuilder.disableAutoComplete()
+        // when building the session receiver.
+    }
+
+    /**
+     * Processes an exception that occurred in the Service Bus Processor.
+     *
+     * @param context Context around the exception that occurred.
+     */
+    private static void processError(ServiceBusErrorContext context) {
+        System.out.printf("Error when receiving messages from namespace: '%s'. Entity: '%s'%n",
+            context.getFullyQualifiedNamespace(), context.getEntityPath());
+
+        if (!(context.getException() instanceof ServiceBusException)) {
+            System.out.printf("Non-ServiceBusException occurred: %s%n", context.getException());
+            return;
+        }
+
+        ServiceBusException exception = (ServiceBusException) context.getException();
+        System.out.printf("ServiceBusException source: %s. Reason: %s. Is transient? %s%n", context.getErrorSource(),
+            exception.getReason(), exception.isTransient());
     }
 }

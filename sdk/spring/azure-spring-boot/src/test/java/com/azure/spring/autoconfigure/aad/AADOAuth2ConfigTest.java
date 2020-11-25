@@ -3,8 +3,6 @@
 
 package com.azure.spring.autoconfigure.aad;
 
-import com.azure.spring.aad.implementation.AzureActiveDirectoryAutoConfiguration;
-import com.azure.spring.aad.implementation.AzureClientRegistrationRepository;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -17,19 +15,13 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.ResourcePropertySource;
 import org.springframework.mock.env.MockPropertySource;
-import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.test.context.support.TestPropertySourceUtils;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
 
 public class AADOAuth2ConfigTest {
     private static final String AAD_OAUTH2_MINIMUM_PROPS = "aad-backend-oauth2-minimum.properties";
@@ -57,7 +49,6 @@ public class AADOAuth2ConfigTest {
     @Test
     public void noOAuth2UserServiceBeanCreatedIfPropsNotConfigured() {
         final AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
-        context.register(AzureActiveDirectoryAutoConfiguration.class);
         context.refresh();
 
         exception.expect(NoSuchBeanDefinitionException.class);
@@ -87,7 +78,6 @@ public class AADOAuth2ConfigTest {
             "azure.service.endpoints.global.aadKeyDiscoveryUri=https://test/",
             "azure.service.endpoints.global.aadMembershipRestUri=https://test/",
             TestConstants.ALLOW_TELEMETRY_PROPERTY + "=false");
-
 
         final Environment environment = testContext.getEnvironment();
         assertThat(environment.getProperty("azure.service.endpoints.global.aadSigninUri"))
@@ -123,41 +113,6 @@ public class AADOAuth2ConfigTest {
 
     }
 
-    @Test
-    public void testScopePropertyConfiguredWithDynamicPermissions() {
-        testContext = initTestContext("azure.activedirectory.authorization.graph.scope=email");
-        final Environment environment = testContext.getEnvironment();
-        assertThat(environment.getProperty("azure.activedirectory.authorization.graph.scope")).isEqualTo("email");
-
-        final AzureClientRegistrationRepository azureClientRegistrationRepository =
-            testContext.getBean(AzureClientRegistrationRepository.class);
-        final ClientRegistration clientRegistration = azureClientRegistrationRepository.findByRegistrationId("azure");
-        final Set<String> actualScopes = clientRegistration.getScopes();
-        final Set<String> expectedScopes = new HashSet<>(Arrays.asList("openid", "profile", "offline_access", "email"));
-        assertEquals(expectedScopes, actualScopes);
-    }
-
-    @Test
-    public void testScopePropertyConfiguredWithStaticPermissions() {
-        testContext = initTestContext("azure.activedirectory.authorization.graph.scope=1111/.default");
-        final Environment environment = testContext.getEnvironment();
-        assertThat(environment.getProperty("azure.activedirectory.authorization.graph.scope")).isEqualTo("1111/"
-            + ".default");
-
-        final AzureClientRegistrationRepository azureClientRegistrationRepository =
-            testContext.getBean(AzureClientRegistrationRepository.class);
-        final ClientRegistration clientRegistration = azureClientRegistrationRepository.findByRegistrationId("azure");
-        final Set<String> actualScopes = clientRegistration.getScopes();
-        final Set<String> expectedScopes =
-            new HashSet<>(Arrays.asList("openid", "profile", "offline_access", "1111/.default"));
-        assertEquals(expectedScopes, actualScopes);
-
-        final ClientRegistration graphClientRegistration =
-            azureClientRegistrationRepository.findByRegistrationId("graph");
-        final Set<String> graphActualScopes = graphClientRegistration.getScopes();
-        final Set<String> graphExpectedScopes = new HashSet<>(Collections.singletonList("1111/.default"));
-        assertEquals(graphExpectedScopes, graphActualScopes);
-    }
 
     private AnnotationConfigWebApplicationContext initTestContext(String... environment) {
         final AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
@@ -169,7 +124,7 @@ public class AADOAuth2ConfigTest {
             TestPropertySourceUtils.addInlinedPropertiesToEnvironment(context, environment);
         }
 
-        context.register(AzureActiveDirectoryAutoConfiguration.class);
+        context.register(AADOAuth2AutoConfiguration.class);
         context.refresh();
 
         return context;

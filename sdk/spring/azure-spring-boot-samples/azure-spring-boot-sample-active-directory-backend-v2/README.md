@@ -15,7 +15,7 @@ azure.activedirectory.user-group.object-id-key=id
 
 Follow the guide [here](https://docs.microsoft.com/azure/active-directory/develop/quickstart-register-app).
 
-The sample retrieves user's group membership using Azure AD graph API which requires the registered app to have `Direcory.AccessAsUser.All` "Access the directory as the signed-in user" under `Delegated Permissions`. You need AAD admin privilege to be able to grant the permission in API ACCESS -> Required permission. You can follow the below steps:
+The sample retrieves user's group membership using Azure AD graph API which requires the registered app to have `Directory.AccessAsUser.All` "Access the directory as the signed-in user" under `Delegated Permissions`. You need AAD admin privilege to be able to grant the permission in API ACCESS -> Required permission. You can follow the below steps:
 
 * In the list of pages for the app, select **API permissions**
    - Click the **Add a permission** button and then,

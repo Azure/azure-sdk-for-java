@@ -3,8 +3,9 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import reactor.core.Disposable;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.concurrent.TimeUnit;
@@ -36,21 +37,31 @@ public class ReceiveNamedSessionAsyncSample {
         ServiceBusSessionReceiverAsyncClient sessionReceiver = new ServiceBusClientBuilder()
             .connectionString(connectionString)
             .sessionReceiver()
-            .receiveMode(ReceiveMode.PEEK_LOCK)
+            .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
             .queueName("<<queue-name>>")
             .buildAsyncClient();
 
-        Mono<ServiceBusReceiverAsyncClient> receiverMono = sessionReceiver.acceptSession("greetings");
-        Disposable subscription = receiverMono.flatMapMany(receiver -> receiver.receiveMessages()
-            .flatMap(message -> {
+        // Receiving messages that have the sessionId "greetings-id" set. This can be set via
+        // ServiceBusMessage.setMessageId(String) when sending a message.
 
-                System.out.println("Processing message from session: " + message.getSessionId());
+        // The Mono completes successfully when a lock on the session is acquired, otherwise, it completes with an
+        // error.
+        Mono<ServiceBusReceiverAsyncClient> receiverMono = sessionReceiver.acceptSession("greetings-id");
 
-                // Process message then complete it.
-                //return receiver.complete(context.getMessage());
-                return Mono.empty();
-            }))
-            .subscribe(aVoid -> {
+        // If the session is successfully accepted, begin receiving messages from it.
+        // Flux.usingWhen is used to dispose of the receiver after consuming messages completes.
+        Disposable subscription = Flux.usingWhen(receiverMono,
+            receiver -> receiver.receiveMessages(),
+            receiver -> Mono.fromRunnable(() -> receiver.close()))
+            .subscribe(message -> {
+                // Process message.
+                System.out.printf("Session: %s. Sequence #: %s. Contents: %s%n", message.getSessionId(),
+                    message.getSequenceNumber(), message.getBody());
+
+                // When this message function completes, the message is automatically completed. If an exception is
+                // thrown in here, the message is abandoned.
+                // To disable this behaviour, toggle ServiceBusSessionReceiverClientBuilder.disableAutoComplete()
+                // when building the session receiver.
             }, error -> System.err.println("Error occurred: " + error));
 
         // Subscribe is not a blocking call so we sleep here so the program does not end.

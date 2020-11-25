@@ -14,7 +14,6 @@ import org.springframework.validation.annotation.Validated;
 import javax.annotation.PostConstruct;
 import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -33,12 +32,7 @@ public class AADAuthenticationProperties {
     private static final Logger LOGGER = LoggerFactory.getLogger(AADAuthenticationProperties.class);
     private static final String DEFAULT_SERVICE_ENVIRONMENT = "global";
     private static final long DEFAULT_JWK_SET_CACHE_LIFESPAN = TimeUnit.MINUTES.toMillis(5);
-    private static final String GROUP_RELATIONSHIP_DIRECT = "direct";
-    private static final String GROUP_RELATIONSHIP_TRANSITIVE = "transitive";
-
-    private String uri;
-
-    private Map<String, AuthorizationProperties> authorization = new HashMap<>();
+    private static final long DEFAULT_JWK_SET_CACHE_REFRESH_TIME = DEFAULT_JWK_SET_CACHE_LIFESPAN;
 
     /**
      * Default UserGroup configuration.
@@ -51,30 +45,20 @@ public class AADAuthenticationProperties {
     private String environment = DEFAULT_SERVICE_ENVIRONMENT;
 
     /**
-     * Registered application ID in Azure AD.
-     * Must be configured when OAuth2 authentication is done in front end
+     * Registered application ID in Azure AD. Must be configured when OAuth2 authentication is done in front end
      */
     private String clientId;
 
     /**
-     * API Access Key of the registered application.
-     * Must be configured when OAuth2 authentication is done in front end
+     * API Access Key of the registered application. Must be configured when OAuth2 authentication is done in front end
      */
     private String clientSecret;
 
     /**
-     * Redirection Endpoint: Used by the authorization server
-     * to return responses containing authorization credentials to the client via the resource owner user-agent.
+     * Redirection Endpoint: Used by the authorization server to return responses containing authorization credentials
+     * to the client via the resource owner user-agent.
      */
     private String redirectUriTemplate;
-
-    /**
-     * Optional. scope doc:
-     * https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-permissions-and-consent#scopes-and-permissions
-     * @deprecated Please use "azure.activedirectory.authorization.client-registration-id.scope" instead.
-     */
-    @Deprecated
-    private List<String> scope = Arrays.asList("openid", "profile", "https://graph.microsoft.com/user.read");
 
     /**
      * App ID URI which might be used in the <code>"aud"</code> claim of an <code>id_token</code>.
@@ -102,6 +86,11 @@ public class AADAuthenticationProperties {
     private long jwkSetCacheLifespan = DEFAULT_JWK_SET_CACHE_LIFESPAN;
 
     /**
+     * The refresh time of the cached JWK set before it expires, default is 5 minutes.
+     */
+    private long jwkSetCacheRefreshTime = DEFAULT_JWK_SET_CACHE_REFRESH_TIME;
+
+    /**
      * Azure Tenant ID.
      */
     private String tenantId;
@@ -112,10 +101,16 @@ public class AADAuthenticationProperties {
     private boolean allowTelemetry = true;
 
     /**
-     * If <code>true</code> activates the stateless auth filter {@link AADAppRoleStatelessAuthenticationFilter}.
-     * The default is <code>false</code> which activates {@link AADAuthenticationFilter}.
+     * If <code>true</code> activates the stateless auth filter {@link AADAppRoleStatelessAuthenticationFilter}. The
+     * default is <code>false</code> which activates {@link AADAuthenticationFilter}.
      */
     private Boolean sessionStateless = false;
+
+    private String authorizationServerUri = "https://login.microsoftonline.com/";
+
+    private String graphMembershipUri = "https://graph.microsoft.com/v1.0/me/memberOf";
+
+    private Map<String, AuthorizationProperties> authorization = new HashMap<>();
 
     @DeprecatedConfigurationProperty(
         reason = "Configuration moved to UserGroup class to keep UserGroup properties together",
@@ -156,16 +151,6 @@ public class AADAuthenticationProperties {
         @NotEmpty
         private String objectIDKey = "objectId";
 
-
-        /**
-         * The way to obtain group relationship.<br/>
-         * direct: the default value, get groups that the user is a direct member of;<br/>
-         * transitive: Get groups that the user is a member of, and will also return all
-         *  groups the user is a nested member of;
-         */
-        @NotEmpty
-        private String groupRelationship = GROUP_RELATIONSHIP_DIRECT;
-
         public List<String> getAllowedGroups() {
             return allowedGroups;
         }
@@ -198,23 +183,14 @@ public class AADAuthenticationProperties {
             this.objectIDKey = objectIDKey;
         }
 
-        public String getGroupRelationship() {
-            return groupRelationship;
-        }
-
-        public void setGroupRelationship(String groupRelationship) {
-            this.groupRelationship = groupRelationship;
-        }
-
         @Override
         public String toString() {
             return "UserGroupProperties{"
-                +  "allowedGroups=" + allowedGroups
-                +  ", key='" + key + '\''
-                +  ", value='" + value + '\''
-                +  ", objectIDKey='" + objectIDKey + '\''
-                +  ", groupRelationship='" + groupRelationship + '\''
-                +  '}';
+                + "allowedGroups=" + allowedGroups
+                + ", key='" + key + '\''
+                + ", value='" + value + '\''
+                + ", objectIDKey='" + objectIDKey + '\''
+                + '}';
         }
 
         @Override
@@ -229,8 +205,7 @@ public class AADAuthenticationProperties {
             return Objects.equals(allowedGroups, that.allowedGroups)
                 && Objects.equals(key, that.key)
                 && Objects.equals(value, that.value)
-                && Objects.equals(objectIDKey, that.objectIDKey)
-                && Objects.equals(groupRelationship, that.groupRelationship);
+                && Objects.equals(objectIDKey, that.objectIDKey);
         }
 
         @Override
@@ -262,27 +237,6 @@ public class AADAuthenticationProperties {
             throw new IllegalArgumentException("One of the User Group Properties must be populated. "
                 + "Please populate azure.activedirectory.user-group.allowed-groups");
         }
-        if (!GROUP_RELATIONSHIP_DIRECT.equalsIgnoreCase(userGroup.groupRelationship)
-            && !GROUP_RELATIONSHIP_TRANSITIVE.equalsIgnoreCase(userGroup.groupRelationship)) {
-            throw new IllegalArgumentException("Configuration 'azure.activedirectory.user-group.group-relationship' "
-                + "should be 'direct' or 'transitive'.");
-        }
-    }
-
-    public void setUri(String uri) {
-        this.uri = uri;
-    }
-
-    public String getUri() {
-        return uri;
-    }
-
-    public void setAuthorization(Map<String, AuthorizationProperties> authorization) {
-        this.authorization = authorization;
-    }
-
-    public Map<String, AuthorizationProperties> getAuthorization() {
-        return authorization;
     }
 
     public UserGroupProperties getUserGroup() {
@@ -323,24 +277,6 @@ public class AADAuthenticationProperties {
 
     public void setRedirectUriTemplate(String redirectUriTemplate) {
         this.redirectUriTemplate = redirectUriTemplate;
-    }
-
-    /**
-     * @param scope scope
-     * @deprecated Please use "azure.activedirectory.authorization.client-registration-id.scope" instead.
-     */
-    @Deprecated
-    public void setScope(List<String> scope) {
-        this.scope = scope;
-    }
-
-    /**
-     * @return scope
-     * @deprecated Please use "azure.activedirectory.authorization.client-registration-id.scope" instead.
-     */
-    @Deprecated
-    public List<String> getScope() {
-        return scope;
     }
 
     @Deprecated
@@ -388,6 +324,14 @@ public class AADAuthenticationProperties {
         this.jwkSetCacheLifespan = jwkSetCacheLifespan;
     }
 
+    public long getJwkSetCacheRefreshTime() {
+        return jwkSetCacheRefreshTime;
+    }
+
+    public void setJwkSetCacheRefreshTime(long jwkSetCacheRefreshTime) {
+        this.jwkSetCacheRefreshTime = jwkSetCacheRefreshTime;
+    }
+
     public String getTenantId() {
         return tenantId;
     }
@@ -412,12 +356,28 @@ public class AADAuthenticationProperties {
         this.sessionStateless = sessionStateless;
     }
 
-    public static String getDirectGroupRelationship() {
-        return GROUP_RELATIONSHIP_DIRECT;
+    public String getAuthorizationServerUri() {
+        return authorizationServerUri;
     }
 
-    public static String getTransitiveGroupRelationship() {
-        return GROUP_RELATIONSHIP_TRANSITIVE;
+    public void setAuthorizationServerUri(String authorizationServerUri) {
+        this.authorizationServerUri = authorizationServerUri;
+    }
+
+    public String getGraphMembershipUri() {
+        return graphMembershipUri;
+    }
+
+    public void setGraphMembershipUri(String graphMembershipUri) {
+        this.graphMembershipUri = graphMembershipUri;
+    }
+
+    public Map<String, AuthorizationProperties> getAuthorization() {
+        return authorization;
+    }
+
+    public void setAuthorization(Map<String, AuthorizationProperties> authorization) {
+        this.authorization = authorization;
     }
 
     public boolean isAllowedGroup(String group) {

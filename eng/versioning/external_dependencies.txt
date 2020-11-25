@@ -99,6 +99,7 @@ org.springframework.boot:spring-boot-starter-logging;2.3.5.RELEASE
 org.springframework.boot:spring-boot-starter-test;2.3.5.RELEASE
 org.springframework.boot:spring-boot-starter-validation;2.3.5.RELEASE
 org.springframework.boot:spring-boot-starter-web;2.3.5.RELEASE
+org.springframework.boot:spring-boot-starter-webflux;2.3.5.RELEASE
 org.springframework.boot:spring-boot-starter;2.3.5.RELEASE
 org.springframework.boot:spring-boot;2.3.5.RELEASE
 org.springframework.data:spring-data-commons;2.3.5.RELEASE
@@ -248,6 +249,7 @@ org.codehaus.mojo:properties-maven-plugin;1.0.0
 org.codehaus.mojo:xml-maven-plugin;1.0
 org.eclipse.jetty:jetty-maven-plugin;9.4.33.v20201020
 org.eclipse.m2e:lifecycle-mapping;1.0.0
+org.hdrhistogram:HdrHistogram;2.1.12
 org.jacoco:jacoco-maven-plugin;0.8.5
 org.jacoco:org.jacoco.agent;0.8.5
 org.mockito:mockito-core;3.3.3
@@ -278,6 +280,7 @@ cosmos_io.dropwizard.metrics:metrics-graphite;4.1.0
 cosmos_io.dropwizard.metrics:metrics-jvm;4.1.0
 cosmos_org.mockito:mockito-core;1.10.19
 cosmos_org.mpierce.metrics.reservoir:hdrhistogram-metrics-reservoir;1.1.0
+cosmos_org.hdrhistogram:HdrHistogram;2.1.12
 
 ## Cosmos Spark connector under sdk\cosmos\azure-cosmos-spark_3-0_2-12\pom.xml
 # Cosmos Spark connector runtime dependencies - provided by Spark runtime/host
