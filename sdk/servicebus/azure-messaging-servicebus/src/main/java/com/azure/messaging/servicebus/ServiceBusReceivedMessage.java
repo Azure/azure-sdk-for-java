@@ -20,6 +20,7 @@ import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 import static com.azure.core.amqp.AmqpMessageConstant.DEAD_LETTER_DESCRIPTION_ANNOTATION_NAME;
@@ -33,7 +34,16 @@ import static com.azure.core.amqp.AmqpMessageConstant.SCHEDULED_ENQUEUE_UTC_TIME
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 
 /**
- * This class represents a received message from Service Bus.
+ * The data structure encapsulating the message received from Service Bus. The message structure is discussed in detail
+ * in the <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads">product
+ * documentation</a>.
+ *
+ * @see ServiceBusReceiverAsyncClient#receiveMessages()
+ * @see ServiceBusReceiverClient#receiveMessages(int)
+ * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads">Service Bus
+ *      message payloads</a>
+ * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-complete-v1.0-os.pdf">AMQP 1.0 specification
+ *     </a>
  */
 public final class ServiceBusReceivedMessage {
     private final ClientLogger logger = new ClientLogger(ServiceBusReceivedMessage.class);
@@ -50,50 +60,56 @@ public final class ServiceBusReceivedMessage {
     }
 
     /**
-     * The representation of message as defined by AMQP protocol.
+     * Gets the set of free-form {@link ServiceBusReceivedMessage} properties which may be used for passing metadata
+     * associated with the {@link ServiceBusReceivedMessage} during Service Bus operations. A common use-case for
+     * {@code properties()} is to associate serialization hints for the {@link #getBody()} as an aid to consumers
+     * who wish to deserialize the binary data.
      *
-     * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#section-message-format">
-     *     Amqp Message Format.</a>
-     *
-     * @return the {@link AmqpAnnotatedMessage} representing amqp message.
+     * @return Application properties associated with this {@link ServiceBusReceivedMessage}.
+     * @see ServiceBusMessage#getApplicationProperties()
      */
-    public AmqpAnnotatedMessage getRawAmqpMessage() {
-        return amqpAnnotatedMessage;
+    public Map<String, Object> getApplicationProperties() {
+        return amqpAnnotatedMessage.getApplicationProperties();
     }
 
     /**
-     * Gets the actual payload/data wrapped by the {@link ServiceBusReceivedMessage}.
+     * Gets the payload wrapped by the {@link ServiceBusReceivedMessage}.
      *
      * <p>The {@link BinaryData} wraps byte array and is an abstraction over many different ways it can be represented.
-     * It provides many convenience API including APIs to serialize/deserialize object.
+     * It provides convenience APIs to serialize/deserialize the object.</p>
+     *
      * <p>
      * If the means for deserializing the raw data is not apparent to consumers, a common technique is to make use of
      * {@link #getApplicationProperties()} when creating the event, to associate serialization hints as an aid to
      * consumers who wish to deserialize the binary data.
      * </p>
      *
-     * @return A byte array representing the data.
+     * @return Binary data representing the payload.
+     * @see ServiceBusMessage#getBody()
      */
     public BinaryData getBody() {
         final AmqpMessageBodyType bodyType = amqpAnnotatedMessage.getBody().getBodyType();
         switch (bodyType) {
             case DATA:
-                return BinaryData.fromBytes(amqpAnnotatedMessage.getBody()
-                    .getData().stream().findFirst().get());
+                final Optional<byte[]> payload = amqpAnnotatedMessage.getBody().getData().stream().findFirst();
+
+                return payload.isPresent()
+                    ? BinaryData.fromBytes(payload.get())
+                    : BinaryData.fromBytes(new byte[0]);
             case SEQUENCE:
             case VALUE:
-                throw logger.logExceptionAsError(new UnsupportedOperationException("Body type not supported yet "
-                    + bodyType.toString()));
+                throw logger.logExceptionAsError(new UnsupportedOperationException(
+                    "This body type not is supported: " + bodyType));
             default:
-                throw logger.logExceptionAsError(new IllegalStateException("Body type not valid "
-                    + bodyType.toString()));
+                throw logger.logExceptionAsError(new IllegalStateException("Body type not valid: " + bodyType));
         }
     }
 
     /**
-     * Gets the actual payload/data wrapped by the {@link ServiceBusReceivedMessage}.
+     * Gets the payload wrapped by the {@link ServiceBusReceivedMessage} as a byte array.
      *
      * @return A byte array representing the data.
+     * @see ServiceBusMessage#getBody()
      */
     public byte[] getBodyAsBytes() {
         return getBody().toBytes();
@@ -102,7 +118,12 @@ public final class ServiceBusReceivedMessage {
     /**
      * Gets the content type of the message.
      *
-     * @return the contentType of the {@link ServiceBusReceivedMessage}.
+     * <p>
+     * Optionally describes the payload of the message, with a descriptor following the format of RFC2045, Section 5,
+     * for example "application/json".
+     * </p>
+     * @return The contentType of the {@link ServiceBusReceivedMessage}.
+     * @see ServiceBusMessage#getContentType()
      */
     public String getContentType() {
         return amqpAnnotatedMessage.getProperties().getContentType();
@@ -115,8 +136,9 @@ public final class ServiceBusReceivedMessage {
      * reflecting the MessageId of a message that is being replied to.
      * </p>
      *
-     * @return correlation id of this message
+     * @return The correlation id of this message.
      *
+     * @see ServiceBusMessage#getCorrelationId()
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads?#message-routing-and-correlation">Message
      *     Routing and Correlation</a>
      */
@@ -132,7 +154,10 @@ public final class ServiceBusReceivedMessage {
     /**
      * Gets the description for a message that has been dead-lettered.
      *
-     * @return The description for a message that has been dead-lettered.
+     * @return The description for a message that has been dead-lettered; {@code null} otherwise.
+     *
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-dead-letter-queues">
+     *     Dead-letter queues</a>
      */
     public String getDeadLetterErrorDescription() {
         return getStringValue(amqpAnnotatedMessage.getApplicationProperties(),
@@ -140,9 +165,12 @@ public final class ServiceBusReceivedMessage {
     }
 
     /**
-     * Gets the reason for a message that has been dead-lettered.
+     * Gets the reason a message was dead-lettered.
      *
-     * @return The reason for a message that has been dead-lettered.
+     * @return The reason a message was dead-lettered; {@code null} otherwise.
+     *
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-dead-letter-queues">
+     *     Dead-letter queues</a>
      */
     public String getDeadLetterReason() {
         return getStringValue(amqpAnnotatedMessage.getApplicationProperties(),
@@ -150,17 +178,15 @@ public final class ServiceBusReceivedMessage {
     }
 
     /**
-     * Gets the name of the queue or subscription that this message was enqueued on, before it was
-     * deadlettered.
-     * <p>
-     * This value is only set in messages that have been dead-lettered and subsequently auto-forwarded
-     * from the dead-letter queue  to another entity. Indicates the entity in which the message
-     * was dead-lettered. This property is read-only.
+     * Gets the name of the queue or subscription that this message was enqueued on, before it was dead-lettered.
      *
-     * @return dead letter source of this message
+     * <p>This value is only set in messages that have been dead-lettered and subsequently auto-forwarded from the
+     * dead-letter queue to another entity.</p>
      *
-     * @see <a href="https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-dead-letter-queues">Dead-letter
-     *     queues</a>
+     * @return The entity in which the message was dead-lettered; {@code null} otherwise.
+     *
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-dead-letter-queues">
+     *     Dead-letter queues</a>
      */
     public String getDeadLetterSource() {
         return getStringValue(amqpAnnotatedMessage.getMessageAnnotations(),
@@ -169,14 +195,14 @@ public final class ServiceBusReceivedMessage {
 
     /**
      * Gets the number of the times this message was delivered to clients.
-     * <p>
-     * The count is incremented when a message lock expires, or the message is explicitly abandoned by
-     * the receiver. This property is read-only.
+     *
+     * <p>The count is incremented when a message lock expires, or the message is explicitly abandoned by the receiver.
+     * </p>
      *
      * @return delivery count of this message.
      *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement">Message
-     *     transfers, locks, and settlement.</a>
+     *     transfers, locks, and settlement</a>
      */
     public long getDeliveryCount() {
         return amqpAnnotatedMessage.getHeader().getDeliveryCount();
@@ -187,8 +213,9 @@ public final class ServiceBusReceivedMessage {
      * <p>
      * The sequence number is a unique 64-bit integer first assigned to a message as it is accepted at its original
      * point of submission.
+     * </p>
      *
-     * @return enqueued sequence number of this message
+     * @return The enqueued sequence number of this message
      *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-sequencing">Message Sequencing and
      *     Timestamps</a>
@@ -203,9 +230,10 @@ public final class ServiceBusReceivedMessage {
      * <p>
      * The UTC datetime at which the message has been accepted and stored in the entity. For scheduled messages, this
      * reflects the time when the message was activated. This value can be used as an authoritative and neutral arrival
-     * time indicator when the receiver does not want to trust the sender's clock. This property is read-only.
+     * time indicator when the receiver does not want to trust the sender's clock.
+     * </p>
      *
-     * @return the datetime at which the message was enqueued in Azure Service Bus
+     * @return The datetime at which the message was enqueued in Azure Service Bus.
      *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-sequencing">Message Sequencing and
      *     Timestamps</a>
@@ -219,11 +247,11 @@ public final class ServiceBusReceivedMessage {
      * Gets the datetime at which this message will expire.
      * <p>
      * The value is the UTC datetime for when the message is scheduled for removal and will no longer available for
-     * retrieval from the entity due to expiration. Expiry is controlled by the {@link #getTimeToLive() TimeToLive}
-     * property. This property is computed from {@link #getEnqueuedTime() EnqueuedTime} plus {@link #getTimeToLive()
-     * TimeToLive}.
+     * retrieval from the entity. Expiry is controlled by the {@link #getTimeToLive() time-to-live} property. This
+     * property is computed from {@link #getEnqueuedTime() enqueued time} plus {@link #getTimeToLive() time-to-live}.
+     * </p>
      *
-     * @return {@link OffsetDateTime} at which this message expires
+     * @return The {@link OffsetDateTime} at which this message expires.
      *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-expiration">Message Expiration</a>
      */
@@ -238,7 +266,13 @@ public final class ServiceBusReceivedMessage {
     /**
      * Gets the label for the message.
      *
+     * <p>
+     * This property enables the application to indicate the purpose of the message to the receiver in a standardized
+     * fashion, similar to an email subject line. The mapped AMQP property is "subject".
+     * </p>
+     *
      * @return The label for the message.
+     * @see ServiceBusMessage#getSubject()
      */
     public String getLabel() {
         return amqpAnnotatedMessage.getProperties().getSubject();
@@ -246,17 +280,16 @@ public final class ServiceBusReceivedMessage {
 
     /**
      * Gets the lock token for the current message.
+     *
      * <p>
      * The lock token is a reference to the lock that is being held by the broker in
-     * {@link ServiceBusReceiveMode#PEEK_LOCK} mode.
-     * Locks are used to explicitly settle messages as explained in the
+     * {@link ServiceBusReceiveMode#PEEK_LOCK} mode. Locks are used to explicitly settle messages as explained in the
      * <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement">product
-     * documentation in more detail</a>. The token can also be used to pin the lock permanently
-     * through the <a
-     * href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Deferral API</a> and, with that,
-     * take the message out of the regular delivery state flow. This property is read-only.
+     * documentation</a>. The token can also be used to pin the lock permanently through the
+     * <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Deferral API</a> and take the
+     * message out of the regular delivery state flow. This property is read-only.
      *
-     * @return Lock-token for this message. Could return {@code null} for
+     * @return The lock-token for this message. {@code null} for messages retrieved via
      * {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode.
      *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement">Message
@@ -268,11 +301,13 @@ public final class ServiceBusReceivedMessage {
 
     /**
      * Gets the datetime at which the lock of this message expires.
+     *
      * <p>
      * For messages retrieved under a lock (peek-lock receive mode, not pre-settled) this property reflects the UTC
-     * datetime until which the message is held locked in the queue/subscription. When the lock expires, the {@link
-     * #getDeliveryCount() DeliveryCount} is incremented and the message is again available for retrieval. This property
-     * is read-only.
+     * datetime until which the message is held locked in the queue/subscription. When the lock expires, the
+     * {@link #getDeliveryCount() delivery count} is incremented and the message is again available for retrieval.
+     * This property is read-only.
+     * </p>
      *
      * @return the datetime at which the lock of this message expires if the message is received using {@link
      *     ServiceBusReceiveMode#PEEK_LOCK} mode. Otherwise it returns null.
@@ -286,7 +321,18 @@ public final class ServiceBusReceivedMessage {
     }
 
     /**
+     * Gets the identifier for the message.
+     *
+     * <p>
+     * The message identifier is an application-defined value that uniquely identifies the message and its payload. The
+     * identifier is a free-form string and can reflect a GUID or an identifier derived from the application context. If
+     * enabled, the
+     * <a href="https://docs.microsoft.com/azure/service-bus-messaging/duplicate-detection">duplicate detection</a>
+     * feature identifies and removes second and further submissions of messages with the same {@code messageId}.
+     * </p>
+     *
      * @return Id of the {@link ServiceBusReceivedMessage}.
+     * @see ServiceBusMessage#getMessageId()
      */
     public String getMessageId() {
         String messageId = null;
@@ -306,10 +352,11 @@ public final class ServiceBusReceivedMessage {
      * cannot be chosen directly. For session-aware entities, the {@link #getSessionId() sessionId} property overrides
      * this value.
      *
-     * @return The partition key of this message
+     * @return The partition key of this message.
      *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-partitioning">Partitioned
      *     entities</a>
+     * @see ServiceBusMessage#getPartitionKey()
      */
     public String getPartitionKey() {
         return getStringValue(amqpAnnotatedMessage.getMessageAnnotations(),
@@ -317,15 +364,15 @@ public final class ServiceBusReceivedMessage {
     }
 
     /**
-     * Gets the set of free-form {@link ServiceBusReceivedMessage} properties which may be used for passing metadata
-     * associated with the {@link ServiceBusReceivedMessage} during Service Bus operations. A common use-case for
-     * {@code properties()} is to associate serialization hints for the {@link #getBody()} as an aid to consumers
-     * who wish to deserialize the binary data.
+     * The representation of message as defined by AMQP protocol.
      *
-     * @return Application properties associated with this {@link ServiceBusReceivedMessage}.
+     * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#section-message-format">
+     *     Amqp Message Format.</a>
+     *
+     * @return the {@link AmqpAnnotatedMessage} representing AMQP message.
      */
-    public Map<String, Object> getApplicationProperties() {
-        return amqpAnnotatedMessage.getApplicationProperties();
+    public AmqpAnnotatedMessage getRawAmqpMessage() {
+        return amqpAnnotatedMessage;
     }
 
     /**
@@ -404,7 +451,15 @@ public final class ServiceBusReceivedMessage {
     /**
      * Gets the session id of the message.
      *
-     * @return Session Id of the {@link ServiceBusReceivedMessage}.
+     * <p>
+     * For session-aware entities, this application-defined value specifies the session affiliation of the message.
+     * Messages with the same session identifier are subject to summary locking and enable exact in-order processing and
+     * demultiplexing. For session-unaware entities, this value is ignored. See <a
+     * href="https://docs.microsoft.com/azure/service-bus-messaging/message-sessions">Message Sessions</a>.
+     * </p>
+     *
+     * @return The session id of the {@link ServiceBusReceivedMessage}.
+     * @see ServiceBusMessage#getSessionId()
      */
     public String getSessionId() {
         return getRawAmqpMessage().getProperties().getGroupId();
@@ -429,8 +484,16 @@ public final class ServiceBusReceivedMessage {
 
     /**
      * Gets the "to" address.
+
+     * <p>
+     * This property is reserved for future use in routing scenarios and presently ignored by the broker itself.
+     * Applications can use this value in rule-driven
+     * <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-auto-forwarding">auto-forward
+     * chaining</a> scenarios to indicate the intended logical destination of the message.
+     * </p>
      *
      * @return "To" property value of this message
+     * @see ServiceBusMessage#getTo()
      */
     public String getTo() {
         String to = null;
