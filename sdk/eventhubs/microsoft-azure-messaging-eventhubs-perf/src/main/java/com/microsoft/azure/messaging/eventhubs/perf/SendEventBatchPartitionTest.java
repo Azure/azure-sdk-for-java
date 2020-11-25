@@ -3,7 +3,10 @@
 
 package com.microsoft.azure.messaging.eventhubs.perf;
 
-import com.microsoft.azure.eventhubs.*;
+import com.microsoft.azure.eventhubs.BatchOptions;
+import com.microsoft.azure.eventhubs.EventData;
+import com.microsoft.azure.eventhubs.EventDataBatch;
+import com.microsoft.azure.eventhubs.PartitionSender;
 import com.microsoft.azure.messaging.eventhubs.perf.core.EventHubsPerfStressOptions;
 import com.microsoft.azure.messaging.eventhubs.perf.core.ServiceTest;
 import reactor.core.publisher.Mono;
@@ -11,17 +14,19 @@ import reactor.core.publisher.Mono;
 /**
  * Runs the Send Events Batch Performance Test for EventHubs.
  */
-public class SendEventBatchTest extends ServiceTest<EventHubsPerfStressOptions> {
+public class SendEventBatchPartitionTest extends ServiceTest<EventHubsPerfStressOptions> {
     private final EventDataBatch eventDataBatch;
+    protected final PartitionSender partitionSender;
 
     /**
      *
      * @param options
      * @throws Exception
      */
-    public SendEventBatchTest(EventHubsPerfStressOptions options) throws Exception {
+    public SendEventBatchPartitionTest(EventHubsPerfStressOptions options) throws Exception {
         super(options);
 
+        partitionSender = eventHubClient.createPartitionSender(String.valueOf(options.getPartitionId())).get();
         BatchOptions batchOptions = new BatchOptions();
 
         if (options.getBatchSize() != null) {
@@ -32,7 +37,7 @@ public class SendEventBatchTest extends ServiceTest<EventHubsPerfStressOptions> 
             batchOptions.partitionKey = options.getPartitionKey();
         }
 
-        eventDataBatch = eventHubClient.createBatch(batchOptions);
+        eventDataBatch = partitionSender.createBatch(batchOptions);
 
         for (int i = 0; i < options.getEvents(); i++) {
             if (!eventDataBatch.tryAdd(EventData.create("Static Event".getBytes()))) {
@@ -45,11 +50,11 @@ public class SendEventBatchTest extends ServiceTest<EventHubsPerfStressOptions> 
     // Perform the API call to be tested here
     @Override
     public void run() {
-        eventHubClient.send(eventDataBatch);
+        partitionSender.send(eventDataBatch);
     }
 
     @Override
     public Mono<Void> runAsync() {
-        return Mono.fromFuture(eventHubClient.send(eventDataBatch));
+        return Mono.fromFuture(partitionSender.send(eventDataBatch));
     }
 }

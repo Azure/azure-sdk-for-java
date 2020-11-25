@@ -23,10 +23,9 @@ public class SendEventBatchTest extends ServiceTest<EventHubsPerfStressOptions> 
      */
     public SendEventBatchTest(EventHubsPerfStressOptions options) throws Exception {
         super(options);
-        if (options.getBatchSize() != null) {
-            CreateBatchOptions batchOptions = new CreateBatchOptions()
-                .setMaximumSizeInBytes(Long.valueOf(options.getSize()).intValue());
-            eventDataBatch = eventHubProducerClient.createBatch(batchOptions);
+        CreateBatchOptions createBatchOptions = getBatchOptions(options);
+        if (createBatchOptions != null) {
+            eventDataBatch = eventHubProducerClient.createBatch(createBatchOptions);
         } else {
             eventDataBatch = eventHubProducerClient.createBatch();
         }
@@ -37,6 +36,29 @@ public class SendEventBatchTest extends ServiceTest<EventHubsPerfStressOptions> 
                     options.getCount(), options.getSize()));
             }
         }
+    }
+
+    private CreateBatchOptions getBatchOptions(EventHubsPerfStressOptions options) {
+        CreateBatchOptions createBatchOptions = new CreateBatchOptions();
+        boolean returnBatchOptions = false;
+        if (options.getBatchSize() != null) {
+            createBatchOptions.setMaximumSizeInBytes(options.getBatchSize());
+            returnBatchOptions = true;
+        }
+        if (options.getPartitionId() != null) {
+            createBatchOptions.setPartitionId(String.valueOf(options.getBatchSize()));
+            returnBatchOptions = true;
+        }
+
+        if (options.getPartitionKey() != null) {
+            createBatchOptions.setPartitionKey(options.getPartitionKey());
+            returnBatchOptions = true;
+        }
+
+        if (returnBatchOptions) {
+            return createBatchOptions;
+        }
+        return null;
     }
 
     // Perform the API call to be tested here
