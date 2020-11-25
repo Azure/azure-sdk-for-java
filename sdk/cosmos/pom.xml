@@ -14,7 +14,7 @@
     <module>azure-cosmos-encryption</module>
     <module>azure-spring-data-cosmos</module>
     <module>azure-spring-data-cosmos-test</module>
-    <module>azure-cosmos-spark_3-0_2-12</module>
+    <module>azure-cosmos-spark_2.12</module>
   </modules>
 
 </project>

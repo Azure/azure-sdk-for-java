@@ -282,7 +282,7 @@ cosmos_org.mockito:mockito-core;1.10.19
 cosmos_org.mpierce.metrics.reservoir:hdrhistogram-metrics-reservoir;1.1.0
 cosmos_org.hdrhistogram:HdrHistogram;2.1.12
 
-## Cosmos Spark connector under sdk\cosmos\azure-cosmos-spark_3-0_2-12\pom.xml
+## Cosmos Spark connector under sdk\cosmos\azure-cosmos-spark_2.12\pom.xml
 # Cosmos Spark connector runtime dependencies - provided by Spark runtime/host
 cosmos_org.apache.spark:spark-sql_2.12;3.0.1
 cosmos_org.scala-lang:scala-library;2.12.10
