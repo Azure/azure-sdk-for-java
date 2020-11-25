@@ -67,7 +67,7 @@ public class Paginator {
         int maxPageSize) {
 
         return getPaginatedQueryResultAsObservable(
-            () -> new FeedRangeCompositeFetcher<T>(
+            () -> new ChangeFeedFetcher<T>(
                 createRequestFunc,
                 executeFunc,
                 continuation,

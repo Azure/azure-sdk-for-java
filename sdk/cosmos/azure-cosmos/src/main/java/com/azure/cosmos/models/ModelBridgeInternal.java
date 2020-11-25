@@ -35,6 +35,8 @@ import com.azure.cosmos.implementation.User;
 import com.azure.cosmos.implementation.UserDefinedFunction;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.Warning;
+import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedMode;
+import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedStartFromInternal;
 import com.azure.cosmos.implementation.directconnectivity.Address;
 import com.azure.cosmos.implementation.query.PartitionedQueryExecutionInfoInternal;
 import com.azure.cosmos.implementation.query.QueryInfo;
@@ -495,15 +497,6 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static void populateChangeFeedRequestOptions(
-        CosmosChangeFeedRequestOptions options,
-        RxDocumentServiceRequest request,
-        String continuation) {
-
-        options.populateRequestOptions(request, continuation);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static ByteBuffer serializeJsonToByteBuffer(JsonSerializable jsonSerializable) {
         return jsonSerializable.serializeJsonToByteBuffer();
     }
@@ -706,6 +699,11 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static Map<String, Object> getPropertiesFromChangeFeedRequestOptions(CosmosChangeFeedRequestOptions options) {
+        return options.getProperties();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static Map<String, Object> getPropertiesFromQueryRequestOptions(CosmosQueryRequestOptions options) {
         return options.getProperties();
     }
@@ -752,5 +750,19 @@ public final class ModelBridgeInternal {
     public static <T> void setFeedResponseContinuationToken(String continuationToken, FeedResponse<T> response) {
         checkNotNull(response, "Argument 'response' must not be null.");
         response.setContinuationToken(continuationToken);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static ChangeFeedMode getChangeFeedMode(CosmosChangeFeedRequestOptions requestOptions) {
+        checkNotNull(requestOptions, "Argument 'requestOptions' must not be null.");
+        return requestOptions.getMode();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static ChangeFeedStartFromInternal getChangeFeedStartFromSettings(
+        CosmosChangeFeedRequestOptions requestOptions) {
+
+        checkNotNull(requestOptions, "Argument 'requestOptions' must not be null.");
+        return requestOptions.getStartFromSettings();
     }
 }

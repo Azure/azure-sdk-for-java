@@ -3,28 +3,32 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Strings;
-import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedRequestOptionsImpl;
+import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedStartFromInternal;
+import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState;
 import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
+import com.azure.cosmos.util.Beta;
 
 import java.time.Instant;
 import java.util.Map;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
+@Beta(Beta.SinceVersion.WHATEVER_NEW_VERSION)
 public final class CosmosChangeFeedRequestOptions {
     private static final Integer DEFAULT_MAX_ITEM_COUNT = 1000;
     private final FeedRangeInternal feedRangeInternal;
     private Integer maxItemCount;
     private ChangeFeedStartFromInternal startFromInternal;
     private Map<String, Object> properties;
+    private ChangeFeedMode mode;
 
     private CosmosChangeFeedRequestOptions(
         FeedRangeInternal feedRange,
-        ChangeFeedStartFromInternal startFromInternal) {
+        ChangeFeedStartFromInternal startFromInternal,
+        ChangeFeedMode mode) {
 
         super();
 
@@ -39,8 +43,18 @@ public final class CosmosChangeFeedRequestOptions {
         this.maxItemCount = DEFAULT_MAX_ITEM_COUNT;
         this.feedRangeInternal = feedRange;
         this.startFromInternal = startFromInternal;
+
+        if (mode != ChangeFeedMode.INCREMENTAL) {
+            throw new IllegalArgumentException(
+                String.format(
+                    "Argument 'mode' has unsupported change feed mode %s",
+                    mode.toString()));
+        }
+
+        this.mode = mode;
     }
 
+    @Beta(Beta.SinceVersion.WHATEVER_NEW_VERSION)
     public FeedRange getFeedRange() {
         return this.feedRangeInternal;
     }
@@ -51,6 +65,8 @@ public final class CosmosChangeFeedRequestOptions {
      *
      * @return the max number of items.
      */
+    @Beta(Beta.SinceVersion.WHATEVER_NEW_VERSION)
+
     public Integer getMaxItemCount() {
         return this.maxItemCount;
     }
@@ -62,10 +78,14 @@ public final class CosmosChangeFeedRequestOptions {
      * @param maxItemCount the max number of items.
      * @return the FeedOptionsBase.
      */
+    @Beta(Beta.SinceVersion.WHATEVER_NEW_VERSION)
+
     public CosmosChangeFeedRequestOptions setMaxItemCount(Integer maxItemCount) {
         this.maxItemCount = maxItemCount;
         return this;
     }
+
+    @Beta(Beta.SinceVersion.WHATEVER_NEW_VERSION)
 
     public CosmosChangeFeedRequestOptions setRequestContinuation(String continuation) {
 
@@ -101,6 +121,21 @@ public final class CosmosChangeFeedRequestOptions {
         return this;
     }
 
+    ChangeFeedMode getMode() {
+        return this.mode;
+    }
+
+    ChangeFeedStartFromInternal getStartFromSettings() {
+        return this.startFromInternal;
+    }
+
+    @Beta(Beta.SinceVersion.WHATEVER_NEW_VERSION)
+    public CosmosChangeFeedRequestOptions withFullFidelity() {
+        this.mode = ChangeFeedMode.FULL_FIDELITY;
+        return this;
+    }
+
+    @Beta(Beta.SinceVersion.WHATEVER_NEW_VERSION)
     public static CosmosChangeFeedRequestOptions createForProcessingFromBeginning(FeedRange feedRange) {
         if (feedRange == null) {
             throw new NullPointerException("feedRange");
@@ -108,26 +143,46 @@ public final class CosmosChangeFeedRequestOptions {
 
         return new CosmosChangeFeedRequestOptions(
             FeedRangeInternal.convert(feedRange),
-            ChangeFeedStartFromInternal.createFromBeginning());
+            ChangeFeedStartFromInternal.createFromBeginning(),
+            ChangeFeedMode.INCREMENTAL);
     }
+
+    @Beta(Beta.SinceVersion.WHATEVER_NEW_VERSION)
 
     public static CosmosChangeFeedRequestOptions createForProcessingFromContinuation(
         String continuation) {
 
-        final FeedRangeContinuation feedRangeContinuation =
-            toFeedRangeContinuation(continuation);
+        final ChangeFeedState changeFeedState = ChangeFeedState.fromJson(continuation);
 
-        final FeedRangeInternal feedRange = feedRangeContinuation.getFeedRange();
-        final String continuationToken = feedRangeContinuation.getContinuation();
-        if (continuationToken != null) {
+        return createForProcessingFromContinuation(changeFeedState);
+    }
+
+    static CosmosChangeFeedRequestOptions createForProcessingFromContinuation(
+        ChangeFeedState changeFeedState ) {
+
+        FeedRangeInternal feedRange = changeFeedState.getFeedRange();
+        FeedRangeContinuation continuation = changeFeedState.getContinuation();
+        ChangeFeedMode mode = changeFeedState.getMode();
+
+        if (continuation != null) {
+            String etag = continuation.getContinuation();
+            if (etag != null) {
+                return new CosmosChangeFeedRequestOptions(
+                    feedRange,
+                    ChangeFeedStartFromInternal.createFromEtagAndFeedRange(etag, feedRange),
+                    mode);
+            }
+
             return new CosmosChangeFeedRequestOptions(
                 feedRange,
-                ChangeFeedStartFromInternal.createFromContinuation(continuationToken));
+                ChangeFeedStartFromInternal.createFromBeginning(),
+                mode);
         }
 
         return new CosmosChangeFeedRequestOptions(
             feedRange,
-            ChangeFeedStartFromInternal.createFromBeginning());
+            changeFeedState.getStartFromSettings(),
+            mode);
     }
 
     static CosmosChangeFeedRequestOptions createForProcessingFromEtagAndFeedRange(
@@ -137,13 +192,17 @@ public final class CosmosChangeFeedRequestOptions {
         if (etag != null) {
             return new CosmosChangeFeedRequestOptions(
                 FeedRangeInternal.convert(feedRange),
-                ChangeFeedStartFromInternal.createFromContinuation(etag));
+                ChangeFeedStartFromInternal.createFromEtagAndFeedRange(etag, FeedRangeInternal.convert(feedRange)),
+                ChangeFeedMode.INCREMENTAL);
         }
 
         return new CosmosChangeFeedRequestOptions(
             FeedRangeInternal.convert(feedRange),
-            ChangeFeedStartFromInternal.createFromBeginning());
+            ChangeFeedStartFromInternal.createFromBeginning(),
+            ChangeFeedMode.INCREMENTAL);
     }
+
+    @Beta(Beta.SinceVersion.WHATEVER_NEW_VERSION)
 
     public static CosmosChangeFeedRequestOptions createForProcessingFromNow(FeedRange feedRange) {
         if (feedRange == null) {
@@ -152,8 +211,11 @@ public final class CosmosChangeFeedRequestOptions {
 
         return new CosmosChangeFeedRequestOptions(
             FeedRangeInternal.convert(feedRange),
-            ChangeFeedStartFromInternal.createFromNow());
+            ChangeFeedStartFromInternal.createFromNow(),
+            ChangeFeedMode.INCREMENTAL);
     }
+
+    @Beta(Beta.SinceVersion.WHATEVER_NEW_VERSION)
 
     public static CosmosChangeFeedRequestOptions createForProcessingFromPointInTime(
         Instant pointInTime,
@@ -169,17 +231,8 @@ public final class CosmosChangeFeedRequestOptions {
 
         return new CosmosChangeFeedRequestOptions(
             FeedRangeInternal.convert(feedRange),
-            ChangeFeedStartFromInternal.createFromPointInTime(pointInTime));
-    }
-
-    void populateRequestOptions(RxDocumentServiceRequest request, String continuation) {
-        ChangeFeedRequestOptionsImpl.populateRequestOptions(
-            this,
-            request,
-            this.startFromInternal,
-            this.feedRangeInternal,
-            continuation
-        );
+            ChangeFeedStartFromInternal.createFromPointInTime(pointInTime),
+            ChangeFeedMode.INCREMENTAL);
     }
 
     /**
@@ -187,7 +240,7 @@ public final class CosmosChangeFeedRequestOptions {
      *
      * @return Map of request options properties
      */
-    public Map<String, Object> getProperties() {
+    Map<String, Object> getProperties() {
         return properties;
     }
 
@@ -197,7 +250,7 @@ public final class CosmosChangeFeedRequestOptions {
      * @param properties the properties.
      * @return the FeedOptionsBase.
      */
-    public CosmosChangeFeedRequestOptions setProperties(Map<String, Object> properties) {
+    CosmosChangeFeedRequestOptions setProperties(Map<String, Object> properties) {
         this.properties = properties;
         return this;
     }

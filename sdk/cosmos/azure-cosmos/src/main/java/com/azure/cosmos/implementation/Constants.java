@@ -211,6 +211,18 @@ public final class Constants {
         public static final String FEED_RANGE_COMPOSITE_CONTINUATION_RESOURCE_ID = "Rid";
         public static final String FEED_RANGE_COMPOSITE_CONTINUATION_CONTINUATION = "Continuation";
 
+        // Change feed state
+        public static final String CHANGE_FEED_STATE_VERSION = "V";
+        public static final String CHANGE_FEED_STATE_RESOURCE_ID = "Rid";
+        public static final String CHANGE_FEED_STATE_MODE = "Mode";
+        public static final String CHANGE_FEED_STATE_CONTINUATION = "Continuation";
+        public static final String CHANGE_FEED_STATE_START_FROM = "StartFrom";
+
+        // Change feed startFrom
+        public static final String CHANGE_FEED_START_FROM_TYPE = "Type";
+        public static final String CHANGE_FEED_START_FROM_CONTINUATION = "Continuation";
+        public static final String CHANGE_FEED_START_FROM_POINT_IN_TIME_MS = "PointInTimeMs";
+        public static final String CHANGE_FEED_START_FROM_ETAG = "Etag";
     }
 
     public static final class UrlEncodingInfo {

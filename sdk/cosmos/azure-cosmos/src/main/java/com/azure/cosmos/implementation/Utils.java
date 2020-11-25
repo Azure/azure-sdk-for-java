@@ -4,6 +4,10 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedStartFromInternal;
+import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedStartFromInternalDeserializer;
+import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState;
+import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedStateDeserializer;
 import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.implementation.feedranges.FeedRangeContinuationDeserializer;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
@@ -89,6 +93,12 @@ public class Utils {
         customDeserializationModules.addDeserializer(
             FeedRangeContinuation.class,
             new FeedRangeContinuationDeserializer());
+        customDeserializationModules.addDeserializer(
+            ChangeFeedStartFromInternal.class,
+            new ChangeFeedStartFromInternalDeserializer());
+        customDeserializationModules.addDeserializer(
+            ChangeFeedState.class,
+            new ChangeFeedStateDeserializer());
         Utils.simpleObjectMapper.registerModule(customDeserializationModules);
 
         Utils.simpleObjectMapper.registerModule(new AfterburnerModule());

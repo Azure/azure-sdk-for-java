@@ -5,21 +5,16 @@ package com.azure.cosmos.implementation.feedranges;
 
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
-import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
-import com.azure.cosmos.implementation.routing.Range;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class FeedRangeContinuationDeserializer extends StdDeserializer<FeedRangeContinuation>  {
@@ -41,6 +36,15 @@ public class FeedRangeContinuationDeserializer extends StdDeserializer<FeedRange
 
         final JsonNode rootNode = parser.getCodec().readTree(parser);
         final ObjectMapper mapper = (ObjectMapper)parser.getCodec();
+
+        return deserializeFeedRangeContinuation(rootNode, mapper, parser);
+    }
+
+    public static FeedRangeContinuation deserializeFeedRangeContinuation(
+        JsonNode rootNode,
+        ObjectMapper mapper,
+        JsonParser parser) throws JsonMappingException {
+
         JsonNode versionNode = rootNode.get(Constants.Properties.FEED_RANGE_COMPOSITE_CONTINUATION_VERSION);
         if (versionNode == null || !versionNode.isInt()) {
             throw JsonMappingException.from(

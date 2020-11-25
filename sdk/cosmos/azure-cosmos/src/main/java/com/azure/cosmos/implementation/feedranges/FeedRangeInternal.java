@@ -92,6 +92,8 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
         }
     }
 
+    public abstract void removeProperties(JsonSerializable serializable) ;
+
     public static FeedRangeInternal tryParse(final String jsonString) {
         checkNotNull(jsonString, "Argument 'jsonString' must not be null");
         final ObjectMapper mapper = Utils.getSimpleObjectMapper();

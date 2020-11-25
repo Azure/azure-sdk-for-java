@@ -2,9 +2,17 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed.implementation;
 
+import com.azure.cosmos.implementation.JsonSerializable;
+import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
 import java.time.Instant;
 
-public abstract class ChangeFeedStartFromInternal {
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+
+public abstract class ChangeFeedStartFromInternal extends JsonSerializable {
     ChangeFeedStartFromInternal() {
     }
 
@@ -22,8 +30,8 @@ public abstract class ChangeFeedStartFromInternal {
         return new ChangeFeedStartFromPointInTimeImpl(pointInTime);
     }
 
-    public static ChangeFeedStartFromInternal createFromContinuation(String continuation) {
-        return new ChangeFeedStartFromContinuationImpl(continuation);
+    public static ChangeFeedStartFromInternal createFromEtagAndFeedRange(String etag, FeedRangeInternal feedRange) {
+        return new ChangeFeedStartFromEtagAndFeedRangeImpl(etag, feedRange);
     }
 
     private static final class InstanceHolder {
@@ -32,5 +40,21 @@ public abstract class ChangeFeedStartFromInternal {
 
         static final ChangeFeedStartFromNowImpl FROM_NOW_SINGLETON =
             new ChangeFeedStartFromNowImpl();
+    }
+
+    @Override
+    public String toString() {
+        return this.toJson();
+    }
+
+    public static ChangeFeedState fomJson(String json)  throws IOException {
+        checkNotNull(json, "Argument 'json' must not be null");
+        final ObjectMapper mapper = Utils.getSimpleObjectMapper();
+        return mapper.readValue(json, ChangeFeedState.class);
+    }
+
+    @Override
+    public void populatePropertyBag() {
+        super.populatePropertyBag();
     }
 }

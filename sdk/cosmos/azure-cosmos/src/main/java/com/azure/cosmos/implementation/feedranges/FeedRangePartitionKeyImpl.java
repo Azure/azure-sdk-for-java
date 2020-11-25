@@ -112,6 +112,12 @@ public final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
     }
 
     @Override
+    public void removeProperties(JsonSerializable serializable) {
+        checkNotNull(serializable, "Argument 'serializable' must not be null.");
+        serializable.remove(Constants.Properties.FEED_RANGE_PARTITION_KEY);
+    }
+
+    @Override
     public String toString() {
         return this.partitionKey.toJson();
     }

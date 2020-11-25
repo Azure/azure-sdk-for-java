@@ -3,6 +3,8 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState;
+import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.query.Paginator;
@@ -32,14 +34,15 @@ class ChangeFeedQueryImpl<T extends Resource> {
     private final Class<T> klass;
     private final CosmosChangeFeedRequestOptions options;
     private final ResourceType resourceType;
-    private final FeedRangeContinuation continuation;
+    private final ChangeFeedState changeFeedState;
 
     public ChangeFeedQueryImpl(
         RxDocumentClientImpl client,
         ResourceType resourceType,
         Class<T> klass,
         String collectionLink,
-        CosmosChangeFeedRequestOptions requestOptions) {
+        CosmosChangeFeedRequestOptions requestOptions,
+        ChangeFeedState changeFeedState) {
 
         checkNotNull(client, "Argument 'client' must not be null.");
         checkNotNull(resourceType, "Argument 'resourceType' must not be null.");
@@ -61,10 +64,16 @@ class ChangeFeedQueryImpl<T extends Resource> {
 
         FeedRangeInternal feedRange = (FeedRangeInternal)this.options.getFeedRange();
 
-        this.continuation = FeedRangeContinuation
-            .createForFullFeedRange(
+        if (changeFeedState != null) {
+            this.changeFeedState = changeFeedState;
+        } else {
+            this.changeFeedState = new ChangeFeedStateV1(
                 collectionLink,
-                feedRange);
+                feedRange,
+                ModelBridgeInternal.getChangeFeedMode(requestOptions),
+                ModelBridgeInternal.getChangeFeedStartFromSettings(requestOptions),
+                null);
+        }
     }
 
     public Flux<FeedResponse<T>> executeAsync() {
@@ -73,7 +82,7 @@ class ChangeFeedQueryImpl<T extends Resource> {
             options.getMaxItemCount() : -1;
 
         return Paginator.getChangeFeedQueryResultAsObservable(
-            this.continuation,
+            this.changeFeedState,
             this.createRequestFunc,
             this.executeFunc,
             this.klass,
@@ -81,8 +90,7 @@ class ChangeFeedQueryImpl<T extends Resource> {
             maxPageSize);
     }
 
-    private RxDocumentServiceRequest createDocumentServiceRequest(String continuationToken,
-                                                                  int pageSize) {
+    private RxDocumentServiceRequest createDocumentServiceRequest(int pageSize) {
 
         // TODO fabianm bullshit ????
 

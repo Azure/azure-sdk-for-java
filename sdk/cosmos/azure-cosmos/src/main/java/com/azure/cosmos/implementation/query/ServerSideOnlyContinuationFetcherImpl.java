@@ -13,7 +13,10 @@ import reactor.core.publisher.Mono;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+
 class ServerSideOnlyContinuationFetcherImpl<T extends Resource> extends Fetcher<T>{
+    private final BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc;
     private volatile String continuationToken;
 
     public ServerSideOnlyContinuationFetcherImpl(BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc,
@@ -23,7 +26,10 @@ class ServerSideOnlyContinuationFetcherImpl<T extends Resource> extends Fetcher<
                                                  int top,
                                                  int maxItemCount) {
 
-        super(createRequestFunc, executeFunc, isChangeFeed, top, maxItemCount);
+        super(executeFunc, isChangeFeed, top, maxItemCount);
+
+        checkNotNull(createRequestFunc, "Argument 'createRequestFunc' must not be null.");
+        this.createRequestFunc = createRequestFunc;
 
         this.continuationToken = continuationToken;
     }
@@ -41,8 +47,8 @@ class ServerSideOnlyContinuationFetcherImpl<T extends Resource> extends Fetcher<
     }
 
     @Override
-    protected String getRequestContinuation() {
-        return this.continuationToken;
+    protected RxDocumentServiceRequest createRequest(int maxItemCount) {
+        return this.createRequestFunc.apply(this.continuationToken, maxItemCount);
     }
 
     @Override

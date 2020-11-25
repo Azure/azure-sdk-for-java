@@ -14,10 +14,11 @@ import reactor.core.publisher.Mono;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+
 abstract class Fetcher<T extends Resource> {
     private final static Logger logger = LoggerFactory.getLogger(Fetcher.class);
 
-    private final BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc;
     private final Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc;
     private final boolean isChangeFeed;
 
@@ -26,13 +27,13 @@ abstract class Fetcher<T extends Resource> {
     private volatile int top;
 
     public Fetcher(
-        BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc,
         Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc,
         boolean isChangeFeed,
         int top,
         int maxItemCount) {
 
-        this.createRequestFunc = createRequestFunc;
+        checkNotNull(executeFunc, "Argument 'executeFunc' must not be null.");
+
         this.executeFunc = executeFunc;
         this.isChangeFeed = isChangeFeed;
 
@@ -57,11 +58,9 @@ abstract class Fetcher<T extends Resource> {
 
     protected abstract String applyServerResponseContinuation(String serverContinuationToken);
 
-    protected abstract boolean isFullyDrained(boolean isChangefeed, FeedResponse<T> response);
+    protected abstract boolean isFullyDrained(boolean isChangeFeed, FeedResponse<T> response);
 
     protected abstract String getContinuationForLogging();
-
-    protected abstract String getRequestContinuation();
 
     private void updateState(FeedResponse<T> response) {
         String transformedContinuation = this.applyServerResponseContinuation(response.getContinuationToken());
@@ -97,8 +96,10 @@ abstract class Fetcher<T extends Resource> {
             throw new IllegalStateException("INVALID state, trying to fetch more after completion");
         }
 
-        return createRequestFunc.apply(this.getRequestContinuation(), maxItemCount);
+        return this.createRequest(maxItemCount);
     }
+
+    protected abstract RxDocumentServiceRequest createRequest(int maxItemCount);
 
     private Mono<FeedResponse<T>> nextPage(RxDocumentServiceRequest request) {
         return executeFunc.apply(request).map(rsp -> {

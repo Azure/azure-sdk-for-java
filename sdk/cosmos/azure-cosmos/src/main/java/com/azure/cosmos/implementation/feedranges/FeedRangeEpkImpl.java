@@ -135,4 +135,10 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
             setProperty(serializable, Constants.Properties.RANGE, this.range);
         }
     }
+
+    @Override
+    public void removeProperties(JsonSerializable serializable) {
+        checkNotNull(serializable, "Argument 'serializable' must not be null.");
+        serializable.remove(Constants.Properties.RANGE);
+    }
 }

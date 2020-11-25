@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.ShouldRetryResult;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.Range;
@@ -52,7 +53,7 @@ public abstract class FeedRangeContinuation extends JsonSerializable {
         return this.feedRange;
     }
 
-    public abstract String getContinuation();
+    public abstract CompositeContinuationToken getCurrentContinuationToken();
 
     public abstract void replaceContinuation(String continuationToken);
 

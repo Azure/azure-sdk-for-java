@@ -136,13 +136,13 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
     }
 
     @Override
-    public String getContinuation() {
+    public CompositeContinuationToken getCurrentContinuationToken() {
         CompositeContinuationToken tokenSnapshot = this.currentToken;
         if (tokenSnapshot == null) {
             return null;
         }
 
-        return tokenSnapshot.getToken();
+        return tokenSnapshot;
     }
 
     @Override

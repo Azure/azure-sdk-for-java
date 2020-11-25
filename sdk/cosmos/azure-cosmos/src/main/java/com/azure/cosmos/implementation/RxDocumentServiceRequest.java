@@ -1031,9 +1031,11 @@ public class RxDocumentServiceRequest implements Cloneable {
         } else if (options instanceof RequestOptions) {
             return ((RequestOptions) options).getProperties();
         } else if (options instanceof CosmosQueryRequestOptions) {
-            return ModelBridgeInternal.getPropertiesFromQueryRequestOptions((CosmosQueryRequestOptions) options);
+            return ModelBridgeInternal.getPropertiesFromQueryRequestOptions(
+                (CosmosQueryRequestOptions) options);
         } else if (options instanceof CosmosChangeFeedRequestOptions) {
-            return ((CosmosChangeFeedRequestOptions) options).getProperties();
+            return ModelBridgeInternal.getPropertiesFromChangeFeedRequestOptions(
+                (CosmosChangeFeedRequestOptions) options);
         } else {
             return null;
         }
