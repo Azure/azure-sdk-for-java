@@ -301,7 +301,12 @@ class EventHubConnectionProcessorTest {
     @Test
     public void getRetryOptionsTest() {
         AmqpRetryOptions testRetryOption = eventHubConnectionProcessor.getRetryOptions();
-        Assertions.assertNotNull(testRetryOption);
+
+        Assertions.assertEquals(AMQP_RETRY_OPTIONS.getTryTimeout(), testRetryOption.getTryTimeout());
+        Assertions.assertEquals(AMQP_RETRY_OPTIONS.getDelay(), testRetryOption.getDelay());
+        Assertions.assertEquals(AMQP_RETRY_OPTIONS.getMaxRetries(), testRetryOption.getMaxRetries());
+        Assertions.assertEquals(AMQP_RETRY_OPTIONS.getMaxDelay(), testRetryOption.getMaxDelay());
+        Assertions.assertEquals(AMQP_RETRY_OPTIONS.getMode(), testRetryOption.getMode());
     }
 
     private static Flux<EventHubAmqpConnection> createSink(EventHubAmqpConnection[] connections) {
