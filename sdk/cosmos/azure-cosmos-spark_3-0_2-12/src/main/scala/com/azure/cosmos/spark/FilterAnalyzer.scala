@@ -11,24 +11,57 @@ import org.apache.spark.sql.sources.{
 
 import scala.collection.mutable.ListBuffer
 
-case class FilterProcessor() {
-
-  def processFilters(filters: Array[Filter]): CosmosParametrizedQuery = {
+case class FilterAnalyzer() {
+  def analyze(filters: Array[Filter]): AnalyzedFilters = {
     val queryBuilder = new StringBuilder
     queryBuilder.append("SELECT * FROM r")
     val list = ListBuffer[(String, Any)]()
 
-    if (filters.size > 0) {
-      queryBuilder.append(" WHERE ")
-      filters.zipWithIndex.foreach{ case (filter, index) =>
-          appendCosmosQueryPredicate(queryBuilder, list, filter)
-          if (index < filters.size - 1 ) {
-            queryBuilder.append(" AND ")
-          }
+    val filtersToBePushedDownToCosmos = ListBuffer[Filter]()
+    val filtersNotSupportedByCosmos = ListBuffer[Filter]()
+
+    val whereClauseBuilder = new StringBuilder
+
+    for(filter <- filters) {
+      val filterAsCosmosPredicate = new StringBuilder()
+      val canBePushedDownToCosmos = appendCosmosQueryPredicate(filterAsCosmosPredicate, list, filter)
+      if (canBePushedDownToCosmos) {
+        if (filtersToBePushedDownToCosmos.size > 0) {
+          whereClauseBuilder.append(" AND ")
+        }
+        filtersToBePushedDownToCosmos.append(filter)
+        whereClauseBuilder.append(filterAsCosmosPredicate)
+
+
+      } else {
+        filtersNotSupportedByCosmos.append(filter)
       }
     }
 
-    CosmosParametrizedQuery(queryBuilder.toString(), list.map(f => f._1).toList, list.map(f => f._2).toList)
+//    filters.foreach { case (filter, index) =>
+//      val filterAsCosmosPredicate = new StringBuilder()
+//      val canBePushedDownToCosmos = appendCosmosQueryPredicate(filterAsCosmosPredicate, list, filter)
+//      if (canBePushedDownToCosmos) {
+//        filtersToBePushedDownToCosmos.append(filter)
+//        whereClauseBuilder.append(filterAsCosmosPredicate)
+//
+//        if (index < filters.size - 1) {
+//          whereClauseBuilder.append(" AND ")
+//        }
+//      } else {
+//        filtersNotSupportedByCosmos.append(filter)
+//      }
+//    }
+
+    if (whereClauseBuilder.length > 0) {
+      queryBuilder.append(" WHERE ")
+      queryBuilder.append(whereClauseBuilder)
+    }
+
+    AnalyzedFilters(
+      CosmosParametrizedQuery(queryBuilder.toString(), list.map(f => f._1).toList, list.map(f => f._2).toList),
+      filtersToBePushedDownToCosmos.toArray,
+      filtersNotSupportedByCosmos.toArray)
   }
 
   /**
@@ -37,7 +70,7 @@ case class FilterProcessor() {
     * @return cosmosFieldpath
     */
   private def canonicalCosmosFieldPath(sparkFilterColumnName: String): String = {
-    val result = new StringBuilder(FilterProcessor.rootName)
+    val result = new StringBuilder(FilterAnalyzer.rootName)
     sparkFilterColumnName.split('.').foreach(cNamePart => result.append(s"['${normalizedFieldName(cNamePart)}']"))
     result.toString
   }
@@ -56,33 +89,39 @@ case class FilterProcessor() {
   // scalastyle:off multiple.string.literals
   private def appendCosmosQueryPredicate(queryBuilder: StringBuilder,
                                          list: scala.collection.mutable.ListBuffer[(String, Any)],
-                                         filter: Filter): Unit = {
+                                         filter: Filter): Boolean = {
     val pName = paramName(list.size)
     filter match {
       case EqualTo(attr, value) =>
         queryBuilder.append(canonicalCosmosFieldPath(attr)).append("=").append(pName)
         list.append((pName, value))
+        true
 
       case EqualNullSafe(attr, value) =>
         // TODO moderakh check the difference between EqualTo and EqualNullSafe
         queryBuilder.append(canonicalCosmosFieldPath(attr)).append("=").append(pName)
         list.append((pName, value))
+        true
 
       case LessThan(attr, value) =>
         queryBuilder.append(canonicalCosmosFieldPath(attr)).append("<").append(pName)
         list.append((pName, value))
+        true
 
       case GreaterThan(attr, value) =>
         queryBuilder.append(canonicalCosmosFieldPath(attr)).append(">").append(pName)
         list.append((pName, value))
+        true
 
       case LessThanOrEqual(attr, value) =>
         queryBuilder.append(canonicalCosmosFieldPath(attr)).append("<=").append(pName)
         list.append((pName, value))
+        true
 
       case GreaterThanOrEqual(attr, value) =>
         queryBuilder.append(canonicalCosmosFieldPath(attr)).append(">=").append(pName)
         list.append((pName, value))
+        true
 
       case In(attr, values) =>
         queryBuilder.append(canonicalCosmosFieldPath(attr)).append(" IN ")
@@ -96,39 +135,57 @@ case class FilterProcessor() {
             }
           ).mkString(","))
         queryBuilder.append(")")
+        true
 
       case StringStartsWith(attr, value: String) =>
         queryBuilder.append("STARTSWITH(").append(canonicalCosmosFieldPath(attr)).append(pName).append(")")
         list.append((pName, value))
+        true
 
       case StringEndsWith(attr, value: String) =>
         queryBuilder.append("ENDSWITH(").append(canonicalCosmosFieldPath(attr)).append(pName).append(")")
         list.append((pName, value))
+        true
 
       case StringContains(attr, value: String) =>
         queryBuilder.append("CONTAINS(").append(canonicalCosmosFieldPath(attr)).append(pName).append(")")
         list.append((pName, value))
+        true
 
       case IsNull(attr) =>
         queryBuilder.append(s"IS_NULL(${canonicalCosmosFieldPath(attr)})")
+        true
 
       case IsNotNull(attr) =>
         queryBuilder.append(s"NOT(IS_NULL(${canonicalCosmosFieldPath(attr)}))")
+        true
 
       case And(leftFilter, rightFilter) =>
-        queryBuilder.append(s"(${appendCosmosQueryPredicate(queryBuilder, list, leftFilter)}" +
-          s" AND ${appendCosmosQueryPredicate(queryBuilder, list, rightFilter)})")
+        queryBuilder.append("(")
+        val isLeftCosmosPredicate = appendCosmosQueryPredicate(queryBuilder, list, leftFilter)
+        queryBuilder.append(" AND ")
+        val isRightCosmosPredicate = appendCosmosQueryPredicate(queryBuilder, list, rightFilter)
+        queryBuilder.append(")")
+        isLeftCosmosPredicate && isRightCosmosPredicate
 
       case Or(leftFilter, rightFilter) =>
-        queryBuilder.append(s"(${appendCosmosQueryPredicate(queryBuilder, list, leftFilter)}" +
-          s" OR ${appendCosmosQueryPredicate(queryBuilder, list, rightFilter)})")
+        queryBuilder.append("(")
+        val isLeftCosmosPredicate = appendCosmosQueryPredicate(queryBuilder, list, leftFilter)
+        queryBuilder.append(" OR ")
+        val isRightCosmosPredicate = appendCosmosQueryPredicate(queryBuilder, list, rightFilter)
+        queryBuilder.append(")")
+        isLeftCosmosPredicate && isRightCosmosPredicate
 
       case Not(childFilter) =>
-        queryBuilder.append(s"NOT(${appendCosmosQueryPredicate(queryBuilder, list, childFilter)})")
+        queryBuilder.append("NOT(")
+        val isInnerCosmosPredicate = appendCosmosQueryPredicate(queryBuilder, list, childFilter)
+        queryBuilder.append(")")
+        isInnerCosmosPredicate
 
       case _: Filter =>
-      // TODO: moderakh we should collect unsupported ones and pass to DataSource v2
-      // as unsupported filters, then the filters will be applied by the spark platform itself
+        // TODO: moderakh we should collect unsupported ones and pass to DataSource v2
+        // as unsupported filters, then the filters will be applied by the spark platform itself
+        false
     }
   }
 
@@ -142,6 +199,6 @@ case class FilterProcessor() {
   }
 }
 
-object FilterProcessor {
+object FilterAnalyzer {
   private val rootName = "r"
 }
