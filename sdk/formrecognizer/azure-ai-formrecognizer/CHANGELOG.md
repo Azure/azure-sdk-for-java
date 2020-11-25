@@ -1,7 +1,16 @@
 # Release History
 
-## 3.1.0-beta.1 (Unreleased)
+## 3.1.0-beta.2 (Unreleased)
+
+
+## 3.1.0-beta.1 (2020-11-23)
+
+### Breaking changes
+
+- Defaults to the latest supported API version, which currently is `2.1-preview.2`.
+
 ### New Features
+
 - Added support for pre-built business card recognition.
 - Added support for pre-built invoices recognition.
 - Added implementation support to create a composed model from the `FormTrainingClient` by calling method `beginCreateComposedModel`.
@@ -22,11 +31,10 @@ Supported locales include support EN-US, EN-AU, EN-CA, EN-GB, EN-IN.
 - Added property `modelId` to `CustomFormSubmodel` and `TrainingDocumentInfo`.
 - Added properties `modelId` and `formTypeConfidence` to `RecognizedForm`.
 
-### Breaking changes
-- Defaults to the latest supported API version, which currently is `2.1-preview.1`.
-
 ## 3.0.3 (2020-11-10)
+
 ### Dependency updates
+
 - Update dependency version, `azure-core`, `azure-core-http-netty` and `azure-identity`.
 
 ## 3.0.2 (2020-10-06)

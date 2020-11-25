@@ -60,7 +60,7 @@ public class AzureAuthorizedClientRepository implements OAuth2AuthorizedClientRe
     }
 
     private String defaultClientRegistrationId() {
-        return repo.defaultClient().client().getRegistrationId();
+        return repo.getAzureClient().getClient().getRegistrationId();
     }
 
     private OAuth2AuthorizedClient createInitAuthzClient(OAuth2AuthorizedClient client,

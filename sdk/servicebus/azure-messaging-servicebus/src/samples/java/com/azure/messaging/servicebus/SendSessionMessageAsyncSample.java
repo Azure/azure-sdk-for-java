@@ -4,8 +4,6 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.util.BinaryData;
-import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
-import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 import java.util.List;
@@ -14,10 +12,10 @@ import java.util.concurrent.TimeUnit;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * Sample demonstrates how to send and receive a {@link ServiceBusMessage} to and from a session-enabled Azure Service
- * Bus queue.
+ * Sample demonstrates how to send a {@link ServiceBusMessage} to a session-enabled Azure Service Bus queue.
+ * Samples for receiving are {@link ReceiveNamedSessionAsyncSample} or {@link ReceiveNamedSessionSample}.
  */
-public class SendAndReceiveSessionMessageSample {
+public class SendSessionMessageAsyncSample {
     /**
      * Main method to invoke this demo on how to send and receive a {@link ServiceBusMessage} to and from a
      * session-enabled Azure Service Bus queue.
@@ -50,51 +48,25 @@ public class SendAndReceiveSessionMessageSample {
             .queueName(queueName)
             .buildAsyncClient();
 
-        // Instantiate a client that will be used to receive messages from the session.
-        ServiceBusSessionReceiverAsyncClient sessionReceiver = builder.sessionReceiver()
-            .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
-            .queueName(queueName)
-            .buildAsyncClient();
-
+        // Setting the sessionId parameter ensures all messages end up in the same session and are received in order.
         List<ServiceBusMessage> messages = Arrays.asList(
             new ServiceBusMessage(BinaryData.fromBytes("Hello".getBytes(UTF_8))).setSessionId(sessionId),
             new ServiceBusMessage(BinaryData.fromBytes("Bonjour".getBytes(UTF_8))).setSessionId(sessionId),
             new ServiceBusMessage(BinaryData.fromBytes("Guten tag".getBytes(UTF_8))).setSessionId(sessionId)
         );
 
-        // Create a message batch and send all messages.
+        // This sends all the messages in a single message batch.
         // This call returns a Mono<Void>, which we subscribe to. It completes successfully when the
         // event has been delivered to the Service queue or topic. It completes with an error if an exception occurred
         // while sending the message.
-        sender.createMessageBatch().flatMap(batch -> {
-            for (ServiceBusMessage message : messages) {
-                // There are only 3 messages, they should all fit in a batch. In a production case, we would send the
-                // full batch, and then create another one to add this message into.
-                if (!batch.tryAddMessage(message)) {
-                    return Mono.error(new IllegalStateException("Should have been able to add message to batch."));
-                }
-            }
-
-            // Publish the batch since we are done.
-            return sender.sendMessages(batch);
-        }).subscribe(unused -> System.out.println("Batch sent."),
+        sender.sendMessages(messages).subscribe(unused -> System.out.println("Batch sent."),
             error -> System.err.println("Error occurred while publishing message batch: " + error),
             () -> System.out.println("Batch send complete."));
-
-        // After sending that message, we receive the messages for that sessionId.
-        sessionReceiver.acceptSession(sessionId).flatMapMany(receiver -> receiver.receiveMessages().flatMap(message -> {
-            System.out.println("Received Message Id: " + message.getMessageId());
-            System.out.println("Received Message Session Id: " + message.getSessionId());
-            System.out.println("Received Message: " + message.getBody().toString());
-
-            return receiver.complete(message);
-        })).subscribe();
 
         // subscribe() is not a blocking call. We sleep here so the program does not end before the send is complete.
         TimeUnit.SECONDS.sleep(10);
 
-        // Close the sender and receiver.
+        // Close the sender.
         sender.close();
-        sessionReceiver.close();
     }
 }

@@ -6,6 +6,7 @@
 
 - Added `BinaryData` which allows for a format agnostic representation of binary information and supports
  `ObjectSerializer` for serialization and deserialization.
+- Added functionality to eagerly read HTTP response bodies into memory when they will be deserialized into a POJO.
 
 ## 1.10.0 (2020-10-29)
 
