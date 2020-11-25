@@ -31,7 +31,8 @@ public final class DataLakeStorageException extends HttpResponseException {
      * @param value the error code of the exception.
      */
     public DataLakeStorageException(String message, HttpResponse response, Object value) {
-        super(response.getRequest().getHttpMethod().equals(HttpMethod.HEAD)
+        super(response != null && response.getRequest() != null && response.getRequest().getHttpMethod() != null
+            && response.getRequest().getHttpMethod().equals(HttpMethod.HEAD)
             ? message.replaceFirst("(empty body)", response.getHeaders().getValue(ERROR_CODE))
             : message, response, value);
     }

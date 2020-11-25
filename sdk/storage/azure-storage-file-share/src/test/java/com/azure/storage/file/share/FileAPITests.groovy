@@ -747,7 +747,7 @@ class FileAPITests extends APISpec {
         primaryFileClient.setMetadataWithResponse(errorMetadata, null, null)
 
         then:
-        def e = notThrown(ShareStorageException)
+        def e = thrown(ShareStorageException)
         assertExceptionStatusCodeAndMessage(e, 400, ShareErrorCode.EMPTY_METADATA_KEY)
     }
 
