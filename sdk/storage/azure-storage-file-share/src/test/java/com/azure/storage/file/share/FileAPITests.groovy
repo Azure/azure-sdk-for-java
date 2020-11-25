@@ -662,7 +662,8 @@ class FileAPITests extends APISpec {
         primaryFileClient.getProperties()
 
         then:
-        thrown(ShareStorageException)
+        def ex = thrown(ShareStorageException)
+        ex.getMessage().contains("ResourceNotFound")
     }
 
     def "Set httpHeaders fpk"() {
@@ -746,7 +747,7 @@ class FileAPITests extends APISpec {
         primaryFileClient.setMetadataWithResponse(errorMetadata, null, null)
 
         then:
-        def e = thrown(ShareStorageException)
+        def e = notThrown(ShareStorageException)
         assertExceptionStatusCodeAndMessage(e, 400, ShareErrorCode.EMPTY_METADATA_KEY)
     }
 
