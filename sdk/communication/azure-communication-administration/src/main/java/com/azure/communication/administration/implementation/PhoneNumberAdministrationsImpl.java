@@ -9,10 +9,7 @@ import com.azure.communication.administration.models.AcquiredPhoneNumberUpdate;
 import com.azure.communication.administration.models.AcquiredPhoneNumbers;
 import com.azure.communication.administration.models.AssignmentType;
 import com.azure.communication.administration.models.Capabilities;
-import com.azure.communication.administration.models.CountriesResponse;
-import com.azure.communication.administration.models.CountryOffering;
 import com.azure.communication.administration.models.ErrorResponseException;
-import com.azure.communication.administration.models.GeographicAreaCodes;
 import com.azure.communication.administration.models.Operation;
 import com.azure.communication.administration.models.PhoneNumberAdministrationsPurchasePhoneNumbersResponse;
 import com.azure.communication.administration.models.PhoneNumberAdministrationsReleasePhoneNumberResponse;
@@ -22,7 +19,6 @@ import com.azure.communication.administration.models.PhoneNumberType;
 import com.azure.communication.administration.models.PurchaseRequest;
 import com.azure.communication.administration.models.SearchRequest;
 import com.azure.communication.administration.models.SearchResult;
-import com.azure.communication.administration.models.TollFreeAreaCodes;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -37,12 +33,10 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import java.util.List;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PhoneNumberAdministrations. */
@@ -70,46 +64,6 @@ public final class PhoneNumberAdministrationsImpl {
     @Host("{endpoint}")
     @ServiceInterface(name = "PhoneNumberAdminClie")
     private interface PhoneNumberAdministrationsService {
-        @Get("/availablePhoneNumbers/countries")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<CountriesResponse>> getCountries(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("locale") String locale,
-                @QueryParam("api-version") String apiVersion,
-                Context context);
-
-        @Get("/availablePhoneNumbers/countries/{countryCode}/areaCodes/tollFree")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<TollFreeAreaCodes>> getTollFreeAreaCodes(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("countryCode") String countryCode,
-                @QueryParam("api-version") String apiVersion,
-                Context context);
-
-        @Get("/availablePhoneNumbers/countries/{countryCode}/areaCodes/geographic")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<GeographicAreaCodes>> getGeographicAreaCodes(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("countryCode") String countryCode,
-                @QueryParam("locale") String locale,
-                @QueryParam("locationPath") String locationPath,
-                @QueryParam("api-version") String apiVersion,
-                Context context);
-
-        @Get("/availablePhoneNumbers/countries/{countryCode}/offerings")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<List<CountryOffering>>> getOfferings(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("countryCode") String countryCode,
-                @QueryParam("numberType") PhoneNumberType numberType,
-                @QueryParam("assignmentType") AssignmentType assignmentType,
-                @QueryParam("api-version") String apiVersion,
-                Context context);
-
         @Post("/availablePhoneNumbers/countries/{countryCode}/~search")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
@@ -159,7 +113,7 @@ public final class PhoneNumberAdministrationsImpl {
         @Get("/phoneNumbers")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<AcquiredPhoneNumbers>> getPhoneNumbers(
+        Mono<Response<AcquiredPhoneNumbers>> listPhoneNumbers(
                 @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
 
         @Get("/phoneNumbers/{phoneNumber}")
@@ -192,494 +146,11 @@ public final class PhoneNumberAdministrationsImpl {
     }
 
     /**
-     * Lists all countries with available phone numbers.
-     *
-     * @param locale Language locale for localizing location names.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a wrapper around a list of countries.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CountriesResponse>> getCountriesWithResponseAsync(String locale) {
-        return FluxUtil.withContext(
-                context ->
-                        service.getCountries(this.client.getEndpoint(), locale, this.client.getApiVersion(), context));
-    }
-
-    /**
-     * Lists all countries with available phone numbers.
-     *
-     * @param locale Language locale for localizing location names.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a wrapper around a list of countries.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CountriesResponse>> getCountriesWithResponseAsync(String locale, Context context) {
-        return service.getCountries(this.client.getEndpoint(), locale, this.client.getApiVersion(), context);
-    }
-
-    /**
-     * Lists all countries with available phone numbers.
-     *
-     * @param locale Language locale for localizing location names.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a wrapper around a list of countries.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CountriesResponse> getCountriesAsync(String locale) {
-        return getCountriesWithResponseAsync(locale)
-                .flatMap(
-                        (Response<CountriesResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * Lists all countries with available phone numbers.
-     *
-     * @param locale Language locale for localizing location names.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a wrapper around a list of countries.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CountriesResponse> getCountriesAsync(String locale, Context context) {
-        return getCountriesWithResponseAsync(locale, context)
-                .flatMap(
-                        (Response<CountriesResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * Lists all countries with available phone numbers.
-     *
-     * @param locale Language locale for localizing location names.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a wrapper around a list of countries.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CountriesResponse getCountries(String locale) {
-        return getCountriesAsync(locale).block();
-    }
-
-    /**
-     * Lists all countries with available phone numbers.
-     *
-     * @param locale Language locale for localizing location names.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a wrapper around a list of countries.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CountriesResponse getCountries(String locale, Context context) {
-        return getCountriesAsync(locale, context).block();
-    }
-
-    /**
-     * Lists available toll-free area codes for a country.
-     *
-     * @param countryCode The ISO 3166-2 country code.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a list of Toll-Free area codes.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TollFreeAreaCodes>> getTollFreeAreaCodesWithResponseAsync(String countryCode) {
-        return FluxUtil.withContext(
-                context ->
-                        service.getTollFreeAreaCodes(
-                                this.client.getEndpoint(), countryCode, this.client.getApiVersion(), context));
-    }
-
-    /**
-     * Lists available toll-free area codes for a country.
-     *
-     * @param countryCode The ISO 3166-2 country code.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a list of Toll-Free area codes.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TollFreeAreaCodes>> getTollFreeAreaCodesWithResponseAsync(
-            String countryCode, Context context) {
-        return service.getTollFreeAreaCodes(
-                this.client.getEndpoint(), countryCode, this.client.getApiVersion(), context);
-    }
-
-    /**
-     * Lists available toll-free area codes for a country.
-     *
-     * @param countryCode The ISO 3166-2 country code.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a list of Toll-Free area codes.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TollFreeAreaCodes> getTollFreeAreaCodesAsync(String countryCode) {
-        return getTollFreeAreaCodesWithResponseAsync(countryCode)
-                .flatMap(
-                        (Response<TollFreeAreaCodes> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * Lists available toll-free area codes for a country.
-     *
-     * @param countryCode The ISO 3166-2 country code.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a list of Toll-Free area codes.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TollFreeAreaCodes> getTollFreeAreaCodesAsync(String countryCode, Context context) {
-        return getTollFreeAreaCodesWithResponseAsync(countryCode, context)
-                .flatMap(
-                        (Response<TollFreeAreaCodes> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * Lists available toll-free area codes for a country.
-     *
-     * @param countryCode The ISO 3166-2 country code.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a list of Toll-Free area codes.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TollFreeAreaCodes getTollFreeAreaCodes(String countryCode) {
-        return getTollFreeAreaCodesAsync(countryCode).block();
-    }
-
-    /**
-     * Lists available toll-free area codes for a country.
-     *
-     * @param countryCode The ISO 3166-2 country code.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a list of Toll-Free area codes.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TollFreeAreaCodes getTollFreeAreaCodes(String countryCode, Context context) {
-        return getTollFreeAreaCodesAsync(countryCode, context).block();
-    }
-
-    /**
-     * Pass a component-url-encoded location to narrow down to a region.
-     *
-     * @param countryCode The ISO 3166-2 country code.
-     * @param locale Language locale for localizing location names.
-     * @param locationPath A URL-encoded location path starting with the region/state/province and optionally narrowed
-     *     down to municipality. Examples: Ontario, Washington%20State%2FRedmond.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a list of geographic area codes.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<GeographicAreaCodes>> getGeographicAreaCodesWithResponseAsync(
-            String countryCode, String locale, String locationPath) {
-        return FluxUtil.withContext(
-                context ->
-                        service.getGeographicAreaCodes(
-                                this.client.getEndpoint(),
-                                countryCode,
-                                locale,
-                                locationPath,
-                                this.client.getApiVersion(),
-                                context));
-    }
-
-    /**
-     * Pass a component-url-encoded location to narrow down to a region.
-     *
-     * @param countryCode The ISO 3166-2 country code.
-     * @param locale Language locale for localizing location names.
-     * @param locationPath A URL-encoded location path starting with the region/state/province and optionally narrowed
-     *     down to municipality. Examples: Ontario, Washington%20State%2FRedmond.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a list of geographic area codes.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<GeographicAreaCodes>> getGeographicAreaCodesWithResponseAsync(
-            String countryCode, String locale, String locationPath, Context context) {
-        return service.getGeographicAreaCodes(
-                this.client.getEndpoint(), countryCode, locale, locationPath, this.client.getApiVersion(), context);
-    }
-
-    /**
-     * Pass a component-url-encoded location to narrow down to a region.
-     *
-     * @param countryCode The ISO 3166-2 country code.
-     * @param locale Language locale for localizing location names.
-     * @param locationPath A URL-encoded location path starting with the region/state/province and optionally narrowed
-     *     down to municipality. Examples: Ontario, Washington%20State%2FRedmond.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a list of geographic area codes.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GeographicAreaCodes> getGeographicAreaCodesAsync(
-            String countryCode, String locale, String locationPath) {
-        return getGeographicAreaCodesWithResponseAsync(countryCode, locale, locationPath)
-                .flatMap(
-                        (Response<GeographicAreaCodes> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * Pass a component-url-encoded location to narrow down to a region.
-     *
-     * @param countryCode The ISO 3166-2 country code.
-     * @param locale Language locale for localizing location names.
-     * @param locationPath A URL-encoded location path starting with the region/state/province and optionally narrowed
-     *     down to municipality. Examples: Ontario, Washington%20State%2FRedmond.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a list of geographic area codes.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GeographicAreaCodes> getGeographicAreaCodesAsync(
-            String countryCode, String locale, String locationPath, Context context) {
-        return getGeographicAreaCodesWithResponseAsync(countryCode, locale, locationPath, context)
-                .flatMap(
-                        (Response<GeographicAreaCodes> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * Pass a component-url-encoded location to narrow down to a region.
-     *
-     * @param countryCode The ISO 3166-2 country code.
-     * @param locale Language locale for localizing location names.
-     * @param locationPath A URL-encoded location path starting with the region/state/province and optionally narrowed
-     *     down to municipality. Examples: Ontario, Washington%20State%2FRedmond.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a list of geographic area codes.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public GeographicAreaCodes getGeographicAreaCodes(String countryCode, String locale, String locationPath) {
-        return getGeographicAreaCodesAsync(countryCode, locale, locationPath).block();
-    }
-
-    /**
-     * Pass a component-url-encoded location to narrow down to a region.
-     *
-     * @param countryCode The ISO 3166-2 country code.
-     * @param locale Language locale for localizing location names.
-     * @param locationPath A URL-encoded location path starting with the region/state/province and optionally narrowed
-     *     down to municipality. Examples: Ontario, Washington%20State%2FRedmond.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a list of geographic area codes.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public GeographicAreaCodes getGeographicAreaCodes(
-            String countryCode, String locale, String locationPath, Context context) {
-        return getGeographicAreaCodesAsync(countryCode, locale, locationPath, context).block();
-    }
-
-    /**
-     * List available offerings for the given country.
-     *
-     * @param countryCode The ISO 3166-2 country code.
-     * @param numberType Filter by numberType.
-     * @param assignmentType Filter by assignmentType.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of available offerings.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<CountryOffering>>> getOfferingsWithResponseAsync(
-            String countryCode, PhoneNumberType numberType, AssignmentType assignmentType) {
-        return FluxUtil.withContext(
-                context ->
-                        service.getOfferings(
-                                this.client.getEndpoint(),
-                                countryCode,
-                                numberType,
-                                assignmentType,
-                                this.client.getApiVersion(),
-                                context));
-    }
-
-    /**
-     * List available offerings for the given country.
-     *
-     * @param countryCode The ISO 3166-2 country code.
-     * @param numberType Filter by numberType.
-     * @param assignmentType Filter by assignmentType.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of available offerings.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<CountryOffering>>> getOfferingsWithResponseAsync(
-            String countryCode, PhoneNumberType numberType, AssignmentType assignmentType, Context context) {
-        return service.getOfferings(
-                this.client.getEndpoint(),
-                countryCode,
-                numberType,
-                assignmentType,
-                this.client.getApiVersion(),
-                context);
-    }
-
-    /**
-     * List available offerings for the given country.
-     *
-     * @param countryCode The ISO 3166-2 country code.
-     * @param numberType Filter by numberType.
-     * @param assignmentType Filter by assignmentType.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of available offerings.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<CountryOffering>> getOfferingsAsync(
-            String countryCode, PhoneNumberType numberType, AssignmentType assignmentType) {
-        return getOfferingsWithResponseAsync(countryCode, numberType, assignmentType)
-                .flatMap(
-                        (Response<List<CountryOffering>> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * List available offerings for the given country.
-     *
-     * @param countryCode The ISO 3166-2 country code.
-     * @param numberType Filter by numberType.
-     * @param assignmentType Filter by assignmentType.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of available offerings.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<CountryOffering>> getOfferingsAsync(
-            String countryCode, PhoneNumberType numberType, AssignmentType assignmentType, Context context) {
-        return getOfferingsWithResponseAsync(countryCode, numberType, assignmentType, context)
-                .flatMap(
-                        (Response<List<CountryOffering>> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * List available offerings for the given country.
-     *
-     * @param countryCode The ISO 3166-2 country code.
-     * @param numberType Filter by numberType.
-     * @param assignmentType Filter by assignmentType.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of available offerings.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<CountryOffering> getOfferings(
-            String countryCode, PhoneNumberType numberType, AssignmentType assignmentType) {
-        return getOfferingsAsync(countryCode, numberType, assignmentType).block();
-    }
-
-    /**
-     * List available offerings for the given country.
-     *
-     * @param countryCode The ISO 3166-2 country code.
-     * @param numberType Filter by numberType.
-     * @param assignmentType Filter by assignmentType.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of available offerings.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<CountryOffering> getOfferings(
-            String countryCode, PhoneNumberType numberType, AssignmentType assignmentType, Context context) {
-        return getOfferingsAsync(countryCode, numberType, assignmentType, context).block();
-    }
-
-    /**
      * Search for available phone numbers to purchase.
      *
      * @param countryCode The ISO 3166-2 country code.
-     * @param numberType The phone number type.
-     * @param assignmentType The phone number's assignment type.
+     * @param numberType The type of a phone number.
+     * @param assignmentType The type that the phone number can be assigned to.
      * @param capabilities The capabilities of a phone number.
      * @param areaCode The desired area code.
      * @param quantity The desired quantity of phone numbers.
@@ -713,8 +184,8 @@ public final class PhoneNumberAdministrationsImpl {
      * Search for available phone numbers to purchase.
      *
      * @param countryCode The ISO 3166-2 country code.
-     * @param numberType The phone number type.
-     * @param assignmentType The phone number's assignment type.
+     * @param numberType The type of a phone number.
+     * @param assignmentType The type that the phone number can be assigned to.
      * @param capabilities The capabilities of a phone number.
      * @param areaCode The desired area code.
      * @param quantity The desired quantity of phone numbers.
@@ -748,8 +219,8 @@ public final class PhoneNumberAdministrationsImpl {
      * Search for available phone numbers to purchase.
      *
      * @param countryCode The ISO 3166-2 country code.
-     * @param numberType The phone number type.
-     * @param assignmentType The phone number's assignment type.
+     * @param numberType The type of a phone number.
+     * @param assignmentType The type that the phone number can be assigned to.
      * @param capabilities The capabilities of a phone number.
      * @param areaCode The desired area code.
      * @param quantity The desired quantity of phone numbers.
@@ -775,8 +246,8 @@ public final class PhoneNumberAdministrationsImpl {
      * Search for available phone numbers to purchase.
      *
      * @param countryCode The ISO 3166-2 country code.
-     * @param numberType The phone number type.
-     * @param assignmentType The phone number's assignment type.
+     * @param numberType The type of a phone number.
+     * @param assignmentType The type that the phone number can be assigned to.
      * @param capabilities The capabilities of a phone number.
      * @param areaCode The desired area code.
      * @param quantity The desired quantity of phone numbers.
@@ -804,8 +275,8 @@ public final class PhoneNumberAdministrationsImpl {
      * Search for available phone numbers to purchase.
      *
      * @param countryCode The ISO 3166-2 country code.
-     * @param numberType The phone number type.
-     * @param assignmentType The phone number's assignment type.
+     * @param numberType The type of a phone number.
+     * @param assignmentType The type that the phone number can be assigned to.
      * @param capabilities The capabilities of a phone number.
      * @param areaCode The desired area code.
      * @param quantity The desired quantity of phone numbers.
@@ -829,8 +300,8 @@ public final class PhoneNumberAdministrationsImpl {
      * Search for available phone numbers to purchase.
      *
      * @param countryCode The ISO 3166-2 country code.
-     * @param numberType The phone number type.
-     * @param assignmentType The phone number's assignment type.
+     * @param numberType The type of a phone number.
+     * @param assignmentType The type that the phone number can be assigned to.
      * @param capabilities The capabilities of a phone number.
      * @param areaCode The desired area code.
      * @param quantity The desired quantity of phone numbers.
@@ -1265,9 +736,9 @@ public final class PhoneNumberAdministrationsImpl {
      * @return the list of acquired phone numbers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AcquiredPhoneNumbers>> getPhoneNumbersWithResponseAsync() {
+    public Mono<Response<AcquiredPhoneNumbers>> listPhoneNumbersWithResponseAsync() {
         return FluxUtil.withContext(
-                context -> service.getPhoneNumbers(this.client.getEndpoint(), this.client.getApiVersion(), context));
+                context -> service.listPhoneNumbers(this.client.getEndpoint(), this.client.getApiVersion(), context));
     }
 
     /**
@@ -1280,8 +751,8 @@ public final class PhoneNumberAdministrationsImpl {
      * @return the list of acquired phone numbers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AcquiredPhoneNumbers>> getPhoneNumbersWithResponseAsync(Context context) {
-        return service.getPhoneNumbers(this.client.getEndpoint(), this.client.getApiVersion(), context);
+    public Mono<Response<AcquiredPhoneNumbers>> listPhoneNumbersWithResponseAsync(Context context) {
+        return service.listPhoneNumbers(this.client.getEndpoint(), this.client.getApiVersion(), context);
     }
 
     /**
@@ -1292,8 +763,8 @@ public final class PhoneNumberAdministrationsImpl {
      * @return the list of acquired phone numbers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AcquiredPhoneNumbers> getPhoneNumbersAsync() {
-        return getPhoneNumbersWithResponseAsync()
+    public Mono<AcquiredPhoneNumbers> listPhoneNumbersAsync() {
+        return listPhoneNumbersWithResponseAsync()
                 .flatMap(
                         (Response<AcquiredPhoneNumbers> res) -> {
                             if (res.getValue() != null) {
@@ -1314,8 +785,8 @@ public final class PhoneNumberAdministrationsImpl {
      * @return the list of acquired phone numbers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AcquiredPhoneNumbers> getPhoneNumbersAsync(Context context) {
-        return getPhoneNumbersWithResponseAsync(context)
+    public Mono<AcquiredPhoneNumbers> listPhoneNumbersAsync(Context context) {
+        return listPhoneNumbersWithResponseAsync(context)
                 .flatMap(
                         (Response<AcquiredPhoneNumbers> res) -> {
                             if (res.getValue() != null) {
@@ -1334,8 +805,8 @@ public final class PhoneNumberAdministrationsImpl {
      * @return the list of acquired phone numbers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AcquiredPhoneNumbers getPhoneNumbers() {
-        return getPhoneNumbersAsync().block();
+    public AcquiredPhoneNumbers listPhoneNumbers() {
+        return listPhoneNumbersAsync().block();
     }
 
     /**
@@ -1348,8 +819,8 @@ public final class PhoneNumberAdministrationsImpl {
      * @return the list of acquired phone numbers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AcquiredPhoneNumbers getPhoneNumbers(Context context) {
-        return getPhoneNumbersAsync(context).block();
+    public AcquiredPhoneNumbers listPhoneNumbers(Context context) {
+        return listPhoneNumbersAsync(context).block();
     }
 
     /**

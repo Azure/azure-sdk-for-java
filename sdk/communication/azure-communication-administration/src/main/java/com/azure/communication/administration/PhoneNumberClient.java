@@ -22,38 +22,6 @@ public final class PhoneNumberClient {
     PhoneNumberClient() {}
 
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PhoneNumberCountry> listAllSupportedCountries(String locale) {
-        throw new UnsupportedOperationException("not yet implemented");
-    }
-
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TollFreeAreaCodes getTollFreeAreaCodes(String countryCode) {
-        throw new UnsupportedOperationException("not yet implemented");
-    }
-
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public GeographicAreaCodes getGeographicAreaCodes(String countryCode) {
-        throw new UnsupportedOperationException("not yet implemented");
-    }
-
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<GeographicAreaCodes> getGeographicAreaCodesWithResponse(
-        String countryCode, String locale, String locationPath, Context context) {
-        throw new UnsupportedOperationException("not yet implemented");
-    }
-
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CountryOffering> listAllOfferings(String countryCode) {
-        throw new UnsupportedOperationException("not yet implemented");
-    }
-
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Response<CountryOffering>> listAllOfferingsWithResponse(
-        String countryCode, PhoneNumberType phoneNumberType, AssignmentType assignmentType, Context context) {
-        throw new UnsupportedOperationException("not yet implemented");
-    }
-
-    @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<Operation, SearchResult> beginPhoneNumberSearch(
         SearchRequest searchRequest,  String countryCode) {
         throw new UnsupportedOperationException("not yet implemented");

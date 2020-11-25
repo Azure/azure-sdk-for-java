@@ -23,38 +23,6 @@ public final class PhoneNumberAsyncClient {
     PhoneNumberAsyncClient() {}
 
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Flux<PhoneNumberCountry> listAllSupportedCountries(String locale) {
-        return Flux.error(new UnsupportedOperationException("not yet implemented"));
-    }
-
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TollFreeAreaCodes> getTollFreeAreaCodes(String countryCode) {
-        return Mono.error(new UnsupportedOperationException("not yet implemented"));
-    }
-
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GeographicAreaCodes> getGeographicAreaCodes(String countryCode) {
-        return Mono.error(new UnsupportedOperationException("not yet implemented"));
-    }
-
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<GeographicAreaCodes>> getGeographicAreaCodesWithResponse(
-        String countryCode, String locale, String locationPath) {
-        return Mono.error(new UnsupportedOperationException("not yet implemented"));
-    }
-
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Flux<CountryOffering> listAllOfferings(String countryCode) {
-        return Flux.error(new UnsupportedOperationException("not yet implemented"));
-    }
-
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Flux<Response<CountryOffering>> listAllOfferingsWithResponse(
-        String countryCode, PhoneNumberType phoneNumberType, AssignmentType assignmentType) {
-        return Flux.error(new UnsupportedOperationException("not yet implemented"));
-    }
-
-    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<Operation, SearchResult> beginPhoneNumberSearch(
         SearchRequest searchRequest,  String countryCode) {
         return new PollerFlux<Operation, SearchResult>(
