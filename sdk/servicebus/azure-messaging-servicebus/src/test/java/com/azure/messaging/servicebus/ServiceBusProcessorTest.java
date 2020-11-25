@@ -4,7 +4,7 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.implementation.TracerProvider;
-import com.azure.core.experimental.util.BinaryData;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.tracing.Tracer;

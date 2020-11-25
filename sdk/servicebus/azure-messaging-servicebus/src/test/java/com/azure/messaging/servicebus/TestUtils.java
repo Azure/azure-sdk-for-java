@@ -4,7 +4,7 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.exception.AmqpResponseCode;
-import com.azure.core.experimental.util.BinaryData;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.messaging.servicebus.administration.models.AccessRights;
 import com.azure.messaging.servicebus.administration.models.AuthorizationRule;

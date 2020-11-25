@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.experimental.util;
+package com.azure.core.util;
 
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.ObjectSerializer;
@@ -36,19 +35,19 @@ import java.util.Objects;
  * Code samples are presented below.
  *
  * <p><strong>Create an instance from Bytes</strong></p>
- * {@codesnippet com.azure.core.experimental.util.BinaryDocument.from#bytes}
+ * {@codesnippet com.azure.core.util.BinaryDocument.from#bytes}
  *
  * <p><strong>Create an instance from String</strong></p>
- * {@codesnippet com.azure.core.experimental.util.BinaryDocument.from#String}
+ * {@codesnippet com.azure.core.util.BinaryDocument.from#String}
  *
  * <p><strong>Create an instance from InputStream</strong></p>
- * {@codesnippet com.azure.core.experimental.util.BinaryDocument.from#Stream}
+ * {@codesnippet com.azure.core.util.BinaryDocument.from#Stream}
  *
  * <p><strong>Get an Object from {@link BinaryData}</strong></p>
- * {@codesnippet com.azure.core.experimental.util.BinaryDocument.to#ObjectAsync}
+ * {@codesnippet com.azure.core.util.BinaryDocument.to#ObjectAsync}
  *
  * <p><strong>Create an instance from Object</strong></p>
- * {@codesnippet com.azure.core.experimental.util.BinaryDocument.from#Object}
+ * {@codesnippet com.azure.core.util.BinaryDocument.from#Object}
  *
  * @see ObjectSerializer
  * @see JsonSerializer
@@ -78,9 +77,9 @@ public final class  BinaryData {
      * is not closed by this function.
      *
      * <p><strong>Create an instance from InputStream</strong></p>
-     * {@codesnippet com.azure.core.experimental.util.BinaryDocument.from#Stream}
+     * {@codesnippet com.azure.core.util.BinaryDocument.from#Stream}
      *
-     * @param inputStream to read bytes from.
+     * @param inputStream The {@link InputStream} to use as data backing the instance of {@link BinaryData}.
      * @throws UncheckedIOException If any error in reading from {@link InputStream}.
      * @throws NullPointerException If {@code inputStream} is null.
      * @return {@link BinaryData} representing the binary data.
@@ -112,7 +111,7 @@ public final class  BinaryData {
      * {@link InputStream} is not closed by this function. If the {@link InputStream} is {@code null}, an empty
      * {@link BinaryData} will be returned.
      *
-     * @param inputStream to read bytes from.
+     * @param inputStream The {@link InputStream} to use as data backing the instance of {@link BinaryData}.
      * @return {@link Mono} of {@link BinaryData} representing the binary data.
      */
     public static Mono<BinaryData> fromStreamAsync(InputStream inputStream) {
@@ -125,9 +124,9 @@ public final class  BinaryData {
      * empty {@link BinaryData} will be returned.
      *
      * <p><strong>Create an instance from String</strong></p>
-     * {@codesnippet com.azure.core.experimental.util.BinaryDocument.from#Flux}
+     * {@codesnippet com.azure.core.util.BinaryDocument.from#Flux}
      *
-     * @param data to use.
+     * @param data The byte buffer stream to use as data backing the instance of {@link BinaryData}.
      * @return {@link Mono} of {@link BinaryData} representing binary data.
      */
     public static Mono<BinaryData> fromFlux(Flux<ByteBuffer> data) {
@@ -143,7 +142,7 @@ public final class  BinaryData {
      * Creates a {@link BinaryData} instance with given data. The {@link String} is converted into bytes using UTF_8
      * character set. If the String is {@code null}, an empty {@link BinaryData} will be returned.
      *
-     * @param data to use.
+     * @param data The string to use as data backing the instance of {@link BinaryData}.
      * @return {@link BinaryData} representing binary data.
      */
     public static BinaryData fromString(String data) {
@@ -158,7 +157,7 @@ public final class  BinaryData {
      * Creates a {@link BinaryData} instance with given byte array data. If the byte array is {@code null}, an empty
      * {@link BinaryData} will be returned.
      *
-     * @param data to use.
+     * @param data The byte array to use as data backing the instance of {@link BinaryData}.
      * @return {@link BinaryData} representing the binary data.
      */
     public static BinaryData fromBytes(byte[] data) {
@@ -174,9 +173,9 @@ public final class  BinaryData {
      * The serializer on classpath must implement {@link JsonSerializer} interface. If the given Object is {@code null},
      * an empty {@link BinaryData} will be returned.
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.core.experimental.util.BinaryDocument.from.default.serializer#Object}
+     * {@codesnippet com.azure.core.util.BinaryDocument.from.default.serializer#Object}
 
-     * @param data The {@link Object} which needs to be serialized into bytes.
+     * @param data The object to use as data backing the instance of {@link BinaryData}.
      * @throws IllegalStateException If a {@link JsonSerializer} cannot be found on the classpath.
      * @return {@link BinaryData} representing the JSON serialized object.
      *
@@ -202,9 +201,9 @@ public final class  BinaryData {
      * and <a href="https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-gson" target="_blank">Gson based serializer</a>.
      *
      * <p><strong>Create an instance from Object</strong></p>
-     * {@codesnippet com.azure.core.experimental.util.BinaryDocument.from#Object}
+     * {@codesnippet com.azure.core.util.BinaryDocument.from#Object}
      *
-     * @param data The {@link Object} which needs to be serialized into bytes.
+     * @param data The object to use as data backing the instance of {@link BinaryData}.
      * @param serializer to use for serializing the object.
      * @throws NullPointerException If {@code serializer} is null.
      * @return {@link BinaryData} representing binary data.
@@ -233,7 +232,7 @@ public final class  BinaryData {
      * <a href="https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-jackson" target="_blank">Json Jackson serializer</a>
      * and <a href="https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-gson" target="_blank">Gson based serializer</a>.
      *
-     * @param data The {@link Object} which needs to be serialized into bytes.
+     * @param data The object to use as data backing the instance of {@link BinaryData}.
      * @param serializer to use for serializing the object.
      * @throws NullPointerException If {@code serializer} is null.
      * @return {@link Mono} of {@link BinaryData} representing the binary data.
@@ -276,7 +275,7 @@ public final class  BinaryData {
      * and <a href="https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-gson" target="_blank">Gson based serializer</a>.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.core.experimental.util.BinaryDocument.to#Object}
+     * {@codesnippet com.azure.core.util.BinaryDocument.to#Object}
      * @param clazz representing the type of the Object.
      * @param serializer to use deserialize data into type.
      * @param <T> Generic type that the data is deserialized into.
@@ -302,7 +301,7 @@ public final class  BinaryData {
      * and <a href="https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-gson" target="_blank">Gson based serializer</a>.
      *
      * <p><strong>Gets the specified object</strong></p>
-     * {@codesnippet com.azure.core.experimental.util.BinaryDocument.to#ObjectAsync}
+     * {@codesnippet com.azure.core.util.BinaryDocument.to#ObjectAsync}
      *
      * @param clazz representing the type of the Object.
      * @param serializer to use deserialize data into type.
@@ -343,7 +342,7 @@ public final class  BinaryData {
      * serializer found on classpath.
      *
      * <p><strong>Gets the specified object</strong></p>
-     * {@codesnippet com.azure.core.experimental.util.BinaryDocument.to#ObjectAsync}
+     * {@codesnippet com.azure.core.util.BinaryDocument.to#ObjectAsync}
      *
      * @param clazz representing the type of the Object.
      * @param <T> Generic type that the data is deserialized into.
@@ -361,7 +360,7 @@ public final class  BinaryData {
      * Provides {@link InputStream} for the data represented by this {@link BinaryData} object.
      *
      * <p><strong>Get InputStream from BinaryData</strong></p>
-     * {@codesnippet com.azure.core.experimental.util.BinaryDocument.to#Stream}
+     * {@codesnippet com.azure.core.util.BinaryDocument.to#Stream}
      *
      * @return {@link InputStream} representing the binary data.
      */
