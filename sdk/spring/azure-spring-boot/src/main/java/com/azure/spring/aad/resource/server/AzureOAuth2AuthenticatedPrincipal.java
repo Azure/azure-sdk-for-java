@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.spring.aad.resource.server;
 
 import static org.springframework.security.core.authority.AuthorityUtils.NO_AUTHORITIES;
@@ -37,8 +39,7 @@ public class AzureOAuth2AuthenticatedPrincipal implements OAuth2AuthenticatedPri
         this.headers = headers;
         this.tokenValue = tokenValue;
         this.attributes = Collections.unmodifiableMap(attributes);
-        this.authorities = authorities == null ?
-            NO_AUTHORITIES : Collections.unmodifiableCollection(authorities);
+        this.authorities = authorities == null ? NO_AUTHORITIES : Collections.unmodifiableCollection(authorities);
         toJwtClaimsSet(attributes);
     }
 
