@@ -198,7 +198,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from
      *     {@link ServiceBusReceiverAsyncClient#peekMessage() peekMessage}.
      * @throws IllegalStateException if receiver is already disposed.
-     * @throws IllegalArgumentException if message is already been settled.
+     * @throws IllegalArgumentException if the message is already settled.
      */
     public Mono<Void> abandon(ServiceBusReceivedMessage message) {
         return updateDisposition(message, DispositionStatus.ABANDONED, null, null,
@@ -225,7 +225,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from
      *     {@link ServiceBusReceiverAsyncClient#peekMessage() peekMessage}.
      * @throws IllegalStateException if receiver is already disposed.
-     * @throws IllegalArgumentException if message is already been settled.
+     * @throws IllegalArgumentException if the message is already settled.
      */
     public Mono<Void> abandon(ServiceBusReceivedMessage message, AbandonOptions options) {
         if (Objects.isNull(options)) {
@@ -251,7 +251,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from
      *     {@link ServiceBusReceiverAsyncClient#peekMessage() peekMessage}.
      * @throws IllegalStateException if receiver is already disposed.
-     * @throws IllegalArgumentException if message is already been settled.
+     * @throws IllegalArgumentException if the message is already settled.
      */
     public Mono<Void> complete(ServiceBusReceivedMessage message) {
         return updateDisposition(message, DispositionStatus.COMPLETED, null, null,
@@ -275,7 +275,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from
      *     {@link ServiceBusReceiverAsyncClient#peekMessage() peekMessage}.
      * @throws IllegalStateException if receiver is already disposed.
-     * @throws IllegalArgumentException if message is already been settled.
+     * @throws IllegalArgumentException if the message is already settled.
      */
     public Mono<Void> complete(ServiceBusReceivedMessage message, CompleteOptions options) {
         if (Objects.isNull(options)) {
@@ -298,10 +298,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @return A {@link Mono} that completes when the Service Bus defer operation finishes.
      * @throws NullPointerException if {@code message} is null.
      * @throws UnsupportedOperationException if the receiver was opened in
-     * {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from
-     * {@link ServiceBusReceiverAsyncClient#peekMessage() peekMessage}.
+     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from
+     *     {@link ServiceBusReceiverAsyncClient#peekMessage() peekMessage}.
      * @throws IllegalStateException if receiver is already disposed.
-     * @throws IllegalArgumentException if message is already been settled.
+     * @throws IllegalArgumentException if the message is already settled.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
      */
     public Mono<Void> defer(ServiceBusReceivedMessage message) {
@@ -327,7 +327,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from
      *     {@link ServiceBusReceiverAsyncClient#peekMessage() peekMessage}.
      * @throws IllegalStateException if receiver is already disposed.
-     * @throws IllegalArgumentException if message is already been settled.
+     * @throws IllegalArgumentException if the message is already settled.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
      */
     public Mono<Void> defer(ServiceBusReceivedMessage message, DeferOptions options) {
@@ -354,7 +354,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from
      *     {@link ServiceBusReceiverAsyncClient#peekMessage() peekMessage}.
      * @throws IllegalStateException if receiver is already disposed.
-     * @throws IllegalArgumentException if message is already been settled.
+     * @throws IllegalArgumentException if the message is already settled.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-dead-letter-queues">Dead letter
      *     queues</a>
      */
@@ -379,7 +379,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from
      *     {@link ServiceBusReceiverAsyncClient#peekMessage() peekMessage}.
      * @throws IllegalStateException if receiver is already disposed.
-     * @throws IllegalArgumentException if message is already been settled.
+     * @throws IllegalArgumentException if the message is already settled.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-dead-letter-queues">Dead letter
      *     queues</a>
      */
@@ -877,8 +877,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * Renews the session lock if this receiver is a session receiver.
      *
      * @return The next expiration time for the session lock.
-     * @throws IllegalStateException if the receiver is a non-session receiver.
-     * @throws IllegalStateException if receiver is already disposed.
+     * @throws IllegalStateException if the receiver is a non-session receiver or if receiver is already disposed.
      */
     public Mono<OffsetDateTime> renewSessionLock() {
         return renewSessionLock(receiverOptions.getSessionId());

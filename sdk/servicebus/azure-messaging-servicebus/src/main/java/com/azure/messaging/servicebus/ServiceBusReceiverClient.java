@@ -83,7 +83,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from
      *     {@link ServiceBusReceiverClient#peekMessage() peekMessage}.
      * @throws IllegalStateException if receiver is already disposed.
-     * @throws IllegalArgumentException if message is already been settled.
+     * @throws IllegalArgumentException if the message is already settled.
      */
     public void abandon(ServiceBusReceivedMessage message) {
         asyncClient.abandon(message).block(operationTimeout);
@@ -107,7 +107,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from
      *     {@link ServiceBusReceiverClient#peekMessage() peekMessage}.
      * @throws IllegalStateException if receiver is already disposed.
-     * @throws IllegalArgumentException if message is already been settled.
+     * @throws IllegalArgumentException if the message is already settled.
      */
     public void abandon(ServiceBusReceivedMessage message, AbandonOptions options) {
         asyncClient.abandon(message, options).block(operationTimeout);
@@ -123,7 +123,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from
      *     {@link ServiceBusReceiverClient#peekMessage() peekMessage}.
      * @throws IllegalStateException if receiver is already disposed.
-     * @throws IllegalArgumentException if message is already been settled.
+     * @throws IllegalArgumentException if the message is already settled.
      */
     public void complete(ServiceBusReceivedMessage message) {
         asyncClient.complete(message).block(operationTimeout);
@@ -144,7 +144,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from
      *     {@link ServiceBusReceiverClient#peekMessage() peekMessage}.
      * @throws IllegalStateException if receiver is already disposed.
-     * @throws IllegalArgumentException if message is already been settled.
+     * @throws IllegalArgumentException if the message is already settled.
      */
     public void complete(ServiceBusReceivedMessage message, CompleteOptions options) {
         asyncClient.complete(message, options).block(operationTimeout);
@@ -160,7 +160,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from
      *     {@link ServiceBusReceiverClient#peekMessage() peekMessage}.
      * @throws IllegalStateException if receiver is already disposed.
-     * @throws IllegalArgumentException if message is already been settled.
+     * @throws IllegalArgumentException if the message is already settled.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
      */
     public void defer(ServiceBusReceivedMessage message) {
@@ -184,7 +184,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from
      *     {@link ServiceBusReceiverClient#peekMessage() peekMessage}.
      * @throws IllegalStateException if receiver is already disposed.
-     * @throws IllegalArgumentException if message is already been settled.
+     * @throws IllegalArgumentException if the message is already settled.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
      */
     public void defer(ServiceBusReceivedMessage message, DeferOptions options) {
@@ -201,7 +201,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from
      *     {@link ServiceBusReceiverClient#peekMessage() peekMessage}.
      * @throws IllegalStateException if receiver is already disposed.
-     * @throws IllegalArgumentException if message is already been settled.
+     * @throws IllegalArgumentException if the message is already settled.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-dead-letter-queues">Dead letter
      *     queues</a>
      */
@@ -227,7 +227,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from
      *     {@link ServiceBusReceiverClient#peekMessage() peekMessage}.
      * @throws IllegalStateException if receiver is already disposed.
-     * @throws IllegalArgumentException if message is already been settled.
+     * @throws IllegalArgumentException if the message is already settled.
      */
     public void deadLetter(ServiceBusReceivedMessage message, DeadLetterOptions options) {
         asyncClient.deadLetter(message, options).block(operationTimeout);

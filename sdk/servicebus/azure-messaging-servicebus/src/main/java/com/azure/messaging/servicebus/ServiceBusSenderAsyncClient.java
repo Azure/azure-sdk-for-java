@@ -187,7 +187,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      *
      * @throws NullPointerException if {@code batch}, {@code transactionContext} or
      * {@code transactionContext.transactionID} is {@code null}.
-     * @throws AmqpException if {@code messages} is larger than the maximum allowed size of a single batch.
+     * @throws ServiceBusException if {@code messages} is larger than the maximum allowed size of a single batch.
      * @throws IllegalStateException if sender is already disposed.
      */
     public Mono<Void> sendMessages(Iterable<ServiceBusMessage> messages,
