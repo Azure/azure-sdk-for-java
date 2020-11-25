@@ -9,10 +9,16 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Sample demonstrates how to receive an {@link ServiceBusReceivedMessage} from an Azure Service Bus Queue and settle
- * it. Settling of message include {@link ServiceBusReceiverAsyncClient#complete(ServiceBusReceivedMessage) complete},
- * {@link ServiceBusReceiverAsyncClient#defer(ServiceBusReceivedMessage) defer},
- * {@link ServiceBusReceiverAsyncClient#abandon(ServiceBusReceivedMessage) abandon}, or
- * {@link ServiceBusReceiverAsyncClient#deadLetter(ServiceBusReceivedMessage) dead-letter} a message.
+ * it <b>manually</b>.
+ *
+ * Messages can be settled via:
+ * <ul>
+ * <li>{@link ServiceBusReceiverAsyncClient#complete(ServiceBusReceivedMessage) complete}</li>
+ * <li>{@link ServiceBusReceiverAsyncClient#defer(ServiceBusReceivedMessage) defer}</li>
+ * <li>{@link ServiceBusReceiverAsyncClient#abandon(ServiceBusReceivedMessage) abandon}</li>
+ * <li>{@link ServiceBusReceiverAsyncClient#deadLetter(ServiceBusReceivedMessage) dead-letter}</li>
+ * </ul>
+ *
  */
 public class ReceiveMessageAndSettleAsyncSample {
 
@@ -33,21 +39,26 @@ public class ReceiveMessageAndSettleAsyncSample {
             + "SharedAccessKey={key}";
 
         // Create a receiver.
-        // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
-        // "<<queue-name>>" will be the name of the Service Bus queue instance you created
-        // inside the Service Bus namespace.
+        // 1. "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
+        // 2. "<<queue-name>>" will be the name of the Service Bus queue instance you created
+        //    inside the Service Bus namespace.
+        // 3. Messages are not automatically settled when `disableAutoComplete()` is toggled.
         ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
             .connectionString(connectionString)
             .receiver()
+            .disableAutoComplete()
             .queueName("<<queue-name>>")
             .buildAsyncClient();
 
         Disposable subscription = receiver.receiveMessages()
             .flatMap(message -> {
-                boolean messageProcessed = false;
+                boolean messageProcessed = processMessage(message);
+
                 // Process the context and its message here.
                 // Change the `messageProcessed` according to you business logic and if you are able to process the
                 // message successfully.
+                // Messages MUST be manually settled because automatic settlement was disabled when creating the
+                // receiver.
                 if (messageProcessed) {
                     return receiver.complete(message);
                 } else {
@@ -63,5 +74,12 @@ public class ReceiveMessageAndSettleAsyncSample {
 
         // Close the receiver.
         receiver.close();
+    }
+
+    private static boolean processMessage(ServiceBusReceivedMessage message) {
+        System.out.printf("Sequence #: %s. Contents: %s%n", message.getSequenceNumber(),
+            message.getBody());
+
+        return true;
     }
 }

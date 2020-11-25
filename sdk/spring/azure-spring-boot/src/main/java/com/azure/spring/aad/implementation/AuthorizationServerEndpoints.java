@@ -5,7 +5,7 @@ package com.azure.spring.aad.implementation;
 
 import com.nimbusds.oauth2.sdk.util.StringUtils;
 
-public class IdentityEndpoints {
+public class AuthorizationServerEndpoints {
 
     private static final String IDENTITY_PLATFORM = "https://login.microsoftonline.com/";
 
@@ -13,13 +13,13 @@ public class IdentityEndpoints {
     private static final String TOKEN_ENDPOINT = "/oauth2/v2.0/token";
     private static final String JWK_SET_ENDPOINT = "/discovery/v2.0/keys";
 
-    private String baseUri;
+    private final String baseUri;
 
-    public IdentityEndpoints() {
+    public AuthorizationServerEndpoints() {
         this(IDENTITY_PLATFORM);
     }
 
-    public IdentityEndpoints(String baseUri) {
+    public AuthorizationServerEndpoints(String baseUri) {
         if (StringUtils.isBlank(baseUri)) {
             baseUri = IDENTITY_PLATFORM;
         }

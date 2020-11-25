@@ -110,16 +110,17 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
         if (CoreUtils.isNullOrEmpty(sessionId)) {
             return monoError(logger, new IllegalArgumentException("'sessionId' cannot be empty"));
         }
+
         final ReceiverOptions newReceiverOptions = new ReceiverOptions(receiverOptions.getReceiveMode(),
             receiverOptions.getPrefetchCount(), receiverOptions.getMaxLockRenewDuration(),
             receiverOptions.isEnableAutoComplete(), sessionId, null);
+        final ServiceBusSessionManager sessionSpecificManager = new ServiceBusSessionManager(entityPath, entityType,
+            connectionProcessor, tracerProvider, messageSerializer, newReceiverOptions);
 
-        ServiceBusReceiverAsyncClient sessionSpecificAsyncClient = new ServiceBusReceiverAsyncClient(
+        return sessionSpecificManager.getActiveLink().map(receiveLink -> new ServiceBusReceiverAsyncClient(
             fullyQualifiedNamespace, entityPath, entityType, newReceiverOptions, connectionProcessor,
-            ServiceBusConstants.OPERATION_TIMEOUT, tracerProvider, messageSerializer, () -> { });
-
-        return sessionSpecificAsyncClient.createConsumerWithReceiveLink()
-            .thenReturn(sessionSpecificAsyncClient);
+            ServiceBusConstants.OPERATION_TIMEOUT, tracerProvider, messageSerializer, () -> { },
+            sessionSpecificManager));
     }
 
     @Override

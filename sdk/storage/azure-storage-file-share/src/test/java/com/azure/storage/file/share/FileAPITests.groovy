@@ -85,13 +85,20 @@ class FileAPITests extends APISpec {
 
         when:
         ShareSnapshotInfo shareSnapshotInfo = shareClient.createSnapshot()
-        expectURL = expectURL + "?snapshot=" + shareSnapshotInfo.getSnapshot()
+        expectURL = expectURL + "?sharesnapshot=" + shareSnapshotInfo.getSnapshot()
         ShareFileClient newFileClient = shareBuilderHelper(interceptorManager, shareName).snapshot(shareSnapshotInfo.getSnapshot())
             .buildClient().getFileClient(filePath)
         def fileURL = newFileClient.getFileUrl()
 
         then:
         expectURL == fileURL
+
+        when:
+        def snapshotEndpoint = String.format("https://%s.file.core.windows.net/%s/%s?sharesnapshot=%s", accountName, shareName, filePath, shareSnapshotInfo.getSnapshot())
+        ShareFileClient client = getFileClient(StorageSharedKeyCredential.fromConnectionString(connectionString), snapshotEndpoint)
+
+        then:
+        client.getFileUrl() == snapshotEndpoint
     }
 
     def "Exists"() {

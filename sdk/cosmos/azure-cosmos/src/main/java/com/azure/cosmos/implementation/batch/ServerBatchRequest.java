@@ -59,27 +59,28 @@ public abstract class ServerBatchRequest {
         final ArrayNode arrayNode =  Utils.getSimpleObjectMapper().createArrayNode();
 
         for(CosmosItemOperation operation : operations) {
+            JsonSerializable operationJsonSerializable;
+
             if (operation instanceof ItemBatchOperation<?>) {
-                final ItemBatchOperation<?> itemBatchOperation = (ItemBatchOperation<?>) operation;
-                final JsonSerializable operationJsonSerializable = itemBatchOperation.serializeOperation();
-
-                // TODO(rakkuma): If the string contains unicode the byte encoding len will be more. Fix it.
-                // Issue: https://github.com/Azure/azure-sdk-for-java/issues/16112
-                final int operationSerializedLength = operationJsonSerializable.toString().length();
-
-                if (totalOperationCount != 0 &&
-                    (totalSerializedLength + operationSerializedLength > this.maxBodyLength || totalOperationCount + 1 > this.maxOperationCount)) {
-                    // Apply the limit only if at least there is one operation in selected operations.
-                    break;
-                }
-
-                totalSerializedLength += operationSerializedLength;
-                totalOperationCount++;
-
-                arrayNode.add(operationJsonSerializable.getPropertyBag());
+                operationJsonSerializable = ((ItemBatchOperation<?>) operation).serializeOperation();
+            } else if (operation instanceof ItemBulkOperation<?>) {
+                operationJsonSerializable = ((ItemBulkOperation<?>) operation).serializeOperation();
             } else {
                 throw new UnsupportedOperationException("Unknown CosmosItemOperation.");
             }
+
+            int operationSerializedLength = getOperationSerializedLength(operationJsonSerializable);
+
+            if (totalOperationCount != 0 &&
+                (totalSerializedLength + operationSerializedLength > this.maxBodyLength || totalOperationCount + 1 > this.maxOperationCount)) {
+                // Apply the limit only if at least there is one operation in selected operations.
+                break;
+            }
+
+            totalSerializedLength += operationSerializedLength;
+            totalOperationCount++;
+
+            arrayNode.add(operationJsonSerializable.getPropertyBag());
         }
 
         // TODO(rakkuma): This should change to byte array later as optimisation.
@@ -121,5 +122,11 @@ public abstract class ServerBatchRequest {
 
     void setShouldContinueOnError(boolean shouldContinueOnError) {
         this.shouldContinueOnError = shouldContinueOnError;
+    }
+
+    private int getOperationSerializedLength(JsonSerializable operationSerializable) {
+        String serializedValue = operationSerializable.toString();
+
+        return serializedValue.codePointCount(0, serializedValue.length());
     }
 }

@@ -3,7 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.core.experimental.util.BinaryData;
+import com.azure.core.util.BinaryData;
 import com.azure.messaging.servicebus.models.CreateMessageBatchOptions;
 
 import java.util.Arrays;
@@ -13,7 +13,7 @@ import java.util.List;
  * Sample demonstrates how to send {@link ServiceBusMessageBatch} to an Azure Service Bus Topic with the synchronous
  * sender.
  */
-public class SendMessageBatchSyncSample {
+public class SendMessageBatchSample {
     /**
      * Main method to invoke this demo on how to send a {@link ServiceBusMessageBatch} to an Azure Service Bus Topic.
      *
@@ -34,14 +34,15 @@ public class SendMessageBatchSyncSample {
             + "SharedAccessKey={key}";
 
         // Instantiate a client that will be used to call the service.
-        ServiceBusSenderClient senderClient = new ServiceBusClientBuilder()
+        ServiceBusSenderClient sender = new ServiceBusClientBuilder()
             .connectionString(connectionString)
             .sender()
             .topicName("<< TOPIC NAME >>")
             .buildClient();
 
         // Creates an ServiceBusMessageBatch where the ServiceBus.
-        ServiceBusMessageBatch currentBatch = senderClient.createMessageBatch(
+        // If no maximumSizeInBatch is set, the maximum message size is used.
+        ServiceBusMessageBatch currentBatch = sender.createMessageBatch(
             new CreateMessageBatchOptions().setMaximumSizeInBytes(1024));
 
         // We try to add as many messages as a batch can fit based on the maximum size and send to Service Bus when
@@ -53,8 +54,8 @@ public class SendMessageBatchSyncSample {
             }
 
             // The batch is full, so we create a new batch and send the batch.
-            senderClient.sendMessages(currentBatch);
-            currentBatch = senderClient.createMessageBatch();
+            sender.sendMessages(currentBatch);
+            currentBatch = sender.createMessageBatch();
 
             // Add that message that we couldn't before.
             if (!currentBatch.tryAddMessage(message)) {
@@ -63,10 +64,9 @@ public class SendMessageBatchSyncSample {
             }
         }
 
-        senderClient.sendMessages(currentBatch);
+        sender.sendMessages(currentBatch);
 
         //close the client
-        senderClient.close();
+        sender.close();
     }
-
 }

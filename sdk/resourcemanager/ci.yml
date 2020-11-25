@@ -10,7 +10,6 @@ trigger:
     include:
       - sdk/resourcemanager/
     exclude:
-      - sdk/resourcemanager/docs/
       - sdk/resourcemanager/tools/
 
 pr:
@@ -24,7 +23,6 @@ pr:
     include:
       - sdk/resourcemanager/
     exclude:
-      - sdk/resourcemanager/docs/
       - sdk/resourcemanager/tools/
 
 extends:
