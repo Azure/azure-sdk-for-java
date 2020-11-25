@@ -1,6 +1,6 @@
 # Release History
 
-## 1.3.4 (2020-11-24)
+## 1.4.0 (2020-11-24)
 
 ### New Features
 
