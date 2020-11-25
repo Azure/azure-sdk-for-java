@@ -22,7 +22,7 @@ case class FilterAnalyzer() {
 
     val whereClauseBuilder = new StringBuilder
 
-    for(filter <- filters) {
+    for (filter <- filters) {
       val filterAsCosmosPredicate = new StringBuilder()
       val canBePushedDownToCosmos = appendCosmosQueryPredicate(filterAsCosmosPredicate, list, filter)
       if (canBePushedDownToCosmos) {
@@ -37,22 +37,7 @@ case class FilterAnalyzer() {
         filtersNotSupportedByCosmos.append(filter)
       }
     }
-
-//    filters.foreach { case (filter, index) =>
-//      val filterAsCosmosPredicate = new StringBuilder()
-//      val canBePushedDownToCosmos = appendCosmosQueryPredicate(filterAsCosmosPredicate, list, filter)
-//      if (canBePushedDownToCosmos) {
-//        filtersToBePushedDownToCosmos.append(filter)
-//        whereClauseBuilder.append(filterAsCosmosPredicate)
-//
-//        if (index < filters.size - 1) {
-//          whereClauseBuilder.append(" AND ")
-//        }
-//      } else {
-//        filtersNotSupportedByCosmos.append(filter)
-//      }
-//    }
-
+    
     if (whereClauseBuilder.length > 0) {
       queryBuilder.append(" WHERE ")
       queryBuilder.append(whereClauseBuilder)
