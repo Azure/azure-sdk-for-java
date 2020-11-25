@@ -276,19 +276,18 @@ public final class  BinaryData {
      *
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.core.util.BinaryDocument.to#Object}
-     * @param clazz representing the type of the Object.
+     * @param typeReference representing the type of the Object.
      * @param serializer to use deserialize data into type.
      * @param <T> Generic type that the data is deserialized into.
-     * @throws NullPointerException If {@code serializer} or {@code clazz} is null.
+     * @throws NullPointerException If {@code serializer} or {@code typeReference} is null.
      * @return The {@link Object} of given type after deserializing the bytes.
      */
-    public <T> T toObject(Class<T> clazz, ObjectSerializer serializer) {
-        Objects.requireNonNull(clazz, "'clazz' cannot be null.");
+    public <T> T toObject(TypeReference<T> typeReference, ObjectSerializer serializer) {
+        Objects.requireNonNull(typeReference, "'typeReference' cannot be null.");
         Objects.requireNonNull(serializer, "'serializer' cannot be null.");
 
-        TypeReference<T>  ref = TypeReference.createInstance(clazz);
         InputStream jsonStream = new ByteArrayInputStream(this.data);
-        return serializer.deserialize(jsonStream, ref);
+        return serializer.deserialize(jsonStream, typeReference);
     }
 
     /**
@@ -303,20 +302,20 @@ public final class  BinaryData {
      * <p><strong>Gets the specified object</strong></p>
      * {@codesnippet com.azure.core.util.BinaryDocument.to#ObjectAsync}
      *
-     * @param clazz representing the type of the Object.
+     * @param typeReference representing the type of the Object.
      * @param serializer to use deserialize data into type.
      * @param <T> Generic type that the data is deserialized into.
-     * @throws NullPointerException If {@code clazz} or {@code serializer} is null.
+     * @throws NullPointerException If {@code typeReference} or {@code serializer} is null.
      * @return The {@link Object} of given type after deserializing the bytes.
      */
-    public  <T> Mono<T> toObjectAsync(Class<T> clazz, ObjectSerializer serializer) {
+    public <T> Mono<T> toObjectAsync(TypeReference<T> typeReference, ObjectSerializer serializer) {
 
-        if (Objects.isNull(clazz)) {
-            return monoError(LOGGER, new NullPointerException("'clazz' cannot be null."));
+        if (Objects.isNull(typeReference)) {
+            return monoError(LOGGER, new NullPointerException("'typeReference' cannot be null."));
         } else if (Objects.isNull(serializer)) {
             return monoError(LOGGER, new NullPointerException("'serializer' cannot be null."));
         }
-        return Mono.fromCallable(() -> toObject(clazz, serializer));
+        return Mono.fromCallable(() -> toObject(typeReference, serializer));
     }
 
     /**
@@ -324,17 +323,16 @@ public final class  BinaryData {
      * classpath. The serializer must implement {@link JsonSerializer} interface. A singleton instance of
      * {@link JsonSerializer} is kept for this class to use.
      *
-     * @param clazz representing the type of the Object.
+     * @param typeReference representing the type of the Object.
      * @param <T> Generic type that the data is deserialized into.
-     * @throws NullPointerException If {@code clazz} is null.
+     * @throws NullPointerException If {@code typeReference} is null.
      * @return The {@link Object} of given type after deserializing the bytes.
      */
-    public <T> T toObject(Class<T> clazz) {
-        Objects.requireNonNull(clazz, "'clazz' cannot be null.");
+    public <T> T toObject(TypeReference<T> typeReference) {
+        Objects.requireNonNull(typeReference, "'typeReference' cannot be null.");
 
-        TypeReference<T>  ref = TypeReference.createInstance(clazz);
         InputStream jsonStream = new ByteArrayInputStream(this.data);
-        return getDefaultSerializer().deserialize(jsonStream, ref);
+        return getDefaultSerializer().deserialize(jsonStream, typeReference);
     }
 
     /**
@@ -344,16 +342,16 @@ public final class  BinaryData {
      * <p><strong>Gets the specified object</strong></p>
      * {@codesnippet com.azure.core.util.BinaryDocument.to#ObjectAsync}
      *
-     * @param clazz representing the type of the Object.
+     * @param typeReference representing the type of the Object.
      * @param <T> Generic type that the data is deserialized into.
-     * @throws NullPointerException If {@code clazz} is null.
+     * @throws NullPointerException If {@code typeReference} is null.
      * @return The {@link Object} of given type after deserializing the bytes.
      */
-    public  <T> Mono<T> toObjectAsync(Class<T> clazz) {
-        if (Objects.isNull(clazz)) {
-            return monoError(LOGGER, new NullPointerException("'clazz' cannot be null."));
+    public <T> Mono<T> toObjectAsync(TypeReference<T> typeReference) {
+        if (Objects.isNull(typeReference)) {
+            return monoError(LOGGER, new NullPointerException("'typeReference' cannot be null."));
         }
-        return Mono.fromCallable(() -> toObject(clazz));
+        return Mono.fromCallable(() -> toObject(typeReference));
     }
 
     /**

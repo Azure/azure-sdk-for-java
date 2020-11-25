@@ -136,7 +136,7 @@ public class BinaryDataJavaDocCodeSnippet {
     }
 
     /**
-     * Codesnippets for {@link BinaryData#toObjectAsync(Class, ObjectSerializer)}.
+     * Codesnippets for {@link BinaryData#toObjectAsync(TypeReference, ObjectSerializer)}.
      */
     public void createToObjectAsync() throws InterruptedException {
         // BEGIN: com.azure.core.util.BinaryDocument.to#ObjectAsync
@@ -167,7 +167,7 @@ public class BinaryDataJavaDocCodeSnippet {
         BinaryData binaryData = BinaryData.fromObject(data, serializer);
 
         Disposable subscriber = binaryData
-            .toObjectAsync(Person.class, serializer)
+            .toObjectAsync(TypeReference.createInstance(Person.class), serializer)
             .map(person -> {
                 System.out.println(person.getName());
                 return true;
@@ -181,7 +181,7 @@ public class BinaryDataJavaDocCodeSnippet {
     }
 
     /**
-     * Codesnippets for {@link BinaryData#toObject(Class, ObjectSerializer)}.
+     * Codesnippets for {@link BinaryData#toObject(TypeReference, ObjectSerializer)}.
      */
     public void createToObject() {
         // BEGIN: com.azure.core.util.BinaryDocument.to#Object
@@ -211,7 +211,7 @@ public class BinaryDataJavaDocCodeSnippet {
             new MyJsonSerializer(); // Replace this with your Serializer
         BinaryData binaryData = BinaryData.fromObject(data, serializer);
 
-        Person person = binaryData.toObject(Person.class, serializer);
+        Person person = binaryData.toObject(TypeReference.createInstance(Person.class), serializer);
         // Lets print the name
         System.out.println("Name : " + person.getName());
 

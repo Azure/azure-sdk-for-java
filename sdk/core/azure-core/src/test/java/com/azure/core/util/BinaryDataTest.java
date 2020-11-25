@@ -42,7 +42,8 @@ public class BinaryDataTest {
         final BinaryData data = BinaryData.fromObject(actualValue, DEFAULT_SERIALIZER);
 
         // Assert
-        assertEquals(expectedValue, data.toObject(expectedValue.getClass(), DEFAULT_SERIALIZER));
+        assertEquals(expectedValue, data.toObject(TypeReference.createInstance(expectedValue.getClass()),
+            DEFAULT_SERIALIZER));
     }
 
     @Test
@@ -55,7 +56,8 @@ public class BinaryDataTest {
         final BinaryData data = BinaryData.fromObject(actualValue, DEFAULT_SERIALIZER);
 
         // Assert
-        assertEquals(expectedValue, data.toObject(expectedValue.getClass(), DEFAULT_SERIALIZER));
+        assertEquals(expectedValue, data.toObject(TypeReference.createInstance(expectedValue.getClass()),
+            DEFAULT_SERIALIZER));
     }
 
     @Test
@@ -200,7 +202,8 @@ public class BinaryDataTest {
         final BinaryData expectedBinaryData = BinaryData.fromObjectAsync(expected, DEFAULT_SERIALIZER).block();
 
         // Act & Assert
-        StepVerifier.create(expectedBinaryData.toObjectAsync(Person.class, DEFAULT_SERIALIZER))
+        StepVerifier.create(expectedBinaryData
+            .toObjectAsync(TypeReference.createInstance(Person.class), DEFAULT_SERIALIZER))
             .assertNext(actual -> {
                 System.out.println(actual.getName());
                 System.out.println(actual.getAge());
