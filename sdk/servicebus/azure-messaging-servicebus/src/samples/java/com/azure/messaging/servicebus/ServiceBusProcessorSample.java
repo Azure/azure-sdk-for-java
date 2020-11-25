@@ -84,7 +84,7 @@ public class ServiceBusProcessorSample {
 
             countdownLatch.countDown();
         } else if (reason == ServiceBusFailureReason.MESSAGE_LOCK_LOST) {
-            System.out.printf("Message lock lost for message: %s", context.getException().toString());
+            System.out.printf("Message lock lost for message: %s%n", context.getException());
         } else if (reason == ServiceBusFailureReason.SERVICE_BUSY) {
             try {
                 // Choosing an arbitrary amount of time to wait until trying again.
@@ -93,8 +93,8 @@ public class ServiceBusProcessorSample {
                 System.err.println("Unable to sleep for period of time");
             }
         } else {
-            System.out.printf("Error source %s, reason %s, message: %s%n", exception.getErrorSource(),
-                reason, context.getException().getMessage());
+            System.out.printf("Error source %s, reason %s, message: %s%n", context.getErrorSource(),
+                reason, context.getException());
         }
     }
 }
