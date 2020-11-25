@@ -109,7 +109,6 @@ public class PhoneNumberClientIntegrationTest extends PhoneNumberIntegrationTest
         assertNotNull(locationOptionsResponse.getValue().getLocationOptions().getLabelId());
     }
 
-
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void listAllReleases(HttpClient httpClient) {
