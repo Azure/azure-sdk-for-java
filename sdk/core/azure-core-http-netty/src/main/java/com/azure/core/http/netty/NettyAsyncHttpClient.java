@@ -73,7 +73,7 @@ class NettyAsyncHttpClient implements HttpClient {
         Objects.requireNonNull(request.getUrl(), "'request.getUrl()' cannot be null.");
         Objects.requireNonNull(request.getUrl().getProtocol(), "'request.getUrl().getProtocol()' cannot be null.");
 
-        boolean eagerlyReadResponse = (boolean) context.getData(EAGERLY_READ_RESPONSE_CONTEXT_KEY).orElse(false);
+        boolean eagerlyReadResponse = (boolean) context.getData("azure-eagerly-read-response").orElse(false);
 
         return nettyClient
             .request(HttpMethod.valueOf(request.getHttpMethod().toString()))
