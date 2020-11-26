@@ -59,7 +59,6 @@ public class PatchTest extends TestSuiteBase {
         cosmosPatch.remove("/description");
         cosmosPatch.replace("/taskNum", newTaskNum);
         cosmosPatch.set("/valid", false);
-        cosmosPatch.increment("/cost", -12.5);
 
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         CosmosItemResponse<ToDoActivity> response = this.container.patchItem(
@@ -78,9 +77,6 @@ public class PatchTest extends TestSuiteBase {
         assertThat(patchedItem.description).isNull();
         assertThat(patchedItem.taskNum).isEqualTo(newTaskNum);
         assertThat(patchedItem.valid).isEqualTo(false);
-
-        // As cost is decreased
-        assertThat(patchedItem.cost).isEqualTo(testItem.cost - 12.5);
 
         // read resource to validate the patch operation
         response = this.container.readItem(
