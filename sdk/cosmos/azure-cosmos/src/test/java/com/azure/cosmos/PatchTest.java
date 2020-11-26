@@ -88,6 +88,65 @@ public class PatchTest extends TestSuiteBase {
         assertThat(response.getItem()).isEqualTo(patchedItem);
     }
 
+    @Test(groups = {  "emulator"  }, timeOut = TIMEOUT * 100)
+    public void itemPatchContentResponseOnWriteEnabledTest() {
+        ToDoActivity testItem = ToDoActivity.createRandomItem(this.container);
+
+        int originalTaskNum = testItem.taskNum;
+        int newTaskNum = originalTaskNum + 10;
+
+        assertThat(testItem.children[1].status).isNull();
+
+        CosmosPatch cosmosPatch = CosmosPatch.create();
+        cosmosPatch.add("/children/1/CamelCase", "alpha");
+        cosmosPatch.remove("/description");
+        cosmosPatch.replace("/taskNum", newTaskNum);
+        cosmosPatch.set("/cost", 100);
+
+        CosmosItemRequestOptions options = new CosmosItemRequestOptions();
+        options.setContentResponseOnWriteEnabled(false);
+
+        CosmosItemResponse<ToDoActivity> response = this.container.patchItem(
+            testItem.id,
+            new PartitionKey(testItem.status),
+            cosmosPatch,
+            options,
+            ToDoActivity.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+        assertThat(response.getItem()).isNull(); // skip content is true
+
+        // Right now
+        CosmosPatch cosmosPatch2 = CosmosPatch.create();
+        cosmosPatch2.set("/valid", false);
+
+        CosmosItemResponse<ToDoActivity> response2 = this.container.patchItem(
+            testItem.id,
+            new PartitionKey(testItem.status),
+            cosmosPatch2,
+            ToDoActivity.class);
+
+        assertThat(response2.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+        ToDoActivity patchedItem = response2.getItem();
+        assertThat(patchedItem).isNotNull();
+
+        // Both the patch's result.
+        assertThat(patchedItem.children[1].camelCase).isEqualTo("alpha");
+        assertThat(patchedItem.description).isNull();
+        assertThat(patchedItem.taskNum).isEqualTo(newTaskNum);
+        assertThat(patchedItem.cost).isEqualTo(100);
+        assertThat(patchedItem.valid).isEqualTo(false);
+
+        // read resource to validate the patch operation
+        response = this.container.readItem(
+            testItem.id,
+            new PartitionKey(testItem.status),
+            options, ToDoActivity.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+        assertThat(response.getItem()).isEqualTo(patchedItem);
+    }
+
     @Test(groups = {  "emulator"  }, timeOut = TIMEOUT)
     public void itemPatchFailureTest() {
         // Create an item
@@ -147,7 +206,7 @@ public class PatchTest extends TestSuiteBase {
 
         public String id;
         public int taskNum;
-        public double cost ;
+        public double cost;
         public String description;
 
         @JsonProperty("mypk")

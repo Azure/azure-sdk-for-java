@@ -853,7 +853,7 @@ public class CosmosAsyncContainer {
      *
      * @return an {@link Mono} containing the Cosmos item resource response with the patched item or an error.
      */
-    @Beta(Beta.SinceVersion.V4_8_0)
+    @Beta(Beta.SinceVersion.V4_9_0)
     public <T> Mono<CosmosItemResponse<T>> patchItem(
         String itemId,
         PartitionKey partitionKey,
@@ -878,7 +878,7 @@ public class CosmosAsyncContainer {
      *
      * @return an {@link Mono} containing the Cosmos item resource response with the patched item or an error.
      */
-    @Beta(Beta.SinceVersion.V4_8_0)
+    @Beta(Beta.SinceVersion.V4_9_0)
     public <T> Mono<CosmosItemResponse<T>> patchItem(
         String itemId,
         PartitionKey partitionKey,
@@ -887,7 +887,7 @@ public class CosmosAsyncContainer {
         Class<T> itemType) {
 
         checkNotNull(itemId, "expected non-null itemId");
-        checkNotNull(partitionKey, "expected non-null partitionKey for cosmosPatch");
+        checkNotNull(partitionKey, "expected non-null partitionKey for patchItem");
         checkNotNull(cosmosPatch, "expected non-null cosmosPatch");
 
         if (options == null) {

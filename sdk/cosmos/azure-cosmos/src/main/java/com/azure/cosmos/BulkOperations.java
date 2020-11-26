@@ -272,4 +272,60 @@ public final class BulkOperations {
             item
         );
     }
+
+    /**
+     * Instantiate an operation for a patch in Bulk execution.
+     *
+     * @param id  the item id.
+     * @param cosmosPatch Represents a container having list of operations to be sequentially applied to the referred Cosmos item.
+     * @param partitionKey the partition key for the operation.
+     *
+     * @return the bulk operation.
+     */
+    @Beta(Beta.SinceVersion.V4_9_0)
+    public static CosmosItemOperation getPatchItemOperation(
+        String id,
+        CosmosPatch cosmosPatch,
+        PartitionKey partitionKey) {
+
+        checkNotNull(cosmosPatch, "expected non-null cosmosPatch");
+        checkNotNull(id, "expected non-null id");
+        checkNotNull(partitionKey, "expected non-null partitionKey");
+
+        return getPatchItemOperation(id, cosmosPatch, partitionKey, new BulkItemRequestOptions());
+    }
+
+    /**
+     * Instantiate an operation for a patch in Bulk execution.
+     *
+     * @param id  the item id.
+     * @param cosmosPatch Represents a container having list of operations to be sequentially applied to the referred Cosmos item.
+     * @param partitionKey the partition key for the operation.
+     * @param requestOptions The options for the item request.
+     *
+     * @return the bulk operation.
+     */
+    @Beta(Beta.SinceVersion.V4_9_0)
+    public static CosmosItemOperation getPatchItemOperation(
+        String id,
+        CosmosPatch cosmosPatch,
+        PartitionKey partitionKey,
+        BulkItemRequestOptions requestOptions) {
+
+        checkNotNull(cosmosPatch, "expected non-null cosmosPatch");
+        checkNotNull(id, "expected non-null id");
+        checkNotNull(partitionKey, "expected non-null partitionKey");
+
+        if (requestOptions == null) {
+            requestOptions = new BulkItemRequestOptions();
+        }
+
+        return new ItemBulkOperation<>(
+            CosmosItemOperationType.PATCH,
+            id,
+            partitionKey,
+            requestOptions.toRequestOptions(),
+            cosmosPatch
+        );
+    }
 }

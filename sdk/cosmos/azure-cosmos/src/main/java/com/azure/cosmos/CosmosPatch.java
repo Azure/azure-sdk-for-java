@@ -21,7 +21,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * Contains a list of Patch operations to be applied on an item. It is applied in an atomic manner and the operations
  * grammar follows above RFC.
  */
-@Beta(Beta.SinceVersion.V4_8_0)
+@Beta(Beta.SinceVersion.V4_9_0)
 public final class CosmosPatch {
 
     private final List<PatchOperation> patchOperations;
@@ -35,6 +35,7 @@ public final class CosmosPatch {
      *
      * @return A new instance of {@link CosmosPatch}.
      */
+    @Beta(Beta.SinceVersion.V4_9_0)
     public static CosmosPatch create() {
         return new CosmosPatch();
     }
@@ -52,6 +53,7 @@ public final class CosmosPatch {
      *
      * @return same instance of {@link CosmosPatch}
      */
+    @Beta(Beta.SinceVersion.V4_9_0)
     public <T> CosmosPatch add(String path, T value) {
 
         checkNotNull(value, "expected non-null value");
@@ -73,6 +75,7 @@ public final class CosmosPatch {
      *
      * @return same instance of {@link CosmosPatch}
      */
+    @Beta(Beta.SinceVersion.V4_9_0)
     public CosmosPatch remove(String path) {
 
         checkArgument(StringUtils.isNotEmpty(path), "path empty %s", path);
@@ -96,6 +99,7 @@ public final class CosmosPatch {
      *
      * @return same instance of {@link CosmosPatch}
      */
+    @Beta(Beta.SinceVersion.V4_9_0)
     public <T> CosmosPatch replace(String path, T value) {
 
         checkArgument(StringUtils.isNotEmpty(path), "path empty %s", path);
@@ -119,6 +123,7 @@ public final class CosmosPatch {
      *
      * @return same instance of {@link CosmosPatch}
      */
+    @Beta(Beta.SinceVersion.V4_9_0)
     public <T> CosmosPatch set(String path, T value) {
 
         checkNotNull(value, "expected non-null value");
@@ -141,6 +146,7 @@ public final class CosmosPatch {
      *
      * @return same instance of {@link CosmosPatch}
      */
+    @Beta(Beta.SinceVersion.V4_9_0)
     public CosmosPatch increment(String path, long value) {
 
         checkArgument(StringUtils.isNotEmpty(path), "path empty %s", path);
@@ -162,6 +168,7 @@ public final class CosmosPatch {
      *
      * @return same instance of {@link CosmosPatch}
      */
+    @Beta(Beta.SinceVersion.V4_9_0)
     public CosmosPatch increment(String path, double value) {
 
         checkArgument(StringUtils.isNotEmpty(path), "path empty %s", path);

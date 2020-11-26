@@ -469,7 +469,7 @@ public class CosmosContainer {
      *
      * @return the Cosmos item resource response with the patched item or an exception.
      */
-    @Beta(Beta.SinceVersion.V4_8_0)
+    @Beta(Beta.SinceVersion.V4_9_0)
     public <T> CosmosItemResponse<T> patchItem(
         String itemId,
         PartitionKey partitionKey,
@@ -491,7 +491,7 @@ public class CosmosContainer {
      *
      * @return the Cosmos item resource response with the patched item or an exception.
      */
-    @Beta(Beta.SinceVersion.V4_8_0)
+    @Beta(Beta.SinceVersion.V4_9_0)
     public <T> CosmosItemResponse<T> patchItem(
         String itemId,
         PartitionKey partitionKey,

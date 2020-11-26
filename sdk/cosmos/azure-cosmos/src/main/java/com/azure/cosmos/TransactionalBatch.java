@@ -330,7 +330,7 @@ public final class TransactionalBatch {
      *
      * @return The added operation.
      */
-    @Beta(Beta.SinceVersion.V4_8_0)
+    @Beta(Beta.SinceVersion.V4_9_0)
     public CosmosItemOperation patchItemOperation(String id, CosmosPatch cosmosPatch) {
         checkNotNull(id, "expected non-null id");
         checkNotNull(cosmosPatch, "expected non-null cosmosPatch");
@@ -347,7 +347,7 @@ public final class TransactionalBatch {
      *
      * @return The added operation.
      */
-    @Beta(Beta.SinceVersion.V4_8_0)
+    @Beta(Beta.SinceVersion.V4_9_0)
     public CosmosItemOperation patchItemOperation(
         String id,
         CosmosPatch cosmosPatch,

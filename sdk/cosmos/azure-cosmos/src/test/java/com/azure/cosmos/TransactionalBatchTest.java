@@ -505,6 +505,7 @@ public class TransactionalBatchTest extends BatchTestBase {
         this.verifyByRead(batchContainer, this.TestDocPk1ExistingA);
     }
 
+
     private void runWithError(
         CosmosContainer container,
         Function<TransactionalBatch, CosmosItemOperation> appendOperation,
