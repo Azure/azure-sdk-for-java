@@ -13,7 +13,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.springframework.http.HttpHeaders;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.util.StringUtils;
 
 import java.io.File;
@@ -25,7 +24,6 @@ import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.text.ParseException;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
