@@ -24,13 +24,15 @@ public class PhoneNumberIntegrationTestBase extends TestBase {
         .get("COMMUNICATION_LIVETEST_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
 
     protected static final String COUNTRY_CODE =
-        Configuration.getGlobalConfiguration().get("COUNTRY_CODE", "US");
+        Configuration.getGlobalConfiguration().get("COUNTRY_CODE", "US");   
+    protected static final String AREA_CODE =
+        Configuration.getGlobalConfiguration().get("AREA_CODE", "619");
     protected static final String LOCALE =
         Configuration.getGlobalConfiguration().get("LOCALE", "en-us");
     protected static final String LOCATION_OPTION_STATE =
         Configuration.getGlobalConfiguration().get("LOCATION_OPTION_STATE", "CA");
     protected static final String LOCATION_OPTION_CITY =
-        Configuration.getGlobalConfiguration().get("LOCATION_OPTION_CITY", "NOAM-US-CA-LA");
+        Configuration.getGlobalConfiguration().get("LOCATION_OPTION_CITY", "NOAM-US-CA-SD");
     protected static final String RESERVATION_OPTIONS_DESCRIPTION =
         Configuration.getGlobalConfiguration().get("RESERVATION_OPTIONS_DESCRIPTION", "testReservation20200014");
     protected static final String RESERVATION_OPTIONS_NAME =

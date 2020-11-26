@@ -29,6 +29,8 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.Context;
+
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -271,6 +273,9 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)")
     public void beginCreateReservationBeginPurchaseReservationTestCapabilitiesWithResponseBeginReleasePhoneNumber(HttpClient httpClient) {
         StepVerifier.create(
             // Setting up for phone number reservation creation
@@ -322,6 +327,9 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)")
     public void beginCreateReservationBeginPurchaseReservationTestConfigurationWithResponseBeginReleasePhoneNumber(HttpClient httpClient) {
         StepVerifier.create(
             // Setting up for phone number reservation creation
@@ -570,7 +578,7 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
 
         CreateReservationOptions createReservationOptions = new CreateReservationOptions();
         createReservationOptions
-            .setAreaCode("213")
+            .setAreaCode(AREA_CODE)
             .setDescription(RESERVATION_OPTIONS_DESCRIPTION)
             .setDisplayName(RESERVATION_OPTIONS_NAME)
             .setPhonePlanIds(phonePlanIds)
