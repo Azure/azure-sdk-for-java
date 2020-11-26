@@ -19,11 +19,11 @@ public class AzureClientRegistrationRepository implements ClientRegistrationRepo
     private final AzureClientRegistration azureClient;
     private final List<ClientRegistration> otherClients;
     private final Map<String, ClientRegistration> allClients;
-    private Map<String,AuthorizationProperties> authorizationProperties;
+    private Map<String, AuthorizationProperties> authorizationProperties;
 
     public AzureClientRegistrationRepository(AzureClientRegistration azureClient,
                                              List<ClientRegistration> otherClients,
-                                             Map<String,AuthorizationProperties> authorizationProperties) {
+                                             Map<String, AuthorizationProperties> authorizationProperties) {
         this.azureClient = azureClient;
         this.otherClients = new ArrayList<>(otherClients);
         this.authorizationProperties = authorizationProperties;

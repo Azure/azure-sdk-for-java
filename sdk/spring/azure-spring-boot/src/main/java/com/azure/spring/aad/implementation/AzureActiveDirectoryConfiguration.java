@@ -68,7 +68,7 @@ public class AzureActiveDirectoryConfiguration {
     private Set<String> allScopes() {
         Set<String> result = openidScopes();
         for (AuthorizationProperties authProperties : properties.getAuthorization().values()) {
-            if(!authProperties.getOnDemand()) {
+            if (!authProperties.getOnDemand()) {
                 result.addAll(authProperties.getScopes());
             }
         }

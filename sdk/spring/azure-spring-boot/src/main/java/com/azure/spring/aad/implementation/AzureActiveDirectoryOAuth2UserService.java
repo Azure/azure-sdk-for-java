@@ -56,7 +56,7 @@ public class AzureActiveDirectoryOAuth2UserService implements OAuth2UserService<
         OidcUser oidcUser = oidcUserService.loadUser(userRequest);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if(authentication != null){
+        if (authentication != null) {
             Set<String> newAuthorities = oidcUser.getAuthorities()
                                                  .stream()
                                                  .map(GrantedAuthority::getAuthority)
@@ -73,7 +73,7 @@ public class AzureActiveDirectoryOAuth2UserService implements OAuth2UserService<
 
             DefaultOidcUser defaultOidcUser = (DefaultOidcUser) session.getAttribute("defaultOidcUser");
             String nameAttributeKey = (String) session.getAttribute("nameAttributeKey");
-            return new DefaultOidcUser(authorities, defaultOidcUser.getIdToken() , nameAttributeKey);
+            return new DefaultOidcUser(authorities, defaultOidcUser.getIdToken(), nameAttributeKey);
         }
 
         Set<String> groups = Optional.of(userRequest)
@@ -104,8 +104,8 @@ public class AzureActiveDirectoryOAuth2UserService implements OAuth2UserService<
         // Create a copy of oidcUser but use the mappedAuthorities instead
         DefaultOidcUser defaultOidcUser = new DefaultOidcUser(authorities, oidcUser.getIdToken(), nameAttributeKey);
 
-        session.setAttribute("defaultOidcUser" , defaultOidcUser);
-        session.setAttribute("nameAttributeKey" , nameAttributeKey);
+        session.setAttribute("defaultOidcUser", defaultOidcUser);
+        session.setAttribute("nameAttributeKey", nameAttributeKey);
         return defaultOidcUser;
     }
 }
