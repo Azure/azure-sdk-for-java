@@ -66,7 +66,7 @@ public class AzureJwtBearerTokenAuthenticationConverterTest {
     public void testExtractCustomScopeAuthorities() {
         when(jwt.containsClaim("roles")).thenReturn(true);
         AzureJwtBearerTokenAuthenticationConverter azureJwtBearerTokenAuthenticationConverter
-            = new AzureJwtBearerTokenAuthenticationConverter("roles","ROLE_");
+            = new AzureJwtBearerTokenAuthenticationConverter("roles", "ROLE_");
         AbstractAuthenticationToken authenticationToken = azureJwtBearerTokenAuthenticationConverter.convert(jwt);
         assertThat(authenticationToken.getPrincipal()).isExactlyInstanceOf(AzureOAuth2AuthenticatedPrincipal.class);
         AzureOAuth2AuthenticatedPrincipal principal = (AzureOAuth2AuthenticatedPrincipal) authenticationToken
