@@ -15,16 +15,19 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.util.StringUtils;
 
 import javax.naming.ServiceUnavailableException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.azure.spring.autoconfigure.aad.AADOAuth2ErrorCode.CONDITIONAL_ACCESS_POLICY;
 import static com.azure.spring.autoconfigure.aad.AADOAuth2ErrorCode.INVALID_REQUEST;
 import static com.azure.spring.autoconfigure.aad.AADOAuth2ErrorCode.SERVER_SERVER;
+import static com.azure.spring.autoconfigure.aad.Constants.ROLE_PREFIX;
 
 /**
  * This implementation will retrieve group info of user from Microsoft Graph and map groups to {@link
@@ -46,7 +49,7 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
     public OidcUser loadUser(OidcUserRequest userRequest) throws OAuth2AuthenticationException {
         // Delegate to the default implementation for loading a user
         OidcUser oidcUser = oidcUserService.loadUser(userRequest);
-        final Set<SimpleGrantedAuthority> mappedAuthorities;
+        final Set<SimpleGrantedAuthority> authorities;
         try {
             // https://github.com/MicrosoftDocs/azure-docs/issues/8121#issuecomment-387090099
             // In AAD App Registration configure oauth2AllowImplicitFlow to true
@@ -63,7 +66,19 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
                     aadAuthenticationProperties.getTenantId()
                 )
                 .accessToken();
-            mappedAuthorities = azureADGraphClient.getGrantedAuthorities(graphApiToken);
+            Set<String> groups = azureADGraphClient.getGroups(graphApiToken);
+            Set<String> groupRoles = groups.stream()
+                                           .filter(aadAuthenticationProperties::isAllowedGroup)
+                                           .map(group -> ROLE_PREFIX + group)
+                                           .collect(Collectors.toSet());
+            Set<String> allRoles = oidcUser.getAuthorities()
+                                           .stream()
+                                           .map(GrantedAuthority::getAuthority)
+                                           .collect(Collectors.toSet());
+            allRoles.addAll(groupRoles);
+            authorities = allRoles.stream()
+                                  .map(SimpleGrantedAuthority::new)
+                                  .collect(Collectors.toSet());
         } catch (MalformedURLException e) {
             throw toOAuth2AuthenticationException(INVALID_REQUEST, "Failed to acquire token for Graph API.", e);
         } catch (ServiceUnavailableException e) {
@@ -85,10 +100,10 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
                     .map(ClientRegistration::getProviderDetails)
                     .map(ClientRegistration.ProviderDetails::getUserInfoEndpoint)
                     .map(ClientRegistration.ProviderDetails.UserInfoEndpoint::getUserNameAttributeName)
-                    .filter(s -> !s.isEmpty())
+                    .filter(StringUtils::hasText)
                     .orElse(AADTokenClaim.NAME);
         // Create a copy of oidcUser but use the mappedAuthorities instead
-        return new DefaultOidcUser(mappedAuthorities, oidcUser.getIdToken(), nameAttributeKey);
+        return new DefaultOidcUser(authorities, oidcUser.getIdToken(), nameAttributeKey);
     }
 
     private OAuth2AuthenticationException toOAuth2AuthenticationException(String errorCode,
