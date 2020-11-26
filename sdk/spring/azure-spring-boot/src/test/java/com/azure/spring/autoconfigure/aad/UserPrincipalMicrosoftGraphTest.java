@@ -28,6 +28,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
@@ -100,9 +101,8 @@ public class UserPrincipalMicrosoftGraphTest {
                 .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
                 .withBody(userGroupsJson)));
 
-        assertThat(graphClientMock.getGrantedAuthorities(MicrosoftGraphConstants.BEARER_TOKEN))
+        assertThat(graphClientMock.getGroups(MicrosoftGraphConstants.BEARER_TOKEN))
             .isNotEmpty()
-            .extracting(GrantedAuthority::getAuthority)
             .containsExactly("ROLE_group1");
 
         verify(getRequestedFor(urlMatching("/memberOf"))
@@ -112,7 +112,7 @@ public class UserPrincipalMicrosoftGraphTest {
 
     @Test
     public void getGroups() throws Exception {
-        aadAuthenticationProperties.setActiveDirectoryGroups(Arrays.asList("group1", "group2", "group3"));
+        aadAuthenticationProperties.getUserGroup().setAllowedGroups(Arrays.asList("group1", "group2", "group3"));
         this.graphClientMock = new AzureADGraphClient(clientId, clientSecret, aadAuthenticationProperties,
             serviceEndpointsProperties);
 
@@ -123,12 +123,9 @@ public class UserPrincipalMicrosoftGraphTest {
                 .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
                 .withBody(userGroupsJson)));
 
-        final Collection<? extends GrantedAuthority> authorities = graphClientMock
-            .getGrantedAuthorities(MicrosoftGraphConstants.BEARER_TOKEN);
-
-        assertThat(authorities)
+        Set<String> groups = graphClientMock.getGroups(MicrosoftGraphConstants.BEARER_TOKEN);
+        assertThat(groups)
             .isNotEmpty()
-            .extracting(GrantedAuthority::getAuthority)
             .containsExactlyInAnyOrder("ROLE_group1", "ROLE_group2", "ROLE_group3");
 
         verify(getRequestedFor(urlMatching("/memberOf"))

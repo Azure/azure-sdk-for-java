@@ -146,15 +146,6 @@ public class AzureADGraphClient {
         return membership.getObjectType().equals(aadAuthenticationProperties.getUserGroup().getValue());
     }
 
-    /**
-     * @param graphApiToken token of graph api.
-     * @return set of SimpleGrantedAuthority
-     * @throws IOException throw exception if get groups failed by IOException.
-     */
-    public Set<SimpleGrantedAuthority> getGrantedAuthorities(String graphApiToken) throws IOException {
-        return toGrantedAuthoritySet(getGroups(graphApiToken));
-    }
-
     public Set<SimpleGrantedAuthority> toGrantedAuthoritySet(final Set<String> groups) {
         Set<SimpleGrantedAuthority> grantedAuthoritySet =
             groups.stream()
