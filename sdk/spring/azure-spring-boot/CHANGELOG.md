@@ -5,7 +5,6 @@
 
 ## 3.0.0-beta.1 (2020-11-18)
 ### Breaking Changes
-- Check scope parameter for AAD authorization requests before configuration. Necessary permissions would be automatically added if needed.
 - Update `com.azure` group id to `com.azure.spring`.
 - Deprecated azure-spring-boot-metrics-starter.
 - Change group id from `com.microsoft.azure` to `com.azure.spring`.
