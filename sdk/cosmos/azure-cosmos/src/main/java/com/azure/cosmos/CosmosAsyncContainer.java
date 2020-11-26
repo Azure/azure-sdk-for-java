@@ -1139,8 +1139,16 @@ public class CosmosAsyncContainer {
             .patchDocument(getItemLink(itemId), cosmosPatch, ModelBridgeInternal.toRequestOptions(options))
             .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType, getItemDeserializer()));
 
-        return database.getClient().getTracerProvider().traceEnabledCosmosItemResponsePublisher(responseMono,
-            context, this.patchItemSpanName, database.getId(), database.getClient().getServiceEndpoint());
+        return database.getClient().getTracerProvider().traceEnabledCosmosItemResponsePublisher(
+            responseMono,
+            context,
+            this.patchItemSpanName,
+            this.getId(),
+            database.getId(),
+            database.getClient(),
+            ModelBridgeInternal.getConsistencyLevel(options),
+            OperationType.Update,
+            ResourceType.Document);
     }
 
     private <T> Mono<CosmosItemResponse<T>> upsertItemInternal(T item, CosmosItemRequestOptions options, Context context) {
