@@ -264,21 +264,6 @@ public final class ServiceBusReceivedMessage {
     }
 
     /**
-     * Gets the label for the message.
-     *
-     * <p>
-     * This property enables the application to indicate the purpose of the message to the receiver in a standardized
-     * fashion, similar to an email subject line. The mapped AMQP property is "subject".
-     * </p>
-     *
-     * @return The label for the message.
-     * @see ServiceBusMessage#getSubject()
-     */
-    public String getLabel() {
-        return amqpAnnotatedMessage.getProperties().getSubject();
-    }
-
-    /**
      * Gets the lock token for the current message.
      *
      * <p>
@@ -463,6 +448,21 @@ public final class ServiceBusReceivedMessage {
      */
     public String getSessionId() {
         return getRawAmqpMessage().getProperties().getGroupId();
+    }
+
+    /**
+     * Gets the subject for the message.
+     *
+     * <p>
+     * This property enables the application to indicate the purpose of the message to the receiver in a standardized
+     * fashion, similar to an email subject line. The mapped AMQP property is "subject".
+     * </p>
+     *
+     * @return The subject for the message.
+     * @see ServiceBusMessage#getSubject()
+     */
+    public String getSubject() {
+        return amqpAnnotatedMessage.getProperties().getSubject();
     }
 
     /**

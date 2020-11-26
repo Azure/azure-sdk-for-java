@@ -261,7 +261,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @param sessionId Session id of the message to peek from. {@code null} if there is no session.
      *
      * @return A peeked {@link ServiceBusReceivedMessage}.
-     * @throws IllegalStateException if receiver is already disposed.
+     * @throws IllegalStateException if receiver is already disposed or the receiver is a non-session receiver.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
     ServiceBusReceivedMessage peekMessage(String sessionId) {

@@ -7,6 +7,8 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.ProcessKind;
+import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusProcessorClientBuilder;
+import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder;
 import com.azure.messaging.servicebus.implementation.models.ServiceBusProcessorClientOptions;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
@@ -39,7 +41,7 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  * The processor client for processing Service Bus messages. {@link ServiceBusProcessorClient} provides a push-based
  * mechanism that invokes the message processing callback when a message is received or the error handler when an error
  * occurs when receiving messages. A {@link ServiceBusProcessorClient} can be created to process messages for a
- * session-enabled or non session-enabled Service Bus entity.
+ * session-enabled or non session-enabled Service Bus entity. It supports auto-settlement of messages by default.
  *
  * <p><strong>Create and run a processor</strong></p>
  * {@codesnippet com.azure.messaging.servicebus.servicebusprocessorclient#instantiation}
@@ -47,7 +49,8 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  * <p><strong>Create and run a session-enabled processor</strong></p>
  * {@codesnippet com.azure.messaging.servicebus.servicebusprocessorclient#session-instantiation}
  *
- * @see ServiceBusClientBuilder
+ * @see ServiceBusProcessorClientBuilder
+ * @see ServiceBusSessionProcessorClientBuilder
  */
 public final class ServiceBusProcessorClient implements AutoCloseable {
 

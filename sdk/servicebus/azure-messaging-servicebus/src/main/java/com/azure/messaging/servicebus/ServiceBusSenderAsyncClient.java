@@ -143,9 +143,9 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      * @return The {@link Mono} the finishes this operation on service bus resource.
      *
      * @throws NullPointerException if {@code message} is {@code null}.
-     * @throws AmqpException if {@code message} is larger than the maximum allowed size of a single message.
      * @throws IllegalStateException if sender is already disposed.
-     * @throws ServiceBusException if the message could not be sent.
+     * @throws ServiceBusException if {@code message} is larger than the maximum allowed size of a single message or
+     *      the message could not be sent.
      */
     public Mono<Void> sendMessage(ServiceBusMessage message) {
         if (Objects.isNull(message)) {
@@ -165,8 +165,8 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      * @throws NullPointerException if {@code message}, {@code transactionContext} or
      *      {@code transactionContext.transactionId} is {@code null}.
      * @throws IllegalStateException if sender is already disposed.
-     * @throws AmqpException if {@code message} is larger than the maximum allowed size of a single message.
-     * @throws ServiceBusException if the message could not be sent.
+     * @throws ServiceBusException if {@code message} is larger than the maximum allowed size of a single message or
+     *      the message could not be sent.
      */
     public Mono<Void> sendMessage(ServiceBusMessage message, ServiceBusTransactionContext transactionContext) {
         if (Objects.isNull(transactionContext)) {
@@ -191,9 +191,9 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      *
      * @throws NullPointerException if {@code batch}, {@code transactionContext} or
      *      {@code transactionContext.transactionId} is {@code null}.
-     * @throws AmqpException if {@code messages} are larger than the maximum allowed size of a single message.
      * @throws IllegalStateException if sender is already disposed.
-     * @throws ServiceBusException if messages could not be sent.
+     * @throws ServiceBusException if {@code messages} are larger than the maximum allowed size of a single message or
+     *      the message could not be sent.
      */
     public Mono<Void> sendMessages(Iterable<ServiceBusMessage> messages,
         ServiceBusTransactionContext transactionContext) {
@@ -217,8 +217,8 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      * @return A {@link Mono} that completes when all messages have been sent to the Service Bus resource.
      *
      * @throws NullPointerException if {@code messages} is {@code null}.
-     * @throws AmqpException if {@code messages} are larger than the maximum allowed size of a single message.
-     * @throws ServiceBusException if the messages could not be sent.
+     * @throws ServiceBusException if {@code messages} are larger than the maximum allowed size of a single message or
+     *      the message could not be sent.
      * @throws IllegalStateException if sender is already disposed.
      */
     public Mono<Void> sendMessages(Iterable<ServiceBusMessage> messages) {
