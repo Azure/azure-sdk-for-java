@@ -15,45 +15,45 @@ public final class SearchResult {
     /*
      * The search id.
      */
-    @JsonProperty(value = "id")
+    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
      * The phone numbers that are available. Can be fewer than the desired
      * search quantity.
      */
-    @JsonProperty(value = "phoneNumbers")
+    @JsonProperty(value = "phoneNumbers", required = true)
     private List<String> phoneNumbers;
 
     /*
      * The phoner number type.
      */
-    @JsonProperty(value = "numberType")
+    @JsonProperty(value = "numberType", required = true)
     private PhoneNumberType numberType;
 
     /*
      * The phone number's assignment type.
      */
-    @JsonProperty(value = "assignmentType")
+    @JsonProperty(value = "assignmentType", required = true)
     private AssignmentType assignmentType;
 
     /*
      * The phone number's capabilities.
      */
-    @JsonProperty(value = "capabilities")
+    @JsonProperty(value = "capabilities", required = true)
     private Capabilities capabilities;
 
     /*
      * The monthly cost for an individual phone number.
      */
-    @JsonProperty(value = "monthlyRate")
+    @JsonProperty(value = "monthlyRate", required = true)
     private MonthlyRate monthlyRate;
 
     /*
      * The date that this search result expires and phone numbers are no longer
      * on hold. A search result expires in less than 15min.
      */
-    @JsonProperty(value = "searchExpiresBy")
+    @JsonProperty(value = "searchExpiresBy", required = true)
     private OffsetDateTime searchExpiresBy;
 
     /**

@@ -17,6 +17,7 @@ import com.azure.communication.administration.models.PhoneNumberAdministrationsS
 import com.azure.communication.administration.models.PhoneNumberAdministrationsUpdatePhoneNumberResponse;
 import com.azure.communication.administration.models.PhoneNumberType;
 import com.azure.communication.administration.models.PurchaseRequest;
+import com.azure.communication.administration.models.SearchCapabilities;
 import com.azure.communication.administration.models.SearchRequest;
 import com.azure.communication.administration.models.SearchResult;
 import com.azure.core.annotation.BodyParam;
@@ -33,6 +34,10 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
@@ -143,6 +148,12 @@ public final class PhoneNumberAdministrationsImpl {
                 @PathParam("phoneNumber") String phoneNumber,
                 @QueryParam("api-version") String apiVersion,
                 Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<Response<AcquiredPhoneNumbers>> listPhoneNumbersNext(
+                @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
     /**
@@ -165,7 +176,7 @@ public final class PhoneNumberAdministrationsImpl {
                     String countryCode,
                     PhoneNumberType numberType,
                     AssignmentType assignmentType,
-                    Capabilities capabilities,
+                    SearchCapabilities capabilities,
                     String areaCode,
                     Integer quantity) {
         SearchRequest search = new SearchRequest();
@@ -201,7 +212,7 @@ public final class PhoneNumberAdministrationsImpl {
                     String countryCode,
                     PhoneNumberType numberType,
                     AssignmentType assignmentType,
-                    Capabilities capabilities,
+                    SearchCapabilities capabilities,
                     String areaCode,
                     Integer quantity,
                     Context context) {
@@ -234,7 +245,7 @@ public final class PhoneNumberAdministrationsImpl {
             String countryCode,
             PhoneNumberType numberType,
             AssignmentType assignmentType,
-            Capabilities capabilities,
+            SearchCapabilities capabilities,
             String areaCode,
             Integer quantity) {
         return searchAvailablePhoneNumbersWithResponseAsync(
@@ -262,7 +273,7 @@ public final class PhoneNumberAdministrationsImpl {
             String countryCode,
             PhoneNumberType numberType,
             AssignmentType assignmentType,
-            Capabilities capabilities,
+            SearchCapabilities capabilities,
             String areaCode,
             Integer quantity,
             Context context) {
@@ -289,7 +300,7 @@ public final class PhoneNumberAdministrationsImpl {
             String countryCode,
             PhoneNumberType numberType,
             AssignmentType assignmentType,
-            Capabilities capabilities,
+            SearchCapabilities capabilities,
             String areaCode,
             Integer quantity) {
         searchAvailablePhoneNumbersAsync(countryCode, numberType, assignmentType, capabilities, areaCode, quantity)
@@ -315,7 +326,7 @@ public final class PhoneNumberAdministrationsImpl {
             String countryCode,
             PhoneNumberType numberType,
             AssignmentType assignmentType,
-            Capabilities capabilities,
+            SearchCapabilities capabilities,
             String areaCode,
             Integer quantity,
             Context context) {
@@ -442,12 +453,8 @@ public final class PhoneNumberAdministrationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PhoneNumberAdministrationsPurchasePhoneNumbersResponse> purchasePhoneNumbersWithResponseAsync(
             String searchId) {
-        PurchaseRequest purchaseInternal = null;
-        if (searchId != null) {
-            purchaseInternal = new PurchaseRequest();
-            purchaseInternal.setSearchId(searchId);
-        }
-        PurchaseRequest purchase = purchaseInternal;
+        PurchaseRequest purchase = new PurchaseRequest();
+        purchase.setSearchId(searchId);
         return FluxUtil.withContext(
                 context ->
                         service.purchasePhoneNumbers(
@@ -467,12 +474,8 @@ public final class PhoneNumberAdministrationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PhoneNumberAdministrationsPurchasePhoneNumbersResponse> purchasePhoneNumbersWithResponseAsync(
             String searchId, Context context) {
-        PurchaseRequest purchaseInternal = null;
-        if (searchId != null) {
-            purchaseInternal = new PurchaseRequest();
-            purchaseInternal.setSearchId(searchId);
-        }
-        PurchaseRequest purchase = purchaseInternal;
+        PurchaseRequest purchase = new PurchaseRequest();
+        purchase.setSearchId(searchId);
         return service.purchasePhoneNumbers(this.client.getEndpoint(), this.client.getApiVersion(), purchase, context);
     }
 
@@ -736,9 +739,20 @@ public final class PhoneNumberAdministrationsImpl {
      * @return the list of acquired phone numbers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AcquiredPhoneNumbers>> listPhoneNumbersWithResponseAsync() {
+    public Mono<PagedResponse<AcquiredPhoneNumber>> listPhoneNumbersSinglePageAsync() {
         return FluxUtil.withContext(
-                context -> service.listPhoneNumbers(this.client.getEndpoint(), this.client.getApiVersion(), context));
+                        context ->
+                                service.listPhoneNumbers(
+                                        this.client.getEndpoint(), this.client.getApiVersion(), context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
@@ -751,8 +765,17 @@ public final class PhoneNumberAdministrationsImpl {
      * @return the list of acquired phone numbers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AcquiredPhoneNumbers>> listPhoneNumbersWithResponseAsync(Context context) {
-        return service.listPhoneNumbers(this.client.getEndpoint(), this.client.getApiVersion(), context);
+    public Mono<PagedResponse<AcquiredPhoneNumber>> listPhoneNumbersSinglePageAsync(Context context) {
+        return service.listPhoneNumbers(this.client.getEndpoint(), this.client.getApiVersion(), context)
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
@@ -762,51 +785,10 @@ public final class PhoneNumberAdministrationsImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of acquired phone numbers.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AcquiredPhoneNumbers> listPhoneNumbersAsync() {
-        return listPhoneNumbersWithResponseAsync()
-                .flatMap(
-                        (Response<AcquiredPhoneNumbers> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * Lists acquired phone numbers.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of acquired phone numbers.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AcquiredPhoneNumbers> listPhoneNumbersAsync(Context context) {
-        return listPhoneNumbersWithResponseAsync(context)
-                .flatMap(
-                        (Response<AcquiredPhoneNumbers> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * Lists acquired phone numbers.
-     *
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of acquired phone numbers.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AcquiredPhoneNumbers listPhoneNumbers() {
-        return listPhoneNumbersAsync().block();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<AcquiredPhoneNumber> listPhoneNumbersAsync() {
+        return new PagedFlux<>(
+                () -> listPhoneNumbersSinglePageAsync(), nextLink -> listPhoneNumbersNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -818,15 +800,43 @@ public final class PhoneNumberAdministrationsImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of acquired phone numbers.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AcquiredPhoneNumbers listPhoneNumbers(Context context) {
-        return listPhoneNumbersAsync(context).block();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<AcquiredPhoneNumber> listPhoneNumbersAsync(Context context) {
+        return new PagedFlux<>(
+                () -> listPhoneNumbersSinglePageAsync(context),
+                nextLink -> listPhoneNumbersNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists acquired phone numbers.
+     *
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of acquired phone numbers.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<AcquiredPhoneNumber> listPhoneNumbers() {
+        return new PagedIterable<>(listPhoneNumbersAsync());
+    }
+
+    /**
+     * Lists acquired phone numbers.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of acquired phone numbers.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<AcquiredPhoneNumber> listPhoneNumbers(Context context) {
+        return new PagedIterable<>(listPhoneNumbersAsync(context));
     }
 
     /**
      * Gets information about an acquired phone number.
      *
-     * @param phoneNumber The phone number id, this is the phone number in E.164 format without the leading +.
+     * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded as %2B.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -843,7 +853,7 @@ public final class PhoneNumberAdministrationsImpl {
     /**
      * Gets information about an acquired phone number.
      *
-     * @param phoneNumber The phone number id, this is the phone number in E.164 format without the leading +.
+     * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded as %2B.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -858,7 +868,7 @@ public final class PhoneNumberAdministrationsImpl {
     /**
      * Gets information about an acquired phone number.
      *
-     * @param phoneNumber The phone number id, this is the phone number in E.164 format without the leading +.
+     * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded as %2B.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -880,7 +890,7 @@ public final class PhoneNumberAdministrationsImpl {
     /**
      * Gets information about an acquired phone number.
      *
-     * @param phoneNumber The phone number id, this is the phone number in E.164 format without the leading +.
+     * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded as %2B.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -903,7 +913,7 @@ public final class PhoneNumberAdministrationsImpl {
     /**
      * Gets information about an acquired phone number.
      *
-     * @param phoneNumber The phone number id, this is the phone number in E.164 format without the leading +.
+     * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded as %2B.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -917,7 +927,7 @@ public final class PhoneNumberAdministrationsImpl {
     /**
      * Gets information about an acquired phone number.
      *
-     * @param phoneNumber The phone number id, this is the phone number in E.164 format without the leading +.
+     * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded as %2B.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -932,7 +942,7 @@ public final class PhoneNumberAdministrationsImpl {
     /**
      * Update an acquired phone number.
      *
-     * @param phoneNumber The phone number id, this is the phone number in E.164 format without the leading +.
+     * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded as %2B.
      * @param callbackUrl The webhook URL for receiving incoming events.
      * @param applicationId The application id the number has been assigned to.
      * @param capabilities The capabilities of a phone number.
@@ -957,7 +967,7 @@ public final class PhoneNumberAdministrationsImpl {
     /**
      * Update an acquired phone number.
      *
-     * @param phoneNumber The phone number id, this is the phone number in E.164 format without the leading +.
+     * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded as %2B.
      * @param callbackUrl The webhook URL for receiving incoming events.
      * @param applicationId The application id the number has been assigned to.
      * @param capabilities The capabilities of a phone number.
@@ -981,7 +991,7 @@ public final class PhoneNumberAdministrationsImpl {
     /**
      * Update an acquired phone number.
      *
-     * @param phoneNumber The phone number id, this is the phone number in E.164 format without the leading +.
+     * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded as %2B.
      * @param callbackUrl The webhook URL for receiving incoming events.
      * @param applicationId The application id the number has been assigned to.
      * @param capabilities The capabilities of a phone number.
@@ -1007,7 +1017,7 @@ public final class PhoneNumberAdministrationsImpl {
     /**
      * Update an acquired phone number.
      *
-     * @param phoneNumber The phone number id, this is the phone number in E.164 format without the leading +.
+     * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded as %2B.
      * @param callbackUrl The webhook URL for receiving incoming events.
      * @param applicationId The application id the number has been assigned to.
      * @param capabilities The capabilities of a phone number.
@@ -1034,7 +1044,7 @@ public final class PhoneNumberAdministrationsImpl {
     /**
      * Update an acquired phone number.
      *
-     * @param phoneNumber The phone number id, this is the phone number in E.164 format without the leading +.
+     * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded as %2B.
      * @param callbackUrl The webhook URL for receiving incoming events.
      * @param applicationId The application id the number has been assigned to.
      * @param capabilities The capabilities of a phone number.
@@ -1052,7 +1062,7 @@ public final class PhoneNumberAdministrationsImpl {
     /**
      * Update an acquired phone number.
      *
-     * @param phoneNumber The phone number id, this is the phone number in E.164 format without the leading +.
+     * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded as %2B.
      * @param callbackUrl The webhook URL for receiving incoming events.
      * @param applicationId The application id the number has been assigned to.
      * @param capabilities The capabilities of a phone number.
@@ -1071,7 +1081,7 @@ public final class PhoneNumberAdministrationsImpl {
     /**
      * Releases an acquired phone number.
      *
-     * @param phoneNumber The phone number id, this is the phone number in E.164 format without the leading +.
+     * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded as %2B.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1089,7 +1099,7 @@ public final class PhoneNumberAdministrationsImpl {
     /**
      * Releases an acquired phone number.
      *
-     * @param phoneNumber The phone number id, this is the phone number in E.164 format without the leading +.
+     * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded as %2B.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1105,7 +1115,7 @@ public final class PhoneNumberAdministrationsImpl {
     /**
      * Releases an acquired phone number.
      *
-     * @param phoneNumber The phone number id, this is the phone number in E.164 format without the leading +.
+     * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded as %2B.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1120,7 +1130,7 @@ public final class PhoneNumberAdministrationsImpl {
     /**
      * Releases an acquired phone number.
      *
-     * @param phoneNumber The phone number id, this is the phone number in E.164 format without the leading +.
+     * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded as %2B.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1136,7 +1146,7 @@ public final class PhoneNumberAdministrationsImpl {
     /**
      * Releases an acquired phone number.
      *
-     * @param phoneNumber The phone number id, this is the phone number in E.164 format without the leading +.
+     * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded as %2B.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1149,7 +1159,7 @@ public final class PhoneNumberAdministrationsImpl {
     /**
      * Releases an acquired phone number.
      *
-     * @param phoneNumber The phone number id, this is the phone number in E.164 format without the leading +.
+     * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded as %2B.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1158,5 +1168,53 @@ public final class PhoneNumberAdministrationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void releasePhoneNumber(String phoneNumber, Context context) {
         releasePhoneNumberAsync(phoneNumber, context).block();
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of acquired phone numbers.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<AcquiredPhoneNumber>> listPhoneNumbersNextSinglePageAsync(String nextLink) {
+        return FluxUtil.withContext(context -> service.listPhoneNumbersNext(nextLink, context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of acquired phone numbers.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<AcquiredPhoneNumber>> listPhoneNumbersNextSinglePageAsync(
+            String nextLink, Context context) {
+        return service.listPhoneNumbersNext(nextLink, context)
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 }

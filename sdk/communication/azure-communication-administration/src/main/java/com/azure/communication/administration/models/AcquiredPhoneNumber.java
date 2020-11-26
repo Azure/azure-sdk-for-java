@@ -12,68 +12,68 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class AcquiredPhoneNumber {
     /*
-     * The id, which is the phone number in E.164 format without the leading +.
+     * The id, this is the same as the phone number in E.164 format.
      */
-    @JsonProperty(value = "id")
+    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
      * The phoneNumber in E.164 format.
      */
-    @JsonProperty(value = "phoneNumber")
+    @JsonProperty(value = "phoneNumber", required = true)
     private String phoneNumber;
 
     /*
      * The ISO 3166-2 country code of the country that the phone number belongs
      * to.
      */
-    @JsonProperty(value = "countryCode")
+    @JsonProperty(value = "countryCode", required = true)
     private String countryCode;
 
     /*
      * The type of the phone number.
      */
-    @JsonProperty(value = "numberType")
+    @JsonProperty(value = "numberType", required = true)
     private PhoneNumberType numberType;
 
     /*
      * The assignment type of the phone number, people or application.
      */
-    @JsonProperty(value = "assignmentType")
+    @JsonProperty(value = "assignmentType", required = true)
     private AssignmentType assignmentType;
 
     /*
-     * The purchaseDate property.
+     * The purchase date of the phone number.
      */
-    @JsonProperty(value = "purchaseDate")
+    @JsonProperty(value = "purchaseDate", required = true)
     private OffsetDateTime purchaseDate;
 
     /*
      * The phone number's capabilities.
      */
-    @JsonProperty(value = "capabilities")
+    @JsonProperty(value = "capabilities", required = true)
     private Capabilities capabilities;
 
     /*
      * The webhook URL for receiving incoming events.
      */
-    @JsonProperty(value = "callbackUrl")
+    @JsonProperty(value = "callbackUrl", required = true)
     private String callbackUrl;
 
     /*
      * The application id the number has been assigned to.
      */
-    @JsonProperty(value = "applicationId")
+    @JsonProperty(value = "applicationId", required = true)
     private String applicationId;
 
     /*
      * The monthly cost of the phone number.
      */
-    @JsonProperty(value = "monthlyRate")
+    @JsonProperty(value = "monthlyRate", required = true)
     private MonthlyRate monthlyRate;
 
     /**
-     * Get the id property: The id, which is the phone number in E.164 format without the leading +.
+     * Get the id property: The id, this is the same as the phone number in E.164 format.
      *
      * @return the id value.
      */
@@ -82,7 +82,7 @@ public final class AcquiredPhoneNumber {
     }
 
     /**
-     * Set the id property: The id, which is the phone number in E.164 format without the leading +.
+     * Set the id property: The id, this is the same as the phone number in E.164 format.
      *
      * @param id the id value to set.
      * @return the AcquiredPhoneNumber object itself.
@@ -173,7 +173,7 @@ public final class AcquiredPhoneNumber {
     }
 
     /**
-     * Get the purchaseDate property: The purchaseDate property.
+     * Get the purchaseDate property: The purchase date of the phone number.
      *
      * @return the purchaseDate value.
      */
@@ -182,7 +182,7 @@ public final class AcquiredPhoneNumber {
     }
 
     /**
-     * Set the purchaseDate property: The purchaseDate property.
+     * Set the purchaseDate property: The purchase date of the phone number.
      *
      * @param purchaseDate the purchaseDate value to set.
      * @return the AcquiredPhoneNumber object itself.

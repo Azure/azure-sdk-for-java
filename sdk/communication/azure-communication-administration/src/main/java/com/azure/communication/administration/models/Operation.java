@@ -51,7 +51,7 @@ public final class Operation {
      * Represents a service error response body.
      */
     @JsonProperty(value = "error")
-    private ErrorBody error;
+    private Error error;
 
     /**
      * Get the status property: Status of operation.
@@ -178,7 +178,7 @@ public final class Operation {
      *
      * @return the error value.
      */
-    public ErrorBody getError() {
+    public Error getError() {
         return this.error;
     }
 
@@ -188,7 +188,7 @@ public final class Operation {
      * @param error the error value to set.
      * @return the Operation object itself.
      */
-    public Operation setError(ErrorBody error) {
+    public Operation setError(Error error) {
         this.error = error;
         return this;
     }

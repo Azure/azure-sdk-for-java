@@ -11,53 +11,53 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class MonthlyRate {
     /*
-     * The monthly rate of a phone plan group
+     * The cost amount.
      */
-    @JsonProperty(value = "value")
-    private Double value;
+    @JsonProperty(value = "value", required = true)
+    private double value;
 
     /*
-     * The currency of a phone plan group
+     * The currency of the cost amount.
      */
-    @JsonProperty(value = "currency")
-    private Currency currency;
+    @JsonProperty(value = "currency", required = true)
+    private String currency;
 
     /**
-     * Get the value property: The monthly rate of a phone plan group.
+     * Get the value property: The cost amount.
      *
      * @return the value value.
      */
-    public Double getValue() {
+    public double getValue() {
         return this.value;
     }
 
     /**
-     * Set the value property: The monthly rate of a phone plan group.
+     * Set the value property: The cost amount.
      *
      * @param value the value value to set.
      * @return the MonthlyRate object itself.
      */
-    public MonthlyRate setValue(Double value) {
+    public MonthlyRate setValue(double value) {
         this.value = value;
         return this;
     }
 
     /**
-     * Get the currency property: The currency of a phone plan group.
+     * Get the currency property: The currency of the cost amount.
      *
      * @return the currency value.
      */
-    public Currency getCurrency() {
+    public String getCurrency() {
         return this.currency;
     }
 
     /**
-     * Set the currency property: The currency of a phone plan group.
+     * Set the currency property: The currency of the cost amount.
      *
      * @param currency the currency value to set.
      * @return the MonthlyRate object itself.
      */
-    public MonthlyRate setCurrency(Currency currency) {
+    public MonthlyRate setCurrency(String currency) {
         this.currency = currency;
         return this;
     }

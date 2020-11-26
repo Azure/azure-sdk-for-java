@@ -39,7 +39,7 @@ add-context-parameter: true
 These settings apply only when `--tag=phonenumber` is specified on the command line.
 
 ``` yaml $(tag) == 'phonenumber'
-input-file: PhoneNumber.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/ca264fa5c7c47c556f5e1ea75df04fd2c2e9b89d/specification/communication/data-plane/Microsoft.CommunicationServicesAdministration/preview/2020-11-01-preview3/phonenumbers.json
 override-client-name: PhoneNumberAdminClient
 ```
 

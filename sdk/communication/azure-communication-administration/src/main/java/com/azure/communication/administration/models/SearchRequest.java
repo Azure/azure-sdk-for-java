@@ -26,7 +26,7 @@ public final class SearchRequest {
      * The phone number's capabilities.
      */
     @JsonProperty(value = "capabilities", required = true)
-    private Capabilities capabilities;
+    private SearchCapabilities capabilities;
 
     /*
      * The desired area code.
@@ -85,7 +85,7 @@ public final class SearchRequest {
      *
      * @return the capabilities value.
      */
-    public Capabilities getCapabilities() {
+    public SearchCapabilities getCapabilities() {
         return this.capabilities;
     }
 
@@ -95,7 +95,7 @@ public final class SearchRequest {
      * @param capabilities the capabilities value to set.
      * @return the SearchRequest object itself.
      */
-    public SearchRequest setCapabilities(Capabilities capabilities) {
+    public SearchRequest setCapabilities(SearchCapabilities capabilities) {
         this.capabilities = capabilities;
         return this;
     }

@@ -14,8 +14,8 @@ public final class AcquiredPhoneNumbers {
     /*
      * Represents a list of acquired phone numbers.
      */
-    @JsonProperty(value = "phoneNumbers", required = true)
-    private List<AcquiredPhoneNumber> phoneNumbers;
+    @JsonProperty(value = "value", required = true)
+    private List<AcquiredPhoneNumber> value;
 
     /*
      * Represents the URL link to the next page
@@ -24,22 +24,22 @@ public final class AcquiredPhoneNumbers {
     private String nextLink;
 
     /**
-     * Get the phoneNumbers property: Represents a list of acquired phone numbers.
+     * Get the value property: Represents a list of acquired phone numbers.
      *
-     * @return the phoneNumbers value.
+     * @return the value value.
      */
-    public List<AcquiredPhoneNumber> getPhoneNumbers() {
-        return this.phoneNumbers;
+    public List<AcquiredPhoneNumber> getValue() {
+        return this.value;
     }
 
     /**
-     * Set the phoneNumbers property: Represents a list of acquired phone numbers.
+     * Set the value property: Represents a list of acquired phone numbers.
      *
-     * @param phoneNumbers the phoneNumbers value to set.
+     * @param value the value value to set.
      * @return the AcquiredPhoneNumbers object itself.
      */
-    public AcquiredPhoneNumbers setPhoneNumbers(List<AcquiredPhoneNumber> phoneNumbers) {
-        this.phoneNumbers = phoneNumbers;
+    public AcquiredPhoneNumbers setValue(List<AcquiredPhoneNumber> value) {
+        this.value = value;
         return this;
     }
 

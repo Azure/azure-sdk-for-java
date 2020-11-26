@@ -137,7 +137,7 @@ public class ReadmeSamples {
     public String beginSearchGeographicPhoneNumbers() {
         String countryCode = "US";
 
-        Capabilities capabilities = new Capabilities()
+        SearchCapabilities searchCapabilities = new SearchCapabilities()
             .setSms(CapabilityValue.OUTBOUND)
             .setCalling(CapabilityValue.INBOUND_OUTBOUND);
 
@@ -145,7 +145,7 @@ public class ReadmeSamples {
             .setNumberType(PhoneNumberType.GEOGRAPHIC)
             .setAssignmentType(AssignmentType.APPLICATION)
             .setAreaCode("425")
-            .setCapabilities(capabilities)
+            .setCapabilities(searchCapabilities)
             .setQuantity(2);
 
         PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
@@ -172,7 +172,7 @@ public class ReadmeSamples {
     public String beginSearchTollFreePhoneNumbers() {
         String countryCode = "US";
 
-        Capabilities capabilities = new Capabilities()
+        SearchCapabilities searchCapabilities = new SearchCapabilities()
             .setSms(CapabilityValue.NONE)
             .setCalling(CapabilityValue.INBOUND);
 
@@ -180,7 +180,7 @@ public class ReadmeSamples {
             .setNumberType(PhoneNumberType.TOLL_FREE)
             .setAssignmentType(AssignmentType.APPLICATION)
             .setAreaCode("800")
-            .setCapabilities(capabilities)
+            .setCapabilities(searchCapabilities)
             .setQuantity(1);
 
         PhoneNumberClient phoneNumberClient = createPhoneNumberClient();

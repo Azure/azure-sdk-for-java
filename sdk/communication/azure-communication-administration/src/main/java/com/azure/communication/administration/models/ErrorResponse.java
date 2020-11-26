@@ -13,15 +13,15 @@ public final class ErrorResponse {
     /*
      * Represents a service error response body.
      */
-    @JsonProperty(value = "error")
-    private ErrorBody error;
+    @JsonProperty(value = "error", required = true)
+    private Error error;
 
     /**
      * Get the error property: Represents a service error response body.
      *
      * @return the error value.
      */
-    public ErrorBody getError() {
+    public Error getError() {
         return this.error;
     }
 
@@ -31,7 +31,7 @@ public final class ErrorResponse {
      * @param error the error value to set.
      * @return the ErrorResponse object itself.
      */
-    public ErrorResponse setError(ErrorBody error) {
+    public ErrorResponse setError(Error error) {
         this.error = error;
         return this;
     }

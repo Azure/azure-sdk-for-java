@@ -7,19 +7,19 @@ package com.azure.communication.administration.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Capabilities model. */
+/** The SearchCapabilities model. */
 @Fluent
-public final class Capabilities {
+public final class SearchCapabilities {
     /*
      * Available Sms capabilities.
      */
-    @JsonProperty(value = "sms", required = true)
+    @JsonProperty(value = "sms")
     private CapabilityValue sms;
 
     /*
      * Available Calling capabilities.
      */
-    @JsonProperty(value = "calling", required = true)
+    @JsonProperty(value = "calling")
     private CapabilityValue calling;
 
     /**
@@ -35,9 +35,9 @@ public final class Capabilities {
      * Set the sms property: Available Sms capabilities.
      *
      * @param sms the sms value to set.
-     * @return the Capabilities object itself.
+     * @return the SearchCapabilities object itself.
      */
-    public Capabilities setSms(CapabilityValue sms) {
+    public SearchCapabilities setSms(CapabilityValue sms) {
         this.sms = sms;
         return this;
     }
@@ -55,9 +55,9 @@ public final class Capabilities {
      * Set the calling property: Available Calling capabilities.
      *
      * @param calling the calling value to set.
-     * @return the Capabilities object itself.
+     * @return the SearchCapabilities object itself.
      */
-    public Capabilities setCalling(CapabilityValue calling) {
+    public SearchCapabilities setCalling(CapabilityValue calling) {
         this.calling = calling;
         return this;
     }
