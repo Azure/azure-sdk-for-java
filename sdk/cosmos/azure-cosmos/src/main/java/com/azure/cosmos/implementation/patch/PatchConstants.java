@@ -15,5 +15,5 @@ final class PatchConstants {
     static final String OperationTypeNames_Remove = "remove";
     static final String OperationTypeNames_Replace = "replace";
     static final String OperationTypeNames_Set = "set";
-    static final String OperationTypeNames_Increment = "inc";
+    static final String OperationTypeNames_Increment = "incr";
 }
