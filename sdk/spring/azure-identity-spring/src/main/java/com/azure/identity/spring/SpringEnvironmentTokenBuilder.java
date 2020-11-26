@@ -20,7 +20,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
  * within a Spring context.
  * </p>
  * 
- * <table>
+ * <table summary="">
  * <tr>
  * <th>Property Tuples</th>
  * <th>Description</th>
