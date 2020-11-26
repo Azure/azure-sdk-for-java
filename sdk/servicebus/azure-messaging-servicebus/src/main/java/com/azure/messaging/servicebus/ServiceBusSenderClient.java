@@ -118,6 +118,7 @@ public class ServiceBusSenderClient implements AutoCloseable {
      * @throws NullPointerException if {@code message} is {@code null}.
      * @throws AmqpException if {@code message} is larger than the maximum allowed size of a single message.
      * @throws ServiceBusException if the message could not be sent.
+     * @throws IllegalStateException if sender is already disposed.
      */
     public void sendMessage(ServiceBusMessage message) {
         Objects.requireNonNull(message, "'message' cannot be null.");
@@ -134,6 +135,7 @@ public class ServiceBusSenderClient implements AutoCloseable {
      * @throws NullPointerException if {@code messages} is {@code null}.
      * @throws AmqpException if {@code messages} are larger than the maximum allowed size of a single batch.
      * @throws ServiceBusException if the messages could not be sent.
+     * @throws IllegalStateException if sender is already disposed.
      */
     public void sendMessages(Iterable<ServiceBusMessage> messages) {
         asyncClient.sendMessages(messages).block(tryTimeout);
@@ -145,6 +147,7 @@ public class ServiceBusSenderClient implements AutoCloseable {
      * @param batch of messages which allows client to send maximum allowed size for a batch of messages.
      *
      * @throws NullPointerException if {@code batch} is {@code null}.
+     * @throws IllegalStateException if sender is already disposed.
      * @throws ServiceBusException if the message batch could not be sent.
      */
     public void sendMessages(ServiceBusMessageBatch batch) {
@@ -162,6 +165,7 @@ public class ServiceBusSenderClient implements AutoCloseable {
      *      {@code transactionContext.transactionId} is {@code null}.
      * @throws AmqpException if {@code message} is larger than the maximum allowed size of a single message.
      * @throws ServiceBusException if the message could not be sent.
+     * @throws IllegalStateException if sender is already disposed.
      */
     public void sendMessage(ServiceBusMessage message, ServiceBusTransactionContext transactionContext) {
         asyncClient.sendMessage(message, transactionContext).block(tryTimeout);
@@ -179,6 +183,7 @@ public class ServiceBusSenderClient implements AutoCloseable {
      *      {@code transactionContext.transactionId} is {@code null}.
      * @throws AmqpException if {@code messages} are larger than the maximum allowed size of a single batch.
      * @throws ServiceBusException if messages could not be sent.
+     * @throws IllegalStateException if sender is already disposed.
      */
     public void sendMessages(Iterable<ServiceBusMessage> messages, ServiceBusTransactionContext transactionContext) {
         asyncClient.sendMessages(messages, transactionContext).block(tryTimeout);
@@ -193,6 +198,7 @@ public class ServiceBusSenderClient implements AutoCloseable {
      * @throws NullPointerException if {@code batch}, {@code transactionContext} or
      *      {@code transactionContext.transactionId} is {@code null}.
      * @throws ServiceBusException if message batch could not be sent.
+     * @throws IllegalStateException if sender is already disposed.
      */
     public void sendMessages(ServiceBusMessageBatch batch, ServiceBusTransactionContext transactionContext) {
         asyncClient.sendMessages(batch, transactionContext).block(tryTimeout);
@@ -207,9 +213,9 @@ public class ServiceBusSenderClient implements AutoCloseable {
      *
      * @return The sequence number of the scheduled message which can be used to cancel the scheduling of the message.
      *
-     * @throws IllegalStateException if the sender is disposed.
      * @throws NullPointerException if {@code message} or {@code scheduledEnqueueTime} is {@code null}.
      * @throws ServiceBusException If the message could not be scheduled.
+     * @throws IllegalStateException if sender is already disposed.
      */
     public Long scheduleMessage(ServiceBusMessage message, OffsetDateTime scheduledEnqueueTime) {
         return asyncClient.scheduleMessage(message, scheduledEnqueueTime).block(tryTimeout);
@@ -225,7 +231,7 @@ public class ServiceBusSenderClient implements AutoCloseable {
      *
      * @return The sequence number of the scheduled message which can be used to cancel the scheduling of the message.
      *
-     * @throws IllegalStateException if the sender is disposed.
+     * @throws IllegalStateException if sender is already disposed.
      * @throws NullPointerException if {@code message}, {@code scheduledEnqueueTime}, {@code transactionContext} or
      *      {@code transactionContext.transactionId} is {@code null}.
      * @throws ServiceBusException If the message could not be scheduled.
@@ -244,7 +250,7 @@ public class ServiceBusSenderClient implements AutoCloseable {
      *
      * @return Sequence numbers of the scheduled messages which can be used to cancel the messages.
      *
-     * @throws IllegalStateException if the sender is disposed.
+     * @throws IllegalStateException if sender is already disposed.
      * @throws NullPointerException If {@code messages} or {@code scheduledEnqueueTime} is {@code null}.
      * @throws ServiceBusException If the messages could not be scheduled.
      */
@@ -262,7 +268,7 @@ public class ServiceBusSenderClient implements AutoCloseable {
      *
      * @return Sequence numbers of the scheduled messages which can be used to cancel the messages.
      *
-     * @throws IllegalStateException if the sender is disposed.
+     * @throws IllegalStateException if sender is already disposed.
      * @throws NullPointerException If {@code messages}, {@code scheduledEnqueueTime}, {@code transactionContext} or
      *      {@code transactionContext.transactionId} is {@code null}.
      * @throws ServiceBusException If the messages could not be scheduled.
@@ -278,6 +284,7 @@ public class ServiceBusSenderClient implements AutoCloseable {
      *
      * @return A new {@link ServiceBusTransactionContext}.
      *
+     * @throws IllegalStateException if sender is already disposed.
      * @throws IllegalStateException if the sender is disposed.
      * @throws ServiceBusException if a transaction cannot be created.
      *
@@ -292,7 +299,7 @@ public class ServiceBusSenderClient implements AutoCloseable {
      *
      * @param transactionContext to be committed.
      *
-     * @throws IllegalStateException if the sender is disposed.
+     * @throws IllegalStateException if sender is already disposed.
      * @throws NullPointerException if {@code transactionContext} or {@code transactionContext.transactionId} is null.
      * @throws ServiceBusException if the transaction could not be committed.
      *
@@ -307,7 +314,7 @@ public class ServiceBusSenderClient implements AutoCloseable {
      *
      * @param transactionContext The transaction to rollback.
      *
-     * @throws IllegalStateException if the sender is disposed.
+     * @throws IllegalStateException if sender is already disposed.
      * @throws NullPointerException if {@code transactionContext} or {@code transactionContext.transactionId} is null.
      * @throws ServiceBusException if the transaction could not be rolled back.
      *

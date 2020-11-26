@@ -79,8 +79,9 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *
      * @throws NullPointerException if {@code message} is null.
      * @throws UnsupportedOperationException if the receiver was opened in
-     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from peekMessage.
-     * @throws IllegalStateException if the receiver is disposed of.
+     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from
+     *     {@link ServiceBusReceiverClient#peekMessage() peekMessage}.
+     * @throws IllegalStateException if receiver is already disposed.
      * @throws ServiceBusException if the message could not be abandoned.
      */
     public void abandon(ServiceBusReceivedMessage message) {
@@ -97,8 +98,10 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws NullPointerException if {@code message} or {@code options} is null. Also if
      *     {@code transactionContext.transactionId} is null when {@code options.transactionContext} is specified.
      * @throws UnsupportedOperationException if the receiver was opened in
-     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from peekMessage.
-     * @throws IllegalStateException if the receiver is disposed of.
+     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from
+     *     {@link ServiceBusReceiverClient#peekMessage() peekMessage}.
+     * @throws IllegalStateException if receiver is already disposed.
+     * @throws IllegalArgumentException if the message is already settled.
      * @throws ServiceBusException if the message could not be abandoned.
      */
     public void abandon(ServiceBusReceivedMessage message, AbandonOptions options) {
@@ -112,8 +115,10 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *
      * @throws NullPointerException if {@code message} is null.
      * @throws UnsupportedOperationException if the receiver was opened in
-     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from peekMessage.
-     * @throws IllegalStateException if the receiver is disposed of.
+     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from
+     *     {@link ServiceBusReceiverClient#peekMessage() peekMessage}.
+     * @throws IllegalStateException if receiver is already disposed.
+     * @throws IllegalArgumentException if the message is already settled.
      * @throws ServiceBusException if the message could not be completed.
      */
     public void complete(ServiceBusReceivedMessage message) {
@@ -129,8 +134,10 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws NullPointerException if {@code message} or {@code options} is null. Also if
      *     {@code transactionContext.transactionId} is null when {@code options.transactionContext} is specified.
      * @throws UnsupportedOperationException if the receiver was opened in
-     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from peekMessage.
-     * @throws IllegalStateException if the receiver is disposed of.
+     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from
+     *     {@link ServiceBusReceiverClient#peekMessage() peekMessage}.
+     * @throws IllegalStateException if receiver is already disposed.
+     * @throws IllegalArgumentException if the message is already settled.
      * @throws ServiceBusException if the message could not be completed.
      */
     public void complete(ServiceBusReceivedMessage message, CompleteOptions options) {
@@ -144,9 +151,11 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *
      * @throws NullPointerException if {@code message} is null.
      * @throws UnsupportedOperationException if the receiver was opened in
-     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from peekMessage.
-     * @throws IllegalStateException if the receiver is disposed of.
+     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from
+     *     {@link ServiceBusReceiverClient#peekMessage() peekMessage}.
+     * @throws IllegalStateException if receiver is already disposed.
      * @throws ServiceBusException if the message could not be deferred.
+     * @throws IllegalArgumentException if the message is already settled.
      *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
      */
@@ -164,8 +173,9 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws NullPointerException if {@code message} or {@code options} is null. Also if
      *     {@code transactionContext.transactionId} is null when {@code options.transactionContext} is specified.
      * @throws UnsupportedOperationException if the receiver was opened in
-     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from peekMessage.
-     * @throws IllegalStateException if the receiver is disposed of.
+     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from
+     *     {@link ServiceBusReceiverClient#peekMessage() peekMessage}.
+     * @throws IllegalStateException if receiver is already disposed.
      * @throws ServiceBusException if the message could not be deferred.
      *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
@@ -181,8 +191,9 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *
      * @throws NullPointerException if {@code message} is null.
      * @throws UnsupportedOperationException if the receiver was opened in
-     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from peekMessage.
-     * @throws IllegalStateException if the receiver is disposed of.
+     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from
+     *     {@link ServiceBusReceiverClient#peekMessage() peekMessage}.
+     * @throws IllegalStateException if receiver is already disposed.
      * @throws ServiceBusException if the message could not be dead-lettered.
      *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-dead-letter-queues">Dead letter
@@ -202,8 +213,9 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws NullPointerException if {@code message} or {@code options} is null. Also if
      *     {@code transactionContext.transactionId} is null when {@code options.transactionContext} is specified.
      * @throws UnsupportedOperationException if the receiver was opened in
-     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from peekMessage.
-     * @throws IllegalStateException if the receiver is disposed of.
+     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from
+     *     {@link ServiceBusReceiverClient#peekMessage() peekMessage}.
+     * @throws IllegalStateException if the receiver is already disposed of.
      * @throws ServiceBusException if the message could not be dead-lettered.
      *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-dead-letter-queues">Dead letter
@@ -218,7 +230,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *
      * @return The session state or null if there is no state set for the session.
      *
-     * @throws IllegalStateException if the receiver is a non-session receiver or disposed of.
+     * @throws IllegalStateException if the receiver is a non-session receiver or receiver is already disposed.
      * @throws ServiceBusException if the session state could not be acquired.
      */
     public byte[] getSessionState() {
@@ -232,7 +244,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *
      * @return A peeked {@link ServiceBusReceivedMessage}.
      *
-     * @throws IllegalStateException if the receiver is disposed.
+     * @throws IllegalStateException if the receiver is already disposed.
      * @throws ServiceBusException if an error occurs while peeking at the message.
      *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
@@ -249,6 +261,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @param sessionId Session id of the message to peek from. {@code null} if there is no session.
      *
      * @return A peeked {@link ServiceBusReceivedMessage}.
+     * @throws IllegalStateException if receiver is already disposed.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
     ServiceBusReceivedMessage peekMessage(String sessionId) {
@@ -261,10 +274,10 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *
      * @param sequenceNumber The sequence number from where to read the message.
      *
-     * @throws IllegalStateException if the receiver is disposed.
-     * @throws ServiceBusException if an error occurs while peeking at the message.
-     *
      * @return A peeked {@link ServiceBusReceivedMessage}.
+     *
+     * @throws IllegalStateException if the receiver is already disposed.
+     * @throws ServiceBusException if an error occurs while peeking at the message.
      *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
@@ -280,6 +293,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @param sessionId Session id of the message to peek from. {@code null} if there is no session.
      *
      * @return A peeked {@link ServiceBusReceivedMessage}.
+     * @throws IllegalStateException if receiver is already disposed.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
     ServiceBusReceivedMessage peekMessageAt(long sequenceNumber, String sessionId) {
@@ -294,7 +308,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @return An {@link IterableStream} of {@link ServiceBusReceivedMessage messages} that are peeked.
      *
      * @throws IllegalArgumentException if {@code maxMessages} is not a positive integer.
-     * @throws IllegalStateException if the receiver is disposed.
+     * @throws IllegalStateException if the receiver is already disposed.
      * @throws ServiceBusException if an error occurs while peeking at messages.
      *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
@@ -311,6 +325,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *
      * @return An {@link IterableStream} of {@link ServiceBusReceivedMessage messages} that are peeked.
      * @throws IllegalArgumentException if {@code maxMessages} is not a positive integer.
+     * @throws IllegalStateException if receiver is already disposed.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
     IterableStream<ServiceBusReceivedMessage> peekMessages(int maxMessages, String sessionId) {
@@ -338,7 +353,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @return An {@link IterableStream} of {@link ServiceBusReceivedMessage messages} peeked.
      *
      * @throws IllegalArgumentException if {@code maxMessages} is not a positive integer.
-     * @throws IllegalStateException if the receiver is disposed.
+     * @throws IllegalStateException if the receiver is already disposed.
      * @throws ServiceBusException if an error occurs while peeking at messages.
      *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
@@ -357,6 +372,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *
      * @return An {@link IterableStream} of {@link ServiceBusReceivedMessage} peeked.
      * @throws IllegalArgumentException if {@code maxMessages} is not a positive integer.
+     * @throws IllegalStateException if receiver is already disposed.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
     IterableStream<ServiceBusReceivedMessage> peekMessagesAt(int maxMessages, long sequenceNumber, String sessionId) {
@@ -384,7 +400,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @return An {@link IterableStream} of at most {@code maxMessages} messages from the Service Bus entity.
      *
      * @throws IllegalArgumentException if {@code maxMessages} is zero or a negative value.
-     * @throws IllegalStateException if the receiver is disposed.
+     * @throws IllegalStateException if the receiver is already disposed.
      * @throws ServiceBusException if an error occurs while receiving messages.
      */
     public IterableStream<ServiceBusReceivedMessage> receiveMessages(int maxMessages) {
@@ -402,7 +418,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @return An {@link IterableStream} of at most {@code maxMessages} messages from the Service Bus entity.
      *
      * @throws IllegalArgumentException if {@code maxMessages} or {@code maxWaitTime} is zero or a negative value.
-     * @throws IllegalStateException if the receiver is disposed.
+     * @throws IllegalStateException if the receiver is already disposed.
      * @throws ServiceBusException if an error occurs while receiving messages.
      */
     public IterableStream<ServiceBusReceivedMessage> receiveMessages(int maxMessages, Duration maxWaitTime) {
@@ -432,7 +448,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *
      * @return A deferred message with the matching {@code sequenceNumber}.
      *
-     * @throws IllegalStateException if receiver is disposed.
+     * @throws IllegalStateException if receiver is already disposed.
      * @throws ServiceBusException if deferred message cannot be received.
      */
     public ServiceBusReceivedMessage receiveDeferredMessage(long sequenceNumber) {
@@ -448,6 +464,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @param sessionId Session id of the deferred message.
      *
      * @return A deferred message with the matching {@code sequenceNumber}.
+     * @throws IllegalStateException if receiver is already disposed.
      */
     ServiceBusReceivedMessage receiveDeferredMessage(long sequenceNumber, String sessionId) {
         return asyncClient.receiveDeferredMessage(sequenceNumber, sessionId).block(operationTimeout);
@@ -462,7 +479,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @return An {@link IterableStream} of deferred {@link ServiceBusReceivedMessage messages}.
      *
      * @throws NullPointerException if {@code sequenceNumbers} is null.
-     * @throws IllegalStateException if receiver is disposed.
+     * @throws IllegalStateException if receiver is already disposed.
      * @throws ServiceBusException if deferred messages cannot be received.
      */
     public IterableStream<ServiceBusReceivedMessage> receiveDeferredMessageBatch(Iterable<Long> sequenceNumbers) {
@@ -477,6 +494,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @param sessionId Session id of the deferred messages. {@code null} if there is no session.
      *
      * @return An {@link IterableStream} of deferred {@link ServiceBusReceivedMessage messages}.
+     * @throws IllegalStateException if receiver is already disposed.
      */
     IterableStream<ServiceBusReceivedMessage> receiveDeferredMessageBatch(Iterable<Long> sequenceNumbers,
         String sessionId) {
@@ -503,7 +521,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws NullPointerException if {@code message} or {@code message.getLockToken()} is null.
      * @throws UnsupportedOperationException if the receiver was opened in
      *      {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from peekMessage.
-     * @throws IllegalStateException if the receiver is a session receiver.
+     * @throws IllegalStateException if the receiver is a session receiver or receiver is already disposed.
      * @throws IllegalArgumentException if {@code message.getLockToken()} is an empty value.
      */
     public OffsetDateTime renewMessageLock(ServiceBusReceivedMessage message) {
@@ -538,7 +556,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * Sets the state of the session if this receiver is a session receiver.
      *
      * @return The next expiration time for the session lock.
-     * @throws IllegalStateException if the receiver is a non-session receiver or the receiver is disposed.
+     * @throws IllegalStateException if the receiver is a non-session receiver or receiver is already disposed.
      * @throws ServiceBusException if the session lock cannot be renewed.
      */
     public OffsetDateTime renewSessionLock() {
@@ -564,7 +582,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *
      * @param sessionState State to set on the session.
      *
-     * @throws IllegalStateException if the receiver is a non-session receiver or the receiver is disposed.
+     * @throws IllegalStateException if the receiver is a non-session receiver or receiver is already disposed.
      * @throws ServiceBusException if the session state cannot be set.
      */
     public void setSessionState(byte[] sessionState) {
@@ -580,7 +598,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *
      * @return A new {@link ServiceBusTransactionContext}.
      *
-     * @throws IllegalStateException if the receiver is disposed.
+     * @throws IllegalStateException if the receiver is already disposed.
      * @throws ServiceBusException if a transaction cannot be created.
      */
     public ServiceBusTransactionContext createTransaction() {
@@ -595,7 +613,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *
      * @param transactionContext The transaction to be commit.
      *
-     * @throws IllegalStateException if the receiver is disposed.
+     * @throws IllegalStateException if the receiver is already disposed.
      * @throws NullPointerException if {@code transactionContext} or {@code transactionContext.transactionId} is null.
      * @throws ServiceBusException if the transaction could not be committed.
      */
@@ -611,7 +629,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *
      * @param transactionContext The transaction to be rollback.
      *
-     * @throws IllegalStateException if the receiver is disposed.
+     * @throws IllegalStateException if the receiver is alread disposed.
      * @throws NullPointerException if {@code transactionContext} or {@code transactionContext.transactionId} is null.
      * @throws ServiceBusException if the transaction could not be rolled back.
      */
