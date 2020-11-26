@@ -1,8 +1,14 @@
 package com.azure.spring.aad.implementation;
 
 import com.azure.test.utils.AppRunner;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.RequestEntity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationExchange;
@@ -22,7 +28,7 @@ public class AuthzCodeGrantRequestEntityConverterTest {
     private ClientRegistration azure;
     private ClientRegistration graph;
 
-    //@BeforeEach
+    @BeforeEach
     public void setupApp() {
         runner = createApp();
         runner.start();
@@ -34,7 +40,7 @@ public class AuthzCodeGrantRequestEntityConverterTest {
 
     private AppRunner createApp() {
         AppRunner result = new AppRunner(DumbApp.class);
-        result.property("azure.activedirectory.uri", "http://localhost");
+        result.property("azure.activedirectory.authorization-server-uri", "http://localhost");
         result.property("azure.activedirectory.tenant-id", "fake-tenant-id");
         result.property("azure.activedirectory.client-id", "fake-client-id");
         result.property("azure.activedirectory.client-secret", "fake-client-secret");
@@ -42,18 +48,22 @@ public class AuthzCodeGrantRequestEntityConverterTest {
         return result;
     }
 
-    //@AfterEach
+    @AfterEach
     public void tearDownApp() {
         runner.stop();
     }
 
-    //@Test
+    @Test
     public void addScopeForDefaultClient() {
         MultiValueMap<String, String> body = convertedBodyOf(createCodeGrantRequest(azure));
-        assertEquals("openid profile offline_access", body.getFirst("scope"));
+        assertEquals(
+            "openid profile offline_access"
+                + " https://graph.microsoft.com/User.Read https://graph.microsoft.com/Directory.AccessAsUser.All",
+            body.getFirst("scope")
+        );
     }
 
-    //@Test
+    @Test
     public void noScopeParamForOtherClient() {
         MultiValueMap<String, String> body = convertedBodyOf(createCodeGrantRequest(graph));
         assertNull(body.get("scope"));
@@ -96,8 +106,9 @@ public class AuthzCodeGrantRequestEntityConverterTest {
         return builder.build();
     }
 
-    //@Configuration
-    //@SpringBootApplication
-    //@EnableWebSecurity
-    public static class DumbApp {}
+    @Configuration
+    @SpringBootApplication
+    @EnableWebSecurity
+    public static class DumbApp {
+    }
 }
