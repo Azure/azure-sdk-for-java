@@ -3,9 +3,9 @@
 
 package com.azure.spring.cloud.context.core.config;
 
+import com.azure.core.management.AzureEnvironment;
 import com.azure.spring.cloud.context.core.api.CredentialSupplier;
 import com.google.common.base.Strings;
-import com.microsoft.azure.AzureEnvironment;
 
 import javax.annotation.PostConstruct;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -20,7 +20,11 @@ import org.springframework.validation.annotation.Validated;
 @ConfigurationProperties("spring.cloud.azure")
 public class AzureProperties implements CredentialSupplier {
 
-    private String credentialFilePath;
+    private String clientId;
+
+    private String clientSecret;
+
+    private String tenantId;
 
     private String resourceGroup;
 
@@ -50,13 +54,28 @@ public class AzureProperties implements CredentialSupplier {
         }
     }
 
-    @Override
-    public String getCredentialFilePath() {
-        return credentialFilePath;
+    public String getClientId() {
+        return clientId;
     }
 
-    public void setCredentialFilePath(String credentialFilePath) {
-        this.credentialFilePath = credentialFilePath;
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
+
+    public String getClientSecret() {
+        return clientSecret;
+    }
+
+    public void setClientSecret(String clientSecret) {
+        this.clientSecret = clientSecret;
+    }
+
+    public String getTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
     }
 
     public String getResourceGroup() {

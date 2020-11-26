@@ -16,6 +16,7 @@ import org.springframework.messaging.Message;
  * @author Warren Zhu
  */
 public interface ServiceBusQueueOperation extends SendOperation, SubscribeOperation {
+
     void setClientConfig(ServiceBusClientConfig clientConfig);
 
     /**

@@ -3,10 +3,10 @@
 
 package com.azure.spring.integration.eventhub.factory;
 
+import com.azure.resourcemanager.eventhubs.models.AuthorizationRule;
+import com.azure.resourcemanager.eventhubs.models.EventHubAuthorizationKey;
+import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
 import com.azure.spring.integration.eventhub.impl.EventHubRuntimeException;
-import com.microsoft.azure.management.eventhub.AuthorizationRule;
-import com.microsoft.azure.management.eventhub.EventHubAuthorizationKey;
-import com.microsoft.azure.management.eventhub.EventHubNamespace;
 import org.springframework.lang.NonNull;
 
 /**

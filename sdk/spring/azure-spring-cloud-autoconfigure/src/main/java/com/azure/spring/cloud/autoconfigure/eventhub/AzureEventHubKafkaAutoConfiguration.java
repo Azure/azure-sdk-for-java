@@ -3,12 +3,12 @@
 
 package com.azure.spring.cloud.autoconfigure.eventhub;
 
+import com.azure.resourcemanager.eventhubs.models.AuthorizationRule;
+import com.azure.resourcemanager.eventhubs.models.EventHubAuthorizationKey;
+import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
 import com.azure.spring.cloud.autoconfigure.context.AzureContextAutoConfiguration;
 import com.azure.spring.cloud.context.core.impl.EventHubNamespaceManager;
 import com.azure.spring.cloud.telemetry.TelemetryCollector;
-import com.microsoft.azure.management.eventhub.AuthorizationRule;
-import com.microsoft.azure.management.eventhub.EventHubAuthorizationKey;
-import com.microsoft.azure.management.eventhub.EventHubNamespace;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

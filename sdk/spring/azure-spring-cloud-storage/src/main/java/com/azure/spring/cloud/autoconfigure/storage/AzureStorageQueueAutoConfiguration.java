@@ -6,7 +6,6 @@ package com.azure.spring.cloud.autoconfigure.storage;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.spring.cloud.autoconfigure.context.AzureContextAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.context.AzureEnvironmentAutoConfiguration;
-import com.azure.spring.cloud.context.core.api.EnvironmentProvider;
 import com.azure.spring.cloud.context.core.impl.StorageAccountManager;
 import com.azure.spring.cloud.context.core.storage.StorageConnectionStringProvider;
 import com.azure.spring.cloud.telemetry.TelemetryCollector;
@@ -29,8 +28,7 @@ import javax.annotation.PostConstruct;
  * Auto-configuration class for Azure Storage Queue.
  */
 @Configuration
-@AutoConfigureAfter({ AzureContextAutoConfiguration.class, AzureEnvironmentAutoConfiguration.class,
-    AzureStorageAutoConfiguration.class })
+@AutoConfigureAfter({ AzureContextAutoConfiguration.class, AzureEnvironmentAutoConfiguration.class })
 @ConditionalOnClass({ QueueServiceClient.class, StorageQueueClientFactory.class })
 @ConditionalOnProperty(name = "spring.cloud.azure.storage.account")
 @EnableConfigurationProperties(AzureStorageProperties.class)
@@ -46,17 +44,11 @@ public class AzureStorageQueueAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     StorageQueueClientFactory storageQueueClientFactory(AzureStorageProperties storageProperties,
-                                                        StorageAccountManager storageAccountManager,
-                                                        EnvironmentProvider environmentProvider) {
+                                                        StorageAccountManager storageAccountManager) {
 
-        String connectionString;
-
-        String accountName = storageProperties.getAccount();
-
-        StorageAccount storageAccount = storageAccountManager.getOrCreate(accountName);
-
-        connectionString = StorageConnectionStringProvider.getConnectionString(storageAccount,
-            environmentProvider.getEnvironment(), storageProperties.isSecureTransfer());
+        final String accountName = storageProperties.getAccount();
+        final StorageAccount storageAccount = storageAccountManager.getOrCreate(accountName);
+        final String connectionString = new StorageConnectionStringProvider(storageAccount).getConnectionString();
 
         return new DefaultStorageQueueClientFactory(connectionString);
     }

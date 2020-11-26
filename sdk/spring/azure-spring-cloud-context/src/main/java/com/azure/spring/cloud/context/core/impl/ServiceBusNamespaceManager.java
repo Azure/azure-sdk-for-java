@@ -3,20 +3,20 @@
 
 package com.azure.spring.cloud.context.core.impl;
 
+import com.azure.resourcemanager.AzureResourceManager;
+import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
-import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.servicebus.ServiceBusNamespace;
 
 /**
  * Resource manager for Service Bus namespace.
  */
 public class ServiceBusNamespaceManager extends AzureManager<ServiceBusNamespace, String> {
 
-    private final Azure azure;
+    private final AzureResourceManager azureResourceManager;
 
-    public ServiceBusNamespaceManager(Azure azure, AzureProperties azureProperties) {
+    public ServiceBusNamespaceManager(AzureResourceManager azureResourceManager, AzureProperties azureProperties) {
         super(azureProperties);
-        this.azure = azure;
+        this.azureResourceManager = azureResourceManager;
     }
 
     @Override
@@ -32,7 +32,7 @@ public class ServiceBusNamespaceManager extends AzureManager<ServiceBusNamespace
     @Override
     public ServiceBusNamespace internalGet(String namespace) {
         try {
-            return azure.serviceBusNamespaces().getByResourceGroup(azureProperties.getResourceGroup(), namespace);
+            return azureResourceManager.serviceBusNamespaces().getByResourceGroup(resourceGroup, namespace);
         } catch (NullPointerException e) {
             // azure management api has no way to determine whether an eventhub namespace
             // exists
@@ -43,7 +43,9 @@ public class ServiceBusNamespaceManager extends AzureManager<ServiceBusNamespace
 
     @Override
     public ServiceBusNamespace internalCreate(String namespace) {
-        return azure.serviceBusNamespaces().define(namespace).withRegion(azureProperties.getRegion())
-                    .withExistingResourceGroup(azureProperties.getResourceGroup()).create();
+        return azureResourceManager.serviceBusNamespaces()
+                                   .define(namespace)
+                                   .withRegion(region)
+                                   .withExistingResourceGroup(resourceGroup).create();
     }
 }

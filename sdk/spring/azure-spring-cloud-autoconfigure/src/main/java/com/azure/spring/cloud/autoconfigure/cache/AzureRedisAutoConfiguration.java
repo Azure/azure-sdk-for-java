@@ -3,12 +3,12 @@
 
 package com.azure.spring.cloud.autoconfigure.cache;
 
+import com.azure.resourcemanager.AzureResourceManager;
+import com.azure.resourcemanager.redis.models.RedisCache;
 import com.azure.spring.cloud.autoconfigure.context.AzureContextAutoConfiguration;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
 import com.azure.spring.cloud.context.core.impl.RedisCacheManager;
 import com.azure.spring.cloud.telemetry.TelemetryCollector;
-import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.redis.RedisCache;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -43,8 +43,9 @@ public class AzureRedisAutoConfiguration {
 
     @ConditionalOnMissingBean
     @Bean
-    public RedisCacheManager redisCacheManager(Azure azure, AzureProperties azureProperties) {
-        return new RedisCacheManager(azure, azureProperties);
+    public RedisCacheManager redisCacheManager(AzureResourceManager azureResourceManager,
+                                               AzureProperties azureProperties) {
+        return new RedisCacheManager(azureResourceManager, azureProperties);
     }
 
     @ConditionalOnMissingBean
@@ -65,14 +66,14 @@ public class AzureRedisAutoConfiguration {
 
         if (isCluster) {
             RedisProperties.Cluster cluster = new RedisProperties.Cluster();
-            cluster.setNodes(Arrays.asList(redisCache.hostName() + ":" + port));
+            cluster.setNodes(Arrays.asList(redisCache.hostname() + ":" + port));
             redisProperties.setCluster(cluster);
         } else {
-            redisProperties.setHost(redisCache.hostName());
+            redisProperties.setHost(redisCache.hostname());
             redisProperties.setPort(port);
         }
 
-        redisProperties.setPassword(redisCache.getKeys().primaryKey());
+        redisProperties.setPassword(redisCache.keys().primaryKey());
         redisProperties.setSsl(useSsl);
 
         return redisProperties;

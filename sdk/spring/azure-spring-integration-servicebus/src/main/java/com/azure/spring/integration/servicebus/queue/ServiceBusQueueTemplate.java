@@ -41,7 +41,8 @@ import java.util.function.Consumer;
  */
 public class ServiceBusQueueTemplate extends ServiceBusTemplate<ServiceBusQueueClientFactory>
     implements ServiceBusQueueOperation {
-    private static final Logger LOG = LoggerFactory.getLogger(ServiceBusQueueTemplate.class);
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusQueueTemplate.class);
 
     private static final String MSG_FAIL_CHECKPOINT = "Failed to checkpoint %s in queue '%s'";
 
@@ -55,7 +56,8 @@ public class ServiceBusQueueTemplate extends ServiceBusTemplate<ServiceBusQueueC
 
     @Override
     @SuppressWarnings("unchecked")
-    public boolean subscribe(String destination, @NonNull Consumer<Message<?>> consumer,
+    public boolean subscribe(String destination,
+                             @NonNull Consumer<Message<?>> consumer,
                              @NonNull Class<?> targetPayloadClass) {
         Assert.hasText(destination, "destination can't be null or empty");
 
@@ -95,11 +97,11 @@ public class ServiceBusQueueTemplate extends ServiceBusTemplate<ServiceBusQueueC
                     session.deadLetter(uuid, deadLetterReason, deadLetterErrorDescription);
                 }
             } catch (ServiceBusException | InterruptedException e) {
-                LOG.error("Failed to register queue message handler", e);
+                LOGGER.error("Failed to register queue message handler", e);
                 throw new ServiceBusRuntimeException("Failed to register queue message handler", e);
             }
         } else {
-            LOG.error("Failed to send message to dead letter queue");
+            LOGGER.error("Failed to send message to dead letter queue");
             throw new ServiceBusRuntimeException("Failed to send message to dead letter queue");
         }
     }
@@ -122,12 +124,12 @@ public class ServiceBusQueueTemplate extends ServiceBusTemplate<ServiceBusQueueC
                     session.abandon(uuid);
                 }
             } catch (ServiceBusException | InterruptedException e) {
-                LOG.error("Failed to register queue message handler", e);
+                LOGGER.error("Failed to register queue message handler", e);
                 throw new ServiceBusRuntimeException("Failed to register queue message handler", e);
             }
 
         } else {
-            LOG.error("Failed to send message to dead letter queue");
+            LOGGER.error("Failed to send message to dead letter queue");
             throw new ServiceBusRuntimeException("Failed to send message to dead letter queue");
         }
     }
@@ -162,7 +164,7 @@ public class ServiceBusQueueTemplate extends ServiceBusTemplate<ServiceBusQueueC
                 queueClient.registerMessageHandler(messageHandler, buildHandlerOptions(), executors);
             }
         } catch (ServiceBusException | InterruptedException e) {
-            LOG.error("Failed to register queue message handler", e);
+            LOGGER.error("Failed to register queue message handler", e);
             throw new ServiceBusRuntimeException("Failed to register queue message handler", e);
         }
     }
@@ -229,7 +231,7 @@ public class ServiceBusQueueTemplate extends ServiceBusTemplate<ServiceBusQueueC
 
         @Override
         public CompletableFuture<Void> OnCloseSessionAsync(IMessageSession session) {
-            LOG.info("Closed session '" + session.getSessionId() + "' for subscription: " + session.getEntityPath());
+            LOGGER.info("Closed session '" + session.getSessionId() + "' for subscription: " + session.getEntityPath());
             return CompletableFuture.completedFuture(null);
         }
     }

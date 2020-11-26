@@ -3,8 +3,8 @@
 
 package com.azure.spring.cloud.context.core.impl;
 
-import com.microsoft.azure.management.servicebus.ServiceBusSubscription;
-import com.microsoft.azure.management.servicebus.Topic;
+import com.azure.resourcemanager.servicebus.models.ServiceBusSubscription;
+import com.azure.resourcemanager.servicebus.models.Topic;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
 import com.azure.spring.cloud.context.core.util.Tuple;
 
@@ -42,7 +42,9 @@ public class ServiceBusTopicSubscriptionManager extends AzureManager<ServiceBusS
 
     @Override
     public ServiceBusSubscription internalCreate(Tuple<Topic, String> topicAndSubscriptionName) {
-        return topicAndSubscriptionName.getFirst().subscriptions().define(topicAndSubscriptionName.getSecond())
-                .create();
+        return topicAndSubscriptionName.getFirst()
+                                       .subscriptions()
+                                       .define(topicAndSubscriptionName.getSecond())
+                                       .create();
     }
 }

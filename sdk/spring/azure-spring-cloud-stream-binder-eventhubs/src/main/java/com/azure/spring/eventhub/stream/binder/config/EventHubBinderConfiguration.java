@@ -3,6 +3,7 @@
 
 package com.azure.spring.eventhub.stream.binder.config;
 
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.autoconfigure.context.AzureContextAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.context.AzureEnvironmentAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.eventhub.AzureEventHubAutoConfiguration;
@@ -18,16 +19,14 @@ import com.azure.spring.eventhub.stream.binder.properties.EventHubExtendedBindin
 import com.azure.spring.eventhub.stream.binder.provisioning.EventHubChannelProvisioner;
 import com.azure.spring.eventhub.stream.binder.provisioning.EventHubChannelResourceManagerProvisioner;
 import com.azure.spring.integration.eventhub.api.EventHubOperation;
-import com.microsoft.azure.management.Azure;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.azure.spring.integration.eventhub.factory.EventHubConnectionStringProvider;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.stream.binder.Binder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 
@@ -44,14 +43,6 @@ public class EventHubBinderConfiguration {
     private static final String EVENT_HUB_BINDER = "EventHubBinder";
     private static final String NAMESPACE = "Namespace";
 
-    @Autowired(required = false)
-    private EventHubNamespaceManager eventHubNamespaceManager;
-
-    @Autowired(required = false)
-    private EventHubManager eventHubManager;
-
-    @Autowired(required = false)
-    private EventHubConsumerGroupManager eventHubConsumerGroupManager;
 
     @PostConstruct
     public void collectTelemetry() {
@@ -60,20 +51,32 @@ public class EventHubBinderConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public EventHubChannelProvisioner eventHubChannelProvisioner(AzureEventHubProperties eventHubProperties) {
-        final String connectionString = eventHubProperties.getConnectionString();
-        
+    public EventHubChannelProvisioner eventHubChannelProvisioner(
+        EventHubConnectionStringProvider eventHubConnectionStringProvider,
+        EventHubNamespaceManager eventHubNamespaceManager,
+        EventHubManager eventHubManager,
+        EventHubConsumerGroupManager consumerGroupManager,
+        AzureEventHubProperties eventHubProperties) {
+
+        final String connectionString = eventHubConnectionStringProvider.getConnectionString();
+        String namespace = eventHubProperties.getNamespace();
+
+        if (namespace == null) {
+            namespace = EventHubUtils.getNamespace(connectionString);
+        }
+        TelemetryCollector.getInstance().addProperty(EVENT_HUB_BINDER, NAMESPACE, namespace);
+
+        if (consumerGroupManager != null) {
+            return new EventHubChannelResourceManagerProvisioner(eventHubNamespaceManager,
+                eventHubManager,
+                consumerGroupManager,
+                namespace);
+        }
+
+
         // TODO: With the previous ResourceManagerProvider architecture, eventHubManager
         // and eventHubConsumerGroup manager were created unconditionally.
         // Now, they are not created at all. Should they be?
-        if (eventHubNamespaceManager != null && eventHubManager != null && eventHubConsumerGroupManager != null) {
-            return new EventHubChannelResourceManagerProvisioner(eventHubNamespaceManager, eventHubManager,
-                    eventHubConsumerGroupManager, eventHubProperties.getNamespace());
-        } else if (StringUtils.hasText(connectionString)) {
-            String namespace = eventHubProperties.getNamespace() != null ? eventHubProperties.getNamespace()
-                    : EventHubUtils.getNamespace(eventHubProperties.getConnectionString());
-            TelemetryCollector.getInstance().addProperty(EVENT_HUB_BINDER, NAMESPACE, namespace);
-        }
 
         return new EventHubChannelProvisioner();
     }
@@ -91,15 +94,16 @@ public class EventHubBinderConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty("spring.cloud.azure.resource-group")
-    public EventHubManager eventHubManager(Azure azure, AzureProperties azureProperties) {
-        return new EventHubManager(azure, azureProperties);
+    @ConditionalOnBean(AzureResourceManager.class)
+    public EventHubManager eventHubManager(AzureResourceManager azureResourceManager, AzureProperties azureProperties) {
+        return new EventHubManager(azureResourceManager, azureProperties);
     }
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty("spring.cloud.azure.resource-group")
-    public EventHubConsumerGroupManager eventHubConsumerGroupManager(Azure azure, AzureProperties azureProperties) {
-        return new EventHubConsumerGroupManager(azure, azureProperties);
+    @ConditionalOnBean(EventHubManager.class)
+    public EventHubConsumerGroupManager eventHubConsumerGroupManager(AzureResourceManager azureResourceManager,
+                                                                     AzureProperties azureProperties) {
+        return new EventHubConsumerGroupManager(azureResourceManager, azureProperties);
     }
 }

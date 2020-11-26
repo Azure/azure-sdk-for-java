@@ -3,10 +3,10 @@
 
 package com.azure.spring.cloud.context.core.impl;
 
+import com.azure.resourcemanager.servicebus.models.Queue;
+import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
 import com.azure.spring.cloud.context.core.util.Tuple;
-import com.microsoft.azure.management.servicebus.Queue;
-import com.microsoft.azure.management.servicebus.ServiceBusNamespace;
 
 /**
  * Resource manager for Service Bus queue.

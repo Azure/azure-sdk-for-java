@@ -3,12 +3,12 @@
 
 package com.azure.spring.eventhub.stream.binder.provisioning;
 
+import com.azure.resourcemanager.eventhubs.models.EventHub;
+import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
 import com.azure.spring.cloud.context.core.impl.EventHubConsumerGroupManager;
 import com.azure.spring.cloud.context.core.impl.EventHubManager;
 import com.azure.spring.cloud.context.core.impl.EventHubNamespaceManager;
 import com.azure.spring.cloud.context.core.util.Tuple;
-import com.microsoft.azure.management.eventhub.EventHub;
-import com.microsoft.azure.management.eventhub.EventHubNamespace;
 import org.springframework.cloud.stream.provisioning.ProvisioningException;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
@@ -23,8 +23,9 @@ public class EventHubChannelResourceManagerProvisioner extends EventHubChannelPr
     private final EventHubConsumerGroupManager eventHubConsumerGroupManager;
 
     public EventHubChannelResourceManagerProvisioner(@NonNull EventHubNamespaceManager eventHubNamespaceManager,
-            @NonNull EventHubManager eventHubManager,
-            @NonNull EventHubConsumerGroupManager eventHubConsumerGroupManager, @NonNull String namespace) {
+                                                     @NonNull EventHubManager eventHubManager,
+                                                     @NonNull EventHubConsumerGroupManager eventHubConsumerGroupManager,
+                                                     @NonNull String namespace) {
         Assert.hasText(namespace, "The namespace can't be null or empty");
         this.namespace = namespace;
         this.eventHubNamespaceManager = eventHubNamespaceManager;

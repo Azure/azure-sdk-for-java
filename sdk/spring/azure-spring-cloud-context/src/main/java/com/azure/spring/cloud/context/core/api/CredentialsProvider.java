@@ -3,14 +3,14 @@
 
 package com.azure.spring.cloud.context.core.api;
 
-import com.microsoft.azure.credentials.AzureTokenCredentials;
+import com.azure.core.credential.TokenCredential;
 
 /**
- * Interface to provide the {@link AzureTokenCredentials} that will be used to call the service.
+ * Interface to provide the {@link TokenCredential} that will be used to call the service.
  *
  * @author Warren Zhu
  */
 public interface CredentialsProvider {
 
-    AzureTokenCredentials getCredentials();
+    TokenCredential getCredential();
 }

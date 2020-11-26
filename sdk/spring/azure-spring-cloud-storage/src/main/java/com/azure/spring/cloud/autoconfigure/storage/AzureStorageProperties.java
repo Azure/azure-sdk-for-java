@@ -21,11 +21,6 @@ public class AzureStorageProperties {
         message = "must be between 3 and 24 characters in length and use numbers and lower-case letters only")
     private String account;
 
-    private boolean secureTransfer = true;
-
-    /**
-     * Either accessKey or credentialFilePath should be provided
-     */
     private String accessKey;
     
     private String resourceGroup;
@@ -46,14 +41,6 @@ public class AzureStorageProperties {
         this.accessKey = accessKey;
     }
 
-    public boolean isSecureTransfer() {
-        return secureTransfer;
-    }
-
-    public void setSecureTransfer(boolean secureTransfer) {
-        this.secureTransfer = secureTransfer;
-    }
-    
     public String getResourceGroup() {
         return resourceGroup;
     }

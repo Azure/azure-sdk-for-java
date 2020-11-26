@@ -28,7 +28,7 @@ import java.util.function.Consumer;
  * @param <U> The type of message payload.
  */
 public abstract class ServiceBusMessageHandler<U> implements IMessageHandler {
-    private static final Logger LOG = LoggerFactory.getLogger(ServiceBusMessageHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusMessageHandler.class);
     protected final Consumer<Message<U>> consumer;
     protected final Class<U> payloadType;
     protected final CheckpointConfig checkpointConfig;
@@ -66,7 +66,7 @@ public abstract class ServiceBusMessageHandler<U> implements IMessageHandler {
 
     @Override
     public void notifyException(Throwable exception, ExceptionPhase phase) {
-        LOG.error(String.format("Exception encountered in phase %s", phase), exception);
+        LOGGER.error(String.format("Exception encountered in phase %s", phase), exception);
     }
 
     protected abstract CompletableFuture<Void> success(UUID uuid);
@@ -79,11 +79,11 @@ public abstract class ServiceBusMessageHandler<U> implements IMessageHandler {
 
     protected void checkpointHandler(Message<?> message, Throwable t) {
         if (t != null) {
-            if (LOG.isWarnEnabled()) {
-                LOG.warn(buildCheckpointFailMessage(message), t);
+            if (LOGGER.isWarnEnabled()) {
+                LOGGER.warn(buildCheckpointFailMessage(message), t);
             }
-        } else if (LOG.isDebugEnabled()) {
-            LOG.debug(buildCheckpointSuccessMessage(message));
+        } else if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug(buildCheckpointSuccessMessage(message));
         }
     }
 }

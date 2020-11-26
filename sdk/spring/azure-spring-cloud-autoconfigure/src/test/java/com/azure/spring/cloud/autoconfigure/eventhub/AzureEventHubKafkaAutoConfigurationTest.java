@@ -3,13 +3,16 @@
 
 package com.azure.spring.cloud.autoconfigure.eventhub;
 
+import com.azure.core.http.rest.Page;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.util.IterableStream;
+import com.azure.resourcemanager.eventhubs.models.EventHubAuthorizationKey;
+import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
+import com.azure.resourcemanager.eventhubs.models.EventHubNamespaceAuthorizationRule;
 import com.azure.spring.cloud.context.core.impl.EventHubNamespaceManager;
-import com.microsoft.azure.Page;
-import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.eventhub.EventHubAuthorizationKey;
-import com.microsoft.azure.management.eventhub.EventHubNamespace;
-import com.microsoft.azure.management.eventhub.EventHubNamespaceAuthorizationRule;
-import com.microsoft.rest.RestException;
+import com.google.common.collect.Lists;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -19,8 +22,7 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.KafkaTemplate;
-
-import java.io.IOException;
+import reactor.core.publisher.Mono;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -79,20 +81,28 @@ public class AzureEventHubKafkaAutoConfigurationTest {
             when(key.primaryConnectionString()).thenReturn("connectionString1");
             EventHubNamespaceAuthorizationRule rule = mock(EventHubNamespaceAuthorizationRule.class);
             when(rule.getKeys()).thenReturn(key);
-            PagedList<EventHubNamespaceAuthorizationRule> rules = new PagedList<EventHubNamespaceAuthorizationRule>() {
-                @Override
-                public Page<EventHubNamespaceAuthorizationRule> nextPage(String nextPageLink)
-                    throws RestException, IOException {
-                    return null;
-                }
-            };
-            rules.add(rule);
+
+            PagedIterable<EventHubNamespaceAuthorizationRule> rules =
+                new PagedIterable<>(new PagedFlux<>(
+                    () -> Mono.just(new PagedResponseBase<String, EventHubNamespaceAuthorizationRule>(
+                        null, 200, null, new Page<EventHubNamespaceAuthorizationRule>() {
+                        @Override
+                        public IterableStream<EventHubNamespaceAuthorizationRule> getElements() {
+                            return new IterableStream<>(Lists.newArrayList(rule));
+                        }
+
+                        @Override
+                        public String getContinuationToken() {
+                            return null;
+                        }
+                    }, null))
+                ));
+
             when(namespace.listAuthorizationRules()).thenReturn(rules);
             when(namespace.serviceBusEndpoint()).thenReturn("localhost");
-            EventHubNamespaceManager eventHubNamespaceManager = mock(EventHubNamespaceManager.class);
             //This previously returned a ResourceManagerProvider that was in no way connected to any of the objets created above.
             //Maintaining similar behavior in refactoring.
-            return eventHubNamespaceManager;
+            return mock(EventHubNamespaceManager.class);
         }
 
     }

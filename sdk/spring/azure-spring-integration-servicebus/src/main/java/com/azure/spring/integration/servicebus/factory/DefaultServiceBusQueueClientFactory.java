@@ -3,10 +3,10 @@
 
 package com.azure.spring.integration.servicebus.factory;
 
+import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
 import com.azure.spring.cloud.context.core.util.Memoizer;
 import com.azure.spring.cloud.context.core.util.Tuple;
 import com.azure.spring.integration.servicebus.ServiceBusRuntimeException;
-import com.microsoft.azure.management.servicebus.ServiceBusNamespace;
 import com.microsoft.azure.servicebus.IMessageSender;
 import com.microsoft.azure.servicebus.IQueueClient;
 import com.microsoft.azure.servicebus.QueueClient;

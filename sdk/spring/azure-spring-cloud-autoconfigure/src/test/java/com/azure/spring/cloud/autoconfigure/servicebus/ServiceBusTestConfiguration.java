@@ -3,8 +3,8 @@
 
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
+import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
 import com.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
-import com.microsoft.azure.management.servicebus.ServiceBusNamespace;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

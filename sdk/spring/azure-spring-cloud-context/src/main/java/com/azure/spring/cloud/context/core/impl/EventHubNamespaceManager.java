@@ -3,20 +3,20 @@
 
 package com.azure.spring.cloud.context.core.impl;
 
+import com.azure.resourcemanager.AzureResourceManager;
+import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
-import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.eventhub.EventHubNamespace;
 
 /**
  * Resource manager for Event Hubs namespace.
  */
 public class EventHubNamespaceManager extends AzureManager<EventHubNamespace, String> {
 
-    private final Azure azure;
+    private final AzureResourceManager azureResourceManager;
 
-    public EventHubNamespaceManager(Azure azure, AzureProperties azureProperties) {
+    public EventHubNamespaceManager(AzureResourceManager azureResourceManager, AzureProperties azureProperties) {
         super(azureProperties);
-        this.azure = azure;
+        this.azureResourceManager = azureResourceManager;
     }
 
     @Override
@@ -32,10 +32,9 @@ public class EventHubNamespaceManager extends AzureManager<EventHubNamespace, St
     @Override
     public EventHubNamespace internalGet(String namespace) {
         try {
-            return azure.eventHubNamespaces().getByResourceGroup(azureProperties.getResourceGroup(), namespace);
+            return azureResourceManager.eventHubNamespaces().getByResourceGroup(resourceGroup, namespace);
         } catch (NullPointerException e) {
-            // azure management api has no way to determine whether an eventhub namespace
-            // exists
+            // azure management api has no way to determine whether an eventhub namespace exists
             // Workaround for this is by catching NPE
             return null;
         }
@@ -43,7 +42,10 @@ public class EventHubNamespaceManager extends AzureManager<EventHubNamespace, St
 
     @Override
     public EventHubNamespace internalCreate(String namespace) {
-        return azure.eventHubNamespaces().define(namespace).withRegion(azureProperties.getRegion())
-                .withExistingResourceGroup(azureProperties.getResourceGroup()).create();
+        return azureResourceManager.eventHubNamespaces()
+                                   .define(namespace)
+                                   .withRegion(region)
+                                   .withExistingResourceGroup(resourceGroup)
+                                   .create();
     }
 }

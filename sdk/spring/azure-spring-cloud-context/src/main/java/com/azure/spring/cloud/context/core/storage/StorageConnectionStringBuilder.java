@@ -2,7 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.context.core.storage;
 
-import com.microsoft.azure.AzureEnvironment;
+import com.azure.core.management.AzureEnvironment;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -33,12 +34,10 @@ public class StorageConnectionStringBuilder {
         map.put(DEFAULT_PROTOCOL, resolveProtocol(isSecureTransfer));
         map.put(ACCOUNT_NAME, accountName);
 
-        if (accountKey.isPresent()) {
-            map.put(ACCOUNT_KEY, accountKey.get());
-        }
+        accountKey.ifPresent(s -> map.put(ACCOUNT_KEY, s));
         // Remove starting dot since AzureEnvironment.storageEndpointSuffix() starts
         // with dot
-        map.put(ENDPOINT_SUFFIX, environment.storageEndpointSuffix().substring(1));
+        map.put(ENDPOINT_SUFFIX, environment.getStorageEndpointSuffix().substring(1));
 
         return map.entrySet().stream().map(Object::toString).collect(Collectors.joining(SEPARATOR));
     }

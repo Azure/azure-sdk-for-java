@@ -3,8 +3,8 @@
 
 package com.azure.spring.cloud.context.core.impl;
 
-import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.resources.ResourceGroup;
+import com.azure.resourcemanager.AzureResourceManager;
+import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
 
 /**
@@ -12,11 +12,11 @@ import com.azure.spring.cloud.context.core.config.AzureProperties;
  */
 public class ResourceGroupManager extends AzureManager<ResourceGroup, String> {
 
-    private final Azure azure;
+    private final AzureResourceManager azureResourceManager;
     
-    public ResourceGroupManager(Azure azure, AzureProperties azureProperties) {
+    public ResourceGroupManager(AzureResourceManager azureResourceManager, AzureProperties azureProperties) {
         super(azureProperties);
-        this.azure = azure;
+        this.azureResourceManager = azureResourceManager;
     }
 
     @Override
@@ -31,11 +31,14 @@ public class ResourceGroupManager extends AzureManager<ResourceGroup, String> {
 
     @Override
     public ResourceGroup internalGet(String key) {
-        return azure.resourceGroups().getByName(key);
+        return azureResourceManager.resourceGroups().getByName(key);
     }
 
     @Override
     public ResourceGroup internalCreate(String key) {
-        return azure.resourceGroups().define(key).withRegion(azureProperties.getRegion()).create();
+        return azureResourceManager.resourceGroups()
+                                   .define(key)
+                                   .withRegion(region)
+                                   .create();
     }
 }

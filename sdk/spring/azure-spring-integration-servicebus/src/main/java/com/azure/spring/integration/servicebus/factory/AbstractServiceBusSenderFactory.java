@@ -16,6 +16,7 @@ import javax.annotation.Nullable;
  * @author Warren Zhu
  */
 abstract class AbstractServiceBusSenderFactory implements ServiceBusSenderFactory {
+
     protected final String connectionString;
 
     @Nullable

@@ -3,9 +3,9 @@
 
 package com.azure.spring.integration.servicebus.factory;
 
+import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
+import com.azure.resourcemanager.servicebus.models.Topic;
 import com.azure.spring.integration.servicebus.ServiceBusRuntimeException;
-import com.microsoft.azure.management.servicebus.ServiceBusNamespace;
-import com.microsoft.azure.management.servicebus.Topic;
 import com.microsoft.azure.servicebus.IMessageSender;
 import com.microsoft.azure.servicebus.ISubscriptionClient;
 import com.microsoft.azure.servicebus.ReceiveMode;
@@ -27,7 +27,8 @@ import java.util.function.Function;
  * @author Warren Zhu
  */
 public class DefaultServiceBusTopicClientFactory extends AbstractServiceBusSenderFactory
-        implements ServiceBusTopicClientFactory {
+    implements ServiceBusTopicClientFactory {
+
     private static final String SUBSCRIPTION_PATH = "%s/subscriptions/%s";
     private final BiFunction<String, String, ISubscriptionClient> subscriptionClientCreator = Memoizer
             .memoize(this::createSubscriptionClient);
