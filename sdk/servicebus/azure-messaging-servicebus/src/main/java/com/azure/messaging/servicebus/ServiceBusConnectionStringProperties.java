@@ -9,10 +9,11 @@ import com.azure.core.credential.TokenCredential;
 import java.net.URI;
 
 /**
- * A utility class that parses a connection string into sections.
- * A Service Bus connection string is a set of key value pairs separated by semi-colon. A typical example is
- * "Endpoint=sb://sbnamespace.servicebus.windows.net/;SharedAccessKeyName=someKeyName;SharedAccessKey=someKeyValue".
+ * A utility class that parses a connection string into sections. A Service Bus connection string is a set of key value
+ * pairs separated by semi-colon. A typical example is
+ * {@code "Endpoint=sb://foo.servicebus.windows.net/;SharedAccessKeyName=someKeyName;SharedAccessKey=someKeyValue"}.
  *
+ * <p>
  * A connection may have the following sections:
  * <ul>
  *     <li>Endpoint, which is mandatory. The hostname part of it is the "Fully qualified namespace".</li>
@@ -21,11 +22,14 @@ import java.net.URI;
  *     <li>EntityPath, optional, the queue name or the topic name under the service namespace</li>
  * </ul>
  *
+ * <p>
  * When you have a ServiceBus connection string, you can use {@link ServiceBusClientBuilder#connectionString(String)}
- * to build a client. But if you'd like to use a {@link com.azure.core.credential.TokenCredential} to access a
- * ServiceBus, you can use this utility class to take the fully qualified namespace and optionally the entity path
- * (queue/topic name) from the connection string and then use
- * {@link ServiceBusClientBuilder#credential(String, TokenCredential)}.
+ * to build a client. If you'd like to use a {@link TokenCredential} to access a Service Bus, you can use this utility
+ * class to take the fully qualified namespace and optionally the entity path (queue/topic name) from the connection
+ * string and then use {@link ServiceBusClientBuilder#credential(String, TokenCredential)}.
+ * </p>
+ *
+ * @see ServiceBusClientBuilder#connectionString(String)
  */
 public final class ServiceBusConnectionStringProperties {
     private final URI endpoint;
@@ -43,18 +47,21 @@ public final class ServiceBusConnectionStringProperties {
     }
 
     /**
-     * Parse a ServiceBus connection string into an instance of this class.
+     * Parse a Service Bus connection string into an instance of this class.
+     *
      * @param connectionString The connection string to be parsed.
+     *
      * @return An instance of this class.
      * @throws NullPointerException if {@code connectionString} is null.
-     * @throws IllegalArgumentException if the {@code connectionString} is empty or malformatted.
+     * @throws IllegalArgumentException if the {@code connectionString} is empty or malformed.
      */
     public static ServiceBusConnectionStringProperties parse(String connectionString) {
         return new ServiceBusConnectionStringProperties(new ConnectionStringProperties(connectionString));
     }
 
     /**
-     * Get the "EntityPath" value of the connection string.
+     * Gets the "EntityPath" value of the connection string.
+     *
      * @return The entity path, or {@code null} if the connection string doesn't have an "EntityPath".
      */
     public String getEntityPath() {
@@ -62,7 +69,8 @@ public final class ServiceBusConnectionStringProperties {
     }
 
     /**
-     * Get the "Endpoint" value of the connection string.
+     * Gets the "Endpoint" value of the connection string.
+     *
      * @return The endpoint.
      */
     public String getEndpoint() {
@@ -70,7 +78,8 @@ public final class ServiceBusConnectionStringProperties {
     }
 
     /**
-     * Get the fully qualified namespace, or hostname, from the connection string "Endpoint" section.
+     * Gets the fully qualified namespace, or hostname, from the connection string "Endpoint" section.
+     *
      * @return The fully qualified namespace.
      */
     public String getFullyQualifiedNamespace() {
@@ -78,27 +87,30 @@ public final class ServiceBusConnectionStringProperties {
     }
 
     /**
-     * Get the "SharedAccessKeyName" section of the connection string.
-     * @return The shared access key name, or {@code null} if the connection string doesn't have an
-     * "SharedAccessKeyName".
+     * Gets the "SharedAccessKeyName" section of the connection string.
+     *
+     * @return The shared access key name, or {@code null} if the connection string doesn't have a
+     *     "SharedAccessKeyName".
      */
     public String getSharedAccessKeyName() {
         return this.sharedAccessKeyName;
     }
 
     /**
-     * Get the "SharedAccessSignature" section of the connection string.
-     * @return The shared access key value, or {@code null} if the connection string doesn't have an
-     * "SharedAccessSignature".
+     * Gets the "SharedAccessSignature" section of the connection string.
+     *
+     * @return The shared access key value, or {@code null} if the connection string doesn't have a
+     *     "SharedAccessSignature".
      */
     public String getSharedAccessKey() {
         return this.sharedAccessKey;
     }
 
     /**
-     * Get the "SharedAccessSignature" section of the connection string.
-     * @return The shared access signature, or {@code null} if the connection string doesn't have an
-     * "SharedAccessSignature".
+     * Gets the "SharedAccessSignature" section of the connection string.
+     *
+     * @return The shared access signature, or {@code null} if the connection string doesn't have a
+     *     "SharedAccessSignature".
      */
     public String getSharedAccessSignature() {
         return this.sharedAccessSignature;

@@ -4,7 +4,7 @@ This client library provides support for exporting OpenTelemetry data to Azure M
  application is already instrumented with the [OpenTelemetry SDK][opentelemetry_sdk] following the [OpenTelemetry
  Specification][opentelemetry_specification].
   
-[Source code][source_code] | Package (Maven) | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][sample_readme]
+[Source code][source_code] | [Package (Maven)][package_mvn] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][sample_readme]
 
 ## Getting started
 
@@ -98,6 +98,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/monitor
 [azure_subscription]: https://azure.microsoft.com/free/
 [api_reference_doc]: https://docs.microsoft.com/azure/azure-monitor/overview
+[package_mvn]: https://mvnrepository.com/artifact/com.azure/opentelemetry-exporters-azuremonitor
 [product_documentation]: https://docs.microsoft.com/azure/azure-monitor/overview
 [azure_cli]: https://docs.microsoft.com/cli/azure
 [azure_portal]: https://portal.azure.com

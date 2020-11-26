@@ -435,7 +435,10 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         // Arrange
         final boolean isSessionEnabled = false;
         final int total = 2;
+        final Duration shortWait = Duration.ofSeconds(3);
+
         setSenderAndReceiver(entityType, TestUtils.USE_CASE_SCHEDULE_MESSAGES, isSessionEnabled);
+
         final Duration scheduleDuration = Duration.ofSeconds(5);
         final String messageId = UUID.randomUUID().toString();
         final List<ServiceBusMessage> messages = new ArrayList<>();
@@ -470,7 +473,9 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
                 assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
                 messagesPending.decrementAndGet();
             })
-            .verifyComplete();
+            .thenAwait(shortWait)
+            .thenCancel()
+            .verify();
     }
 
     /**

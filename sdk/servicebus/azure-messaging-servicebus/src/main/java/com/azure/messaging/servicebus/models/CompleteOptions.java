@@ -3,22 +3,24 @@
 
 package com.azure.messaging.servicebus.models;
 
+import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
+import com.azure.messaging.servicebus.ServiceBusReceiverAsyncClient;
+import com.azure.messaging.servicebus.ServiceBusReceiverClient;
 import com.azure.messaging.servicebus.ServiceBusTransactionContext;
 
 /**
  * Options to specify while completing message.
+ *
+ * @see ServiceBusReceiverAsyncClient#complete(ServiceBusReceivedMessage, CompleteOptions)
+ * @see ServiceBusReceiverClient#complete(ServiceBusReceivedMessage, CompleteOptions)
  */
 public final class CompleteOptions extends SettlementOptions {
-    protected CompleteOptions self() {
-        return this;
-    }
-
     /**
      * Sets the {@link ServiceBusTransactionContext} to the options.
      *
      * @param transactionContext The {@link ServiceBusTransactionContext} that will be used to complete a message.
      *
-     * @return The Updated {@link CompleteOptions} object.
+     * @return The updated {@link CompleteOptions} object.
      */
     @Override
     public CompleteOptions setTransactionContext(ServiceBusTransactionContext transactionContext) {
