@@ -24,7 +24,6 @@ import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.text.ParseException;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -83,27 +82,6 @@ public class UserPrincipalAzureADGraphTest {
     }
 
     @Test
-    public void getAuthoritiesByUserGroups() throws Exception {
-        aadAuthenticationProperties.getUserGroup().setAllowedGroups(Collections.singletonList("group1"));
-        this.graphClientMock = new AzureADGraphClient(clientId, clientSecret, aadAuthenticationProperties,
-            serviceEndpointsProperties);
-
-        stubFor(get(urlEqualTo("/memberOf"))
-            .withHeader(ACCEPT, equalTo("application/json;odata=minimalmetadata"))
-            .willReturn(aResponse()
-                .withStatus(200)
-                .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
-                .withBody(userGroupsJson)));
-
-        assertThat(graphClientMock.getGroups(TestConstants.ACCESS_TOKEN)).isNotEmpty().containsExactly("ROLE_group1");
-
-        verify(getRequestedFor(urlMatching("/memberOf"))
-            .withHeader(HttpHeaders.AUTHORIZATION, equalTo(String.format("Bearer %s", accessToken)))
-            .withHeader(ACCEPT, equalTo("application/json;odata=minimalmetadata"))
-            .withHeader("api-version", equalTo("1.6")));
-    }
-
-    @Test
     public void getGroups() throws Exception {
         aadAuthenticationProperties.getUserGroup().setAllowedGroups(Arrays.asList("group1", "group2", "group3"));
         this.graphClientMock = new AzureADGraphClient(clientId, clientSecret, aadAuthenticationProperties,
@@ -117,7 +95,7 @@ public class UserPrincipalAzureADGraphTest {
                 .withBody(userGroupsJson)));
 
         Set<String> groups = graphClientMock.getGroups(TestConstants.ACCESS_TOKEN);
-        assertThat(groups).isNotEmpty().containsExactlyInAnyOrder("ROLE_group1", "ROLE_group2", "ROLE_group3");
+        assertThat(groups).isNotEmpty().containsExactlyInAnyOrder("group1", "group2", "group3");
 
         verify(getRequestedFor(urlMatching("/memberOf"))
             .withHeader(HttpHeaders.AUTHORIZATION, equalTo(String.format("Bearer %s", accessToken)))
