@@ -6,9 +6,13 @@ pool:
   vmImage: 'ubuntu-18.04'
 
 variables:
-  MAVEN_CACHE_FOLDER: $(Pipeline.Workspace)/.m2/repository
-  MAVEN_OPTS: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
-  NodeVersion: '14.x'
+- group: Release Secrets for GitHub
+- name: MAVEN_CACHE_FOLDER
+  value: $(Pipeline.Workspace)/.m2/repository
+- name: MAVEN_OPTS
+  value: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
+- name: NodeVersion
+  value: '14.x'
 
 steps:
 - bash: |

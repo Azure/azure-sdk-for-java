@@ -661,6 +661,46 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static CosmosBulkItemResponse createCosmosBulkItemResponse(
+        TransactionalBatchOperationResult result,
+        TransactionalBatchResponse response) {
+
+        return new CosmosBulkItemResponse(
+            result.getETag(),
+            result.getRequestCharge(),
+            result.getResourceObject(),
+            result.getStatusCode(),
+            result.getRetryAfterDuration(),
+            result.getSubStatusCode(),
+            response.getResponseHeaders(),
+            response.getDiagnostics());
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <TContext> CosmosBulkOperationResponse<TContext> createCosmosBulkOperationResponse(
+        CosmosItemOperation operation,
+        CosmosBulkItemResponse response,
+        TContext batchContext) {
+
+        return new CosmosBulkOperationResponse<>(
+            operation,
+            response,
+            batchContext);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <TContext> CosmosBulkOperationResponse<TContext> createCosmosBulkOperationResponse(
+        CosmosItemOperation operation,
+        Exception exception,
+        TContext batchContext) {
+
+        return new CosmosBulkOperationResponse<>(
+            operation,
+            exception,
+            batchContext);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static TransactionalBatchResponse createTransactionBatchResponse(
         int responseStatusCode,
         int responseSubStatusCode,

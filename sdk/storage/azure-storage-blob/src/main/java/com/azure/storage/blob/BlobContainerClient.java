@@ -141,6 +141,15 @@ public final class BlobContainerClient {
     }
 
     /**
+     * Get a client pointing to the account.
+     *
+     * @return {@link BlobServiceClient}
+     */
+    public BlobServiceClient getServiceAsyncClient() {
+        return this.client.getServiceClientBuilder().buildClient();
+    }
+
+    /**
      * Gets the service version the client is using.
      *
      * @return the service version the client is using.

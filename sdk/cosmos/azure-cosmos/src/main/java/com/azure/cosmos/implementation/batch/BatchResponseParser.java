@@ -155,6 +155,9 @@ public final class BatchResponseParser {
             documentServiceResponse.getCosmosDiagnostics());
 
         BridgeInternal.addTransactionBatchResultInResponse(response, results);
+
+        assert (response.getResults().size() == request.getOperations().size());
+
         return response;
     }
 
@@ -174,20 +177,20 @@ public final class BatchResponseParser {
 
         final JsonSerializable jsonSerializable = new JsonSerializable(objectNode);
 
-        final int statusCode = jsonSerializable.getInt(BatchRequestResponseConstant.FIELD_STATUS_CODE);
-        Integer subStatusCode = jsonSerializable.getInt(BatchRequestResponseConstant.FIELD_SUBSTATUS_CODE);
+        final int statusCode = jsonSerializable.getInt(BatchRequestResponseConstants.FIELD_STATUS_CODE);
+        Integer subStatusCode = jsonSerializable.getInt(BatchRequestResponseConstants.FIELD_SUBSTATUS_CODE);
         if (subStatusCode == null) {
             subStatusCode = HttpConstants.SubStatusCodes.UNKNOWN;
         }
 
-        Double requestCharge = jsonSerializable.getDouble(BatchRequestResponseConstant.FIELD_REQUEST_CHARGE);
+        Double requestCharge = jsonSerializable.getDouble(BatchRequestResponseConstants.FIELD_REQUEST_CHARGE);
         if (requestCharge == null) {
             requestCharge = (double) 0;
         }
 
-        final String eTag = jsonSerializable.getString(BatchRequestResponseConstant.FIELD_ETAG);
-        final ObjectNode resourceBody = jsonSerializable.getObject(BatchRequestResponseConstant.FIELD_RESOURCE_BODY);
-        final Integer retryAfterMilliseconds = jsonSerializable.getInt(BatchRequestResponseConstant.FIELD_RETRY_AFTER_MILLISECONDS);
+        final String eTag = jsonSerializable.getString(BatchRequestResponseConstants.FIELD_ETAG);
+        final ObjectNode resourceBody = jsonSerializable.getObject(BatchRequestResponseConstants.FIELD_RESOURCE_BODY);
+        final Integer retryAfterMilliseconds = jsonSerializable.getInt(BatchRequestResponseConstants.FIELD_RETRY_AFTER_MILLISECONDS);
 
         return BridgeInternal.createTransactionBatchResult(
             eTag,
