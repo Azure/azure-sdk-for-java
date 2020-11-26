@@ -445,34 +445,6 @@ public class TransactionalBatchTest extends BatchTestBase {
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
-    public void BatchCreateAndPatchAsync() {
-        BatchTestBase.TestDoc testDoc = this.populateTestDoc(this.partitionKey1);
-        CosmosPatch cosmosPatch = CosmosPatch.create();
-        cosmosPatch.increment("/cost", 12);
-
-        TransactionalBatch batch = TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1));
-        batch.createItemOperation(testDoc);
-        batch.patchItemOperation(testDoc.getId(), cosmosPatch);
-
-        TransactionalBatchResponse batchResponse = batchContainer.executeTransactionalBatch(batch);
-
-        this.verifyBatchProcessed(batchResponse, 2);
-
-        assertThat(batchResponse.getResults().get(0).getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
-        assertThat(batchResponse.getResults().get(0).getItem(TestDoc.class)).isEqualTo(testDoc);
-
-        assertThat(batchResponse.getResults().get(1).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
-
-        testDoc.setCost(testDoc.getCost() + 12);
-
-        // Modified test doc should be equal to patched test doc
-        assertThat(batchResponse.getResults().get(1).getItem(TestDoc.class)).isEqualTo(testDoc);
-
-
-        this.verifyByRead(batchContainer, testDoc);
-    }
-
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void batchWithInvalidCreateTest() {
         // partition key mismatch between doc and and value passed in to the operation
         this.runWithError(

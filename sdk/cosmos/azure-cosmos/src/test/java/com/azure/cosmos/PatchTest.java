@@ -26,12 +26,12 @@ public class PatchTest extends TestSuiteBase {
     private CosmosClient client;
     private CosmosContainer container;
 
-    @Factory(dataProvider = "simpleClientBuildersWithDirect")
+    @Factory(dataProvider = "clientBuilders")
     public PatchTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
 
-    @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
     public void before_PatchTest() {
         assertThat(this.client).isNull();
         this.client = getClientBuilder().contentResponseOnWriteEnabled(true).buildClient();
@@ -39,13 +39,13 @@ public class PatchTest extends TestSuiteBase {
         container = client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
     }
 
-    @AfterClass(groups = {"simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         assertThat(this.client).isNotNull();
         this.client.close();
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT * 100)
+    @Test(groups = {  "emulator"  }, timeOut = TIMEOUT * 100)
     public void itemPatchSuccessTest() {
         ToDoActivity testItem = ToDoActivity.createRandomItem(this.container);
 
@@ -92,7 +92,7 @@ public class PatchTest extends TestSuiteBase {
         assertThat(response.getItem()).isEqualTo(patchedItem);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = {  "emulator"  }, timeOut = TIMEOUT)
     public void itemPatchFailureTest() {
         // Create an item
         ToDoActivity testItem = ToDoActivity.createRandomItem(this.container);
