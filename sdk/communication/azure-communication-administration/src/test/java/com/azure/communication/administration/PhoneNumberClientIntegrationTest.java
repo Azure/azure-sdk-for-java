@@ -27,6 +27,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -209,6 +210,9 @@ public class PhoneNumberClientIntegrationTest extends PhoneNumberIntegrationTest
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)")
     public void beginCreateReservationBeginPurchaseReservationTestCapabilitiesWithResponseBeginReleasePhoneNumberSync(HttpClient httpClient) {
          // Setting up for phone number reservation creation
         PhoneNumberClient client = this.getClient(httpClient);
@@ -259,6 +263,9 @@ public class PhoneNumberClientIntegrationTest extends PhoneNumberIntegrationTest
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)")
     public void beginCreateReservationBeginPurchaseReservationTestConfigurationWithResponseBeginReleasePhoneNumberSync(HttpClient httpClient) {
          // Setting up for phone number reservation creation
         PhoneNumberClient client = this.getClient(httpClient);
