@@ -132,6 +132,30 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void deleteUserWithNullUser(HttpClient httpClient) {
+        // Arrange
+        asyncClient = getCommunicationIdentityClient(httpClient).buildAsyncClient();
+
+        // Action & Assert
+        StepVerifier.create(
+            asyncClient.deleteUser(null))
+            .verifyError(NullPointerException.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void deleteUserWithResponseWithNullUser(HttpClient httpClient) {
+        // Arrange
+        asyncClient = getCommunicationIdentityClient(httpClient).buildAsyncClient();
+
+        // Action & Assert
+        StepVerifier.create(
+            asyncClient.deleteUserWithResponse(null))
+            .verifyError(NullPointerException.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void revokeToken(HttpClient httpClient) {
         // Arrange
         asyncClient = getCommunicationIdentityClient(httpClient).buildAsyncClient();
@@ -170,6 +194,31 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
             })
             .verifyComplete();
     }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void revokeTokenWithNullUser(HttpClient httpClient) {
+        // Arrange
+        asyncClient = getCommunicationIdentityClient(httpClient).buildAsyncClient();
+
+        // Action & Assert
+        StepVerifier.create(
+            asyncClient.revokeTokens(null, null))
+            .verifyError(NullPointerException.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void revokeTokenWithResponseWithNullUser(HttpClient httpClient) {
+        // Arrange
+        asyncClient = getCommunicationIdentityClient(httpClient).buildAsyncClient();
+
+        // Action & Assert
+        StepVerifier.create(
+            asyncClient.revokeTokensWithResponse(null, null))
+            .verifyError(NullPointerException.class);
+    }
+
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
@@ -215,5 +264,42 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
                 assertNotNull(issuedToken.getValue().getUser());
             })
             .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void issueTokenWithNullUser(HttpClient httpClient) {
+        // Arrange
+        asyncClient = getCommunicationIdentityClient(httpClient).buildAsyncClient();
+        List<String> scopes = new ArrayList<>(Arrays.asList("chat"));
+
+        // Action & Assert
+        StepVerifier.create(
+            asyncClient.issueToken(null, scopes))
+            .verifyError(NullPointerException.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void issueTokenWithNullScope(HttpClient httpClient) {
+        // Arrange
+        asyncClient = getCommunicationIdentityClient(httpClient).buildAsyncClient();
+
+        // Action & Assert
+        StepVerifier.create(asyncClient.issueToken(new CommunicationUser("testUser"), null))
+            .verifyError(NullPointerException.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void issueTokenWithResponseWithNullUser(HttpClient httpClient) {
+        // Arrange
+        asyncClient = getCommunicationIdentityClient(httpClient).buildAsyncClient();
+        List<String> scopes = new ArrayList<>(Arrays.asList("chat"));
+
+        // Action & Assert
+        StepVerifier.create(
+            asyncClient.issueTokenWithResponse(null, scopes))
+            .verifyError(NullPointerException.class);
     }
 }

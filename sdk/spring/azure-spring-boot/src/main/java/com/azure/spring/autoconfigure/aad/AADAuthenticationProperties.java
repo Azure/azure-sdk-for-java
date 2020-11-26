@@ -14,7 +14,6 @@ import org.springframework.validation.annotation.Validated;
 import javax.annotation.PostConstruct;
 import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -62,12 +61,6 @@ public class AADAuthenticationProperties {
     private String redirectUriTemplate;
 
     /**
-     * Optional. scope doc: https://docs.microsoft
-     * .com/en-us/azure/active-directory/develop/v2-permissions-and-consent#scopes-and-permissions
-     */
-    private List<String> scope = Arrays.asList("openid", "https://graph.microsoft.com/user.read", "profile");
-
-    /**
      * App ID URI which might be used in the <code>"aud"</code> claim of an <code>id_token</code>.
      */
     private String appIdUri;
@@ -108,8 +101,8 @@ public class AADAuthenticationProperties {
     private boolean allowTelemetry = true;
 
     /**
-     * If <code>true</code> activates the stateless auth filter {@link AADAppRoleStatelessAuthenticationFilter}.
-     * The default is <code>false</code> which activates {@link AADAuthenticationFilter}.
+     * If <code>true</code> activates the stateless auth filter {@link AADAppRoleStatelessAuthenticationFilter}. The
+     * default is <code>false</code> which activates {@link AADAuthenticationFilter}.
      */
     private Boolean sessionStateless = false;
 
@@ -284,14 +277,6 @@ public class AADAuthenticationProperties {
 
     public void setRedirectUriTemplate(String redirectUriTemplate) {
         this.redirectUriTemplate = redirectUriTemplate;
-    }
-
-    public void setScope(List<String> scope) {
-        this.scope = scope;
-    }
-
-    public List<String> getScope() {
-        return scope;
     }
 
     @Deprecated

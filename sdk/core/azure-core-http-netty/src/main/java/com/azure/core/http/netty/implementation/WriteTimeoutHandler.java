@@ -58,10 +58,7 @@ public final class WriteTimeoutHandler extends ChannelOutboundHandlerAdapter {
 
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) {
-        if (writeTimeoutWatcher != null && !writeTimeoutWatcher.isDone()) {
-            writeTimeoutWatcher.cancel(false);
-            writeTimeoutWatcher = null;
-        }
+        disposeWatcher();
     }
 
     private void writeTimeoutRunnable(ChannelHandlerContext ctx) {
@@ -85,9 +82,17 @@ public final class WriteTimeoutHandler extends ChannelOutboundHandlerAdapter {
 
         // No progress has been made since the last timeout event, channel has timed out.
         if (!closed) {
+            disposeWatcher();
             ctx.fireExceptionCaught(new TimeoutException(String.format(WRITE_TIMED_OUT_MESSAGE, timeoutMillis)));
             ctx.close();
             closed = true;
+        }
+    }
+
+    private void disposeWatcher() {
+        if (writeTimeoutWatcher != null && !writeTimeoutWatcher.isDone()) {
+            writeTimeoutWatcher.cancel(false);
+            writeTimeoutWatcher = null;
         }
     }
 }

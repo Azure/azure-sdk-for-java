@@ -31,6 +31,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -246,6 +247,14 @@ public class ShareFileClientBuilder {
             this.shareName = length >= 2 ? pathSegments[1] : this.shareName;
             String[] filePathParams = length >= 3 ? Arrays.copyOfRange(pathSegments, 2, length) : null;
             this.resourcePath = filePathParams != null ? String.join("/", filePathParams) : this.resourcePath;
+
+            // Attempt to get the snapshot from the URL passed
+            Map<String, String[]> queryParamsMap = SasImplUtils.parseQueryString(fullUrl.getQuery());
+
+            String[] snapshotArray = queryParamsMap.remove("sharesnapshot");
+            if (snapshotArray != null) {
+                this.shareSnapshot = snapshotArray[0];
+            }
 
             // TODO (gapra): What happens if a user has custom queries?
             // Attempt to get the SAS token from the URL passed

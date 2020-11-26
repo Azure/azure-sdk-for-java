@@ -1,5 +1,8 @@
 # Release History
 
+## 2.2.0-beta.1 (Unreleased)
+
+
 ## 2.1.0 (2020-11-24)
 
 - Updated core dependency from resources
