@@ -3,10 +3,11 @@ package com.azure.cosmos.implementation.changefeed.implementation;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
+import com.azure.cosmos.implementation.feedranges.FeedRangeRxDocumentServiceRequestPopulatorVisitorImpl;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 
 import static com.azure.cosmos.BridgeInternal.setProperty;
@@ -77,22 +78,7 @@ public class ChangeFeedStateV1 extends ChangeFeedState{
     }
 
     @Override
-    public void populateRequest(RxDocumentServiceRequest request, int maxItemCount) {
-        // Page size
-        request.getHeaders().put(
-            HttpConstants.HttpHeaders.PAGE_SIZE,
-            String.valueOf(maxItemCount));
-
-        if (this.mode == ChangeFeedMode.INCREMENTAL) {
-            request.getHeaders().put(
-                HttpConstants.HttpHeaders.A_IM,
-                HttpConstants.A_IMHeaderValues.INCREMENTAL_FEED);
-        } else {
-
-            // TODO fabianm implement full fiedelity
-            throw new IllegalStateException("Unsupported change feed mode");
-        }
-
+    public Pair<FeedRangeInternal, ChangeFeedStartFromInternal> getEffectiveRangeAndStartFromSettings() {
         final FeedRangeInternal effectiveFeedRange;
         final ChangeFeedStartFromInternal effectiveStartFrom;
         final CompositeContinuationToken continuationToken;
@@ -113,8 +99,39 @@ public class ChangeFeedStateV1 extends ChangeFeedState{
                 effectiveFeedRange);
         }
 
-        //TODO fabianm FINSIH this
-        Finish this
+        return Pair.of(effectiveFeedRange, effectiveStartFrom);
+    }
+
+    @Override
+    public void populateRequest(RxDocumentServiceRequest request, int maxItemCount) {
+        // Page size
+        request.getHeaders().put(
+            HttpConstants.HttpHeaders.PAGE_SIZE,
+            String.valueOf(maxItemCount));
+
+        if (this.mode == ChangeFeedMode.INCREMENTAL) {
+            request.getHeaders().put(
+                HttpConstants.HttpHeaders.A_IM,
+                HttpConstants.A_IMHeaderValues.INCREMENTAL_FEED);
+        } else {
+
+            // TODO fabianm implement full fiedelity
+            throw new IllegalStateException("Unsupported change feed mode");
+        }
+
+        Pair<FeedRangeInternal, ChangeFeedStartFromInternal> effectiveRangeAndStartFromSettings =
+            this.getEffectiveRangeAndStartFromSettings();
+
+        final FeedRangeInternal effectiveFeedRange = effectiveRangeAndStartFromSettings.getLeft();
+        final ChangeFeedStartFromInternal effectiveStartFrom = effectiveRangeAndStartFromSettings.getRight();
+
+        effectiveStartFrom.accept(
+            PopulateStartFromRequestOptionVisitorImpl.SINGLETON,
+            request);
+
+        effectiveFeedRange.accept(
+            FeedRangeRxDocumentServiceRequestPopulatorVisitorImpl.SINGLETON,
+            request);
     }
 
     @Override

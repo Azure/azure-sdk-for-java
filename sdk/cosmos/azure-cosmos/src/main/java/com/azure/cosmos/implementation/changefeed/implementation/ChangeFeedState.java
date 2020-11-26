@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.changefeed.implementation;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -39,6 +40,8 @@ public abstract class ChangeFeedState extends JsonSerializable {
         }
     }
 
+    public abstract Pair<FeedRangeInternal, ChangeFeedStartFromInternal> getEffectiveRangeAndStartFromSettings();
+
     public abstract FeedRangeContinuation getContinuation();
 
     public abstract FeedRangeInternal getFeedRange();
@@ -49,7 +52,7 @@ public abstract class ChangeFeedState extends JsonSerializable {
 
     public abstract String applyServerResponseContinuation(String serverContinuationToken);
 
-    public abstract void populateRequest(RxDocumentServiceRequest request);
+    public abstract void populateRequest(RxDocumentServiceRequest request, int maxItemCount);
 
     @Override
     public void populatePropertyBag() {

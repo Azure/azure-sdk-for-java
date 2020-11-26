@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.query;
 
+import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState;
 import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -59,8 +60,8 @@ public class Paginator {
     }
 
     public static <T extends Resource> Flux<FeedResponse<T>> getChangeFeedQueryResultAsObservable(
-        FeedRangeContinuation continuation,
-        BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc,
+        ChangeFeedState changeFeedState,
+        Supplier<RxDocumentServiceRequest> createRequestFunc,
         Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc,
         Class<T> resourceType,
         int top,
@@ -70,8 +71,7 @@ public class Paginator {
             () -> new ChangeFeedFetcher<T>(
                 createRequestFunc,
                 executeFunc,
-                continuation,
-                true,
+                changeFeedState,
                 top,
                 maxPageSize));
     }

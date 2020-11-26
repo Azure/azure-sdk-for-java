@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation.changefeed.implementation;
 
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 
 import static com.azure.cosmos.BridgeInternal.setProperty;
 
@@ -12,8 +13,8 @@ class ChangeFeedStartFromBeginningImpl extends ChangeFeedStartFromInternal {
     }
 
     @Override
-    void accept(ChangeFeedStartFromVisitor visitor) {
-        visitor.Visit(this);
+    void accept(ChangeFeedStartFromVisitor visitor, RxDocumentServiceRequest request) {
+        visitor.Visit(this, request);
     }
 
     @Override

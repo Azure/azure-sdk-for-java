@@ -9,12 +9,11 @@ import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedStart
 import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState;
 import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
+import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 import com.azure.cosmos.util.Beta;
 
 import java.time.Instant;
 import java.util.Map;
-
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 @Beta(Beta.SinceVersion.WHATEVER_NEW_VERSION)
 public final class CosmosChangeFeedRequestOptions {
@@ -24,11 +23,13 @@ public final class CosmosChangeFeedRequestOptions {
     private ChangeFeedStartFromInternal startFromInternal;
     private Map<String, Object> properties;
     private ChangeFeedMode mode;
+    private final ChangeFeedState continuationState;
 
     private CosmosChangeFeedRequestOptions(
         FeedRangeInternal feedRange,
         ChangeFeedStartFromInternal startFromInternal,
-        ChangeFeedMode mode) {
+        ChangeFeedMode mode,
+        ChangeFeedState continuationState) {
 
         super();
 
@@ -43,6 +44,7 @@ public final class CosmosChangeFeedRequestOptions {
         this.maxItemCount = DEFAULT_MAX_ITEM_COUNT;
         this.feedRangeInternal = feedRange;
         this.startFromInternal = startFromInternal;
+        this.continuationState = continuationState;
 
         if (mode != ChangeFeedMode.INCREMENTAL) {
             throw new IllegalArgumentException(
@@ -52,6 +54,10 @@ public final class CosmosChangeFeedRequestOptions {
         }
 
         this.mode = mode;
+    }
+
+    ChangeFeedState getContinuation() {
+        return this.continuationState;
     }
 
     @Beta(Beta.SinceVersion.WHATEVER_NEW_VERSION)
@@ -85,48 +91,19 @@ public final class CosmosChangeFeedRequestOptions {
         return this;
     }
 
-    @Beta(Beta.SinceVersion.WHATEVER_NEW_VERSION)
-
-    public CosmosChangeFeedRequestOptions setRequestContinuation(String continuation) {
-
-        checkNotNull(continuation, "expected non-null continuation");
-
-        final FeedRangeContinuation feedRangeContinuation =
-            toFeedRangeContinuation(continuation);
-
-        final FeedRangeInternal feedRangeFromContinuation = feedRangeContinuation.getFeedRange();
-        if (!feedRangeFromContinuation.toJsonString().equals(feedRangeInternal.toJsonString())) {
-
-            final String message = String.format(
-                "The feed range used to construct the request options '%s' isn't the same " +
-                    "as the feed range '%s' of this continuation '%s'.",
-                this.feedRangeInternal.toJsonString(),
-                feedRangeFromContinuation.toJsonString(),
-                continuation);
-
-            throw new IllegalArgumentException(message);
-        }
-
-        String continuationToken = feedRangeContinuation.getContinuation();
-        if (Strings.isNullOrWhiteSpace(continuationToken)) {
-            final String message = String.format(
-                "No continuation available in the provided feed range continuation '%s'.",
-                continuation);
-
-            throw new IllegalArgumentException(message);
-        }
-
-        this.startFromInternal = ChangeFeedStartFromInternal.createFromContinuation(continuationToken);
-
-        return this;
-    }
-
     ChangeFeedMode getMode() {
         return this.mode;
     }
 
     ChangeFeedStartFromInternal getStartFromSettings() {
         return this.startFromInternal;
+    }
+
+    // TODO fabianm remove or at least make internal
+    public void setRequestContinuation(String etag) {
+        this.startFromInternal = ChangeFeedStartFromInternal.createFromEtagAndFeedRange(
+            etag,
+            this.feedRangeInternal);
     }
 
     @Beta(Beta.SinceVersion.WHATEVER_NEW_VERSION)
@@ -144,7 +121,8 @@ public final class CosmosChangeFeedRequestOptions {
         return new CosmosChangeFeedRequestOptions(
             FeedRangeInternal.convert(feedRange),
             ChangeFeedStartFromInternal.createFromBeginning(),
-            ChangeFeedMode.INCREMENTAL);
+            ChangeFeedMode.INCREMENTAL,
+            null);
     }
 
     @Beta(Beta.SinceVersion.WHATEVER_NEW_VERSION)
@@ -165,24 +143,28 @@ public final class CosmosChangeFeedRequestOptions {
         ChangeFeedMode mode = changeFeedState.getMode();
 
         if (continuation != null) {
-            String etag = continuation.getContinuation();
-            if (etag != null) {
+            CompositeContinuationToken continuationToken = continuation.getCurrentContinuationToken();
+            if (continuationToken != null) {
+                String etag = continuationToken.getToken();
                 return new CosmosChangeFeedRequestOptions(
                     feedRange,
                     ChangeFeedStartFromInternal.createFromEtagAndFeedRange(etag, feedRange),
-                    mode);
+                    mode,
+                    changeFeedState);
             }
 
             return new CosmosChangeFeedRequestOptions(
                 feedRange,
                 ChangeFeedStartFromInternal.createFromBeginning(),
-                mode);
+                mode,
+                changeFeedState);
         }
 
         return new CosmosChangeFeedRequestOptions(
             feedRange,
             changeFeedState.getStartFromSettings(),
-            mode);
+            mode,
+            changeFeedState);
     }
 
     static CosmosChangeFeedRequestOptions createForProcessingFromEtagAndFeedRange(
@@ -193,13 +175,15 @@ public final class CosmosChangeFeedRequestOptions {
             return new CosmosChangeFeedRequestOptions(
                 FeedRangeInternal.convert(feedRange),
                 ChangeFeedStartFromInternal.createFromEtagAndFeedRange(etag, FeedRangeInternal.convert(feedRange)),
-                ChangeFeedMode.INCREMENTAL);
+                ChangeFeedMode.INCREMENTAL,
+                null);
         }
 
         return new CosmosChangeFeedRequestOptions(
             FeedRangeInternal.convert(feedRange),
             ChangeFeedStartFromInternal.createFromBeginning(),
-            ChangeFeedMode.INCREMENTAL);
+            ChangeFeedMode.INCREMENTAL,
+            null);
     }
 
     @Beta(Beta.SinceVersion.WHATEVER_NEW_VERSION)
@@ -212,7 +196,8 @@ public final class CosmosChangeFeedRequestOptions {
         return new CosmosChangeFeedRequestOptions(
             FeedRangeInternal.convert(feedRange),
             ChangeFeedStartFromInternal.createFromNow(),
-            ChangeFeedMode.INCREMENTAL);
+            ChangeFeedMode.INCREMENTAL,
+            null);
     }
 
     @Beta(Beta.SinceVersion.WHATEVER_NEW_VERSION)
@@ -232,7 +217,8 @@ public final class CosmosChangeFeedRequestOptions {
         return new CosmosChangeFeedRequestOptions(
             FeedRangeInternal.convert(feedRange),
             ChangeFeedStartFromInternal.createFromPointInTime(pointInTime),
-            ChangeFeedMode.INCREMENTAL);
+            ChangeFeedMode.INCREMENTAL,
+            null);
     }
 
     /**

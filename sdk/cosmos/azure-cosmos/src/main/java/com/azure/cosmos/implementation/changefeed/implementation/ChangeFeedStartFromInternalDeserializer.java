@@ -87,17 +87,6 @@ public class ChangeFeedStartFromInternalDeserializer extends StdDeserializer<Cha
                 }
                 return new ChangeFeedStartFromPointInTimeImpl(Instant.ofEpochMilli(pitNode.longValue()));
 
-            case CONTINUATION:
-                JsonNode continuationNode = rootNode.get(Constants.Properties.CHANGE_FEED_START_FROM_CONTINUATION);
-                if (continuationNode == null || !continuationNode.isTextual() || Strings.isNullOrWhiteSpace(continuationNode.textValue())) {
-                    throw JsonMappingException.from(
-                        parser,
-                        String.format(
-                            "Required property '%s' missing or does not have a valid value.",
-                            Constants.Properties.CHANGE_FEED_START_FROM_CONTINUATION));
-                }
-                return new ChangeFeedStartFromContinuationImpl(continuationNode.textValue());
-
             case LEASE:
                 JsonNode etagNode = rootNode.get(Constants.Properties.CHANGE_FEED_START_FROM_ETAG);
                 if (etagNode == null || !etagNode.isTextual() || Strings.isNullOrWhiteSpace(etagNode.textValue())) {

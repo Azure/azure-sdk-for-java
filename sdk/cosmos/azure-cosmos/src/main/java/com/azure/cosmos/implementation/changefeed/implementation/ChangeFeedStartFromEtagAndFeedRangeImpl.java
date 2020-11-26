@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.changefeed.implementation;
 
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 
@@ -30,7 +31,7 @@ class ChangeFeedStartFromEtagAndFeedRangeImpl extends ChangeFeedStartFromInterna
     }
 
     @Override
-    void accept(ChangeFeedStartFromVisitor visitor) {
-        visitor.Visit(this);
+    void accept(ChangeFeedStartFromVisitor visitor, RxDocumentServiceRequest request) {
+        visitor.Visit(this, request);
     }
 }

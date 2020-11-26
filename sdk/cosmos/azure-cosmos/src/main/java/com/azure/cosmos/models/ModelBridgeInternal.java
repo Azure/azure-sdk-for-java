@@ -37,6 +37,7 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.Warning;
 import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedStartFromInternal;
+import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState;
 import com.azure.cosmos.implementation.directconnectivity.Address;
 import com.azure.cosmos.implementation.query.PartitionedQueryExecutionInfoInternal;
 import com.azure.cosmos.implementation.query.QueryInfo;
@@ -764,5 +765,13 @@ public final class ModelBridgeInternal {
 
         checkNotNull(requestOptions, "Argument 'requestOptions' must not be null.");
         return requestOptions.getStartFromSettings();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static ChangeFeedState getChangeFeedContinuationState(
+        CosmosChangeFeedRequestOptions requestOptions) {
+
+        checkNotNull(requestOptions, "Argument 'requestOptions' must not be null.");
+        return requestOptions.getContinuation();
     }
 }

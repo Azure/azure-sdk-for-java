@@ -5,7 +5,6 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedStateV1;
-import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.query.Paginator;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
@@ -16,8 +15,8 @@ import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -28,7 +27,7 @@ class ChangeFeedQueryImpl<T extends Resource> {
 
     private final RxDocumentClientImpl client;
     private final DiagnosticsClientContext clientContext;
-    private final BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc;
+    private final Supplier<RxDocumentServiceRequest> createRequestFunc;
     private final String documentsLink;
     private final Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc;
     private final Class<T> klass;
@@ -41,8 +40,7 @@ class ChangeFeedQueryImpl<T extends Resource> {
         ResourceType resourceType,
         Class<T> klass,
         String collectionLink,
-        CosmosChangeFeedRequestOptions requestOptions,
-        ChangeFeedState changeFeedState) {
+        CosmosChangeFeedRequestOptions requestOptions) {
 
         checkNotNull(client, "Argument 'client' must not be null.");
         checkNotNull(resourceType, "Argument 'resourceType' must not be null.");
@@ -64,16 +62,17 @@ class ChangeFeedQueryImpl<T extends Resource> {
 
         FeedRangeInternal feedRange = (FeedRangeInternal)this.options.getFeedRange();
 
-        if (changeFeedState != null) {
-            this.changeFeedState = changeFeedState;
-        } else {
-            this.changeFeedState = new ChangeFeedStateV1(
+        ChangeFeedState state;
+        if ((state = ModelBridgeInternal.getChangeFeedContinuationState(requestOptions)) == null)
+        {
+            state = new ChangeFeedStateV1(
                 collectionLink,
                 feedRange,
                 ModelBridgeInternal.getChangeFeedMode(requestOptions),
                 ModelBridgeInternal.getChangeFeedStartFromSettings(requestOptions),
                 null);
         }
+        this.changeFeedState = state;
     }
 
     public Flux<FeedResponse<T>> executeAsync() {
@@ -90,31 +89,24 @@ class ChangeFeedQueryImpl<T extends Resource> {
             maxPageSize);
     }
 
-    private RxDocumentServiceRequest createDocumentServiceRequest(int pageSize) {
-
-        // TODO fabianm bullshit ????
-
+    private RxDocumentServiceRequest createDocumentServiceRequest() {
         Map<String, String> headers = new HashMap<>();
-        RxDocumentServiceRequest req = RxDocumentServiceRequest.create(clientContext,
+        return RxDocumentServiceRequest.create(clientContext,
             OperationType.ReadFeed,
             resourceType,
             documentsLink,
             headers,
             options);
-
-        ModelBridgeInternal.populateChangeFeedRequestOptions(this.options, req, continuationToken);
-
-        return req;
     }
 
     private Mono<FeedResponse<T>> executeRequestAsync(RxDocumentServiceRequest request) {
         // TODO fabianm bullshit - wire up handleNoChanges
         return client.readFeed(request)
                      .map(rsp -> BridgeInternal.toChangeFeedResponsePage(rsp, klass))
-                     .map(rsp -> updateContinuation(rsp));
+                     .map(this::updateContinuation);
     }
 
-    private <T> FeedResponse<T> updateContinuation(FeedResponse<T> response) {
+    private FeedResponse<T> updateContinuation(FeedResponse<T> response) {
         // TODO fabianm bullshit
         return response;
     }

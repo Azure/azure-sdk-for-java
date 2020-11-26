@@ -4,6 +4,5 @@ public enum ChangeFeedStartFromTypes {
     BEGINNING,
     NOW,
     POINT_IN_TIME,
-    CONTINUATION,
     LEASE
 }

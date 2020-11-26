@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation.changefeed.implementation;
 
 import com.azure.cosmos.implementation.JsonSerializable;
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,7 +17,7 @@ public abstract class ChangeFeedStartFromInternal extends JsonSerializable {
     ChangeFeedStartFromInternal() {
     }
 
-    abstract void accept(ChangeFeedStartFromVisitor visitor);
+    abstract void accept(ChangeFeedStartFromVisitor visitor, RxDocumentServiceRequest request);
 
     public static ChangeFeedStartFromInternal createFromBeginning() {
         return InstanceHolder.FROM_BEGINNING_SINGLETON;
