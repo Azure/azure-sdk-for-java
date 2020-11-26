@@ -29,7 +29,7 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
         .buildAsyncClient();
 
     public void initialization() {
-        // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation
+        // BEGIN: com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation
         // The required parameters is connectionString, a way to authenticate with Service Bus using credentials.
         ServiceBusReceiverAsyncClient consumer = new ServiceBusClientBuilder()
             .connectionString(
@@ -37,13 +37,13 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
             .receiver()
             .queueName("<< QUEUE NAME >>")
             .buildAsyncClient();
-        // END: com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation
+        // END: com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation
 
         consumer.close();
     }
 
     public void instantiateWithDefaultCredential() {
-        // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiateWithDefaultCredential
+        // BEGIN: com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiateWithDefaultCredential
         // The required parameters is connectionString, a way to authenticate with Service Bus using credentials.
         ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
             .credential("<<fully-qualified-namespace>>",
@@ -51,7 +51,7 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
             .receiver()
             .queueName("<< QUEUE NAME >>")
             .buildAsyncClient();
-        // END: com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiateWithDefaultCredential
+        // END: com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiateWithDefaultCredential
 
         receiver.close();
     }
@@ -66,7 +66,7 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
             .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
             .queueName("<< QUEUE NAME >>")
             .buildAsyncClient();
-        // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.receiveWithReceiveAndDeleteMode
+        // BEGIN: com.azure.messaging.servicebus.servicebusreceiverasyncclient.receiveWithReceiveAndDeleteMode
 
         // Keep a reference to `subscription`. When the program is finished receiving messages, call
         // subscription.dispose(). This will stop fetching messages from the Service Bus.
@@ -75,7 +75,7 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
                 System.out.printf("Received Seq #: %s%n", message.getSequenceNumber());
                 System.out.printf("Contents of message as string: %s%n", message.getBody().toString());
             }, error -> System.err.print(error));
-        // END: com.azure.messaging.servicebus.servicebusasyncreceiverclient.receiveWithReceiveAndDeleteMode
+        // END: com.azure.messaging.servicebus.servicebusreceiverasyncclient.receiveWithReceiveAndDeleteMode
 
         // When program ends, or you're done receiving all messages.
         receiver.close();
@@ -86,7 +86,7 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
      * Receives message with back pressure.
      */
     public void receiveBackpressure() {
-        // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#basesubscriber
+        // BEGIN: com.azure.messaging.servicebus.servicebusreceiverasyncclient.receive#basesubscriber
         receiver.receiveMessages().subscribe(new BaseSubscriber<ServiceBusReceivedMessage>() {
             private static final int NUMBER_OF_MESSAGES = 5;
             private final AtomicInteger currentNumberOfMessages = new AtomicInteger();
@@ -108,7 +108,7 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
                 }
             }
         });
-        // END: com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#basesubscriber
+        // END: com.azure.messaging.servicebus.servicebusreceiverasyncclient.receive#basesubscriber
         receiver.close();
     }
 
@@ -116,7 +116,7 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
      * Receives from all the messages.
      */
     public void receiveAll() {
-        // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#all
+        // BEGIN: com.azure.messaging.servicebus.servicebusreceiverasyncclient.receive#all
         Disposable subscription = receiver.receiveMessages()
             .subscribe(message -> {
                 System.out.printf("Received Seq #: %s%n", message.getSequenceNumber());
@@ -128,14 +128,14 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
         // When program ends, or you're done receiving all messages.
         subscription.dispose();
         receiver.close();
-        // END: com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#all
+        // END: com.azure.messaging.servicebus.servicebusreceiverasyncclient.receive#all
     }
 
     /**
      * Demonstrates how to create a session receiver for a single, first available session.
      */
     public void sessionReceiverSingleInstantiation() {
-        // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#nextsession
+        // BEGIN: com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#nextsession
         ServiceBusSessionReceiverAsyncClient sessionReceiver = new ServiceBusClientBuilder()
             .connectionString("Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};"
                 + "SharedAccessKey={key}")
@@ -157,7 +157,7 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
             message -> System.out.printf("Received Sequence #: %s. Contents: %s%n",
                 message.getSequenceNumber(), message.getBody()),
             error -> System.err.print(error));
-        // END: com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#nextsession
+        // END: com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#nextsession
 
         subscription.dispose();
         sessionReceiver.close();
@@ -167,7 +167,7 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
      * Demonstrates how to create a session receiver for a single know session id.
      */
     public void sessionReceiverSessionIdInstantiation() {
-        // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#sessionId
+        // BEGIN: com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#sessionId
         ServiceBusSessionReceiverAsyncClient sessionReceiver = new ServiceBusClientBuilder()
             .connectionString("Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};"
                 + "SharedAccessKey={key}")
@@ -191,8 +191,7 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
                 message.getSequenceNumber(), message.getBody()),
             error -> System.err.print(error));
 
-        // END: com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#sessionId
-
+        // END: com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#sessionId
         subscription.dispose();
         sessionReceiver.close();
     }
@@ -222,7 +221,6 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
             return operations.flatMap(transactionOperations -> receiver.commitTransaction(transaction));
         });
         // END: com.azure.messaging.servicebus.servicebusreceiverasyncclient.committransaction#servicebustransactioncontext
-
         receiver.close();
     }
 }

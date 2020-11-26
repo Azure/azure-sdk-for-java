@@ -69,9 +69,8 @@ public class ServiceBusReceiverClientJavaDocCodeSample {
 
         // Use the receiver and finally close it along with the sessionReceiver.
         receiver.close();
-        // END: com.azure.messaging.servicebus.servicebusreceiverclient.instantiation#sessionId
-
         sessionReceiver.close();
+        // END: com.azure.messaging.servicebus.servicebusreceiverclient.instantiation#sessionId
     }
 
     /**

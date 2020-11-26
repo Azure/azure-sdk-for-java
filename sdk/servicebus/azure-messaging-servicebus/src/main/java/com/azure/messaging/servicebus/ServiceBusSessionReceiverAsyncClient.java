@@ -26,12 +26,12 @@ import static com.azure.core.util.FluxUtil.monoError;
  *
  * <p><strong>Receive messages from a specific session</strong></p>
  * <p>Use {@link #acceptSession(String)} to acquire the lock of a session if you know the session id.</p>
- * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#nextsession}
+ * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#sessionId}
  *
  * <p><strong>Receive messages from the first available session</strong></p>
  * <p>Use {@link #acceptNextSession()} to acquire the lock of the next available session without specifying the session
  * id.</p>
- * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#sessionId}
+ * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#nextsession}
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class, isAsync = true)
 public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable {

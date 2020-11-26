@@ -50,38 +50,38 @@ import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPE
  * topic subscription on Azure Service Bus.
  *
  * <p><strong>Create an instance of receiver</strong></p>
- * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation}
+ * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation}
  *
  * <p><strong>Create an instance of receiver using default credential</strong></p>
- * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiateWithDefaultCredential}
+ * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiateWithDefaultCredential}
  *
  * <p><strong>Receive all messages from Service Bus resource</strong></p>
  * <p>This returns an infinite stream of messages from Service Bus. The stream ends when the subscription is disposed
  * or other terminal scenarios. See {@link #receiveMessages()} for more information.</p>
- * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#all}
+ * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverasyncclient.receive#all}
  *
  * <p><strong>Receive messages in {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode from a Service Bus
  * entity</strong></p>
- * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.receiveWithReceiveAndDeleteMode}
+ * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverasyncclient.receiveWithReceiveAndDeleteMode}
  *
  * <p><strong>Receive messages from a specific session</strong></p>
  * <p>To fetch messages from a specific session, switch to {@link ServiceBusSessionReceiverClientBuilder} and
  * build the session receiver client. Use {@link ServiceBusSessionReceiverAsyncClient#acceptSession(String)} to create
  * a session-bound {@link ServiceBusReceiverAsyncClient}.
  * </p>
- * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#sessionId}
+ * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#sessionId}
  *
  * <p><strong>Receive messages from the first available session</strong></p>
  * <p>To process messages from the first available session, switch to {@link ServiceBusSessionReceiverClientBuilder}
  * and build the session receiver client. Use
  * {@link ServiceBusSessionReceiverAsyncClient#acceptNextSession() acceptNextSession()} to find the first available
  * session to process messages from.</p>
- * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#nextsession}
+ * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#nextsession}
  *
  * <p><strong>Rate limiting consumption of messages from a Service Bus entity</strong></p>
  * <p>For message receivers that need to limit the number of messages they receive at a given time, they can use
  * {@link BaseSubscriber#request(long)}.</p>
- * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#basesubscriber}
+ * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverasyncclient.receive#basesubscriber}
  *
  * @see ServiceBusClientBuilder
  * @see ServiceBusReceiverClient To communicate with a Service Bus resource using a synchronous client.
