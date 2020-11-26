@@ -23,7 +23,6 @@ import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.text.ParseException;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -87,28 +86,6 @@ public class UserPrincipalMicrosoftGraphTest {
     }
 
     @Test
-    public void getAuthoritiesByUserGroups() throws Exception {
-        aadAuthenticationProperties.getUserGroup().setAllowedGroups(Collections.singletonList("group1"));
-        this.graphClientMock = new AzureADGraphClient(clientId, clientSecret, aadAuthenticationProperties,
-            serviceEndpointsProperties);
-
-        stubFor(get(urlEqualTo("/memberOf"))
-            .withHeader(ACCEPT, equalTo(APPLICATION_JSON_VALUE))
-            .willReturn(aResponse()
-                .withStatus(200)
-                .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
-                .withBody(userGroupsJson)));
-
-        assertThat(graphClientMock.getGroups(MicrosoftGraphConstants.BEARER_TOKEN))
-            .isNotEmpty()
-            .containsExactly("ROLE_group1");
-
-        verify(getRequestedFor(urlMatching("/memberOf"))
-            .withHeader(AUTHORIZATION, equalTo(String.format("Bearer %s", accessToken)))
-            .withHeader(ACCEPT, equalTo(APPLICATION_JSON_VALUE)));
-    }
-
-    @Test
     public void getGroups() throws Exception {
         aadAuthenticationProperties.getUserGroup().setAllowedGroups(Arrays.asList("group1", "group2", "group3"));
         this.graphClientMock = new AzureADGraphClient(clientId, clientSecret, aadAuthenticationProperties,
@@ -124,7 +101,7 @@ public class UserPrincipalMicrosoftGraphTest {
         Set<String> groups = graphClientMock.getGroups(MicrosoftGraphConstants.BEARER_TOKEN);
         assertThat(groups)
             .isNotEmpty()
-            .containsExactlyInAnyOrder("ROLE_group1", "ROLE_group2", "ROLE_group3");
+            .containsExactlyInAnyOrder("group1", "group2", "group3");
 
         verify(getRequestedFor(urlMatching("/memberOf"))
             .withHeader(AUTHORIZATION, equalTo(String.format("Bearer %s", accessToken)))
