@@ -52,7 +52,7 @@ public class AzureAuthorizedClientRepository implements OAuth2AuthorizedClientRe
             return (T) result;
         }
 
-        if (repo.isAuthzClient(id)) {
+        if (repo.isAuthzClient(id) && !repo.getAuthorizationProperties().get(id).getOnDemand()) {
             OAuth2AuthorizedClient client = loadAuthorizedClient(defaultClientRegistrationId(), principal, request);
             return (T) createInitAuthzClient(client, id, principal);
         }

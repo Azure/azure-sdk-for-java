@@ -41,7 +41,8 @@ public class AzureActiveDirectoryConfiguration {
     public AzureClientRegistrationRepository clientRegistrationRepository() {
         return new AzureClientRegistrationRepository(
             createDefaultClient(),
-            createAuthzClients());
+            createAuthzClients(),
+            properties.getAuthorization());
     }
 
     @Bean
@@ -67,7 +68,9 @@ public class AzureActiveDirectoryConfiguration {
     private Set<String> allScopes() {
         Set<String> result = openidScopes();
         for (AuthorizationProperties authProperties : properties.getAuthorization().values()) {
-            result.addAll(authProperties.getScopes());
+            if(!authProperties.getOnDemand()) {
+                result.addAll(authProperties.getScopes());
+            }
         }
         return result;
     }

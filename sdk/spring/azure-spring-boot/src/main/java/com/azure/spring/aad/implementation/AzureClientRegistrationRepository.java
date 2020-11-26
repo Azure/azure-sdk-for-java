@@ -19,11 +19,15 @@ public class AzureClientRegistrationRepository implements ClientRegistrationRepo
     private final AzureClientRegistration azureClient;
     private final List<ClientRegistration> otherClients;
     private final Map<String, ClientRegistration> allClients;
+    private Map<String,AuthorizationProperties> authorizationProperties;
 
     public AzureClientRegistrationRepository(AzureClientRegistration azureClient,
-                                             List<ClientRegistration> otherClients) {
+                                             List<ClientRegistration> otherClients,
+                                             Map<String,AuthorizationProperties> authorizationProperties) {
         this.azureClient = azureClient;
         this.otherClients = new ArrayList<>(otherClients);
+        this.authorizationProperties = authorizationProperties;
+
         allClients = new HashMap<>();
         addClientRegistration(azureClient.getClient());
         for (ClientRegistration c : otherClients) {
@@ -57,5 +61,13 @@ public class AzureClientRegistrationRepository implements ClientRegistrationRepo
     public boolean isAuthzClient(String id) {
         ClientRegistration client = findByRegistrationId(id);
         return client != null && isAuthzClient(client);
+    }
+
+    public Map<String, AuthorizationProperties> getAuthorizationProperties() {
+        return authorizationProperties;
+    }
+
+    public void setAuthorizationProperties(Map<String, AuthorizationProperties> authorizationProperties) {
+        this.authorizationProperties = authorizationProperties;
     }
 }
