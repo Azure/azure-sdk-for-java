@@ -36,15 +36,15 @@ public final class ServiceBusSessionReceiverClient implements AutoCloseable {
     }
 
     /**
-     * Acquires a session lock for the next available session and create a {@link ServiceBusReceiverClient}
+     * Acquires a session lock for the next available session and creates a {@link ServiceBusReceiverClient}
      * to receive messages from the session. It will wait until a session is available if no one is available
      * immediately.
      *
      * @return A {@link ServiceBusReceiverClient} that is tied to the available session.
      *
      * @throws UnsupportedOperationException if the queue or topic subscription is not session-enabled.
-     * @throws IllegalStateException if the operation times out. The timeout duration is the tryTimeout
-     * of when you build this client with the {@link ServiceBusClientBuilder#retryOptions(AmqpRetryOptions)}.
+     * @throws AmqpException if the operation times out. The timeout duration is the tryTimeout
+     *      of when you build this client with the {@link ServiceBusClientBuilder#retryOptions(AmqpRetryOptions)}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceBusReceiverClient acceptNextSession() {
@@ -65,10 +65,9 @@ public final class ServiceBusSessionReceiverClient implements AutoCloseable {
      * @throws NullPointerException if {@code sessionId} is null.
      * @throws IllegalArgumentException if {@code sessionId} is empty.
      * @throws UnsupportedOperationException if the queue or topic subscription is not session-enabled.
-     * @throws AmqpException if the lock cannot be acquired.
-     * @throws IllegalStateException if the operation times out. The timeout duration is the tryTimeout
-     * of when you build this client with the
-     * {@link ServiceBusClientBuilder#retryOptions(AmqpRetryOptions)}.
+     * @throws ServiceBusException if the lock cannot be acquired.
+     * @throws AmqpException if the operation times out. The timeout duration is the tryTimeout
+     *      of when you build this client with the {@link ServiceBusClientBuilder#retryOptions(AmqpRetryOptions)}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceBusReceiverClient acceptSession(String sessionId) {
