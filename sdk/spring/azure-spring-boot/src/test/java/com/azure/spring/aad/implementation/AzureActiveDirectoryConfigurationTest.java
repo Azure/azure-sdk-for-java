@@ -50,7 +50,7 @@ public class AzureActiveDirectoryConfigurationTest {
         assertEquals(endpoints.tokenEndpoint("fake-tenant-id"), azure.getProviderDetails().getTokenUri());
         assertEquals(endpoints.jwkSetEndpoint("fake-tenant-id"), azure.getProviderDetails().getJwkSetUri());
         assertEquals("{baseUrl}/login/oauth2/code/{registrationId}", azure.getRedirectUriTemplate());
-        assertDefaultScopes(azure, "openid", "profile");
+        assertDefaultScopes(azure, "openid", "profile", "https://graph.microsoft.com/User.Read");
     }
 
     @Test
@@ -66,7 +66,8 @@ public class AzureActiveDirectoryConfigurationTest {
 
         assertNotNull(azure);
         assertNotNull(graph);
-        assertDefaultScopes(azure, "openid", "profile", "offline_access", "Calendars.Read");
+        assertDefaultScopes(azure,
+            "openid", "profile", "offline_access", "https://graph.microsoft.com/User.Read", "Calendars.Read");
         assertDefaultScopes(graph, "Calendars.Read");
     }
 
@@ -88,6 +89,7 @@ public class AzureActiveDirectoryConfigurationTest {
             "profile",
             "offline_access",
             "Calendars.Read",
+            "https://graph.microsoft.com/User.Read",
             "https://management.core.windows.net/user_impersonation");
         assertDefaultScopes(graph, "Calendars.Read");
     }
@@ -101,7 +103,8 @@ public class AzureActiveDirectoryConfigurationTest {
 
         ClientRegistrationRepository clientRepo = context.getBean(AzureClientRegistrationRepository.class);
         ClientRegistration azure = clientRepo.findByRegistrationId("azure");
-        assertDefaultScopes(azure, "openid", "profile", "offline_access", "Calendars.Read");
+        assertDefaultScopes(azure,
+            "openid", "profile", "offline_access", "https://graph.microsoft.com/User.Read", "Calendars.Read");
     }
 
     @Test
@@ -116,8 +119,7 @@ public class AzureActiveDirectoryConfigurationTest {
         ClientRegistration graph = clientRepo.findByRegistrationId("graph");
         assertDefaultScopes(
             clientRepo.getAzureClient(),
-            "openid", "profile", "offline_access", "https://graph.microsoft.com/User.Read",
-            "https://graph.microsoft.com/Directory.AccessAsUser.All"
+            "openid", "profile", "offline_access", "https://graph.microsoft.com/User.Read"
         );
         assertEquals(clientRepo.getAzureClient().getClient(), azure);
 
@@ -141,8 +143,7 @@ public class AzureActiveDirectoryConfigurationTest {
         AzureClientRegistrationRepository clientRepo = context.getBean(AzureClientRegistrationRepository.class);
         assertDefaultScopes(
             clientRepo.getAzureClient(),
-            "openid", "profile", "offline_access", "https://graph.microsoft.com/User.Read",
-            "https://graph.microsoft.com/Directory.AccessAsUser.All", "Calendars.Read"
+            "openid", "profile", "offline_access", "https://graph.microsoft.com/User.Read", "Calendars.Read"
         );
     }
 

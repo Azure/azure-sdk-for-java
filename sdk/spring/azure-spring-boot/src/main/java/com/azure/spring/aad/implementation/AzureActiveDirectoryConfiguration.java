@@ -77,7 +77,6 @@ public class AzureActiveDirectoryConfiguration {
     private Set<String> accessTokenScopes() {
         Set<String> result = openidScopes();
         if (properties.allowedGroupsConfigured()) {
-            result.add("https://graph.microsoft.com/Directory.AccessAsUser.All");
             result.add("https://graph.microsoft.com/User.Read");
         }
         addAzureConfiguredScopes(result);
