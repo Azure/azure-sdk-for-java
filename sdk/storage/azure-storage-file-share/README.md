@@ -467,7 +467,7 @@ Taking the shareClient in KeyConcept, [`${shareClient}`](#share) .
 <!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L212-L213 -->
 ```Java
 int quotaOnGB = 1;
-shareClient.setQuota(quotaOnGB);
+shareClient.setPropertiesWithResponse(new ShareSetPropertiesOptions().setQuotaInGb(quotaOnGB), null, Context.NONE);
 ```
 
 ### Set file httpheaders
