@@ -2,7 +2,7 @@
 
 # changeable parameters
 # use update logic in generate.py#update_parameters
-# set to None first to guarantee it would be updated first
+# set to None first to guarantee it would be updated
 SUFFIX = None
 
 NAMESPACE_SUFFIX = None
