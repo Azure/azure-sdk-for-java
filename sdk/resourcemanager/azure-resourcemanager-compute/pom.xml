@@ -211,6 +211,20 @@
           </excludes>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.revapi</groupId>
+        <artifactId>revapi-maven-plugin</artifactId>
+        <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+        <configuration>
+          <analysisConfiguration>
+            <revapi.ignore>
+              <item>
+                <code>java.method.addedToInterface</code>
+              </item>
+            </revapi.ignore>
+          </analysisConfiguration>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 </project>
