@@ -172,10 +172,6 @@
             <revapi.ignore>
               <item>
                 <code>java.method.addedToInterface</code>
-                <new>method com.azure.resourcemanager.network.models.NetworkInterface.Update com.azure.resourcemanager.network.models.NetworkInterface.UpdateStages.WithAcceleratedNetworking::withAcceleratedNetworking()</new>
-                <justification>
-                  NetworkInterface should allow users to enable accelerated networking after creation.
-                </justification>
               </item>
             </revapi.ignore>
           </analysisConfiguration>
