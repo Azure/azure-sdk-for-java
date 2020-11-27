@@ -325,6 +325,7 @@ def parse_args() -> argparse.Namespace:
         action = 'store_true',
         help = 'Do compile after generation or not',
     )
+    parser.add_argument('--suffix', help = 'Suffix for namespace and artifact')
     parser.add_argument(
         '--auto-commit-external-change',
         action = 'store_true',
@@ -338,6 +339,20 @@ def parse_args() -> argparse.Namespace:
     )
 
     return parser.parse_args()
+
+
+def update_parameters(suffix):
+    # update changeable parameters in parameters.py
+    global SUFFIX, NAMESPACE_SUFFIX, ARTIFACT_SUFFIX, NAMESPACE_FORMAT, ARTIFACT_FORMAT, OUTPUT_FOLDER_FORMAT
+
+    SUFFIX = suffix
+
+    NAMESPACE_SUFFIX = '.{0}'.format(SUFFIX) if SUFFIX else ''
+    ARTIFACT_SUFFIX = '-{0}'.format(SUFFIX) if SUFFIX else ''
+    NAMESPACE_FORMAT = 'com.azure.resourcemanager.{{0}}{0}'.format(
+        NAMESPACE_SUFFIX)
+    ARTIFACT_FORMAT = 'azure-resourcemanager-{{0}}{0}'.format(ARTIFACT_SUFFIX)
+    OUTPUT_FOLDER_FORMAT = 'sdk/{{0}}/{0}'.format(ARTIFACT_FORMAT)
 
 
 def valid_service(service: str):
@@ -458,6 +473,7 @@ def sdk_automation(input_file: str, output_file: str):
 
 def main():
     args = vars(parse_args())
+    update_parameters(args.get('suffix'))
 
     if args.get('config'):
         return sdk_automation(args['config'][0], args['config'][1])
