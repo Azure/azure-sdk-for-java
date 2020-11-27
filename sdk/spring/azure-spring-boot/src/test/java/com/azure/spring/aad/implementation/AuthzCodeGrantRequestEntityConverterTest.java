@@ -51,8 +51,7 @@ public class AuthzCodeGrantRequestEntityConverterTest {
     public void addScopeForDefaultClient() {
         MultiValueMap<String, String> body = convertedBodyOf(createCodeGrantRequest(azure));
         assertEquals(
-            "openid profile offline_access"
-                + " https://graph.microsoft.com/User.Read https://graph.microsoft.com/Directory.AccessAsUser.All",
+            "openid profile offline_access https://graph.microsoft.com/User.Read",
             body.getFirst("scope")
         );
     }
