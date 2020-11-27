@@ -777,8 +777,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
         // Arrange
         final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
         final String topicName = interceptorManager.isPlaybackMode()
-            ? "topic-1"
-            : getEntityName(getTopicBaseName(), 1);
+            ? "topic-18"
+            : getEntityName(getTopicBaseName(), 18);
         final OffsetDateTime nowUtc = OffsetDateTime.now(Clock.systemUTC());
 
         // Act & Assert
