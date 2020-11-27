@@ -1,18 +1,23 @@
 #!/usr/bin/env python3
 
-SDK_ROOT = '../../../'  # related to file dir
-AUTOREST_CORE_VERSION = '3.0.6327'
-AUTOREST_JAVA = '@autorest/java@4.0.5'
-DEFAULT_VERSION = '1.0.0-beta.1'
-SUFFIX = None           # 'generated'
-GROUP_ID = 'com.azure.resourcemanager'
-API_SPECS_FILE = 'api-specs.yaml'
+# changeable parameters for SUFFIX
+# please add update logic in generate.py#update_parameters when you add new parameters
+SUFFIX = None
 
 NAMESPACE_SUFFIX = '.{0}'.format(SUFFIX) if SUFFIX else ''
 ARTIFACT_SUFFIX = '-{0}'.format(SUFFIX) if SUFFIX else ''
 NAMESPACE_FORMAT = 'com.azure.resourcemanager.{{0}}{0}'.format(NAMESPACE_SUFFIX)
 ARTIFACT_FORMAT = 'azure-resourcemanager-{{0}}{0}'.format(ARTIFACT_SUFFIX)
 OUTPUT_FOLDER_FORMAT = 'sdk/{{0}}/{0}'.format(ARTIFACT_FORMAT)
+
+# Constant parameters
+SDK_ROOT = '../../../'  # related to file dir
+AUTOREST_CORE_VERSION = '3.0.6327'
+AUTOREST_JAVA = '@autorest/java@4.0.5'
+DEFAULT_VERSION = '1.0.0-beta.1'
+GROUP_ID = 'com.azure.resourcemanager'
+API_SPECS_FILE = 'api-specs.yaml'
+
 CI_FILE_FORMAT = 'sdk/{0}/ci.yml'
 POM_FILE_FORMAT = 'sdk/{0}/pom.xml'
 README_FORMAT = 'specification/{0}/resource-manager/readme.md'
