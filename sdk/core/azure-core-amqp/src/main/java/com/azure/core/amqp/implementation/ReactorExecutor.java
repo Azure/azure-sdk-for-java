@@ -152,8 +152,8 @@ class ReactorExecutor implements Closeable {
         this.scheduler.schedule(() -> {
             logger.info(LOG_MESSAGE, connectionId, "Processing all pending tasks and closing old reactor.");
             try {
-                reactor.stop();
                 reactor.process();
+                reactor.stop();
             } catch (HandlerException e) {
                 logger.warning(LOG_MESSAGE, connectionId,
                     StringUtil.toStackTraceString(e, "scheduleCompletePendingTasks - exception occurred while "
@@ -176,13 +176,6 @@ class ReactorExecutor implements Closeable {
         if (!isDisposed.getAndSet(true)) {
             close(true, "ReactorExecutor.close() was called.");
 
-            try {
-                if (!disposeSemaphore.tryAcquire(timeout.toMillis(), TimeUnit.MILLISECONDS)) {
-                    logger.info("Unable to acquire dispose reactor semaphore within timeout.");
-                }
-            } catch (InterruptedException e) {
-                logger.warning("Could not acquire semaphore to finish close operation.", e);
-            }
         }
     }
 

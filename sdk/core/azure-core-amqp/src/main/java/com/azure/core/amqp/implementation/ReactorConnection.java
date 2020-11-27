@@ -350,7 +350,7 @@ public class ReactorConnection implements AmqpConnection {
             connection = reactor.connectionToHost(handler.getHostname(), handler.getProtocolPort(), handler);
 
             reactorExceptionHandler = new ReactorExceptionHandler();
-            executor = new ReactorExecutor(reactor, Schedulers.single(), connectionId,
+            executor = new ReactorExecutor(reactor, Schedulers.newSingle("new-reactor-connection"), connectionId,
                 reactorExceptionHandler, connectionOptions.getRetry().getTryTimeout(),
                 connectionOptions.getFullyQualifiedNamespace());
 
