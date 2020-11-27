@@ -27,6 +27,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.azure.spring.autoconfigure.aad.Constants.DEFAULT_AUTHORITY_SET;
 import static com.azure.spring.autoconfigure.aad.Constants.ROLE_PREFIX;
 
 /**
@@ -85,14 +86,12 @@ public class AzureActiveDirectoryOAuth2UserService implements OAuth2UserService<
                                        .filter(properties::isAllowedGroup)
                                        .map(group -> ROLE_PREFIX + group)
                                        .collect(Collectors.toSet());
-        Set<String> allRoles = oidcUser.getAuthorities()
-                                       .stream()
-                                       .map(GrantedAuthority::getAuthority)
-                                       .collect(Collectors.toSet());
-        allRoles.addAll(groupRoles);
-        Set<SimpleGrantedAuthority> authorities = allRoles.stream()
-                                                          .map(SimpleGrantedAuthority::new)
-                                                          .collect(Collectors.toSet());
+        Set<SimpleGrantedAuthority> authorities = groupRoles.stream()
+                                                            .map(SimpleGrantedAuthority::new)
+                                                            .collect(Collectors.toSet());
+        if (authorities.isEmpty()) {
+            authorities = DEFAULT_AUTHORITY_SET;
+        }
         String nameAttributeKey =
             Optional.of(userRequest)
                     .map(OAuth2UserRequest::getClientRegistration)
