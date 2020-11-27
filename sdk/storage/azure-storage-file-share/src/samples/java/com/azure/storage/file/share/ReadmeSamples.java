@@ -25,6 +25,7 @@ import com.azure.storage.file.share.models.ShareFileRange;
 import com.azure.storage.file.share.models.ShareServiceProperties;
 import com.azure.storage.file.share.models.ShareSignedIdentifier;
 import com.azure.storage.file.share.models.ShareStorageException;
+import com.azure.storage.file.share.options.ShareSetPropertiesOptions;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -210,7 +211,7 @@ public class ReadmeSamples {
 
     public void setQuotaOnShare() {
         int quotaOnGB = 1;
-        shareClient.setQuota(quotaOnGB);
+        shareClient.setPropertiesWithResponse(new ShareSetPropertiesOptions().setQuotaInGb(quotaOnGB), null, Context.NONE);
     }
 
     public void setFileHttpHeaders() {
