@@ -31,11 +31,17 @@ public class AzureActiveDirectoryConfigurationTest {
             assertEquals("fake-client-secret", azure.getClientSecret());
 
             AuthorizationServerEndpoints endpoints = new AuthorizationServerEndpoints();
-            assertEquals(endpoints.authorizationEndpoint("fake-tenant-id"), azure.getProviderDetails().getAuthorizationUri());
+            assertEquals(endpoints.authorizationEndpoint("fake-tenant-id"),
+                azure.getProviderDetails().getAuthorizationUri());
             assertEquals(endpoints.tokenEndpoint("fake-tenant-id"), azure.getProviderDetails().getTokenUri());
             assertEquals(endpoints.jwkSetEndpoint("fake-tenant-id"), azure.getProviderDetails().getJwkSetUri());
             assertEquals("{baseUrl}/login/oauth2/code/{registrationId}", azure.getRedirectUriTemplate());
-            assertDefaultScopes(azure, "openid", "profile");
+            assertDefaultScopes(
+                azure,
+                "openid",
+                "profile",
+                "https://graph.microsoft.com/Directory.AccessAsUser.All",
+                "https://graph.microsoft.com/User.Read");
         }
     }
 
@@ -50,7 +56,14 @@ public class AzureActiveDirectoryConfigurationTest {
             ClientRegistration graph = repo.findByRegistrationId("graph");
 
             assertNotNull(azure);
-            assertDefaultScopes(azure, "openid", "profile", "offline_access", "Calendars.Read");
+            assertDefaultScopes(
+                azure,
+                "openid",
+                "profile",
+                "https://graph.microsoft.com/Directory.AccessAsUser.All",
+                "https://graph.microsoft.com/User.Read",
+                "offline_access",
+                "Calendars.Read");
 
             assertNotNull(graph);
             assertDefaultScopes(graph, "Calendars.Read");
@@ -73,6 +86,8 @@ public class AzureActiveDirectoryConfigurationTest {
                 azure,
                 "openid",
                 "profile",
+                "https://graph.microsoft.com/Directory.AccessAsUser.All",
+                "https://graph.microsoft.com/User.Read",
                 "offline_access",
                 "Calendars.Read",
                 "https://management.core.windows.net/user_impersonation");
@@ -92,7 +107,14 @@ public class AzureActiveDirectoryConfigurationTest {
             ClientRegistration azure = repo.findByRegistrationId("azure");
 
             assertNotNull(azure);
-            assertDefaultScopes(azure, "openid", "profile", "offline_access", "Calendars.Read");
+            assertDefaultScopes(
+                azure,
+                "openid",
+                "profile",
+                "https://graph.microsoft.com/Directory.AccessAsUser.All",
+                "https://graph.microsoft.com/User.Read",
+                "offline_access",
+                "Calendars.Read");
         }
     }
 
