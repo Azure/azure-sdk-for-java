@@ -5,6 +5,9 @@ This sample illustrates how to use `azure-spring-boot-starter-active-directory-b
 
 ## Getting started
 
+### Environment setup
+We need to ensure that this [environment setup][environment-setup] is completed before the run.
+
 ### Create your Azure Active Directory B2C tenant
 
 Follow the guide of [AAD B2C tenant creation](https://docs.microsoft.com/azure/active-directory-b2c/tutorial-create-tenant).
@@ -87,4 +90,4 @@ And also available for Amazon, Azure AD, FaceBook, Github, Linkedin and Twitter.
 ## Next steps
 ## Contributing
 <!-- LINKS -->
-[instruction]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/CONTRIBUTING.md#building-from-source
+[environment-setup]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#environment-setup

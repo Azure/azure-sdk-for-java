@@ -12,6 +12,9 @@ This project is composed of a vue.js frontend and a simple backend with three en
 The sample is composed of two layers: vue.js client and Spring Boot RESTful Web Service. You need to make some changes 
 to get it working with your Azure AD tenant on both sides.
 
+### Environment setup
+We need to ensure that this [environment setup][environment-setup] is completed before the run.
+
 ### Register your application with your Azure Active Directory Tenant
 
 Follow the guide [here](https://docs.microsoft.com/azure/active-directory/develop/v1-protocols-openid-connect-code#register-your-application-with-your-ad-tenant).
@@ -87,10 +90,7 @@ data: {
 ``` 
 
 ### Run with Maven
-First, we need to ensure that this [instruction] is completed before run.
 ```shell
-# Under sdk/spring project root directory
-mvn clean install -DskipTests
 cd azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-stateless
 mvn spring-boot:run
 ```
@@ -112,4 +112,4 @@ mvn spring-boot:run
 ## Next steps
 ## Contributing
 <!-- LINKS -->
-[instruction]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/CONTRIBUTING.md#building-from-source
+[environment-setup]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#environment-setup

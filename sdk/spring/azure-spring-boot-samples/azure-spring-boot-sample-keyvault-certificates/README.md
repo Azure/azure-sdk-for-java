@@ -1,12 +1,10 @@
-# Azure Spring Cloud App Configuration Conversion Sample client library for Java
-
+# Azure Spring Boot Key Vault Certificates client library for Java
 ## Key concepts
 ## Getting started
 
 ### Environment setup
 We need to ensure that this [environment setup][environment-setup] is completed before the run.
 
-## Key concepts
 ## Examples
 ## Troubleshooting
 ## Next steps
