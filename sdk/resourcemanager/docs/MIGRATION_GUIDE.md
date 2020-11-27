@@ -54,6 +54,7 @@ ApplicationTokenCredential = new ApplicationTokenCredentials("<ClientId>", "<Ten
 
 **Equivalent in new version (`com.azure.resourcemanager.**`)**
 
+<!-- embedme ../azure-resourcemanager/src/samples/java/com/azure/resourcemanager/MigrationGuideSamples.java#L72-L77 -->
 ```java
 TokenCredential credential = new ClientSecretCredentialBuilder()
     .clientId("<ClientId>")
@@ -99,6 +100,7 @@ Azure azure = Azure.configure()
 
 **Equivalent in new version (`com.azure.resourcemanager.**`)**
 
+<!-- embedme ../azure-resourcemanager/src/samples/java/com/azure/resourcemanager/MigrationGuideSamples.java#L81-L84 -->
 ```java
 AzureResourceManager azure = AzureResourceManager.configure()
     .withPolicy(new CustomizedPolicy())
@@ -124,6 +126,7 @@ Azure azure = Azure.authenticate(client, "<TenantId>")
 
 **Equivalent in new version (`com.azure.resourcemanager.**`)**
 
+<!-- embedme ../azure-resourcemanager/src/samples/java/com/azure/resourcemanager/MigrationGuideSamples.java#L95-L102 -->
 ```java
 HttpClient client = new OkHttpAsyncHttpClientBuilder()
     .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("127.0.0.1", 8888)))
@@ -155,6 +158,7 @@ try {
 
 **Equivalent in new version (`com.azure.resourcemanager.**`)**
 
+<!-- embedme ../azure-resourcemanager/src/samples/java/com/azure/resourcemanager/MigrationGuideSamples.java#L106-L114 -->
 ```java
 final String resourceGroupName = "invalid resource group name";
 try {
@@ -238,6 +242,7 @@ Observable.merge(
 
 **Equivalent in new version (`com.azure.resourcemanager.**`)**
 
+<!-- embedme ../azure-resourcemanager/src/samples/java/com/azure/resourcemanager/MigrationGuideSamples.java#L133-L166 -->
 ```java
 final List<Object> createdResources = new ArrayList<>();
 azure.resourceGroups().define(rgName).withRegion(region).create();
