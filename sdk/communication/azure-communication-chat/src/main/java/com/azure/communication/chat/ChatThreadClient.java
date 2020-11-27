@@ -19,6 +19,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 
+import java.util.Collections;
+
 /**
  * Sync Client that supports chat thread operations.
  */
@@ -96,6 +98,32 @@ public final class ChatThreadClient {
     public Response<Void> addParticipantsWithResponse(AddChatParticipantsOptions options, Context context) {
 
         return this.client.addParticipants(options, context).block();
+    }
+
+    /**
+     * Adds a participant to a thread. If the participant already exists, no change occurs.
+     *
+     * @param participant The new participant.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void addParticipant(ChatParticipant participant) {
+
+        this.client.addParticipants(new AddChatParticipantsOptions()
+            .setParticipants(Collections.singletonList(participant))).block();
+    }
+
+    /**
+     * Adds a participant to a thread. If the participant already exists, no change occurs.
+     *
+     * @param participant The new participant.
+     * @param context The context to associate with this operation.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> addParticipantWithResponse(ChatParticipant participant, Context context) {
+
+        return this.client.addParticipants(new AddChatParticipantsOptions()
+            .setParticipants(Collections.singletonList(participant)), context).block();
     }
 
     /**

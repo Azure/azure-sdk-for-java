@@ -33,6 +33,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.paging.PageRetriever;
 
+import java.util.Collections;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.Objects;
@@ -145,6 +146,47 @@ public final class ChatThreadAsyncClient {
     public Mono<Response<Void>> addParticipantsWithResponse(AddChatParticipantsOptions options) {
         try {
             return withContext(context -> addParticipants(options, context));
+        } catch (RuntimeException ex) {
+
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Adds a participant to a thread. If the participant already exists, no change occurs.
+     *
+     * @param participant The new participant.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> addParticipant(ChatParticipant participant) {
+        try {
+            return withContext(context -> addParticipants(
+                new AddChatParticipantsOptions()
+                    .setParticipants(Collections.singletonList(participant)),
+                context)
+                .flatMap((Response<Void> res) -> {
+                    return Mono.empty();
+                }));
+        } catch (RuntimeException ex) {
+
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Adds a participant to a thread. If the participant already exists, no change occurs.
+     *
+     * @param participant The new participant.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> addParticipantWithResponse(ChatParticipant participant) {
+        try {
+            return withContext(context -> addParticipants(
+                new AddChatParticipantsOptions()
+                    .setParticipants(Collections.singletonList(participant)),
+                context));
         } catch (RuntimeException ex) {
 
             return monoError(logger, ex);
