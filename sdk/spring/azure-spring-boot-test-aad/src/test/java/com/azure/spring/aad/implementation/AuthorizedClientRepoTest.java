@@ -1,10 +1,9 @@
 package com.azure.spring.aad.implementation;
 
-import com.azure.test.utils.AppRunner;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -27,53 +26,43 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AuthorizedClientRepoTest {
 
-    private AppRunner runner;
-
     private ClientRegistration azure;
     private ClientRegistration graph;
 
-    private OAuth2AuthorizedClientRepository repo;
+    private OAuth2AuthorizedClientRepository authorizedRepo;
     private MockHttpServletRequest request;
     private MockHttpServletResponse response;
 
     @BeforeEach
     public void setup() {
-        runner = createApp();
-        runner.start();
+        System.setProperty("azure.activedirectory.user-group.allowed-groups", "group1, group2");
+        System.setProperty("azure.activedirectory.authorization-server-uri", "fake-uri");
+        System.setProperty("azure.activedirectory.tenant-id", "fake-tenant-id");
+        System.setProperty("azure.activedirectory.client-id", "fake-client-id");
+        System.setProperty("azure.activedirectory.client-secret", "fake-client-secret");
+        System.setProperty("azure.activedirectory.authorization.graph.scopes", "Calendars.Read");
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+        context.register(DumbApp.class);
+        context.refresh();
 
-        AzureClientRegistrationRepository clientRepo = runner.getBean(AzureClientRegistrationRepository.class);
+        AzureClientRegistrationRepository clientRepo = context.getBean(AzureClientRegistrationRepository.class);
         azure = clientRepo.findByRegistrationId("azure");
         graph = clientRepo.findByRegistrationId("graph");
 
-        repo = new AzureAuthorizedClientRepository(clientRepo);
+        authorizedRepo = new AzureAuthorizedClientRepository(clientRepo);
         request = new MockHttpServletRequest();
         response = new MockHttpServletResponse();
     }
 
-    private AppRunner createApp() {
-        AppRunner result = new AppRunner(AzureActiveDirectoryConfigurationTest.DumbApp.class);
-        result.property("azure.activedirectory.authorization-server-uri", "fake-uri");
-        result.property("azure.activedirectory.tenant-id", "fake-tenant-id");
-        result.property("azure.activedirectory.client-id", "fake-client-id");
-        result.property("azure.activedirectory.client-secret", "fake-client-secret");
-        result.property("azure.activedirectory.authorization.graph.scopes", "Calendars.Read");
-        return result;
-    }
-
-    @AfterEach
-    public void tearDown() {
-        runner.stop();
-    }
-
     @Test
     public void loadInitAzureAuthzClient() {
-        repo.saveAuthorizedClient(
+        authorizedRepo.saveAuthorizedClient(
             createAuthorizedClient(azure),
             createAuthentication(),
             request,
             response);
 
-        OAuth2AuthorizedClient client = repo.loadAuthorizedClient(
+        OAuth2AuthorizedClient client = authorizedRepo.loadAuthorizedClient(
             "graph",
             createAuthentication(),
             request);
@@ -88,13 +77,13 @@ public class AuthorizedClientRepoTest {
 
     @Test
     public void saveAndLoadAzureAuthzClient() {
-        repo.saveAuthorizedClient(
+        authorizedRepo.saveAuthorizedClient(
             createAuthorizedClient(graph),
             createAuthentication(),
             request,
             response);
 
-        OAuth2AuthorizedClient client = repo.loadAuthorizedClient(
+        OAuth2AuthorizedClient client = authorizedRepo.loadAuthorizedClient(
             "graph",
             createAuthentication(),
             request);

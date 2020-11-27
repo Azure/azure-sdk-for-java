@@ -1,10 +1,9 @@
 package com.azure.spring.aad.implementation;
 
-import com.azure.test.utils.AppRunner;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.RequestEntity;
@@ -23,34 +22,25 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class AuthzCodeGrantRequestEntityConverterTest {
 
-    private AppRunner runner;
-    private AzureClientRegistrationRepository repo;
+    private AzureClientRegistrationRepository clientRepo;
     private ClientRegistration azure;
     private ClientRegistration graph;
 
     @BeforeEach
     public void setupApp() {
-        runner = createApp();
-        runner.start();
+        System.setProperty("azure.activedirectory.authorization-server-uri", "fake-uri");
+        System.setProperty("azure.activedirectory.authorization.graph.scopes", "Calendars.Read");
+        System.setProperty("azure.activedirectory.client-id", "fake-client-id");
+        System.setProperty("azure.activedirectory.client-secret", "fake-client-secret");
+        System.setProperty("azure.activedirectory.tenant-id", "fake-tenant-id");
+        System.setProperty("azure.activedirectory.user-group.allowed-groups", "group1, group2");
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+        context.register(AuthorizedClientRepoTest.DumbApp.class);
+        context.refresh();
 
-        repo = runner.getBean(AzureClientRegistrationRepository.class);
-        azure = repo.findByRegistrationId("azure");
-        graph = repo.findByRegistrationId("graph");
-    }
-
-    private AppRunner createApp() {
-        AppRunner result = new AppRunner(DumbApp.class);
-        result.property("azure.activedirectory.authorization-server-uri", "http://localhost");
-        result.property("azure.activedirectory.tenant-id", "fake-tenant-id");
-        result.property("azure.activedirectory.client-id", "fake-client-id");
-        result.property("azure.activedirectory.client-secret", "fake-client-secret");
-        result.property("azure.activedirectory.authorization.graph.scopes", "Calendars.Read");
-        return result;
-    }
-
-    @AfterEach
-    public void tearDownApp() {
-        runner.stop();
+        clientRepo = context.getBean(AzureClientRegistrationRepository.class);
+        azure = clientRepo.findByRegistrationId("azure");
+        graph = clientRepo.findByRegistrationId("graph");
     }
 
     @Test
@@ -72,7 +62,7 @@ public class AuthzCodeGrantRequestEntityConverterTest {
     @SuppressWarnings("unchecked")
     private MultiValueMap<String, String> convertedBodyOf(OAuth2AuthorizationCodeGrantRequest request) {
         AuthzCodeGrantRequestEntityConverter converter =
-            new AuthzCodeGrantRequestEntityConverter(repo.getAzureClient());
+            new AuthzCodeGrantRequestEntityConverter(clientRepo.getAzureClient());
         RequestEntity<?> entity = converter.convert(request);
         return (MultiValueMap<String, String>) Optional.ofNullable(entity)
                                                        .map(HttpEntity::getBody)
