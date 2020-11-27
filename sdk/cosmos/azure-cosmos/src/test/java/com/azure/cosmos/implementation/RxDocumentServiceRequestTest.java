@@ -97,15 +97,15 @@ public class RxDocumentServiceRequestTest {
                 { TRIGGER_URL, ResourceType.Trigger, OperationType.Query },
                 { CONFLICT_URL, ResourceType.Conflict, OperationType.Query },
 
-                { DATABASE_URL, ResourceType.Database, OperationType.Update },
-                { DOCUMENT_COLLECTION_URL, ResourceType.DocumentCollection, OperationType.Update },
-                { STORED_PRCEDURE_URL, ResourceType.StoredProcedure, OperationType.Update },
-                { USER_DEFINED_FUNCTION_URL, ResourceType.UserDefinedFunction, OperationType.Update },
-                { USER_URL, ResourceType.User, OperationType.Update },
-                { PERMISSION_URL, ResourceType.Permission, OperationType.Update },
-                { ATTACHMENT_URL, ResourceType.Attachment, OperationType.Update },
-                { TRIGGER_URL, ResourceType.Trigger, OperationType.Update },
-                { CONFLICT_URL, ResourceType.Conflict, OperationType.Update } };
+                { DATABASE_URL, ResourceType.Database, OperationType.Patch },
+                { DOCUMENT_COLLECTION_URL, ResourceType.DocumentCollection, OperationType.Patch },
+                { STORED_PRCEDURE_URL, ResourceType.StoredProcedure, OperationType.Patch },
+                { USER_DEFINED_FUNCTION_URL, ResourceType.UserDefinedFunction, OperationType.Patch },
+                { USER_URL, ResourceType.User, OperationType.Patch },
+                { PERMISSION_URL, ResourceType.Permission, OperationType.Patch },
+                { ATTACHMENT_URL, ResourceType.Attachment, OperationType.Patch },
+                { TRIGGER_URL, ResourceType.Trigger, OperationType.Patch },
+                { CONFLICT_URL, ResourceType.Conflict, OperationType.Patch } };
     }
 
     @DataProvider(name = "resourceIdOrFullNameRequestAndOperationTypeData")

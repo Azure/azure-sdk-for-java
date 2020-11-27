@@ -70,6 +70,7 @@ public class PatchAsyncTest extends BatchTestBase {
     public void patchInBulkTest() {
         List<CosmosItemOperation> operations = new ArrayList<>();
 
+        this.createJsonTestDocs(container);
         TestDoc testDocToCreate = this.populateTestDoc(this.partitionKey1);
         TestDoc testDocToReplace = this.getTestDocCopy(this.TestDocPk1ExistingA);
         testDocToReplace.setCost(testDocToReplace.getCost() + 1);

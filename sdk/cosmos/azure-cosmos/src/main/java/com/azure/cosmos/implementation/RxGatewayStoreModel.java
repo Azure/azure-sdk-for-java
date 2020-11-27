@@ -358,7 +358,7 @@ class RxGatewayStoreModel implements RxStoreModel {
             case Create:
             case Batch:
                 return this.create(request);
-            case Update:
+            case Patch:
                 return this.patch(request);
             case Upsert:
                 return this.upsert(request);

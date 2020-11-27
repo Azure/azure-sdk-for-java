@@ -1147,7 +1147,7 @@ public class CosmosAsyncContainer {
             database.getId(),
             database.getClient(),
             ModelBridgeInternal.getConsistencyLevel(options),
-            OperationType.Update,
+            OperationType.Patch,
             ResourceType.Document);
     }
 

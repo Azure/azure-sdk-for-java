@@ -227,7 +227,7 @@ public final class RntbdConstants {
 
         Connection((short) 0x0000, null),
         Create((short) 0x0001, OperationType.Create),
-        Update((short) 0x0002, OperationType.Update),
+        Patch((short) 0x0002, OperationType.Patch),
         Read((short) 0x0003, OperationType.Read),
         ReadFeed((short) 0x0004, OperationType.ReadFeed),
         Delete((short) 0x0005, OperationType.Delete),
@@ -278,7 +278,7 @@ public final class RntbdConstants {
                 case 0x0001:
                     return RntbdOperationType.Create;
                 case 0x0002:
-                    return RntbdOperationType.Update;
+                    return RntbdOperationType.Patch;
                 case 0x0003:
                     return RntbdOperationType.Read;
                 case 0x0004:
@@ -381,8 +381,8 @@ public final class RntbdConstants {
                     return RntbdOperationType.Stop;
                 case SqlQuery:
                     return RntbdOperationType.SqlQuery;
-                case Update:
-                    return RntbdOperationType.Update;
+                case Patch:
+                    return RntbdOperationType.Patch;
                 case ForceConfigRefresh:
                     return RntbdOperationType.ForceConfigRefresh;
                 case Head:

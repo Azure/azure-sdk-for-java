@@ -1734,8 +1734,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         final String path = Utils.joinPath(documentLink, null);
 
-        // OperationType.Update is later used for patch method.
-        final Map<String, String> requestHeaders = getRequestHeaders(options, ResourceType.Document, OperationType.Update);
+        final Map<String, String> requestHeaders = getRequestHeaders(options, ResourceType.Document, OperationType.Patch);
         Instant serializationStartTimeUTC = Instant.now();
 
         ByteBuffer content = ByteBuffer.wrap(PatchUtil.serializeCosmosPatchToByteArray(cosmosPatch));
@@ -1748,7 +1747,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         final RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
             this,
-            OperationType.Update,
+            OperationType.Patch,
             ResourceType.Document,
             path,
             requestHeaders,
