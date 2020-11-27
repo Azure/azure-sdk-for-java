@@ -20,6 +20,8 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Objects;
+
 import reactor.core.publisher.Mono;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -103,6 +105,7 @@ public final class CommunicationIdentityAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteUser(CommunicationUser communicationUser) {
         try {
+            Objects.requireNonNull(communicationUser);
             return withContext(context -> deleteUser(communicationUser, context)
                 .flatMap(
                     (Response<Void> res) -> {
@@ -122,6 +125,7 @@ public final class CommunicationIdentityAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteUserWithResponse(CommunicationUser communicationUser) {
         try {
+            Objects.requireNonNull(communicationUser);
             return withContext(context -> deleteUser(communicationUser, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -151,6 +155,7 @@ public final class CommunicationIdentityAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> revokeTokens(CommunicationUser communicationUser, OffsetDateTime issuedBefore) {
         try {
+            Objects.requireNonNull(communicationUser);
             return withContext(context -> revokeTokens(communicationUser, issuedBefore, context)
                 .flatMap(
                     (Response<Void> res) -> {
@@ -172,6 +177,7 @@ public final class CommunicationIdentityAsyncClient {
     public Mono<Response<Void>> revokeTokensWithResponse(
         CommunicationUser communicationUser, OffsetDateTime issuedBefore) {
         try {
+            Objects.requireNonNull(communicationUser);
             return withContext(context -> revokeTokens(communicationUser, issuedBefore, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -208,6 +214,8 @@ public final class CommunicationIdentityAsyncClient {
     public Mono<CommunicationUserToken> issueToken(
         CommunicationUser communicationUser, List<String> scopes) {
         try {
+            Objects.requireNonNull(communicationUser);
+            Objects.requireNonNull(scopes);
             return withContext(context -> issueToken(communicationUser, scopes, context)
                 .flatMap(
                     (Response<CommunicationUserToken> res) -> {
@@ -232,6 +240,8 @@ public final class CommunicationIdentityAsyncClient {
     public Mono<Response<CommunicationUserToken>> issueTokenWithResponse(
         CommunicationUser communicationUser, List<String> scopes) {
         try {
+            Objects.requireNonNull(communicationUser);
+            Objects.requireNonNull(scopes);
             return withContext(context -> issueToken(communicationUser, scopes, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);

@@ -1,6 +1,10 @@
 package com.azure.spring.aad.implementation;
 
 import com.azure.test.utils.AppRunner;
+import org.junit.Test;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 
@@ -14,8 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AzureActiveDirectoryConfigurationTest {
 
-    //@Test
-    // TODO: Enable these tests after add AzureActiveDirectoryConfiguration in spring.factories.
+    @Test
     public void clientRegistered() {
         try (AppRunner runner = createApp()) {
             runner.start();
@@ -36,7 +39,7 @@ public class AzureActiveDirectoryConfigurationTest {
         }
     }
 
-    //@Test
+    @Test
     public void clientRequiresPermissionRegistered() {
         try (AppRunner runner = createApp()) {
             runner.property("azure.activedirectory.authorization.graph.scopes", "Calendars.Read");
@@ -54,7 +57,7 @@ public class AzureActiveDirectoryConfigurationTest {
         }
     }
 
-    //@Test
+    @Test
     public void clientRequiresMultiPermissions() {
         try (AppRunner runner = createApp()) {
             runner.property("azure.activedirectory.authorization.graph.scopes", "Calendars.Read");
@@ -79,7 +82,7 @@ public class AzureActiveDirectoryConfigurationTest {
         }
     }
 
-    //@Test
+    @Test
     public void clientRequiresPermissionInDefaultClient() {
         try (AppRunner runner = createApp()) {
             runner.property("azure.activedirectory.authorization.azure.scopes", "Calendars.Read");
@@ -93,7 +96,7 @@ public class AzureActiveDirectoryConfigurationTest {
         }
     }
 
-    //@Test
+    @Test
     public void aadAwareClientRepository() {
         try (AppRunner runner = createApp()) {
             runner.property("azure.activedirectory.authorization.graph.scopes", "Calendars.Read");
@@ -103,7 +106,11 @@ public class AzureActiveDirectoryConfigurationTest {
             ClientRegistration azure = repo.findByRegistrationId("azure");
             ClientRegistration graph = repo.findByRegistrationId("graph");
 
-            assertDefaultScopes(repo.getAzureClient(), "openid", "profile", "offline_access");
+            assertDefaultScopes(
+                repo.getAzureClient(),
+                "openid", "profile", "offline_access", "https://graph.microsoft.com/User.Read",
+                "https://graph.microsoft.com/Directory.AccessAsUser.All"
+            );
             assertEquals(repo.getAzureClient().getClient(), azure);
 
             assertFalse(repo.isAuthzClient(azure));
@@ -117,21 +124,25 @@ public class AzureActiveDirectoryConfigurationTest {
         }
     }
 
-    //@Test
+    @Test
     public void defaultClientWithAuthzScope() {
         try (AppRunner runner = createApp()) {
             runner.property("azure.activedirectory.authorization.azure.scopes", "Calendars.Read");
             runner.start();
 
             AzureClientRegistrationRepository repo = runner.getBean(AzureClientRegistrationRepository.class);
-            assertDefaultScopes(repo.getAzureClient(), "openid", "profile", "offline_access", "Calendars.Read");
+            assertDefaultScopes(
+                repo.getAzureClient(),
+                "openid", "profile", "offline_access", "https://graph.microsoft.com/User.Read",
+                "https://graph.microsoft.com/Directory.AccessAsUser.All", "Calendars.Read"
+            );
         }
     }
 
-    //@Test
+    @Test
     public void customizeUri() {
         try (AppRunner runner = createApp()) {
-            runner.property("azure.activedirectory.uri", "http://localhost/");
+            runner.property("azure.activedirectory.authorization-server-uri", "http://localhost/");
             runner.start();
 
             AzureClientRegistrationRepository repo = runner.getBean(AzureClientRegistrationRepository.class);
@@ -146,7 +157,7 @@ public class AzureActiveDirectoryConfigurationTest {
 
     private AppRunner createApp() {
         AppRunner result = new AppRunner(DumbApp.class);
-        result.property("azure.activedirectory.uri", "https://login.microsoftonline.com");
+        result.property("azure.activedirectory.authorization-server-uri", "https://login.microsoftonline.com");
         result.property("azure.activedirectory.tenant-id", "fake-tenant-id");
         result.property("azure.activedirectory.client-id", "fake-client-id");
         result.property("azure.activedirectory.client-secret", "fake-client-secret");
@@ -174,8 +185,9 @@ public class AzureActiveDirectoryConfigurationTest {
         return result;
     }
 
-    //@Configuration
-    //@EnableWebSecurity
-    //@SpringBootApplication
-    public static class DumbApp {}
+    @Configuration
+    @EnableWebSecurity
+    @SpringBootApplication
+    public static class DumbApp {
+    }
 }

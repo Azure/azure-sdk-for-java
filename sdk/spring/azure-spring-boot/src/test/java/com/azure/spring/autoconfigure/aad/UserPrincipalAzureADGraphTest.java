@@ -13,7 +13,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.springframework.http.HttpHeaders;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.util.StringUtils;
 
 import java.io.File;
@@ -25,10 +24,9 @@ import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.text.ParseException;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
@@ -84,30 +82,8 @@ public class UserPrincipalAzureADGraphTest {
     }
 
     @Test
-    public void getAuthoritiesByUserGroups() throws Exception {
-        aadAuthenticationProperties.getUserGroup().setAllowedGroups(Collections.singletonList("group1"));
-        this.graphClientMock = new AzureADGraphClient(clientId, clientSecret, aadAuthenticationProperties,
-            serviceEndpointsProperties);
-
-        stubFor(get(urlEqualTo("/memberOf"))
-            .withHeader(ACCEPT, equalTo("application/json;odata=minimalmetadata"))
-            .willReturn(aResponse()
-                .withStatus(200)
-                .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
-                .withBody(userGroupsJson)));
-
-        assertThat(graphClientMock.getGrantedAuthorities(TestConstants.ACCESS_TOKEN)).isNotEmpty()
-                                                                                     .extracting(GrantedAuthority::getAuthority).containsExactly("ROLE_group1");
-
-        verify(getRequestedFor(urlMatching("/memberOf"))
-            .withHeader(HttpHeaders.AUTHORIZATION, equalTo(String.format("Bearer %s", accessToken)))
-            .withHeader(ACCEPT, equalTo("application/json;odata=minimalmetadata"))
-            .withHeader("api-version", equalTo("1.6")));
-    }
-
-    @Test
     public void getGroups() throws Exception {
-        aadAuthenticationProperties.setActiveDirectoryGroups(Arrays.asList("group1", "group2", "group3"));
+        aadAuthenticationProperties.getUserGroup().setAllowedGroups(Arrays.asList("group1", "group2", "group3"));
         this.graphClientMock = new AzureADGraphClient(clientId, clientSecret, aadAuthenticationProperties,
             serviceEndpointsProperties);
 
@@ -118,11 +94,8 @@ public class UserPrincipalAzureADGraphTest {
                 .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
                 .withBody(userGroupsJson)));
 
-        final Collection<? extends GrantedAuthority> authorities = graphClientMock
-            .getGrantedAuthorities(TestConstants.ACCESS_TOKEN);
-
-        assertThat(authorities).isNotEmpty().extracting(GrantedAuthority::getAuthority)
-                               .containsExactlyInAnyOrder("ROLE_group1", "ROLE_group2", "ROLE_group3");
+        Set<String> groups = graphClientMock.getGroups(TestConstants.ACCESS_TOKEN);
+        assertThat(groups).isNotEmpty().containsExactlyInAnyOrder("group1", "group2", "group3");
 
         verify(getRequestedFor(urlMatching("/memberOf"))
             .withHeader(HttpHeaders.AUTHORIZATION, equalTo(String.format("Bearer %s", accessToken)))
