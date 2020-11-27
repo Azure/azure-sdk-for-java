@@ -5,7 +5,6 @@ package com.azure.cosmos.implementation.patch;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosPatch;
-import org.assertj.core.api.Assertions;
 import org.testng.annotations.Test;
 
 import java.time.Instant;
@@ -14,17 +13,18 @@ import java.util.Random;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 public class PatchUnitTest {
 
     public static String path = "/random";
 
     @Test(groups = { "unit" })
-    public void throwsOnNullArguement() {
+    public void throwsOnNullArgument() {
 
         try {
             CosmosPatch.create().add(null, "1");
-            Assertions.fail("Should throw IllegalArgumentException");
+            fail("Should throw IllegalArgumentException");
 
         } catch(IllegalArgumentException ex) {
             assertThat(ex.getMessage()).contains("path empty");
@@ -32,7 +32,7 @@ public class PatchUnitTest {
 
         try {
             CosmosPatch.create().remove(null);
-            Assertions.fail("Should throw IllegalArgumentException");
+            fail("Should throw IllegalArgumentException");
         } catch (IllegalArgumentException ex) {
             assertThat(ex.getMessage()).contains("path empty");
         }

@@ -9,7 +9,6 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.assertj.core.api.Assertions;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -20,6 +19,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 public class PatchTest extends TestSuiteBase {
 
@@ -162,7 +162,7 @@ public class PatchTest extends TestSuiteBase {
                 new PartitionKey(testItem.status),
                 cosmosPatch,
                 ToDoActivity.class);
-            Assertions.fail("Update operation should fail if the item doesn't exist.");
+            fail("Update operation should fail if the item doesn't exist.");
         } catch (CosmosException ex) {
             assertThat(ex.getStatusCode()).isEqualTo(HttpResponseStatus.NOT_FOUND.code());
             assertThat(ex.getMessage()).contains("Resource Not Found");
@@ -176,7 +176,7 @@ public class PatchTest extends TestSuiteBase {
                 cosmosPatch,
                 ToDoActivity.class);
 
-            Assertions.fail("Update operation should fail for malformed PatchSpecification.");
+            fail("Update operation should fail for malformed PatchSpecification.");
         } catch (CosmosException ex) {
             assertThat(ex.getStatusCode()).isEqualTo(HttpResponseStatus.BAD_REQUEST.code());
             assertThat(ex.getMessage())
@@ -195,7 +195,7 @@ public class PatchTest extends TestSuiteBase {
                 requestOptions,
                 ToDoActivity.class);
 
-            Assertions.fail("Update operation should fail in case of pre-condition failure.");
+            fail("Update operation should fail in case of pre-condition failure.");
         } catch (CosmosException ex) {
             assertThat(ex.getStatusCode()).isEqualTo(HttpResponseStatus.PRECONDITION_FAILED.code());
             assertThat(ex.getMessage()).contains("One of the specified pre-condition is not met");

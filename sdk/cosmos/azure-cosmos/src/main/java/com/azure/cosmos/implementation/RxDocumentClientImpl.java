@@ -1726,11 +1726,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                                                    CosmosPatch cosmosPatch,
                                                                    RequestOptions options,
                                                                    DocumentClientRetryPolicy retryPolicyInstance) {
-        if (cosmosPatch == null) {
-            throw new IllegalArgumentException("cosmosPatch");
-        }
 
-        logger.debug("Running patch operations on document. patch Operations: [{}]", cosmosPatch);
+        checkArgument(StringUtils.isNotEmpty(documentLink), "expected non empty documentLink");
+        checkNotNull(cosmosPatch, "expected non null cosmosPatch");
+
+        logger.debug("Running patch operations on Document. documentLink: [{}]", documentLink);
 
         final String path = Utils.joinPath(documentLink, null);
 
@@ -1765,7 +1765,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = collectionCache.resolveCollectionAsync(
             BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
-        Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, null, options, collectionObs);
+
+        // options will always have partition key info, so contentAsByteBuffer can be null and is not needed.
+        Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(
+            request,
+            null,
+            null,
+            options,
+            collectionObs);
 
         return requestObs.flatMap(req -> {
             return patch(request, retryPolicyInstance)

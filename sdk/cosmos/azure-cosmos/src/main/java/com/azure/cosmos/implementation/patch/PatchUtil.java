@@ -23,7 +23,7 @@ public final class PatchUtil {
     }
 
     public static byte[] serializeCosmosPatchToByteArray(CosmosPatch cosmosPatch) {
-        JsonSerializable jsonSerializable =  cosmosPatchToJsonSerializable(cosmosPatch);
+        JsonSerializable jsonSerializable = cosmosPatchToJsonSerializable(cosmosPatch);
 
         byte[] serializedBody;
         try {
