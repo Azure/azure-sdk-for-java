@@ -58,23 +58,8 @@ public class AzureActiveDirectoryOAuth2UserService implements OAuth2UserService<
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null) {
-            Set<String> newAuthorities = oidcUser.getAuthorities()
-                                                 .stream()
-                                                 .map(GrantedAuthority::getAuthority)
-                                                 .collect(Collectors.toSet());
-            Set<String> alreadyAuthorities = authentication.getAuthorities()
-                                                           .stream()
-                                                           .map(GrantedAuthority::getAuthority)
-                                                           .collect(Collectors.toSet());
-
-            newAuthorities.addAll(alreadyAuthorities);
-            Set<SimpleGrantedAuthority> authorities = newAuthorities.stream()
-                                                                    .map(SimpleGrantedAuthority::new)
-                                                                    .collect(Collectors.toSet());
-
             DefaultOidcUser defaultOidcUser = (DefaultOidcUser) session.getAttribute("defaultOidcUser");
-            String nameAttributeKey = (String) session.getAttribute("nameAttributeKey");
-            return new DefaultOidcUser(authorities, defaultOidcUser.getIdToken(), nameAttributeKey);
+            return defaultOidcUser;
         }
 
         Set<String> groups = Optional.of(userRequest)
@@ -104,7 +89,6 @@ public class AzureActiveDirectoryOAuth2UserService implements OAuth2UserService<
         DefaultOidcUser defaultOidcUser = new DefaultOidcUser(authorities, oidcUser.getIdToken(), nameAttributeKey);
 
         session.setAttribute("defaultOidcUser", defaultOidcUser);
-        session.setAttribute("nameAttributeKey", nameAttributeKey);
         return defaultOidcUser;
     }
 }
