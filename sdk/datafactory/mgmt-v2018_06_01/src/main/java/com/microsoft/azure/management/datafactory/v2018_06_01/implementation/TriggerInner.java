@@ -9,17 +9,12 @@
 package com.microsoft.azure.management.datafactory.v2018_06_01.implementation;
 
 import java.util.Map;
-
-import com.microsoft.azure.management.datafactory.v2018_06_01.ChainingTrigger;
-import com.microsoft.azure.management.datafactory.v2018_06_01.MultiplePipelineTrigger;
-import com.microsoft.azure.management.datafactory.v2018_06_01.RerunTumblingWindowTrigger;
 import com.microsoft.azure.management.datafactory.v2018_06_01.TriggerRuntimeState;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.microsoft.azure.management.datafactory.v2018_06_01.TumblingWindowTrigger;
 
 /**
  * Azure data factory nested object which contains information about creating
