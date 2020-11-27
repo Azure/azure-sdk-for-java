@@ -175,14 +175,6 @@ class ReactorExecutor implements Closeable {
     public void close() {
         if (!isDisposed.getAndSet(true)) {
             close(true, "ReactorExecutor.close() was called.");
-
-            try {
-                if (!disposeSemaphore.tryAcquire(timeout.toMillis(), TimeUnit.MILLISECONDS)) {
-                    logger.info("Unable to acquire dispose reactor semaphore within timeout.");
-                }
-            } catch (InterruptedException e) {
-                logger.warning("Could not acquire semaphore to finish close operation.", e);
-            }
         }
     }
 
@@ -196,5 +188,8 @@ class ReactorExecutor implements Closeable {
         }
 
         exceptionHandler.onConnectionShutdown(new AmqpShutdownSignal(false, isUserInitialized, reason));
+        if (scheduler != null) {
+            scheduler.dispose();
+        }
     }
 }
