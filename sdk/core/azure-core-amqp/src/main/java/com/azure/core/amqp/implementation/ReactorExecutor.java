@@ -189,6 +189,8 @@ class ReactorExecutor implements Closeable {
         }
 
         exceptionHandler.onConnectionShutdown(new AmqpShutdownSignal(false, isUserInitialized, reason));
+
+        // dispose the scheduler
         if (scheduler != null) {
             scheduler.dispose();
         }
