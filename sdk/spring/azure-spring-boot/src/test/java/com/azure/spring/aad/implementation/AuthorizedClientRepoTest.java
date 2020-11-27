@@ -1,13 +1,13 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.spring.aad.implementation;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
@@ -16,6 +16,7 @@ import org.springframework.security.oauth2.core.AbstractOAuth2Token;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2RefreshToken;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
+import org.springframework.test.context.support.TestPropertySourceUtils;
 
 import java.time.Instant;
 import java.util.Optional;
@@ -35,14 +36,17 @@ public class AuthorizedClientRepoTest {
 
     @BeforeEach
     public void setup() {
-        System.setProperty("azure.activedirectory.user-group.allowed-groups", "group1, group2");
-        System.setProperty("azure.activedirectory.authorization-server-uri", "fake-uri");
-        System.setProperty("azure.activedirectory.tenant-id", "fake-tenant-id");
-        System.setProperty("azure.activedirectory.client-id", "fake-client-id");
-        System.setProperty("azure.activedirectory.client-secret", "fake-client-secret");
-        System.setProperty("azure.activedirectory.authorization.graph.scopes", "Calendars.Read");
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-        context.register(DumbApp.class);
+        TestPropertySourceUtils.addInlinedPropertiesToEnvironment(
+            context,
+            "azure.activedirectory.user-group.allowed-groups = group1, group2",
+            "azure.activedirectory.authorization-server-uri = fake-uri",
+            "azure.activedirectory.tenant-id = fake-tenant-id",
+            "azure.activedirectory.client-id = fake-client-id",
+            "azure.activedirectory.client-secret = fake-client-secret",
+            "azure.activedirectory.authorization.graph.scopes = Calendars.Read"
+        );
+        context.register(AzureActiveDirectoryConfiguration.class);
         context.refresh();
 
         AzureClientRegistrationRepository clientRepo = context.getBean(AzureClientRegistrationRepository.class);
@@ -126,11 +130,5 @@ public class AuthorizedClientRepoTest {
                        .map(AbstractOAuth2Token::getExpiresAt)
                        .map(expiresAt -> expiresAt.isBefore(Instant.now()))
                        .orElse(false);
-    }
-
-    @Configuration
-    @SpringBootApplication
-    @EnableWebSecurity
-    public static class DumbApp {
     }
 }

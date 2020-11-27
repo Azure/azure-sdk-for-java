@@ -1,18 +1,19 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.spring.aad.implementation;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.RequestEntity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationExchange;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationResponse;
+import org.springframework.test.context.support.TestPropertySourceUtils;
 import org.springframework.util.MultiValueMap;
 
 import java.util.Optional;
@@ -28,14 +29,17 @@ public class AuthzCodeGrantRequestEntityConverterTest {
 
     @BeforeEach
     public void setupApp() {
-        System.setProperty("azure.activedirectory.authorization-server-uri", "fake-uri");
-        System.setProperty("azure.activedirectory.authorization.graph.scopes", "Calendars.Read");
-        System.setProperty("azure.activedirectory.client-id", "fake-client-id");
-        System.setProperty("azure.activedirectory.client-secret", "fake-client-secret");
-        System.setProperty("azure.activedirectory.tenant-id", "fake-tenant-id");
-        System.setProperty("azure.activedirectory.user-group.allowed-groups", "group1, group2");
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-        context.register(AuthorizedClientRepoTest.DumbApp.class);
+        TestPropertySourceUtils.addInlinedPropertiesToEnvironment(
+            context,
+            "azure.activedirectory.authorization-server-uri = fake-uri",
+            "azure.activedirectory.authorization.graph.scopes = Calendars.Read",
+            "azure.activedirectory.client-id = fake-client-id",
+            "azure.activedirectory.client-secret = fake-client-secret",
+            "azure.activedirectory.tenant-id = fake-tenant-id",
+            "azure.activedirectory.user-group.allowed-groups = group1, group2"
+        );
+        context.register(AzureActiveDirectoryConfiguration.class);
         context.refresh();
 
         clientRepo = context.getBean(AzureClientRegistrationRepository.class);
@@ -94,11 +98,5 @@ public class AuthzCodeGrantRequestEntityConverterTest {
         builder.redirectUri("http://localhost");
         builder.state("fake-state");
         return builder.build();
-    }
-
-    @Configuration
-    @SpringBootApplication
-    @EnableWebSecurity
-    public static class DumbApp {
     }
 }

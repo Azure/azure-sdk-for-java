@@ -1,12 +1,13 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.spring.aad.implementation;
 
 import org.junit.Test;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.test.context.support.TestPropertySourceUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,21 +19,22 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AzureActiveDirectoryConfigurationTest {
 
-    private void setCommonProperties() {
-        System.setProperty("azure.activedirectory.client-id", "fake-client-id");
-        System.setProperty("azure.activedirectory.client-secret", "fake-client-secret");
-        System.setProperty("azure.activedirectory.tenant-id", "fake-tenant-id");
-        System.setProperty("azure.activedirectory.user-group.allowed-groups", "group1, group2");
-        System.clearProperty("azure.activedirectory.authorization.azure.scopes");
-        System.clearProperty("azure.activedirectory.authorization.graph.scopes");
-        System.clearProperty("azure.activedirectory.authorization.arm.scopes");
+    private AnnotationConfigApplicationContext getContext() {
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+        TestPropertySourceUtils.addInlinedPropertiesToEnvironment(
+            context,
+            "azure.activedirectory.client-id = fake-client-id",
+            "azure.activedirectory.client-secret = fake-client-secret",
+            "azure.activedirectory.tenant-id = fake-tenant-id",
+            "azure.activedirectory.user-group.allowed-groups = group1, group2"
+        );
+        context.register(AzureActiveDirectoryConfiguration.class);
+        return context;
     }
 
     @Test
     public void clientRegistered() {
-        setCommonProperties();
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-        context.register(AuthorizedClientRepoTest.DumbApp.class);
+        AnnotationConfigApplicationContext context = getContext();
         context.refresh();
 
         ClientRegistrationRepository clientRepo = context.getBean(AzureClientRegistrationRepository.class);
@@ -53,10 +55,9 @@ public class AzureActiveDirectoryConfigurationTest {
 
     @Test
     public void clientRequiresPermissionRegistered() {
-        setCommonProperties();
-        System.setProperty("azure.activedirectory.authorization.graph.scopes", "Calendars.Read");
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-        context.register(AuthorizedClientRepoTest.DumbApp.class);
+        AnnotationConfigApplicationContext context = getContext();
+        TestPropertySourceUtils.addInlinedPropertiesToEnvironment(context,
+            "azure.activedirectory.authorization.graph.scopes = Calendars.Read");
         context.refresh();
 
         ClientRegistrationRepository clientRepo = context.getBean(AzureClientRegistrationRepository.class);
@@ -71,12 +72,11 @@ public class AzureActiveDirectoryConfigurationTest {
 
     @Test
     public void clientRequiresMultiPermissions() {
-        setCommonProperties();
-        System.setProperty("azure.activedirectory.authorization.graph.scopes", "Calendars.Read");
-        System.setProperty("azure.activedirectory.authorization.arm.scopes",
-            "https://management.core.windows.net/user_impersonation");
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-        context.register(AuthorizedClientRepoTest.DumbApp.class);
+        AnnotationConfigApplicationContext context = getContext();
+        TestPropertySourceUtils.addInlinedPropertiesToEnvironment(context,
+            "azure.activedirectory.authorization.graph.scopes = Calendars.Read",
+            "azure.activedirectory.authorization.arm.scopes = https://management.core.windows.net/user_impersonation"
+        );
         context.refresh();
 
         ClientRegistrationRepository clientRepo = context.getBean(AzureClientRegistrationRepository.class);
@@ -94,10 +94,9 @@ public class AzureActiveDirectoryConfigurationTest {
 
     @Test
     public void clientRequiresPermissionInDefaultClient() {
-        setCommonProperties();
-        System.setProperty("azure.activedirectory.authorization.graph.scopes", "Calendars.Read");
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-        context.register(AuthorizedClientRepoTest.DumbApp.class);
+        AnnotationConfigApplicationContext context = getContext();
+        TestPropertySourceUtils.addInlinedPropertiesToEnvironment(context,
+            "azure.activedirectory.authorization.graph.scopes = Calendars.Read");
         context.refresh();
 
         ClientRegistrationRepository clientRepo = context.getBean(AzureClientRegistrationRepository.class);
@@ -107,10 +106,9 @@ public class AzureActiveDirectoryConfigurationTest {
 
     @Test
     public void aadAwareClientRepository() {
-        setCommonProperties();
-        System.setProperty("azure.activedirectory.authorization.graph.scopes", "Calendars.Read");
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-        context.register(AuthorizedClientRepoTest.DumbApp.class);
+        AnnotationConfigApplicationContext context = getContext();
+        TestPropertySourceUtils.addInlinedPropertiesToEnvironment(context,
+            "azure.activedirectory.authorization.graph.scopes = Calendars.Read");
         context.refresh();
 
         AzureClientRegistrationRepository clientRepo = context.getBean(AzureClientRegistrationRepository.class);
@@ -135,10 +133,9 @@ public class AzureActiveDirectoryConfigurationTest {
 
     @Test
     public void defaultClientWithAuthzScope() {
-        setCommonProperties();
-        System.setProperty("azure.activedirectory.authorization.azure.scopes", "Calendars.Read");
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-        context.register(AuthorizedClientRepoTest.DumbApp.class);
+        AnnotationConfigApplicationContext context = getContext();
+        TestPropertySourceUtils.addInlinedPropertiesToEnvironment(context,
+            "azure.activedirectory.authorization.azure.scopes = Calendars.Read");
         context.refresh();
 
         AzureClientRegistrationRepository clientRepo = context.getBean(AzureClientRegistrationRepository.class);
@@ -151,10 +148,9 @@ public class AzureActiveDirectoryConfigurationTest {
 
     @Test
     public void customizeUri() {
-        setCommonProperties();
-        System.setProperty("azure.activedirectory.authorization-server-uri", "http://localhost/");
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-        context.register(AuthorizedClientRepoTest.DumbApp.class);
+        AnnotationConfigApplicationContext context = getContext();
+        TestPropertySourceUtils.addInlinedPropertiesToEnvironment(context,
+            "azure.activedirectory.authorization-server-uri = http://localhost/");
         context.refresh();
 
         AzureClientRegistrationRepository clientRepo = context.getBean(AzureClientRegistrationRepository.class);
@@ -166,14 +162,14 @@ public class AzureActiveDirectoryConfigurationTest {
         assertEquals(endpoints.jwkSetEndpoint("fake-tenant-id"), azure.getProviderDetails().getJwkSetUri());
     }
 
-    private void assertDefaultScopes(ClientRegistration client, String ... scopes) {
+    private void assertDefaultScopes(ClientRegistration client, String... scopes) {
         assertEquals(scopes.length, client.getScopes().size());
         for (String s : scopes) {
             assertTrue(client.getScopes().contains(s));
         }
     }
 
-    private void assertDefaultScopes(AzureClientRegistration client, String ... expected) {
+    private void assertDefaultScopes(AzureClientRegistration client, String... expected) {
         assertEquals(expected.length, client.getAccessTokenScopes().size());
         for (String e : expected) {
             assertTrue(client.getAccessTokenScopes().contains(e));
@@ -184,11 +180,5 @@ public class AzureActiveDirectoryConfigurationTest {
         List<ClientRegistration> result = new ArrayList<>();
         itr.forEach(result::add);
         return result;
-    }
-
-    @Configuration
-    @EnableWebSecurity
-    @SpringBootApplication
-    public static class DumbApp {
     }
 }
