@@ -20,6 +20,16 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  *
  * Contains a list of Patch operations to be applied on an item. It is applied in an atomic manner and the operations
  * grammar follows above RFC.
+ *
+ * This can be executed in 3 ways:
+ *  1. Passing this to container in container.patchItem() which requires the id of the item to be patched, partition
+ *      key, the CosmosPatch instance, any CosmosItemRequestOptions and the class type for which response will be parsed.
+ *  2. Add CosmosPatch instance in TransactionalBatch using batch.patchItemOperation() which requires the id of the item
+ *      to be patched, cosmos patch instance and TransactionalBatchItemRequestOptions(if-any) and follow remaining
+ *      steps for batch for it's execution.
+ *  3. Create a bulk item using BulkOperations.getPatchItemOperation which requires the id of the item to be patched,
+ *      cosmos patch instance, partition key and BulkItemRequestOptions(if-any) and follow remaining steps to
+ *      execute bulk operations.
  */
 @Beta(Beta.SinceVersion.V4_9_0)
 public final class CosmosPatch {
