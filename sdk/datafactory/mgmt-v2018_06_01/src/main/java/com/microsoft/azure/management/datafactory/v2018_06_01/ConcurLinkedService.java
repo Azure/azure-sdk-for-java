@@ -22,6 +22,13 @@ import com.microsoft.azure.management.datafactory.v2018_06_01.implementation.Lin
 @JsonFlatten
 public class ConcurLinkedService extends LinkedServiceInner {
     /**
+     * Properties used to connect to Concur. It is mutually exclusive with any
+     * other properties in the linked service. Type: object.
+     */
+    @JsonProperty(value = "typeProperties.connectionProperties")
+    private Object connectionProperties;
+
+    /**
      * Application client_id supplied by Concur App Management.
      */
     @JsonProperty(value = "typeProperties.clientId", required = true)
@@ -69,6 +76,26 @@ public class ConcurLinkedService extends LinkedServiceInner {
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
+
+    /**
+     * Get properties used to connect to Concur. It is mutually exclusive with any other properties in the linked service. Type: object.
+     *
+     * @return the connectionProperties value
+     */
+    public Object connectionProperties() {
+        return this.connectionProperties;
+    }
+
+    /**
+     * Set properties used to connect to Concur. It is mutually exclusive with any other properties in the linked service. Type: object.
+     *
+     * @param connectionProperties the connectionProperties value to set
+     * @return the ConcurLinkedService object itself.
+     */
+    public ConcurLinkedService withConnectionProperties(Object connectionProperties) {
+        this.connectionProperties = connectionProperties;
+        return this;
+    }
 
     /**
      * Get application client_id supplied by Concur App Management.
