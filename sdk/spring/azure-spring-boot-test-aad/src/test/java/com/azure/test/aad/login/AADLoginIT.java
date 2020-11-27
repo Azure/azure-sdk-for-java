@@ -33,6 +33,9 @@ import java.util.regex.Pattern;
 
 import static com.azure.test.oauth.OAuthUtils.AAD_MULTI_TENANT_CLIENT_ID;
 import static com.azure.test.oauth.OAuthUtils.AAD_MULTI_TENANT_CLIENT_SECRET;
+import static com.azure.test.oauth.OAuthUtils.AAD_TENANT_ID_1;
+import static com.azure.test.oauth.OAuthUtils.AAD_USER_NAME_1;
+import static com.azure.test.oauth.OAuthUtils.AAD_USER_PASSWORD_1;
 import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated;
 
 public class AADLoginIT {
@@ -60,9 +63,9 @@ public class AADLoginIT {
             WebDriverWait wait = new WebDriverWait(driver, 10);
             driver.get(app.root() + "api/group1");
             wait.until(presenceOfElementLocated(By.name("loginfmt")))
-                .sendKeys(System.getenv("AAD_USER_NAME_1") + Keys.ENTER);
+                .sendKeys(System.getenv(AAD_USER_NAME_1) + Keys.ENTER);
             wait.until(presenceOfElementLocated(By.name("passwd")))
-                .sendKeys(System.getenv("AAD_USER_PASSWORD_1"));
+                .sendKeys(System.getenv(AAD_USER_PASSWORD_1));
 
             try {
                 Thread.sleep(3000);
@@ -88,10 +91,11 @@ public class AADLoginIT {
             app.property("spring.security.oauth2.client.registration.azure.client-secret",
                 System.getenv(AAD_MULTI_TENANT_CLIENT_SECRET));
 
-            app.property("azure.activedirectory.tenant-id", System.getenv("AAD_TENANT_ID_1"));
+            app.property("azure.activedirectory.tenant-id", System.getenv(AAD_TENANT_ID_1));
             app.property("azure.activedirectory.client-id", System.getenv(AAD_MULTI_TENANT_CLIENT_ID));
             app.property("azure.activedirectory.client-secret", System.getenv(AAD_MULTI_TENANT_CLIENT_SECRET));
             app.property("azure.activedirectory.user-group.allowed-groups", "group1");
+
             app.start();
             command.accept(app);
         }
