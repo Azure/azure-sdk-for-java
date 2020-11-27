@@ -110,7 +110,7 @@ azure.activedirectory.user-group.allowed-groups=group1,group2
 
 4. (Optional) If you want to configure oauth2 redirect uri, please configure by :
 ```properties
-azure.activedirectory.redirect-uri-template=xxxxxx-your-redirect-uri-xxxxxx
+spring.security.oauth2.client.registration.azure.redirect-uri=xxxxxx-your-redirect-uri-xxxxxx
 ```
 
  ---

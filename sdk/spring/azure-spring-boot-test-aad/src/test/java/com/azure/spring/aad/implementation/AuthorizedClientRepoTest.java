@@ -13,11 +13,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
+import org.springframework.security.oauth2.core.AbstractOAuth2Token;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2RefreshToken;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 
 import java.time.Instant;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -34,7 +36,7 @@ public class AuthorizedClientRepoTest {
     private MockHttpServletRequest request;
     private MockHttpServletResponse response;
 
-    //@BeforeEach
+    @BeforeEach
     public void setup() {
         runner = createApp();
         runner.start();
@@ -50,7 +52,7 @@ public class AuthorizedClientRepoTest {
 
     private AppRunner createApp() {
         AppRunner result = new AppRunner(AzureActiveDirectoryConfigurationTest.DumbApp.class);
-        result.property("azure.activedirectory.uri", "fake-uri");
+        result.property("azure.activedirectory.authorization-server-uri", "fake-uri");
         result.property("azure.activedirectory.tenant-id", "fake-tenant-id");
         result.property("azure.activedirectory.client-id", "fake-client-id");
         result.property("azure.activedirectory.client-secret", "fake-client-secret");
@@ -58,12 +60,12 @@ public class AuthorizedClientRepoTest {
         return result;
     }
 
-    //@AfterEach
+    @AfterEach
     public void tearDown() {
         runner.stop();
     }
 
-    //@Test
+    @Test
     public void loadInitAzureAuthzClient() {
         repo.saveAuthorizedClient(
             createAuthorizedClient(azure),
@@ -84,7 +86,7 @@ public class AuthorizedClientRepoTest {
         assertEquals("fake-refresh-token", client.getRefreshToken().getTokenValue());
     }
 
-    //@Test
+    @Test
     public void saveAndLoadAzureAuthzClient() {
         repo.saveAuthorizedClient(
             createAuthorizedClient(graph),
@@ -131,11 +133,15 @@ public class AuthorizedClientRepoTest {
     }
 
     private boolean isTokenExpired(OAuth2AccessToken token) {
-        return token.getExpiresAt().isBefore(Instant.now());
+        return Optional.ofNullable(token)
+                       .map(AbstractOAuth2Token::getExpiresAt)
+                       .map(expiresAt -> expiresAt.isBefore(Instant.now()))
+                       .orElse(false);
     }
 
-    //@Configuration
-    //@SpringBootApplication
-    //@EnableWebSecurity
-    public static class DumbApp {}
+    @Configuration
+    @SpringBootApplication
+    @EnableWebSecurity
+    public static class DumbApp {
+    }
 }
