@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 
-# changeable parameters for SUFFIX
-# please add update logic in generate.py#update_parameters when you add new parameters
+# changeable parameters
+# use update logic in generate.py#update_parameters
+# set to None first to guarantee it would be updated first
 SUFFIX = None
 
-NAMESPACE_SUFFIX = '.{0}'.format(SUFFIX) if SUFFIX else ''
-ARTIFACT_SUFFIX = '-{0}'.format(SUFFIX) if SUFFIX else ''
-NAMESPACE_FORMAT = 'com.azure.resourcemanager.{{0}}{0}'.format(NAMESPACE_SUFFIX)
-ARTIFACT_FORMAT = 'azure-resourcemanager-{{0}}{0}'.format(ARTIFACT_SUFFIX)
-OUTPUT_FOLDER_FORMAT = 'sdk/{{0}}/{0}'.format(ARTIFACT_FORMAT)
+NAMESPACE_SUFFIX = None
+ARTIFACT_SUFFIX = None
+NAMESPACE_FORMAT = None
+ARTIFACT_FORMAT = None
+OUTPUT_FOLDER_FORMAT = None
 
 # Constant parameters
 SDK_ROOT = '../../../'  # related to file dir
