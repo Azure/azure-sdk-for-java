@@ -67,8 +67,8 @@ Please refer to [azure-spring-boot-sample-active-directory-backend](https://gith
 ####  Configure application.properties:
 ```properties
 azure.activedirectory.tenant-id=xxxxxx-your-tenant-id-xxxxxx
-azure.activedirectory.client-id=xxxxxx-your-client-id-xxxxxx
-azure.activedirectory.client-secret=xxxxxx-your-client-secret-xxxxxx
+spring.security.oauth2.client.registration.azure.client-id=xxxxxx-your-client-id-xxxxxx
+spring.security.oauth2.client.registration.azure.client-secret=xxxxxx-your-client-secret-xxxxxx
 azure.activedirectory.user-group.allowed-groups=group1, group2
 ```
 
@@ -184,16 +184,18 @@ The roles you want to use within your application have to be [set up in the mani
 application registration](https://docs.microsoft.com/azure/active-directory/develop/howto-add-app-roles-in-azure-ad-apps).
 
 ### Using The Microsoft Graph API
-By default, azure-spring-boot is set up to utilize the Azure AD Graph.  If you would prefer, it can be set up to utilize the Microsoft Graph instead.  In order to do this, you will need to update the app registration in Azure to grant the application permissions to the Microsoft Graph API and add some properties to the application.properties file.
+By default, azure-spring-boot is set up to utilize the Microsoft Graph. If you would prefer, it can be set up to utilize the Azure AD Graph instead.  In order to do this, you will need to update the app registration in Azure to grant the application permissions to the Azure AD Graph API and add some properties to the application.properties file.
 
-* **Grant permissions to the application**: After application registration succeeded, go to API permissions - Add a permission, select `Microsoft Graph`, select Delegated permissions,  tick `Directory.AccessAsUser.All - Access the directory as the signed-in user` and `Use.Read - Sign in and read user profile`. Click `Add Permissions` (Note: you will need administrator privilege to grant permission).  Furthermore, you can remove the API permissions to the Azure Active Directory Graph, as these will not be needed.
+* **Grant permissions to the application**: After application registration succeeded, go to API permissions - Add a permission, select `Azure Active Directory Graph`, select Delegated permissions,  tick `Directory.AccessAsUser.All - Access the directory as the signed-in user` and `Use.Read - Sign in and read user profile`. Click `Add Permissions` (Note: you will need administrator privilege to grant permission).  Furthermore, you can remove the API permissions to the Microsoft Graph, as these will not be needed.
 
 * **Configure your `application properties`**:
 ```properties
-azure.activedirectory.environment=global-v2-graph
-azure.activedirectory.user-group.key=@odata.type
-azure.activedirectory.user-group.value=#microsoft.graph.group
-azure.activedirectory.user-group.object-id-key=id
+spring.security.oauth2.client.provider.azure.authorization-uri=https://login.microsoftonline.com/common/oauth2/authorize
+spring.security.oauth2.client.provider.azure.token-uri=https://login.microsoftonline.com/common/oauth2/token
+spring.security.oauth2.client.provider.azure.user-info-uri=https://login.microsoftonline.com/common/openid/userinfo
+spring.security.oauth2.client.provider.azure.jwk-set-uri=https://login.microsoftonline.com/common/discovery/keys
+#
+spring.security.oauth2.client.registration.azure.scope=openid, https://graph.windows.net/user.read, {your-customized-scope}
 ```
 
 If you're using [Azure China](https://docs.microsoft.com/azure/china/china-welcome), please set the environment property in the `application.properties` file to:
@@ -208,7 +210,7 @@ Please refer to [azure-spring-boot-sample-active-directory-backend-v2](https://g
 
 By default, `azure-spring-boot-starter-active-directory` configures scopes of `openid`, `profile` and `https://graph.microsoft.com/user.read` to implement OpenID Connect protocol and access of Microsoft Graph API. For customization of scope, developers need to configure in the `application.properties`:
 ```yaml
-azure.activedirectory.scope = openid, profile, https://graph.microsoft.com/user.read, {your-customized-scope}
+spring.security.oauth2.client.registration.azure.scope = openid, profile, https://graph.microsoft.com/user.read, {your-customized-scope}
 ``` 
 Note, if you don't configure the 3 mentioned permissions, this starter will add them automatically.
 
