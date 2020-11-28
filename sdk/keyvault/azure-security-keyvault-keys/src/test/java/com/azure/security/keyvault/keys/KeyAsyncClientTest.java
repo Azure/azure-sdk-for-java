@@ -10,11 +10,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
-import com.azure.security.keyvault.keys.models.CreateKeyOptions;
-import com.azure.security.keyvault.keys.models.DeletedKey;
-import com.azure.security.keyvault.keys.models.KeyProperties;
-import com.azure.security.keyvault.keys.models.KeyType;
-import com.azure.security.keyvault.keys.models.KeyVaultKey;
+import com.azure.security.keyvault.keys.models.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -76,6 +72,16 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
         createRsaKeyRunner((expected) -> StepVerifier.create(client.createRsaKey(expected))
             .assertNext(response -> assertKeyEquals(expected, response))
             .verifyComplete());
+    }
+
+    /**
+     * Tests that a Ec key created.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void createEcKey(HttpClient httpClient, KeyServiceVersion keyServiceVersion) {
+        createKeyAsyncClient(httpClient, keyServiceVersion);
+        createEcKeyRunner((expected) -> client.createEcKey(expected));
     }
 
     /**

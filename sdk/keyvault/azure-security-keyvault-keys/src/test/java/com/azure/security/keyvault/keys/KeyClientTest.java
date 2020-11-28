@@ -9,11 +9,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.security.keyvault.keys.models.CreateKeyOptions;
-import com.azure.security.keyvault.keys.models.DeletedKey;
-import com.azure.security.keyvault.keys.models.KeyProperties;
-import com.azure.security.keyvault.keys.models.KeyType;
-import com.azure.security.keyvault.keys.models.KeyVaultKey;
+import com.azure.security.keyvault.keys.models.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -72,6 +68,16 @@ public class KeyClientTest extends KeyClientTestBase {
     public void createRsaKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         getKeyClient(httpClient, serviceVersion);
         createRsaKeyRunner((expected) -> assertKeyEquals(expected, client.createRsaKey(expected)));
+    }
+
+    /**
+     * Tests that an Ec key is created.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void createEcKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        getKeyClient(httpClient, serviceVersion);
+        createEcKeyRunner((expected) -> client.createEcKey(expected));
     }
 
     /**

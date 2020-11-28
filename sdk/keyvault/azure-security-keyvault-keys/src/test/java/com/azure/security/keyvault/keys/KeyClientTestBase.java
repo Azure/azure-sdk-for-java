@@ -24,10 +24,7 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.ClientSecretCredentialBuilder;
-import com.azure.security.keyvault.keys.models.CreateKeyOptions;
-import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
-import com.azure.security.keyvault.keys.models.KeyType;
-import com.azure.security.keyvault.keys.models.KeyVaultKey;
+import com.azure.security.keyvault.keys.models.*;
 
 import java.time.Duration;
 import java.util.stream.Stream;
@@ -133,6 +130,22 @@ public abstract class KeyClientTestBase extends TestBase {
             .setTags(tags);
 
         testRunner.accept(createRsaKeyOptions);
+    }
+
+    @Test
+    public abstract void createEcKey(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
+
+    void createEcKeyRunner(Consumer<CreateEcKeyOptions> testRunner) {
+        final Map<String, String> tags = new HashMap<>();
+
+        tags.put("foo", "baz");
+
+        final CreateEcKeyOptions createEcKeyOptions = new CreateEcKeyOptions(generateResourceId(KEY_NAME))
+            .setExpiresOn(OffsetDateTime.of(2050, 1, 30, 0, 0, 0, 0, ZoneOffset.UTC))
+            .setNotBefore(OffsetDateTime.of(2000, 1, 30, 12, 59, 59, 0, ZoneOffset.UTC))
+            .setTags(tags);
+
+        testRunner.accept(createEcKeyOptions);
     }
 
     @Test
