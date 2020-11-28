@@ -20,7 +20,6 @@ import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
 
 import static com.azure.core.amqp.AmqpMessageConstant.DEAD_LETTER_DESCRIPTION_ANNOTATION_NAME;
@@ -91,11 +90,8 @@ public final class ServiceBusReceivedMessage {
         final AmqpMessageBodyType bodyType = amqpAnnotatedMessage.getBody().getBodyType();
         switch (bodyType) {
             case DATA:
-                final Optional<byte[]> payload = amqpAnnotatedMessage.getBody().getData().stream().findFirst();
-
-                return payload.isPresent()
-                    ? BinaryData.fromBytes(payload.get())
-                    : BinaryData.fromBytes(new byte[0]);
+                final byte[] payload = amqpAnnotatedMessage.getBody().getFirstData();
+                return BinaryData.fromBytes(payload);
             case SEQUENCE:
             case VALUE:
                 throw logger.logExceptionAsError(new UnsupportedOperationException(
