@@ -258,7 +258,7 @@ class ServiceBusReceiverAsyncClientTest {
         when(managementNode.peek(fromSequenceNumber, null, null)).thenReturn(Mono.just(receivedMessage));
 
         // Act & Assert
-        StepVerifier.create(receiver.peekMessageAt(fromSequenceNumber))
+        StepVerifier.create(receiver.peekMessage(fromSequenceNumber))
             .expectNext(receivedMessage)
             .verifyComplete();
     }
@@ -428,7 +428,7 @@ class ServiceBusReceiverAsyncClientTest {
             .thenReturn(Flux.fromArray(new ServiceBusReceivedMessage[]{receivedMessage, receivedMessage2}));
 
         // Act & Assert
-        StepVerifier.create(receiver.peekMessagesAt(numberOfEvents, fromSequenceNumber))
+        StepVerifier.create(receiver.peekMessages(numberOfEvents, fromSequenceNumber))
             .expectNext(receivedMessage, receivedMessage2)
             .verifyComplete();
     }

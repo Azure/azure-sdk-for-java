@@ -297,7 +297,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
     ServiceBusReceivedMessage peekMessageAt(long sequenceNumber, String sessionId) {
-        return asyncClient.peekMessageAt(sequenceNumber, sessionId).block(operationTimeout);
+        return asyncClient.peekMessage(sequenceNumber, sessionId).block(operationTimeout);
     }
 
     /**
@@ -358,8 +358,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
-    public IterableStream<ServiceBusReceivedMessage> peekMessagesAt(int maxMessages, long sequenceNumber) {
-        return this.peekMessagesAt(maxMessages, sequenceNumber, asyncClient.getReceiverOptions().getSessionId());
+    public IterableStream<ServiceBusReceivedMessage> peekMessages(int maxMessages, long sequenceNumber) {
+        return this.peekMessages(maxMessages, sequenceNumber, asyncClient.getReceiverOptions().getSessionId());
     }
 
     /**
@@ -375,13 +375,13 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws IllegalStateException if receiver is already disposed.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
-    IterableStream<ServiceBusReceivedMessage> peekMessagesAt(int maxMessages, long sequenceNumber, String sessionId) {
+    IterableStream<ServiceBusReceivedMessage> peekMessages(int maxMessages, long sequenceNumber, String sessionId) {
         if (maxMessages <= 0) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "'maxMessages' cannot be less than or equal to 0. maxMessages: " + maxMessages));
         }
 
-        final Flux<ServiceBusReceivedMessage> messages = asyncClient.peekMessagesAt(maxMessages, sequenceNumber,
+        final Flux<ServiceBusReceivedMessage> messages = asyncClient.peekMessages(maxMessages, sequenceNumber,
             sessionId).timeout(operationTimeout);
 
         // Subscribe so we can kick off this operation.

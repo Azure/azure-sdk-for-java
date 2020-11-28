@@ -102,16 +102,6 @@ public final class ServiceBusReceivedMessage {
     }
 
     /**
-     * Gets the payload wrapped by the {@link ServiceBusReceivedMessage} as a byte array.
-     *
-     * @return A byte array representing the data.
-     * @see ServiceBusMessage#getBody()
-     */
-    public byte[] getBodyAsBytes() {
-        return getBody().toBytes();
-    }
-
-    /**
      * Gets the content type of the message.
      *
      * <p>

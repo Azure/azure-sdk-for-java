@@ -29,7 +29,7 @@ import java.util.Objects;
  * @see ServiceBusSenderAsyncClient To communicate with a Service Bus resource using an asynchronous client.
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class)
-public class ServiceBusSenderClient implements AutoCloseable {
+public final class ServiceBusSenderClient implements AutoCloseable {
     private final ServiceBusSenderAsyncClient asyncClient;
     private final Duration tryTimeout;
 
