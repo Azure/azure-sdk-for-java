@@ -17,7 +17,6 @@ import reactor.core.publisher.FluxSink;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -73,7 +72,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     }
 
     /**
-     * Abandon a {@link ServiceBusReceivedMessage message}. This will make the message available again for processing.
+     * Abandons a {@link ServiceBusReceivedMessage message}. This will make the message available again for processing.
      * Abandoning a message will increase the delivery count on the message.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
@@ -83,23 +82,18 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from
      *     {@link ServiceBusReceiverClient#peekMessage() peekMessage}.
      * @throws IllegalStateException if receiver is already disposed.
-     * @throws IllegalArgumentException if the message is already settled.
+     * @throws ServiceBusException if the message could not be abandoned.
      */
     public void abandon(ServiceBusReceivedMessage message) {
         asyncClient.abandon(message).block(operationTimeout);
     }
 
     /**
-     * Abandon a {@link ServiceBusReceivedMessage message} updates the message's properties. This will make the message
-     * available again for processing. Abandoning a message will increase the delivery count on the message.
+     * Abandons a {@link ServiceBusReceivedMessage message} and updates the message's properties. This will make the
+     * message available again for processing. Abandoning a message will increase the delivery count on the message.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
-     * @param options to abandon the message. You can specify
-     *     {@link AbandonOptions#setPropertiesToModify(Map) properties} to modify on the Message. The
-     *     {@code transactionContext} can be set using
-     *     {@link AbandonOptions#setTransactionContext(ServiceBusTransactionContext)}. The transaction should be
-     *     created first by {@link ServiceBusReceiverAsyncClient#createTransaction()} or
-     *     {@link ServiceBusSenderAsyncClient#createTransaction()}.
+     * @param options The options to set while abandoning the message.
      *
      * @throws NullPointerException if {@code message} or {@code options} is null. Also if
      *     {@code transactionContext.transactionId} is null when {@code options.transactionContext} is specified.
@@ -108,6 +102,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *     {@link ServiceBusReceiverClient#peekMessage() peekMessage}.
      * @throws IllegalStateException if receiver is already disposed.
      * @throws IllegalArgumentException if the message is already settled.
+     * @throws ServiceBusException if the message could not be abandoned.
      */
     public void abandon(ServiceBusReceivedMessage message, AbandonOptions options) {
         asyncClient.abandon(message, options).block(operationTimeout);
@@ -124,6 +119,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *     {@link ServiceBusReceiverClient#peekMessage() peekMessage}.
      * @throws IllegalStateException if receiver is already disposed.
      * @throws IllegalArgumentException if the message is already settled.
+     * @throws ServiceBusException if the message could not be completed.
      */
     public void complete(ServiceBusReceivedMessage message) {
         asyncClient.complete(message).block(operationTimeout);
@@ -133,10 +129,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * Completes a {@link ServiceBusReceivedMessage message}. This will delete the message from the service.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
-     * @param options to complete the message. The {@code transactionContext} can be set using
-     *     {@link CompleteOptions#setTransactionContext(ServiceBusTransactionContext)}. The transaction should be
-     *     created first by {@link ServiceBusReceiverAsyncClient#createTransaction()} or
-     *     {@link ServiceBusSenderAsyncClient#createTransaction()}.
+     * @param options Options used to complete the message.
      *
      * @throws NullPointerException if {@code message} or {@code options} is null. Also if
      *     {@code transactionContext.transactionId} is null when {@code options.transactionContext} is specified.
@@ -145,6 +138,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *     {@link ServiceBusReceiverClient#peekMessage() peekMessage}.
      * @throws IllegalStateException if receiver is already disposed.
      * @throws IllegalArgumentException if the message is already settled.
+     * @throws ServiceBusException if the message could not be completed.
      */
     public void complete(ServiceBusReceivedMessage message, CompleteOptions options) {
         asyncClient.complete(message, options).block(operationTimeout);
@@ -160,7 +154,9 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from
      *     {@link ServiceBusReceiverClient#peekMessage() peekMessage}.
      * @throws IllegalStateException if receiver is already disposed.
+     * @throws ServiceBusException if the message could not be deferred.
      * @throws IllegalArgumentException if the message is already settled.
+     *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
      */
     public void defer(ServiceBusReceivedMessage message) {
@@ -168,15 +164,11 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     }
 
     /**
-     * Defers a {@link ServiceBusReceivedMessage message} using its lock token with modified message property. This will
-     * move message into the deferred subqueue.
+     * Defers a {@link ServiceBusReceivedMessage message} using its lock token with modified message property. This
+     * will move message into the deferred sub-queue.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
-     * @param options to defer the message. You can specify {@link DeferOptions#setPropertiesToModify(Map) properties}
-     *     to modify on the Message. The {@code transactionContext} can be set using
-     *     {@link DeferOptions#setTransactionContext(ServiceBusTransactionContext)}. The transaction should be
-     *     created first by {@link ServiceBusReceiverAsyncClient#createTransaction()} or
-     *     {@link ServiceBusSenderAsyncClient#createTransaction()}.
+     * @param options Options used to defer the message.
      *
      * @throws NullPointerException if {@code message} or {@code options} is null. Also if
      *     {@code transactionContext.transactionId} is null when {@code options.transactionContext} is specified.
@@ -184,7 +176,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from
      *     {@link ServiceBusReceiverClient#peekMessage() peekMessage}.
      * @throws IllegalStateException if receiver is already disposed.
-     * @throws IllegalArgumentException if the message is already settled.
+     * @throws ServiceBusException if the message could not be deferred.
+     *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
      */
     public void defer(ServiceBusReceivedMessage message, DeferOptions options) {
@@ -192,7 +185,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     }
 
     /**
-     * Moves a {@link ServiceBusReceivedMessage message} to the deadletter sub-queue.
+     * Moves a {@link ServiceBusReceivedMessage message} to the dead-letter sub-queue.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
      *
@@ -201,7 +194,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from
      *     {@link ServiceBusReceiverClient#peekMessage() peekMessage}.
      * @throws IllegalStateException if receiver is already disposed.
-     * @throws IllegalArgumentException if the message is already settled.
+     * @throws ServiceBusException if the message could not be dead-lettered.
+     *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-dead-letter-queues">Dead letter
      *     queues</a>
      */
@@ -210,24 +204,22 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     }
 
     /**
-     * Moves a {@link ServiceBusReceivedMessage message} to the deadletter subqueue with deadletter reason, error
+     * Moves a {@link ServiceBusReceivedMessage message} to the dead-letter sub-queue with dead-letter reason, error
      * description, and/or modified properties.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
-     * @param options to deadLetter the message. You can specify
-     *     {@link DeadLetterOptions#setPropertiesToModify(Map) properties} to modify on the Message. The
-     *     {@code transactionContext} can be set using
-     *     {@link DeadLetterOptions#setTransactionContext(ServiceBusTransactionContext)}. The transaction should be
-     *     created first by {@link ServiceBusReceiverAsyncClient#createTransaction()} or
-     *     {@link ServiceBusSenderAsyncClient#createTransaction()}.
+     * @param options Options used to dead-letter the message.
      *
      * @throws NullPointerException if {@code message} or {@code options} is null. Also if
      *     {@code transactionContext.transactionId} is null when {@code options.transactionContext} is specified.
      * @throws UnsupportedOperationException if the receiver was opened in
      *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from
      *     {@link ServiceBusReceiverClient#peekMessage() peekMessage}.
-     * @throws IllegalStateException if receiver is already disposed.
-     * @throws IllegalArgumentException if the message is already settled.
+     * @throws IllegalStateException if the receiver is already disposed of.
+     * @throws ServiceBusException if the message could not be dead-lettered.
+     *
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-dead-letter-queues">Dead letter
+     *     queues</a>
      */
     public void deadLetter(ServiceBusReceivedMessage message, DeadLetterOptions options) {
         asyncClient.deadLetter(message, options).block(operationTimeout);
@@ -237,7 +229,9 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * Gets the state of the session if this receiver is a session receiver.
      *
      * @return The session state or null if there is no state set for the session.
+     *
      * @throws IllegalStateException if the receiver is a non-session receiver or receiver is already disposed.
+     * @throws ServiceBusException if the session state could not be acquired.
      */
     public byte[] getSessionState() {
         return this.getSessionState(asyncClient.getReceiverOptions().getSessionId());
@@ -245,11 +239,14 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
 
     /**
      * Reads the next active message without changing the state of the receiver or the message source. The first call to
-     * {@code peek()} fetches the first active message for this receiver. Each subsequent call fetches the subsequent
-     * message in the entity.
+     * {@code peekMessage()} fetches the first active message for this receiver. Each subsequent call fetches the
+     * subsequent message in the entity.
      *
      * @return A peeked {@link ServiceBusReceivedMessage}.
-     * @throws IllegalStateException if receiver is already disposed.
+     *
+     * @throws IllegalStateException if the receiver is already disposed.
+     * @throws ServiceBusException if an error occurs while peeking at the message.
+     *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
     public ServiceBusReceivedMessage peekMessage() {
@@ -258,18 +255,19 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
 
     /**
      * Reads the next active message without changing the state of the receiver or the message source. The first call to
-     * {@code peek()} fetches the first active message for this receiver. Each subsequent call fetches the subsequent
-     * message in the entity.
+     * {@code peekMessage()} fetches the first active message for this receiver. Each subsequent call fetches the
+     * subsequent message in the entity.
      *
      * @param sessionId Session id of the message to peek from. {@code null} if there is no session.
      *
      * @return A peeked {@link ServiceBusReceivedMessage}.
-     * @throws IllegalStateException if receiver is already disposed.
+     * @throws IllegalStateException if receiver is already disposed or the receiver is a non-session receiver.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
     ServiceBusReceivedMessage peekMessage(String sessionId) {
         return asyncClient.peekMessage(sessionId).block(operationTimeout);
     }
+
     /**
      * Starting from the given sequence number, reads next the active message without changing the state of the receiver
      * or the message source.
@@ -277,7 +275,10 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @param sequenceNumber The sequence number from where to read the message.
      *
      * @return A peeked {@link ServiceBusReceivedMessage}.
-     * @throws IllegalStateException if receiver is already disposed.
+     *
+     * @throws IllegalStateException if the receiver is already disposed.
+     * @throws ServiceBusException if an error occurs while peeking at the message.
+     *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
     public ServiceBusReceivedMessage peekMessageAt(long sequenceNumber) {
@@ -302,11 +303,14 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     /**
      * Reads the next batch of active messages without changing the state of the receiver or the message source.
      *
-     * @param maxMessages The number of messages.
+     * @param maxMessages The maximum number of messages to peek.
      *
      * @return An {@link IterableStream} of {@link ServiceBusReceivedMessage messages} that are peeked.
+     *
      * @throws IllegalArgumentException if {@code maxMessages} is not a positive integer.
-     * @throws IllegalStateException if receiver is already disposed.
+     * @throws IllegalStateException if the receiver is already disposed.
+     * @throws ServiceBusException if an error occurs while peeking at messages.
+     *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
     public IterableStream<ServiceBusReceivedMessage> peekMessages(int maxMessages) {
@@ -346,9 +350,12 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @param maxMessages The number of messages.
      * @param sequenceNumber The sequence number from where to start reading messages.
      *
-     * @return An {@link IterableStream} of {@link ServiceBusReceivedMessage} peeked.
+     * @return An {@link IterableStream} of {@link ServiceBusReceivedMessage messages} peeked.
+     *
      * @throws IllegalArgumentException if {@code maxMessages} is not a positive integer.
-     * @throws IllegalStateException if receiver is already disposed.
+     * @throws IllegalStateException if the receiver is already disposed.
+     * @throws ServiceBusException if an error occurs while peeking at messages.
+     *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
     public IterableStream<ServiceBusReceivedMessage> peekMessagesAt(int maxMessages, long sequenceNumber) {
@@ -368,8 +375,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws IllegalStateException if receiver is already disposed.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
-    IterableStream<ServiceBusReceivedMessage> peekMessagesAt(int maxMessages, long sequenceNumber,
-        String sessionId) {
+    IterableStream<ServiceBusReceivedMessage> peekMessagesAt(int maxMessages, long sequenceNumber, String sessionId) {
         if (maxMessages <= 0) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "'maxMessages' cannot be less than or equal to 0. maxMessages: " + maxMessages));
@@ -392,8 +398,10 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @param maxMessages The maximum number of messages to receive.
      *
      * @return An {@link IterableStream} of at most {@code maxMessages} messages from the Service Bus entity.
+     *
      * @throws IllegalArgumentException if {@code maxMessages} is zero or a negative value.
-     * @throws IllegalStateException if receiver is already disposed.
+     * @throws IllegalStateException if the receiver is already disposed.
+     * @throws ServiceBusException if an error occurs while receiving messages.
      */
     public IterableStream<ServiceBusReceivedMessage> receiveMessages(int maxMessages) {
         return receiveMessages(maxMessages, operationTimeout);
@@ -408,8 +416,10 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @param maxWaitTime The time the client waits for receiving a message before it times out.
      *
      * @return An {@link IterableStream} of at most {@code maxMessages} messages from the Service Bus entity.
+     *
      * @throws IllegalArgumentException if {@code maxMessages} or {@code maxWaitTime} is zero or a negative value.
-     * @throws IllegalStateException if receiver is already disposed.
+     * @throws IllegalStateException if the receiver is already disposed.
+     * @throws ServiceBusException if an error occurs while receiving messages.
      */
     public IterableStream<ServiceBusReceivedMessage> receiveMessages(int maxMessages, Duration maxWaitTime) {
         if (maxMessages <= 0) {
@@ -437,7 +447,9 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *     message.
      *
      * @return A deferred message with the matching {@code sequenceNumber}.
+     *
      * @throws IllegalStateException if receiver is already disposed.
+     * @throws ServiceBusException if deferred message cannot be received.
      */
     public ServiceBusReceivedMessage receiveDeferredMessage(long sequenceNumber) {
         return this.receiveDeferredMessage(sequenceNumber, asyncClient.getReceiverOptions().getSessionId());
@@ -465,7 +477,10 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @param sequenceNumbers The sequence numbers of the deferred messages.
      *
      * @return An {@link IterableStream} of deferred {@link ServiceBusReceivedMessage messages}.
+     *
+     * @throws NullPointerException if {@code sequenceNumbers} is null.
      * @throws IllegalStateException if receiver is already disposed.
+     * @throws ServiceBusException if deferred messages cannot be received.
      */
     public IterableStream<ServiceBusReceivedMessage> receiveDeferredMessageBatch(Iterable<Long> sequenceNumbers) {
         return this.receiveDeferredMessageBatch(sequenceNumbers, asyncClient.getReceiverOptions().getSessionId());
@@ -502,10 +517,12 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @param message The {@link ServiceBusReceivedMessage} to perform lock renewal.
      *
      * @return The new expiration time for the message.
-     * @throws NullPointerException if {@code message} is null.
+     *
+     * @throws NullPointerException if {@code message} or {@code message.getLockToken()} is null.
      * @throws UnsupportedOperationException if the receiver was opened in
-     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode.
+     *      {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from peekMessage.
      * @throws IllegalStateException if the receiver is a session receiver or receiver is already disposed.
+     * @throws IllegalArgumentException if {@code message.getLockToken()} is an empty value.
      */
     public OffsetDateTime renewMessageLock(ServiceBusReceivedMessage message) {
         return asyncClient.renewMessageLock(message).block(operationTimeout);
@@ -520,6 +537,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *
      * @throws NullPointerException if {@code message} or {@code maxLockRenewalDuration} is null.
      * @throws IllegalStateException if the receiver is a session receiver or the receiver is disposed.
+     * @throws IllegalArgumentException if {@code message.getLockToken()} is an empty value.
      */
     public void renewMessageLock(ServiceBusReceivedMessage message, Duration maxLockRenewalDuration,
         Consumer<Throwable> onError) {
@@ -538,9 +556,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * Sets the state of the session if this receiver is a session receiver.
      *
      * @return The next expiration time for the session lock.
-     * @throws NullPointerException if {@code sessionId} is null.
-     * @throws IllegalArgumentException if {@code sessionId} is an empty string.
      * @throws IllegalStateException if the receiver is a non-session receiver or receiver is already disposed.
+     * @throws ServiceBusException if the session lock cannot be renewed.
      */
     public OffsetDateTime renewSessionLock() {
         return this.renewSessionLock(asyncClient.getReceiverOptions().getSessionId());
@@ -566,52 +583,62 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @param sessionState State to set on the session.
      *
      * @throws IllegalStateException if the receiver is a non-session receiver or receiver is already disposed.
+     * @throws ServiceBusException if the session state cannot be set.
      */
     public void setSessionState(byte[] sessionState) {
         this.setSessionState(asyncClient.getReceiverOptions().getSessionId(), sessionState);
     }
 
     /**
-     * Starts a new transaction on Service Bus. The {@link ServiceBusTransactionContext} should be passed along with
-     * {@link ServiceBusReceivedMessage} or {@code lockToken} to all operations that needs to be in this transaction.
+     * Starts a new transaction on Service Bus. The {@link ServiceBusTransactionContext} should be passed along to all
+     * operations that need to be in this transaction.
      *
-     * @return a new {@link ServiceBusTransactionContext}.
-     * @throws NullPointerException if {@code transactionContext} or {@code transactionContext.transactionId} is
-     *     null.
-     * @throws IllegalStateException if receiver is already disposed.
+     * <p><strong>Creating and using a transaction</strong></p>
+     * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverclient.committransaction#servicebustransactioncontext}
+     *
+     * @return A new {@link ServiceBusTransactionContext}.
+     *
+     * @throws IllegalStateException if the receiver is already disposed.
+     * @throws ServiceBusException if a transaction cannot be created.
      */
     public ServiceBusTransactionContext createTransaction() {
         return asyncClient.createTransaction().block(operationTimeout);
     }
 
     /**
-     * Commits the transaction given {@link ServiceBusTransactionContext}. This will make a call to Service Bus.
+     * Commits the transaction and all the operations associated with it.
      *
-     * @param transactionContext to be committed.
+     * <p><strong>Creating and using a transaction</strong></p>
+     * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverclient.committransaction#servicebustransactioncontext}
      *
-     * @throws NullPointerException if {@code transactionContext} or {@code transactionContext.transactionId} is
-     *     null.
-     * @throws IllegalStateException if receiver is already disposed.
+     * @param transactionContext The transaction to be commit.
+     *
+     * @throws IllegalStateException if the receiver is already disposed.
+     * @throws NullPointerException if {@code transactionContext} or {@code transactionContext.transactionId} is null.
+     * @throws ServiceBusException if the transaction could not be committed.
      */
     public void commitTransaction(ServiceBusTransactionContext transactionContext) {
         asyncClient.commitTransaction(transactionContext).block(operationTimeout);
     }
 
     /**
-     * Rollbacks the transaction given {@link ServiceBusTransactionContext}. This will make a call to Service Bus.
+     * Rollbacks the transaction given and all operations associated with it.
      *
-     * @param transactionContext to be rollbacked.
+     * <p><strong>Creating and using a transaction</strong></p>
+     * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverclient.committransaction#servicebustransactioncontext}
      *
-     * @throws NullPointerException if {@code transactionContext} or {@code transactionContext.transactionId} is
-     *     null.
-     * @throws IllegalStateException if receiver is already disposed.
+     * @param transactionContext The transaction to be rollback.
+     *
+     * @throws IllegalStateException if the receiver is alread disposed.
+     * @throws NullPointerException if {@code transactionContext} or {@code transactionContext.transactionId} is null.
+     * @throws ServiceBusException if the transaction could not be rolled back.
      */
     public void rollbackTransaction(ServiceBusTransactionContext transactionContext) {
         asyncClient.rollbackTransaction(transactionContext).block(operationTimeout);
     }
 
     /**
-     * {@inheritDoc}
+     * Disposes of the consumer by closing the underlying links to the service.
      */
     @Override
     public void close() {

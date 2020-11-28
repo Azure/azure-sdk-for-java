@@ -49,27 +49,27 @@ public final class ServiceBusMessageBatch {
     }
 
     /**
-     * Gets the number of {@link ServiceBusMessage events} in the batch.
+     * Gets the number of {@link ServiceBusMessage messages} in the batch.
      *
-     * @return The number of {@link ServiceBusMessage events} in the batch.
+     * @return The number of {@link ServiceBusMessage messages} in the batch.
      */
     public int getCount() {
         return serviceBusMessageList.size();
     }
 
     /**
-     * Gets the maximum size, in bytes, of the {@link ServiceBusMessageBatch}.
+     * Gets the maximum size, in bytes, of the {@link ServiceBusMessageBatch batch}.
      *
-     * @return The maximum size, in bytes, of the {@link ServiceBusMessageBatch}.
+     * @return The maximum size, in bytes, of the {@link ServiceBusMessageBatch batch}.
      */
     public int getMaxSizeInBytes() {
         return maxMessageSize;
     }
 
     /**
-     * Gets the size of the {@link ServiceBusMessageBatch} in bytes.
+     * Gets the size of the {@link ServiceBusMessageBatch batch} in bytes.
      *
-     * @return the size of the {@link ServiceBusMessageBatch} in bytes.
+     * @return The size of the {@link ServiceBusMessageBatch batch} in bytes.
      */
     public int getSizeInBytes() {
         return this.sizeInBytes;
