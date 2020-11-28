@@ -77,6 +77,16 @@ public class KeyClientTest extends KeyClientTestBase {
     }
 
     /**
+     * Tests that an Ec key is created.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void createEcKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        getKeyClient(httpClient, serviceVersion);
+        createEcKeyRunner((expected) -> client.createEcKey(expected));
+    }
+
+    /**
      * Tests that an attempt to create a key with empty string name throws an error.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
