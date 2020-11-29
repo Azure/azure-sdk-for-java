@@ -417,7 +417,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         assertNotNull(receivedMessage);
 
         // Act
-        final ServiceBusReceivedMessage receivedPeekMessage = receiver.peekMessageAt(receivedMessage.getSequenceNumber());
+        final ServiceBusReceivedMessage receivedPeekMessage = receiver.peekMessage(receivedMessage.getSequenceNumber());
 
         // Assert
         assertEquals(receivedMessage.getSequenceNumber(), receivedPeekMessage.getSequenceNumber());

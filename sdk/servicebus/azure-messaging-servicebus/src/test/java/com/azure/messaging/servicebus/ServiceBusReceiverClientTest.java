@@ -454,7 +454,7 @@ class ServiceBusReceiverClientTest {
         when(asyncClient.peekMessage(sequenceNumber, SESSION_ID)).thenReturn(Mono.just(message));
 
         // Act
-        final ServiceBusReceivedMessage actual = client.peekMessageAt(sequenceNumber);
+        final ServiceBusReceivedMessage actual = client.peekMessage(sequenceNumber);
 
         // Assert
         assertEquals(message, actual);

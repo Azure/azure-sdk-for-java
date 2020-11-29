@@ -281,8 +281,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
-    public ServiceBusReceivedMessage peekMessageAt(long sequenceNumber) {
-        return this.peekMessageAt(sequenceNumber, asyncClient.getReceiverOptions().getSessionId());
+    public ServiceBusReceivedMessage peekMessage(long sequenceNumber) {
+        return this.peekMessage(sequenceNumber, asyncClient.getReceiverOptions().getSessionId());
     }
 
     /**
@@ -296,7 +296,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws IllegalStateException if receiver is already disposed.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
-    ServiceBusReceivedMessage peekMessageAt(long sequenceNumber, String sessionId) {
+    ServiceBusReceivedMessage peekMessage(long sequenceNumber, String sessionId) {
         return asyncClient.peekMessage(sequenceNumber, sessionId).block(operationTimeout);
     }
 
