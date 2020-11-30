@@ -24,6 +24,10 @@ Execute `git clone https://github.com/Azure/azure-sdk-for-java.git`.
 #### Clone source from specific version tag
 It means run the special release branch, all the code, dependencies, and readme files are versions of the corresponding release version.
 Find out which release tag you want to use, then replace tag name and execute `git clone -b <replace-the-tag-you-want-to-use> https://github.com/Azure/azure-sdk-for-java.git`.
+After cloning the code, you may be able to skip step **Compile the project** if all dependencies can be found.
+
+>**Note:** 
+There's a [link][azure_spring_release_tags] to query the `azure-spring` release tag, if there are too many returns, you can modify the query keyword value to accurately query. 
 
 ### Compile the project
 1. Traverse to the root directory
@@ -42,3 +46,5 @@ Reload the `pom.xml` file of the sample to update the dependencies, then you can
 <!-- Links -->
 [maven]: https://maven.apache.org/
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[azure_spring_release_tags]: https://github.com/Azure/azure-sdk-for-java/refs-tags/master?source_action=disambiguate&source_controller=files&tag_name=master&q=azure-spring
+
