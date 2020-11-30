@@ -81,7 +81,7 @@ public class AADLoginIT {
 
                 driver.get(app.root() + "api/group2");
                 Thread.sleep(1000);
-                Assert.assertEquals("group2", driver.findElement(By.tagName("body")).getText());
+                Assert.assertNotEquals("group2", driver.findElement(By.tagName("body")).getText());
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             } finally {
