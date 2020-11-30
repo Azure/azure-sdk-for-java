@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * InMage Azure V2 provider specific recovery point details.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = InMageAzureV2RecoveryPointDetails.class)
 @JsonTypeName("InMageAzureV2")
 public class InMageAzureV2RecoveryPointDetails extends ProviderSpecificRecoveryPointDetails {
     /**

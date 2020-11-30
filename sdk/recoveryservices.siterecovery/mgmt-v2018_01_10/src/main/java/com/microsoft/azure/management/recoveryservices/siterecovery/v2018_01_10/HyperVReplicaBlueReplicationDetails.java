@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * HyperV replica 2012 R2 (Blue) replication details.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = HyperVReplicaBlueReplicationDetails.class)
 @JsonTypeName("HyperVReplica2012R2")
 public class HyperVReplicaBlueReplicationDetails extends ReplicationProviderSpecificSettings {
     /**
