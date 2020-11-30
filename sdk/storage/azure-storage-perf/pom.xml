@@ -29,6 +29,14 @@
       <artifactId>azure-storage-blob</artifactId>
       <version>12.10.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
     </dependency>
+
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-storage-file-share</artifactId>
+      <version>12.8.0-beta.1</version>
+    </dependency>
+
+
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>perf-test-core</artifactId>
@@ -52,7 +60,7 @@
               <archive>
                 <manifest>
                   <mainClass>
-                    com.azure.storage.blob.perf.App
+                    com.azure.storage.App
                   </mainClass>
                 </manifest>
               </archive>

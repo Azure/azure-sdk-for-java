@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.perf;
+package com.azure.storage;
 
 import com.azure.perf.test.core.PerfStressProgram;
+import com.azure.storage.blob.perf.*;
 
 /**
  * Runs the Storage performance test.
