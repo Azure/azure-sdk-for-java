@@ -32,8 +32,8 @@ public class DefaultServiceBusQueueClientFactory extends AbstractServiceBusSende
     }
 
     private IQueueClient createQueueClient(String destination) {
-        if (StringUtils.hasText(namespace)) {
-            ServiceBusNamespace serviceBusNamespace = serviceBusNamespaceManager.getOrCreate(namespace);
+        if (serviceBusQueueManager != null && StringUtils.hasText(namespace)) {
+            ServiceBusNamespace serviceBusNamespace = serviceBusNamespaceManager.get(namespace);
             serviceBusQueueManager.getOrCreate(Tuple.of(serviceBusNamespace, destination));
         }
 

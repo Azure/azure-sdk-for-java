@@ -12,6 +12,7 @@ import com.azure.spring.integration.servicebus.factory.ServiceBusConnectionStrin
 import com.microsoft.azure.servicebus.IMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -46,7 +47,7 @@ public class AzureServiceBusAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnBean(AzureResourceManager.class)
+    @ConditionalOnBean({ AzureResourceManager.class, AzureProperties.class })
     public ServiceBusNamespaceManager serviceBusNamespaceManager(AzureResourceManager azureResourceManager,
                                                                  AzureProperties azureProperties) {
         return new ServiceBusNamespaceManager(azureResourceManager, azureProperties);
@@ -65,7 +66,7 @@ public class AzureServiceBusAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public ServiceBusConnectionStringProvider serviceBusConnectionStringProvider(
-        ServiceBusNamespaceManager namespaceManager,
+        @Autowired(required = false) ServiceBusNamespaceManager namespaceManager,
         AzureServiceBusProperties properties) {
 
         final String namespace = properties.getNamespace();
@@ -73,11 +74,13 @@ public class AzureServiceBusAutoConfiguration {
 
         if (StringUtils.hasText(connectionString)) {
             return new ServiceBusConnectionStringProvider(connectionString);
-        } else {
+        } else if (namespaceManager != null && namespace != null) {
             LOGGER.info("'spring.cloud.azure.servicebus.connection-string' auto configured");
 
             return new ServiceBusConnectionStringProvider(namespaceManager.getOrCreate(namespace));
         }
+
+        return null;
     }
 
 }

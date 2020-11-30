@@ -49,6 +49,7 @@ public class AzureServiceBusTopicAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
+    @ConditionalOnBean(ServiceBusConnectionStringProvider.class)
     public ServiceBusTopicClientFactory topicClientFactory(ServiceBusNamespaceManager namespaceManager,
                                                            ServiceBusTopicManager topicManager,
                                                            ServiceBusTopicSubscriptionManager topicSubscriptionManager,
@@ -86,6 +87,7 @@ public class AzureServiceBusTopicAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
+    @ConditionalOnBean(ServiceBusTopicClientFactory.class)
     public ServiceBusTopicOperation topicOperation(ServiceBusTopicClientFactory factory) {
         return new ServiceBusTopicTemplate(factory);
     }

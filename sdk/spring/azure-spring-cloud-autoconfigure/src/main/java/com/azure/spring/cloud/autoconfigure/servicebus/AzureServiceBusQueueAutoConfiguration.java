@@ -14,6 +14,7 @@ import com.azure.spring.integration.servicebus.factory.ServiceBusQueueClientFact
 import com.azure.spring.integration.servicebus.queue.ServiceBusQueueOperation;
 import com.azure.spring.integration.servicebus.queue.ServiceBusQueueTemplate;
 import com.microsoft.azure.servicebus.QueueClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -54,9 +55,10 @@ public class AzureServiceBusQueueAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public ServiceBusQueueClientFactory queueClientFactory(ServiceBusNamespaceManager namespaceManager,
-                                                           ServiceBusQueueManager queueManager,
-                                                           ServiceBusConnectionStringProvider connectionStrProvider,
+    @ConditionalOnBean(ServiceBusConnectionStringProvider.class)
+    public ServiceBusQueueClientFactory queueClientFactory(ServiceBusConnectionStringProvider connectionStrProvider,
+                                                           @Autowired(required = false) ServiceBusNamespaceManager namespaceManager,
+                                                           @Autowired(required = false) ServiceBusQueueManager queueManager,
                                                            AzureServiceBusProperties properties) {
 
         String connectionString = connectionStrProvider.getConnectionString();
@@ -75,6 +77,7 @@ public class AzureServiceBusQueueAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
+    @ConditionalOnBean(ServiceBusQueueClientFactory.class)
     public ServiceBusQueueOperation queueOperation(ServiceBusQueueClientFactory factory) {
         return new ServiceBusQueueTemplate(factory);
     }

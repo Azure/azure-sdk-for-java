@@ -5,6 +5,8 @@ package com.azure.spring.integration.servicebus.factory;
 
 import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
 import com.azure.resourcemanager.servicebus.models.Topic;
+import com.azure.spring.cloud.context.core.util.Memoizer;
+import com.azure.spring.cloud.context.core.util.Tuple;
 import com.azure.spring.integration.servicebus.ServiceBusRuntimeException;
 import com.microsoft.azure.servicebus.IMessageSender;
 import com.microsoft.azure.servicebus.ISubscriptionClient;
@@ -13,8 +15,6 @@ import com.microsoft.azure.servicebus.SubscriptionClient;
 import com.microsoft.azure.servicebus.TopicClient;
 import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
-import com.azure.spring.cloud.context.core.util.Memoizer;
-import com.azure.spring.cloud.context.core.util.Tuple;
 import org.springframework.util.StringUtils;
 
 import java.util.function.BiFunction;
@@ -41,8 +41,8 @@ public class DefaultServiceBusTopicClientFactory extends AbstractServiceBusSende
 
     private ISubscriptionClient createSubscriptionClient(String topicName, String subscription) {
 
-        if (StringUtils.hasText(namespace)) {
-            ServiceBusNamespace serviceBusNamespace = serviceBusNamespaceManager.getOrCreate(namespace);
+        if (serviceBusTopicSubscriptionManager != null && StringUtils.hasText(namespace)) {
+            ServiceBusNamespace serviceBusNamespace = serviceBusNamespaceManager.get(namespace);
             Topic topic = serviceBusTopicManager.getOrCreate(Tuple.of(serviceBusNamespace, topicName));
             serviceBusTopicSubscriptionManager.getOrCreate(Tuple.of(topic, subscription));
         }
