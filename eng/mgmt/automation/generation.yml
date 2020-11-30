@@ -34,7 +34,7 @@ steps:
 - bash: |
     export PATH=$JAVA_HOME_11_X64/bin:$PATH
     java -version
-    ./eng/mgmt/automation/generate.py --readme "$(README)" --tag "$(TAG)" --service "$(SERVICE)" --version "$(VERSION)" --auto-commit-external-change --user-name "azure-sdk" --user-email "azuresdk@microsoft.com"
+    ./eng/mgmt/automation/generate.py --readme "$(README)" --tag "$(TAG)" --service "$(SERVICE)" --version "$(VERSION)" --suffix "$(SUFFIX)" --auto-commit-external-change --user-name "azure-sdk" --user-email "azuresdk@microsoft.com"
   displayName: Generation
 
 - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
