@@ -2,9 +2,9 @@
 
 ## Key concepts
 This sample illustrates how to protect a Java web API by restricting access to its resources to authorized accounts only.
-The bearer token is obtained in the request header and analyzed and validated. After verification,
-add AzureOAuth2AuthenticatedPrincipal object to SecurityContext, the object that is associated with the current user request thread.
-Token ClaimsSet, Authorities, JWS headers etc. are accessible from the object.
+The bearer token is obtained in the request header and Use `JwtDecoder` to parse token into `Jwt`.
+Then, claims, and Headers etc in `Jwt` will be extracted,They will be wrapped in `AzureOAuth2AuthenticatedPrincipal` object.
+In the end,`AzureOAuth2AuthenticatedPrincipal` will eventually be set into the SecurityContext.
 
 
 ## Getting started
@@ -14,7 +14,7 @@ To run this sample, you'll need:
 - A [Java Development Kit (JDK)][jdk_link], version 1.8 or above.
 - [Maven](https://maven.apache.org/) 3.0 or above
 - An Internet connection
-- A Window machine (necessary if you want to run the app on Windows)
+- A Windows machine (necessary if you want to run the app on Windows)
 - An OS X machine (necessary if you want to run the app on Mac)
 - A Linux machine (necessary if you want to run the app on Linux)
 - An Azure Active Directory (Azure AD) tenant. For more information on how to get an Azure AD tenant, see [How to get an Azure AD tenant](https://azure.microsoft.com/documentation/articles/active-directory-howto-tenant/)
