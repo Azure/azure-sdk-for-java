@@ -1,20 +1,20 @@
 # OAuth 2.0 Sample for Azure AD Spring Boot Starter Resource Server library for Java
 
 ## Key concepts
-This sample illustrates how to protect an Java web API by restricting access to its resources to authorized accounts only.
-Obtain Bearer Token in the request head of resources and carry out analysis and verification. After verification,
-injects AzureOAuth2AuthenticatedPrincipal object that is associated with the thread of the current user request. 
-Token claimsset, Authorities, JWS headers etc. are accessible from the object which can be used for role based authorization.
+This sample illustrates how to protect a Java web API by restricting access to its resources to authorized accounts only.
+The bearer token is obtained in the request header and analyzed and validated. After verification,
+add AzureOAuth2AuthenticatedPrincipal object to SecurityContext, the object that is associated with the current user request thread.
+Token ClaimsSet, Authorities, JWS headers etc. are accessible from the object.
 
 
 ## Getting started
 
 To run this sample, you'll need:
 
-- A [Java Development Kit (JDK)][jdk_link], version 1.8 and above.
-- [Maven](https://maven.apache.org/) 3.0 and above
+- A [Java Development Kit (JDK)][jdk_link], version 1.8 or above.
+- [Maven](https://maven.apache.org/) 3.0 or above
 - An Internet connection
-- A Windows machine (necessary if you want to run the app on Windows)
+- A Window machine (necessary if you want to run the app on Windows)
 - An OS X machine (necessary if you want to run the app on Mac)
 - A Linux machine (necessary if you want to run the app on Linux)
 - An Azure Active Directory (Azure AD) tenant. For more information on how to get an Azure AD tenant, see [How to get an Azure AD tenant](https://azure.microsoft.com/documentation/articles/active-directory-howto-tenant/)
@@ -55,13 +55,14 @@ To register your apps manually, choose the Azure Active Directory (Azure AD) ten
 1. Go to the Microsoft identity platform for developers App registrations portal.
 
 2. Select New registration.
+    ![Select New registration](docs/image-select-new-registration.png "Select new registration")
 
 3. When the Register an application page opens, enter your application's registration information:
-    - In the Name section, enter a meaningful application name that will be displayed to app users. For example, enter **web-api-sample**.
-    - For Supported account types, select Accounts in any organizational directory.
-    - Select Register to create the application.
+    ![Scope Config](docs/image-register-an-application.png "Register an application")
         
-4. In the **Expose an API** section, select **Add a scope**, accept the proposed Application ID URI `(api://{clientId})` (back up the Application ID URI here,which will be used in the properties file) by selecting **Save and Continue**, and then enter the following information:
+4. In the **Expose an API** section, select **Add a scope**, accept the proposed Application ID URI `(api://{clientId})` (back up the Application ID URI here,which will be used in the properties file) by selecting **Save and Continue**.
+   ![App-Id-Uri Config](docs/image-app-id-uri-config.png "App-id-uri Config")
+   Then enter the following information:
    - For **Scope name**, enter **File.read**.
    - For **Who can consent**, ensure that the **Admins and users** option is selected.
    - In the **Admin consent display name** box, enter **Access File.read as a user**.
@@ -70,6 +71,7 @@ To register your apps manually, choose the Azure Active Directory (Azure AD) ten
    - In the **User consent description** box, enter **Accesses the File.read web API as a user**.
    - For **State**, keep **Enabled**.
    - Select **Add scope**.
+   ![Scope Config](docs/image-scope-configurations.png "Scope Config")
 
 ## Examples
 

@@ -233,7 +233,7 @@ For more information about setting logging in spring, please refer to the [offic
  
 
 ### Protect the Resource API through Resource Server
-Please refer to [azure-spring-boot-sample-active-directory-spring-oauth2-resource-server](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-spring-oauth2-resource-server) for access resource api.
+Please refer to [azure-spring-boot-sample-active-directory-spring-oauth2-resource-server](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-spring-security-resource-server/README.md) for access resource api.
 
 #### Include the package
 ```xml
