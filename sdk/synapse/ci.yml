@@ -29,12 +29,18 @@ extends:
   parameters:
     ServiceDirectory: synapse
     Artifacts:
-      - name: azure-analytics-synapse-accesscontrol
+      - name: azure-synapse-accesscontrol
         groupId: com.azure
-        safeName: azureanalyticssynapseaccesscontrol
-      - name: azure-analytics-synapse-artifacts
+        safeName: azuresynapseaccesscontrol
+      - name: azure-synapse-artifacts
         groupId: com.azure
-        safeName: azureanalyticssynapseartifacts
-      - name: azure-analytics-synapse-spark
+        safeName: azuresynapseartifacts
+      - name: azure-synapse-spark
         groupId: com.azure
-        safeName: azureanalyticssynapsespark
+        safeName: azuresynapsespark
+      - name: azure-synapse-managed-private-endpoints
+        groupId: com.azure
+        safeName: azuresynapsemanagedprivateendpoints
+      - name: azure-synapse-monitoring
+        groupId: com.azure
+        safeName: azuresynapsemonitoring
