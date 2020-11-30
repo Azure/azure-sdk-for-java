@@ -1,6 +1,20 @@
 # Release History
 
-## 1.7.0-beta.3 (Unreleased)
+## 2.0.0 (2020-11-30)
+### New Features
+- Added 'AmqpAddress' as a type to support 'AmqpMessageProperties#replyTo' and 'AmqpMessageProperties#to' properties.
+- Added 'AmqpMessageId' as a type to support 'AmqpMessageProperties#correlationId' and 'AmqpMessageProperties#messageId' 
+  properties.
+- Added static methods to instantiate 'AmqpMessageBody' for example 'AmqpMessageBody#fromData(byte[])'.
+
+### Breaking Changes
+- Changed  'AmqpMessageBody' from interface to a class. User can use 'getBodyType()' to know what is the 'AmqpBodyType' 
+  of the message.
+- Changed type of 'correlationId' and 'messageId' in type 'AmqpMessageProperties' from 'String' to 'AmqpMessageId'.
+- Changed type of 'replyTo' and 'to' in type 'AmqpMessageProperties' from 'String' to 'AmqpAddress'.
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.11.0`.
 
 ## 1.7.0-beta.2 (2020-11-10)
 ### New Features
