@@ -78,17 +78,17 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
     public void canUpdateThread(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient);
-        UpdateChatThreadOptions threadRequest = ChatOptionsProvider.updateThreadOptions();
+        String newTopic = "Update Test";
 
         // Act & Assert
         StepVerifier.create(
-                chatThreadClient.updateChatThread(threadRequest)
+                chatThreadClient.updateTopic(newTopic)
                     .flatMap(noResp -> {
                         return client.getChatThread(threadId);
                     })
             )
             .assertNext(chatThread -> {
-                assertEquals(chatThread.getTopic(), threadRequest.getTopic());
+                assertEquals(chatThread.getTopic(), newTopic);
             });
     }
 
@@ -97,11 +97,11 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
     public void canUpdateThreadWithResponse(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient);
-        UpdateChatThreadOptions threadRequest = ChatOptionsProvider.updateThreadOptions();
+        String newTopic = "Update Test";
 
         // Act & Assert
         StepVerifier.create(
-                chatThreadClient.updateChatThreadWithResponse(threadRequest)
+                chatThreadClient.updateTopicWithResponse(newTopic)
                     .flatMap(updateThreadResponse -> {
                         assertEquals(updateThreadResponse.getStatusCode(), 200);
                         return client.getChatThread(threadId);
@@ -109,7 +109,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
 
             )
             .assertNext(chatThread -> {
-                assertEquals(chatThread.getTopic(), threadRequest.getTopic());
+                assertEquals(chatThread.getTopic(), newTopic);
             })
             .verifyComplete();
     }

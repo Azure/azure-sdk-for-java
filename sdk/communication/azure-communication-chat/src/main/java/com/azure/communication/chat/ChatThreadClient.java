@@ -9,7 +9,6 @@ import com.azure.communication.chat.models.ChatMessageReadReceipt;
 import com.azure.communication.chat.models.ListChatMessagesOptions;
 import com.azure.communication.chat.models.SendChatMessageOptions;
 import com.azure.communication.chat.models.UpdateChatMessageOptions;
-import com.azure.communication.chat.models.UpdateChatThreadOptions;
 import com.azure.communication.common.CommunicationUser;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -53,27 +52,27 @@ public final class ChatThreadClient {
     }
 
     /**
-     * Updates a thread's properties.
+     * Updates a thread's topic.
      *
-     * @param options Options for updating a chat thread.
+     * @param topic The new topic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateChatThread(UpdateChatThreadOptions options) {
+    public void updateTopic(String topic) {
 
-        this.client.updateChatThread(options).block();
+        this.client.updateTopic(topic).block();
     }
 
     /**
-     * Updates a thread's properties.
+     * Updates a thread's topic.
      *
-     * @param options Options for updating a chat thread.
+     * @param topic The new topic.
      * @param context The context to associate with this operation.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> updateChatThreadWithResponse(UpdateChatThreadOptions options, Context context) {
+    public Response<Void> updateTopicWithResponse(String topic, Context context) {
 
-        return this.client.updateChatThread(options, context).block();
+        return this.client.updateTopic(topic, context).block();
     }
 
     /**
