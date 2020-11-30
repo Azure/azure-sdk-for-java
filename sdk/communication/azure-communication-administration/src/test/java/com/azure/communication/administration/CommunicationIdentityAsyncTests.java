@@ -33,6 +33,23 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void createAsyncIdentityClientUsingManagedIdentity(HttpClient httpClient) {
+        // Arrange
+        asyncClient = getCommunicationIdentityClientBuilderUsingManagedIdentity(httpClient).buildAsyncClient();
+        assertNotNull(asyncClient);
+
+        // Action & Assert
+        Mono<CommunicationUser> response = asyncClient.createUser();
+        StepVerifier.create(response)
+            .assertNext(item -> {
+                assertNotNull(item.getId());
+                assertFalse(item.getId().isEmpty());
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createAsyncIdentityClientUsingConnectionString(HttpClient httpClient) {
         // Arrange
         asyncClient = getCommunicationIdentityClientUsingConnectionString(httpClient).buildAsyncClient();
