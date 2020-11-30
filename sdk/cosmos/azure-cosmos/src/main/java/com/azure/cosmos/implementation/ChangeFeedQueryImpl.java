@@ -4,13 +4,13 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.Resource;
 import com.azure.cosmos.implementation.query.Paginator;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiFunction;
@@ -20,6 +20,7 @@ class ChangeFeedQueryImpl<T extends Resource> {
 
     private static final String IfNonMatchAllHeaderValue = "*";
     private final RxDocumentClientImpl client;
+    private final DiagnosticsClientContext clientContext;
     private final ResourceType resourceType;
     private final Class<T> klass;
     private final String documentsLink;
@@ -30,7 +31,7 @@ class ChangeFeedQueryImpl<T extends Resource> {
             Class<T> klass,
             String collectionLink,
             ChangeFeedOptions changeFeedOptions) {
-
+        this.clientContext = client;
         this.client = client;
         this.resourceType = resourceType;
         this.klass = klass;
@@ -71,7 +72,7 @@ class ChangeFeedQueryImpl<T extends Resource> {
 
     private RxDocumentServiceRequest createDocumentServiceRequest(String continuationToken, int pageSize) {
         Map<String, String> headers = new HashMap<>();
-        RxDocumentServiceRequest req = RxDocumentServiceRequest.create(
+        RxDocumentServiceRequest req = RxDocumentServiceRequest.create(clientContext,
             OperationType.ReadFeed,
             resourceType,
             documentsLink,
@@ -96,7 +97,7 @@ class ChangeFeedQueryImpl<T extends Resource> {
         }
 
         if(options.getStartDateTime() != null){
-            String dateTimeInHttpFormat = Utils.zonedDateTimeAsUTCRFC1123(options.getStartDateTime());
+            String dateTimeInHttpFormat = Utils.zonedDateTimeAsUTCRFC1123(options.getStartDateTime().atOffset(ZoneOffset.UTC));
             headers.put(HttpConstants.HttpHeaders.IF_MODIFIED_SINCE, dateTimeInHttpFormat);
         }
 
@@ -124,6 +125,6 @@ class ChangeFeedQueryImpl<T extends Resource> {
 
     private Mono<FeedResponse<T>> executeRequestAsync(RxDocumentServiceRequest request) {
         return client.readFeed(request)
-                .map( rsp -> BridgeInternal.toChaneFeedResponsePage(rsp, klass));
+                .map( rsp -> BridgeInternal.toChangeFeedResponsePage(rsp, klass));
     }
 }

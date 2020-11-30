@@ -9,6 +9,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Decode {@link HttpResponse} to {@link HttpDecodedResponse}.
@@ -83,8 +84,13 @@ public final class HttpResponseDecoder {
          * @return publisher that emits decoded http content
          */
         public Mono<Object> getDecodedBody(String body) {
+            return getDecodedBody(body.getBytes(StandardCharsets.UTF_8));
+        }
+
+        // TODO (jogiles) JavaDoc
+        public Mono<Object> getDecodedBody(byte[] body) {
             if (this.bodyCached == null) {
-                this.bodyCached = HttpResponseBodyDecoder.decode(body,
+                this.bodyCached = HttpResponseBodyDecoder.decodeByteArray(body,
                     this.response,
                     this.serializer,
                     this.decodeData).cache();

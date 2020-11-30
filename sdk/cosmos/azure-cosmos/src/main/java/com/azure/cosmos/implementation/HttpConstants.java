@@ -171,6 +171,9 @@ public class HttpConstants {
         public static final String OFFER_TYPE = "x-ms-offer-type";
         public static final String OFFER_THROUGHPUT = "x-ms-offer-throughput";
         public static final String OFFER_IS_RU_PER_MINUTE_THROUGHPUT_ENABLED = "x-ms-offer-is-ru-per-minute-throughput-enabled";
+        public static final String OFFER_MIN_THROUGHPUT = "x-ms-cosmos-min-throughput";
+        public static final String OFFER_AUTOPILOT_SETTINGS = "x-ms-cosmos-offer-autopilot-settings";
+        public static final String OFFER_REPLACE_PENDING = "x-ms-offer-replace-pending";
 
         // Upsert header
         public static final String IS_UPSERT = "x-ms-documentdb-is-upsert";
@@ -246,6 +249,11 @@ public class HttpConstants {
         public static final String API_TYPE = "x-ms-cosmos-apitype";
         public static final String QUERY_METRICS = "x-ms-documentdb-query-metrics";
 
+        // Batch operations
+        public static final String IS_BATCH_ATOMIC = "x-ms-cosmos-batch-atomic";
+        public static final String IS_BATCH_ORDERED = "x-ms-cosmos-batch-ordered";
+        public static final String IS_BATCH_REQUEST = "x-ms-cosmos-is-batch-request";
+        public static final String SHOULD_BATCH_CONTINUE_ON_ERROR = "x-ms-cosmos-batch-continue-on-error";
     }
 
     public static class A_IMHeaderValues {
@@ -258,11 +266,15 @@ public class HttpConstants {
         public static final String AZURE_COSMOS_PROPERTIES_FILE_NAME = "azure-cosmos.properties";
 
         public static final String SDK_VERSION = CoreUtils.getProperties(AZURE_COSMOS_PROPERTIES_FILE_NAME).get("version");
-        public static final String SDK_NAME = "cosmosdb-java-sdk";
+        public static final String SDK_NAME = "cosmos";
     }
 
     public static class StatusCodes {
+        public static final int OK = 200;
         public static final int NOT_MODIFIED = 304;
+        // Success
+        public static final int MINIMUM_SUCCESS_STATUSCODE = 200;
+        public static final int MAXIMUM_SUCCESS_STATUSCODE = 299;
         // Client error
         public static final int MINIMUM_STATUSCODE_AS_ERROR_GATEWAY = 400;
         public static final int BADREQUEST = 400;
@@ -303,9 +315,17 @@ public class HttpConstants {
 
         // 404: LSN in session token is higher
         public static final int READ_SESSION_NOT_AVAILABLE = 1002;
+
+        // Client generated gateway network error substatus
+        public static final int GATEWAY_ENDPOINT_UNAVAILABLE = 10001;
+
+        // Client generated gateway network error on ReadTimeoutException
+        public static final int GATEWAY_ENDPOINT_READ_TIMEOUT = 10002;
     }
 
     public static class HeaderValues {
-        public static final String NoCache = "no-cache";
+        public static final String NO_CACHE = "no-cache";
+        public static final String PREFER_RETURN_MINIMAL = "return=minimal";
+        public static final String IF_NONE_MATCH_ALL = "*";
     }
 }

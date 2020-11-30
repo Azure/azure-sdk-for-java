@@ -7,9 +7,7 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The LanguageInput model.
- */
+/** The LanguageInput model. */
 @Fluent
 public final class LanguageInput {
     /*

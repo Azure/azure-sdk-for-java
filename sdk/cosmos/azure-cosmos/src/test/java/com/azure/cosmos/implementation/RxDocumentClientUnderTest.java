@@ -2,10 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.cosmos.ClientUnderTestBuilder;
-import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosKeyCredential;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
@@ -14,6 +13,7 @@ import org.mockito.stubbing.Answer;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -36,8 +36,9 @@ public class RxDocumentClientUnderTest extends RxDocumentClientImpl {
                                      ConnectionPolicy connectionPolicy,
                                      ConsistencyLevel consistencyLevel,
                                      Configs configs,
-                                     CosmosKeyCredential cosmosKeyCredential) {
-        super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential, false, false);
+                                     AzureKeyCredential credential,
+                                     boolean contentResponseOnWriteEnabled) {
+        super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, credential, null, false, false, contentResponseOnWriteEnabled);
         init();
     }
 
@@ -54,9 +55,10 @@ public class RxDocumentClientUnderTest extends RxDocumentClientImpl {
 
         doAnswer((Answer<Mono<HttpResponse>>) invocationOnMock -> {
             HttpRequest httpRequest = invocationOnMock.getArgumentAt(0, HttpRequest.class);
+            Duration responseTimeout = invocationOnMock.getArgumentAt(1, Duration.class);
             httpRequests.add(httpRequest);
-            return origHttpClient.send(httpRequest);
-        }).when(spyHttpClient).send(Mockito.any(HttpRequest.class));
+            return origHttpClient.send(httpRequest, responseTimeout);
+        }).when(spyHttpClient).send(Mockito.any(HttpRequest.class), Mockito.any(Duration.class));
 
         return super.createRxGatewayProxy(sessionContainer,
                 consistencyLevel,

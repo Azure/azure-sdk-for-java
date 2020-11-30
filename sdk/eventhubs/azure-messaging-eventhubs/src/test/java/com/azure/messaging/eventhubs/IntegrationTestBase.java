@@ -16,8 +16,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.messaging.eventhubs.models.SendOptions;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
 import org.mockito.Mockito;
@@ -30,9 +33,13 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.time.Duration;
-import java.time.Instant;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static com.azure.core.amqp.ProxyOptions.PROXY_PASSWORD;
 import static com.azure.core.amqp.ProxyOptions.PROXY_USERNAME;
@@ -41,34 +48,52 @@ import static com.azure.core.amqp.ProxyOptions.PROXY_USERNAME;
  * Test base for running integration tests.
  */
 public abstract class IntegrationTestBase extends TestBase {
-    protected static final Duration TIMEOUT = Duration.ofSeconds(30);
+    // The number of partitions we create in test-resources.json.
+    // Partitions 0 and 1 are used for consume-only operations. 2, 3, and 4 are used to publish or consume events.
+    protected static final int NUMBER_OF_PARTITIONS = 5;
+    protected static final List<String> EXPECTED_PARTITION_IDS = IntStream.range(0, NUMBER_OF_PARTITIONS)
+        .mapToObj(String::valueOf)
+        .collect(Collectors.toList());
+    protected static final Duration TIMEOUT = Duration.ofSeconds(45);
     protected static final AmqpRetryOptions RETRY_OPTIONS = new AmqpRetryOptions().setTryTimeout(TIMEOUT);
+
     protected final ClientLogger logger;
 
     private static final String PROXY_AUTHENTICATION_TYPE = "PROXY_AUTHENTICATION_TYPE";
     private static final String EVENT_HUB_CONNECTION_STRING_ENV_NAME = "AZURE_EVENTHUBS_CONNECTION_STRING";
+    private static final String EVENT_HUB_CONNECTION_STRING_WITH_SAS = "AZURE_EVENTHUBS_CONNECTION_STRING_WITH_SAS";
 
     private static final String AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME = "AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME";
     private static final String AZURE_EVENTHUBS_EVENT_HUB_NAME = "AZURE_EVENTHUBS_EVENT_HUB_NAME";
+    private static final Object LOCK = new Object();
 
-    private ConnectionStringProperties properties;
+    private static Scheduler scheduler;
+    private static Map<String, IntegrationTestEventData> testEventData;
+
     private String testName;
-    private final Scheduler scheduler = Schedulers.parallel();
 
     protected IntegrationTestBase(ClientLogger logger) {
         this.logger = logger;
     }
 
+    @BeforeAll
+    public static void beforeAll() {
+        scheduler = Schedulers.newParallel("eh-integration");
+        StepVerifier.setDefaultTimeout(TIMEOUT);
+    }
+
+    @AfterAll
+    public static void afterAll() {
+        StepVerifier.resetDefaultTimeout();
+        scheduler.dispose();
+    }
+
     @BeforeEach
     public void setupTest(TestInfo testInfo) {
-        logger.info("[{}]: Performing integration test set-up.", testInfo.getDisplayName());
+        System.out.printf("----- [%s]: Performing integration test set-up. -----%n", testInfo.getDisplayName());
 
         testName = testInfo.getDisplayName();
         skipIfNotRecordMode();
-
-        properties = new ConnectionStringProperties(getConnectionString());
-
-        StepVerifier.setDefaultTimeout(TIMEOUT);
 
         beforeTest();
     }
@@ -77,8 +102,7 @@ public abstract class IntegrationTestBase extends TestBase {
     @Override
     @AfterEach
     public void teardownTest(TestInfo testInfo) {
-        logger.info("[{}]: Performing test clean-up.", testInfo.getDisplayName());
-        StepVerifier.resetDefaultTimeout();
+        System.out.printf("----- [%s]: Performing test clean-up. -----%n", testInfo.getDisplayName());
         afterTest();
 
         // Tear down any inline mocks to avoid memory leaks.
@@ -99,14 +123,21 @@ public abstract class IntegrationTestBase extends TestBase {
         return CoreUtils.isNullOrEmpty(getConnectionString()) ? TestMode.PLAYBACK : TestMode.RECORD;
     }
 
-    protected String getConnectionString() {
+    static String getConnectionString() {
+        return getConnectionString(false);
+    }
+
+    static String getConnectionString(boolean withSas) {
+        if (withSas) {
+            return System.getenv(EVENT_HUB_CONNECTION_STRING_WITH_SAS);
+        }
         return System.getenv(EVENT_HUB_CONNECTION_STRING_ENV_NAME);
     }
 
     /**
      * Gets the configured ProxyConfiguration from environment variables.
      */
-    public ProxyOptions getProxyConfiguration() {
+    protected ProxyOptions getProxyConfiguration() {
         final String address = System.getenv(Configuration.PROPERTY_HTTP_PROXY);
 
         if (address == null) {
@@ -141,11 +172,11 @@ public abstract class IntegrationTestBase extends TestBase {
         return new ProxyOptions(authenticationType, proxy, username, password);
     }
 
-    public String getFullyQualifiedDomainName() {
+    protected static String getFullyQualifiedDomainName() {
         return System.getenv(AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME);
     }
 
-    public String getEventHubName() {
+    protected static String getEventHubName() {
         return System.getenv(AZURE_EVENTHUBS_EVENT_HUB_NAME);
     }
 
@@ -153,7 +184,7 @@ public abstract class IntegrationTestBase extends TestBase {
      * Creates a new instance of {@link EventHubClientBuilder} with the default integration test settings and uses a
      * connection string to authenticate.
      */
-    protected EventHubClientBuilder createBuilder() {
+    protected static EventHubClientBuilder createBuilder() {
         return createBuilder(false);
     }
 
@@ -162,7 +193,7 @@ public abstract class IntegrationTestBase extends TestBase {
      * connection string to authenticate if {@code useCredentials} is false. Otherwise, uses a service principal through
      * {@link com.azure.identity.ClientSecretCredential}.
      */
-    protected EventHubClientBuilder createBuilder(boolean useCredentials) {
+    protected static EventHubClientBuilder createBuilder(boolean useCredentials) {
         final EventHubClientBuilder builder = new EventHubClientBuilder()
             .proxyOptions(ProxyOptions.SYSTEM_DEFAULTS)
             .retry(RETRY_OPTIONS)
@@ -188,50 +219,56 @@ public abstract class IntegrationTestBase extends TestBase {
         }
     }
 
-    protected ConnectionStringProperties getConnectionStringProperties() {
-        return properties;
+    protected static ConnectionStringProperties getConnectionStringProperties() {
+        return new ConnectionStringProperties(getConnectionString());
     }
 
     /**
-     * Pushes a set of {@link EventData} to Event Hubs.
+     * Gets or creates the integration test data.
      */
-    protected IntegrationTestEventData setupEventTestData(EventHubProducerAsyncClient producer, int numberOfEvents,
-            SendOptions options) {
-        final String messageId = UUID.randomUUID().toString();
-
-        logger.info("Pushing events to partition. Message tracking value: {}", messageId);
-
-        final List<EventData> events = TestUtils.getEvents(numberOfEvents, messageId).collectList().block();
-        final Instant datePushed = Instant.now();
-
-        try {
-            producer.send(events, options).block(TIMEOUT);
-        } finally {
-            dispose(producer);
+    protected static Map<String, IntegrationTestEventData> getTestData() {
+        if (testEventData != null) {
+            return testEventData;
         }
 
-        return new IntegrationTestEventData(options.getPartitionId(), messageId, datePushed, events);
-    }
+        synchronized (LOCK) {
+            if (testEventData != null) {
+                return testEventData;
+            }
 
-    /**
-     * Pushes a set of {@link EventData} to Event Hubs.
-     */
-    protected IntegrationTestEventData setupEventTestData(EventHubProducerClient producer, int numberOfEvents,
-            SendOptions options) {
-        final String messageId = UUID.randomUUID().toString();
+            System.out.println("--> Adding events to Event Hubs.");
+            final Map<String, IntegrationTestEventData> integrationData = new HashMap<>();
 
-        logger.info("Pushing events to partition. Message tracking value: {}", messageId);
+            try (EventHubProducerClient producer = new EventHubClientBuilder()
+                .connectionString(getConnectionString())
+                .buildProducerClient()) {
 
-        final List<EventData> events = TestUtils.getEvents(numberOfEvents, messageId).collectList().block();
-        final Instant datePushed = Instant.now();
+                producer.getPartitionIds().forEach(partitionId -> {
+                    System.out.printf("--> Adding events to partition: %s%n", partitionId);
+                    final PartitionProperties partitionProperties = producer.getPartitionProperties(partitionId);
+                    final String messageId = UUID.randomUUID().toString();
+                    final int numberOfEvents = 15;
+                    final List<EventData> events = TestUtils.getEvents(numberOfEvents, messageId);
+                    final SendOptions options = new SendOptions().setPartitionId(partitionId);
 
-        try {
-            producer.send(events, options);
-        } finally {
-            dispose(producer);
+                    producer.send(events, options);
+
+                    integrationData.put(partitionId,
+                        new IntegrationTestEventData(partitionId, partitionProperties, messageId, events));
+                });
+
+                if (integrationData.size() != NUMBER_OF_PARTITIONS) {
+                    System.out.printf("--> WARNING: Number of partitions is different. Expected: %s. Actual %s%n",
+                        NUMBER_OF_PARTITIONS, integrationData.size());
+                }
+
+                testEventData = Collections.unmodifiableMap(integrationData);
+            }
         }
 
-        return new IntegrationTestEventData(options.getPartitionId(), messageId, datePushed, events);
+        Assertions.assertNotNull(testEventData, "'testEventData' should have been set.");
+        Assertions.assertFalse(testEventData.isEmpty(), "'testEventData' should not be empty.");
+        return testEventData;
     }
 
     /**

@@ -19,6 +19,7 @@ import com.microsoft.rest.RestClient;
 import com.microsoft.azure.management.recoveryservices.v2016_06_01.VaultCertificates;
 import com.microsoft.azure.management.recoveryservices.v2016_06_01.RegisteredIdentities;
 import com.microsoft.azure.management.recoveryservices.v2016_06_01.ReplicationUsages;
+import com.microsoft.azure.management.recoveryservices.v2016_06_01.PrivateLinkResources;
 import com.microsoft.azure.management.recoveryservices.v2016_06_01.RecoveryServices;
 import com.microsoft.azure.management.recoveryservices.v2016_06_01.Vaults;
 import com.microsoft.azure.management.recoveryservices.v2016_06_01.Operations;
@@ -34,6 +35,7 @@ public final class RecoveryServicesManager extends ManagerCore<RecoveryServicesM
     private VaultCertificates vaultCertificates;
     private RegisteredIdentities registeredIdentities;
     private ReplicationUsages replicationUsages;
+    private PrivateLinkResources privateLinkResources;
     private RecoveryServices recoveryServices;
     private Vaults vaults;
     private Operations operations;
@@ -114,6 +116,16 @@ public final class RecoveryServicesManager extends ManagerCore<RecoveryServicesM
             this.replicationUsages = new ReplicationUsagesImpl(this);
         }
         return this.replicationUsages;
+    }
+
+    /**
+     * @return Entry point to manage PrivateLinkResources.
+     */
+    public PrivateLinkResources privateLinkResources() {
+        if (this.privateLinkResources == null) {
+            this.privateLinkResources = new PrivateLinkResourcesImpl(this);
+        }
+        return this.privateLinkResources;
     }
 
     /**

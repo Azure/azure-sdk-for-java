@@ -14,6 +14,7 @@ import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
 import com.azure.storage.blob.models.BlobContainerProperties;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier;
@@ -76,7 +77,8 @@ public class DataLakeFileSystemClient {
      * Initializes a new DataLakeFileClient object by concatenating fileName to the end of DataLakeFileSystemClient's
      * URL. The new DataLakeFileClient uses the same request policy pipeline as the DataLakeFileSystemClient.
      *
-     * @param fileName A {@code String} representing the name of the file.
+     * @param fileName A {@code String} representing the name of the file. If the path name contains special characters,
+     * pass in the url encoded version of the path name.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -97,7 +99,8 @@ public class DataLakeFileSystemClient {
      * DataLakeFileSystemClient's URL. The new DataLakeDirectoryClient uses the same request policy pipeline as the
      * DataLakeFileSystemClient.
      *
-     * @param directoryName A {@code String} representing the name of the directory.
+     * @param directoryName A {@code String} representing the name of the directory. If the path name contains special
+     * characters, pass in the url encoded version of the path name.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -351,19 +354,41 @@ public class DataLakeFileSystemClient {
     }
 
     /**
-     * Creates a new file within a file system. If a file with the same name already exists, the file will be
-     * overwritten. For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+     * Creates a new file within a file system. By default, this method will not overwrite an existing file. For more
+     * information, see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.createFile#String}
      *
-     * @param fileName Name of the file to create.
+     * @param fileName Name of the file to create. If the path name contains special characters, pass in the url encoded
+     *  version of the path name.
      * @return A {@link DataLakeFileClient} used to interact with the file created.
      */
     public DataLakeFileClient createFile(String fileName) {
-        return createFileWithResponse(fileName, null, null, null, null, null, null, Context.NONE).getValue();
+        return createFile(fileName, false);
+    }
+
+    /**
+     * Creates a new file within a file system. For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.createFile#String-boolean}
+     *
+     * @param fileName Name of the file to create. If the path name contains special characters, pass in the url encoded
+     * version of the path name.
+     * @param overwrite Whether or not to overwrite, should a file exist.
+     * @return A {@link DataLakeFileClient} used to interact with the file created.
+     */
+    public DataLakeFileClient createFile(String fileName, boolean overwrite) {
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions();
+        if (!overwrite) {
+            requestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+        }
+        return createFileWithResponse(fileName, null, null, null, null, requestConditions, null, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -374,7 +399,8 @@ public class DataLakeFileSystemClient {
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.createFileWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context}
      *
-     * @param fileName Name of the file to create.
+     * @param fileName Name of the file to create. If the path name contains special characters, pass in the url encoded
+     * version of the path name.
      * @param permissions POSIX access permissions for the file owner, the file owning group, and others.
      * @param umask Restricts permissions of the file to be created.
      * @param headers {@link PathHttpHeaders}
@@ -404,7 +430,8 @@ public class DataLakeFileSystemClient {
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteFile#String}
      *
-     * @param fileName Name of the file to delete.
+     * @param fileName Name of the file to delete. If the path name contains special characters, pass in the url encoded
+     * version of the path name.
      */
     public void deleteFile(String fileName) {
         deleteFileWithResponse(fileName, null, null, Context.NONE).getValue();
@@ -419,7 +446,8 @@ public class DataLakeFileSystemClient {
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteFileWithResponse#String-DataLakeRequestConditions-Duration-Context}
      *
-     * @param fileName Name of the file to delete.
+     * @param fileName Name of the file to delete. If the path name contains special characters, pass in the url encoded
+     * version of the path name.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -431,19 +459,42 @@ public class DataLakeFileSystemClient {
     }
 
     /**
-     * Creates a new directory within a file system. If a directory with the same name already exists, the directory
-     * will be overwritten. For more information, see the
+     * Creates a new directory within a file system. By default, this method will not overwrite an existing directory.
+     * For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectory#String}
      *
-     * @param directoryName Name of the directory to create.
+     * @param directoryName Name of the directory to create. If the path name contains special characters, pass in the
+     * url encoded version of the path name.
      * @return A {@link DataLakeDirectoryClient} used to interact with the directory created.
      */
     public DataLakeDirectoryClient createDirectory(String directoryName) {
-        return createDirectoryWithResponse(directoryName, null, null, null, null, null, null, null).getValue();
+        return createDirectory(directoryName, false);
+    }
+
+    /**
+     * Creates a new directory within a file system. For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectory#String-boolean}
+     *
+     * @param directoryName Name of the directory to create. If the path name contains special characters, pass in the
+     * url encoded version of the path name.
+     * @param overwrite Whether or not to overwrite, should a directory exist.
+     * @return A {@link DataLakeDirectoryClient} used to interact with the directory created.
+     */
+    public DataLakeDirectoryClient createDirectory(String directoryName, boolean overwrite) {
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions();
+        if (!overwrite) {
+            requestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+        }
+        return createDirectoryWithResponse(directoryName, null, null, null, null, requestConditions, null, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -455,7 +506,8 @@ public class DataLakeFileSystemClient {
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context}
      *
-     * @param directoryName Name of the directory to create.
+     * @param directoryName Name of the directory to create.  If the path name contains special characters, pass in the
+     * url encoded version of the path name.
      * @param permissions POSIX access permissions for the directory owner, the directory owning group, and others.
      * @param umask Restricts permissions of the directory to be created.
      * @param headers {@link PathHttpHeaders}
@@ -485,7 +537,8 @@ public class DataLakeFileSystemClient {
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteDirectory#String}
      *
-     * @param directoryName Name of the directory to delete.
+     * @param directoryName Name of the directory to delete.  If the path name contains special characters, pass in the
+     * url encoded version of the path name.
      */
     public void deleteDirectory(String directoryName) {
         deleteDirectoryWithResponse(directoryName, false, null, null, Context.NONE).getValue();
@@ -500,7 +553,8 @@ public class DataLakeFileSystemClient {
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.deleteDirectoryWithResponse#String-boolean-DataLakeRequestConditions-Duration-Context}
      *
-     * @param directoryName Name of the directory to delete.
+     * @param directoryName Name of the directory to delete. If the path name contains special characters, pass in the
+     * url encoded version of the path name.
      * @param recursive Whether or not to delete all paths beneath the directory.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.

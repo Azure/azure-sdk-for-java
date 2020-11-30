@@ -1,7 +1,63 @@
 # Release History
 
-## 1.5.0-beta.1 (Unreleased)
+## 1.7.0 (2020-11-24)
 
+### New Features
+
+- Added functionality to eagerly read HTTP response bodies into memory when they will be deserialized into a POJO.
+
+### Bug Fixes
+
+- Fixed a bug where a connection would remain active when timed out instead of being closed.
+
+## 1.6.3 (2020-10-29)
+
+### Dependency updates
+
+- Updated `azure-core` to `1.10.0`.
+
+## 1.6.2 (2020-10-01)
+
+- Updated `azure-core` version.
+
+## 1.6.1 (2020-09-08)
+
+- Updated `azure-core` version to pickup bug fix.
+
+## 1.6.0 (2020-09-03)
+
+- Added new APIs to configure request write timeout, response timeout, and response body read timeout.
+- Changed default timeouts from infinite to 60 seconds.
+- Updated `reactor-core` version to `3.3.9.RELEASE`.
+- Updated `reactor-netty` version to `0.9.11.RELEASE`.
+
+## 1.5.4 (2020-08-07)
+
+- Updated `reactor-core` version to `3.3.8.RELEASE`.
+- Updated `reactor-netty` version to `0.9.10.RELEASE`.
+- Updated `netty` version to `4.1.51.Final`.
+- Updated `netty-tcnative` version to `2.0.31.Final`.
+- Fixed a bug where connections weren't being re-used when using a proxy which lead to a new TCP and SSL session for each request.
+- Fixed a bug where a non-shareable proxy handler could be added twice into a `ChannelPipeline`.
+
+## 1.5.3 (2020-07-02)
+
+- Updated Azure Core dependency.
+
+## 1.5.2 (2020-06-08)
+
+- Fix bug where environment proxy wasn't inferred properly when it didn't use authentication.
+- Updated Azure Core dependency.
+
+## 1.5.1 (2020-05-04)
+
+- Updated default retrieval of response body as a `String` to use `CoreUtils.bomAwareToString`.
+- Updated Reactor Netty and Netty dependencies.
+
+## 1.5.0 (2020-04-03)
+
+- Generalized configuration for `NioEventLoopGroup` to `EventLoopGroup`. Deprecated `NioEventLoopGroup` setter.
+- Updated Netty dependencies to `4.1.45.FINAL` and Netty Reactor to `0.9.5.RELEASE`.
 
 ## 1.4.0 (2020-03-06)
 
@@ -19,7 +75,7 @@
 
 ## 1.2.0 (2020-01-07)
 
-- Upgrade netty dependencies to latest version 
+- Upgrade netty dependencies to latest version
 
 ## Version 1.1.0 (2019-11-26)
 

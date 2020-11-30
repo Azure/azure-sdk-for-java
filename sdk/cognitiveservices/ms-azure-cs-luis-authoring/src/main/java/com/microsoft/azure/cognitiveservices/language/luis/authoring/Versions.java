@@ -12,10 +12,16 @@ import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.Clon
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ListVersionsOptionalParameter;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.UpdateVersionsOptionalParameter;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ImportMethodVersionsOptionalParameter;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ImportV2AppVersionsOptionalParameter;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ImportLuFormatVersionsOptionalParameter;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.LuisApp;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.LuisAppV2;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.OperationStatus;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.VersionInfo;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 import rx.Observable;
@@ -26,7 +32,7 @@ import rx.Observable;
  */
 public interface Versions {
     /**
-     * Creates a new version using the current snapshot of the selected application version.
+     * Creates a new version from the selected version.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -36,11 +42,10 @@ public interface Versions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the String object if successful.
      */
-    @Deprecated
     String clone(UUID appId, String versionId, CloneOptionalParameter cloneOptionalParameter);
 
     /**
-     * Creates a new version using the current snapshot of the selected application version.
+     * Creates a new version from the selected version.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -48,11 +53,10 @@ public interface Versions {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the String object
      */
-    @Deprecated
     Observable<String> cloneAsync(UUID appId, String versionId, CloneOptionalParameter cloneOptionalParameter);
 
     /**
-     * Creates a new version using the current snapshot of the selected application version.
+     * Creates a new version from the selected version.
      *
      * @return the first stage of the clone call
      */
@@ -128,7 +132,7 @@ public interface Versions {
     }
 
     /**
-     * Gets the application versions info.
+     * Gets a list of versions for this application ID.
      *
      * @param appId The application ID.
      * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
@@ -137,22 +141,20 @@ public interface Versions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;VersionInfo&gt; object if successful.
      */
-    @Deprecated
     List<VersionInfo> list(UUID appId, ListVersionsOptionalParameter listOptionalParameter);
 
     /**
-     * Gets the application versions info.
+     * Gets a list of versions for this application ID.
      *
      * @param appId The application ID.
      * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;VersionInfo&gt; object
      */
-    @Deprecated
     Observable<List<VersionInfo>> listAsync(UUID appId, ListVersionsOptionalParameter listOptionalParameter);
 
     /**
-     * Gets the application versions info.
+     * Gets a list of versions for this application ID.
      *
      * @return the first stage of the list call
      */
@@ -224,7 +226,8 @@ public interface Versions {
 
 
     /**
-     * Gets the version info.
+     * Gets the version information such as date created, last modified date, endpoint URL, count of
+      *  intents and entities, training and publishing status.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -236,7 +239,8 @@ public interface Versions {
     VersionInfo get(UUID appId, String versionId);
 
     /**
-     * Gets the version info.
+     * Gets the version information such as date created, last modified date, endpoint URL, count of
+      *  intents and entities, training and publishing status.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -257,7 +261,6 @@ public interface Versions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
     OperationStatus update(UUID appId, String versionId, UpdateVersionsOptionalParameter updateOptionalParameter);
 
     /**
@@ -269,7 +272,6 @@ public interface Versions {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    @Deprecated
     Observable<OperationStatus> updateAsync(UUID appId, String versionId, UpdateVersionsOptionalParameter updateOptionalParameter);
 
     /**
@@ -407,7 +409,6 @@ public interface Versions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the String object if successful.
      */
-    @Deprecated
     String importMethod(UUID appId, LuisApp luisApp, ImportMethodVersionsOptionalParameter importMethodOptionalParameter);
 
     /**
@@ -419,7 +420,6 @@ public interface Versions {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the String object
      */
-    @Deprecated
     Observable<String> importMethodAsync(UUID appId, LuisApp luisApp, ImportMethodVersionsOptionalParameter importMethodOptionalParameter);
 
     /**
@@ -500,7 +500,7 @@ public interface Versions {
 
 
     /**
-     * Deleted an unlabelled utterance.
+     * Deleted an unlabelled utterance in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -513,7 +513,7 @@ public interface Versions {
     OperationStatus deleteUnlabelledUtterance(UUID appId, String versionId, String utterance);
 
     /**
-     * Deleted an unlabelled utterance.
+     * Deleted an unlabelled utterance in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -522,6 +522,230 @@ public interface Versions {
      * @return the observable to the OperationStatus object
      */
     Observable<OperationStatus> deleteUnlabelledUtteranceAsync(UUID appId, String versionId, String utterance);
+
+
+    /**
+     * Imports a new version into a LUIS application.
+     *
+     * @param appId The application ID.
+     * @param luisAppV2 A LUIS application structure.
+     * @param importV2AppOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the String object if successful.
+     */
+    String importV2App(UUID appId, LuisAppV2 luisAppV2, ImportV2AppVersionsOptionalParameter importV2AppOptionalParameter);
+
+    /**
+     * Imports a new version into a LUIS application.
+     *
+     * @param appId The application ID.
+     * @param luisAppV2 A LUIS application structure.
+     * @param importV2AppOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the String object
+     */
+    Observable<String> importV2AppAsync(UUID appId, LuisAppV2 luisAppV2, ImportV2AppVersionsOptionalParameter importV2AppOptionalParameter);
+
+    /**
+     * Imports a new version into a LUIS application.
+     *
+     * @return the first stage of the importV2App call
+     */
+    VersionsImportV2AppDefinitionStages.WithAppId importV2App();
+
+    /**
+     * Grouping of importV2App definition stages.
+     */
+    interface VersionsImportV2AppDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithLuisAppV2 withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify luisAppV2.
+         */
+        interface WithLuisAppV2 {
+            /**
+             * A LUIS application structure.
+             *
+             * @return next definition stage
+             */
+            VersionsImportV2AppDefinitionStages.WithExecute withLuisAppV2(LuisAppV2 luisAppV2);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The new versionId to import. If not specified, the versionId will be read from the imported object.
+             *
+             * @return next definition stage
+             */
+            VersionsImportV2AppDefinitionStages.WithExecute withVersionId(String versionId);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends VersionsImportV2AppDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the String object if successful.
+             */
+            String execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the String object
+             */
+            Observable<String> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of importV2App definition.
+     */
+    interface VersionsImportV2AppDefinition extends
+        VersionsImportV2AppDefinitionStages.WithAppId,
+        VersionsImportV2AppDefinitionStages.WithLuisAppV2,
+        VersionsImportV2AppDefinitionStages.WithExecute {
+    }
+
+    /**
+     * Imports a new version into a LUIS application.
+     *
+     * @param appId The application ID.
+     * @param luisAppLu An LU representing the LUIS application structure.
+     * @param importLuFormatOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the String object if successful.
+     */
+    String importLuFormat(UUID appId, String luisAppLu, ImportLuFormatVersionsOptionalParameter importLuFormatOptionalParameter);
+
+    /**
+     * Imports a new version into a LUIS application.
+     *
+     * @param appId The application ID.
+     * @param luisAppLu An LU representing the LUIS application structure.
+     * @param importLuFormatOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the String object
+     */
+    Observable<String> importLuFormatAsync(UUID appId, String luisAppLu, ImportLuFormatVersionsOptionalParameter importLuFormatOptionalParameter);
+
+    /**
+     * Imports a new version into a LUIS application.
+     *
+     * @return the first stage of the importLuFormat call
+     */
+    VersionsImportLuFormatDefinitionStages.WithAppId importLuFormat();
+
+    /**
+     * Grouping of importLuFormat definition stages.
+     */
+    interface VersionsImportLuFormatDefinitionStages {
+        /**
+         * The stage of the definition to be specify appId.
+         */
+        interface WithAppId {
+            /**
+             * The application ID.
+             *
+             * @return next definition stage
+             */
+            WithLuisAppLu withAppId(UUID appId);
+        }
+        /**
+         * The stage of the definition to be specify luisAppLu.
+         */
+        interface WithLuisAppLu {
+            /**
+             * An LU representing the LUIS application structure.
+             *
+             * @return next definition stage
+             */
+            VersionsImportLuFormatDefinitionStages.WithExecute withLuisAppLu(String luisAppLu);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The new versionId to import. If not specified, the versionId will be read from the imported object.
+             *
+             * @return next definition stage
+             */
+            VersionsImportLuFormatDefinitionStages.WithExecute withVersionId(String versionId);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends VersionsImportLuFormatDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             * @return the String object if successful.
+             */
+            String execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return the observable to the String object
+             */
+            Observable<String> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of importLuFormat definition.
+     */
+    interface VersionsImportLuFormatDefinition extends
+        VersionsImportLuFormatDefinitionStages.WithAppId,
+        VersionsImportLuFormatDefinitionStages.WithLuisAppLu,
+        VersionsImportLuFormatDefinitionStages.WithExecute {
+    }
+
+
+    /**
+     * Exports a LUIS application to text format.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the InputStream object if successful.
+     */
+    InputStream exportLuFormat(UUID appId, String versionId);
+
+    /**
+     * Exports a LUIS application to text format.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the InputStream object
+     */
+    Observable<InputStream> exportLuFormatAsync(UUID appId, String versionId);
 
 
 }

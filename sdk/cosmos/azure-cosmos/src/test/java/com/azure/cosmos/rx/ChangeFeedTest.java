@@ -7,7 +7,7 @@ import com.azure.cosmos.implementation.ChangeFeedOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
-import com.azure.cosmos.models.Resource;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.Document;
@@ -17,8 +17,8 @@ import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.TestSuiteBase;
 import com.azure.cosmos.implementation.TestUtils;
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
+import com.azure.cosmos.implementation.guava25.collect.ArrayListMultimap;
+import com.azure.cosmos.implementation.guava25.collect.Multimap;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
@@ -29,7 +29,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.lang.reflect.Method;
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -164,16 +164,16 @@ public class ChangeFeedTest extends TestSuiteBase {
         String partitionKey = partitionKeyToDocuments.keySet().iterator().next();
 
         changeFeedOption.setPartitionKey(new PartitionKey(partitionKey));
-        OffsetDateTime befTime = OffsetDateTime.now();
+        Instant befTime = Instant.now();
         // Waiting for at-least a second to ensure that new document is created after we took the time stamp
         waitAtleastASecond(befTime);
 
-        OffsetDateTime dateTimeBeforeCreatingDoc = OffsetDateTime.now();
+        Instant dateTimeBeforeCreatingDoc = Instant.now();
         changeFeedOption.setStartDateTime(dateTimeBeforeCreatingDoc);
 
         // Waiting for at-least a second to ensure that new document is created after we took the time stamp
         waitAtleastASecond(dateTimeBeforeCreatingDoc);
-        client.createDocument(getCollectionLink(), getDocumentDefinition(partitionKey), null, true).single().block();
+        client.createDocument(getCollectionLink(), getDocumentDefinition(partitionKey), null, true).block();
 
         List<FeedResponse<Document>> changeFeedResultList = client.queryDocumentChangeFeed(getCollectionLink(),
                 changeFeedOption).collectList().block();
@@ -205,8 +205,8 @@ public class ChangeFeedTest extends TestSuiteBase {
         assertThat(changeFeedContinuation).as("continuation token is not empty").isNotEmpty();
 
         // create some documents
-        client.createDocument(getCollectionLink(), getDocumentDefinition(partitionKey), null, true).single().block();
-        client.createDocument(getCollectionLink(), getDocumentDefinition(partitionKey), null, true).single().block();
+        client.createDocument(getCollectionLink(), getDocumentDefinition(partitionKey), null, true).block();
+        client.createDocument(getCollectionLink(), getDocumentDefinition(partitionKey), null, true).block();
 
         // READ change feed from continuation
         changeFeedOption.setRequestContinuation(changeFeedContinuation);
@@ -223,7 +223,7 @@ public class ChangeFeedTest extends TestSuiteBase {
         Document docDefinition = getDocumentDefinition(partitionKey);
 
         Document createdDocument = client
-                .createDocument(getCollectionLink(), docDefinition, null, false).single().block().getResource();
+                .createDocument(getCollectionLink(), docDefinition, null, false).block().getResource();
         partitionKeyToDocuments.put(partitionKey, createdDocument);
     }
 
@@ -288,8 +288,8 @@ public class ChangeFeedTest extends TestSuiteBase {
         return doc;
     }
 
-    private static void waitAtleastASecond(OffsetDateTime befTime) throws InterruptedException {
-        while (befTime.plusSeconds(1).isAfter(OffsetDateTime.now())) {
+    private static void waitAtleastASecond(Instant befTime) throws InterruptedException {
+        while (befTime.plusSeconds(1).isAfter(Instant.now())) {
             Thread.sleep(100);
         }
     }

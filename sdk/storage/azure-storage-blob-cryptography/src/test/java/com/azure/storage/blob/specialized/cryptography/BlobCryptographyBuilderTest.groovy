@@ -1,7 +1,13 @@
 package com.azure.storage.blob.specialized.cryptography
 
+import com.azure.core.http.HttpPipelineCallContext
+import com.azure.core.http.HttpPipelineNextPolicy
+import com.azure.core.http.HttpPipelinePosition
+import com.azure.core.http.HttpResponse
+import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.CustomerProvidedKey
+import reactor.core.publisher.Mono
 
 class BlobCryptographyBuilderTest extends APISpec {
 
@@ -120,4 +126,26 @@ class BlobCryptographyBuilderTest extends APISpec {
         e.getStatusCode() == 409
     }
 
+    def "Conflicting encryption info"() {
+        when:
+        new EncryptedBlobClientBuilder()
+            .blobAsyncClient(beac)
+            .key(fakeKey, "keywrapalgorithm")
+            .buildEncryptedBlobAsyncClient()
+
+        then:
+        thrown(IllegalArgumentException)
+    }
+
+    def "Key after pipeline"() {
+        when:
+        new EncryptedBlobClientBuilder()
+            .blobClient(bc)
+            .key(fakeKey, "keywrapalgorithm")
+            .buildEncryptedBlobClient()
+
+        then:
+        notThrown(IllegalArgumentException)
+
+    }
 }

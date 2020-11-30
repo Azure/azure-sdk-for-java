@@ -1,8 +1,21 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
-- Keyvault: add az namespace info attribute to all outgoing spans.
+## 1.0.0-beta.7 (Unreleased)
 
+
+## 1.0.0-beta.6 (2020-08-07)
+- Update `opentelemetry-api` dependency version to `0.6.0` and included `io.grpc:grpc-context[1.30.0]` external
+ dependency .
+
+## 1.0.0-beta.5 (2020-06-08)
+
+- Changed `Tracer` loading logic to only use first in classpath instead of all in classpath.
+- Updated Azure Core dependency.
+
+## 1.0.0-beta.4 (2020-04-02)
+
+- Added az namespace info attribute to all outgoing spans for Http Libraries.
+- `io.opentelemetry` version update to `0.2.4` API changes.
 
 ## 1.0.0-beta.3 (2020-03-06)
 

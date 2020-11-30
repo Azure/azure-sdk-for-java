@@ -17,6 +17,7 @@ import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.storage.v2019_04_01.AccountSasParameters;
+import com.microsoft.azure.management.storage.v2019_04_01.ListKeyExpand;
 import com.microsoft.azure.management.storage.v2019_04_01.ServiceSasParameters;
 import com.microsoft.azure.management.storage.v2019_04_01.StorageAccountCheckNameAvailabilityParameters;
 import com.microsoft.azure.management.storage.v2019_04_01.StorageAccountCreateParameters;
@@ -46,8 +47,6 @@ import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
-import com.microsoft.azure.LongRunningFinalState;
-import com.microsoft.azure.LongRunningOperationOptions;
 import com.microsoft.azure.LongRunningFinalState;
 import com.microsoft.azure.LongRunningOperationOptions;
 
@@ -111,7 +110,7 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.storage.v2019_04_01.StorageAccounts listKeys" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/listKeys")
-        Observable<Response<ResponseBody>> listKeys(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listKeys(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Query("$expand") ListKeyExpand expand, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.storage.v2019_04_01.StorageAccounts regenerateKey" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/regenerateKey")
@@ -942,7 +941,7 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
     }
 
     /**
-     * Lists the access keys for the specified storage account.
+     * Lists the access keys or Kerberos keys (if active directory enabled) for the specified storage account.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -956,7 +955,7 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
     }
 
     /**
-     * Lists the access keys for the specified storage account.
+     * Lists the access keys or Kerberos keys (if active directory enabled) for the specified storage account.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -969,7 +968,7 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
     }
 
     /**
-     * Lists the access keys for the specified storage account.
+     * Lists the access keys or Kerberos keys (if active directory enabled) for the specified storage account.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -986,7 +985,7 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
     }
 
     /**
-     * Lists the access keys for the specified storage account.
+     * Lists the access keys or Kerberos keys (if active directory enabled) for the specified storage account.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -1006,7 +1005,91 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.listKeys(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final ListKeyExpand expand = null;
+        return service.listKeys(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<StorageAccountListKeysResultInner>>>() {
+                @Override
+                public Observable<ServiceResponse<StorageAccountListKeysResultInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<StorageAccountListKeysResultInner> clientResponse = listKeysDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Lists the access keys or Kerberos keys (if active directory enabled) for the specified storage account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param expand Specifies type of the key to be listed. Possible value is kerb. Possible values include: 'kerb'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the StorageAccountListKeysResultInner object if successful.
+     */
+    public StorageAccountListKeysResultInner listKeys(String resourceGroupName, String accountName, ListKeyExpand expand) {
+        return listKeysWithServiceResponseAsync(resourceGroupName, accountName, expand).toBlocking().single().body();
+    }
+
+    /**
+     * Lists the access keys or Kerberos keys (if active directory enabled) for the specified storage account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param expand Specifies type of the key to be listed. Possible value is kerb. Possible values include: 'kerb'
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<StorageAccountListKeysResultInner> listKeysAsync(String resourceGroupName, String accountName, ListKeyExpand expand, final ServiceCallback<StorageAccountListKeysResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listKeysWithServiceResponseAsync(resourceGroupName, accountName, expand), serviceCallback);
+    }
+
+    /**
+     * Lists the access keys or Kerberos keys (if active directory enabled) for the specified storage account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param expand Specifies type of the key to be listed. Possible value is kerb. Possible values include: 'kerb'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the StorageAccountListKeysResultInner object
+     */
+    public Observable<StorageAccountListKeysResultInner> listKeysAsync(String resourceGroupName, String accountName, ListKeyExpand expand) {
+        return listKeysWithServiceResponseAsync(resourceGroupName, accountName, expand).map(new Func1<ServiceResponse<StorageAccountListKeysResultInner>, StorageAccountListKeysResultInner>() {
+            @Override
+            public StorageAccountListKeysResultInner call(ServiceResponse<StorageAccountListKeysResultInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Lists the access keys or Kerberos keys (if active directory enabled) for the specified storage account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param expand Specifies type of the key to be listed. Possible value is kerb. Possible values include: 'kerb'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the StorageAccountListKeysResultInner object
+     */
+    public Observable<ServiceResponse<StorageAccountListKeysResultInner>> listKeysWithServiceResponseAsync(String resourceGroupName, String accountName, ListKeyExpand expand) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listKeys(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<StorageAccountListKeysResultInner>>>() {
                 @Override
                 public Observable<ServiceResponse<StorageAccountListKeysResultInner>> call(Response<ResponseBody> response) {
@@ -1028,11 +1111,11 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
     }
 
     /**
-     * Regenerates one of the access keys for the specified storage account.
+     * Regenerates one of the access keys or Kerberos keys for the specified storage account.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param keyName The name of storage keys that want to be regenerated, possible values are key1, key2.
+     * @param keyName The name of storage keys that want to be regenerated, possible values are key1, key2, kerb1, kerb2.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -1043,11 +1126,11 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
     }
 
     /**
-     * Regenerates one of the access keys for the specified storage account.
+     * Regenerates one of the access keys or Kerberos keys for the specified storage account.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param keyName The name of storage keys that want to be regenerated, possible values are key1, key2.
+     * @param keyName The name of storage keys that want to be regenerated, possible values are key1, key2, kerb1, kerb2.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -1057,11 +1140,11 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
     }
 
     /**
-     * Regenerates one of the access keys for the specified storage account.
+     * Regenerates one of the access keys or Kerberos keys for the specified storage account.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param keyName The name of storage keys that want to be regenerated, possible values are key1, key2.
+     * @param keyName The name of storage keys that want to be regenerated, possible values are key1, key2, kerb1, kerb2.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the StorageAccountListKeysResultInner object
      */
@@ -1075,11 +1158,11 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
     }
 
     /**
-     * Regenerates one of the access keys for the specified storage account.
+     * Regenerates one of the access keys or Kerberos keys for the specified storage account.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param keyName The name of storage keys that want to be regenerated, possible values are key1, key2.
+     * @param keyName The name of storage keys that want to be regenerated, possible values are key1, key2, kerb1, kerb2.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the StorageAccountListKeysResultInner object
      */

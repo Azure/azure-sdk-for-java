@@ -7,10 +7,14 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.implementation.AuthenticationRecord;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
+import com.azure.identity.implementation.MsalAuthenticationAccount;
 import com.azure.identity.implementation.MsalToken;
+import com.azure.identity.implementation.util.LoggingUtil;
 import reactor.core.publisher.Mono;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -26,9 +30,14 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 @Immutable
 public class InteractiveBrowserCredential implements TokenCredential {
-    private final int port;
+    private final Integer port;
     private final IdentityClient identityClient;
-    private final AtomicReference<MsalToken> cachedToken;
+    private final AtomicReference<MsalAuthenticationAccount> cachedToken;
+    private final boolean automaticAuthentication;
+    private final String authorityHost;
+    private final String redirectUrl;
+    private final ClientLogger logger = new ClientLogger(InteractiveBrowserCredential.class);
+
 
     /**
      * Creates a InteractiveBrowserCredential with the given identity client options and a listening port, for which
@@ -37,35 +46,85 @@ public class InteractiveBrowserCredential implements TokenCredential {
      * @param clientId the client ID of the application
      * @param tenantId the tenant ID of the application
      * @param port the port on which the credential will listen for the browser authentication result
+     * @param redirectUrl the redirect URL to listen on and receive security code.
+     * @param automaticAuthentication indicates whether automatic authentication should be attempted or not.
      * @param identityClientOptions the options for configuring the identity client
      */
-    InteractiveBrowserCredential(String clientId, String tenantId, int port,
-                                 IdentityClientOptions identityClientOptions) {
+    InteractiveBrowserCredential(String clientId, String tenantId, Integer port, String redirectUrl,
+                                 boolean automaticAuthentication, IdentityClientOptions identityClientOptions) {
         this.port = port;
-        if (tenantId == null) {
-            tenantId = "common";
-        }
+        this.redirectUrl = redirectUrl;
         identityClient = new IdentityClientBuilder()
             .tenantId(tenantId)
             .clientId(clientId)
             .identityClientOptions(identityClientOptions)
             .build();
         cachedToken = new AtomicReference<>();
+        this.authorityHost = identityClientOptions.getAuthorityHost();
+        this.automaticAuthentication = automaticAuthentication;
+        if (identityClientOptions.getAuthenticationRecord() != null) {
+            cachedToken.set(new MsalAuthenticationAccount(identityClientOptions.getAuthenticationRecord()));
+        }
     }
 
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         return Mono.defer(() -> {
             if (cachedToken.get() != null) {
-                return identityClient.authenticateWithUserRefreshToken(request, cachedToken.get())
+                return identityClient.authenticateWithPublicClientCache(request, cachedToken.get())
                     .onErrorResume(t -> Mono.empty());
             } else {
                 return Mono.empty();
             }
-        }).switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithBrowserInteraction(request, port)))
-            .map(msalToken -> {
-                cachedToken.set(msalToken);
-                return msalToken;
-            });
+        }).switchIfEmpty(Mono.defer(() -> {
+            if (!automaticAuthentication) {
+                return Mono.error(logger.logExceptionAsError(new AuthenticationRequiredException("Interactive "
+                             + "authentication is needed to acquire token. Call Authenticate to initiate the device "
+                             + "code authentication.", request)));
+            }
+            return identityClient.authenticateWithBrowserInteraction(request, port, redirectUrl);
+        })).map(this::updateCache)
+            .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
+            .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
+    }
+
+    /**
+     * Interactively authenticates a user via the default browser.
+     *
+     * @param request The details of the authentication request.
+     *
+     * @return The {@link AuthenticationRecord} which can be used to silently authenticate the account
+     * on future execution if persistent caching was enabled via
+     * {@link InteractiveBrowserCredentialBuilder#enablePersistentCache()} when credential was instantiated.
+     */
+    Mono<AuthenticationRecord> authenticate(TokenRequestContext request) {
+        return Mono.defer(() -> identityClient.authenticateWithBrowserInteraction(request, port, redirectUrl))
+                .map(this::updateCache)
+                .map(msalToken -> cachedToken.get().getAuthenticationRecord());
+    }
+
+    /**
+     * Interactively authenticates a user via the default browser.
+     *
+     * @return The {@link AuthenticationRecord} which can be used to silently authenticate the account
+     * on future execution if persistent caching was enabled via
+     * {@link InteractiveBrowserCredentialBuilder#enablePersistentCache()} when credential was instantiated.
+     */
+    Mono<AuthenticationRecord> authenticate() {
+        String defaultScope = AzureAuthorityHosts.getDefaultScope(authorityHost);
+        if (defaultScope == null) {
+            return Mono.error(logger.logExceptionAsError(new CredentialUnavailableException("Authenticating in this "
+                                                    + "environment requires specifying a TokenRequestContext.")));
+        }
+        return authenticate(new TokenRequestContext().addScopes(defaultScope));
+    }
+
+    private AccessToken updateCache(MsalToken msalToken) {
+        cachedToken.set(
+                new MsalAuthenticationAccount(
+                    new AuthenticationRecord(msalToken.getAuthenticationResult(),
+                                identityClient.getTenantId(), identityClient.getClientId()),
+                    msalToken.getAccount().getTenantProfiles()));
+        return msalToken;
     }
 }

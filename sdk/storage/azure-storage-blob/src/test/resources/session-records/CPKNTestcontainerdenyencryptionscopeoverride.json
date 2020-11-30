@@ -1,153 +1,127 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gaprastg71.blob.core.windows.net/jtccontainerdenyencryptionscopeoverride038128f94b22acc?restype=container",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtccontainerdenyencryptionscopeoverride003611d771c0ff6?restype=container",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.1.0 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "200151e9-5119-4f64-ad04-10bc61b919ea"
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.9.0-beta.1 (11.0.4; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "aaf905ed-627a-45d7-9ead-cb7f4ab87cc1"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
+      "x-ms-version" : "2019-12-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D7831EEDC1CEAD",
-      "Last-Modified" : "Tue, 17 Dec 2019 18:28:35 GMT",
+      "ETag" : "0x8D84EBE7B1FBF86",
+      "Last-Modified" : "Tue, 01 Sep 2020 21:32:08 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "522d966e-901e-002b-6c07-b512f7000000",
-      "Date" : "Tue, 17 Dec 2019 18:28:35 GMT",
-      "x-ms-client-request-id" : "200151e9-5119-4f64-ad04-10bc61b919ea"
+      "x-ms-request-id" : "d84aa04f-401e-0078-6ea7-80793a000000",
+      "Date" : "Tue, 01 Sep 2020 21:32:08 GMT",
+      "x-ms-client-request-id" : "aaf905ed-627a-45d7-9ead-cb7f4ab87cc1"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://gaprastg71.blob.core.windows.net/jtccontainerdenyencryptionscopeoverride038128f94b22acc/javablobcontainerdenyencryptionscopeoverride45168625158f",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtccontainerdenyencryptionscopeoverride487477ddfa18869?restype=container",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.1.0 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "b99b1ba6-5efb-42d7-8dbd-cc776049a880",
-      "Content-Type" : "application/octet-stream"
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.9.0-beta.1 (11.0.4; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "6f8d24d7-665e-4146-93f8-52e723abc5be"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
+      "x-ms-version" : "2019-12-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-content-crc64" : "6RYQPwaVsyQ=",
-      "Last-Modified" : "Tue, 17 Dec 2019 18:28:35 GMT",
+      "ETag" : "0x8D84EBE7B29AC69",
+      "Last-Modified" : "Tue, 01 Sep 2020 21:32:09 GMT",
       "retry-after" : "0",
-      "StatusCode" : "201",
-      "x-ms-request-server-encrypted" : "true",
-      "Date" : "Tue, 17 Dec 2019 18:28:35 GMT",
-      "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg==",
-      "ETag" : "0x8D7831EEDCFEAB7",
       "Content-Length" : "0",
-      "x-ms-request-id" : "522d9673-901e-002b-7007-b512f7000000",
-      "x-ms-client-request-id" : "b99b1ba6-5efb-42d7-8dbd-cc776049a880",
-      "x-ms-encryption-scope" : "testscope1"
+      "StatusCode" : "201",
+      "x-ms-request-id" : "d84aa056-401e-0078-73a7-80793a000000",
+      "Date" : "Tue, 01 Sep 2020 21:32:08 GMT",
+      "x-ms-client-request-id" : "6f8d24d7-665e-4146-93f8-52e723abc5be"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://gaprastg71.blob.core.windows.net/jtccontainerdenyencryptionscopeoverride5986167a28dafb1?restype=container",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtccontainerdenyencryptionscopeoverride487477ddfa18869/javablobcontainerdenyencryptionscopeoverride553442ec1ab3",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.1.0 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "b8daa512-77ce-4a49-99c8-817d78a5b812"
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.9.0-beta.1 (11.0.4; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "450f9be9-f445-43b2-bcab-0d74f5302bdf"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
-      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D7831EEDDCD79F",
-      "Last-Modified" : "Tue, 17 Dec 2019 18:28:35 GMT",
-      "retry-after" : "0",
-      "Content-Length" : "0",
-      "StatusCode" : "201",
-      "x-ms-request-id" : "522d9676-901e-002b-7307-b512f7000000",
-      "Date" : "Tue, 17 Dec 2019 18:28:35 GMT",
-      "x-ms-client-request-id" : "b8daa512-77ce-4a49-99c8-817d78a5b812"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "PUT",
-    "Uri" : "https://gaprastg71.blob.core.windows.net/jtccontainerdenyencryptionscopeoverride5986167a28dafb1/javablobcontainerdenyencryptionscopeoverride65712728007d",
-    "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.1.0 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "cbbf5150-bfd6-4fb2-9014-311882ea322f"
-    },
-    "Response" : {
-      "x-ms-version" : "2019-07-07",
+      "x-ms-version" : "2019-12-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "RequestForbiddenByContainerEncryptionPolicy",
       "retry-after" : "0",
       "Content-Length" : "272",
       "StatusCode" : "403",
-      "x-ms-request-id" : "522d967c-901e-002b-7807-b512f7000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>RequestForbiddenByContainerEncryptionPolicy</Code><Message>The request is forbidden by the container encryption policy.\nRequestId:522d967c-901e-002b-7807-b512f7000000\nTime:2019-12-17T18:28:36.0256198Z</Message></Error>",
-      "Date" : "Tue, 17 Dec 2019 18:28:35 GMT",
-      "x-ms-client-request-id" : "cbbf5150-bfd6-4fb2-9014-311882ea322f",
+      "x-ms-request-id" : "d84aa07e-401e-0078-0fa7-80793a000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>RequestForbiddenByContainerEncryptionPolicy</Code><Message>The request is forbidden by the container encryption policy.\nRequestId:d84aa07e-401e-0078-0fa7-80793a000000\nTime:2020-09-01T21:32:09.0887259Z</Message></Error>",
+      "Date" : "Tue, 01 Sep 2020 21:32:08 GMT",
+      "x-ms-client-request-id" : "450f9be9-f445-43b2-bcab-0d74f5302bdf",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://gaprastg71.blob.core.windows.net?prefix=jtccontainerdenyencryptionscopeoverride&comp=list",
+    "Uri" : "https://REDACTED.blob.core.windows.net?prefix=jtccontainerdenyencryptionscopeoverride&comp=list",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.1.0 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "afc76915-63e1-4047-a0e7-1fe909b4a9dd"
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.9.0-beta.1 (11.0.4; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d7a8f38c-4c67-41a6-a237-421808c2e5b1"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-ms-version" : "2019-07-07",
+      "x-ms-version" : "2019-12-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "522d9682-901e-002b-7e07-b512f7000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://gaprastg71.blob.core.windows.net/\"><Prefix>jtccontainerdenyencryptionscopeoverride</Prefix><Containers><Container><Name>jtccontainerdenyencryptionscopeoverride038128f94b22acc</Name><Properties><Last-Modified>Tue, 17 Dec 2019 18:28:35 GMT</Last-Modified><Etag>\"0x8D7831EEDC1CEAD\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container><Container><Name>jtccontainerdenyencryptionscopeoverride5986167a28dafb1</Name><Properties><Last-Modified>Tue, 17 Dec 2019 18:28:35 GMT</Last-Modified><Etag>\"0x8D7831EEDDCD79F\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>testscope2</DefaultEncryptionScope><DenyEncryptionScopeOverride>true</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
-      "Date" : "Tue, 17 Dec 2019 18:28:35 GMT",
-      "x-ms-client-request-id" : "afc76915-63e1-4047-a0e7-1fe909b4a9dd",
+      "x-ms-request-id" : "d84aa09d-401e-0078-2aa7-80793a000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://seanmcccanary3.blob.core.windows.net/\"><Prefix>jtccontainerdenyencryptionscopeoverride</Prefix><Containers><Container><Name>jtccontainerdenyencryptionscopeoverride003611d771c0ff6</Name><Properties><Last-Modified>Tue, 01 Sep 2020 21:32:08 GMT</Last-Modified><Etag>\"0x8D84EBE7B1FBF86\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container><Container><Name>jtccontainerdenyencryptionscopeoverride487477ddfa18869</Name><Properties><Last-Modified>Tue, 01 Sep 2020 21:32:09 GMT</Last-Modified><Etag>\"0x8D84EBE7B29AC69\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>testscope2</DefaultEncryptionScope><DenyEncryptionScopeOverride>true</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Tue, 01 Sep 2020 21:32:08 GMT",
+      "x-ms-client-request-id" : "d7a8f38c-4c67-41a6-a237-421808c2e5b1",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://gaprastg71.blob.core.windows.net/jtccontainerdenyencryptionscopeoverride038128f94b22acc?restype=container",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtccontainerdenyencryptionscopeoverride003611d771c0ff6?restype=container",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.1.0 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "0c010440-ff57-478a-83fb-25a32e49c122"
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.9.0-beta.1 (11.0.4; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ee9d78f3-72d3-4bbc-9d16-53c6a7d0d07d"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
+      "x-ms-version" : "2019-12-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "522d9685-901e-002b-0107-b512f7000000",
-      "Date" : "Tue, 17 Dec 2019 18:28:35 GMT",
-      "x-ms-client-request-id" : "0c010440-ff57-478a-83fb-25a32e49c122"
+      "x-ms-request-id" : "d84aa0ae-401e-0078-38a7-80793a000000",
+      "Date" : "Tue, 01 Sep 2020 21:32:08 GMT",
+      "x-ms-client-request-id" : "ee9d78f3-72d3-4bbc-9d16-53c6a7d0d07d"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://gaprastg71.blob.core.windows.net/jtccontainerdenyencryptionscopeoverride5986167a28dafb1?restype=container",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtccontainerdenyencryptionscopeoverride487477ddfa18869?restype=container",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.1.0 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "b45da243-5082-46bf-9f5c-c0af45f1653a"
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.9.0-beta.1 (11.0.4; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a29ac8eb-dced-4d8c-93e2-b9e48b64c509"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
+      "x-ms-version" : "2019-12-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "522d9689-901e-002b-0507-b512f7000000",
-      "Date" : "Tue, 17 Dec 2019 18:28:35 GMT",
-      "x-ms-client-request-id" : "b45da243-5082-46bf-9f5c-c0af45f1653a"
+      "x-ms-request-id" : "d84aa0c0-401e-0078-44a7-80793a000000",
+      "Date" : "Tue, 01 Sep 2020 21:32:08 GMT",
+      "x-ms-client-request-id" : "a29ac8eb-dced-4d8c-93e2-b9e48b64c509"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtccontainerdenyencryptionscopeoverride038128f94b22acc", "javablobcontainerdenyencryptionscopeoverride14512129b4d6", "javablobcontainerdenyencryptionscopeoverride2671932f321d", "javablobcontainerdenyencryptionscopeoverride369816a42c16", "javablobcontainerdenyencryptionscopeoverride45168625158f", "jtccontainerdenyencryptionscopeoverride5986167a28dafb1", "javablobcontainerdenyencryptionscopeoverride65712728007d" ]
+  "variables" : [ "jtccontainerdenyencryptionscopeoverride003611d771c0ff6", "javablobcontainerdenyencryptionscopeoverride17380781436c", "javablobcontainerdenyencryptionscopeoverride2568897ec33b", "javablobcontainerdenyencryptionscopeoverride30548999de03", "jtccontainerdenyencryptionscopeoverride487477ddfa18869", "javablobcontainerdenyencryptionscopeoverride553442ec1ab3" ]
 }

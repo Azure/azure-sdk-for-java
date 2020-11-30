@@ -3,36 +3,44 @@
 
 package com.azure.ai.textanalytics.models;
 
+import com.azure.ai.textanalytics.implementation.TextAnalyticsExceptionPropertiesHelper;
 import com.azure.core.exception.AzureException;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * General exception for Text Analytics related failures.
  */
 public class TextAnalyticsException extends AzureException {
-    private static final long serialVersionUID = 21436310107606058L;
     private static final String ERROR_CODE = "ErrorCodeValue";
     private static final String TARGET = "target";
 
-    private final String code;
+    private final TextAnalyticsErrorCode errorCode;
     private final String target;
+
+    private List<TextAnalyticsErrorInformation> errorInformationList;
+
+    static {
+        TextAnalyticsExceptionPropertiesHelper.setAccessor(TextAnalyticsException::setErrorInformationList);
+    }
 
     /**
      * Initializes a new instance of the {@link TextAnalyticsException} class.
-     *
      * @param message Text contains any additional details of the exception.
-     * @param code The service returned error code value.
+     * @param errorCode The service returned error code value.
      * @param target The target for this exception.
      */
-    public TextAnalyticsException(String message, String code, String target) {
+    public TextAnalyticsException(String message, TextAnalyticsErrorCode errorCode, String target) {
         super(message);
-        this.code = code;
+        this.errorCode = errorCode;
         this.target = target;
     }
 
     @Override
     public String getMessage() {
         StringBuilder baseMessage = new StringBuilder().append(super.getMessage()).append(" ").append(ERROR_CODE)
-            .append(": {").append(code).append("}");
+            .append(": {").append(errorCode).append("}");
 
         if (this.target == null) {
             return baseMessage.toString();
@@ -55,7 +63,26 @@ public class TextAnalyticsException extends AzureException {
      *
      * @return The {@link TextAnalyticsErrorCode} for this exception.
      */
-    public TextAnalyticsErrorCode getCode() {
-        return TextAnalyticsErrorCode.fromString(code);
+    public TextAnalyticsErrorCode getErrorCode() {
+        return errorCode;
+    }
+
+    /**
+     * Get the error information list fot this exception.
+     *
+     * @return the unmodifiable error information list for this exception.
+     */
+    public List<TextAnalyticsErrorInformation> getErrorInformationList() {
+        return Collections.unmodifiableList(this.errorInformationList);
+    }
+
+    /**
+     * The private setter to set the errors property
+     * via {@link TextAnalyticsExceptionPropertiesHelper.TextAnalyticsExceptionAccessor}.
+     *
+     * @param errorInformationList the list of {@link TextAnalyticsErrorInformation}
+     */
+    private void setErrorInformationList(List<TextAnalyticsErrorInformation> errorInformationList) {
+        this.errorInformationList = errorInformationList;
     }
 }

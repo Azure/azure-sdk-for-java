@@ -1,7 +1,21 @@
 # Release History
 
-## 7.1.0-beta.1 (Unreleased)
+## 8.1.0 (Unreleased)
+### Features
+- Adds support for task slots
+    - `JobOperations.getTaskSlotCounts()` returns task slot counts
+    - `JobOperations.getTaskResult()` returns a `TaskCountsResult` object containing both task and slot counts
 
+## 8.1.0-beta.1 (Unreleased)
+
+## 8.0.0 (2020-04-27)
+### Features
+- Added ability to encrypt `ComputeNode` disk drives using the new `diskEncryptionConfiguration` property of `VirtualMachineConfiguration`.
+- The `createCertificate` functions on `CertificateOperations` had their parameters updated to more clearly reflect that `password` is optional for PFX formatted certificates.
+- **[Breaking]** The `virtualMachineImageId` property of `ImageReference` can now only refer to a Shared Image Gallery image.
+- **[Breaking]** Pools can now be provisioned without a public IP using the new `PublicIPAddressConfiguration` property of `NetworkConfiguration`.
+    - The `PublicIPs` property of `NetworkConfiguration` has moved in to `PublicIPAddressConfiguration` as well. This property can only be specified if `IPAddressProvisioningType` is `UserManaged`.
+      
 ## 7.0.0
 ### Features
     - Added ability to specify a collection of public IPs on CloudPool via the new PublicIPs property. This guarantees nodes in the Pool will have an IP from the list user provided IPs.
@@ -65,7 +79,7 @@ This version of the Batch .NET client library targets version 2018-12-01.8.0 of 
  - Update 'List' methods to return the lower layer PagedList object instead of the standard List.
 
 ### REST API version
-This version of the Batch Java client library targets version 2018-08-01.7.1 of the Azure Batch REST API. See this [document](https://docs.microsoft.com/en-us/rest/api/batchservice/batch-service-rest-api-versioning#latest-version-2018-08-0171) for detail.
+This version of the Batch Java client library targets version 2018-08-01.7.1 of the Azure Batch REST API. See this [document](https://docs.microsoft.com/rest/api/batchservice/batch-service-rest-api-versioning#latest-version-2018-08-0171) for detail.
 
 ## 3.3.0
 ### Features
@@ -84,7 +98,7 @@ This version of the Batch Java client library targets version 2018-08-01.7.1 of 
    - This is intended for use in debugging by Microsoft support when there are problems on a node.
 
 ### REST API version
-This version of the Batch Java client library targets version 2018-03-01.6.1 of the Azure Batch REST API. See this [document](https://docs.microsoft.com/en-us/rest/api/batchservice/batch-service-rest-api-versioning#latest-version-2018-03-0161) for detail.
+This version of the Batch Java client library targets version 2018-03-01.6.1 of the Azure Batch REST API. See this [document](https://docs.microsoft.com/rest/api/batchservice/batch-service-rest-api-versioning#latest-version-2018-03-0161) for detail.
 
 
 ## 3.0.0
@@ -98,4 +112,4 @@ This version of the Batch Java client library targets version 2018-03-01.6.1 of 
 - Added support for tasks run using Docker containers. To run a task using a Docker container you must specify a `containerConfiguration` on the `VirtualMachineConfiguration` for a pool, and then add `taskContainerSettings` on the Task.
 
 ### REST API version
-This version of the Batch Java client library targets version 2017-09-01.6.0 of the Azure Batch REST API. See this [document](https://docs.microsoft.com/en-us/rest/api/batchservice/batch-service-rest-api-versioning#latest-version-2017-09-0160) for detail.
+This version of the Batch Java client library targets version 2017-09-01.6.0 of the Azure Batch REST API. See this [document](https://docs.microsoft.com/rest/api/batchservice/batch-service-rest-api-versioning#latest-version-2017-09-0160) for detail.

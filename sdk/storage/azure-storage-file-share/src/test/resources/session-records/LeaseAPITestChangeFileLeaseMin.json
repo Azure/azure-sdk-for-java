@@ -1,0 +1,98 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net/leaseapitestchangefileleasemin3477345191fa2320c?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "100fd30d-5e5a-4b55-b7b7-7ca71cd5c7c1"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-02-10",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D8671C809C0D73",
+      "Last-Modified" : "Fri, 02 Oct 2020 21:45:38 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "660dd223-301a-00a3-6705-99f447000000",
+      "Date" : "Fri, 02 Oct 2020 21:45:37 GMT",
+      "x-ms-client-request-id" : "100fd30d-5e5a-4b55-b7b7-7ca71cd5c7c1"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net/leaseapitestchangefileleasemin3477345191fa2320c/leaseapitestchangefileleasemin57846b09b888e6109",
+    "Headers" : {
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "68e8bc78-c9e5-4540-9b15-ebd42326cf35"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-02-10",
+      "x-ms-file-permission-key" : "5144323600546320195*17277118026500876237",
+      "x-ms-file-id" : "13835128424026341376",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-file-creation-time" : "2020-10-02T21:45:38.8533187Z",
+      "Last-Modified" : "Fri, 02 Oct 2020 21:45:38 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Fri, 02 Oct 2020 21:45:38 GMT",
+      "ETag" : "0x8D8671C80ADA1C3",
+      "x-ms-file-attributes" : "Archive",
+      "x-ms-file-change-time" : "2020-10-02T21:45:38.8533187Z",
+      "x-ms-file-parent-id" : "0",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "660dd225-301a-00a3-6805-99f447000000",
+      "x-ms-client-request-id" : "68e8bc78-c9e5-4540-9b15-ebd42326cf35",
+      "x-ms-file-last-write-time" : "2020-10-02T21:45:38.8533187Z"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net/leaseapitestchangefileleasemin3477345191fa2320c/leaseapitestchangefileleasemin57846b09b888e6109?comp=lease",
+    "Headers" : {
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "19b6251f-f08f-416b-a2c7-31196ac6eea4"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-02-10",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D8671C80ADA1C3",
+      "x-ms-lease-id" : "5a431855-9cab-43e8-983a-ee4455917642",
+      "Last-Modified" : "Fri, 02 Oct 2020 21:45:38 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "660dd228-301a-00a3-6905-99f447000000",
+      "Date" : "Fri, 02 Oct 2020 21:45:38 GMT",
+      "x-ms-client-request-id" : "19b6251f-f08f-416b-a2c7-31196ac6eea4"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net/leaseapitestchangefileleasemin3477345191fa2320c/leaseapitestchangefileleasemin57846b09b888e6109?comp=lease",
+    "Headers" : {
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f26a88c6-f90e-4a14-80a4-0e415f4923e6"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-02-10",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D8671C80ADA1C3",
+      "x-ms-lease-id" : "059ce29d-ef63-4459-b62f-5ee76a9ceaec",
+      "Last-Modified" : "Fri, 02 Oct 2020 21:45:38 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "660dd229-301a-00a3-6a05-99f447000000",
+      "Date" : "Fri, 02 Oct 2020 21:45:38 GMT",
+      "x-ms-client-request-id" : "f26a88c6-f90e-4a14-80a4-0e415f4923e6"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "leaseapitestchangefileleasemin3477345191fa2320c", "leaseapitestchangefileleasemin57846b09b888e6109", "059ce29d-ef63-4459-b62f-5ee76a9ceaec" ]
+}

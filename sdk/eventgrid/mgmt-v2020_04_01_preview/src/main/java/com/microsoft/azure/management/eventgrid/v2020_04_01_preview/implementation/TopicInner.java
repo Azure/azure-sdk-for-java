@@ -26,7 +26,7 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class TopicInner extends Resource {
     /**
-     * List of private endpoint connections.
+     * The privateEndpointConnections property.
      */
     @JsonProperty(value = "properties.privateEndpointConnections")
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
@@ -97,7 +97,7 @@ public class TopicInner extends Resource {
     private IdentityInfo identity;
 
     /**
-     * Get list of private endpoint connections.
+     * Get the privateEndpointConnections value.
      *
      * @return the privateEndpointConnections value
      */
@@ -106,7 +106,7 @@ public class TopicInner extends Resource {
     }
 
     /**
-     * Set list of private endpoint connections.
+     * Set the privateEndpointConnections value.
      *
      * @param privateEndpointConnections the privateEndpointConnections value to set
      * @return the TopicInner object itself.

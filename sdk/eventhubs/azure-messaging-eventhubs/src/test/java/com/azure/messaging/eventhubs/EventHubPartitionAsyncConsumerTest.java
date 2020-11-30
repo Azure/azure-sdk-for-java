@@ -108,13 +108,11 @@ class EventHubPartitionAsyncConsumerTest {
             consumer.close();
         }
 
-        if (linkProcessor != null) {
-            linkProcessor.dispose();
-        }
+        linkProcessor.cancel();
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "true", "false" })
+    @ValueSource(strings = {"true", "false"})
     void receivesMessages(boolean trackLastEnqueuedProperties) {
         // Arrange
         linkProcessor = createSink(link1, link2).subscribeWith(new AmqpReceiveLinkProcessor(PREFETCH, retryPolicy, parentConnection));

@@ -12,7 +12,7 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Log storage settings.
+ * (Deprecated. Please use LogSettings) Log storage settings.
  */
 public class LogStorageSettings {
     /**
@@ -33,6 +33,20 @@ public class LogStorageSettings {
      */
     @JsonProperty(value = "path")
     private Object path;
+
+    /**
+     * Gets or sets the log level, support: Info, Warning. Type: string (or
+     * Expression with resultType string).
+     */
+    @JsonProperty(value = "logLevel")
+    private Object logLevel;
+
+    /**
+     * Specifies whether to enable reliable logging. Type: boolean (or
+     * Expression with resultType boolean).
+     */
+    @JsonProperty(value = "enableReliableLogging")
+    private Object enableReliableLogging;
 
     /**
      * Get unmatched properties from the message are deserialized this collection.
@@ -91,6 +105,46 @@ public class LogStorageSettings {
      */
     public LogStorageSettings withPath(Object path) {
         this.path = path;
+        return this;
+    }
+
+    /**
+     * Get gets or sets the log level, support: Info, Warning. Type: string (or Expression with resultType string).
+     *
+     * @return the logLevel value
+     */
+    public Object logLevel() {
+        return this.logLevel;
+    }
+
+    /**
+     * Set gets or sets the log level, support: Info, Warning. Type: string (or Expression with resultType string).
+     *
+     * @param logLevel the logLevel value to set
+     * @return the LogStorageSettings object itself.
+     */
+    public LogStorageSettings withLogLevel(Object logLevel) {
+        this.logLevel = logLevel;
+        return this;
+    }
+
+    /**
+     * Get specifies whether to enable reliable logging. Type: boolean (or Expression with resultType boolean).
+     *
+     * @return the enableReliableLogging value
+     */
+    public Object enableReliableLogging() {
+        return this.enableReliableLogging;
+    }
+
+    /**
+     * Set specifies whether to enable reliable logging. Type: boolean (or Expression with resultType boolean).
+     *
+     * @param enableReliableLogging the enableReliableLogging value to set
+     * @return the LogStorageSettings object itself.
+     */
+    public LogStorageSettings withEnableReliableLogging(Object enableReliableLogging) {
+        this.enableReliableLogging = enableReliableLogging;
         return this;
     }
 

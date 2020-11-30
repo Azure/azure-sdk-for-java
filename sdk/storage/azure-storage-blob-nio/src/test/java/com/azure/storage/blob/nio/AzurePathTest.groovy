@@ -20,7 +20,7 @@ class AzurePathTest extends APISpec {
         fs = new AzureFileSystem(new AzureFileSystemProvider(), getAccountName(PRIMARY_STORAGE), config)
     }
 
-    def "Path getFileSystem"() {
+    def "GetFileSystem"() {
         when:
         def path = fs.getPath("Foo")
 
@@ -29,7 +29,7 @@ class AzurePathTest extends APISpec {
     }
 
     @Unroll
-    def "Path isAbsolute getRoot"() {
+    def "IsAbsolute getRoot"() {
         expect:
         fs.getPath(path).isAbsolute() == absolute
         fs.getPath(path).getRoot() == (root == null ? null : fs.getPath(root))
@@ -47,7 +47,7 @@ class AzurePathTest extends APISpec {
     }
 
     @Unroll
-    def "Path getFileName getParent getNameCount"() {
+    def "GetFileName getParent getNameCount"() {
         expect:
         fs.getPath(path).getFileName() == (fileName == null ? null : fs.getPath(fileName))
         fs.getPath(path).getParent() == (parent == null ? null : fs.getPath(parent))
@@ -71,7 +71,7 @@ class AzurePathTest extends APISpec {
     }
 
     @Unroll
-    def "Path getName"() {
+    def "GetName"() {
         setup:
         def rootPath = "root:/foo/bar/baz"
         def path = "foo/bar/baz"
@@ -88,7 +88,7 @@ class AzurePathTest extends APISpec {
     }
 
     @Unroll
-    def "Path getName fail"() {
+    def "GetName fail"() {
         when:
         fs.getPath("foo/bar").getName(index)
 
@@ -109,7 +109,7 @@ class AzurePathTest extends APISpec {
     }
 
     @Unroll
-    def "Path subPath"() {
+    def "SubPath"() {
         setup:
         def rootPath = "root:/foo/bar/fizz/buzz/dir"
         def path = "foo/bar/fizz/buzz/dir"
@@ -130,7 +130,7 @@ class AzurePathTest extends APISpec {
     }
 
     // The javadocs define an equivalence between these two methods in special cases.
-    def "Path subPath getParent"() {
+    def "SubPath getParent"() {
         setup:
         def path = fs.getPath("foo/bar/fizz/buzz")
 
@@ -138,7 +138,7 @@ class AzurePathTest extends APISpec {
         path.subpath(0, path.getNameCount() - 1) == path.getParent()
     }
 
-    def "Path subPath fail"() {
+    def "SubPath fail"() {
         when:
         fs.getPath("foo/bar/fizz/buzz/dir").subpath(begin, end)
 
@@ -155,7 +155,7 @@ class AzurePathTest extends APISpec {
     }
 
     @Unroll
-    def "Path startsWith"() {
+    def "StartsWith"() {
         expect:
         fs.getPath(path).startsWith(fs.getPath(otherPath)) == startsWith
         fs.getPath(path).startsWith(otherPath) == startsWith
@@ -182,7 +182,7 @@ class AzurePathTest extends APISpec {
     }
 
     @Unroll
-    def "Path endsWith"() {
+    def "EndsWith"() {
         expect:
         fs.getPath(path).endsWith(fs.getPath(otherPath)) == endsWith
         fs.getPath(path).endsWith(otherPath) == endsWith
@@ -209,7 +209,7 @@ class AzurePathTest extends APISpec {
     }
 
     @Unroll
-    def "Path normalize"() {
+    def "Normalize"() {
         expect:
         fs.getPath(path).normalize() == fs.getPath(resultPath)
 
@@ -236,7 +236,7 @@ class AzurePathTest extends APISpec {
     }
 
     @Unroll
-    def "Path resolve"() {
+    def "Resolve"() {
         expect:
         fs.getPath(path).resolve(fs.getPath(other)) == fs.getPath(resultPath)
         fs.getPath(path).resolve(other) == fs.getPath(resultPath)
@@ -253,7 +253,7 @@ class AzurePathTest extends APISpec {
     }
 
     @Unroll
-    def "Path resolveSibling"() {
+    def "ResolveSibling"() {
         expect:
         fs.getPath(path).resolveSibling(fs.getPath(other)) == fs.getPath(resultPath)
         fs.getPath(path).resolveSibling(other) == fs.getPath(resultPath)
@@ -273,7 +273,7 @@ class AzurePathTest extends APISpec {
     }
 
     @Unroll
-    def "Path relativize"() {
+    def "Relativize"() {
         setup:
         def p = fs.getPath(path)
         def otherP = fs.getPath(other)
@@ -298,7 +298,7 @@ class AzurePathTest extends APISpec {
         "foo"           | ""                   || ".."                    | true
     }
 
-    def "Path relativize fail"() {
+    def "Relativize fail"() {
         when:
         fs.getPath(path).relativize(fs.getPath(other))
 
@@ -312,7 +312,7 @@ class AzurePathTest extends APISpec {
     }
 
     @Unroll
-    def "Path toUri toAbsolute"() {
+    def "ToUri toAbsolute"() {
         expect:
         fs.getPath(path).toAbsolutePath().toString() == expected
         fs.getPath(path).toUri().toString() == fs.provider().getScheme() + ":/" + expected
@@ -325,7 +325,7 @@ class AzurePathTest extends APISpec {
     }
 
     @Unroll
-    def "Path iterator"() {
+    def "Iterator"() {
         setup:
         def p = fs.getPath(path)
         def it = p.iterator()
@@ -351,7 +351,7 @@ class AzurePathTest extends APISpec {
     }
 
     @Unroll
-    def "Path compareTo equals"() {
+    def "CompareTo equals"() {
         expect:
         fs.getPath(path1).compareTo(fs.getPath(path2)) == path1.compareTo(path2)
         fs.getPath(path1).equals(fs.getPath(path2)) == equals
@@ -364,7 +364,7 @@ class AzurePathTest extends APISpec {
         ""        | "foo"     | false
     }
 
-    def "Path compareTo equals fails"() {
+    def "CompareTo equals fails"() {
         when:
         def path1 = fs.getPath("a/b")
         def path2 = FileSystems.default.getPath("a/b")
@@ -379,7 +379,7 @@ class AzurePathTest extends APISpec {
         thrown(ClassCastException)
     }
 
-    def "Path getBlobClient relative"() {
+    def "GetBlobClient relative"() {
         when:
         def path = fs.getPath("foo/bar")
         def client = ((AzurePath) path).toBlobClient()
@@ -389,7 +389,7 @@ class AzurePathTest extends APISpec {
         client.getContainerName() == rootNameToContainerName(getDefaultDir(fs))
     }
 
-    def "Path getBlobClient empty"() {
+    def "GetBlobClient empty"() {
         when:
         def path = fs.getPath(getNonDefaultRootDir(fs))
         ((AzurePath) path).toBlobClient()
@@ -405,7 +405,7 @@ class AzurePathTest extends APISpec {
         thrown(IOException)
     }
 
-    def "Path getBlobClient absolute"() {
+    def "GetBlobClient absolute"() {
         when:
         def path = fs.getPath(getNonDefaultRootDir(fs), "foo/bar")
         def client = ((AzurePath) path).toBlobClient()
@@ -415,7 +415,7 @@ class AzurePathTest extends APISpec {
         client.getContainerName() == rootNameToContainerName(getNonDefaultRootDir(fs))
     }
 
-    def "Path getBlobClient fail"() {
+    def "GetBlobClient fail"() {
         when:
         // Can't get a client to a nonexistent root/container.
         ((AzurePath) fs.getPath("fakeRoot:", "foo/bar")).toBlobClient()

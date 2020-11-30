@@ -5,49 +5,60 @@ parameters:
   EnvVars: {}
   MaxParallel: 0
   Matrix:
-    Linux - Java 8:
-      OSName: 'Linux'
-      OSVmImage: 'ubuntu-16.04'
-      JavaVersion: '1.8'
+    Linux - Java 8 (AzureCloud):
+      OSVmImage: 'ubuntu-18.04'
+      JavaTestVersion: '1.8'
       DisplayName: 'Linux - Java 8'
-    macOS - Java 8:
-      OSName: 'macOS'
+      AZURE_TEST_HTTP_CLIENTS: netty
+    macOS - Java 8 (AzureCloud):
       OSVmImage: 'macOS-10.15'
-      JavaVersion: '1.8'
+      JavaTestVersion: '1.8'
       DisplayName: 'macOS - Java 8'
-    Windows - Java 8:
-      OSName: 'Windows'
+      AZURE_TEST_HTTP_CLIENTS: okhttp
+    Windows - Java 8 (AzureCloud):
       OSVmImage: 'windows-2019'
-      JavaVersion: '1.8'
+      JavaTestVersion: '1.8'
       DisplayName: 'Windows - Java 8'
-    Linux - Java 11:
-      OSName: 'Linux'
-      OSVmImage: 'ubuntu-16.04'
-      JavaVersion: '1.11'
+      AZURE_TEST_HTTP_CLIENTS: netty
+    Linux - Java 11 (AzureCloud):
+      OSVmImage: 'ubuntu-18.04'
+      JavaTestVersion: '1.11'
       DisplayName: 'Linux - Java 11'
-    macOS - Java 11:
-      OSName: 'macOS'
+      AZURE_TEST_HTTP_CLIENTS: okhttp
+    macOS - Java 11 (AzureCloud):
       OSVmImage: 'macOS-10.15'
-      JavaVersion: '1.11'
+      JavaTestVersion: '1.11'
       DisplayName: 'macOS - Java 11'
-    Windows - Java 11:
-      OSName: 'Windows'
+      AZURE_TEST_HTTP_CLIENTS: netty
+    Windows - Java 11 (AzureCloud):
       OSVmImage: 'windows-2019'
-      JavaVersion: '1.11'
+      JavaTestVersion: '1.11'
       DisplayName: 'Windows - Java 11'
+      AZURE_TEST_HTTP_CLIENTS: okhttp
+    Linux From Source - Java 11:
+      OSVmImage: 'ubuntu-18.04'
+      JavaTestVersion: '1.11'
+      RunTitle: 'From Source: Linux on Java 1.11'
+      AZURE_TEST_HTTP_CLIENTS: netty
+      TestFromSource: true
   PreRunSteps: []
   PostRunSteps: []
   TestName: LiveTest
+  TestCanary: false
   TimeoutInMinutes: 60
   TestStepMavenInputs:
-    options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -pl $(ProjectList)'
+    options: '$(DefaultOptions) -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -DtrimStackTrace=false -pl $(ProjectList)'
     mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
     javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '$(JavaVersion)'
+    jdkVersionOption: '$(JavaTestVersion)'
     jdkArchitectureOption: 'x64'
     publishJUnitResults: false
-    goals: 'test'
+    goals: 'verify'
   TestResultsFiles: ''
+  SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+  ResourceGroupLocationCanary: "centraluseuap"
+  ArmTemplateParameters: '@{}'
+  Location: ''
 
 jobs:
   - job: ${{ parameters.TestName }}
@@ -55,39 +66,42 @@ jobs:
 
     variables:
       - template: ../variables/globals.yml
+      # Default $(SubscriptionConfiguration) if the matrix does not specify a $(SubscriptionConfiguration)
+      - name: SubscriptionConfiguration
+        value: ${{ parameters.SubscriptionConfiguration }}
+      - name: ArmTemplateParameters
+        value: ${{ parameters.ArmTemplateParameters }}
+      - name: Location
+        value: ${{ parameters.Location }}
+
     strategy:
-      matrix: ${{ parameters.Matrix }}
+      matrix:
+        ${{ insert }}: ${{ parameters.Matrix }}
+        ${{ if eq(parameters.TestCanary, 'true') }}:
+          Linux - Java 11 (AzureCloudCanary):
+            OSVmImage: 'ubuntu-18.04'
+            JavaTestVersion: '1.11'
+            DisplayName: 'Linux - Java 11'
+            SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)
+            Location: ${{ parameters.ResourceGroupLocationCanary }}
+            AZURE_TEST_HTTP_CLIENTS: netty
       maxParallel: ${{ parameters.MaxParallel }}
 
     pool:
       vmImage: $(OSVmImage)
 
     steps:
+      - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
+
+      - template: /eng/common/pipelines/templates/steps/bypass-local-dns.yml
+
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
-        - pwsh: |
-            Install-Module -Name Az -AllowClobber -Scope CurrentUser -Force
-          displayName: Install Az Module
-
-        - pwsh: |
-            $baseName = "t" + [guid]::NewGuid().ToString('n').Substring(0,16)
-            Write-Host "##vso[task.setvariable variable=BaseName;]$baseName"
-          displayName: Generate $(BaseName)
-
-        - pwsh: >-
-            eng/New-TestResources.ps1
-            -BaseName $(BaseName)
-            -ServiceDirectory ${{ parameters.ServiceDirectory }}
-            -TestApplicationId '$(aad-azure-sdk-test-client-id)'
-            -TestApplicationSecret '$(aad-azure-sdk-test-client-secret)'
-            -TestApplicationOid '$(aad-azure-sdk-test-client-oid)'
-            -TenantId '$(aad-azure-sdk-test-tenant-id)'
-            -ProvisionerApplicationId '$(provisioner-aad-id)'
-            -ProvisionerApplicationSecret '$(provisioner-aad-secret)'
-            -DeleteAfterHours 24
-            -CI
-            -Force
-            -Verbose
-          displayName: Provision Test Resources
+        - template: /eng/common/TestResources/deploy-test-resources.yml
+          parameters:
+            ServiceDirectory: '${{ parameters.ServiceDirectory }}'
+            SubscriptionConfiguration: $(SubscriptionConfiguration)
+            ArmTemplateParameters: $(ArmTemplateParameters)
+            Location: $(Location)
 
       - ${{ parameters.PreRunSteps }}
 
@@ -95,22 +109,41 @@ jobs:
         parameters:
           Artifacts: ${{parameters.Artifacts}}
           AdditionalModules: ${{parameters.AdditionalModules}}
+      
+      - task: UsePythonVersion@0
+        displayName: 'Use Python 3.6'
+        inputs:
+          versionSpec: '3.6'
+        condition: and(succeeded(), eq(variables['TestFromSource'],'true'))
+
+      - task: PythonScript@0
+        displayName: 'Set versions for source build'
+        inputs:
+          scriptPath: 'eng/versioning/set_versions.py'
+          arguments: '--build-type client --pst'
+        condition: and(succeeded(), eq(variables['TestFromSource'],'true'))
+
+      - task: PythonScript@0
+        displayName: 'Update versions for source build'
+        inputs:
+          scriptPath: 'eng/versioning/update_versions.py'
+          arguments: '--update-type library --build-type client --sr'
+        condition: and(succeeded(), eq(variables['ShouldRunSourceTests'],'true'))
 
       - task: Maven@3
-        displayName: 'Build and Install'
+        displayName: 'Build and Install, JDK Version: $(JavaTestVersion)'
         inputs:
           mavenPomFile: pom.xml
           goals: 'install'
-          options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
+          options: '$(DefaultOptions) -T 1C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.11'
+          jdkVersionOption: $(JavaTestVersion)
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
-  
 
       - task: Maven@3
-        displayName: $(DisplayName)
+        displayName: 'Run tests: $(DisplayName)'
         inputs:
           mavenPomFile: pom.xml
           ${{ insert }}: ${{ parameters.TestStepMavenInputs }}
@@ -119,18 +152,12 @@ jobs:
       - ${{ parameters.PostRunSteps }}
 
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
-        - pwsh: >-
-            eng/Remove-TestResources.ps1
-            -ResourceGroupName "${env:AZURE_RESOURCEGROUP_NAME}"
-            -TenantId '$(aad-azure-sdk-test-tenant-id)'
-            -ProvisionerApplicationId '$(provisioner-aad-id)'
-            -ProvisionerApplicationSecret '$(provisioner-aad-secret)'
-            -Force
-            -Verbose
-          condition: ne(variables['AZURE_RESOURCEGROUP_NAME'], '')
-          continueOnError: true
-          displayName: Remove Test Resources
+        - template: /eng/common/TestResources/remove-test-resources.yml
+          parameters:
+            ServiceDirectory: '${{ parameters.ServiceDirectory }}'
+            SubscriptionConfiguration: $(SubscriptionConfiguration)
 
+      - template: ../steps/upload-repository-on-failure.yml
 
       - task: PublishTestResults@2
         condition: always()

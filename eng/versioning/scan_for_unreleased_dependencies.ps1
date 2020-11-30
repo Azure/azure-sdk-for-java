@@ -9,7 +9,7 @@ param(
 
 # Given an input groupId, artifactId and root service directory, scan the service directory for the
 # POM file that matches the group/artifact. If the POM file is found, scan for any unreleased_ dependency
-# tags otherwise report an error. If there are unreleased dependency tags then report them and return an 
+# tags otherwise report an error. If there are unreleased dependency tags then report them and return an
 # error, otherwise report success and allow the release to continue.
 
 $script:FoundPomFile = $false
@@ -34,7 +34,7 @@ Get-ChildItem -Path $serviceDirectory -Filter pom*.xml -Recurse -File | ForEach-
         $script:FoundPomFile = $true
         Write-Host "Found pom file with matching groupId($($inputGroupId))/artifactId($($inputArtifactId)), pomFile=$($pomFile)"
         $version = $xmlPomFile.project.version
-        if ($version -like '*-beta.*')
+        if ($version -match '.*-beta(\.\d*)?')
         {
             $libraryIsBeta = $true
             Write-Host "Library is releasing as Beta, version=$($version)"
@@ -60,13 +60,20 @@ Get-ChildItem -Path $serviceDirectory -Filter pom*.xml -Recurse -File | ForEach-
                 $versionUpdateTag = $versionNode.NextSibling.Value.Trim()
                 if ($versionUpdateTag -match "{x-version-update;unreleased_$($groupId)")
                 {
-                    # before reporting an error, check to see if there's a scope element and
-                    # if the scope is test then don't fail
-                    $scopeNode = $dependencyNode.GetElementsByTagName("scope")[0]
-                    if ($scopeNode -and $scopeNode.InnerText.Trim() -eq "test")
-                    {
-                        continue
-                    }
+                    # mvn dependency:copy-dependencies is used to copy the dependencies from maven for analysis
+                    # as part of the doc build which requires pulling down all dependencies including test
+                    # dependencies. Until such a time that a better solution is found, disable release of a
+                    # library with unreleased test dependencies. When a better solution is found, just uncomment
+                    # the code below.
+
+                    # # before reporting an error, check to see if there's a scope element and
+                    # # if the scope is test then don't fail
+                    # $scopeNode = $dependencyNode.GetElementsByTagName("scope")[0]
+                    # if ($scopeNode -and $scopeNode.InnerText.Trim() -eq "test")
+                    # {
+                    #    continue
+                    # }
+
                     $script:FoundError = $true
                     Write-Error-With-Color "Error: Cannot release libraries with unreleased dependencies. dependency=$($versionUpdateTag)"
                     continue
@@ -87,6 +94,26 @@ Get-ChildItem -Path $serviceDirectory -Filter pom*.xml -Recurse -File | ForEach-
                         Write-Error-With-Color "Error: Cannot release non-beta libraries with beta_ dependencies. dependency=$($versionUpdateTag)"
                     }
                     continue
+                } else {
+                    # If this is an external dependency then continue
+                    if ($versionUpdateTag -match "external_dependency}") {
+                        continue
+                    }
+                    # If the scope is test then a beta dependency is allowed
+                    $scopeNode = $dependencyNode.GetElementsByTagName("scope")[0]
+                    if ($scopeNode -and $scopeNode.InnerText.Trim() -eq "test") {
+                        continue
+                    }
+                    # If this isn't an external dependency then ensure that if the dependency
+                    # version is beta, that we're releasing a beta, otherwise fail
+                    if ($versionNode.InnerText -match '.*-beta(\.\d*)?')
+                    {
+                        if (!$libraryIsBeta)
+                        {
+                            $script:FoundError = $true
+                            Write-Error-With-Color "Error: Cannot release non-beta libraries with beta dependencies. dependency=$($versionUpdateTag), version=$($versionNode.InnerText.Trim())"
+                        }
+                    }
                 }
             }
             else
@@ -106,8 +133,7 @@ if (-Not $script:FoundPomFile) {
     exit(1)
 }
 if ($script:FoundError) {
-    Write-Error-With-Color "Libaries with unreleased dependencies cannot be released."
     exit(1)
 }
 
-Write-Host "$($inputGroupId):$($inputArtifactId) looks goood to release" -ForegroundColor Green
+Write-Host "$($inputGroupId):$($inputArtifactId) looks good to release" -ForegroundColor Green

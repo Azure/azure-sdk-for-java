@@ -70,7 +70,6 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
     private Mono<HttpResponse> attemptAsync(final HttpPipelineCallContext context, HttpPipelineNextPolicy next,
                                             final HttpRequest originalRequest, final boolean considerSecondary,
                                             final int primaryTry, final int attempt) {
-
         // Determine which endpoint to try. It's primary if there is no secondary or if it is an odd number attempt.
         final boolean tryingPrimary = !considerSecondary || (attempt % 2 != 0);
 
@@ -112,7 +111,7 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
          until after the retry backoff delay, so we call delaySubscription.
          */
         return next.clone().process()
-            .timeout(Duration.ofSeconds(this.requestRetryOptions.getTryTimeout()))
+            .timeout(this.requestRetryOptions.getTryTimeoutDuration())
             .delaySubscription(Duration.ofMillis(delayMs))
             .flatMap(response -> {
                 boolean newConsiderSecondary = considerSecondary;
@@ -141,8 +140,18 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
                         ensure primaryTry is correct when passed to calculate the delay.
                          */
                     int newPrimaryTry = (!tryingPrimary || !considerSecondary) ? primaryTry + 1 : primaryTry;
-                    return attemptAsync(context, next, originalRequest, newConsiderSecondary, newPrimaryTry,
-                        attempt + 1);
+
+                    Flux<ByteBuffer> responseBody = response.getBody();
+                    if (responseBody == null) {
+                        return attemptAsync(context, next, originalRequest, newConsiderSecondary, newPrimaryTry,
+                            attempt + 1);
+                    } else {
+                        return response.getBody()
+                            .ignoreElements()
+                            .then(attemptAsync(context, next, originalRequest, newConsiderSecondary, newPrimaryTry,
+                                attempt + 1));
+                    }
+
                 }
                 return Mono.just(response);
             }).onErrorResume(throwable -> {

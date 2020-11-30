@@ -295,7 +295,7 @@ public final class ConnectionStringBuilder {
     /**
      * Set the authentication type in the Connection String. The only valid values are "Managed Identity" or null.
      * 
-     * @param authentication
+     * @param authentication Authentication Type
      * @return the {@link ConnectionStringBuilder} instance being set.
      */
     public ConnectionStringBuilder setAuthentication(final String authentication) {

@@ -3,9 +3,10 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.implementation.ChangeFeedOptions;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.Resource;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,12 +33,16 @@ public class Paginator {
     }
 
     public static <T extends Resource> Flux<FeedResponse<T>> getPaginatedQueryResultAsObservable(
-        FeedOptions feedOptions,
+        CosmosQueryRequestOptions cosmosQueryRequestOptions,
         BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc,
         Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc, Class<T> resourceType,
         int maxPageSize) {
-        return getPaginatedQueryResultAsObservable(feedOptions.getRequestContinuation(), createRequestFunc, executeFunc, resourceType,
-                -1, maxPageSize);
+        return getPaginatedQueryResultAsObservable(
+            ModelBridgeInternal.getRequestContinuationFromQueryRequestOptions(cosmosQueryRequestOptions),
+            createRequestFunc,
+            executeFunc,
+            resourceType,
+            -1, maxPageSize);
     }
 
     public static <T extends Resource> Flux<FeedResponse<T>> getPaginatedQueryResultAsObservable(

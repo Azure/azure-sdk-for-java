@@ -3,7 +3,6 @@
 
 package com.azure.storage.blob.implementation.models;
 
-import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobPrefix;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
@@ -17,11 +16,11 @@ final class CustomHierarchicalListingDeserializer extends JsonDeserializer<BlobH
 
     @Override
     public BlobHierarchyListSegment deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-        ArrayList<BlobItem> blobItems = new ArrayList<>();
+        ArrayList<BlobItemInternal> blobItems = new ArrayList<>();
         ArrayList<BlobPrefix> blobPrefixes = new ArrayList<>();
 
         JsonDeserializer<Object> blobItemDeserializer =
-            ctxt.findRootValueDeserializer(ctxt.constructType(BlobItem.class));
+            ctxt.findRootValueDeserializer(ctxt.constructType(BlobItemInternal.class));
         JsonDeserializer<Object> blobPrefixDeserializer =
             ctxt.findRootValueDeserializer(ctxt.constructType(BlobPrefix.class));
 
@@ -31,7 +30,7 @@ final class CustomHierarchicalListingDeserializer extends JsonDeserializer<BlobH
             p.nextToken();
 
             if (p.getCurrentName().equals("Blob")) {
-                blobItems.add((BlobItem) blobItemDeserializer.deserialize(p, ctxt));
+                blobItems.add((BlobItemInternal) blobItemDeserializer.deserialize(p, ctxt));
             } else if (p.getCurrentName().equals("BlobPrefix")) {
                 blobPrefixes.add((BlobPrefix) blobPrefixDeserializer.deserialize(p, ctxt));
             }

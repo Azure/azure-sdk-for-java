@@ -1,0 +1,22 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.servicebus.windows.net/topic-1/subscriptions/subscription-session?enrich=true&api-version=2017-04",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-messaging-servicebus/7.0.0-beta.4 (11.0.5; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Strict-Transport-Security" : "max-age=31536000",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "ETag" : "637293228523500000",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "<entry xmlns=\"http://www.w3.org/2005/Atom\"><id>sb://sb-java-conniey-1.servicebus.windows.net/topic-1/subscriptions/subscription-session?enrich=true&amp;api-version=2017-04</id><title type=\"text\">subscription-session</title><published>2020-07-02T21:40:54Z</published><updated>2020-07-02T21:40:54Z</updated><link rel=\"self\" href=\"sb://sb-java-conniey-1.servicebus.windows.net/topic-1/subscriptions/subscription-session?enrich=true&amp;api-version=2017-04\"/><content type=\"application/xml\"><SubscriptionDescription xmlns=\"http://schemas.microsoft.com/netservices/2010/10/servicebus/connect\" xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\"><LockDuration>PT15S</LockDuration><RequiresSession>true</RequiresSession><DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive><DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration><DeadLetteringOnFilterEvaluationExceptions>true</DeadLetteringOnFilterEvaluationExceptions><MessageCount>0</MessageCount><MaxDeliveryCount>5</MaxDeliveryCount><EnableBatchedOperations>true</EnableBatchedOperations><Status>Active</Status><CreatedAt>2020-07-02T21:40:54.4327719Z</CreatedAt><UpdatedAt>2020-07-02T21:40:54.4327719Z</UpdatedAt><AccessedAt>2020-07-02T21:40:54.433Z</AccessedAt><CountDetails xmlns:d3p1=\"http://schemas.microsoft.com/netservices/2011/06/servicebus\"><d3p1:ActiveMessageCount>0</d3p1:ActiveMessageCount><d3p1:DeadLetterMessageCount>0</d3p1:DeadLetterMessageCount><d3p1:ScheduledMessageCount>0</d3p1:ScheduledMessageCount><d3p1:TransferMessageCount>0</d3p1:TransferMessageCount><d3p1:TransferDeadLetterMessageCount>0</d3p1:TransferDeadLetterMessageCount></CountDetails><AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle><EntityAvailabilityStatus>Available</EntityAvailabilityStatus></SubscriptionDescription></content></entry>",
+      "Date" : "Thu, 02 Jul 2020 22:49:10 GMT",
+      "Content-Type" : "application/atom+xml;type=entry;charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

@@ -4,14 +4,19 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.implementation.BadRequestException;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConflictException;
+import com.azure.cosmos.implementation.ConnectionPolicy;
+import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.ForbiddenException;
 import com.azure.cosmos.implementation.GoneException;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.InvalidPartitionException;
 import com.azure.cosmos.implementation.LockedException;
 import com.azure.cosmos.implementation.MethodNotAllowedException;
 import com.azure.cosmos.implementation.NotFoundException;
+import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionIsMigratingException;
 import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
 import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
@@ -19,15 +24,11 @@ import com.azure.cosmos.implementation.PreconditionFailedException;
 import com.azure.cosmos.implementation.RequestEntityTooLargeException;
 import com.azure.cosmos.implementation.RequestRateTooLargeException;
 import com.azure.cosmos.implementation.RequestTimeoutException;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RetryWithException;
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.UnauthorizedException;
-import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.FailureValidator;
-import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.OperationType;
-import com.azure.cosmos.implementation.ResourceType;
-import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
@@ -45,6 +46,7 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
+import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 /**
@@ -64,7 +66,7 @@ public class HttpTransportClientTest {
 
     @Test(groups = "unit")
     public void getResourceFeedUri_Document() throws Exception {
-        RxDocumentServiceRequest req = RxDocumentServiceRequest.createFromName(
+        RxDocumentServiceRequest req = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Create, "dbs/db/colls/col", ResourceType.Document);
         String res = HttpTransportClient.getResourceFeedUri(req.getResourceType(), physicalAddress, req);
         assertThat(res.toString()).isEqualTo(physicalAddress.toString() + HttpUtils.urlEncode("dbs/db/colls/col/docs"));
@@ -72,7 +74,7 @@ public class HttpTransportClientTest {
 
     @Test(groups = "unit")
     public void getResourceFeedUri_Attachment() throws Exception {
-        RxDocumentServiceRequest req = RxDocumentServiceRequest.createFromName(
+        RxDocumentServiceRequest req = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Create, "dbs/db/colls/col", ResourceType.Attachment);
         String res = HttpTransportClient.getResourceFeedUri(req.getResourceType(), physicalAddress, req);
         assertThat(res.toString()).isEqualTo(physicalAddress.toString() + HttpUtils.urlEncode("dbs/db/colls/col/attachments"));
@@ -80,7 +82,7 @@ public class HttpTransportClientTest {
 
     @Test(groups = "unit")
     public void getResourceFeedUri_Collection() throws Exception {
-        RxDocumentServiceRequest req = RxDocumentServiceRequest.createFromName(
+        RxDocumentServiceRequest req = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Create, "dbs/db", ResourceType.DocumentCollection);
         String res = HttpTransportClient.getResourceFeedUri(req.getResourceType(), physicalAddress, req);
         assertThat(res.toString()).isEqualTo(physicalAddress.toString() + HttpUtils.urlEncode("dbs/db/colls"));
@@ -88,7 +90,7 @@ public class HttpTransportClientTest {
 
     @Test(groups = "unit")
     public void getResourceFeedUri_Conflict() throws Exception {
-        RxDocumentServiceRequest req = RxDocumentServiceRequest.createFromName(
+        RxDocumentServiceRequest req = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Create, "/dbs/db/colls/col", ResourceType.Conflict);
         String res = HttpTransportClient.getResourceFeedUri(req.getResourceType(), physicalAddress, req);
         assertThat(res.toString()).isEqualTo(physicalAddress.toString() + HttpUtils.urlEncode("dbs/db/colls/col/conflicts"));
@@ -96,27 +98,27 @@ public class HttpTransportClientTest {
 
     @Test(groups = "unit")
     public void getResourceFeedUri_Database() throws Exception {
-        RxDocumentServiceRequest req = RxDocumentServiceRequest.createFromName(
+        RxDocumentServiceRequest req = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Create, "/", ResourceType.Database);
         String res = HttpTransportClient.getResourceFeedUri(req.getResourceType(), physicalAddress, req);
         assertThat(res.toString()).isEqualTo(physicalAddress.toString() + "dbs");
     }
 
-    public static HttpTransportClient getHttpTransportClientUnderTest(Duration requestTimeout,
+    public static HttpTransportClient getHttpTransportClientUnderTest(ConnectionPolicy connectionPolicy,
                                                                       UserAgentContainer userAgent,
                                                                       HttpClient httpClient) {
         class HttpTransportClientUnderTest extends HttpTransportClient {
-            public HttpTransportClientUnderTest(Duration requestTimeout, UserAgentContainer userAgent) {
-                super(configs, requestTimeout, userAgent);
+            public HttpTransportClientUnderTest(ConnectionPolicy connectionPolicy, UserAgentContainer userAgent) {
+                super(configs, connectionPolicy, userAgent);
             }
 
             @Override
-            HttpClient createHttpClient(Duration requestTimeout) {
+            HttpClient createHttpClient(ConnectionPolicy connectionPolicy) {
                 return httpClient;
             }
         }
 
-        return new HttpTransportClientUnderTest(requestTimeout, userAgent);
+        return new HttpTransportClientUnderTest(connectionPolicy, userAgent);
     }
 
     @Test(groups = "unit")
@@ -130,11 +132,13 @@ public class HttpTransportClientTest {
         UserAgentContainer userAgentContainer = new UserAgentContainer();
         userAgentContainer.setSuffix("i am suffix");
 
-        HttpTransportClient transportClient = getHttpTransportClientUnderTest(Duration.ofSeconds(100),
+        ConnectionPolicy connectionPolicy = ConnectionPolicy.getDefaultPolicy();
+        connectionPolicy.setRequestTimeout(Duration.ofSeconds(100));
+        HttpTransportClient transportClient = getHttpTransportClientUnderTest(connectionPolicy,
                 userAgentContainer,
                 httpClientMockWrapper.getClient());
 
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Create, "dbs/db/colls/col", ResourceType.Document);
         request.setContentBytes(new byte[0]);
 
@@ -447,13 +451,16 @@ public class HttpTransportClientTest {
                                             FailureValidator.Builder failureValidatorBuilder) {
         HttpClientMockWrapper httpClientMockWrapper = new HttpClientMockWrapper(mockedResponseBuilder);
         UserAgentContainer userAgentContainer = new UserAgentContainer();
+        ConnectionPolicy connectionPolicy = ConnectionPolicy.getDefaultPolicy();
+        connectionPolicy.setRequestTimeout(Duration.ofSeconds(100));
         HttpTransportClient transportClient = getHttpTransportClientUnderTest(
-                Duration.ofSeconds(100),
+                connectionPolicy,
                 userAgentContainer,
                 httpClientMockWrapper.getClient());
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Create, "dbs/db/colls/col", ResourceType.Document);
         request.setContentBytes(new byte[0]);
+        request.requestContext.resourcePhysicalAddress = "dbs/db/colls/col";
 
         Mono<StoreResponse> storeResp = transportClient.invokeStoreAsync(
                 Uri.create(physicalAddress),
@@ -558,8 +565,10 @@ public class HttpTransportClientTest {
                                 FailureValidator.Builder failureValidatorBuilder) {
         HttpClientMockWrapper httpClientMockWrapper = new HttpClientMockWrapper(mockedResponseBuilder);
         UserAgentContainer userAgentContainer = new UserAgentContainer();
+        ConnectionPolicy connectionPolicy = ConnectionPolicy.getDefaultPolicy();
+        connectionPolicy.setRequestTimeout(Duration.ofSeconds(100));
         HttpTransportClient transportClient = getHttpTransportClientUnderTest(
-                Duration.ofSeconds(100),
+                connectionPolicy,
                 userAgentContainer,
                 httpClientMockWrapper.getClient());
 
@@ -582,7 +591,7 @@ public class HttpTransportClientTest {
             String resourceFullName,
             ResourceType resourceType,
             byte[] content) {
-        RxDocumentServiceRequest req = RxDocumentServiceRequest.create(
+        RxDocumentServiceRequest req = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),
                 operationType,
                 resourceType,
                 resourceFullName,

@@ -13,7 +13,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Regex Entity Extractor.
+ * Regular Expression Entity Extractor.
  */
 public class RegexEntityExtractor {
     /**
@@ -35,11 +35,11 @@ public class RegexEntityExtractor {
     private Integer typeId;
 
     /**
-     * Possible values include: 'Entity Extractor', 'Hierarchical Entity
-     * Extractor', 'Hierarchical Child Entity Extractor', 'Composite Entity
-     * Extractor', 'Closed List Entity Extractor', 'Prebuilt Entity Extractor',
-     * 'Intent Classifier', 'Pattern.Any Entity Extractor', 'Regex Entity
-     * Extractor'.
+     * Possible values include: 'Entity Extractor', 'Child Entity Extractor',
+     * 'Hierarchical Entity Extractor', 'Hierarchical Child Entity Extractor',
+     * 'Composite Entity Extractor', 'List Entity Extractor', 'Prebuilt Entity
+     * Extractor', 'Intent Classifier', 'Pattern.Any Entity Extractor', 'Closed
+     * List Entity Extractor', 'Regex Entity Extractor'.
      */
     @JsonProperty(value = "readableType", required = true)
     private String readableType;
@@ -51,7 +51,7 @@ public class RegexEntityExtractor {
     private List<EntityRole> roles;
 
     /**
-     * The Regex entity pattern.
+     * The Regular Expression entity pattern.
      */
     @JsonProperty(value = "regexPattern")
     private String regexPattern;

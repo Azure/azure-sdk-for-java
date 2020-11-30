@@ -11,32 +11,39 @@ public class SpyClientBuilder extends AsyncDocumentClient.Builder {
         super.desiredConsistencyLevel = builder.desiredConsistencyLevel;
         super.masterKeyOrResourceToken = builder.masterKeyOrResourceToken;
         super.serviceEndpoint = builder.serviceEndpoint;
-        super.cosmosKeyCredential = builder.cosmosKeyCredential;
+        super.credential = builder.credential;
+        super.contentResponseOnWriteEnabled = builder.contentResponseOnWriteEnabled;
     }
 
     public SpyClientUnderTestFactory.ClientUnderTest build() {
         return SpyClientUnderTestFactory.createClientUnderTest(
-                serviceEndpoint,
-                masterKeyOrResourceToken,
-                connectionPolicy,
-                desiredConsistencyLevel,
-                configs, cosmosKeyCredential);
+            serviceEndpoint,
+            masterKeyOrResourceToken,
+            connectionPolicy,
+            desiredConsistencyLevel,
+            configs,
+            credential,
+            contentResponseOnWriteEnabled);
     }
 
     public SpyClientUnderTestFactory.ClientWithGatewaySpy buildWithGatewaySpy() {
         return SpyClientUnderTestFactory.createClientWithGatewaySpy(
-                serviceEndpoint,
-                masterKeyOrResourceToken,
-                connectionPolicy,
-                desiredConsistencyLevel,
-                configs, cosmosKeyCredential);
+            serviceEndpoint,
+            masterKeyOrResourceToken,
+            connectionPolicy,
+            desiredConsistencyLevel,
+            configs,
+            credential,
+            contentResponseOnWriteEnabled);
     }
 
     public SpyClientUnderTestFactory.DirectHttpsClientUnderTest buildWithDirectHttps() {
         return SpyClientUnderTestFactory.createDirectHttpsClientUnderTest(
-                serviceEndpoint,
-                masterKeyOrResourceToken,
-                connectionPolicy,
-                desiredConsistencyLevel, cosmosKeyCredential);
+            serviceEndpoint,
+            masterKeyOrResourceToken,
+            connectionPolicy,
+            desiredConsistencyLevel,
+            credential,
+            contentResponseOnWriteEnabled);
     }
 }

@@ -3,49 +3,50 @@
 package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.tracing.Tracer;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 import reactor.core.publisher.Signal;
+
+import java.util.Objects;
 
 public class TracerProvider {
     private final ClientLogger logger = new ClientLogger(TracerProvider.class);
-    private final List<Tracer> tracers = new ArrayList<>();
+    private Tracer tracer;
 
     public TracerProvider(Iterable<Tracer> tracers) {
         Objects.requireNonNull(tracers, "'tracers' cannot be null.");
-        tracers.forEach(e -> this.tracers.add(e));
+        if (tracers.iterator().hasNext()) {
+            tracer = tracers.iterator().next();
+        }
     }
 
     public boolean isEnabled() {
-        return tracers.size() > 0;
+        return tracer != null;
     }
 
     /**
-     * For each tracer plugged into the SDK a new tracing span is created.
+     *  For a plugged tracer implementation a new tracing span is created.
      *
      * The {@code context} will be checked for containing information about a parent span. If a parent span is found the
      * new span will be added as a child, otherwise the span will be created and added to the context and any downstream
      * start calls will use the created span as the parent.
      *
+     * @param serviceBaseName the service name to be appended to the span name.
      * @param context Additional metadata that is passed through the call stack.
      * @param processKind the invoking process type.
      * @return An updated context object.
      */
-    public Context startSpan(Context context, ProcessKind processKind) {
-        Context local = Objects.requireNonNull(context, "'context' cannot be null.");
-        Objects.requireNonNull(processKind, "'processKind' cannot be null.");
-        String spanName = getSpanName(processKind);
-
-        for (Tracer tracer : tracers) {
-            local = tracer.start(spanName, local, processKind);
+    public Context startSpan(String serviceBaseName, Context context, ProcessKind processKind) {
+        if (tracer == null) {
+            return context;
         }
+        Objects.requireNonNull(context, "'context' cannot be null.");
+        Objects.requireNonNull(processKind, "'processKind' cannot be null.");
+        String spanName = getSpanName(serviceBaseName, processKind);
 
-        return local;
+        return tracer.start(spanName, context, processKind);
     }
 
     /**
@@ -56,6 +57,9 @@ public class TracerProvider {
      * @param signal The signal indicates the status and contains the metadata we need to end the tracing span.
      */
     public void endSpan(Context context, Signal<Void> signal) {
+        if (tracer == null) {
+            return;
+        }
         Objects.requireNonNull(context, "'context' cannot be null.");
         Objects.requireNonNull(signal, "'signal' cannot be null.");
 
@@ -84,67 +88,67 @@ public class TracerProvider {
     }
 
     /**
-     * For each tracer plugged into the SDK a link is created between the parent tracing span and
+     *  For a plugged tracer implementation a link is created between the parent tracing span and
      * the current service call.
      *
      * @param context Additional metadata that is passed through the call stack.
      */
     public void addSpanLinks(Context context) {
+        if (tracer == null) {
+            return;
+        }
         Objects.requireNonNull(context, "'context' cannot be null.");
-        tracers.forEach(tracer -> tracer.addLink(context));
+        tracer.addLink(context);
     }
 
     /**
-     * For each tracer plugged into the SDK a new context is extracted from the event's diagnostic Id.
+     *  For a plugged tracer implementation a new context is extracted from the event's diagnostic Id.
      *
      * @param diagnosticId Unique identifier of an external call from producer to the queue.
      */
     public Context extractContext(String diagnosticId, Context context) {
-        Context local = Objects.requireNonNull(context, "'context' cannot be null.");
-        Objects.requireNonNull(diagnosticId, "'diagnosticId' cannot be null.");
-        for (Tracer tracer : tracers) {
-            local = tracer.extractContext(diagnosticId, local);
+        if (tracer == null) {
+            return context;
         }
-        return local;
+        Objects.requireNonNull(context, "'context' cannot be null.");
+        Objects.requireNonNull(diagnosticId, "'diagnosticId' cannot be null.");
+        return tracer.extractContext(diagnosticId, context);
     }
 
     /**
-     * For each tracer plugged into the SDK a new context containing the span builder is returned.
+     * For a plugged tracer implementation a new context containing the span builder is returned.
      *
-     * @param context Additional metadata containing the span name for creating the span builer.
+     * @param serviceBaseName the service name to be appended to the span name.
+     * @param context Additional metadata containing the span name for creating the span builder.
      */
-    public Context getSharedSpanBuilder(Context context) {
-        Context local = Objects.requireNonNull(context, "'context' cannot be null.");
-        String spanName = getSpanName(ProcessKind.SEND);
-        for (Tracer tracer : tracers) {
-            local = tracer.getSharedSpanBuilder(spanName, local);
+    public Context getSharedSpanBuilder(String serviceBaseName, Context context) {
+        if (tracer == null) {
+            return context;
         }
-        return local;
+        Objects.requireNonNull(context, "'context' cannot be null.");
+        String spanName = getSpanName(serviceBaseName, ProcessKind.SEND);
+        return tracer.getSharedSpanBuilder(spanName, context);
     }
 
     private void end(String statusMessage, Throwable throwable, Context context) {
-        for (Tracer tracer : tracers) {
-            tracer.end(statusMessage, throwable, context);
-        }
+        tracer.end(statusMessage, throwable, context);
     }
 
-    private String getSpanName(ProcessKind processKind) {
-        String spanName = "EventHubs.";
+    private String getSpanName(String serviceBaseName, ProcessKind processKind) {
         switch (processKind) {
             case SEND:
-                spanName += "send";
+                serviceBaseName += "send";
                 break;
             case MESSAGE:
-                spanName += "message";
+                serviceBaseName += "message";
                 break;
             case PROCESS:
-                spanName += "process";
+                serviceBaseName += "process";
                 break;
             default:
                 logger.warning("Unknown processKind type: {}", processKind);
                 break;
         }
-
-        return spanName;
+        return serviceBaseName;
     }
 }

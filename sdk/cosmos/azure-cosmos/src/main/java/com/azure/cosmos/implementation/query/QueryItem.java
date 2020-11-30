@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation.query;
 
-import com.azure.cosmos.models.JsonSerializable;
+import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Undefined;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -33,5 +33,15 @@ public final class QueryItem extends JsonSerializable {
     @Override
     public String toJson() {
         return super.toJson();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 }

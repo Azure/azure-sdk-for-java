@@ -8,26 +8,35 @@ import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.DocumentLanguage;
 import com.azure.ai.textanalytics.implementation.models.LanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.LanguageResult;
+import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
-import com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux;
-import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
+import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
+import com.azure.ai.textanalytics.models.WarningCode;
+import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
+import java.util.stream.Collectors;
 
-import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
-import static com.azure.ai.textanalytics.Transforms.toLanguageInput;
-import static com.azure.core.util.FluxUtil.fluxError;
+import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
+import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
+import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExist;
+import static com.azure.ai.textanalytics.implementation.Utility.toBatchStatistics;
+import static com.azure.ai.textanalytics.implementation.Utility.toLanguageInput;
+import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsError;
+import static com.azure.ai.textanalytics.implementation.Utility.toTextDocumentStatistics;
+import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 /**
  * Helper class for managing detect language endpoint.
@@ -47,116 +56,109 @@ class DetectLanguageAsyncClient {
     }
 
     /**
-     * Helper function for calling service with max overloaded parameters that a returns {@link TextAnalyticsPagedFlux}
-     * which is a paged flux that contains {@link DetectLanguageResult}.
+     * Helper function for calling service with max overloaded parameters.
      *
      * @param documents The list of documents to detect languages for.
      * @param options The {@link TextAnalyticsRequestOptions} request options.
      *
-     * @return The {@link TextAnalyticsPagedFlux} of {@link DetectLanguageResult}.
+     * @return A mono {@link Response} that contains {@link DetectLanguageResultCollection}.
      */
-    TextAnalyticsPagedFlux<DetectLanguageResult> detectLanguageBatch(Iterable<DetectLanguageInput> documents,
-        TextAnalyticsRequestOptions options) {
-        Objects.requireNonNull(documents, "'documents' cannot be null.");
-
+    Mono<Response<DetectLanguageResultCollection>> detectLanguageBatch(
+        Iterable<DetectLanguageInput> documents, TextAnalyticsRequestOptions options) {
         try {
-            return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> withContext(context ->
-                getDetectedLanguageResponseInPage(documents, options, context)).flux());
+            inputDocumentsValidation(documents);
+            return withContext(context -> getDetectedLanguageResponse(documents, options, context));
         } catch (RuntimeException ex) {
-            return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> fluxError(logger, ex));
+            return monoError(logger, ex);
         }
     }
 
     /**
-     * Helper function for calling service with max overloaded parameters with {@link Context} that a returns
-     * {@link TextAnalyticsPagedFlux} which is a paged flux that contains {@link DetectLanguageResult}.
+     * Helper function for calling service with max overloaded parameters with {@link Context}.
      *
      * @param documents The list of documents to detect languages for.
      * @param options The {@link TextAnalyticsRequestOptions} request options.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return The {@link TextAnalyticsPagedFlux} of {@link DetectLanguageResult}.
+     * @return A mono {@link Response} which contains {@link DetectLanguageResultCollection}.
      */
-    TextAnalyticsPagedFlux<DetectLanguageResult> detectLanguageBatchWithContext(
+    Mono<Response<DetectLanguageResultCollection>> detectLanguageBatchWithContext(
         Iterable<DetectLanguageInput> documents, TextAnalyticsRequestOptions options, Context context) {
-        Objects.requireNonNull(documents, "'documents' cannot be null.");
-        return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) ->
-            getDetectedLanguageResponseInPage(documents, options, context).flux());
+        try {
+            inputDocumentsValidation(documents);
+            return getDetectedLanguageResponse(documents, options, context);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
-     * Helper method to convert the service response of {@link LanguageResult} to {@link TextAnalyticsPagedResponse}
-     * of {@link DetectLanguageResult}.
+     * Helper method to convert the service response of {@link LanguageResult} to {@link Response} that contains
+     * {@link DetectLanguageResultCollection}.
      *
      * @param response the {@link SimpleResponse} of {@link LanguageResult} returned by the service.
      *
-     * @return the {@link TextAnalyticsPagedResponse} of {@link DetectLanguageResult} to be returned by the SDK.
+     * @return A {@link Response} that contains {@link DetectLanguageResultCollection}.
      */
-    private TextAnalyticsPagedResponse<DetectLanguageResult> toTextAnalyticsPagedResponse(
-        SimpleResponse<LanguageResult> response) {
-
+    private Response<DetectLanguageResultCollection> toTextAnalyticsResultDocumentResponse(
+        Response<LanguageResult> response) {
         final LanguageResult languageResult = response.getValue();
-
         final List<DetectLanguageResult> detectLanguageResults = new ArrayList<>();
         for (DocumentLanguage documentLanguage : languageResult.getDocuments()) {
-            DetectedLanguage primaryLanguage = null;
-            List<com.azure.ai.textanalytics.implementation.models.DetectedLanguage> detectedLanguages =
-                documentLanguage.getDetectedLanguages();
-            if (detectedLanguages.size() >= 1) {
-                detectedLanguages.sort(
-                    Comparator.comparing(com.azure.ai.textanalytics.implementation.models.DetectedLanguage::getScore));
-                com.azure.ai.textanalytics.implementation.models.DetectedLanguage detectedLanguageResult =
-                    detectedLanguages.get(0);
-                primaryLanguage = new DetectedLanguage(detectedLanguageResult.getName(),
-                    detectedLanguageResult.getIso6391Name(), detectedLanguageResult.getScore());
-            }
+            com.azure.ai.textanalytics.implementation.models.DetectedLanguage detectedLanguage =
+                documentLanguage.getDetectedLanguage();
 
-            detectLanguageResults.add(new DetectLanguageResult(documentLanguage.getId(),
+            // warnings
+            final List<TextAnalyticsWarning> warnings = documentLanguage.getWarnings().stream()
+                .map(warning -> {
+                    final WarningCodeValue warningCodeValue = warning.getCode();
+                    return new TextAnalyticsWarning(
+                        WarningCode.fromString(warningCodeValue == null ? null : warningCodeValue.toString()),
+                        warning.getMessage());
+                }).collect(Collectors.toList());
+
+            detectLanguageResults.add(new DetectLanguageResult(
+                documentLanguage.getId(),
                 documentLanguage.getStatistics() == null
-                    ? null : Transforms.toTextDocumentStatistics(documentLanguage.getStatistics()),
+                    ? null : toTextDocumentStatistics(documentLanguage.getStatistics()),
                 null,
-                primaryLanguage));
+                new DetectedLanguage(detectedLanguage.getName(),
+                    detectedLanguage.getIso6391Name(), detectedLanguage.getConfidenceScore(),
+                    new IterableStream<>(warnings))));
         }
-
+        // Document errors
         for (DocumentError documentError : languageResult.getErrors()) {
-            com.azure.ai.textanalytics.models.TextAnalyticsError error =
-                Transforms.toTextAnalyticsError(documentError.getError());
-            final String documentId = documentError.getId();
-
-            detectLanguageResults.add(
-                new DetectLanguageResult(documentId, null, error, null));
+            detectLanguageResults.add(new DetectLanguageResult(documentError.getId(), null,
+                toTextAnalyticsError(documentError.getError()), null));
         }
 
-        return new TextAnalyticsPagedResponse<>(
-            response.getRequest(),
-            response.getStatusCode(),
-            response.getHeaders(),
-            detectLanguageResults,
-            null,
-            languageResult.getModelVersion(),
-            languageResult.getStatistics() == null ? null : toBatchStatistics(languageResult.getStatistics()));
+        return new SimpleResponse<>(response,
+            new DetectLanguageResultCollection(detectLanguageResults, languageResult.getModelVersion(),
+                languageResult.getStatistics() == null ? null : toBatchStatistics(languageResult.getStatistics())));
     }
 
     /**
-     * Call the service with REST response, convert to a {@link Mono} of {@link TextAnalyticsPagedResponse} of
+     * Call the service with REST response, convert to a {@link Mono} of {@link Response} of
      * {@link DetectLanguageResult} from a {@link SimpleResponse} of {@link LanguageResult}.
      *
      * @param documents The list of documents to detect languages for.
      * @param options The {@link TextAnalyticsRequestOptions} request options.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return A {@link Mono} of {@link TextAnalyticsPagedResponse} of {@link DetectLanguageResult}.
+     * @return A mono {@link Response} that contains {@link DetectLanguageResultCollection}.
      */
-    private Mono<TextAnalyticsPagedResponse<DetectLanguageResult>> getDetectedLanguageResponseInPage(
+    private Mono<Response<DetectLanguageResultCollection>> getDetectedLanguageResponse(
         Iterable<DetectLanguageInput> documents, TextAnalyticsRequestOptions options, Context context) {
-        return service.languagesWithRestResponseAsync(
+        return service.languagesWithResponseAsync(
             new LanguageBatchInput().setDocuments(toLanguageInput(documents)),
             options == null ? null : options.getModelVersion(),
-            options == null ? null : options.isIncludeStatistics(), context)
+            options == null ? null : options.isIncludeStatistics(),
+            context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
             .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", documents.toString()))
             .doOnSuccess(response -> logger.info("Detected languages for a batch of documents - {}",
                 response.getValue()))
             .doOnError(error -> logger.warning("Failed to detect language - {}", error))
-            .map(this::toTextAnalyticsPagedResponse);
+            .map(this::toTextAnalyticsResultDocumentResponse)
+            .onErrorMap(throwable -> mapToHttpResponseExceptionIfExist(throwable));
     }
 }

@@ -23,11 +23,16 @@ import com.microsoft.azure.management.storage.v2019_06_01.Usages;
 import com.microsoft.azure.management.storage.v2019_06_01.ManagementPolicies;
 import com.microsoft.azure.management.storage.v2019_06_01.PrivateEndpointConnections;
 import com.microsoft.azure.management.storage.v2019_06_01.PrivateLinkResources;
+import com.microsoft.azure.management.storage.v2019_06_01.ObjectReplicationPolicies;
 import com.microsoft.azure.management.storage.v2019_06_01.EncryptionScopes;
 import com.microsoft.azure.management.storage.v2019_06_01.BlobServices;
 import com.microsoft.azure.management.storage.v2019_06_01.BlobContainers;
 import com.microsoft.azure.management.storage.v2019_06_01.FileServices;
 import com.microsoft.azure.management.storage.v2019_06_01.FileShares;
+import com.microsoft.azure.management.storage.v2019_06_01.QueueServices;
+import com.microsoft.azure.management.storage.v2019_06_01.Queues;
+import com.microsoft.azure.management.storage.v2019_06_01.TableServices;
+import com.microsoft.azure.management.storage.v2019_06_01.Tables;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -42,11 +47,16 @@ public final class StorageManager extends ManagerCore<StorageManager, StorageMan
     private ManagementPolicies managementPolicies;
     private PrivateEndpointConnections privateEndpointConnections;
     private PrivateLinkResources privateLinkResources;
+    private ObjectReplicationPolicies objectReplicationPolicies;
     private EncryptionScopes encryptionScopes;
     private BlobServices blobServices;
     private BlobContainers blobContainers;
     private FileServices fileServices;
     private FileShares fileShares;
+    private QueueServices queueServices;
+    private Queues queues;
+    private TableServices tableServices;
+    private Tables tables;
     /**
     * Get a Configurable instance that can be used to create StorageManager with optional configuration.
     *
@@ -165,6 +175,16 @@ public final class StorageManager extends ManagerCore<StorageManager, StorageMan
     }
 
     /**
+     * @return Entry point to manage ObjectReplicationPolicies.
+     */
+    public ObjectReplicationPolicies objectReplicationPolicies() {
+        if (this.objectReplicationPolicies == null) {
+            this.objectReplicationPolicies = new ObjectReplicationPoliciesImpl(this);
+        }
+        return this.objectReplicationPolicies;
+    }
+
+    /**
      * @return Entry point to manage EncryptionScopes.
      */
     public EncryptionScopes encryptionScopes() {
@@ -212,6 +232,46 @@ public final class StorageManager extends ManagerCore<StorageManager, StorageMan
             this.fileShares = new FileSharesImpl(this);
         }
         return this.fileShares;
+    }
+
+    /**
+     * @return Entry point to manage QueueServices.
+     */
+    public QueueServices queueServices() {
+        if (this.queueServices == null) {
+            this.queueServices = new QueueServicesImpl(this);
+        }
+        return this.queueServices;
+    }
+
+    /**
+     * @return Entry point to manage Queues.
+     */
+    public Queues queues() {
+        if (this.queues == null) {
+            this.queues = new QueuesImpl(this);
+        }
+        return this.queues;
+    }
+
+    /**
+     * @return Entry point to manage TableServices.
+     */
+    public TableServices tableServices() {
+        if (this.tableServices == null) {
+            this.tableServices = new TableServicesImpl(this);
+        }
+        return this.tableServices;
+    }
+
+    /**
+     * @return Entry point to manage Tables.
+     */
+    public Tables tables() {
+        if (this.tables == null) {
+            this.tables = new TablesImpl(this);
+        }
+        return this.tables;
     }
 
     /**

@@ -22,6 +22,7 @@ import com.microsoft.azure.arm.utils.RXMapper;
 import rx.functions.Func1;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
+import com.microsoft.azure.management.mediaservices.v2018_07_01.EdgePolicies;
 import com.microsoft.azure.management.mediaservices.v2018_07_01.SubscriptionMediaService;
 import com.microsoft.azure.arm.utils.PagedListConverter;
 
@@ -156,6 +157,18 @@ class MediaservicesImpl extends GroupableResourcesCoreImpl<MediaService, MediaSe
     public Completable syncStorageKeysAsync(String resourceGroupName, String accountName) {
         MediaservicesInner client = this.inner();
         return client.syncStorageKeysAsync(resourceGroupName, accountName).toCompletable();
+    }
+
+    @Override
+    public Observable<EdgePolicies> listEdgePoliciesAsync(String resourceGroupName, String accountName) {
+        MediaservicesInner client = this.inner();
+        return client.listEdgePoliciesAsync(resourceGroupName, accountName)
+        .map(new Func1<EdgePoliciesInner, EdgePolicies>() {
+            @Override
+            public EdgePolicies call(EdgePoliciesInner inner) {
+                return new EdgePoliciesImpl(inner, manager());
+            }
+        });
     }
 
     @Override

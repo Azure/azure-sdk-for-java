@@ -11,21 +11,26 @@ import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.DeletedKey;
-import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.KeyType;
+import com.azure.security.keyvault.keys.models.KeyVaultKey;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.net.HttpURLConnection;
+import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
 
 import static com.azure.security.keyvault.keys.cryptography.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 public class KeyClientTest extends KeyClientTestBase {
 
@@ -38,11 +43,17 @@ public class KeyClientTest extends KeyClientTestBase {
 
     private void getKeyClient(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         HttpPipeline httpPipeline = getHttpPipeline(httpClient, serviceVersion);
-        client = new KeyClientBuilder()
+        KeyAsyncClient asyncClient = spy(new KeyClientBuilder()
             .vaultUrl(getEndpoint())
             .pipeline(httpPipeline)
             .serviceVersion(serviceVersion)
-            .buildClient();
+            .buildAsyncClient());
+
+        if (interceptorManager.isPlaybackMode()) {
+            when(asyncClient.getDefaultPollingInterval()).thenReturn(Duration.ofMillis(10));
+        }
+
+        client = new KeyClient(asyncClient);
     }
 
     /**
@@ -53,6 +64,16 @@ public class KeyClientTest extends KeyClientTestBase {
     public void setKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         getKeyClient(httpClient, serviceVersion);
         setKeyRunner((expected) -> assertKeyEquals(expected, client.createKey(expected)));
+    }
+
+    /**
+     * Tests that an RSA key is created.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void createRsaKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        getKeyClient(httpClient, serviceVersion);
+        createRsaKeyRunner((expected) -> assertKeyEquals(expected, client.createRsaKey(expected)));
     }
 
     /**
@@ -416,6 +437,53 @@ public class KeyClientTest extends KeyClientTestBase {
             List<KeyProperties> keyVersionsList = new ArrayList<>();
             keyVersionsOutput.forEach(keyVersionsList::add);
             assertEquals(keyVersions.size(), keyVersionsList.size());
+        });
+    }
+
+    /**
+     * Tests that an RSA key with a public exponent can be created in the key vault.
+     */
+    @Disabled // Service issue: https://github.com/Azure/azure-sdk-for-java/issues/17382
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void createRsaKeyWithPublicExponent(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        getKeyClient(httpClient, serviceVersion);
+        createRsaKeyWithPublicExponentRunner((createRsaKeyOptions) -> {
+            KeyVaultKey rsaKey = client.createRsaKey(createRsaKeyOptions);
+            assertKeyEquals(createRsaKeyOptions, rsaKey);
+            ByteBuffer wrappedArray = ByteBuffer.wrap(rsaKey.getKey().getE()); // Big-endian by default
+            assertEquals(createRsaKeyOptions.getPublicExponent(), wrappedArray.getInt());
+        });
+    }
+
+    /**
+     * Tests that a key can be exported from the key vault.
+     */
+    @Disabled // Service issue: https://github.com/Azure/azure-sdk-for-java/issues/17382
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void exportKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        getKeyClient(httpClient, serviceVersion);
+        exportKeyRunner((createKeyOptions) -> {
+            client.createKey(createKeyOptions);
+            KeyVaultKey exportedKey = client.exportKey(createKeyOptions.getName(), "testEnvironment");
+            assertKeyEquals(createKeyOptions, exportedKey);
+        });
+    }
+
+    /**
+     * Tests that a specific key version can be exported from the key vault.
+     */
+    @Disabled // Service issue: https://github.com/Azure/azure-sdk-for-java/issues/17382
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void exportKeyVersion(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        getKeyClient(httpClient, serviceVersion);
+        exportKeyRunner((createKeyOptions) -> {
+            KeyVaultKey originalKey = client.createKey(createKeyOptions);
+            KeyVaultKey exportedKey =
+                client.exportKey(originalKey.getName(), originalKey.getProperties().getVersion(), "testEnvironment");
+            assertKeyEquals(createKeyOptions, exportedKey);
         });
     }
 

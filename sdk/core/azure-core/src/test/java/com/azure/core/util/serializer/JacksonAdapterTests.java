@@ -12,13 +12,13 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class JacksonAdapterTests {
     @Test
@@ -63,46 +63,6 @@ public class JacksonAdapterTests {
         assertEquals("{\"\":\"test\"}", serializer.serialize(map, SerializerEncoding.JSON));
     }
 
-    @ParameterizedTest
-    @MethodSource("xmlBomRemovalSupplier")
-    public void xmlBomRemoval(String xml, String expected) throws IOException {
-        XmlString actual = new JacksonAdapter().deserialize(xml, XmlString.class, SerializerEncoding.XML);
-
-        if (expected == null) {
-            assertNull(actual);
-        } else {
-            assertEquals(expected, actual.getValue());
-        }
-    }
-
-    private static Stream<Arguments> xmlBomRemovalSupplier() {
-        byte[] utf8BomBytes = new byte[] { (byte) 0xEF, (byte) 0xBB, (byte) 0xBF };
-        String utf8Bom = new String(utf8BomBytes, StandardCharsets.UTF_8);
-        String cp1252Utf8Bom = new String(utf8BomBytes);
-
-        String cleanXml = "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><XmlString><Value>This is clean xml.</Value></XmlString>";
-        String dirtyXml = "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><XmlString><Value>Clean this xml.</Value></XmlString>";
-
-        return Stream.of(
-            // Null value returns null.
-            Arguments.of(null, null),
-
-            // Empty value returns null.
-            Arguments.of("", null),
-
-            // Value that is only a UTF-8 BOM returns null.
-            Arguments.of(utf8Bom, null),
-            Arguments.of(cp1252Utf8Bom, null),
-
-            // Value without a leading BOM isn't mutated.
-            Arguments.of(cleanXml, "This is clean xml."),
-
-            // Value with a leading UTF-8 BOM scrubs the BOM.
-            Arguments.of(utf8Bom.concat(dirtyXml), "Clean this xml."),
-            Arguments.of(cp1252Utf8Bom.concat(dirtyXml), "Clean this xml.")
-        );
-    }
-
     private static class MapHolder {
         @JsonInclude(content = JsonInclude.Include.ALWAYS)
         private Map<String, String> map = new HashMap<>();
@@ -123,6 +83,65 @@ public class JacksonAdapterTests {
 
         public String getValue() {
             return value;
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("deserializeJsonSupplier")
+    public void deserializeJson(String json, OffsetDateTime expected) throws IOException {
+        DateTimeWrapper wrapper = JacksonAdapter.createDefaultSerializerAdapter()
+            .deserialize(json, DateTimeWrapper.class, SerializerEncoding.JSON);
+
+        assertEquals(expected, wrapper.getOffsetDateTime());
+    }
+
+    private static Stream<Arguments> deserializeJsonSupplier() {
+        final String jsonFormat = "{\"OffsetDateTime\":\"%s\"}";
+        OffsetDateTime minValue = OffsetDateTime.of(1, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
+        OffsetDateTime unixEpoch = OffsetDateTime.of(1970, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
+
+        return Stream.of(
+            Arguments.of(String.format(jsonFormat, "0001-01-01T00:00:00"), minValue),
+            Arguments.of(String.format(jsonFormat, "0001-01-01T00:00:00Z"), minValue),
+            Arguments.of(String.format(jsonFormat, "1970-01-01T00:00:00"), unixEpoch),
+            Arguments.of(String.format(jsonFormat, "1970-01-01T00:00:00Z"), unixEpoch)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("deserializeXmlSupplier")
+    public void deserializeXml(String xml, OffsetDateTime expected) throws IOException {
+        DateTimeWrapper wrapper = JacksonAdapter.createDefaultSerializerAdapter()
+            .deserialize(xml, DateTimeWrapper.class, SerializerEncoding.XML);
+
+        assertEquals(expected, wrapper.getOffsetDateTime());
+    }
+
+    private static Stream<Arguments> deserializeXmlSupplier() {
+        final String xmlFormat = "<Wrapper><OffsetDateTime>%s</OffsetDateTime></Wrapper>";
+        OffsetDateTime minValue = OffsetDateTime.of(1, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
+        OffsetDateTime unixEpoch = OffsetDateTime.of(1970, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
+
+        return Stream.of(
+            Arguments.of(String.format(xmlFormat, "0001-01-01T00:00:00"), minValue),
+            Arguments.of(String.format(xmlFormat, "0001-01-01T00:00:00Z"), minValue),
+            Arguments.of(String.format(xmlFormat, "1970-01-01T00:00:00"), unixEpoch),
+            Arguments.of(String.format(xmlFormat, "1970-01-01T00:00:00Z"), unixEpoch)
+        );
+    }
+
+    @JacksonXmlRootElement(localName = "Wrapper")
+    private static class DateTimeWrapper {
+        @JsonProperty(value = "OffsetDateTime", required = true)
+        private OffsetDateTime offsetDateTime;
+
+        public DateTimeWrapper setOffsetDateTime(OffsetDateTime offsetDateTime) {
+            this.offsetDateTime = offsetDateTime;
+            return this;
+        }
+
+        public OffsetDateTime getOffsetDateTime() {
+            return offsetDateTime;
         }
     }
 }

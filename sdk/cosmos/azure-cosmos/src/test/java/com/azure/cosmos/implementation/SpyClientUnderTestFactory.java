@@ -2,10 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.cosmos.ConnectionMode;
-import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosKeyCredential;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.http.HttpClient;
@@ -18,6 +17,7 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 import java.net.URI;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -32,8 +32,8 @@ public class SpyClientUnderTestFactory {
 
     public static abstract class SpyBaseClass<T> extends RxDocumentClientImpl {
 
-        public SpyBaseClass(URI serviceEndpoint, String masterKeyOrResourceToken, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, Configs configs, CosmosKeyCredential cosmosKeyCredential) {
-            super(serviceEndpoint, masterKeyOrResourceToken, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential, false, false);
+        public SpyBaseClass(URI serviceEndpoint, String masterKeyOrResourceToken, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, Configs configs, AzureKeyCredential credential, boolean contentResponseOnWriteEnabled) {
+            super(serviceEndpoint, masterKeyOrResourceToken, connectionPolicy, consistencyLevel, configs, credential, null, false, false, contentResponseOnWriteEnabled);
         }
 
         public abstract List<T> getCapturedRequests();
@@ -55,8 +55,8 @@ public class SpyClientUnderTestFactory {
         private List<RxDocumentServiceRequest> requests;
 
 
-        ClientWithGatewaySpy(URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, Configs configs, CosmosKeyCredential cosmosKeyCredential) {
-            super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential);
+        ClientWithGatewaySpy(URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, Configs configs, AzureKeyCredential credential, boolean contentResponseOnWriteEnabled) {
+            super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, credential, contentResponseOnWriteEnabled);
             init();
         }
 
@@ -117,8 +117,8 @@ public class SpyClientUnderTestFactory {
         List<Pair<HttpRequest, Future<HttpHeaders>>> requestsResponsePairs =
                 Collections.synchronizedList(new ArrayList<>());
 
-        ClientUnderTest(URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, Configs configs, CosmosKeyCredential cosmosKeyCredential) {
-            super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential);
+        ClientUnderTest(URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, Configs configs, AzureKeyCredential credential, boolean contentResponseOnWriteEnabled) {
+            super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, credential, contentResponseOnWriteEnabled);
             init();
         }
 
@@ -134,14 +134,15 @@ public class SpyClientUnderTestFactory {
         void initRequestCapture(HttpClient spyClient) {
             doAnswer(invocationOnMock -> {
                 HttpRequest httpRequest = invocationOnMock.getArgumentAt(0, HttpRequest.class);
+                Duration responseTimeout = invocationOnMock.getArgumentAt(1, Duration.class);
                 CompletableFuture<HttpHeaders> f = new CompletableFuture<>();
                 requestsResponsePairs.add(Pair.of(httpRequest, f));
 
                 return origHttpClient
-                        .send(httpRequest)
+                        .send(httpRequest, responseTimeout)
                         .doOnNext(httpResponse -> f.complete(httpResponse.headers()))
                         .doOnError(f::completeExceptionally);
-            }).when(spyClient).send(Mockito.any(HttpRequest.class));
+            }).when(spyClient).send(Mockito.any(HttpRequest.class), Mockito.any(Duration.class));
         }
 
         @Override
@@ -169,8 +170,8 @@ public class SpyClientUnderTestFactory {
         List<Pair<HttpRequest, Future<HttpHeaders>>> requestsResponsePairs =
                 Collections.synchronizedList(new ArrayList<>());
 
-        DirectHttpsClientUnderTest(URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, CosmosKeyCredential cosmosKeyCredential) {
-            super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, createConfigsSpy(Protocol.HTTPS), cosmosKeyCredential);
+        DirectHttpsClientUnderTest(URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, AzureKeyCredential credential, boolean contentResponseOnWriteEnabled) {
+            super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, createConfigsSpy(Protocol.HTTPS), credential, contentResponseOnWriteEnabled);
             assert connectionPolicy.getConnectionMode() == ConnectionMode.DIRECT;
             init();
 
@@ -192,15 +193,16 @@ public class SpyClientUnderTestFactory {
         void initRequestCapture(HttpClient spyClient) {
             doAnswer(invocationOnMock -> {
                 HttpRequest httpRequest = invocationOnMock.getArgumentAt(0, HttpRequest.class);
+                Duration responseTimeout = invocationOnMock.getArgumentAt(1, Duration.class);
                 CompletableFuture<HttpHeaders> f = new CompletableFuture<>();
                 requestsResponsePairs.add(Pair.of(httpRequest, f));
 
                 return origHttpClient
-                        .send(httpRequest)
+                        .send(httpRequest, responseTimeout)
                         .doOnNext(httpResponse -> f.complete(httpResponse.headers()))
                         .doOnError(f::completeExceptionally);
 
-            }).when(spyClient).send(Mockito.any(HttpRequest.class));
+            }).when(spyClient).send(Mockito.any(HttpRequest.class), Mockito.any(Duration.class));
         }
 
         @Override
@@ -230,8 +232,9 @@ public class SpyClientUnderTestFactory {
                                                                   ConnectionPolicy connectionPolicy,
                                                                   ConsistencyLevel consistencyLevel,
                                                                   Configs configs,
-                                                                  CosmosKeyCredential cosmosKeyCredential) {
-        return new ClientWithGatewaySpy(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential);
+                                                                  AzureKeyCredential credential,
+                                                                  boolean contentResponseOnWriteEnabled) {
+        return new ClientWithGatewaySpy(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, credential, contentResponseOnWriteEnabled);
     }
 
     public static ClientUnderTest createClientUnderTest(AsyncDocumentClient.Builder builder) {
@@ -247,8 +250,9 @@ public class SpyClientUnderTestFactory {
                                                         ConnectionPolicy connectionPolicy,
                                                         ConsistencyLevel consistencyLevel,
                                                         Configs configs,
-                                                        CosmosKeyCredential cosmosKeyCredential) {
-        return new ClientUnderTest(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential) {
+                                                        AzureKeyCredential credential,
+                                                        boolean contentResponseOnWriteEnabled) {
+        return new ClientUnderTest(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, credential, contentResponseOnWriteEnabled) {
 
             @Override
             RxGatewayStoreModel createRxGatewayProxy(ISessionContainer sessionContainer,
@@ -276,8 +280,8 @@ public class SpyClientUnderTestFactory {
         };
     }
 
-    public static DirectHttpsClientUnderTest createDirectHttpsClientUnderTest(URI serviceEndpoint, String masterKey,
-            ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, CosmosKeyCredential cosmosKeyCredential) {
-        return new DirectHttpsClientUnderTest(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, cosmosKeyCredential);
+    public static DirectHttpsClientUnderTest createDirectHttpsClientUnderTest(
+        URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, AzureKeyCredential credential, boolean contentResponseOnWriteEnabled) {
+        return new DirectHttpsClientUnderTest(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, credential, contentResponseOnWriteEnabled);
     }
 }

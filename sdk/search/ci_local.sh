@@ -5,7 +5,7 @@
 #!/bin/bash
 set -e
 
-SCOPE_DOWN="--projects com.azure:azure-search,com.azure:azure-client-sdk-parent --also-make"
+SCOPE_DOWN="--projects com.azure:azure-search-documents,com.azure:azure-client-sdk-parent --also-make"
 
 echo ===========================================================================================================================
 echo Build

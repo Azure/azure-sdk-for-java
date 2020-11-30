@@ -3,9 +3,19 @@
 #Javadoc files
 dist/
 .publish/
+output/
+temp/
+
+# Spring
+**/*packageOutputDirectory*
+
+# Sensitive files
+*.json.env
 
 #javadoc overview files generated from README.md
 readme_overview.html
+**/javadocTemp/**
+**/sourceTemp/**
 
 #External libs
 extlib/
@@ -28,6 +38,7 @@ extlib/
 # Azure Tooling #
 node_modules
 packages
+__pycache__
 
 # Eclipse #
 *.pydevproject
@@ -66,3 +77,14 @@ package-lock.json
 # VS Code
 .vscode/
 .factorypath
+jacoco.exec
+
+# Generated client pom file
+ClientAggregatePom.xml
+
+# Anaconda virtual env
+venv
+
+# NetBeans
+nbproject
+nb-configuration.xml

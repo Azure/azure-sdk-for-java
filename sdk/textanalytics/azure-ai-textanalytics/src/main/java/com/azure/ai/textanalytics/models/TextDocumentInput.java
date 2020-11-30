@@ -3,14 +3,11 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.core.annotation.Immutable;
-
 import java.util.Locale;
 
 /**
  * Contains an input document to be analyzed by the service.
  */
-@Immutable
 public final class TextDocumentInput {
 
     /*
@@ -28,7 +25,7 @@ public final class TextDocumentInput {
      * For example, use "en" for English; "es" for Spanish etc. If not set, use
      * "en" for English as default.
      */
-    private final String language;
+    private String language;
 
     /**
      * Creates a {@code TextDocumentInput} model that describes the documents.
@@ -37,20 +34,8 @@ public final class TextDocumentInput {
      * @param text The document to process.
      */
     public TextDocumentInput(String id, String text) {
-        this(id, text, null);
-    }
-
-    /**
-     * Creates a {@link TextDocumentInput} model that describes the documents.
-     *
-     * @param id A unique, non-empty document identifier.
-     * @param text The document to process.
-     * @param language Optional. This is the 2 letter ISO 639-1 representation of a language.
-     */
-    public TextDocumentInput(String id, String text, String language) {
         this.id = id;
         this.text = text;
-        this.language = language;
     }
 
     /**
@@ -80,6 +65,20 @@ public final class TextDocumentInput {
      */
     public String getLanguage() {
         return this.language;
+    }
+
+    /**
+     * Set the language property: (Optional) This is the 2 letter ISO 639-1
+     * representation of a language. For example, use "en" for English; "es"
+     * for Spanish etc. If not set, use "en" for English as default.
+     *
+     * @param language Optional. This is the 2 letter ISO 639-1 representation of a language.
+     *
+     * @return The object {@link TextDocumentInput} itself.
+     */
+    public TextDocumentInput setLanguage(String language) {
+        this.language = language;
+        return this;
     }
 
     @Override

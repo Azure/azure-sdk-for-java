@@ -4,10 +4,11 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.implementation.ChangeFeedOptions;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import io.reactivex.subscribers.TestSubscriber;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -27,24 +28,24 @@ public class FetcherTest {
     @DataProvider(name = "queryParams")
     public static Object[][] queryParamProvider() {
 
-        FeedOptions options1 = new FeedOptions();
-        options1.setMaxItemCount(100);
-        options1.setRequestContinuation("cp-init"); // initial continuation token
+        CosmosQueryRequestOptions options1 = new CosmosQueryRequestOptions();
+        // initial continuation token
+        ModelBridgeInternal.setQueryRequestOptionsContinuationTokenAndMaxItemCount(options1,"cp-init",100);
         int top1 = -1; // no top
 
         // no continuation token
-        FeedOptions options2 = new FeedOptions();
-        options2.setMaxItemCount(100);
+        CosmosQueryRequestOptions options2 = new CosmosQueryRequestOptions();
+        ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options2, 100);
         int top2 = -1; // no top
 
         // top more than max item count
-        FeedOptions options3 = new FeedOptions();
-        options3.setMaxItemCount(100);
+        CosmosQueryRequestOptions options3 = new CosmosQueryRequestOptions();
+        ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options3, 100);
         int top3 = 200;
 
         // top less than max item count
-        FeedOptions options4 = new FeedOptions();
-        options4.setMaxItemCount(100);
+        CosmosQueryRequestOptions options4 = new CosmosQueryRequestOptions();
+        ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options4, 100);
         int top4 = 20;
 
         return new Object[][] {
@@ -55,7 +56,7 @@ public class FetcherTest {
     }
 
     @Test(groups = { "unit" }, dataProvider = "queryParams")
-    public void query(FeedOptions options, int top) {
+    public void query(CosmosQueryRequestOptions options, int top) {
 
         FeedResponse<Document> fp1 = FeedResponseBuilder.queryFeedResponseBuilder(Document.class)
                 .withContinuationToken("cp1")
@@ -77,7 +78,8 @@ public class FetcherTest {
             assertThat(maxItemCount).describedAs("max item count").isEqualTo(
                     getExpectedMaxItemCountInRequest(options, top, feedResponseList, requestIndex.get()));
             assertThat(token).describedAs("continuation token").isEqualTo(
-                    getExpectedContinuationTokenInRequest(options.getRequestContinuation(), feedResponseList, requestIndex.get()));
+                    getExpectedContinuationTokenInRequest(
+                        ModelBridgeInternal.getRequestContinuationFromQueryRequestOptions(options), feedResponseList, requestIndex.get()));
             requestIndex.getAndIncrement();
 
             return mock(RxDocumentServiceRequest.class);
@@ -92,14 +94,14 @@ public class FetcherTest {
         };
 
         Fetcher<Document> fetcher =
-                new Fetcher<>(createRequestFunc, executeFunc, options.getRequestContinuation(), false, top,
-                        options.getMaxItemCount());
+                new Fetcher<>(createRequestFunc, executeFunc, ModelBridgeInternal.getRequestContinuationFromQueryRequestOptions(options), false, top,
+                        ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(options));
 
         validateFetcher(fetcher, options, top, feedResponseList);
     }
 
     private void validateFetcher(Fetcher<Document> fetcher,
-                                 FeedOptions options,
+                                 CosmosQueryRequestOptions options,
                                  int top,
                                  List<FeedResponse<Document>> feedResponseList) {
 
@@ -195,17 +197,17 @@ public class FetcherTest {
         return feedResponseList.get(requestIndex - 1).getContinuationToken();
     }
 
-    private int getExpectedMaxItemCountInRequest(FeedOptions options,
+    private int getExpectedMaxItemCountInRequest(CosmosQueryRequestOptions options,
                                                  int top,
                                                  List<FeedResponse<Document>> feedResponseList,
                                                  int requestIndex) {
         if (top == -1) {
-            return options.getMaxItemCount();
+            return ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(options);
         }
 
         int numberOfReceivedItemsSoFar  =
                 feedResponseList.subList(0, requestIndex).stream().mapToInt(rsp -> rsp.getResults().size()).sum();
 
-        return Math.min(top - numberOfReceivedItemsSoFar, options.getMaxItemCount());
+        return Math.min(top - numberOfReceivedItemsSoFar, ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(options));
     }
 }

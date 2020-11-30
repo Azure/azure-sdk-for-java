@@ -4,7 +4,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosResponseDiagnostics;
+import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.TimeoutHelper;
@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class DocumentServiceRequestContext implements Cloneable {
@@ -35,7 +36,8 @@ public class DocumentServiceRequestContext implements Cloneable {
     public volatile List<String> storeResponses;
     public volatile StoreResult quorumSelectedStoreResponse;
     public volatile PartitionKeyInternal effectivePartitionKey;
-    public volatile CosmosResponseDiagnostics cosmosResponseDiagnostics;
+    public volatile CosmosDiagnostics cosmosDiagnostics;
+    public volatile String resourcePhysicalAddress;
     public RetryContext retryContext;
 
     public DocumentServiceRequestContext() {
@@ -88,9 +90,9 @@ public class DocumentServiceRequestContext implements Cloneable {
             }
 
             if (retryPolicy.getStatusAndSubStatusCodes() != null) {
-                this.retryContext.genericRetrySpecificStatusAndSubStatusCodes = new ArrayList<>(retryPolicy.getStatusAndSubStatusCodes());
+                this.retryContext.genericRetrySpecificStatusAndSubStatusCodes = Collections.synchronizedList(new ArrayList<>(retryPolicy.getStatusAndSubStatusCodes()));
             } else {
-                this.retryContext.genericRetrySpecificStatusAndSubStatusCodes = new ArrayList<>();
+                this.retryContext.genericRetrySpecificStatusAndSubStatusCodes = Collections.synchronizedList(new ArrayList<>());
             }
             this.retryContext.retryCount = retryPolicy.getRetryCount();
             this.retryContext.statusAndSubStatusCodes = retryPolicy.getStatusAndSubStatusCodes();
@@ -109,9 +111,9 @@ public class DocumentServiceRequestContext implements Cloneable {
             }
 
             if (retryPolicy.getStatusAndSubStatusCodes() != null) {
-                this.retryContext.directRetrySpecificStatusAndSubStatusCodes = new ArrayList<>(retryPolicy.getStatusAndSubStatusCodes());
+                this.retryContext.directRetrySpecificStatusAndSubStatusCodes = Collections.synchronizedList(new ArrayList<>(retryPolicy.getStatusAndSubStatusCodes()));
             } else {
-                this.retryContext.directRetrySpecificStatusAndSubStatusCodes = new ArrayList<>();
+                this.retryContext.directRetrySpecificStatusAndSubStatusCodes = Collections.synchronizedList(new ArrayList<>());
             }
             this.retryContext.retryCount = retryPolicy.getRetryCount();
             this.retryContext.statusAndSubStatusCodes = retryPolicy.getStatusAndSubStatusCodes();
@@ -143,7 +145,8 @@ public class DocumentServiceRequestContext implements Cloneable {
         context.performLocalRefreshOnGoneException = this.performLocalRefreshOnGoneException;
         context.effectivePartitionKey = this.effectivePartitionKey;
         context.performedBackgroundAddressRefresh = this.performedBackgroundAddressRefresh;
-        context.cosmosResponseDiagnostics = this.cosmosResponseDiagnostics;
+        context.cosmosDiagnostics = this.cosmosDiagnostics;
+        context.resourcePhysicalAddress = this.resourcePhysicalAddress;
         context.retryContext = new RetryContext(this.retryContext);
 
         return context;

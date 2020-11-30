@@ -172,6 +172,19 @@ public class RecoveryServicesClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The PrivateLinkResourcesInner object to access its operations.
+     */
+    private PrivateLinkResourcesInner privateLinkResources;
+
+    /**
+     * Gets the PrivateLinkResourcesInner object to access its operations.
+     * @return the PrivateLinkResourcesInner object.
+     */
+    public PrivateLinkResourcesInner privateLinkResources() {
+        return this.privateLinkResources;
+    }
+
+    /**
      * The RecoveryServicesInner object to access its operations.
      */
     private RecoveryServicesInner recoveryServices;
@@ -274,6 +287,7 @@ public class RecoveryServicesClientImpl extends AzureServiceClient {
         this.vaultCertificates = new VaultCertificatesInner(restClient().retrofit(), this);
         this.registeredIdentities = new RegisteredIdentitiesInner(restClient().retrofit(), this);
         this.replicationUsages = new ReplicationUsagesInner(restClient().retrofit(), this);
+        this.privateLinkResources = new PrivateLinkResourcesInner(restClient().retrofit(), this);
         this.recoveryServices = new RecoveryServicesInner(restClient().retrofit(), this);
         this.vaults = new VaultsInner(restClient().retrofit(), this);
         this.operations = new OperationsInner(restClient().retrofit(), this);

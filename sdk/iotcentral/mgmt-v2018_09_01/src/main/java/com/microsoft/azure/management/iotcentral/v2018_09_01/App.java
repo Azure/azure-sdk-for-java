@@ -130,7 +130,7 @@ public interface App extends HasInner<AppInner>, Resource, GroupableResourceCore
     /**
      * The template for a App update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<App>, Resource.UpdateWithTags<Update>, UpdateStages.WithDisplayName, UpdateStages.WithSubdomain, UpdateStages.WithTemplate {
+    interface Update extends Appliable<App>, Resource.UpdateWithTags<Update>, UpdateStages.WithDisplayName, UpdateStages.WithSku, UpdateStages.WithSubdomain, UpdateStages.WithTemplate {
     }
 
     /**
@@ -147,6 +147,18 @@ public interface App extends HasInner<AppInner>, Resource, GroupableResourceCore
              * @return the next update stage
              */
             Update withDisplayName(String displayName);
+        }
+
+        /**
+         * The stage of the app update allowing to specify Sku.
+         */
+        interface WithSku {
+            /**
+             * Specifies sku.
+             * @param sku A valid instance SKU
+             * @return the next update stage
+             */
+            Update withSku(AppSkuInfo sku);
         }
 
         /**

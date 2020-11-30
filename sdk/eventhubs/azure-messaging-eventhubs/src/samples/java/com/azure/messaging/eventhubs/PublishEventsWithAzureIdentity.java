@@ -5,7 +5,6 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
-import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 
@@ -15,8 +14,6 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Sample demonstrates how to send an {@link EventDataBatch} to an Azure Event Hub using Azure Identity.
  */
 public class PublishEventsWithAzureIdentity {
-    private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
-
     /**
      * Main method to invoke this demo on how to send an {@link EventDataBatch} to an Azure Event Hub.
      *
@@ -34,7 +31,7 @@ public class PublishEventsWithAzureIdentity {
         // See https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal for
         // information on how to create a service principal.
         System.setProperty("AZURE_CLIENT_ID", "<<insert-service-principal-client-id>>");
-        System.setProperty("AZURE_CLIENT_ID", "<<insert-service-principal-client-application-secret>>");
+        System.setProperty("AZURE_CLIENT_SECRET", "<<insert-service-principal-client-application-secret>>");
         System.setProperty("AZURE_TENANT_ID", "<<insert-service-principal-tenant-id>>");
 
         // DefaultAzureCredentialBuilder exists inside the azure-identity package.

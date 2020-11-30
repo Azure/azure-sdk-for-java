@@ -30,14 +30,14 @@ public class UrlEscaperTests {
     public void canEscapePathWithGenDelim() {
         PercentEscaper escaper = UrlEscapers.PATH_ESCAPER;
         String actual = escaper.escape(genDelim);
-        Assertions.assertEquals("abc%5b456%2378", actual);
+        Assertions.assertEquals("abc%5B456%2378", actual);
     }
 
     @Test
     public void canEscapeQueryWithGenDelim() {
         PercentEscaper escaper = UrlEscapers.QUERY_ESCAPER;
         String actual = escaper.escape(genDelim);
-        Assertions.assertEquals("abc%5b456%2378", actual);
+        Assertions.assertEquals("abc%5B456%2378", actual);
     }
 
     @Test
@@ -51,14 +51,14 @@ public class UrlEscaperTests {
     public void canEscapeQueryWithSafeForPath() {
         PercentEscaper escaper = UrlEscapers.QUERY_ESCAPER;
         String actual = escaper.escape(safeForPath);
-        Assertions.assertEquals("abc%3a456%4078", actual);
+        Assertions.assertEquals("abc%3A456%4078", actual);
     }
 
     @Test
     public void canEscapePathWithSafeForQuery() {
         PercentEscaper escaper = UrlEscapers.PATH_ESCAPER;
         String actual = escaper.escape(safeForQuery);
-        Assertions.assertEquals("abc%2f456%3f78", actual);
+        Assertions.assertEquals("abc%2F456%3F78", actual);
     }
 
     @Test

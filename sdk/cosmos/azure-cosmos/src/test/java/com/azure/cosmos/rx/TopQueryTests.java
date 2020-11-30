@@ -7,14 +7,15 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.util.CosmosPagedFlux;
-import com.azure.cosmos.implementation.CosmosItemProperties;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.implementation.InternalObjectNode;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.RetryAnalyzer;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
 import com.azure.cosmos.implementation.query.TakeContinuationToken;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.reactivex.subscribers.TestSubscriber;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -31,7 +32,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class TopQueryTests extends TestSuiteBase {
     private CosmosAsyncContainer createdCollection;
-    private ArrayList<CosmosItemProperties> docs = new ArrayList<CosmosItemProperties>();
+    private ArrayList<InternalObjectNode> docs = new ArrayList<InternalObjectNode>();
 
     private String partitionKey = "mypk";
     private int firstPk = 0;
@@ -46,40 +47,41 @@ public class TopQueryTests extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider", retryAnalyzer = RetryAnalyzer.class)
-    public void queryDocumentsWithTop(boolean qmEnabled) throws Exception {
+    public void queryDocumentsWithTop(Boolean qmEnabled) throws Exception {
 
-        FeedOptions options = new FeedOptions();
-
-        options.setMaxItemCount(9);
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setMaxDegreeOfParallelism(2);
-        options.setPopulateQueryMetrics(qmEnabled);
+
+        if (qmEnabled != null) {
+            options.setQueryMetricsEnabled(qmEnabled);
+        }
 
         int expectedTotalSize = 20;
         int expectedNumberOfPages = 3;
         int[] expectedPageLengths = new int[] { 9, 9, 2 };
 
         for (int i = 0; i < 2; i++) {
-            CosmosPagedFlux<CosmosItemProperties> queryObservable1 = createdCollection.queryItems("SELECT TOP 0 value AVG(c.field) from c",
+            CosmosPagedFlux<JsonNode> queryObservable1 = createdCollection.queryItems("SELECT TOP 0 value AVG(c.field) from c",
                 options,
-                CosmosItemProperties.class);
+                                                                                      JsonNode.class);
 
-            FeedResponseListValidator<CosmosItemProperties> validator1 = new FeedResponseListValidator.Builder<CosmosItemProperties>()
+            FeedResponseListValidator<JsonNode> validator1 = new FeedResponseListValidator.Builder<JsonNode>()
                     .totalSize(0).build();
 
-            validateQuerySuccess(queryObservable1.byPage(), validator1, TIMEOUT);
+            validateQuerySuccess(queryObservable1.byPage(9), validator1, TIMEOUT);
 
-            CosmosPagedFlux<CosmosItemProperties> queryObservable2 = createdCollection.queryItems("SELECT TOP 1 value AVG(c.field) from c",
+            CosmosPagedFlux<JsonNode> queryObservable2 = createdCollection.queryItems("SELECT TOP 1 value AVG(c.field) from c",
                 options,
-                CosmosItemProperties.class);
+                                                                                      JsonNode.class);
 
-            FeedResponseListValidator<CosmosItemProperties> validator2 = new FeedResponseListValidator.Builder<CosmosItemProperties>()
+            FeedResponseListValidator<JsonNode> validator2 = new FeedResponseListValidator.Builder<JsonNode>()
                     .totalSize(1).build();
 
             validateQuerySuccess(queryObservable2.byPage(), validator2, TIMEOUT);
 
-            CosmosPagedFlux<CosmosItemProperties> queryObservable3 = createdCollection.queryItems("SELECT TOP 20 * from c", options, CosmosItemProperties.class);
+            CosmosPagedFlux<InternalObjectNode> queryObservable3 = createdCollection.queryItems("SELECT TOP 20 * from c", options, InternalObjectNode.class);
 
-            FeedResponseListValidator<CosmosItemProperties> validator3 = new FeedResponseListValidator.Builder<CosmosItemProperties>()
+            FeedResponseListValidator<InternalObjectNode> validator3 = new FeedResponseListValidator.Builder<InternalObjectNode>()
                     .totalSize(expectedTotalSize).numberOfPages(expectedNumberOfPages).pageLengths(expectedPageLengths)
                     .hasValidQueryMetrics(qmEnabled).build();
 
@@ -127,9 +129,9 @@ public class TopQueryTests extends TestSuiteBase {
 
     private void queryWithContinuationTokensAndPageSizes(String query, int[] pageSizes, int topCount) {
         for (int pageSize : pageSizes) {
-            List<CosmosItemProperties> receivedDocuments = this.queryWithContinuationTokens(query, pageSize);
+            List<InternalObjectNode> receivedDocuments = this.queryWithContinuationTokens(query, pageSize);
             Set<String> actualIds = new HashSet<String>();
-            for (CosmosItemProperties document : receivedDocuments) {
+            for (InternalObjectNode document : receivedDocuments) {
                 actualIds.add(document.getResourceId());
             }
 
@@ -137,28 +139,25 @@ public class TopQueryTests extends TestSuiteBase {
         }
     }
 
-    private List<CosmosItemProperties> queryWithContinuationTokens(String query, int pageSize) {
+    private List<InternalObjectNode> queryWithContinuationTokens(String query, int pageSize) {
         String requestContinuation = null;
         List<String> continuationTokens = new ArrayList<String>();
-        List<CosmosItemProperties> receivedDocuments = new ArrayList<CosmosItemProperties>();
+        List<InternalObjectNode> receivedDocuments = new ArrayList<InternalObjectNode>();
 
         do {
-            FeedOptions options = new FeedOptions();
-            options.setMaxItemCount(pageSize);
-
+            CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
             options.setMaxDegreeOfParallelism(2);
-            options.setRequestContinuation(requestContinuation);
-            CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.<CosmosItemProperties>queryItems(query, options, CosmosItemProperties.class);
+            CosmosPagedFlux<InternalObjectNode> queryObservable = createdCollection.<InternalObjectNode>queryItems(query, options, InternalObjectNode.class);
 
             //Observable<FeedResponse<Document>> firstPageObservable = queryObservable.first();
-            TestSubscriber<FeedResponse<CosmosItemProperties>> testSubscriber = new TestSubscriber<>();
-            queryObservable.byPage().subscribe(testSubscriber);
+            TestSubscriber<FeedResponse<InternalObjectNode>> testSubscriber = new TestSubscriber<>();
+            queryObservable.byPage(requestContinuation, pageSize).subscribe(testSubscriber);
             testSubscriber.awaitTerminalEvent(TIMEOUT, TimeUnit.MILLISECONDS);
             testSubscriber.assertNoErrors();
             testSubscriber.assertComplete();
 
             @SuppressWarnings("unchecked")
-            FeedResponse<CosmosItemProperties> firstPage = (FeedResponse<CosmosItemProperties>) testSubscriber.getEvents().get(0).get(0);
+            FeedResponse<InternalObjectNode> firstPage = (FeedResponse<InternalObjectNode>) testSubscriber.getEvents().get(0).get(0);
             requestContinuation = firstPage.getContinuationToken();
             receivedDocuments.addAll(firstPage.getResults());
             continuationTokens.add(requestContinuation);
@@ -178,7 +177,7 @@ public class TopQueryTests extends TestSuiteBase {
     public void generateTestData() {
 
         for (int i = 0; i < 10; i++) {
-            CosmosItemProperties d = new CosmosItemProperties();
+            InternalObjectNode d = new InternalObjectNode();
             d.setId(Integer.toString(i));
             BridgeInternal.setProperty(d, field, i);
             BridgeInternal.setProperty(d, partitionKey, firstPk);
@@ -186,7 +185,7 @@ public class TopQueryTests extends TestSuiteBase {
         }
 
         for (int i = 10; i < 20; i++) {
-            CosmosItemProperties d = new CosmosItemProperties();
+            InternalObjectNode d = new InternalObjectNode();
             d.setId(Integer.toString(i));
             BridgeInternal.setProperty(d, field, i);
             BridgeInternal.setProperty(d, partitionKey, secondPk);

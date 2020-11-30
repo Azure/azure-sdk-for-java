@@ -1,6 +1,39 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.4.0-beta.2 (Unreleased)
+
+## 1.4.0-beta.1 (2020-11-12)
+### Dependency Updates
+- Update `azure-messaging-eventhubs` dependency to `5.4.0-beta.1`.
+
+## 1.3.1 (2020-10-30)
+### Dependency Updates
+- Update `azure-messaging-eventhubs` dependency to `5.3.1`.
+
+## 1.3.0 (2020-10-12)
+### Dependency Updates
+- Update `azure-messaging-eventhubs` dependency to `5.3.0`.
+
+## 1.2.0 (2020-09-11)
+- Updated dependency version of `azure-messaging-eventhubs` to `5.2.0`.
+
+## 1.2.0-beta.2 (2020-08-14)
+- Updated dependency version of `azure-messaging-eventhubs` to `5.2.0-beta.2`.
+
+## 1.1.2 (2020-07-08)
+- Updated dependency version of `azure-messaging-eventhubs` to `5.1.2`
+
+## 1.1.1 (2020-06-12)
+- Updated dependency version of `azure-messaging-eventhubs` to `5.1.1`
+
+## 1.1.0 (2020-05-07)
+- Updated version of `azure-messaging-eventhubs` to `5.1.0`.
+
+## 1.1.0-beta.1 (2020-04-08)
+- Updated version of `azure-messaging-eventhubs` to `5.1.0-beta.1` that supports receiving events in batches.
+
+## 1.0.3 (2020-04-08)
+- Fix bug where processor would hang after a reconnect due to being unable to load balance partitions.
 
 ## 1.0.2 (2020-02-12)
 - Dependency fixed so `EventProcessor` consumers can use blocking method calls in their code.
@@ -30,9 +63,11 @@ our efforts can be found in the [Azure SDK Design Guidelines for Java](https://a
 - Receive messages from all partitions of an Azure Event Hub using `EventProcessor`.
 - Provide an instance of `BlobCheckpointStore` to your Event Processor. `BlobCheckpointStore` uses Azure Blob Storage to
 store checkpoints and balance partition load among all instances of Event Processors.
-- Store checkpoint and partition ownership details in [Azure Storage Blobs](https://azure.microsoft.com/en-us/services/storage/blobs/).
+- Store checkpoint and partition ownership details in [Azure Storage Blobs](https://azure.microsoft.com/services/storage/blobs/).
 
 ### Known issues
 
 - Initial offset provider for each partition is not implemented.
 - Interoperability with Event Processors of other language SDKs like Python is not supported.
+
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feventhubs%2Fazure-messaging-eventhubs-checkpointstore-blob%2FCHANGELOG.png)

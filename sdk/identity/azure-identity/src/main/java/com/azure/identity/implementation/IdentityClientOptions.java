@@ -6,9 +6,11 @@ package com.azure.identity.implementation;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.util.Configuration;
+import com.azure.identity.AzureAuthorityHosts;
+import com.azure.identity.implementation.util.ValidationUtil;
 
 import java.time.Duration;
-import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 import java.util.function.Function;
@@ -17,7 +19,6 @@ import java.util.function.Function;
  * Options to configure the IdentityClient.
  */
 public final class IdentityClientOptions {
-    private static final String DEFAULT_AUTHORITY_HOST = "https://login.microsoftonline.com/";
     private static final int MAX_RETRY_DEFAULT_LIMIT = 3;
 
     private String authorityHost;
@@ -26,14 +27,21 @@ public final class IdentityClientOptions {
     private ProxyOptions proxyOptions;
     private HttpPipeline httpPipeline;
     private ExecutorService executorService;
-    private Duration tokenRefreshOffset = Duration.ofMinutes(2);
     private HttpClient httpClient;
+    private boolean allowUnencryptedCache;
+    private boolean sharedTokenCacheEnabled;
+    private String keePassDatabasePath;
+    private boolean includeX5c;
+    private AuthenticationRecord authenticationRecord;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
      */
     public IdentityClientOptions() {
-        authorityHost = DEFAULT_AUTHORITY_HOST;
+        Configuration configuration = Configuration.getGlobalConfiguration();
+        authorityHost = configuration.get(Configuration.PROPERTY_AZURE_AUTHORITY_HOST,
+            AzureAuthorityHosts.AZURE_PUBLIC_CLOUD);
+        ValidationUtil.validateAuthHost(getClass().getSimpleName(), authorityHost);
         maxRetry = MAX_RETRY_DEFAULT_LIMIT;
         retryTimeout = i -> Duration.ofSeconds((long) Math.pow(2, i.getSeconds() - 1));
     }
@@ -157,31 +165,6 @@ public final class IdentityClientOptions {
     public ExecutorService getExecutorService() {
         return executorService;
     }
-  
-    /**
-     * @return how long before the actual token expiry to refresh the token.
-     */
-    public Duration getTokenRefreshOffset() {
-        return tokenRefreshOffset;
-    }
-
-    /**
-     * Sets how long before the actual token expiry to refresh the token. The
-     * token will be considered expired at and after the time of (actual
-     * expiry - token refresh offset). The default offset is 2 minutes.
-     *
-     * This is useful when network is congested and a request containing the
-     * token takes longer than normal to get to the server.
-     *
-     * @param tokenRefreshOffset the duration before the actual expiry of a token to refresh it
-     * @return IdentityClientOptions
-     * @throws NullPointerException If {@code tokenRefreshOffset} is null.
-     */
-    public IdentityClientOptions setTokenRefreshOffset(Duration tokenRefreshOffset) {
-        Objects.requireNonNull(tokenRefreshOffset, "The token refresh offset cannot be null.");
-        this.tokenRefreshOffset = tokenRefreshOffset;
-        return this;
-    }
 
     /**
      * Specifies the HttpClient to send use for requests.
@@ -191,5 +174,102 @@ public final class IdentityClientOptions {
     public IdentityClientOptions setHttpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
+    }
+
+    /**
+     * Allows to use an unprotected file specified by <code>cacheFileLocation()</code> instead of
+     * Gnome keyring on Linux. This is restricted by default.
+     *
+     * @param allowUnencryptedCache the flag to indicate if unencrypted persistent cache is allowed for use or not.
+     * @return The updated identity client options.
+     */
+    public IdentityClientOptions setAllowUnencryptedCache(boolean allowUnencryptedCache) {
+        this.allowUnencryptedCache = allowUnencryptedCache;
+        return this;
+    }
+
+    public boolean getAllowUnencryptedCache() {
+        return this.allowUnencryptedCache;
+    }
+
+    /**
+     * Specifies the database to extract IntelliJ cached credentials from.
+     * @param keePassDatabasePath the database to extract intellij credentials from.
+     * @return IdentityClientOptions
+     */
+    public IdentityClientOptions setIntelliJKeePassDatabasePath(String keePassDatabasePath) {
+        this.keePassDatabasePath = keePassDatabasePath;
+        return this;
+    }
+
+    /**
+     * Gets if the shared token cache is disabled.
+     * @return if the shared token cache is disabled.
+     */
+    public boolean isSharedTokenCacheEnabled() {
+        return this.sharedTokenCacheEnabled;
+    }
+
+    /**
+     * Enables the shared token cache which is disabled by default. If enabled, the client will store tokens
+     * in a cache persisted to the machine, protected to the current user, which can be shared by other credentials
+     * and processes.
+     *
+     * @return The updated identity client options.
+     */
+    public IdentityClientOptions enablePersistentCache() {
+        this.sharedTokenCacheEnabled = true;
+        return this;
+    }
+
+    /*
+     * Get the KeePass database path.
+     * @return the KeePass database path to extract inellij credentials from.
+     */
+    public String getIntelliJKeePassDatabasePath() {
+        return keePassDatabasePath;
+    }
+
+    /**
+     * Sets the {@link AuthenticationRecord} captured from a previous authentication.
+     *
+     * @param authenticationRecord The Authentication record to be configured.
+     *
+     * @return An updated instance of this builder with the configured authentication record.
+     */
+    public IdentityClientOptions setAuthenticationRecord(AuthenticationRecord authenticationRecord) {
+        this.authenticationRecord = authenticationRecord;
+        return this;
+    }
+
+
+    /**
+     * Get the status whether x5c claim (public key of the certificate) should be included as part of the authentication
+     * request or not.
+     * @return the status of x5c claim inclusion.
+     */
+    public boolean isIncludeX5c() {
+        return includeX5c;
+    }
+
+    /**
+     * Specifies if the x5c claim (public key of the certificate) should be sent as part of the authentication request.
+     * The default value is false.
+     *
+     * @param includeX5c true if the x5c should be sent. Otherwise false
+     * @return The updated identity client options.
+     */
+    public IdentityClientOptions setIncludeX5c(boolean includeX5c) {
+        this.includeX5c = includeX5c;
+        return this;
+    }
+
+    /**
+     * Get the configured {@link AuthenticationRecord}.
+     *
+     * @return {@link AuthenticationRecord}.
+     */
+    public AuthenticationRecord getAuthenticationRecord() {
+        return authenticationRecord;
     }
 }

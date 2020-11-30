@@ -3,6 +3,7 @@
 
 package com.azure.core.test.http;
 
+import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
@@ -63,7 +64,7 @@ public class MockHttpClient extends NoOpHttpClient {
                     final String byteCountString = requestPath.substring("/bytes/".length());
                     final int byteCount = Integer.parseInt(byteCountString);
                     HttpHeaders newHeaders = new HttpHeaders(RESPONSE_HEADERS)
-                        .put("Content-Type", "application/octet-stream")
+                        .put("Content-Type", ContentType.APPLICATION_OCTET_STREAM)
                         .put("Content-Length", Integer.toString(byteCount));
                     response = new MockHttpResponse(request, 200, newHeaders, byteCount == 0 ? null : new byte[byteCount]);
                 } else if (requestPathLower.startsWith("/base64urlbytes/")) {

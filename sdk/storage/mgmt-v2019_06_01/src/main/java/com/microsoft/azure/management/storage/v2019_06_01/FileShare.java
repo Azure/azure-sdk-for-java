@@ -16,13 +16,43 @@ import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.storage.v2019_06_01.implementation.StorageManager;
-import java.util.Map;
 import org.joda.time.DateTime;
+import java.util.Map;
 
 /**
  * Type representing FileShare.
  */
 public interface FileShare extends HasInner<FileShareInner>, Indexable, Updatable<FileShare.Update>, HasManager<StorageManager> {
+    /**
+     * @return the accessTier value.
+     */
+    ShareAccessTier accessTier();
+
+    /**
+     * @return the accessTierChangeTime value.
+     */
+    DateTime accessTierChangeTime();
+
+    /**
+     * @return the accessTierStatus value.
+     */
+    String accessTierStatus();
+
+    /**
+     * @return the deleted value.
+     */
+    Boolean deleted();
+
+    /**
+     * @return the deletedTime value.
+     */
+    DateTime deletedTime();
+
+    /**
+     * @return the enabledProtocols value.
+     */
+    EnabledProtocols enabledProtocols();
+
     /**
      * @return the etag value.
      */
@@ -49,9 +79,24 @@ public interface FileShare extends HasInner<FileShareInner>, Indexable, Updatabl
     String name();
 
     /**
+     * @return the remainingRetentionDays value.
+     */
+    Integer remainingRetentionDays();
+
+    /**
+     * @return the rootSquash value.
+     */
+    RootSquashType rootSquash();
+
+    /**
      * @return the shareQuota value.
      */
     Integer shareQuota();
+
+    /**
+     * @return the shareUsageBytes value.
+     */
+    Long shareUsageBytes();
 
     /**
      * @return the type value.
@@ -59,9 +104,14 @@ public interface FileShare extends HasInner<FileShareInner>, Indexable, Updatabl
     String type();
 
     /**
+     * @return the version value.
+     */
+    String version();
+
+    /**
      * The entirety of the FileShare definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithFileService, DefinitionStages.WithMetadata, DefinitionStages.WithShareQuota, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithFileService, DefinitionStages.WithCreate {
     }
 
     /**
@@ -84,30 +134,66 @@ public interface FileShare extends HasInner<FileShareInner>, Indexable, Updatabl
             * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only
             * @return the next definition stage
             */
-            WithMetadata withExistingFileService(String resourceGroupName, String accountName);
+            WithCreate withExistingFileService(String resourceGroupName, String accountName);
+        }
+
+        /**
+         * The stage of the fileshare definition allowing to specify AccessTier.
+         */
+        interface WithAccessTier {
+            /**
+             * Specifies accessTier.
+             * @param accessTier Access tier for specific share. GpV2 account can choose between TransactionOptimized (default), Hot, and Cool. FileStorage account can choose Premium. Possible values include: 'TransactionOptimized', 'Hot', 'Cool', 'Premium'
+             * @return the next definition stage
+             */
+            WithCreate withAccessTier(ShareAccessTier accessTier);
+        }
+
+        /**
+         * The stage of the fileshare definition allowing to specify EnabledProtocols.
+         */
+        interface WithEnabledProtocols {
+            /**
+             * Specifies enabledProtocols.
+             * @param enabledProtocols The authentication protocol that is used for the file share. Can only be specified when creating a share. Possible values include: 'SMB', 'NFS'
+             * @return the next definition stage
+             */
+            WithCreate withEnabledProtocols(EnabledProtocols enabledProtocols);
         }
 
         /**
          * The stage of the fileshare definition allowing to specify Metadata.
          */
         interface WithMetadata {
-           /**
-            * Specifies metadata.
-            * @param metadata A name-value pair to associate with the share as metadata
-            * @return the next definition stage
-            */
-            WithShareQuota withMetadata(Map<String, String> metadata);
+            /**
+             * Specifies metadata.
+             * @param metadata A name-value pair to associate with the share as metadata
+             * @return the next definition stage
+             */
+            WithCreate withMetadata(Map<String, String> metadata);
+        }
+
+        /**
+         * The stage of the fileshare definition allowing to specify RootSquash.
+         */
+        interface WithRootSquash {
+            /**
+             * Specifies rootSquash.
+             * @param rootSquash The property is for NFS share only. The default is NoRootSquash. Possible values include: 'NoRootSquash', 'RootSquash', 'AllSquash'
+             * @return the next definition stage
+             */
+            WithCreate withRootSquash(RootSquashType rootSquash);
         }
 
         /**
          * The stage of the fileshare definition allowing to specify ShareQuota.
          */
         interface WithShareQuota {
-           /**
-            * Specifies shareQuota.
-            * @param shareQuota The maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5TB (5120). For Large File Shares, the maximum size is 102400
-            * @return the next definition stage
-            */
+            /**
+             * Specifies shareQuota.
+             * @param shareQuota The maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5TB (5120). For Large File Shares, the maximum size is 102400
+             * @return the next definition stage
+             */
             WithCreate withShareQuota(Integer shareQuota);
         }
 
@@ -116,19 +202,43 @@ public interface FileShare extends HasInner<FileShareInner>, Indexable, Updatabl
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<FileShare> {
+        interface WithCreate extends Creatable<FileShare>, DefinitionStages.WithAccessTier, DefinitionStages.WithEnabledProtocols, DefinitionStages.WithMetadata, DefinitionStages.WithRootSquash, DefinitionStages.WithShareQuota {
         }
     }
     /**
      * The template for a FileShare update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<FileShare>, UpdateStages.WithMetadata, UpdateStages.WithShareQuota {
+    interface Update extends Appliable<FileShare>, UpdateStages.WithAccessTier, UpdateStages.WithEnabledProtocols, UpdateStages.WithMetadata, UpdateStages.WithRootSquash, UpdateStages.WithShareQuota {
     }
 
     /**
      * Grouping of FileShare update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the fileshare update allowing to specify AccessTier.
+         */
+        interface WithAccessTier {
+            /**
+             * Specifies accessTier.
+             * @param accessTier Access tier for specific share. GpV2 account can choose between TransactionOptimized (default), Hot, and Cool. FileStorage account can choose Premium. Possible values include: 'TransactionOptimized', 'Hot', 'Cool', 'Premium'
+             * @return the next update stage
+             */
+            Update withAccessTier(ShareAccessTier accessTier);
+        }
+
+        /**
+         * The stage of the fileshare update allowing to specify EnabledProtocols.
+         */
+        interface WithEnabledProtocols {
+            /**
+             * Specifies enabledProtocols.
+             * @param enabledProtocols The authentication protocol that is used for the file share. Can only be specified when creating a share. Possible values include: 'SMB', 'NFS'
+             * @return the next update stage
+             */
+            Update withEnabledProtocols(EnabledProtocols enabledProtocols);
+        }
+
         /**
          * The stage of the fileshare update allowing to specify Metadata.
          */
@@ -139,6 +249,18 @@ public interface FileShare extends HasInner<FileShareInner>, Indexable, Updatabl
              * @return the next update stage
              */
             Update withMetadata(Map<String, String> metadata);
+        }
+
+        /**
+         * The stage of the fileshare update allowing to specify RootSquash.
+         */
+        interface WithRootSquash {
+            /**
+             * Specifies rootSquash.
+             * @param rootSquash The property is for NFS share only. The default is NoRootSquash. Possible values include: 'NoRootSquash', 'RootSquash', 'AllSquash'
+             * @return the next update stage
+             */
+            Update withRootSquash(RootSquashType rootSquash);
         }
 
         /**

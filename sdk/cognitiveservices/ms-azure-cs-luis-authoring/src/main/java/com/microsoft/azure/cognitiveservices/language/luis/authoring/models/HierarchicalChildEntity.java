@@ -8,66 +8,9 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A Hierarchical Child Entity.
  */
 public class HierarchicalChildEntity extends ChildEntity {
-    /**
-     * The type ID of the Entity Model.
-     */
-    @JsonProperty(value = "typeId")
-    private Integer typeId;
-
-    /**
-     * Possible values include: 'Entity Extractor', 'Hierarchical Entity
-     * Extractor', 'Hierarchical Child Entity Extractor', 'Composite Entity
-     * Extractor', 'Closed List Entity Extractor', 'Prebuilt Entity Extractor',
-     * 'Intent Classifier', 'Pattern.Any Entity Extractor', 'Regex Entity
-     * Extractor'.
-     */
-    @JsonProperty(value = "readableType")
-    private String readableType;
-
-    /**
-     * Get the typeId value.
-     *
-     * @return the typeId value
-     */
-    public Integer typeId() {
-        return this.typeId;
-    }
-
-    /**
-     * Set the typeId value.
-     *
-     * @param typeId the typeId value to set
-     * @return the HierarchicalChildEntity object itself.
-     */
-    public HierarchicalChildEntity withTypeId(Integer typeId) {
-        this.typeId = typeId;
-        return this;
-    }
-
-    /**
-     * Get the readableType value.
-     *
-     * @return the readableType value
-     */
-    public String readableType() {
-        return this.readableType;
-    }
-
-    /**
-     * Set the readableType value.
-     *
-     * @param readableType the readableType value to set
-     * @return the HierarchicalChildEntity object itself.
-     */
-    public HierarchicalChildEntity withReadableType(String readableType) {
-        this.readableType = readableType;
-        return this;
-    }
-
 }

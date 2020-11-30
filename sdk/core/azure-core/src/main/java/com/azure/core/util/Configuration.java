@@ -3,8 +3,6 @@
 
 package com.azure.core.util;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
@@ -24,6 +22,16 @@ public class Configuration implements Cloneable {
      * URL of the proxy for HTTPS connections.
      */
     public static final String PROPERTY_HTTPS_PROXY = "HTTPS_PROXY";
+
+    /**
+     * Endpoint to connect to when using Azure Active Directory managed service identity (MSI).
+     */
+    public static final String PROPERTY_IDENTITY_ENDPOINT = "IDENTITY_ENDPOINT";
+
+    /**
+     * Header when connecting to Azure Active Directory using managed service identity (MSI).
+     */
+    public static final String PROPERTY_IDENTITY_HEADER = "IDENTITY_HEADER";
 
     /**
      * A list of hosts or CIDR to not use proxy HTTP/HTTPS connections through.
@@ -71,6 +79,11 @@ public class Configuration implements Cloneable {
     public static final String PROPERTY_AZURE_TENANT_ID = "AZURE_TENANT_ID";
 
     /**
+     * Path of a PEM certificate file to use when performing service principal authentication with Azure.
+     */
+    public static final String PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH = "AZURE_CLIENT_CERTIFICATE_PATH";
+
+    /**
      * Name of the Azure resource group.
      */
     public static final String PROPERTY_AZURE_RESOURCE_GROUP = "AZURE_RESOURCE_GROUP";
@@ -79,6 +92,11 @@ public class Configuration implements Cloneable {
      * Name of the Azure cloud to connect to.
      */
     public static final String PROPERTY_AZURE_CLOUD = "AZURE_CLOUD";
+
+    /**
+     * The Azure Active Directory endpoint to connect to.
+     */
+    public static final String PROPERTY_AZURE_AUTHORITY_HOST = "AZURE_AUTHORITY_HOST";
 
     /**
      * Disables telemetry collection.
@@ -96,23 +114,13 @@ public class Configuration implements Cloneable {
     public static final String PROPERTY_AZURE_TRACING_DISABLED = "AZURE_TRACING_DISABLED";
 
     /*
-     * System property loader.
-     */
-    private static final Function<String, String> PROPERTY_LOADER = System::getProperty;
-
-    /*
-     * Environment variable loader.
-     */
-    private static final Function<String, String> ENV_VAR_LOADER = System::getenv;
-
-    private static final List<Function<String, String>> LOADERS = Arrays.asList(PROPERTY_LOADER, ENV_VAR_LOADER);
-
-    /*
      * Configurations that are loaded into the global configuration store when the application starts.
      */
     private static final String[] DEFAULT_CONFIGURATIONS = {
         PROPERTY_HTTP_PROXY,
         PROPERTY_HTTPS_PROXY,
+        PROPERTY_IDENTITY_ENDPOINT,
+        PROPERTY_IDENTITY_HEADER,
         PROPERTY_NO_PROXY,
         PROPERTY_MSI_ENDPOINT,
         PROPERTY_MSI_SECRET,
@@ -124,6 +132,7 @@ public class Configuration implements Cloneable {
         PROPERTY_AZURE_TENANT_ID,
         PROPERTY_AZURE_RESOURCE_GROUP,
         PROPERTY_AZURE_CLOUD,
+        PROPERTY_AZURE_AUTHORITY_HOST,
         PROPERTY_AZURE_TELEMETRY_DISABLED,
         PROPERTY_AZURE_LOG_LEVEL,
         PROPERTY_AZURE_TRACING_DISABLED,
@@ -237,15 +246,22 @@ public class Configuration implements Cloneable {
      * @param name Name of the configuration.
      * @return If found the loaded configuration, otherwise null.
      */
-    private static String load(String name) {
-        for (Function<String, String> loader : LOADERS) {
-            String value = loader.apply(name);
-            if (value != null) {
-                return value;
-            }
+    private String load(String name) {
+        String value = loadFromProperties(name);
+
+        if (value != null) {
+            return value;
         }
 
-        return null;
+        return loadFromEnvironment(name);
+    }
+
+    String loadFromEnvironment(String name) {
+        return System.getenv(name);
+    }
+
+    String loadFromProperties(String name) {
+        return System.getProperty(name);
     }
 
     /**
@@ -330,7 +346,7 @@ public class Configuration implements Cloneable {
         return (T) convertedValue;
     }
 
-    private static void loadBaseConfiguration(Configuration configuration) {
+    private void loadBaseConfiguration(Configuration configuration) {
         for (String config : DEFAULT_CONFIGURATIONS) {
             String value = load(config);
             if (value != null) {

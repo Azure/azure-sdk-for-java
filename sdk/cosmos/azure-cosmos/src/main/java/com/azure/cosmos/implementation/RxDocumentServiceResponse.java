@@ -5,12 +5,10 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.Permission;
 import com.azure.cosmos.implementation.directconnectivity.Address;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosResponseDiagnostics;
-import com.azure.cosmos.models.Resource;
+import com.azure.cosmos.CosmosDiagnostics;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -27,11 +25,12 @@ import java.util.Map;
  * This is core Transport/Connection agnostic response for the Azure Cosmos DB database service.
  */
 public class RxDocumentServiceResponse {
+    private final DiagnosticsClientContext diagnosticsClientContext;
     private final int statusCode;
     private final Map<String, String> headersMap;
     private final StoreResponse storeResponse;
 
-    public RxDocumentServiceResponse(StoreResponse response) {
+    public RxDocumentServiceResponse(DiagnosticsClientContext diagnosticsClientContext, StoreResponse response) {
         String[] headerNames = response.getResponseHeaderNames();
         String[] headerValues = response.getResponseHeaderValues();
 
@@ -46,6 +45,7 @@ public class RxDocumentServiceResponse {
         }
 
         this.storeResponse = response;
+        this.diagnosticsClientContext = diagnosticsClientContext;
     }
 
     public static <T extends Resource> String getResourceKey(Class<T> c) {
@@ -182,10 +182,14 @@ public class RxDocumentServiceResponse {
         return null;
     }
 
-    CosmosResponseDiagnostics getCosmosResponseRequestDiagnosticStatistics() {
+    public CosmosDiagnostics getCosmosDiagnostics() {
         if (this.storeResponse == null) {
             return null;
         }
-        return this.storeResponse.getCosmosResponseDiagnostics();
+        return this.storeResponse.getCosmosDiagnostics();
+    }
+
+    public DiagnosticsClientContext getDiagnosticsClientContext() {
+        return diagnosticsClientContext;
     }
 }

@@ -1,28 +1,27 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://azure-java-live-test3.vault.azure.net/keys/non-existing/?api-version=7.1-preview",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/non-existing/?api-version=7.1",
     "Headers" : {
-      "User-Agent" : "azsdk-java-client_name/client_version (12.0.1; Mac OS X 10.14.6)",
+      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "Server" : "Microsoft-IIS/10.0",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "404",
-      "Date" : "Thu, 12 Mar 2020 20:09:02 GMT",
+      "Date" : "Tue, 04 Aug 2020 02:49:17 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
       "X-AspNet-Version" : "4.0.30319",
-      "x-ms-keyvault-region" : "eastus",
-      "x-ms-keyvault-network-info" : "addr=172.103.233.178;act_addr_fam=InterNetwork;",
+      "x-ms-keyvault-region" : "westus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
-      "Content-Length" : "72",
-      "x-ms-request-id" : "4a8b1f7c-6824-49b8-b833-ab5eb90798ef",
-      "x-ms-keyvault-service-version" : "1.1.0.897",
-      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"Key not found: non-existing\"}}",
+      "Content-Length" : "300",
+      "x-ms-request-id" : "3aff35ee-8959-4a39-a9f7-812f1e334395",
+      "x-ms-keyvault-service-version" : "1.1.10.0",
+      "Body" : "{\"error\":{\"code\":\"KeyNotFound\",\"message\":\"A key with (name/id) non-existing was not found in this key vault. If you recently deleted this key you may be able to recover it using the correct recovery command. For help resolving this issue, please see https://go.microsoft.com/fwlink/?linkid=2125182\"}}",
       "X-Powered-By" : "ASP.NET",
       "Content-Type" : "application/json; charset=utf-8"
     },

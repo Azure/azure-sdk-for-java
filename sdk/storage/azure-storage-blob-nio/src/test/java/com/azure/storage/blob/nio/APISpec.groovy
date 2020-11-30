@@ -28,7 +28,6 @@ import com.azure.storage.blob.models.ListBlobContainersOptions
 import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.common.StorageSharedKeyCredential
-import com.azure.storage.common.implementation.Constants
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import spock.lang.Requires
@@ -37,7 +36,6 @@ import spock.lang.Specification
 import spock.lang.Timeout
 
 import java.nio.ByteBuffer
-import java.nio.channels.AsynchronousFileChannel
 import java.nio.charset.StandardCharsets
 import java.nio.file.FileSystem
 import java.nio.file.Path
@@ -113,6 +111,9 @@ class APISpec extends Specification {
      */
     static final String receivedEtag = "received"
 
+    static final int KB = 1024
+    static final int MB = 1024 * KB
+
     def setupSpec() {
         testMode = setupTestMode()
         primaryCredential = getCredential(PRIMARY_STORAGE)
@@ -132,6 +133,9 @@ class APISpec extends Specification {
         this.testName = fullTestName.substring(0, substringIndex)
         this.interceptorManager = new InterceptorManager(className + fullTestName, testMode)
         this.resourceNamer = new TestResourceNamer(className + testName, testMode, interceptorManager.getRecordedData())
+
+        // Print out the test name to create breadcrumbs in our test logging in case anything hangs.
+        System.out.printf("========================= %s.%s =========================%n", className, fullTestName)
 
         // If the test doesn't have the Requires tag record it in live mode.
         recordLiveMode = specificationContext.getCurrentIteration().getDescription().getAnnotation(Requires.class) != null
@@ -155,8 +159,7 @@ class APISpec extends Specification {
 
         interceptorManager.close()
     }
-
-    //TODO: Should this go in core.
+    
     static Mono<ByteBuffer> collectBytesInBuffer(Flux<ByteBuffer> content) {
         return FluxUtil.collectBytesInByteBufferStream(content).map { bytes -> ByteBuffer.wrap(bytes) }
     }
@@ -408,7 +411,7 @@ class APISpec extends Specification {
         return Base64.encoder.encodeToString(resourceNamer.randomUuid().getBytes(StandardCharsets.UTF_8))
     }
 
-    def createFS(Map<String,String> config) {
+    def createFS(Map<String,Object> config) {
         config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName() + "," + generateContainerName()
         config[AzureFileSystem.AZURE_STORAGE_ACCOUNT_KEY] = getAccountKey(PRIMARY_STORAGE)
 
@@ -442,9 +445,9 @@ class APISpec extends Specification {
         file.deleteOnExit()
         FileOutputStream fos = new FileOutputStream(file)
 
-        if (size > Constants.MB) {
-            for (def i = 0; i < size / Constants.MB; i++) {
-                def dataSize = Math.min(Constants.MB, size - i * Constants.MB)
+        if (size > MB) {
+            for (def i = 0; i < size / MB; i++) {
+                def dataSize = Math.min(MB, size - i * MB)
                 fos.write(getRandomByteArray(dataSize))
             }
         } else {
@@ -465,32 +468,41 @@ class APISpec extends Specification {
      * @return Whether the files have equivalent content based on offset and read count
      */
     def compareFiles(File file1, File file2, long offset, long count) {
+        def stream1 = new FileInputStream(file1)
+        stream1.skip(offset)
+        def stream2 = new FileInputStream(file2)
+
+        return compareInputStreams(stream1, stream2, count)
+    }
+
+    def compareInputStreams(InputStream stream1, InputStream stream2, long count) {
         def pos = 0L
-        def readBuffer = 8 * Constants.KB
-        def fileChannel1 = AsynchronousFileChannel.open(file1.toPath())
-        def fileChannel2 = AsynchronousFileChannel.open(file2.toPath())
+        def defaultReadBuffer = 128 * KB
+        try {
+            // If the amount we are going to read is smaller than the default buffer size use that instead.
+            def bufferSize = (int) Math.min(defaultReadBuffer, count)
 
-        while (pos < count) {
-            def bufferSize = (int) Math.min(readBuffer, count - pos)
-            def buffer1 = ByteBuffer.allocate(bufferSize)
-            def buffer2 = ByteBuffer.allocate(bufferSize)
+            while (pos < count) {
+                // Number of bytes we expect to read.
+                def expectedReadCount = (int) Math.min(bufferSize, count - pos)
+                def buffer1 = new byte[expectedReadCount]
+                def buffer2 = new byte[expectedReadCount]
 
-            def readCount1 = fileChannel1.read(buffer1, offset + pos).get()
-            def readCount2 = fileChannel2.read(buffer2, pos).get()
+                def readCount1 = stream1.read(buffer1)
+                def readCount2 = stream2.read(buffer2)
 
-            if (readCount1 != readCount2 || buffer1 != buffer2) {
-                return false
+                // Use Arrays.equals as it is more optimized than Groovy/Spock's '==' for arrays.
+                assert readCount1 == readCount2 && Arrays.equals(buffer1, buffer2)
+
+                pos += expectedReadCount
             }
 
-            pos += bufferSize
+            def verificationRead = stream2.read()
+            return pos == count && verificationRead == -1
+        } finally {
+            stream1.close()
+            stream2.close()
         }
-
-        def verificationRead = fileChannel2.read(ByteBuffer.allocate(1), pos).get()
-
-        fileChannel1.close()
-        fileChannel2.close()
-
-        return pos == count && verificationRead == -1
     }
 
     // Only sleep if test is running in live mode
@@ -556,7 +568,7 @@ class APISpec extends Specification {
 
     def checkBlobIsDir(BlobClient blobClient) {
          String isDir = blobClient.getPropertiesWithResponse(null, null, null)
-             .getValue().getMetadata().get(AzureFileSystemProvider.DIR_METADATA_MARKER)
+             .getValue().getMetadata().get(AzureResource.DIR_METADATA_MARKER)
         return isDir != null && isDir == "true"
     }
 

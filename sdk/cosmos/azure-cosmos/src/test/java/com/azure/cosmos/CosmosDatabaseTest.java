@@ -9,8 +9,9 @@ package com.azure.cosmos;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.util.CosmosPagedIterable;
@@ -52,7 +53,7 @@ public class CosmosDatabaseTest extends TestSuiteBase {
 
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
-    public void createDatabase_withPropertiesAndOptions() throws CosmosClientException {
+    public void createDatabase_withPropertiesAndOptions() {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
         databases.add(databaseDefinition.getId());
 
@@ -84,14 +85,15 @@ public class CosmosDatabaseTest extends TestSuiteBase {
         try {
             client.createDatabase(databaseProperties);
         } catch (Exception e) {
-            assertThat(e).isInstanceOf(CosmosClientException.class);
-            assertThat(((CosmosClientException) e).getStatusCode()).isEqualTo(HttpConstants.StatusCodes.CONFLICT);
+            assertThat(e).isInstanceOf(CosmosException.class);
+            assertThat(((CosmosException) e).getStatusCode()).isEqualTo(HttpConstants.StatusCodes.CONFLICT);
         }
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void createDatabase_withId() throws Exception {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
+        databases.add(databaseDefinition.getId());
 
         CosmosDatabaseResponse createResponse = client.createDatabase(databaseDefinition.getId());
         validateDatabaseResponse(databaseDefinition, createResponse);
@@ -100,13 +102,14 @@ public class CosmosDatabaseTest extends TestSuiteBase {
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void createDatabase_withPropertiesThroughputAndOptions() throws Exception {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
+        databases.add(databaseDefinition.getId());
         CosmosDatabaseProperties databaseProperties = new CosmosDatabaseProperties(databaseDefinition.getId());
         CosmosDatabaseRequestOptions requestOptions = new CosmosDatabaseRequestOptions();
         int throughput = 400;
         try {
-            CosmosDatabaseResponse createResponse = client.createDatabase(databaseProperties, throughput, requestOptions);
+            CosmosDatabaseResponse createResponse = client.createDatabase(databaseProperties, ThroughputProperties.createManualThroughput(throughput), requestOptions);
             validateDatabaseResponse(databaseDefinition, createResponse);
-        } catch (CosmosClientException ex) {
+        } catch (CosmosException ex) {
             assertThat(ex.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.FORBIDDEN);
         }
     }
@@ -114,14 +117,16 @@ public class CosmosDatabaseTest extends TestSuiteBase {
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void createDatabase_withPropertiesAndThroughput() throws Exception {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
+        databases.add(databaseDefinition.getId());
+
         CosmosDatabaseProperties databaseProperties = new CosmosDatabaseProperties(databaseDefinition.getId());
         int throughput = 1000;
         try {
-            CosmosDatabaseResponse createResponse = client.createDatabase(databaseProperties, throughput);
+            CosmosDatabaseResponse createResponse = client.createDatabase(databaseProperties, ThroughputProperties.createManualThroughput(throughput));
             validateDatabaseResponse(databaseDefinition, createResponse);
         } catch (Exception ex) {
-            if (ex instanceof CosmosClientException) {
-                assertThat(((CosmosClientException) ex).getStatusCode()).isEqualTo(HttpConstants.StatusCodes.FORBIDDEN);
+            if (ex instanceof CosmosException) {
+                assertThat(((CosmosException) ex).getStatusCode()).isEqualTo(HttpConstants.StatusCodes.FORBIDDEN);
             } else {
                 throw ex;
             }
@@ -131,13 +136,14 @@ public class CosmosDatabaseTest extends TestSuiteBase {
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void createDatabase_withIdAndThroughput() throws Exception {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
+        databases.add(databaseDefinition.getId());
         int throughput = 1000;
         try {
-            CosmosDatabaseResponse createResponse = client.createDatabase(databaseDefinition.getId(), throughput);
+            CosmosDatabaseResponse createResponse = client.createDatabase(databaseDefinition.getId(), ThroughputProperties.createManualThroughput(throughput));
             validateDatabaseResponse(databaseDefinition, createResponse);
         } catch (Exception ex) {
-            if (ex instanceof CosmosClientException) {
-                assertThat(((CosmosClientException) ex).getStatusCode()).isEqualTo(HttpConstants.StatusCodes.FORBIDDEN);
+            if (ex instanceof CosmosException) {
+                assertThat(((CosmosException) ex).getStatusCode()).isEqualTo(HttpConstants.StatusCodes.FORBIDDEN);
             } else {
                 throw ex;
             }
@@ -159,7 +165,7 @@ public class CosmosDatabaseTest extends TestSuiteBase {
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void readAllDatabases() throws Exception {
-        FeedOptions options = new FeedOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
         CosmosPagedIterable<CosmosDatabaseProperties> readIterator = client.readAllDatabases(options);
         // Basic validation
@@ -172,9 +178,9 @@ public class CosmosDatabaseTest extends TestSuiteBase {
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void queryAllDatabases() throws Exception {
-        FeedOptions options = new FeedOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         String query = String.format("SELECT * from c where c.getId = '%s'", createdDatabase.getId());
-        FeedOptions feedOptions = new FeedOptions();
+        CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
 
         CosmosPagedIterable<CosmosDatabaseProperties> queryIterator = client.queryDatabases(query, options);
         // Basic validation
@@ -190,6 +196,7 @@ public class CosmosDatabaseTest extends TestSuiteBase {
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void deleteDatabase() throws Exception {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
+        databases.add(databaseDefinition.getId());
         CosmosDatabaseProperties databaseProperties = new CosmosDatabaseProperties(databaseDefinition.getId());
         CosmosDatabaseResponse createResponse = client.createDatabase(databaseProperties);
 
@@ -199,6 +206,7 @@ public class CosmosDatabaseTest extends TestSuiteBase {
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void deleteDatabase_withOptions() throws Exception {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
+        databases.add(databaseDefinition.getId());
         CosmosDatabaseProperties databaseProperties = new CosmosDatabaseProperties(databaseDefinition.getId());
         CosmosDatabaseResponse createResponse = client.createDatabase(databaseProperties);
         CosmosDatabaseRequestOptions options = new CosmosDatabaseRequestOptions();

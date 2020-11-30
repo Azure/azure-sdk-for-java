@@ -10,8 +10,11 @@ package com.microsoft.azure.management.storage.v2019_06_01.implementation;
 
 import com.microsoft.azure.management.storage.v2019_06_01.FileShareItem;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
+import com.microsoft.azure.management.storage.v2019_06_01.ShareAccessTier;
 import org.joda.time.DateTime;
+import com.microsoft.azure.management.storage.v2019_06_01.EnabledProtocols;
 import java.util.Map;
+import com.microsoft.azure.management.storage.v2019_06_01.RootSquashType;
 
 class FileShareItemImpl extends WrapperImpl<FileShareItemInner> implements FileShareItem {
     private final StorageManager manager;
@@ -23,6 +26,36 @@ class FileShareItemImpl extends WrapperImpl<FileShareItemInner> implements FileS
     @Override
     public StorageManager manager() {
         return this.manager;
+    }
+
+    @Override
+    public ShareAccessTier accessTier() {
+        return this.inner().accessTier();
+    }
+
+    @Override
+    public DateTime accessTierChangeTime() {
+        return this.inner().accessTierChangeTime();
+    }
+
+    @Override
+    public String accessTierStatus() {
+        return this.inner().accessTierStatus();
+    }
+
+    @Override
+    public Boolean deleted() {
+        return this.inner().deleted();
+    }
+
+    @Override
+    public DateTime deletedTime() {
+        return this.inner().deletedTime();
+    }
+
+    @Override
+    public EnabledProtocols enabledProtocols() {
+        return this.inner().enabledProtocols();
     }
 
     @Override
@@ -51,13 +84,33 @@ class FileShareItemImpl extends WrapperImpl<FileShareItemInner> implements FileS
     }
 
     @Override
+    public Integer remainingRetentionDays() {
+        return this.inner().remainingRetentionDays();
+    }
+
+    @Override
+    public RootSquashType rootSquash() {
+        return this.inner().rootSquash();
+    }
+
+    @Override
     public Integer shareQuota() {
         return this.inner().shareQuota();
     }
 
     @Override
+    public Long shareUsageBytes() {
+        return this.inner().shareUsageBytes();
+    }
+
+    @Override
     public String type() {
         return this.inner().type();
+    }
+
+    @Override
+    public String version() {
+        return this.inner().version();
     }
 
 }

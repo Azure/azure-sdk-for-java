@@ -13,6 +13,16 @@
     "Component": {
       "Type": "Maven",
       "Maven": {
+        "ArtifactId": "guava",
+        "GroupId": "com.google.guava",
+        "Version": "25.0-jre"
+      }
+    }
+  },
+  {
+    "Component": {
+      "Type": "Maven",
+      "Maven": {
         "ArtifactId": "commons-collections4",
         "GroupId": "org.apache.commons",
         "Version": "4.2"
@@ -36,6 +46,16 @@
         "ArtifactId": "commons-lang3",
         "GroupId": "org.apache.commons",
         "Version": "3.8.1"
+      }
+    }
+  },
+  {
+    "Component": {
+      "Type": "Maven",
+      "Maven": {
+        "ArtifactId": "java-uuid-generator",
+        "GroupId": "com.fasterxml.uuid",
+        "Version": "4.0.1"
       }
     }
   }

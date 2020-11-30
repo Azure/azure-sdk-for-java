@@ -7,7 +7,7 @@ import com.azure.cosmos.implementation.guava27.Strings;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.CorruptedFrameException;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 final class RntbdFramer {
 

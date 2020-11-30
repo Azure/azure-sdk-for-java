@@ -44,7 +44,7 @@ public final class TextDocumentBatchStatistics {
      * @param transactionCount The number of transactions for the request.
      */
     public TextDocumentBatchStatistics(int documentCount, int validDocumentCount, int invalidDocumentCount,
-        long transactionCount) {
+                                       long transactionCount) {
         this.documentCount = documentCount;
         this.validDocumentCount = validDocumentCount;
         this.invalidDocumentCount = invalidDocumentCount;

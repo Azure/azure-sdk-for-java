@@ -3,6 +3,8 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.util.CosmosPagedFlux;
 
 /**
@@ -13,8 +15,32 @@ public class CosmosPagedFluxOptions {
 
     private String requestContinuation;
     private Integer maxItemCount;
+    private TracerProvider tracerProvider;
+    private String tracerSpanName;
+    private String databaseId;
+    private String containerId;
+    private OperationType operationType;
+    private ResourceType resourceType;
+    private String serviceEndpoint;
+    private CosmosAsyncClient cosmosAsyncClient;
 
     public CosmosPagedFluxOptions() {}
+
+    public String getContainerId() {
+        return containerId;
+    }
+
+    public OperationType getOperationType() {
+        return operationType;
+    }
+
+    public ResourceType getResourceType() {
+        return resourceType;
+    }
+
+    public CosmosAsyncClient getCosmosAsyncClient() {
+        return cosmosAsyncClient;
+    }
 
     /**
      * Gets the request continuation token.
@@ -56,5 +82,61 @@ public class CosmosPagedFluxOptions {
     public CosmosPagedFluxOptions setMaxItemCount(Integer maxItemCount) {
         this.maxItemCount = maxItemCount;
         return this;
+    }
+
+    /**
+     * Gets the tracer provider
+     * @return tracerProvider
+     */
+    public TracerProvider getTracerProvider() {
+        return this.tracerProvider;
+    }
+
+    /**
+     * Gets the tracer span name
+     * @return tracerSpanName
+     */
+    public String getTracerSpanName() {
+        return tracerSpanName;
+    }
+
+    /**
+     * Gets the databaseId
+     * @return databaseId
+     */
+    public String getDatabaseId() {
+        return databaseId;
+    }
+
+    /**
+     * Gets the service end point
+     * @return serviceEndpoint
+     */
+    public String getServiceEndpoint() {
+        return serviceEndpoint;
+    }
+
+    public void setTracerInformation(TracerProvider tracerProvider, String tracerSpanName, String serviceEndpoint, String databaseId) {
+        this.databaseId = databaseId;
+        this.serviceEndpoint = serviceEndpoint;
+        this.tracerSpanName = tracerSpanName;
+        this.tracerProvider = tracerProvider;
+    }
+
+    public void setTracerAndTelemetryInformation(String tracerSpanName,
+                                                 String databaseId,
+                                                 String containerId,
+                                                 OperationType operationType,
+                                                 ResourceType resourceType,
+                                                 CosmosAsyncClient cosmosAsyncClient
+    ) {
+        this.tracerProvider = BridgeInternal.getTracerProvider(cosmosAsyncClient);
+        this.serviceEndpoint = BridgeInternal.getServiceEndpoint(cosmosAsyncClient);
+        this.tracerSpanName = tracerSpanName;
+        this.databaseId = databaseId;
+        this.containerId = containerId;
+        this.operationType = operationType;
+        this.resourceType = resourceType;
+        this.cosmosAsyncClient = cosmosAsyncClient;
     }
 }

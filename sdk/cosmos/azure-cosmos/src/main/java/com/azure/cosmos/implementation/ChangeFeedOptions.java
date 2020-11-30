@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.models.PartitionKey;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.Map;
 
 /**
@@ -15,18 +15,18 @@ import java.util.Map;
 public final class ChangeFeedOptions {
     private String partitionKeyRangeId;
     private boolean startFromBeginning;
-    private OffsetDateTime startDateTime;
+    private Instant startDateTime;
     private Integer maxItemCount;
     private String requestContinuation;
     private PartitionKey partitionkey;
-    private final boolean populateQueryMetrics;
+    private final boolean queryMetricsEnabled;
     private Map<String, Object> properties;
 
     /**
      * Instantiates a new Change feed options.
      */
     public ChangeFeedOptions() {
-        this.populateQueryMetrics = false;
+        this.queryMetricsEnabled = false;
     }
 
     /**
@@ -41,7 +41,7 @@ public final class ChangeFeedOptions {
         this.maxItemCount = options.maxItemCount;
         this.requestContinuation = options.requestContinuation;
         this.partitionkey = options.partitionkey;
-        this.populateQueryMetrics = options.populateQueryMetrics;
+        this.queryMetricsEnabled = options.queryMetricsEnabled;
     }
 
     /**
@@ -101,23 +101,23 @@ public final class ChangeFeedOptions {
     }
 
     /**
-     * Gets the zoned date time to start looking for changes after.
+     * Gets the instant time to start looking for changes after.
      *
-     * @return a zoned date time to start looking for changes after, if set or null
+     * @return a instant time to start looking for changes after, if set or null
      * otherwise
      */
-    public OffsetDateTime getStartDateTime() {
+    public Instant getStartDateTime() {
         return startDateTime;
     }
 
     /**
-     * Sets the zoned date time (exclusive) to start looking for changes after. If
+     * Sets the instant time (exclusive) to start looking for changes after. If
      * this is specified, startFromBeginning is ignored.
      *
-     * @param startDateTime a zoned date time to start looking for changes after.
+     * @param startDateTime a instant time to start looking for changes after.
      * @return the ChangeFeedOptions.
      */
-    public ChangeFeedOptions setStartDateTime(OffsetDateTime startDateTime) {
+    public ChangeFeedOptions setStartDateTime(Instant startDateTime) {
         this.startDateTime = startDateTime;
         return this;
     }

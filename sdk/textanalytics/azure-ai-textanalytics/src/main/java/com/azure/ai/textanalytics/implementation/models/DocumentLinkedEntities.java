@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The DocumentLinkedEntities model.
- */
+/** The DocumentLinkedEntities model. */
 @Fluent
 public final class DocumentLinkedEntities {
     /*
@@ -24,6 +22,12 @@ public final class DocumentLinkedEntities {
      */
     @JsonProperty(value = "entities", required = true)
     private List<LinkedEntity> entities;
+
+    /*
+     * Warnings encountered while processing document.
+     */
+    @JsonProperty(value = "warnings", required = true)
+    private List<TextAnalyticsWarning> warnings;
 
     /*
      * if showStats=true was specified in the request this field will contain
@@ -53,8 +57,7 @@ public final class DocumentLinkedEntities {
     }
 
     /**
-     * Get the entities property: Recognized well-known entities in the
-     * document.
+     * Get the entities property: Recognized well-known entities in the document.
      *
      * @return the entities value.
      */
@@ -63,8 +66,7 @@ public final class DocumentLinkedEntities {
     }
 
     /**
-     * Set the entities property: Recognized well-known entities in the
-     * document.
+     * Set the entities property: Recognized well-known entities in the document.
      *
      * @param entities the entities value to set.
      * @return the DocumentLinkedEntities object itself.
@@ -75,8 +77,28 @@ public final class DocumentLinkedEntities {
     }
 
     /**
-     * Get the statistics property: if showStats=true was specified in the
-     * request this field will contain information about the document payload.
+     * Get the warnings property: Warnings encountered while processing document.
+     *
+     * @return the warnings value.
+     */
+    public List<TextAnalyticsWarning> getWarnings() {
+        return this.warnings;
+    }
+
+    /**
+     * Set the warnings property: Warnings encountered while processing document.
+     *
+     * @param warnings the warnings value to set.
+     * @return the DocumentLinkedEntities object itself.
+     */
+    public DocumentLinkedEntities setWarnings(List<TextAnalyticsWarning> warnings) {
+        this.warnings = warnings;
+        return this;
+    }
+
+    /**
+     * Get the statistics property: if showStats=true was specified in the request this field will contain information
+     * about the document payload.
      *
      * @return the statistics value.
      */
@@ -85,8 +107,8 @@ public final class DocumentLinkedEntities {
     }
 
     /**
-     * Set the statistics property: if showStats=true was specified in the
-     * request this field will contain information about the document payload.
+     * Set the statistics property: if showStats=true was specified in the request this field will contain information
+     * about the document payload.
      *
      * @param statistics the statistics value to set.
      * @return the DocumentLinkedEntities object itself.

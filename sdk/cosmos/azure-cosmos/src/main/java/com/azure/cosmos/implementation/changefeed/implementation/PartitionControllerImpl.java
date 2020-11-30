@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.changefeed.PartitionController;
 import com.azure.cosmos.implementation.changefeed.PartitionSupervisor;
 import com.azure.cosmos.implementation.changefeed.PartitionSupervisorFactory;
 import com.azure.cosmos.implementation.changefeed.PartitionSynchronizer;
+import com.azure.cosmos.implementation.changefeed.exceptions.LeaseLostException;
 import com.azure.cosmos.implementation.changefeed.exceptions.PartitionSplitException;
 import com.azure.cosmos.implementation.changefeed.exceptions.TaskCancelledException;
 import org.slf4j.Logger;
@@ -27,6 +28,7 @@ import java.util.concurrent.ConcurrentHashMap;
 class PartitionControllerImpl implements PartitionController {
     private static final Logger logger = LoggerFactory.getLogger(PartitionControllerImpl.class);
     private final Map<String, WorkerTask> currentlyOwnedPartitions = new ConcurrentHashMap<>();
+    private final Object lock;
 
     private final LeaseContainer leaseContainer;
     private final LeaseManager leaseManager;
@@ -43,6 +45,7 @@ class PartitionControllerImpl implements PartitionController {
             PartitionSynchronizer synchronizer,
             Scheduler scheduler) {
 
+        this.lock = new Object();
         this.leaseContainer = leaseContainer;
         this.leaseManager = leaseManager;
         this.partitionSupervisorFactory = partitionSupervisorFactory;
@@ -59,7 +62,7 @@ class PartitionControllerImpl implements PartitionController {
     @Override
     public synchronized Mono<Lease> addOrUpdateLease(final Lease lease) {
         WorkerTask workerTask = this.currentlyOwnedPartitions.get(lease.getLeaseToken());
-        if ( workerTask != null && workerTask.isRunning()) {
+        if (workerTask != null && workerTask.isRunning()) {
             return this.leaseManager.updateProperties(lease)
                 .map(updatedLease -> {
                     logger.debug("Partition {}: updated.", updatedLease.getLeaseToken());
@@ -70,12 +73,20 @@ class PartitionControllerImpl implements PartitionController {
         return this.leaseManager.acquire(lease)
             .defaultIfEmpty(lease)
             .map(updatedLease -> {
-                logger.info("Partition {}: acquired.", updatedLease.getLeaseToken());
-                PartitionSupervisor supervisor = this.partitionSupervisorFactory.create(updatedLease);
-                this.currentlyOwnedPartitions.put(updatedLease.getLeaseToken(), this.processPartition(supervisor, updatedLease));
-                return updatedLease;
+                synchronized (lock) {
+                    WorkerTask checkTask = this.currentlyOwnedPartitions.get(lease.getLeaseToken());
+                    if (checkTask == null) {
+                        logger.info("Partition {}: acquired.", updatedLease.getLeaseToken());
+                        PartitionSupervisor supervisor = this.partitionSupervisorFactory.create(updatedLease);
+                        this.currentlyOwnedPartitions.put(updatedLease.getLeaseToken(), this.processPartition(supervisor, updatedLease));
+                    }
+                    return updatedLease;
+                }
             })
-            .onErrorResume(throwable -> this.removeLease(lease).then(Mono.error(throwable)));
+            .onErrorResume(throwable -> {
+                logger.warn("Partition {}: unexpected error; removing lease from current cache.", lease.getLeaseToken());
+                return this.removeLease(lease).then(Mono.error(throwable));
+            });
     }
 
     @Override
@@ -110,10 +121,15 @@ class PartitionControllerImpl implements PartitionController {
 
             return this.leaseManager.release(lease)
                 .onErrorResume(e -> {
+                    if (e instanceof LeaseLostException) {
+                        logger.warn("Partition {}: lease already removed.", lease.getLeaseToken());
+                    } else {
                         logger.warn("Partition {}: failed to remove lease.", lease.getLeaseToken(), e);
-                        return Mono.empty();
                     }
-                ).doOnSuccess(aVoid -> {
+
+                    return Mono.empty();
+                })
+                .doOnSuccess(aVoid -> {
                     logger.info("Partition {}: successfully removed lease.", lease.getLeaseToken());
                 });
     }

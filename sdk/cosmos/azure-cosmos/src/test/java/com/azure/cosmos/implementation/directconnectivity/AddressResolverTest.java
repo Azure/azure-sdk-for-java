@@ -5,29 +5,30 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.implementation.InvalidPartitionException;
-import com.azure.cosmos.implementation.NotFoundException;
-import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
-import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.PartitionKeyDefinition;
-import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ICollectionRoutingMapCache;
+import com.azure.cosmos.implementation.InvalidPartitionException;
+import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
+import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.IServerIdentity;
 import com.azure.cosmos.implementation.routing.InMemoryCollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.mutable.MutableObject;
@@ -49,6 +50,7 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.fail;
 
@@ -199,12 +201,14 @@ public class AddressResolverTest {
         RxDocumentServiceRequest request;
         if (nameBased) {
             request = RxDocumentServiceRequest.create(
+                mockDiagnosticsClientContext(),
                 OperationType.Read,
                 ResourceType.Document,
                 "dbs/db/colls/coll/docs/doc1",
                 new HashMap<>());
         } else {
             request = RxDocumentServiceRequest.create(
+                mockDiagnosticsClientContext(),
                 OperationType.Read,
                 ResourceType.Document,
                 DOCUMENT_TEST_URL,
@@ -267,11 +271,13 @@ public class AddressResolverTest {
         RxDocumentServiceRequest request;
         if (nameBased) {
             request = RxDocumentServiceRequest.createFromName(
+                mockDiagnosticsClientContext(),
                 OperationType.Read,
                 "dbs/db/colls/coll/docs/doc1",
                 ResourceType.Document);
         } else {
             request = RxDocumentServiceRequest.create(
+                mockDiagnosticsClientContext(),
                 OperationType.Read,
                 ResourceType.Document,
                 DOCUMENT_TEST_URL,
@@ -315,7 +321,7 @@ public class AddressResolverTest {
         this.collectionCacheRefreshedCount = 0;
 
         Mockito.doAnswer(invocationOnMock -> {
-            RxDocumentServiceRequest request = invocationOnMock.getArgumentAt(0, RxDocumentServiceRequest.class);
+            RxDocumentServiceRequest request = invocationOnMock.getArgumentAt(1, RxDocumentServiceRequest.class);
             if (request.forceNameCacheRefresh && collectionAfterRefresh != null) {
                 currentCollection.setValue(collectionAfterRefresh);
                 AddressResolverTest.this.collectionCacheRefreshedCount++;
@@ -340,7 +346,7 @@ public class AddressResolverTest {
             }
 
             return new Utils.ValueHolder<>(null);
-        }).when(this.collectionCache).resolveCollectionAsync(Mockito.any(RxDocumentServiceRequest.class));
+        }).when(this.collectionCache).resolveCollectionAsync( Mockito.any(), Mockito.any(RxDocumentServiceRequest.class));
 
         // Routing map cache
         Map<String, CollectionRoutingMap> currentRoutingMap =
@@ -348,18 +354,20 @@ public class AddressResolverTest {
         this.routingMapRefreshCount = new HashMap<>();
 
         Mockito.doAnswer(invocationOnMock -> {
-            String collectionRid = invocationOnMock.getArgumentAt(0, String.class);
-            CollectionRoutingMap previousValue = invocationOnMock.getArgumentAt(1, CollectionRoutingMap.class);
+            String collectionRid = invocationOnMock.getArgumentAt(1, String.class);
+            CollectionRoutingMap previousValue = invocationOnMock.getArgumentAt(2, CollectionRoutingMap.class);
 
-            return collectionRoutingMapCache.tryLookupAsync(collectionRid, previousValue, false, null);
-        }).when(this.collectionRoutingMapCache).tryLookupAsync(Mockito.anyString(),
+            return collectionRoutingMapCache.tryLookupAsync(null, collectionRid, previousValue, false, null);
+        }).when(this.collectionRoutingMapCache).tryLookupAsync(
+            Mockito.any(MetadataDiagnosticsContext.class),
+            Mockito.anyString(),
             Mockito.any(CollectionRoutingMap.class),
             Mockito.anyMapOf(String.class, Object.class));
 
         // Refresh case
         Mockito.doAnswer(invocationOnMock -> {
-            String collectionRid = invocationOnMock.getArgumentAt(0, String.class);
-            CollectionRoutingMap previousValue = invocationOnMock.getArgumentAt(1, CollectionRoutingMap.class);
+            String collectionRid = invocationOnMock.getArgumentAt(1, String.class);
+            CollectionRoutingMap previousValue = invocationOnMock.getArgumentAt(2, CollectionRoutingMap.class);
 
             if (previousValue == null) {
                 return Mono.just(new Utils.ValueHolder<>(currentRoutingMap.get(collectionRid)));
@@ -390,7 +398,9 @@ public class AddressResolverTest {
             }
 
             return Mono.error(new NotImplementedException("not mocked"));
-        }).when(this.collectionRoutingMapCache).tryLookupAsync(Mockito.anyString(),
+        }).when(this.collectionRoutingMapCache).tryLookupAsync(
+            Mockito.any(MetadataDiagnosticsContext.class),
+            Mockito.anyString(),
             Mockito.any(CollectionRoutingMap.class),
             Mockito.anyBoolean(),
             Mockito.anyMapOf(String.class, Object.class));

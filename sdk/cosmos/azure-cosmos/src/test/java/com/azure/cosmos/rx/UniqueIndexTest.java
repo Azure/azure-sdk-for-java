@@ -3,22 +3,24 @@
 package com.azure.cosmos.rx;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.CosmosDatabaseForTest;
-import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.implementation.InternalObjectNode;
+import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
+import com.azure.cosmos.implementation.guava25.collect.Lists;
+import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
-import com.azure.cosmos.models.DataType;
 import com.azure.cosmos.models.ExcludedPath;
-import com.azure.cosmos.models.HashIndex;
 import com.azure.cosmos.models.IncludedPath;
-import com.azure.cosmos.models.Index;
 import com.azure.cosmos.models.IndexingMode;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -26,14 +28,9 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.UniqueKey;
 import com.azure.cosmos.models.UniqueKeyPolicy;
-import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.TestConfigurations;
-import com.azure.cosmos.implementation.Utils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -66,25 +63,18 @@ public class UniqueIndexTest extends TestSuiteBase {
 
         CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef);
         UniqueKeyPolicy uniqueKeyPolicy = new UniqueKeyPolicy();
-        UniqueKey uniqueKey = new UniqueKey();
-        uniqueKey.setPaths(ImmutableList.of("/name", "/description"));
+        UniqueKey uniqueKey = new UniqueKey(ImmutableList.of("/name", "/description"));
         uniqueKeyPolicy.setUniqueKeys(Lists.newArrayList(uniqueKey));
         collectionDefinition.setUniqueKeyPolicy(uniqueKeyPolicy);
 
         IndexingPolicy indexingPolicy = new IndexingPolicy();
         indexingPolicy.setIndexingMode(IndexingMode.CONSISTENT);
-        ExcludedPath excludedPath = new ExcludedPath();
-        excludedPath.setPath("/*");
+        ExcludedPath excludedPath = new ExcludedPath("/*");
         indexingPolicy.setExcludedPaths(Collections.singletonList(excludedPath));
 
-        IncludedPath includedPath1 = new IncludedPath();
-        includedPath1.setPath("/name/?");
-        includedPath1.setIndexes(Collections.singletonList(Index.hash(DataType.STRING, 7)));
-        includedPath1.setIndexes(Collections.singletonList(Index.hash(DataType.STRING, 7)));
+        IncludedPath includedPath1 = new IncludedPath("/name/?");
 
-        IncludedPath includedPath2 = new IncludedPath();
-        includedPath2.setPath("/description/?");
-        includedPath2.setIndexes(Collections.singletonList(Index.hash(DataType.STRING, 7)));
+        IncludedPath includedPath2 = new IncludedPath("/description/?");
         indexingPolicy.setIncludedPaths(ImmutableList.of(includedPath1, includedPath2));
         collectionDefinition.setIndexingPolicy(indexingPolicy);
 
@@ -94,14 +84,15 @@ public class UniqueIndexTest extends TestSuiteBase {
         JsonNode doc2 = om.readValue("{\"name\":\"Alexander Pushkin\",\"description\":\"playwright\",\"id\": \"" + UUID.randomUUID().toString() + "\"}", JsonNode.class);
         JsonNode doc3 = om.readValue("{\"name\":\"حافظ شیرازی\",\"description\":\"poet\",\"id\": \"" + UUID.randomUUID().toString() + "\"}", JsonNode.class);
 
-        collection = database.createContainer(collectionDefinition).block().getContainer();
+        database.createContainer(collectionDefinition).block();
+        collection = database.getContainer(collectionDefinition.getId());
 
-        CosmosItemProperties properties = BridgeInternal.getProperties(collection.createItem(doc1).block());
+        InternalObjectNode properties = BridgeInternal.getProperties(collection.createItem(doc1).block());
 
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-        CosmosItemProperties itemSettings =
+        InternalObjectNode itemSettings =
             BridgeInternal.getProperties(
-                collection.readItem(properties.getId(), PartitionKey.NONE, options, CosmosItemProperties.class)
+                collection.readItem(properties.getId(), PartitionKey.NONE, options, InternalObjectNode.class)
                                              .block());
         assertThat(itemSettings.getId()).isEqualTo(doc1.get("id").textValue());
 
@@ -125,12 +116,12 @@ public class UniqueIndexTest extends TestSuiteBase {
 
         CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef);
         UniqueKeyPolicy uniqueKeyPolicy = new UniqueKeyPolicy();
-        UniqueKey uniqueKey = new UniqueKey();
-        uniqueKey.setPaths(ImmutableList.of("/name", "/description"));
+        UniqueKey uniqueKey = new UniqueKey(ImmutableList.of("/name", "/description"));
         uniqueKeyPolicy.setUniqueKeys(Lists.newArrayList(uniqueKey));
         collectionDefinition.setUniqueKeyPolicy(uniqueKeyPolicy);
 
-        collection = database.createContainer(collectionDefinition).block().getContainer();
+        database.createContainer(collectionDefinition).block();
+        collection = database.getContainer(collectionDefinition.getId());
 
         ObjectMapper om = new ObjectMapper();
 
@@ -138,16 +129,16 @@ public class UniqueIndexTest extends TestSuiteBase {
         ObjectNode doc3 = om.readValue("{\"name\":\"Rabindranath Tagore\",\"description\":\"poet\",\"id\": \""+ UUID.randomUUID().toString() +"\"}", ObjectNode.class);
         ObjectNode doc2 = om.readValue("{\"name\":\"عمر خیّام\",\"description\":\"mathematician\",\"id\": \""+ UUID.randomUUID().toString() +"\"}", ObjectNode.class);
 
-        CosmosItemProperties doc1Inserted =
+        InternalObjectNode doc1Inserted =
             BridgeInternal.getProperties(collection.createItem(doc1, new CosmosItemRequestOptions()).block());
 
         BridgeInternal.getProperties(collection.replaceItem(doc1Inserted, doc1.get("id").asText(), PartitionKey.NONE, new CosmosItemRequestOptions())
             .block());     // REPLACE with same values -- OK.
 
-        CosmosItemProperties doc2Inserted = BridgeInternal.getProperties(collection
+        InternalObjectNode doc2Inserted = BridgeInternal.getProperties(collection
                                                                              .createItem(doc2, new CosmosItemRequestOptions())
                                                                              .block());
-        CosmosItemProperties doc2Replacement = new CosmosItemProperties(ModelBridgeInternal.toJsonFromJsonSerializable(doc1Inserted));
+        InternalObjectNode doc2Replacement = new InternalObjectNode(ModelBridgeInternal.toJsonFromJsonSerializable(doc1Inserted));
         doc2Replacement.setId( doc2Inserted.getId());
 
         try {
@@ -175,29 +166,24 @@ public class UniqueIndexTest extends TestSuiteBase {
 
         CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef);
         UniqueKeyPolicy uniqueKeyPolicy = new UniqueKeyPolicy();
-        UniqueKey uniqueKey = new UniqueKey();
-        uniqueKey.setPaths(ImmutableList.of("/name", "/description"));
+        UniqueKey uniqueKey = new UniqueKey(ImmutableList.of("/name", "/description"));
         uniqueKeyPolicy.setUniqueKeys(Lists.newArrayList(uniqueKey));
         collectionDefinition.setUniqueKeyPolicy(uniqueKeyPolicy);
 
         IndexingPolicy indexingPolicy = new IndexingPolicy();
         indexingPolicy.setIndexingMode(IndexingMode.CONSISTENT);
-        ExcludedPath excludedPath = new ExcludedPath();
-        excludedPath.setPath("/*");
+        ExcludedPath excludedPath = new ExcludedPath("/*");
         indexingPolicy.setExcludedPaths(Collections.singletonList(excludedPath));
 
-        IncludedPath includedPath1 = new IncludedPath();
-        includedPath1.setPath("/name/?");
-        includedPath1.setIndexes(Collections.singletonList(Index.hash(DataType.STRING, 7)));
+        IncludedPath includedPath1 = new IncludedPath("/name/?");
 
-        IncludedPath includedPath2 = new IncludedPath();
-        includedPath2.setPath("/description/?");
-        includedPath2.setIndexes(Collections.singletonList(Index.hash(DataType.STRING, 7)));
+        IncludedPath includedPath2 = new IncludedPath("/description/?");
         indexingPolicy.setIncludedPaths(ImmutableList.of(includedPath1, includedPath2));
 
         collectionDefinition.setIndexingPolicy(indexingPolicy);
 
-        CosmosAsyncContainer createdCollection = database.createContainer(collectionDefinition).block().getContainer();
+        database.createContainer(collectionDefinition).block();
+        CosmosAsyncContainer createdCollection = database.getContainer(collectionDefinition.getId());
 
         CosmosContainerProperties collection = createdCollection.read().block().getProperties();
 
@@ -211,8 +197,8 @@ public class UniqueIndexTest extends TestSuiteBase {
                         ImmutableList.of(ImmutableList.of("/name", "/description")));
     }
 
-    private CosmosClientException getDocumentClientException(RuntimeException e) {
-        CosmosClientException dce = Utils.as(e, CosmosClientException.class);
+    private CosmosException getDocumentClientException(RuntimeException e) {
+        CosmosException dce = Utils.as(e, CosmosException.class);
         assertThat(dce).isNotNull();
         return dce;
     }
@@ -223,8 +209,10 @@ public class UniqueIndexTest extends TestSuiteBase {
         client = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
-            .connectionPolicy(ConnectionPolicy.getDefaultPolicy())
-            .consistencyLevel(ConsistencyLevel.SESSION).buildAsyncClient();
+            .directMode(DirectConnectionConfig.getDefaultConfig())
+            .consistencyLevel(ConsistencyLevel.SESSION)
+            .contentResponseOnWriteEnabled(true)
+            .buildAsyncClient();
 
         database = createDatabase(client, databaseId);
     }

@@ -24,6 +24,7 @@ import org.asynchttpclient.ListenableFuture;
 import org.asynchttpclient.Request;
 import org.asynchttpclient.RequestBuilder;
 import org.asynchttpclient.Response;
+import org.asynchttpclient.proxy.ProxyServer;
 import org.asynchttpclient.util.HttpConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,10 +39,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.net.*;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
@@ -68,8 +66,10 @@ public class ManagementClientAsync {
     private static final String USER_AGENT = String.format("%s/%s(%s)", ClientConstants.PRODUCT_NAME, ClientConstants.CURRENT_JAVACLIENT_VERSION, ClientConstants.PLATFORM_INFO);
 
     private ClientSettings clientSettings;
+    private MessagingFactory factory;
     private URI namespaceEndpointURI;
     private AsyncHttpClient asyncHttpClient;
+    private List<Proxy> proxies;
 
     /**
      * Creates a new {@link ManagementClientAsync}.
@@ -91,6 +91,8 @@ public class ManagementClientAsync {
         this.clientSettings = clientSettings;
         DefaultAsyncHttpClientConfig.Builder clientBuilder = Dsl.config()
                 .setConnectTimeout((int) CONNECTION_TIMEOUT.toMillis())
+                .setUseProxySelector(true)
+                .setUseProxyProperties(true)
                 .setRequestTimeout((int) this.clientSettings.getOperationTimeout().toMillis());
         this.asyncHttpClient = asyncHttpClient(clientBuilder);
     }

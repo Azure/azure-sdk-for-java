@@ -12,6 +12,7 @@ import org.slf4j.helpers.NOPLogger;
 
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 /**
  * This is a fluent logger helper class that wraps a pluggable {@link Logger}.
@@ -35,6 +36,7 @@ import java.util.Objects;
  * @see Configuration
  */
 public class ClientLogger {
+    private static final Pattern CRLF_PATTERN = Pattern.compile("[\r\n]");
     private final Logger logger;
 
     /**
@@ -70,7 +72,7 @@ public class ClientLogger {
      */
     public void verbose(String message) {
         if (logger.isDebugEnabled()) {
-            logger.debug(message);
+            logger.debug(sanitizeLogMessageInput(message));
         }
     }
 
@@ -106,7 +108,7 @@ public class ClientLogger {
      */
     public void info(String message) {
         if (logger.isInfoEnabled()) {
-            logger.info(message);
+            logger.info(sanitizeLogMessageInput(message));
         }
     }
 
@@ -142,7 +144,7 @@ public class ClientLogger {
      */
     public void warning(String message) {
         if (logger.isWarnEnabled()) {
-            logger.warn(message);
+            logger.warn(sanitizeLogMessageInput(message));
         }
     }
 
@@ -178,7 +180,7 @@ public class ClientLogger {
      */
     public void error(String message) {
         if (logger.isErrorEnabled()) {
-            logger.error(message);
+            logger.error(sanitizeLogMessageInput(message));
         }
     }
 
@@ -205,7 +207,7 @@ public class ClientLogger {
      * Logs the {@link RuntimeException} at the warning level and returns it to be thrown.
      * <p>
      * This API covers the cases where a runtime exception type needs to be thrown and logged. If a {@link Throwable} is
-     * being logged use {@link #logThowableAsWarning(Throwable)} instead.
+     * being logged use {@link #logThrowableAsWarning(Throwable)} instead.
      *
      * @param runtimeException RuntimeException to be logged and returned.
      * @return The passed {@link RuntimeException}.
@@ -214,7 +216,30 @@ public class ClientLogger {
     public RuntimeException logExceptionAsWarning(RuntimeException runtimeException) {
         Objects.requireNonNull(runtimeException, "'runtimeException' cannot be null.");
 
-        return logThowableAsWarning(runtimeException);
+        return logThrowableAsWarning(runtimeException);
+    }
+
+    /**
+     * Logs the {@link Throwable} at the warning level and returns it to be thrown.
+     * <p>
+     * This API covers the cases where a checked exception type needs to be thrown and logged. If a {@link
+     * RuntimeException} is being logged use {@link #logExceptionAsWarning(RuntimeException)} instead.
+     *
+     * @param throwable Throwable to be logged and returned.
+     * @param <T> Type of the Throwable being logged.
+     * @return The passed {@link Throwable}.
+     * @throws NullPointerException If {@code throwable} is {@code null}.
+     * @deprecated Use {@link #logThrowableAsWarning(Throwable)} instead.
+     */
+    @Deprecated
+    public <T extends Throwable> T logThowableAsWarning(T throwable) {
+        Objects.requireNonNull(throwable, "'throwable' cannot be null.");
+        if (!logger.isWarnEnabled()) {
+            return throwable;
+        }
+
+        performLogging(LogLevel.WARNING, true, throwable.getMessage(), throwable);
+        return throwable;
     }
 
     /**
@@ -228,7 +253,7 @@ public class ClientLogger {
      * @return The passed {@link Throwable}.
      * @throws NullPointerException If {@code throwable} is {@code null}.
      */
-    public <T extends Throwable> T logThowableAsWarning(T throwable) {
+    public <T extends Throwable> T logThrowableAsWarning(T throwable) {
         Objects.requireNonNull(throwable, "'throwable' cannot be null.");
         if (!logger.isWarnEnabled()) {
             return throwable;
@@ -304,6 +329,7 @@ public class ClientLogger {
             }
         }
 
+        sanitizeLogMessageInput(format);
         switch (logLevel) {
             case VERBOSE:
                 logger.debug(format, args);
@@ -377,5 +403,18 @@ public class ClientLogger {
      */
     private Object[] removeThrowable(Object... args) {
         return Arrays.copyOf(args, args.length - 1);
+    }
+
+    /**
+     * Removes CRLF pattern in the {@code logMessage}.
+     *
+     * @param logMessage The log message to sanitize.
+     * @return The updated logMessage.
+     */
+    private static String sanitizeLogMessageInput(String logMessage) {
+        if (CoreUtils.isNullOrEmpty(logMessage)) {
+            return logMessage;
+        }
+        return CRLF_PATTERN.matcher(logMessage).replaceAll("");
     }
 }

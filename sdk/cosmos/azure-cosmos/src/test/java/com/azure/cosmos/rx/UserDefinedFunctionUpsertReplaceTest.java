@@ -4,7 +4,7 @@ package com.azure.cosmos.rx;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.models.CosmosAsyncUserDefinedFunctionResponse;
+import com.azure.cosmos.models.CosmosUserDefinedFunctionResponse;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosResponseValidator;
 import com.azure.cosmos.models.CosmosUserDefinedFunctionProperties;
@@ -31,9 +31,10 @@ public class UserDefinedFunctionUpsertReplaceTest extends TestSuiteBase {
     public void replaceUserDefinedFunction() throws Exception {
 
         // create a udf
-        CosmosUserDefinedFunctionProperties udf = new CosmosUserDefinedFunctionProperties();
-        udf.setId(UUID.randomUUID().toString());
-        udf.setBody("function() {var x = 10;}");
+        CosmosUserDefinedFunctionProperties udf = new CosmosUserDefinedFunctionProperties(
+            UUID.randomUUID().toString(),
+            "function() {var x = 10;}"
+        );
 
         CosmosUserDefinedFunctionProperties readBackUdf = null;
 
@@ -41,10 +42,11 @@ public class UserDefinedFunctionUpsertReplaceTest extends TestSuiteBase {
 
         // read udf to validate creation
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
-        Mono<CosmosAsyncUserDefinedFunctionResponse> readObservable = createdCollection.getScripts().getUserDefinedFunction(readBackUdf.getId()).read();
+        Mono<CosmosUserDefinedFunctionResponse> readObservable =
+            createdCollection.getScripts().getUserDefinedFunction(readBackUdf.getId()).read();
 
         // validate udf creation
-        CosmosResponseValidator<CosmosAsyncUserDefinedFunctionResponse> validatorForRead = new CosmosResponseValidator.Builder<CosmosAsyncUserDefinedFunctionResponse>()
+        CosmosResponseValidator<CosmosUserDefinedFunctionResponse> validatorForRead = new CosmosResponseValidator.Builder<CosmosUserDefinedFunctionResponse>()
                 .withId(readBackUdf.getId())
                 .withUserDefinedFunctionBody("function() {var x = 10;}")
                 .notNullEtag()
@@ -54,10 +56,11 @@ public class UserDefinedFunctionUpsertReplaceTest extends TestSuiteBase {
         //update udf
         readBackUdf.setBody("function() {var x = 11;}");
 
-        Mono<CosmosAsyncUserDefinedFunctionResponse> replaceObservable = createdCollection.getScripts().getUserDefinedFunction(readBackUdf.getId()).replace(readBackUdf);
+        Mono<CosmosUserDefinedFunctionResponse> replaceObservable =
+            createdCollection.getScripts().getUserDefinedFunction(readBackUdf.getId()).replace(readBackUdf);
 
         //validate udf replace
-        CosmosResponseValidator<CosmosAsyncUserDefinedFunctionResponse> validatorForReplace = new CosmosResponseValidator.Builder<CosmosAsyncUserDefinedFunctionResponse>()
+        CosmosResponseValidator<CosmosUserDefinedFunctionResponse> validatorForReplace = new CosmosResponseValidator.Builder<CosmosUserDefinedFunctionResponse>()
                 .withId(readBackUdf.getId())
                 .withUserDefinedFunctionBody("function() {var x = 11;}")
                 .notNullEtag()
@@ -65,8 +68,6 @@ public class UserDefinedFunctionUpsertReplaceTest extends TestSuiteBase {
         validateSuccess(replaceObservable, validatorForReplace);
     }
 
-    // TODO (DANOBLE) UserDefinedFunctionUpsertReplaceTest initialization consistently times out in CI environments.
-    //  see https://github.com/Azure/azure-sdk-for-java/issues/6383
     @BeforeClass(groups = { "simple" }, timeOut = 4 * SETUP_TIMEOUT)
     public void before_UserDefinedFunctionUpsertReplaceTest() {
         client = getClientBuilder().buildAsyncClient();

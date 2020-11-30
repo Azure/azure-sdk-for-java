@@ -1,26 +1,26 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://gapradev.queue.core.windows.net/queueapitestsgetaccesspolicyerror55067b652d2956b9?comp=acl",
+    "Uri" : "https://REDACTED.queue.core.windows.net/queueapitestsgetaccesspolicyerror21671dbd27ed439a?comp=acl",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.3.0-beta.1 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "e09579b3-ed3a-4c8a-afec-e00fa6fb020d"
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "64927745-4c11-4321-b94e-4b1f0c3dd395"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
+      "x-ms-version" : "2019-12-12",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "QueueNotFound",
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "d25b8228-f003-0012-0371-e0e9eb000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:d25b8228-f003-0012-0371-e0e9eb000000\nTime:2020-02-11T00:24:36.7603041Z</Message></Error>",
-      "Date" : "Tue, 11 Feb 2020 00:24:35 GMT",
-      "x-ms-client-request-id" : "e09579b3-ed3a-4c8a-afec-e00fa6fb020d",
+      "x-ms-request-id" : "37a39df4-3003-009b-0d03-3a8ca5000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:37a39df4-3003-009b-0d03-3a8ca5000000\nTime:2020-06-04T00:04:59.8499401Z</Message></Error>",
+      "Date" : "Thu, 04 Jun 2020 00:04:59 GMT",
+      "x-ms-client-request-id" : "64927745-4c11-4321-b94e-4b1f0c3dd395",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueapitestsgetaccesspolicyerror55067b652d2956b9" ]
+  "variables" : [ "queueapitestsgetaccesspolicyerror21671dbd27ed439a" ]
 }

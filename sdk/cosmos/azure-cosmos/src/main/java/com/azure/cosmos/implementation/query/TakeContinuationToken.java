@@ -4,7 +4,7 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.models.JsonSerializable;
+import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,8 +44,8 @@ public final class TakeContinuationToken extends JsonSerializable {
             parsed = true;
         } catch (Exception ex) {
             logger.debug(
-                    "Received exception {} when trying to parse: {}", 
-                    ex.getMessage(), 
+                    "Received exception {} when trying to parse: {}",
+                    ex.getMessage(),
                     serializedTakeContinuationToken);
             parsed = false;
             outTakeContinuationToken.v = null;

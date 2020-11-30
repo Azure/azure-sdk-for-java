@@ -1,0 +1,90 @@
+<feed>
+  <entry xml:base="https://foo.servicebus.windows.net/$Resources/queues?api-version=2017-04&amp;enrich=false&amp;$skip=0&amp;$top=100">
+    <id>https://foo.servicebus.windows.net/queue?api-version=2017-04</id>
+    <title type="text">queue</title>
+    <published>2020-05-26T21:25:28Z</published>
+    <updated>2020-05-26T21:10:28Z</updated>
+    <author>
+      <name>foo</name>
+    </author>
+    <link rel="self" href="../queue?api-version=2017-04" />
+    <content type="application/xml">
+      <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+      >
+        <LockDuration>PT1M</LockDuration>
+        <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+        <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+        <RequiresSession>false</RequiresSession>
+        <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+        <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+        <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+        <MaxDeliveryCount>10</MaxDeliveryCount>
+        <EnableBatchedOperations>true</EnableBatchedOperations>
+        <SizeInBytes>0</SizeInBytes>
+        <MessageCount>0</MessageCount>
+        <IsAnonymousAccessible>false</IsAnonymousAccessible>
+        <AuthorizationRules></AuthorizationRules>
+        <Status>Active</Status>
+        <CreatedAt>2020-05-26T21:30:28.68Z</CreatedAt>
+        <UpdatedAt>2020-05-26T21:30:28.73Z</UpdatedAt>
+        <AccessedAt>0001-01-01T00:00:00Z</AccessedAt>
+        <SupportOrdering>true</SupportOrdering>
+        <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+          <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
+          <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+          <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+          <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+          <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+        </CountDetails>
+        <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+        <EnablePartitioning>false</EnablePartitioning>
+        <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+        <EnableExpress>false</EnableExpress>
+      </QueueDescription>
+    </content>
+  </entry>
+  <entry xml:base="https://foo.servicebus.windows.net/$Resources/queues?api-version=2017-04&amp;enrich=false&amp;$skip=0&amp;$top=100">
+    <id>https://foo.servicebus.windows.net/queue-session?api-version=2017-04</id>
+    <title type="text">queue-session</title>
+    <published>2020-05-26T21:07:28Z</published>
+    <updated>2020-05-26T21:45:28Z</updated>
+    <author>
+      <name>foo</name>
+    </author>
+    <link rel="self" href="../queue-session?api-version=2017-04" />
+    <content type="application/xml">
+      <QueueDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+      >
+        <LockDuration>PT1M</LockDuration>
+        <MaxSizeInMegabytes>1024</MaxSizeInMegabytes>
+        <RequiresDuplicateDetection>false</RequiresDuplicateDetection>
+        <RequiresSession>true</RequiresSession>
+        <DefaultMessageTimeToLive>P10675199DT2H48M5.4775807S</DefaultMessageTimeToLive>
+        <DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration>
+        <DuplicateDetectionHistoryTimeWindow>PT10M</DuplicateDetectionHistoryTimeWindow>
+        <MaxDeliveryCount>10</MaxDeliveryCount>
+        <EnableBatchedOperations>true</EnableBatchedOperations>
+        <SizeInBytes>0</SizeInBytes>
+        <MessageCount>0</MessageCount>
+        <IsAnonymousAccessible>false</IsAnonymousAccessible>
+        <AuthorizationRules></AuthorizationRules>
+        <Status>Active</Status>
+        <CreatedAt>2020-05-26T21:30:28.46Z</CreatedAt>
+        <UpdatedAt>2020-05-26T21:30:28.553Z</UpdatedAt>
+        <AccessedAt>0001-01-01T00:00:00Z</AccessedAt>
+        <SupportOrdering>true</SupportOrdering>
+        <CountDetails xmlns:d2p1="http://schemas.microsoft.com/netservices/2011/06/servicebus">
+          <d2p1:ActiveMessageCount>0</d2p1:ActiveMessageCount>
+          <d2p1:DeadLetterMessageCount>0</d2p1:DeadLetterMessageCount>
+          <d2p1:ScheduledMessageCount>0</d2p1:ScheduledMessageCount>
+          <d2p1:TransferMessageCount>0</d2p1:TransferMessageCount>
+          <d2p1:TransferDeadLetterMessageCount>0</d2p1:TransferDeadLetterMessageCount>
+        </CountDetails>
+        <AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle>
+        <EnablePartitioning>false</EnablePartitioning>
+        <EntityAvailabilityStatus>Available</EntityAvailabilityStatus>
+        <EnableExpress>false</EnableExpress>
+      </QueueDescription>
+    </content>
+  </entry>
+</feed>

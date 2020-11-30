@@ -8,8 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -73,7 +73,7 @@ class EqualPartitionsBalancingStrategy implements PartitionLoadBalancingStrategy
             return new ArrayList<Lease>();
 
         if (expiredLeases.size() > 0) {
-            return expiredLeases.subList(0, partitionsNeededForMe);
+            return expiredLeases.subList(0, Math.min(partitionsNeededForMe, expiredLeases.size()));
         }
 
         Lease stolenLease = getLeaseToSteal(workerToPartitionCount, target, partitionsNeededForMe, allPartitions);
@@ -172,8 +172,8 @@ class EqualPartitionsBalancingStrategy implements PartitionLoadBalancingStrategy
         }
 
 
-        ZonedDateTime leaseExpireTime = ZonedDateTime.parse(lease.getTimestamp()).plus(this.leaseExpirationInterval);
-        this.logger.debug("Current lease timestamp: {}, current time: {}", leaseExpireTime, ZonedDateTime.now(ZoneId.of("UTC")));
-        return leaseExpireTime.isBefore(ZonedDateTime.now(ZoneId.of("UTC")));
+        Instant leaseExpireTime = Instant.parse(lease.getTimestamp()).plus(this.leaseExpirationInterval);
+        this.logger.debug("Current lease timestamp: {}, current time: {}", leaseExpireTime, Instant.now());
+        return leaseExpireTime.isBefore(Instant.now());
     }
 }

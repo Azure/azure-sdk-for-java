@@ -22,7 +22,7 @@ class AzureResourceTest extends APISpec {
         provider = new AzureFileSystemProvider()
     }
 
-    def "Resource constructor"() {
+    def "Constructor"() {
         setup:
         def fs = createFS(config)
 
@@ -34,7 +34,7 @@ class AzureResourceTest extends APISpec {
         resource.getBlobClient().getBlobUrl() == resource.getPath().toBlobClient().getBlobUrl()
     }
 
-    def "Resource no root"() {
+    def "No root"() {
         when:
         new AzureResource(createFS(config).getPath("root:"))
 
@@ -42,7 +42,7 @@ class AzureResourceTest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
-    def "Resource instance type"() {
+    def "Instance type"() {
         when:
         new AzureResource(FileSystems.getDefault().getPath("foo"))
 
@@ -51,7 +51,7 @@ class AzureResourceTest extends APISpec {
     }
 
     @Unroll
-    def "Resource directory status and exists"() {
+    def "Directory status and exists"() {
         setup:
         def fs = createFS(config)
 
@@ -104,7 +104,7 @@ class AzureResourceTest extends APISpec {
         DirectoryStatus.NOT_EMPTY       | false
     }
 
-    def "Resource parent dir exists false"() {
+    def "Parent dir exists false"() {
         setup:
         def fs = createFS(config)
         def fileName = generateBlobName()
@@ -113,7 +113,7 @@ class AzureResourceTest extends APISpec {
         !new AzureResource(fs.getPath(fileName, "bar")).checkParentDirectoryExists()
     }
 
-    def "Resource parent dir exists virtual"() {
+    def "Parent dir exists virtual"() {
         setup:
         def fs = createFS(config)
         def fileName = generateBlobName()
@@ -129,7 +129,7 @@ class AzureResourceTest extends APISpec {
         new AzureResource(fs.getPath(fileName, childName)).checkParentDirectoryExists()
     }
 
-    def "Resource parent dir exists concrete"() {
+    def "Parent dir exists concrete"() {
         setup:
         def fs = createFS(config)
         def fileName = generateBlobName()
@@ -143,7 +143,7 @@ class AzureResourceTest extends APISpec {
         new AzureResource(fs.getPath(fileName, "bar")).checkParentDirectoryExists()
     }
 
-    def "Resource parent dir exists root"() {
+    def "Parent dir exists root"() {
         setup:
         def fs = createFS(config)
 
@@ -153,7 +153,7 @@ class AzureResourceTest extends APISpec {
 
     }
 
-    def "Resource parent dir exists non default root"() {
+    def "Parent dir exists non default root"() {
         // Checks for a bug where we would check the wrong root container for existence on a path with depth > 1
         setup:
         def fs = createFS(config)
@@ -169,7 +169,7 @@ class AzureResourceTest extends APISpec {
     }
 
     @Unroll
-    def "Resource putDirectoryBlob"() {
+    def "PutDirectoryBlob"() {
         setup:
         def fs = createFS(config)
         def resource = new AzureResource(fs.getPath(generateBlobName()))
@@ -228,7 +228,7 @@ class AzureResourceTest extends APISpec {
     }
 
     @Unroll
-    def "Resource putDirectoryBlob AC"() {
+    def "PutDirectoryBlob AC"() {
         setup:
         def fs = createFS(config)
         def resource = new AzureResource(fs.getPath(generateBlobName()))
@@ -256,7 +256,7 @@ class AzureResourceTest extends APISpec {
     }
 
     @Unroll
-    def "Resource putDirectoryBlob AC fail"() {
+    def "PutDirectoryBlob AC fail"() {
         setup:
         def fs = createFS(config)
         def resource = new AzureResource(fs.getPath(generateBlobName()))

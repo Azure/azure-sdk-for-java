@@ -4,15 +4,23 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
+import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
+import com.azure.ai.textanalytics.implementation.models.PiiResult;
+import com.azure.ai.textanalytics.implementation.models.StringIndexType;
+import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
 import com.azure.ai.textanalytics.models.EntityCategory;
 import com.azure.ai.textanalytics.models.PiiEntity;
+import com.azure.ai.textanalytics.models.PiiEntityCollection;
+import com.azure.ai.textanalytics.models.PiiEntityDomainType;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
-import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
+import com.azure.ai.textanalytics.models.RecognizePiiEntityOptions;
+import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux;
-import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
+import com.azure.ai.textanalytics.models.WarningCode;
+import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.IterableStream;
@@ -21,17 +29,21 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
-import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
-import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsException;
-import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
-import static com.azure.core.util.FluxUtil.fluxError;
+import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
+import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
+import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExist;
+import static com.azure.ai.textanalytics.implementation.Utility.toBatchStatistics;
+import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
+import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsError;
+import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsException;
+import static com.azure.ai.textanalytics.implementation.Utility.toTextDocumentStatistics;
+import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 /**
  * Helper class for managing recognize Personally Identifiable Information entity endpoint.
@@ -51,132 +63,166 @@ class RecognizePiiEntityAsyncClient {
     }
 
     /**
-     * Helper function for calling service with max overloaded parameters that a returns {@link TextAnalyticsPagedFlux}
-     * which is a paged flux that contains {@link PiiEntity}.
+     * Helper function for calling service with max overloaded parameters that returns a {@link Mono}
+     * which contains {@link PiiEntityCollection}.
      *
      * @param document A single document.
      * @param language The language code.
+     * @param options The additional configurable {@link RecognizePiiEntityOptions options} that may be passed when
+     * recognizing PII entities.
      *
-     * @return The {@link TextAnalyticsPagedFlux} of {@link PiiEntity}.
+     * @return The {@link Mono} of {@link PiiEntityCollection}.
      */
-    TextAnalyticsPagedFlux<PiiEntity> recognizePiiEntities(String document, String language) {
-        return new TextAnalyticsPagedFlux<>(() ->
-            (continuationToken, pageSize) -> recognizePiiEntitiesBatch(
-                Collections.singletonList(new TextDocumentInput("0", document, language)), null)
-                .byPage()
-                .map(resOfResult -> {
-                    final Iterator<RecognizePiiEntitiesResult> iterator = resOfResult.getValue().iterator();
-                    // Collection will never empty
-                    if (!iterator.hasNext()) {
-                        throw logger.logExceptionAsError(new IllegalStateException(
-                            "An empty collection returned which is an unexpected error."));
-                    }
-
-                    final RecognizePiiEntitiesResult entitiesResult = iterator.next();
-                    if (entitiesResult.isError()) {
-                        throw logger.logExceptionAsError(toTextAnalyticsException(entitiesResult.getError()));
-                    }
-
-                    return new TextAnalyticsPagedResponse<>(
-                        resOfResult.getRequest(), resOfResult.getStatusCode(), resOfResult.getHeaders(),
-                        entitiesResult.getEntities().stream().collect(Collectors.toList()),
-                        null, resOfResult.getModelVersion(), resOfResult.getStatistics());
-                }));
-    }
-
-    /**
-     * Helper function for calling service with max overloaded parameters that a returns {@link TextAnalyticsPagedFlux}
-     * which is a paged flux that contains {@link RecognizePiiEntitiesResult}.
-     *
-     * @param documents A list of documents to recognize PII entities for.
-     * @param options The {@link TextAnalyticsRequestOptions} request options.
-     *
-     * @return The {@link TextAnalyticsPagedFlux} of {@link RecognizePiiEntitiesResult}.
-     */
-    TextAnalyticsPagedFlux<RecognizePiiEntitiesResult> recognizePiiEntitiesBatch(
-        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
-        Objects.requireNonNull(documents, "'documents' cannot be null.");
+    Mono<PiiEntityCollection> recognizePiiEntities(String document, String language,
+        RecognizePiiEntityOptions options) {
         try {
-            return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> withContext(context ->
-                getRecognizedPiiEntitiesResponseInPage(documents, options, context)).flux());
+            Objects.requireNonNull(document, "'document' cannot be null.");
+            return recognizePiiEntitiesBatch(
+                Collections.singletonList(new TextDocumentInput("0", document).setLanguage(language)), options)
+                .map(resultCollectionResponse -> {
+                    PiiEntityCollection entityCollection = null;
+                    // for each loop will have only one entry inside
+                    for (RecognizePiiEntitiesResult entitiesResult : resultCollectionResponse.getValue()) {
+                        if (entitiesResult.isError()) {
+                            throw logger.logExceptionAsError(toTextAnalyticsException(entitiesResult.getError()));
+                        }
+                        entityCollection = new PiiEntityCollection(entitiesResult.getEntities(),
+                            entitiesResult.getEntities().getRedactedText(),
+                            entitiesResult.getEntities().getWarnings());
+                    }
+                    return entityCollection;
+                });
         } catch (RuntimeException ex) {
-            return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> fluxError(logger, ex));
+            return monoError(logger, ex);
         }
     }
 
     /**
-     * Helper function for calling service with max overloaded parameters that a returns {@link TextAnalyticsPagedFlux}
-     * which is a paged flux that contains {@link RecognizePiiEntitiesResult}.
+     * Helper function for calling service with max overloaded parameters.
      *
-     * @param documents A list of documents to recognize PII entities for.
-     * @param options The {@link TextAnalyticsRequestOptions} request options.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @param documents The list of documents to recognize Personally Identifiable Information entities for.
+     * @param options The additional configurable {@link RecognizePiiEntityOptions options} that may be passed when
+     * recognizing PII entities.
      *
-     * @return the {@link TextAnalyticsPagedFlux} of {@link RecognizePiiEntitiesResult} to be returned by the SDK.
+     * @return A mono {@link Response} that contains {@link RecognizePiiEntitiesResultCollection}.
      */
-    TextAnalyticsPagedFlux<RecognizePiiEntitiesResult> recognizePiiEntitiesBatchWithContext(
-        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
-        Objects.requireNonNull(documents, "'documents' cannot be null.");
-        return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) ->
-            getRecognizedPiiEntitiesResponseInPage(documents, options, context).flux());
+    Mono<Response<RecognizePiiEntitiesResultCollection>> recognizePiiEntitiesBatch(
+        Iterable<TextDocumentInput> documents, RecognizePiiEntityOptions options) {
+        try {
+            inputDocumentsValidation(documents);
+            return withContext(context -> getRecognizePiiEntitiesResponse(documents, options, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
-     * Helper method to convert the service response of {@link EntitiesResult} to {@link TextAnalyticsPagedResponse}
-     * of {@link RecognizePiiEntitiesResult}.
+     * Helper function for calling service with max overloaded parameters with {@link Context} is given.
      *
-     * @param response the {@link SimpleResponse} of {@link EntitiesResult} returned by the service.
+     * @param documents The list of documents to recognize Personally Identifiable Information entities for.
+     * @param options The additional configurable {@link RecognizePiiEntityOptions options} that may be passed when
+     * recognizing PII entities.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return the {@link TextAnalyticsPagedResponse} of {@link RecognizePiiEntitiesResult} to be returned by the SDK.
+     * @return A mono {@link Response} that contains {@link RecognizePiiEntitiesResultCollection}.
      */
-    private TextAnalyticsPagedResponse<RecognizePiiEntitiesResult> toTextAnalyticsPagedResponse(
-        SimpleResponse<EntitiesResult> response) {
+    Mono<Response<RecognizePiiEntitiesResultCollection>> recognizePiiEntitiesBatchWithContext(
+        Iterable<TextDocumentInput> documents, RecognizePiiEntityOptions options, Context context) {
+        try {
+            inputDocumentsValidation(documents);
+            return getRecognizePiiEntitiesResponse(documents, options, context);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
 
-        final EntitiesResult entitiesResult = response.getValue();
+    /**
+     * Helper method to convert the service response of {@link EntitiesResult} to {@link Response} which contains
+     * {@link RecognizePiiEntitiesResultCollection}.
+     *
+     * @param response the {@link Response} of {@link EntitiesResult} returned by the service.
+     *
+     * @return A {@link Response} that contains {@link RecognizePiiEntitiesResultCollection}.
+     */
+    private Response<RecognizePiiEntitiesResultCollection> toRecognizePiiEntitiesResultCollectionResponse(
+        final Response<PiiResult> response) {
+        final PiiResult piiEntitiesResult = response.getValue();
         // List of documents results
-        final List<RecognizePiiEntitiesResult> recognizePiiEntitiesResults = new ArrayList<>();
-        entitiesResult.getDocuments().forEach(documentEntities -> recognizePiiEntitiesResults.add(
-            new RecognizePiiEntitiesResult(
+        final List<RecognizePiiEntitiesResult> recognizeEntitiesResults = new ArrayList<>();
+        piiEntitiesResult.getDocuments().forEach(documentEntities -> {
+            // Pii entities list
+            final List<PiiEntity> piiEntities = documentEntities.getEntities().stream().map(entity ->
+                new PiiEntity(entity.getText(), EntityCategory.fromString(entity.getCategory()),
+                    entity.getSubcategory(), entity.getConfidenceScore(), entity.getOffset()))
+                .collect(Collectors.toList());
+            // Warnings
+            final List<TextAnalyticsWarning> warnings = documentEntities.getWarnings().stream()
+                .map(warning -> {
+                    final WarningCodeValue warningCodeValue = warning.getCode();
+                    return new TextAnalyticsWarning(
+                        WarningCode.fromString(warningCodeValue == null ? null : warningCodeValue.toString()),
+                        warning.getMessage());
+                }).collect(Collectors.toList());
+
+            recognizeEntitiesResults.add(new RecognizePiiEntitiesResult(
                 documentEntities.getId(),
                 documentEntities.getStatistics() == null ? null
                     : toTextDocumentStatistics(documentEntities.getStatistics()),
                 null,
-                new IterableStream<>(documentEntities.getEntities().stream().map(entity -> new PiiEntity(
-                    entity.getText(), EntityCategory.fromString(entity.getType()), entity.getSubtype(),
-                    entity.getOffset(), entity.getLength(), entity.getScore())).collect(Collectors.toList())))));
+                new PiiEntityCollection(new IterableStream<>(piiEntities), documentEntities.getRedactedText(),
+                    new IterableStream<>(warnings))
+            ));
+        });
         // Document errors
-        entitiesResult.getErrors().forEach(documentError -> recognizePiiEntitiesResults.add(
-            new RecognizePiiEntitiesResult(documentError.getId(), null,
-                toTextAnalyticsError(documentError.getError()), null)));
+        for (DocumentError documentError : piiEntitiesResult.getErrors()) {
+            recognizeEntitiesResults.add(new RecognizePiiEntitiesResult(documentError.getId(), null,
+                toTextAnalyticsError(documentError.getError()), null));
+        }
 
-        return new TextAnalyticsPagedResponse<>(
-            response.getRequest(), response.getStatusCode(), response.getHeaders(),
-            recognizePiiEntitiesResults, null, entitiesResult.getModelVersion(),
-            entitiesResult.getStatistics() == null ? null : toBatchStatistics(entitiesResult.getStatistics()));
+        return new SimpleResponse<>(response,
+            new RecognizePiiEntitiesResultCollection(recognizeEntitiesResults, piiEntitiesResult.getModelVersion(),
+                piiEntitiesResult.getStatistics() == null ? null : toBatchStatistics(piiEntitiesResult.getStatistics())
+            ));
     }
 
     /**
-     * Call the service with REST response, convert to a {@link Mono} of {@link TextAnalyticsPagedResponse} of
-     * {@link RecognizePiiEntitiesResult} from a {@link SimpleResponse} of {@link EntitiesResult}.
+     * Call the service with REST response, convert to a {@link Mono} of {@link Response} that contains
+     * {@link RecognizePiiEntitiesResultCollection} from a {@link SimpleResponse} of {@link EntitiesResult}.
      *
-     * @param documents A list of documents to recognize PII entities for.
-     * @param options The {@link TextAnalyticsRequestOptions} request options.
+     * @param documents The list of documents to recognize Personally Identifiable Information entities for.
+     * @param options The additional configurable {@link RecognizePiiEntityOptions options} that may be passed when
+     * recognizing PII entities.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return A {@link Mono} of {@link TextAnalyticsPagedResponse} of {@link RecognizePiiEntitiesResult}.
+     * @return A mono {@link Response} that contains {@link RecognizePiiEntitiesResultCollection}.
      */
-    private Mono<TextAnalyticsPagedResponse<RecognizePiiEntitiesResult>> getRecognizedPiiEntitiesResponseInPage(
-        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
-        return service.entitiesRecognitionPiiWithRestResponseAsync(
-            new MultiLanguageBatchInput().setDocuments(Transforms.toMultiLanguageInput(documents)),
-            options == null ? null : options.getModelVersion(),
-            options == null ? null : options.isIncludeStatistics(), context)
-            .doOnSubscribe(ignoredValue ->
-                logger.info("Processing a batch of document that contains Personally Identifiable Information"))
-            .doOnSuccess(response ->
-                logger.info("Recognized Personally Identifiable Information entities for a batch of documents"))
+    private Mono<Response<RecognizePiiEntitiesResultCollection>> getRecognizePiiEntitiesResponse(
+        Iterable<TextDocumentInput> documents, RecognizePiiEntityOptions options, Context context) {
+        String modelVersion = null;
+        Boolean includeStatistics = null;
+        String domainFilter = null;
+        if (options != null) {
+            modelVersion = options.getModelVersion();
+            includeStatistics = options.isIncludeStatistics();
+            final PiiEntityDomainType domainType = options.getDomainFilter();
+            if (domainType != null) {
+                domainFilter = domainType.toString();
+            }
+        }
+        return service.entitiesRecognitionPiiWithResponseAsync(
+            new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
+            modelVersion,
+            includeStatistics,
+            domainFilter,
+            StringIndexType.UTF16CODE_UNIT,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
+            .doOnSubscribe(ignoredValue -> logger.info(
+                "Start recognizing Personally Identifiable Information entities for a batch of documents."))
+            .doOnSuccess(response -> logger.info(
+                "Successfully recognized Personally Identifiable Information entities for a batch of documents."))
             .doOnError(error ->
                 logger.warning("Failed to recognize Personally Identifiable Information entities - {}", error))
-            .map(this::toTextAnalyticsPagedResponse);
+            .map(this::toRecognizePiiEntitiesResultCollectionResponse)
+            .onErrorMap(throwable -> mapToHttpResponseExceptionIfExist(throwable));
     }
 }

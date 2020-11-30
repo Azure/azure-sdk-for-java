@@ -7,10 +7,7 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Represents the confidence scores between 0 and 1 across all sentiment
- * classes: positive, neutral, negative.
- */
+/** Represents the confidence scores between 0 and 1 across all sentiment classes: positive, neutral, negative. */
 @Fluent
 public final class SentimentConfidenceScorePerLabel {
     /*
@@ -44,7 +41,7 @@ public final class SentimentConfidenceScorePerLabel {
      * Set the positive property: The positive property.
      *
      * @param positive the positive value to set.
-     * @return the SentimentConfidenceScores object itself.
+     * @return the SentimentConfidenceScorePerLabel object itself.
      */
     public SentimentConfidenceScorePerLabel setPositive(double positive) {
         this.positive = positive;
@@ -64,7 +61,7 @@ public final class SentimentConfidenceScorePerLabel {
      * Set the neutral property: The neutral property.
      *
      * @param neutral the neutral value to set.
-     * @return the SentimentConfidenceScores object itself.
+     * @return the SentimentConfidenceScorePerLabel object itself.
      */
     public SentimentConfidenceScorePerLabel setNeutral(double neutral) {
         this.neutral = neutral;
@@ -84,7 +81,7 @@ public final class SentimentConfidenceScorePerLabel {
      * Set the negative property: The negative property.
      *
      * @param negative the negative value to set.
-     * @return the SentimentConfidenceScores object itself.
+     * @return the SentimentConfidenceScorePerLabel object itself.
      */
     public SentimentConfidenceScorePerLabel setNegative(double negative) {
         this.negative = negative;

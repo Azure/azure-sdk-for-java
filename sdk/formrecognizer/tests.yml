@@ -1,0 +1,13 @@
+trigger: none
+
+jobs:
+  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
+    parameters:
+      ServiceDirectory: formrecognizer
+      timeoutInMinutes: 120 # how long to run the job before automatically cancelling
+      Artifacts:
+        - name: azure-ai-formrecognizer
+          groupId: com.azure
+          safeName: azureaiformrecognizer
+      EnvVars:
+        AZURE_TEST_MODE: RECORD

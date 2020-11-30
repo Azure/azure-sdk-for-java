@@ -13,15 +13,18 @@ import com.microsoft.azure.batch.protocol.models.*;
 public class PoolTests extends BatchIntegrationTestBase {
     private static CloudPool livePool;
     private static String poolId;
+    private static NetworkConfiguration networkConfiguration;
 
     @BeforeClass
     public static void setup() throws Exception {
         poolId = getStringIdWithUserNamePrefix("-testpool");
         if(isRecordMode()) {
-            createClient(AuthMode.SharedKey);
-            livePool = createIfNotExistPaaSPool(poolId);
+            createClient(AuthMode.AAD);
+            livePool = createIfNotExistIaaSPool(poolId);
             Assert.assertNotNull(livePool);
         }
+        // Need VNet to allow security to inject NSGs
+        networkConfiguration = createNetworkConfiguration();
     }
 
     @AfterClass
@@ -75,7 +78,7 @@ public class PoolTests extends BatchIntegrationTestBase {
             VirtualMachineConfiguration configuration = new VirtualMachineConfiguration();
             configuration.withNodeAgentSKUId("batch.node.ubuntu 16.04").withImageReference(imgRef);
 
-            NetworkConfiguration netConfig = new NetworkConfiguration();
+            NetworkConfiguration netConfig = createNetworkConfiguration();
             PoolEndpointConfiguration endpointConfig = new PoolEndpointConfiguration();
             List<InboundNATPool> inbounds = new ArrayList<>();
             inbounds.add(new InboundNATPool().withName("testinbound").withProtocol(InboundEndpointProtocol.TCP)
@@ -201,9 +204,14 @@ public class PoolTests extends BatchIntegrationTestBase {
                 .withImageReference(
                         new ImageReference().withPublisher("Canonical").withOffer("UbuntuServer").withSku("16.04-LTS"))
                 .withNodeAgentSKUId("batch.node.ubuntu 16.04").withDataDisks(dataDisks);
-
+        PoolAddParameter poolConfig =  new PoolAddParameter()
+            .withId(poolId)
+            .withNetworkConfiguration(networkConfiguration)
+            .withTargetDedicatedNodes(POOL_VM_COUNT)
+            .withVmSize(POOL_VM_SIZE)
+            .withVirtualMachineConfiguration(configuration);
         try {
-            batchClient.poolOperations().createPool(poolId, POOL_VM_SIZE, configuration, POOL_VM_COUNT);
+            batchClient.poolOperations().createPool(poolConfig);
 
             CloudPool pool = batchClient.poolOperations().getPool(poolId);
             Assert.assertEquals(lun, pool.virtualMachineConfiguration().dataDisks().get(0).lun());
@@ -229,18 +237,24 @@ public class PoolTests extends BatchIntegrationTestBase {
 
         // Use IaaS VM with Linux
         VirtualMachineConfiguration configuration = new VirtualMachineConfiguration();
-        configuration.withImageReference(new ImageReference().withVirtualMachineImageId(
-                "/subscriptions/f30ef677-64a9-4768-934f-5fbbc0e1ad27/resourceGroups/batchexp/providers/Microsoft.Compute/images/FakeImage"))
-                .withNodeAgentSKUId("batch.node.ubuntu 16.04");
-
+        configuration.withImageReference(new ImageReference().withVirtualMachineImageId(String.format(
+            "/subscriptions/%s/resourceGroups/batchexp/providers/Microsoft.Compute/images/FakeImage",
+            System.getenv("SUBSCRIPTION_ID"))))
+            .withNodeAgentSKUId("batch.node.ubuntu 16.04");
+        PoolAddParameter poolConfig = new PoolAddParameter()
+            .withId(poolId)
+            .withVmSize(POOL_VM_SIZE)
+            .withTargetDedicatedNodes(POOL_VM_COUNT)
+            .withVirtualMachineConfiguration(configuration)
+            .withNetworkConfiguration(networkConfiguration);
         try {
-            batchClient.poolOperations().createPool(poolId, POOL_VM_SIZE, configuration, POOL_VM_COUNT);
+            batchClient.poolOperations().createPool(poolConfig);
             throw new Exception("Expect exception, but not got it.");
         } catch (BatchErrorException err) {
             if (err.body().code().equals("InsufficientPermissions")) {
                 // Accepted Error
                 Assert.assertTrue(err.body().values().get(0).value().contains(
-                        "The user identity used for this operation does not have the required privelege Microsoft.Compute/images/read on the specified resource"));
+                        "The user identity used for this operation does not have the required privilege Microsoft.Compute/images/read on the specified resource"));
             } else {
                 if (!err.body().code().equals("InvalidPropertyValue")) {
                     throw err;
@@ -274,9 +288,14 @@ public class PoolTests extends BatchIntegrationTestBase {
                         new ImageReference().withPublisher("Canonical").withOffer("UbuntuServer").withSku("16.04-LTS"))
                 .withNodeAgentSKUId("batch.node.ubuntu 16.04")
                 .withContainerConfiguration(new ContainerConfiguration().withContainerImageNames(images));
-
+        PoolAddParameter poolConfig = new PoolAddParameter()
+            .withId(poolId)
+            .withVmSize(POOL_VM_SIZE)
+            .withTargetDedicatedNodes(POOL_VM_COUNT)
+            .withVirtualMachineConfiguration(configuration)
+            .withNetworkConfiguration(networkConfiguration);
         try {
-            batchClient.poolOperations().createPool(poolId, POOL_VM_SIZE, configuration, POOL_VM_COUNT);
+            batchClient.poolOperations().createPool(poolConfig);
             throw new Exception("The test case should throw exception here");
         } catch (BatchErrorException err) {
             if (err.body().code().equals("InvalidPropertyValue")) {
@@ -332,7 +351,8 @@ public class PoolTests extends BatchIntegrationTestBase {
                 .withTargetDedicatedNodes(POOL_VM_COUNT)
                 .withTargetLowPriorityNodes(0)
                 .withVmSize(POOL_VM_SIZE)
-                .withUserAccounts(users);
+                .withUserAccounts(users)
+                .withNetworkConfiguration(networkConfiguration);
 
         try {
             batchClient.poolOperations().createPool(pool);

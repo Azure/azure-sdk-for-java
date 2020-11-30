@@ -3,8 +3,6 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.CosmosClientException;
-
 /**
  * Models session token.
  *
@@ -24,7 +22,7 @@ public interface ISessionToken {
      * @return true if this instance of session  token is valid with respect to <code>other</code> session token;
      * false otherwise
      */
-    boolean isValid(ISessionToken other) throws CosmosClientException;
+    boolean isValid(ISessionToken other);
 
     /**
      * Returns a new instance of session token obtained by merging this session token with
@@ -35,7 +33,7 @@ public interface ISessionToken {
      * @param other Other session token to merge
      * @return Instance of merged session token
      */
-    ISessionToken merge(ISessionToken other) throws CosmosClientException;
+    ISessionToken merge(ISessionToken other);
 
     long getLSN();
 

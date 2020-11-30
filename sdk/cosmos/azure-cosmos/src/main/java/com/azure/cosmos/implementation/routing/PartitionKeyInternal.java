@@ -259,11 +259,14 @@ public class PartitionKeyInternal implements Comparable<PartitionKeyInternal> {
                     return;
                 }
 
-                writer.writeStartArray();
-                for (IPartitionKeyComponent componentValue : partitionKey.getComponents()) {
-                    componentValue.jsonEncode(writer);
+                //  PartitionKey.None has null components - which returns a null list
+                if (partitionKey.getComponents() != null) {
+                    writer.writeStartArray();
+                    for (IPartitionKeyComponent componentValue : partitionKey.getComponents()) {
+                        componentValue.jsonEncode(writer);
+                    }
+                    writer.writeEndArray();
                 }
-                writer.writeEndArray();
             } catch (IOException e) {
                 throw new IllegalStateException(e);
             }

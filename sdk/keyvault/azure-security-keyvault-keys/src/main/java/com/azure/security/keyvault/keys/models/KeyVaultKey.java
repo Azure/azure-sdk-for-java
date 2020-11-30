@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  *  Key is the resource consisting of name, {@link JsonWebKey} and its attributes specified in {@link KeyProperties}.
@@ -99,29 +98,12 @@ public class KeyVaultKey {
     }
 
     /**
-     * Creates an instance of KeyVaultKey
-     * @param keyId the identifier of the key
-     * @param jsonWebKey the json web key to be used for crypto operations
-     * @return The Key Vault Key object.
+     * Get the policy rules under which the key can be exported.
+     *
+     * @return The release policy.
      */
-    public static KeyVaultKey fromKeyId(String keyId, JsonWebKey jsonWebKey) {
-        Objects.requireNonNull(jsonWebKey, "The Json web key cannot be null");
-        KeyProperties properties = new KeyProperties();
-        properties.unpackId(keyId);
-        return new KeyVaultKey(properties, jsonWebKey);
-    }
-
-    /**
-     * Creates an instance of KeyVaultKey
-     * @param name the name of the key
-     * @param jsonWebKey the json web key to be used for crypto operations
-     * @return The Key Vault Key object.
-     */
-    public static KeyVaultKey fromName(String name, JsonWebKey jsonWebKey) {
-        Objects.requireNonNull(jsonWebKey, "The Json web key cannot be null");
-        KeyProperties properties = new KeyProperties();
-        properties.name = name;
-        return new KeyVaultKey(properties, jsonWebKey);
+    public KeyReleasePolicy getReleasePolicy() {
+        return properties.getReleasePolicy();
     }
 
     /**
@@ -133,14 +115,24 @@ public class KeyVaultKey {
         this.key = properties.createKeyMaterialFromJson(key);
     }
 
-    @JsonProperty(value = "kid")
-    private void unpackKid(String kid) {
-        properties.unpackId(kid);
-    }
-
     @JsonProperty("attributes")
     @SuppressWarnings("unchecked")
     private void unpackAttributes(Map<String, Object> attributes) {
         properties.unpackAttributes(attributes);
+    }
+
+    @JsonProperty("tags")
+    private void setTags(Map<String, String> tags) {
+        properties.setTags(tags);
+    }
+
+    @JsonProperty("managed")
+    private void setManaged(boolean managed) {
+        properties.setManaged(managed);
+    }
+
+    @JsonProperty(value = "release_policy")
+    private void setReleasePolicy(KeyReleasePolicy releasePolicy) {
+        properties.setReleasePolicy(releasePolicy);
     }
 }

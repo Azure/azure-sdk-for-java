@@ -3,17 +3,14 @@
 
 package com.azure.cosmos.benchmark;
 
-import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.models.DataType;
-import com.azure.cosmos.models.IncludedPath;
-import com.azure.cosmos.models.Index;
-import com.azure.cosmos.models.IndexingPolicy;
-import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.models.IncludedPath;
+import com.azure.cosmos.models.IndexingPolicy;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.beust.jcommander.JCommander;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.AfterClass;
@@ -22,7 +19,6 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -277,7 +273,7 @@ public class WorkflowTest {
         database = Utils.createDatabaseForTest(housekeepingClient);
         collection = housekeepingClient.createCollection("dbs/" + database.getId(),
             getCollectionDefinitionWithRangeRangeIndex(),
-            options).single().block().getResource();
+            options).block().getResource();
         housekeepingClient.close();
     }
 
@@ -305,17 +301,7 @@ public class WorkflowTest {
         partitionKeyDef.setPaths(paths);
         IndexingPolicy indexingPolicy = new IndexingPolicy();
         List<IncludedPath> includedPaths = new ArrayList<>();
-        IncludedPath includedPath = new IncludedPath();
-        includedPath.setPath("/*");
-        Collection<Index> indexes = new ArrayList<>();
-        Index stringIndex = Index.range(DataType.STRING);
-        BridgeInternal.setProperty(stringIndex, "precision", -1);
-        indexes.add(stringIndex);
-
-        Index numberIndex = Index.range(DataType.NUMBER);
-        BridgeInternal.setProperty(numberIndex, "precision", -1);
-        indexes.add(numberIndex);
-        includedPath.setIndexes(indexes);
+        IncludedPath includedPath = new IncludedPath("/*");
         includedPaths.add(includedPath);
         indexingPolicy.setIncludedPaths(includedPaths);
 

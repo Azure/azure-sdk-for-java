@@ -6,6 +6,7 @@ package com.azure.core.util.serializer;
 import com.azure.core.annotation.HeaderCollection;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.implementation.AccessibleByteArrayOutputStream;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.serializer.MalformedValueException;
 import com.azure.core.util.CoreUtils;
@@ -22,12 +23,13 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.StringWriter;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
@@ -36,11 +38,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * Implementation of {@link SerializerAdapter} for Jackson.
  */
 public class JacksonAdapter implements SerializerAdapter {
+    private static final Pattern PATTERN = Pattern.compile("^\"*|\"*$");
+
     private final ClientLogger logger = new ClientLogger(JacksonAdapter.class);
 
     /**
@@ -53,7 +58,7 @@ public class JacksonAdapter implements SerializerAdapter {
      */
     private final ObjectMapper simpleMapper;
 
-    private final XmlMapper xmlMapper;
+    private final ObjectMapper xmlMapper;
 
     private final ObjectMapper headerMapper;
 
@@ -62,29 +67,27 @@ public class JacksonAdapter implements SerializerAdapter {
      */
     private static SerializerAdapter serializerAdapter;
 
-    /*
-     * BOM header from some response bodies. To be removed in deserialization.
-     */
-    private static final String BOM = "\uFEFF";
-    private static final String BOM_STRING = new String(BOM.getBytes(StandardCharsets.UTF_8), Charset.defaultCharset());
-
     /**
      * Creates a new JacksonAdapter instance with default mapper settings.
      */
     public JacksonAdapter() {
         simpleMapper = initializeObjectMapper(new ObjectMapper());
-        xmlMapper = initializeObjectMapper(new XmlMapper());
-        xmlMapper.configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true);
-        xmlMapper.setDefaultUseWrapper(false);
+
+        xmlMapper = initializeObjectMapper(new XmlMapper())
+            .setDefaultUseWrapper(false)
+            .configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true);
+
         ObjectMapper flatteningMapper = initializeObjectMapper(new ObjectMapper())
             .registerModule(FlatteningSerializer.getModule(simpleMapper()))
             .registerModule(FlatteningDeserializer.getModule(simpleMapper()));
+
         mapper = initializeObjectMapper(new ObjectMapper())
             // Order matters: must register in reverse order of hierarchy
             .registerModule(AdditionalPropertiesSerializer.getModule(flatteningMapper))
             .registerModule(AdditionalPropertiesDeserializer.getModule(flatteningMapper))
             .registerModule(FlatteningSerializer.getModule(simpleMapper()))
             .registerModule(FlatteningDeserializer.getModule(simpleMapper()));
+
         headerMapper = simpleMapper
             .copy()
             .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
@@ -123,14 +126,24 @@ public class JacksonAdapter implements SerializerAdapter {
         if (object == null) {
             return null;
         }
-        StringWriter writer = new StringWriter();
-        if (encoding == SerializerEncoding.XML) {
-            xmlMapper.writeValue(writer, object);
-        } else {
-            serializer().writeValue(writer, object);
+
+        ByteArrayOutputStream stream = new AccessibleByteArrayOutputStream();
+        serialize(object, encoding, stream);
+
+        return new String(stream.toByteArray(), 0, stream.size(), StandardCharsets.UTF_8);
+    }
+
+    @Override
+    public void serialize(Object object, SerializerEncoding encoding, OutputStream outputStream) throws IOException {
+        if (object == null) {
+            return;
         }
 
-        return writer.toString();
+        if ((encoding == SerializerEncoding.XML)) {
+            xmlMapper.writeValue(outputStream, object);
+        } else {
+            serializer().writeValue(outputStream, object);
+        }
     }
 
     @Override
@@ -139,7 +152,7 @@ public class JacksonAdapter implements SerializerAdapter {
             return null;
         }
         try {
-            return serialize(object, SerializerEncoding.JSON).replaceAll("^\"*", "").replaceAll("\"*$", "");
+            return PATTERN.matcher(serialize(object, SerializerEncoding.JSON)).replaceAll("");
         } catch (IOException ex) {
             logger.warning("Failed to serialize {} to JSON.", object.getClass(), ex);
             return null;
@@ -161,16 +174,9 @@ public class JacksonAdapter implements SerializerAdapter {
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T> T deserialize(String value, final Type type, SerializerEncoding encoding) throws IOException {
-        if (CoreUtils.isNullOrEmpty(value) || value.equals(BOM) || value.equals(BOM_STRING)) {
+    public <T> T deserialize(String value, Type type, SerializerEncoding encoding) throws IOException {
+        if (CoreUtils.isNullOrEmpty(value)) {
             return null;
-        }
-
-        // Remove any leading BOM from the XML.
-        if (value.startsWith(BOM)) {
-            value = value.replaceFirst(BOM, "");
-        } else if (value.startsWith(BOM_STRING)) {
-            value = value.replaceFirst(BOM_STRING, "");
         }
 
         final JavaType javaType = createJavaType(type);
@@ -179,6 +185,26 @@ public class JacksonAdapter implements SerializerAdapter {
                 return (T) xmlMapper.readValue(value, javaType);
             } else {
                 return (T) serializer().readValue(value, javaType);
+            }
+        } catch (JsonParseException jpe) {
+            throw logger.logExceptionAsError(new MalformedValueException(jpe.getMessage(), jpe));
+        }
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> T deserialize(InputStream inputStream, final Type type, SerializerEncoding encoding)
+        throws IOException {
+        if (inputStream == null) {
+            return null;
+        }
+
+        final JavaType javaType = createJavaType(type);
+        try {
+            if (encoding == SerializerEncoding.XML) {
+                return (T) xmlMapper.readValue(inputStream, javaType);
+            } else {
+                return (T) serializer().readValue(inputStream, javaType);
             }
         } catch (JsonParseException jpe) {
             throw logger.logExceptionAsError(new MalformedValueException(jpe.getMessage(), jpe));
@@ -198,46 +224,48 @@ public class JacksonAdapter implements SerializerAdapter {
         final Class<?> deserializedHeadersClass = TypeUtil.getRawClass(deserializedHeadersType);
         final Field[] declaredFields = deserializedHeadersClass.getDeclaredFields();
         for (final Field declaredField : declaredFields) {
-            if (declaredField.isAnnotationPresent(HeaderCollection.class)) {
-                final Type declaredFieldType = declaredField.getGenericType();
-                if (TypeUtil.isTypeOrSubTypeOf(declaredField.getType(), Map.class)) {
-                    final Type[] mapTypeArguments = TypeUtil.getTypeArguments(declaredFieldType);
-                    if (mapTypeArguments.length == 2
-                        && mapTypeArguments[0] == String.class
-                        && mapTypeArguments[1] == String.class) {
-                        final HeaderCollection headerCollectionAnnotation =
-                            declaredField.getAnnotation(HeaderCollection.class);
-                        final String headerCollectionPrefix =
-                            headerCollectionAnnotation.value().toLowerCase(Locale.ROOT);
-                        final int headerCollectionPrefixLength = headerCollectionPrefix.length();
-                        if (headerCollectionPrefixLength > 0) {
-                            final Map<String, String> headerCollection = new HashMap<>();
-                            for (final HttpHeader header : headers) {
-                                final String headerName = header.getName();
-                                if (headerName.toLowerCase(Locale.ROOT).startsWith(headerCollectionPrefix)) {
-                                    headerCollection.put(headerName.substring(headerCollectionPrefixLength),
-                                        header.getValue());
-                                }
-                            }
+            if (!declaredField.isAnnotationPresent(HeaderCollection.class)) {
+                continue;
+            }
 
-                            final boolean declaredFieldAccessibleBackup = declaredField.isAccessible();
-                            try {
-                                if (!declaredFieldAccessibleBackup) {
-                                    AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
-                                        declaredField.setAccessible(true);
-                                        return null;
-                                    });
-                                }
-                                declaredField.set(deserializedHeaders, headerCollection);
-                            } catch (IllegalAccessException ignored) {
-                            } finally {
-                                if (!declaredFieldAccessibleBackup) {
-                                    AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
-                                        declaredField.setAccessible(declaredFieldAccessibleBackup);
-                                        return null;
-                                    });
-                                }
-                            }
+            final Type declaredFieldType = declaredField.getGenericType();
+            if (!TypeUtil.isTypeOrSubTypeOf(declaredField.getType(), Map.class)) {
+                continue;
+            }
+
+            final Type[] mapTypeArguments = TypeUtil.getTypeArguments(declaredFieldType);
+            if (mapTypeArguments.length == 2
+                && mapTypeArguments[0] == String.class
+                && mapTypeArguments[1] == String.class) {
+                final HeaderCollection headerCollectionAnnotation = declaredField.getAnnotation(HeaderCollection.class);
+                final String headerCollectionPrefix = headerCollectionAnnotation.value().toLowerCase(Locale.ROOT);
+                final int headerCollectionPrefixLength = headerCollectionPrefix.length();
+                if (headerCollectionPrefixLength > 0) {
+                    final Map<String, String> headerCollection = new HashMap<>();
+                    for (final HttpHeader header : headers) {
+                        final String headerName = header.getName();
+                        if (headerName.toLowerCase(Locale.ROOT).startsWith(headerCollectionPrefix)) {
+                            headerCollection.put(headerName.substring(headerCollectionPrefixLength),
+                                header.getValue());
+                        }
+                    }
+
+                    final boolean declaredFieldAccessibleBackup = declaredField.isAccessible();
+                    try {
+                        if (!declaredFieldAccessibleBackup) {
+                            AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
+                                declaredField.setAccessible(true);
+                                return null;
+                            });
+                        }
+                        declaredField.set(deserializedHeaders, headerCollection);
+                    } catch (IllegalAccessException ignored) {
+                    } finally {
+                        if (!declaredFieldAccessibleBackup) {
+                            AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
+                                declaredField.setAccessible(false);
+                                return null;
+                            });
                         }
                     }
                 }
@@ -263,9 +291,11 @@ public class JacksonAdapter implements SerializerAdapter {
             .registerModule(ByteArraySerializer.getModule())
             .registerModule(Base64UrlSerializer.getModule())
             .registerModule(DateTimeSerializer.getModule())
+            .registerModule(DateTimeDeserializer.getModule())
             .registerModule(DateTimeRfc1123Serializer.getModule())
             .registerModule(DurationSerializer.getModule())
-            .registerModule(HttpHeadersSerializer.getModule());
+            .registerModule(HttpHeadersSerializer.getModule())
+            .registerModule(UnixTimeSerializer.getModule());
         mapper.setVisibility(mapper.getSerializationConfig().getDefaultVisibilityChecker()
             .withFieldVisibility(JsonAutoDetect.Visibility.ANY)
             .withSetterVisibility(JsonAutoDetect.Visibility.NONE)

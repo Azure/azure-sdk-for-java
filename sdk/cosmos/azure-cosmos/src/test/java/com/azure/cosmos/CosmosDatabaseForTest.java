@@ -3,10 +3,9 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
+import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.SqlParameter;
-import com.azure.cosmos.models.SqlParameterList;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -18,6 +17,7 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -78,7 +78,8 @@ public class CosmosDatabaseForTest {
     public static CosmosDatabaseForTest create(DatabaseManager client) {
         CosmosDatabaseProperties dbDef = new CosmosDatabaseProperties(generateId());
 
-        CosmosAsyncDatabase db = client.createDatabase(dbDef).block().getDatabase();
+        client.createDatabase(dbDef).block();
+        CosmosAsyncDatabase db = client.getDatabase(dbDef.getId());
         CosmosDatabaseForTest dbForTest = CosmosDatabaseForTest.from(db);
         assertThat(dbForTest).isNotNull();
         return dbForTest;
@@ -86,10 +87,10 @@ public class CosmosDatabaseForTest {
 
     public static void cleanupStaleTestDatabases(DatabaseManager client) {
         logger.info("Cleaning stale test databases ...");
+        List<SqlParameter> sqlParameterList = new ArrayList<>();
+        sqlParameterList.add(new SqlParameter("@PREFIX", CosmosDatabaseForTest.SHARED_DB_ID_PREFIX));
         List<CosmosDatabaseProperties> dbs = client.queryDatabases(
-                new SqlQuerySpec("SELECT * FROM c WHERE STARTSWITH(c.id, @PREFIX)",
-                                 new SqlParameterList(new SqlParameter("@PREFIX", CosmosDatabaseForTest.SHARED_DB_ID_PREFIX))))
-                                                   .collectList().block();
+                new SqlQuerySpec("SELECT * FROM c WHERE STARTSWITH(c.id, @PREFIX)", sqlParameterList)).collectList().block();
 
         for (CosmosDatabaseProperties db : dbs) {
             assertThat(db.getId()).startsWith(CosmosDatabaseForTest.SHARED_DB_ID_PREFIX);
@@ -109,7 +110,7 @@ public class CosmosDatabaseForTest {
 
     public interface DatabaseManager {
         CosmosPagedFlux<CosmosDatabaseProperties> queryDatabases(SqlQuerySpec query);
-        Mono<CosmosAsyncDatabaseResponse> createDatabase(CosmosDatabaseProperties databaseDefinition);
+        Mono<CosmosDatabaseResponse> createDatabase(CosmosDatabaseProperties databaseDefinition);
         CosmosAsyncDatabase getDatabase(String id);
     }
 }

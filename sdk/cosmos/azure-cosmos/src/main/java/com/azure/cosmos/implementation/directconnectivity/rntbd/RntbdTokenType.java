@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
-import com.google.common.base.Utf8;
+import com.azure.cosmos.implementation.guava25.base.Utf8;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.handler.codec.CorruptedFrameException;
@@ -11,7 +11,7 @@ import io.netty.handler.codec.CorruptedFrameException;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
-import static com.google.common.base.Preconditions.checkState;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkState;
 import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
 enum RntbdTokenType {
@@ -42,6 +42,24 @@ enum RntbdTokenType {
     Invalid((byte)0xFF, RntbdNone.codec);             // no data
 
     // region Implementation
+    private static final RntbdTokenType[] allTokens = getAllTokens();
+
+    private static  RntbdTokenType[] getAllTokens() {
+        final int maxByteValue = 0xFF + 1;
+        final RntbdTokenType[] allPossibleTokens = new RntbdTokenType[maxByteValue]; // one byte RNTBD limit
+        for(int i = 0; i < maxByteValue; i++) {
+            allPossibleTokens[i] = Invalid;
+        }
+
+        // Override with valid entries
+        for (final RntbdTokenType tokenType : RntbdTokenType.values()) {
+            if (tokenType.id != Invalid.id) { // byte (0xFF auto-translates to -1)
+                allPossibleTokens[tokenType.id] = tokenType;
+            }
+        }
+
+        return allPossibleTokens;
+    }
 
     private Codec codec;
     private byte id;
@@ -56,13 +74,11 @@ enum RntbdTokenType {
     }
 
     public static RntbdTokenType fromId(final byte value) {
-
-        for (final RntbdTokenType tokenType : RntbdTokenType.values()) {
-            if (value == tokenType.id) {
-                return tokenType;
-            }
+        if (value == Invalid.id) {
+            return Invalid;
         }
-        return Invalid;
+
+        return allTokens[value];
     }
 
     public byte id() {

@@ -4,8 +4,8 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.models.JsonSerializable;
-import com.azure.cosmos.models.Resource;
+import com.azure.cosmos.implementation.JsonSerializable;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.Constants;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 

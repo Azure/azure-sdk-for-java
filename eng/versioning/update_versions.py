@@ -40,8 +40,10 @@ import traceback
 from utils import BuildType
 from utils import CodeModule
 from utils import external_dependency_version_regex
+from utils import external_dependency_include_regex
 from utils import run_check_call
 from utils import UpdateType
+from utils import include_update_marker
 from utils import version_regex_str_no_anchor
 from utils import version_update_start_marker
 from utils import version_update_end_marker
@@ -51,16 +53,22 @@ import xml.etree.ElementTree as ET
 def update_versions(update_type, version_map, ext_dep_map, target_file, skip_readme, auto_version_increment):
 
     newlines = []
-    repl_open, repl_thisline, file_changed = False, False, False
+    repl_open, repl_thisline, file_changed, is_include = False, False, False, False
     print('processing: ' + target_file)
     try:
         with open(target_file, encoding='utf-8') as f:
             for line in f:
+                is_include = False
                 repl_thisline = repl_open
                 match = version_update_marker.search(line)
                 if match and not target_file.endswith('.md'):
                     module_name, version_type = match.group(1), match.group(2)
                     repl_thisline = True
+                elif include_update_marker.search(line):
+                    match = include_update_marker.search(line)
+                    module_name, version_type = match.group(1), match.group(2)
+                    repl_thisline = True
+                    is_include = True
                 else:
                     match = version_update_start_marker.search(line)
                     if match:
@@ -73,7 +81,7 @@ def update_versions(update_type, version_map, ext_dep_map, target_file, skip_rea
 
                 if repl_thisline:
                     # If the module isn't found then just continue. This can happen if we're going through and updating
-                    # library versions for one track and tag entry is for another track or if we're only updating 
+                    # library versions for one track and tag entry is for another track or if we're only updating
                     # external_dependency versions.
                     if module_name not in version_map and (version_type == 'current' or version_type == 'dependency'):
                         newlines.append(line)
@@ -100,12 +108,20 @@ def update_versions(update_type, version_map, ext_dep_map, target_file, skip_rea
                         if update_type == UpdateType.library:
                             newlines.append(line)
                             continue
-                        try:
-                            module = ext_dep_map[module_name]
-                            new_version = module.external_dependency
-                            newline = re.sub(external_dependency_version_regex, new_version, line)
-                        except AttributeError:
-                            raise ValueError('Module: {0} does not have an external dependency version.\nFile={1}\nLine={2}'.format(module_name, target_file, line))
+                        if is_include:
+                            try:
+                                module = ext_dep_map[module_name]
+                                new_include_version = module.string_for_allowlist_include()
+                                newline = re.sub(external_dependency_include_regex, new_include_version, line)
+                            except AttributeError:
+                                raise ValueError('Module: {0} does not have an external dependency version.\nFile={1}\nLine={2}'.format(module_name, target_file, line))
+                        else:
+                            try:
+                                module = ext_dep_map[module_name]
+                                new_version = module.external_dependency
+                                newline = re.sub(external_dependency_version_regex, new_version, line)
+                            except AttributeError:
+                                raise ValueError('Module: {0} does not have an external dependency version.\nFile={1}\nLine={2}'.format(module_name, target_file, line))
                     else:
                         raise ValueError('Invalid version type: {} for module: {}.\nFile={}\nLine={}'.format(version_type, module_name, target_file, line))
 
@@ -131,7 +147,7 @@ def update_versions(update_type, version_map, ext_dep_map, target_file, skip_rea
         print("Unexpected exception: " + str(e))
         traceback.print_exc(file=sys.stderr)
 
-# Updating the changelog is special. Grab the version from the respective pom file 
+# Updating the changelog is special. Grab the version from the respective pom file
 def update_changelog(pom_file, is_unreleased, replace_version):
 
     # Before doing anything, ensure that there is a changelog.md file sitting next to the pom file
@@ -169,8 +185,20 @@ def load_version_map_from_file(the_file, version_map):
             if not stripped_line or stripped_line.startswith('#'):
                 continue
             module = CodeModule(stripped_line)
+            # verify no duplicate entries
             if (module.name in version_map):
-                raise ValueError('Version file: {0} contains a duplicate entry: {1}'.format(the_file, module.name)) 
+                raise ValueError('Version file: {0} contains a duplicate entry: {1}'.format(the_file, module.name))
+            # verify that if the module is beta_ or unreleased_ that there's a matching non-beta_ or non-unreleased_ entry
+            if (module.name.startswith('beta_') or module.name.startswith('unreleased_')):
+                tempName = module.name
+                if tempName.startswith('beta_'):
+                    tempName = module.name[len('beta_'):]
+                else:
+                    tempName = module.name[len('unreleased_'):]
+                # if there isn't a non beta or unreleased entry then raise an issue
+                if tempName not in version_map:
+                    raise ValueError('Version file: {0} does not contain a non-beta or non-unreleased entry for beta_/unreleased_ library: {1}'.format(the_file, module.name))
+
             version_map[module.name] = module
 
 def display_version_info(version_map):

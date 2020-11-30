@@ -2,15 +2,16 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.query;
 
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.Resource;
-import com.azure.cosmos.models.SqlParameterList;
+import com.azure.cosmos.implementation.Resource;
+import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationType;
@@ -26,6 +27,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -36,18 +38,20 @@ import java.util.UUID;
 public abstract class DocumentQueryExecutionContextBase<T extends Resource>
 implements IDocumentQueryExecutionContext<T> {
 
+    protected final DiagnosticsClientContext diagnosticsClientContext;
     protected ResourceType resourceTypeEnum;
     protected String resourceLink;
     protected IDocumentQueryClient client;
     protected Class<T> resourceType;
-    protected FeedOptions feedOptions;
+    protected CosmosQueryRequestOptions cosmosQueryRequestOptions;
     protected SqlQuerySpec query;
     protected UUID correlatedActivityId;
     protected boolean shouldExecuteQueryRequest;
 
-    protected DocumentQueryExecutionContextBase(IDocumentQueryClient client, ResourceType resourceTypeEnum,
-            Class<T> resourceType, SqlQuerySpec query, FeedOptions feedOptions, String resourceLink,
-            boolean getLazyFeedResponse, UUID correlatedActivityId) {
+    protected DocumentQueryExecutionContextBase(DiagnosticsClientContext diagnosticsClientContext,
+                                                IDocumentQueryClient client, ResourceType resourceTypeEnum,
+                                                Class<T> resourceType, SqlQuerySpec query, CosmosQueryRequestOptions cosmosQueryRequestOptions, String resourceLink,
+                                                boolean getLazyFeedResponse, UUID correlatedActivityId) {
 
         // TODO: validate args are not null: client and feedOption should not be null
         this.client = client;
@@ -55,10 +59,11 @@ implements IDocumentQueryExecutionContext<T> {
         this.resourceType = resourceType;
         this.query = query;
         this.shouldExecuteQueryRequest = (query != null);
-        this.feedOptions = feedOptions;
+        this.cosmosQueryRequestOptions = cosmosQueryRequestOptions;
         this.resourceLink = resourceLink;
         // this.getLazyFeedResponse = getLazyFeedResponse;
         this.correlatedActivityId = correlatedActivityId;
+        this.diagnosticsClientContext = diagnosticsClientContext;
     }
 
     @Override
@@ -112,10 +117,9 @@ implements IDocumentQueryExecutionContext<T> {
         return response.map(resp -> BridgeInternal.toFeedResponsePage(resp, resourceType));
     }
 
-    public FeedOptions getFeedOptions(String continuationToken, Integer maxPageSize) {
-        FeedOptions options = new FeedOptions(this.feedOptions);
-        options.setRequestContinuation(continuationToken);
-        options.setMaxItemCount(maxPageSize);
+    public CosmosQueryRequestOptions getFeedOptions(String continuationToken, Integer maxPageSize) {
+        CosmosQueryRequestOptions options = ModelBridgeInternal.createQueryRequestOptions(this.cosmosQueryRequestOptions);
+        ModelBridgeInternal.setQueryRequestOptionsContinuationTokenAndMaxItemCount(options, continuationToken, maxPageSize);
         return options;
     }
 
@@ -123,22 +127,34 @@ implements IDocumentQueryExecutionContext<T> {
         return this.client.executeQueryAsync(request);
     }
 
-    public Map<String, String> createCommonHeadersAsync(FeedOptions feedOptions) {
+    public Map<String, String> createCommonHeadersAsync(CosmosQueryRequestOptions cosmosQueryRequestOptions) {
         Map<String, String> requestHeaders = new HashMap<>();
 
         ConsistencyLevel defaultConsistencyLevel = this.client.getDefaultConsistencyLevelAsync();
-        ConsistencyLevel desiredConsistencyLevel = this.client.getDesiredConsistencyLevelAsync();
-        if (!Strings.isNullOrEmpty(feedOptions.getSessionToken())
+        ConsistencyLevel desiredConsistencyLevel = cosmosQueryRequestOptions.getConsistencyLevel() != null ?
+            cosmosQueryRequestOptions.getConsistencyLevel():
+            this.client.getDesiredConsistencyLevelAsync();
+
+        boolean sessionTokenApplicable =
+            desiredConsistencyLevel == ConsistencyLevel.SESSION ||
+                (defaultConsistencyLevel == ConsistencyLevel.SESSION &&
+                    // skip applying the session token when Eventual Consistency is explicitly requested
+                    // on request-level for data plane operations.
+                    // The session token is ignored on teh backend/gateway in this case anyway
+                    // and the session token can be rather large (even run in the 16 KB header length problem
+                    // on the gateway - so not worth sending when not needed
+                    this.resourceTypeEnum == ResourceType.Document);
+
+        if (!Strings.isNullOrEmpty(cosmosQueryRequestOptions.getSessionToken())
                 && !ReplicatedResourceClientUtils.isReadingFromMaster(this.resourceTypeEnum, OperationType.ReadFeed)) {
-            if (defaultConsistencyLevel == ConsistencyLevel.SESSION
-                    || (desiredConsistencyLevel == ConsistencyLevel.SESSION)) {
+            if (sessionTokenApplicable) {
                 // Query across partitions is not supported today. Master resources (for e.g.,
                 // database)
                 // can span across partitions, whereas server resources (viz: collection,
                 // document and attachment)
                 // don't span across partitions. Hence, session token returned by one partition
                 // should not be used
-                // when quering resources from another partition.
+                // when querying resources from another partition.
                 // Since master resources can span across partitions, don't send session token
                 // to the backend.
                 // As master resources are sync replicated, we should always get consistent
@@ -146,33 +162,34 @@ implements IDocumentQueryExecutionContext<T> {
                 // irrespective of the chosen replica.
                 // For server resources, which don't span partitions, specify the session token
                 // for correct replica to be chosen for servicing the query result.
-                requestHeaders.put(HttpConstants.HttpHeaders.SESSION_TOKEN, feedOptions.getSessionToken());
+                requestHeaders.put(HttpConstants.HttpHeaders.SESSION_TOKEN, cosmosQueryRequestOptions.getSessionToken());
             }
         }
 
-        requestHeaders.put(HttpConstants.HttpHeaders.CONTINUATION, feedOptions.getRequestContinuation());
+        requestHeaders.put(HttpConstants.HttpHeaders.CONTINUATION, ModelBridgeInternal.getRequestContinuationFromQueryRequestOptions(cosmosQueryRequestOptions));
         requestHeaders.put(HttpConstants.HttpHeaders.IS_QUERY, Strings.toString(true));
 
         // Flow the pageSize only when we are not doing client eval
-        if (feedOptions.getMaxItemCount() != null && feedOptions.getMaxItemCount() > 0) {
-            requestHeaders.put(HttpConstants.HttpHeaders.PAGE_SIZE, Strings.toString(feedOptions.getMaxItemCount()));
+        Integer maxItemCount = ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(cosmosQueryRequestOptions);
+        if (maxItemCount != null && maxItemCount > 0) {
+            requestHeaders.put(HttpConstants.HttpHeaders.PAGE_SIZE, Strings.toString(maxItemCount));
         }
 
-        if (feedOptions.getMaxDegreeOfParallelism() != 0) {
+        if (cosmosQueryRequestOptions.getMaxDegreeOfParallelism() != 0) {
             requestHeaders.put(HttpConstants.HttpHeaders.PARALLELIZE_CROSS_PARTITION_QUERY, Strings.toString(true));
         }
 
-        if (this.feedOptions.setResponseContinuationTokenLimitInKb() > 0) {
+        if (this.cosmosQueryRequestOptions.getResponseContinuationTokenLimitInKb() > 0) {
             requestHeaders.put(HttpConstants.HttpHeaders.RESPONSE_CONTINUATION_TOKEN_LIMIT_IN_KB,
-                    Strings.toString(feedOptions.setResponseContinuationTokenLimitInKb()));
+                    Strings.toString(cosmosQueryRequestOptions.getResponseContinuationTokenLimitInKb()));
         }
 
         if (desiredConsistencyLevel != null) {
             requestHeaders.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, desiredConsistencyLevel.toString());
         }
 
-        if(feedOptions.isPopulateQueryMetrics()){
-            requestHeaders.put(HttpConstants.HttpHeaders.POPULATE_QUERY_METRICS, String.valueOf(feedOptions.isPopulateQueryMetrics()));
+        if(cosmosQueryRequestOptions.isQueryMetricsEnabled()){
+            requestHeaders.put(HttpConstants.HttpHeaders.POPULATE_QUERY_METRICS, String.valueOf(cosmosQueryRequestOptions.isQueryMetricsEnabled()));
         }
 
         return requestHeaders;
@@ -215,17 +232,19 @@ implements IDocumentQueryExecutionContext<T> {
 
         switch (this.client.getQueryCompatibilityMode()) {
         case SqlQuery:
-            SqlParameterList params = querySpec.getParameters();
+            List<SqlParameter> params = querySpec.getParameters();
             // SqlQuerySpec::getParameters is guaranteed to return non-null SqlParameterList list
             // hence no null check for params is necessary.
             Utils.checkStateOrThrow(params.size() > 0, "query.parameters",
                     "Unsupported argument in query compatibility mode '%s'",
                     this.client.getQueryCompatibilityMode().toString());
 
-            executeQueryRequest = RxDocumentServiceRequest.create(OperationType.SqlQuery, this.resourceTypeEnum,
-                    this.resourceLink,
+            executeQueryRequest = RxDocumentServiceRequest.create(this.diagnosticsClientContext,
+                OperationType.SqlQuery,
+                this.resourceTypeEnum,
+                this.resourceLink,
                     // AuthorizationTokenType.PrimaryMasterKey,
-                    requestHeaders);
+                requestHeaders);
 
             executeQueryRequest.getHeaders().put(HttpConstants.HttpHeaders.CONTENT_TYPE, MediaTypes.JSON);
             executeQueryRequest.setContentBytes(Utils.getUTF8Bytes(querySpec.getQueryText()));
@@ -234,10 +253,12 @@ implements IDocumentQueryExecutionContext<T> {
         case Default:
         case Query:
         default:
-            executeQueryRequest = RxDocumentServiceRequest.create(OperationType.Query, this.resourceTypeEnum,
-                    this.resourceLink,
+            executeQueryRequest = RxDocumentServiceRequest.create(this.diagnosticsClientContext,
+                OperationType.Query,
+                this.resourceTypeEnum,
+                this.resourceLink,
                     // AuthorizationTokenType.PrimaryMasterKey,
-                    requestHeaders);
+                requestHeaders);
 
             executeQueryRequest.getHeaders().put(HttpConstants.HttpHeaders.CONTENT_TYPE, MediaTypes.QUERY_JSON);
             executeQueryRequest.setByteBuffer(ModelBridgeInternal.serializeJsonToByteBuffer(querySpec));
@@ -249,12 +270,12 @@ implements IDocumentQueryExecutionContext<T> {
 
     private RxDocumentServiceRequest createReadFeedDocumentServiceRequest(Map<String, String> requestHeaders) {
         if (this.resourceTypeEnum == ResourceType.Database || this.resourceTypeEnum == ResourceType.Offer) {
-            return RxDocumentServiceRequest.create(OperationType.ReadFeed, null, this.resourceTypeEnum,
+            return RxDocumentServiceRequest.create(this.diagnosticsClientContext, OperationType.ReadFeed, null, this.resourceTypeEnum,
                     // TODO: we may want to add a constructor to RxDocumentRequest supporting authorization type similar to .net
                     // AuthorizationTokenType.PrimaryMasterKey,
                     requestHeaders);
         } else {
-            return RxDocumentServiceRequest.create(OperationType.ReadFeed, this.resourceTypeEnum, this.resourceLink,
+            return RxDocumentServiceRequest.create(this.diagnosticsClientContext, OperationType.ReadFeed, this.resourceTypeEnum, this.resourceLink,
                     // TODO: we may want to add a constructor to RxDocumentRequest supporting authorization type similar to .net
                     // AuthorizationTokenType.PrimaryMasterKey,
                     requestHeaders);

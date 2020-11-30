@@ -4,11 +4,11 @@
 package com.azure.cosmos.models;
 
 /**
- * Specifies the partition scheme for an multiple-partitioned collection in the Azure Cosmos DB database service.
+ * Specifies the partition scheme for an multiple-partitioned container in the Azure Cosmos DB database service.
  */
 public enum PartitionKind {
     /**
-     * The Partition of a document is calculated based on the hash value of the PartitionKey.
+     * The Partition of a item is calculated based on the hash value of the PartitionKey.
      */
     HASH("Hash");
 

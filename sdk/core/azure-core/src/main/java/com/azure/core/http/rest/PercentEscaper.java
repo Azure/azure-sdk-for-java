@@ -3,104 +3,236 @@
 
 package com.azure.core.http.rest;
 
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * An escaper that escapes URL data through percent encoding.
  */
 final class PercentEscaper {
+    private static final char[] HEX_CHARACTERS = "0123456789ABCDEF".toCharArray();
 
-    private static final String[] HEX = {
-        "%00", "%01", "%02", "%03", "%04", "%05", "%06", "%07",
-        "%08", "%09", "%0a", "%0b", "%0c", "%0d", "%0e", "%0f",
-        "%10", "%11", "%12", "%13", "%14", "%15", "%16", "%17",
-        "%18", "%19", "%1a", "%1b", "%1c", "%1d", "%1e", "%1f",
-        "%20", "%21", "%22", "%23", "%24", "%25", "%26", "%27",
-        "%28", "%29", "%2a", "%2b", "%2c", "%2d", "%2e", "%2f",
-        "%30", "%31", "%32", "%33", "%34", "%35", "%36", "%37",
-        "%38", "%39", "%3a", "%3b", "%3c", "%3d", "%3e", "%3f",
-        "%40", "%41", "%42", "%43", "%44", "%45", "%46", "%47",
-        "%48", "%49", "%4a", "%4b", "%4c", "%4d", "%4e", "%4f",
-        "%50", "%51", "%52", "%53", "%54", "%55", "%56", "%57",
-        "%58", "%59", "%5a", "%5b", "%5c", "%5d", "%5e", "%5f",
-        "%60", "%61", "%62", "%63", "%64", "%65", "%66", "%67",
-        "%68", "%69", "%6a", "%6b", "%6c", "%6d", "%6e", "%6f",
-        "%70", "%71", "%72", "%73", "%74", "%75", "%76", "%77",
-        "%78", "%79", "%7a", "%7b", "%7c", "%7d", "%7e", "%7f",
-        "%80", "%81", "%82", "%83", "%84", "%85", "%86", "%87",
-        "%88", "%89", "%8a", "%8b", "%8c", "%8d", "%8e", "%8f",
-        "%90", "%91", "%92", "%93", "%94", "%95", "%96", "%97",
-        "%98", "%99", "%9a", "%9b", "%9c", "%9d", "%9e", "%9f",
-        "%a0", "%a1", "%a2", "%a3", "%a4", "%a5", "%a6", "%a7",
-        "%a8", "%a9", "%aa", "%ab", "%ac", "%ad", "%ae", "%af",
-        "%b0", "%b1", "%b2", "%b3", "%b4", "%b5", "%b6", "%b7",
-        "%b8", "%b9", "%ba", "%bb", "%bc", "%bd", "%be", "%bf",
-        "%c0", "%c1", "%c2", "%c3", "%c4", "%c5", "%c6", "%c7",
-        "%c8", "%c9", "%ca", "%cb", "%cc", "%cd", "%ce", "%cf",
-        "%d0", "%d1", "%d2", "%d3", "%d4", "%d5", "%d6", "%d7",
-        "%d8", "%d9", "%da", "%db", "%dc", "%dd", "%de", "%df",
-        "%e0", "%e1", "%e2", "%e3", "%e4", "%e5", "%e6", "%e7",
-        "%e8", "%e9", "%ea", "%eb", "%ec", "%ed", "%ee", "%ef",
-        "%f0", "%f1", "%f2", "%f3", "%f4", "%f5", "%f6", "%f7",
-        "%f8", "%f9", "%fa", "%fb", "%fc", "%fd", "%fe", "%ff"
-    };
+    /*
+     * The characters in this string are always safe to use.
+     */
+    private static final String SAFE_CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+    private final ClientLogger logger = new ClientLogger(PercentEscaper.class);
 
     private final boolean usePlusForSpace;
-
-    private final List<Character> safeChars = new ArrayList<>();
+    private final Set<Integer> safeCharacterPoints;
 
     /**
      * Creates a percent escaper.
-     * @param safeChars a collection of characters that will not be escaped
-     * @param usePlusForSpace escape ' ' as '+' if true, "%20" otherwise
+     *
+     * @param safeCharacters Collection of characters that won't be escaped.
+     * @param usePlusForSpace If true {@code ' '} will be escaped as {@code '+'} instead of {@code "%20"}.
      */
-    PercentEscaper(String safeChars, boolean usePlusForSpace) {
-        for (int i = 0; i != safeChars.length(); i++) {
-            this.safeChars.add(safeChars.charAt(i));
-        }
+    PercentEscaper(String safeCharacters, boolean usePlusForSpace) {
         this.usePlusForSpace = usePlusForSpace;
-    }
 
-    /**
-     * Creates a percent escaper with default settings and encode ' ' as "%20".
-     */
-    PercentEscaper() {
-        this("-._~", false);
+        if (usePlusForSpace && safeCharacters != null && safeCharacters.contains(" ")) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "' ' as a safe character with 'usePlusForSpace = true' is an invalid configuration."));
+        }
+
+        this.safeCharacterPoints = new HashSet<>();
+        SAFE_CHARACTERS.codePoints().forEach(safeCharacterPoints::add);
+        if (!CoreUtils.isNullOrEmpty(safeCharacters)) {
+            safeCharacters.codePoints().forEach(safeCharacterPoints::add);
+        }
     }
 
     /**
      * Escapes a string with the current settings on the escaper.
+     *
      * @param original the origin string to escape
      * @return the escaped string
      */
     public String escape(String original) {
-        StringBuilder output = new StringBuilder();
-        for (int i = 0; i != utf16ToAscii(original).length(); i++) {
-            char c = original.charAt(i);
-            if (c == ' ') {
-                output.append(usePlusForSpace ? "+" : HEX[' ']);
-            } else if (c >= 'a' && c <= 'z') {
-                output.append(c);
-            } else if (c >= 'A' && c <= 'Z') {
-                output.append(c);
-            } else if (c >= '0' && c <= '9') {
-                output.append(c);
-            } else if (safeChars.contains(c)) {
-                output.append(c);
-            } else {
-                output.append(HEX[c]);
+        // String is either null or empty, just return it as is.
+        if (CoreUtils.isNullOrEmpty(original)) {
+            return original;
+        }
+
+        StringBuilder escapedBuilder = new StringBuilder();
+        int index = 0;
+        int end = original.length();
+
+        /*
+         * When the UTF-8 character is more than one byte the bytes will be converted to hex in reverse order to allow
+         * for simpler logic being used. To make this easier a temporary character array will be used to keep track of
+         * the conversion.
+         */
+        while (index < end) {
+            int codePoint = getCodePoint(original, index, end, logger);
+
+            // Supplementary code points comprise of two characters in the string.
+            index += (Character.isSupplementaryCodePoint(codePoint)) ? 2 : 1;
+
+            if (safeCharacterPoints.contains(codePoint)) {
+                // This is a safe character, use it as is.
+                escapedBuilder.append(Character.toChars(codePoint));
+            } else if (usePlusForSpace && codePoint == ' ') {
+                // Character is a space and we are using '+' instead of "%20".
+                escapedBuilder.append('+');
+            } else if (codePoint <= 0x7F) {
+                // Character is one byte, use format '%xx'.
+                // Leading bit is always 0.
+                escapedBuilder.append('%');
+
+                // Shift 4 times to the right to get the leading 4 bits and get the corresponding hex character.
+                escapedBuilder.append(HEX_CHARACTERS[codePoint >>> 4]);
+
+                // Mask all but the last 4 bits and get the corresponding hex character.
+                escapedBuilder.append(HEX_CHARACTERS[codePoint & 0xF]);
+            } else if (codePoint <= 0x7FF) {
+                /*
+                 * Character is two bytes, use the format '%xx%xx'. Leading bits in the first byte are always 110 and
+                 * the leading bits in the second byte are always 10. The conversion will happen using the following
+                 * logic:
+                 *
+                 * 1. Mask with bits 1111 to get the last hex character.
+                 * 2. Shift right 4 times to move to the next hex quad bits.
+                 * 3. Mask with bits 11 and then bitwise or with bits 1000 to get the leading hex in the second byte.
+                 * 4. Shift right 2 times to move to the next hex quad bits.
+                 *   a. This is only shifted twice since the bits 10 are the encoded value but not in the code point.
+                 * 5. Mask with bits 1111 to get the second hex character in the first byte.
+                 * 6. Shift right 4 times to move to the next hex quad bits.
+                 * 7. Bitwise or with bits 1100 to get the leading hex character.
+                 */
+                char[] chars = new char[6];
+                chars[0] = '%';
+                chars[3] = '%';
+
+                chars[5] = HEX_CHARACTERS[codePoint & 0xF];
+
+                codePoint >>>= 4;
+                chars[4] = HEX_CHARACTERS[0x8 | (codePoint & 0x3)];
+
+                codePoint >>>= 2;
+                chars[2] = HEX_CHARACTERS[codePoint & 0xF];
+
+                codePoint >>>= 4;
+                chars[1] = HEX_CHARACTERS[codePoint | 0xC];
+
+                escapedBuilder.append(chars);
+            } else if (codePoint <= 0xFFFF) {
+                /*
+                 * Character is three bytes, use the format '%Ex%xx%xx'. Leading bits in the first byte are always
+                 * 1110 (hence it is '%Ex'), the leading bits in both the second and third byte are always 10. The
+                 * conversion will happen using the following logic:
+                 *
+                 * 1. Mask with bits 1111 to get the last hex character.
+                 * 2. Shift right 4 times to move to the next hex quad bits.
+                 * 3. Mask with bits 11 and then bitwise or with bits 1000 to get the leading hex in the third byte.
+                 * 4. Shift right 2 times to move to the next hex quad bits.
+                 *   a. This is only shifted twice since the bits 10 are the encoded value but not in the code point.
+                 * 5. Repeat steps 1-4 to convert the second byte.
+                 * 6. Mask with bits 1111 to get the second hex character in the first byte.
+                 *
+                 * Note: No work is needed for the leading hex character since it is always 'E'.
+                 */
+                char[] chars = new char[9];
+                chars[0] = '%';
+                chars[1] = 'E';
+                chars[3] = '%';
+                chars[6] = '%';
+
+                chars[8] = HEX_CHARACTERS[codePoint & 0xF];
+
+                codePoint >>>= 4;
+                chars[7] = HEX_CHARACTERS[0x8 | (codePoint & 0x3)];
+
+                codePoint >>>= 2;
+                chars[5] = HEX_CHARACTERS[codePoint & 0xF];
+
+                codePoint >>>= 4;
+                chars[4] = HEX_CHARACTERS[0x8 | (codePoint & 0x3)];
+
+                codePoint >>>= 2;
+                chars[2] = HEX_CHARACTERS[codePoint & 0xF];
+
+                escapedBuilder.append(chars);
+            } else if (codePoint <= 0x10FFFF) {
+                /*
+                 * Character is four bytes, use the format '%Fx%xx%xx%xx'. Leading bits in the first byte are always
+                 * 11110 (hence it is '%Fx'), the leading bits in the other bytes are always 10. The conversion will
+                 * happen using the following logic:
+                 *
+                 * 1. Mask with bits 1111 to get the last hex character.
+                 * 2. Shift right 4 times to move to the next hex quad bits.
+                 * 3. Mask with bits 11 and then bitwise or with bits 1000 to get the leading hex in the fourth byte.
+                 * 4. Shift right 2 times to move to the next hex quad bits.
+                 *   a. This is only shifted twice since the bits 10 are the encoded value but not in the code point.
+                 * 5. Repeat steps 1-4 to convert the second and third bytes.
+                 * 6. Mask with bits 111 to get the second hex character in the first byte.
+                 *
+                 * Note: No work is needed for the leading hex character since it is always 'F'.
+                 */
+                char[] chars = new char[12];
+                chars[0] = '%';
+                chars[1] = 'F';
+                chars[3] = '%';
+                chars[6] = '%';
+                chars[9] = '%';
+
+                chars[11] = HEX_CHARACTERS[codePoint & 0xF];
+
+                codePoint >>>= 4;
+                chars[10] = HEX_CHARACTERS[0x8 | (codePoint & 0x3)];
+
+                codePoint >>>= 2;
+                chars[8] = HEX_CHARACTERS[codePoint & 0xF];
+
+                codePoint >>>= 4;
+                chars[7] = HEX_CHARACTERS[0x8 | (codePoint & 0x3)];
+
+                codePoint >>>= 2;
+                chars[5] = HEX_CHARACTERS[codePoint & 0xF];
+
+                codePoint >>>= 4;
+                chars[4] = HEX_CHARACTERS[0x8 | (codePoint & 0x3)];
+
+                codePoint >>>= 2;
+                chars[2] = HEX_CHARACTERS[codePoint & 0x7];
+
+                escapedBuilder.append(chars);
             }
         }
-        return output.toString();
+
+        return escapedBuilder.toString();
     }
 
-    private String utf16ToAscii(String input) {
-        byte[] ascii = new byte[input.length()];
-        for (int i = 0; i < input.length(); i++) {
-            ascii[i] = (byte) input.charAt(i);
+    /*
+     * Java uses UTF-16 to represent Strings, due to characters only being 2 bytes they must use surrogate pairs to
+     * get the correct code point for characters above 0xFFFF.
+     */
+    private static int getCodePoint(String original, int index, int end, ClientLogger logger) {
+        char char1 = original.charAt(index++);
+        if (!Character.isSurrogate(char1)) {
+            // Character isn't a surrogate, return it as is.
+            return char1;
+        } else if (Character.isHighSurrogate(char1)) {
+            // High surrogates will occur first in the string.
+            if (index == end) {
+                throw logger.logExceptionAsError(new IllegalStateException(
+                    "String contains trailing high surrogate without paired low surrogate."));
+            }
+
+            char char2 = original.charAt(index);
+            if (Character.isLowSurrogate(char2)) {
+                return Character.toCodePoint(char1, char2);
+            }
+
+            throw logger.logExceptionAsError(new IllegalStateException(
+                "String contains high surrogate without trailing low surrogate."));
+        } else {
+            throw logger.logExceptionAsError(new IllegalStateException(
+                "String contains low surrogate without leading high surrogate."));
         }
-        return new String(ascii, StandardCharsets.UTF_8);
     }
 }

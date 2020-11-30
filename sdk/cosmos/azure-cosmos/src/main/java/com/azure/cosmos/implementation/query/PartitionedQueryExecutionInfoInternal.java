@@ -6,7 +6,7 @@ package com.azure.cosmos.implementation.query;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.models.JsonSerializable;
+import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.Utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -66,5 +66,15 @@ public final class PartitionedQueryExecutionInfoInternal extends JsonSerializabl
         } catch (JsonProcessingException e) {
             throw new IllegalStateException("Unable to serialize partition query execution info internal.");
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 }

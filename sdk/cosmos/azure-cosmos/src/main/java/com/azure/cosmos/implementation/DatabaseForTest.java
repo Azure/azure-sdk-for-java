@@ -6,7 +6,6 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.implementation.apachecommons.lang.RandomStringUtils;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.SqlParameter;
-import com.azure.cosmos.models.SqlParameterList;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -17,6 +16,7 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.List;
 
 public class DatabaseForTest {
@@ -76,7 +76,7 @@ public class DatabaseForTest {
         Database dbDef = new Database();
         dbDef.setId(generateId());
 
-        Database db = client.createDatabase(dbDef).single().block().getResource();
+        Database db = client.createDatabase(dbDef).block().getResource();
         DatabaseForTest dbForTest = DatabaseForTest.from(db);
         assert(dbForTest != null);
         return dbForTest;
@@ -86,7 +86,7 @@ public class DatabaseForTest {
         logger.info("Cleaning stale test databases ...");
         List<Database> dbs = client.queryDatabases(
                 new SqlQuerySpec("SELECT * FROM c WHERE STARTSWITH(c.id, @PREFIX)",
-                                 new SqlParameterList(new SqlParameter("@PREFIX", DatabaseForTest.SHARED_DB_ID_PREFIX))))
+                    Collections.singletonList(new SqlParameter("@PREFIX", DatabaseForTest.SHARED_DB_ID_PREFIX))))
                 .flatMap(page -> Flux.fromIterable(page.getResults())).collectList().block();
 
         // block() can return null if Flux is empty()

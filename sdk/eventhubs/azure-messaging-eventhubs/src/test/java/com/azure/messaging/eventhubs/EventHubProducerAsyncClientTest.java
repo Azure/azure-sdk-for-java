@@ -17,6 +17,7 @@ import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.ProcessKind;
@@ -27,6 +28,7 @@ import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.apache.qpid.proton.amqp.messaging.Section;
+import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -34,6 +36,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
@@ -57,6 +60,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
+import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_BUILDER_KEY;
@@ -77,8 +81,10 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 class EventHubProducerAsyncClientTest {
+    private static final ClientOptions CLIENT_OPTIONS = new ClientOptions();
     private static final String HOSTNAME = "my-host-name";
     private static final String EVENT_HUB_NAME = "my-event-hub-name";
+    private static final String ENTITY_PATH = HOSTNAME + ".servicebus.windows.net";
 
     @Mock
     private AmqpSendLink sendLink;
@@ -115,7 +121,7 @@ class EventHubProducerAsyncClientTest {
     private EventHubConnectionProcessor connectionProcessor;
     private TracerProvider tracerProvider;
     private ConnectionOptions connectionOptions;
-    private final Scheduler testScheduler = Schedulers.newSingle("test");
+    private final Scheduler testScheduler = Schedulers.newElastic("test");
 
     @BeforeAll
     static void beforeAll() {
@@ -128,13 +134,13 @@ class EventHubProducerAsyncClientTest {
     }
 
     @BeforeEach
-    void setup() {
+    void setup(TestInfo testInfo) {
         MockitoAnnotations.initMocks(this);
 
         tracerProvider = new TracerProvider(Collections.emptyList());
         connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS, retryOptions,
-            ProxyOptions.SYSTEM_DEFAULTS, testScheduler);
+            ProxyOptions.SYSTEM_DEFAULTS, testScheduler, CLIENT_OPTIONS, SslDomain.VerifyMode.VERIFY_PEER_NAME);
 
         when(connection.getEndpointStates()).thenReturn(endpointProcessor);
         endpointSink.next(AmqpEndpointState.ACTIVE);
@@ -151,11 +157,10 @@ class EventHubProducerAsyncClientTest {
     }
 
     @AfterEach
-    void teardown() {
+    void teardown(TestInfo testInfo) {
         testScheduler.dispose();
         Mockito.framework().clearInlineMocks();
-        sendLink = null;
-        connection = null;
+        Mockito.reset(sendLink, connection);
         singleMessageCaptor = null;
         messagesCaptor = null;
     }
@@ -236,7 +241,7 @@ class EventHubProducerAsyncClientTest {
         final Semaphore semaphore = new Semaphore(1);
         // In our actual client builder, we allow this.
         final EventHubProducerAsyncClient flexibleProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            connectionProcessor, retryOptions, tracerProvider, messageSerializer, Schedulers.elastic(),
+            connectionProcessor, retryOptions, tracerProvider, messageSerializer, testScheduler,
             false, onClientClosed);
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
@@ -263,7 +268,7 @@ class EventHubProducerAsyncClientTest {
         // Assert
         Assertions.assertTrue(semaphore.tryAcquire(30, TimeUnit.SECONDS));
 
-        verify(sendLink, times(1)).send(any(Message.class));
+        verify(sendLink).send(any(Message.class));
         verify(sendLink).send(singleMessageCaptor.capture());
 
         final Message message = singleMessageCaptor.getValue();
@@ -519,6 +524,8 @@ class EventHubProducerAsyncClientTest {
         final AmqpSendLink link = mock(AmqpSendLink.class);
 
         when(link.getLinkSize()).thenReturn(Mono.just(ClientConstants.MAX_MESSAGE_LENGTH_BYTES));
+        when(link.getHostname()).thenReturn(HOSTNAME);
+        when(link.getEntityPath()).thenReturn(ENTITY_PATH);
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
         when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions)))
@@ -527,6 +534,10 @@ class EventHubProducerAsyncClientTest {
         when(tracer1.start(eq("EventHubs.message"), any(), eq(ProcessKind.MESSAGE))).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
+                assertEquals(passed.getData(AZ_TRACING_NAMESPACE_KEY).get(), AZ_NAMESPACE_VALUE);
+                assertEquals(passed.getData(ENTITY_PATH_KEY).get(), ENTITY_PATH);
+                assertEquals(passed.getData(HOST_NAME_KEY).get(), HOSTNAME);
+
                 return passed.addData(PARENT_SPAN_KEY, "value").addData(DIAGNOSTIC_ID_KEY, "value2");
             }
         );

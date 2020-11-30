@@ -3,9 +3,9 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.FailureValidator;
-import com.google.common.base.Predicates;
+import com.azure.cosmos.implementation.guava25.base.Predicates;
 import org.apache.commons.lang3.mutable.MutableObject;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.description.Description;
@@ -67,7 +67,7 @@ public interface MultiStoreResultValidator {
                     for(StoreResult srr: storeResults) {
                         try {
                             storeResponseValidator.validate(srr.toResponse());
-                        } catch (CosmosClientException e) {
+                        } catch (CosmosException e) {
                             fail(e.getMessage());
                         }
                     }
@@ -129,7 +129,7 @@ public interface MultiStoreResultValidator {
                     for(StoreResult srr: storeResults) {
                         try {
                             failureValidator.validate(srr.getException());
-                        } catch (CosmosClientException e) {
+                        } catch (CosmosException e) {
                             fail(e.getMessage());
                         }
                     }

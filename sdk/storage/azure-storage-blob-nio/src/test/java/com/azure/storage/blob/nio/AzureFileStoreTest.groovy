@@ -25,7 +25,7 @@ class AzureFileStoreTest extends APISpec {
 
     // The constructor is implicitly tested by creating a file system.
 
-    def "FileStore name"() {
+    def "Name"() {
         setup:
         def name = generateContainerName()
         def store = new AzureFileStore(fs, name)
@@ -34,17 +34,17 @@ class AzureFileStoreTest extends APISpec {
         store.name() == name
     }
 
-    def "FileStore type"() {
+    def "Type"() {
         expect:
         fs.getFileStores().iterator().next().type() == "AzureBlobContainer"
     }
 
-    def "FileStore isReadOnly"() {
+    def "IsReadOnly"() {
         expect:
         !fs.getFileStores().iterator().next().isReadOnly()
     }
 
-    def "FileStore space"() {
+    def "Space"() {
         setup:
         def store = fs.getFileStores().iterator().next()
 
@@ -55,7 +55,7 @@ class AzureFileStoreTest extends APISpec {
     }
 
     @Unroll
-    def "FileStore supportsFileAttributeView"() {
+    def "SupportsFileAttributeView"() {
         setup:
         def store = fs.getFileStores().iterator().next()
 
@@ -66,12 +66,12 @@ class AzureFileStoreTest extends APISpec {
         where:
         view                                | viewName       || supports
         BasicFileAttributeView.class        | "basic"        || true
-        UserDefinedFileAttributeView.class  | "user"         || true
-        AzureStorageFileAttributeView.class | "azureStorage" || true
+        AzureBlobFileAttributeView.class    | "azureBlob"    || true
+        AzureBasicFileAttributeView.class   | "azureBasic"   || true
         PosixFileAttributeView.class        | "posix"        || false
     }
 
-    def "FileStore getFileStoreAttributeView"() {
+    def "GetFileStoreAttributeView"() {
         setup:
         def store = fs.getFileStores().iterator().next()
 

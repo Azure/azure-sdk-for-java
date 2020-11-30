@@ -11,6 +11,7 @@ package com.microsoft.azure.cognitiveservices.language.luis.authoring;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.EnqueueTrainingResponse;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ModelTrainingInfo;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 import rx.Observable;

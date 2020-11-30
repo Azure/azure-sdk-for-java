@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.storage.v2019_06_01;
 
+import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -26,6 +27,18 @@ public class RestorePolicyProperties {
      */
     @JsonProperty(value = "days")
     private Integer days;
+
+    /**
+     * Deprecated in favor of minRestoreTime property.
+     */
+    @JsonProperty(value = "lastEnabledTime", access = JsonProperty.Access.WRITE_ONLY)
+    private DateTime lastEnabledTime;
+
+    /**
+     * Returns the minimum date and time that the restore can be started.
+     */
+    @JsonProperty(value = "minRestoreTime", access = JsonProperty.Access.WRITE_ONLY)
+    private DateTime minRestoreTime;
 
     /**
      * Get blob restore is enabled if set to true.
@@ -65,6 +78,24 @@ public class RestorePolicyProperties {
     public RestorePolicyProperties withDays(Integer days) {
         this.days = days;
         return this;
+    }
+
+    /**
+     * Get deprecated in favor of minRestoreTime property.
+     *
+     * @return the lastEnabledTime value
+     */
+    public DateTime lastEnabledTime() {
+        return this.lastEnabledTime;
+    }
+
+    /**
+     * Get returns the minimum date and time that the restore can be started.
+     *
+     * @return the minRestoreTime value
+     */
+    public DateTime minRestoreTime() {
+        return this.minRestoreTime;
     }
 
 }

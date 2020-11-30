@@ -3,15 +3,13 @@
 
 package com.azure.security.keyvault.secrets;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
-import com.azure.core.util.polling.*;
+import com.azure.core.util.polling.AsyncPollResponse;
+import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollerFlux;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
@@ -20,9 +18,16 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
 import java.net.HttpURLConnection;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 public class SecretAsyncClientTest extends SecretClientTestBase {
 
@@ -34,11 +39,15 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
     }
 
     private void initializeClient(HttpClient httpClient, SecretServiceVersion serviceVersion) {
-        client = new SecretClientBuilder()
+        client = spy(new SecretClientBuilder()
             .pipeline(getHttpPipeline(httpClient, serviceVersion))
             .vaultUrl(getEndpoint())
             .serviceVersion(serviceVersion)
-            .buildAsyncClient();
+            .buildAsyncClient());
+
+        if (interceptorManager.isPlaybackMode()) {
+            when(client.getDefaultPollingInterval()).thenReturn(Duration.ofMillis(10));
+        }
     }
 
     /**
@@ -298,6 +307,17 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
     public void recoverDeletedSecretNotFound(HttpClient httpClient, SecretServiceVersion serviceVersion) {
         initializeClient(httpClient, serviceVersion);
         StepVerifier.create(client.beginRecoverDeletedSecret("non-existing"))
+            .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
+    }
+
+    /**
+     * Tests that an attempt to recover a non existing deleted secret throws an error on a soft-delete enabled vault.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void recoverDeletedSecretNotFoundWithPollingDuration(HttpClient httpClient, SecretServiceVersion serviceVersion) {
+        initializeClient(httpClient, serviceVersion);
+        StepVerifier.create(client.beginRecoverDeletedSecret("non-existing", Duration.ofSeconds(1)))
             .verifyErrorSatisfies(ex -> assertRestException(ex, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
     }
 

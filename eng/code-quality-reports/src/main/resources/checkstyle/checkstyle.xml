@@ -54,7 +54,8 @@ page at http://checkstyle.sourceforge.net/config.html -->
   <module name="LineLength">
     <property name="max" value="120"/>
     <!-- Allow codeSnippet to override max line length -->
-    <property name="ignorePattern" value=".*(\{@codesnippet.*\}|&lt;a href)"/>
+    <!-- Allow comment with single word to override max line length -->
+    <property name="ignorePattern" value=".*(\{@codesnippet.*\}|&lt;a href)|^ *\* *[^ ]+$"/>
   </module>
 
   <!-- All Java AST specific tests live under TreeWalker module. -->
@@ -274,7 +275,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <!--characters 'a' to 'z' with no more than 20 characters and  the package names should be no-->
     <!--more than 80 characters.-->
     <module name="PackageName">
-      <property name="format" value="^(?=.{9,80}$)((com.microsoft.azure|com.azure)(\.[a-z]{1,20})*)+$"/>
+      <property name="format" value="^(?=.{9,80}$)((com.microsoft|com.azure)(\.[a-z]{1,20})*)+$"/>
     </module>
 
     <!-- Javadoc checks                                   -->

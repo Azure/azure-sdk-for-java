@@ -35,6 +35,12 @@ public class ClusterGetProperties {
     private Tier tier;
 
     /**
+     * The cluster id.
+     */
+    @JsonProperty(value = "clusterId")
+    private String clusterId;
+
+    /**
      * The cluster definition.
      */
     @JsonProperty(value = "clusterDefinition", required = true)
@@ -103,10 +109,22 @@ public class ClusterGetProperties {
     private DiskEncryptionProperties diskEncryptionProperties;
 
     /**
+     * The encryption-in-transit properties.
+     */
+    @JsonProperty(value = "encryptionInTransitProperties")
+    private EncryptionInTransitProperties encryptionInTransitProperties;
+
+    /**
      * The minimal supported tls version.
      */
     @JsonProperty(value = "minSupportedTlsVersion")
     private String minSupportedTlsVersion;
+
+    /**
+     * The network properties.
+     */
+    @JsonProperty(value = "networkProperties")
+    private NetworkProperties networkProperties;
 
     /**
      * Get the version of the cluster.
@@ -165,6 +183,26 @@ public class ClusterGetProperties {
      */
     public ClusterGetProperties withTier(Tier tier) {
         this.tier = tier;
+        return this;
+    }
+
+    /**
+     * Get the cluster id.
+     *
+     * @return the clusterId value
+     */
+    public String clusterId() {
+        return this.clusterId;
+    }
+
+    /**
+     * Set the cluster id.
+     *
+     * @param clusterId the clusterId value to set
+     * @return the ClusterGetProperties object itself.
+     */
+    public ClusterGetProperties withClusterId(String clusterId) {
+        this.clusterId = clusterId;
         return this;
     }
 
@@ -389,6 +427,26 @@ public class ClusterGetProperties {
     }
 
     /**
+     * Get the encryption-in-transit properties.
+     *
+     * @return the encryptionInTransitProperties value
+     */
+    public EncryptionInTransitProperties encryptionInTransitProperties() {
+        return this.encryptionInTransitProperties;
+    }
+
+    /**
+     * Set the encryption-in-transit properties.
+     *
+     * @param encryptionInTransitProperties the encryptionInTransitProperties value to set
+     * @return the ClusterGetProperties object itself.
+     */
+    public ClusterGetProperties withEncryptionInTransitProperties(EncryptionInTransitProperties encryptionInTransitProperties) {
+        this.encryptionInTransitProperties = encryptionInTransitProperties;
+        return this;
+    }
+
+    /**
      * Get the minimal supported tls version.
      *
      * @return the minSupportedTlsVersion value
@@ -405,6 +463,26 @@ public class ClusterGetProperties {
      */
     public ClusterGetProperties withMinSupportedTlsVersion(String minSupportedTlsVersion) {
         this.minSupportedTlsVersion = minSupportedTlsVersion;
+        return this;
+    }
+
+    /**
+     * Get the network properties.
+     *
+     * @return the networkProperties value
+     */
+    public NetworkProperties networkProperties() {
+        return this.networkProperties;
+    }
+
+    /**
+     * Set the network properties.
+     *
+     * @param networkProperties the networkProperties value to set
+     * @return the ClusterGetProperties object itself.
+     */
+    public ClusterGetProperties withNetworkProperties(NetworkProperties networkProperties) {
+        this.networkProperties = networkProperties;
         return this;
     }
 

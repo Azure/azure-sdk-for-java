@@ -6,7 +6,10 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.util.Configuration;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
+import java.util.stream.Stream;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.net.InetSocketAddress;
@@ -14,6 +17,9 @@ import java.net.Proxy;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Locale;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -83,6 +89,59 @@ public class EventHubClientBuilderTest {
             // Assert
             assertNotNull(builder.buildAsyncClient());
         });
+    }
+    @Test
+    public void testConnectionStringWithSas() {
+
+        String connectionStringWithNoEntityPath = "Endpoint=sb://eh-name.servicebus.windows.net/;"
+            + "SharedAccessSignature=SharedAccessSignature test-value";
+        String connectionStringWithEntityPath = "Endpoint=sb://eh-name.servicebus.windows.net/;"
+            + "SharedAccessSignature=SharedAccessSignature test-value;EntityPath=eh-name";
+
+        assertNotNull(new EventHubClientBuilder()
+            .connectionString(connectionStringWithNoEntityPath, "eh-name"));
+        assertNotNull(new EventHubClientBuilder()
+            .connectionString(connectionStringWithEntityPath));
+        assertThrows(NullPointerException.class, () -> new EventHubClientBuilder()
+            .connectionString(connectionStringWithNoEntityPath));
+        assertThrows(IllegalArgumentException.class, () -> new EventHubClientBuilder()
+            .connectionString(connectionStringWithEntityPath, "eh-name-mismatch"));
+    }
+
+    @MethodSource("getProxyConfigurations")
+    @ParameterizedTest
+    public void testProxyOptionsConfiguration(String proxyConfiguration, boolean expectedClientCreation) {
+        Configuration configuration = Configuration.getGlobalConfiguration().clone();
+        configuration = configuration.put(Configuration.PROPERTY_HTTP_PROXY, proxyConfiguration);
+        boolean clientCreated = false;
+        try {
+            EventHubConsumerAsyncClient asyncClient = new EventHubClientBuilder()
+                .connectionString(CORRECT_CONNECTION_STRING)
+                .configuration(configuration)
+                .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
+                .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
+                .buildAsyncConsumerClient();
+            clientCreated = true;
+        } catch (Exception ex) {
+        }
+
+        Assertions.assertEquals(expectedClientCreation, clientCreated);
+    }
+
+    private static Stream<Arguments> getProxyConfigurations() {
+        return Stream.of(
+            Arguments.of("http://localhost:8080", true),
+            Arguments.of("localhost:8080", true),
+            Arguments.of("localhost_8080", false),
+            Arguments.of("http://example.com:8080", true),
+            Arguments.of("http://sub.example.com:8080", true),
+            Arguments.of(":8080", false),
+            Arguments.of("http://localhost", true),
+            Arguments.of("sub.example.com:8080", true),
+            Arguments.of("https://username:password@sub.example.com:8080", true),
+            Arguments.of("https://username:password@sub.example.com", true)
+        );
+
     }
 
     private static URI getURI(String endpointFormat, String namespace, String domainName) {

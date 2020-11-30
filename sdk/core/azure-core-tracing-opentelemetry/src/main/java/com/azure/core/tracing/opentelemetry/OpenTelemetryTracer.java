@@ -11,7 +11,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.ProcessKind;
 import io.opentelemetry.OpenTelemetry;
-import io.opentelemetry.trace.AttributeValue;
+import io.opentelemetry.common.AttributeValue;
 import io.opentelemetry.trace.Span;
 import io.opentelemetry.trace.Span.Builder;
 import io.opentelemetry.trace.SpanContext;
@@ -29,7 +29,7 @@ import java.util.Optional;
  * requests.
  */
 public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
-    private static final Tracer TRACER = OpenTelemetry.getTracerFactory().get("Azure-OpenTelemetry");
+    private static final Tracer TRACER = OpenTelemetry.getTracerProvider().get("Azure-OpenTelemetry");
 
     // standard attributes with AMQP request
     static final String AZ_NAMESPACE_KEY = "az.namespace";
@@ -86,9 +86,8 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
                 spanBuilder = getSpanBuilder(spanName, context);
                 span = spanBuilder.setSpanKind(Span.Kind.PRODUCER).startSpan();
                 if (span.isRecording()) {
-                    span.setAttribute(AZ_NAMESPACE_KEY,
-                        AttributeValue.stringAttributeValue(getOrDefault(context, AZ_TRACING_NAMESPACE_KEY, "",
-                            String.class)));
+                    // If span is sampled in, add additional request attributes
+                    addSpanRequestAttributes(span, context, spanName);
                 }
                 // Add diagnostic Id and trace-headers to Context
                 context = setContextData(span);
@@ -270,6 +269,10 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         if (messageEnqueuedTime != null) {
             span.setAttribute(MESSAGE_ENQUEUED_TIME, messageEnqueuedTime);
         }
+        String tracingNamespace = getOrDefault(context, AZ_TRACING_NAMESPACE_KEY, null, String.class);
+        if (tracingNamespace != null) {
+            span.setAttribute(AZ_NAMESPACE_KEY, tracingNamespace);
+        }
     }
 
     /**
@@ -308,7 +311,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     private <T> T getOrDefault(Context context, String key, T defaultValue, Class<T> clazz) {
         final Optional<Object> optional = context.getData(key);
         final Object result = optional.filter(value -> clazz.isAssignableFrom(value.getClass())).orElseGet(() -> {
-            logger.warning("Could not extract key '{}' of type '{}' from context.", key, clazz);
+            logger.verbose("Could not extract key '{}' of type '{}' from context.", key, clazz);
             return defaultValue;
         });
 

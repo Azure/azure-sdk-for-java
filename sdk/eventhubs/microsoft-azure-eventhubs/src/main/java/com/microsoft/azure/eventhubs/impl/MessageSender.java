@@ -292,7 +292,15 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
         for (final Message amqpMessage : messages) {
             final Message messageWrappedByData = Proton.message();
 
-            int payloadSize = AmqpUtil.getDataSerializedSize(amqpMessage);
+            int payloadSize = 0;
+            try {
+                payloadSize = AmqpUtil.getDataSerializedSize(amqpMessage);
+            } catch (EventHubException e) {
+                final CompletableFuture<Void> payloadTask = new CompletableFuture<Void>();
+                payloadTask.completeExceptionally(new EventHubException(false,
+                    String.format(Locale.US, "Entity(%s): %s", this.sendPath, e.getMessage())));
+                return payloadTask;
+            }
             int allocationSize = Math.min(payloadSize + ClientConstants.MAX_EVENTHUB_AMQP_HEADER_SIZE_BYTES, maxMessageSizeTemp);
 
             byte[] messageBytes = new byte[allocationSize];
@@ -316,7 +324,15 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
     }
 
     public CompletableFuture<Void> send(Message msg) {
-        int payloadSize = AmqpUtil.getDataSerializedSize(msg);
+        int payloadSize = 0;
+        try {
+            payloadSize = AmqpUtil.getDataSerializedSize(msg);
+        } catch (EventHubException e) {
+            final CompletableFuture<Void> payloadTask = new CompletableFuture<Void>();
+            payloadTask.completeExceptionally(new EventHubException(false,
+                String.format(Locale.US, "Entity(%s): %s", this.sendPath, e.getMessage())));
+            return payloadTask;
+        }
 
         final int maxMessageSizeTemp = this.maxMessageSize;
         int allocationSize = Math.min(payloadSize + ClientConstants.MAX_EVENTHUB_AMQP_HEADER_SIZE_BYTES, maxMessageSizeTemp);

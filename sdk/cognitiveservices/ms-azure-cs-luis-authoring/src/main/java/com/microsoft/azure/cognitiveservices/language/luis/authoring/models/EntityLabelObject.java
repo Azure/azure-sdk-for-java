@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -32,6 +33,18 @@ public class EntityLabelObject {
      */
     @JsonProperty(value = "endCharIndex", required = true)
     private int endCharIndex;
+
+    /**
+     * The role the entity plays in the utterance.
+     */
+    @JsonProperty(value = "role")
+    private String role;
+
+    /**
+     * The identified entities within the example utterance.
+     */
+    @JsonProperty(value = "children")
+    private List<EntityLabelObject> children;
 
     /**
      * Get the entityName value.
@@ -90,6 +103,46 @@ public class EntityLabelObject {
      */
     public EntityLabelObject withEndCharIndex(int endCharIndex) {
         this.endCharIndex = endCharIndex;
+        return this;
+    }
+
+    /**
+     * Get the role value.
+     *
+     * @return the role value
+     */
+    public String role() {
+        return this.role;
+    }
+
+    /**
+     * Set the role value.
+     *
+     * @param role the role value to set
+     * @return the EntityLabelObject object itself.
+     */
+    public EntityLabelObject withRole(String role) {
+        this.role = role;
+        return this;
+    }
+
+    /**
+     * Get the children value.
+     *
+     * @return the children value
+     */
+    public List<EntityLabelObject> children() {
+        return this.children;
+    }
+
+    /**
+     * Set the children value.
+     *
+     * @param children the children value to set
+     * @return the EntityLabelObject object itself.
+     */
+    public EntityLabelObject withChildren(List<EntityLabelObject> children) {
+        this.children = children;
         return this;
     }
 

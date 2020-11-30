@@ -37,7 +37,7 @@ public class EventContext {
     public EventContext(PartitionContext partitionContext, EventData eventData,
         CheckpointStore checkpointStore, LastEnqueuedEventProperties lastEnqueuedEventProperties) {
         this.partitionContext = Objects.requireNonNull(partitionContext, "'partitionContext' cannot be null.");
-        this.eventData = Objects.requireNonNull(eventData, "'eventData' cannot be null.");
+        this.eventData = eventData;
         this.checkpointStore = Objects.requireNonNull(checkpointStore, "'checkpointStore' cannot be null.");
         this.lastEnqueuedEventProperties = lastEnqueuedEventProperties;
     }
@@ -66,21 +66,23 @@ public class EventContext {
      * return {@code null}.
      *
      * @return The properties of the last enqueued event in this partition. If
-     * {@link EventProcessorClientBuilder#trackLastEnqueuedEventProperties(boolean)}is set to {@code false}, this
-     * method will return {@code null}.
+     * {@link EventProcessorClientBuilder#trackLastEnqueuedEventProperties(boolean)} is
+     * set to {@code false}, this method will return {@code null}.
      */
     public LastEnqueuedEventProperties getLastEnqueuedEventProperties() {
         return lastEnqueuedEventProperties;
     }
 
     /**
-     * Updates the checkpoint asynchronously for this partition using the event data in this
-     * {@link EventContext}. This will serve as the last known successfully processed event in this partition if the
-     * update is successful.
+     * Updates the checkpoint asynchronously for this partition using the event data in this {@link EventContext}. This
+     * will serve as the last known successfully processed event in this partition if the update is successful.
      *
      * @return a representation of deferred execution of this call.
      */
     public Mono<Void> updateCheckpointAsync() {
+        if (eventData == null) {
+            return Mono.empty();
+        }
         Checkpoint checkpoint = new Checkpoint()
             .setFullyQualifiedNamespace(partitionContext.getFullyQualifiedNamespace())
             .setEventHubName(partitionContext.getEventHubName())

@@ -14,7 +14,7 @@ import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.SystemTopicE
 import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
-import java.util.List;
+import com.microsoft.azure.Page;
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.EventSubscriptionFullUrl;
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.SystemTopicEventSubscription;
 
@@ -56,13 +56,13 @@ class SystemTopicEventSubscriptionsImpl extends WrapperImpl<SystemTopicEventSubs
     }
 
     @Override
-    public Observable<SystemTopicEventSubscription> listBySystemTopicAsync(String resourceGroupName, String systemTopicName) {
+    public Observable<SystemTopicEventSubscription> listBySystemTopicAsync(final String resourceGroupName, final String systemTopicName) {
         SystemTopicEventSubscriptionsInner client = this.inner();
         return client.listBySystemTopicAsync(resourceGroupName, systemTopicName)
-        .flatMap(new Func1<List<EventSubscriptionInner>, Observable<EventSubscriptionInner>>() {
+        .flatMapIterable(new Func1<Page<EventSubscriptionInner>, Iterable<EventSubscriptionInner>>() {
             @Override
-            public Observable<EventSubscriptionInner> call(List<EventSubscriptionInner> innerList) {
-                return Observable.from(innerList);
+            public Iterable<EventSubscriptionInner> call(Page<EventSubscriptionInner> page) {
+                return page.items();
             }
         })
         .map(new Func1<EventSubscriptionInner, SystemTopicEventSubscription>() {

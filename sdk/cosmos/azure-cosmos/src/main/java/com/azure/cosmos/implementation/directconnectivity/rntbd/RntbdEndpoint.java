@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.UserAgentContainer;
+import com.azure.cosmos.implementation.directconnectivity.IAddressResolver;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.micrometer.core.instrument.Tag;
@@ -13,26 +14,52 @@ import io.netty.handler.ssl.SslContext;
 
 import java.net.SocketAddress;
 import java.net.URI;
+import java.time.Instant;
 import java.util.stream.Stream;
 
 import static com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient.Options;
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public interface RntbdEndpoint extends AutoCloseable {
 
     // region Accessors
 
-    int channelsAcquired();
+    /**
+     * @return approximate number of acquired channels.
+     */
+    int channelsAcquiredMetric();
 
-    int channelsAvailable();
+    /**
+     * @return approximate number of available channels.
+     */
+    int channelsAvailableMetric();
 
     int concurrentRequests();
+
+    /**
+     * @return returns approximate number of connections in the connecting mode.
+     */
+    int gettingEstablishedConnectionsMetrics();
+
+    Instant getCreatedTime();
+
+    long lastRequestNanoTime();
+
+    long lastSuccessfulRequestNanoTime();
+
+    int channelsMetrics();
+
+    int executorTaskQueueMetrics();
 
     long id();
 
     boolean isClosed();
 
+    int maxChannels();
+
     SocketAddress remoteAddress();
+
+    URI serverKey();
 
     int requestQueueLength();
 
@@ -67,6 +94,8 @@ public interface RntbdEndpoint extends AutoCloseable {
         int evictions();
 
         RntbdEndpoint get(URI physicalAddress);
+
+        IAddressResolver getAddressResolver();
 
         Stream<RntbdEndpoint> list();
     }
@@ -105,8 +134,13 @@ public interface RntbdEndpoint extends AutoCloseable {
         }
 
         @JsonProperty
-        public int connectionTimeoutInMillis() {
-            final long value = this.options.connectionTimeout().toMillis();
+        public long connectionAcquisitionTimeoutInNanos() {
+            return this.options.connectionAcquisitionTimeout().toNanos();
+        }
+
+        @JsonProperty
+        public int connectTimeoutInMillis() {
+            final long value = this.options.connectTimeout().toMillis();
             assert value <= Integer.MAX_VALUE;
             return (int)value;
         }
@@ -117,8 +151,18 @@ public interface RntbdEndpoint extends AutoCloseable {
         }
 
         @JsonProperty
+        public long idleConnectionTimerResolutionInNanos() {
+            return this.options.idleChannelTimerResolution().toNanos();
+        }
+
+        @JsonProperty
         public long idleEndpointTimeoutInNanos() {
             return this.options.idleEndpointTimeout().toNanos();
+        }
+
+        @JsonProperty()
+        public boolean isConnectionEndpointRediscoveryEnabled() {
+            return this.options.isConnectionEndpointRediscoveryEnabled();
         }
 
         @JsonProperty
@@ -134,6 +178,11 @@ public interface RntbdEndpoint extends AutoCloseable {
         @JsonProperty
         public int maxRequestsPerChannel() {
             return this.options.maxRequestsPerChannel();
+        }
+
+        @JsonProperty
+        public int maxConcurrentRequestsPerEndpoint() {
+            return this.options.maxConcurrentRequestsPerEndpoint();
         }
 
         @JsonProperty

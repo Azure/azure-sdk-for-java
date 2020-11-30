@@ -22,6 +22,9 @@ public final class DirectoryServiceOptions extends ExpandableStringEnum<Director
     /** Static value AADDS for DirectoryServiceOptions. */
     public static final DirectoryServiceOptions AADDS = fromString("AADDS");
 
+    /** Static value AD for DirectoryServiceOptions. */
+    public static final DirectoryServiceOptions AD = fromString("AD");
+
     /**
      * Creates or finds a DirectoryServiceOptions from its string representation.
      * @param name a name to look for

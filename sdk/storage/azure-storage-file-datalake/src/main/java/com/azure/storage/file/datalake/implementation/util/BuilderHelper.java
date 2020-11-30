@@ -56,7 +56,8 @@ public final class BuilderHelper {
      * @param retryOptions Retry options to set in the retry policy.
      * @param logOptions Logging options to set in the logging policy.
      * @param httpClient HttpClient to use in the builder.
-     * @param additionalPolicies Additional {@link HttpPipelinePolicy policies} to set in the pipeline.
+     * @param perCallPolicies Additional {@link HttpPipelinePolicy policies} to set in the pipeline per call.
+     * @param perRetryPolicies Additional {@link HttpPipelinePolicy policies} to set in the pipeline per retry.
      * @param configuration Configuration store contain environment settings.
      * @param logger {@link ClientLogger} used to log any exception.
      * @return A new {@link HttpPipeline} from the passed values.
@@ -64,12 +65,18 @@ public final class BuilderHelper {
     public static HttpPipeline buildPipeline(StorageSharedKeyCredential storageSharedKeyCredential,
         TokenCredential tokenCredential, SasTokenCredential sasTokenCredential, String endpoint,
         RequestRetryOptions retryOptions, HttpLogOptions logOptions, HttpClient httpClient,
-        List<HttpPipelinePolicy> additionalPolicies, Configuration configuration, ClientLogger logger) {
+        List<HttpPipelinePolicy> perCallPolicies, List<HttpPipelinePolicy> perRetryPolicies,
+        Configuration configuration, ClientLogger logger) {
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        policies.add(getUserAgentPolicy(configuration));
+        policies.add(getUserAgentPolicy(configuration, logOptions));
         policies.add(new RequestIdPolicy());
+
+        policies.addAll(perCallPolicies);
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
+        policies.add(new RequestRetryPolicy(retryOptions));
+
         policies.add(new AddDatePolicy());
 
         HttpPipelinePolicy credentialPolicy;
@@ -77,8 +84,7 @@ public final class BuilderHelper {
             credentialPolicy =  new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
         } else if (tokenCredential != null) {
             // The endpoint scope for the BearerToken is the blob endpoint not dfs
-            credentialPolicy =  new BearerTokenAuthenticationPolicy(tokenCredential,
-                String.format("%s/.default", DataLakeImplUtils.endpointToDesiredEndpoint(endpoint, "blob", "dfs")));
+            credentialPolicy =  new BearerTokenAuthenticationPolicy(tokenCredential, Constants.STORAGE_SCOPE);
         } else if (sasTokenCredential != null) {
             credentialPolicy =  new SasTokenCredentialPolicy(sasTokenCredential);
         } else {
@@ -89,10 +95,7 @@ public final class BuilderHelper {
             policies.add(credentialPolicy);
         }
 
-        HttpPolicyProviders.addBeforeRetryPolicies(policies);
-        policies.add(new RequestRetryPolicy(retryOptions));
-
-        policies.addAll(additionalPolicies);
+        policies.addAll(perRetryPolicies);
 
         HttpPolicyProviders.addAfterRetryPolicies(policies);
 
@@ -139,14 +142,15 @@ public final class BuilderHelper {
      * Creates a {@link UserAgentPolicy} using the default blob module name and version.
      *
      * @param configuration Configuration store used to determine whether telemetry information should be included.
+     * @param logOptions Logging options to set in the logging policy.
      * @return The default {@link UserAgentPolicy} for the module.
      */
-    private static UserAgentPolicy getUserAgentPolicy(Configuration configuration) {
+    private static UserAgentPolicy getUserAgentPolicy(Configuration configuration, HttpLogOptions logOptions) {
         configuration = (configuration == null) ? Configuration.NONE : configuration;
 
         String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
-        return new UserAgentPolicy(getDefaultHttpLogOptions().getApplicationId(), clientName, clientVersion,
+        return new UserAgentPolicy(logOptions.getApplicationId(), clientName, clientVersion,
             configuration);
     }
 

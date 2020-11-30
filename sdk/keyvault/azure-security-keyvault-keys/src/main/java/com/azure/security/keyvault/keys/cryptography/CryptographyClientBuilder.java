@@ -5,22 +5,25 @@ package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.http.policy.HttpLoggingPolicy;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
-import com.azure.security.keyvault.keys.models.KeyVaultKey;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,13 +76,13 @@ public final class CryptographyClientBuilder {
     private static final String SDK_VERSION = "version";
     private TokenCredential credential;
     private HttpPipeline pipeline;
-    private KeyVaultKey keyVaultKey;
     private String keyId;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
-    final RetryPolicy retryPolicy;
+    private RetryPolicy retryPolicy;
     private Configuration configuration;
     private CryptographyServiceVersion version;
+    private ClientOptions clientOptions;
 
     /**
      * The constructor with defaults.
@@ -127,18 +130,14 @@ public final class CryptographyClientBuilder {
      * CryptographyClientBuilder#keyIdentifier(String)} have not been set.
      */
     public CryptographyAsyncClient buildAsyncClient() {
-        if (keyVaultKey == null && Strings.isNullOrEmpty(keyId)) {
+        if (Strings.isNullOrEmpty(keyId)) {
             throw logger.logExceptionAsError(new IllegalStateException(
-                "Json Web Key or jsonWebKey identifier are required to create cryptography client"));
+                "JSON Web Key identifier is required to create cryptography client"));
         }
         CryptographyServiceVersion serviceVersion = version != null ? version : CryptographyServiceVersion.getLatest();
 
         if (pipeline != null) {
-            if (keyVaultKey != null) {
-                return new CryptographyAsyncClient(keyVaultKey, pipeline, serviceVersion);
-            } else {
-                return new CryptographyAsyncClient(keyId, pipeline, serviceVersion);
-            }
+            return new CryptographyAsyncClient(keyId, pipeline, serviceVersion);
         }
 
         if (credential == null) {
@@ -148,11 +147,7 @@ public final class CryptographyClientBuilder {
 
         HttpPipeline pipeline = setupPipeline();
 
-        if (keyVaultKey != null) {
-            return new CryptographyAsyncClient(keyVaultKey, pipeline, serviceVersion);
-        } else {
-            return new CryptographyAsyncClient(keyId, pipeline, serviceVersion);
-        }
+        return new CryptographyAsyncClient(keyId, pipeline, serviceVersion);
     }
 
     HttpPipeline setupPipeline() {
@@ -164,12 +159,22 @@ public final class CryptographyClientBuilder {
 
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
-        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
-            buildConfiguration));
+        String applicationId =
+            clientOptions == null ? httpLogOptions.getApplicationId() : clientOptions.getApplicationId();
+
+        policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(retryPolicy);
         policies.add(new KeyVaultCredentialPolicy(credential));
         policies.addAll(this.policies);
+
+        if (clientOptions != null) {
+            List<HttpHeader> httpHeaderList = new ArrayList<>();
+            clientOptions.getHeaders().forEach(header ->
+                httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+            policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
+        }
+
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
 
@@ -302,16 +307,32 @@ public final class CryptographyClientBuilder {
     }
 
     /**
-     * Sets the jsonWebKey to be used for cryptography operations.
+     * Sets the {@link RetryPolicy} that is used when each request is sent.
      *
-     * <p>If {@code key} is provided then it takes precedence over key identifier and gets used for cryptography
-     * operations.</p>
+     * The default retry policy will be used in the pipeline, if not provided.
      *
-     * @param key The key to be used for cryptography operations.
-     * @return the updated builder object.
+     * @param retryPolicy user's retry policy applied to each request.
+     * @return The updated CryptographyClientBuilder object.
+     * @throws NullPointerException if the specified {@code retryPolicy} is null.
      */
-    CryptographyClientBuilder key(KeyVaultKey key) {
-        this.keyVaultKey = key;
+    public CryptographyClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+        Objects.requireNonNull(retryPolicy, "The retry policy cannot be bull");
+        this.retryPolicy = retryPolicy;
+        return this;
+    }
+
+    /**
+     * Sets the {@link ClientOptions} which enables various options to be set on the client. For example setting an
+     * {@code applicationId} using {@link ClientOptions#setApplicationId(String)} to configure
+     * the {@link UserAgentPolicy} for telemetry/monitoring purposes.
+     *
+     * <p>More About <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">Azure Core: Telemetry policy</a>
+     *
+     * @param clientOptions the {@link ClientOptions} to be set on the client.
+     * @return The updated CryptographyClientBuilder object.
+     */
+    public CryptographyClientBuilder clientOptions(ClientOptions clientOptions) {
+        this.clientOptions = clientOptions;
         return this;
     }
 }

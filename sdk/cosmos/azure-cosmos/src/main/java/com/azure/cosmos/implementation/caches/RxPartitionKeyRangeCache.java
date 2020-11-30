@@ -2,14 +2,18 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.caches;
 
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
+import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
+import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.apachecommons.collections.CollectionUtils;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.InMemoryCollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.DocumentCollection;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -25,6 +29,7 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -40,28 +45,30 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
     private final Logger logger = LoggerFactory.getLogger(RxPartitionKeyRangeCache.class);
 
     private final AsyncCache<String, CollectionRoutingMap> routingMapCache;
-    private final AsyncDocumentClient client;
+    private final RxDocumentClientImpl client;
     private final RxCollectionCache collectionCache;
+    private final DiagnosticsClientContext clientContext;
 
-    public RxPartitionKeyRangeCache(AsyncDocumentClient client, RxCollectionCache collectionCache) {
+    public RxPartitionKeyRangeCache(RxDocumentClientImpl client, RxCollectionCache collectionCache) {
         this.routingMapCache = new AsyncCache<>();
         this.client = client;
         this.collectionCache = collectionCache;
+        this.clientContext = client;
     }
 
     /* (non-Javadoc)
      * @see IPartitionKeyRangeCache#tryLookupAsync(java.lang.STRING, com.azure.cosmos.internal.routing.CollectionRoutingMap)
      */
     @Override
-    public Mono<Utils.ValueHolder<CollectionRoutingMap>> tryLookupAsync(String collectionRid, CollectionRoutingMap previousValue, Map<String, Object> properties) {
+    public Mono<Utils.ValueHolder<CollectionRoutingMap>> tryLookupAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionRid, CollectionRoutingMap previousValue, Map<String, Object> properties) {
         return routingMapCache.getAsync(
                 collectionRid,
                 previousValue,
-                () -> getRoutingMapForCollectionAsync(collectionRid, previousValue, properties))
+                () -> getRoutingMapForCollectionAsync(metaDataDiagnosticsContext, collectionRid, previousValue, properties))
                               .map(Utils.ValueHolder::new)
                               .onErrorResume(err -> {
                                   logger.debug("tryLookupAsync on collectionRid {} encountered failure", collectionRid, err);
-                                  CosmosClientException dce = Utils.as(err, CosmosClientException.class);
+                                  CosmosException dce = Utils.as(err, CosmosException.class);
                                   if (dce != null && Exceptions.isStatusCode(dce, HttpConstants.StatusCodes.NOTFOUND)) {
                                       return Mono.just(new Utils.ValueHolder<>(null));
                                   }
@@ -71,24 +78,30 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
     }
 
     @Override
-    public Mono<Utils.ValueHolder<CollectionRoutingMap>> tryLookupAsync(String collectionRid, CollectionRoutingMap previousValue, boolean forceRefreshCollectionRoutingMap,
-                                                                       Map<String, Object> properties) {
-        return tryLookupAsync(collectionRid, previousValue, properties);
+    public Mono<Utils.ValueHolder<CollectionRoutingMap>> tryLookupAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext,
+                                                                        String collectionRid,
+                                                                        CollectionRoutingMap previousValue,
+                                                                        boolean forceRefreshCollectionRoutingMap,
+                                                                        Map<String, Object> properties) {
+        return tryLookupAsync(metaDataDiagnosticsContext, collectionRid, previousValue, properties);
     }
 
     /* (non-Javadoc)
      * @see IPartitionKeyRangeCache#tryGetOverlappingRangesAsync(java.lang.STRING, com.azure.cosmos.internal.routing.RANGE, boolean)
      */
     @Override
-    public Mono<Utils.ValueHolder<List<PartitionKeyRange>>> tryGetOverlappingRangesAsync(String collectionRid, Range<String> range, boolean forceRefresh,
+    public Mono<Utils.ValueHolder<List<PartitionKeyRange>>> tryGetOverlappingRangesAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext,
+                                                                                         String collectionRid,
+                                                                                         Range<String> range,
+                                                                                         boolean forceRefresh,
                                                                                          Map<String, Object> properties) {
 
-        Mono<Utils.ValueHolder<CollectionRoutingMap>> routingMapObs = tryLookupAsync(collectionRid, null, properties);
+        Mono<Utils.ValueHolder<CollectionRoutingMap>> routingMapObs = tryLookupAsync(metaDataDiagnosticsContext, collectionRid, null, properties);
 
         return routingMapObs.flatMap(routingMapValueHolder -> {
             if (forceRefresh && routingMapValueHolder.v != null) {
                 logger.debug("tryGetOverlappingRangesAsync with forceRefresh on collectionRid {}", collectionRid);
-                return tryLookupAsync(collectionRid, routingMapValueHolder.v, properties);
+                return tryLookupAsync(metaDataDiagnosticsContext, collectionRid, routingMapValueHolder.v, properties);
             }
 
             return Mono.just(routingMapValueHolder);
@@ -108,14 +121,17 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
      * @see IPartitionKeyRangeCache#tryGetPartitionKeyRangeByIdAsync(java.lang.STRING, java.lang.STRING, boolean)
      */
     @Override
-    public Mono<Utils.ValueHolder<PartitionKeyRange>> tryGetPartitionKeyRangeByIdAsync(String collectionResourceId, String partitionKeyRangeId,
-                                                                                      boolean forceRefresh, Map<String, Object> properties) {
+    public Mono<Utils.ValueHolder<PartitionKeyRange>> tryGetPartitionKeyRangeByIdAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext,
+                                                                                       String collectionResourceId,
+                                                                                       String partitionKeyRangeId,
+                                                                                       boolean forceRefresh,
+                                                                                       Map<String, Object> properties) {
 
-        Mono<Utils.ValueHolder<CollectionRoutingMap>> routingMapObs = tryLookupAsync(collectionResourceId, null, properties);
+        Mono<Utils.ValueHolder<CollectionRoutingMap>> routingMapObs = tryLookupAsync(metaDataDiagnosticsContext, collectionResourceId, null, properties);
 
         return routingMapObs.flatMap(routingMapValueHolder -> {
             if (forceRefresh && routingMapValueHolder.v != null) {
-                return tryLookupAsync(collectionResourceId, routingMapValueHolder.v, properties);
+                return tryLookupAsync(metaDataDiagnosticsContext, collectionResourceId, routingMapValueHolder.v, properties);
             }
             return Mono.just(routingMapValueHolder);
 
@@ -133,15 +149,15 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
      * @see IPartitionKeyRangeCache#tryGetRangeByPartitionKeyRangeId(java.lang.STRING, java.lang.STRING)
      */
     @Override
-    public Mono<Utils.ValueHolder<PartitionKeyRange>> tryGetRangeByPartitionKeyRangeId(String collectionRid, String partitionKeyRangeId, Map<String, Object> properties) {
+    public Mono<Utils.ValueHolder<PartitionKeyRange>> tryGetRangeByPartitionKeyRangeId(MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionRid, String partitionKeyRangeId, Map<String, Object> properties) {
         Mono<Utils.ValueHolder<CollectionRoutingMap>> routingMapObs = routingMapCache.getAsync(
                 collectionRid,
                 null,
-                () -> getRoutingMapForCollectionAsync(collectionRid, null, properties)).map(Utils.ValueHolder::new);
+                () -> getRoutingMapForCollectionAsync(metaDataDiagnosticsContext, collectionRid, null, properties)).map(Utils.ValueHolder::new);
 
         return routingMapObs.map(routingMapValueHolder -> new Utils.ValueHolder<>(routingMapValueHolder.v.getRangeByPartitionKeyRangeId(partitionKeyRangeId)))
                 .onErrorResume(err -> {
-                    CosmosClientException dce = Utils.as(err, CosmosClientException.class);
+                    CosmosException dce = Utils.as(err, CosmosException.class);
                     logger.debug("tryGetRangeByPartitionKeyRangeId on collectionRid {} and partitionKeyRangeId {} encountered failure",
                             collectionRid, partitionKeyRangeId, err);
 
@@ -154,6 +170,7 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
     }
 
     private Mono<CollectionRoutingMap> getRoutingMapForCollectionAsync(
+        MetadataDiagnosticsContext metaDataDiagnosticsContext,
             String collectionRid,
             CollectionRoutingMap previousRoutingMap,
             Map<String, Object> properties) {
@@ -163,7 +180,7 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
 
         // here we stick to what main java sdk does, investigate later.
 
-        Mono<List<PartitionKeyRange>> rangesObs = getPartitionKeyRange(collectionRid, false, properties);
+        Mono<List<PartitionKeyRange>> rangesObs = getPartitionKeyRange(metaDataDiagnosticsContext, collectionRid , false, properties);
 
         return rangesObs.flatMap(ranges -> {
 
@@ -196,8 +213,8 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
         });
     }
 
-    private Mono<List<PartitionKeyRange>> getPartitionKeyRange(String collectionRid, boolean forceRefresh, Map<String, Object> properties) {
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+    private Mono<List<PartitionKeyRange>> getPartitionKeyRange(MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionRid, boolean forceRefresh, Map<String, Object> properties) {
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this.clientContext,
                 OperationType.ReadFeed,
                 collectionRid,
                 ResourceType.PartitionKeyRange,
@@ -205,18 +222,29 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
                 ); //this request doesn't actually go to server
 
         request.requestContext.resolvedCollectionRid = collectionRid;
-        Mono<DocumentCollection> collectionObs = collectionCache.resolveCollectionAsync(request)
+        Mono<DocumentCollection> collectionObs = collectionCache.resolveCollectionAsync(metaDataDiagnosticsContext, request)
                                                                 .map(collectionValueHolder -> collectionValueHolder.v);
 
         return collectionObs.flatMap(coll -> {
 
-            FeedOptions feedOptions = new FeedOptions();
+            CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
             if (properties != null) {
-                feedOptions.setProperties(properties);
+                ModelBridgeInternal.setQueryRequestOptionsProperties(cosmosQueryRequestOptions, properties);
             }
-            return client.readPartitionKeyRanges(coll.getSelfLink(), feedOptions)
+            Instant addressCallStartTime = Instant.now();
+            return client.readPartitionKeyRanges(coll.getSelfLink(), cosmosQueryRequestOptions)
                     // maxConcurrent = 1 to makes it in the right getOrder
-                    .flatMap(p -> Flux.fromIterable(p.getResults()), 1).collectList();
+                    .flatMap(p -> {
+                        if(metaDataDiagnosticsContext != null) {
+                            Instant addressCallEndTime = Instant.now();
+                            MetadataDiagnosticsContext.MetadataDiagnostics metaDataDiagnostic  = new MetadataDiagnosticsContext.MetadataDiagnostics(addressCallStartTime,
+                                addressCallEndTime,
+                                MetadataDiagnosticsContext.MetadataType.PARTITION_KEY_RANGE_LOOK_UP);
+                            metaDataDiagnosticsContext.addMetaDataDiagnostic(metaDataDiagnostic);
+                        }
+
+                        return Flux.fromIterable(p.getResults());
+                    }, 1).collectList();
         });
     }
 }

@@ -5,7 +5,7 @@ package com.azure.cosmos.models;
 
 /**
  * Represents the sorting order for a path in a composite index, for a
- * collection in the Azure Cosmos DB database service.
+ * container in the Azure Cosmos DB database service.
  */
 public enum CompositePathSortOrder {
     /**

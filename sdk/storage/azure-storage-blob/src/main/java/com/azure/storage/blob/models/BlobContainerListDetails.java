@@ -8,13 +8,13 @@ import com.azure.storage.blob.BlobServiceClient;
 
 /**
  * This type allows users to specify additional information the service should return with each container when listing
- * containers in an account (via a {@link BlobServiceClient} object). This type is immutable to ensure thread-safety of
- * requests, so changing the details for a different listing operation requires construction of a new object. Null may
+ * containers in an account (via a {@link BlobServiceClient} object). Null may
  * be passed if none of the options are desirable.
  */
 @Fluent
 public final class BlobContainerListDetails {
     private boolean retrieveMetadata;
+    private boolean retrieveDeleted;
 
     /**
      * Constructs an unpopulated {@link BlobContainerListDetails}.
@@ -43,8 +43,31 @@ public final class BlobContainerListDetails {
     }
 
     /**
-     * @return the listing flags
+     * Whether deleted containers should be returned.
+     *
+     * @return a flag indicating whether deleted containers should be returned
      */
+    public boolean getRetrieveDeleted() {
+        return this.retrieveDeleted;
+    }
+
+    /**
+     * Whether deleted containers should be returned.
+     *
+     * @param retrieveDeleted Flag indicating whether deleted containers should be returned.
+     * @return the updated ContainerListDetails object
+     */
+    public BlobContainerListDetails setRetrieveDeleted(boolean retrieveDeleted) {
+        this.retrieveDeleted = retrieveDeleted;
+        return this;
+    }
+
+    /**
+     * @return the listing flags
+     * @deprecated {@link BlobContainerListDetails} now contains multiple options.
+     * This will only convert result of {{@link #setRetrieveMetadata(boolean)}} for backwards compatibility.
+     */
+    @Deprecated
     public ListBlobContainersIncludeType toIncludeType() {
         if (this.retrieveMetadata) {
             return ListBlobContainersIncludeType.METADATA;

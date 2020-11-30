@@ -4,6 +4,10 @@
 package com.azure.storage.queue
 
 import com.azure.core.http.HttpClient
+import com.azure.core.http.HttpPipelineCallContext
+import com.azure.core.http.HttpPipelineNextPolicy
+import com.azure.core.http.HttpPipelinePosition
+import com.azure.core.http.HttpResponse
 import com.azure.core.http.ProxyOptions
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.core.http.policy.HttpLogDetailLevel
@@ -16,7 +20,10 @@ import com.azure.core.util.Configuration
 import com.azure.core.util.Context
 import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.common.StorageSharedKeyCredential
+import com.azure.storage.common.policy.RequestRetryOptions
+import com.azure.storage.common.policy.RetryPolicyType
 import com.azure.storage.queue.models.QueuesSegmentOptions
+import reactor.core.publisher.Mono
 import spock.lang.Specification
 
 import java.time.Duration
@@ -67,14 +74,14 @@ class APISpec extends Specification {
      * Clean up the test queues and messages for the account.
      */
     def cleanup() {
-
         interceptorManager.close()
         if (getTestMode() != TestMode.PLAYBACK) {
-            QueueServiceClient cleanupQueueServiceClient = new QueueServiceClientBuilder()
+            def cleanupQueueServiceClient = new QueueServiceClientBuilder()
+                .retryOptions(new RequestRetryOptions(RetryPolicyType.FIXED, 3, 60, 1000, 1000, null))
                 .connectionString(connectionString)
                 .buildClient()
             cleanupQueueServiceClient.listQueues(new QueuesSegmentOptions().setPrefix(methodName.toLowerCase()),
-                Duration.ofSeconds(30), Context.NONE).each {
+                null, Context.NONE).each {
                 queueItem -> cleanupQueueServiceClient.deleteQueue(queueItem.getName())
             }
         }
@@ -147,7 +154,7 @@ class APISpec extends Specification {
     }
 
     QueueServiceClientBuilder getServiceClientBuilder(StorageSharedKeyCredential credential, String endpoint,
-                                                      HttpPipelinePolicy... policies) {
+        HttpPipelinePolicy... policies) {
         QueueServiceClientBuilder builder = new QueueServiceClientBuilder()
             .endpoint(endpoint)
             .httpClient(getHttpClient())
@@ -223,4 +230,21 @@ class APISpec extends Specification {
         return testMode == TestMode.RECORD
     }
 
+    def getMessageUpdateDelay(long liveTestDurationInMillis) {
+        return (testMode == TestMode.PLAYBACK) ? Duration.ofMillis(10) : Duration.ofMillis(liveTestDurationInMillis)
+    }
+
+    def getPerCallVersionPolicy() {
+        return new HttpPipelinePolicy() {
+            @Override
+            Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+                context.getHttpRequest().setHeader("x-ms-version","2017-11-09")
+                return next.process()
+            }
+            @Override
+            HttpPipelinePosition getPipelinePosition() {
+                return HttpPipelinePosition.PER_CALL
+            }
+        }
+    }
 }

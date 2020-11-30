@@ -6,7 +6,6 @@ package com.azure.security.keyvault.keys.models;
 import com.azure.core.annotation.Fluent;
 
 import java.time.OffsetDateTime;
-import java.util.Arrays;
 import java.util.Map;
 
 /**
@@ -26,12 +25,16 @@ public class CreateRsaKeyOptions extends CreateKeyOptions {
     private boolean hardwareProtected;
 
     /**
+     * The public exponent for the key.
+     */
+    private int publicExponent;
+
+    /**
      * Creates a RsaKeyCreateOptions with {@code name} as name of the Rsa key.
      * @param name The name of the key.
      */
     public CreateRsaKeyOptions(String name) {
-        super.name = name;
-        this.keyType = KeyType.RSA;
+        super(name, KeyType.RSA);
     }
 
     /**
@@ -62,7 +65,7 @@ public class CreateRsaKeyOptions extends CreateKeyOptions {
      */
     @Override
     public CreateRsaKeyOptions setKeyOperations(KeyOperation... keyOperations) {
-        this.keyOperations = Arrays.asList(keyOperations);
+        super.setKeyOperations(keyOperations);
         return this;
     }
 
@@ -120,7 +123,8 @@ public class CreateRsaKeyOptions extends CreateKeyOptions {
      */
     public CreateRsaKeyOptions setHardwareProtected(Boolean hardwareProtected) {
         this.hardwareProtected = hardwareProtected;
-        this.keyType = hardwareProtected ? KeyType.RSA_HSM : KeyType.RSA;
+        KeyType keyType = hardwareProtected ? KeyType.RSA_HSM : KeyType.RSA;
+        setKeyType(keyType);
         return this;
     }
 
@@ -130,5 +134,25 @@ public class CreateRsaKeyOptions extends CreateKeyOptions {
      */
     public Boolean isHardwareProtected() {
         return this.hardwareProtected;
+    }
+
+    /**
+     * Get the public exponent for the key.
+     *
+     * @return The public exponent.
+     */
+    public int getPublicExponent() {
+        return publicExponent;
+    }
+
+    /**
+     * Set the public exponent for the key.
+     *
+     * @param publicExponent The public exponent to set.
+     * @return The updated {@link CreateRsaKeyOptions} object.
+     */
+    public CreateRsaKeyOptions setPublicExponent(int publicExponent) {
+        this.publicExponent = publicExponent;
+        return this;
     }
 }

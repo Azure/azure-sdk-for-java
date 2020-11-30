@@ -1,0 +1,67 @@
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title type="text">Rules</title>
+  <id>https://sb-java-conniey-3.servicebus.windows.net/topic-10/Subscriptions/subscription/rules?api-version=2017-04&amp;enrich=false&amp;$skip=0&amp;$top=100</id>
+  <updated>2020-08-28T14:59:16Z</updated>
+  <link rel="self"
+        href="https://sb-java-conniey-3.servicebus.windows.net/topic-10/Subscriptions/subscription/rules?api-version=2017-04&amp;enrich=false&amp;$skip=0&amp;$top=100"/>
+  <entry
+      xml:base="https://sb-java-conniey-3.servicebus.windows.net/topic-10/Subscriptions/subscription/rules?api-version=2017-04&amp;enrich=false&amp;$skip=0&amp;$top=100">
+    <id>https://sb-java-conniey-3.servicebus.windows.net/topic-10/Subscriptions/subscription/rules/$Default?api-version=2017-04</id>
+    <title type="text">$Default</title>
+    <published>2020-08-12T18:48:00Z</published>
+    <updated>2020-08-12T18:48:00Z</updated>
+    <link rel="self" href="rules/$Default?api-version=2017-04"/>
+    <content type="application/xml">
+      <RuleDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+        <Filter i:type="TrueFilter">
+          <SqlExpression>1=1</SqlExpression>
+          <CompatibilityLevel>20</CompatibilityLevel>
+        </Filter>
+        <Action i:type="EmptyRuleAction"/>
+        <CreatedAt>2020-08-12T18:48:00.1005312Z</CreatedAt>
+        <Name>$Default</Name>
+      </RuleDescription>
+    </content>
+  </entry>
+  <entry
+      xml:base="https://sb-java-conniey-3.servicebus.windows.net/topic-10/Subscriptions/subscription/rules?api-version=2017-04&amp;enrich=false&amp;$skip=0&amp;$top=100">
+    <id>https://sb-java-conniey-3.servicebus.windows.net/topic-10/Subscriptions/subscription/rules/correl?api-version=2017-04</id>
+    <title type="text">correl</title>
+    <published>2020-08-28T04:32:50Z</published>
+    <updated>2020-08-28T04:32:50Z</updated>
+    <link rel="self" href="rules/correl?api-version=2017-04"/>
+    <content type="application/xml">
+      <RuleDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+        <Filter i:type="CorrelationFilter">
+          <Label>matching-label</Label>
+          <Properties/>
+        </Filter>
+        <Action i:type="EmptyRuleAction"/>
+        <CreatedAt>2020-08-28T04:32:50.7697024Z</CreatedAt>
+        <Name>correl</Name>
+      </RuleDescription>
+    </content>
+  </entry>
+  <entry
+      xml:base="https://sb-java-conniey-3.servicebus.windows.net/topic-10/Subscriptions/subscription/rules?api-version=2017-04&amp;enrich=false&amp;$skip=0&amp;$top=100">
+    <id>https://sb-java-conniey-3.servicebus.windows.net/topic-10/Subscriptions/subscription/rules/foo?api-version=2017-04</id>
+    <title type="text">foo</title>
+    <published>2020-08-28T04:32:20Z</published>
+    <updated>2020-08-28T04:32:20Z</updated>
+    <link rel="self" href="rules/foo?api-version=2017-04"/>
+    <content type="application/xml">
+      <RuleDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+        <Filter i:type="SqlFilter">
+          <SqlExpression>type = "TestType"</SqlExpression>
+          <CompatibilityLevel>20</CompatibilityLevel>
+        </Filter>
+        <Action i:type="SqlRuleAction">
+          <SqlExpression>set FilterTag = 'true'</SqlExpression>
+          <CompatibilityLevel>20</CompatibilityLevel>
+        </Action>
+        <CreatedAt>2020-08-28T04:32:20.9387321Z</CreatedAt>
+        <Name>foo</Name>
+      </RuleDescription>
+    </content>
+  </entry>
+</feed>

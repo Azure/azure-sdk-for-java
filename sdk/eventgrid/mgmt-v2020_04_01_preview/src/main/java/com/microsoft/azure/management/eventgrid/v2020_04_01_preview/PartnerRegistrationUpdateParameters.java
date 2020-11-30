@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.eventgrid.v2020_04_01_preview;
 
+import java.util.Map;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -15,6 +16,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Properties of the Partner Registration update.
  */
 public class PartnerRegistrationUpdateParameters {
+    /**
+     * Tags of the partner registration resource.
+     */
+    @JsonProperty(value = "tags")
+    private Map<String, String> tags;
+
     /**
      * Name of the partner topic type.
      */
@@ -58,6 +65,26 @@ public class PartnerRegistrationUpdateParameters {
      */
     @JsonProperty(value = "authorizedAzureSubscriptionIds")
     private List<String> authorizedAzureSubscriptionIds;
+
+    /**
+     * Get tags of the partner registration resource.
+     *
+     * @return the tags value
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set tags of the partner registration resource.
+     *
+     * @param tags the tags value to set
+     * @return the PartnerRegistrationUpdateParameters object itself.
+     */
+    public PartnerRegistrationUpdateParameters withTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
+    }
 
     /**
      * Get name of the partner topic type.

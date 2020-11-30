@@ -6,36 +6,51 @@ package com.azure.storage.blob.specialized;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.implementation.util.ModelHelper;
+import com.azure.storage.blob.options.BlobBeginCopyOptions;
+import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobCopyInfo;
+import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobQueryAsyncResponse;
+import com.azure.storage.blob.options.BlobDownloadToFileOptions;
+import com.azure.storage.blob.options.BlobGetTagsOptions;
+import com.azure.storage.blob.options.BlobInputStreamOptions;
+import com.azure.storage.blob.options.BlobQueryOptions;
+import com.azure.storage.blob.models.BlobQueryResponse;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.DownloadRetryOptions;
-import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.options.BlobSetAccessTierOptions;
+import com.azure.storage.blob.options.BlobSetTagsOptions;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.FluxInputStream;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.net.URL;
@@ -82,6 +97,17 @@ public class BlobClientBase {
     }
 
     /**
+     * Creates a new {@link BlobClientBase} linked to the {@code version} of this blob resource.
+     *
+     * @param versionId the identifier for a specific version of this blob,
+     * pass {@code null} to interact with the latest blob version.
+     * @return a {@link BlobClientBase} used to interact with the specific version.
+     */
+    public BlobClientBase getVersionClient(String versionId) {
+        return new BlobClientBase(client.getVersionClient(versionId));
+    }
+
+    /**
      * Gets the URL of the blob represented by this client.
      *
      * @return the URL.
@@ -110,6 +136,19 @@ public class BlobClientBase {
      */
     public final String getContainerName() {
         return client.getContainerName();
+    }
+
+    /**
+     * Gets a client pointing to the parent container.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.getContainerClient}
+     *
+     * @return {@link BlobContainerClient}
+     */
+    public BlobContainerClient getContainerClient() {
+        return client.getContainerClientBuilder().buildClient();
     }
 
     /**
@@ -171,6 +210,15 @@ public class BlobClientBase {
     }
 
     /**
+     * Gets the versionId for a blob resource
+     *
+     * @return A string that represents the versionId of the snapshot blob
+     */
+    public String getVersionId() {
+        return client.getVersionId();
+    }
+
+    /**
      * Determines if a blob is a snapshot
      *
      * @return A boolean that indicates if a blob is a snapshot
@@ -187,7 +235,7 @@ public class BlobClientBase {
      * @throws BlobStorageException If a storage service error occurred.
      */
     public final BlobInputStream openInputStream() {
-        return openInputStream(new BlobRange(0), null);
+        return openInputStream(null, null);
     }
 
     /**
@@ -201,7 +249,33 @@ public class BlobClientBase {
      * @throws BlobStorageException If a storage service error occurred.
      */
     public final BlobInputStream openInputStream(BlobRange range, BlobRequestConditions requestConditions) {
-        return new BlobInputStream(client, range.getOffset(), range.getCount(), requestConditions);
+        return openInputStream(new BlobInputStreamOptions().setRange(range).setRequestConditions(requestConditions));
+    }
+
+    /**
+     * Opens a blob input stream to download the specified range of the blob.
+     *
+     * @param options {@link BlobInputStreamOptions}
+     * @return An <code>InputStream</code> object that represents the stream to use for reading from the blob.
+     * @throws BlobStorageException If a storage service error occurred.
+     */
+    public BlobInputStream openInputStream(BlobInputStreamOptions options) {
+        options = options == null ? new BlobInputStreamOptions() : options;
+
+        BlobProperties properties = getProperties();
+
+        BlobRange range = options.getRange() == null ? new BlobRange(0) : options.getRange();
+        int chunkSize = options.getBlockSize() == null ? 4 * Constants.MB : options.getBlockSize();
+
+        BlobRequestConditions requestConditions = options.getRequestConditions() == null
+            ? new BlobRequestConditions() : options.getRequestConditions();
+        // Target the user specified version by default. If not provided, target the latest version.
+        if (requestConditions.getIfMatch() == null) {
+            requestConditions.setIfMatch(properties.getETag());
+        }
+
+        return new BlobInputStream(client, range.getOffset(), range.getCount(), chunkSize,
+            requestConditions, properties);
     }
 
     /**
@@ -236,6 +310,11 @@ public class BlobClientBase {
 
     /**
      * Copies the data at the source URL to a blob.
+     * <p>
+     * This method triggers a long-running, asynchronous operations. The source may be another blob or an Azure File. If
+     * the source is in another account, the source must either be public or authenticated with a SAS token. If the
+     * source is in the same account, the Shared Key authorization on the destination will also be applied to the
+     * source. The source URL must be URL encoded.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -260,6 +339,11 @@ public class BlobClientBase {
 
     /**
      * Copies the data at the source URL to a blob.
+     * <p>
+     * This method triggers a long-running, asynchronous operations. The source may be another blob or an Azure File. If
+     * the source is in another account, the source must either be public or authenticated with a SAS token. If the
+     * source is in the same account, the Shared Key authorization on the destination will also be applied to the
+     * source. The source URL must be URL encoded.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -284,10 +368,35 @@ public class BlobClientBase {
     public SyncPoller<BlobCopyInfo, Void> beginCopy(String sourceUrl, Map<String, String> metadata, AccessTier tier,
             RehydratePriority priority, RequestConditions sourceModifiedRequestConditions,
             BlobRequestConditions destRequestConditions, Duration pollInterval) {
-
-        return client.beginCopy(sourceUrl, metadata, tier, priority, sourceModifiedRequestConditions,
-                destRequestConditions, pollInterval).getSyncPoller();
+        return this.beginCopy(new BlobBeginCopyOptions(sourceUrl).setMetadata(metadata).setTier(tier)
+            .setRehydratePriority(priority).setSourceRequestConditions(
+                ModelHelper.populateBlobSourceRequestConditions(sourceModifiedRequestConditions))
+            .setDestinationRequestConditions(destRequestConditions).setPollInterval(pollInterval));
     }
+
+    /**
+     * Copies the data at the source URL to a blob.
+     * <p>
+     * This method triggers a long-running, asynchronous operations. The source may be another blob or an Azure File. If
+     * the source is in another account, the source must either be public or authenticated with a SAS token. If the
+     * source is in the same account, the Shared Key authorization on the destination will also be applied to the
+     * source. The source URL must be URL encoded.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.beginCopy#BlobBeginCopyOptions}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a></p>
+     *
+     * @param options {@link BlobBeginCopyOptions}
+     * @return A {@link SyncPoller} to poll the progress of blob copy operation.
+     */
+    public SyncPoller<BlobCopyInfo, Void> beginCopy(BlobBeginCopyOptions options) {
+        return client.beginCopy(options).getSyncPoller();
+    }
+
+
 
     /**
      * Stops a pending copy that was previously started and leaves a destination blob with 0 length and metadata.
@@ -328,13 +437,16 @@ public class BlobClientBase {
 
     /**
      * Copies the data at the source URL to a blob and waits for the copy to complete before returning a response.
+     * <p>
+     * The source must be a block blob no larger than 256MB. The source must also be either public or have a sas token
+     * attached. The URL must be URL encoded.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.copyFromUrl#String}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob-from-url">Azure Docs</a></p>
      *
      * @param copySource The source URL to copy from.
      * @return The copy ID for the long running operation.
@@ -346,13 +458,16 @@ public class BlobClientBase {
 
     /**
      * Copies the data at the source URL to a blob and waits for the copy to complete before returning a response.
+     * <p>
+     * The source must be a block blob no larger than 256MB. The source must also be either public or have a sas token
+     * attached. The URL must be URL encoded.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.copyFromUrlWithResponse#String-Map-AccessTier-RequestConditions-BlobRequestConditions-Duration-Context}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob-from-url">Azure Docs</a></p>
      *
      * @param copySource The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
      * @param metadata Metadata to associate with the destination blob.
@@ -370,9 +485,34 @@ public class BlobClientBase {
     public Response<String> copyFromUrlWithResponse(String copySource, Map<String, String> metadata, AccessTier tier,
             RequestConditions sourceModifiedRequestConditions, BlobRequestConditions destRequestConditions,
             Duration timeout, Context context) {
+        return this.copyFromUrlWithResponse(new BlobCopyFromUrlOptions(copySource).setMetadata(metadata)
+            .setTier(tier).setSourceRequestConditions(sourceModifiedRequestConditions)
+            .setDestinationRequestConditions(destRequestConditions), timeout, context);
+    }
+
+    /**
+     * Copies the data at the source URL to a blob and waits for the copy to complete before returning a response.
+     * <p>
+     * The source must be a block blob no larger than 256MB. The source must also be either public or have a sas token
+     * attached. The URL must be URL encoded.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.copyFromUrlWithResponse#BlobCopyFromUrlOptions-Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob-from-url">Azure Docs</a></p>
+     *
+     * @param options {@link BlobCopyFromUrlOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return The copy ID for the long running operation.
+     * @throws IllegalArgumentException If {@code copySource} is a malformed {@link URL}.
+     */
+    public Response<String> copyFromUrlWithResponse(BlobCopyFromUrlOptions options, Duration timeout,
+        Context context) {
         Mono<Response<String>> response = client
-            .copyFromUrlWithResponse(copySource, metadata, tier, sourceModifiedRequestConditions, destRequestConditions,
-                context);
+            .copyFromUrlWithResponse(options, context);
 
         return blockWithOptionalTimeout(response, timeout);
     }
@@ -552,8 +692,37 @@ public class BlobClientBase {
         ParallelTransferOptions parallelTransferOptions, DownloadRetryOptions downloadRetryOptions,
         BlobRequestConditions requestConditions, boolean rangeGetContentMd5, Set<OpenOption> openOptions,
         Duration timeout, Context context) {
-        Mono<Response<BlobProperties>> download = client.downloadToFileWithResponse(filePath, range,
-            parallelTransferOptions, downloadRetryOptions, requestConditions, rangeGetContentMd5, openOptions, context);
+        final com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions =
+            ModelHelper.wrapBlobOptions(ModelHelper.populateAndApplyDefaults(parallelTransferOptions));
+        return downloadToFileWithResponse(new BlobDownloadToFileOptions(filePath).setRange(range)
+            .setParallelTransferOptions(finalParallelTransferOptions)
+            .setDownloadRetryOptions(downloadRetryOptions).setRequestConditions(requestConditions)
+            .setRetrieveContentRangeMd5(rangeGetContentMd5).setOpenOptions(openOptions), timeout, context);
+    }
+
+    /**
+     * Downloads the entire blob into a file specified by the path.
+     *
+     * <p>By default the file will be created and must not exist, if the file already exists a
+     * {@link FileAlreadyExistsException} will be thrown. To override this behavior, provide appropriate
+     * {@link OpenOption OpenOptions} </p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.downloadToFileWithResponse#BlobDownloadToFileOptions-Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * @param options {@link BlobDownloadToFileOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the blob properties and metadata.
+     * @throws UncheckedIOException If an I/O error occurs.
+     */
+    public Response<BlobProperties> downloadToFileWithResponse(BlobDownloadToFileOptions options, Duration timeout,
+        Context context) {
+        Mono<Response<BlobProperties>> download = client.downloadToFileWithResponse(options, context);
         return blockWithOptionalTimeout(download, timeout);
     }
 
@@ -719,6 +888,83 @@ public class BlobClientBase {
     }
 
     /**
+     * Returns the blob's tags.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.getTags}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-tags">Azure Docs</a></p>
+     *
+     * @return The blob's tags.
+     */
+    public Map<String, String> getTags() {
+        return this.getTagsWithResponse(new BlobGetTagsOptions(), null, Context.NONE).getValue();
+    }
+
+    /**
+     * Returns the blob's tags.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.getTagsWithResponse#BlobGetTagsOptions-Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-tags">Azure Docs</a></p>
+     *
+     * @param options {@link BlobGetTagsOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return The blob's tags.
+     */
+    public Response<Map<String, String>> getTagsWithResponse(BlobGetTagsOptions options, Duration timeout,
+        Context context) {
+        Mono<Response<Map<String, String>>> response = client.getTagsWithResponse(options, context);
+
+        return blockWithOptionalTimeout(response, timeout);
+    }
+
+    /**
+     * Sets user defined tags. The specified tags in this method will replace existing tags. If old values
+     * must be preserved, they must be downloaded and included in the call to this method.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setTags#Map}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-tags">Azure Docs</a></p>
+     *
+     * @param tags Tags to associate with the blob.
+     */
+    public void setTags(Map<String, String> tags) {
+        this.setTagsWithResponse(new BlobSetTagsOptions(tags), null, Context.NONE);
+    }
+
+    /**
+     * Sets user defined tags. The specified tags in this method will replace existing tags. If old values
+     * must be preserved, they must be downloaded and included in the call to this method.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setTagsWithResponse#BlobSetTagsOptions-Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-tags">Azure Docs</a></p>
+     *
+     * @param options {@link BlobSetTagsOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing status code and HTTP headers.
+     */
+    public Response<Void> setTagsWithResponse(BlobSetTagsOptions options, Duration timeout, Context context) {
+        Mono<Response<Void>> response = client.setTagsWithResponse(options, context);
+
+        return blockWithOptionalTimeout(response, timeout);
+    }
+
+    /**
      * Creates a read-only snapshot of the blob.
      *
      * <p><strong>Code Samples</strong></p>
@@ -728,8 +974,8 @@ public class BlobClientBase {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/snapshot-blob">Azure Docs</a></p>
      *
-     * @return A response containing a {@link BlobClient} which is used to interact with the created snapshot, use
-     * {@link BlobClient#getSnapshotId()} to get the identifier for the snapshot.
+     * @return A response containing a {@link BlobClientBase} which is used to interact with the created snapshot, use
+     * {@link BlobClientBase#getSnapshotId()} to get the identifier for the snapshot.
      */
     public BlobClientBase createSnapshot() {
         return createSnapshotWithResponse(null, null, null, Context.NONE).getValue();
@@ -750,8 +996,8 @@ public class BlobClientBase {
      * @param requestConditions {@link BlobRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response containing a {@link BlobClient} which is used to interact with the created snapshot, use
-     * {@link BlobClient#getSnapshotId()} to get the identifier for the snapshot.
+     * @return A response containing a {@link BlobClientBase} which is used to interact with the created snapshot, use
+     * {@link BlobClientBase#getSnapshotId()} to get the identifier for the snapshot.
      */
     public Response<BlobClientBase> createSnapshotWithResponse(Map<String, String> metadata,
         BlobRequestConditions requestConditions, Duration timeout, Context context) {
@@ -803,7 +1049,31 @@ public class BlobClientBase {
      */
     public Response<Void> setAccessTierWithResponse(AccessTier tier, RehydratePriority priority, String leaseId,
         Duration timeout, Context context) {
-        return blockWithOptionalTimeout(client.setTierWithResponse(tier, priority, leaseId, context), timeout);
+        return setAccessTierWithResponse(new BlobSetAccessTierOptions(tier).setPriority(priority).setLeaseId(leaseId),
+            timeout, context);
+    }
+
+    /**
+     * Sets the tier on a blob. The operation is allowed on a page blob in a premium storage account or a block blob in
+     * a blob storage or GPV2 account. A premium page blob's tier determines the allowed size, IOPS, and bandwidth of
+     * the blob. A block blob's tier determines the Hot/Cool/Archive storage type. This does not update the blob's
+     * etag.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setAccessTierWithResponse#BlobSetAccessTierOptions-Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-tier">Azure Docs</a></p>
+     *
+     * @param options {@link BlobSetAccessTierOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing status code and HTTP headers.
+     */
+    public Response<Void> setAccessTierWithResponse(BlobSetAccessTierOptions options,
+        Duration timeout, Context context) {
+        return blockWithOptionalTimeout(client.setTierWithResponse(options, context), timeout);
     }
 
     /**
@@ -910,5 +1180,102 @@ public class BlobClientBase {
      */
     public String generateSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues) {
         return this.client.generateSas(blobServiceSasSignatureValues);
+    }
+
+    /**
+     * Opens a blob input stream to query the blob.
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/query-blob-contents">Azure Docs</a></p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.openQueryInputStream#String}
+     *
+     * @param expression The query expression.
+     * @return An <code>InputStream</code> object that represents the stream to use for reading the query response.
+     */
+    public InputStream openQueryInputStream(String expression) {
+        return openQueryInputStreamWithResponse(new BlobQueryOptions(expression)).getValue();
+    }
+
+    /**
+     * Opens a blob input stream to query the blob.
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/query-blob-contents">Azure Docs</a></p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.openQueryInputStream#BlobQueryOptions}
+     *
+     * @param queryOptions {@link BlobQueryOptions The query options}.
+     * @return A response containing status code and HTTP headers including an <code>InputStream</code> object
+     * that represents the stream to use for reading the query response.
+     */
+    public Response<InputStream> openQueryInputStreamWithResponse(BlobQueryOptions queryOptions) {
+
+        // Data to subscribe to and read from.
+        BlobQueryAsyncResponse response = client.queryWithResponse(queryOptions).block();
+
+        // Create input stream from the data.
+        if (response == null) {
+            throw logger.logExceptionAsError(new IllegalStateException("Query response cannot be null"));
+        }
+        return new ResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            new FluxInputStream(response.getValue()), response.getDeserializedHeaders());
+    }
+
+    /**
+     * Queries an entire blob into an output stream.
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/query-blob-contents">Azure Docs</a></p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.query#OutputStream-String}
+     *
+     * @param stream A non-null {@link OutputStream} instance where the downloaded data will be written.
+     * @param expression The query expression.
+     * @throws UncheckedIOException If an I/O error occurs.
+     * @throws NullPointerException if {@code stream} is null.
+     */
+    public void query(OutputStream stream, String expression) {
+        queryWithResponse(new BlobQueryOptions(expression, stream), null, Context.NONE);
+    }
+
+    /**
+     * Queries an entire blob into an output stream.
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/query-blob-contents">Azure Docs</a></p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.queryWithResponse#BlobQueryOptions-Duration-Context}
+     *
+     * @param queryOptions {@link BlobQueryOptions The query options}.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing status code and HTTP headers.
+     * @throws UncheckedIOException If an I/O error occurs.
+     * @throws NullPointerException if {@code stream} is null.
+     */
+    public BlobQueryResponse queryWithResponse(BlobQueryOptions queryOptions, Duration timeout, Context context) {
+        StorageImplUtils.assertNotNull("options", queryOptions);
+        StorageImplUtils.assertNotNull("outputStream", queryOptions.getOutputStream());
+        Mono<BlobQueryResponse> download = client
+            .queryWithResponse(queryOptions, context)
+            .flatMap(response -> response.getValue().reduce(queryOptions.getOutputStream(), (outputStream, buffer) -> {
+                try {
+                    outputStream.write(FluxUtil.byteBufferToArray(buffer));
+                    return outputStream;
+                } catch (IOException ex) {
+                    throw logger.logExceptionAsError(Exceptions.propagate(new UncheckedIOException(ex)));
+                }
+            }).thenReturn(new BlobQueryResponse(response)));
+
+        return blockWithOptionalTimeout(download, timeout);
     }
 }

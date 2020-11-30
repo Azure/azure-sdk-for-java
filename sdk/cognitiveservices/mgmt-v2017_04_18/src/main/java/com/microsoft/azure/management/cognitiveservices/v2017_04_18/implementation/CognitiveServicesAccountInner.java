@@ -10,6 +10,7 @@ package com.microsoft.azure.management.cognitiveservices.v2017_04_18.implementat
 
 import com.microsoft.azure.management.cognitiveservices.v2017_04_18.CognitiveServicesAccountProperties;
 import com.microsoft.azure.management.cognitiveservices.v2017_04_18.Sku;
+import com.microsoft.azure.management.cognitiveservices.v2017_04_18.Identity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.azure.Resource;
 
@@ -41,6 +42,12 @@ public class CognitiveServicesAccountInner extends Resource {
      */
     @JsonProperty(value = "sku")
     private Sku sku;
+
+    /**
+     * The identity of Cognitive Services account.
+     */
+    @JsonProperty(value = "identity")
+    private Identity identity;
 
     /**
      * Get entity Tag.
@@ -108,6 +115,26 @@ public class CognitiveServicesAccountInner extends Resource {
      */
     public CognitiveServicesAccountInner withSku(Sku sku) {
         this.sku = sku;
+        return this;
+    }
+
+    /**
+     * Get the identity of Cognitive Services account.
+     *
+     * @return the identity value
+     */
+    public Identity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity of Cognitive Services account.
+     *
+     * @param identity the identity value to set
+     * @return the CognitiveServicesAccountInner object itself.
+     */
+    public CognitiveServicesAccountInner withIdentity(Identity identity) {
+        this.identity = identity;
         return this;
     }
 

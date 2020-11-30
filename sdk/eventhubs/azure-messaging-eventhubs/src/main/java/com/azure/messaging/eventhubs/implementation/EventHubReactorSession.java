@@ -57,13 +57,15 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
      * @param tokenManagerProvider Provides {@link TokenManager} that authorizes the client when performing
      *     operations on the message broker.
      * @param openTimeout Timeout to wait for the session operation to complete.
+     * @param retryPolicy to be used for this session.
+     * @param messageSerializer to be used.
      */
     EventHubReactorSession(Session session, SessionHandler sessionHandler, String sessionName,
                            ReactorProvider provider, ReactorHandlerProvider handlerProvider,
                            Mono<ClaimsBasedSecurityNode> cbsNodeSupplier, TokenManagerProvider tokenManagerProvider,
-                           Duration openTimeout, MessageSerializer messageSerializer) {
+                           Duration openTimeout, AmqpRetryPolicy retryPolicy, MessageSerializer messageSerializer) {
         super(session, sessionHandler, sessionName, provider, handlerProvider, cbsNodeSupplier, tokenManagerProvider,
-            messageSerializer, openTimeout);
+            messageSerializer, openTimeout, retryPolicy);
     }
 
     /**
@@ -80,7 +82,7 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
         Objects.requireNonNull(options, "'options' cannot be null.");
 
         final String eventPositionExpression = getExpression(eventPosition);
-        final Map<Symbol, UnknownDescribedType> filter = new HashMap<>();
+        final Map<Symbol, Object> filter = new HashMap<>();
         filter.put(AmqpConstants.STRING_FILTER, new UnknownDescribedType(AmqpConstants.STRING_FILTER,
             eventPositionExpression));
 

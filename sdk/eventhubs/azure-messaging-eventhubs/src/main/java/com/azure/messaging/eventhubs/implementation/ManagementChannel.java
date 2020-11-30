@@ -3,19 +3,28 @@
 
 package com.azure.messaging.eventhubs.implementation;
 
+import com.azure.core.amqp.AmqpEndpointState;
+import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.AmqpConstants;
+import com.azure.core.amqp.implementation.ExceptionUtil;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseChannel;
+import com.azure.core.amqp.implementation.RequestResponseUtils;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubProperties;
 import com.azure.messaging.eventhubs.PartitionProperties;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.Disposable;
+import reactor.core.Exceptions;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.ReplayProcessor;
 import reactor.core.scheduler.Scheduler;
 
 import java.util.HashMap;
@@ -49,12 +58,19 @@ public class ManagementChannel implements EventHubManagementNode {
     private static final String MANAGEMENT_EVENTHUB_ENTITY_TYPE = AmqpConstants.VENDOR + ":eventhub";
     private static final String MANAGEMENT_PARTITION_ENTITY_TYPE = AmqpConstants.VENDOR + ":partition";
 
+    private final ClientLogger logger = new ClientLogger(ManagementChannel.class);
     private final TokenCredential tokenProvider;
     private final Mono<RequestResponseChannel> channelMono;
     private final Scheduler scheduler;
     private final String eventHubName;
     private final MessageSerializer messageSerializer;
     private final TokenManagerProvider tokenManagerProvider;
+    private final ReplayProcessor<AmqpEndpointState> endpointStateProcessor = ReplayProcessor.cacheLast();
+    private final FluxSink<AmqpEndpointState> endpointStateSink =
+        endpointStateProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
+    private final Disposable subscription;
+
+    private volatile boolean isDisposed;
 
     /**
      * Creates an instance that is connected to the {@code eventHubName}'s management node.
@@ -66,8 +82,8 @@ public class ManagementChannel implements EventHubManagementNode {
      * @param messageSerializer Maps responses from the management channel.
      */
     ManagementChannel(Mono<RequestResponseChannel> responseChannelMono, String eventHubName, TokenCredential credential,
-                      TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer,
-                      Scheduler scheduler) {
+        TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer,
+        Scheduler scheduler) {
 
         this.tokenManagerProvider = Objects.requireNonNull(tokenManagerProvider,
             "'tokenManagerProvider' cannot be null.");
@@ -76,6 +92,33 @@ public class ManagementChannel implements EventHubManagementNode {
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.channelMono = Objects.requireNonNull(responseChannelMono, "'responseChannelMono' cannot be null.");
         this.scheduler = Objects.requireNonNull(scheduler, "'scheduler' cannot be null.");
+
+        //@formatter:off
+        this.subscription = responseChannelMono
+            .flatMapMany(e -> e.getEndpointStates().distinct())
+            .subscribe(e -> {
+                logger.info("Management endpoint state: {}", e);
+                endpointStateSink.next(e);
+            }, error -> {
+                    logger.error("Exception occurred:", error);
+                    endpointStateSink.error(error);
+                    close();
+                }, () -> {
+                    logger.info("Complete.");
+                    endpointStateSink.complete();
+                    close();
+                });
+        //@formatter:on
+    }
+
+    /**
+     * Gets the endpoint states for the management channel.
+     *
+     * @return The endpoint states for the management channel.
+     */
+    @Override
+    public Flux<AmqpEndpointState> getEndpointStates() {
+        return endpointStateProcessor;
     }
 
     /**
@@ -115,8 +158,19 @@ public class ManagementChannel implements EventHubManagementNode {
             final ApplicationProperties applicationProperties = new ApplicationProperties(properties);
             request.setApplicationProperties(applicationProperties);
 
-            return channelMono.flatMap(x -> x.sendWithAck(request))
-                .map(message -> messageSerializer.deserialize(message, responseType));
+            return channelMono.flatMap(channel -> channel.sendWithAck(request)
+                .map(message -> {
+                    if (RequestResponseUtils.isSuccessful(message)) {
+                        return messageSerializer.deserialize(message, responseType);
+                    }
+
+                    final AmqpResponseCode statusCode = RequestResponseUtils.getStatusCode(message);
+                    final String statusDescription = RequestResponseUtils.getStatusDescription(message);
+                    final Throwable error = ExceptionUtil.amqpResponseCodeToException(statusCode.getValue(),
+                        statusDescription, channel.getErrorContext());
+
+                    throw logger.logExceptionAsWarning(Exceptions.propagate(error));
+                }));
         });
     }
 
@@ -125,6 +179,13 @@ public class ManagementChannel implements EventHubManagementNode {
      */
     @Override
     public void close() {
+        if (isDisposed) {
+            return;
+        }
+
+        isDisposed = true;
+        subscription.dispose();
+
         if (channelMono instanceof Disposable) {
             ((Disposable) channelMono).dispose();
         }

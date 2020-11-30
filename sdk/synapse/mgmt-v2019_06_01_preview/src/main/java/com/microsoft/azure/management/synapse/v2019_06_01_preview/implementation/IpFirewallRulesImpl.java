@@ -13,8 +13,8 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.IpFirewallRules;
 import rx.Observable;
 import rx.functions.Func1;
-import com.microsoft.azure.Page;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.IpFirewallRuleInfo;
+import com.microsoft.azure.Page;
 import rx.Completable;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.ReplaceAllFirewallRulesOperationResponse;
 
@@ -41,6 +41,30 @@ class IpFirewallRulesImpl extends WrapperImpl<IpFirewallRulesInner> implements I
 
     private IpFirewallRuleInfoImpl wrapIpFirewallRuleInfoModel(IpFirewallRuleInfoInner inner) {
         return  new IpFirewallRuleInfoImpl(inner, manager());
+    }
+
+    private Observable<IpFirewallRuleInfoInner> getIpFirewallRuleInfoInnerUsingIpFirewallRulesInnerAsync(String id) {
+        String resourceGroupName = IdParsingUtils.getValueFromIdByName(id, "resourceGroups");
+        String workspaceName = IdParsingUtils.getValueFromIdByName(id, "workspaces");
+        String ruleName = IdParsingUtils.getValueFromIdByName(id, "firewallRules");
+        IpFirewallRulesInner client = this.inner();
+        return client.getAsync(resourceGroupName, workspaceName, ruleName);
+    }
+
+    @Override
+    public Observable<IpFirewallRuleInfo> getAsync(String resourceGroupName, String workspaceName, String ruleName) {
+        IpFirewallRulesInner client = this.inner();
+        return client.getAsync(resourceGroupName, workspaceName, ruleName)
+        .flatMap(new Func1<IpFirewallRuleInfoInner, Observable<IpFirewallRuleInfo>>() {
+            @Override
+            public Observable<IpFirewallRuleInfo> call(IpFirewallRuleInfoInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((IpFirewallRuleInfo)wrapIpFirewallRuleInfoModel(inner));
+                }
+            }
+       });
     }
 
     @Override

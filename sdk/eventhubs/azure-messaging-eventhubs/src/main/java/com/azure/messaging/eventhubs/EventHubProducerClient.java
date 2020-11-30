@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -25,7 +26,6 @@ import java.util.Objects;
  * <li>The sending of events needs to be highly available.</li>
  * <li>The event data should be evenly distributed among all available partitions.</li>
  * </ul>
- * </p>
  *
  * <p>
  * If no partition id is specified, the following rules are used for automatically selecting one:
@@ -35,7 +35,6 @@ import java.util.Objects;
  * <li>If a partition becomes unavailable, the Event Hubs service will automatically detect it and forward the
  * message to another available partition.</li>
  * </ol>
- * </p>
  *
  * <p><strong>Create a producer and publish events to any partition</strong></p>
  * {@codesnippet com.azure.messaging.eventhubs.eventhubproducerclient.createBatch}
@@ -101,6 +100,7 @@ public class EventHubProducerClient implements Closeable {
      *
      * @return A Flux of identifiers for the partitions of an Event Hub.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public IterableStream<String> getPartitionIds() {
         return new IterableStream<>(producer.getPartitionIds());
     }
@@ -123,6 +123,7 @@ public class EventHubProducerClient implements Closeable {
      *
      * @return A new {@link EventDataBatch} that can fit as many events as the transport allows.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public EventDataBatch createBatch() {
         return producer.createBatch().block(tryTimeout);
     }
@@ -136,6 +137,7 @@ public class EventHubProducerClient implements Closeable {
      *
      * @throws NullPointerException if {@code options} is null.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public EventDataBatch createBatch(CreateBatchOptions options) {
         return producer.createBatch(options).block(tryTimeout);
     }
@@ -152,6 +154,7 @@ public class EventHubProducerClient implements Closeable {
      *
      * @param event Event to send to the service.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     void send(EventData event) {
         producer.send(event).block();
     }
@@ -169,6 +172,7 @@ public class EventHubProducerClient implements Closeable {
      * @param event Event to send to the service.
      * @param options The set of options to consider when sending this event.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     void send(EventData event, SendOptions options) {
         producer.send(event, options).block();
     }
@@ -178,6 +182,8 @@ public class EventHubProducerClient implements Closeable {
      * maximum size of a single batch, an exception will be triggered and the send will fail. By default, the message
      * size is the max amount allowed on the link.
      *
+     * {@codesnippet com.azure.messaging.eventhubs.eventhubproducerclient.send#Iterable}
+     *
      * <p>
      * For more information regarding the maximum event size allowed, see
      * <a href="https://docs.microsoft.com/azure/event-hubs/event-hubs-quotas">Azure Event Hubs Quotas and
@@ -185,8 +191,10 @@ public class EventHubProducerClient implements Closeable {
      * </p>
      *
      * @param events Events to send to the service.
+     * @throws AmqpException if the size of {@code events} exceed the maximum size of a single batch.
      */
-    void send(Iterable<EventData> events) {
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void send(Iterable<EventData> events) {
         producer.send(events).block();
     }
 
@@ -194,6 +202,8 @@ public class EventHubProducerClient implements Closeable {
      * Sends a set of events to the associated Event Hub using a batched approach. If the size of events exceed the
      * maximum size of a single batch, an exception will be triggered and the send will fail. By default, the message
      * size is the max amount allowed on the link.
+     *
+     * {@codesnippet com.azure.messaging.eventhubs.eventhubproducerclient.send#Iterable-SendOptions}
      *
      * <p>
      * For more information regarding the maximum event size allowed, see
@@ -203,8 +213,10 @@ public class EventHubProducerClient implements Closeable {
      *
      * @param events Events to send to the service.
      * @param options The set of options to consider when sending this batch.
+     * @throws AmqpException if the size of {@code events} exceed the maximum size of a single batch.
      */
-    void send(Iterable<EventData> events, SendOptions options) {
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void send(Iterable<EventData> events, SendOptions options) {
         producer.send(events, options).block();
     }
 
@@ -216,6 +228,7 @@ public class EventHubProducerClient implements Closeable {
      * @see EventHubProducerClient#createBatch()
      * @see EventHubProducerClient#createBatch(CreateBatchOptions)
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void send(EventDataBatch batch) {
         producer.send(batch).block();
     }

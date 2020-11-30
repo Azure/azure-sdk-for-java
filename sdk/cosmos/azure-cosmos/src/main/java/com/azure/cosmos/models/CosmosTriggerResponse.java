@@ -1,46 +1,34 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.CosmosTrigger;
+import com.azure.cosmos.implementation.ResourceResponse;
+import com.azure.cosmos.implementation.Trigger;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 /**
- * The type Cosmos sync trigger response.
+ * The type Cosmos trigger response.
  */
 public class CosmosTriggerResponse extends CosmosResponse<CosmosTriggerProperties> {
 
-    private final CosmosTrigger syncTrigger;
-    private final CosmosAsyncTriggerResponse asyncResponse;
+    private final CosmosTriggerProperties cosmosTriggerProperties;
 
-    /**
-     * Instantiates a new Cosmos sync trigger response.
-     *
-     * @param asyncResponse the async response
-     * @param syncTrigger the sync trigger
-     */
-    CosmosTriggerResponse(CosmosAsyncTriggerResponse asyncResponse,
-                          CosmosTrigger syncTrigger) {
-        super(asyncResponse.resourceResponseWrapper, asyncResponse.getProperties());
-        this.asyncResponse = asyncResponse;
-        this.syncTrigger = syncTrigger;
+    CosmosTriggerResponse(ResourceResponse<Trigger> response) {
+        super(response);
+        String bodyAsString = response.getBodyAsString();
+        if (StringUtils.isEmpty(bodyAsString)) {
+            cosmosTriggerProperties = null;
+        } else {
+            cosmosTriggerProperties = new CosmosTriggerProperties(bodyAsString);
+        }
     }
 
     /**
-     * Gets cosmos trigger properties.
+     * Gets the cosmos trigger properties or null
      *
-     * @return the cosmos trigger properties
+     * @return {@link CosmosTriggerProperties}
      */
     public CosmosTriggerProperties getProperties() {
-        return asyncResponse.getProperties();
-    }
-
-    /**
-     * Gets cosmos sync trigger.
-     *
-     * @return the cosmos sync trigger
-     */
-    public CosmosTrigger getTrigger() {
-        return syncTrigger;
+        return cosmosTriggerProperties;
     }
 }

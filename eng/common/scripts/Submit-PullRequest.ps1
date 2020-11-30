@@ -15,94 +15,98 @@ The owner of the branch we want to create a pull request for.
 The branch which we want to create a pull request for.
 .PARAMETER AuthToken
 A personal access token
+.PARAMETER PRTitle
+The title of the pull request.
+.PARAMETER PRBody
+The body message for the pull request. 
+.PARAMETER PRLabels
+The labels added to the PRs. Multple labels seperated by comma, e.g "bug, service"
 #>
 [CmdletBinding(SupportsShouldProcess = $true)]
 param(
-    [Parameter(Mandatory = $true)]
-    $RepoOwner,
+  [Parameter(Mandatory = $true)]
+  [string]$RepoOwner,
 
-    [Parameter(Mandatory = $true)]
-    $RepoName,
+  [Parameter(Mandatory = $true)]
+  [string]$RepoName,
 
-    [Parameter(Mandatory = $true)]
-    $BaseBranch,
+  [Parameter(Mandatory = $true)]
+  [string]$BaseBranch,
 
-    [Parameter(Mandatory = $true)]
-    $PROwner,
+  [Parameter(Mandatory = $true)]
+  [string]$PROwner,
 
-    [Parameter(Mandatory = $true)]
-    $PRBranch,
+  [Parameter(Mandatory = $true)]
+  [string]$PRBranch,
 
-    [Parameter(Mandatory = $true)]
-    $AuthToken,
+  [Parameter(Mandatory = $true)]
+  [string]$AuthToken,
 
-    [Parameter(Mandatory = $true)]
-    $PRTitle,
-    $PRBody = $PRTitle
+  [Parameter(Mandatory = $true)]
+  [string]$PRTitle,
+
+  [Parameter(Mandatory = $false)]
+  [string]$PRBody = $PRTitle,
+
+  [string]$PRLabels,
+
+  [string]$UserReviewers,
+
+  [string]$TeamReviewers,
+
+  [string]$Assignees,
+
+  [boolean]$CloseAfterOpenForTesting=$false
 )
 
-$ErrorActionPreference = 'stop'
-Set-StrictMode -Version 1
-[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+. (Join-Path $PSScriptRoot common.ps1)
 
-$headers = @{
-    Authorization = "bearer $AuthToken"
+try {
+  $resp = Get-GitHubPullRequests -RepoOwner $RepoOwner -RepoName $RepoName `
+  -Head "${PROwner}:${PRBranch}" -Base $BaseBranch -AuthToken $AuthToken
+}
+catch { 
+  LogError "Get-GitHubPullRequests failed with exception:`n$_"
+  exit 1
 }
 
-$query = 'query ($repoOwner: String!, $repoName: String!, $baseRefName: String!) {
-    repository(owner: $repoOwner, name: $repoName) {
-      pullRequests(baseRefName: $baseRefName, states: OPEN, first: 100) {
-        totalCount
-        nodes {
-          number
-          headRef {
-            name
-            repository {
-              name
-              owner {
-                login
-              }
-            }
-          }
-        }
-      }
-    }
-  }'
-
-
-$data = @{
-    query     = $query
-    variables = @{
-        repoOwner   = $RepoOwner
-        repoName    = $RepoName
-        baseRefName = $BaseBranch
-    }
-}
-
-$resp = Invoke-RestMethod -Method Post -Headers $headers `
-                          https://api.github.com/graphql `
-                          -Body ($data | ConvertTo-Json)
 $resp | Write-Verbose
 
-$matchingPr = $resp.data.repository.pullRequests.nodes `
-    | ? { $_.headRef.name -eq $PRBranch -and $_.headRef.repository.owner.login -eq $PROwner } `
-    | select -First 1
-
-if ($matchingPr) {
-    Write-Host -f green "Pull request already exists https://github.com/$RepoOwner/$RepoName/pull/$($matchingPr.number)"
+if ($resp.Count -gt 0) {
+  LogDebug "Pull request already exists $($resp[0].html_url)"
+  # setting variable to reference the pull request by number
+  Write-Host "##vso[task.setvariable variable=Submitted.PullRequest.Number]$($resp[0].number)"
 }
 else {
-    $data = @{
-        title                 = $PRTitle
-        head                  = "${PROwner}:${PRBranch}"
-        base                  = $BaseBranch
-        body                  = $PRBody
-        maintainer_can_modify = $true
+  try {
+    $resp = New-GitHubPullRequest -RepoOwner $RepoOwner -RepoName $RepoName -Title $PRTitle `
+    -Head "${PROwner}:${PRBranch}" -Base $BaseBranch -Body $PRBody -Maintainer_Can_Modify $true `
+    -AuthToken $AuthToken
+
+    $resp | Write-Verbose
+    LogDebug "Pull request created https://github.com/$RepoOwner/$RepoName/pull/$($resp.number)"
+  
+    # setting variable to reference the pull request by number
+    Write-Host "##vso[task.setvariable variable=Submitted.PullRequest.Number]$($resp.number)"
+
+    if ($UserReviewers -or $TeamReviewers) {
+      Add-GitHubPullRequestReviewers -RepoOwner $RepoOwner -RepoName $RepoName -PrNumber $resp.number `
+      -Users $UserReviewers -Teams $TeamReviewers -AuthToken $AuthToken
     }
 
-    $resp = Invoke-RestMethod -Method POST -Headers $headers `
-                              https://api.github.com/repos/$RepoOwner/$RepoName/pulls `
-                              -Body ($data | ConvertTo-Json)
-    $resp | Write-Verbose
-    Write-Host -f green "Pull request created https://github.com/$RepoOwner/$RepoName/pull/$($resp.number)"
+    if ($CloseAfterOpenForTesting) {
+      $prState = "closed"
+      LogDebug "Updating https://github.com/$RepoOwner/$RepoName/pull/$($resp.number) state to closed because this was only testing."
+    }
+    else {
+      $prState = "open"
+    }
+
+    Update-GitHubIssue -RepoOwner $RepoOwner -RepoName $RepoName -IssueNumber $resp.number `
+    -State $prState -Labels $PRLabels -Assignees $Assignees -AuthToken $AuthToken
+  }
+  catch {
+    LogError "Call to GitHub API failed with exception:`n$_"
+    exit 1
+  }
 }

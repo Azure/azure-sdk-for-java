@@ -43,9 +43,6 @@ public final class DateTimeRfc1123 {
      * @return The underlying DateTime.
      */
     public OffsetDateTime getDateTime() {
-        if (this.dateTime == null) {
-            return null;
-        }
         return this.dateTime;
     }
 

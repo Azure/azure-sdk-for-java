@@ -28,6 +28,8 @@ class WebJobsIdentityTest {
     private static final String AZURE_WEBJOBS_TEST_MODE = "AZURE_WEBJOBS_TEST_MODE";
     private static final String AZURE_VAULT_URL = "AZURE_VAULT_URL";
     private static final Configuration CONFIGURATION = Configuration.getGlobalConfiguration().clone();
+    private static final String PROPERTY_IDENTITY_ENDPOINT = "IDENTITY_ENDPOINT";
+    private static final String PROPERTY_IDENTITY_HEADER = "IDENTITY_HEADER";
     private final ClientLogger logger = new ClientLogger(WebJobsIdentityTest.class);
 
     /**
@@ -60,12 +62,18 @@ class WebJobsIdentityTest {
     }
 
     private void testMSIEndpointWithSystemAssigned() {
-        assertConfigPresence(Configuration.PROPERTY_MSI_ENDPOINT,
-            "testMSIEndpointWithSystemAssigned - MSIEndpoint not configured in the environment.");
+        if (CoreUtils.isNullOrEmpty(CONFIGURATION.get(Configuration.PROPERTY_MSI_ENDPOINT))
+                && CoreUtils.isNullOrEmpty(CONFIGURATION.get(Configuration.PROPERTY_MSI_SECRET)))  {
+            throw logger.logExceptionAsError(
+                new IllegalStateException("testMSIEndpointWithUserAssigned - MSIEndpoint and Identity Point not"
+                                              + "configured in the environment. At least one should be configured"));
+        }
         assertConfigPresence(Configuration.PROPERTY_MSI_SECRET,
             "testMSIEndpointWithSystemAssigned - MSISecret not configured in the environment.");
         IdentityClient client = new IdentityClientBuilder().build();
         AccessToken accessToken = client.authenticateToManagedIdentityEndpoint(
+            CONFIGURATION.get(PROPERTY_IDENTITY_ENDPOINT),
+            CONFIGURATION.get(PROPERTY_IDENTITY_HEADER),
             CONFIGURATION.get(Configuration.PROPERTY_MSI_ENDPOINT),
             CONFIGURATION.get(Configuration.PROPERTY_MSI_SECRET),
             new TokenRequestContext().addScopes("https://management.azure.com/.default"))
@@ -115,8 +123,12 @@ class WebJobsIdentityTest {
     }
 
     private void testMSIEndpointWithUserAssigned() {
-        assertConfigPresence(Configuration.PROPERTY_MSI_ENDPOINT,
-            "testMSIEndpointWithUserAssigned - MSIEndpoint not configured in the environment.");
+        if (CoreUtils.isNullOrEmpty(CONFIGURATION.get(Configuration.PROPERTY_MSI_ENDPOINT))
+            && CoreUtils.isNullOrEmpty(CONFIGURATION.get(Configuration.PROPERTY_MSI_SECRET)))  {
+            throw logger.logExceptionAsError(
+                new IllegalStateException("testMSIEndpointWithUserAssigned - MSIEndpoint and Identity Point not"
+                    + "configured in the environment. Atleast one should be configuured"));
+        }
         assertConfigPresence(Configuration.PROPERTY_AZURE_CLIENT_ID,
             "testMSIEndpointWithUserAssigned - Client is not configured in the environment.");
         assertConfigPresence(AZURE_VAULT_URL,
@@ -127,6 +139,8 @@ class WebJobsIdentityTest {
                                     .build();
 
         AccessToken accessToken = client.authenticateToManagedIdentityEndpoint(
+            CONFIGURATION.get(PROPERTY_IDENTITY_ENDPOINT),
+            CONFIGURATION.get(PROPERTY_IDENTITY_HEADER),
             CONFIGURATION.get(Configuration.PROPERTY_MSI_ENDPOINT),
             CONFIGURATION.get(Configuration.PROPERTY_MSI_SECRET),
             new TokenRequestContext().addScopes("https://management.azure.com/.default"))
@@ -150,6 +164,12 @@ class WebJobsIdentityTest {
     }
 
     private void testMSIEndpointWithUserAssignedAccessKeyVault() {
+
+        if (CoreUtils.isNullOrEmpty(CONFIGURATION.get(Configuration.PROPERTY_MSI_ENDPOINT) )
+                                        && CoreUtils.isNullOrEmpty(CONFIGURATION.get("IDENTITY_ENDPOINT"))) {
+
+        }
+
         assertConfigPresence(Configuration.PROPERTY_MSI_ENDPOINT,
             "testMSIEndpointWithUserAssignedKeyVault - MSIEndpoint not configured in the environment.");
         assertConfigPresence(Configuration.PROPERTY_AZURE_CLIENT_ID,

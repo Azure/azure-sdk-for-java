@@ -12,7 +12,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Object model for adding a batch of sublists to an existing closedlist.
+ * Object model for adding a batch of sublists to an existing list entity.
  */
 public class ClosedListModelPatchObject {
     /**

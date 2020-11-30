@@ -3,7 +3,9 @@ omitted_paths:
   - profiles/*
   - loganalytics/data-plane/samples/*
   - sdk/*/azure-*/samples/*
+  - sdk/*/microsoft-opentelemetry-exporter-azuremonitor/*/samples/*
   - sdk/applicationinsights/microsoft-azure-applicationinsights-query/samples/*
+  - sdk/spring/azure-spring-boot-samples/*
   - sdk/loganalytics/microsoft-azure-loganalytics/samples/*
   - "*/resource-manager/*"
   - "sdk/*/mgmt-*/*"
@@ -13,7 +15,7 @@ omitted_paths:
 language: java
 root_check_enabled: True
 required_readme_sections:
-  - "Azure .+ client library for Java"
+  - "Azure .+ (client|plugin|shared) library for Java"
   - ^Getting started$
   - ^Key concepts$
   - ^Examples$
@@ -51,6 +53,7 @@ known_presence_issues:
   - ['sdk/core/azure-core-auth', '#2847']
   - ['sdk/core/azure-core-management', '#2847']
   - ['sdk/e2e', '#2847']
+  - ['sdk/eventgrid/azure-messaging-eventgrid', '#2847']
   - ['sdk/eventhubs/microsoft-azure-eventhubs-extensions', '#2847']
   - ['sdk/keyvault/microsoft-azure-keyvault', '#2847']
   - ['sdk/keyvault/microsoft-azure-keyvault-core', '#2847']
@@ -92,6 +95,7 @@ known_presence_issues:
   - ['sdk/cosmos/azure-cosmos-examples/CHANGELOG.md', '#2847']
   - ['sdk/cosmos/azure-cosmos-benchmark/CHANGELOG.md', '#2847']
   - ['sdk/cosmos/CHANGELOG.md', '#2847']
+  - ['sdk/eventgrid/azure-messaging-eventgrid/CHANGELOG.md', '#2847']
   - ['sdk/eventgrid/microsoft-azure-eventgrid/CHANGELOG.md', '#2847']
   - ['sdk/eventhubs/microsoft-azure-eventhubs/CHANGELOG.md', '#2847']
   - ['sdk/eventhubs/microsoft-azure-eventhubs-eph/CHANGELOG.md', '#2847']
@@ -110,44 +114,57 @@ known_presence_issues:
   - ['sdk/keyvault/microsoft-azure-keyvault-complete/CHANGELOG.md', '#2847']
 
 known_content_issues:
-  - ['cosmosdb/data-plane/benchmark/README.md', '#3113']
-  - ['cosmosdb/data-plane/changelog/README.md', '#3113']
-  - ['cosmosdb/data-plane/faq/README.md', '#3113']
-  - ['cosmosdb/data-plane/README.md', '#3113']
-  - ['eventhubs/data-plane/azure-eventhubs-eph/Readme.md', '#3113']
   - ['README.md', '#3113']
+  - ['sdk/anomalydetector/azure-ai-anomalydetector/swagger/README.md', '#3113']
   - ['sdk/applicationinsights/microsoft-azure-applicationinsights-query/README.md', '#3113']
   - ['sdk/authorization/microsoft-azure-authentication-msi-token-provider/README.md', '#3113']
   - ['sdk/batch/microsoft-azure-batch/README.md', '#3113']
   - ['sdk/boms/azure-sdk-bom/README.md', '#3113']
+  - ['sdk/boms/azure-sdk-template-bom/README.md', '#3113']
   - ['sdk/core/README.md', '#3113']
+  - ['sdk/core/azure-core-experimental/README.md', '#3113']
+  - ['sdk/cognitiveservices/ms-azure-cs-textanalytics/README.md', '#3113']
+  - ['sdk/communication/azure-communication-chat/swagger/README.md', '#3113']
+  - ['sdk/communication/azure-communication-sms/swagger/README.md', '#3113']
+  - ['sdk/communication/azure-communication-administration/swagger/README.md', '#3113']
   - ['sdk/cosmos/changelog/README.md', '#3113']
   - ['sdk/cosmos/faq/README.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-benchmark/README.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-examples/README.md', '#3113']
   - ['sdk/cosmos/azure-cosmos/README.md', '#3113']
+  - ['sdk/cosmos/azure-cosmos-encryption/README.md', '#3113']
   - ['sdk/e2e/README.md', '#3113']
+  - ['sdk/eventgrid/azure-messaging-eventgrid/swagger/README.md', '#3113']
   - ['sdk/eventgrid/microsoft-azure-eventgrid/README.md', '#3113']
   - ['sdk/eventhubs/microsoft-azure-eventhubs-eph/README.md', '#3113']
   - ['sdk/eventhubs/README.md', '#3113']
+  - ['sdk/formrecognizer/azure-ai-formrecognizer/swagger/README.md', '#3113']
+  - ['sdk/metricsadvisor/azure-ai-metricsadvisor/swagger/README.md', '#3113']
   - ['sdk/keyvault/README.md', '#3113']
+  - ['sdk/keyvault/azure-security-keyvault-administration/README.md', '#3113']
   - ['sdk/loganalytics/microsoft-azure-loganalytics/README.md', '#3113']
-  - ['sdk/search/azure-search/swagger/readme.md', '#3113']
-  - ['sdk/servicebus/README.md', '#3113']
+  - ['sdk/monitor/microsoft-opentelemetry-exporter-azuremonitor/swagger/README.md', '#3113' ]
+  - ['sdk/parents/azure-client-sdk-parent/README.md', '#3113']
+  - ['sdk/search/azure-search-documents/swagger/README.md', '#3113']
+  - ['sdk/search/azure-search-documents/src/test/README.md', '#3113']
+  - ['sdk/search/open-api/readme.md', '#3113']
+  - ['sdk/servicebus/azure-messaging-servicebus/swagger/README.md', '#3113']
+  - ['sdk/servicebus/microsoft-azure-servicebus/README.md', '#3113']
   - ['sdk/storage/azure-storage-blob/swagger/README.md', '#3113']
+  - ['sdk/storage/azure-storage-blob-nio/README.md', '#3113']
   - ['sdk/storage/azure-storage-common/README.md', '#3113']
   - ['sdk/storage/azure-storage-file/swagger/README.md', '#3113']
   - ['sdk/storage/azure-storage-file-datalake/swagger/README.md', '#3113']
+  - ['sdk/storage/azure-storage-file-share/swagger/README.md','has other required sections']
   - ['sdk/storage/azure-storage-queue/swagger/README.md', '#3113']
   - ['sdk/storage/microsoft-azure-storage-blob/README.md', '#3113']
   - ['sdk/storage/microsoft-azure-storage-blob/swagger/README.md', '#3113']
   - ['sdk/storage/azure-storage-blob-nio/README.md', '#3113']
+  - ['sdk/storage/azure-storage-internal-avro/README.md', '#3113']
   - ['sdk/storage/README.md', '#3113']
-  - ['sdk/textanalytics/azure-ai-textanalytics/swagger/README.md', '#3113']
+  - ['sdk/tables/azure-data-tables/swagger/README.md', '#3113']
   - ['sdk/template/azure-sdk-template/README.md','has other required sections']
-  - ['sdk/storage/azure-storage-file-share/swagger/README.md','has other required sections']
-  - ['sdk/search/azure-search/src/test/README.md', '#3113']
-  - ['sdk/search/open-api/readme.md', '#3113']
+  - ['sdk/textanalytics/azure-ai-textanalytics/swagger/README.md', '#3113']
 
 package_indexing_exclusion_list:
   - azure-loganalytics-sample

@@ -232,6 +232,7 @@ public class TestCommons {
         Assert.assertNotNull("Message not received", receivedMessage);
         Assert.assertEquals("Message Id did not match", messageId, receivedMessage.getMessageId());
         long deliveryCount = receivedMessage.getDeliveryCount();
+        Assert.assertEquals("Wrong delivery count for received message", 1, deliveryCount);
         receiver.abandon(receivedMessage.getLockToken());
         receivedMessage = receiver.receive();
         Assert.assertNotNull("Message not received", receivedMessage);
@@ -394,6 +395,24 @@ public class TestCommons {
         Assert.assertTrue("Scheduled messages not received", allReceivedMessages.removeIf(msg -> msg.getMessageId().equals(msgId1)));
         Assert.assertFalse("Cancelled scheduled messages also received", allReceivedMessages.removeIf(msg -> msg.getMessageId().equals(msgId2)));
     }
+    
+    public static void testLargeTimeToLiveOnMessage(IMessageSender sender, String sessionId, IMessageReceiver receiver) throws InterruptedException, ServiceBusException, ExecutionException {        
+        Message message = new Message("AMQP message");
+        if (sessionId != null) {
+            message.setSessionId(sessionId);
+        }
+        // Must be larger than 50 days to exceed the max duration supported ttl header
+        Duration timeToLive = Duration.ofDays(100);
+        message.setTimeToLive(timeToLive);
+        sender.send(message);
+
+        IMessage receivedMessage = receiver.receive();
+        Assert.assertNotNull("Message not received", receivedMessage);
+        Assert.assertEquals("TimeToLive value didn't match", timeToLive, receivedMessage.getTimeToLive());
+        receiver.complete(receivedMessage.getLockToken());
+        receivedMessage = receiver.receive(SHORT_WAIT_TIME);
+        Assert.assertNull("Message was not properly completed", receivedMessage);
+    }
 
     public static void testPeekMessage(IMessageSender sender, String sessionId, IMessageBrowser browser) throws InterruptedException, ServiceBusException {
         Message message = new Message("AMQP Scheduled message");
@@ -498,6 +517,7 @@ public class TestCommons {
         Assert.assertEquals("ReceiveBySequenceNumber didn't receive the right message.", sequenceNumber, receivedMessage.getSequenceNumber());
         Assert.assertEquals("ReceiveBySequenceNumber didn't receive the right message.", messageId, receivedMessage.getMessageId());
         long deliveryCount = receivedMessage.getDeliveryCount();
+        Assert.assertEquals("Wrong delivery count for received message", 2, deliveryCount);
         receiver.abandon(receivedMessage.getLockToken());
 
         // Try to receive by sequence number again

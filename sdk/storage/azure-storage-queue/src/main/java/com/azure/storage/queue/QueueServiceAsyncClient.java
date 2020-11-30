@@ -6,11 +6,11 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.http.rest.PagedResponseBase;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.AccountSasImplUtil;
@@ -37,6 +37,9 @@ import java.util.function.Function;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
+
 
 /**
  * This class provides a client that contains all the operations for interacting with a queue account in Azure Storage.
@@ -336,7 +339,9 @@ public final class QueueServiceAsyncClient {
     }
 
     Mono<Response<QueueServiceProperties>> getPropertiesWithResponse(Context context) {
-        return client.services().getPropertiesWithRestResponseAsync(context)
+        context = context == null ? Context.NONE : context;
+        return client.services().getPropertiesWithRestResponseAsync(
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
@@ -431,7 +436,9 @@ public final class QueueServiceAsyncClient {
     }
 
     Mono<Response<Void>> setPropertiesWithResponse(QueueServiceProperties properties, Context context) {
-        return client.services().setPropertiesWithRestResponseAsync(properties, context)
+        context = context == null ? Context.NONE : context;
+        return client.services().setPropertiesWithRestResponseAsync(properties,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -480,7 +487,9 @@ public final class QueueServiceAsyncClient {
     }
 
     Mono<Response<QueueServiceStatistics>> getStatisticsWithResponse(Context context) {
-        return client.services().getStatisticsWithRestResponseAsync(context)
+        context = context == null ? Context.NONE : context;
+        return client.services().getStatisticsWithRestResponseAsync(
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 

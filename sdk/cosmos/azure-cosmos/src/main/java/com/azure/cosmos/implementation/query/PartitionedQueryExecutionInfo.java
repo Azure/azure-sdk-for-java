@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.models.JsonSerializable;
+import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Constants;
 
 import java.util.List;
@@ -52,5 +52,15 @@ public final class PartitionedQueryExecutionInfo extends JsonSerializable {
         return this.queryRanges != null ? this.queryRanges
                 : (this.queryRanges = super.getList(
                         PartitionedQueryExecutionInfoInternal.QUERY_RANGES_PROPERTY, QUERY_RANGES_CLASS));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 }

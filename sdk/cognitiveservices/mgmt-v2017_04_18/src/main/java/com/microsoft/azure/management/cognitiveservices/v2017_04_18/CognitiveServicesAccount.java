@@ -30,6 +30,11 @@ public interface CognitiveServicesAccount extends HasInner<CognitiveServicesAcco
     String etag();
 
     /**
+     * @return the identity value.
+     */
+    Identity identity();
+
+    /**
      * @return the kind value.
      */
     String kind();
@@ -64,6 +69,18 @@ public interface CognitiveServicesAccount extends HasInner<CognitiveServicesAcco
          * The stage of the CognitiveServicesAccount definition allowing to specify the resource group.
          */
         interface WithGroup extends GroupableResourceCore.DefinitionStages.WithGroup<WithCreate> {
+        }
+
+        /**
+         * The stage of the cognitiveservicesaccount definition allowing to specify Identity.
+         */
+        interface WithIdentity {
+            /**
+             * Specifies identity.
+             * @param identity The identity of Cognitive Services account
+             * @return the next definition stage
+             */
+            WithCreate withIdentity(Identity identity);
         }
 
         /**
@@ -107,19 +124,31 @@ public interface CognitiveServicesAccount extends HasInner<CognitiveServicesAcco
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<CognitiveServicesAccount>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithKind, DefinitionStages.WithProperties, DefinitionStages.WithSku {
+        interface WithCreate extends Creatable<CognitiveServicesAccount>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithIdentity, DefinitionStages.WithKind, DefinitionStages.WithProperties, DefinitionStages.WithSku {
         }
     }
     /**
      * The template for a CognitiveServicesAccount update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<CognitiveServicesAccount>, Resource.UpdateWithTags<Update>, UpdateStages.WithKind, UpdateStages.WithProperties, UpdateStages.WithSku {
+    interface Update extends Appliable<CognitiveServicesAccount>, Resource.UpdateWithTags<Update>, UpdateStages.WithIdentity, UpdateStages.WithKind, UpdateStages.WithProperties, UpdateStages.WithSku {
     }
 
     /**
      * Grouping of CognitiveServicesAccount update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the cognitiveservicesaccount update allowing to specify Identity.
+         */
+        interface WithIdentity {
+            /**
+             * Specifies identity.
+             * @param identity The identity of Cognitive Services account
+             * @return the next update stage
+             */
+            Update withIdentity(Identity identity);
+        }
+
         /**
          * The stage of the cognitiveservicesaccount update allowing to specify Kind.
          */

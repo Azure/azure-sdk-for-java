@@ -12,7 +12,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Object model for creating a closed list.
+ * Object model for creating a list entity.
  */
 public class ClosedListModelCreateObject {
     /**
@@ -22,7 +22,7 @@ public class ClosedListModelCreateObject {
     private List<WordListObject> subLists;
 
     /**
-     * Name of the closed list feature.
+     * Name of the list entity.
      */
     @JsonProperty(value = "name")
     private String name;

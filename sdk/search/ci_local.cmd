@@ -2,7 +2,7 @@
 @REM ************************ DELETE THIS FILE BEFORE RETURNING TO MAIN REPO ************************
 @REM ************************************************************************************************
 
-SET SCOPE_DOWN=--projects com.azure:azure-search,com.azure:azure-client-sdk-parent --also-make
+SET SCOPE_DOWN=--projects com.azure:azure-search-documents,com.azure:azure-client-sdk-parent --also-make
 SET DefaultOptions=--fail-at-end --settings eng/settings.xml
 
 @echo ===========================================================================================================================

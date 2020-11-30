@@ -9,27 +9,40 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
+import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
+import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
+import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
+
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 import java.util.stream.Stream;
+
 import org.junit.jupiter.api.Test;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import org.junit.jupiter.params.provider.Arguments;
@@ -77,14 +90,15 @@ public abstract class KeyClientTestBase extends TestBase {
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
         policies.add(new UserAgentPolicy(SDK_NAME, SDK_VERSION,  Configuration.getGlobalConfiguration().clone(), serviceVersion));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
-        policies.add(new RetryPolicy());
+        RetryStrategy strategy = new ExponentialBackoff(5, Duration.ofSeconds(2), Duration.ofSeconds(16));
+        policies.add(new RetryPolicy(strategy));
         if (credential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(credential, KeyAsyncClient.KEY_VAULT_SCOPE));
         }
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
 
-        if (!interceptorManager.isPlaybackMode()) {
+        if (getTestMode() == TestMode.RECORD) {
             policies.add(interceptorManager.getRecordPolicy());
         }
 
@@ -110,6 +124,22 @@ public abstract class KeyClientTestBase extends TestBase {
             .setTags(tags);
 
         testRunner.accept(keyOptions);
+    }
+
+    @Test
+    public abstract void createRsaKey(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
+
+    void createRsaKeyRunner(Consumer<CreateRsaKeyOptions> testRunner) {
+        final Map<String, String> tags = new HashMap<>();
+
+        tags.put("foo", "baz");
+
+        final CreateRsaKeyOptions createRsaKeyOptions = new CreateRsaKeyOptions(generateResourceId(KEY_NAME))
+            .setExpiresOn(OffsetDateTime.of(2050, 1, 30, 0, 0, 0, 0, ZoneOffset.UTC))
+            .setNotBefore(OffsetDateTime.of(2000, 1, 30, 12, 59, 59, 0, ZoneOffset.UTC))
+            .setTags(tags);
+
+        testRunner.accept(createRsaKeyOptions);
     }
 
     @Test
@@ -293,6 +323,33 @@ public abstract class KeyClientTestBase extends TestBase {
                     .setExpiresOn(OffsetDateTime.of(2090, 5, 25, 0, 0, 0, 0, ZoneOffset.UTC)));
         }
         testRunner.accept(keys);
+    }
+
+    @Test
+    public abstract void createRsaKeyWithPublicExponent(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
+
+    void createRsaKeyWithPublicExponentRunner(Consumer<CreateRsaKeyOptions> testRunner) {
+        final Map<String, String> tags = new HashMap<>();
+
+        tags.put("foo", "baz");
+
+        final CreateRsaKeyOptions keyOptions = new CreateRsaKeyOptions(generateResourceId("testRsaKey"))
+            .setExpiresOn(OffsetDateTime.of(2050, 1, 30, 0, 0, 0, 0, ZoneOffset.UTC))
+            .setNotBefore(OffsetDateTime.of(2000, 1, 30, 12, 59, 59, 0, ZoneOffset.UTC))
+            .setTags(tags)
+            .setPublicExponent(3);
+
+        testRunner.accept(keyOptions);
+    }
+
+    @Test
+    public abstract void exportKey(HttpClient httpClient, KeyServiceVersion keyServiceVersion);
+
+    void exportKeyRunner(Consumer<CreateKeyOptions> testRunner) {
+        CreateKeyOptions createKeyOptions = new CreateKeyOptions(generateResourceId(KEY_NAME), KeyType.RSA)
+            .setExportable(true);
+
+        testRunner.accept(createKeyOptions);
     }
 
     String generateResourceId(String suffix) {

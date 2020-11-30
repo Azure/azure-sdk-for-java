@@ -8,8 +8,8 @@
 
 package com.microsoft.azure.management.storage.v2019_06_01.implementation;
 
-import com.microsoft.azure.management.storage.v2019_06_01.PublicAccess;
 import org.joda.time.DateTime;
+import com.microsoft.azure.management.storage.v2019_06_01.PublicAccess;
 import com.microsoft.azure.management.storage.v2019_06_01.LeaseStatus;
 import com.microsoft.azure.management.storage.v2019_06_01.LeaseState;
 import com.microsoft.azure.management.storage.v2019_06_01.LeaseDuration;
@@ -26,6 +26,42 @@ import com.microsoft.azure.management.storage.v2019_06_01.AzureEntityResource;
  */
 @JsonFlatten
 public class BlobContainerInner extends AzureEntityResource {
+    /**
+     * The version of the deleted blob container.
+     */
+    @JsonProperty(value = "properties.version", access = JsonProperty.Access.WRITE_ONLY)
+    private String version;
+
+    /**
+     * Indicates whether the blob container was deleted.
+     */
+    @JsonProperty(value = "properties.deleted", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean deleted;
+
+    /**
+     * Blob container deletion time.
+     */
+    @JsonProperty(value = "properties.deletedTime", access = JsonProperty.Access.WRITE_ONLY)
+    private DateTime deletedTime;
+
+    /**
+     * Remaining retention days for soft deleted blob container.
+     */
+    @JsonProperty(value = "properties.remainingRetentionDays", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer remainingRetentionDays;
+
+    /**
+     * Default the container to use specified encryption scope for all writes.
+     */
+    @JsonProperty(value = "properties.defaultEncryptionScope")
+    private String defaultEncryptionScope;
+
+    /**
+     * Block override of encryption scope from the container default.
+     */
+    @JsonProperty(value = "properties.denyEncryptionScopeOverride")
+    private Boolean denyEncryptionScopeOverride;
+
     /**
      * Specifies whether data in the container may be accessed publicly and the
      * level of access. Possible values include: 'Container', 'Blob', 'None'.
@@ -97,6 +133,82 @@ public class BlobContainerInner extends AzureEntityResource {
      */
     @JsonProperty(value = "properties.hasImmutabilityPolicy", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean hasImmutabilityPolicy;
+
+    /**
+     * Get the version of the deleted blob container.
+     *
+     * @return the version value
+     */
+    public String version() {
+        return this.version;
+    }
+
+    /**
+     * Get indicates whether the blob container was deleted.
+     *
+     * @return the deleted value
+     */
+    public Boolean deleted() {
+        return this.deleted;
+    }
+
+    /**
+     * Get blob container deletion time.
+     *
+     * @return the deletedTime value
+     */
+    public DateTime deletedTime() {
+        return this.deletedTime;
+    }
+
+    /**
+     * Get remaining retention days for soft deleted blob container.
+     *
+     * @return the remainingRetentionDays value
+     */
+    public Integer remainingRetentionDays() {
+        return this.remainingRetentionDays;
+    }
+
+    /**
+     * Get default the container to use specified encryption scope for all writes.
+     *
+     * @return the defaultEncryptionScope value
+     */
+    public String defaultEncryptionScope() {
+        return this.defaultEncryptionScope;
+    }
+
+    /**
+     * Set default the container to use specified encryption scope for all writes.
+     *
+     * @param defaultEncryptionScope the defaultEncryptionScope value to set
+     * @return the BlobContainerInner object itself.
+     */
+    public BlobContainerInner withDefaultEncryptionScope(String defaultEncryptionScope) {
+        this.defaultEncryptionScope = defaultEncryptionScope;
+        return this;
+    }
+
+    /**
+     * Get block override of encryption scope from the container default.
+     *
+     * @return the denyEncryptionScopeOverride value
+     */
+    public Boolean denyEncryptionScopeOverride() {
+        return this.denyEncryptionScopeOverride;
+    }
+
+    /**
+     * Set block override of encryption scope from the container default.
+     *
+     * @param denyEncryptionScopeOverride the denyEncryptionScopeOverride value to set
+     * @return the BlobContainerInner object itself.
+     */
+    public BlobContainerInner withDenyEncryptionScopeOverride(Boolean denyEncryptionScopeOverride) {
+        this.denyEncryptionScopeOverride = denyEncryptionScopeOverride;
+        return this;
+    }
 
     /**
      * Get specifies whether data in the container may be accessed publicly and the level of access. Possible values include: 'Container', 'Blob', 'None'.

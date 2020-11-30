@@ -3,22 +3,16 @@
 
 package com.microsoft.azure.batch;
 
+import com.microsoft.azure.batch.protocol.models.*;
+import com.microsoft.azure.credentials.ApplicationTokenCredentials;
+import com.microsoft.azure.AzureEnvironment;
+import com.microsoft.azure.credentials.AzureTokenCredentials;
+import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.AzureResponseBuilder;
 import com.microsoft.azure.batch.auth.BatchApplicationTokenCredentials;
 import com.microsoft.azure.batch.auth.BatchCredentials;
 import com.microsoft.azure.batch.auth.BatchSharedKeyCredentials;
-import com.microsoft.azure.batch.protocol.models.CloudPool;
-import com.microsoft.azure.batch.protocol.models.CloudServiceConfiguration;
-import com.microsoft.azure.batch.protocol.models.PoolAddParameter;
-import com.microsoft.azure.batch.protocol.models.UserAccount;
-import com.microsoft.azure.batch.protocol.models.ElevationLevel;
-import com.microsoft.azure.batch.protocol.models.AllocationState;
-import com.microsoft.azure.batch.protocol.models.VirtualMachineConfiguration;
-import com.microsoft.azure.batch.protocol.models.ImageReference;
-import com.microsoft.azure.batch.protocol.models.CloudTask;
-import com.microsoft.azure.batch.protocol.models.LinuxUserConfiguration;
-import com.microsoft.azure.batch.protocol.models.TaskState;
-import com.microsoft.azure.batch.protocol.models.BatchErrorException;
+import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.resources.core.InterceptorManager;
 import com.microsoft.azure.management.resources.core.TestBase;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceManagerThrottlingInterceptor;
@@ -237,7 +231,7 @@ public class BatchIntegrationTestBase {
     @Before
     public void beforeMethod() throws Exception {
         printThreadInfo(String.format("%s: %s", "beforeTest", testName.getMethodName()));
-        createClientWithInterceptor(AuthMode.SharedKey);
+        createClientWithInterceptor(AuthMode.AAD);
     }
 
 
@@ -268,67 +262,122 @@ public class BatchIntegrationTestBase {
     }
 
 
-    static CloudPool createIfNotExistPaaSPool(String poolId) throws Exception {
-        // Create a pool with 3 Small VMs
-        String poolVmSize = "Small";
-        int poolVmCount = 3;
-        String poolOsFamily = "4";
-        String poolOsVersion = "*";
-
-        // 10 minutes
-        long poolSteadyTimeoutInSeconds = 10 * 60 * 1000;
-
-        // Check if pool exists
-        if (!batchClient.poolOperations().existsPool(poolId)) {
-            // Use PaaS VM with Windows
-            CloudServiceConfiguration configuration = new CloudServiceConfiguration();
-            configuration.withOsFamily(poolOsFamily).withOsVersion(poolOsVersion);
-
-            List<UserAccount> userList = new ArrayList<>();
-            userList.add(new UserAccount().withName("test-user").withPassword("kt#_gahr!@aGERDXA")
-                    .withElevationLevel(ElevationLevel.ADMIN));
-            PoolAddParameter addParameter = new PoolAddParameter().withId(poolId)
-                    .withTargetDedicatedNodes(poolVmCount).withVmSize(poolVmSize)
-                    .withCloudServiceConfiguration(configuration).withUserAccounts(userList);
-            batchClient.poolOperations().createPool(addParameter);
-        } else {
-            logger.log(createLogRecord(Level.INFO, String.format("The %s already exists.", poolId)));
-        }
-
-        long startTime = System.currentTimeMillis();
-        long elapsedTime = 0L;
-        boolean steady = false;
-        CloudPool pool;
-
-        // Wait for the VM to be allocated
-        while (elapsedTime < poolSteadyTimeoutInSeconds) {
-            pool = batchClient.poolOperations().getPool(poolId);
-            if (pool.allocationState() == AllocationState.STEADY) {
-                steady = true;
-                break;
-            }
-            System.out.println("wait 30 seconds for pool steady...");
-            Thread.sleep(30 * 1000);
-            elapsedTime = (new Date()).getTime() - startTime;
-        }
-
-        Assert.assertTrue("The pool did not reach a steady state in the allotted time", steady);
-
-        return batchClient.poolOperations().getPool(poolId);
-    }
+//    static CloudPool createIfNotExistPaaSPool(String poolId) throws Exception {
+//        // Create a pool with 3 Small VMs
+//        String poolVmSize = "Small";
+//        int poolVmCount = 3;
+//        String poolOsFamily = "4";
+//        String poolOsVersion = "*";
+//
+//        // 10 minutes
+//        long poolSteadyTimeoutInSeconds = 10 * 60 * 1000;
+//
+//        // Check if pool exists
+//        if (!batchClient.poolOperations().existsPool(poolId)) {
+//            // Need VNet to allow security to inject NSGs
+//            AzureTokenCredentials token = new ApplicationTokenCredentials(
+//                System.getenv("CLIENT_ID"),
+//                System.getenv("TENANT_ID"),
+//                System.getenv("APPLICATION_SECRET"),
+//                AzureEnvironment.AZURE);
+//            Azure azure = Azure.authenticate(token).withSubscription(System.getenv("AZURE_BATCH_SUBSCRIPTION_ID"));
+//            String vnetName = "AzureBatchTestVnet";
+//            String subnetName = "AzureBatchTestSubnet";
+//            if (azure.networks().list().size() == 0) {
+//                Network virtualNetwork = azure.networks().define(vnetName)
+//                    .withRegion(System.getenv("AZURE_BATCH_REGION"))
+//                    .withExistingResourceGroup(System.getenv("AZURE_BATCH_RESOURCE_GROUP"))
+//                    .withAddressSpace("192.168.0.0/16")
+//                    .withSubnet(subnetName, "192.168.1.0/24")
+//                    .create();
+//            }
+//            String vNetResourceId = String.format(
+//                "/subscriptions/%s/resourceGroups/%s/providers/Microsoft.Network/virtualNetworks/%s/subnets/%s",
+//                System.getenv("AZURE_BATCH_SUBSCRIPTION_ID"),
+//                System.getenv("AZURE_BATCH_RESOURCE_GROUP"),
+//                vnetName,
+//                subnetName);
+//            NetworkConfiguration networkConfiguration = new NetworkConfiguration().withSubnetId(vNetResourceId);
+//            // Use PaaS VM with Windows
+//            CloudServiceConfiguration configuration = new CloudServiceConfiguration();
+//            configuration.withOsFamily(poolOsFamily).withOsVersion(poolOsVersion);
+//
+//            List<UserAccount> userList = new ArrayList<>();
+//            userList.add(new UserAccount().withName("test-user").withPassword("kt#_gahr!@aGERDXA")
+//                    .withElevationLevel(ElevationLevel.ADMIN));
+//            PoolAddParameter addParameter = new PoolAddParameter().withId(poolId)
+//                    .withTargetDedicatedNodes(poolVmCount).withVmSize(poolVmSize)
+//                    .withCloudServiceConfiguration(configuration).withUserAccounts(userList)
+//                    .withNetworkConfiguration(networkConfiguration);
+//            batchClient.poolOperations().createPool(addParameter);
+//        } else {
+//            logger.log(createLogRecord(Level.INFO, String.format("The %s already exists.", poolId)));
+//        }
+//
+//        long startTime = System.currentTimeMillis();
+//        long elapsedTime = 0L;
+//        boolean steady = false;
+//        CloudPool pool;
+//
+//        // Wait for the VM to be allocated
+//        while (elapsedTime < poolSteadyTimeoutInSeconds) {
+//            pool = batchClient.poolOperations().getPool(poolId);
+//            if (pool.allocationState() == AllocationState.STEADY) {
+//                steady = true;
+//                break;
+//            }
+//            System.out.println("wait 30 seconds for pool steady...");
+//            Thread.sleep(30 * 1000);
+//            elapsedTime = (new Date()).getTime() - startTime;
+//        }
+//
+//        Assert.assertTrue("The pool did not reach a steady state in the allotted time", steady);
+//
+//        return batchClient.poolOperations().getPool(poolId);
+//    }
 
     private static LogRecord createLogRecord(Level logLevel, String message) {
         return new LogRecord(Level.INFO,  message);
     }
 
+    static NetworkConfiguration createNetworkConfiguration(){
+        String vnetName = System.getenv("AZURE_VNET");
+        String subnetName = System.getenv("AZURE_VNET_SUBNET");
+        if(isRecordMode()) {
+            AzureTokenCredentials token = new ApplicationTokenCredentials(
+                System.getenv("CLIENT_ID"),
+                "72f988bf-86f1-41af-91ab-2d7cd011db47",
+                System.getenv("APPLICATION_SECRET"),
+                AzureEnvironment.AZURE);
+            Azure azure = Azure.authenticate(token).withSubscription(System.getenv("SUBSCRIPTION_ID"));
+            if (azure.networks().list().size() == 0) {
+                Network virtualNetwork = azure.networks().define(vnetName)
+                    .withRegion(System.getenv("AZURE_BATCH_REGION"))
+                    .withExistingResourceGroup(System.getenv("AZURE_VNET_RESOURCE_GROUP"))
+                    .withAddressSpace(System.getenv("AZURE_VNET_ADDRESS_SPACE"))
+                    .withSubnet(subnetName, System.getenv("AZURE_VNET_SUBNET_ADDRESS_SPACE"))
+                    .create();
+            }
+        }
+        String vNetResourceId = String.format(
+            "/subscriptions/%s/resourceGroups/%s/providers/Microsoft.Network/virtualNetworks/%s/subnets/%s",
+            System.getenv("SUBSCRIPTION_ID"),
+            System.getenv("AZURE_VNET_RESOURCE_GROUP"),
+            vnetName,
+            subnetName);
+        return new NetworkConfiguration().withSubnetId(vNetResourceId);
+    }
+
     static CloudPool createIfNotExistIaaSPool(String poolId) throws Exception {
         // Create a pool with 3 Small VMs
-        String poolVmSize = "STANDARD_A1";
+        String poolVmSize = "STANDARD_D1_V2";
         int poolVmCount = 1;
 
         // 10 minutes
         long poolSteadyTimeoutInSeconds = 10 * 60 * 1000;
 
+        // Need VNet to allow security to inject NSGs
+        NetworkConfiguration networkConfiguration = createNetworkConfiguration();
         // Check if pool exists
         if (!batchClient.poolOperations().existsPool(poolId)) {
             // Use IaaS VM with Ubuntu
@@ -343,7 +392,8 @@ public class BatchIntegrationTestBase {
                     .withElevationLevel(ElevationLevel.ADMIN));
             PoolAddParameter addParameter = new PoolAddParameter().withId(poolId)
                     .withTargetDedicatedNodes(poolVmCount).withVmSize(poolVmSize)
-                    .withVirtualMachineConfiguration(configuration).withUserAccounts(userList);
+                    .withVirtualMachineConfiguration(configuration).withUserAccounts(userList)
+                    .withNetworkConfiguration(networkConfiguration);
             batchClient.poolOperations().createPool(addParameter);
         } else {
             logger.log(createLogRecord(Level.INFO, String.format("The %s already exists.", poolId)));

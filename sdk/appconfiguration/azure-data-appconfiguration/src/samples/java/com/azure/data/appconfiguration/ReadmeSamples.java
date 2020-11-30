@@ -4,6 +4,7 @@ package com.azure.data.appconfiguration;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.rest.PagedIterable;
@@ -14,6 +15,7 @@ import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
+import java.net.InetSocketAddress;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -167,6 +169,22 @@ public class ReadmeSamples {
             new ConfigurationSetting().setKey("key").setValue("value"),
             new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers));
         // Above three HttpHeader will be added in outgoing HttpRequest.
+    }
+
+    public void createClientWithProxyOption() {
+        // Proxy options
+        final String hostname = "{your-host-name}";
+        final int port = 447; // your port number
+
+        ProxyOptions proxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP,
+            new InetSocketAddress(hostname, port));
+        HttpClient httpClient = new NettyAsyncHttpClientBuilder()
+            .proxy(proxyOptions)
+            .build();
+        ConfigurationAsyncClient configurationAsyncClient = new ConfigurationClientBuilder()
+            .connectionString("{your_connection_string}")
+            .httpClient(httpClient)
+            .buildAsyncClient();
     }
 
     private void updateConfiguration(ConfigurationSetting setting) {

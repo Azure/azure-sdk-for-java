@@ -1,0 +1,46 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0//feedback/metric",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.2 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "35922f24-15ab-4431-97b0-57a98141759a",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-request-id" : "94800666-330b-4631-8371-5f874474801c",
+      "x-envoy-upstream-service-time" : "5385",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "94800666-330b-4631-8371-5f874474801c",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "Date" : "Sat, 24 Oct 2020 23:50:29 GMT",
+      "Location" : "https://js-metrics-advisor.cognitiveservices.azure.com/metricsadvisor/v1.0/feedback/metric/f051d9e3-0559-4747-9166-66ca4cfca77a"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0//feedback/metric/f051d9e3-0559-4747-9166-66ca4cfca77a",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.2 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b587736c-2d69-4edd-9473-68bb95442403"
+    },
+    "Response" : {
+      "x-request-id" : "43b5fb9a-dc22-4a70-b994-173ce1c71ac6",
+      "x-envoy-upstream-service-time" : "5161",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "43b5fb9a-dc22-4a70-b994-173ce1c71ac6",
+      "retry-after" : "0",
+      "Content-Length" : "408",
+      "StatusCode" : "200",
+      "Body" : "{\"feedbackId\":\"f051d9e3-0559-4747-9166-66ca4cfca77a\",\"createdTime\":\"2020-10-24T23:50:30.389Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimensionFilter\":{\"dimension\":{\"city\":\"Miami\",\"category\":\"Health & Personal Care\"}},\"feedbackType\":\"ChangePoint\",\"startTime\":\"2020-01-01T00:00:00Z\",\"endTime\":\"2020-10-22T00:00:00Z\",\"value\":{\"changePointValue\":\"AutoDetect\"}}",
+      "Date" : "Sat, 24 Oct 2020 23:50:36 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

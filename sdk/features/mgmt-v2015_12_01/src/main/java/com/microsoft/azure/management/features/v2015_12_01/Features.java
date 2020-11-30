@@ -27,6 +27,16 @@ public interface Features extends HasInner<FeaturesInner> {
     Observable<FeatureResult> registerAsync(String resourceProviderNamespace, String featureName);
 
     /**
+     * Unregisters the preview feature for the subscription.
+     *
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param featureName The name of the feature to unregister.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<FeatureResult> unregisterAsync(String resourceProviderNamespace, String featureName);
+
+    /**
      * Gets all the preview features that are available through AFEC for the subscription.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation

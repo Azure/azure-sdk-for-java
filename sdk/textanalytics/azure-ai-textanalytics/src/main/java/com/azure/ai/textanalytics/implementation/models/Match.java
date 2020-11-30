@@ -7,17 +7,15 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The Match model.
- */
+/** The Match model. */
 @Fluent
 public final class Match {
     /*
      * If a well-known item is recognized, a decimal number denoting the
      * confidence level between 0 and 1 will be returned.
      */
-    @JsonProperty(value = "score", required = true)
-    private double score;
+    @JsonProperty(value = "confidenceScore", required = true)
+    private double confidenceScore;
 
     /*
      * Entity text as appears in the request.
@@ -26,36 +24,36 @@ public final class Match {
     private String text;
 
     /*
-     * Start position (in Unicode characters) for the entity match text.
+     * Start position for the entity match text.
      */
     @JsonProperty(value = "offset", required = true)
     private int offset;
 
     /*
-     * Length (in Unicode characters) for the entity match text.
+     * Length for the entity match text.
      */
     @JsonProperty(value = "length", required = true)
     private int length;
 
     /**
-     * Get the score property: If a well-known item is recognized, a decimal
-     * number denoting the confidence level between 0 and 1 will be returned.
+     * Get the confidenceScore property: If a well-known item is recognized, a decimal number denoting the confidence
+     * level between 0 and 1 will be returned.
      *
-     * @return the score value.
+     * @return the confidenceScore value.
      */
-    public double getScore() {
-        return this.score;
+    public double getConfidenceScore() {
+        return this.confidenceScore;
     }
 
     /**
-     * Set the score property: If a well-known item is recognized, a decimal
-     * number denoting the confidence level between 0 and 1 will be returned.
+     * Set the confidenceScore property: If a well-known item is recognized, a decimal number denoting the confidence
+     * level between 0 and 1 will be returned.
      *
-     * @param score the score value to set.
+     * @param confidenceScore the confidenceScore value to set.
      * @return the Match object itself.
      */
-    public Match setScore(double score) {
-        this.score = score;
+    public Match setConfidenceScore(double confidenceScore) {
+        this.confidenceScore = confidenceScore;
         return this;
     }
 
@@ -80,8 +78,7 @@ public final class Match {
     }
 
     /**
-     * Get the offset property: Start position (in Unicode characters) for the
-     * entity match text.
+     * Get the offset property: Start position for the entity match text.
      *
      * @return the offset value.
      */
@@ -90,8 +87,7 @@ public final class Match {
     }
 
     /**
-     * Set the offset property: Start position (in Unicode characters) for the
-     * entity match text.
+     * Set the offset property: Start position for the entity match text.
      *
      * @param offset the offset value to set.
      * @return the Match object itself.
@@ -102,8 +98,7 @@ public final class Match {
     }
 
     /**
-     * Get the length property: Length (in Unicode characters) for the entity
-     * match text.
+     * Get the length property: Length for the entity match text.
      *
      * @return the length value.
      */
@@ -112,8 +107,7 @@ public final class Match {
     }
 
     /**
-     * Set the length property: Length (in Unicode characters) for the entity
-     * match text.
+     * Set the length property: Length for the entity match text.
      *
      * @param length the length value to set.
      * @return the Match object itself.

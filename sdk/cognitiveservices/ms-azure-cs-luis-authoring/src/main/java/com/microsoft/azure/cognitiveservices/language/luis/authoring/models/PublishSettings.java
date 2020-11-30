@@ -22,21 +22,20 @@ public class PublishSettings {
     private UUID id;
 
     /**
-     * Setting sentiment analysis as true returns the Sentiment of the input
-     * utterance along with the resopnse.
+     * Setting sentiment analysis as true returns the sentiment of the input
+     * utterance along with the response.
      */
     @JsonProperty(value = "sentimentAnalysis", required = true)
     private boolean isSentimentAnalysisEnabled;
 
     /**
-     * Setting speech as public enables speech priming in your app.
+     * Enables speech priming in your app.
      */
     @JsonProperty(value = "speech", required = true)
     private boolean isSpeechEnabled;
 
     /**
-     * Setting spell checker as public enables spell checking the input
-     * utterance.
+     * Enables spell checking of the utterance.
      */
     @JsonProperty(value = "spellChecker", required = true)
     private boolean isSpellCheckerEnabled;

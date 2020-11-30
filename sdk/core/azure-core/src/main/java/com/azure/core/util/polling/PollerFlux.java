@@ -41,6 +41,7 @@ import java.util.function.Function;
  * @param <U> The type of the final result of long running operation.
  */
 public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
+
     private final ClientLogger logger = new ClientLogger(PollerFlux.class);
     private final PollingContext<T> rootContext = new PollingContext<>();
     private final Duration defaultPollInterval;
@@ -162,6 +163,22 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
         this.syncActivationOperation = cxt -> activationOperation.apply(cxt).block();
     }
 
+    /**
+     * Creates a PollerFlux instance that returns an error on subscription.
+     *
+     * @param ex The exception to be returned on subscription of this {@link PollerFlux}.
+     * @param <T> The type of poll response value.
+     * @param <U> The type of the final result of long running operation.
+     * @return A poller flux instance that returns an error without emitting any data.
+     *
+     * @see Mono#error(Throwable)
+     * @see Flux#error(Throwable)
+     */
+    public static <T, U> PollerFlux<T, U> error(Exception ex) {
+        return new PollerFlux<>(Duration.ofMillis(1L), context -> Mono.error(ex), context -> Mono.error(ex),
+            (context, response) -> Mono.error(ex), context -> Mono.error(ex));
+    }
+
     @Override
     public void subscribe(CoreSubscriber<? super AsyncPollResponse<T, U>> actual) {
         this.oneTimeActivationMono
@@ -200,16 +217,15 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
             () -> this.rootContext.copy(),
             // Do polling
             // set|read to|from context as needed, reactor guarantee thread-safety of cxt object.
-            cxt -> Mono.defer(() -> this.pollOperation.apply(cxt))
-                .delaySubscription(getDelay(cxt.getLatestResponse()))
+            cxt -> Mono.defer(() -> {
+                final Mono<PollResponse<T>> pollOnceMono = this.pollOperation.apply(cxt);
+                // Execute (subscribe to) the pollOnceMono after the default poll-interval
+                // or duration specified in the last retry-after response header elapses.
+                return pollOnceMono.delaySubscription(getDelay(cxt.getLatestResponse()));
+            })
                 .switchIfEmpty(Mono.error(new IllegalStateException("PollOperation returned Mono.empty().")))
                 .repeat()
                 .takeUntil(currentPollResponse -> currentPollResponse.getStatus().isComplete())
-                .onErrorResume(throwable -> {
-                    logger.warning("Received an error from pollOperation. Any error from pollOperation "
-                        + "will be ignored and polling will be continued. Error:" + throwable.getMessage());
-                    return Mono.empty();
-                })
                 .concatMap(currentPollResponse -> {
                     cxt.setLatestResponse(currentPollResponse);
                     return Mono.just(new AsyncPollResponse<>(cxt,

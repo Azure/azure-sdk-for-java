@@ -9,6 +9,7 @@
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
   <modules>
+    <module>azure-messaging-eventgrid</module>
     <module>microsoft-azure-eventgrid</module>
   </modules>
 </project>

@@ -54,6 +54,13 @@ public class HdfsReadSettings extends StoreReadSettings {
     private Boolean enablePartitionDiscovery;
 
     /**
+     * Specify the root path where partition discovery starts from. Type:
+     * string (or Expression with resultType string).
+     */
+    @JsonProperty(value = "partitionRootPath")
+    private Object partitionRootPath;
+
+    /**
      * The start of file's modified datetime. Type: string (or Expression with
      * resultType string).
      */
@@ -72,6 +79,14 @@ public class HdfsReadSettings extends StoreReadSettings {
      */
     @JsonProperty(value = "distcpSettings")
     private DistcpSettings distcpSettings;
+
+    /**
+     * Indicates whether the source files need to be deleted after copy
+     * completion. Default is false. Type: boolean (or Expression with
+     * resultType boolean).
+     */
+    @JsonProperty(value = "deleteFilesAfterCompletion")
+    private Object deleteFilesAfterCompletion;
 
     /**
      * Get if true, files under the folder path will be read recursively. Default is true. Type: boolean (or Expression with resultType boolean).
@@ -174,6 +189,26 @@ public class HdfsReadSettings extends StoreReadSettings {
     }
 
     /**
+     * Get specify the root path where partition discovery starts from. Type: string (or Expression with resultType string).
+     *
+     * @return the partitionRootPath value
+     */
+    public Object partitionRootPath() {
+        return this.partitionRootPath;
+    }
+
+    /**
+     * Set specify the root path where partition discovery starts from. Type: string (or Expression with resultType string).
+     *
+     * @param partitionRootPath the partitionRootPath value to set
+     * @return the HdfsReadSettings object itself.
+     */
+    public HdfsReadSettings withPartitionRootPath(Object partitionRootPath) {
+        this.partitionRootPath = partitionRootPath;
+        return this;
+    }
+
+    /**
      * Get the start of file's modified datetime. Type: string (or Expression with resultType string).
      *
      * @return the modifiedDatetimeStart value
@@ -230,6 +265,26 @@ public class HdfsReadSettings extends StoreReadSettings {
      */
     public HdfsReadSettings withDistcpSettings(DistcpSettings distcpSettings) {
         this.distcpSettings = distcpSettings;
+        return this;
+    }
+
+    /**
+     * Get indicates whether the source files need to be deleted after copy completion. Default is false. Type: boolean (or Expression with resultType boolean).
+     *
+     * @return the deleteFilesAfterCompletion value
+     */
+    public Object deleteFilesAfterCompletion() {
+        return this.deleteFilesAfterCompletion;
+    }
+
+    /**
+     * Set indicates whether the source files need to be deleted after copy completion. Default is false. Type: boolean (or Expression with resultType boolean).
+     *
+     * @param deleteFilesAfterCompletion the deleteFilesAfterCompletion value to set
+     * @return the HdfsReadSettings object itself.
+     */
+    public HdfsReadSettings withDeleteFilesAfterCompletion(Object deleteFilesAfterCompletion) {
+        this.deleteFilesAfterCompletion = deleteFilesAfterCompletion;
         return this;
     }
 

@@ -43,7 +43,7 @@ public class EventProcessorClientStateManagement {
             .processPartitionClose(context -> program.onClose(context.getPartitionContext(), context.getCloseReason()))
             .processEvent(event -> program.onEvent(event.getPartitionContext(), event.getEventData()))
             .processError(error -> program.onError(error.getPartitionContext(), error.getThrowable()))
-            .checkpointStore(new InMemoryCheckpointStore())
+            .checkpointStore(new SampleCheckpointStore())
             .buildEventProcessorClient();
 
         System.out.println("Starting event processor");

@@ -9,7 +9,7 @@ import com.azure.core.annotation.Immutable;
  * The {@link AnalyzeSentimentResult} model.
  */
 @Immutable
-public final class AnalyzeSentimentResult extends DocumentResult {
+public final class AnalyzeSentimentResult extends TextAnalyticsResult {
     private final DocumentSentiment documentSentiment;
 
     /**
@@ -21,7 +21,7 @@ public final class AnalyzeSentimentResult extends DocumentResult {
      * @param documentSentiment The document sentiment.
      */
     public AnalyzeSentimentResult(String id, TextDocumentStatistics textDocumentStatistics,
-        TextAnalyticsError error, DocumentSentiment documentSentiment) {
+                                  TextAnalyticsError error, DocumentSentiment documentSentiment) {
         super(id, textDocumentStatistics, error);
         this.documentSentiment = documentSentiment;
     }
@@ -30,6 +30,9 @@ public final class AnalyzeSentimentResult extends DocumentResult {
      * Get the document sentiment.
      *
      * @return The document sentiment.
+     *
+     * @throws TextAnalyticsException if result has {@code isError} equals to true and when a non-error property
+     * was accessed.
      */
     public DocumentSentiment getDocumentSentiment() {
         throwExceptionIfError();

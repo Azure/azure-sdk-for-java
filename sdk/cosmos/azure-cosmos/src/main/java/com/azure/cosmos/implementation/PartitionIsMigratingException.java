@@ -3,13 +3,10 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.RMResources;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 import com.azure.cosmos.implementation.http.HttpHeaders;
-import com.azure.cosmos.models.CosmosError;
 
 import java.util.Map;
 
@@ -17,7 +14,7 @@ import java.util.Map;
  * While this class is public, but it is not part of our published public APIs.
  * This is meant to be internally used only by our sdk.
  */
-public class PartitionIsMigratingException extends CosmosClientException {
+public class PartitionIsMigratingException extends CosmosException {
 
     private static final long serialVersionUID = 1L;
 

@@ -2,109 +2,91 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
-import com.azure.cosmos.models.FeedOptions;
-import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.PermissionMode;
-import com.azure.cosmos.models.Resource;
-import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.implementation.Database;
+import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosAsyncDatabase;
+import com.azure.cosmos.CosmosAsyncUser;
+import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.DatabaseForTest;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
-import com.azure.cosmos.models.Permission;
-import com.azure.cosmos.implementation.TestSuiteBase;
-import com.azure.cosmos.implementation.User;
+import com.azure.cosmos.models.CosmosPermissionProperties;
+import com.azure.cosmos.models.CosmosUserProperties;
+import com.azure.cosmos.models.PermissionMode;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
-import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-//TODO: change to use external TestSuiteBase
 public class ReadFeedPermissionsTest extends TestSuiteBase {
 
     public final String databaseId = DatabaseForTest.generateId();
 
-    private Database createdDatabase;
-    private User createdUser;
-    private List<Permission> createdPermissions = new ArrayList<>();
-
-    private AsyncDocumentClient client;
+    private CosmosAsyncDatabase createdDatabase;
+    private CosmosAsyncUser createdUser;
+    private CosmosAsyncClient client;
+    private List<CosmosPermissionProperties> createdPermissions = new ArrayList<>();
 
     @Factory(dataProvider = "clientBuilders")
-    public ReadFeedPermissionsTest(AsyncDocumentClient.Builder clientBuilder) {
+    public ReadFeedPermissionsTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
 
     @Test(groups = { "simple" }, timeOut = FEED_TIMEOUT)
     public void readPermissions() throws Exception {
+        int maxItemCount = 2;
 
-        FeedOptions options = new FeedOptions();
-        options.setMaxItemCount(2);
+        CosmosPagedFlux<CosmosPermissionProperties> feedObservable = createdUser.readAllPermissions();
 
-        Flux<FeedResponse<Permission>> feedObservable = client.readPermissions(getUserLink(), options);
+        int expectedPageSize = (createdPermissions.size() + maxItemCount - 1) / maxItemCount;
 
-        int expectedPageSize = (createdPermissions.size() + options.getMaxItemCount() - 1) / options.getMaxItemCount();
-
-        FeedResponseListValidator<Permission> validator = new FeedResponseListValidator.Builder<Permission>()
+        FeedResponseListValidator<CosmosPermissionProperties> validator = new FeedResponseListValidator.Builder<CosmosPermissionProperties>()
                 .totalSize(createdPermissions.size())
                 .numberOfPages(expectedPageSize)
-                .exactlyContainsInAnyOrder(createdPermissions.stream().map(Resource::getResourceId).collect(Collectors.toList()))
-                .allPagesSatisfy(new FeedResponseValidator.Builder<Permission>()
+                .exactlyContainsIdsInAnyOrder(createdPermissions.stream().map(
+                    CosmosPermissionProperties::getId).collect(Collectors.toList()))
+                .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosPermissionProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
-        validateQuerySuccess(feedObservable, validator, FEED_TIMEOUT);
+        validateQuerySuccess(feedObservable.byPage(maxItemCount), validator, FEED_TIMEOUT);
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void before_ReadFeedPermissionsTest() {
-        client = clientBuilder().build();
-        Database d = new Database();
-        d.setId(databaseId);
-        createdDatabase = createDatabase(client, d);
+        client = this.getClientBuilder().buildAsyncClient();
+        createdDatabase = createDatabase(client, databaseId);
         createdUser = safeCreateUser(client, createdDatabase.getId(), getUserDefinition());
 
         for(int i = 0; i < 5; i++) {
-            createdPermissions.add(createPermissions(client, i));
+            createdPermissions.add(createPermissions(i));
         }
 
-        waitIfNeededForReplicasToCatchUp(clientBuilder());
+        waitIfNeededForReplicasToCatchUp(this.getClientBuilder());
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeDeleteDatabase(client, databaseId);
+        safeDeleteDatabase(createdDatabase);
         safeClose(client);
     }
 
-    private static User getUserDefinition() {
-        User user = new User();
-        user.setId(UUID.randomUUID().toString());
-        return user;
+    private static CosmosUserProperties getUserDefinition() {
+        CosmosUserProperties cosmosUserProperties = new CosmosUserProperties();
+        cosmosUserProperties.setId(UUID.randomUUID().toString());
+        return cosmosUserProperties;
     }
 
-    public Permission createPermissions(AsyncDocumentClient client, int index) {
-        Permission permission = new Permission();
+    public CosmosPermissionProperties createPermissions(int index) {
+        CosmosPermissionProperties permission = new CosmosPermissionProperties();
         permission.setId(UUID.randomUUID().toString());
         permission.setPermissionMode(PermissionMode.READ);
-        permission.setResourceLink("dbs/AQAAAA==/colls/AQAAAJ0fgT" + Integer.toString(index) + "=");
-        return client.createPermission(getUserLink(), permission, null).single().block().getResource();
-    }
+        permission.setContainerName("myContainer" + index + "=");
 
-    private String getUserLink() {
-        return "dbs/" + getDatabaseId() + "/users/" + getUserId();
-    }
-
-    private String getDatabaseId() {
-        return createdDatabase.getId();
-    }
-
-    private String getUserId() {
-        return createdUser.getId();
+        return createdUser.createPermission(permission, null).block().getProperties();
     }
 }

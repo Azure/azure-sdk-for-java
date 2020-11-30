@@ -44,8 +44,7 @@ public class CertificateAddParameter {
 
     /**
      * The password to access the Certificate's private key.
-     * This is required if the Certificate format is pfx. It should be omitted
-     * if the Certificate format is cer.
+     * This must be omitted if the Certificate format is cer.
      */
     @JsonProperty(value = "password")
     private String password;
@@ -131,7 +130,7 @@ public class CertificateAddParameter {
     }
 
     /**
-     * Get this is required if the Certificate format is pfx. It should be omitted if the Certificate format is cer.
+     * Get this must be omitted if the Certificate format is cer.
      *
      * @return the password value
      */
@@ -140,7 +139,7 @@ public class CertificateAddParameter {
     }
 
     /**
-     * Set this is required if the Certificate format is pfx. It should be omitted if the Certificate format is cer.
+     * Set this must be omitted if the Certificate format is cer.
      *
      * @param password the password value to set
      * @return the CertificateAddParameter object itself.

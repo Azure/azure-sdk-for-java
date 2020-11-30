@@ -54,13 +54,20 @@ class DirectoryAPITests extends APISpec {
 
         when:
         ShareSnapshotInfo shareSnapshotInfo = shareClient.createSnapshot()
-        expectURL = expectURL + "?snapshot=" + shareSnapshotInfo.getSnapshot()
+        expectURL = expectURL + "?sharesnapshot=" + shareSnapshotInfo.getSnapshot()
         ShareDirectoryClient newDirClient = shareBuilderHelper(interceptorManager, shareName).snapshot(shareSnapshotInfo.getSnapshot())
             .buildClient().getDirectoryClient(directoryPath)
         def directoryURL = newDirClient.getDirectoryUrl()
 
         then:
         expectURL == directoryURL
+
+        when:
+        def snapshotEndpoint = String.format("https://%s.file.core.windows.net/%s/%s?sharesnapshot=%s", accountName, shareName, directoryPath, shareSnapshotInfo.getSnapshot())
+        ShareDirectoryClient client = getDirectoryClient(StorageSharedKeyCredential.fromConnectionString(connectionString), snapshotEndpoint)
+
+        then:
+        client.getDirectoryUrl() == snapshotEndpoint
     }
 
     def "Get sub directory client"() {
@@ -149,6 +156,29 @@ class DirectoryAPITests extends APISpec {
         smbProperties.setFileCreationTime(getUTCNow())
             .setFileLastWriteTime(getUTCNow())
             .setFilePermissionKey(filePermissionKey)
+        when:
+        def resp = primaryDirectoryClient.createWithResponse(smbProperties, null, null, null, null)
+
+        then:
+        FileTestHelper.assertResponseStatusCode(resp, 201)
+        resp.getValue().getSmbProperties()
+        resp.getValue().getSmbProperties().getFilePermissionKey()
+        resp.getValue().getSmbProperties().getNtfsFileAttributes()
+        resp.getValue().getSmbProperties().getFileLastWriteTime()
+        resp.getValue().getSmbProperties().getFileCreationTime()
+        resp.getValue().getSmbProperties().getFileChangeTime()
+        resp.getValue().getSmbProperties().getParentId()
+        resp.getValue().getSmbProperties().getFileId()
+    }
+
+    def "Create directory with ntfs attributes"() {
+        setup:
+        def filePermissionKey = shareClient.createPermission(filePermission)
+        def attributes = EnumSet.of(NtfsFileAttributes.HIDDEN, NtfsFileAttributes.DIRECTORY)
+        smbProperties.setFileCreationTime(getUTCNow())
+            .setFileLastWriteTime(getUTCNow())
+            .setFilePermissionKey(filePermissionKey)
+            .setNtfsFileAttributes(attributes)
         when:
         def resp = primaryDirectoryClient.createWithResponse(smbProperties, null, null, null, null)
 
@@ -629,5 +659,21 @@ class DirectoryAPITests extends APISpec {
     def "Get Directory Path"() {
         expect:
         directoryPath == primaryDirectoryClient.getDirectoryPath()
+    }
+
+    // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
+    def "Per call policy"() {
+        given:
+        primaryDirectoryClient.create()
+
+        def directoryClient = directoryBuilderHelper(interceptorManager, primaryDirectoryClient.getShareName(), primaryDirectoryClient.getDirectoryPath())
+            .addPolicy(getPerCallVersionPolicy()).buildDirectoryClient()
+
+        when:
+        def response = directoryClient.getPropertiesWithResponse(null, null)
+
+        then:
+        notThrown(ShareStorageException)
+        response.getHeaders().getValue("x-ms-version") == "2017-11-09"
     }
 }

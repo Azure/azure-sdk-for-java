@@ -6,36 +6,36 @@ package com.azure.ai.textanalytics.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
-import java.util.ArrayList;
-
 /**
  * The {@link RecognizePiiEntitiesResult} model.
  */
 @Immutable
-public final class RecognizePiiEntitiesResult extends DocumentResult {
-    private final IterableStream<PiiEntity> entities;
+public final class RecognizePiiEntitiesResult extends TextAnalyticsResult {
+    private final PiiEntityCollection entities;
 
     /**
-     * Creates a {@link RecognizePiiEntitiesResult} model that describes recognized entities result.
+     * Creates a {@link RecognizePiiEntitiesResult} model that describes recognized PII entities result.
      *
      * @param id Unique, non-empty document identifier.
      * @param textDocumentStatistics The text document statistics.
      * @param error The document error.
-     * @param entities An {@link IterableStream} of {@link PiiEntity}.
-
+     * @param entities A {@link PiiEntityCollection} contains entities and warnings.
      */
     public RecognizePiiEntitiesResult(String id, TextDocumentStatistics textDocumentStatistics,
-        TextAnalyticsError error, IterableStream<PiiEntity> entities) {
+        TextAnalyticsError error, PiiEntityCollection entities) {
         super(id, textDocumentStatistics, error);
-        this.entities = entities == null ? new IterableStream<>(new ArrayList<>()) : entities;
+        this.entities = entities;
     }
 
     /**
      * Get an {@link IterableStream} of {@link PiiEntity}.
      *
      * @return An {@link IterableStream} of {@link PiiEntity}.
+     *
+     * @throws TextAnalyticsException if result has {@code isError} equals to true and when a non-error property
+     * was accessed.
      */
-    public IterableStream<PiiEntity> getEntities() {
+    public PiiEntityCollection getEntities() {
         throwExceptionIfError();
         return entities;
     }

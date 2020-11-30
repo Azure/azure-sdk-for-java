@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.CosmosResponseDiagnostics;
+import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.RequestTimeline;
 
 /**
@@ -12,8 +12,8 @@ import com.azure.cosmos.implementation.RequestTimeline;
  **/
 public class DirectBridgeInternal {
 
-    public static void setCosmosResponseDiagnostics(StoreResponse storeResponse, CosmosResponseDiagnostics cosmosResponseDiagnostics) {
-        storeResponse.setCosmosResponseDiagnostics(cosmosResponseDiagnostics);
+    public static void setCosmosDiagnostics(StoreResponse storeResponse, CosmosDiagnostics cosmosDiagnostics) {
+        storeResponse.setCosmosDiagnostics(cosmosDiagnostics);
     }
 
     public static int getSubStatusCode(StoreResponse storeResponse) {

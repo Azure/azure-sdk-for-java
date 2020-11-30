@@ -27,6 +27,9 @@ import java.util.concurrent.LinkedBlockingQueue;
  * be sent. Filled buffers can be uploaded in parallel and should return buffers to the pool after the upload completes.
  * Once the source terminates, it should call flush.
  *
+ * {@link BufferAggregator} is used to store {@link ByteBuffer}s in order to handle situations when chunk size
+ * exceeds single {@link ByteBuffer} capacity.
+ *
  * RESERVED FOR INTERNAL USE ONLY
  */
 public final class UploadBufferPool {
@@ -37,23 +40,23 @@ public final class UploadBufferPool {
     queue will not compromise the async nature of this workflow. Fluxes themselves are internally synchronized to ensure
     only one call to onNext happens at a time.
      */
-    private final BlockingQueue<ByteBuffer> buffers;
+    private final BlockingQueue<BufferAggregator> buffers;
 
     private final int maxBuffs;
 
     // The number of buffs we have allocated. We can query the queue for how many are available.
     private int numBuffs;
 
-    private final int buffSize;
+    private final long buffSize;
 
-    private ByteBuffer currentBuf;
+    private BufferAggregator currentBuf;
 
     /**
      * Creates a new instance of UploadBufferPool
      * @param numBuffs The number of buffers in the buffer pool.
      * @param buffSize The size of the buffers
      */
-    public UploadBufferPool(final int numBuffs, final int buffSize, int maxBuffSize) {
+    public UploadBufferPool(final int numBuffs, final long buffSize, long maxBuffSize) {
         /*
         We require at least two buffers because it is possible that a given write will spill over into a second buffer.
         We only need one overflow buffer because the max size of a ByteBuffer is assumed to be the size as a buffer in
@@ -69,8 +72,8 @@ public final class UploadBufferPool {
         this.buffSize = buffSize;
 
         // We prep the queue with two buffers in case there is overflow.
-        buffers.add(ByteBuffer.allocate(this.buffSize));
-        buffers.add(ByteBuffer.allocate(this.buffSize));
+        buffers.add(new BufferAggregator(this.buffSize));
+        buffers.add(new BufferAggregator(this.buffSize));
         this.numBuffs = 2;
     }
 
@@ -80,23 +83,21 @@ public final class UploadBufferPool {
      */
 
     /**
-     * Writes ByteBuffers to a {@code Flux<ByteBuffer>}
+     * Writes ByteBuffers to a {@code Flux<BufferAggregator>}
      * @param buf The buffer to write
-     * @return The {@code Flux<ByteBuffer>}
+     * @return The {@code Flux<BufferAggregator>}
      */
-    public Flux<ByteBuffer> write(ByteBuffer buf) {
+    public Flux<BufferAggregator> write(ByteBuffer buf) {
         // Check if there's a buffer holding any data from a previous call to write. If not, get a new one.
         if (this.currentBuf == null) {
             this.currentBuf = this.getBuffer();
         }
 
-        Flux<ByteBuffer> result;
+        Flux<BufferAggregator> result;
         // We can fit this whole write in the buffer we currently have.
-        if (this.currentBuf.remaining() >= buf.remaining()) {
-            this.currentBuf.put(buf);
-            if (this.currentBuf.remaining() == 0) {
-                // Reset the position so that we can read the whole thing then return this buffer.
-                this.currentBuf.position(0);
+        if (this.currentBuf.remainingCapacity() >= buf.remaining()) {
+            this.currentBuf.append(buf);
+            if (this.currentBuf.remainingCapacity() == 0) {
                 result = Flux.just(this.currentBuf);
                 // This will force us to get a new buffer next time we try to write.
                 this.currentBuf = null;
@@ -109,15 +110,14 @@ public final class UploadBufferPool {
             }
         } else {
             // We will overflow the current buffer and require another one.
-            // Adjust the window of buf so that we fill up currentBuf without going out of bounds.
-            int oldLimit = buf.limit();
-            buf.limit(buf.position() + this.currentBuf.remaining());
-            this.currentBuf.put(buf);
-            // Set the old limit so we can read to the end in the next buffer.
-            buf.limit(oldLimit);
+            // Duplicate and adjust the window of buf so that we fill up currentBuf without going out of bounds.
+            ByteBuffer duplicate = buf.duplicate();
+            int newLimit = buf.position() + (int) this.currentBuf.remainingCapacity();
+            duplicate.limit(newLimit);
+            this.currentBuf.append(duplicate);
+            // Adjust the window of original buffer to represent remaining part.
+            buf.position(newLimit);
 
-            // Reset the position so we can read the buffer.
-            this.currentBuf.position(0);
             result = Flux.just(this.currentBuf);
 
             /*
@@ -127,7 +127,7 @@ public final class UploadBufferPool {
             buffer we will write to on the next call to write().
              */
             this.currentBuf = this.getBuffer();
-            this.currentBuf.put(buf);
+            this.currentBuf.append(buf);
         }
         return result;
     }
@@ -136,8 +136,8 @@ public final class UploadBufferPool {
     Note that the upload method will be calling write sequentially as there is only one worker reading from the source
     and calling write. Hence there is only one worker calling getBuffer at any time.
      */
-    private ByteBuffer getBuffer() {
-        ByteBuffer result;
+    private BufferAggregator getBuffer() {
+        BufferAggregator result;
         /*
          There are no buffers in the queue and we have space to allocate one. We do not add the new buffer to the queue
          because we want to make immediate use of it. This is effectively equivalent to a buffers.add(newBuffer) and
@@ -145,7 +145,7 @@ public final class UploadBufferPool {
          we just created. The new buffer will be added to buffers when it is returned to the pool.
          */
         if (this.buffers.isEmpty() && this.numBuffs < this.maxBuffs) {
-            result = ByteBuffer.allocate(this.buffSize);
+            result = new BufferAggregator(this.buffSize);
             this.numBuffs++;
         } else {
             try {
@@ -164,14 +164,13 @@ public final class UploadBufferPool {
      * Flushes the current buffer
      * @return the flushed buffer
      */
-    public Flux<ByteBuffer> flush() {
+    public Flux<BufferAggregator> flush() {
         /*
         Prep and return any data left in the pool. It is important to set the limit so that we don't read beyond the
         actual data as this buffer may have been used before and therefore may have some garbage at the end.
          */
         if (this.currentBuf != null) {
-            this.currentBuf.flip();
-            ByteBuffer last = this.currentBuf;
+            BufferAggregator last = this.currentBuf;
             // If there is an accidental duplicate call to flush, this prevents sending the last buffer twice
             this.currentBuf = null;
             return Flux.just(last);
@@ -183,13 +182,12 @@ public final class UploadBufferPool {
      * Returns the ByteBuffer
      * @param b The ByteBuffer to reset and return
      */
-    public void returnBuffer(ByteBuffer b) {
-        // Reset the buffer.
-        b.position(0);
-        b.limit(b.capacity());
+    public void returnBuffer(BufferAggregator b) {
+        // Reset the buffer aggregator.
+        b.reset();
 
         try {
-            this.buffers.put(b);
+            this.buffers.put(new BufferAggregator(this.buffSize));
         } catch (InterruptedException e) {
             throw logger.logExceptionAsError(new IllegalStateException("UploadFromStream thread interrupted."));
         }

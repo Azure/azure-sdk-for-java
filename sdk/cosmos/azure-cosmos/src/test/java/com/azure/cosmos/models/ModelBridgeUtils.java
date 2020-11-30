@@ -4,6 +4,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.DatabaseAccount;
+import com.azure.cosmos.implementation.DatabaseAccountLocation;
 
 import java.util.List;
 
@@ -26,14 +27,6 @@ public class ModelBridgeUtils {
         dbAccount.setWritableLocations(writeLocations);
 
         return dbAccount;
-    }
-
-    public static DatabaseAccountLocation createDatabaseAccountLocation(String name, String endpoint) {
-        DatabaseAccountLocation dal = new DatabaseAccountLocation();
-        dal.setName(name);
-        dal.setEndpoint(endpoint);
-
-        return dal;
     }
 
     public static ConflictResolutionPolicy setMode(ConflictResolutionPolicy policy, ConflictResolutionMode mode) {

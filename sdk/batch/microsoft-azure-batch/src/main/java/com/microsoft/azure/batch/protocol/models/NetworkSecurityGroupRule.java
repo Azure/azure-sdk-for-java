@@ -21,7 +21,7 @@ public class NetworkSecurityGroupRule {
      * priority. The lower the number the higher the priority. For example,
      * rules could be specified with order numbers of 150, 250, and 350. The
      * rule with the order number of 150 takes precedence over the rule that
-     * has an order of 250. Allowed priorities are 150 to 3500. If any reserved
+     * has an order of 250. Allowed priorities are 150 to 4096. If any reserved
      * or duplicate values are provided the request fails with HTTP status code
      * 400.
      */
@@ -57,7 +57,7 @@ public class NetworkSecurityGroupRule {
     private List<String> sourcePortRanges;
 
     /**
-     * Get priorities within a Pool must be unique and are evaluated in order of priority. The lower the number the higher the priority. For example, rules could be specified with order numbers of 150, 250, and 350. The rule with the order number of 150 takes precedence over the rule that has an order of 250. Allowed priorities are 150 to 3500. If any reserved or duplicate values are provided the request fails with HTTP status code 400.
+     * Get priorities within a Pool must be unique and are evaluated in order of priority. The lower the number the higher the priority. For example, rules could be specified with order numbers of 150, 250, and 350. The rule with the order number of 150 takes precedence over the rule that has an order of 250. Allowed priorities are 150 to 4096. If any reserved or duplicate values are provided the request fails with HTTP status code 400.
      *
      * @return the priority value
      */
@@ -66,7 +66,7 @@ public class NetworkSecurityGroupRule {
     }
 
     /**
-     * Set priorities within a Pool must be unique and are evaluated in order of priority. The lower the number the higher the priority. For example, rules could be specified with order numbers of 150, 250, and 350. The rule with the order number of 150 takes precedence over the rule that has an order of 250. Allowed priorities are 150 to 3500. If any reserved or duplicate values are provided the request fails with HTTP status code 400.
+     * Set priorities within a Pool must be unique and are evaluated in order of priority. The lower the number the higher the priority. For example, rules could be specified with order numbers of 150, 250, and 350. The rule with the order number of 150 takes precedence over the rule that has an order of 250. Allowed priorities are 150 to 4096. If any reserved or duplicate values are provided the request fails with HTTP status code 400.
      *
      * @param priority the priority value to set
      * @return the NetworkSecurityGroupRule object itself.

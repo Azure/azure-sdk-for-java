@@ -51,7 +51,7 @@ public interface SystemTopicEventSubscriptions extends SupportsCreating<SystemTo
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<SystemTopicEventSubscription> listBySystemTopicAsync(String resourceGroupName, String systemTopicName);
+    Observable<SystemTopicEventSubscription> listBySystemTopicAsync(final String resourceGroupName, final String systemTopicName);
 
     /**
      * Delete an event subscription of a system topic.

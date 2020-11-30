@@ -1,0 +1,28 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions?api-version=2020-01-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Mon, 27 Jul 2020 09:24:04 GMT",
+      "content-length" : "460",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "c4a00a48-a265-47c2-9c49-a725847fb906",
+      "x-ms-ratelimit-remaining-tenant-reads" : "11997",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200727T092405Z:c4a00a48-a265-47c2-9c49-a725847fb906",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "c4a00a48-a265-47c2-9c49-a725847fb906",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000\",\"authorizationSource\":\"RoleBased\",\"managedByTenants\":[],\"subscriptionId\":\"00000000-0000-0000-0000-000000000000\",\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"displayName\":\"Java Libs Tests with TTL = 7 Days\",\"state\":\"Enabled\",\"subscriptionPolicies\":{\"locationPlacementId\":\"Internal_2014-09-01\",\"quotaId\":\"Internal_2014-09-01\",\"spendingLimit\":\"Off\"}}],\"count\":{\"type\":\"Total\",\"value\":1}}"
+    }
+  } ],
+  "variables" : [ ]
+}

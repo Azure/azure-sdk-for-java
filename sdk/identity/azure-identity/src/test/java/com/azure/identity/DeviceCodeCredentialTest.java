@@ -30,7 +30,6 @@ import static org.mockito.Mockito.when;
 @PowerMockIgnore({"com.sun.org.apache.xerces.*", "javax.xml.*", "org.xml.*"})
 public class DeviceCodeCredentialTest {
 
-    private final String tenantId = "contoso.com";
     private final String clientId = UUID.randomUUID().toString();
 
     @Test
@@ -46,7 +45,7 @@ public class DeviceCodeCredentialTest {
         // mock
         IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
         when(identityClient.authenticateWithDeviceCode(eq(request1), eq(consumer))).thenReturn(TestUtils.getMockMsalToken(token1, expiresAt));
-        when(identityClient.authenticateWithUserRefreshToken(any(), any()))
+        when(identityClient.authenticateWithPublicClientCache(any(), any()))
             .thenAnswer(invocation -> {
                 TokenRequestContext argument = (TokenRequestContext) invocation.getArguments()[0];
                 if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request2.getScopes().get(0))) {
@@ -69,6 +68,32 @@ public class DeviceCodeCredentialTest {
         StepVerifier.create(credential.getToken(request2))
             .expectNextMatches(accessToken -> token2.equals(accessToken.getToken())
                 && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
+            .verifyComplete();
+    }
+
+
+    @Test
+    public void testValidAuthenticateDeviceCode() throws Exception {
+        // setup
+        Consumer<DeviceCodeInfo> consumer = deviceCodeInfo -> { /* do nothing */ };
+        String token1 = "token1";
+        TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
+        OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+
+        // mock
+        IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
+        when(identityClient.authenticateWithDeviceCode(eq(request1), eq(consumer)))
+                .thenReturn(TestUtils.getMockMsalToken(token1, expiresAt));
+        PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
+
+        // test
+        DeviceCodeCredential credential =
+            new DeviceCodeCredentialBuilder().challengeConsumer(consumer).clientId(clientId).build();
+        StepVerifier.create(credential.authenticate(request1))
+    .expectNextMatches(authenticationRecord -> authenticationRecord.getAuthority()
+               .equals("http://login.microsoftonline.com")
+               && authenticationRecord.getUsername().equals("testuser")
+               && authenticationRecord.getHomeAccountId() != null)
             .verifyComplete();
     }
 }

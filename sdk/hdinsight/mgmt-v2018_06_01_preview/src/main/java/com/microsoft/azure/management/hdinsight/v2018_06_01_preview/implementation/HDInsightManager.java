@@ -24,6 +24,7 @@ import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.Extensions;
 import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.ScriptActions;
 import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.ScriptExecutionHistorys;
 import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.Operations;
+import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.VirtualMachines;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -39,6 +40,7 @@ public final class HDInsightManager extends ManagerCore<HDInsightManager, HDInsi
     private ScriptActions scriptActions;
     private ScriptExecutionHistorys scriptExecutionHistorys;
     private Operations operations;
+    private VirtualMachines virtualMachines;
     /**
     * Get a Configurable instance that can be used to create HDInsightManager with optional configuration.
     *
@@ -164,6 +166,16 @@ public final class HDInsightManager extends ManagerCore<HDInsightManager, HDInsi
             this.operations = new OperationsImpl(this);
         }
         return this.operations;
+    }
+
+    /**
+     * @return Entry point to manage VirtualMachines.
+     */
+    public VirtualMachines virtualMachines() {
+        if (this.virtualMachines == null) {
+            this.virtualMachines = new VirtualMachinesImpl(this);
+        }
+        return this.virtualMachines;
     }
 
     /**

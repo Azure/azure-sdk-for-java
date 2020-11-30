@@ -6,13 +6,17 @@ package com.azure.storage.blob.specialized
 import com.azure.core.exception.UnexpectedLengthException
 import com.azure.core.util.Context
 import com.azure.storage.blob.APISpec
-import com.azure.storage.blob.models.BlobErrorCode
+
+import com.azure.storage.blob.options.AppendBlobCreateOptions
 import com.azure.storage.blob.models.AppendBlobRequestConditions
+import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.PublicAccessType
+import com.azure.storage.blob.options.AppendBlobSealOptions
+import com.azure.storage.blob.options.BlobGetTagsOptions
 import spock.lang.Unroll
 
 import java.security.MessageDigest
@@ -102,8 +106,36 @@ class AppendBlobAPITest extends APISpec {
     }
 
     @Unroll
+    def "Create tags"() {
+        setup:
+        def tags = new HashMap<String, String>()
+        if (key1 != null) {
+            tags.put(key1, value1)
+        }
+        if (key2 != null) {
+            tags.put(key2, value2)
+        }
+
+        when:
+        bc.createWithResponse(new AppendBlobCreateOptions().setTags(tags), null, Context.NONE)
+        def response = bc.getTagsWithResponse(new BlobGetTagsOptions(), null, null)
+
+        then:
+        response.getValue() == tags
+
+        where:
+        key1                | value1     | key2   | value2
+        null                | null       | null   | null
+        "foo"               | "bar"      | "fizz" | "buzz"
+        " +-./:=_  +-./:=_" | " +-./:=_" | null   | null
+    }
+
+    @Unroll
     def "Create AC"() {
         setup:
+        def t = new HashMap<String, String>()
+        t.put("foo", "bar")
+        bc.setTags(t)
         match = setupBlobMatchCondition(bc, match)
         leaseID = setupBlobLeaseCondition(bc, leaseID)
         def bac = new BlobRequestConditions()
@@ -112,18 +144,20 @@ class AppendBlobAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags)
 
         expect:
         bc.createWithResponse(null, null, bac, null, null).getStatusCode() == 201
 
         where:
-        modified | unmodified | match        | noneMatch   | leaseID
-        null     | null       | null         | null        | null
-        oldDate  | null       | null         | null        | null
-        null     | newDate    | null         | null        | null
-        null     | null       | receivedEtag | null        | null
-        null     | null       | null         | garbageEtag | null
-        null     | null       | null         | null        | receivedLeaseID
+        modified | unmodified | match        | noneMatch   | leaseID         | tags
+        null     | null       | null         | null        | null            | null
+        oldDate  | null       | null         | null        | null            | null
+        null     | newDate    | null         | null        | null            | null
+        null     | null       | receivedEtag | null        | null            | null
+        null     | null       | null         | garbageEtag | null            | null
+        null     | null       | null         | null        | receivedLeaseID | null
+        null     | null       | null         | null        | null            | "\"foo\" = 'bar'"
     }
 
     @Unroll
@@ -137,6 +171,7 @@ class AppendBlobAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags)
 
         when:
         bc.createWithResponse(null, null, bac, null, Context.NONE)
@@ -145,12 +180,13 @@ class AppendBlobAPITest extends APISpec {
         thrown(BlobStorageException)
 
         where:
-        modified | unmodified | match       | noneMatch    | leaseID
-        newDate  | null       | null        | null         | null
-        null     | oldDate    | null        | null         | null
-        null     | null       | garbageEtag | null         | null
-        null     | null       | null        | receivedEtag | null
-        null     | null       | null        | null         | garbageLeaseID
+        modified | unmodified | match       | noneMatch    | leaseID        | tags
+        newDate  | null       | null        | null         | null           | null
+        null     | oldDate    | null        | null         | null           | null
+        null     | null       | garbageEtag | null         | null           | null
+        null     | null       | null        | receivedEtag | null           | null
+        null     | null       | null        | null         | garbageLeaseID | null
+        null     | null       | null         | null        | null           | "\"notfoo\" = 'notbar'"
     }
 
     def "Append block defaults"() {
@@ -230,6 +266,9 @@ class AppendBlobAPITest extends APISpec {
     @Unroll
     def "Append block AC"() {
         setup:
+        def t = new HashMap<String, String>()
+        t.put("foo", "bar")
+        bc.setTags(t)
         match = setupBlobMatchCondition(bc, match)
         leaseID = setupBlobLeaseCondition(bc, leaseID)
         def bac = new AppendBlobRequestConditions()
@@ -240,22 +279,23 @@ class AppendBlobAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
             .setAppendPosition(appendPosE)
             .setMaxSize(maxSizeLTE)
-
+            .setTagsConditions(tags)
 
         expect:
         bc.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, bac, null, null)
             .getStatusCode() == 201
 
         where:
-        modified | unmodified | match        | noneMatch   | leaseID         | appendPosE | maxSizeLTE
-        null     | null       | null         | null        | null            | null       | null
-        oldDate  | null       | null         | null        | null            | null       | null
-        null     | newDate    | null         | null        | null            | null       | null
-        null     | null       | receivedEtag | null        | null            | null       | null
-        null     | null       | null         | garbageEtag | null            | null       | null
-        null     | null       | null         | null        | receivedLeaseID | null       | null
-        null     | null       | null         | null        | null            | 0          | null
-        null     | null       | null         | null        | null            | null       | 100
+        modified | unmodified | match        | noneMatch   | leaseID         | appendPosE | maxSizeLTE  | tags
+        null     | null       | null         | null        | null            | null       | null        | null
+        oldDate  | null       | null         | null        | null            | null       | null        | null
+        null     | newDate    | null         | null        | null            | null       | null        | null
+        null     | null       | receivedEtag | null        | null            | null       | null        | null
+        null     | null       | null         | garbageEtag | null            | null       | null        | null
+        null     | null       | null         | null        | receivedLeaseID | null       | null        | null
+        null     | null       | null         | null        | null            | 0          | null        | null
+        null     | null       | null         | null        | null            | null       | 100         | null
+        null     | null       | null         | null        | null            | null       | null        | "\"foo\" = 'bar'"
     }
 
     @Unroll
@@ -272,6 +312,7 @@ class AppendBlobAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
             .setAppendPosition(appendPosE)
             .setMaxSize(maxSizeLTE)
+            .setTagsConditions(tags)
 
         when:
         bc.appendBlockWithResponse(defaultInputStream.get(), defaultDataSize, null, bac, null, null)
@@ -283,15 +324,15 @@ class AppendBlobAPITest extends APISpec {
         defaultInputStream.get().reset()
 
         where:
-        modified | unmodified | match       | noneMatch    | leaseID        | appendPosE | maxSizeLTE
-        newDate  | null       | null        | null         | null           | null       | null
-        null     | oldDate    | null        | null         | null           | null       | null
-        null     | null       | garbageEtag | null         | null           | null       | null
-        null     | null       | null        | receivedEtag | null           | null       | null
-        null     | null       | null        | null         | garbageLeaseID | null       | null
-        null     | null       | null        | null         | null           | 1          | null
-        null     | null       | null        | null         | null           | null       | 1
-
+        modified | unmodified | match       | noneMatch    | leaseID        | appendPosE | maxSizeLTE | tags
+        newDate  | null       | null        | null         | null           | null       | null       | null
+        null     | oldDate    | null        | null         | null           | null       | null       | null
+        null     | null       | garbageEtag | null         | null           | null       | null       | null
+        null     | null       | null        | receivedEtag | null           | null       | null       | null
+        null     | null       | null        | null         | garbageLeaseID | null       | null       | null
+        null     | null       | null        | null         | null           | 1          | null       | null
+        null     | null       | null        | null         | null           | null       | 1          | null
+        null     | null       | null        | null         | null           | null       | null       | "\"notfoo\" = 'notbar'"
     }
 
     def "Append block error"() {
@@ -303,6 +344,23 @@ class AppendBlobAPITest extends APISpec {
 
         then:
         thrown(BlobStorageException)
+    }
+
+    def "Append block retry on transient failure"() {
+        setup:
+        def clientWithFailure = getBlobClient(
+            primaryCredential,
+            bc.getBlobUrl(),
+            new TransientFailureInjectingHttpPipelinePolicy()
+        ).getAppendBlobClient()
+
+        when:
+        clientWithFailure.appendBlock(defaultInputStream.get(), defaultDataSize)
+
+        then:
+        def os = new ByteArrayOutputStream()
+        bc.download(os)
+        os.toByteArray() == defaultData.array()
     }
 
     def "Append block from URL min"() {
@@ -379,6 +437,9 @@ class AppendBlobAPITest extends APISpec {
     @Unroll
     def "Append block from URL destination AC"() {
         setup:
+        def t = new HashMap<String, String>()
+        t.put("foo", "bar")
+        bc.setTags(t)
         cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
         match = setupBlobMatchCondition(bc, match)
         leaseID = setupBlobLeaseCondition(bc, leaseID)
@@ -390,6 +451,7 @@ class AppendBlobAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
             .setAppendPosition(appendPosE)
             .setMaxSize(maxSizeLTE)
+            .setTagsConditions(tags)
 
         def sourceURL = cc.getBlobClient(generateBlobName()).getAppendBlobClient()
         sourceURL.create()
@@ -400,15 +462,16 @@ class AppendBlobAPITest extends APISpec {
         bc.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl(), null, null, bac, null, null, null).getStatusCode() == 201
 
         where:
-        modified | unmodified | match        | noneMatch   | leaseID         | appendPosE | maxSizeLTE
-        null     | null       | null         | null        | null            | null       | null
-        oldDate  | null       | null         | null        | null            | null       | null
-        null     | newDate    | null         | null        | null            | null       | null
-        null     | null       | receivedEtag | null        | null            | null       | null
-        null     | null       | null         | garbageEtag | null            | null       | null
-        null     | null       | null         | null        | receivedLeaseID | null       | null
-        null     | null       | null         | null        | null            | 0          | null
-        null     | null       | null         | null        | null            | null       | 100
+        modified | unmodified | match        | noneMatch   | leaseID         | appendPosE | maxSizeLTE  | tags
+        null     | null       | null         | null        | null            | null       | null        | null
+        oldDate  | null       | null         | null        | null            | null       | null        | null
+        null     | newDate    | null         | null        | null            | null       | null        | null
+        null     | null       | receivedEtag | null        | null            | null       | null        | null
+        null     | null       | null         | garbageEtag | null            | null       | null        | null
+        null     | null       | null         | null        | receivedLeaseID | null       | null        | null
+        null     | null       | null         | null        | null            | 0          | null        | null
+        null     | null       | null         | null        | null            | null       | 100         | null
+        null     | null       | null         | null        | null            | null       | null        | "\"foo\" = 'bar'"
     }
 
     @Unroll
@@ -426,6 +489,7 @@ class AppendBlobAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
             .setAppendPosition(appendPosE)
             .setMaxSize(maxSizeLTE)
+            .setTagsConditions(tags)
 
         def sourceURL = cc.getBlobClient(generateBlobName()).getAppendBlobClient()
         sourceURL.create()
@@ -439,14 +503,15 @@ class AppendBlobAPITest extends APISpec {
         thrown(BlobStorageException)
 
         where:
-        modified | unmodified | match       | noneMatch    | leaseID        | appendPosE | maxSizeLTE
-        newDate  | null       | null        | null         | null           | null       | null
-        null     | oldDate    | null        | null         | null           | null       | null
-        null     | null       | garbageEtag | null         | null           | null       | null
-        null     | null       | null        | receivedEtag | null           | null       | null
-        null     | null       | null        | null         | garbageLeaseID | null       | null
-        null     | null       | null        | null         | null           | 1          | null
-        null     | null       | null        | null         | null           | null       | 1
+        modified | unmodified | match       | noneMatch    | leaseID        | appendPosE | maxSizeLTE | tags
+        newDate  | null       | null        | null         | null           | null       | null       | null
+        null     | oldDate    | null        | null         | null           | null       | null       | null
+        null     | null       | garbageEtag | null         | null           | null       | null       | null
+        null     | null       | null        | receivedEtag | null           | null       | null       | null
+        null     | null       | null        | null         | garbageLeaseID | null       | null       | null
+        null     | null       | null        | null         | null           | 1          | null       | null
+        null     | null       | null        | null         | null           | null       | 1          | null
+        null     | null       | null        | null         | null           | null       | null       | "\"notfoo\" = 'notbar'"
     }
 
     @Unroll
@@ -532,4 +597,106 @@ class AppendBlobAPITest extends APISpec {
         then:
         notThrown(Throwable)
     }
+
+    def "Seal defaults"() {
+        when:
+        def sealResponse = bc.sealWithResponse(null, null, null)
+
+        then:
+        sealResponse.getStatusCode() == 200
+        sealResponse.getHeaders().getValue("x-ms-blob-sealed")
+    }
+
+    def "Seal min"() {
+        when:
+        bc.seal()
+
+        then:
+        bc.getProperties().isSealed()
+        bc.downloadWithResponse(new ByteArrayOutputStream(), null, null, null, false, null, null).getDeserializedHeaders().isSealed()
+    }
+
+    def "Seal error"() {
+        setup:
+        bc = cc.getBlobClient(generateBlobName()).getAppendBlobClient()
+
+        when:
+        bc.seal()
+
+        then:
+        thrown(BlobStorageException)
+    }
+
+    @Unroll
+    def "Seal AC"() {
+        setup:
+        match = setupBlobMatchCondition(bc, match)
+        leaseID = setupBlobLeaseCondition(bc, leaseID)
+        def bac = new AppendBlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setAppendPosition(appendPosE)
+
+        expect:
+        bc.sealWithResponse(new AppendBlobSealOptions().setRequestConditions(bac), null, null)
+            .getStatusCode() == 200
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID         | appendPosE
+        null     | null       | null         | null        | null            | null
+        oldDate  | null       | null         | null        | null            | null
+        null     | newDate    | null         | null        | null            | null
+        null     | null       | receivedEtag | null        | null            | null
+        null     | null       | null         | garbageEtag | null            | null
+        null     | null       | null         | null        | receivedLeaseID | null
+        null     | null       | null         | null        | null            | 0
+    }
+
+    @Unroll
+    def "Seal AC fail"() {
+        setup:
+        noneMatch = setupBlobMatchCondition(bc, noneMatch)
+        setupBlobLeaseCondition(bc, leaseID)
+
+        def bac = new AppendBlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setAppendPosition(appendPosE)
+
+        when:
+        bc.sealWithResponse(new AppendBlobSealOptions().setRequestConditions(bac), null, null)
+
+        then:
+        thrown(BlobStorageException)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID        | appendPosE
+        newDate  | null       | null        | null         | null           | null
+        null     | oldDate    | null        | null         | null           | null
+        null     | null       | garbageEtag | null         | null           | null
+        null     | null       | null        | receivedEtag | null           | null
+        null     | null       | null        | null         | garbageLeaseID | null
+        null     | null       | null        | null         | null           | 1
+    }
+
+    // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
+    def "Per call policy"() {
+        setup:
+        def specialBlob = getSpecializedBuilder(primaryCredential, bc.getBlobUrl(), getPerCallVersionPolicy())
+            .buildAppendBlobClient()
+
+        when:
+        def response = specialBlob.getPropertiesWithResponse(null, null, null)
+
+        then:
+        notThrown(BlobStorageException)
+        response.getHeaders().getValue("x-ms-version") == "2017-11-09"
+    }
+
 }

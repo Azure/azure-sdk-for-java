@@ -4,7 +4,8 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.ConnectionPolicy;
+import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
@@ -14,6 +15,7 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DatabaseAccountManagerInternal;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.LifeCycleUtils;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.TestSuiteBase;
@@ -67,7 +69,8 @@ public class GatewayServiceConfigurationReaderTest extends TestSuiteBase {
         DatabaseAccountManagerInternal databaseAccountManagerInternal = Mockito.mock(DatabaseAccountManagerInternal.class);
         Mockito.when(databaseAccountManagerInternal.getDatabaseAccountFromEndpoint(Matchers.any())).thenReturn(Flux.just(new DatabaseAccount(GlobalEndPointManagerTest.dbAccountJson1)));
         Mockito.when(databaseAccountManagerInternal.getServiceEndpoint()).thenReturn(new URI(TestConfigurations.HOST));
-        GlobalEndpointManager globalEndpointManager = new GlobalEndpointManager(databaseAccountManagerInternal, new ConnectionPolicy(), new Configs());
+        GlobalEndpointManager globalEndpointManager = new GlobalEndpointManager(databaseAccountManagerInternal,
+            new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig()), new Configs());
         ReflectionUtils.setBackgroundRefreshLocationTimeIntervalInMS(globalEndpointManager, 1000);
         globalEndpointManager.init();
 
@@ -92,11 +95,12 @@ public class GatewayServiceConfigurationReaderTest extends TestSuiteBase {
         assertThat(configurationReader.getUserReplicationPolicy().getMaxReplicaSetSize()).isEqualTo(4);
 
         //Testing scenario of scheduled cache refresh with error
-        Mockito.when(databaseAccountManagerInternal.getDatabaseAccountFromEndpoint(Matchers.any())).thenReturn(Flux.error(BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.FORBIDDEN)));
+        Mockito.when(databaseAccountManagerInternal.getDatabaseAccountFromEndpoint(Matchers.any())).thenReturn(Flux.error(BridgeInternal.createCosmosException(HttpConstants.StatusCodes.FORBIDDEN)));
         Thread.sleep(2000);
         assertThat(configurationReader.getDefaultConsistencyLevel()).isEqualTo(ConsistencyLevel.SESSION);
         assertThat((boolean) configurationReader.getQueryEngineConfiguration().get("enableSpatialIndexing")).isTrue();
         assertThat(configurationReader.getSystemReplicationPolicy().getMaxReplicaSetSize()).isEqualTo(4);
         assertThat(configurationReader.getUserReplicationPolicy().getMaxReplicaSetSize()).isEqualTo(4);
+        LifeCycleUtils.closeQuietly(globalEndpointManager);
     }
 }

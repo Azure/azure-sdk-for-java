@@ -10,6 +10,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import java.net.URL;
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -156,7 +157,8 @@ public final class StorageSharedKeyCredential {
             return "";
         }
 
-        Collections.sort(xmsHeaderNameArray);
+        /* Culture-sensitive word sort */
+        Collections.sort(xmsHeaderNameArray, Collator.getInstance(Locale.ROOT));
 
         final StringBuilder canonicalizedHeaders = new StringBuilder();
         for (final String key : xmsHeaderNameArray) {

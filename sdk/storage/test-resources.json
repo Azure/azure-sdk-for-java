@@ -9,6 +9,13 @@
             "type": "string",
             "defaultValue": "core.windows.net"
         },
+        "tenantId": {
+            "type": "string",
+            "defaultValue": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+            "metadata": {
+                "description": "The tenant ID to which the application and resources belong."
+            }
+        },
         "testApplicationOid": {
             "type": "string",
             "metadata": {
@@ -17,15 +24,20 @@
         }
     },
     "variables": {
-        "storageApiVersion": "2019-04-01",
+        "storageApiVersion": "2019-06-01",
+        "keyVaultApiVersion": "2016-10-01",
         "authorizationApiVersion": "2018-09-01-preview",
         "blobDataContributorRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/ba92f5b4-2d11-453d-a403-e96b0029c9fe')]",
         "contributorRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c')]",
+        "blobDataOwnerRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/b7e6dc6d-f1e8-4753-8033-0f276bb0955b')]",
         "primaryAccountName": "[concat('prim', parameters('baseName'))]",
         "secondaryAccountName": "[concat('sec', parameters('baseName'))]",
         "premiumAccountName": "[concat('prem', parameters('baseName'))]",
+        "versionedAccountName": "[concat('ver', parameters('baseName'))]",
         "dataLakeAccountName": "[concat('dtlk', parameters('baseName'))]",
         "premiumFileAccountName": "[concat('premf', parameters('baseName'))]",
+        "keyvaultName": "[concat(parameters('baseName'), 'kvlt')]",
+        "azureKeyVaultUrl": "[format('https://{0}.vault.azure.net', variables('keyvaultName'))]",
         "location": "[resourceGroup().location]"
     },
     "resources": [
@@ -50,6 +62,18 @@
             ],
             "properties": {
                 "roleDefinitionId": "[variables('contributorRoleId')]",
+                "principalId": "[parameters('testApplicationOid')]"
+            }
+        },
+        {
+            "type": "Microsoft.Authorization/roleAssignments",
+            "apiVersion": "[variables('authorizationApiVersion')]",
+            "name": "[guid(concat('blobDataOwnerRoleId', variables('primaryAccountName')))]",
+            "dependsOn": [
+                "[variables('primaryAccountName')]"
+            ],
+            "properties": {
+                "roleDefinitionId": "[variables('blobDataOwnerRoleId')]",
                 "principalId": "[parameters('testApplicationOid')]"
             }
         },
@@ -84,6 +108,54 @@
                 },
                 "accessTier": "Hot"
             }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices",
+            "apiVersion": "[variables('storageApiVersion')]",
+            "name": "[concat(variables('primaryAccountName'), '/default')]",
+            "properties": {
+            "containerDeleteRetentionPolicy": {
+                "enabled": true,
+                "days": 1
+              }
+        },
+        "dependsOn": [
+          "[variables('primaryAccountName')]"
+        ]
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/fileServices",
+            "apiVersion": "[variables('storageApiVersion')]",
+            "name": "[concat(variables('primaryAccountName'), '/default')]",
+            "properties": {
+            "shareDeleteRetentionPolicy": {
+                "enabled": true,
+                "days": 1
+            }
+            },
+            "dependsOn": [
+                "[variables('primaryAccountName')]"
+            ]
+        },
+        {
+          "type": "Microsoft.Storage/storageAccounts/encryptionScopes",
+          "apiVersion": "[variables('storageApiVersion')]",
+          "name": "[concat(variables('primaryAccountName'), '/testscope1')]",
+          "properties": {
+          },
+          "dependsOn": [
+            "[variables('primaryAccountName')]"
+          ]
+        },
+        {
+          "type": "Microsoft.Storage/storageAccounts/encryptionScopes",
+          "apiVersion": "[variables('storageApiVersion')]",
+          "name": "[concat(variables('primaryAccountName'), '/testscope2')]",
+          "properties": {
+          },
+          "dependsOn": [
+            "[variables('primaryAccountName')]"
+          ]
         },
         {
             "type": "Microsoft.Storage/storageAccounts",
@@ -150,6 +222,49 @@
             }
         },
         {
+          "type": "Microsoft.Storage/storageAccounts",
+          "apiVersion": "[variables('storageApiVersion')]",
+          "name": "[variables('versionedAccountName')]",
+          "location": "[variables('location')]",
+          "sku": {
+            "name": "Standard_RAGRS",
+            "tier": "Standard"
+          },
+          "kind": "StorageV2",
+          "properties": {
+            "networkAcls": {
+              "bypass": "AzureServices",
+              "virtualNetworkRules": [],
+              "ipRules": [],
+              "defaultAction": "Allow"
+            },
+            "supportsHttpsTrafficOnly": true,
+            "encryption": {
+              "services": {
+                "file": {
+                  "enabled": true
+                },
+                "blob": {
+                  "enabled": true
+                }
+              },
+              "keySource": "Microsoft.Storage"
+            },
+            "accessTier": "Hot"
+          }
+        },
+        {
+          "type": "Microsoft.Storage/storageAccounts/blobServices",
+          "apiVersion": "[variables('storageApiVersion')]",
+          "name": "[concat(variables('versionedAccountName'), '/default')]",
+          "properties": {
+            "isVersioningEnabled": true
+          },
+          "dependsOn": [
+            "[variables('versionedAccountName')]"
+          ]
+        },
+        {
             "type": "Microsoft.Storage/storageAccounts",
             "apiVersion": "[variables('storageApiVersion')]",
             "name": "[variables('dataLakeAccountName')]",
@@ -209,6 +324,77 @@
                     "keySource": "Microsoft.Storage"
                 }
             }
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults",
+            "apiVersion": "[variables('keyvaultApiVersion')]",
+            "name": "[variables('keyvaultName')]",
+            "location": "[variables('location')]",
+            "properties": {
+                "sku": {
+                    "family": "A",
+                    "name": "premium"
+                },
+                "tenantId": "[parameters('tenantId')]",
+                "accessPolicies": [
+                  {
+                      "tenantId": "[parameters('tenantId')]",
+                      "objectId": "[parameters('testApplicationOid')]",
+                      "permissions": {
+                        "keys": [
+                            "get",
+                            "list",
+                            "update",
+                            "create",
+                            "import",
+                            "delete",
+                            "recover",
+                            "backup",
+                            "restore",
+                            "decrypt",
+                            "encrypt",
+                            "unwrapKey",
+                            "wrapKey",
+                            "verify",
+                            "sign",
+                            "purge"
+                        ],
+                        "secrets": [
+                            "get",
+                            "list",
+                            "set",
+                            "delete",
+                            "recover",
+                            "backup",
+                            "restore",
+                            "purge"
+                        ],
+                        "certificates": [
+                            "get",
+                            "list",
+                            "update",
+                            "create",
+                            "import",
+                            "delete",
+                            "recover",
+                            "backup",
+                            "restore",
+                            "managecontacts",
+                            "manageissuers",
+                            "getissuers",
+                            "listissuers",
+                            "setissuers",
+                            "deleteissuers",
+                            "purge"
+                      ]
+                  }
+              }
+            ],
+            "enabledForDeployment": false,
+            "enabledForDiskEncryption": false,
+            "enabledForTemplateDeployment": false,
+            "enableSoftDelete": false
+          }
         }
     ],
     "outputs": {
@@ -243,6 +429,14 @@
         "PREMIUM_STORAGE_ACCOUNT_KEY": {
             "type": "string",
             "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('premiumAccountName')), variables('storageApiVersion')).keys[0].value]"
+        },
+        "VERSIONED_STORAGE_ACCOUNT_NAME": {
+          "type": "string",
+          "value": "[variables('versionedAccountName')]"
+        },
+        "VERSIONED_STORAGE_ACCOUNT_KEY": {
+          "type": "string",
+          "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('versionedAccountName')), variables('storageApiVersion')).keys[0].value]"
         },
         "AZURE_STORAGE_FILE_ACCOUNT_NAME": {
             "type": "string",
@@ -296,7 +490,10 @@
         "AZURE_STORAGE_QUEUE_CONNECTION_STRING": {
             "type": "string",
             "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('primaryAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName')), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('endpointSuffix'))]"
+        },
+        "KEYVAULT_URL":{
+            "type": "string",
+            "value": "[variables('azureKeyVaultUrl')]"
         }
-
     }
 }

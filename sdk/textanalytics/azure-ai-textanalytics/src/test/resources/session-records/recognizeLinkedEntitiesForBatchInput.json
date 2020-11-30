@@ -1,24 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://javatextanalyticstestresources.cognitiveservices.azure.com/text/analytics/v3.0-preview.1/entities/linking",
+    "Uri" : "https://REDACTED.azure-api.net/text/analytics/v3.1-preview.3//entities/linking?stringIndexType=Utf16CodeUnit",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/1.0.0-beta.1 (11.0.5; Windows 10 10.0)",
-      "x-ms-client-request-id" : "801ab3cf-aa2a-43c7-add5-e1c8e8a2b49d",
-      "Content-Type" : "application/json; charset=utf-8"
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e1c8f748-2cf0-4bd7-9f03-b8c4615e17c1",
+      "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "12",
+      "x-envoy-upstream-service-time" : "19",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
       "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=2",
-      "apim-request-id" : "dd8d437b-aa02-4be1-8a96-bfb6591755ae",
-      "x-aml-ta-request-id" : "d7bbf941-abd6-44c3-9658-6922a117da0c",
+      "apim-request-id" : "f210df70-3aa8-4582-86f2-1ce572c7776a",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"documents\":[{\"id\":\"0\",\"entities\":[{\"name\":\"Seattle\",\"matches\":[{\"text\":\"Seattle\",\"offset\":26,\"length\":7,\"score\":0.11472424095537814}],\"language\":\"en\",\"id\":\"Seattle\",\"url\":\"https://en.wikipedia.org/wiki/Seattle\",\"dataSource\":\"Wikipedia\"}]},{\"id\":\"1\",\"entities\":[{\"name\":\"Microsoft\",\"matches\":[{\"text\":\"Microsoft\",\"offset\":10,\"length\":9,\"score\":0.18693659716732069}],\"language\":\"en\",\"id\":\"Microsoft\",\"url\":\"https://en.wikipedia.org/wiki/Microsoft\",\"dataSource\":\"Wikipedia\"}]}],\"errors\":[],\"modelVersion\":\"2019-10-01\"}",
-      "Date" : "Tue, 17 Dec 2019 22:32:51 GMT",
+      "Body" : "{\"documents\":[{\"id\":\"0\",\"entities\":[{\"bingId\":\"5fbba6b8-85e1-4d41-9444-d9055436e473\",\"name\":\"Seattle\",\"matches\":[{\"text\":\"Seattle\",\"offset\":26,\"length\":7,\"confidenceScore\":0.19}],\"language\":\"en\",\"id\":\"Seattle\",\"url\":\"https://en.wikipedia.org/wiki/Seattle\",\"dataSource\":\"Wikipedia\"}],\"warnings\":[]},{\"id\":\"1\",\"entities\":[{\"bingId\":\"a093e9b9-90f5-a3d5-c4b8-5855e1b01f85\",\"name\":\"Microsoft\",\"matches\":[{\"text\":\"Microsoft\",\"offset\":10,\"length\":9,\"confidenceScore\":0.25}],\"language\":\"en\",\"id\":\"Microsoft\",\"url\":\"https://en.wikipedia.org/wiki/Microsoft\",\"dataSource\":\"Wikipedia\"}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2020-02-01\"}",
+      "Date" : "Thu, 03 Sep 2020 19:03:58 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

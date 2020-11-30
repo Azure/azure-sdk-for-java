@@ -1,10 +1,51 @@
 # Release History
 
-## 12.1.0-beta.1 (Unreleased)
+## 12.4.0-beta.1 (Unreleased)
+- Added support to list paths on a directory.
 
+## 12.3.0 (2020-11-11)
+- Added support to specify whether or not a pipeline policy should be added per call or per retry.
+- Modified DataLakeAclChangeFailedException to extend AzureException
+- Fixed a bug where the endpoint would be improperly converted if the account name contained the word dfs.
+
+## 12.3.0-beta.1 (2020-10-01)
+- Added support for the 2020-02-10 service version.
+- Added support for setting, modifying, and removing ACLs recursively.
+- Added support to schedule file expiration. 
+- Added support to specify Arrow Output Serialization when querying a file. 
+- Added support to generate directory SAS and added support to specify additional user ids and correlation ids for user delegation SAS.
+- Fixed a bug where users could not download more than 5000MB of data in one shot in the readToFile API.
+- Fixed a bug where the TokenCredential scope would be incorrect for custom URLs.
+- Added support to upload data to a file from an InputStream.
+- Added support to specify permissions and umask when uploading a file. 
+- Fixed a bug where an empty string would be sent with the x-ms-properties header when metadata was null or empty.
+- Fixed a bug where a custom application id in HttpLogOptions would not be added to the User Agent String.
+
+## 12.2.0 (2020-08-13)
+- Fixed bug where Query Input Stream would throw when a ByteBuffer of length 0 was encountered.
+
+## 12.2.0-beta.1 (2019-07-07)
+- Added support for the 2019-12-12 service version.
+- Added support to query a file. 
+- Added support to increase the maximum size of data that can be sent via an append.
+- Fixed a bug that would cause buffered upload to always put an empty file before uploading actual data. 
+
+## 12.1.2 (2020-06-12)
+- Updated azure-storage-common and azure-core dependencies.
+
+## 12.1.1 (2020-05-06)
+- Updated `azure-core` version to `1.5.0` to pickup fixes for percent encoding `UTF-8` and invalid leading bytes in a body string.
+
+## 12.1.0 (2020-04-06)
+- Fixed a NPE caused due to deserializing a non existent lastModifiedTime.
+- Added an isDirectory property to PathProperties.
+- Fixed DataLakeFileSystemClient.createFile/createDirectory, DataLakeDirectoryClient.createFile/createSubdirectory to not overwrite by default
+- Added overloads to DataLakeFileSystemClient.createFile/createDirectory, DataLakeDirectoryClient.createFile/createSubdirectory to allow overwrite behavior.
+- Fixed a bug where the Date header wouldn't be updated with a new value on request retry.
+- Fixed a bug where rename would not work with Url encoded destinations.
 
 ## 12.0.1 (2020-03-11)
-- GA release. 
+- GA release.
 - Fixed bug that caused rename to fail on paths that are url encoded.
 - Mapped StorageErrorException and BlobStorageException to DataLakeStorageException on DataLakeServiceClient.listFileSystems
 - Removed DataLakeFileSystem.getRootDirectory methods to get the root directory in a file system.
@@ -36,13 +77,13 @@ and
 - Added SAS generation methods on clients to improve discoverability and convenience of sas.
 - Mapped StorageErrorException and BlobStorageException to DataLakeStorageException.
 - Added support for exists method on FileClients and DirectoryClients
-- Added support for no overwrite by default on min create method on FileClients and DirectoryClients and flush method on FileClients 
+- Added support for no overwrite by default on min create method on FileClients and DirectoryClients and flush method on FileClients
 
 ## 12.0.0-beta.7 (2019-12-04)
-This package's 
-[documentation](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/storage/azure-storage-file-datalake/README.md) 
-and 
-[samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/storage/azure-storage-file-datalake/src/samples/java/com/azure/storage/file/datalake) 
+This package's
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/storage/azure-storage-file-datalake/README.md)
+and
+[samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/storage/azure-storage-file-datalake/src/samples/java/com/azure/storage/file/datalake)
 
 - Fixed bug in ClientBuilders that prevented OAuth from functioning.
 - Added a check in ClientBuilders to enforce HTTPS for bearer token authentication.
@@ -52,7 +93,7 @@ and
 - Renamed setters and getters in PathPermissions and RolePermissions to be more detailed.
 - Fixed camel-casing of the word SubDirectory.
 - Upgraded to version 1.1.0 of Azure Core.
-- Upgraded to version 12.1.0 of Azure Storage Blob. 
+- Upgraded to version 12.1.0 of Azure Storage Blob.
 
 ## 12.0.0-preview.5
 - Initial Release. Please see the README and wiki for information on the new design.
@@ -63,7 +104,7 @@ and
 - Support for DataLakeDirectoryClient: create, delete, rename, get properties, get access control, set metadata, set properties, set access control, create file, delete file, create sub-directory, delete sub-directory
 - Support for DataLakeFileClient: create, delete, rename, get properties, get access control, set metadata, set properties, set access control, append, flush, read
 
-This package's 
-[documentation](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/storage/azure-storage-file-datalake/README.md) 
-and 
-[samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/storage/azure-storage-file-datalake/src/samples/java/com/azure/storage/file/datalake) 
+This package's
+[documentation](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/storage/azure-storage-file-datalake/README.md)
+and
+[samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/storage/azure-storage-file-datalake/src/samples/java/com/azure/storage/file/datalake)

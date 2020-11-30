@@ -11,7 +11,7 @@ package com.microsoft.azure.management.eventgrid.v2020_04_01_preview;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * ConnectionState Information.
+ * ConnectionState information.
  */
 public class ConnectionState {
     /**

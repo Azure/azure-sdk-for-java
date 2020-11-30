@@ -74,12 +74,14 @@ class ProgressReporterTest extends APISpec {
         data2 = ProgressReporter.addParallelProgressReporting(data2, mockReceiver, lock, totalProgress)
 
         when:
-        data.subscribe()
-        data2.subscribe()
-        data.subscribe()
-        data2.subscribe()
+        def disposable1 = data.subscribe()
+        def disposable2 = data2.subscribe()
+        def disposable3 = data.subscribe()
+        def disposable4 = data2.subscribe()
 
-        sleep(3000) // These Fluxes should complete quickly, but we don't want to block or it'll order everything
+        while (!(disposable1.isDisposed() && disposable2.isDisposed() && disposable3.isDisposed() && disposable4.isDisposed())) {
+
+        }
 
         then:
         /*

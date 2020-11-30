@@ -164,7 +164,7 @@ final class RntbdRequestFrame {
             case Stop:
                 return RntbdOperationType.Stop;
             case SqlQuery:
-                return RntbdOperationType.SQLQuery;
+                return RntbdOperationType.SqlQuery;
             case Update:
                 return RntbdOperationType.Update;
             case ForceConfigRefresh:
@@ -203,6 +203,8 @@ final class RntbdRequestFrame {
                 return RntbdOperationType.MigratePartition;
             case AddComputeGatewayRequestCharges:
                 return RntbdOperationType.AddComputeGatewayRequestCharges;
+            case Batch:
+                return RntbdOperationType.Batch;
             default:
                 final String reason = Strings.lenientFormat("Unrecognized operation type: %s", operationType);
                 throw new UnsupportedOperationException(reason);

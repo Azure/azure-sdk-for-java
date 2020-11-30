@@ -4,15 +4,11 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.ConnectionPolicy;
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.SessionContainer;
 import com.azure.cosmos.implementation.UserAgentContainer;
-
-import java.time.Duration;
-
-// TODO: DANOBLE: no support for ICommunicationEventSource ask Ji
-//  Links:
-//  https://msdata.visualstudio.com/CosmosDB/SDK/_workitems/edit/262496
 
 // We suppress the "try" warning here because the close() method's signature
 // allows it to throw InterruptedException which is strongly advised against
@@ -23,35 +19,39 @@ import java.time.Duration;
 public class StoreClientFactory implements AutoCloseable {
 
     private final Configs configs;
-    private final int maxConcurrentConnectionOpenRequests;
-    private final Duration requestTimeout;
-    private final Protocol protocol;
     private final TransportClient transportClient;
-    private final boolean enableTransportClientSharing;
     private volatile boolean isClosed;
 
     public StoreClientFactory(
+        IAddressResolver addressResolver,
+        DiagnosticsClientContext.DiagnosticsClientConfig diagnosticsClientConfig,
         Configs configs,
-        Duration requestTimeout,
-        int maxConcurrentConnectionOpenRequests,
+        ConnectionPolicy connectionPolicy,
         UserAgentContainer userAgent,
         boolean enableTransportClientSharing) {
 
         this.configs = configs;
-        this.protocol = configs.getProtocol();
-        this.requestTimeout = requestTimeout;
-        this.maxConcurrentConnectionOpenRequests = maxConcurrentConnectionOpenRequests;
-        this.enableTransportClientSharing = enableTransportClientSharing;
-
+        Protocol protocol = configs.getProtocol();
         if (enableTransportClientSharing) {
-            this.transportClient = SharedTransportClient.getOrCreateInstance(protocol, configs, requestTimeout, userAgent);
+            this.transportClient = SharedTransportClient.getOrCreateInstance(
+                protocol,
+                configs,
+                connectionPolicy,
+                userAgent,
+                diagnosticsClientConfig,
+                addressResolver);
         } else {
             if (protocol == Protocol.HTTPS) {
-                this.transportClient = new HttpTransportClient(configs, requestTimeout, userAgent);
+                this.transportClient = new HttpTransportClient(configs, connectionPolicy, userAgent);
             } else if (protocol == Protocol.TCP) {
-                this.transportClient = new RntbdTransportClient(configs, requestTimeout, userAgent);
+
+                RntbdTransportClient.Options rntbdOptions =
+                    new RntbdTransportClient.Options.Builder(connectionPolicy).userAgent(userAgent).build();
+                this.transportClient = new RntbdTransportClient(rntbdOptions, configs.getSslContext(), addressResolver);
+                diagnosticsClientConfig.withRntbdOptions(rntbdOptions);
+
             } else {
-                throw new IllegalArgumentException(String.format("protocol: %s", this.protocol));
+                throw new IllegalArgumentException(String.format("protocol: %s", protocol));
             }
         }
     }
@@ -65,6 +65,7 @@ public class StoreClientFactory implements AutoCloseable {
     // TODO enableReadRequestsFallback ask Ji
     // TODO useFallbackClient ask Ji
     public StoreClient createStoreClient(
+        DiagnosticsClientContext diagnosticsClientContext,
         IAddressResolver addressResolver,
         SessionContainer sessionContainer,
         GatewayServiceConfigurationReader serviceConfigurationReader,
@@ -72,7 +73,8 @@ public class StoreClientFactory implements AutoCloseable {
         boolean useMultipleWriteLocations) {
         this.throwIfClosed();
 
-        return new StoreClient(configs,
+        return new StoreClient(diagnosticsClientContext,
+            configs,
             addressResolver,
             sessionContainer,
             serviceConfigurationReader,

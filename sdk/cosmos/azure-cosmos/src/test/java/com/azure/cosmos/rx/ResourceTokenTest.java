@@ -3,7 +3,7 @@
 package com.azure.cosmos.rx;
 
 import com.azure.cosmos.ConnectionMode;
-import com.azure.cosmos.ConnectionPolicy;
+import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
@@ -14,7 +14,7 @@ import com.azure.cosmos.implementation.DatabaseForTest;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.FailureValidator;
-import com.azure.cosmos.models.Permission;
+import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.ResourceResponseValidator;
@@ -111,42 +111,42 @@ public class ResourceTokenTest extends TestSuiteBase {
         // CREATE getUser
         createdUser = createUser(client, createdDatabase.getId(), getUserDefinition());
         // CREATE getPermission for collection
-        createdCollPermission = client.createPermission(getUserLink(), getCollPermission(), null).single().block()
+        createdCollPermission = client.createPermission(getUserLink(), getCollPermission(), null).block()
                 .getResource();
-        createdCollPermissionWithName = client.createPermission(getUserLink(), getCollPermissionWithName(), null).single().block()
+        createdCollPermissionWithName = client.createPermission(getUserLink(), getCollPermissionWithName(), null).block()
                 .getResource();
         // CREATE permission for document
-        createdDocPermission = client.createPermission(getUserLink(), getDocPermission(), null).single().block()
+        createdDocPermission = client.createPermission(getUserLink(), getDocPermission(), null).block()
                 .getResource();
-        createdDocPermissionWithName = client.createPermission(getUserLink(), getDocPermissionWithName(), null).single().block()
+        createdDocPermissionWithName = client.createPermission(getUserLink(), getDocPermissionWithName(), null).block()
                 .getResource();
         // CREATE permission for document with partition key
         createdDocPermissionWithPartitionKey = client
-                .createPermission(getUserLink(), getDocPermissionWithPartitionKey(), null).single().block()
+                .createPermission(getUserLink(), getDocPermissionWithPartitionKey(), null).block()
                 .getResource();
         createdDocPermissionWithPartitionKeyWithName = client
-                .createPermission(getUserLink(), getDocPermissionWithPartitionKeyWithName(), null).single().block()
+                .createPermission(getUserLink(), getDocPermissionWithPartitionKeyWithName(), null).block()
                 .getResource();
         // CREATE permission for document with partition key 2
         createdDocPermissionWithPartitionKey2 = client
-                .createPermission(getUserLink(), getDocPermissionWithPartitionKey2(), null).single().block()
+                .createPermission(getUserLink(), getDocPermissionWithPartitionKey2(), null).block()
                 .getResource();
         createdDocPermissionWithPartitionKey2WithName = client
-                .createPermission(getUserLink(), getDocPermissionWithPartitionKey2WithName(), null).single().block()
+                .createPermission(getUserLink(), getDocPermissionWithPartitionKey2WithName(), null).block()
                 .getResource();
         // CREATE permission for collection with partition key
         createdColPermissionWithPartitionKey = client
-                .createPermission(getUserLink(), getColPermissionWithPartitionKey(), null).single().block()
+                .createPermission(getUserLink(), getColPermissionWithPartitionKey(), null).block()
                 .getResource();
         createdColPermissionWithPartitionKeyWithName = client
-                .createPermission(getUserLink(), getColPermissionWithPartitionKeyWithName(), null).single().block()
+                .createPermission(getUserLink(), getColPermissionWithPartitionKeyWithName(), null).block()
                 .getResource();
         // CREATE permission for collection with partition key
         createdColPermissionWithPartitionKey2 = client
-                .createPermission(getUserLink(), getColPermissionWithPartitionKey2(), null).single().block()
+                .createPermission(getUserLink(), getColPermissionWithPartitionKey2(), null).block()
                 .getResource();
         createdColPermissionWithPartitionKey2WithName = client
-                .createPermission(getUserLink(), getColPermissionWithPartitionKey2WithName(), null).single().block()
+                .createPermission(getUserLink(), getColPermissionWithPartitionKey2WithName(), null).block()
                 .getResource();
     }
 

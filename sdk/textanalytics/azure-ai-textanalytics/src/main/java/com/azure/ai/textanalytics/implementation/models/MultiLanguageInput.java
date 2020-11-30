@@ -7,9 +7,7 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Contains an input document to be analyzed by the service.
- */
+/** Contains an input document to be analyzed by the service. */
 @Fluent
 public final class MultiLanguageInput {
     /*
@@ -73,9 +71,8 @@ public final class MultiLanguageInput {
     }
 
     /**
-     * Get the language property: (Optional) This is the 2 letter ISO 639-1
-     * representation of a language. For example, use "en" for English; "es"
-     * for Spanish etc. If not set, use "en" for English as default.
+     * Get the language property: (Optional) This is the 2 letter ISO 639-1 representation of a language. For example,
+     * use "en" for English; "es" for Spanish etc. If not set, use "en" for English as default.
      *
      * @return the language value.
      */
@@ -84,9 +81,8 @@ public final class MultiLanguageInput {
     }
 
     /**
-     * Set the language property: (Optional) This is the 2 letter ISO 639-1
-     * representation of a language. For example, use "en" for English; "es"
-     * for Spanish etc. If not set, use "en" for English as default.
+     * Set the language property: (Optional) This is the 2 letter ISO 639-1 representation of a language. For example,
+     * use "en" for English; "es" for Spanish etc. If not set, use "en" for English as default.
      *
      * @param language the language value to set.
      * @return the MultiLanguageInput object itself.

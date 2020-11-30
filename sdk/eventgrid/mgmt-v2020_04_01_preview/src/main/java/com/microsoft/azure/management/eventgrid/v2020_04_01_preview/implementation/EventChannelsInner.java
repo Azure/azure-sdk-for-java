@@ -73,6 +73,10 @@ public class EventChannelsInner {
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerNamespaces/{partnerNamespaceName}/eventChannels/{eventChannelName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("partnerNamespaceName") String partnerNamespaceName, @Path("eventChannelName") String eventChannelName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.eventgrid.v2020_04_01_preview.EventChannels beginDelete" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerNamespaces/{partnerNamespaceName}/eventChannels/{eventChannelName}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> beginDelete(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("partnerNamespaceName") String partnerNamespaceName, @Path("eventChannelName") String eventChannelName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.eventgrid.v2020_04_01_preview.EventChannels listByPartnerNamespace" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerNamespaces/{partnerNamespaceName}/eventChannels")
         Observable<Response<ResponseBody>> listByPartnerNamespace(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("partnerNamespaceName") String partnerNamespaceName, @Query("api-version") String apiVersion, @Query("$filter") String filter, @Query("$top") Integer top, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -297,7 +301,7 @@ public class EventChannelsInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String partnerNamespaceName, String eventChannelName) {
-        deleteWithServiceResponseAsync(resourceGroupName, partnerNamespaceName, eventChannelName).toBlocking().single().body();
+        deleteWithServiceResponseAsync(resourceGroupName, partnerNamespaceName, eventChannelName).toBlocking().last().body();
     }
 
     /**
@@ -323,7 +327,7 @@ public class EventChannelsInner {
      * @param partnerNamespaceName Name of the partner namespace.
      * @param eventChannelName Name of the event channel.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
+     * @return the observable for the request
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String partnerNamespaceName, String eventChannelName) {
         return deleteWithServiceResponseAsync(resourceGroupName, partnerNamespaceName, eventChannelName).map(new Func1<ServiceResponse<Void>, Void>() {
@@ -342,7 +346,7 @@ public class EventChannelsInner {
      * @param partnerNamespaceName Name of the partner namespace.
      * @param eventChannelName Name of the event channel.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
+     * @return the observable for the request
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String partnerNamespaceName, String eventChannelName) {
         if (this.client.subscriptionId() == null) {
@@ -360,12 +364,91 @@ public class EventChannelsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.delete(this.client.subscriptionId(), resourceGroupName, partnerNamespaceName, eventChannelName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        Observable<Response<ResponseBody>> observable = service.delete(this.client.subscriptionId(), resourceGroupName, partnerNamespaceName, eventChannelName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
+    }
+
+    /**
+     * Delete an event channel.
+     * Delete existing event channel.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerNamespaceName Name of the partner namespace.
+     * @param eventChannelName Name of the event channel.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void beginDelete(String resourceGroupName, String partnerNamespaceName, String eventChannelName) {
+        beginDeleteWithServiceResponseAsync(resourceGroupName, partnerNamespaceName, eventChannelName).toBlocking().single().body();
+    }
+
+    /**
+     * Delete an event channel.
+     * Delete existing event channel.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerNamespaceName Name of the partner namespace.
+     * @param eventChannelName Name of the event channel.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String partnerNamespaceName, String eventChannelName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, partnerNamespaceName, eventChannelName), serviceCallback);
+    }
+
+    /**
+     * Delete an event channel.
+     * Delete existing event channel.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerNamespaceName Name of the partner namespace.
+     * @param eventChannelName Name of the event channel.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> beginDeleteAsync(String resourceGroupName, String partnerNamespaceName, String eventChannelName) {
+        return beginDeleteWithServiceResponseAsync(resourceGroupName, partnerNamespaceName, eventChannelName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Delete an event channel.
+     * Delete existing event channel.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerNamespaceName Name of the partner namespace.
+     * @param eventChannelName Name of the event channel.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String partnerNamespaceName, String eventChannelName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (partnerNamespaceName == null) {
+            throw new IllegalArgumentException("Parameter partnerNamespaceName is required and cannot be null.");
+        }
+        if (eventChannelName == null) {
+            throw new IllegalArgumentException("Parameter eventChannelName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.beginDelete(this.client.subscriptionId(), resourceGroupName, partnerNamespaceName, eventChannelName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Void> clientResponse = deleteDelegate(response);
+                        ServiceResponse<Void> clientResponse = beginDeleteDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -374,7 +457,7 @@ public class EventChannelsInner {
             });
     }
 
-    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())

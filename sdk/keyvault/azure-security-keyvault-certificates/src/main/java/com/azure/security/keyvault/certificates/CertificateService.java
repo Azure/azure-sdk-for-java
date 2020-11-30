@@ -57,7 +57,7 @@ interface CertificateService {
                                           @PathParam("certificate-name") String certificateName,
                                           @QueryParam("api-version") String apiVersion,
                                           @HeaderParam("accept-language") String acceptLanguage,
-                                          @BodyParam("body") CertificateRequestParameters parameters,
+                                          @BodyParam("application/json") CertificateRequestParameters parameters,
                                           @HeaderParam("Content-Type") String type,
                                           Context context);
 
@@ -180,7 +180,7 @@ interface CertificateService {
                                                           @PathParam("certificate-version") String certificateVersion,
                                                           @QueryParam("api-version") String apiVersion,
                                                           @HeaderParam("accept-language") String acceptLanguage,
-                                                          @BodyParam("body") CertificateUpdateParameters properties,
+                                                          @BodyParam("application/json") CertificateUpdateParameters properties,
                                                           @HeaderParam("Content-Type") String type,
                                                           Context context);
 
@@ -347,7 +347,7 @@ interface CertificateService {
                                                               @PathParam("issuer-name") String issuerName,
                                                               @QueryParam("api-version") String apiVersion,
                                                               @HeaderParam("accept-language") String acceptLanguage,
-                                                              @BodyParam("body") CertificateIssuerUpdateParameters properties,
+                                                              @BodyParam("application/json") CertificateIssuerUpdateParameters properties,
                                                               @HeaderParam("Content-Type") String type,
                                                               Context context);
 

@@ -4,7 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -21,16 +21,18 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.apachecommons.lang.NotImplementedException;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
+import java.net.URI;
 import java.util.concurrent.Callable;
 import java.util.function.Function;
 
@@ -80,6 +82,11 @@ public class AddressResolver implements IAddressResolver {
 
             return Mono.just(result.Addresses);
         });
+    }
+
+    @Override
+    public void updateAddresses(RxDocumentServiceRequest request, URI serverKey) {
+        throw new NotImplementedException("updateAddresses() is not supported in AddressResolver");
     }
 
     private static boolean isSameCollection(PartitionKeyRange initiallyResolved, PartitionKeyRange newlyResolved) {
@@ -134,7 +141,7 @@ public class AddressResolver implements IAddressResolver {
      * @param request     Request in progress
      * @param targetRange Target partition key range determined by address resolver
      * @*/
-    private void throwIfTargetChanged(RxDocumentServiceRequest request, PartitionKeyRange targetRange) throws CosmosClientException {
+    private void throwIfTargetChanged(RxDocumentServiceRequest request, PartitionKeyRange targetRange) {
         // If new range is child of previous range, we don't need to throw any exceptions
         // as LSNs are continued on child ranges.
         if (request.requestContext.resolvedPartitionKeyRange != null &&
@@ -148,14 +155,14 @@ public class AddressResolver implements IAddressResolver {
             }
 
             request.requestContext.resolvedPartitionKeyRange = null;
-            throw new InvalidPartitionException(RMResources.InvalidTarget, request.getResourceAddress());
+            throw new InvalidPartitionException(RMResources.InvalidTarget, request.requestContext.resourcePhysicalAddress);
         }
     }
 
     private static void ensureRoutingMapPresent(
         RxDocumentServiceRequest request,
         CollectionRoutingMap routingMap,
-        DocumentCollection collection) throws CosmosClientException {
+        DocumentCollection collection) {
         if (routingMap == null && request.getIsNameBased() && request.getPartitionKeyRangeIdentity() != null
             && request.getPartitionKeyRangeIdentity().getCollectionRid() != null) {
             // By design, if partitionkeyrangeid header is present and it contains collectionrid for collection
@@ -169,7 +176,7 @@ public class AddressResolver implements IAddressResolver {
                     request.getPartitionKeyRangeIdentity().toHeader());
             }
             InvalidPartitionException invalidPartitionException = new InvalidPartitionException();
-            BridgeInternal.setResourceAddress(invalidPartitionException, request.getResourceAddress());
+            BridgeInternal.setResourceAddress(invalidPartitionException, request.requestContext.resourcePhysicalAddress);
             throw invalidPartitionException;
         }
 
@@ -181,7 +188,7 @@ public class AddressResolver implements IAddressResolver {
             }
             // Routing map not found although collection was resolved correctly.
             NotFoundException e = new NotFoundException();
-            BridgeInternal.setResourceAddress(e, request.getResourceAddress());
+            BridgeInternal.setResourceAddress(e, request.requestContext.resourcePhysicalAddress);
             throw e;
         }
     }
@@ -216,7 +223,7 @@ public class AddressResolver implements IAddressResolver {
                     request.getResourceType(),
                     request.getOperationType(),
                     request.getResourceAddress());
-                return Mono.error(BridgeInternal.setResourceAddress(new InternalServerErrorException(RMResources.InternalServerError), request.getResourceAddress()));
+                return Mono.error(BridgeInternal.setResourceAddress(new InternalServerErrorException(RMResources.InternalServerError), request.requestContext.resourcePhysicalAddress));
             }
 
             PartitionKeyRange range;
@@ -266,7 +273,7 @@ public class AddressResolver implements IAddressResolver {
     private PartitionKeyRange tryResolveSinglePartitionCollection(
         RxDocumentServiceRequest request,
         CollectionRoutingMap routingMap,
-        boolean collectionCacheIsUptoDate) throws CosmosClientException {
+        boolean collectionCacheIsUptoDate) {
         // Neither partitionkey nor partitionkeyrangeid is specified.
         // Three options here:
         //    * This is non-partitioned collection and old client SDK which doesn't send partition key. In
@@ -286,7 +293,7 @@ public class AddressResolver implements IAddressResolver {
 
         logger.debug("tryResolveSinglePartitionCollection: collectionCacheIsUptoDate = {}", collectionCacheIsUptoDate);
         if (collectionCacheIsUptoDate) {
-            throw BridgeInternal.setResourceAddress(new BadRequestException(RMResources.MissingPartitionKeyValue), request.getResourceAddress());
+            throw BridgeInternal.setResourceAddress(new BadRequestException(RMResources.MissingPartitionKeyValue), request.requestContext.resourcePhysicalAddress);
         } else {
             return null;
         }
@@ -307,7 +314,7 @@ public class AddressResolver implements IAddressResolver {
 
                 // return Observable.getError()
                 NotFoundException e = new NotFoundException();
-                BridgeInternal.setResourceAddress(e, request.getResourceAddress());
+                BridgeInternal.setResourceAddress(e, request.requestContext.resourcePhysicalAddress);
                 return Mono.error(e);
             }
 
@@ -334,12 +341,12 @@ public class AddressResolver implements IAddressResolver {
             (request.getPartitionKeyRangeIdentity() != null && request.getPartitionKeyRangeIdentity().getCollectionRid() != null);
         state.collectionRoutingMapCacheIsUptoDate = false;
 
-        Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(request);
+        Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
 
         Mono<RefreshState> stateObs = collectionObs.flatMap(collectionValueHolder -> {
             state.collection = collectionValueHolder.v;
             Mono<Utils.ValueHolder<CollectionRoutingMap>> routingMapObs =
-                this.collectionRoutingMapCache.tryLookupAsync(collectionValueHolder.v.getResourceId(), null, request.forceCollectionRoutingMapRefresh, request.properties);
+                this.collectionRoutingMapCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), collectionValueHolder.v.getResourceId(), null, request.forceCollectionRoutingMapRefresh, request.properties);
             final Utils.ValueHolder<DocumentCollection> underlyingCollection = collectionValueHolder;
             return routingMapObs.flatMap(routingMapValueHolder -> {
                 state.routingMap = routingMapValueHolder.v;
@@ -348,7 +355,7 @@ public class AddressResolver implements IAddressResolver {
                     state.collectionRoutingMapCacheIsUptoDate = true;
                     request.forcePartitionKeyRangeRefresh = false;
                     if (routingMapValueHolder.v != null) {
-                        return this.collectionRoutingMapCache.tryLookupAsync(underlyingCollection.v.getResourceId(), routingMapValueHolder.v, request.properties)
+                        return this.collectionRoutingMapCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), underlyingCollection.v.getResourceId(), routingMapValueHolder.v, request.properties)
                             .map(newRoutingMapValueHolder -> {
                                 state.routingMap = newRoutingMapValueHolder.v;
                                 return state;
@@ -369,11 +376,12 @@ public class AddressResolver implements IAddressResolver {
                 newState.collectionCacheIsUptoDate = true;
                 newState.collectionRoutingMapCacheIsUptoDate = false;
 
-                Mono<Utils.ValueHolder<DocumentCollection>> newCollectionObs = this.collectionCache.resolveCollectionAsync(request);
+                Mono<Utils.ValueHolder<DocumentCollection>> newCollectionObs = this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
 
                 return newCollectionObs.flatMap(collectionValueHolder -> {
                         newState.collection = collectionValueHolder.v;
                     Mono<Utils.ValueHolder<CollectionRoutingMap>> newRoutingMapObs = this.collectionRoutingMapCache.tryLookupAsync(
+                        BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
                             collectionValueHolder.v.getResourceId(),
                             null,
                             request.properties);
@@ -463,6 +471,7 @@ public class AddressResolver implements IAddressResolver {
                         if (!funcState.collectionRoutingMapCacheIsUptoDate) {
                             funcState.collectionRoutingMapCacheIsUptoDate = true;
                             Mono<Utils.ValueHolder<CollectionRoutingMap>> newRoutingMapObs = this.collectionRoutingMapCache.tryLookupAsync(
+                                BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
                                 funcState.collection.getResourceId(),
                                 funcState.routingMap,
                                 request.properties);
@@ -498,7 +507,7 @@ public class AddressResolver implements IAddressResolver {
                             // The only reason we will get here is if collection doesn't exist.
                             // Case when partition-key-range doesn't exist is handled in the corresponding method.
 
-                            return Mono.error(BridgeInternal.setResourceAddress(new NotFoundException(), request.getResourceAddress()));
+                            return Mono.error(BridgeInternal.setResourceAddress(new NotFoundException(), request.requestContext.resourcePhysicalAddress));
                         }
 
                         return Mono.just(funcResolutionResult.v);
@@ -510,7 +519,7 @@ public class AddressResolver implements IAddressResolver {
                         request.forceNameCacheRefresh = true;
                         state.collectionCacheIsUptoDate = true;
 
-                        Mono<Utils.ValueHolder<DocumentCollection>> newCollectionObs = this.collectionCache.resolveCollectionAsync(request);
+                        Mono<Utils.ValueHolder<DocumentCollection>> newCollectionObs = this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
                         Mono<RefreshState> newRefreshStateObs = newCollectionObs.flatMap(collectionValueHolder -> {
                             state.collection = collectionValueHolder.v;
 
@@ -519,6 +528,7 @@ public class AddressResolver implements IAddressResolver {
                                 // for this new collection rid. Mark it as such.
                                 state.collectionRoutingMapCacheIsUptoDate = false;
                                 Mono<Utils.ValueHolder<CollectionRoutingMap>> newRoutingMap = this.collectionRoutingMapCache.tryLookupAsync(
+                                    BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
                                     collectionValueHolder.v.getResourceId(),
                                     null,
                                     request.properties);
@@ -549,7 +559,7 @@ public class AddressResolver implements IAddressResolver {
         RxDocumentServiceRequest request,
         boolean collectionCacheIsUpToDate,
         boolean routingMapCacheIsUpToDate,
-        CollectionRoutingMap routingMap) throws CosmosClientException {
+        CollectionRoutingMap routingMap) {
         // Optimization to not refresh routing map unnecessary. As we keep track of parent child relationships,
         // we can determine that a range is gone just by looking up in the routing map.
         if (collectionCacheIsUpToDate && routingMapCacheIsUpToDate ||
@@ -558,7 +568,7 @@ public class AddressResolver implements IAddressResolver {
                 RMResources.PartitionKeyRangeNotFound,
                 request.getPartitionKeyRangeIdentity().getPartitionKeyRangeId(),
                 request.getPartitionKeyRangeIdentity().getCollectionRid());
-            throw BridgeInternal.setResourceAddress(new PartitionKeyRangeGoneException(errorMessage), request.getResourceAddress());
+            throw BridgeInternal.setResourceAddress(new PartitionKeyRangeGoneException(errorMessage), request.requestContext.resourcePhysicalAddress);
         }
         logger.debug("handleRangeAddressResolutionFailure returns null");
         return null;
@@ -600,7 +610,7 @@ public class AddressResolver implements IAddressResolver {
                 }
                 try {
                     return Mono.just(new Utils.ValueHolder<>(this.handleRangeAddressResolutionFailure(request, collectionCacheIsUpToDate, routingMapCacheIsUpToDate, routingMap)));
-                } catch (CosmosClientException e) {
+                } catch (CosmosException e) {
                     return Mono.error(e);
                 }
             }
@@ -613,7 +623,7 @@ public class AddressResolver implements IAddressResolver {
         PartitionKeyInternal partitionKey,
         boolean collectionCacheUptoDate,
         DocumentCollection collection,
-        CollectionRoutingMap routingMap) throws CosmosClientException {
+        CollectionRoutingMap routingMap) {
         if (request == null) {
             throw new NullPointerException("request");
         }
@@ -639,7 +649,7 @@ public class AddressResolver implements IAddressResolver {
                 } catch (Exception ex) {
                     throw BridgeInternal.setResourceAddress(new BadRequestException(
                         String.format(RMResources.InvalidPartitionKey, partitionKeyString),
-                        ex), request.getResourceAddress());
+                        ex), request.requestContext.resourcePhysicalAddress);
                 }
             }
         }
@@ -648,7 +658,7 @@ public class AddressResolver implements IAddressResolver {
             throw new InternalServerErrorException(String.format("partition key is null"));
         }
 
-        if (partitionKey.equals(PartitionKeyInternal.Empty) || partitionKey.getComponents().size() == collection.getPartitionKey().getPaths().size()) {
+        if (partitionKey.equals(PartitionKeyInternal.Empty) || Utils.getCollectionSize(partitionKey.getComponents()) == collection.getPartitionKey().getPaths().size()) {
             // Although we can compute effective partition getKey here, in general case this GATEWAY can have outdated
             // partition getKey definition cached - like if collection with same getName but with RANGE partitioning is created.
             // In this case server will not pass x-ms-documentdb-collection-rid check and will return back InvalidPartitionException.
@@ -660,7 +670,8 @@ public class AddressResolver implements IAddressResolver {
         }
 
         if (collectionCacheUptoDate) {
-            BadRequestException badRequestException = BridgeInternal.setResourceAddress(new BadRequestException(RMResources.PartitionKeyMismatch), request.getResourceAddress());
+            BadRequestException badRequestException = BridgeInternal.setResourceAddress(new BadRequestException(RMResources.PartitionKeyMismatch),
+                request.requestContext.resourcePhysicalAddress);
             badRequestException.getResponseHeaders().put(WFConstants.BackendHeaders.SUB_STATUS, Integer.toString(HttpConstants.SubStatusCodes.PARTITION_KEY_MISMATCH));
 
             throw badRequestException;
@@ -682,7 +693,7 @@ public class AddressResolver implements IAddressResolver {
             logger.debug(
                 "Cannot compute effective partition getKey. Definition has '{}' getPaths, values supplied has '{}' getPaths. Will refresh cache and retry.",
                 collection.getPartitionKey().getPaths().size(),
-                partitionKey.getComponents().size());
+                Utils.getCollectionSize(partitionKey.getComponents()));
         }
 
         return null;

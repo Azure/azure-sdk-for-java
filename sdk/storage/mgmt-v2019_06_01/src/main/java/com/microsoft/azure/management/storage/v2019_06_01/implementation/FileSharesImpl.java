@@ -79,4 +79,10 @@ class FileSharesImpl extends WrapperImpl<FileSharesInner> implements FileShares 
         return client.deleteAsync(resourceGroupName, accountName, shareName).toCompletable();
     }
 
+    @Override
+    public Completable restoreAsync(String resourceGroupName, String accountName, String shareName, String deletedShareName, String deletedShareVersion) {
+        FileSharesInner client = this.inner();
+        return client.restoreAsync(resourceGroupName, accountName, shareName, deletedShareName, deletedShareVersion).toCompletable();
+    }
+
 }

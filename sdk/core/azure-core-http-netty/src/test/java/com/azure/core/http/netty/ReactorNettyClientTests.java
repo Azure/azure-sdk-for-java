@@ -4,19 +4,22 @@
 package com.azure.core.http.netty;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.netty.implementation.ReactorNettyClientProvider;
 import com.azure.core.util.Context;
 import com.github.tomakehurst.wiremock.WireMockServer;
-import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -26,6 +29,7 @@ import reactor.test.StepVerifierOptions;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -35,8 +39,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
+import java.util.stream.Stream;
 
-import static com.azure.core.http.netty.NettyAsyncHttpClient.ReactorNettyHttpResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static java.time.Duration.ofMillis;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -50,18 +57,24 @@ public class ReactorNettyClientTests {
     private static final String SHORT_BODY = "hi there";
     private static final String LONG_BODY = createLongBody();
 
+    static final String TEST_HEADER = "testHeader";
+
     private static WireMockServer server;
 
     @BeforeAll
     public static void beforeClass() {
-        server = new WireMockServer(WireMockConfiguration.options().dynamicPort().disableRequestJournal());
-        server.stubFor(
-            WireMock.get(SHORT_BODY_PATH).willReturn(WireMock.aResponse().withBody(SHORT_BODY)));
-        server.stubFor(WireMock.get(LONG_BODY_PATH).willReturn(WireMock.aResponse().withBody(LONG_BODY)));
-        server.stubFor(WireMock.get("/error")
-            .willReturn(WireMock.aResponse().withBody("error").withStatus(500)));
-        server.stubFor(
-            WireMock.post("/shortPost").willReturn(WireMock.aResponse().withBody(SHORT_BODY)));
+        server = new WireMockServer(WireMockConfiguration.options()
+            .extensions(new ReactorNettyClientResponseTransformer())
+            .dynamicPort()
+            .disableRequestJournal()
+            .gzipDisabled(true));
+
+        server.stubFor(get(SHORT_BODY_PATH).willReturn(aResponse().withBody(SHORT_BODY)));
+        server.stubFor(get(LONG_BODY_PATH).willReturn(aResponse().withBody(LONG_BODY)));
+        server.stubFor(get("/error").willReturn(aResponse().withBody("error").withStatus(500)));
+        server.stubFor(post("/shortPost").willReturn(aResponse().withBody(SHORT_BODY)));
+        server.stubFor(post("/httpHeaders").willReturn(aResponse()
+            .withTransformers(ReactorNettyClientResponseTransformer.NAME)));
         server.start();
         // ResourceLeakDetector.setLevel(Level.PARANOID);
     }
@@ -84,18 +97,32 @@ public class ReactorNettyClientTests {
     }
 
     @Test
+    @Disabled
     public void testMultipleSubscriptionsEmitsError() {
+        /*
+         * This test is being disabled as there is a possible race condition on what is being tested.
+         *
+         * Reactor Netty will throw an exception when multiple subscriptions are made to the same network response at
+         * the same time. An exception won't be thrown if the first subscription has already been completed and cleaned
+         * up when the second subscription is made. In addition to that potential race scenario, there is additional
+         * complexity added when dealing with the response in an EventLoop. When in the EventLoop the subscription isn't
+         * cleaned up synchronously but instead is added as an execution for the EventLoop to trigger some time in the
+         * future. Given that this test will be disabled.
+         */
         HttpResponse response = getResponse(SHORT_BODY_PATH);
         // Subscription:1
-        response.getBodyAsByteArray().block();
+        StepVerifier.create(response.getBodyAsByteArray())
+            .assertNext(bytes -> assertEquals(SHORT_BODY, new String(bytes, StandardCharsets.UTF_8)))
+            .verifyComplete();
 
         // Subscription:2
         StepVerifier.create(response.getBodyAsByteArray())
             .expectNextCount(0)
             // Reactor netty 0.9.0.RELEASE behavior changed - second subscription returns onComplete() instead
             // of throwing an error
-            //.verifyError(IllegalStateException.class);
-            .verifyComplete();
+            // Reactor netty 0.9.7.RELEASE again changed the behavior to return an error on second subscription.
+            .verifyError(IllegalStateException.class);
+            // .verifyComplete();
     }
 
     @Test
@@ -334,6 +361,27 @@ public class ReactorNettyClientTests {
         assertEquals(LONG_BODY, delayWriteStream.aggregateAsString());
     }
 
+    @ParameterizedTest
+    @MethodSource("requestHeaderSupplier")
+    public void requestHeader(String headerValue, String expectedValue) {
+        HttpClient client = new ReactorNettyClientProvider().createInstance();
+
+        HttpHeaders headers = new HttpHeaders().put(TEST_HEADER, headerValue);
+        HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/httpHeaders"), headers, Flux.empty());
+
+        StepVerifier.create(client.send(request))
+            .assertNext(response -> assertEquals(expectedValue, response.getHeaderValue(TEST_HEADER)))
+            .verifyComplete();
+    }
+
+    private static Stream<Arguments> requestHeaderSupplier() {
+        return Stream.of(
+            Arguments.of(null, ReactorNettyClientResponseTransformer.NULL_REPLACEMENT),
+            Arguments.of("", ""),
+            Arguments.of("aValue", "aValue")
+        );
+    }
+
     private static ReactorNettyHttpResponse getResponse(String path) {
         NettyAsyncHttpClient client = new NettyAsyncHttpClient();
         return getResponse(client, path);
@@ -391,7 +439,11 @@ public class ReactorNettyClientTests {
                 }
             }
 
-            return new String(outputStream.toByteArray(), StandardCharsets.UTF_8);
+            try {
+                return outputStream.toString("UTF-8");
+            } catch (UnsupportedEncodingException ex) {
+                throw new RuntimeException(ex);
+            }
         }
     }
 }

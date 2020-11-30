@@ -10,6 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
+import java.net.Proxy;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -255,14 +256,31 @@ public class ProxyOptions {
         /**
          * HTTP proxy type.
          */
-        HTTP(),
+        HTTP(Proxy.Type.HTTP),
+
         /**
          * SOCKS4 proxy type.
          */
-        SOCKS4(),
+        SOCKS4(Proxy.Type.SOCKS),
+
         /**
          * SOCKS5 proxy type.
          */
-        SOCKS5()
+        SOCKS5(Proxy.Type.SOCKS);
+
+        private final Proxy.Type proxyType;
+
+        Type(Proxy.Type proxyType) {
+            this.proxyType = proxyType;
+        }
+
+        /**
+         * Get the {@link Proxy.Type} equivalent of this type.
+         *
+         * @return the proxy type
+         */
+        public Proxy.Type toProxyType() {
+            return proxyType;
+        }
     }
 }

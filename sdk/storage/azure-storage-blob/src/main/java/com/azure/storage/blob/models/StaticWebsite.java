@@ -32,6 +32,12 @@ public final class StaticWebsite {
     @JsonProperty(value = "ErrorDocument404Path")
     private String errorDocument404Path;
 
+    /*
+     * Absolute path of the default index page
+     */
+    @JsonProperty(value = "DefaultIndexDocumentPath")
+    private String defaultIndexDocumentPath;
+
     /**
      * Get the enabled property: Indicates whether this account is hosting a
      * static website.
@@ -95,6 +101,29 @@ public final class StaticWebsite {
      */
     public StaticWebsite setErrorDocument404Path(String errorDocument404Path) {
         this.errorDocument404Path = errorDocument404Path;
+        return this;
+    }
+
+    /**
+     * Get the defaultIndexDocumentPath property: Absolute path of the default
+     * index page.
+     *
+     * @return the defaultIndexDocumentPath value.
+     */
+    public String getDefaultIndexDocumentPath() {
+        return this.defaultIndexDocumentPath;
+    }
+
+    /**
+     * Set the defaultIndexDocumentPath property: Absolute path of the default
+     * index page.
+     *
+     * @param defaultIndexDocumentPath the defaultIndexDocumentPath value to
+     * set.
+     * @return the StaticWebsite object itself.
+     */
+    public StaticWebsite setDefaultIndexDocumentPath(String defaultIndexDocumentPath) {
+        this.defaultIndexDocumentPath = defaultIndexDocumentPath;
         return this;
     }
 }

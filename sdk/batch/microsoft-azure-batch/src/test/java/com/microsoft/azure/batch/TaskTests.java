@@ -27,8 +27,8 @@ public class TaskTests  extends BatchIntegrationTestBase {
         liveIaasPoolId = getStringIdWithUserNamePrefix("-testIaaSpool");
         try {
             if(isRecordMode()) {
-                createClient(AuthMode.SharedKey);
-                livePool = createIfNotExistPaaSPool(livePoolId);
+                createClient(AuthMode.AAD);
+                livePool = createIfNotExistIaaSPool(livePoolId);
                 liveIaaSPool = createIfNotExistIaaSPool(liveIaasPoolId);
                 Assert.assertNotNull(livePool);
             }
@@ -77,7 +77,7 @@ public class TaskTests  extends BatchIntegrationTestBase {
 
             //The Storage operations run only in Record mode.
             // Playback mode is configured to test Batch operations only.
-            if(isRecordMode()) {
+            if (isRecordMode()) {
                 // Create storage container
                 container = createBlobContainer(storageAccountName, storageAccountKey, "testaddtask");
                 sas = uploadFileToCloud(container, BLOB_FILE_NAME, temp.getAbsolutePath());
@@ -109,7 +109,7 @@ public class TaskTests  extends BatchIntegrationTestBase {
             contraint.withMaxTaskRetryCount(5);
             batchClient.taskOperations().updateTask(jobId, taskId, contraint);
             task = batchClient.taskOperations().getTask(jobId, taskId);
-            Assert.assertEquals((Integer)5, task.constraints().maxTaskRetryCount());
+            Assert.assertEquals((Integer) 5, task.constraints().maxTaskRetryCount());
 
             // LIST
             List<CloudTask> tasks = batchClient.taskOperations().listTasks(jobId);
@@ -303,7 +303,7 @@ public class TaskTests  extends BatchIntegrationTestBase {
         }
     }
 
-    @Test
+    //@Test
     public void testAddMultiTasks() throws Exception {
         String jobId = getStringIdWithUserNamePrefix("-testAddMultiTasks");
 
@@ -387,9 +387,15 @@ public class TaskTests  extends BatchIntegrationTestBase {
 
         try {
             // Test Job count
-            TaskCounts counts = alternativeBatchClient.jobOperations().getTaskCounts(jobId);
+            TaskCountsResult countResult =
+                alternativeBatchClient.jobOperations().getTaskCountsResult(jobId);
+            TaskCounts counts = countResult.taskCounts();
             int all = counts.active() + counts.completed() + counts.running();
             Assert.assertEquals(0, all);
+
+            TaskSlotCounts slotCounts = countResult.taskSlotCounts();
+            int allSlots = slotCounts.active() + slotCounts.completed() + slotCounts.running();
+            Assert.assertEquals(0, allSlots);
 
             // CREATE
             List<TaskAddParameter> tasksToAdd = new ArrayList<>();
@@ -408,9 +414,16 @@ public class TaskTests  extends BatchIntegrationTestBase {
             threadSleepInRecordMode(30 * 1000);
 
             // Test Job count
-            counts = alternativeBatchClient.jobOperations().getTaskCounts(jobId);
+            countResult =
+                alternativeBatchClient.jobOperations().getTaskCountsResult(jobId);
+            counts = countResult.taskCounts();
             all = counts.active() + counts.completed() + counts.running();
             Assert.assertEquals(TASK_COUNT, all);
+
+            slotCounts = countResult.taskSlotCounts();
+            allSlots = slotCounts.active() + slotCounts.completed() + slotCounts.running();
+            // One slot per task
+            Assert.assertEquals(TASK_COUNT, allSlots);
         } finally {
             try {
                 batchClient.jobOperations().deleteJob(jobId);
@@ -527,7 +540,7 @@ public class TaskTests  extends BatchIntegrationTestBase {
         if(!isRecordMode()){
             return;
         }
-        createClient(AuthMode.SharedKey);
+        createClient(AuthMode.AAD);
         String jobId = getStringIdWithUserNamePrefix("-succeedWithRetry");
         String taskId = "mytask";
 
@@ -546,7 +559,7 @@ public class TaskTests  extends BatchIntegrationTestBase {
 
         // Num Resource Files * Max Chunk Size should be greater than or equal to the limit which triggers the PoisonTask test to ensure we encounter the error in the initial chunk.
         for(int i = 0; i < 100; i++) {
-            resourceFile = new ResourceFile().withHttpUrl("https://mystorageaccount.blob.core.windows.net/files/resourceFile"+i).withFilePath("resourceFile"+i);
+            resourceFile = new ResourceFile().withHttpUrl("https://mystorageaccount.blob.core.windows.net/files/resourceFile"+i).withFilePath("resourceFile" + i);
             resourceFiles.add(resourceFile);
         }
         // Num tasks to add

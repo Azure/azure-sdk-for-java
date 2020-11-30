@@ -4,6 +4,7 @@ import com.azure.core.util.Context
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
+import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.common.Utility
 import com.azure.storage.file.datalake.models.*
 import spock.lang.Unroll
@@ -362,6 +363,29 @@ class FileSystemAPITest extends APISpec {
         notThrown(DataLakeStorageException)
     }
 
+    @Unroll
+    def "Create file overwrite"() {
+        setup:
+        def pathName = generatePathName()
+        fsc.createFile(pathName)
+
+        when:
+        def exceptionThrown = false
+        try {
+            fsc.createFile(pathName, overwrite)
+        } catch (DataLakeStorageException ignored) {
+            exceptionThrown = true
+        }
+
+        then:
+        exceptionThrown != overwrite
+
+        where:
+        overwrite || _
+        true      || _
+        false     || _
+    }
+
     def "Create file defaults"() {
         when:
         def createResponse = fsc.createFileWithResponse(generatePathName(), null, null, null, null, null, null, null)
@@ -578,11 +602,33 @@ class FileSystemAPITest extends APISpec {
 
     def "Create dir min"() {
         when:
-        def dir = fsc.getDirectoryClient(generatePathName())
-        dir.create()
+        fsc.createDirectory(generatePathName())
 
         then:
         notThrown(DataLakeStorageException)
+    }
+
+    @Unroll
+    def "Create dir overwrite"() {
+        setup:
+        def pathName = generatePathName()
+        fsc.createDirectory(pathName)
+
+        when:
+        def exceptionThrown = false
+        try {
+            fsc.createDirectory(pathName, overwrite)
+        } catch (DataLakeStorageException ignored) {
+            exceptionThrown = true
+        }
+
+        then:
+        exceptionThrown != overwrite
+
+        where:
+        overwrite || _
+        true      || _
+        false     || _
     }
 
     def "Create dir defaults"() {
@@ -1170,6 +1216,26 @@ class FileSystemAPITest extends APISpec {
         notThrown(DataLakeStorageException)
         resp.getETag()
         resp.getLastModified()
+    }
+
+    // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
+    def "Per call policy"() {
+        setup:
+        def fsc = getFileSystemClientBuilder(fsc.getFileSystemUrl()).addPolicy(getPerCallVersionPolicy()).credential(primaryCredential).buildClient()
+
+        when: "blob endpoint"
+        def response = fsc.getPropertiesWithResponse(null, null, null)
+
+        then:
+        notThrown(DataLakeStorageException)
+        response.getHeaders().getValue("x-ms-version") == "2019-02-02"
+
+        when: "dfs endpoint"
+        response = fsc.getAccessPolicyWithResponse(null, null, null)
+
+        then:
+        notThrown(DataLakeStorageException)
+        response.getHeaders().getValue("x-ms-version") == "2019-02-02"
     }
 
 }

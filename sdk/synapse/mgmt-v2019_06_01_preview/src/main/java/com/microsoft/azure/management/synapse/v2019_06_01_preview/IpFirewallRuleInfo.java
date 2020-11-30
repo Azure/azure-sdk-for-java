@@ -11,6 +11,7 @@ package com.microsoft.azure.management.synapse.v2019_06_01_preview;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.implementation.IpFirewallRuleInfoInner;
 import com.microsoft.azure.arm.model.Indexable;
+import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
@@ -20,7 +21,7 @@ import com.microsoft.azure.management.synapse.v2019_06_01_preview.implementation
 /**
  * Type representing IpFirewallRuleInfo.
  */
-public interface IpFirewallRuleInfo extends HasInner<IpFirewallRuleInfoInner>, Indexable, Updatable<IpFirewallRuleInfo.Update>, HasManager<SynapseManager> {
+public interface IpFirewallRuleInfo extends HasInner<IpFirewallRuleInfoInner>, Indexable, Refreshable<IpFirewallRuleInfo>, Updatable<IpFirewallRuleInfo.Update>, HasManager<SynapseManager> {
     /**
      * @return the endIpAddress value.
      */

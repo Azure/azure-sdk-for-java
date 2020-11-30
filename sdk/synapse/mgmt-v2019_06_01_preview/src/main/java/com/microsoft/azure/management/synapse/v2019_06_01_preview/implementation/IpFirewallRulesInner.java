@@ -11,8 +11,8 @@ package com.microsoft.azure.management.synapse.v2019_06_01_preview.implementatio
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.ErrorContractException;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.IpFirewallRuleProperties;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.ReplaceAllIpFirewallRulesRequest;
 import com.microsoft.azure.Page;
@@ -87,6 +87,10 @@ public class IpFirewallRulesInner {
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/firewallRules/{ruleName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> beginDelete(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("workspaceName") String workspaceName, @Path("ruleName") String ruleName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.synapse.v2019_06_01_preview.IpFirewallRules get" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/firewallRules/{ruleName}")
+        Observable<Response<ResponseBody>> get(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("workspaceName") String workspaceName, @Path("ruleName") String ruleName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.synapse.v2019_06_01_preview.IpFirewallRules replaceAll" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/replaceAllIpFirewallRules")
         Observable<Response<ResponseBody>> replaceAll(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("workspaceName") String workspaceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ReplaceAllIpFirewallRulesRequest request, @Header("User-Agent") String userAgent);
@@ -107,7 +111,7 @@ public class IpFirewallRulesInner {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;IpFirewallRuleInfoInner&gt; object if successful.
      */
@@ -217,10 +221,10 @@ public class IpFirewallRulesInner {
             });
     }
 
-    private ServiceResponse<PageImpl<IpFirewallRuleInfoInner>> listByWorkspaceDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<IpFirewallRuleInfoInner>, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<IpFirewallRuleInfoInner>> listByWorkspaceDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<IpFirewallRuleInfoInner>, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<IpFirewallRuleInfoInner>>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 
@@ -232,7 +236,7 @@ public class IpFirewallRulesInner {
      * @param ruleName The IP firewall rule name
      * @param ipFirewallRuleInfo IP firewall rule properties
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the IpFirewallRuleInfoInner object if successful.
      */
@@ -316,7 +320,7 @@ public class IpFirewallRulesInner {
      * @param ruleName The IP firewall rule name
      * @param ipFirewallRuleInfo IP firewall rule properties
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the IpFirewallRuleInfoInner object if successful.
      */
@@ -402,11 +406,11 @@ public class IpFirewallRulesInner {
             });
     }
 
-    private ServiceResponse<IpFirewallRuleInfoInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws ErrorContractInnerException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<IpFirewallRuleInfoInner, ErrorContractInnerException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<IpFirewallRuleInfoInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<IpFirewallRuleInfoInner, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<IpFirewallRuleInfoInner>() { }.getType())
                 .register(201, new TypeToken<IpFirewallRuleInfoInner>() { }.getType())
-                .registerError(ErrorContractInnerException.class)
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 
@@ -417,7 +421,7 @@ public class IpFirewallRulesInner {
      * @param workspaceName The name of the workspace
      * @param ruleName The IP firewall rule name
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Object object if successful.
      */
@@ -493,7 +497,7 @@ public class IpFirewallRulesInner {
      * @param workspaceName The name of the workspace
      * @param ruleName The IP firewall rule name
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Object object if successful.
      */
@@ -572,12 +576,105 @@ public class IpFirewallRulesInner {
             });
     }
 
-    private ServiceResponse<Object> beginDeleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Object, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<Object> beginDeleteDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Object, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Object>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorContractException.class)
+                .build(response);
+    }
+
+    /**
+     * Get a firewall rule.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param ruleName The IP firewall rule name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorContractException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the IpFirewallRuleInfoInner object if successful.
+     */
+    public IpFirewallRuleInfoInner get(String resourceGroupName, String workspaceName, String ruleName) {
+        return getWithServiceResponseAsync(resourceGroupName, workspaceName, ruleName).toBlocking().single().body();
+    }
+
+    /**
+     * Get a firewall rule.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param ruleName The IP firewall rule name
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<IpFirewallRuleInfoInner> getAsync(String resourceGroupName, String workspaceName, String ruleName, final ServiceCallback<IpFirewallRuleInfoInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, workspaceName, ruleName), serviceCallback);
+    }
+
+    /**
+     * Get a firewall rule.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param ruleName The IP firewall rule name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the IpFirewallRuleInfoInner object
+     */
+    public Observable<IpFirewallRuleInfoInner> getAsync(String resourceGroupName, String workspaceName, String ruleName) {
+        return getWithServiceResponseAsync(resourceGroupName, workspaceName, ruleName).map(new Func1<ServiceResponse<IpFirewallRuleInfoInner>, IpFirewallRuleInfoInner>() {
+            @Override
+            public IpFirewallRuleInfoInner call(ServiceResponse<IpFirewallRuleInfoInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Get a firewall rule.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param ruleName The IP firewall rule name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the IpFirewallRuleInfoInner object
+     */
+    public Observable<ServiceResponse<IpFirewallRuleInfoInner>> getWithServiceResponseAsync(String resourceGroupName, String workspaceName, String ruleName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (workspaceName == null) {
+            throw new IllegalArgumentException("Parameter workspaceName is required and cannot be null.");
+        }
+        if (ruleName == null) {
+            throw new IllegalArgumentException("Parameter ruleName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.get(this.client.subscriptionId(), resourceGroupName, workspaceName, ruleName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<IpFirewallRuleInfoInner>>>() {
+                @Override
+                public Observable<ServiceResponse<IpFirewallRuleInfoInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<IpFirewallRuleInfoInner> clientResponse = getDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<IpFirewallRuleInfoInner> getDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<IpFirewallRuleInfoInner, ErrorContractException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<IpFirewallRuleInfoInner>() { }.getType())
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 
@@ -587,7 +684,7 @@ public class IpFirewallRulesInner {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ReplaceAllFirewallRulesOperationResponseInner object if successful.
      */
@@ -659,7 +756,7 @@ public class IpFirewallRulesInner {
      * @param workspaceName The name of the workspace
      * @param ipFirewallRules IP firewall rule properties
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ReplaceAllFirewallRulesOperationResponseInner object if successful.
      */
@@ -734,7 +831,7 @@ public class IpFirewallRulesInner {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ReplaceAllFirewallRulesOperationResponseInner object if successful.
      */
@@ -817,7 +914,7 @@ public class IpFirewallRulesInner {
      * @param workspaceName The name of the workspace
      * @param ipFirewallRules IP firewall rule properties
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ReplaceAllFirewallRulesOperationResponseInner object if successful.
      */
@@ -896,11 +993,11 @@ public class IpFirewallRulesInner {
             });
     }
 
-    private ServiceResponse<ReplaceAllFirewallRulesOperationResponseInner> beginReplaceAllDelegate(Response<ResponseBody> response) throws ErrorContractInnerException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<ReplaceAllFirewallRulesOperationResponseInner, ErrorContractInnerException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<ReplaceAllFirewallRulesOperationResponseInner> beginReplaceAllDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ReplaceAllFirewallRulesOperationResponseInner, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ReplaceAllFirewallRulesOperationResponseInner>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
-                .registerError(ErrorContractInnerException.class)
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 
@@ -909,7 +1006,7 @@ public class IpFirewallRulesInner {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;IpFirewallRuleInfoInner&gt; object if successful.
      */
@@ -1008,10 +1105,10 @@ public class IpFirewallRulesInner {
             });
     }
 
-    private ServiceResponse<PageImpl<IpFirewallRuleInfoInner>> listByWorkspaceNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<IpFirewallRuleInfoInner>, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<IpFirewallRuleInfoInner>> listByWorkspaceNextDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<IpFirewallRuleInfoInner>, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<IpFirewallRuleInfoInner>>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 

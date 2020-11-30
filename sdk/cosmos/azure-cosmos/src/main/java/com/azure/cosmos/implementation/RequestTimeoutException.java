@@ -4,21 +4,18 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.RMResources;
-import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.implementation.http.HttpHeaders;
-import com.azure.cosmos.models.CosmosError;
 
+import java.net.SocketAddress;
 import java.net.URI;
 import java.util.Map;
 
 /**
  * The type Request timeout exception.
  */
-public class RequestTimeoutException extends CosmosClientException {
+public class RequestTimeoutException extends CosmosException {
 
     /**
      * Instantiates a new Request timeout exception.
@@ -52,17 +49,6 @@ public class RequestTimeoutException extends CosmosClientException {
         this(message, null, null, requestUri);
     }
 
-    RequestTimeoutException(String message,
-                            Exception innerException,
-                            URI requestUri,
-                            String localIpAddress) {
-        this(message(localIpAddress, message), innerException, null, requestUri);
-    }
-
-    RequestTimeoutException(Exception innerException) {
-        this(RMResources.Gone, innerException, (HttpHeaders) null, null);
-    }
-
     /**
      * Instantiates a new Request timeout exception.
      *
@@ -71,7 +57,7 @@ public class RequestTimeoutException extends CosmosClientException {
      * @param requestUrl the request url
      */
     public RequestTimeoutException(String message, HttpHeaders headers, URI requestUrl) {
-        super(message, 
+        super(message,
             null,
             HttpUtils.asMap(headers),
             HttpConstants.StatusCodes.REQUEST_TIMEOUT,
@@ -80,6 +66,24 @@ public class RequestTimeoutException extends CosmosClientException {
                 : null);
     }
 
+    /**
+     * Instantiates a new Request timeout exception.
+     *
+     * @param message the message
+     * @param headers the headers
+     * @param remoteAddress the remote address
+     */
+    public RequestTimeoutException(String message, HttpHeaders headers, SocketAddress remoteAddress) {
+        super(message,
+            null,
+            HttpUtils.asMap(headers),
+            HttpConstants.StatusCodes.REQUEST_TIMEOUT,
+            remoteAddress != null
+                ? remoteAddress.toString()
+                : null);
+    }
+
+    // Used via reflection from unit tests
     RequestTimeoutException(String message, HttpHeaders headers, String requestUriString) {
         super(message, null, HttpUtils.asMap(headers), HttpConstants.StatusCodes.REQUEST_TIMEOUT, requestUriString);
     }
@@ -90,16 +94,5 @@ public class RequestTimeoutException extends CosmosClientException {
                             URI requestUrl) {
         super(message, innerException, HttpUtils.asMap(headers), HttpConstants.StatusCodes.REQUEST_TIMEOUT,
             requestUrl != null ? requestUrl.toString() : null);
-    }
-
-    private static String message(String localIP, String baseMessage) {
-        if (!Strings.isNullOrEmpty(localIP)) {
-            return String.format(
-                RMResources.ExceptionMessageAddIpAddress,
-                baseMessage,
-                localIP);
-        }
-
-        return baseMessage;
     }
 }

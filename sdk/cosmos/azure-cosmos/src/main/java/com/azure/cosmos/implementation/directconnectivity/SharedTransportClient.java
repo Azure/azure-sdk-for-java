@@ -4,6 +4,8 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.ConnectionPolicy;
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.LifeCycleUtils;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
@@ -11,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -28,29 +29,48 @@ public class SharedTransportClient extends TransportClient {
     private static final Logger logger = LoggerFactory.getLogger(SharedTransportClient.class);
     private static final AtomicInteger counter = new AtomicInteger(0);
     private static SharedTransportClient sharedTransportClient;
+    private final RntbdTransportClient.Options rntbdOptions;
 
-    public static TransportClient getOrCreateInstance(Protocol protocol, Configs configs, Duration requestTimeout, UserAgentContainer userAgent) {
+    public static TransportClient getOrCreateInstance(
+        Protocol protocol,
+        Configs configs,
+        ConnectionPolicy connectionPolicy,
+        UserAgentContainer userAgent,
+        DiagnosticsClientContext.DiagnosticsClientConfig diagnosticsClientConfig,
+        IAddressResolver addressResolver) {
+
         synchronized (SharedTransportClient.class) {
             if (sharedTransportClient == null) {
                 assert counter.get() == 0;
                 logger.info("creating a new shared RntbdTransportClient");
-                sharedTransportClient = new SharedTransportClient(protocol, configs, requestTimeout, userAgent);
+                sharedTransportClient = new SharedTransportClient(protocol, configs, connectionPolicy, userAgent, addressResolver);
             } else {
                 logger.info("Reusing an instance of RntbdTransportClient");
             }
 
             counter.incrementAndGet();
+
+            diagnosticsClientConfig.withRntbdOptions(sharedTransportClient.rntbdOptions);
             return sharedTransportClient;
         }
     }
 
     private final TransportClient transportClient;
 
-    private SharedTransportClient(Protocol protocol, Configs configs, Duration requestTimeout, UserAgentContainer userAgent) {
+    private SharedTransportClient(
+        Protocol protocol,
+        Configs configs,
+        ConnectionPolicy connectionPolicy,
+        UserAgentContainer userAgent,
+        IAddressResolver addressResolver) {
         if (protocol == Protocol.TCP) {
-            this.transportClient = new RntbdTransportClient(configs, requestTimeout, userAgent);
+            this.rntbdOptions =
+                new RntbdTransportClient.Options.Builder(connectionPolicy).userAgent(userAgent).build();
+            this.transportClient = new RntbdTransportClient(rntbdOptions, configs.getSslContext(), addressResolver);
+
         } else if (protocol == Protocol.HTTPS){
-            this.transportClient = new HttpTransportClient(configs, requestTimeout, userAgent);
+            this.rntbdOptions = null;
+            this.transportClient = new HttpTransportClient(configs, connectionPolicy, userAgent);
         } else {
             throw new IllegalArgumentException(String.format("protocol: %s", protocol));
         }

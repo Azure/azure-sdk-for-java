@@ -57,7 +57,7 @@ public final class ContainerGetAccountInfoHeaders {
 
     /*
      * Identifies the account kind. Possible values include: 'Storage',
-     * 'BlobStorage', 'StorageV2'
+     * 'BlobStorage', 'StorageV2', 'FileStorage', 'BlockBlobStorage'
      */
     @JsonProperty(value = "x-ms-account-kind")
     private AccountKind accountKind;
@@ -193,7 +193,8 @@ public final class ContainerGetAccountInfoHeaders {
 
     /**
      * Get the accountKind property: Identifies the account kind. Possible
-     * values include: 'Storage', 'BlobStorage', 'StorageV2'.
+     * values include: 'Storage', 'BlobStorage', 'StorageV2', 'FileStorage',
+     * 'BlockBlobStorage'.
      *
      * @return the accountKind value.
      */
@@ -203,7 +204,8 @@ public final class ContainerGetAccountInfoHeaders {
 
     /**
      * Set the accountKind property: Identifies the account kind. Possible
-     * values include: 'Storage', 'BlobStorage', 'StorageV2'.
+     * values include: 'Storage', 'BlobStorage', 'StorageV2', 'FileStorage',
+     * 'BlockBlobStorage'.
      *
      * @param accountKind the accountKind value to set.
      * @return the ContainerGetAccountInfoHeaders object itself.

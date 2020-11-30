@@ -5,13 +5,13 @@ package com.azure.core.implementation.http;
 
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 
 /**
  * HTTP response which will buffer the response's body when/if it is read.
@@ -31,7 +31,8 @@ public final class BufferedHttpResponse extends HttpResponse {
         this.cachedBody = FluxUtil.collectBytesInByteBufferStream(innerHttpResponse.getBody())
             .map(ByteBuffer::wrap)
             .flux()
-            .cache();
+            .cache()
+            .map(ByteBuffer::duplicate);
     }
 
     @Override
@@ -61,14 +62,13 @@ public final class BufferedHttpResponse extends HttpResponse {
 
     @Override
     public Mono<String> getBodyAsString() {
-        return getBodyAsByteArray()
-                .map(bytes -> bytes == null ? null : new String(bytes, StandardCharsets.UTF_8));
+        return getBodyAsByteArray().map(bytes ->
+            CoreUtils.bomAwareToString(bytes, innerHttpResponse.getHeaderValue("Content-Type")));
     }
 
     @Override
     public Mono<String> getBodyAsString(Charset charset) {
-        return getBodyAsByteArray()
-                .map(bytes -> bytes == null ? null : new String(bytes, charset));
+        return getBodyAsByteArray().map(bytes -> new String(bytes, charset));
     }
 
     @Override

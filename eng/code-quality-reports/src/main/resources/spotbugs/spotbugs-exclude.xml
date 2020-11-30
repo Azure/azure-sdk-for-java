@@ -46,6 +46,38 @@
     <Bug pattern="UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD"/>
   </Match>
 
+  <!-- Defines native api, doesn't follow java style.-->
+  <Match>
+      <Class name="~com\.azure\.identity\.implementation\.WindowsCredentialApi(.+)"/>
+      <Bug pattern="UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD,
+      UWF_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD,
+      NM_FIELD_NAMING_CONVENTION"/>
+  </Match>
+
+  <!-- Exception needs to be caught here.-->
+  <Match>
+      <Class name="~com\.azure\.identity\.implementation\.VisualStudioCacheAccessor"/>
+      <Bug pattern="REC_CATCH_EXCEPTION"/>
+  </Match>
+
+  <!-- Exception needs to be caught here.-->
+  <Match>
+      <Class name="~com\.azure\.identity\.IntelliJCredential"/>
+      <Bug pattern="REC_CATCH_EXCEPTION"/>
+  </Match>
+
+  <!-- Accesses native api, doesn't follow java style.-->
+  <Match>
+      <Class name="~com\.azure\.identity\.implementation\.LinuxKeyRingAccessor(.+)"/>
+      <Bug pattern="UWF_UNWRITTEN_FIELD"/>
+  </Match>
+
+  <!-- Accesses native api, doesn't follow java style.-->
+  <Match>
+      <Class name="com.azure.identity.implementation.WindowsCredentialAccessor"/>
+      <Bug pattern="NP_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD"/>
+  </Match>
+
   <!-- Public field already exists in the public API surface. -->
   <Match>
     <Class name="com.microsoft.azure.batch.auth.BatchUserTokenCredentials"/>
@@ -350,6 +382,13 @@
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
   </Match>
 
+  <!-- The fields are checked for null in the build method and throw exceptions if values for fields are not specified. -->
+  <Match>
+      <Class name="com.azure.identity.InteractiveBrowserCredentialBuilder"/>
+      <Field name="port"/>
+      <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
+  </Match>
+
   <!-- The major fields of poll strategy data subclass are non-serializable, and there is another design for serializing
   the class proposed. Suppress the warning for current design. -->
   <Match>
@@ -396,6 +435,8 @@
       <Class name="com.azure.storage.blob.BlobProperties"/>
       <Class name="com.azure.storage.blob.BlobContainerProperties"/>
       <Class name="com.azure.storage.file.share.implementation.models.DirectoryCreateHeaders"/>
+      <Class name="com.azure.storage.blob.implementation.models.BlobDownloadHeaders"/>
+      <Class name="com.azure.storage.blob.models.BlobQueryHeaders"/>
     </Or>
     <Bug pattern="NM_CONFUSING"/>
   </Match>
@@ -592,9 +633,16 @@
           name="com.azure.data.appconfiguration.credentials.ConfigurationClientCredentials$AuthorizationHeaderProvider"/>
       <Class name="com.azure.messaging.eventhubs.EventData$SystemProperties"/>
       <Class name="com.azure.messaging.eventhubs.implementation.ReactorSender$WeightedDeliveryTag"/>
-      <Class name="com.azure.identity.implementation.AuthorizationCodeListener"/>
     </Or>
     <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
+  </Match>
+
+  <!-- This is a false positive. Exception is thrown and caught to map to a different type of exception-->
+  <Match>
+    <Or>
+      <Class name="com.azure.messaging.eventhubs.PartitionPumpManager"/>
+    </Or>
+    <Bug pattern="REC_CATCH_EXCEPTION"/>
   </Match>
 
   <!-- Names defined in the service. -->
@@ -671,27 +719,6 @@
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
   </Match>
 
-
-  <!-- Azure search has generated code mixed with hand-written in these packages -->
-  <Match>
-    <And>
-      <Package name="~com\.azure\.search\.documents\.(implementation|models)(.*)"/>
-      <Not>
-        <Or>
-          <!-- Hand-written classes should be specified here to be checked  -->
-          <Class name="com.azure.search.documents.implementation.GeoPointDeserializer"/>
-          <Class name="com.azure.search.documents.implementation.Iso8601DateDeserializer"/>
-          <Class name="com.azure.search.documents.implementation.SerializationUtil"/>
-          <Class name="com.azure.search.documents.models.CoordinateSystem"/>
-          <Class name="com.azure.search.documents.models.GeoPoint"/>
-          <Class name="com.azure.search.documents.models.IndexBatch"/>
-          <Class name="com.azure.search.documents.models.ValueFacetResult"/>
-          <Class name="com.azure.search.documents.models.RangeFacetResult"/>
-        </Or>
-      </Not>
-    </And>
-  </Match>
-
   <!-- Initial implementation of JacksonDeserializer is using an inline class-->
   <Match>
     <Class name="com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer"/>
@@ -704,6 +731,7 @@
       <Class name="com.azure.core.implementation.http.UrlBuilder"/>
       <Class name="com.azure.storage.blob.implementation.models.AppendBlobAppendBlockFromUrlHeaders"/>
       <Class name="com.azure.storage.file.share.implementation.models.FileGetPropertiesHeaders"/>
+      <Class name="com.azure.storage.file.datalake.implementation.models.PathAppendDataHeaders"/>
     </Or>
     <Bug pattern="NM_CONFUSING"/>
   </Match>
@@ -769,6 +797,30 @@
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
 
+  <Match>
+    <Class name="com.azure.cosmos.implementation.encryption.AeadAes256CbcHmac256Algorithm"/>
+    <Method name="decryptData"/>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.cosmos.implementation.encryption.AeadAes256CbcHmac256Algorithm"/>
+    <Method name="encryptData"/>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.cosmos.implementation.BaseAuthorizationTokenProvider"/>
+    <Method name="reInitializeIfPossible"/>
+    <Bug pattern="ES_COMPARING_STRINGS_WITH_EQ"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.cosmos.implementation.encryption.SecurityUtility"/>
+    <Method name="getSHA256Hash"/>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
+  </Match>
+
   <!-- Suppress false positive, there is no null in the flagged code -->
   <Match>
     <Class name="com.azure.cosmos.implementation.TestConfigurations"/>
@@ -786,7 +838,7 @@
   <Match>
     <Or>
       <Class name="com.azure.cosmos.ClientSideRequestStatistics"/>
-      <Class name="com.azure.cosmos.models.CosmosAsyncItemResponse"/>
+      <Class name="com.azure.cosmos.models.CosmosItemResponse"/>
     </Or>
     <Bug pattern="IS2_INCONSISTENT_SYNC"/>
   </Match>
@@ -811,6 +863,30 @@
     <Class name="com.azure.cosmos.implementation.directconnectivity.GoneAndRetryWithRetryPolicy" />
     <Method name="shouldRetry"/>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.cosmos.encryption.KeyVaultAccessClient" />
+    <Method name="unwrapKeyAsync"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.cosmos.encryption.KeyVaultAccessClient" />
+    <Method name="wrapKeyAsync"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.cosmos.encryption.AzureKeyVaultKeyWrapProvider" />
+    <Method name="unwrapKey"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.cosmos.encryption.AzureKeyVaultKeyWrapProvider" />
+    <Method name="wrapKey"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
 
   <!-- DB is retrieved synchronously (Flux::block()) after creating it, so no chance of null  -->
@@ -865,40 +941,6 @@
     <Bug pattern="DM_BOXED_PRIMITIVE_FOR_PARSING"/>
   </Match>
 
-  <!-- When setting the value which this method returns, it is ensured that value is of CosmosContainerProperties -->
-  <Match>
-    <Class name="com.azure.cosmos.models.CosmosAsyncContainerResponse"/>
-    <Method name="getProperties"/>
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>
-
-  <!-- When setting the value which this method returns, it is ensured that value is of CosmosDatabaseProperties -->
-  <Match>
-    <Class name="com.azure.cosmos.models.CosmosAsyncDatabaseResponse"/>
-    <Method name="getProperties"/>
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>
-
-  <!-- When setting the value which this method returns, it is ensured that value is of CosmosPermissionProperties -->
-  <Match>
-    <Class name="com.azure.cosmos.models.CosmosAsyncPermissionResponse"/>
-    <Method name="getProperties"/>
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>
-
-  <!-- When setting the value which this method returns, it is ensured that value is of CosmosStoredProcedureProperties -->
-  <Match>
-    <Class name="com.azure.cosmos.models.CosmosAsyncStoredProcedureResponse"/>
-    <Method name="getProperties"/>
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>
-
-  <!-- When setting the value which this method returns, it is ensured that value is of CosmosUserProperties -->
-  <Match>
-    <Class name="com.azure.cosmos.models.CosmosAsyncUserResponse"/>
-    <Method name="getProperties"/>
-    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>
 
   <!-- Extra null check is for assertion -->
   <Match>
@@ -918,7 +960,7 @@
    Issue: https://github.com/Azure/azure-sdk-for-java/issues/9054
    -->
   <Match>
-    <Class name="com.azure.cosmos.models.CosmosAsyncItemResponse"/>
+    <Class name="com.azure.cosmos.models.CosmosItemResponse"/>
     <Method name="getItem"/>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"/>
   </Match>
@@ -933,14 +975,14 @@
   <!-- Suppress URF_UNREAD_FIELD, the fields are read but during serialization -->
   <Match>
     <Class name="com.azure.cosmos.ClientSideRequestStatistics$AddressResolutionStatistics"/>
-    <Field name="endTime"/>
+    <Field name="endTimeUTC"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
   <!-- Suppress URF_UNREAD_FIELD, the fields are read but during serialization -->
   <Match>
     <Class name="com.azure.cosmos.ClientSideRequestStatistics$AddressResolutionStatistics"/>
-    <Field name="startTime"/>
+    <Field name="startTimeUTC"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
@@ -948,6 +990,20 @@
   <Match>
     <Class name="com.azure.cosmos.ClientSideRequestStatistics$AddressResolutionStatistics"/>
     <Field name="targetEndpoint"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- Suppress URF_UNREAD_FIELD, the fields are read but during serialization -->
+  <Match>
+    <Class name="com.azure.cosmos.ClientSideRequestStatistics$AddressResolutionStatistics"/>
+    <Field name="errorMessage"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- Suppress URF_UNREAD_FIELD, the fields are read but during serialization -->
+  <Match>
+    <Class name="com.azure.cosmos.ClientSideRequestStatistics$AddressResolutionStatistics"/>
+    <Field name="inflightRequest"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
@@ -961,7 +1017,7 @@
   <!-- Suppress URF_UNREAD_FIELD, the field is read but during serialization -->
   <Match>
     <Class name="com.azure.cosmos.ClientSideRequestStatistics$StoreResponseStatistics"/>
-    <Field name="requestResponseTime"/>
+    <Field name="requestResponseTimeUTC"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
@@ -1169,35 +1225,35 @@
 
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9054 -->
   <Match>
-    <Class name="com.azure.cosmos.models.CosmosAsyncItemResponse"/>
+    <Class name="com.azure.cosmos.models.CosmosItemResponse"/>
     <Field name="item"/>
     <Bug pattern="DC_DOUBLECHECK"/>
   </Match>
 
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9088 -->
   <Match>
-    <Class name="com.azure.cosmos.CosmosClientException"/>
+    <Class name="com.azure.cosmos.CosmosException"/>
     <Field name="cosmosError"/>
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9088 -->
   <Match>
-    <Class name="com.azure.cosmos.CosmosClientException"/>
-    <Field name="cosmosResponseDiagnostics"/>
+    <Class name="com.azure.cosmos.CosmosException"/>
+    <Field name="cosmosDiagnostics"/>
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9088 -->
   <Match>
-    <Class name="com.azure.cosmos.CosmosClientException"/>
+    <Class name="com.azure.cosmos.CosmosException"/>
     <Field name="requestTimeline"/>
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9088 -->
   <Match>
-    <Class name="com.azure.cosmos.CosmosClientException"/>
+    <Class name="com.azure.cosmos.CosmosException"/>
     <Field name="requestUri"/>
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
@@ -1214,6 +1270,92 @@
     <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdContextException"/>
     <Field name="status"/>
     <Bug pattern="SE_BAD_FIELD"/>
+  </Match>
+
+  <!-- FormRecognizerException fields re serializable -->
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.models.FormRecognizerException" />
+    <Field name="errorInformationList" />
+    <Bug pattern="SE_BAD_FIELD" />
+  </Match>
+
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.training.models.CustomFormModel" />
+    <Field name="modelName" />
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+  </Match>
+
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.training.models.CustomFormModel" />
+    <Field name="customFormModelProperties" />
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+  </Match>
+
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.training.models.CustomFormModelInfo" />
+    <Field name="modelName" />
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+  </Match>
+
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.training.models.CustomFormModelInfo" />
+    <Field name="customFormModelProperties" />
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+  </Match>
+
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.training.models.CustomFormSubmodel" />
+    <Field name="modelId" />
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+  </Match>
+
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.training.models.CustomFormModelProperties" />
+    <Field name="isComposed" />
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+  </Match>
+
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.training.models.TrainingDocumentInfo" />
+    <Field name="modelId" />
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+  </Match>
+
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.models.RecognizedForm" />
+    <Field name="formTypeConfidence" />
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+  </Match>
+
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.models.RecognizedForm" />
+    <Field name="modelId" />
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+  </Match>
+
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.models.FormSelectionMark" />
+    <Field name="confidence" />
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+  </Match>
+
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.models.FormSelectionMark" />
+    <Field name="state" />
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+  </Match>
+
+  <Match>
+    <Class name="com.azure.ai.formrecognizer.models.FormPage" />
+    <Field name="selectionMarks" />
+    <Bug pattern="UWF_UNWRITTEN_FIELD" />
+  </Match>
+
+  <!-- TextAnalyticsException fields re serializable -->
+  <Match>
+    <Class name="com.azure.ai.textanalytics.models.TextAnalyticsException" />
+    <Field name="errorInformationList" />
+    <Bug pattern="SE_BAD_FIELD" />
   </Match>
 
   <!-- Exception is required to catch, ref: code comment in the OrderbyRowComparer::compare() method  -->
@@ -1249,6 +1391,12 @@
     <Class name="com.azure.cosmos.implementation.ResourceId"/>
     <Method name="tryParse"/>
     <Bug pattern="REC_CATCH_EXCEPTION"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.cosmos.encryption.EncryptionCosmosAsyncContainer"/>
+    <Method name="decryptResponseAsync"/>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
 
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9089 -->
@@ -1444,6 +1592,13 @@
     <Bug pattern="NP_NONNULL_PARAM_VIOLATION"/>
   </Match>
 
+  <!-- Exception is needed to catch a SslException masked as a RuntimeException by Netty -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestManager"/>
+    <Method name="close"/>
+    <Bug pattern="BC_IMPOSSIBLE_INSTANCEOF"/>
+  </Match>
+
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9092 -->
   <Match>
     <Class name="com.azure.cosmos.implementation.query.OrderByUtils$PageToItemTransformer"/>
@@ -1458,11 +1613,24 @@
     <Bug pattern="RV_RETURN_VALUE_IGNORED_INFERRED"/>
   </Match>
 
+    <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9092 -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.QueryMetrics"/>
+    <Method name="mergeQueryMetricsMap"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_INFERRED"/>
+  </Match>
+
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9093 -->
   <Match>
     <Class name="com.azure.cosmos.implementation.PathsHelper"/>
     <Method name="tryParsePathSegments"/>
     <Bug pattern="DLS_DEAD_LOCAL_STORE_OF_NULL"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.cosmos.implementation.encryption.AeadAes256CbcHmac256Algorithm"/>
+    <Method name="encryptData"/>
+    <Bug pattern="DLS_DEAD_LOCAL_STORE"/>
   </Match>
 
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9093 -->
@@ -1571,13 +1739,6 @@
 
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9096 -->
   <Match>
-    <Class name="com.azure.cosmos.models.CosmosAsyncConflictResponse"/>
-    <Method name="getProperties"/>
-    <Bug pattern="IL_INFINITE_RECURSIVE_LOOP"/>
-  </Match>
-
-  <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9096 -->
-  <Match>
     <Class name="com.azure.cosmos.models.SqlParameterList"/>
     <Method name="listIterator"/>
     <Bug pattern="IL_INFINITE_RECURSIVE_LOOP"/>
@@ -1669,7 +1830,70 @@
 
   <!-- Returning a new copy of the object is not necessary -->
   <Match>
+    <Class name="com.azure.cosmos.encryption.EncryptionKeyUnwrapResult"/>
+    <Method name="getDataEncryptionKey"/>
+    <Bug pattern="EI_EXPOSE_REP"/>
+  </Match>
+
+  <!-- Returning a new copy of the object is not necessary -->
+  <Match>
+    <Class name="com.azure.cosmos.encryption.EncryptionKeyUnwrapResult"/>
+    <Method name="getWrappedDataEncryptionKey"/>
+    <Bug pattern="EI_EXPOSE_REP"/>
+  </Match>
+
+  <!-- Returning a new copy of the object is not necessary -->
+  <Match>
+    <Class name="com.azure.cosmos.encryption.DecryptionResult"/>
+    <Method name="getEncryptedContent"/>
+    <Bug pattern="EI_EXPOSE_REP"/>
+  </Match>
+
+  <!-- Returning a new copy of the object is not necessary -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.encryption.EncryptionProperties"/>
+    <Method name="getEncryptedData"/>
+    <Bug pattern="EI_EXPOSE_REP"/>
+  </Match>
+
+  <!-- Returning a new copy of the object is not necessary -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.encryption.EncryptionProperties"/>
+    <Method name="&lt;init&gt;"/>
+    <Bug pattern="EI_EXPOSE_REP2"/>
+  </Match>
+
+  <!-- Returning a new copy of the object is not necessary -->
+  <Match>
+    <Class name="com.azure.cosmos.encryption.EncryptionKeyUnwrapResult"/>
+    <Method name="&lt;init&gt;"/>
+    <Bug pattern="EI_EXPOSE_REP2"/>
+  </Match>
+
+  <!-- Returning a new copy of the object is not necessary -->
+  <Match>
     <Class name="com.azure.cosmos.implementation.directconnectivity.StoreResponse"/>
+    <Method name="&lt;init&gt;"/>
+    <Bug pattern="EI_EXPOSE_REP2"/>
+  </Match>
+
+  <!-- Returning a new copy of the object is not necessary -->
+  <Match>
+    <Class name="com.azure.cosmos.encryption.EncryptionKeyWrapResult"/>
+    <Method name="getWrappedDataEncryptionKey"/>
+    <Bug pattern="EI_EXPOSE_REP2,EI_EXPOSE_REP"/>
+  </Match>
+
+  <!-- Returning a new copy of the object is not necessary -->
+  <Match>
+    <Class name="com.azure.cosmos.encryption.EncryptionKeyWrapResult"/>
+    <Method name="getEncryptionKeyWrapMetadata"/>
+    <Bug pattern="EI_EXPOSE_REP2,EI_EXPOSE_REP"/>
+  </Match>
+
+  <!-- Returning a new copy of the object is not necessary -->
+  <Match>
+    <Class name="com.azure.cosmos.encryption.EncryptionKeyWrapResult"/>
     <Method name="&lt;init&gt;"/>
     <Bug pattern="EI_EXPOSE_REP2"/>
   </Match>
@@ -1773,6 +1997,13 @@
     <Bug pattern="EQ_UNUSUAL"/>
   </Match>
 
+   <!-- False positive, equals method is implemented correctly by using equality of member variables  -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.clientTelemetry.ReportPayload"/>
+    <Method name="equals"/>
+    <Bug pattern="EQ_UNUSUAL"/>
+  </Match>
+
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9106 -->
   <Match>
     <Class name="com.azure.cosmos.implementation.PathsHelper"/>
@@ -1837,6 +2068,12 @@
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
   </Match>
 
+  <Match>
+    <Class name="com.azure.cosmos.implementation.encryption.CosmosDataEncryptionKeyProvider"/>
+    <Method name="initialize"/>
+    <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+  </Match>
+
   <!-- https://github.com/Azure/azure-sdk-for-java/issues/9179 -->
   <Match>
     <Class name="com.azure.cosmos.implementation.SessionContainer"/>
@@ -1856,6 +2093,21 @@
     <Class name="com.azure.cosmos.implementation.routing.MurmurHash3_128"/>
     <Method name="rotateLeft32"/>
     <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
+  </Match>
+
+
+  <Match>
+    <Class name="com.azure.cosmos.implementation.routing.UInt128"/>
+    <Method name="compareTo"/>
+    <Bug pattern="SA_FIELD_SELF_COMPARISON"/>
+  </Match>
+
+  <!-- Serializing a null value should return null to allow client to handle null cases
+    consistently instead of injecting null payload behavior from the payload. -->
+  <Match>
+    <Class name="com.azure.data.schemaregistry.avro.SchemaRegistryAvroSerializer"/>
+    <Method name="serialize"/>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
 
   <!-- Exclude spotbug from non-shipping modules -->
@@ -1900,11 +2152,304 @@
     DM_CONVERT_CASE"/>
   </Match>
 
+    <!-- Exclude vendor-ed guava25 types from spotbug -->
+  <Match>
+    <Class name="~com\.azure\.cosmos\.implementation\.guava25(.+)"/>
+    <Bug pattern="BC_BAD_CAST_TO_ABSTRACT_COLLECTION,
+    BC_UNCONFIRMED_CAST,
+    BC_UNCONFIRMED_CAST_OF_RETURN_VALUE,
+    DLS_DEAD_LOCAL_STORE,
+    DLS_DEAD_LOCAL_STORE_IN_RETURN,
+    DMI_NONSERIALIZABLE_OBJECT_WRITTEN,
+    DP_CREATE_CLASSLOADER_INSIDE_DO_PRIVILEGED,
+    EQ_DOESNT_OVERRIDE_EQUALS,
+    HE_EQUALS_NO_HASHCODE,
+    HE_EQUALS_USE_HASHCODE,
+    HE_HASHCODE_NO_EQUALS,
+    HE_INHERITS_EQUALS_USE_HASHCODE,
+    IA_AMBIGUOUS_INVOCATION_OF_INHERITED_OR_OUTER_METHOD,
+    IS2_INCONSISTENT_SYNC,
+    IT_NO_SUCH_ELEMENT,
+    NM_SAME_SIMPLE_NAME_AS_INTERFACE,
+    NP_LOAD_OF_KNOWN_NULL_VALUE,
+    NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE,
+    NS_NON_SHORT_CIRCUIT,
+    PZLA_PREFER_ZERO_LENGTH_ARRAYS,
+    RI_REDUNDANT_INTERFACES,
+    RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT,
+    SA_FIELD_SELF_ASSIGNMENT,
+    SE_BAD_FIELD,
+    SE_COMPARATOR_SHOULD_BE_SERIALIZABLE,
+    SE_INNER_CLASS,
+    SE_NO_SERIALVERSIONID,
+    SE_TRANSIENT_FIELD_NOT_RESTORED,
+    SF_SWITCH_FALLTHROUGH,
+    UC_USELESS_CONDITION,
+    UMAC_UNCALLABLE_METHOD_OF_ANONYMOUS_CLASS,
+    UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR,
+    UWF_UNWRITTEN_FIELD"/>
+    </Match>
+
+  <!-- Exclude vendor-ed com.fasterxml.uuid:java-uuid-generator types from spotbug -->
+  <Match>
+    <Class name="~com\.azure\.cosmos\.implementation\.uuid(.+)"/>
+    <Bug pattern="CN_IDIOM_NO_SUPER_CALL,
+    MS_PKGPROTECT,
+    DM_CONVERT_CASE,
+    MS_MUTABLE_COLLECTION_PKGPROTECT,
+    RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE,
+    SF_SWITCH_NO_DEFAULT,
+    UCF_USELESS_CONTROL_FLOW,
+    SE_COMPARATOR_SHOULD_BE_SERIALIZABLE,
+    CI_CONFUSED_INHERITANCE,
+    MS_SHOULD_BE_FINAL"/>
+  </Match>
+
   <!-- Empty byte array is returned as null to reactor. Reactor transform null from Callable to downstream onComplete  -->
   <Match>
-    <Class name="~com\.azure\.core\.http\.okhttp\.OkHttpAsyncHttpClient\$OkHttpResponse(.*)"/>
+    <Class name="~com\.azure\.core\.http\.okhttp\.OkHttpResponse(.*)"/>
     <Method name="~(.*)\$(getBodyAsByteArray|null)\$(.*)"/>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
 
+  <!-- Internal Avro Parser does read the blockCount field. Seems to be a false positive.  -->
+  <Match>
+    <Or>
+      <Class name="com.azure.storage.internal.avro.implementation.schema.complex.AvroArraySchema"/>
+      <Class name="com.azure.storage.internal.avro.implementation.schema.complex.AvroMapSchema"/>
+      <Class name="com.azure.storage.internal.avro.implementation.schema.file.AvroBlockSchema"/>
+    </Or>
+    <Bug pattern="DLS_DEAD_LOCAL_STORE"/>
+  </Match>
+
+  <!-- Internal Avro Parser does check the types before casting. Seems to be a false positive.  -->
+  <Match>
+    <Class name="com.azure.storage.internal.avro.implementation.schema.AvroSchema"/>
+    <Method name="getSchema"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST"/>
+  </Match>
+
+  <!-- FluxInputStream definitely throws an IOException since this.lastError is an IOException. -->
+  <Match>
+    <Class name="com.azure.storage.common.implementation.FluxInputStream"/>
+    <Method name="read"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+  </Match>
+
+  <!-- Known issue in autorest of inner Enumeration for InputStream response -->
+  <!-- Not much can be done if spotbugs think the class is too big for analysis -->
+  <Match>
+    <Or>
+      <Class name="com.azure.resourcemanager.appservice.fluent.WebAppsClient"/>
+      <Class name="com.azure.resourcemanager.appservice.implementation.WebAppsClientImpl"/>
+      <Class name="~com\.azure\.resourcemanager\.appservice\.implementation\.WebAppsClientImpl(.+)"/>
+    </Or>
+    <Bug pattern="SKIPPED_CLASS_TOO_BIG,SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
+
+  <!-- Exclude REC_CATCH_EXCEPTION and false positive error for management samples. All samples in management catch Exception instead of throw it. -->
+  <Match>
+    <Package name="~com\.azure\.resourcemanager(\.[^.]+)*\.samples(\.[^.]+)*"/>
+    <Bug pattern="REC_CATCH_EXCEPTION,
+                  RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE,
+                  RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
+  </Match>
+
+  <!-- Exclude BC_UNCONFIRMED_CAST_OF_RETURN_VALUE as false positive -->
+  <Match>
+    <Or>
+      <Class name="com.azure.resourcemanager.resources.fluentcore.dag.TaskGroup"/>
+      <Class name="com.azure.resourcemanager.resources.fluentcore.dag.TaskGroup$ProxyTaskGroupWrapper"/>
+    </Or>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+  </Match>
+
+  <!-- Exclude for Fluent Lite generated code -->
+  <Match>
+    <Or>
+      <Package name="~com\.azure\.resourcemanager(\.[^.]+)*\.generated(\.[^.]+)*"/>
+    </Or>
+    <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE,SIC_INNER_SHOULD_BE_STATIC_ANON,SKIPPED_CLASS_TOO_BIG,UPM_UNCALLED_PRIVATE_METHOD"/>
+  </Match>
+
+  <!-- Exclude from spring related classes -->
+  <Match>
+    <Or>
+      <Class name="com.azure.spring.utils.GetHashMac"/> <!-- false positive -->
+      <Class name="com.azure.spring.utils.PropertyLoader"/> <!-- false positive -->
+    </Or>
+    <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE,
+                  NP_LOAD_OF_KNOWN_NULL_VALUE,
+                  RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE,
+                  RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"/>
+  </Match>
+
+  <Match>
+    <Or>
+      <Class name="com.azure.spring.telemetry.TelemetryEventData$EventData$CustomData"/> <!-- false positive -->
+    </Or>
+    <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
+  </Match>
+
+  <Match>
+    <Or>
+      <Class name="com.azure.spring.integration.servicebus.queue.ServiceBusQueueTemplate$QueueMessageHandler"/> <!-- false positive -->
+      <Class name="com.azure.spring.integration.servicebus.topic.ServiceBusTopicTemplate$TopicMessageHandler"/> <!-- false positive -->
+    </Or>
+    <Method name="OnCloseSessionAsync"/>
+    <Bug pattern="NM_METHOD_NAMING_CONVENTION"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.spring.messaging.config.AzureListenerEndpointRegistrar" />
+    <Bug pattern="NP_NULL_ON_SOME_PATH"/>
+  </Match>
+
+  <!-- The transient fields are not used if deserialization happens. -->
+  <Match>
+      <Class name="com.azure.identity.implementation.MsalAuthenticationAccount"/>
+      <Field name="authenticationRecord"/>
+      <Bug pattern="SE_TRANSIENT_FIELD_NOT_RESTORED"/>
+  </Match>
+
+  <!-- These fields are designed to be not written. They are for deserializing. -->
+  <Match>
+      <Class name="com.azure.identity.implementation.LinuxKeyRingAccessor$GError"/>
+      <Bug pattern="UWF_UNWRITTEN_FIELD"/>
+  </Match>
+
+  <!-- These fields use File Reader with default encoding, java 8 doesn't support passing in encoding type. -->
+  <Match>
+      <Class name="com.azure.identity.implementation.IntelliJCacheAccessor"/>
+      <Or>
+          <Method name="getIntellijServicePrincipalDetails"/>
+          <Method name="getKdbxPassword"/>
+      </Or>
+      <Bug pattern="DM_DEFAULT_ENCODING"/>
+  </Match>
+
+  <!-- The field is designed to be unread and for serialization purpose. -->
+  <Match>
+      <Class name="~com\.azure\.search\.documents\.indexes\.models\.(EdgeNGramTokenFilter|KeywordTokenizer|LuceneStandardTokenizer|NGramTokenFilter)"/>
+      <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+
+  <!-- Use static final ObjectMapper property to save the cost of ObjectMapper initialization. -->
+  <Match>
+    <Class name="com.azure.search.documents.SearchAsyncClient" />
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON" />
+  </Match>
+  <Match>
+    <Class name="~com\.azure\.search\.documents\.indexes\.implementation\.models\.(Suggester|SynonymMap)" />
+    <Bug pattern="IP_PARAMETER_IS_DEAD_BUT_OVERWRITTEN"/>
+  </Match>
+
+  <Match>
+    <Class name="com.azure.core.experimental.serializer.JsonSerializer"/>
+    <Bug pattern="NM_SAME_SIMPLE_NAME_AS_INTERFACE"/>
+  </Match>
+
+  <!-- Use the property to take the custom serializer from SearchClient. -->
+  <Match>
+    <Class name="~com\.azure\.search\.documents\.models\.(SearchResult|SuggestResult)" />
+    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" />
+  </Match>
+
+  <!-- Use abstract TypeReference class for serialize and deserialize API. -->
+  <Match>
+    <Class name="~com\.azure\.search\.documents\.models\.(SearchResult|SuggestResult)" />
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON" />
+  </Match>
+
+  <Match>
+    <Or>
+      <Class name="com.azure.core.serializer.json.jackson.JacksonJsonSerializer"/>
+      <Class name="com.azure.core.serializer.json.gson.GsonJsonSerializer"/>
+    </Or>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
+  <!-- Setup in Identity Test classes, required for the tests to work properly.-->
+  <Match>
+      <Class name="com.azure.identity.ClientCertificateCredentialTest" />
+      <Bug pattern="DMI_HARDCODED_ABSOLUTE_FILENAME"/>
+  </Match>
+
+  <Match>
+      <Or>
+          <Class name="com.azure.identity.implementation.IdentityClientTests"/>
+          <Class name="com.azure.identity.implementation.SynchronizedAccessorTests"/>
+      </Or>
+      <Or>
+          <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/> <!-- false positive -->
+          <Bug pattern="UI_INHERITANCE_UNSAFE_GETRESOURCE"/>
+      </Or>
+  </Match>
+
+  <Match>
+    <Bug pattern="EI_EXPOSE_REP"/>
+    <Class name="com.azure.core.implementation.AccessibleByteArrayOutputStream"/>
+  </Match>
+
+  <!-- EventGrid swagger naming -->
+  <Match>
+    <Or>
+      <Class name="com.azure.messaging.eventgrid.implementation.models.CloudEvent"/>
+      <Class name="com.azure.messaging.eventgrid.systemevents.AppConfigurationKeyValueDeletedEventData"/>
+    </Or>
+  </Match>
+  <Bug pattern="NM_CONFUSING"/>
+
+  <Match>
+    <Class name="com.azure.ai.metricsadvisor.implementation.models.InfluxDBParameter" />
+    <Method name="getUserName" />
+    <Bug pattern="NM_CONFUSING" />
+  </Match>
+
+  <!-- Disabling false positives in azure-core -->
+  <!-- This Issue has been resolved as per spotbugs's recommended solution but the static checker still flags it, its a known issue with this rule. -->
+  <Match>
+      <Class name="com.azure.core.util.logging.ClientLogger" />
+      <Bug pattern="CRLF_INJECTION_LOGS" />
+  </Match>
+
+  <!-- The predictable randomness doesn't expose any crucial detail in this case. -->
+  <Match>
+      <Class name="com.azure.core.http.policy.ExponentialBackoff" />
+      <Bug pattern="PREDICTABLE_RANDOM" />
+  </Match>
+
+  <!-- In the default log level azure-core will not print the stack trace, but when the user opt-in for the lowest level log (DEBUG) we'll print it, which is expected. -->
+  <Match>
+      <Class name="com.azure.core.implementation.logging.DefaultLogger" />
+      <Bug pattern="INFORMATION_EXPOSURE_THROUGH_AN_ERROR_MESSAGE" />
+  </Match>
+
+  <!-- False positives -->
+  <Match>
+      <Class name="com.azure.security.keyvault.jca.KeyVaultKeyStore" />
+      <Method name="getFilenames" />
+      <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE" />
+  </Match>
+  <Match>
+      <Class name="com.azure.security.keyvault.jca.LegacyRestClient" />
+      <Method name="~(get|post)" />
+      <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE" />
+  </Match>
+
+  <!-- Conflicting APIs have already been GA'd with incorrect capitalization  -->
+  <Match>
+    <Or>
+      <Class name="com.azure.security.keyvault.keys.cryptography.DecryptOptions" />
+      <Class name="com.azure.security.keyvault.keys.cryptography.EncryptOptions" />
+    </Or>
+    <Bug pattern="NM_CONFUSING" />
+  </Match>
+  <!-- Returning a new copy of the object is not necessary for queuing system use cases.
+  Client do not change content of message once message is created. Array copy would degrade the performance.
+  https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core-amqp/src/main/java/com/azure/core/amqp/models/AmqpMessageBody.java#L115 -->
+  <Match>
+    <Class name="com.azure.core.amqp.models.AmqpMessageBody"/>
+    <Field name="data"/>
+    <Bug pattern="EI_EXPOSE_REP"/>
+  </Match>
 </FindBugsFilter>

@@ -3,9 +3,11 @@
 
 package com.azure.core.amqp.implementation.handler;
 
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.microsoft.azure.proton.transport.ws.impl.WebSocketImpl;
 import org.apache.qpid.proton.engine.Event;
+import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.engine.impl.TransportInternal;
 
 /**
@@ -29,10 +31,11 @@ public class WebSocketsConnectionHandler extends ConnectionHandler {
      * @param hostname Hostname to use for socket creation.
      * @param product The name of the product this connection handler is created for.
      * @param clientVersion The version of the client library creating the connection handler.
+     * @param clientOptions provided by the user.
      */
     public WebSocketsConnectionHandler(final String connectionId, final String hostname, final String product,
-        final String clientVersion) {
-        super(connectionId, hostname, product, clientVersion);
+        final String clientVersion, final SslDomain.VerifyMode verifyMode, final ClientOptions clientOptions) {
+        super(connectionId, hostname, product, clientVersion, verifyMode, clientOptions);
     }
 
     @Override
@@ -51,7 +54,8 @@ public class WebSocketsConnectionHandler extends ConnectionHandler {
 
         transport.addTransportLayer(webSocket);
 
-        logger.verbose("Adding web sockets transport layer for hostname[{}]", hostName);
+        logger.verbose("connectionId[{}] Adding web sockets transport layer for hostname[{}]",
+            getConnectionId(), hostName);
 
         super.addTransportLayers(event, transport);
     }

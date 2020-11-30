@@ -7,6 +7,7 @@ import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
@@ -14,6 +15,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * Tests metadata operations with synchronous {@link EventHubClient}.
+ */
+@Tag(TestUtils.INTEGRATION)
 public class EventHubClientIntegrationTest extends IntegrationTestBase {
     private EventHubClient client;
 
@@ -23,10 +28,7 @@ public class EventHubClientIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        client = new EventHubClientBuilder()
-            .connectionString(getConnectionString())
-            .retry(RETRY_OPTIONS)
-            .buildClient();
+        client = createBuilder().buildClient();
     }
 
     @Override

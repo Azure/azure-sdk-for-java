@@ -26,7 +26,7 @@ If data required by the FileSystem is spread across multiple accounts, the FileS
 
 The scheme used for Azure Storage&#39;s implementation will be &quot;azb&quot;. We specify &#39;b&#39; as it is more flexible. This will leave room for later implementations to be built on top of Datalake (&quot;azd&quot;) which will enable scenarios like working with [POSIX permissions](https://docs.oracle.com/javase/tutorial/essential/io/fileAttr.html#posix). It could also allow for loading a provider backed by Azure Share Files (&quot;azs&quot;) for a fuller set of FileSystem features.
 
-A best effort attempt to make a request to the storage account will be made upon initialization by making a call to [getContainerProperties](https://docs.microsoft.com/en-us/rest/api/storageservices/get-container-properties) for each container specified (See &quot;Configuration and Authentication&quot; below). Failure to complete this connection on any container will result in an IOException and failure to load the FileSystem. Because this is a best effort check, it merely validates the existence of and minimal authorization to the FileSystem. It does not guarantee that there are sufficient permissions for all FileSystem operations.
+A best effort attempt to make a request to the storage account will be made upon initialization by making a call to [getContainerProperties](https://docs.microsoft.com/rest/api/storageservices/get-container-properties) for each container specified (See &quot;Configuration and Authentication&quot; below). Failure to complete this connection on any container will result in an IOException and failure to load the FileSystem. Because this is a best effort check, it merely validates the existence of and minimal authorization to the FileSystem. It does not guarantee that there are sufficient permissions for all FileSystem operations.
 
 Once a FileSystem instance has been loaded and returned, a customer may perform their normal FileSystem operations backed by Azure Blob Storage.
 
@@ -52,7 +52,7 @@ The following options allow for configuring the underlying blob client. If they 
 - AzureStorageMaxRetryDelayInMs: Long
 - AzureStorageRetryPolicyType: com.azure.storage.common.policy.RetryPolicyType
 - AzureStorageSecondaryHost: String
-- AzureStorageUploadBlockSize: Integer
+- AzureStorageUploadBlockSize: Long
 - AzureStorageDownloadResumeRetries: Integer
 - AzureStorageUseHttps: Boolean
 

@@ -26,6 +26,12 @@ public class JsonSource extends CopySource {
     private StoreReadSettings storeSettings;
 
     /**
+     * Json format settings.
+     */
+    @JsonProperty(value = "formatSettings")
+    private JsonReadSettings formatSettings;
+
+    /**
      * Specifies the additional columns to be added to source data. Type: array
      * of objects (or Expression with resultType array of objects).
      */
@@ -49,6 +55,26 @@ public class JsonSource extends CopySource {
      */
     public JsonSource withStoreSettings(StoreReadSettings storeSettings) {
         this.storeSettings = storeSettings;
+        return this;
+    }
+
+    /**
+     * Get json format settings.
+     *
+     * @return the formatSettings value
+     */
+    public JsonReadSettings formatSettings() {
+        return this.formatSettings;
+    }
+
+    /**
+     * Set json format settings.
+     *
+     * @param formatSettings the formatSettings value to set
+     * @return the JsonSource object itself.
+     */
+    public JsonSource withFormatSettings(JsonReadSettings formatSettings) {
+        this.formatSettings = formatSettings;
         return this;
     }
 

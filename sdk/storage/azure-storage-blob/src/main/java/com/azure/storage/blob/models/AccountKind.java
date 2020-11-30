@@ -24,7 +24,17 @@ public enum AccountKind {
     /**
      * Enum value StorageV2.
      */
-    STORAGE_V2("StorageV2");
+    STORAGE_V2("StorageV2"),
+
+    /**
+     * Enum value FileStorage.
+     */
+    FILE_STORAGE("FileStorage"),
+
+    /**
+     * Enum value BlockBlobStorage.
+     */
+    BLOCK_BLOB_STORAGE("BlockBlobStorage");
 
     /**
      * The actual serialized value for a AccountKind instance.

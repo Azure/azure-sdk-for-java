@@ -1,0 +1,26 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net/shareapitestssetpropertieserror36397f5edb3011616?restype=share&comp=properties",
+    "Headers" : {
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a042bab5-27b5-408a-b128-56082d4be5d9"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-02-10",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ShareNotFound",
+      "retry-after" : "0",
+      "Content-Length" : "217",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "a757d7ce-501a-0023-66a3-a10b41000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:a757d7ce-501a-0023-66a3-a10b41000000\nTime:2020-10-13T21:00:31.9848516Z</Message></Error>",
+      "Date" : "Tue, 13 Oct 2020 21:00:31 GMT",
+      "x-ms-client-request-id" : "a042bab5-27b5-408a-b128-56082d4be5d9",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "shareapitestssetpropertieserror36397f5edb3011616" ]
+}

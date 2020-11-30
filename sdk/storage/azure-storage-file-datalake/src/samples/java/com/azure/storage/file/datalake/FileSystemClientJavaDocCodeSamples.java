@@ -201,13 +201,19 @@ public class FileSystemClientJavaDocCodeSamples {
     }
 
     /**
-     * Code snippets for {@link DataLakeFileSystemClient#createFile(String)} and
+     * Code snippets for {@link DataLakeFileSystemClient#createFile(String)},
+     * {@link DataLakeFileSystemClient#createFile(String, boolean)} and
      * {@link DataLakeFileSystemClient#createFileWithResponse(String, String, String, PathHttpHeaders, Map, DataLakeRequestConditions, Duration, Context)}
      */
     public void createFileCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.createFile#String
         DataLakeFileClient fileClient = client.createFile(fileName);
         // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.createFile#String
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.createFile#String-boolean
+        boolean overwrite = false; /* Default value. */
+        DataLakeFileClient fClient = client.createFile(fileName, overwrite);
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.createFile#String-boolean
 
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.createFileWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context
         PathHttpHeaders httpHeaders = new PathHttpHeaders()
@@ -243,13 +249,19 @@ public class FileSystemClientJavaDocCodeSamples {
     }
 
     /**
-     * Code snippets for {@link DataLakeFileSystemClient#createDirectory(String)} and
+     * Code snippets for {@link DataLakeFileSystemClient#createDirectory(String)},
+     * {@link DataLakeFileSystemClient#createDirectory(String, boolean)} and
      * {@link DataLakeFileSystemClient#createDirectoryWithResponse(String, String, String, PathHttpHeaders, Map, DataLakeRequestConditions, Duration, Context)}
      */
     public void createDirectoryCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectory#String
         DataLakeDirectoryClient directoryClient = client.createDirectory(directoryName);
         // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectory#String
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectory#String-boolean
+        boolean overwrite = false; /* Default value. */
+        DataLakeDirectoryClient dClient = client.createDirectory(fileName, overwrite);
+        // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectory#String-boolean
 
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectoryWithResponse#String-String-String-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context
         PathHttpHeaders httpHeaders = new PathHttpHeaders()

@@ -321,6 +321,17 @@ class QueueAysncAPITests extends APISpec {
         }.verifyComplete()
     }
 
+    def "Dequeue message from empty queue"() {
+        given:
+        queueAsyncClient.create().block()
+
+        when:
+        def dequeueMsgVerifier = StepVerifier.create(queueAsyncClient.receiveMessage())
+
+        then:
+        dequeueMsgVerifier.verifyComplete()
+    }
+
     def "Dequeue message"() {
         given:
         queueAsyncClient.create().block()
@@ -360,6 +371,15 @@ class QueueAysncAPITests extends APISpec {
         dequeueMsgVerifier.verifyErrorSatisfies {
             assert QueueTestHelper.assertExceptionStatusCodeAndMessage(it, 400, QueueErrorCode.OUT_OF_RANGE_QUERY_PARAMETER_VALUE)
         }
+    }
+
+    def "Peek message from empty queue"() {
+        given:
+        queueAsyncClient.create().block()
+        when:
+        def peekMsgVerifier = StepVerifier.create(queueAsyncClient.peekMessage())
+        then:
+        peekMsgVerifier.verifyComplete()
     }
 
     def "Peek message"() {
@@ -503,7 +523,8 @@ class QueueAysncAPITests extends APISpec {
         when:
         def updateMsgVerifier = StepVerifier.create(queueAsyncClient.updateMessageWithResponse(
             dequeueMsg.getMessageId(), dequeueMsg.getPopReceipt(), updateMsg, Duration.ofSeconds(1)))
-        def peekMsgVerifier = StepVerifier.create(queueAsyncClient.peekMessage().delaySubscription(Duration.ofSeconds(2)))
+        def peekMsgVerifier = StepVerifier.create(queueAsyncClient.peekMessage()
+            .delaySubscription(getMessageUpdateDelay(2000)))
         then:
         updateMsgVerifier.assertNext {
             assert QueueTestHelper.assertResponseStatusCode(it, 204)

@@ -4,12 +4,9 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.RMResources;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.implementation.http.HttpHeaders;
-import com.azure.cosmos.models.CosmosError;
 
 import java.net.URI;
 import java.util.Map;
@@ -21,7 +18,7 @@ import java.util.Map;
  * No retries should be made in this case, as either split or merge might have happened and query/readfeed
  * must take appropriate actions.
  */
-public class InternalServerErrorException extends CosmosClientException {
+public class InternalServerErrorException extends CosmosException {
 
     InternalServerErrorException() {
         this(RMResources.InternalServerError);

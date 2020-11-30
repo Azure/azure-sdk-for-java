@@ -23,6 +23,8 @@ import com.azure.security.keyvault.keys.models.KeyCurveName;
 import com.azure.security.keyvault.keys.models.KeyOperation;
 import com.azure.security.keyvault.keys.models.KeyType;
 
+import java.time.Duration;
+
 /**
  * The KeyClient provides synchronous methods to manage {@link KeyVaultKey keys} in the Azure Key Vault. The client supports
  * creating, retrieving, updating, deleting, purging, backing up, restoring and listing the {@link KeyVaultKey keys}. The client
@@ -60,9 +62,9 @@ public final class KeyClient {
      * key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It requires the
      * {@code keys/create} permission.
      *
-     * <p>The {@link KeyType keyType} indicates the type of key to create. Possible values include: {@link KeyType#EC
-     * EC}, {@link KeyType#EC_HSM EC-HSM}, {@link KeyType#RSA RSA}, {@link KeyType#RSA_HSM RSA-HSM} and {@link
-     * KeyType#OCT OCT}.</p>
+     * <p>The {@link KeyType keyType} indicates the type of key to create. Possible values include:
+     * {@link KeyType#EC EC}, {@link KeyType#EC_HSM EC-HSM}, {@link KeyType#RSA RSA}, {@link KeyType#RSA_HSM RSA-HSM},
+     * {@link KeyType#OCT OCT} and {@link KeyType#OCT_HSM OCT-HSM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new EC key. Prints out the details of the created key.</p>
@@ -87,9 +89,9 @@ public final class KeyClient {
      * CreateKeyOptions#getNotBefore() notBefore} values are optional. The {@link CreateKeyOptions#isEnabled()} enabled} field
      * is set to true by Azure Key Vault, if not specified.</p>
      *
-     * <p>The {@link CreateKeyOptions#getKeyType() keyType} indicates the type of key to create. Possible values include:
-     * {@link KeyType#EC EC}, {@link KeyType#EC_HSM EC-HSM}, {@link KeyType#RSA RSA}, {@link KeyType#RSA_HSM RSA-HSM}
-     * and {@link KeyType#OCT OCT}.</p>
+     * <p>The {@link CreateKeyOptions#getKeyType() keyType} indicates the type of key to create. Possible values
+     * include: {@link KeyType#EC EC}, {@link KeyType#EC_HSM EC-HSM}, {@link KeyType#RSA RSA},
+     * {@link KeyType#RSA_HSM RSA-HSM}, {@link KeyType#OCT OCT} and {@link KeyType#OCT_HSM OCT-HSM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new RSA key which activates in one day and expires in one year. Prints out the details of the
@@ -113,9 +115,9 @@ public final class KeyClient {
      * CreateKeyOptions#getNotBefore() notBefore} values are optional. The {@link CreateKeyOptions#isEnabled() enabled} field
      * is set to true by Azure Key Vault, if not specified.</p>
      *
-     * <p>The {@link CreateKeyOptions#getKeyType() keyType} indicates the type of key to create. Possible values include:
-     * {@link KeyType#EC EC}, {@link KeyType#EC_HSM EC-HSM}, {@link KeyType#RSA RSA}, {@link KeyType#RSA_HSM RSA-HSM}
-     * and {@link KeyType#OCT OCT}.</p>
+     * <p>The {@link CreateKeyOptions#getKeyType() keyType} indicates the type of key to create. Possible values
+     * include: {@link KeyType#EC EC}, {@link KeyType#EC_HSM EC-HSM}, {@link KeyType#RSA RSA},
+     * {@link KeyType#RSA_HSM RSA-HSM}, {@link KeyType#OCT OCT} and {@link KeyType#OCT_HSM OCT-HSM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new RSA key which activates in one day and expires in one year. Prints out the details of the
@@ -318,6 +320,69 @@ public final class KeyClient {
     }
 
     /**
+     * Exports the latest version of a key from the key vault. The export key operation may be used to import any key
+     * from the Azure Key Vault as long as it is marked as exportable and its release policy is satisfied.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Exports a key from a key vault. Subscribes to the call asynchronously and prints out the newly exported key
+     * details when a response has been received.</p>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.keyclient.exportKey#String-String}
+     *
+     * @param name The name of the key to be exported.
+     * @param environment The target environment assertion.
+     * @return The {@link KeyVaultKey exported key}.
+     * @throws NullPointerException If the specified {@code name} or {@code environment} are {@code null}.
+     */
+    public KeyVaultKey exportKey(String name, String environment) {
+        return client.exportKey(name, environment).block();
+    }
+
+    /**
+     * Exports a key from the key vault. The export key operation may be used to import any key from the Azure Key Vault
+     * as long as it is marked as exportable and its release policy is satisfied.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Exports a key from a key vault. Subscribes to the call asynchronously and prints out the newly exported key
+     * details when a response has been received.</p>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.keyclient.exportKey#String-String-String}
+     *
+     * @param name The name of the key to be exported.
+     * @param version The key version.
+     * @param environment The target environment assertion.
+     * @return The {@link KeyVaultKey exported key}.
+     * @throws NullPointerException If the specified {@code name}, {@code version} or {@code environment} are
+     * {@code null}.
+     */
+    public KeyVaultKey exportKey(String name, String version, String environment) {
+        return client.exportKey(name, version, environment).block();
+    }
+
+    /**
+     * Exports a key from the key vault. The export key operation may be used to import any key from the Azure Key Vault
+     * as long as it is marked as exportable and its release policy is satisfied.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Exports a key from a key vault. Subscribes to the call asynchronously and prints out the newly exported key
+     * details when a response has been received.</p>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.keyclient.exportKeyWithResponse#String-String-String-Context}
+     *
+     * @param name The name of the key to be exported.
+     * @param version The key version.
+     * @param environment The target environment assertion.
+     * @param context Additional context that is passed through the HTTP pipeline during the service call.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link KeyVaultKey exported key}.
+     * @throws NullPointerException If the specified {@code name}, {@code version} or {@code environment} are
+     * {@code null}.
+     */
+    public Response<KeyVaultKey> exportKeyWithResponse(String name, String version, String environment,
+                                                       Context context) {
+        return client.exportKeyWithResponse(name, version, environment, context).block();
+    }
+
+    /**
      * Gets the public part of the specified key and key version. The get key operation is applicable to all key types
      * and it requires the {@code keys/get} permission.
      *
@@ -328,10 +393,11 @@ public final class KeyClient {
      * @param name The name of the key, cannot be null
      * @param version The version of the key to retrieve. If this is an empty String or null, this call is
      *     equivalent to calling {@link KeyClient#getKey(String)}, with the latest version being retrieved.
-     * @return The requested {@link KeyVaultKey key}.
-     * @throws ResourceNotFoundException when a key with {@code name} and valid {@code version} doesn't exist in the key
-     *     vault.
-     * @throws HttpResponseException if an invalid {@code version} is specified.
+     * @return The requested {@link KeyVaultKey key}. The content of the key is null if
+     * both {@code name} and {@code version} are null or empty.
+     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault or
+     * an empty/null {@code name} and a non null/empty {@code version} is provided.
+     * @throws HttpResponseException if a valid {@code name} and a non null/empty {@code version} is specified.
      */
     public KeyVaultKey getKey(String name, String version) {
         return getKeyWithResponse(name, version, Context.NONE).getValue();
@@ -350,9 +416,10 @@ public final class KeyClient {
      * @param version The version of the key to retrieve. If this is an empty String or null, this call is
      *     equivalent to calling {@link KeyClient#getKey(String)}, with the latest version being retrieved.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the requested {@link KeyVaultKey key}.
-     * @throws ResourceNotFoundException when a key with {@code name} and valid {@code version} doesn't exist in the key
-     *     vault.
-     * @throws HttpResponseException if an invalid {@code version} is specified.
+     * The content of the key is null if both {@code name} and {@code version} are null or empty.
+     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault or
+     * an empty/null {@code name} and a non null/empty {@code version} is provided.
+     * @throws HttpResponseException if a valid {@code name} and a non null/empty {@code version} is specified.
      */
     public Response<KeyVaultKey> getKeyWithResponse(String name, String version, Context context) {
         return client.getKeyWithResponse(name, version, context).block();
@@ -367,9 +434,9 @@ public final class KeyClient {
      * {@codesnippet com.azure.keyvault.keys.keyclient.getKey#string}
      *
      * @param name The name of the key.
-     * @return The requested {@link KeyVaultKey key}.
-     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpResponseException if an invalid {@code version} is specified.
+     * @return The requested {@link KeyVaultKey key}. The content of the key is null if {@code name} is null or empty.
+     * @throws ResourceNotFoundException when a key with non null/empty {@code name} doesn't exist in the key vault.
+     * @throws HttpResponseException if a non null/empty and an invalid {@code name} is specified.
      */
     public KeyVaultKey getKey(String name) {
         return getKeyWithResponse(name, "", Context.NONE).getValue();
@@ -435,7 +502,7 @@ public final class KeyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Deletes the key from the keyvault. Prints out the recovery id of the deleted key returned in the
      * response.</p>
-     * {@codesnippet com.azure.keyvault.keys.keyclient.deleteKey#string}
+     * {@codesnippet com.azure.keyvault.keys.keyclient.deleteKey#String}
      *
      * @param name The name of the key to be deleted.
      * @return A {@link SyncPoller} to poll on and retrieve {@link DeletedKey deleted key}
@@ -444,6 +511,29 @@ public final class KeyClient {
      */
     public SyncPoller<DeletedKey, Void> beginDeleteKey(String name) {
         return client.beginDeleteKey(name).getSyncPoller();
+    }
+
+    /**
+     * Deletes a key of any type from the key vault. If soft-delete is enabled on the key vault then the key is placed
+     * in the deleted state and requires to be purged for permanent deletion else the key is permanently deleted. The
+     * delete operation applies to any key stored in Azure Key Vault but it cannot be applied to an individual version
+     * of a key. This operation removes the cryptographic material associated with the key, which means the key is not
+     * usable for Sign/Verify, Wrap/Unwrap or Encrypt/Decrypt operations. This operation requires the {@code
+     * keys/delete} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Deletes the key from the keyvault. Prints out the recovery id of the deleted key returned in the
+     * response.</p>
+     * {@codesnippet com.azure.keyvault.keys.keyclient.deleteKey#String-Duration}
+     *
+     * @param name The name of the key to be deleted.
+     * @param pollingInterval The interval at which the operation status will be polled for.
+     * @return A {@link SyncPoller} to poll on and retrieve {@link DeletedKey deleted key}
+     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
+     * @throws HttpResponseException when a key with {@code name} is empty string.
+     */
+    public SyncPoller<DeletedKey, Void> beginDeleteKey(String name, Duration pollingInterval) {
+        return client.beginDeleteKey(name, pollingInterval).getSyncPoller();
     }
 
     /**
@@ -531,7 +621,7 @@ public final class KeyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Recovers the deleted key from the key vault enabled for soft-delete.</p>
      * //Assuming key is deleted on a soft-delete enabled key vault.
-     * {@codesnippet com.azure.keyvault.keys.keyclient.recoverDeletedKey#string}
+     * {@codesnippet com.azure.keyvault.keys.keyclient.recoverDeletedKey#String}
      *
      * @param name The name of the deleted key to be recovered.
      * @return A {@link SyncPoller} to poll on and retrieve {@link KeyVaultKey recovered key}.
@@ -540,6 +630,26 @@ public final class KeyClient {
      */
     public SyncPoller<KeyVaultKey, Void> beginRecoverDeletedKey(String name) {
         return client.beginRecoverDeletedKey(name).getSyncPoller();
+    }
+
+    /**
+     * Recovers the deleted key in the key vault to its latest version and can only be performed on a soft-delete
+     * enabled vault. An attempt to recover an non-deleted key will return an error. Consider this the inverse of the
+     * delete operation on soft-delete enabled vaults. This operation requires the {@code keys/recover} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Recovers the deleted key from the key vault enabled for soft-delete.</p>
+     * //Assuming key is deleted on a soft-delete enabled key vault.
+     * {@codesnippet com.azure.keyvault.keys.keyclient.recoverDeletedKey#String-Duration}
+     *
+     * @param name The name of the deleted key to be recovered.
+     * @param pollingInterval The interval at which the operation status will be polled for.
+     * @return A {@link SyncPoller} to poll on and retrieve {@link KeyVaultKey recovered key}.
+     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
+     * @throws HttpResponseException when a key with {@code name} is empty string.
+     */
+    public SyncPoller<KeyVaultKey, Void> beginRecoverDeletedKey(String name, Duration pollingInterval) {
+        return client.beginRecoverDeletedKey(name, pollingInterval).getSyncPoller();
     }
 
     /**
@@ -755,8 +865,7 @@ public final class KeyClient {
      * @param name The name of the key.
      * @return {@link PagedIterable} of {@link KeyProperties key} of all the versions of the specified key in the vault. List
      *     is empty if key with {@code name} does not exist in key vault.
-     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpResponseException when a key with {@code name} is empty string.
+     * @throws ResourceNotFoundException when a given key {@code name} is null or an empty string.
      */
     public PagedIterable<KeyProperties> listPropertiesOfKeyVersions(String name) {
         return listPropertiesOfKeyVersions(name, Context.NONE);
@@ -783,8 +892,7 @@ public final class KeyClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return {@link PagedIterable} of {@link KeyProperties key} of all the versions of the specified key in the vault. List
      *     is empty if key with {@code name} does not exist in key vault.
-     * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
-     * @throws HttpResponseException when a key with {@code name} is empty string.
+     * @throws ResourceNotFoundException when a given key {@code name} is null or an empty string.
      */
     public PagedIterable<KeyProperties> listPropertiesOfKeyVersions(String name, Context context) {
         return new PagedIterable<>(client.listPropertiesOfKeyVersions(name, context));

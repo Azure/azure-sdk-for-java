@@ -18,10 +18,33 @@ public class ClientSecretCredentialBuilder extends AadCredentialBuilderBase<Clie
     /**
      * Sets the client secret for the authentication.
      * @param clientSecret the secret value of the AAD application.
-     * @return the ClientSecretCredentialBuilder itself
+     * @return An updated instance of this builder.
      */
     public ClientSecretCredentialBuilder clientSecret(String clientSecret) {
         this.clientSecret = clientSecret;
+        return this;
+    }
+
+    /**
+     * Enables the shared token cache which is disabled by default. If enabled, the credential will store tokens
+     * in a cache persisted to the machine, protected to the current user, which can be shared by other credentials
+     * and processes.
+     *
+     * @return An updated instance of this builder.
+     */
+    ClientSecretCredentialBuilder enablePersistentCache() {
+        this.identityClientOptions.enablePersistentCache();
+        return this;
+    }
+
+    /**
+     * Allows to use an unprotected file specified by <code>cacheFileLocation()</code> instead of
+     * Gnome keyring on Linux. This is restricted by default.
+     *
+     * @return An updated instance of this builder.
+     */
+    ClientSecretCredentialBuilder allowUnencryptedCache() {
+        this.identityClientOptions.setAllowUnencryptedCache(true);
         return this;
     }
 

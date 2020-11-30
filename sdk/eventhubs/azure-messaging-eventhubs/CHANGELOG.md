@@ -1,6 +1,68 @@
 # Release History
 
-## 5.1.0-beta.1 (Unreleased)
+## 5.4.0-beta.2 (Unreleased)
+
+## 5.4.0-beta.1 (2020-11-12)
+### Breaking changes
+- Removed `ObjectBatch` and related `createBatch()` and `send()` operations in favor of
+ supporting `BinaryData` in `EventData`.
+
+## 5.3.1 (2020-10-30)
+### Bug fixes
+- Eagerly close top-level client in `EventProcessorClient` after fetching the list of partitions instead of waiting until
+ the connection times out.
+- Added checks for matching lost link name with the current link name before propagating the error in
+ `AmqpReceiveLinkProcessor`.
+ 
+## 5.3.0 (2020-10-12)
+### New Features
+- Add `clientOptions` to `EventHubClientBuilder` to support for setting user's application id in the user-agent property
+of the amqp connection.
+
+### Other Changes
+- `EventHubProcessorClient` checks connection status of each partition consumer periodically and closes
+the partition consumer to rebuild the connection later.
+
+### Dependency Updates
+- Update `azure-core` dependency to `1.9.0`.
+- Update `azure-core-amqp` dependency to `1.6.0`.
+- Update `azure-identity` dependency to `1.1.3`.
+
+## 5.2.0 (2020-09-11)
+- Default scheme to 'sb://' if no scheme is set in 'Endpoint'. 
+- Update dependency version of `azure-core-amp` to `1.5.1`
+- Add support for connection strings containing Shared Access Signature
+- Add option to control the load balancing cycle interval.
+- Add option to control the partition ownership expiration duration.
+- Add option to configure the load balancing strategy to either use balanced or greedy approach.
+
+## 5.2.0-beta.2 (2020-08-14)
+- Support for object serializer to send and receive strongly-typed objects.
+
+## 5.2.0-beta.1 (2020-07-08)
+- Add option to control the load balancing cycle interval.
+- Add option to control the partition ownership expiration duration.
+- Add option to configure the load balancing strategy to either use balanced or greedy approach.
+
+## 5.1.2 (2020-07-08)
+- Updated dependency version of `azure-core-amqp` which has a bug fix for updating User Agent string format.
+- Fix bug where batch receive handler runs on non-blocking thread and fails on blocking calls. 
+
+## 5.1.1 (2020-06-12)
+- Fix bug where receiver link fails to add credits to new links created after an existing link is closed.
+- Add a check to load balancer task to not run if the previous load balancer task is still in progress.
+- Updated dependency version of `azure-core-amqp` to `1.2.0`
+
+## 5.1.0 (2020-05-07)
+- Add support for sending a collection of events as a single batch from `EventHubProducerClient` and `EventHubProducerAsyncClient`.
+- Updated dependency version of `azure-core-amqp` to `1.1.2`.
+
+## 5.1.0-beta.1 (2020-04-08)
+- Add support for heartbeat for single process event function in Event Processor Client.
+- Add support for receiving events in batches in Event Processor Client.
+
+## 5.0.3 (2020-04-08)
+- Fix bug where producers and consumers would be unable to get partition information after a reconnect.
 
 ## 5.0.2 (2020-02-13)
 - Fix bug where producers and consumers would not be able to block in their consuming code.
@@ -104,3 +166,5 @@ For release notes and more information please visit https://aka.ms/azure-sdk-pre
   by calling `EventHubPublisher.close()` or `EventHubConsumer.close()`.
 - Creating more than two concurrent `EventHubClients` or `EventHubConsumers` does not work. Limit usage of concurrent
   clients and consumers to two to avoid failures.
+
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feventhubs%2Fazure-messaging-eventhubs%2FCHANGELOG.png)

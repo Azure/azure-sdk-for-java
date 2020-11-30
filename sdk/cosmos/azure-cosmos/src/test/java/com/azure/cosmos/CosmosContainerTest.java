@@ -6,23 +6,25 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.IndexingMode;
 import com.azure.cosmos.models.IndexingPolicy;
-import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.rx.TestSuiteBase;
-import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.util.CosmosPagedIterable;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -51,19 +53,6 @@ public class CosmosContainerTest extends TestSuiteBase {
         safeCloseSyncClient(client);
     }
 
-    private CosmosContainerProperties getCollectionDefinition(String collectionName) {
-        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
-        ArrayList<String> paths = new ArrayList<String>();
-        paths.add("/mypk");
-        partitionKeyDef.setPaths(paths);
-
-        CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(
-            collectionName,
-            partitionKeyDef);
-
-        return collectionDefinition;
-    }
-
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void createContainer_withProperties() throws Exception {
         String collectionName = UUID.randomUUID().toString();
@@ -72,6 +61,35 @@ public class CosmosContainerTest extends TestSuiteBase {
         CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
         assertThat(containerResponse.getRequestCharge()).isGreaterThan(0);
         validateContainerResponse(containerProperties, containerResponse);
+    }
+
+    @DataProvider
+    public static Object[][] analyticalTTLProvider() {
+        return new Object[][]{
+            // analytical ttl >= collection default ttl
+            {-1},  // infinite ttl for data stored in analytical storage
+            {0},   // analytics disabled
+            {10},
+            {null}
+        };
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "analyticalTTLProvider", enabled = false)
+    public void createContainer_withAnalyticalTTL(Integer analyticalTTL) throws Exception {
+        // not working with emulator yet. TODO: enable when emulator has support for this.
+        String collectionName = UUID.randomUUID().toString();
+        CosmosContainerProperties containerProperties = new CosmosContainerProperties(collectionName, "/id");
+
+        containerProperties.setAnalyticalStoreTimeToLiveInSeconds(analyticalTTL);
+        if (analyticalTTL != null && analyticalTTL > 0) {
+            containerProperties.setDefaultTimeToLiveInSeconds(analyticalTTL - 1);
+        }
+
+        CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
+        assertThat(containerResponse.getRequestCharge()).isGreaterThan(0);
+        validateContainerResponse(containerProperties, containerResponse);
+
+        assertThat(containerResponse.getProperties().getAnalyticalStoreTimeToLiveInSeconds()).isEqualTo(analyticalTTL);
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
@@ -85,8 +103,8 @@ public class CosmosContainerTest extends TestSuiteBase {
         try {
             createdDatabase.createContainer(containerProperties);
         } catch (Exception e) {
-            assertThat(e).isInstanceOf(CosmosClientException.class);
-            assertThat(((CosmosClientException) e).getStatusCode()).isEqualTo(HttpConstants.StatusCodes.CONFLICT);
+            assertThat(e).isInstanceOf(CosmosException.class);
+            assertThat(((CosmosException) e).getStatusCode()).isEqualTo(HttpConstants.StatusCodes.CONFLICT);
         }
     }
 
@@ -97,7 +115,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         int throughput = 1000;
 
         CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties,
-            throughput);
+            ThroughputProperties.createManualThroughput(throughput));
         validateContainerResponse(containerProperties, containerResponse);
     }
 
@@ -139,7 +157,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         int throughput = 1000;
 
         CosmosContainerResponse containerResponse = createdDatabase.createContainer(collectionName,
-            partitionKeyPath, throughput);
+            partitionKeyPath, ThroughputProperties.createManualThroughput(throughput));
         validateContainerResponse(new CosmosContainerProperties(collectionName, partitionKeyPath), containerResponse);
     }
 
@@ -158,6 +176,25 @@ public class CosmosContainerTest extends TestSuiteBase {
 
         CosmosContainerResponse read1 = syncContainer.read(options);
         validateContainerResponse(containerProperties, read1);
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void getFeedRanges() throws Exception {
+        String collectionName = UUID.randomUUID().toString();
+        CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
+        CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
+
+        CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
+
+        CosmosContainer syncContainer = createdDatabase.getContainer(collectionName);
+
+        List<FeedRange> feedRanges = syncContainer.getFeedRanges();
+        assertThat(feedRanges)
+            .isNotNull()
+            .hasSize(1);
+        assertThat(feedRanges.get(0).toJsonString())
+            .isNotNull()
+            .isEqualTo("{\"PKRangeId\":\"0\"}");
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
@@ -196,13 +233,13 @@ public class CosmosContainerTest extends TestSuiteBase {
 
         assertThat(containerResponse.getProperties().getIndexingPolicy().getIndexingMode()).isEqualTo(IndexingMode.CONSISTENT);
 
-        CosmosContainerResponse replaceResponse = containerResponse.getContainer()
+        CosmosContainerResponse replaceResponse = createdDatabase.getContainer(containerProperties.getId())
                                                           .replace(containerResponse.getProperties().setIndexingPolicy(
-                                                              new IndexingPolicy().setIndexingMode(IndexingMode.LAZY)));
+                                                              new IndexingPolicy().setIndexingMode(IndexingMode.CONSISTENT)));
         assertThat(replaceResponse.getProperties().getIndexingPolicy().getIndexingMode())
-            .isEqualTo(IndexingMode.LAZY);
+            .isEqualTo(IndexingMode.CONSISTENT);
 
-        CosmosContainerResponse replaceResponse1 = containerResponse.getContainer()
+        CosmosContainerResponse replaceResponse1 = createdDatabase.getContainer(containerProperties.getId())
                                                           .replace(containerResponse.getProperties().setIndexingPolicy(
                                                               new IndexingPolicy().setIndexingMode(IndexingMode.CONSISTENT)),
                                                               options);
@@ -222,8 +259,8 @@ public class CosmosContainerTest extends TestSuiteBase {
         // Very basic validation
         assertThat(feedResponseIterator.iterator().hasNext()).isTrue();
 
-        FeedOptions feedOptions = new FeedOptions();
-        CosmosPagedIterable<CosmosContainerProperties> feedResponseIterator1 = createdDatabase.readAllContainers(feedOptions);
+        CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
+        CosmosPagedIterable<CosmosContainerProperties> feedResponseIterator1 = createdDatabase.readAllContainers(cosmosQueryRequestOptions);
         assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
     }
 
@@ -236,14 +273,14 @@ public class CosmosContainerTest extends TestSuiteBase {
 
         CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
         String query = String.format("SELECT * from c where c.id = '%s'", collectionName);
-        FeedOptions feedOptions = new FeedOptions();
+        CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
 
         CosmosPagedIterable<CosmosContainerProperties> feedResponseIterator = createdDatabase.queryContainers(query);
         // Very basic validation
         assertThat(feedResponseIterator.iterator().hasNext()).isTrue();
 
         CosmosPagedIterable<CosmosContainerProperties> feedResponseIterator1 =
-            createdDatabase.queryContainers(query, feedOptions);
+            createdDatabase.queryContainers(query, cosmosQueryRequestOptions);
         // Very basic validation
         assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
 
@@ -253,7 +290,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         assertThat(feedResponseIterator2.iterator().hasNext()).isTrue();
 
         CosmosPagedIterable<CosmosContainerProperties> feedResponseIterator3 =
-            createdDatabase.queryContainers(querySpec, feedOptions);
+            createdDatabase.queryContainers(querySpec, cosmosQueryRequestOptions);
         assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
     }
 

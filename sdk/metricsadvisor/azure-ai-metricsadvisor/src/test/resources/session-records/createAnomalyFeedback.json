@@ -1,0 +1,46 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0//feedback/metric",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.2 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "65b6e815-cc22-4ed5-bcd8-16b6cc60ecac",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-request-id" : "f15fe030-d18b-4c16-a5a1-9247c3d02ad8",
+      "x-envoy-upstream-service-time" : "247",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "f15fe030-d18b-4c16-a5a1-9247c3d02ad8",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "Date" : "Sat, 24 Oct 2020 23:52:00 GMT",
+      "Location" : "https://js-metrics-advisor.cognitiveservices.azure.com/metricsadvisor/v1.0/feedback/metric/1f82a6a0-00a1-4621-9116-8bf6764b3157"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0//feedback/metric/1f82a6a0-00a1-4621-9116-8bf6764b3157",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.2 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8d3d6fff-3a01-4458-9b1f-b8fa3c793436"
+    },
+    "Response" : {
+      "x-request-id" : "fa5f0d8f-6ca1-4a0d-9ca4-b90089791375",
+      "x-envoy-upstream-service-time" : "76",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "fa5f0d8f-6ca1-4a0d-9ca4-b90089791375",
+      "retry-after" : "0",
+      "Content-Length" : "484",
+      "StatusCode" : "200",
+      "Body" : "{\"feedbackId\":\"1f82a6a0-00a1-4621-9116-8bf6764b3157\",\"createdTime\":\"2020-10-24T23:52:01.728Z\",\"userPrincipal\":\"savaity@microsoft.com\",\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"dimensionFilter\":{\"dimension\":{\"city\":\"Miami\",\"category\":\"Health & Personal Care\"}},\"feedbackType\":\"Anomaly\",\"startTime\":\"2020-01-01T00:00:00Z\",\"endTime\":\"2020-10-22T00:00:00Z\",\"value\":{\"anomalyValue\":\"NotAnomaly\"},\"anomalyDetectionConfigurationId\":null,\"anomalyDetectionConfigurationSnapshot\":null}",
+      "Date" : "Sat, 24 Oct 2020 23:52:03 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

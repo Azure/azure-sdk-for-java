@@ -11,8 +11,8 @@ package com.microsoft.azure.management.eventgrid.v2020_04_01_preview.implementat
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.PrivateEndpointConnection;
 import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
-import java.util.List;
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.PrivateEndpoint;
+import java.util.List;
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.ConnectionState;
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.ResourceProvisioningState;
 
@@ -58,7 +58,7 @@ class PrivateEndpointConnectionImpl extends CreatableUpdatableImpl<PrivateEndpoi
     @Override
     public Observable<PrivateEndpointConnection> updateResourceAsync() {
         PrivateEndpointConnectionsInner client = this.manager().inner().privateEndpointConnections();
-        return client.updateAsync(this.resourceGroupName, this.parentType, this.parentName, this.privateEndpointConnectionName)
+        return client.updateAsync(this.resourceGroupName, this.parentType, this.parentName, this.privateEndpointConnectionName, this.inner())
             .map(innerToFluentMap(this));
     }
 
@@ -107,6 +107,30 @@ class PrivateEndpointConnectionImpl extends CreatableUpdatableImpl<PrivateEndpoi
     @Override
     public String type() {
         return this.inner().type();
+    }
+
+    @Override
+    public PrivateEndpointConnectionImpl withGroupIds(List<String> groupIds) {
+        this.inner().withGroupIds(groupIds);
+        return this;
+    }
+
+    @Override
+    public PrivateEndpointConnectionImpl withPrivateEndpoint(PrivateEndpoint privateEndpoint) {
+        this.inner().withPrivateEndpoint(privateEndpoint);
+        return this;
+    }
+
+    @Override
+    public PrivateEndpointConnectionImpl withPrivateLinkServiceConnectionState(ConnectionState privateLinkServiceConnectionState) {
+        this.inner().withPrivateLinkServiceConnectionState(privateLinkServiceConnectionState);
+        return this;
+    }
+
+    @Override
+    public PrivateEndpointConnectionImpl withProvisioningState(ResourceProvisioningState provisioningState) {
+        this.inner().withProvisioningState(provisioningState);
+        return this;
     }
 
 }

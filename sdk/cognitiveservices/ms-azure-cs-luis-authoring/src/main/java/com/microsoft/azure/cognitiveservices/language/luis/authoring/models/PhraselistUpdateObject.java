@@ -49,6 +49,13 @@ public class PhraselistUpdateObject {
     private Boolean isExchangeable;
 
     /**
+     * Indicates if the Phraselist is enabled for all models in the
+     * application.
+     */
+    @JsonProperty(value = "enabledForAllModels")
+    private Boolean enabledForAllModels;
+
+    /**
      * Get the phrases value.
      *
      * @return the phrases value
@@ -125,6 +132,26 @@ public class PhraselistUpdateObject {
      */
     public PhraselistUpdateObject withIsExchangeable(Boolean isExchangeable) {
         this.isExchangeable = isExchangeable;
+        return this;
+    }
+
+    /**
+     * Get the enabledForAllModels value.
+     *
+     * @return the enabledForAllModels value
+     */
+    public Boolean enabledForAllModels() {
+        return this.enabledForAllModels;
+    }
+
+    /**
+     * Set the enabledForAllModels value.
+     *
+     * @param enabledForAllModels the enabledForAllModels value to set
+     * @return the PhraselistUpdateObject object itself.
+     */
+    public PhraselistUpdateObject withEnabledForAllModels(Boolean enabledForAllModels) {
+        this.enabledForAllModels = enabledForAllModels;
         return this;
     }
 

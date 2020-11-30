@@ -12,17 +12,17 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Exported Model - A Closed List.
+ * Exported Model - A list entity.
  */
 public class ClosedList {
     /**
-     * Name of the closed list feature.
+     * Name of the list entity.
      */
     @JsonProperty(value = "name")
     private String name;
 
     /**
-     * Sublists for the feature.
+     * Sublists for the list entity.
      */
     @JsonProperty(value = "subLists")
     private List<SubClosedList> subLists;

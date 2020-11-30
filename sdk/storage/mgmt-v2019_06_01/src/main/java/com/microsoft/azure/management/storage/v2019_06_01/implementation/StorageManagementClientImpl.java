@@ -226,6 +226,19 @@ public class StorageManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The ObjectReplicationPoliciesInner object to access its operations.
+     */
+    private ObjectReplicationPoliciesInner objectReplicationPolicies;
+
+    /**
+     * Gets the ObjectReplicationPoliciesInner object to access its operations.
+     * @return the ObjectReplicationPoliciesInner object.
+     */
+    public ObjectReplicationPoliciesInner objectReplicationPolicies() {
+        return this.objectReplicationPolicies;
+    }
+
+    /**
      * The EncryptionScopesInner object to access its operations.
      */
     private EncryptionScopesInner encryptionScopes;
@@ -291,6 +304,58 @@ public class StorageManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The QueueServicesInner object to access its operations.
+     */
+    private QueueServicesInner queueServices;
+
+    /**
+     * Gets the QueueServicesInner object to access its operations.
+     * @return the QueueServicesInner object.
+     */
+    public QueueServicesInner queueServices() {
+        return this.queueServices;
+    }
+
+    /**
+     * The QueuesInner object to access its operations.
+     */
+    private QueuesInner queues;
+
+    /**
+     * Gets the QueuesInner object to access its operations.
+     * @return the QueuesInner object.
+     */
+    public QueuesInner queues() {
+        return this.queues;
+    }
+
+    /**
+     * The TableServicesInner object to access its operations.
+     */
+    private TableServicesInner tableServices;
+
+    /**
+     * Gets the TableServicesInner object to access its operations.
+     * @return the TableServicesInner object.
+     */
+    public TableServicesInner tableServices() {
+        return this.tableServices;
+    }
+
+    /**
+     * The TablesInner object to access its operations.
+     */
+    private TablesInner tables;
+
+    /**
+     * Gets the TablesInner object to access its operations.
+     * @return the TablesInner object.
+     */
+    public TablesInner tables() {
+        return this.tables;
+    }
+
+    /**
      * Initializes an instance of StorageManagementClient client.
      *
      * @param credentials the management credentials for Azure
@@ -332,11 +397,16 @@ public class StorageManagementClientImpl extends AzureServiceClient {
         this.managementPolicies = new ManagementPoliciesInner(restClient().retrofit(), this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsInner(restClient().retrofit(), this);
         this.privateLinkResources = new PrivateLinkResourcesInner(restClient().retrofit(), this);
+        this.objectReplicationPolicies = new ObjectReplicationPoliciesInner(restClient().retrofit(), this);
         this.encryptionScopes = new EncryptionScopesInner(restClient().retrofit(), this);
         this.blobServices = new BlobServicesInner(restClient().retrofit(), this);
         this.blobContainers = new BlobContainersInner(restClient().retrofit(), this);
         this.fileServices = new FileServicesInner(restClient().retrofit(), this);
         this.fileShares = new FileSharesInner(restClient().retrofit(), this);
+        this.queueServices = new QueueServicesInner(restClient().retrofit(), this);
+        this.queues = new QueuesInner(restClient().retrofit(), this);
+        this.tableServices = new TableServicesInner(restClient().retrofit(), this);
+        this.tables = new TablesInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 

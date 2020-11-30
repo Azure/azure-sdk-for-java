@@ -3,17 +3,32 @@
 
 package com.azure.cosmos.models;
 
+import com.azure.cosmos.implementation.JsonSerializable;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import java.util.Objects;
+
 /**
  * Represents a SQL parameter in the SqlQuerySpec used for queries in the Azure Cosmos DB database service.
  */
-public final class SqlParameter extends JsonSerializable {
-
+public final class SqlParameter {
+    private JsonSerializable jsonSerializable;
 
     /**
      * Initializes a new instance of the SqlParameter class.
      */
     public SqlParameter() {
-        super();
+        this.jsonSerializable = new JsonSerializable();
+    }
+
+    /**
+     * Initializes a new instance of the SqlParameter class.
+     *
+     * @param objectNode the object node that represents the included path.
+     */
+    SqlParameter(ObjectNode objectNode) {
+
+        this.jsonSerializable = new JsonSerializable(objectNode);
     }
 
     /**
@@ -23,7 +38,7 @@ public final class SqlParameter extends JsonSerializable {
      * @param value the value of the parameter.
      */
     public SqlParameter(String name, Object value) {
-        super();
+        this.jsonSerializable = new JsonSerializable();
         this.setName(name);
         this.setValue(value);
     }
@@ -34,7 +49,7 @@ public final class SqlParameter extends JsonSerializable {
      * @return the name of the parameter.
      */
     public String getName() {
-        return super.getString("name");
+        return this.jsonSerializable.getString("name");
     }
 
     /**
@@ -44,7 +59,7 @@ public final class SqlParameter extends JsonSerializable {
      * @return the SqlParameter.
      */
     public SqlParameter setName(String name) {
-        super.set("name", name);
+        this.jsonSerializable.set("name", name);
         return this;
     }
 
@@ -56,7 +71,7 @@ public final class SqlParameter extends JsonSerializable {
      * @return the value of the parameter.
      */
     public <T> T getValue(Class<T> classType) {
-        return super.getObject("value", classType);
+        return this.jsonSerializable.getObject("value", classType);
     }
 
     /**
@@ -66,7 +81,30 @@ public final class SqlParameter extends JsonSerializable {
      * @return the SqlParameter.
      */
     public SqlParameter setValue(Object value) {
-        super.set("value", value);
+        this.jsonSerializable.set("value", value);
         return this;
+    }
+
+    void populatePropertyBag() {
+        this.jsonSerializable.populatePropertyBag();
+    }
+
+    JsonSerializable getJsonSerializable() { return this.jsonSerializable; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        SqlParameter that = (SqlParameter) o;
+        return Objects.equals(jsonSerializable, that.jsonSerializable);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(jsonSerializable);
     }
 }

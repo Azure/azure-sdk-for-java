@@ -6,10 +6,9 @@ package com.azure.core.exception;
 import com.azure.core.http.HttpRequest;
 
 /**
- * The exception occurred while attempting to connect a socket to a Azure service address and port.
- * Typically, the connection was refused remotely (e.g., no process is listening on the Azure service address/port).
- *
- * These errors are safe to retry.
+ * The exception when an HTTP request fails.
+ * <p>
+ * Generally, these errors are safe to retry.
  */
 public class HttpRequestException extends AzureException {
 
@@ -19,9 +18,19 @@ public class HttpRequestException extends AzureException {
     private final transient HttpRequest request;
 
     /**
-     * Initializes a new instance of the ServiceRequestException class.
+     * Initializes a new instance of the HttpRequestException class.
      *
-     * @param message the exception message or the response content if a message is not available
+     * @param request The {@link HttpRequest} being sent when the exception occurred.
+     */
+    public HttpRequestException(final HttpRequest request) {
+        super();
+        this.request = request;
+    }
+
+    /**
+     * Initializes a new instance of the HttpRequestException class.
+     *
+     * @param message The exception message.
      * @param request the HTTP request sends to the Azure service
      */
     public HttpRequestException(final String message, final HttpRequest request) {
@@ -30,11 +39,22 @@ public class HttpRequestException extends AzureException {
     }
 
     /**
-     * Initializes a new instance of the ServiceRequestException class.
+     * Initializes a new instance of the HttpRequestException class.
      *
-     * @param message the exception message or the response content if a message is not available
-     * @param request the HTTP request sends to the Azure service
-     * @param cause the Throwable which caused the creation of this ServiceRequestException
+     * @param request The {@link HttpRequest} being sent when the exception occurred.
+     * @param cause The {@link Throwable} which caused the creation of this HttpRequestException.
+     */
+    public HttpRequestException(final HttpRequest request, final Throwable cause) {
+        super(cause);
+        this.request = request;
+    }
+
+    /**
+     * Initializes a new instance of the HttpRequestException class.
+     *
+     * @param message The exception message.
+     * @param request The {@link HttpRequest} being sent when the exception occurred.
+     * @param cause The {@link Throwable} which caused the creation of this HttpRequestException.
      */
     public HttpRequestException(final String message, final HttpRequest request, final Throwable cause) {
         super(message, cause);
@@ -42,7 +62,22 @@ public class HttpRequestException extends AzureException {
     }
 
     /**
-     * @return information about the associated HTTP response
+     * Initializes a new instance of the HttpRequestException class.
+     *
+     * @param message The exception message.
+     * @param request The {@link HttpRequest} being sent when the exception occurred.
+     * @param cause The {@link Throwable} which caused the creation of this HttpRequestException.
+     * @param enableSuppression Whether suppression is enabled or disabled.
+     * @param writableStackTrace Whether the exception stack trace will be filled in.
+     */
+    public HttpRequestException(final String message, final HttpRequest request, final Throwable cause,
+        final boolean enableSuppression, final boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+        this.request = request;
+    }
+
+    /**
+     * @return The {@link HttpRequest} being sent when the exception occurred.
      */
     public HttpRequest getRequest() {
         return request;

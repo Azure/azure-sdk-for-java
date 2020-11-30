@@ -1,9 +1,4 @@
-resources:
-  repositories:
-    - repository: azure-sdk-build-tools
-      type: git
-      name: internal/azure-sdk-build-tools
-
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
 trigger:
   branches:
     include:
@@ -15,9 +10,10 @@ trigger:
     include:
       - sdk/cosmos/
     exclude:
-      - sdk/cosmos/azure
-      - sdk/cosmos/microsoft-azure
-      - sdk/cosmos/ms-azure
+      - sdk/cosmos/azure-cosmos
+      - sdk/cosmos/azure-cosmos-benchmark
+      - sdk/cosmos/azure-cosmos-examples
+      - sdk/cosmos/azure-cosmos-table
 
 pr:
   branches:
@@ -30,9 +26,10 @@ pr:
     include:
       - sdk/cosmos/
     exclude:
-      - sdk/cosmos/azure
-      - sdk/cosmos/microsoft-azure
-      - sdk/cosmos/ms-azure
+      - sdk/cosmos/azure-cosmos
+      - sdk/cosmos/azure-cosmos-benchmark
+      - sdk/cosmos/azure-cosmos-examples
+      - sdk/cosmos/azure-cosmos-table
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

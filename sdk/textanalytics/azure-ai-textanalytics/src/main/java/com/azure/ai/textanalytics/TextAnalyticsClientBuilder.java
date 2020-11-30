@@ -3,11 +3,10 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.implementation.ApiKeyCredentialPolicy;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImplBuilder;
-import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
@@ -15,6 +14,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
+import com.azure.core.http.policy.AzureKeyCredentialPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -27,6 +27,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.temporal.ChronoUnit;
@@ -37,13 +38,13 @@ import java.util.Objects;
 
 /**
  * This class provides a fluent builder API to help instantiation of {@link TextAnalyticsClient TextAnalyticsClients}
- * and {@link TextAnalyticsAsyncClient TextAnalyticsAsyncClients}, call {@link #buildClient()} buildClient} and
- * {@link #buildAsyncClient() buildAsyncClient} respectively to construct an instance of the desired client.
+ * and {@link TextAnalyticsAsyncClient TextAnalyticsAsyncClients}, call {@link #buildClient()} buildClient} and {@link
+ * #buildAsyncClient() buildAsyncClient} respectively to construct an instance of the desired client.
  *
  * <p>
- * The client needs the service endpoint of the Azure Text Analytics to access the resource service.
- * {@link #apiKey(TextAnalyticsApiKeyCredential) apiKey(TextAnalyticsApiKeyCredential)} or
- * {@link #credential(TokenCredential) credential(TokenCredential)} give the builder access credential.
+ * The client needs the service endpoint of the Azure Text Analytics to access the resource service. {@link
+ * #credential(AzureKeyCredential)} or {@link #credential(TokenCredential) credential(TokenCredential)} give the builder
+ * access credential.
  * </p>
  *
  * <p><strong>Instantiating an asynchronous Text Analytics Client</strong></p>
@@ -55,11 +56,10 @@ import java.util.Objects;
  * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.instantiation}
  *
  * <p>
- * Another way to construct the client is using a {@link HttpPipeline}. The pipeline gives the client an
- * authenticated way to communicate with the service. Set the pipeline with {@link #pipeline(HttpPipeline) this} and
- * set the service endpoint with {@link #endpoint(String) this}. Using a
- * pipeline requires additional setup but allows for finer control on how the {@link TextAnalyticsClient} and
- * {@link TextAnalyticsAsyncClient} is built.
+ * Another way to construct the client is using a {@link HttpPipeline}. The pipeline gives the client an authenticated
+ * way to communicate with the service. Set the pipeline with {@link #pipeline(HttpPipeline) this} and set the service
+ * endpoint with {@link #endpoint(String) this}. Using a pipeline requires additional setup but allows for finer control
+ * on how the {@link TextAnalyticsClient} and {@link TextAnalyticsAsyncClient} is built.
  * </p>
  *
  * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.pipeline.instantiation}
@@ -69,6 +69,7 @@ import java.util.Objects;
  */
 @ServiceClientBuilder(serviceClients = {TextAnalyticsAsyncClient.class, TextAnalyticsClient.class})
 public final class TextAnalyticsClientBuilder {
+    private static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
     private static final String ECHO_REQUEST_ID_HEADER = "x-ms-return-client-request-id";
     private static final String CONTENT_TYPE_HEADER = "Content-Type";
     private static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
@@ -88,7 +89,7 @@ public final class TextAnalyticsClientBuilder {
     private String defaultCountryHint;
     private String defaultLanguage;
     private Configuration configuration;
-    private TextAnalyticsApiKeyCredential credential;
+    private AzureKeyCredential credential;
     private String endpoint;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
@@ -115,18 +116,17 @@ public final class TextAnalyticsClientBuilder {
     }
 
     /**
-     * Creates a {@link TextAnalyticsClient} based on options set in the builder. Every time
-     * {@code buildClient()} is called a new instance of {@link TextAnalyticsClient} is created.
+     * Creates a {@link TextAnalyticsClient} based on options set in the builder. Every time {@code buildClient()} is
+     * called a new instance of {@link TextAnalyticsClient} is created.
      *
      * <p>
-     * If {@link #pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
-     * {@link #endpoint(String) endpoint} are used to create the {@link TextAnalyticsClient client}. All other builder
-     * settings are ignored
+     * If {@link #pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and {@link #endpoint(String)
+     * endpoint} are used to create the {@link TextAnalyticsClient client}. All other builder settings are ignored
      * </p>
      *
      * @return A {@link TextAnalyticsClient} with the options set from the builder.
-     * @throws NullPointerException if {@link #endpoint(String) endpoint} or
-     * {@link #apiKey(TextAnalyticsApiKeyCredential) apiKey} has not been set.
+     * @throws NullPointerException if {@link #endpoint(String) endpoint} or {@link #credential(AzureKeyCredential)}
+     * has not been set.
      * @throws IllegalArgumentException if {@link #endpoint(String) endpoint} cannot be parsed into a valid URL.
      */
     public TextAnalyticsClient buildClient() {
@@ -134,18 +134,17 @@ public final class TextAnalyticsClientBuilder {
     }
 
     /**
-     * Creates a {@link TextAnalyticsAsyncClient} based on options set in the builder. Every time
-     * {@code buildAsyncClient()} is called a new instance of {@link TextAnalyticsAsyncClient} is created.
+     * Creates a {@link TextAnalyticsAsyncClient} based on options set in the builder. Every time {@code
+     * buildAsyncClient()} is called a new instance of {@link TextAnalyticsAsyncClient} is created.
      *
      * <p>
-     * If {@link #pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
-     * {@link #endpoint(String) endpoint} are used to create the {@link TextAnalyticsClient client}. All other builder
-     * settings are ignored.
+     * If {@link #pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and {@link #endpoint(String)
+     * endpoint} are used to create the {@link TextAnalyticsClient client}. All other builder settings are ignored.
      * </p>
      *
      * @return A {@link TextAnalyticsAsyncClient} with the options set from the builder.
-     * @throws NullPointerException if {@link #endpoint(String) endpoint} or
-     * {@link #apiKey(TextAnalyticsApiKeyCredential) apiKey} has not been set.
+     * @throws NullPointerException if {@link #endpoint(String) endpoint} or {@link #credential(AzureKeyCredential)}
+     * has not been set.
      * @throws IllegalArgumentException if {@link #endpoint(String) endpoint} cannot be parsed into a valid URL.
      */
     public TextAnalyticsAsyncClient buildAsyncClient() {
@@ -165,26 +164,28 @@ public final class TextAnalyticsClientBuilder {
             // Closest to API goes first, closest to wire goes last.
             final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
+            policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
+                buildConfiguration));
+            policies.add(new RequestIdPolicy());
+            policies.add(new AddHeadersPolicy(headers));
+
+            HttpPolicyProviders.addBeforeRetryPolicies(policies);
+
+            policies.add(retryPolicy == null ? DEFAULT_RETRY_POLICY : retryPolicy);
+
+            policies.add(new AddDatePolicy());
             // Authentications
             if (tokenCredential != null) {
                 // User token based policy
                 policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPE));
             } else if (credential != null) {
-                policies.add(new ApiKeyCredentialPolicy(credential));
+                policies.add(new AzureKeyCredentialPolicy(OCP_APIM_SUBSCRIPTION_KEY, credential));
             } else {
                 // Throw exception that credential and tokenCredential cannot be null
                 throw logger.logExceptionAsError(
                     new IllegalArgumentException("Missing credential information while building a client."));
             }
 
-            policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
-                buildConfiguration));
-            policies.add(new RequestIdPolicy());
-            policies.add(new AddHeadersPolicy(headers));
-            policies.add(new AddDatePolicy());
-
-            HttpPolicyProviders.addBeforeRetryPolicies(policies);
-            policies.add(retryPolicy == null ? DEFAULT_RETRY_POLICY : retryPolicy);
             policies.addAll(this.policies);
             HttpPolicyProviders.addAfterRetryPolicies(policies);
 
@@ -199,7 +200,7 @@ public final class TextAnalyticsClientBuilder {
         final TextAnalyticsClientImpl textAnalyticsAPI = new TextAnalyticsClientImplBuilder()
             .endpoint(endpoint)
             .pipeline(pipeline)
-            .build();
+            .buildClient();
 
         return new TextAnalyticsAsyncClient(textAnalyticsAPI, serviceVersion, defaultCountryHint, defaultLanguage);
     }
@@ -208,7 +209,6 @@ public final class TextAnalyticsClientBuilder {
      * Set the default language option for one client.
      *
      * @param language default language
-     *
      * @return The updated {@link TextAnalyticsClientBuilder} object.
      */
     public TextAnalyticsClientBuilder defaultLanguage(String language) {
@@ -220,7 +220,6 @@ public final class TextAnalyticsClientBuilder {
      * Set the default country hint option for one client.
      *
      * @param countryHint default country hint
-     *
      * @return The updated {@link TextAnalyticsClientBuilder} object.
      */
     public TextAnalyticsClientBuilder defaultCountryHint(String countryHint) {
@@ -255,15 +254,15 @@ public final class TextAnalyticsClientBuilder {
     }
 
     /**
-     * Sets the credential to use when authenticating HTTP requests for this {@link TextAnalyticsClientBuilder}.
+     * Sets the {@link AzureKeyCredential} to use when authenticating HTTP requests for this
+     * {@link TextAnalyticsClientBuilder}.
      *
-     * @param apiKeyCredential API key credential
-     *
+     * @param keyCredential {@link AzureKeyCredential} API key credential
      * @return The updated {@link TextAnalyticsClientBuilder} object.
-     * @throws NullPointerException If {@code apiKeyCredential} is {@code null}
+     * @throws NullPointerException If {@code keyCredential} is null
      */
-    public TextAnalyticsClientBuilder apiKey(TextAnalyticsApiKeyCredential apiKeyCredential) {
-        this.credential = Objects.requireNonNull(apiKeyCredential, "'apiKeyCredential' cannot be null.");
+    public TextAnalyticsClientBuilder credential(AzureKeyCredential keyCredential) {
+        this.credential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
         return this;
     }
 
@@ -272,7 +271,7 @@ public final class TextAnalyticsClientBuilder {
      *
      * @param tokenCredential {@link TokenCredential} used to authenticate HTTP requests.
      * @return The updated {@link TextAnalyticsClientBuilder} object.
-     * @throws NullPointerException If {@code tokenCredential} is {@code null}.
+     * @throws NullPointerException If {@code tokenCredential} is null.
      */
     public TextAnalyticsClientBuilder credential(TokenCredential tokenCredential) {
         Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
@@ -286,7 +285,6 @@ public final class TextAnalyticsClientBuilder {
      * <p> If logLevel is not provided, default value of {@link HttpLogDetailLevel#NONE} is set. </p>
      *
      * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
-     *
      * @return The updated {@link TextAnalyticsClientBuilder} object.
      */
     public TextAnalyticsClientBuilder httpLogOptions(HttpLogOptions logOptions) {
@@ -298,9 +296,8 @@ public final class TextAnalyticsClientBuilder {
      * Adds a policy to the set of existing policies that are executed after required policies.
      *
      * @param policy The retry policy for service requests.
-     *
      * @return The updated {@link TextAnalyticsClientBuilder} object.
-     * @throws NullPointerException If {@code policy} is {@code null}.
+     * @throws NullPointerException If {@code policy} is null.
      */
     public TextAnalyticsClientBuilder addPolicy(HttpPipelinePolicy policy) {
         policies.add(Objects.requireNonNull(policy, "'policy' cannot be null."));
@@ -325,12 +322,11 @@ public final class TextAnalyticsClientBuilder {
     /**
      * Sets the HTTP pipeline to use for the service client.
      * <p>
-     * If {@code pipeline} is set, all other settings are ignored, aside from
-     * {@link TextAnalyticsClientBuilder#endpoint(String) endpoint} to build {@link TextAnalyticsAsyncClient} or
-     * {@link TextAnalyticsClient}.
+     * If {@code pipeline} is set, all other settings are ignored, aside from {@link
+     * TextAnalyticsClientBuilder#endpoint(String) endpoint} to build {@link TextAnalyticsAsyncClient} or {@link
+     * TextAnalyticsClient}.
      *
      * @param httpPipeline The HTTP pipeline to use for sending service requests and receiving responses.
-     *
      * @return The updated {@link TextAnalyticsClientBuilder} object.
      */
     public TextAnalyticsClientBuilder pipeline(HttpPipeline httpPipeline) {
@@ -349,7 +345,6 @@ public final class TextAnalyticsClientBuilder {
      * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
      *
      * @param configuration The configuration store used to
-     *
      * @return The updated {@link TextAnalyticsClientBuilder} object.
      */
     public TextAnalyticsClientBuilder configuration(Configuration configuration) {
@@ -360,11 +355,10 @@ public final class TextAnalyticsClientBuilder {
     /**
      * Sets the {@link RetryPolicy} that is used when each request is sent.
      * <p>
-     * The default retry policy will be used if not provided {@link TextAnalyticsClientBuilder#buildAsyncClient()}
-     * to build {@link TextAnalyticsAsyncClient} or {@link TextAnalyticsClient}.
+     * The default retry policy will be used if not provided {@link TextAnalyticsClientBuilder#buildAsyncClient()} to
+     * build {@link TextAnalyticsAsyncClient} or {@link TextAnalyticsClient}.
      *
      * @param retryPolicy user's retry policy applied to each request.
-     *
      * @return The updated {@link TextAnalyticsClientBuilder} object.
      */
     public TextAnalyticsClientBuilder retryPolicy(RetryPolicy retryPolicy) {
@@ -380,7 +374,6 @@ public final class TextAnalyticsClientBuilder {
      * newer version the client library will have the result of potentially moving to a newer service version.
      *
      * @param version {@link TextAnalyticsServiceVersion} of the service to be used when making requests.
-     *
      * @return The updated {@link TextAnalyticsClientBuilder} object.
      */
     public TextAnalyticsClientBuilder serviceVersion(TextAnalyticsServiceVersion version) {

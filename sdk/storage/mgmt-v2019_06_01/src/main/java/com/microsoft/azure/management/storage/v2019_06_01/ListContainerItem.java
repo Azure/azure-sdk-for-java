@@ -20,6 +20,26 @@ import java.util.Map;
  */
 public interface ListContainerItem extends HasInner<ListContainerItemInner>, HasManager<StorageManager> {
     /**
+     * @return the defaultEncryptionScope value.
+     */
+    String defaultEncryptionScope();
+
+    /**
+     * @return the deleted value.
+     */
+    Boolean deleted();
+
+    /**
+     * @return the deletedTime value.
+     */
+    DateTime deletedTime();
+
+    /**
+     * @return the denyEncryptionScopeOverride value.
+     */
+    Boolean denyEncryptionScopeOverride();
+
+    /**
      * @return the etag value.
      */
     String etag();
@@ -85,8 +105,18 @@ public interface ListContainerItem extends HasInner<ListContainerItemInner>, Has
     PublicAccess publicAccess();
 
     /**
+     * @return the remainingRetentionDays value.
+     */
+    Integer remainingRetentionDays();
+
+    /**
      * @return the type value.
      */
     String type();
+
+    /**
+     * @return the version value.
+     */
+    String version();
 
 }

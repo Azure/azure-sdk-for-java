@@ -24,7 +24,7 @@ import com.microsoft.azure.arm.model.HasInner;
  */
 public interface StorageAccounts extends SupportsCreating<StorageAccount.DefinitionStages.Blank>, SupportsDeletingByResourceGroup, SupportsBatchDeletion, SupportsGettingByResourceGroup<StorageAccount>, SupportsListingByResourceGroup<StorageAccount>, SupportsListing<StorageAccount>, HasInner<StorageAccountsInner> {
     /**
-     * Lists the access keys for the specified storage account.
+     * Lists the access keys or Kerberos keys (if active directory enabled) for the specified storage account.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
@@ -34,11 +34,11 @@ public interface StorageAccounts extends SupportsCreating<StorageAccount.Definit
     Observable<StorageAccountListKeysResult> listKeysAsync(String resourceGroupName, String accountName);
 
     /**
-     * Regenerates one of the access keys for the specified storage account.
+     * Regenerates one of the access keys or Kerberos keys for the specified storage account.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param keyName The name of storage keys that want to be regenerated, possible values are key1, key2.
+     * @param keyName The name of storage keys that want to be regenerated, possible values are key1, key2, kerb1, kerb2.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */

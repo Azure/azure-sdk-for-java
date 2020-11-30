@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.ConnectionPolicy;
 import reactor.core.publisher.Flux;
 
 import java.net.URI;

@@ -1,0 +1,65 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0//hooks",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.2 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "11767d82-297b-4fb4-a301-59b48a7c71a5",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-request-id" : "aa2b0c7e-509b-400e-8bcb-e3ee5ab99442",
+      "x-envoy-upstream-service-time" : "1000",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "aa2b0c7e-509b-400e-8bcb-e3ee5ab99442",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "Date" : "Sun, 25 Oct 2020 00:38:35 GMT",
+      "Location" : "https://js-metrics-advisor.cognitiveservices.azure.com/metricsadvisor/v1.0/hooks/6c75382f-5301-4681-84ba-0bab94e05e41"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0//hooks/6c75382f-5301-4681-84ba-0bab94e05e41",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.2 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "43d8a61d-6814-4a0d-a3a7-b4cc1dc881ef"
+    },
+    "Response" : {
+      "x-request-id" : "d93ed2dc-9155-4ad6-908c-b30d6b5ba3ed",
+      "x-envoy-upstream-service-time" : "487",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "d93ed2dc-9155-4ad6-908c-b30d6b5ba3ed",
+      "retry-after" : "0",
+      "Content-Length" : "450",
+      "StatusCode" : "200",
+      "Body" : "{\"hookId\":\"6c75382f-5301-4681-84ba-0bab94e05e41\",\"hookName\":\"df063bb8-af3e-4fa0-aea2-07fd570d18cd\",\"hookType\":\"Webhook\",\"externalLink\":\"https://github.com/Azure/azure-sdk-for-java/wiki\",\"description\":\"alert_us!\",\"admins\":[\"savaity@microsoft.com\"],\"hookParameter\":{\"endpoint\":\"https://httpbin.org/post\",\"username\":\"test\",\"password\":\"REDACTED\",\"headers\":{\"x-contoso-id\":\"123\",\"x-contoso-name\":\"contoso\"},\"certificateKey\":\"\",\"certificatePassword\":\"\"}}",
+      "Date" : "Sun, 25 Oct 2020 00:38:36 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0//hooks/6c75382f-5301-4681-84ba-0bab94e05e41",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.2 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c06d2d1b-3da8-4d03-b0c3-4e7945576b4b"
+    },
+    "Response" : {
+      "x-request-id" : "a2f6e32a-473e-4ab5-98c3-a205669bad4c",
+      "x-envoy-upstream-service-time" : "492",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "a2f6e32a-473e-4ab5-98c3-a205669bad4c",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "204",
+      "Date" : "Sun, 25 Oct 2020 00:38:37 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

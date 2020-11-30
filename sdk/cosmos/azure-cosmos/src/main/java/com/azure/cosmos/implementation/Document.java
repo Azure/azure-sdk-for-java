@@ -3,8 +3,6 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.models.JsonSerializable;
-import com.azure.cosmos.models.Resource;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -28,6 +26,15 @@ public class Document extends Resource {
      */
     public Document(ObjectNode objectNode) {
         super(objectNode);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param content byte[] encoding of the json string that represents the resource.
+     */
+    public Document(byte[] content) {
+        super(content);
     }
 
     /**
@@ -127,5 +134,15 @@ public class Document extends Resource {
     @Override
     public Object get(String propertyName) {
         return super.get(propertyName);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 }

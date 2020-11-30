@@ -6,113 +6,93 @@ package com.azure.ai.textanalytics.models;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The Personally Identifiable Information entity model.
+ * The {@link PiiEntity} model.
  */
 @Immutable
 public final class PiiEntity {
     /*
-     * Personally Identifiable Information entity text as appears in the request.
+     * PiiEntity text as appears in the request.
      */
     private final String text;
 
     /*
-     * Personally Identifiable Information entity category, such as Person/Location/Org/SSN etc
+     * PiiEntity category, such as Person/Location/Org/SSN etc
      */
     private final EntityCategory category;
 
     /*
-     * Personally Identifiable Information entity sub category, such as Age/Year/TimeRange etc
+     * PiiEntity sub category, such as Medical/Stock exchange/Sports etc
      */
-    private final String subCategory;
-
-    /*
-     * Grapheme start position for the entity text.
-     */
-    private final int offset;
-
-    /*
-     * Grapheme length for the entity text.
-     */
-    private final int length;
+    private final String subcategory;
 
     /*
      * Confidence score between 0 and 1 of the extracted entity.
      */
     private final double confidenceScore;
 
-    /**
-     * Creates a Personally Identifiable Information entity model that describes entity.
-     *
-     * @param text Personally Identifiable Information entity text as appears in the request
-     * @param category Personally Identifiable Information entity category, such as Person/Location/Org/SSN etc
-     * @param subCategory Personally Identifiable Information entity sub category, such as Age/Year/TimeRange etc
-     * @param offset Grapheme start position for the entity text
-     * @param length Grapheme length for the entity text
-     * @param confidenceScore Confidence score between 0 and 1 of the extracted entity
+    /*
+     * Start position for the entity text.
      */
-    public PiiEntity(String text, EntityCategory category, String subCategory, int offset, int length,
-        double confidenceScore) {
+    private final int offset;
+
+    /**
+     * Creates a {@link PiiEntity} model that describes entity.
+     * @param text The entity text as appears in the request.
+     * @param category The entity category, such as Person/Location/Org/SSN etc.
+     * @param subcategory The entity subcategory, such as Medical/Stock exchange/Sports etc.
+     * @param confidenceScore A confidence score between 0 and 1 of the recognized entity.
+     * @param offset The start position for the entity text
+     */
+    public PiiEntity(String text, EntityCategory category, String subcategory, double confidenceScore, int offset) {
         this.text = text;
         this.category = category;
-        this.subCategory = subCategory;
-        this.offset = offset;
-        this.length = length;
+        this.subcategory = subcategory;
         this.confidenceScore = confidenceScore;
+        this.offset = offset;
     }
 
     /**
-     * Get the text property: Personally Identifiable Information entity text as appears in the request.
+     * Get the text property: PII entity text as appears in the request.
      *
-     * @return The text value.
+     * @return The {@code text} value.
      */
     public String getText() {
         return this.text;
     }
 
     /**
-     * Get the category property: Personally Identifiable Information entity category, such as
-     * Person/Location/Org/SSN etc.
+     * Get the category property: Categorized entity category, such as Person/Location/Org/SSN etc.
      *
-     * @return The category value.
+     * @return The {@code category} value.
      */
     public EntityCategory getCategory() {
         return this.category;
     }
 
     /**
-     * Get the subcategory property: Personally Identifiable Information entity sub category, such as
-     * Age/Year/TimeRange etc.
+     * Get the subcategory property: Categorized entity subcategory, such as Medical/Stock exchange/Sports etc.
      *
-     * @return The subcategory value.
+     * @return The {@code subcategory} value.
      */
-    public String getSubCategory() {
-        return this.subCategory;
+    public String getSubcategory() {
+        return this.subcategory;
     }
 
     /**
-     * Get the offset property: Grapheme start position for the entity text.
+     * Get the score property: Confidence score between 0 and 1 of the recognized entity.
      *
-     * @return The offset value.
-     */
-    public int getGraphemeOffset() {
-        return this.offset;
-    }
-
-    /**
-     * Get the length property: Grapheme length for the entity text.
-     *
-     * @return The length value.
-     */
-    public int getGraphemeLength() {
-        return this.length;
-    }
-
-    /**
-     * Get the score property: Confidence score between 0 and 1 of the extracted entity.
-     *
-     * @return The score value.
+     * @return The {@code confidenceScore} value.
      */
     public double getConfidenceScore() {
         return this.confidenceScore;
+    }
+
+    /**
+     * Get the offset property: the start position for the entity text.
+     *
+     * @return The {@code offset} value.
+     */
+    public int getOffset() {
+        return this.offset;
     }
 }

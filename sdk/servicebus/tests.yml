@@ -8,6 +8,7 @@ jobs:
         - name: azure-messaging-servicebus
           groupId: com.azure
           safeName: azuremessagingservicebus
+      TestCanary: true
       EnvVars:
         AZURE_TEST_MODE: RECORD
-        AZURE_SERVICEBUS_CONNECTION_STRING: $(java-servicebus-test-connection-string)
+        AZURE_LOG_LEVEL: 2

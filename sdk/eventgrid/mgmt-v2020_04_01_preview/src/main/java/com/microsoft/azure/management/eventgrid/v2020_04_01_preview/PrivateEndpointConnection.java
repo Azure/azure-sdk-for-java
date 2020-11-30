@@ -59,12 +59,60 @@ public interface PrivateEndpointConnection extends HasInner<PrivateEndpointConne
     /**
      * The template for a PrivateEndpointConnection update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<PrivateEndpointConnection> {
+    interface Update extends Appliable<PrivateEndpointConnection>, UpdateStages.WithGroupIds, UpdateStages.WithPrivateEndpoint, UpdateStages.WithPrivateLinkServiceConnectionState, UpdateStages.WithProvisioningState {
     }
 
     /**
      * Grouping of PrivateEndpointConnection update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the privateendpointconnection update allowing to specify GroupIds.
+         */
+        interface WithGroupIds {
+            /**
+             * Specifies groupIds.
+             * @param groupIds GroupIds from the private link service resource
+             * @return the next update stage
+             */
+            Update withGroupIds(List<String> groupIds);
+        }
+
+        /**
+         * The stage of the privateendpointconnection update allowing to specify PrivateEndpoint.
+         */
+        interface WithPrivateEndpoint {
+            /**
+             * Specifies privateEndpoint.
+             * @param privateEndpoint The Private Endpoint resource for this Connection
+             * @return the next update stage
+             */
+            Update withPrivateEndpoint(PrivateEndpoint privateEndpoint);
+        }
+
+        /**
+         * The stage of the privateendpointconnection update allowing to specify PrivateLinkServiceConnectionState.
+         */
+        interface WithPrivateLinkServiceConnectionState {
+            /**
+             * Specifies privateLinkServiceConnectionState.
+             * @param privateLinkServiceConnectionState Details about the state of the connection
+             * @return the next update stage
+             */
+            Update withPrivateLinkServiceConnectionState(ConnectionState privateLinkServiceConnectionState);
+        }
+
+        /**
+         * The stage of the privateendpointconnection update allowing to specify ProvisioningState.
+         */
+        interface WithProvisioningState {
+            /**
+             * Specifies provisioningState.
+             * @param provisioningState Provisioning state of the Private Endpoint Connection. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Canceled', 'Failed'
+             * @return the next update stage
+             */
+            Update withProvisioningState(ResourceProvisioningState provisioningState);
+        }
+
     }
 }

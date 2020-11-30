@@ -5,8 +5,8 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import com.google.common.base.Predicates;
-import com.google.common.collect.ImmutableList;
+import com.azure.cosmos.implementation.guava25.base.Predicates;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.assertj.core.api.Condition;
@@ -287,6 +287,10 @@ public class AddressSelectorWrapper {
             this.protocol = protocol;
         }
 
+        private static AddressInformation toAddressInformation(Uri uri, boolean isPrimary, Protocol protocol) {
+            return new AddressInformation(true, isPrimary, uri.getURIAsString(), protocol);
+        }
+
         public static class PrimaryReplicaMoveBuilder extends Builder {
             static PrimaryReplicaMoveBuilder  create(Protocol protocol) {
                 return new PrimaryReplicaMoveBuilder(protocol);
@@ -422,7 +426,7 @@ public class AddressSelectorWrapper {
                     RxDocumentServiceRequest request = invocation.getArgumentAt(0, RxDocumentServiceRequest.class);
                     boolean forceRefresh = invocation.getArgumentAt(1, Boolean.class);
 
-                    ImmutableList.Builder<Uri> b = ImmutableList.builder();
+                    ImmutableList.Builder<AddressInformation> b = ImmutableList.builder();
 
                     if (forceRefresh || refreshed.get()) {
                         if (partitionKeyRangeFunction != null) {
@@ -430,13 +434,20 @@ public class AddressSelectorWrapper {
                         }
 
                         refreshed.set(true);
-                        b.add(primary.getRight());
-                        b.addAll(secondary.stream().map(s -> s.getRight()).collect(Collectors.toList()));
+                        b.add(toAddressInformation(primary.getRight(), true, protocol));
+                        b.addAll(
+                            secondary.stream()
+                                     .map(
+                                        s -> toAddressInformation(s.getRight(), false, protocol))
+                                     .collect(Collectors.toList()));
                         return Mono.just(b.build());
                     } else {
                         // old
-                        b.add(primary.getLeft());
-                        b.addAll(secondary.stream().map(s -> s.getLeft()).collect(Collectors.toList()));
+                        b.add(toAddressInformation(primary.getLeft(), true, protocol));
+                        b.addAll(secondary.stream()
+                                          .map(
+                                              s -> toAddressInformation(s.getLeft(), false, protocol))
+                                          .collect(Collectors.toList()));
                         return Mono.just(b.build());
                     }
                 })).when(addressSelector).resolveAddressesAsync(Mockito.any(RxDocumentServiceRequest.class), Mockito.anyBoolean());
@@ -498,10 +509,6 @@ public class AddressSelectorWrapper {
 
 
                 return new AddressSelectorWrapper(this.addressSelector, this.invocationOnMockList);
-            }
-
-            private AddressInformation toAddressInformation(Uri uri, boolean isPrimary, Protocol protocol) {
-                return new AddressInformation(true, isPrimary, uri.getURIAsString(), protocol);
             }
         }
 

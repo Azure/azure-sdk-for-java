@@ -1,0 +1,11 @@
+---
+applications:
+- name: cf-app
+  memory: 1G
+  path: ./target/azure-cloud-foundry-service-sample-1.0.0.jar
+  random-route: true
+  services:
+    - azure-documentdb-service
+    - azure-servicebus-service
+  env:
+    COM_MICROSOFT_AZURE_CLOUDFOUNDRY_SERVICE_LOG: false

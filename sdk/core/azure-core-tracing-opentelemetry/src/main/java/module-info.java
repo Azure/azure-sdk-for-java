@@ -3,7 +3,10 @@ import com.azure.core.tracing.opentelemetry.OpenTelemetryTracer;
 
 module com.azure.core.tracing.opentelemetry {
     requires transitive com.azure.core;
-    requires opentelemetry.api;
+
+    requires io.opentelemetry.api;
+    requires io.opentelemetry.context.propagation;
+    requires grpc.context;
 
     opens com.azure.core.tracing.opentelemetry to com.fasterxml.jackson.databind;
 

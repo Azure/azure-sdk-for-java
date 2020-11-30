@@ -50,6 +50,11 @@ public final class Constants {
         public static final String DOCUMENTS_LINK = "_docs";
         public static final String RESOURCE_LINK = "resource";
         public static final String MEDIA_LINK = "media";
+        public static final String AUTOPILOT_MAX_THROUGHPUT = "maxThroughput";
+        public static final String AUTOPILOT_AUTO_UPGRADE_POLICY = "autoUpgradePolicy";
+        public static final String AUTOPILOT_AUTO_THROUGHPUT_POLICY = "throughputPolicy";
+        public static final String AUTOPILOT_THROUGHPUT_POLICY_INCREMENT_PERCENT = "incrementPercent";
+        public static final String AUTOPILOT_SETTINGS = "offerAutopilotSettings";
 
         public static final String PERMISSION_MODE = "permissionMode";
         public static final String RESOURCE_KEY = "key";
@@ -153,6 +158,7 @@ public final class Constants {
         // Time-to-Live
         public static final String TTL = "ttl";
         public static final String DEFAULT_TTL = "defaultTtl";
+        public static final String ANALYTICAL_STORAGE_TTL = "analyticalStorageTtl";
 
         // Global DB account properties
         public static final String Name = "name";
@@ -163,6 +169,7 @@ public final class Constants {
       //Authorization
         public static final String MASTER_TOKEN = "master";
         public static final String RESOURCE_TOKEN = "resource";
+        public static final String AAD_TOKEN = "aad";
         public static final String TOKEN_VERSION = "1.0";
         public static final String AUTH_SCHEMA_TYPE = "type";
         public static final String AUTH_VERSION = "ver";
@@ -185,6 +192,20 @@ public final class Constants {
         public static final String SSL_COMPLETION_HANDLER_NAME = "ssl-completion-handler";
         public static final String HTTP_PROXY_HANDLER_NAME = "http-proxy-handler";
         public static final String LOGGING_HANDLER_NAME = "logging-handler";
+
+        // encryption
+        public static final String WrappedDataEncryptionKey = "wrappedDataEncryptionKey";
+        public static final String  EncryptionAlgorithmId = "encryptionAlgorithmId";
+        public static final String  KeyWrapMetadata = "keyWrapMetadata";
+        public static final String  KeyWrapMetadataType = "type";
+        public static final String  KeyWrapMetadataValue = "value";
+        public static final String  EncryptedInfo = "_ei";
+
+        // Feed Ranges
+        public static final String RANGE = "Range";
+        public static final String FEED_RANGE_PARTITION_KEY = "PartitionKey";
+        public static final String FEED_RANGE_PARTITION_KEY_RANGE_ID = "PKRangeId";
+
     }
 
     public static final class UrlEncodingInfo {
@@ -193,7 +214,7 @@ public final class Constants {
         public static final String SINGLE_SPACE_URI_ENCODING = "%20";
         public static final String UTF_8 = "UTF-8";
     }
-    
+
     public static final class PartitionedQueryExecutionInfo {
         public static final int VERSION_1 = 1;
     }

@@ -19,7 +19,7 @@
     <groupId>com.azure</groupId>
     <artifactId>azure-data-sdk-parent</artifactId>
     <version>1.3.0</version> <!-- {x-version-update;com.azure:azure-data-sdk-parent;current} -->
-    <relativePath>../../../pom.data.xml</relativePath>
+    <relativePath>../../parents/azure-data-sdk-parent</relativePath>
   </parent>
 
   <licenses>
@@ -53,7 +53,7 @@
           <groupId>junit</groupId>
           <artifactId>junit</artifactId>
           <scope>test</scope>
-          <version>4.13-beta-3</version> <!-- {x-version-update;junit:junit;external_dependency} -->
+          <version>4.13.1</version> <!-- {x-version-update;junit:junit;external_dependency} -->
       </dependency>
   </dependencies>
   <build>

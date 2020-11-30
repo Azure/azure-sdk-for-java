@@ -6,6 +6,7 @@ package com.azure.tools.checkstyle.checks;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.utils.AnnotationUtil;
 
 import java.util.Stack;
 
@@ -114,17 +115,6 @@ public class ServiceClientBuilderCheck extends AbstractCheck {
      * @return the annotation node if the class is annotated with @ServiceClientBuilder, null otherwise.
      */
     private DetailAST getServiceClientBuilderAnnotation(DetailAST classDefToken) {
-        final DetailAST modifiersToken = classDefToken.findFirstToken(TokenTypes.MODIFIERS);
-
-        if (!modifiersToken.branchContains(TokenTypes.ANNOTATION)) {
-            return null;
-        }
-
-        DetailAST annotationToken = modifiersToken.findFirstToken(TokenTypes.ANNOTATION);
-        if (!SERVICE_CLIENT_BUILDER.equals(annotationToken.findFirstToken(TokenTypes.IDENT).getText())) {
-            return null;
-        }
-
-        return annotationToken;
+        return AnnotationUtil.getAnnotation(classDefToken, "ServiceClientBuilder");
     }
 }

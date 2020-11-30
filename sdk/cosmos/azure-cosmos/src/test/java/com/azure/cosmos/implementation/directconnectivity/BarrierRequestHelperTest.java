@@ -19,6 +19,7 @@ import org.testng.annotations.Test;
 import java.util.Map;
 import java.util.UUID;
 
+import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Fail.fail;
 
@@ -33,15 +34,15 @@ public class BarrierRequestHelperTest {
                 Document randomResource = new Document();
                 randomResource.setId(UUID.randomUUID().toString());
                 RxDocumentServiceRequest request =
-                        RxDocumentServiceRequest.create(operationType, resourceType, "/dbs/7mVFAA==/colls/7mVFAP1jpeU=", randomResource, (Map<String, String>) null);
+                        RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), operationType, resourceType, "/dbs/7mVFAA==/colls/7mVFAP1jpeU=", randomResource, (Map<String, String>) null);
 
-                BarrierRequestHelper.createAsync(request, authTokenProvider, 10l, 10l).block();
+                BarrierRequestHelper.createAsync(mockDiagnosticsClientContext(), request, authTokenProvider, 10l, 10l).block();
                 request =
-                        RxDocumentServiceRequest.create(operationType, resourceType, "/dbs/7mVFAA==", randomResource, null);
+                        RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), operationType, resourceType, "/dbs/7mVFAA==", randomResource, null);
 
                 request.setResourceId("3");
                 try {
-                    BarrierRequestHelper.createAsync(request, authTokenProvider, 10l, 10l).block();
+                    BarrierRequestHelper.createAsync(mockDiagnosticsClientContext(), request, authTokenProvider, 10l, 10l).block();
                 } catch (Exception e) {
                     if (!BarrierRequestHelper.isCollectionHeadBarrierRequest(resourceType, operationType)) {
                         fail("Should not fail for non-collection head combinations");
@@ -61,9 +62,9 @@ public class BarrierRequestHelperTest {
         Document randomResource = new Document();
         randomResource.setId(UUID.randomUUID().toString());
         RxDocumentServiceRequest request =
-                RxDocumentServiceRequest.create(operationType, resourceType, "/dbs/7mVFAA==/colls/7mVFAP1jpeU=", randomResource, (Map<String, String>) null);
+                RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), operationType, resourceType, "/dbs/7mVFAA==/colls/7mVFAP1jpeU=", randomResource, (Map<String, String>) null);
 
-        RxDocumentServiceRequest barrierRequest = BarrierRequestHelper.createAsync(request, authTokenProvider, 11l, 10l).block();
+        RxDocumentServiceRequest barrierRequest = BarrierRequestHelper.createAsync(mockDiagnosticsClientContext(), request, authTokenProvider, 11l, 10l).block();
 
         assertThat(barrierRequest.getOperationType()).isEqualTo(OperationType.HeadFeed);
         assertThat(barrierRequest.getResourceType()).isEqualTo(ResourceType.Database);
@@ -83,9 +84,9 @@ public class BarrierRequestHelperTest {
         Document randomResource = new Document();
         randomResource.setId(UUID.randomUUID().toString());
         RxDocumentServiceRequest request =
-                RxDocumentServiceRequest.create(operationType, resourceType, "/dbs/dbname/colls/collname", randomResource, (Map<String, String>) null);
+                RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), operationType, resourceType, "/dbs/dbname/colls/collname", randomResource, (Map<String, String>) null);
 
-        RxDocumentServiceRequest barrierRequest = BarrierRequestHelper.createAsync(request, authTokenProvider, 11l, 10l).block();
+        RxDocumentServiceRequest barrierRequest = BarrierRequestHelper.createAsync(mockDiagnosticsClientContext(), request, authTokenProvider, 11l, 10l).block();
 
         assertThat(barrierRequest.getOperationType()).isEqualTo(OperationType.Head);
         assertThat(barrierRequest.getResourceType()).isEqualTo(ResourceType.DocumentCollection);
@@ -105,9 +106,9 @@ public class BarrierRequestHelperTest {
         Document randomResource = new Document();
         randomResource.setId(UUID.randomUUID().toString());
         RxDocumentServiceRequest request =
-                RxDocumentServiceRequest.create(operationType, resourceType, "/dbs/dbname/colls/collname", randomResource, (Map<String, String>) null);
+                RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), operationType, resourceType, "/dbs/dbname/colls/collname", randomResource, (Map<String, String>) null);
 
-        RxDocumentServiceRequest barrierRequest = BarrierRequestHelper.createAsync(request, authTokenProvider, 11l, 10l).block();
+        RxDocumentServiceRequest barrierRequest = BarrierRequestHelper.createAsync(mockDiagnosticsClientContext(), request, authTokenProvider, 11l, 10l).block();
 
         assertThat(barrierRequest.getOperationType()).isEqualTo(OperationType.Head);
         assertThat(barrierRequest.getResourceType()).isEqualTo(ResourceType.DocumentCollection);
@@ -129,9 +130,9 @@ public class BarrierRequestHelperTest {
         Document randomResource = new Document();
         randomResource.setId(UUID.randomUUID().toString());
         RxDocumentServiceRequest request =
-                RxDocumentServiceRequest.create(operationType, "7mVFAA==", resourceType, (Map<String, String>) null);
+                RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), operationType, "7mVFAA==", resourceType, (Map<String, String>) null);
 
-        RxDocumentServiceRequest barrierRequest = BarrierRequestHelper.createAsync(request, authTokenProvider, 11l, 10l).block();
+        RxDocumentServiceRequest barrierRequest = BarrierRequestHelper.createAsync(mockDiagnosticsClientContext(), request, authTokenProvider, 11l, 10l).block();
 
         assertThat(barrierRequest.getOperationType()).isEqualTo(OperationType.Head);
         assertThat(barrierRequest.getResourceType()).isEqualTo(ResourceType.DocumentCollection);

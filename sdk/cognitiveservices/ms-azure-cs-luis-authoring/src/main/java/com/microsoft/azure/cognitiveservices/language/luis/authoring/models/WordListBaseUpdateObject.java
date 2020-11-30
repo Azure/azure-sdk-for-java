@@ -12,7 +12,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Object model for updating one of the closed list's sublists.
+ * Object model for updating one of the list entity's sublists.
  */
 public class WordListBaseUpdateObject {
     /**

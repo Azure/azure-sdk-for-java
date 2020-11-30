@@ -5,19 +5,39 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.RequestOptions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Encapsulates options that can be specified for a request issued to cosmos Item.
  */
-public final class CosmosItemRequestOptions {
+public class CosmosItemRequestOptions {
     private ConsistencyLevel consistencyLevel;
     private IndexingDirective indexingDirective;
     private List<String> preTriggerInclude;
     private List<String> postTriggerInclude;
     private String sessionToken;
     private PartitionKey partitionKey;
-    private AccessCondition accessCondition;
+    private String ifMatchETag;
+    private String ifNoneMatchETag;
+    private Boolean contentResponseOnWriteEnabled;
+
+
+    /**
+     * copy constructor
+     */
+    CosmosItemRequestOptions(CosmosItemRequestOptions options) {
+        consistencyLevel = options.consistencyLevel;
+        indexingDirective = options.indexingDirective;
+        preTriggerInclude = options.preTriggerInclude != null ? new ArrayList<>(options.preTriggerInclude) : null;
+        postTriggerInclude = options.postTriggerInclude != null ? new ArrayList<>(options.postTriggerInclude) : null;
+        sessionToken = options.sessionToken;
+        partitionKey = options.partitionKey;
+        ifMatchETag = options.ifMatchETag;
+        ifNoneMatchETag = options.ifNoneMatchETag;
+        contentResponseOnWriteEnabled = options.contentResponseOnWriteEnabled;
+    }
+
 
     /**
      * Constructor
@@ -37,22 +57,42 @@ public final class CosmosItemRequestOptions {
     }
 
     /**
-     * Gets the conditions associated with the request.
+     * Gets the If-Match (ETag) associated with the request in the Azure Cosmos DB service.
      *
-     * @return the access condition.
+     * @return the ifMatchETag associated with the request.
      */
-    public AccessCondition getAccessCondition() {
-        return accessCondition;
+    public String getIfMatchETag() {
+        return this.ifMatchETag;
     }
 
     /**
-     * Sets the conditions associated with the request.
+     * Sets the If-Match (ETag) associated with the request in the Azure Cosmos DB service.
      *
-     * @param accessCondition the access condition.
+     * @param ifMatchETag the ifMatchETag associated with the request.
      * @return the current request options
      */
-    public CosmosItemRequestOptions setAccessCondition(AccessCondition accessCondition) {
-        this.accessCondition = accessCondition;
+    public CosmosItemRequestOptions setIfMatchETag(String ifMatchETag) {
+        this.ifMatchETag = ifMatchETag;
+        return this;
+    }
+
+    /**
+     * Gets the If-None-Match (ETag) associated with the request in the Azure Cosmos DB service.
+     *
+     * @return the ifNoneMatchETag associated with the request.
+     */
+    public String getIfNoneMatchETag() {
+        return this.ifNoneMatchETag;
+    }
+
+    /**
+     * Sets the If-None-Match (ETag) associated with the request in the Azure Cosmos DB service.
+     *
+     * @param ifNoneMatchETag the ifNoneMatchETag associated with the request.
+     * @return the current request options
+     */
+    public CosmosItemRequestOptions setIfNoneMatchETag(String ifNoneMatchETag) {
+        this.ifNoneMatchETag = ifNoneMatchETag;
         return this;
     }
 
@@ -66,7 +106,15 @@ public final class CosmosItemRequestOptions {
     }
 
     /**
-     * Sets the consistency level required for the request.
+     * Sets the consistency level required for the request. The effective consistency level
+     * can only be reduce for read/query requests. So when the Account's default consistency level
+     * is for example Session you can specify on a request-by-request level for individual requests
+     * that Eventual consistency is sufficient - which could reduce the latency and RU charges for this
+     * request but will not guarantee session consistency (read-your-own-write) anymore
+     * NOTE: If the consistency-level set on a request level here is SESSION and the default consistency
+     * level specified when constructing the CosmosClient instance via CosmosClientBuilder.consistencyLevel
+     * is not SESSION then session token capturing also needs to be enabled by calling
+     * CosmosClientBuilder:sessionCapturingOverrideEnabled(true) explicitly.
      *
      * @param consistencyLevel the consistency level.
      * @return the CosmosItemRequestOptions.
@@ -157,6 +205,51 @@ public final class CosmosItemRequestOptions {
     }
 
     /**
+     * Gets the boolean to only return the headers and status code in Cosmos DB response
+     * in case of Create, Update and Delete operations on CosmosItem.
+     *
+     * If set to false, service doesn't returns payload in the response. It reduces networking
+     * and CPU load by not sending the payload back over the network and serializing it on the client.
+     *
+     * This feature does not impact RU usage for read or write operations.
+     *
+     * NOTE: This flag is also present on {@link com.azure.cosmos.CosmosClientBuilder},
+     * however if specified on {@link CosmosItemRequestOptions},
+     * it will override the value specified in {@link com.azure.cosmos.CosmosClientBuilder} for this request.
+     *
+     * By-default, this is null.
+     *
+     * @return a boolean indicating whether payload will be included in the response or not for this request.
+     */
+    public Boolean isContentResponseOnWriteEnabled() {
+        return contentResponseOnWriteEnabled;
+    }
+
+    /**
+     * Sets the boolean to only return the headers and status code in Cosmos DB response
+     * in case of Create, Update and Delete operations on CosmosItem.
+     *
+     * If set to false, service doesn't return payload in the response. It reduces networking
+     * and CPU load by not sending the payload back over the network and serializing it on the client.
+     *
+     * This feature does not impact RU usage for read or write operations.
+     *
+     * By-default, this is null.
+     *
+     * NOTE: This flag is also present on {@link com.azure.cosmos.CosmosClientBuilder},
+     * however if specified on {@link CosmosItemRequestOptions},
+     * it will override the value specified in {@link com.azure.cosmos.CosmosClientBuilder} for this request.
+     *
+     * @param contentResponseOnWriteEnabled a boolean indicating whether payload will be included
+     * in the response or not for this request
+     * @return the CosmosItemRequestOptions.
+     */
+    public CosmosItemRequestOptions setContentResponseOnWriteEnabled(Boolean contentResponseOnWriteEnabled) {
+        this.contentResponseOnWriteEnabled = contentResponseOnWriteEnabled;
+        return this;
+    }
+
+    /**
      * Gets the partition key
      *
      * @return the partition key
@@ -179,14 +272,15 @@ public final class CosmosItemRequestOptions {
     RequestOptions toRequestOptions() {
         //TODO: Should we set any default values instead of nulls?
         RequestOptions requestOptions = new RequestOptions();
-        requestOptions.setAccessCondition(accessCondition);
-        requestOptions.setAccessCondition(getAccessCondition());
+        requestOptions.setIfMatchETag(getIfMatchETag());
+        requestOptions.setIfNoneMatchETag(getIfNoneMatchETag());
         requestOptions.setConsistencyLevel(getConsistencyLevel());
         requestOptions.setIndexingDirective(indexingDirective);
         requestOptions.setPreTriggerInclude(preTriggerInclude);
         requestOptions.setPostTriggerInclude(postTriggerInclude);
         requestOptions.setSessionToken(sessionToken);
         requestOptions.setPartitionKey(partitionKey);
+        requestOptions.setContentResponseOnWriteEnabled(contentResponseOnWriteEnabled);
         return requestOptions;
     }
 }

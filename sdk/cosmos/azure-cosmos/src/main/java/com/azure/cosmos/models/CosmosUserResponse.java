@@ -3,49 +3,32 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosDatabase;
-import com.azure.cosmos.CosmosUser;
+import com.azure.cosmos.implementation.ResourceResponse;
+import com.azure.cosmos.implementation.User;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 /**
- * The type Cosmos sync user response.
+ * The type Cosmos user response. Contains methods to get properties
  */
 public class CosmosUserResponse extends CosmosResponse<CosmosUserProperties> {
-    private final CosmosAsyncUserResponse asyncResponse;
-    private final CosmosUser user;
 
-    /**
-     * Instantiates a new Cosmos sync user response.
-     *
-     * @param response the response
-     * @param database the database
-     */
-    CosmosUserResponse(CosmosAsyncUserResponse response, CosmosDatabase database) {
-        super(response.resourceResponseWrapper, response.getProperties());
-        this.asyncResponse = response;
-        if (response.getUser() != null) {
-            this.user = BridgeInternal.createCosmosUser(response.getUser(), database, response.getUser().getId());
+    CosmosUserResponse(ResourceResponse<User> response) {
+        super(response);
+        String bodyAsString = response.getBodyAsString();
+        if (StringUtils.isEmpty(bodyAsString)) {
+            super.setProperties(null);
         } else {
-            // delete has null user client
-            this.user = null;
+            CosmosUserProperties props = new CosmosUserProperties(bodyAsString);
+            super.setProperties(props);
         }
     }
 
     /**
-     * Gets cosmos sync user.
+     * Gets the cosmos user properties
      *
-     * @return the cosmos sync user
-     */
-    public CosmosUser getUser() {
-        return this.user;
-    }
-
-    /**
-     * Gets cosmos user properties.
-     *
-     * @return the cosmos user properties
+     * @return {@link CosmosUserProperties}
      */
     public CosmosUserProperties getProperties() {
-        return asyncResponse.getProperties();
+        return super.getProperties();
     }
 }

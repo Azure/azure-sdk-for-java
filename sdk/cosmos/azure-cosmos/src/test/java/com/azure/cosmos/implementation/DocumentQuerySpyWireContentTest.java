@@ -2,8 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.implementation.AsyncDocumentClient.Builder;
 import com.azure.cosmos.implementation.http.HttpRequest;
@@ -49,28 +50,28 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
     @DataProvider(name = "responseContinuationTokenLimitParamProvider")
     public static Object[][] responseContinuationTokenLimitParamProvider() {
 
-        FeedOptions options1 = new FeedOptions();
-        options1.setMaxItemCount(1);
-        options1.getResponseContinuationTokenLimitInKb(5);
+        CosmosQueryRequestOptions options1 = new CosmosQueryRequestOptions();
+        ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options1, 1);
+        options1.setResponseContinuationTokenLimitInKb(5);
         options1.setPartitionKey(new PartitionKey("99"));
         String query1 = "Select * from r";
         boolean multiPartitionCollection1 = true;
 
-        FeedOptions options2 = new FeedOptions();
-        options2.setMaxItemCount(1);
-        options2.getResponseContinuationTokenLimitInKb(5);
+        CosmosQueryRequestOptions options2 = new CosmosQueryRequestOptions();
+        ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options2, 1);
+        options2.setResponseContinuationTokenLimitInKb(5);
         options2.setPartitionKey(new PartitionKey("99"));
         String query2 = "Select * from r order by r.prop";
         boolean multiPartitionCollection2 = false;
 
-        FeedOptions options3 = new FeedOptions();
-        options3.setMaxItemCount(1);
-        options3.getResponseContinuationTokenLimitInKb(5);
+        CosmosQueryRequestOptions options3 = new CosmosQueryRequestOptions();
+        ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options3, 1);
+        options3.setResponseContinuationTokenLimitInKb(5);
         options3.setPartitionKey(new PartitionKey("99"));
         String query3 = "Select * from r";
         boolean multiPartitionCollection3 = false;
 
-        FeedOptions options4 = new FeedOptions();
+        CosmosQueryRequestOptions options4 = new CosmosQueryRequestOptions();
         options4.setPartitionKey(new PartitionKey("99"));
         String query4 = "Select * from r order by r.prop";
         boolean multiPartitionCollection4 = false;
@@ -84,7 +85,7 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
     }
 
     @Test(dataProvider = "responseContinuationTokenLimitParamProvider", groups = { "simple" }, timeOut = TIMEOUT)
-    public void queryWithContinuationTokenLimit(FeedOptions options, String query, boolean isMultiParitionCollection) throws Exception {
+    public void queryWithContinuationTokenLimit(CosmosQueryRequestOptions options, String query, boolean isMultiParitionCollection) throws Exception {
         String collectionLink;
         if (isMultiParitionCollection) {
             collectionLink = getMultiPartitionCollectionLink();
@@ -105,7 +106,7 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
         List<HttpRequest> requests = client.getCapturedRequests();
 
         for(HttpRequest req: requests) {
-            validateRequestHasContinuationTokenLimit(req, options.setResponseContinuationTokenLimitInKb());
+            validateRequestHasContinuationTokenLimit(req, options.getResponseContinuationTokenLimitInKb());
         }
     }
 
@@ -159,7 +160,7 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
         // wait for catch up
         TimeUnit.SECONDS.sleep(1);
 
-        FeedOptions options = new FeedOptions();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
         // do the query once to ensure the collection is cached.
         client.queryDocuments(getMultiPartitionCollectionLink(), "select * from root", options)
