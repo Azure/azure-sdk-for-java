@@ -3,6 +3,7 @@
 package com.azure.resourcemanager.cosmos.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.cosmos.CosmosManager;
 import com.azure.resourcemanager.cosmos.fluent.models.DatabaseAccountGetResultsInner;
 import com.azure.resourcemanager.cosmos.models.Capability;
@@ -77,6 +78,9 @@ class CosmosDBAccountImpl
 
     @Override
     public String ipRangeFilter() {
+        if (CoreUtils.isNullOrEmpty(ipRules())) {
+            return null;
+        }
         return this.ipRules().stream().map(IpAddressOrRange::ipAddressOrRange).collect(Collectors.joining(","));
     }
 
@@ -369,8 +373,10 @@ class CosmosDBAccountImpl
     @Override
     public CosmosDBAccountImpl withIpRangeFilter(String ipRangeFilter) {
         List<IpAddressOrRange> rules = new ArrayList<>();
-        for (String ip : ipRangeFilter.split(",")) {
-            rules.add(new IpAddressOrRange().withIpAddressOrRange(ip));
+        if (!CoreUtils.isNullOrEmpty(ipRangeFilter)) {
+            for (String ip : ipRangeFilter.split(",")) {
+                rules.add(new IpAddressOrRange().withIpAddressOrRange(ip));
+            }
         }
         this.innerModel().withIpRules(rules);
         return this;
