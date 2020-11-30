@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
 import static com.azure.spring.autoconfigure.aad.AADOAuth2ErrorCode.CONDITIONAL_ACCESS_POLICY;
 import static com.azure.spring.autoconfigure.aad.AADOAuth2ErrorCode.INVALID_REQUEST;
 import static com.azure.spring.autoconfigure.aad.AADOAuth2ErrorCode.SERVER_SERVER;
+import static com.azure.spring.autoconfigure.aad.Constants.DEFAULT_AUTHORITY_SET;
 import static com.azure.spring.autoconfigure.aad.Constants.ROLE_PREFIX;
 
 /**
@@ -49,7 +50,7 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
     public OidcUser loadUser(OidcUserRequest userRequest) throws OAuth2AuthenticationException {
         // Delegate to the default implementation for loading a user
         OidcUser oidcUser = oidcUserService.loadUser(userRequest);
-        final Set<SimpleGrantedAuthority> authorities;
+        Set<SimpleGrantedAuthority> authorities;
         try {
             // https://github.com/MicrosoftDocs/azure-docs/issues/8121#issuecomment-387090099
             // In AAD App Registration configure oauth2AllowImplicitFlow to true
@@ -71,14 +72,12 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
                                            .filter(aadAuthenticationProperties::isAllowedGroup)
                                            .map(group -> ROLE_PREFIX + group)
                                            .collect(Collectors.toSet());
-            Set<String> allRoles = oidcUser.getAuthorities()
-                                           .stream()
-                                           .map(GrantedAuthority::getAuthority)
-                                           .collect(Collectors.toSet());
-            allRoles.addAll(groupRoles);
-            authorities = allRoles.stream()
-                                  .map(SimpleGrantedAuthority::new)
-                                  .collect(Collectors.toSet());
+            authorities = groupRoles.stream()
+                                    .map(SimpleGrantedAuthority::new)
+                                    .collect(Collectors.toSet());
+            if (authorities.isEmpty()) {
+                authorities = DEFAULT_AUTHORITY_SET;
+            }
         } catch (MalformedURLException e) {
             throw toOAuth2AuthenticationException(INVALID_REQUEST, "Failed to acquire token for Graph API.", e);
         } catch (ServiceUnavailableException e) {
