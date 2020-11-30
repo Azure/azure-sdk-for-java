@@ -2,6 +2,7 @@
 
 ## 12.10.0-beta.1 (Unreleased)
 - Added ability to get container client from blob clients and service client from container clients
+- Fixed a bug where the error message would not be displayed the exception message of a HEAD request.
 
 ## 12.9.0 (2020-11-11)
 - Fixed a bug where interspersed element types returned by page listing would deserialize incorrectly.
