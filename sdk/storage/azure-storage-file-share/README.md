@@ -116,7 +116,7 @@ https://myaccount.file.core.windows.net/myshare/mydirectorypath/myfile
 ### Handling Exceptions
 Uses the `shareServiceClient` generated from [shareSeviceClient](#share-service) section below.
 
-<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L222-L226 -->
+<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L223-L227 -->
 ```java
 try {
     shareServiceClient.createShare("myShare");
@@ -464,7 +464,7 @@ directoryClient.forceCloseHandleWithResponse(handleId, Duration.ofSeconds(30), C
 ### Set quota on share
 Taking the shareClient in KeyConcept, [`${shareClient}`](#share) .
 
-<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L212-L213 -->
+<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L213-L214 -->
 ```Java
 int quotaOnGB = 1;
 shareClient.setPropertiesWithResponse(new ShareSetPropertiesOptions().setQuotaInGb(quotaOnGB), null, Context.NONE);
@@ -473,7 +473,7 @@ shareClient.setPropertiesWithResponse(new ShareSetPropertiesOptions().setQuotaIn
 ### Set file httpheaders
 Taking the fileClient in KeyConcept, [`${fileClient}`](#file) .
 
-<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L217-L218 -->
+<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L218-L219 -->
 ```Java
 ShareFileHttpHeaders httpHeaders = new ShareFileHttpHeaders().setContentType("text/plain");
 fileClient.setProperties(1024, httpHeaders, null, null);
