@@ -68,17 +68,16 @@ public final class ChatThreadAsyncClient {
     }
 
     /**
-     * Updates a thread's properties.
+     * Updates a thread's topic.
      *
-     * @param options Options for updating a chat thread.
+     * @param topic The new topic.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateChatThread(UpdateChatThreadOptions options) {
+    public Mono<Void> updateTopic(String topic) {
         try {
             Objects.requireNonNull(options, "'options' cannot be null.");
-            return withContext(context -> updateChatThread(options, context)
-                .flatMap((Response<Void> res) -> {
+            return withContext(context -> updateTopic(topic, context)                .flatMap((Response<Void> res) -> {
                     return Mono.empty();
                 }));
         } catch (RuntimeException ex) {
@@ -89,29 +88,34 @@ public final class ChatThreadAsyncClient {
     /**
      * Updates a thread's properties.
      *
-     * @param options Options for updating a chat thread.
+     * @param topic The new topic.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateChatThreadWithResponse(UpdateChatThreadOptions options) {
+    public Mono<Response<Void>> updateTopicWithResponse(String topic) {
         try {
             Objects.requireNonNull(options, "'options' cannot be null.");
-            return withContext(context -> updateChatThread(options, context));
-        } catch (RuntimeException ex) {
+            return withContext(context -> updateTopic(topic, context));        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     /**
-     * Updates a thread's properties.
+     * Updates a thread's topic.
      *
-     * @param options Options for updating a chat thread.
+     * @param topic The new topic.
      * @param context The context to associate with this operation.
      * @return the completion.
      */
-    Mono<Response<Void>> updateChatThread(UpdateChatThreadOptions options, Context context) {
+    Mono<Response<Void>> updateTopic(String topic, Context context) {
         context = context == null ? Context.NONE : context;
-        return this.chatServiceClient.updateChatThreadWithResponseAsync(chatThreadId, options, context);
+
+        return this.chatServiceClient.updateChatThreadWithResponseAsync(
+            chatThreadId,
+            new UpdateChatThreadOptions()
+                .setTopic(topic),
+            context
+        );
     }
 
     /**
