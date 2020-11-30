@@ -83,6 +83,12 @@
     </dependency>
     <dependency>
       <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-oauth2-resource-server</artifactId>
+      <version>5.3.5.RELEASE</version> <!-- {x-version-update;org.springframework.security:spring-security-oauth2-resource-server;external_dependency} -->
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-oauth2-jose</artifactId>
       <version>5.3.5.RELEASE</version> <!-- {x-version-update;org.springframework.security:spring-security-oauth2-jose;external_dependency} -->
       <optional>true</optional>
@@ -103,18 +109,6 @@
       <groupId>javax.servlet</groupId>
       <artifactId>javax.servlet-api</artifactId>
       <version>4.0.1</version> <!-- {x-version-update;javax.servlet:javax.servlet-api;external_dependency} -->
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-webflux</artifactId>
-      <version>2.3.5.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-webflux;external_dependency} -->
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>io.projectreactor.netty</groupId>
-      <artifactId>reactor-netty</artifactId>
-      <version>0.9.13.RELEASE</version> <!-- {x-version-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -152,24 +146,6 @@
       <artifactId>qpid-jms-client</artifactId>
       <version>0.53.0</version><!-- {x-version-update;org.apache.qpid:qpid-jms-client;external_dependency} -->
       <optional>true</optional>
-      <exclusions>
-        <exclusion>
-          <groupId>io.netty</groupId>
-          <artifactId>netty-common</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>io.netty</groupId>
-          <artifactId>netty-buffer</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>io.netty</groupId>
-          <artifactId>netty-transport</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>io.netty</groupId>
-          <artifactId>netty-transport-native-kqueue</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <!-- Azure libraries-->
     <dependency>
@@ -184,12 +160,6 @@
       <artifactId>azure-identity</artifactId>
       <version>1.2.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <optional>true</optional>
-      <exclusions>
-        <exclusion>
-          <groupId>io.netty</groupId>
-          <artifactId>netty-transport-native-kqueue</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
 
     <dependency>
@@ -336,10 +306,10 @@
                 <include>org.springframework.security:spring-security-config:[5.3.5.RELEASE]</include> <!-- {x-include-update;org.springframework.security:spring-security-config;external_dependency} -->
                 <include>org.springframework.security:spring-security-core:[5.3.5.RELEASE]</include> <!-- {x-include-update;org.springframework.security:spring-security-core;external_dependency} -->
                 <include>org.springframework.security:spring-security-oauth2-client:[5.3.5.RELEASE]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-client;external_dependency} -->
+                <include>org.springframework.security:spring-security-oauth2-resource-server:[5.3.5.RELEASE]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-resource-server;external_dependency} -->
                 <include>org.springframework.security:spring-security-oauth2-jose:[5.3.5.RELEASE]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-jose;external_dependency} -->
                 <include>org.springframework.security:spring-security-web:[5.3.5.RELEASE]</include> <!-- {x-include-update;org.springframework.security:spring-security-web;external_dependency} -->
                 <include>org.apache.qpid:qpid-jms-client:[0.53.0]</include> <!-- {x-include-update;org.apache.qpid:qpid-jms-client;external_dependency} -->
-                <include>io.projectreactor.netty:reactor-netty:[0.9.13.RELEASE]</include> <!-- {x-include-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

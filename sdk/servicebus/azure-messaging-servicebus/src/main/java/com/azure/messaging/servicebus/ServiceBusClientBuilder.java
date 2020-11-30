@@ -241,6 +241,7 @@ public final class ServiceBusClientBuilder {
         this.verifyMode = verifyMode;
         return this;
     }
+
     /**
      * Sets the retry options for Service Bus clients. If not specified, the default retry options are used.
      *
@@ -639,17 +640,21 @@ public final class ServiceBusClientBuilder {
 
     /**
      * Builder for creating {@link ServiceBusProcessorClient} to consume messages from a session-based Service Bus
-     * entity. {@link ServiceBusProcessorClient ServiceBusProcessorClients} provides a push-based mechanism that
-     * invokes the message processing callback when a message is received or the error handler when an error occurs
-     * when receiving messages. To create an instance, therefore, configuring the two callbacks -
-     * {@link #processMessage(Consumer)} and {@link #processError(Consumer)} are necessary. By default, a
-     * {@link ServiceBusProcessorClient} is configured with auto-completion and auto-lock renewal capabilities.
-     * {@link ServiceBusProcessorClient ServiceBusProcessorClients} created by this builder can be configured to
-     * consume messages from {@link #maxConcurrentSessions(int) multiple sessions concurrently}. By default, the
-     * processor will receive messages from a single session with rollover.
+     * entity. {@link ServiceBusProcessorClient} processes messages and errors via {@link #processMessage(Consumer)}
+     * and {@link #processError(Consumer)}. When the processor finishes processing a session, it tries to fetch the
+     * next session to process.
      *
-     * <p><strong>Sample code to instantiate a session-enabled processor client</strong></p>
-     * {@codesnippet com.azure.messaging.servicebus.servicebusprocessorclient.sessionclientinstantiation}
+     * <p>
+     * By default, the processor:
+     * <ul>
+     *     <li>Automatically settles messages. Disabled via {@link #disableAutoComplete()}</li>
+     *     <li>Processes 1 session concurrently. Configured via {@link #maxConcurrentSessions(int)}</li>
+     *     <li>Invokes 1 instance of {@link #processMessage(Consumer) processMessage consumer}. Configured via
+     *     {@link #maxConcurrentCalls(int)}</li>
+     * </ul>
+     *
+     * <p><strong>Instantiate a session-enabled processor client</strong></p>
+     * {@codesnippet com.azure.messaging.servicebus.servicebusprocessorclient#session-instantiation}
      *
      * @see ServiceBusProcessorClient
      */
@@ -780,6 +785,7 @@ public final class ServiceBusClientBuilder {
          * @param maxConcurrentCalls max concurrent messages that this processor should process.
          *
          * @return The updated {@link ServiceBusSessionProcessorClientBuilder} object.
+         * @throws IllegalArgumentException if {@code maxConcurrentCalls} is less than 1.
          */
         public ServiceBusSessionProcessorClientBuilder maxConcurrentCalls(int maxConcurrentCalls) {
             if (maxConcurrentCalls < 1) {
@@ -980,20 +986,12 @@ public final class ServiceBusClientBuilder {
          *     queueName()} or {@link #topicName(String) topicName()}, respectively.
          */
         ServiceBusReceiverAsyncClient buildAsyncClientForProcessor() {
-            return buildAsyncClientForProcessor(true);
-        }
-
-        private ServiceBusReceiverAsyncClient buildAsyncClientForProcessor(boolean isAutoCompleteAllowed) {
             final MessagingEntityType entityType = validateEntityPaths(logger, connectionStringEntityName, topicName,
                 queueName);
             final String entityPath = getEntityPath(logger, entityType, queueName, topicName, subscriptionName,
                 SubQueue.NONE);
 
-            if (!isAutoCompleteAllowed && enableAutoComplete) {
-                logger.warning(
-                    "'enableAutoComplete' is not supported in synchronous client except through callback receive.");
-                enableAutoComplete = false;
-            } else if (enableAutoComplete && receiveMode == ServiceBusReceiveMode.RECEIVE_AND_DELETE) {
+            if (enableAutoComplete && receiveMode == ServiceBusReceiveMode.RECEIVE_AND_DELETE) {
                 logger.warning("'enableAutoComplete' is not needed in for RECEIVE_AND_DELETE mode.");
                 enableAutoComplete = false;
             }
@@ -1089,7 +1087,7 @@ public final class ServiceBusClientBuilder {
      * with auto-completion and auto-lock renewal capabilities.
      *
      * <p><strong>Sample code to instantiate a processor client</strong></p>
-     * {@codesnippet com.azure.messaging.servicebus.servicebusprocessorclient.instantiation}
+     * {@codesnippet com.azure.messaging.servicebus.servicebusprocessorclient#instantiation}
      *
      * @see ServiceBusProcessorClient
      */
@@ -1457,5 +1455,4 @@ public final class ServiceBusClientBuilder {
                 "'maxLockRenewalDuration' cannot be negative."));
         }
     }
-
 }

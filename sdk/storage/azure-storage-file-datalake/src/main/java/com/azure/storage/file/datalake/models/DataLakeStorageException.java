@@ -4,6 +4,7 @@
 package com.azure.storage.file.datalake.models;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpResponse;
 
 import static com.azure.storage.common.implementation.Constants.HeaderConstants.ERROR_CODE;
@@ -30,7 +31,10 @@ public final class DataLakeStorageException extends HttpResponseException {
      * @param value the error code of the exception.
      */
     public DataLakeStorageException(String message, HttpResponse response, Object value) {
-        super(message, response, value);
+        super(response != null && response.getRequest() != null && response.getRequest().getHttpMethod() != null
+            && response.getRequest().getHttpMethod().equals(HttpMethod.HEAD)
+            ? message.replaceFirst("(empty body)", response.getHeaders().getValue(ERROR_CODE))
+            : message, response, value);
     }
 
     /**

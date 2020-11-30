@@ -30,6 +30,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -182,7 +183,6 @@ public class ShareClientBuilder {
 
             this.accountName = BuilderHelper.getAccountName(fullUrl);
 
-
             // Attempt to get the share name from the URL passed
             String[] pathSegments = fullUrl.getPath().split("/");
             int length = pathSegments.length;
@@ -191,6 +191,14 @@ public class ShareClientBuilder {
                     "Cannot accept a URL to a file or directory to construct a file share client"));
             }
             this.shareName = length >= 2 ? pathSegments[1] : this.shareName;
+
+            // Attempt to get the snapshot from the URL passed
+            Map<String, String[]> queryParamsMap = SasImplUtils.parseQueryString(fullUrl.getQuery());
+
+            String[] snapshotArray = queryParamsMap.remove("sharesnapshot");
+            if (snapshotArray != null) {
+                this.snapshot = snapshotArray[0];
+            }
 
             // TODO (gapra) : What happens if a user has custom queries?
             // Attempt to get the SAS token from the URL passed

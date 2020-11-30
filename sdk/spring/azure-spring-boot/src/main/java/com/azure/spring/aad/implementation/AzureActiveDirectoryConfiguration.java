@@ -3,31 +3,40 @@
 
 package com.azure.spring.aad.implementation;
 
+import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Configuration
 @ConditionalOnClass(ClientRegistrationRepository.class)
-@EnableConfigurationProperties(AzureActiveDirectoryProperties.class)
+@EnableConfigurationProperties(AADAuthenticationProperties.class)
 public class AzureActiveDirectoryConfiguration {
 
-    private static final String DEFAULT_CLIENT = "azure";
+    private static final String AZURE_CLIENT_REGISTRATION_ID = "azure";
 
     @Autowired
-    private AzureActiveDirectoryProperties config;
+    private AADAuthenticationProperties properties;
 
     @Bean
     @ConditionalOnMissingBean({ ClientRegistrationRepository.class, AzureClientRegistrationRepository.class })
@@ -37,41 +46,56 @@ public class AzureActiveDirectoryConfiguration {
             createAuthzClients());
     }
 
-    private DefaultClient createDefaultClient() {
-        ClientRegistration.Builder builder = createClientBuilder(DEFAULT_CLIENT);
+    @Bean
+    @ConditionalOnMissingBean
+    public OAuth2AuthorizedClientRepository authorizedClientRepository(AzureClientRegistrationRepository repo) {
+        return new AzureAuthorizedClientRepository(repo);
+    }
+
+    @Bean
+    @ConditionalOnProperty(prefix = "azure.activedirectory.user-group", value = "allowed-groups")
+    public OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService(AADAuthenticationProperties properties) {
+        return new AzureActiveDirectoryOAuth2UserService(properties);
+    }
+
+    private AzureClientRegistration createDefaultClient() {
+        ClientRegistration.Builder builder = createClientBuilder(AZURE_CLIENT_REGISTRATION_ID);
         builder.scope(allScopes());
         ClientRegistration client = builder.build();
 
-        return new DefaultClient(client, defaultScopes());
+        return new AzureClientRegistration(client, accessTokenScopes());
     }
 
-    private String[] allScopes() {
-        List<String> result = openidScopes();
-        for (AuthorizationProperties authz : config.getAuthorization().values()) {
-            result.addAll(authz.getScopes());
+    private Set<String> allScopes() {
+        Set<String> result = accessTokenScopes();
+        for (AuthorizationProperties authProperties : properties.getAuthorization().values()) {
+            result.addAll(authProperties.getScopes());
         }
-        return result.toArray(new String[0]);
-    }
-
-    private List<String> defaultScopes() {
-        List<String> result = openidScopes();
-        addAuthzDefaultScope(result);
         return result;
     }
 
-    private void addAuthzDefaultScope(List<String> result) {
-        AuthorizationProperties authz = config.getAuthorization().get(DEFAULT_CLIENT);
-        if (authz != null) {
-            result.addAll(authz.getScopes());
+    private Set<String> accessTokenScopes() {
+        Set<String> result = openidScopes();
+        if (properties.allowedGroupsConfigured()) {
+            result.add("https://graph.microsoft.com/User.Read");
+        }
+        addAzureConfiguredScopes(result);
+        return result;
+    }
+
+    private void addAzureConfiguredScopes(Set<String> result) {
+        AuthorizationProperties azureProperties = properties.getAuthorization().get(AZURE_CLIENT_REGISTRATION_ID);
+        if (azureProperties != null) {
+            result.addAll(azureProperties.getScopes());
         }
     }
 
-    private List<String> openidScopes() {
-        List<String> result = new ArrayList<>();
+    private Set<String> openidScopes() {
+        Set<String> result = new HashSet<>();
         result.add("openid");
         result.add("profile");
 
-        if (!config.getAuthorization().isEmpty()) {
+        if (!properties.getAuthorization().isEmpty()) {
             result.add("offline_access");
         }
         return result;
@@ -79,12 +103,12 @@ public class AzureActiveDirectoryConfiguration {
 
     private List<ClientRegistration> createAuthzClients() {
         List<ClientRegistration> result = new ArrayList<>();
-        for (String name : config.getAuthorization().keySet()) {
-            if (DEFAULT_CLIENT.equals(name)) {
+        for (String name : properties.getAuthorization().keySet()) {
+            if (AZURE_CLIENT_REGISTRATION_ID.equals(name)) {
                 continue;
             }
 
-            AuthorizationProperties authz = config.getAuthorization().get(name);
+            AuthorizationProperties authz = properties.getAuthorization().get(name);
             result.add(createClientBuilder(name, authz));
         }
         return result;
@@ -101,31 +125,35 @@ public class AzureActiveDirectoryConfiguration {
         result.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE);
         result.redirectUriTemplate("{baseUrl}/login/oauth2/code/{registrationId}");
 
-        result.clientId(config.getClientId());
-        result.clientSecret(config.getClientSecret());
+        result.clientId(properties.getClientId());
+        result.clientSecret(properties.getClientSecret());
 
-        IdentityEndpoints endpoints = new IdentityEndpoints(config.getUri());
-        result.authorizationUri(endpoints.authorizationEndpoint(config.getTenantId()));
-        result.tokenUri(endpoints.tokenEndpoint(config.getTenantId()));
-        result.jwkSetUri(endpoints.jwkSetEndpoint(config.getTenantId()));
+        AuthorizationServerEndpoints endpoints =
+            new AuthorizationServerEndpoints(properties.getAuthorizationServerUri());
+        result.authorizationUri(endpoints.authorizationEndpoint(properties.getTenantId()));
+        result.tokenUri(endpoints.tokenEndpoint(properties.getTenantId()));
+        result.jwkSetUri(endpoints.jwkSetEndpoint(properties.getTenantId()));
 
         return result;
     }
 
-    @Bean
-    @ConditionalOnMissingBean
-    public OAuth2AuthorizedClientRepository authorizedClientRepository(AzureClientRegistrationRepository repo) {
-        return new AzureAuthorizedClientRepository(repo);
-    }
-
     @Configuration
+    @ConditionalOnBean(ObjectPostProcessor.class)
     @ConditionalOnMissingBean(WebSecurityConfigurerAdapter.class)
     public static class DefaultAzureOAuth2Configuration extends AzureOAuth2Configuration {
+
+        @Autowired
+        private OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService;
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             super.configure(http);
-            http.authorizeRequests().anyRequest().authenticated();
+            http.authorizeRequests()
+                .anyRequest().authenticated()
+                .and()
+                .oauth2Login()
+                .userInfoEndpoint()
+                .oidcUserService(oidcUserService);
         }
     }
 }

@@ -3,7 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.core.experimental.util.BinaryData;
+import com.azure.core.util.BinaryData;
 
 import java.util.concurrent.TimeUnit;
 

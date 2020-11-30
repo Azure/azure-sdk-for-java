@@ -1,7 +1,15 @@
 # Release History
 
-## 1.11.0-beta.1 (Unreleased)
+## 1.12.0-beta.1 (Unreleased)
 
+
+## 1.11.0 (2020-11-24)
+
+### New Features
+
+- Added `BinaryData` which allows for a format agnostic representation of binary information and supports
+ `ObjectSerializer` for serialization and deserialization.
+- Added functionality to eagerly read HTTP response bodies into memory when they will be deserialized into a POJO.
 
 ## 1.10.0 (2020-10-29)
 
