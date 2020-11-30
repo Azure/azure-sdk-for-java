@@ -49,7 +49,7 @@ public class CommunicationIdentityClientTestBase extends TestBase {
         builder
             .endpoint(ENDPOINT)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
-        
+
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new FakeCredentials());
         } else {
@@ -58,21 +58,6 @@ public class CommunicationIdentityClientTestBase extends TestBase {
 
         if (getTestMode() == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
-        }
-
-        return builder;
-    }
-
-    protected CommunicationIdentityClientBuilder getCommunicationIdentityClientBuilderUsingManagedIdentity(HttpClient httpClient) {
-        CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
-        builder
-            .endpoint(ENDPOINT)
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
-
-        if (getTestMode() == TestMode.PLAYBACK) {
-                builder.credential(new AzureKeyCredential("FAKE_API_KEY"));
-        } else {
-                builder.credential(new DefaultAzureCredentialBuilder().build());
         }
 
         return builder;
