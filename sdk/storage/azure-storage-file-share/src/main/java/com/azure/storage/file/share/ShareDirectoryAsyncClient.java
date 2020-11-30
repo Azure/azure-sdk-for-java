@@ -115,7 +115,7 @@ public class ShareDirectoryAsyncClient {
         StringBuilder directoryUrlString = new StringBuilder(azureFileStorageClient.getUrl()).append("/")
             .append(shareName).append("/").append(directoryPath);
         if (snapshot != null) {
-            directoryUrlString.append("?snapshot=").append(snapshot);
+            directoryUrlString.append("?sharesnapshot=").append(snapshot);
         }
         return directoryUrlString.toString();
     }

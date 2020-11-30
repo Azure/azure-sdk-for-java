@@ -1,18 +1,21 @@
 # Release History
 
-## 1.2.0-beta.3 (Unreleased)
+## 1.3.0-beta.1 (Unreleased)
 
-### Breaking Changes
-- Removing Application Authentication APIs for GA release. These will be reintroduced in 1.3.0-beta.1.
-  - Removed class `AuthenticationRecord`
-  - Removed class `AuthenticationRequiredException`
-  - Removed methods `allowUnencryptedCache()` and `enablePersistentCache()` from `ClientCertificateCredentialBuilder`, 
-   `ClientSecretCredentialBuilder`, `InteractiveBrowserCredentialBuilder`, `DeviceCodeCredentialBuilder`,
-    `UsernamePasswordCredentialBuilder` and `ClientCertificateCredentialBuilder`.
-  - Removed methods `disallowUnencryptedCache()` and `authenticationRecord(AuthenticationRecord)` from `SharedTokenCacheCredentialBuilder`.
-  - Removed methods `authenticationRecord(AuthenticationRecord)` and `disableAutomaticAuthentication()` from `DeviceCodeCredentialBuilder` and `InteractiveBrowserCredentialBuilder`.
-  - Removed methods `authenticate(TokenRequestContext)` and `authenticate()` from `DeviceCodeCredential`, `InteractiveBrowserCredential`
-    and `UsernamePasswordCredential`.
+
+## 1.2.0 (2020-11-09)
+
+### New Features
+- Added Azure Service Fabric Managed Identity support to `ManagedIdentityCredential`
+- Added Azure Arc Managed Identity support to `ManagedIdentityCredential`
+- Added support for Docker Containers in `DefaultAzureCredential`
+
+### Fixes and improvements
+- Prevent `VisualStudioCodeCredential` using invalid authentication data when no user is signed in to Visual Studio Code
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to 1.10.0
+- Upgraded `msal4j` dependency to 1.8.0
 
 
 ## 1.2.0-beta.2 (2020-10-06)

@@ -48,11 +48,11 @@ public class AzureSqlSource extends TabularSource {
 
     /**
      * The partition mechanism that will be used for Sql read in parallel.
-     * Possible values include: 'None', 'PhysicalPartitionsOfTable',
-     * 'DynamicRange'.
+     * Possible values include: "None", "PhysicalPartitionsOfTable",
+     * "DynamicRange".
      */
     @JsonProperty(value = "partitionOption")
-    private SqlPartitionOption partitionOption;
+    private Object partitionOption;
 
     /**
      * The settings that will be leveraged for Sql source partitioning.
@@ -141,21 +141,21 @@ public class AzureSqlSource extends TabularSource {
     }
 
     /**
-     * Get the partition mechanism that will be used for Sql read in parallel. Possible values include: 'None', 'PhysicalPartitionsOfTable', 'DynamicRange'.
+     * Get the partition mechanism that will be used for Sql read in parallel. Possible values include: "None", "PhysicalPartitionsOfTable", "DynamicRange".
      *
      * @return the partitionOption value
      */
-    public SqlPartitionOption partitionOption() {
+    public Object partitionOption() {
         return this.partitionOption;
     }
 
     /**
-     * Set the partition mechanism that will be used for Sql read in parallel. Possible values include: 'None', 'PhysicalPartitionsOfTable', 'DynamicRange'.
+     * Set the partition mechanism that will be used for Sql read in parallel. Possible values include: "None", "PhysicalPartitionsOfTable", "DynamicRange".
      *
      * @param partitionOption the partitionOption value to set
      * @return the AzureSqlSource object itself.
      */
-    public AzureSqlSource withPartitionOption(SqlPartitionOption partitionOption) {
+    public AzureSqlSource withPartitionOption(Object partitionOption) {
         this.partitionOption = partitionOption;
         return this;
     }

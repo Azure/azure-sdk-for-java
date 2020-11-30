@@ -108,7 +108,7 @@ class ServiceBusMessageSerializerTest {
 
         // Verifying that all our properties are set.
         assertEquals(message.getTtl(), actualMessage.getTimeToLive().toMillis());
-        assertEquals(message.getSubject(), actualMessage.getLabel());
+        assertEquals(message.getSubject(), actualMessage.getSubject());
         assertEquals(message.getReplyTo(), actualMessage.getReplyTo());
         assertEquals(message.getDeliveryCount(), actualMessage.getDeliveryCount());
         assertEquals(message.getProperties().getTo(), actualMessage.getTo());
@@ -117,9 +117,9 @@ class ServiceBusMessageSerializerTest {
         assertEquals(message.getContentType(), actualMessage.getContentType());
         assertEquals(message.getCorrelationId(), actualMessage.getCorrelationId());
 
-        assertValues(expectedMessageAnnotations, actualMessage.getAmqpAnnotatedMessage().getMessageAnnotations());
-        assertValues(expectedDeliveryAnnotations, actualMessage.getAmqpAnnotatedMessage().getDeliveryAnnotations());
-        assertValues(expectedFooterValues, actualMessage.getAmqpAnnotatedMessage().getFooter());
+        assertValues(expectedMessageAnnotations, actualMessage.getRawAmqpMessage().getMessageAnnotations());
+        assertValues(expectedDeliveryAnnotations, actualMessage.getRawAmqpMessage().getDeliveryAnnotations());
+        assertValues(expectedFooterValues, actualMessage.getRawAmqpMessage().getFooter());
 
         // Verifying our application properties are the same.
         assertEquals(APPLICATION_PROPERTIES.size(), actualMessage.getApplicationProperties().size());

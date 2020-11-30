@@ -8,7 +8,7 @@ import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
-import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
      * @param options to set performance test options.
      */
     public ReceiveAndLockMessageTest(ServiceBusStressOptions options) {
-        super(options, ReceiveMode.PEEK_LOCK);
+        super(options, ServiceBusReceiveMode.PEEK_LOCK);
         this.options = options;
     }
 

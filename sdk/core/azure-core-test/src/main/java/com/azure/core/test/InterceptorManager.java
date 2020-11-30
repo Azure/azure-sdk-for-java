@@ -7,6 +7,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.http.PlaybackClient;
 import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.test.models.RecordedData;
+import com.azure.core.test.models.RecordingRedactor;
 import com.azure.core.test.policy.RecordNetworkCallPolicy;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -17,9 +18,12 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 
 /**
  * A class that keeps track of network calls by either reading the data from an existing test session record or
@@ -230,7 +234,19 @@ public class InterceptorManager implements AutoCloseable {
      * @return HttpPipelinePolicy to record network calls.
      */
     public HttpPipelinePolicy getRecordPolicy() {
-        return new RecordNetworkCallPolicy(recordedData);
+        return getRecordPolicy(Collections.emptyList());
+    }
+
+    /**
+     * Gets a new HTTP pipeline policy that records network calls. The recorded content is redacted by the given list
+     * of redactor functions to hide sensitive information.
+     *
+     * @param recordingRedactors The custom redactor functions that are applied in addition to the default redactor
+     *                           functions defined in {@link RecordingRedactor}.
+     * @return {@link HttpPipelinePolicy} to record network calls.
+     */
+    public HttpPipelinePolicy getRecordPolicy(List<Function<String, String>> recordingRedactors) {
+        return new RecordNetworkCallPolicy(recordedData, recordingRedactors);
     }
 
     /**

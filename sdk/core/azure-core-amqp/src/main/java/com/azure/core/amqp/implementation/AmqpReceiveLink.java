@@ -25,7 +25,7 @@ public interface AmqpReceiveLink extends AmqpLink {
     Flux<Message> receive();
 
     /**
-     * Adds the specified number of credits to the link.
+     * Schedule to adds the specified number of credits to the link.
      *
      * The number of link credits initialises to zero. It is the application's responsibility to call this method to
      * allow the receiver to receive {@code credits} more deliveries.
@@ -33,6 +33,21 @@ public interface AmqpReceiveLink extends AmqpLink {
      * @param credits Number of credits to add to the receive link.
      */
     void addCredits(int credits);
+
+    /**
+     * Adds the specified number of credits to the link.
+     *
+     * The number of link credits initialises to zero. It is the application's responsibility to call this method to
+     * allow the receiver to receive {@code credits} more deliveries.
+     *
+     * It will update the credits in local memory instantly so {@link #getCredits()} will get
+     * the updated credits immediately. But the service side may get the credits added with a latency.
+     * As a contrast, {@link #getCredits()} may return an unchanged value for a short while after
+     * {@link #addCredits(int)} is called to schedule the credit addition and before the job dispatcher executes it.
+     *
+     * @param credits Number of credits to add to the receive link.
+     */
+    void addCreditsInstantly(int credits);
 
     /**
      * Gets the current number of credits this link has.

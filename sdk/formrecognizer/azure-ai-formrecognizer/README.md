@@ -4,7 +4,9 @@ from form documents. It includes the following main functionalities:
 
 * Custom models - Recognize field values and table data from forms. These models are trained with your own data, so they're tailored to your forms. You can then take these custom models and recognize forms. You can also manage the custom models you've created and see how close you are to the limit of custom models your account can hold.
 * Content API - Recognize text and table structures, along with their bounding box coordinates, from documents. Corresponds to the REST service's Layout API.
-* Prebuilt receipt model - Recognize data from USA sales receipts using a prebuilt model.
+* Prebuilt receipt model - Recognize data from sales receipts using a prebuilt model.
+* Prebuilt invoice model - Recognize data from USA sales invoices using a prebuilt model.
+* Prebuilt business card model - Recognize data from business cards using a prebuilt model.
 
 [Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][sample_readme]
 
@@ -16,14 +18,14 @@ from form documents. It includes the following main functionalities:
 - [Cognitive Services or Form Recognizer account][form_recognizer_account] to use this package.
 
 ### Include the Package
-**Note:** This beta version targets Azure Form Recognizer service API version v2.0.
+**Note:** This beta version targets Azure Form Recognizer service API version v2.1-preview.2.
 
 [//]: # ({x-version-update-start;com.azure:azure-ai-formrecognizer;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-formrecognizer</artifactId>
-    <version>3.0.2</version>
+    <version>3.1.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -121,7 +123,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.1.3</version>
+    <version>1.2.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -155,6 +157,8 @@ provide both synchronous and asynchronous operations
  - Recognizing form content, including tables, lines and words, without the need to train a model.
  Form content is returned in a collection of `FormPage` objects. See example [Recognize Content](#recognize-content).
  - Recognizing common fields from receipts, using a pre-trained receipt model on the Form Recognizer service.
+ - Recognizing common fields from invoices, using a pre-trained invoice model on the Form Recognizer service.
+ - Recognizing common fields from business cards, using a pre-trained business card model on the Form Recognizer service.
  These fields and meta-data are returned in a collection of `RecognizedForm` objects. See example [Recognize Receipts](#recognize-receipts).
 
 ### FormTrainingClient

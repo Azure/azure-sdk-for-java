@@ -140,27 +140,32 @@ public class AnomalyAlertAsyncTest extends AnomalyAlertTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     public void getAnomalyAlertValidId(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-        // Arrange
-        client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
         final AtomicReference<String> alertConfigurationId = new AtomicReference<>();
+        try {
+            // Arrange
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
 
-        creatAnomalyAlertRunner(inputAnomalyAlertConfiguration -> {
-            final AnomalyAlertConfiguration createdAnomalyAlert =
-                client.createAnomalyAlertConfig(inputAnomalyAlertConfiguration).block();
+            creatAnomalyAlertRunner(inputAnomalyAlertConfiguration -> {
+                final AnomalyAlertConfiguration createdAnomalyAlert =
+                    client.createAnomalyAlertConfig(inputAnomalyAlertConfiguration).block();
 
-            assertNotNull(createdAnomalyAlert);
-            alertConfigurationId.set(createdAnomalyAlert.getId());
+                assertNotNull(createdAnomalyAlert);
+                alertConfigurationId.set(createdAnomalyAlert.getId());
 
-            // Act & Assert
-            StepVerifier.create(client.getAnomalyAlertConfigWithResponse(alertConfigurationId.get()))
-                .assertNext(anomalyAlertConfigurationResponse -> {
-                    assertEquals(anomalyAlertConfigurationResponse.getStatusCode(), HttpResponseStatus.OK.code());
-                    validateAnomalyAlertResult(createdAnomalyAlert, anomalyAlertConfigurationResponse.getValue());
-                });
-        });
-        Mono<Void> deleteAnomalyAlertConfig = client.deleteAnomalyAlertConfig(alertConfigurationId.get());
+                // Act & Assert
+                StepVerifier.create(client.getAnomalyAlertConfigWithResponse(alertConfigurationId.get()))
+                    .assertNext(anomalyAlertConfigurationResponse -> {
+                        assertEquals(anomalyAlertConfigurationResponse.getStatusCode(), HttpResponseStatus.OK.code());
+                        validateAnomalyAlertResult(createdAnomalyAlert, anomalyAlertConfigurationResponse.getValue());
+                    });
+            });
+        } finally {
+            if (!CoreUtils.isNullOrEmpty(alertConfigurationId.get())) {
+                Mono<Void> deleteAnomalyAlertConfig = client.deleteAnomalyAlertConfig(alertConfigurationId.get());
 
-        StepVerifier.create(deleteAnomalyAlertConfig).verifyComplete();
+                StepVerifier.create(deleteAnomalyAlertConfig).verifyComplete();
+            }
+        }
     }
 
     // Create Anomaly alert configuration

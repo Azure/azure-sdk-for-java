@@ -9,14 +9,12 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.util.Context;
 import okhttp3.Call;
-import okhttp3.Headers;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-import okhttp3.Response;
 import okhttp3.ResponseBody;
 import okio.ByteString;
 import reactor.core.Exceptions;
@@ -25,9 +23,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoSink;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -47,6 +43,13 @@ class OkHttpAsyncHttpClient implements HttpClient {
 
     @Override
     public Mono<HttpResponse> send(HttpRequest request) {
+        return send(request, Context.NONE);
+    }
+
+    @Override
+    public Mono<HttpResponse> send(HttpRequest request, Context context) {
+        boolean eagerlyReadResponse = (boolean) context.getData("azure-eagerly-read-response").orElse(false);
+
         return Mono.create(sink -> sink.onRequest(value -> {
             // Using MonoSink::onRequest for back pressure support.
 
@@ -62,7 +65,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
             //
             toOkHttpRequest(request).subscribe(okHttpRequest -> {
                 Call call = httpClient.newCall(okHttpRequest);
-                call.enqueue(new OkHttpCallback(sink, request));
+                call.enqueue(new OkHttpCallback(sink, request, eagerlyReadResponse));
                 sink.onCancel(call::cancel);
             }, sink::error);
         }));
@@ -97,7 +100,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
                     return Mono.just(rb.head());
                 } else {
                     return toOkHttpRequestBody(request.getBody(), request.getHeaders())
-                            .map(requestBody -> rb.method(request.getHttpMethod().toString(), requestBody));
+                        .map(requestBody -> rb.method(request.getHttpMethod().toString(), requestBody));
                 }
             })
             .map(Request.Builder::build);
@@ -128,11 +131,10 @@ class OkHttpAsyncHttpClient implements HttpClient {
     /**
      * Aggregate Flux of java.nio.ByteBuffer to single okio.ByteString.
      *
-     * Pooled okio.Buffer type is used to buffer emitted ByteBuffer instances.
-     * Content of each ByteBuffer will be written (i.e copied) to the internal okio.Buffer slots.
-     * Once the stream terminates, the contents of all slots get copied to one single byte array
-     * and okio.ByteString will be created referring this byte array.
-     * Finally the initial okio.Buffer will be returned to the pool.
+     * Pooled okio.Buffer type is used to buffer emitted ByteBuffer instances. Content of each ByteBuffer will be
+     * written (i.e copied) to the internal okio.Buffer slots. Once the stream terminates, the contents of all slots get
+     * copied to one single byte array and okio.ByteString will be created referring this byte array. Finally the
+     * initial okio.Buffer will be returned to the pool.
      *
      * @param bbFlux the Flux of ByteBuffer to aggregate
      * @return a mono emitting aggregated ByteString
@@ -148,7 +150,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
                     throw Exceptions.propagate(ioe);
                 }
             })
-            .map(b -> ByteString.of(b.readByteArray())),
+                .map(b -> ByteString.of(b.readByteArray())),
             okio.Buffer::clear)
             .switchIfEmpty(EMPTY_BYTE_STRING_MONO);
     }
@@ -156,10 +158,12 @@ class OkHttpAsyncHttpClient implements HttpClient {
     private static class OkHttpCallback implements okhttp3.Callback {
         private final MonoSink<HttpResponse> sink;
         private final HttpRequest request;
+        private final boolean eagerlyReadResponse;
 
-        OkHttpCallback(MonoSink<HttpResponse> sink, HttpRequest request) {
+        OkHttpCallback(MonoSink<HttpResponse> sink, HttpRequest request, boolean eagerlyReadResponse) {
             this.sink = sink;
             this.request = request;
+            this.eagerlyReadResponse = eagerlyReadResponse;
         }
 
         @Override
@@ -169,169 +173,27 @@ class OkHttpAsyncHttpClient implements HttpClient {
 
         @Override
         public void onResponse(okhttp3.Call call, okhttp3.Response response) {
-            sink.success(new OkHttpResponse(response, request));
-        }
-    }
-
-    /**
-     * An implementation of {@link HttpResponse} for OkHttp.
-     */
-    private static class OkHttpResponse extends HttpResponse {
-        private final int statusCode;
-        private final HttpHeaders headers;
-        private final ResponseBody responseBody;
-        // using 4K as default buffer size: https://stackoverflow.com/a/237495/1473510
-        private static final int BYTE_BUFFER_CHUNK_SIZE = 4096;
-
-        OkHttpResponse(Response innerResponse, HttpRequest request) {
-            super(request);
-            this.statusCode = innerResponse.code();
-            this.headers = fromOkHttpHeaders(innerResponse.headers());
-            // innerResponse.body() getter will not return null for server returned responses.
-            // It can be null:
-            // [a]. if response is built manually with null body (e.g for mocking)
-            // [b]. for the cases described here
-            // [ref](https://square.github.io/okhttp/4.x/okhttp/okhttp3/-response/body/).
-            //
-            this.responseBody = innerResponse.body();
-        }
-
-        @Override
-        public int getStatusCode() {
-            return this.statusCode;
-        }
-
-        @Override
-        public String getHeaderValue(String name) {
-            return this.headers.getValue(name);
-        }
-
-        @Override
-        public HttpHeaders getHeaders() {
-            return this.headers;
-        }
-
-        @Override
-        public Flux<ByteBuffer> getBody() {
-            if (this.responseBody == null) {
-                return Flux.empty();
-            }
-            // Use Flux.using to close the stream after complete emission
-            return Flux.using(this.responseBody::byteStream,
-                OkHttpResponse::toFluxByteBuffer,
-                bodyStream -> {
+            /*
+             * Use a buffered response when we are eagerly reading the response from the network and the body isn't
+             * empty.
+             */
+            if (eagerlyReadResponse) {
+                ResponseBody body = response.body();
+                if (Objects.nonNull(body)) {
                     try {
-                        // OkHttp: The stream from ResponseBody::byteStream() has to be explicitly closed.
-                 // https://square.github.io/okhttp/4.x/okhttp/okhttp3/-response-body/#the-response-body-must-be-closed
-                        bodyStream.close();
-                    } catch (IOException ioe) {
-                        throw Exceptions.propagate(ioe);
+                        byte[] bytes = body.bytes();
+                        body.close();
+                        sink.success(new BufferedOkHttpResponse(response, request, bytes));
+                    } catch (IOException ex) {
+                        // Reading the body bytes may cause an IOException, if it happens propagate it.
+                        sink.error(ex);
                     }
-                }, false);
-        }
-
-        @Override
-        public Mono<byte[]> getBodyAsByteArray() {
-            return Mono.fromCallable(() -> {
-                // Reactor: The fromCallable operator treats a null from the Callable
-                // as completion signal.
-                if (responseBody == null) {
-                    return null;
+                } else {
+                    // Body is null, use the non-buffering response.
+                    sink.success(new OkHttpResponse(response, request));
                 }
-                byte[] content = responseBody.bytes();
-                // Consistent with GAed behaviour.
-                if (content.length == 0) {
-                    return null;
-                }
-                // OkHttp: When calling ResponseBody::bytes() the underlying stream automatically closed.
-                // https://square.github.io/okhttp/4.x/okhttp/okhttp3/-response-body/#the-response-body-must-be-closed
-                return content;
-            });
-        }
-
-        @Override
-        public Mono<String> getBodyAsString() {
-            return getBodyAsByteArray()
-                .map(bytes -> CoreUtils.bomAwareToString(bytes, headers.getValue("Content-Type")));
-        }
-
-        @Override
-        public Mono<String> getBodyAsString(Charset charset) {
-            return getBodyAsByteArray()
-                .map(bytes -> new String(bytes, charset));
-        }
-
-        @Override
-        public void close() {
-            if (this.responseBody != null) {
-                // It's safe to invoke close() multiple times, additional calls will be ignored.
-                this.responseBody.close();
-            }
-        }
-
-        /**
-         * Creates azure-core HttpHeaders from okhttp headers.
-         *
-         * @param headers okhttp headers
-         * @return azure-core HttpHeaders
-         */
-        private static HttpHeaders fromOkHttpHeaders(Headers headers) {
-            HttpHeaders httpHeaders = new HttpHeaders();
-            for (String headerName : headers.names()) {
-                httpHeaders.put(headerName, headers.get(headerName));
-            }
-            return httpHeaders;
-        }
-
-        /**
-         * Creates a Flux of ByteBuffer, with each ByteBuffer wrapping bytes read from the given
-         * InputStream.
-         *
-         * @param inputStream InputStream to back the Flux
-         * @return Flux of ByteBuffer backed by the InputStream
-         */
-        private static Flux<ByteBuffer> toFluxByteBuffer(InputStream inputStream) {
-            Pair pair = new Pair();
-            return Flux.just(true)
-                .repeat()
-                .map(ignore -> {
-                    byte[] buffer = new byte[BYTE_BUFFER_CHUNK_SIZE];
-                    try {
-                        int numBytes = inputStream.read(buffer);
-                        if (numBytes > 0) {
-                            return pair.buffer(ByteBuffer.wrap(buffer, 0, numBytes)).readBytes(numBytes);
-                        } else {
-                            return pair.buffer(null).readBytes(numBytes);
-                        }
-                    } catch (IOException ioe) {
-                        throw Exceptions.propagate(ioe);
-                    }
-                })
-                .takeUntil(p -> p.readBytes() == -1)
-                .filter(p -> p.readBytes() > 0)
-                .map(Pair::buffer);
-        }
-
-        private static class Pair {
-            private ByteBuffer byteBuffer;
-            private int readBytes;
-
-            ByteBuffer buffer() {
-                return this.byteBuffer;
-            }
-
-            int readBytes() {
-                return this.readBytes;
-            }
-
-            Pair buffer(ByteBuffer byteBuffer) {
-                this.byteBuffer = byteBuffer;
-                return this;
-            }
-
-            Pair readBytes(int cnt) {
-                this.readBytes = cnt;
-                return this;
+            } else {
+                sink.success(new OkHttpResponse(response, request));
             }
         }
     }

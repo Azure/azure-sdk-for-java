@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public interface ShouldRetryValidator {
 
-    void validate(IRetryPolicy.ShouldRetryResult shouldRetryResult);
+    void validate(ShouldRetryResult shouldRetryResult);
 
     static Builder builder() {
         return new Builder();
@@ -26,7 +26,7 @@ public interface ShouldRetryValidator {
             return new ShouldRetryValidator() {
 
                 @Override
-                public void validate(IRetryPolicy.ShouldRetryResult shouldRetryResult) {
+                public void validate(ShouldRetryResult shouldRetryResult) {
                     for (ShouldRetryValidator validator : validators) {
                         validator.validate(shouldRetryResult);
                     }
@@ -38,7 +38,7 @@ public interface ShouldRetryValidator {
             validators.add(new ShouldRetryValidator() {
 
                 @Override
-                public void validate(IRetryPolicy.ShouldRetryResult shouldRetryResult) {
+                public void validate(ShouldRetryResult shouldRetryResult) {
                     assertThat(shouldRetryResult.exception).isNull();
                 }
             });
@@ -49,7 +49,7 @@ public interface ShouldRetryValidator {
             validators.add(new ShouldRetryValidator() {
 
                 @Override
-                public void validate(IRetryPolicy.ShouldRetryResult shouldRetryResult) {
+                public void validate(ShouldRetryResult shouldRetryResult) {
                     assertThat(shouldRetryResult.exception).isNotNull();
                 }
             });
@@ -60,7 +60,7 @@ public interface ShouldRetryValidator {
             validators.add(new ShouldRetryValidator() {
 
                 @Override
-                public void validate(IRetryPolicy.ShouldRetryResult shouldRetryResult) {
+                public void validate(ShouldRetryResult shouldRetryResult) {
                     assertThat(shouldRetryResult.exception).isNotNull();
                     assertThat(shouldRetryResult.exception).isInstanceOf(klass);
                 }
@@ -72,7 +72,7 @@ public interface ShouldRetryValidator {
             validators.add(new ShouldRetryValidator() {
 
                 @Override
-                public void validate(IRetryPolicy.ShouldRetryResult shouldRetryResult) {
+                public void validate(ShouldRetryResult shouldRetryResult) {
                     assertThat(shouldRetryResult.exception).isNotNull();
                     failureValidator.validate(shouldRetryResult.exception);
                 }
@@ -84,7 +84,7 @@ public interface ShouldRetryValidator {
             validators.add(new ShouldRetryValidator() {
 
                 @Override
-                public void validate(IRetryPolicy.ShouldRetryResult shouldRetryResult) {
+                public void validate(ShouldRetryResult shouldRetryResult) {
                     assertThat(shouldRetryResult.exception).isNotNull();
                     assertThat(shouldRetryResult.exception).isEqualTo(exception);
                 }
@@ -96,7 +96,7 @@ public interface ShouldRetryValidator {
             validators.add(new ShouldRetryValidator() {
 
                 @Override
-                public void validate(IRetryPolicy.ShouldRetryResult shouldRetryResult) {
+                public void validate(ShouldRetryResult shouldRetryResult) {
                     assertThat(shouldRetryResult.shouldRetry).isEqualTo(value);
                 }
             });
@@ -108,7 +108,7 @@ public interface ShouldRetryValidator {
             validators.add(new ShouldRetryValidator() {
 
                 @Override
-                public void validate(IRetryPolicy.ShouldRetryResult shouldRetryResult) {
+                public void validate(ShouldRetryResult shouldRetryResult) {
                     assertThat(shouldRetryResult.backOffTime).isEqualTo(backOfTime);
                 }
             });

@@ -36,7 +36,7 @@ Azure Management Libraries for Java is object-oriented API for managing Azure re
 
 There are 3 levels of object for Azure resource management.
 
-Topmost, there is **service** API, e.g. `ComputeManager` for Azure compute service or `Azure` for all supported services.
+Topmost, there is **service** API, e.g. `ComputeManager` for Azure compute service or `AzureResourceManager` for all supported services.
 [Authentication][authenticate] is required to instantiate the service API.
 
 Next, there is **resource collection** API, e.g. `VirtualMachines` to manage Azure virtual machine.
@@ -50,14 +50,14 @@ A resource instance can be instantiated as:
 
 - Creating a new Azure resource from resource collection API, with method verb `define` till `create`, e.g.
 
-```
+```java
 VirtualMachine virtualMachine = computeManager.virtualMachines()
     .define(name)...create();
 ```
 
 - Getting an existing Azure resource from resource collection API, with method verb `get` or `list`, e.g.
 
-```
+```java
 VirtualMachine virtualMachine = computeManager.virtualMachines()
     .getByResourceGroup(resourceGroupName, name);
 ```
@@ -66,7 +66,7 @@ After a resource instance is instantiated, it can be modified as:
 
 - Updating the Azure resource, with method verb `update` till `apply`, e.g.
 
-```
+```java
 virtualMachine.update()...apply();
 ```
 
@@ -74,7 +74,7 @@ After the Azure resource served its purpose, it can be deleted as:
 
 - Deleting the Azure resource from resource collection API, with method verb `delete`, e.g.
 
-```
+```java
 computeManager.virtualMachines().deleteByResourceGroup(resourceGroupName, name);
 ```
 
@@ -108,7 +108,7 @@ The method verb `list` in resource collection API usually returns a `PagedIterab
 
 The results can be iterated by items, in a for-loop, or via `forEach`.
 Alternatively, the results can be iterated by pages, e.g.
-```
+```java
 computeManager.virtualMachines().list()
     .iterableByPage()
     .forEach(page -> ...);

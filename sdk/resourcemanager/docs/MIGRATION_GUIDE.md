@@ -54,6 +54,7 @@ ApplicationTokenCredential = new ApplicationTokenCredentials("<ClientId>", "<Ten
 
 **Equivalent in new version (`com.azure.resourcemanager.**`)**
 
+<!-- embedme ../azure-resourcemanager/src/samples/java/com/azure/resourcemanager/MigrationGuideSamples.java#L72-L77 -->
 ```java
 TokenCredential credential = new ClientSecretCredentialBuilder()
     .clientId("<ClientId>")
@@ -99,6 +100,7 @@ Azure azure = Azure.configure()
 
 **Equivalent in new version (`com.azure.resourcemanager.**`)**
 
+<!-- embedme ../azure-resourcemanager/src/samples/java/com/azure/resourcemanager/MigrationGuideSamples.java#L81-L84 -->
 ```java
 AzureResourceManager azure = AzureResourceManager.configure()
     .withPolicy(new CustomizedPolicy())
@@ -124,6 +126,7 @@ Azure azure = Azure.authenticate(client, "<TenantId>")
 
 **Equivalent in new version (`com.azure.resourcemanager.**`)**
 
+<!-- embedme ../azure-resourcemanager/src/samples/java/com/azure/resourcemanager/MigrationGuideSamples.java#L95-L102 -->
 ```java
 HttpClient client = new OkHttpAsyncHttpClientBuilder()
     .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("127.0.0.1", 8888)))
@@ -155,6 +158,7 @@ try {
 
 **Equivalent in new version (`com.azure.resourcemanager.**`)**
 
+<!-- embedme ../azure-resourcemanager/src/samples/java/com/azure/resourcemanager/MigrationGuideSamples.java#L106-L114 -->
 ```java
 final String resourceGroupName = "invalid resource group name";
 try {
@@ -238,6 +242,7 @@ Observable.merge(
 
 **Equivalent in new version (`com.azure.resourcemanager.**`)**
 
+<!-- embedme ../azure-resourcemanager/src/samples/java/com/azure/resourcemanager/MigrationGuideSamples.java#L133-L166 -->
 ```java
 final List<Object> createdResources = new ArrayList<>();
 azure.resourceGroups().define(rgName).withRegion(region).create();
@@ -253,28 +258,26 @@ Flux.merge(
         .withExistingResourceGroup(rgName)
         .withLeafDomainLabel(publicIpName)
         .createAsync()
-        .flatMapMany(publicIp -> {
-            return Flux.merge(
-                Flux.just(publicIp),
-                azure.loadBalancers().define(loadBalancerName1)
-                    .withRegion(region)
-                    .withExistingResourceGroup(rgName)
-                    // Add two rules that uses above backend and probe
-                    .defineLoadBalancingRule(httpLoadBalancingRule).withProtocol(TransportProtocol.TCP).fromFrontend(frontendName).fromFrontendPort(80).toBackend(backendPoolName1).withProbe(httpProbe).attach()
-                    .defineLoadBalancingRule(httpsLoadBalancingRule).withProtocol(TransportProtocol.TCP).fromFrontend(frontendName).fromFrontendPort(443).toBackend(backendPoolName2).withProbe(httpsProbe).attach()
-                    // Add nat pools to enable direct VM connectivity for SSH to port 22 and TELNET to port 23
-                    .defineInboundNatPool(natPool50XXto22).withProtocol(TransportProtocol.TCP).fromFrontend(frontendName).fromFrontendPortRange(5000, 5099).toBackendPort(22).attach()
-                    .defineInboundNatPool(natPool60XXto23).withProtocol(TransportProtocol.TCP).fromFrontend(frontendName).fromFrontendPortRange(6000, 6099).toBackendPort(23).attach()
-                    // Explicitly define the frontend
-                    .definePublicFrontend(frontendName).withExistingPublicIpAddress(publicIp).attach()
-                    // Add two probes one per rule
-                    .defineHttpProbe(httpProbe).withRequestPath("/").withPort(80).attach()
-                    .defineHttpProbe(httpsProbe).withRequestPath("/").withPort(443).attach()
-                    .createAsync());
-            })
+        .flatMapMany(publicIp -> Flux.merge(
+            Flux.just(publicIp),
+            azure.loadBalancers().define(loadBalancerName1)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                // Add two rules that uses above backend and probe
+                .defineLoadBalancingRule(httpLoadBalancingRule).withProtocol(TransportProtocol.TCP).fromFrontend(frontendName).fromFrontendPort(80).toBackend(backendPoolName1).withProbe(httpProbe).attach()
+                .defineLoadBalancingRule(httpsLoadBalancingRule).withProtocol(TransportProtocol.TCP).fromFrontend(frontendName).fromFrontendPort(443).toBackend(backendPoolName2).withProbe(httpsProbe).attach()
+                // Add nat pools to enable direct VM connectivity for SSH to port 22 and TELNET to port 23
+                .defineInboundNatPool(natPool50XXto22).withProtocol(TransportProtocol.TCP).fromFrontend(frontendName).fromFrontendPortRange(5000, 5099).toBackendPort(22).attach()
+                .defineInboundNatPool(natPool60XXto23).withProtocol(TransportProtocol.TCP).fromFrontend(frontendName).fromFrontendPortRange(6000, 6099).toBackendPort(23).attach()
+                // Explicitly define the frontend
+                .definePublicFrontend(frontendName).withExistingPublicIpAddress(publicIp).attach()
+                // Add two probes one per rule
+                .defineHttpProbe(httpProbe).withRequestPath("/").withPort(80).attach()
+                .defineHttpProbe(httpsProbe).withRequestPath("/").withPort(443).attach()
+                .createAsync()))
 )
-.doOnNext(createdResources::add)
-.blockLast();
+    .doOnNext(createdResources::add)
+    .blockLast();
 ```
 
 [**Link to full sample**](https://github.com/Azure/azure-sdk-for-java/blob/15b8e62/sdk/resourcemanager/azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/compute/samples/ManageVirtualMachineScaleSetAsync.java#L88)

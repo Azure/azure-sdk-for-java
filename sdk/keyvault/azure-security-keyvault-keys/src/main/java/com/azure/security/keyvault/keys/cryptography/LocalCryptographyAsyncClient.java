@@ -48,8 +48,17 @@ public class LocalCryptographyAsyncClient {
      * portion of the key is used for encryption. This operation requires the keys/encrypt permission.
      *
      * <p>The {@link EncryptionAlgorithm encryption algorithm} indicates the type of algorithm to use for encrypting the
-     * specified {@code plaintext}. Possible values for assymetric keys include:
-     * {@link EncryptionAlgorithm#RSA1_5 RSA1_5} and {@link EncryptionAlgorithm#RSA_OAEP RSA_OAEP}. </p>
+     * specified {@code plainText}. Possible values for asymmetric keys include:
+     * {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP RSA_OAEP} and
+     * {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
+     *
+     * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC},
+     * {@link EncryptionAlgorithm#A128CBCPAD A128CBCPAD}, {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
+     * {@link EncryptionAlgorithm#A128GCM A128GCM}, {@link EncryptionAlgorithm#A192CBC A192CBC},
+     * {@link EncryptionAlgorithm#A192CBCPAD A192CBCPAD}, {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384},
+     * {@link EncryptionAlgorithm#A192GCM A192GCM}, {@link EncryptionAlgorithm#A256CBC A256CBC},
+     * {@link EncryptionAlgorithm#A256CBCPAD A256CBPAD}, {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512} and
+     * {@link EncryptionAlgorithm#A256GCM A256GCM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Encrypts the content. Subscribes to the call asynchronously and prints out the encrypted content details when
@@ -57,16 +66,49 @@ public class LocalCryptographyAsyncClient {
      * {@codesnippet com.azure.security.keyvault.keys.cryptography.LocalCryptographyAsyncClient.encrypt#EncryptionAlgorithm-byte}
      *
      * @param algorithm The algorithm to be used for encryption.
-     * @param plaintext The content to be encrypted.
+     * @param plainText The content to be encrypted.
      * @return A {@link Mono} containing a {@link EncryptResult} whose {@link EncryptResult#getCipherText() cipher text}
      * contains the encrypted content.
-     * @throws UnsupportedOperationException if the encrypt operation is not supported or configured on the key.
-     * @throws NullPointerException if {@code algorithm} or  {@code plainText} is null.
+     * @throws UnsupportedOperationException If the encrypt operation is not supported or configured on the key.
+     * @throws NullPointerException if {@code algorithm} or  {@code plainText} is {@code null}.
      */
-    public Mono<EncryptResult> encrypt(EncryptionAlgorithm algorithm, byte[] plaintext) {
-        return cryptographyAsyncClient.encrypt(algorithm, plaintext);
+    public Mono<EncryptResult> encrypt(EncryptionAlgorithm algorithm, byte[] plainText) {
+        return cryptographyAsyncClient.encrypt(algorithm, plainText);
     }
 
+    /**
+     * Encrypts an arbitrary sequence of bytes using the configured key. Note that the encrypt operation only supports a
+     * single block of data, the size of which is dependent on the target key and the encryption algorithm to be used.
+     * The encrypt operation is supported for both symmetric keys and asymmetric keys. In case of asymmetric keys public
+     * portion of the key is used for encryption. This operation requires the keys/encrypt permission.
+     *
+     * <p>The {@link EncryptionAlgorithm encryption algorithm} indicates the type of algorithm to use for encrypting the
+     * specified {@code plainText}. Possible values for asymmetric keys include:
+     * {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP RSA_OAEP} and
+     * {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
+     *
+     * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC},
+     * {@link EncryptionAlgorithm#A128CBCPAD A128CBCPAD}, {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
+     * {@link EncryptionAlgorithm#A128GCM A128GCM}, {@link EncryptionAlgorithm#A192CBC A192CBC},
+     * {@link EncryptionAlgorithm#A192CBCPAD A192CBCPAD}, {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384},
+     * {@link EncryptionAlgorithm#A192GCM A192GCM}, {@link EncryptionAlgorithm#A256CBC A256CBC},
+     * {@link EncryptionAlgorithm#A256CBCPAD A256CBPAD}, {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512} and
+     * {@link EncryptionAlgorithm#A256GCM A256GCM}.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Encrypts the content. Subscribes to the call asynchronously and prints out the encrypted content details when
+     * a response has been received.</p>
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.LocalCryptographyAsyncClient.encrypt#EncryptOptions}
+     *
+     * @param encryptOptions The parameters to use in the encryption operation.
+     * @return A {@link Mono} containing a {@link EncryptResult} whose {@link EncryptResult#getCipherText() cipher text}
+     * contains the encrypted content.
+     * @throws UnsupportedOperationException If the encrypt operation is not supported or configured on the key.
+     * @throws NullPointerException if {@code encryptOptions} is {@code null}.
+     */
+    public Mono<EncryptResult> encrypt(EncryptOptions encryptOptions) {
+        return cryptographyAsyncClient.encrypt(encryptOptions);
+    }
 
     /**
      * Decrypts a single block of encrypted data using the configured key and specified algorithm. Note that only a
@@ -75,8 +117,17 @@ public class LocalCryptographyAsyncClient {
      * keys/decrypt permission.
      *
      * <p>The {@link EncryptionAlgorithm encryption algorithm} indicates the type of algorithm to use for decrypting the
-     * specified encrypted content. Possible values for assymetric keys include:
-     * {@link EncryptionAlgorithm#RSA1_5 RSA1_5} and {@link EncryptionAlgorithm#RSA_OAEP RSA_OAEP}.</p>
+     * specified encrypted content. Possible values for asymmetric keys include:
+     * {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP RSA_OAEP} and {@link
+     * EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
+     *
+     * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC},
+     * {@link EncryptionAlgorithm#A128CBCPAD A128CBCPAD}, {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
+     * {@link EncryptionAlgorithm#A128GCM A128GCM}, {@link EncryptionAlgorithm#A192CBC A192CBC},
+     * {@link EncryptionAlgorithm#A192CBCPAD A192CBCPAD}, {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384},
+     * {@link EncryptionAlgorithm#A192GCM A192GCM}, {@link EncryptionAlgorithm#A256CBC A256CBC},
+     * {@link EncryptionAlgorithm#A256CBCPAD A256CBPAD}, {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512} and
+     * {@link EncryptionAlgorithm#A256GCM A256GCM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Decrypts the encrypted content. Subscribes to the call asynchronously and prints out the decrypted content
@@ -86,11 +137,44 @@ public class LocalCryptographyAsyncClient {
      * @param algorithm The algorithm to be used for decryption.
      * @param cipherText The content to be decrypted.
      * @return A {@link Mono} containing the decrypted blob.
-     * @throws UnsupportedOperationException if the decrypt operation is not supported or configured on the key.
-     * @throws NullPointerException if {@code algorithm} or {@code cipherText} is null.
+     * @throws UnsupportedOperationException If the decrypt operation is not supported or configured on the key.
+     * @throws NullPointerException If {@code algorithm} or {@code cipherText} are {@code null}.
      */
     public Mono<DecryptResult> decrypt(EncryptionAlgorithm algorithm, byte[] cipherText) {
         return cryptographyAsyncClient.decrypt(algorithm, cipherText);
+    }
+
+    /**
+     * Decrypts a single block of encrypted data using the configured key and specified algorithm. Note that only a
+     * single block of data may be decrypted, the size of this block is dependent on the target key and the algorithm to
+     * be used. The decrypt operation is supported for both asymmetric and symmetric keys. This operation requires the
+     * keys/decrypt permission.
+     *
+     * <p>The {@link EncryptionAlgorithm encryption algorithm} indicates the type of algorithm to use for decrypting the
+     * specified encrypted content. Possible values for asymmetric keys include:
+     * {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP RSA_OAEP} and {@link
+     * EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
+     *
+     * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC},
+     * {@link EncryptionAlgorithm#A128CBCPAD A128CBCPAD}, {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
+     * {@link EncryptionAlgorithm#A128GCM A128GCM}, {@link EncryptionAlgorithm#A192CBC A192CBC},
+     * {@link EncryptionAlgorithm#A192CBCPAD A192CBCPAD}, {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384},
+     * {@link EncryptionAlgorithm#A192GCM A192GCM}, {@link EncryptionAlgorithm#A256CBC A256CBC},
+     * {@link EncryptionAlgorithm#A256CBCPAD A256CBPAD}, {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512} and
+     * {@link EncryptionAlgorithm#A256GCM A256GCM}.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Decrypts the encrypted content. Subscribes to the call asynchronously and prints out the decrypted content
+     * details when a response has been received.</p>
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.LocalCryptographyAsyncClient.decrypt#DecryptOptions}
+     *
+     * @param decryptOptions The parameters to use in the decryption operation.
+     * @return A {@link Mono} containing the decrypted blob.
+     * @throws UnsupportedOperationException If the decrypt operation is not supported or configured on the key.
+     * @throws NullPointerException If {@code decryptOptions} is {@code null}.
+     */
+    public Mono<DecryptResult> decrypt(DecryptOptions decryptOptions) {
+        return cryptographyAsyncClient.decrypt(decryptOptions);
     }
 
 

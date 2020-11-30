@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-cloud-messaging</artifactId>
-  <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-messaging;current} -->
+  <version>2.0.0-beta.2</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-messaging;current} -->
 
   <name>Azure Spring Cloud Messaging</name>
 
@@ -20,17 +20,17 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-context</artifactId>
-      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-context;current} -->
+      <version>2.0.0-beta.2</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-context;current} -->
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-messaging</artifactId>
-      <version>5.2.9.RELEASE</version> <!-- {x-version-update;org.springframework:spring-messaging;external_dependency} -->
+      <version>5.2.10.RELEASE</version> <!-- {x-version-update;org.springframework:spring-messaging;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-integration-core</artifactId>
-      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-core;current} -->
+      <version>2.0.0-beta.2</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-core;current} -->
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -81,7 +81,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework:spring-messaging:[5.2.9.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-messaging;external_dependency} -->
+                <include>org.springframework:spring-messaging:[5.2.10.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-messaging;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

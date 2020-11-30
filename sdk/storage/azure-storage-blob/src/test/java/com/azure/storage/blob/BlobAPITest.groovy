@@ -1092,7 +1092,8 @@ class BlobAPITest extends APISpec {
         bc.getProperties()
 
         then:
-        thrown(BlobStorageException)
+        def ex = thrown(BlobStorageException)
+        ex.getMessage().contains("BlobNotFound")
     }
 
     def "Set HTTP headers null"() {
@@ -2701,6 +2702,22 @@ class BlobAPITest extends APISpec {
     def "Get Container Name"() {
         expect:
         containerName == bc.getContainerName()
+    }
+
+    def "Get Container Client"() {
+        setup:
+        def sasToken = cc.generateSas(
+            new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(2),
+                new BlobSasPermission().setReadPermission(true)))
+
+        // Ensure a sas token is also persisted
+        cc = getContainerClient(sasToken, cc.getBlobContainerUrl())
+
+        expect:
+        // Ensure the correct endpoint
+        cc.getBlobContainerUrl() == bc.getContainerClient().getBlobContainerUrl()
+        // Ensure it is a functional client
+        bc.getContainerClient().getProperties() != null
     }
 
     def "Get Blob Name"() {

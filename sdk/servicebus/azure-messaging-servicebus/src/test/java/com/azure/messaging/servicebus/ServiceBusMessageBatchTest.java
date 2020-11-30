@@ -3,13 +3,11 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
-import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
-import com.azure.core.experimental.util.BinaryData;
+import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -52,11 +50,12 @@ public class ServiceBusMessageBatchTest {
         final ServiceBusMessage tooBig = new ServiceBusMessage(BinaryData.fromBytes(new byte[1024 * 1024 * 2]));
 
         // Act
-        AmqpException amqpException = assertThrows(AmqpException.class, () -> batch.tryAddMessage(tooBig));
+        ServiceBusException thrownException = assertThrows(ServiceBusException.class, () -> batch.tryAddMessage(tooBig));
 
         // Assert
-        Assertions.assertFalse(amqpException.isTransient());
-        Assertions.assertEquals(AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, amqpException.getErrorCondition());
+        Assertions.assertFalse(thrownException.isTransient());
+        Assertions.assertEquals(ServiceBusErrorSource.SEND, thrownException.getErrorSource());
+        Assertions.assertEquals(ServiceBusFailureReason.MESSAGE_SIZE_EXCEEDED, thrownException.getReason());
     }
 
     /**
