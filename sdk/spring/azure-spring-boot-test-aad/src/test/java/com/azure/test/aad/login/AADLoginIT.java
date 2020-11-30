@@ -16,7 +16,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -53,27 +52,36 @@ public class AADLoginIT {
             System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, chromedriverWin32);
         } else if (Pattern.matches("mac.*", osName)) {
             System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, chromedriverMac);
+        } else {
+            throw new IllegalStateException("Can not recognize osName. osName = " + System.getProperty("os.name"));
         }
     }
 
-//    @Test
+    @Test
     public void loginTest() {
-        this.runTest(app -> {
+        this.runApp(app -> {
             WebDriver driver = new ChromeDriver();
             WebDriverWait wait = new WebDriverWait(driver, 10);
-            driver.get(app.root() + "api/group1");
-            wait.until(presenceOfElementLocated(By.name("loginfmt")))
-                .sendKeys(System.getenv(AAD_USER_NAME_1) + Keys.ENTER);
-            wait.until(presenceOfElementLocated(By.name("passwd")))
-                .sendKeys(System.getenv(AAD_USER_PASSWORD_1));
-
             try {
+                driver.get(app.root() + "api/home");
+                wait.until(presenceOfElementLocated(By.name("loginfmt")))
+                    .sendKeys(System.getenv(AAD_USER_NAME_1) + Keys.ENTER);
+                wait.until(presenceOfElementLocated(By.name("passwd")))
+                    .sendKeys(System.getenv(AAD_USER_PASSWORD_1));
                 Thread.sleep(3000);
                 driver.findElement(By.cssSelector("input[type='submit']")).click();
                 Thread.sleep(3000);
                 driver.findElement(By.cssSelector("input[type='submit']")).click();
                 Thread.sleep(3000);
+                Assert.assertEquals("home", driver.findElement(By.tagName("body")).getText());
+
+                driver.get(app.root() + "api/group1");
+                Thread.sleep(1000);
                 Assert.assertEquals("group1", driver.findElement(By.tagName("body")).getText());
+
+                driver.get(app.root() + "api/group2");
+                Thread.sleep(1000);
+                Assert.assertEquals("group2", driver.findElement(By.tagName("body")).getText());
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             } finally {
@@ -82,10 +90,11 @@ public class AADLoginIT {
         });
     }
 
-    public void runTest(Consumer<AppRunner> command) {
+    private void runApp(Consumer<AppRunner> command) {
         try (AppRunner app = new AppRunner(AADLoginIT.DumbApp.class)) {
+            // TODO here, just remind us to delete old configuration item after new aad implementation start to work.
             app.property("spring.security.oauth2.client.registration.azure.tenant-id",
-                System.getenv("AAD_TENANT_ID_1"));
+                System.getenv(AAD_TENANT_ID_1));
             app.property("spring.security.oauth2.client.registration.azure.client-id",
                 System.getenv(AAD_MULTI_TENANT_CLIENT_ID));
             app.property("spring.security.oauth2.client.registration.azure.client-secret",
@@ -94,7 +103,7 @@ public class AADLoginIT {
             app.property("azure.activedirectory.tenant-id", System.getenv(AAD_TENANT_ID_1));
             app.property("azure.activedirectory.client-id", System.getenv(AAD_MULTI_TENANT_CLIENT_ID));
             app.property("azure.activedirectory.client-secret", System.getenv(AAD_MULTI_TENANT_CLIENT_SECRET));
-            app.property("azure.activedirectory.user-group.allowed-groups", "group1");
+            app.property("azure.activedirectory.user-group.allowed-groups", "group1,group2");
 
             app.start();
             command.accept(app);
@@ -109,12 +118,6 @@ public class AADLoginIT {
         @Autowired
         private OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService;
 
-        @PreAuthorize("hasRole('ROLE_group1')")
-        @GetMapping(value = "/api/group1")
-        public ResponseEntity<String> getRoleGroup1() {
-            return new ResponseEntity<>("group1", HttpStatus.OK);
-        }
-
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http.authorizeRequests()
@@ -123,6 +126,23 @@ public class AADLoginIT {
                 .oauth2Login()
                 .userInfoEndpoint()
                 .oidcUserService(oidcUserService);
+        }
+
+        @PreAuthorize("hasRole('ROLE_group1')")
+        @GetMapping(value = "/api/group1")
+        public ResponseEntity<String> group1() {
+            return ResponseEntity.ok("group1");
+        }
+
+        @PreAuthorize("hasRole('ROLE_group2')")
+        @GetMapping(value = "/api/group2")
+        public ResponseEntity<String> group2() {
+            return ResponseEntity.ok("group2");
+        }
+
+        @GetMapping(value = "/api/home")
+        public ResponseEntity<String> home() {
+            return ResponseEntity.ok("home");
         }
     }
 }
