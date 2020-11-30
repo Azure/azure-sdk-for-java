@@ -10,10 +10,10 @@
 ### Breaking Changes
 - Changed  'AmqpMessageBody' from interface to a class. User can use 'getBodyType()' to know what is the 'AmqpBodyType' 
   of the message.
-- Removed copy constructor for 'AmqpAnnotatedMessage'.
-- Renamed 'AmqpBodyType' to 'AmqpMessageBodyType'.
 - Changed type of 'correlationId' and 'messageId' in type 'AmqpMessageProperties' from 'String' to 'AmqpMessageId'.
 - Changed type of 'replyTo' and 'to' in type 'AmqpMessageProperties' from 'String' to 'AmqpAddress'.
+- Removed copy constructor for 'AmqpAnnotatedMessage'.
+- Renamed 'AmqpBodyType' to 'AmqpMessageBodyType'.
 
 ### Dependency Updates
 - Upgraded `azure-core` dependency to `1.11.0`.
