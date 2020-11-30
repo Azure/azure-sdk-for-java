@@ -10,7 +10,7 @@ trigger:
     include:
       - sdk/synapse/
     exclude:
-      - sdk/synapse/azure-analytics-synapse-accesscontrol
+      - sdk/synapse/azure-analytics-synapse-access-control
       - sdk/synapse/azure-analytics-synapse-artifacts
       - sdk/synapse/azure-analytics-synapse-spark
       - sdk/synapse/azure-analytics-synapse-managed-private-endpoints
@@ -27,7 +27,7 @@ pr:
     include:
       - sdk/synapse/
     exclude:
-      - sdk/synapse/azure-analytics-synapse-accesscontrol
+      - sdk/synapse/azure-analytics-synapse-access-control
       - sdk/synapse/azure-analytics-synapse-artifacts
       - sdk/synapse/azure-analytics-synapse-spark
       - sdk/synapse/azure-analytics-synapse-managed-private-endpoints

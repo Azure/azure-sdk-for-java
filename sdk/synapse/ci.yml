@@ -29,7 +29,7 @@ extends:
   parameters:
     ServiceDirectory: synapse
     Artifacts:
-      - name: azure-synapse-accesscontrol
+      - name: azure-synapse-access-control
         groupId: com.azure
         safeName: azuresynapseaccesscontrol
       - name: azure-synapse-artifacts
