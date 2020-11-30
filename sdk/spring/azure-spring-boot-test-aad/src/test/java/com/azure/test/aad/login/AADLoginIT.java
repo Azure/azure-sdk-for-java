@@ -27,6 +27,7 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.File;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
@@ -42,18 +43,33 @@ public class AADLoginIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(AADLoginIT.class);
 
     static {
-        final String chromedriverLinux = "src/test/resources/driver/chromedriver_linux64";
-        final String chromedriverWin32 = "src/test/resources/driver/chromedriver_win32.exe";
-        final String chromedriverMac = "src/test/resources/driver/chromedriver_mac64";
+        final String directory = "src/test/resources/driver/";
+        final String chromedriverLinux = "chromedriver_linux64";
+        final String chromedriverWin32 = "chromedriver_win32.exe";
+        final String chromedriverMac = "chromedriver_mac64";
         String osName = System.getProperty("os.name").toLowerCase();
-        if (Pattern.matches("linux.*", osName)) {
-            System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, chromedriverLinux);
-        } else if (Pattern.matches("windows.*", osName)) {
-            System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, chromedriverWin32);
-        } else if (Pattern.matches("mac.*", osName)) {
-            System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, chromedriverMac);
-        } else {
-            throw new IllegalStateException("Can not recognize osName. osName = " + System.getProperty("os.name"));
+        Process process = null;
+        try {
+            File dir = new File(directory);
+            if (Pattern.matches("linux.*", osName)) {
+                process = Runtime.getRuntime().exec("chmod +x " + chromedriverLinux, null, dir);
+                process.waitFor();
+                System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, directory + chromedriverLinux);
+            } else if (Pattern.matches("windows.*", osName)) {
+                System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, directory + chromedriverWin32);
+            } else if (Pattern.matches("mac.*", osName)) {
+                process = Runtime.getRuntime().exec("chmod +x " + chromedriverMac, null, dir);
+                process.waitFor();
+                System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, directory + chromedriverMac);
+            } else {
+                throw new IllegalStateException("Can not recognize osName. osName = " + System.getProperty("os.name"));
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (process != null) {
+                process.destroy();
+            }
         }
     }
 
