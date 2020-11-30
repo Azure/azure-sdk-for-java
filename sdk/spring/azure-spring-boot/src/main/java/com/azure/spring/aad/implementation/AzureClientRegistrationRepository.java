@@ -60,7 +60,7 @@ public class AzureClientRegistrationRepository implements ClientRegistrationRepo
 
     public boolean isAuthzClient(String id) {
         ClientRegistration client = findByRegistrationId(id);
-        return client != null && isAuthzClient(client);
+        return client != null && isAuthzClient(client) && !authorizationProperties.get(id).getOnDemand();
     }
 
     public Map<String, AuthorizationProperties> getAuthorizationProperties() {

@@ -20,6 +20,8 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.util.StringUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.util.Collections;
@@ -39,9 +41,7 @@ public class AzureActiveDirectoryOAuth2UserService implements OAuth2UserService<
     private final OidcUserService oidcUserService;
     private final AADAuthenticationProperties properties;
     private final GraphClient graphClient;
-
-    @Autowired
-    private HttpSession session;
+    private static final String DEFAULT_OIDC_USER = "defaultOidcUser";
 
     public AzureActiveDirectoryOAuth2UserService(
         AADAuthenticationProperties properties
@@ -56,10 +56,11 @@ public class AzureActiveDirectoryOAuth2UserService implements OAuth2UserService<
         // Delegate to the default implementation for loading a user
         OidcUser oidcUser = oidcUserService.loadUser(userRequest);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpSession session = attr.getRequest().getSession(true);
 
         if (authentication != null) {
-            DefaultOidcUser defaultOidcUser = (DefaultOidcUser) session.getAttribute("defaultOidcUser");
-            return defaultOidcUser;
+            return (DefaultOidcUser) session.getAttribute(DEFAULT_OIDC_USER);
         }
 
         Set<String> groups = Optional.of(userRequest)
@@ -88,7 +89,7 @@ public class AzureActiveDirectoryOAuth2UserService implements OAuth2UserService<
         // Create a copy of oidcUser but use the mappedAuthorities instead
         DefaultOidcUser defaultOidcUser = new DefaultOidcUser(authorities, oidcUser.getIdToken(), nameAttributeKey);
 
-        session.setAttribute("defaultOidcUser", defaultOidcUser);
+        session.setAttribute(DEFAULT_OIDC_USER, defaultOidcUser);
         return defaultOidcUser;
     }
 }
