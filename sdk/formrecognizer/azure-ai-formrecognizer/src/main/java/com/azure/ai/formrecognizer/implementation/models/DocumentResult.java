@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-/** The DocumentResult model. */
+/** A set of extracted fields corresponding to the input document. */
 @Fluent
 public final class DocumentResult {
     /*

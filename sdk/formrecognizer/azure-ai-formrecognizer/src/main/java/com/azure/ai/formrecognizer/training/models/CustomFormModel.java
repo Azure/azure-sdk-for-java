@@ -3,6 +3,7 @@
 
 package com.azure.ai.formrecognizer.training.models;
 
+import com.azure.ai.formrecognizer.implementation.CustomFormModelHelper;
 import com.azure.ai.formrecognizer.models.FormRecognizerError;
 
 import java.time.OffsetDateTime;
@@ -48,11 +49,31 @@ public final class CustomFormModel {
     /*
      * List of the documents used to train the model.
      */
-    private final List<TrainingDocumentInfo> trainingDocuments;
+    private List<TrainingDocumentInfo> trainingDocuments;
 
     private String modelName;
 
     private CustomFormModelProperties customFormModelProperties;
+
+    static {
+        CustomFormModelHelper.setAccessor(new CustomFormModelHelper.CustomFormModelAccessor() {
+            @Override
+            public void setTrainingDocuments(CustomFormModel formModel, List<TrainingDocumentInfo> trainingDocuments) {
+                formModel.setTrainingDocuments(trainingDocuments);
+            }
+
+            @Override
+            public void setModelName(CustomFormModel formModel, String modelName) {
+                formModel.setModelName(modelName);
+            }
+
+            @Override
+            public void setCustomFormModelProperties(CustomFormModel formModel,
+                                                     CustomFormModelProperties customFormModelProperties) {
+                formModel.setCustomFormModelProperties(customFormModelProperties);
+            }
+        });
+    }
 
     /**
      * Constructs a CustomFormModel object.
@@ -160,5 +181,36 @@ public final class CustomFormModel {
      */
     public String getModelName() {
         return modelName;
+    }
+
+    /**
+     * The private setter to set the trainingDocuments property
+     * via {@link CustomFormModelHelper.CustomFormModelAccessor}.
+     *
+     * @param trainingDocuments The list of the documents used to train the model and any
+     *                         errors reported in each document.
+     */
+    private void setTrainingDocuments(List<TrainingDocumentInfo> trainingDocuments) {
+        this.trainingDocuments = trainingDocuments;
+    }
+
+    /**
+     * The private setter to set the modelName property
+     * via {@link CustomFormModelHelper.CustomFormModelAccessor}.
+     *
+     * @param modelName The user defined model display name.
+     */
+    private void setModelName(String modelName) {
+        this.modelName = modelName;
+    }
+
+    /**
+     * The private setter to set the customFormModelProperties property
+     * via {@link CustomFormModelHelper.CustomFormModelAccessor}.
+     *
+     * @param customFormModelProperties The model metadata properties.
+     */
+    private void setCustomFormModelProperties(CustomFormModelProperties customFormModelProperties) {
+        this.customFormModelProperties = customFormModelProperties;
     }
 }

@@ -12,7 +12,7 @@
   <artifactId>azure-spring-cloud-sample-eventhubs-binder</artifactId>
   <groupId>com.azure.spring</groupId>
   <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-sample-eventhubs-binder;current} -->
-  <name>Azure Spring Cloud Event Hub Binder Sample</name>
+  <name>Azure Spring Cloud Sample Event Hubs Binder</name>
 
   <dependencyManagement>
     <dependencies>
@@ -33,8 +33,8 @@
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-cloud-eventhubs-stream-binder</artifactId>
-      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-eventhubs-stream-binder;current} -->
+      <artifactId>azure-spring-cloud-stream-binder-eventhubs</artifactId>
+      <version>2.0.0-beta.2</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-eventhubs;current} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>

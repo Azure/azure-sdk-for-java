@@ -62,8 +62,8 @@ class ShareAPITests extends APISpec {
 
     def "Get share snapshot URL"() {
         given:
-        def accoutName = StorageSharedKeyCredential.fromConnectionString(connectionString).getAccountName()
-        def expectURL = String.format("https://%s.file.core.windows.net/%s", accoutName, shareName)
+        def accountName = StorageSharedKeyCredential.fromConnectionString(connectionString).getAccountName()
+        def expectURL = String.format("https://%s.file.core.windows.net/%s", accountName, shareName)
         primaryShareClient.create()
         when:
         ShareSnapshotInfo shareSnapshotInfo = primaryShareClient.createSnapshot()
@@ -74,6 +74,13 @@ class ShareAPITests extends APISpec {
 
         then:
         expectURL == shareURL
+
+        when:
+        def snapshotEndpoint = String.format("https://%s.file.core.windows.net/%s?sharesnapshot=%s", accountName, shareName, shareSnapshotInfo.getSnapshot())
+        ShareClient client = getShareClientBuilder(snapshotEndpoint).credential(StorageSharedKeyCredential.fromConnectionString(connectionString)).buildClient()
+
+        then:
+        client.getShareUrl() == snapshotEndpoint
     }
 
     def "Get root directory client"() {

@@ -94,7 +94,7 @@ public interface Remediation extends HasInner<RemediationInner>, Indexable, Upda
         }
 
         /**
-         * The stage of the remediation definition allowing to specify ManagementGroupId.
+         * The stage of the remediation definition allowing to specify Microsoft.PolicyInsight.
          */
         interface WithManagementGroupId {
            /**
@@ -102,7 +102,7 @@ public interface Remediation extends HasInner<RemediationInner>, Indexable, Upda
             * @param managementGroupId Management group ID
             * @return the next definition stage
             */
-            WithCreate withExistingManagementGroupId(String managementGroupId);
+            WithCreate withManagementGroupId(String managementGroupId);
         }
 
         /**

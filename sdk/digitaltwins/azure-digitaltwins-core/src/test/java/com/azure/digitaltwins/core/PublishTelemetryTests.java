@@ -18,7 +18,7 @@ import static com.azure.digitaltwins.core.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
-public class PublishTelemetryTests extends PublishTelemetryTestBase{
+public class PublishTelemetryTests extends PublishTelemetryTestBase {
     private final ClientLogger logger = new ClientLogger(PublishTelemetryTests.class);
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -63,30 +63,27 @@ public class PublishTelemetryTests extends PublishTelemetryTestBase{
             assertThat(publishComponentTelemetryResponse.getStatusCode())
                 .as("Publish component telemetry succeeds.")
                 .isEqualTo(HttpURLConnection.HTTP_NO_CONTENT);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             fail("Failure in executing a step in the test case", ex);
-        }
-        finally {
+        } finally {
             try {
-                if (roomWithWifiTwinId != null){
+                if (roomWithWifiTwinId != null) {
                     client.deleteDigitalTwin(roomWithWifiTwinId);
                 }
-                if (roomWithWifiModelId != null){
+                if (roomWithWifiModelId != null) {
                     client.deleteModel(roomWithWifiModelId);
                 }
-                if(wifiModelId != null){
+                if (wifiModelId != null) {
                     client.deleteModel(wifiModelId);
                 }
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 fail("Test cleanup failed", ex);
             }
 
         }
     }
 
-    private void createModelsAndTwins(DigitalTwinsClient client, String wifiModelId, String roomWithWifiModelId, String roomWithWifiTwinId){
+    private void createModelsAndTwins(DigitalTwinsClient client, String wifiModelId, String roomWithWifiModelId, String roomWithWifiTwinId) {
         String wifiModelPayload = TestAssetsHelper.getWifiModelPayload(wifiModelId);
         String roomWithWifiModelPayload = TestAssetsHelper.getRoomWithWifiModelPayload(roomWithWifiModelId, wifiModelId, TestAssetDefaults.WIFI_COMPONENT_NAME);
 
@@ -94,6 +91,6 @@ public class PublishTelemetryTests extends PublishTelemetryTestBase{
 
         String roomWithWifiTwinPayload = TestAssetsHelper.getRoomWithWifiTwinPayload(roomWithWifiModelId, TestAssetDefaults.WIFI_COMPONENT_NAME);
 
-        client.createDigitalTwin(roomWithWifiTwinId, roomWithWifiTwinPayload, String.class);
+        client.createOrReplaceDigitalTwin(roomWithWifiTwinId, roomWithWifiTwinPayload, String.class);
     }
 }

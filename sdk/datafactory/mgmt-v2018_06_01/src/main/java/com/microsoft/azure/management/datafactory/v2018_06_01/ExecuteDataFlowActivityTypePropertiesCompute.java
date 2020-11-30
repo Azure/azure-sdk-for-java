@@ -16,54 +16,56 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class ExecuteDataFlowActivityTypePropertiesCompute {
     /**
      * Compute type of the cluster which will execute data flow job. Possible
-     * values include: 'General', 'MemoryOptimized', 'ComputeOptimized'.
+     * values include: 'General', 'MemoryOptimized', 'ComputeOptimized'. Type:
+     * string (or Expression with resultType string).
      */
     @JsonProperty(value = "computeType")
-    private DataFlowComputeType computeType;
+    private Object computeType;
 
     /**
      * Core count of the cluster which will execute data flow job. Supported
-     * values are: 8, 16, 32, 48, 80, 144 and 272.
+     * values are: 8, 16, 32, 48, 80, 144 and 272. Type: integer (or Expression
+     * with resultType integer).
      */
     @JsonProperty(value = "coreCount")
-    private Integer coreCount;
+    private Object coreCount;
 
     /**
-     * Get compute type of the cluster which will execute data flow job. Possible values include: 'General', 'MemoryOptimized', 'ComputeOptimized'.
+     * Get compute type of the cluster which will execute data flow job. Possible values include: 'General', 'MemoryOptimized', 'ComputeOptimized'. Type: string (or Expression with resultType string).
      *
      * @return the computeType value
      */
-    public DataFlowComputeType computeType() {
+    public Object computeType() {
         return this.computeType;
     }
 
     /**
-     * Set compute type of the cluster which will execute data flow job. Possible values include: 'General', 'MemoryOptimized', 'ComputeOptimized'.
+     * Set compute type of the cluster which will execute data flow job. Possible values include: 'General', 'MemoryOptimized', 'ComputeOptimized'. Type: string (or Expression with resultType string).
      *
      * @param computeType the computeType value to set
      * @return the ExecuteDataFlowActivityTypePropertiesCompute object itself.
      */
-    public ExecuteDataFlowActivityTypePropertiesCompute withComputeType(DataFlowComputeType computeType) {
+    public ExecuteDataFlowActivityTypePropertiesCompute withComputeType(Object computeType) {
         this.computeType = computeType;
         return this;
     }
 
     /**
-     * Get core count of the cluster which will execute data flow job. Supported values are: 8, 16, 32, 48, 80, 144 and 272.
+     * Get core count of the cluster which will execute data flow job. Supported values are: 8, 16, 32, 48, 80, 144 and 272. Type: integer (or Expression with resultType integer).
      *
      * @return the coreCount value
      */
-    public Integer coreCount() {
+    public Object coreCount() {
         return this.coreCount;
     }
 
     /**
-     * Set core count of the cluster which will execute data flow job. Supported values are: 8, 16, 32, 48, 80, 144 and 272.
+     * Set core count of the cluster which will execute data flow job. Supported values are: 8, 16, 32, 48, 80, 144 and 272. Type: integer (or Expression with resultType integer).
      *
      * @param coreCount the coreCount value to set
      * @return the ExecuteDataFlowActivityTypePropertiesCompute object itself.
      */
-    public ExecuteDataFlowActivityTypePropertiesCompute withCoreCount(Integer coreCount) {
+    public ExecuteDataFlowActivityTypePropertiesCompute withCoreCount(Object coreCount) {
         this.coreCount = coreCount;
         return this;
     }

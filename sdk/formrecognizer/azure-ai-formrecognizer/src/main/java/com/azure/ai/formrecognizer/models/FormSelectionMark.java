@@ -3,12 +3,28 @@
 
 package com.azure.ai.formrecognizer.models;
 
+import com.azure.ai.formrecognizer.implementation.FormSelectionMarkHelper;
+
 /**
  * The FormSelectionMark model.
  */
 public final class FormSelectionMark extends FormElement {
     private float confidence;
     private SelectionMarkState state;
+
+    static {
+        FormSelectionMarkHelper.setAccessor(new FormSelectionMarkHelper.FormSelectionMarkAccessor() {
+            @Override
+            public void setConfidence(FormSelectionMark selectionMark, float confidence) {
+                selectionMark.setConfidence(confidence);
+            }
+
+            @Override
+            public void setState(FormSelectionMark selectionMark, SelectionMarkState state) {
+                selectionMark.setState(state);
+            }
+        });
+    }
 
     /**
      * Creates a FormSelectionMark.
@@ -61,5 +77,25 @@ public final class FormSelectionMark extends FormElement {
      */
     public float getConfidence() {
         return this.confidence;
+    }
+
+    /**
+     * The private setter to set the confidence property
+     * via {@link FormSelectionMarkHelper.FormSelectionMarkAccessor}.
+     *
+     * @param confidence the confidence value for the selection mark.
+     */
+    private void setConfidence(float confidence) {
+        this.confidence = confidence;
+    }
+
+    /**
+     * The private setter to set the state property
+     * via {@link FormSelectionMarkHelper.FormSelectionMarkAccessor}.
+     *
+     * @param state the the state value for the selection mark.
+     */
+    private void setState(SelectionMarkState state) {
+        this.state = state;
     }
 }

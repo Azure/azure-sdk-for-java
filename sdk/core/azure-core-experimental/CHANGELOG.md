@@ -1,5 +1,21 @@
 # Release History
 
+## 1.0.0-beta.9 (Unreleased)
+
+### Breaking Changes
+- Moved `BinaryData` to `azure-core`.
+
+## 1.0.0-beta.8 (2020-10-29)
+
+### New Features
+
+- Added `Object` based APIs to `BinaryData` that use a default `JsonSerializer`.
+
+### Breaking Changes
+
+- Moved `JsonPatchDocument` into `azure-core`.
+- Removed `BinaryData.fromString(String, Charset)`.
+
 ## 1.0.0-beta.7 (2020-10-08)
 
 - Added API `fromObject()` in `BinaryData` which uses `JsonSerializer` present in the classpath.

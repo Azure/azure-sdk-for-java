@@ -39,36 +39,48 @@ public class ReceiveNamedSessionSample {
         // Create a receiver.
         // "<<queue-name>>" will be the name of the Service Bus session-enabled queue instance you created inside the
         // Service Bus namespace.
-        ServiceBusReceiverClient receiver = new ServiceBusClientBuilder()
+        ServiceBusSessionReceiverClient sessionReceiver = new ServiceBusClientBuilder()
             .connectionString(connectionString)
             .sessionReceiver()
-            .sessionId("greetings")
             .queueName("<<queue-name>>")
             .buildClient();
 
-        while (isRunning.get()) {
-            IterableStream<ServiceBusReceivedMessageContext> messages = receiver.receiveMessages(10, Duration.ofSeconds(30));
+        // Receiving messages that have the sessionId "greetings-id" set. This can be set via
+        // ServiceBusMessage.setMessageId(String) when sending a message.
 
-            for (ServiceBusReceivedMessageContext context : messages) {
-                System.out.println("Processing message from session: " + context.getSessionId());
+        // A receiver is returned when a lock on the session is acquired, otherwise, it throws an exception.
+        ServiceBusReceiverClient receiver = sessionReceiver.acceptSession("greetings-id");
 
-                ServiceBusReceivedMessage message = context.getMessage();
-                boolean isSuccessfullyProcessed = processMessage(message);
+        try {
+            while (isRunning.get()) {
+                IterableStream<ServiceBusReceivedMessage> messages = receiver.receiveMessages(10, Duration.ofSeconds(30));
 
-                if (isSuccessfullyProcessed) {
-                    receiver.complete(message);
-                } else {
-                    receiver.abandon(message, null);
+                for (ServiceBusReceivedMessage message : messages) {
+                    // Process message.
+                    boolean isSuccessfullyProcessed = processMessage(message);
+
+                    // Messages from the sync receiver MUST be settled explicitly. In this case, we complete the message if
+                    // it was successfully
+                    if (isSuccessfullyProcessed) {
+                        receiver.complete(message);
+                    } else {
+                        receiver.abandon(message, null);
+                    }
                 }
             }
+        } finally {
+            // Dispose of our resources.
+            receiver.close();
         }
 
+
         // Close the receiver.
-        receiver.close();
+        sessionReceiver.close();
     }
 
     private static boolean processMessage(ServiceBusReceivedMessage message) {
-        System.out.println("Processing message: " + message.getMessageId());
+        System.out.printf("Session: %s. Sequence #: %s. Contents: %s%n", message.getSessionId(),
+            message.getSequenceNumber(), message.getBody());
         return true;
     }
 }

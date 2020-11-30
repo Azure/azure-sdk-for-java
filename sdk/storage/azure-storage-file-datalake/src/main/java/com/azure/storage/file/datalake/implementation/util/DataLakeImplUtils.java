@@ -11,13 +11,13 @@ import java.util.function.Supplier;
 
 public class DataLakeImplUtils {
     public static String endpointToDesiredEndpoint(String endpoint, String desiredEndpoint, String currentEndpoint) {
-        // Add the . on either side to prevent overwriting an endpoint if a user provides a
+        // Add the . on either side to prevent overwriting an account name.
         String desiredStringToMatch = "." + desiredEndpoint + ".";
-        String currentStringToMatch = "." + currentEndpoint + ".";
+        String currentRegexToMatch = "\\." + currentEndpoint + "\\.";
         if (endpoint.contains(desiredStringToMatch)) {
             return endpoint;
         } else {
-            return endpoint.replaceFirst(currentStringToMatch, desiredStringToMatch);
+            return endpoint.replaceFirst(currentRegexToMatch, desiredStringToMatch);
         }
     }
 

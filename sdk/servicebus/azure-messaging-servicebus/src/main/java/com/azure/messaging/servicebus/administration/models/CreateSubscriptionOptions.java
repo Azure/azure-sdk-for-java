@@ -20,7 +20,7 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  * @see ServiceBusAdministrationClient#createTopic(String, CreateTopicOptions)
  */
 @Fluent
-public class CreateSubscriptionOptions {
+public final class CreateSubscriptionOptions {
     private Duration autoDeleteOnIdle;
     private Duration defaultMessageTimeToLive;
     private boolean deadLetteringOnMessageExpiration;
@@ -42,11 +42,11 @@ public class CreateSubscriptionOptions {
      *     <li>{@link #setAutoDeleteOnIdle(Duration)} is max duration value.</li>
      *     <li>{@link #setDeadLetteringOnMessageExpiration(boolean)} is false.</li>
      *     <li>{@link #setDefaultMessageTimeToLive(Duration)} is max duration value.</li>
-     *     <li>{@link #setEnableBatchedOperations(boolean)} is true.</li>
+     *     <li>{@link #setBatchedOperationsEnabled(boolean)} is true.</li>
      *     <li>{@link #setEnableDeadLetteringOnFilterEvaluationExceptions(boolean)} is true.</li>
      *     <li>{@link #setLockDuration(Duration)} is 1 minute.</li>
      *     <li>{@link #setMaxDeliveryCount(int)} is 10.</li>
-     *     <li>{@link #setRequiresSession(boolean)} is false.</li>
+     *     <li>{@link #setSessionRequired(boolean)} is false.</li>
      *     <li>{@link #setStatus(EntityStatus)} is {@link EntityStatus#ACTIVE}.</li>
      * </ul>
      *
@@ -76,15 +76,15 @@ public class CreateSubscriptionOptions {
         Objects.requireNonNull(subscription, "'subscription' cannot be null.");
 
         this.autoDeleteOnIdle = subscription.getAutoDeleteOnIdle();
-        this.deadLetteringOnMessageExpiration = subscription.deadLetteringOnMessageExpiration();
-        this.deadLetteringOnFilterEvaluationExceptions = subscription.enableDeadLetteringOnFilterEvaluationExceptions();
+        this.deadLetteringOnMessageExpiration = subscription.isDeadLetteringOnMessageExpiration();
+        this.deadLetteringOnFilterEvaluationExceptions = subscription.isDeadLetteringOnFilterEvaluationExceptions();
         this.defaultMessageTimeToLive = subscription.getDefaultMessageTimeToLive();
-        this.enableBatchedOperations = subscription.enableBatchedOperations();
+        this.enableBatchedOperations = subscription.isBatchedOperationsEnabled();
         this.forwardTo = subscription.getForwardTo();
         this.forwardDeadLetteredMessagesTo = subscription.getForwardDeadLetteredMessagesTo();
         this.lockDuration = subscription.getLockDuration();
         this.maxDeliveryCount = subscription.getMaxDeliveryCount();
-        this.requiresSession = subscription.requiresSession();
+        this.requiresSession = subscription.isSessionRequired();
         this.status = subscription.getStatus();
         this.userMetadata = subscription.getUserMetadata();
     }
@@ -119,7 +119,7 @@ public class CreateSubscriptionOptions {
      *
      * @return the requiresSession value.
      */
-    public boolean requiresSession() {
+    public boolean isSessionRequired() {
         return this.requiresSession;
     }
 
@@ -130,7 +130,7 @@ public class CreateSubscriptionOptions {
      *
      * @return the CreateSubscriptionOptions object itself.
      */
-    public CreateSubscriptionOptions setRequiresSession(boolean requiresSession) {
+    public CreateSubscriptionOptions setSessionRequired(boolean requiresSession) {
         this.requiresSession = requiresSession;
         return this;
     }
@@ -166,7 +166,7 @@ public class CreateSubscriptionOptions {
      *
      * @return the deadLetteringOnMessageExpiration value.
      */
-    public boolean deadLetteringOnMessageExpiration() {
+    public boolean isDeadLetteringOnMessageExpiration() {
         return this.deadLetteringOnMessageExpiration;
     }
 
@@ -189,7 +189,7 @@ public class CreateSubscriptionOptions {
      *
      * @return the deadLetteringOnFilterEvaluationExceptions value.
      */
-    public boolean enableDeadLetteringOnFilterEvaluationExceptions() {
+    public boolean isDeadLetteringOnFilterEvaluationExceptions() {
         return this.deadLetteringOnFilterEvaluationExceptions;
     }
 
@@ -236,7 +236,7 @@ public class CreateSubscriptionOptions {
      *
      * @return the enableBatchedOperations value.
      */
-    public boolean enableBatchedOperations() {
+    public boolean isBatchedOperationsEnabled() {
         return this.enableBatchedOperations;
     }
 
@@ -248,7 +248,7 @@ public class CreateSubscriptionOptions {
      *
      * @return the CreateSubscriptionOptions object itself.
      */
-    public CreateSubscriptionOptions setEnableBatchedOperations(boolean enableBatchedOperations) {
+    public CreateSubscriptionOptions setBatchedOperationsEnabled(boolean enableBatchedOperations) {
         this.enableBatchedOperations = enableBatchedOperations;
         return this;
     }

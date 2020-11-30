@@ -19,6 +19,7 @@ public class KeyVaultLoadStoreParameterTest {
     public void testGetProtectionParameter() {
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
             System.getProperty("azure.keyvault.uri"),
+            System.getProperty("azure.keyvault.aadAuthenticationUrl"),
             null,
             null,
             null

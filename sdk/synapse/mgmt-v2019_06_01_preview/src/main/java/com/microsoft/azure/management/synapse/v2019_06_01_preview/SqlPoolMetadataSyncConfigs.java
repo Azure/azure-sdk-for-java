@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.synapse.v2019_06_01_preview;
 
 import rx.Observable;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.implementation.MetadataSyncConfigInner;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.implementation.SqlPoolMetadataSyncConfigsInner;
 import com.microsoft.azure.arm.model.HasInner;
 
@@ -35,9 +36,10 @@ public interface SqlPoolMetadataSyncConfigs extends HasInner<SqlPoolMetadataSync
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace
      * @param sqlPoolName SQL pool name
+     * @param metadataSyncConfiguration Metadata sync configuration
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<MetadataSyncConfig> createAsync(String resourceGroupName, String workspaceName, String sqlPoolName);
+    Observable<MetadataSyncConfig> createAsync(String resourceGroupName, String workspaceName, String sqlPoolName, MetadataSyncConfigInner metadataSyncConfiguration);
 
 }

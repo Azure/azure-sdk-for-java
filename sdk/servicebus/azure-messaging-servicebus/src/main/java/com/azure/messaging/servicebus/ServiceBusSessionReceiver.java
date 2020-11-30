@@ -37,8 +37,8 @@ class ServiceBusSessionReceiver implements AutoCloseable {
     private final ClientLogger logger = new ClientLogger(ServiceBusSessionReceiver.class);
     private final ServiceBusReceiveLink receiveLink;
     private final Disposable.Composite subscriptions;
-    private final Flux<ServiceBusReceivedMessageContext> receivedMessages;
-    private final MonoProcessor<ServiceBusReceivedMessageContext> cancelReceiveProcessor = MonoProcessor.create();
+    private final Flux<ServiceBusMessageContext> receivedMessages;
+    private final MonoProcessor<ServiceBusMessageContext> cancelReceiveProcessor = MonoProcessor.create();
     private final DirectProcessor<String> messageReceivedEmitter = DirectProcessor.create();
     private final FluxSink<String> messageReceivedSink = messageReceivedEmitter.sink(FluxSink.OverflowStrategy.BUFFER);
 
@@ -63,14 +63,23 @@ class ServiceBusSessionReceiver implements AutoCloseable {
         this.receiveLink = receiveLink;
         this.lockContainer = new LockContainer<>(ServiceBusConstants.OPERATION_TIMEOUT);
 
-        receiveLink.setEmptyCreditListener(() -> 1);
+        receiveLink.setEmptyCreditListener(() -> 0);
 
-        final Flux<ServiceBusReceivedMessageContext> receivedMessagesFlux = receiveLink
+        final Flux<ServiceBusMessageContext> receivedMessagesFlux = receiveLink
             .receive()
             .publishOn(scheduler)
             .doOnSubscribe(subscription -> {
                 logger.verbose("Adding prefetch to receive link.");
-                receiveLink.addCredits(prefetch);
+                if (prefetch > 0) {
+                    receiveLink.addCredits(prefetch);
+                }
+            })
+            .doOnRequest(request -> {  // request is of type long.
+                if (prefetch == 0) {  //  add "request" number of credits
+                    receiveLink.addCredits((int) request);
+                } else {  // keep total credits "prefetch" if prefetch is not 0.
+                    receiveLink.addCredits(Math.max(0, prefetch - receiveLink.getCredits()));
+                }
             })
             .takeUntilOther(cancelReceiveProcessor)
             .map(message -> {
@@ -86,11 +95,11 @@ class ServiceBusSessionReceiver implements AutoCloseable {
                         deserialized.getSessionId(), deserialized.getMessageId());
                 }
 
-                return new ServiceBusReceivedMessageContext(deserialized);
+                return new ServiceBusMessageContext(deserialized);
             })
             .onErrorResume(error -> {
                 logger.warning("sessionId[{}]. Error occurred. Ending session.", sessionId, error);
-                return Mono.just(new ServiceBusReceivedMessageContext(getSessionId(), error));
+                return Mono.just(new ServiceBusMessageContext(getSessionId(), error));
             })
             .doOnNext(context -> {
                 if (context.hasError()) {
@@ -169,7 +178,7 @@ class ServiceBusSessionReceiver implements AutoCloseable {
      *
      * @return A flux of messages for the session.
      */
-    Flux<ServiceBusReceivedMessageContext> receive() {
+    Flux<ServiceBusMessageContext> receive() {
         return receivedMessages;
     }
 

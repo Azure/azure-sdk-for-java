@@ -85,13 +85,20 @@ class FileAPITests extends APISpec {
 
         when:
         ShareSnapshotInfo shareSnapshotInfo = shareClient.createSnapshot()
-        expectURL = expectURL + "?snapshot=" + shareSnapshotInfo.getSnapshot()
+        expectURL = expectURL + "?sharesnapshot=" + shareSnapshotInfo.getSnapshot()
         ShareFileClient newFileClient = shareBuilderHelper(interceptorManager, shareName).snapshot(shareSnapshotInfo.getSnapshot())
             .buildClient().getFileClient(filePath)
         def fileURL = newFileClient.getFileUrl()
 
         then:
         expectURL == fileURL
+
+        when:
+        def snapshotEndpoint = String.format("https://%s.file.core.windows.net/%s/%s?sharesnapshot=%s", accountName, shareName, filePath, shareSnapshotInfo.getSnapshot())
+        ShareFileClient client = getFileClient(StorageSharedKeyCredential.fromConnectionString(connectionString), snapshotEndpoint)
+
+        then:
+        client.getFileUrl() == snapshotEndpoint
     }
 
     def "Exists"() {
@@ -269,6 +276,25 @@ class FileAPITests extends APISpec {
         then:
         def e = thrown(ShareStorageException)
         assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.RESOURCE_NOT_FOUND)
+    }
+
+    def "Upload data retry on transient failure"() {
+        setup:
+        def clientWithFailure = getFileClient(
+            primaryCredential,
+            primaryFileClient.getFileUrl(),
+            new TransientFailureInjectingHttpPipelinePolicy()
+        )
+
+        primaryFileClient.create(1024)
+
+        when:
+        clientWithFailure.upload(defaultData, defaultDataLength)
+
+        then:
+        def os = new ByteArrayOutputStream()
+        primaryFileClient.downloadWithResponse(os, new ShareFileRange(0, defaultDataLength - 1), null, null, null)
+        os.toByteArray() == data
     }
 
     def "Upload and clear range"() {
@@ -636,7 +662,8 @@ class FileAPITests extends APISpec {
         primaryFileClient.getProperties()
 
         then:
-        thrown(ShareStorageException)
+        def ex = thrown(ShareStorageException)
+        ex.getMessage().contains("ResourceNotFound")
     }
 
     def "Set httpHeaders fpk"() {

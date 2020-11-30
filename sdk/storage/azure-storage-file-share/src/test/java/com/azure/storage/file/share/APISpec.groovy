@@ -40,6 +40,9 @@ import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import java.time.Duration
 import java.time.OffsetDateTime
+import java.util.concurrent.ConcurrentHashMap
+import java.util.function.BiFunction
+import java.util.function.Function
 
 class APISpec extends Specification {
     // Field common used for all APIs.
@@ -333,6 +336,26 @@ class APISpec extends Specification {
         }
     }
 
+    ShareDirectoryClient getDirectoryClient(StorageSharedKeyCredential credential, String endpoint, HttpPipelinePolicy... policies) {
+        ShareFileClientBuilder builder = new ShareFileClientBuilder()
+            .endpoint(endpoint)
+            .httpClient(getHttpClient())
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+
+        for (HttpPipelinePolicy policy : policies) {
+            builder.addPolicy(policy)
+        }
+
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+        if (credential != null) {
+            builder.credential(credential)
+        }
+
+        return builder.buildDirectoryClient()
+    }
+
     def fileBuilderHelper(final InterceptorManager interceptorManager, final String shareName, final String filePath) {
         ShareFileClientBuilder builder = new ShareFileClientBuilder()
         if (testMode != TestMode.PLAYBACK) {
@@ -554,6 +577,41 @@ class APISpec extends Specification {
             @Override
             HttpPipelinePosition getPipelinePosition() {
                 return HttpPipelinePosition.PER_CALL
+            }
+        }
+    }
+
+    /**
+     * Injects one retry-able IOException failure per url.
+     */
+    class TransientFailureInjectingHttpPipelinePolicy implements HttpPipelinePolicy {
+
+        private ConcurrentHashMap<String, Boolean> failureTracker = new ConcurrentHashMap<>();
+
+        @Override
+        Mono<HttpResponse> process(HttpPipelineCallContext httpPipelineCallContext, HttpPipelineNextPolicy httpPipelineNextPolicy) {
+            def request = httpPipelineCallContext.httpRequest
+            def key = request.url.toString()
+            // Make sure that failure happens once per url.
+            if (failureTracker.get(key, false)) {
+                return httpPipelineNextPolicy.process()
+            } else {
+                failureTracker.put(key, true)
+                return request.getBody().flatMap {
+                    byteBuffer ->
+                        // Read a byte from each buffer to simulate that failure occurred in the middle of transfer.
+                        byteBuffer.get()
+                        return Flux.just(byteBuffer)
+                }.reduce( 0L, {
+                        // Reduce in order to force processing of all buffers.
+                    a, byteBuffer ->
+                        return a + byteBuffer.remaining()
+                } as BiFunction<Long, ByteBuffer, Long>
+                ).flatMap ({
+                    aLong ->
+                        // Throw retry-able error.
+                        return Mono.error(new IOException("KABOOM!"))
+                } as Function<Long, Mono<HttpResponse>>)
             }
         }
     }

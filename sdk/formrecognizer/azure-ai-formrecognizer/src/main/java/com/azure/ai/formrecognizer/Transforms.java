@@ -3,7 +3,13 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.implementation.PrivateFieldAccessHelper;
+import com.azure.ai.formrecognizer.implementation.AppearanceHelper;
+import com.azure.ai.formrecognizer.implementation.FormLineHelper;
+import com.azure.ai.formrecognizer.implementation.FormPageHelper;
+import com.azure.ai.formrecognizer.implementation.FormSelectionMarkHelper;
+import com.azure.ai.formrecognizer.implementation.FormTableHelper;
+import com.azure.ai.formrecognizer.implementation.RecognizedFormHelper;
+import com.azure.ai.formrecognizer.implementation.StyleHelper;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.implementation.models.DocumentResult;
 import com.azure.ai.formrecognizer.implementation.models.FieldValue;
@@ -14,6 +20,7 @@ import com.azure.ai.formrecognizer.implementation.models.ReadResult;
 import com.azure.ai.formrecognizer.implementation.models.SelectionMarkState;
 import com.azure.ai.formrecognizer.implementation.models.TextLine;
 import com.azure.ai.formrecognizer.implementation.models.TextWord;
+import com.azure.ai.formrecognizer.models.Appearance;
 import com.azure.ai.formrecognizer.models.FieldBoundingBox;
 import com.azure.ai.formrecognizer.models.FieldData;
 import com.azure.ai.formrecognizer.models.FieldValueType;
@@ -29,6 +36,8 @@ import com.azure.ai.formrecognizer.models.FormWord;
 import com.azure.ai.formrecognizer.models.LengthUnit;
 import com.azure.ai.formrecognizer.models.Point;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
+import com.azure.ai.formrecognizer.models.Style;
+import com.azure.ai.formrecognizer.models.TextStyle;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -45,7 +54,6 @@ import java.util.stream.Collectors;
 
 import static com.azure.ai.formrecognizer.implementation.Utility.forEachWithIndex;
 import static com.azure.ai.formrecognizer.implementation.models.FieldValueType.ARRAY;
-import static com.azure.ai.formrecognizer.implementation.models.FieldValueType.OBJECT;
 
 /**
  * Helper class to convert service level models to SDK exposed models.
@@ -67,11 +75,10 @@ final class Transforms {
      * @param includeFieldElements Boolean to indicate if to set reference elements data on fields.
      *
      * @param modelId the unlabeled model Id used for recognition.
-     * @param isBusinessCard boolean indicating if its recognizing a business card.
      * @return The List of {@code RecognizedForm}.
      */
     static List<RecognizedForm> toRecognizedForm(AnalyzeResult analyzeResult, boolean includeFieldElements,
-        String modelId, boolean isBusinessCard) {
+                                                 String modelId) {
         List<ReadResult> readResults = analyzeResult.getReadResults();
         List<DocumentResult> documentResults = analyzeResult.getDocumentResults();
         List<PageResult> pageResults = analyzeResult.getPageResults();
@@ -90,18 +97,16 @@ final class Transforms {
                     formPageRange = new FormPageRange(1, 1);
                 }
 
-                Map<String, FormField> extractedFieldMap = getLabeledFieldMap(documentResultItem, readResults,
-                    isBusinessCard);
+                Map<String, FormField> extractedFieldMap = getLabeledFieldMap(documentResultItem, readResults);
                 final RecognizedForm recognizedForm = new RecognizedForm(
                     extractedFieldMap,
                     documentResultItem.getDocType(),
                     formPageRange,
                     formPages.subList(formPageRange.getFirstPageNumber() - 1, formPageRange.getLastPageNumber()));
-                PrivateFieldAccessHelper.set(recognizedForm, "formTypeConfidence",
-                    documentResultItem.getDocTypeConfidence());
+
+                RecognizedFormHelper.setFormTypeConfidence(recognizedForm, documentResultItem.getDocTypeConfidence());
                 if (documentResultItem.getModelId() != null) {
-                    PrivateFieldAccessHelper.set(recognizedForm, "modelId",
-                        documentResultItem.getModelId().toString());
+                    RecognizedFormHelper.setModelId(recognizedForm, documentResultItem.getModelId().toString());
                 }
                 extractedFormList.add(recognizedForm);
             }
@@ -123,7 +128,7 @@ final class Transforms {
                     new FormPageRange(pageNumber, pageNumber),
                     Collections.singletonList(formPages.get(index)));
 
-                PrivateFieldAccessHelper.set(recognizedForm, "modelId", modelId);
+                RecognizedFormHelper.setModelId(recognizedForm, modelId);
                 extractedFormList.add(recognizedForm);
             }));
         }
@@ -150,7 +155,9 @@ final class Transforms {
             // add form tables
             if (!pageResultsIsNullOrEmpty) {
                 PageResult pageResultItem = pageResults.get(index);
-                perPageTableList = getPageTables(pageResultItem, readResults, pageResultItem.getPage());
+                if (pageResultItem != null) {
+                    perPageTableList = getPageTables(pageResultItem, readResults, pageResultItem.getPage());
+                }
             }
 
             // add form lines
@@ -188,7 +195,7 @@ final class Transforms {
                 final FormSelectionMark formSelectionMark = new FormSelectionMark(
                     null, toBoundingBox(selectionMark.getBoundingBox()), pageNumber);
                 final SelectionMarkState selectionMarkStateImpl = selectionMark.getState();
-                com.azure.ai.formrecognizer.models.SelectionMarkState selectionMarkState = null;
+                com.azure.ai.formrecognizer.models.SelectionMarkState selectionMarkState;
                 if (SelectionMarkState.SELECTED.equals(selectionMarkStateImpl)) {
                     selectionMarkState = com.azure.ai.formrecognizer.models.SelectionMarkState.SELECTED;
                 } else if (SelectionMarkState.UNSELECTED.equals(selectionMarkStateImpl)) {
@@ -197,8 +204,8 @@ final class Transforms {
                     throw LOGGER.logThrowableAsError(new RuntimeException(
                             String.format("%s, unsupported selection mark state.", selectionMarkStateImpl)));
                 }
-                PrivateFieldAccessHelper.set(formSelectionMark, "confidence", selectionMark.getConfidence());
-                PrivateFieldAccessHelper.set(formSelectionMark, "state", selectionMarkState);
+                FormSelectionMarkHelper.setConfidence(formSelectionMark, selectionMark.getConfidence());
+                FormSelectionMarkHelper.setState(formSelectionMark, selectionMarkState);
                 return formSelectionMark;
             })
             .collect(Collectors.toList());
@@ -214,22 +221,30 @@ final class Transforms {
      * @return The list of per page {@code FormTable}.
      */
     static List<FormTable> getPageTables(PageResult pageResultItem, List<ReadResult> readResults, int pageNumber) {
-        return pageResultItem.getTables().stream()
-            .map(dataTable ->
-                new FormTable(dataTable.getRows(), dataTable.getColumns(),
-                    dataTable.getCells()
-                        .stream()
-                        .map(dataTableCell -> new FormTableCell(
-                            dataTableCell.getRowIndex(), dataTableCell.getColumnIndex(),
-                            dataTableCell.getRowSpan() == null ? DEFAULT_TABLE_SPAN : dataTableCell.getRowSpan(),
-                            dataTableCell.getColumnSpan() == null ? DEFAULT_TABLE_SPAN : dataTableCell.getColumnSpan(),
-                            dataTableCell.getText(), toBoundingBox(dataTableCell.getBoundingBox()),
-                            dataTableCell.getConfidence(),
-                            dataTableCell.isHeader() == null ? false : dataTableCell.isHeader(),
-                            dataTableCell.isFooter() == null ? false : dataTableCell.isFooter(),
-                            pageNumber, setReferenceElements(dataTableCell.getElements(), readResults)))
-                        .collect(Collectors.toList()), pageNumber))
-            .collect(Collectors.toList());
+        if (pageResultItem.getTables() == null) {
+            return new ArrayList<>();
+        } else {
+            return pageResultItem.getTables().stream()
+                .map(dataTable -> {
+                    FormTable formTable = new FormTable(dataTable.getRows(), dataTable.getColumns(),
+                        dataTable.getCells()
+                            .stream()
+                            .map(dataTableCell -> new FormTableCell(
+                                dataTableCell.getRowIndex(), dataTableCell.getColumnIndex(),
+                                dataTableCell.getRowSpan() == null ? DEFAULT_TABLE_SPAN : dataTableCell.getRowSpan(),
+                                dataTableCell.getColumnSpan() == null ? DEFAULT_TABLE_SPAN : dataTableCell.getColumnSpan(),
+                                dataTableCell.getText(), toBoundingBox(dataTableCell.getBoundingBox()),
+                                dataTableCell.getConfidence(),
+                                dataTableCell.isHeader() == null ? false : dataTableCell.isHeader(),
+                                dataTableCell.isFooter() == null ? false : dataTableCell.isFooter(),
+                                pageNumber, setReferenceElements(dataTableCell.getElements(), readResults)))
+                            .collect(Collectors.toList()), pageNumber);
+
+                    FormTableHelper.setBoundingBox(formTable, toBoundingBox(dataTable.getBoundingBox()));
+                    return formTable;
+                })
+                .collect(Collectors.toList());
+        }
     }
 
     /**
@@ -241,12 +256,37 @@ final class Transforms {
      */
     static List<FormLine> getReadResultFormLines(ReadResult readResultItem) {
         return readResultItem.getLines().stream()
-            .map(textLine -> new FormLine(
-                textLine.getText(),
-                toBoundingBox(textLine.getBoundingBox()),
-                readResultItem.getPage(),
-                toWords(textLine.getWords(), readResultItem.getPage())))
+            .map(textLine -> {
+                FormLine formLine = new FormLine(
+                    textLine.getText(),
+                    toBoundingBox(textLine.getBoundingBox()),
+                    readResultItem.getPage(),
+                    toWords(textLine.getWords(), readResultItem.getPage()));
+
+                FormLineHelper.setAppearance(formLine, getAppearance(textLine));
+                return formLine;
+            })
             .collect(Collectors.toList());
+    }
+
+    /**
+     * Private method to get the appearance from the service side text line object.
+     * @param textLine The service side text line object.
+     * @return the custom type Appearance model.
+     */
+    private static Appearance getAppearance(TextLine textLine) {
+        Style style = new Style();
+        if (textLine.getAppearance() != null && textLine.getAppearance().getStyle() != null) {
+            if (textLine.getAppearance().getStyle().getName() != null) {
+                StyleHelper.setName(style,
+                    TextStyle.fromString(textLine.getAppearance().getStyle().getName().toString()));
+            }
+            StyleHelper.setConfidence(style, textLine.getAppearance().getStyle().getConfidence());
+        }
+        
+        Appearance appearance = new Appearance();
+        AppearanceHelper.setStyle(appearance, style);
+        return appearance;
     }
 
     /**
@@ -254,11 +294,10 @@ final class Transforms {
      *
      * @param documentResultItem The extracted document level information.
      * @param readResults The text extraction result returned by the service.
-     * @param isBusinessCard boolean indicating if its recognizing a business card.
      * @return The {@link RecognizedForm#getFields}.
      */
     private static Map<String, FormField> getLabeledFieldMap(DocumentResult documentResultItem,
-        List<ReadResult> readResults, boolean isBusinessCard) {
+                                                             List<ReadResult> readResults) {
         Map<String, FormField> recognizedFieldMap = new LinkedHashMap<>();
         // add receipt fields
         if (!CoreUtils.isNullOrEmpty(documentResultItem.getFields())) {
@@ -272,7 +311,7 @@ final class Transforms {
                         valueData = new FieldData(fieldValue.getText(), toBoundingBox(fieldValue.getBoundingBox()),
                             fieldValue.getPage(), formElementList);
                     }
-                    recognizedFieldMap.put(key, setFormField(key, valueData, fieldValue, readResults, isBusinessCard));
+                    recognizedFieldMap.put(key, setFormField(key, valueData, fieldValue, readResults));
                 } else {
                     recognizedFieldMap.put(key, new FormField(key, null, null, null,
                         DEFAULT_CONFIDENCE_VALUE));
@@ -291,11 +330,10 @@ final class Transforms {
      * @param fieldValue The named field values returned by the service.
      * @param readResults The text extraction result returned by the service.
      *
-     * @param isBusinessCard boolean indicating if its recognizing a business card.
      * @return The strongly typed {@link FormField} for the field input.
      */
     private static FormField setFormField(String name, FieldData valueData, FieldValue fieldValue,
-        List<ReadResult> readResults, boolean isBusinessCard) {
+                                          List<ReadResult> readResults) {
         com.azure.ai.formrecognizer.models.FieldValue value;
         switch (fieldValue.getType()) {
             case PHONE_NUMBER:
@@ -333,14 +371,14 @@ final class Transforms {
                 break;
             case ARRAY:
                 value = new com.azure.ai.formrecognizer.models.FieldValue(
-                    toFieldValueArray(fieldValue.getValueArray(), readResults, isBusinessCard), FieldValueType.LIST);
+                    toFieldValueArray(fieldValue.getValueArray(), readResults), FieldValueType.LIST);
                 break;
             case OBJECT:
                 value = new com.azure.ai.formrecognizer.models.FieldValue(
-                    toFieldValueObject(fieldValue.getValueObject(), readResults, isBusinessCard), FieldValueType.MAP);
+                    toFieldValueObject(fieldValue.getValueObject(), readResults), FieldValueType.MAP);
                 break;
             case SELECTION_MARK:
-                com.azure.ai.formrecognizer.models.SelectionMarkState selectionMarkState = null;
+                com.azure.ai.formrecognizer.models.SelectionMarkState selectionMarkState;
                 final FieldValueSelectionMark fieldValueSelectionMarkState = fieldValue.getValueSelectionMark();
                 if (FieldValueSelectionMark.SELECTED.equals(fieldValueSelectionMarkState)) {
                     selectionMarkState = com.azure.ai.formrecognizer.models.SelectionMarkState.SELECTED;
@@ -384,11 +422,10 @@ final class Transforms {
      *
      * @param valueObject The array of field values returned by the service in {@link FieldValue#getValueObject()}.
      *
-     * @param isBusinessCard boolean indicating if its recognizing a business card.
      * @return The Map of {@link FormField}.
      */
     private static Map<String, FormField> toFieldValueObject(Map<String, FieldValue> valueObject,
-        List<ReadResult> readResults, boolean isBusinessCard) {
+                                                             List<ReadResult> readResults) {
         Map<String, FormField> fieldValueObjectMap = new TreeMap<>();
         valueObject.forEach((key, fieldValue) ->
             fieldValueObjectMap.put(key,
@@ -398,7 +435,7 @@ final class Transforms {
                         fieldValue.getPage(),
                         setReferenceElements(fieldValue.getElements(), readResults)),
                     fieldValue,
-                    readResults, isBusinessCard)
+                    readResults)
             ));
         return fieldValueObjectMap;
     }
@@ -410,32 +447,21 @@ final class Transforms {
      *
      * @param valueArray The array of field values returned by the service in {@link FieldValue#getValueArray()}.
      * @param readResults The text extraction result returned by the service.
-     * @param isBusinessCard boolean indicating if its recognizing a business card.
      * @return The List of {@link FormField}.
      */
-    private static List<FormField> toFieldValueArray(List<FieldValue> valueArray, List<ReadResult> readResults,
-        boolean isBusinessCard) {
+    private static List<FormField> toFieldValueArray(List<FieldValue> valueArray, List<ReadResult> readResults) {
         return valueArray.stream()
             .map(fieldValue -> {
                 FieldData valueData = null;
                 // ARRAY has ho value data, such as bounding box.
-                if (ARRAY != fieldValue.getType() && OBJECT != fieldValue.getType()) {
+                if (ARRAY != fieldValue.getType()
+                    && (fieldValue.getPage() != null && fieldValue.getBoundingBox() != null
+                    && fieldValue.getText() != null)) {
                     valueData = new FieldData(fieldValue.getText(), toBoundingBox(fieldValue.getBoundingBox()),
                         fieldValue.getPage(),
                         setReferenceElements(fieldValue.getElements(), readResults));
-                } else if (isBusinessCard && OBJECT.equals(fieldValue.getType())) {
-                    // TODO: (savaity) Service bug, update after fixed.
-                    if (fieldValue.getValueObject().get("FirstName") != null
-                        && fieldValue.getValueObject().get("LastName") != null) {
-                        if (fieldValue.getValueObject().get("FirstName").getPage()
-                            .equals(fieldValue.getValueObject().get("LastName").getPage())) {
-                            valueData = new FieldData(fieldValue.getText(), toBoundingBox(fieldValue.getBoundingBox()),
-                                fieldValue.getValueObject().get("FirstName").getPage(),
-                                setReferenceElements(fieldValue.getElements(), readResults));
-                        }
-                    }
                 }
-                return setFormField(null, valueData, fieldValue, readResults, isBusinessCard);
+                return setFormField(null, valueData, fieldValue, readResults);
             })
             .collect(Collectors.toList());
     }
@@ -460,7 +486,7 @@ final class Transforms {
             perPageLineList,
             perPageTableList,
             readResultItem.getPage());
-        PrivateFieldAccessHelper.set(formPage, "selectionMarks", perPageSelectionMarkList);
+        FormPageHelper.setSelectionMarks(formPage, perPageSelectionMarkList);
         return formPage;
     }
 
@@ -481,8 +507,8 @@ final class Transforms {
         Map<String, FormField> formFieldMap = new LinkedHashMap<>();
         List<KeyValuePair> keyValuePairs = pageResultItem.getKeyValuePairs();
         forEachWithIndex(keyValuePairs, ((index, keyValuePair) -> {
-            List<FormElement> formKeyContentList = null;
-            List<FormElement> formValueContentList = null;
+            List<FormElement> formKeyContentList = new ArrayList<>();
+            List<FormElement> formValueContentList = new ArrayList<>();
             if (includeFieldElements) {
                 formKeyContentList = setReferenceElements(keyValuePair.getKey().getElements(), readResults);
                 formValueContentList = setReferenceElements(keyValuePair.getValue().getElements(), readResults
@@ -538,6 +564,7 @@ final class Transforms {
                 TextLine textLine = readResults.get(readResultIndex).getLines().get(lineIndex);
                 FormLine lineElement = new FormLine(textLine.getText(), toBoundingBox(textLine.getBoundingBox()),
                     readResultIndex + 1, toWords(textLine.getWords(), readResultIndex + 1));
+                FormLineHelper.setAppearance(lineElement, getAppearance(textLine));
                 formElementList.add(lineElement);
             }
         });

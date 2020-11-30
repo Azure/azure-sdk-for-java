@@ -1,12 +1,40 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
-### Added
-- Support directly passing connection string to the CommunicationIdentityClientBuilder
+## 1.0.0-beta.4 (Unreleased)
 
-### Breaking Change
+
+## 1.0.0-beta.3 (2020-11-16)
+### Added
+- Support directly passing connection string to the CommunicationIdentityClientBuilder.
+- Added support for sync and async long-running operations
+    - beginCreateReservation
+    - beginPurchaseReservation
+    - beginReleasePhoneNumber
+
+### Breaking Changes
 - Removed credential(CommunicationClientCredential credential) and replaced with 
-accessKey(String accessKey) within CommunicationIdentityClientBuilder
+accessKey(String accessKey) within CommunicationIdentityClientBuilder.
+- `PhoneNumberSearch` renamed to `PhoneNumberReservation`.
+- `SearchStatus` renamed to `ReservationStatus`.
+- `CreateSearchOptions` reanamed to `CreateReservationOptions`.
+- `CreateSearchResponse` renamed to `CreateReservationResponse`.
+
+#### PhoneNumberReservation
+- `searchId` renamed to `reservationId`.
+- `getSearchId` renamed to `getReservationId`.
+- `setSearchId` renamed to `setReservationId`.
+
+#### Phone Number Clients
+- `getSearchId`renamed to `getReservationId`
+- `getSearchByIdWithResponse`renamed to `getReservationByIdWithResponse`.
+- `createSearchWithResponse`renamed to `createReservationWithResponse`.
+- `listAllSearches`renamed to `listAllReservations`.
+- `cancelSearch`renamed to `cancelReservation`.
+- `cancelSearchWithResponse`renamed to `cancelReservationWithResponse`.
+- Replaced`createSearch`with to `beginCreateReservation` which returns a poller for the long-running operation.
+- Replaced `purchaseSearch`renamed to `beginPurchaseReservation` which returns a poller for the long-running operation.
+- Replaced `releasePhoneNumber`renamed to `beginReleasePhoneNumber` which returns a poller for the long-running operation.
+
 
 ## 1.0.0-beta.2 (2020-10-06)
 Added phone number administration. For more information, please see the [README][read_me] and [documentation][documentation].

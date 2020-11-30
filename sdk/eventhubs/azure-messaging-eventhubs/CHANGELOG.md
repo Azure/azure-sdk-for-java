@@ -1,8 +1,19 @@
 # Release History
 
-## 5.4.0-beta.1 (Unreleased)
+## 5.4.0-beta.2 (Unreleased)
 
+## 5.4.0-beta.1 (2020-11-12)
+### Breaking changes
+- Removed `ObjectBatch` and related `createBatch()` and `send()` operations in favor of
+ supporting `BinaryData` in `EventData`.
 
+## 5.3.1 (2020-10-30)
+### Bug fixes
+- Eagerly close top-level client in `EventProcessorClient` after fetching the list of partitions instead of waiting until
+ the connection times out.
+- Added checks for matching lost link name with the current link name before propagating the error in
+ `AmqpReceiveLinkProcessor`.
+ 
 ## 5.3.0 (2020-10-12)
 ### New Features
 - Add `clientOptions` to `EventHubClientBuilder` to support for setting user's application id in the user-agent property

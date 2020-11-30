@@ -1,23 +1,41 @@
 # Release History
 
-## 3.1.0-beta.1 (Unreleased)
+## 3.1.0-beta.2 (Unreleased)
+
+
+## 3.1.0-beta.1 (2020-11-23)
+
+### Breaking changes
+
+- Defaults to the latest supported API version, which currently is `2.1-preview.2`.
+
 ### New Features
-- Added implementation support to create a composed model from the `FormTrainingClient` by calling method `beginCreateComposedModel`.
-- Added properties `modelName` and `customFormModelProperties` to types `CustomFormModel` and `CustomFormModelInfo`.
-- Added property `modelName` to `TrainingOptions` and new type `CreateComposedModelOptions`.
-- Added property `modelId` to `CustomFormSubmodel` and `TrainingDocumentInfo`.
-- Added properties `modelId` and `formTypeConfidence` to `RecognizedForm`.
-- Added support for providing locale info when recognizing receipts and business cards.
-Supported locales include support EN-US, EN-AU, EN-CA, EN-GB, EN-IN.
+
 - Added support for pre-built business card recognition.
+- Added support for pre-built invoices recognition.
+- Added implementation support to create a composed model from the `FormTrainingClient` by calling method `beginCreateComposedModel`.
+- Added `language` to `RecognizeContentOptions` for users to specify a preferred language to process the document.
 - Added support to `beginRecognizeContent` to recognize selection marks such as check boxes and radio buttons.
 - Added support to train and recognize custom forms with selection marks such as check boxes and radio buttons.
 This functionality is only available in trained with labels scenarios.
 - When passing `includeFieldElements` as true in `RecognizeCustomFormsOptions`, the property `fieldElements` on `FieldData`
 and `FormTableCell` will also be populated with any selection marks found on the page.
+- Added support for providing locale info when recognizing receipts and business cards.
+Supported locales include support EN-US, EN-AU, EN-CA, EN-GB, EN-IN.
+- Added property `Appearance` to `FormLine` to indicate the style of the extracted text, for example, "handwriting" or "other".
+- Added support for `FormContentType` `image/bmp` in recognize content and prebuilt models.
+- Added property `Pages` to `RecognizeContentOptions` to specify the page numbers to analyze.
+- Added property `BoundingBox` to `FormTable`.
+- Added properties `modelName` and `customFormModelProperties` to types `CustomFormModel` and `CustomFormModelInfo`.
+- Added property `modelName` to `TrainingOptions` and new type `CreateComposedModelOptions`.
+- Added property `modelId` to `CustomFormSubmodel` and `TrainingDocumentInfo`.
+- Added properties `modelId` and `formTypeConfidence` to `RecognizedForm`.
 
-### Breaking changes
-- Defaults to the latest supported API version, which currently is `2.1-preview.1`.
+## 3.0.3 (2020-11-10)
+
+### Dependency updates
+
+- Update dependency version, `azure-core`, `azure-core-http-netty` and `azure-identity`.
 
 ## 3.0.2 (2020-10-06)
 ### Dependency updates
