@@ -9,6 +9,7 @@ import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.Head;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -90,7 +91,7 @@ public final class DatabaseAccountsClientImpl
     @Host("{$host}")
     @ServiceInterface(name = "CosmosDBManagementCl")
     private interface DatabaseAccountsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}")
@@ -102,9 +103,10 @@ public final class DatabaseAccountsClientImpl
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}")
@@ -117,9 +119,10 @@ public final class DatabaseAccountsClientImpl
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") DatabaseAccountUpdateParameters updateParameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}")
@@ -132,6 +135,7 @@ public final class DatabaseAccountsClientImpl
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") DatabaseAccountCreateUpdateParameters createUpdateParameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
@@ -163,7 +167,7 @@ public final class DatabaseAccountsClientImpl
             @BodyParam("application/json") FailoverPolicies failoverParameters,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/databaseAccounts")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -171,9 +175,10 @@ public final class DatabaseAccountsClientImpl
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts")
@@ -184,9 +189,10 @@ public final class DatabaseAccountsClientImpl
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/listKeys")
@@ -198,9 +204,10 @@ public final class DatabaseAccountsClientImpl
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/listConnectionStrings")
@@ -212,9 +219,10 @@ public final class DatabaseAccountsClientImpl
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/offlineRegion")
@@ -227,9 +235,10 @@ public final class DatabaseAccountsClientImpl
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") RegionForOnlineOffline regionParameterForOffline,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/onlineRegion")
@@ -242,9 +251,10 @@ public final class DatabaseAccountsClientImpl
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") RegionForOnlineOffline regionParameterForOnline,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/readonlykeys")
@@ -256,9 +266,10 @@ public final class DatabaseAccountsClientImpl
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/readonlykeys")
@@ -270,6 +281,7 @@ public final class DatabaseAccountsClientImpl
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
@@ -297,7 +309,7 @@ public final class DatabaseAccountsClientImpl
             @QueryParam("api-version") String apiVersion,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/metrics")
@@ -310,9 +322,10 @@ public final class DatabaseAccountsClientImpl
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
             @QueryParam("$filter") String filter,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/usages")
@@ -325,9 +338,10 @@ public final class DatabaseAccountsClientImpl
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
             @QueryParam("$filter") String filter,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/metricDefinitions")
@@ -339,13 +353,14 @@ public final class DatabaseAccountsClientImpl
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
     /**
      * Retrieves the properties of an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -374,7 +389,8 @@ public final class DatabaseAccountsClientImpl
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -385,6 +401,7 @@ public final class DatabaseAccountsClientImpl
                             resourceGroupName,
                             accountName,
                             apiVersion,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -392,7 +409,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Retrieves the properties of an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -422,7 +439,8 @@ public final class DatabaseAccountsClientImpl
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getByResourceGroup(
@@ -431,13 +449,14 @@ public final class DatabaseAccountsClientImpl
                 resourceGroupName,
                 accountName,
                 apiVersion,
+                accept,
                 context);
     }
 
     /**
      * Retrieves the properties of an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -460,7 +479,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Retrieves the properties of an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -475,7 +494,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Retrieves the properties of an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -492,7 +511,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Updates the properties of an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param updateParameters Parameters for patching Azure Cosmos DB database account properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -528,7 +547,8 @@ public final class DatabaseAccountsClientImpl
         } else {
             updateParameters.validate();
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -540,6 +560,7 @@ public final class DatabaseAccountsClientImpl
                             accountName,
                             apiVersion,
                             updateParameters,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -547,7 +568,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Updates the properties of an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param updateParameters Parameters for patching Azure Cosmos DB database account properties.
      * @param context The context to associate with this operation.
@@ -587,7 +608,8 @@ public final class DatabaseAccountsClientImpl
         } else {
             updateParameters.validate();
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .update(
@@ -597,13 +619,14 @@ public final class DatabaseAccountsClientImpl
                 accountName,
                 apiVersion,
                 updateParameters,
+                accept,
                 context);
     }
 
     /**
      * Updates the properties of an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param updateParameters Parameters for patching Azure Cosmos DB database account properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -629,7 +652,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Updates the properties of an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param updateParameters Parameters for patching Azure Cosmos DB database account properties.
      * @param context The context to associate with this operation.
@@ -660,7 +683,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Updates the properties of an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param updateParameters Parameters for patching Azure Cosmos DB database account properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -677,7 +700,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Updates the properties of an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param updateParameters Parameters for patching Azure Cosmos DB database account properties.
      * @param context The context to associate with this operation.
@@ -698,7 +721,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Updates the properties of an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param updateParameters Parameters for patching Azure Cosmos DB database account properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -717,7 +740,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Updates the properties of an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param updateParameters Parameters for patching Azure Cosmos DB database account properties.
      * @param context The context to associate with this operation.
@@ -740,7 +763,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Updates the properties of an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param updateParameters Parameters for patching Azure Cosmos DB database account properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -757,7 +780,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Updates the properties of an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param updateParameters Parameters for patching Azure Cosmos DB database account properties.
      * @param context The context to associate with this operation.
@@ -779,7 +802,7 @@ public final class DatabaseAccountsClientImpl
      * Creates or updates an Azure Cosmos DB database account. The "Update" method is preferred when performing updates
      * on an account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param createUpdateParameters Parameters to create and update Cosmos DB database accounts.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -816,7 +839,8 @@ public final class DatabaseAccountsClientImpl
         } else {
             createUpdateParameters.validate();
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -828,6 +852,7 @@ public final class DatabaseAccountsClientImpl
                             accountName,
                             apiVersion,
                             createUpdateParameters,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -836,7 +861,7 @@ public final class DatabaseAccountsClientImpl
      * Creates or updates an Azure Cosmos DB database account. The "Update" method is preferred when performing updates
      * on an account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param createUpdateParameters Parameters to create and update Cosmos DB database accounts.
      * @param context The context to associate with this operation.
@@ -877,7 +902,8 @@ public final class DatabaseAccountsClientImpl
         } else {
             createUpdateParameters.validate();
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -887,6 +913,7 @@ public final class DatabaseAccountsClientImpl
                 accountName,
                 apiVersion,
                 createUpdateParameters,
+                accept,
                 context);
     }
 
@@ -894,7 +921,7 @@ public final class DatabaseAccountsClientImpl
      * Creates or updates an Azure Cosmos DB database account. The "Update" method is preferred when performing updates
      * on an account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param createUpdateParameters Parameters to create and update Cosmos DB database accounts.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -924,7 +951,7 @@ public final class DatabaseAccountsClientImpl
      * Creates or updates an Azure Cosmos DB database account. The "Update" method is preferred when performing updates
      * on an account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param createUpdateParameters Parameters to create and update Cosmos DB database accounts.
      * @param context The context to associate with this operation.
@@ -957,7 +984,7 @@ public final class DatabaseAccountsClientImpl
      * Creates or updates an Azure Cosmos DB database account. The "Update" method is preferred when performing updates
      * on an account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param createUpdateParameters Parameters to create and update Cosmos DB database accounts.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -975,7 +1002,7 @@ public final class DatabaseAccountsClientImpl
      * Creates or updates an Azure Cosmos DB database account. The "Update" method is preferred when performing updates
      * on an account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param createUpdateParameters Parameters to create and update Cosmos DB database accounts.
      * @param context The context to associate with this operation.
@@ -998,7 +1025,7 @@ public final class DatabaseAccountsClientImpl
      * Creates or updates an Azure Cosmos DB database account. The "Update" method is preferred when performing updates
      * on an account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param createUpdateParameters Parameters to create and update Cosmos DB database accounts.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1018,7 +1045,7 @@ public final class DatabaseAccountsClientImpl
      * Creates or updates an Azure Cosmos DB database account. The "Update" method is preferred when performing updates
      * on an account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param createUpdateParameters Parameters to create and update Cosmos DB database accounts.
      * @param context The context to associate with this operation.
@@ -1042,7 +1069,7 @@ public final class DatabaseAccountsClientImpl
      * Creates or updates an Azure Cosmos DB database account. The "Update" method is preferred when performing updates
      * on an account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param createUpdateParameters Parameters to create and update Cosmos DB database accounts.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1060,7 +1087,7 @@ public final class DatabaseAccountsClientImpl
      * Creates or updates an Azure Cosmos DB database account. The "Update" method is preferred when performing updates
      * on an account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param createUpdateParameters Parameters to create and update Cosmos DB database accounts.
      * @param context The context to associate with this operation.
@@ -1081,7 +1108,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Deletes an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1109,7 +1136,7 @@ public final class DatabaseAccountsClientImpl
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1127,7 +1154,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Deletes an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1157,7 +1184,7 @@ public final class DatabaseAccountsClientImpl
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -1172,7 +1199,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Deletes an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1190,7 +1217,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Deletes an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1211,7 +1238,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Deletes an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1226,7 +1253,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Deletes an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1243,7 +1270,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Deletes an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1258,7 +1285,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Deletes an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1276,7 +1303,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Deletes an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1290,7 +1317,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Deletes an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1307,7 +1334,7 @@ public final class DatabaseAccountsClientImpl
      * write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values
      * must be unique for each of the regions in which the database account exists.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param failoverParameters The list of new failover policies for the failover priority change.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1343,7 +1370,7 @@ public final class DatabaseAccountsClientImpl
         } else {
             failoverParameters.validate();
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1364,7 +1391,7 @@ public final class DatabaseAccountsClientImpl
      * write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values
      * must be unique for each of the regions in which the database account exists.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param failoverParameters The list of new failover policies for the failover priority change.
      * @param context The context to associate with this operation.
@@ -1401,7 +1428,7 @@ public final class DatabaseAccountsClientImpl
         } else {
             failoverParameters.validate();
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
         context = this.client.mergeContext(context);
         return service
             .failoverPriorityChange(
@@ -1419,7 +1446,7 @@ public final class DatabaseAccountsClientImpl
      * write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values
      * must be unique for each of the regions in which the database account exists.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param failoverParameters The list of new failover policies for the failover priority change.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1442,7 +1469,7 @@ public final class DatabaseAccountsClientImpl
      * write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values
      * must be unique for each of the regions in which the database account exists.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param failoverParameters The list of new failover policies for the failover priority change.
      * @param context The context to associate with this operation.
@@ -1467,7 +1494,7 @@ public final class DatabaseAccountsClientImpl
      * write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values
      * must be unique for each of the regions in which the database account exists.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param failoverParameters The list of new failover policies for the failover priority change.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1486,7 +1513,7 @@ public final class DatabaseAccountsClientImpl
      * write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values
      * must be unique for each of the regions in which the database account exists.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param failoverParameters The list of new failover policies for the failover priority change.
      * @param context The context to associate with this operation.
@@ -1507,7 +1534,7 @@ public final class DatabaseAccountsClientImpl
      * write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values
      * must be unique for each of the regions in which the database account exists.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param failoverParameters The list of new failover policies for the failover priority change.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1528,7 +1555,7 @@ public final class DatabaseAccountsClientImpl
      * write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values
      * must be unique for each of the regions in which the database account exists.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param failoverParameters The list of new failover policies for the failover priority change.
      * @param context The context to associate with this operation.
@@ -1550,7 +1577,7 @@ public final class DatabaseAccountsClientImpl
      * write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values
      * must be unique for each of the regions in which the database account exists.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param failoverParameters The list of new failover policies for the failover priority change.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1568,7 +1595,7 @@ public final class DatabaseAccountsClientImpl
      * write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values
      * must be unique for each of the regions in which the database account exists.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param failoverParameters The list of new failover policies for the failover priority change.
      * @param context The context to associate with this operation.
@@ -1603,11 +1630,13 @@ public final class DatabaseAccountsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
-                    service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), context))
+                    service
+                        .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context))
             .<PagedResponse<DatabaseAccountGetResultsInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1638,10 +1667,11 @@ public final class DatabaseAccountsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), context)
+            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -1703,7 +1733,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Lists all the Azure Cosmos DB database accounts available under the given resource group.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1728,7 +1758,8 @@ public final class DatabaseAccountsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1738,6 +1769,7 @@ public final class DatabaseAccountsClientImpl
                             resourceGroupName,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .<PagedResponse<DatabaseAccountGetResultsInner>>map(
                 res ->
@@ -1749,7 +1781,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Lists all the Azure Cosmos DB database accounts available under the given resource group.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1775,11 +1807,17 @@ public final class DatabaseAccountsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(
-                this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(), context)
+                this.client.getEndpoint(),
+                resourceGroupName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                accept,
+                context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -1789,7 +1827,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Lists all the Azure Cosmos DB database accounts available under the given resource group.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1803,7 +1841,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Lists all the Azure Cosmos DB database accounts available under the given resource group.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1819,7 +1857,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Lists all the Azure Cosmos DB database accounts available under the given resource group.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1833,7 +1871,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Lists all the Azure Cosmos DB database accounts available under the given resource group.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1849,7 +1887,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Lists the access keys for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1878,7 +1916,8 @@ public final class DatabaseAccountsClientImpl
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1889,6 +1928,7 @@ public final class DatabaseAccountsClientImpl
                             resourceGroupName,
                             accountName,
                             apiVersion,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -1896,7 +1936,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Lists the access keys for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1926,7 +1966,8 @@ public final class DatabaseAccountsClientImpl
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listKeys(
@@ -1935,13 +1976,14 @@ public final class DatabaseAccountsClientImpl
                 resourceGroupName,
                 accountName,
                 apiVersion,
+                accept,
                 context);
     }
 
     /**
      * Lists the access keys for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1964,7 +2006,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Lists the access keys for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1979,7 +2021,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Lists the access keys for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1996,7 +2038,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Lists the connection strings for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2025,7 +2067,8 @@ public final class DatabaseAccountsClientImpl
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -2036,6 +2079,7 @@ public final class DatabaseAccountsClientImpl
                             resourceGroupName,
                             accountName,
                             apiVersion,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -2043,7 +2087,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Lists the connection strings for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2073,7 +2117,8 @@ public final class DatabaseAccountsClientImpl
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listConnectionStrings(
@@ -2082,13 +2127,14 @@ public final class DatabaseAccountsClientImpl
                 resourceGroupName,
                 accountName,
                 apiVersion,
+                accept,
                 context);
     }
 
     /**
      * Lists the connection strings for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2112,7 +2158,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Lists the connection strings for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2128,7 +2174,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Lists the connection strings for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2145,7 +2191,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Offline the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param regionParameterForOffline Cosmos DB region to online or offline.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2183,7 +2229,8 @@ public final class DatabaseAccountsClientImpl
         } else {
             regionParameterForOffline.validate();
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -2195,6 +2242,7 @@ public final class DatabaseAccountsClientImpl
                             accountName,
                             apiVersion,
                             regionParameterForOffline,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -2202,7 +2250,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Offline the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param regionParameterForOffline Cosmos DB region to online or offline.
      * @param context The context to associate with this operation.
@@ -2244,7 +2292,8 @@ public final class DatabaseAccountsClientImpl
         } else {
             regionParameterForOffline.validate();
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .offlineRegion(
@@ -2254,13 +2303,14 @@ public final class DatabaseAccountsClientImpl
                 accountName,
                 apiVersion,
                 regionParameterForOffline,
+                accept,
                 context);
     }
 
     /**
      * Offline the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param regionParameterForOffline Cosmos DB region to online or offline.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2281,7 +2331,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Offline the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param regionParameterForOffline Cosmos DB region to online or offline.
      * @param context The context to associate with this operation.
@@ -2307,7 +2357,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Offline the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param regionParameterForOffline Cosmos DB region to online or offline.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2324,7 +2374,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Offline the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param regionParameterForOffline Cosmos DB region to online or offline.
      * @param context The context to associate with this operation.
@@ -2346,7 +2396,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Offline the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param regionParameterForOffline Cosmos DB region to online or offline.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2365,7 +2415,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Offline the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param regionParameterForOffline Cosmos DB region to online or offline.
      * @param context The context to associate with this operation.
@@ -2388,7 +2438,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Offline the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param regionParameterForOffline Cosmos DB region to online or offline.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2404,7 +2454,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Offline the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param regionParameterForOffline Cosmos DB region to online or offline.
      * @param context The context to associate with this operation.
@@ -2424,7 +2474,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Online the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param regionParameterForOnline Cosmos DB region to online or offline.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2461,7 +2511,8 @@ public final class DatabaseAccountsClientImpl
         } else {
             regionParameterForOnline.validate();
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -2473,6 +2524,7 @@ public final class DatabaseAccountsClientImpl
                             accountName,
                             apiVersion,
                             regionParameterForOnline,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -2480,7 +2532,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Online the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param regionParameterForOnline Cosmos DB region to online or offline.
      * @param context The context to associate with this operation.
@@ -2521,7 +2573,8 @@ public final class DatabaseAccountsClientImpl
         } else {
             regionParameterForOnline.validate();
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .onlineRegion(
@@ -2531,13 +2584,14 @@ public final class DatabaseAccountsClientImpl
                 accountName,
                 apiVersion,
                 regionParameterForOnline,
+                accept,
                 context);
     }
 
     /**
      * Online the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param regionParameterForOnline Cosmos DB region to online or offline.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2558,7 +2612,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Online the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param regionParameterForOnline Cosmos DB region to online or offline.
      * @param context The context to associate with this operation.
@@ -2584,7 +2638,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Online the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param regionParameterForOnline Cosmos DB region to online or offline.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2601,7 +2655,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Online the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param regionParameterForOnline Cosmos DB region to online or offline.
      * @param context The context to associate with this operation.
@@ -2623,7 +2677,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Online the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param regionParameterForOnline Cosmos DB region to online or offline.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2642,7 +2696,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Online the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param regionParameterForOnline Cosmos DB region to online or offline.
      * @param context The context to associate with this operation.
@@ -2665,7 +2719,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Online the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param regionParameterForOnline Cosmos DB region to online or offline.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2681,7 +2735,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Online the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param regionParameterForOnline Cosmos DB region to online or offline.
      * @param context The context to associate with this operation.
@@ -2701,7 +2755,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Lists the read-only access keys for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2730,7 +2784,8 @@ public final class DatabaseAccountsClientImpl
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -2741,6 +2796,7 @@ public final class DatabaseAccountsClientImpl
                             resourceGroupName,
                             accountName,
                             apiVersion,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -2748,7 +2804,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Lists the read-only access keys for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2778,7 +2834,8 @@ public final class DatabaseAccountsClientImpl
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getReadOnlyKeys(
@@ -2787,13 +2844,14 @@ public final class DatabaseAccountsClientImpl
                 resourceGroupName,
                 accountName,
                 apiVersion,
+                accept,
                 context);
     }
 
     /**
      * Lists the read-only access keys for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2817,7 +2875,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Lists the read-only access keys for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2832,7 +2890,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Lists the read-only access keys for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2849,7 +2907,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Lists the read-only access keys for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2878,7 +2936,8 @@ public final class DatabaseAccountsClientImpl
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -2889,6 +2948,7 @@ public final class DatabaseAccountsClientImpl
                             resourceGroupName,
                             accountName,
                             apiVersion,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -2896,7 +2956,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Lists the read-only access keys for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2926,7 +2986,8 @@ public final class DatabaseAccountsClientImpl
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listReadOnlyKeys(
@@ -2935,13 +2996,14 @@ public final class DatabaseAccountsClientImpl
                 resourceGroupName,
                 accountName,
                 apiVersion,
+                accept,
                 context);
     }
 
     /**
      * Lists the read-only access keys for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2965,7 +3027,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Lists the read-only access keys for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2980,7 +3042,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Lists the read-only access keys for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2997,7 +3059,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Regenerates an access key for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyToRegenerate Parameters to regenerate the keys within the database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3033,7 +3095,7 @@ public final class DatabaseAccountsClientImpl
         } else {
             keyToRegenerate.validate();
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -3052,7 +3114,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Regenerates an access key for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyToRegenerate Parameters to regenerate the keys within the database account.
      * @param context The context to associate with this operation.
@@ -3092,7 +3154,7 @@ public final class DatabaseAccountsClientImpl
         } else {
             keyToRegenerate.validate();
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
         context = this.client.mergeContext(context);
         return service
             .regenerateKey(
@@ -3108,7 +3170,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Regenerates an access key for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyToRegenerate Parameters to regenerate the keys within the database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3129,7 +3191,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Regenerates an access key for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyToRegenerate Parameters to regenerate the keys within the database account.
      * @param context The context to associate with this operation.
@@ -3155,7 +3217,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Regenerates an access key for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyToRegenerate Parameters to regenerate the keys within the database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3172,7 +3234,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Regenerates an access key for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyToRegenerate Parameters to regenerate the keys within the database account.
      * @param context The context to associate with this operation.
@@ -3193,7 +3255,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Regenerates an access key for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyToRegenerate Parameters to regenerate the keys within the database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3212,7 +3274,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Regenerates an access key for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyToRegenerate Parameters to regenerate the keys within the database account.
      * @param context The context to associate with this operation.
@@ -3235,7 +3297,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Regenerates an access key for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyToRegenerate Parameters to regenerate the keys within the database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3251,7 +3313,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Regenerates an access key for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyToRegenerate Parameters to regenerate the keys within the database account.
      * @param context The context to associate with this operation.
@@ -3289,7 +3351,7 @@ public final class DatabaseAccountsClientImpl
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
         return FluxUtil
             .withContext(
                 context -> service.checkNameExists(this.client.getEndpoint(), accountName, apiVersion, context))
@@ -3318,7 +3380,7 @@ public final class DatabaseAccountsClientImpl
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
         context = this.client.mergeContext(context);
         return service.checkNameExists(this.client.getEndpoint(), accountName, apiVersion, context);
     }
@@ -3385,7 +3447,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Retrieves the metrics determined by the given filter for the given database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
      *     filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
@@ -3420,7 +3482,8 @@ public final class DatabaseAccountsClientImpl
         if (filter == null) {
             return Mono.error(new IllegalArgumentException("Parameter filter is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -3432,6 +3495,7 @@ public final class DatabaseAccountsClientImpl
                             accountName,
                             apiVersion,
                             filter,
+                            accept,
                             context))
             .<PagedResponse<MetricInner>>map(
                 res ->
@@ -3443,7 +3507,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Retrieves the metrics determined by the given filter for the given database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
      *     filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
@@ -3479,7 +3543,8 @@ public final class DatabaseAccountsClientImpl
         if (filter == null) {
             return Mono.error(new IllegalArgumentException("Parameter filter is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listMetrics(
@@ -3489,6 +3554,7 @@ public final class DatabaseAccountsClientImpl
                 accountName,
                 apiVersion,
                 filter,
+                accept,
                 context)
             .map(
                 res ->
@@ -3499,7 +3565,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Retrieves the metrics determined by the given filter for the given database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
      *     filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
@@ -3517,7 +3583,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Retrieves the metrics determined by the given filter for the given database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
      *     filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
@@ -3537,7 +3603,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Retrieves the metrics determined by the given filter for the given database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
      *     filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
@@ -3555,7 +3621,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Retrieves the metrics determined by the given filter for the given database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
      *     filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
@@ -3575,7 +3641,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Retrieves the usages (most recent data) for the given database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is
      *     name.value (name of the metric, can have an or of multiple names).
@@ -3606,7 +3672,8 @@ public final class DatabaseAccountsClientImpl
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -3618,6 +3685,7 @@ public final class DatabaseAccountsClientImpl
                             accountName,
                             apiVersion,
                             filter,
+                            accept,
                             context))
             .<PagedResponse<UsageInner>>map(
                 res ->
@@ -3629,7 +3697,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Retrieves the usages (most recent data) for the given database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is
      *     name.value (name of the metric, can have an or of multiple names).
@@ -3661,7 +3729,8 @@ public final class DatabaseAccountsClientImpl
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listUsages(
@@ -3671,6 +3740,7 @@ public final class DatabaseAccountsClientImpl
                 accountName,
                 apiVersion,
                 filter,
+                accept,
                 context)
             .map(
                 res ->
@@ -3681,7 +3751,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Retrieves the usages (most recent data) for the given database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is
      *     name.value (name of the metric, can have an or of multiple names).
@@ -3698,7 +3768,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Retrieves the usages (most recent data) for the given database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3714,7 +3784,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Retrieves the usages (most recent data) for the given database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is
      *     name.value (name of the metric, can have an or of multiple names).
@@ -3733,7 +3803,23 @@ public final class DatabaseAccountsClientImpl
     /**
      * Retrieves the usages (most recent data) for the given database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a list usage request.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<UsageInner> listUsages(String resourceGroupName, String accountName) {
+        final String filter = null;
+        return new PagedIterable<>(listUsagesAsync(resourceGroupName, accountName, filter));
+    }
+
+    /**
+     * Retrieves the usages (most recent data) for the given database account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is
      *     name.value (name of the metric, can have an or of multiple names).
@@ -3750,25 +3836,9 @@ public final class DatabaseAccountsClientImpl
     }
 
     /**
-     * Retrieves the usages (most recent data) for the given database account.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list usage request.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<UsageInner> listUsages(String resourceGroupName, String accountName) {
-        final String filter = null;
-        return new PagedIterable<>(listUsagesAsync(resourceGroupName, accountName, filter));
-    }
-
-    /**
      * Retrieves metric definitions for the given database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3797,7 +3867,8 @@ public final class DatabaseAccountsClientImpl
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -3808,6 +3879,7 @@ public final class DatabaseAccountsClientImpl
                             resourceGroupName,
                             accountName,
                             apiVersion,
+                            accept,
                             context))
             .<PagedResponse<MetricDefinitionInner>>map(
                 res ->
@@ -3819,7 +3891,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Retrieves metric definitions for the given database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3849,7 +3921,8 @@ public final class DatabaseAccountsClientImpl
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listMetricDefinitions(
@@ -3858,6 +3931,7 @@ public final class DatabaseAccountsClientImpl
                 resourceGroupName,
                 accountName,
                 apiVersion,
+                accept,
                 context)
             .map(
                 res ->
@@ -3868,7 +3942,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Retrieves metric definitions for the given database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3883,7 +3957,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Retrieves metric definitions for the given database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3900,7 +3974,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Retrieves metric definitions for the given database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3915,7 +3989,7 @@ public final class DatabaseAccountsClientImpl
     /**
      * Retrieves metric definitions for the given database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

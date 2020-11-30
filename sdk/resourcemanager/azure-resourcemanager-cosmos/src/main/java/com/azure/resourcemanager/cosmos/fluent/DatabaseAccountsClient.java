@@ -40,7 +40,7 @@ public interface DatabaseAccountsClient
     /**
      * Retrieves the properties of an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -54,7 +54,7 @@ public interface DatabaseAccountsClient
     /**
      * Retrieves the properties of an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -67,7 +67,7 @@ public interface DatabaseAccountsClient
     /**
      * Retrieves the properties of an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -80,7 +80,7 @@ public interface DatabaseAccountsClient
     /**
      * Retrieves the properties of an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -95,7 +95,7 @@ public interface DatabaseAccountsClient
     /**
      * Updates the properties of an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param updateParameters Parameters for patching Azure Cosmos DB database account properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -110,7 +110,7 @@ public interface DatabaseAccountsClient
     /**
      * Updates the properties of an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param updateParameters Parameters for patching Azure Cosmos DB database account properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -125,7 +125,7 @@ public interface DatabaseAccountsClient
     /**
      * Updates the properties of an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param updateParameters Parameters for patching Azure Cosmos DB database account properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -140,7 +140,7 @@ public interface DatabaseAccountsClient
     /**
      * Updates the properties of an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param updateParameters Parameters for patching Azure Cosmos DB database account properties.
      * @param context The context to associate with this operation.
@@ -159,7 +159,7 @@ public interface DatabaseAccountsClient
     /**
      * Updates the properties of an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param updateParameters Parameters for patching Azure Cosmos DB database account properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -174,7 +174,7 @@ public interface DatabaseAccountsClient
     /**
      * Updates the properties of an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param updateParameters Parameters for patching Azure Cosmos DB database account properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -189,7 +189,7 @@ public interface DatabaseAccountsClient
     /**
      * Updates the properties of an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param updateParameters Parameters for patching Azure Cosmos DB database account properties.
      * @param context The context to associate with this operation.
@@ -209,7 +209,7 @@ public interface DatabaseAccountsClient
      * Creates or updates an Azure Cosmos DB database account. The "Update" method is preferred when performing updates
      * on an account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param createUpdateParameters Parameters to create and update Cosmos DB database accounts.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -225,7 +225,7 @@ public interface DatabaseAccountsClient
      * Creates or updates an Azure Cosmos DB database account. The "Update" method is preferred when performing updates
      * on an account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param createUpdateParameters Parameters to create and update Cosmos DB database accounts.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -241,7 +241,7 @@ public interface DatabaseAccountsClient
      * Creates or updates an Azure Cosmos DB database account. The "Update" method is preferred when performing updates
      * on an account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param createUpdateParameters Parameters to create and update Cosmos DB database accounts.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -257,7 +257,7 @@ public interface DatabaseAccountsClient
      * Creates or updates an Azure Cosmos DB database account. The "Update" method is preferred when performing updates
      * on an account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param createUpdateParameters Parameters to create and update Cosmos DB database accounts.
      * @param context The context to associate with this operation.
@@ -277,7 +277,7 @@ public interface DatabaseAccountsClient
      * Creates or updates an Azure Cosmos DB database account. The "Update" method is preferred when performing updates
      * on an account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param createUpdateParameters Parameters to create and update Cosmos DB database accounts.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -293,7 +293,7 @@ public interface DatabaseAccountsClient
      * Creates or updates an Azure Cosmos DB database account. The "Update" method is preferred when performing updates
      * on an account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param createUpdateParameters Parameters to create and update Cosmos DB database accounts.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -309,7 +309,7 @@ public interface DatabaseAccountsClient
      * Creates or updates an Azure Cosmos DB database account. The "Update" method is preferred when performing updates
      * on an account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param createUpdateParameters Parameters to create and update Cosmos DB database accounts.
      * @param context The context to associate with this operation.
@@ -328,7 +328,7 @@ public interface DatabaseAccountsClient
     /**
      * Deletes an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -341,7 +341,7 @@ public interface DatabaseAccountsClient
     /**
      * Deletes an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -354,7 +354,7 @@ public interface DatabaseAccountsClient
     /**
      * Deletes an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -367,7 +367,7 @@ public interface DatabaseAccountsClient
     /**
      * Deletes an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -381,7 +381,7 @@ public interface DatabaseAccountsClient
     /**
      * Deletes an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -394,7 +394,7 @@ public interface DatabaseAccountsClient
     /**
      * Deletes an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -406,7 +406,7 @@ public interface DatabaseAccountsClient
     /**
      * Deletes an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -421,7 +421,7 @@ public interface DatabaseAccountsClient
      * write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values
      * must be unique for each of the regions in which the database account exists.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param failoverParameters The list of new failover policies for the failover priority change.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -438,7 +438,7 @@ public interface DatabaseAccountsClient
      * write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values
      * must be unique for each of the regions in which the database account exists.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param failoverParameters The list of new failover policies for the failover priority change.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -455,7 +455,7 @@ public interface DatabaseAccountsClient
      * write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values
      * must be unique for each of the regions in which the database account exists.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param failoverParameters The list of new failover policies for the failover priority change.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -472,7 +472,7 @@ public interface DatabaseAccountsClient
      * write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values
      * must be unique for each of the regions in which the database account exists.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param failoverParameters The list of new failover policies for the failover priority change.
      * @param context The context to associate with this operation.
@@ -490,7 +490,7 @@ public interface DatabaseAccountsClient
      * write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values
      * must be unique for each of the regions in which the database account exists.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param failoverParameters The list of new failover policies for the failover priority change.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -507,7 +507,7 @@ public interface DatabaseAccountsClient
      * write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values
      * must be unique for each of the regions in which the database account exists.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param failoverParameters The list of new failover policies for the failover priority change.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -522,7 +522,7 @@ public interface DatabaseAccountsClient
      * write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values
      * must be unique for each of the regions in which the database account exists.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param failoverParameters The list of new failover policies for the failover priority change.
      * @param context The context to associate with this operation.
@@ -569,7 +569,7 @@ public interface DatabaseAccountsClient
     /**
      * Lists all the Azure Cosmos DB database accounts available under the given resource group.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -581,7 +581,7 @@ public interface DatabaseAccountsClient
     /**
      * Lists all the Azure Cosmos DB database accounts available under the given resource group.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -593,7 +593,7 @@ public interface DatabaseAccountsClient
     /**
      * Lists all the Azure Cosmos DB database accounts available under the given resource group.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -606,7 +606,7 @@ public interface DatabaseAccountsClient
     /**
      * Lists the access keys for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -620,7 +620,7 @@ public interface DatabaseAccountsClient
     /**
      * Lists the access keys for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -633,7 +633,7 @@ public interface DatabaseAccountsClient
     /**
      * Lists the access keys for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -646,7 +646,7 @@ public interface DatabaseAccountsClient
     /**
      * Lists the access keys for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -661,7 +661,7 @@ public interface DatabaseAccountsClient
     /**
      * Lists the connection strings for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -675,7 +675,7 @@ public interface DatabaseAccountsClient
     /**
      * Lists the connection strings for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -689,7 +689,7 @@ public interface DatabaseAccountsClient
     /**
      * Lists the connection strings for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -702,7 +702,7 @@ public interface DatabaseAccountsClient
     /**
      * Lists the connection strings for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -717,7 +717,7 @@ public interface DatabaseAccountsClient
     /**
      * Offline the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param regionParameterForOffline Cosmos DB region to online or offline.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -732,7 +732,7 @@ public interface DatabaseAccountsClient
     /**
      * Offline the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param regionParameterForOffline Cosmos DB region to online or offline.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -747,7 +747,7 @@ public interface DatabaseAccountsClient
     /**
      * Offline the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param regionParameterForOffline Cosmos DB region to online or offline.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -762,7 +762,7 @@ public interface DatabaseAccountsClient
     /**
      * Offline the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param regionParameterForOffline Cosmos DB region to online or offline.
      * @param context The context to associate with this operation.
@@ -781,7 +781,7 @@ public interface DatabaseAccountsClient
     /**
      * Offline the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param regionParameterForOffline Cosmos DB region to online or offline.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -796,7 +796,7 @@ public interface DatabaseAccountsClient
     /**
      * Offline the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param regionParameterForOffline Cosmos DB region to online or offline.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -809,7 +809,7 @@ public interface DatabaseAccountsClient
     /**
      * Offline the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param regionParameterForOffline Cosmos DB region to online or offline.
      * @param context The context to associate with this operation.
@@ -827,7 +827,7 @@ public interface DatabaseAccountsClient
     /**
      * Online the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param regionParameterForOnline Cosmos DB region to online or offline.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -842,7 +842,7 @@ public interface DatabaseAccountsClient
     /**
      * Online the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param regionParameterForOnline Cosmos DB region to online or offline.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -857,7 +857,7 @@ public interface DatabaseAccountsClient
     /**
      * Online the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param regionParameterForOnline Cosmos DB region to online or offline.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -872,7 +872,7 @@ public interface DatabaseAccountsClient
     /**
      * Online the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param regionParameterForOnline Cosmos DB region to online or offline.
      * @param context The context to associate with this operation.
@@ -888,7 +888,7 @@ public interface DatabaseAccountsClient
     /**
      * Online the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param regionParameterForOnline Cosmos DB region to online or offline.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -903,7 +903,7 @@ public interface DatabaseAccountsClient
     /**
      * Online the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param regionParameterForOnline Cosmos DB region to online or offline.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -916,7 +916,7 @@ public interface DatabaseAccountsClient
     /**
      * Online the specified region for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param regionParameterForOnline Cosmos DB region to online or offline.
      * @param context The context to associate with this operation.
@@ -931,7 +931,7 @@ public interface DatabaseAccountsClient
     /**
      * Lists the read-only access keys for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -945,7 +945,7 @@ public interface DatabaseAccountsClient
     /**
      * Lists the read-only access keys for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -958,7 +958,7 @@ public interface DatabaseAccountsClient
     /**
      * Lists the read-only access keys for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -971,7 +971,7 @@ public interface DatabaseAccountsClient
     /**
      * Lists the read-only access keys for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -986,7 +986,7 @@ public interface DatabaseAccountsClient
     /**
      * Lists the read-only access keys for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1000,7 +1000,7 @@ public interface DatabaseAccountsClient
     /**
      * Lists the read-only access keys for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1014,7 +1014,7 @@ public interface DatabaseAccountsClient
     /**
      * Lists the read-only access keys for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1027,7 +1027,7 @@ public interface DatabaseAccountsClient
     /**
      * Lists the read-only access keys for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1042,7 +1042,7 @@ public interface DatabaseAccountsClient
     /**
      * Regenerates an access key for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyToRegenerate Parameters to regenerate the keys within the database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1057,7 +1057,7 @@ public interface DatabaseAccountsClient
     /**
      * Regenerates an access key for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyToRegenerate Parameters to regenerate the keys within the database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1072,7 +1072,7 @@ public interface DatabaseAccountsClient
     /**
      * Regenerates an access key for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyToRegenerate Parameters to regenerate the keys within the database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1087,7 +1087,7 @@ public interface DatabaseAccountsClient
     /**
      * Regenerates an access key for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyToRegenerate Parameters to regenerate the keys within the database account.
      * @param context The context to associate with this operation.
@@ -1106,7 +1106,7 @@ public interface DatabaseAccountsClient
     /**
      * Regenerates an access key for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyToRegenerate Parameters to regenerate the keys within the database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1121,7 +1121,7 @@ public interface DatabaseAccountsClient
     /**
      * Regenerates an access key for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyToRegenerate Parameters to regenerate the keys within the database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1135,7 +1135,7 @@ public interface DatabaseAccountsClient
     /**
      * Regenerates an access key for the specified Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyToRegenerate Parameters to regenerate the keys within the database account.
      * @param context The context to associate with this operation.
@@ -1206,7 +1206,7 @@ public interface DatabaseAccountsClient
     /**
      * Retrieves the metrics determined by the given filter for the given database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
      *     filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
@@ -1222,7 +1222,7 @@ public interface DatabaseAccountsClient
     /**
      * Retrieves the metrics determined by the given filter for the given database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
      *     filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
@@ -1238,7 +1238,7 @@ public interface DatabaseAccountsClient
     /**
      * Retrieves the metrics determined by the given filter for the given database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
      *     filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
@@ -1256,7 +1256,7 @@ public interface DatabaseAccountsClient
     /**
      * Retrieves the usages (most recent data) for the given database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is
      *     name.value (name of the metric, can have an or of multiple names).
@@ -1271,7 +1271,7 @@ public interface DatabaseAccountsClient
     /**
      * Retrieves the usages (most recent data) for the given database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1284,7 +1284,20 @@ public interface DatabaseAccountsClient
     /**
      * Retrieves the usages (most recent data) for the given database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a list usage request.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<UsageInner> listUsages(String resourceGroupName, String accountName);
+
+    /**
+     * Retrieves the usages (most recent data) for the given database account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is
      *     name.value (name of the metric, can have an or of multiple names).
@@ -1298,22 +1311,9 @@ public interface DatabaseAccountsClient
     PagedIterable<UsageInner> listUsages(String resourceGroupName, String accountName, String filter, Context context);
 
     /**
-     * Retrieves the usages (most recent data) for the given database account.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list usage request.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<UsageInner> listUsages(String resourceGroupName, String accountName);
-
-    /**
      * Retrieves metric definitions for the given database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1326,7 +1326,7 @@ public interface DatabaseAccountsClient
     /**
      * Retrieves metric definitions for the given database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1339,7 +1339,7 @@ public interface DatabaseAccountsClient
     /**
      * Retrieves metric definitions for the given database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
