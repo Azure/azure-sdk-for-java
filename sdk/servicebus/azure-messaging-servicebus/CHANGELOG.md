@@ -1,7 +1,29 @@
 # Release History
 
-## 7.0.0-beta.8 (Unreleased)
+## 7.0.0 (2020-11-30)
 
+### New Features
+- Exposing enum 'ServiceBusFailureReason' in 'ServiceBusException' which contains set of well-known reasons for an
+  Service Bus operation failure that was the cause of an exception.
+- Added 'BinaryData' support to  'ServiceBusReceivedMessage' and 'ServiceBusMessage'. It provides an easy abstraction 
+  over many different ways that binary data can be represented. It also provides support for serialize and deserialize
+  Object.
+- Introducing 'ServiceBusProcessorClient': It provides a push-based mechanism that invokes the message processing 
+  callback when a message is received or the error handler when an error occurs when receiving messages. It supports 
+  auto-settlement of messages by default.
+
+### Breaking Changes
+- Renamed all the 'peekMessageAt()' API to 'peekMessage()' in 'ServiceBusReceiverAsyncClient' and 
+  'ServiceBusReceiverClient'.
+- Rename 'getAmqpAnnotatedMessage()' to 'getRawAmqpMessage()' in 'ServiceBusReceivedMessage' and 'ServiceBusMessage'.
+
+### Bug Fixes
+- Set the default 'prefetch' to 0 instead of 1 in both 'RECEIVE_AND_DELETE' and 'PEEK_LOCK' mode. User can set this 
+  value in builder.
+   
+### Dependency Updates   
+- Upgraded `azure-core` dependency to `1.11.0`.
+- Upgraded `azure-core-amqp` dependency to `2.0.0`.
 
 ## 7.0.0-beta.7 (2020-11-06)
 ### New Features
