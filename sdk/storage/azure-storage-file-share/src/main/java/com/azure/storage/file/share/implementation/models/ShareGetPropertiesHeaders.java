@@ -10,6 +10,7 @@ import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.file.share.models.LeaseDurationType;
 import com.azure.storage.file.share.models.LeaseStateType;
 import com.azure.storage.file.share.models.LeaseStatusType;
+import com.azure.storage.file.share.models.ShareRootSquash;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -131,6 +132,19 @@ public final class ShareGetPropertiesHeaders {
      */
     @JsonProperty(value = "x-ms-access-tier-transition-state")
     private String accessTierTransitionState;
+
+    /*
+     * The protocols that have been enabled on the share.
+     */
+    @JsonProperty(value = "x-ms-enabled-protocols")
+    private String enabledProtocols;
+
+    /*
+     * Valid for NFS shares only. Possible values include: 'NoRootSquash',
+     * 'RootSquash', 'AllSquash'
+     */
+    @JsonProperty(value = "x-ms-root-squash")
+    private ShareRootSquash rootSquash;
 
     /*
      * The errorCode property.
@@ -539,6 +553,50 @@ public final class ShareGetPropertiesHeaders {
      */
     public ShareGetPropertiesHeaders setAccessTierTransitionState(String accessTierTransitionState) {
         this.accessTierTransitionState = accessTierTransitionState;
+        return this;
+    }
+
+    /**
+     * Get the enabledProtocols property: The protocols that have been enabled
+     * on the share.
+     *
+     * @return the enabledProtocols value.
+     */
+    public String getEnabledProtocols() {
+        return this.enabledProtocols;
+    }
+
+    /**
+     * Set the enabledProtocols property: The protocols that have been enabled
+     * on the share.
+     *
+     * @param enabledProtocols the enabledProtocols value to set.
+     * @return the ShareGetPropertiesHeaders object itself.
+     */
+    public ShareGetPropertiesHeaders setEnabledProtocols(String enabledProtocols) {
+        this.enabledProtocols = enabledProtocols;
+        return this;
+    }
+
+    /**
+     * Get the rootSquash property: Valid for NFS shares only. Possible values
+     * include: 'NoRootSquash', 'RootSquash', 'AllSquash'.
+     *
+     * @return the rootSquash value.
+     */
+    public ShareRootSquash getRootSquash() {
+        return this.rootSquash;
+    }
+
+    /**
+     * Set the rootSquash property: Valid for NFS shares only. Possible values
+     * include: 'NoRootSquash', 'RootSquash', 'AllSquash'.
+     *
+     * @param rootSquash the rootSquash value to set.
+     * @return the ShareGetPropertiesHeaders object itself.
+     */
+    public ShareGetPropertiesHeaders setRootSquash(ShareRootSquash rootSquash) {
+        this.rootSquash = rootSquash;
         return this;
     }
 
