@@ -11,12 +11,12 @@ package com.microsoft.azure.management.iothub.v2019_03_22_preview;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.iothub.v2019_03_22_preview.implementation.IotHubQuotaMetricInfoInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.iothub.v2019_03_22_preview.implementation.IoTHubManager;
+import com.microsoft.azure.management.iothub.v2019_03_22_preview.implementation.DevicesManager;
 
 /**
  * Type representing IotHubQuotaMetricInfo.
  */
-public interface IotHubQuotaMetricInfo extends HasInner<IotHubQuotaMetricInfoInner>, HasManager<IoTHubManager> {
+public interface IotHubQuotaMetricInfo extends HasInner<IotHubQuotaMetricInfoInner>, HasManager<DevicesManager> {
     /**
      * @return the currentValue value.
      */

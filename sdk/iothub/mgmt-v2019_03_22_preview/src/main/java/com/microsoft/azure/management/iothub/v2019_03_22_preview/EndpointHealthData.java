@@ -10,13 +10,13 @@ package com.microsoft.azure.management.iothub.v2019_03_22_preview;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.iothub.v2019_03_22_preview.implementation.IoTHubManager;
+import com.microsoft.azure.management.iothub.v2019_03_22_preview.implementation.DevicesManager;
 import com.microsoft.azure.management.iothub.v2019_03_22_preview.implementation.EndpointHealthDataInner;
 
 /**
  * Type representing EndpointHealthData.
  */
-public interface EndpointHealthData extends HasInner<EndpointHealthDataInner>, HasManager<IoTHubManager> {
+public interface EndpointHealthData extends HasInner<EndpointHealthDataInner>, HasManager<DevicesManager> {
     /**
      * @return the endpointId value.
      */
