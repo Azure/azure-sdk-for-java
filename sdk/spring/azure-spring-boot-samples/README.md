@@ -34,12 +34,6 @@ There's a [link][azure_spring_release_tags] to query the `azure-spring` release 
 1. Build the whole product by executing the following command which may take several minutes:
     * `mvn clean install -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -Djacoco.skip=true​ -DskipTests -Dparallel-test-playback`
 
-After executing the above steps, you can build the spring project only for the developing purpose:
-1. Traverse to spring directory:
-    * `cd sdk\spring`
-1. Build the spring project:
-    * `mvn clean install -DskipTests`
-
 ### Run Sample
 Reload the `pom.xml` file of the sample to update the dependencies, then you can start demonstrating.
 
