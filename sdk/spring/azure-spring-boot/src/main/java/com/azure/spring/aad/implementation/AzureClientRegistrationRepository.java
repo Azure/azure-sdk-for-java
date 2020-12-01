@@ -20,14 +20,14 @@ public class AzureClientRegistrationRepository implements ClientRegistrationRepo
     private final AzureClientRegistration azureClient;
     private final List<ClientRegistration> otherClients;
     private final Map<String, ClientRegistration> allClients;
-    private AADAuthenticationProperties authorizationProperties;
+    private AADAuthenticationProperties properties;
 
     public AzureClientRegistrationRepository(AzureClientRegistration azureClient,
                                              List<ClientRegistration> otherClients,
-                                             AADAuthenticationProperties authorizationProperties) {
+                                             AADAuthenticationProperties properties) {
         this.azureClient = azureClient;
         this.otherClients = new ArrayList<>(otherClients);
-        this.authorizationProperties = authorizationProperties;
+        this.properties = properties;
 
         allClients = new HashMap<>();
         addClientRegistration(azureClient.getClient());
@@ -57,8 +57,8 @@ public class AzureClientRegistrationRepository implements ClientRegistrationRepo
 
     public boolean isAuthzClient(ClientRegistration client) {
         return otherClients.contains(client)
-            && authorizationProperties.getAuthorization().get(client.getClientName()) != null
-            && !authorizationProperties.getAuthorization().get(client.getClientName()).isOnDemand();
+            && properties.getAuthorization().get(client.getClientName()) != null
+            && !properties.getAuthorization().get(client.getClientName()).isOnDemand();
     }
 
     public boolean isAuthzClient(String id) {
