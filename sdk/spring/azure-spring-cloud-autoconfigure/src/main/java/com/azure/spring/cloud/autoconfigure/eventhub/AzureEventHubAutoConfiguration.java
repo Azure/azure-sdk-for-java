@@ -18,6 +18,7 @@ import com.azure.spring.integration.eventhub.api.EventHubOperation;
 import com.azure.spring.integration.eventhub.factory.DefaultEventHubClientFactory;
 import com.azure.spring.integration.eventhub.factory.EventHubConnectionStringProvider;
 import com.azure.spring.integration.eventhub.impl.EventHubTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -83,30 +84,35 @@ public class AzureEventHubAutoConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean
-    public EventHubConnectionStringProvider eventHubConnectionStringProvider(EventHubNamespaceManager namespaceManager,
-                                                                             AzureEventHubProperties properties) {
+    public EventHubConnectionStringProvider eventHubConnectionStringProvider(
+        @Autowired(required = false) EventHubNamespaceManager namespaceManager,
+        AzureEventHubProperties properties) {
 
         final String namespace = properties.getNamespace();
         final String connectionString = properties.getConnectionString();
 
         if (StringUtils.hasText(connectionString)) {
             return new EventHubConnectionStringProvider(connectionString);
-        } else {
+        } else if (namespaceManager != null && StringUtils.hasText(namespace)) {
             return new EventHubConnectionStringProvider(namespaceManager.getOrCreate(namespace));
         }
+        return null;
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public EventHubClientFactory clientFactory(StorageAccountManager storageAccountManager,
-                                               EventHubConnectionStringProvider ehConnectionStringProvider,
-                                               AzureEventHubProperties properties,
-                                               EnvironmentProvider environmentProvider) {
+    @ConditionalOnBean(EventHubConnectionStringProvider.class)
+    public EventHubClientFactory clientFactory(
+        @Autowired(required = false) EnvironmentProvider environmentProvider,
+        @Autowired(required = false) StorageAccountManager storageAccountManager,
+        EventHubConnectionStringProvider eventHubConnectionStringProvider,
+        AzureEventHubProperties properties
+    ) {
 
-        final String eventHubConnectionString = ehConnectionStringProvider.getConnectionString();
+        final String eventHubConnectionString = eventHubConnectionStringProvider.getConnectionString();
         final String storageConnectionString = getStorageConnectionString(properties,
             storageAccountManager,
-            environmentProvider.getEnvironment());
+            environmentProvider == null ? null : environmentProvider.getEnvironment());
 
         TelemetryCollector.getInstance()
                           .addProperty(EVENT_HUB, NAMESPACE, EventHubUtils.getNamespace(eventHubConnectionString));

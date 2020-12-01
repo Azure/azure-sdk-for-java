@@ -3,9 +3,11 @@
 
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
 import com.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
 import com.azure.spring.cloud.context.core.impl.ServiceBusQueueManager;
+import com.azure.spring.integration.servicebus.factory.ServiceBusConnectionStringProvider;
 import com.azure.spring.integration.servicebus.factory.ServiceBusQueueClientFactory;
 import com.azure.spring.integration.servicebus.queue.ServiceBusQueueOperation;
 import com.microsoft.azure.servicebus.QueueClient;
@@ -23,6 +25,7 @@ import static org.mockito.Mockito.mock;
 public class AzureServiceBusQueueAutoConfigurationTest {
 
     private static final String SERVICE_BUS_PROPERTY_PREFIX = "spring.cloud.azure.servicebus.";
+    private static final String AZURE_PROPERTY_PREFIX = "spring.cloud.azure.";
 
     private ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(AzureServiceBusQueueAutoConfiguration.class));
@@ -65,6 +68,36 @@ public class AzureServiceBusQueueAutoConfigurationTest {
                                                              .doesNotHaveBean(ServiceBusQueueOperation.class));
     }
 
+    @Test
+    public void testConnectionStringProvided() {
+        this.contextRunner.withPropertyValues(SERVICE_BUS_PROPERTY_PREFIX + "connection-string=str1")
+                          .withUserConfiguration(AzureServiceBusAutoConfiguration.class)
+                          .run(context -> {
+                              assertThat(context.getBean(ServiceBusConnectionStringProvider.class).getConnectionString()).isEqualTo("str1");
+                              assertThat(context).doesNotHaveBean(ServiceBusNamespaceManager.class);
+                              assertThat(context).doesNotHaveBean(ServiceBusQueueManager.class);
+                              assertThat(context).hasSingleBean(ServiceBusQueueClientFactory.class);
+                              assertThat(context).hasSingleBean(ServiceBusQueueOperation.class);
+                          });
+    }
+
+    @Test
+    public void testResourceManagerProvided() {
+        this.contextRunner.withUserConfiguration(
+            TestConfigWithAzureResourceManagerAndConnectionProvider.class,
+            AzureServiceBusAutoConfiguration.class)
+                          .withPropertyValues(
+                              AZURE_PROPERTY_PREFIX + "resource-group=rg1",
+                              SERVICE_BUS_PROPERTY_PREFIX + "namespace=ns1"
+                          )
+                          .run(context -> {
+                              assertThat(context).hasSingleBean(ServiceBusQueueClientFactory.class);
+                              assertThat(context).hasSingleBean(ServiceBusQueueOperation.class);
+                              assertThat(context).hasSingleBean(ServiceBusNamespaceManager.class);
+                              assertThat(context).hasSingleBean(ServiceBusQueueManager.class);
+                          });
+    }
+
     @Configuration
     @EnableConfigurationProperties(AzureProperties.class)
     public static class TestConfigWithServiceBusNamespaceManager {
@@ -72,6 +105,22 @@ public class AzureServiceBusQueueAutoConfigurationTest {
         @Bean
         public ServiceBusNamespaceManager servicebusNamespaceManager() {
             return mock(ServiceBusNamespaceManager.class);
+        }
+
+    }
+
+    @Configuration
+    @EnableConfigurationProperties(AzureProperties.class)
+    public static class TestConfigWithAzureResourceManagerAndConnectionProvider {
+
+        @Bean
+        public AzureResourceManager azureResourceManager() {
+            return mock(AzureResourceManager.class);
+        }
+
+        @Bean
+        public ServiceBusConnectionStringProvider connectionStringProvider() {
+            return new ServiceBusConnectionStringProvider("fake-string");
         }
 
     }

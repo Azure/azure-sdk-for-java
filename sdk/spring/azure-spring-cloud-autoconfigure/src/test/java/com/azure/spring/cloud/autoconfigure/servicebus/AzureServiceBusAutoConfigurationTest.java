@@ -58,12 +58,6 @@ public class AzureServiceBusAutoConfigurationTest {
     }
 
     @Test
-    public void testWithAzureResourceManagerProvided() {
-        this.contextRunner.withUserConfiguration(TestConfigWithAzureResourceManager.class)
-                          .run(context -> assertThat(context).hasSingleBean(ServiceBusNamespaceManager.class));
-    }
-
-    @Test
     public void testWithoutServiceBusSDKInClasspath() {
         this.contextRunner.withClassLoader(new FilteredClassLoader(IMessage.class))
                           .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusProperties.class));
@@ -76,17 +70,25 @@ public class AzureServiceBusAutoConfigurationTest {
     }
 
     @Test
-    public void testConnectionStringProviderWithConnectionString() {
-        this.contextRunner.withPropertyValues(SERVICE_BUS_PROPERTY_PREFIX + "connection-string=str1")
-                          .run(context -> assertThat(context.getBean(ServiceBusConnectionStringProvider.class)
-                                                            .getConnectionString()).isEqualTo("str1"));
-    }
-
-    @Test
     public void testConnectionStringProviderNull() {
         // Spring will use NullBean for bean of value null
         this.contextRunner.run(context -> assertThat(context.getBean("serviceBusConnectionStringProvider")
                                                             .equals(null)));
+    }
+
+    @Test
+    public void testConnectionStringProvided() {
+        this.contextRunner.withPropertyValues(SERVICE_BUS_PROPERTY_PREFIX + "connection-string=str1")
+                          .run(context -> {
+                              assertThat(context.getBean(ServiceBusConnectionStringProvider.class).getConnectionString()).isEqualTo("str1");
+                              assertThat(context).doesNotHaveBean(ServiceBusNamespaceManager.class);
+                          });
+    }
+
+    @Test
+    public void testWithAzureResourceManagerProvided() {
+        this.contextRunner.withUserConfiguration(TestConfigWithAzureResourceManager.class)
+                          .run(context -> assertThat(context).hasSingleBean(ServiceBusNamespaceManager.class));
     }
 
     @Configuration

@@ -15,6 +15,7 @@ import com.azure.spring.integration.servicebus.factory.ServiceBusTopicClientFact
 import com.azure.spring.integration.servicebus.topic.ServiceBusTopicOperation;
 import com.azure.spring.integration.servicebus.topic.ServiceBusTopicTemplate;
 import com.microsoft.azure.servicebus.TopicClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -50,11 +51,12 @@ public class AzureServiceBusTopicAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(ServiceBusConnectionStringProvider.class)
-    public ServiceBusTopicClientFactory topicClientFactory(ServiceBusNamespaceManager namespaceManager,
-                                                           ServiceBusTopicManager topicManager,
-                                                           ServiceBusTopicSubscriptionManager topicSubscriptionManager,
-                                                           ServiceBusConnectionStringProvider connectionStringProvider,
-                                                           AzureServiceBusProperties properties) {
+    public ServiceBusTopicClientFactory topicClientFactory(
+        @Autowired(required = false) ServiceBusNamespaceManager namespaceManager,
+        @Autowired(required = false) ServiceBusTopicManager topicManager,
+        @Autowired(required = false) ServiceBusTopicSubscriptionManager topicSubscriptionManager,
+        ServiceBusConnectionStringProvider connectionStringProvider,
+        AzureServiceBusProperties properties) {
 
         String connectionString = connectionStringProvider.getConnectionString();
 
