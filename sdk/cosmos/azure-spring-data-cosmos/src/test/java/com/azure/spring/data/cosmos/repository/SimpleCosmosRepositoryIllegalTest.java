@@ -2,6 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository;
 
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.IndexingPolicy;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.spring.data.cosmos.core.CosmosOperations;
 import com.azure.spring.data.cosmos.domain.Person;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
@@ -11,6 +14,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SimpleCosmosRepositoryIllegalTest {
@@ -23,6 +29,9 @@ public class SimpleCosmosRepositoryIllegalTest {
 
     @Before
     public void setUp() {
+        CosmosContainerProperties containerProperties = new CosmosContainerProperties("", new PartitionKeyDefinition());
+        when(entityInformation.getIndexingPolicy()).thenReturn(new IndexingPolicy());
+        when(dbOperations.getContainerProperties(any())).thenReturn(containerProperties);
         repository = new SimpleCosmosRepository<>(entityInformation, dbOperations);
     }
 

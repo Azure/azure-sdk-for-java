@@ -3,6 +3,7 @@
 
 package com.azure.spring.data.cosmos.repository.support;
 
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.core.CosmosOperations;
@@ -45,6 +46,32 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
         if (this.information.isAutoCreateContainer()) {
             createContainerIfNotExists();
         }
+
+        CosmosContainerProperties currentProperties = getContainerProperties();
+        if (shouldUpdateIndexingPolicy(currentProperties)) {
+            currentProperties.setIndexingPolicy(information.getIndexingPolicy());
+            replaceContainerProperties(currentProperties);
+        }
+    }
+
+    private boolean shouldUpdateIndexingPolicy(CosmosContainerProperties currentProperties) {
+        return currentProperties != null && !currentProperties.getIndexingPolicy().equals(information.getIndexingPolicy());
+    }
+
+    private CosmosContainerProperties getContainerProperties() {
+        try {
+            return this.operation.getContainerProperties(this.information.getContainerName());
+        } catch(CosmosException ex) {
+            if (ex.getStatusCode() == 404) {
+                return null;
+            } else {
+                throw ex;
+            }
+        }
+    }
+
+    private CosmosContainerProperties replaceContainerProperties(CosmosContainerProperties properties) {
+        return this.operation.replaceContainerProperties(this.information.getContainerName(), properties);
     }
 
     private CosmosContainerProperties createContainerIfNotExists() {
