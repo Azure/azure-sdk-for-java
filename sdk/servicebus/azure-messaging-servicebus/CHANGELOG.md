@@ -3,8 +3,8 @@
 ## 7.0.0 (2020-11-30)
 
 ### New Features
-- Exposing enum 'ServiceBusFailureReason' in 'ServiceBusException' which contains set of well-known reasons for an
-  Service Bus operation failure that was the cause of an exception.
+- Exposing enum 'ServiceBusFailureReason' in 'ServiceBusException' which contains a set of well-known reasons for an
+  Service Bus operation failure.
 - Added 'BinaryData' support to  'ServiceBusReceivedMessage' and 'ServiceBusMessage'. It provides an easy abstraction 
   over many different ways that binary data can be represented. It also provides support for serialize and deserialize
   Object.
