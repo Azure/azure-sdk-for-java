@@ -13,14 +13,14 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.iothub.v2019_07_01_preview.EndpointHealthStatus;
 
 class EndpointHealthDataImpl extends WrapperImpl<EndpointHealthDataInner> implements EndpointHealthData {
-    private final IoTHubManager manager;
-    EndpointHealthDataImpl(EndpointHealthDataInner inner, IoTHubManager manager) {
+    private final DevicesManager manager;
+    EndpointHealthDataImpl(EndpointHealthDataInner inner, DevicesManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public IoTHubManager manager() {
+    public DevicesManager manager() {
         return this.manager;
     }
 

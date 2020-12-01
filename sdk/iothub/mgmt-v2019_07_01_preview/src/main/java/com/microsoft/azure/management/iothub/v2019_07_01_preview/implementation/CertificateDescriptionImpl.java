@@ -14,7 +14,7 @@ import rx.Observable;
 import com.microsoft.azure.management.iothub.v2019_07_01_preview.CertificateProperties;
 
 class CertificateDescriptionImpl extends CreatableUpdatableImpl<CertificateDescription, CertificateDescriptionInner, CertificateDescriptionImpl> implements CertificateDescription, CertificateDescription.Definition, CertificateDescription.Update {
-    private final IoTHubManager manager;
+    private final DevicesManager manager;
     private String resourceGroupName;
     private String resourceName;
     private String certificateName;
@@ -23,7 +23,7 @@ class CertificateDescriptionImpl extends CreatableUpdatableImpl<CertificateDescr
     private String uifMatch;
     private String ucertificate;
 
-    CertificateDescriptionImpl(String name, IoTHubManager manager) {
+    CertificateDescriptionImpl(String name, DevicesManager manager) {
         super(name, new CertificateDescriptionInner());
         this.manager = manager;
         // Set resource name
@@ -31,7 +31,7 @@ class CertificateDescriptionImpl extends CreatableUpdatableImpl<CertificateDescr
         //
     }
 
-    CertificateDescriptionImpl(CertificateDescriptionInner inner, IoTHubManager manager) {
+    CertificateDescriptionImpl(CertificateDescriptionInner inner, DevicesManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -44,7 +44,7 @@ class CertificateDescriptionImpl extends CreatableUpdatableImpl<CertificateDescr
     }
 
     @Override
-    public IoTHubManager manager() {
+    public DevicesManager manager() {
         return this.manager;
     }
 

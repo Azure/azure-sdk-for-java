@@ -14,14 +14,14 @@ import com.microsoft.azure.management.iothub.v2019_07_01_preview.TestRouteResult
 import com.microsoft.azure.management.iothub.v2019_07_01_preview.TestResultStatus;
 
 class TestRouteResultImpl extends WrapperImpl<TestRouteResultInner> implements TestRouteResult {
-    private final IoTHubManager manager;
-    TestRouteResultImpl(TestRouteResultInner inner, IoTHubManager manager) {
+    private final DevicesManager manager;
+    TestRouteResultImpl(TestRouteResultInner inner, DevicesManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public IoTHubManager manager() {
+    public DevicesManager manager() {
         return this.manager;
     }
 
