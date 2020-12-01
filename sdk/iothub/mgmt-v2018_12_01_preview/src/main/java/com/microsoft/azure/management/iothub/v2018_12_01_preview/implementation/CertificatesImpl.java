@@ -19,14 +19,14 @@ import com.microsoft.azure.management.iothub.v2018_12_01_preview.CertificateWith
 import com.microsoft.azure.management.iothub.v2018_12_01_preview.CertificateDescription;
 
 class CertificatesImpl extends WrapperImpl<CertificatesInner> implements Certificates {
-    private final IoTHubManager manager;
+    private final DevicesManager manager;
 
-    CertificatesImpl(IoTHubManager manager) {
+    CertificatesImpl(DevicesManager manager) {
         super(manager.inner().certificates());
         this.manager = manager;
     }
 
-    public IoTHubManager manager() {
+    public DevicesManager manager() {
         return this.manager;
     }
 
@@ -83,10 +83,14 @@ class CertificatesImpl extends WrapperImpl<CertificatesInner> implements Certifi
     public Observable<CertificateDescription> getAsync(String resourceGroupName, String resourceName, String certificateName) {
         CertificatesInner client = this.inner();
         return client.getAsync(resourceGroupName, resourceName, certificateName)
-        .map(new Func1<CertificateDescriptionInner, CertificateDescription>() {
+        .flatMap(new Func1<CertificateDescriptionInner, Observable<CertificateDescription>>() {
             @Override
-            public CertificateDescription call(CertificateDescriptionInner inner) {
-                return wrapModel(inner);
+            public Observable<CertificateDescription> call(CertificateDescriptionInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((CertificateDescription)wrapModel(inner));
+                }
             }
        });
     }
