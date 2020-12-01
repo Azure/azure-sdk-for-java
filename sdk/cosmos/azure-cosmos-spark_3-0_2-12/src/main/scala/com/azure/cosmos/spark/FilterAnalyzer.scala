@@ -171,7 +171,9 @@ case class FilterAnalyzer() {
       case _: Filter =>
         // the unsupported filter will be applied by the spark platform itself.
         // TODO: moderakh how count, avg, min, max are pushed down? or orderby?
-        // are they provided in the projected push down columns?
+        // spark 3.0 does not support aggregate push downs, but spark 3.1 will
+        // https://issues.apache.org/jira/browse/SPARK-22390
+        // https://github.com/apache/spark/pull/29695/files
         false
     }
   }
