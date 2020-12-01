@@ -42,7 +42,7 @@ public class AzureActiveDirectoryConfiguration {
         return new AzureClientRegistrationRepository(
             createDefaultClient(),
             createAuthzClients(),
-            properties.getAuthorization());
+            properties);
     }
 
     @Bean
@@ -68,7 +68,7 @@ public class AzureActiveDirectoryConfiguration {
     private Set<String> allScopes() {
         Set<String> result = accessTokenScopes();
         for (AuthorizationProperties authProperties : properties.getAuthorization().values()) {
-            if (!authProperties.getOnDemand()) {
+            if (!authProperties.isOnDemand()) {
                 result.addAll(authProperties.getScopes());
             }
         }

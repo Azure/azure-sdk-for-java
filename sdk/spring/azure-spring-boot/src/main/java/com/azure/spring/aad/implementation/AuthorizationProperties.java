@@ -9,7 +9,7 @@ public class AuthorizationProperties {
 
     private List<String> scopes;
 
-    private Boolean onDemand = false;
+    private boolean onDemand = false;
 
     public void setScopes(List<String> scopes) {
         this.scopes = scopes;
@@ -19,11 +19,11 @@ public class AuthorizationProperties {
         return scopes;
     }
 
-    public Boolean getOnDemand() {
+    public boolean isOnDemand() {
         return onDemand;
     }
 
-    public void setOnDemand(Boolean onDemand) {
+    public void setOnDemand(boolean onDemand) {
         this.onDemand = onDemand;
     }
 }

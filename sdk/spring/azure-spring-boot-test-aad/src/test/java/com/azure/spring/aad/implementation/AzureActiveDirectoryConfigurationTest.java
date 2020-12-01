@@ -177,6 +177,38 @@ public class AzureActiveDirectoryConfigurationTest {
         }
     }
 
+    @Test
+    public void clientRequiresOnDemandPermissions() {
+        try (AppRunner runner = createApp()) {
+            runner.property("azure.activedirectory.authorization.graph.scopes", "Calendars.Read");
+            runner.property("azure.activedirectory.authorization.graph.on-demand", "true");
+            runner.property("azure.activedirectory.authorization.arm.scopes", "https://management.core.windows.net/user_impersonation");
+            runner.start();
+
+            AzureClientRegistrationRepository repo = (AzureClientRegistrationRepository) runner.getBean(ClientRegistrationRepository.class);
+            ClientRegistration azure = repo.findByRegistrationId("azure");
+            ClientRegistration graph = repo.findByRegistrationId("graph");
+            ClientRegistration arm = repo.findByRegistrationId("arm");
+
+            assertNotNull(azure);
+            assertDefaultScopes(
+                azure,
+                "openid",
+                "profile",
+                "https://graph.microsoft.com/Directory.AccessAsUser.All",
+                "https://graph.microsoft.com/User.Read",
+                "offline_access",
+                "https://management.core.windows.net/user_impersonation");
+
+            assertFalse(azure.getScopes().contains("Calendars.Read"));
+            assertFalse(repo.isAuthzClient(graph));
+            assertTrue(repo.isAuthzClient(arm));
+            assertFalse(repo.isAuthzClient("graph"));
+            assertTrue(repo.isAuthzClient("arm"));
+
+        }
+    }
+
     private AppRunner createApp() {
         AppRunner result = new AppRunner(DumbApp.class);
         result.property("azure.activedirectory.authorization-server-uri", "https://login.microsoftonline.com");

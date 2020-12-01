@@ -3,6 +3,7 @@
 
 package com.azure.spring.aad.implementation;
 
+import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
@@ -19,11 +20,11 @@ public class AzureClientRegistrationRepository implements ClientRegistrationRepo
     private final AzureClientRegistration azureClient;
     private final List<ClientRegistration> otherClients;
     private final Map<String, ClientRegistration> allClients;
-    private Map<String, AuthorizationProperties> authorizationProperties;
+    private AADAuthenticationProperties authorizationProperties;
 
     public AzureClientRegistrationRepository(AzureClientRegistration azureClient,
                                              List<ClientRegistration> otherClients,
-                                             Map<String, AuthorizationProperties> authorizationProperties) {
+                                             AADAuthenticationProperties authorizationProperties) {
         this.azureClient = azureClient;
         this.otherClients = new ArrayList<>(otherClients);
         this.authorizationProperties = authorizationProperties;
@@ -55,19 +56,14 @@ public class AzureClientRegistrationRepository implements ClientRegistrationRepo
     }
 
     public boolean isAuthzClient(ClientRegistration client) {
-        return otherClients.contains(client);
+        return otherClients.contains(client) &&
+            authorizationProperties.getAuthorization().get(client.getClientName()) != null &&
+            !authorizationProperties.getAuthorization().get(client.getClientName()).isOnDemand();
     }
 
     public boolean isAuthzClient(String id) {
         ClientRegistration client = findByRegistrationId(id);
-        return client != null && isAuthzClient(client) && !authorizationProperties.get(id).getOnDemand();
+        return client != null && isAuthzClient(client);
     }
 
-    public Map<String, AuthorizationProperties> getAuthorizationProperties() {
-        return authorizationProperties;
-    }
-
-    public void setAuthorizationProperties(Map<String, AuthorizationProperties> authorizationProperties) {
-        this.authorizationProperties = authorizationProperties;
-    }
 }
