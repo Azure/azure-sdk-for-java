@@ -5,12 +5,14 @@ package com.azure.spring.aad.implementation;
 
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
@@ -78,7 +80,6 @@ public class AzureActiveDirectoryConfiguration {
     private Set<String> accessTokenScopes() {
         Set<String> result = openidScopes();
         if (properties.allowedGroupsConfigured()) {
-            result.add("https://graph.microsoft.com/Directory.AccessAsUser.All");
             result.add("https://graph.microsoft.com/User.Read");
         }
         addAzureConfiguredScopes(result);
@@ -140,6 +141,7 @@ public class AzureActiveDirectoryConfiguration {
     }
 
     @Configuration
+    @ConditionalOnBean(ObjectPostProcessor.class)
     @ConditionalOnMissingBean(WebSecurityConfigurerAdapter.class)
     public static class DefaultAzureOAuth2Configuration extends AzureOAuth2Configuration {
 

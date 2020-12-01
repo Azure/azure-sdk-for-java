@@ -1,19 +1,19 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.spring.aad.implementation;
 
-import com.azure.test.utils.AppRunner;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.RequestEntity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationExchange;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationResponse;
+import org.springframework.test.context.support.TestPropertySourceUtils;
 import org.springframework.util.MultiValueMap;
 
 import java.util.Optional;
@@ -23,42 +23,35 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class AuthzCodeGrantRequestEntityConverterTest {
 
-    private AppRunner runner;
-    private AzureClientRegistrationRepository repo;
+    private AzureClientRegistrationRepository clientRepo;
     private ClientRegistration azure;
     private ClientRegistration graph;
 
     @BeforeEach
     public void setupApp() {
-        runner = createApp();
-        runner.start();
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+        TestPropertySourceUtils.addInlinedPropertiesToEnvironment(
+            context,
+            "azure.activedirectory.authorization-server-uri = fake-uri",
+            "azure.activedirectory.authorization.graph.scopes = Calendars.Read",
+            "azure.activedirectory.client-id = fake-client-id",
+            "azure.activedirectory.client-secret = fake-client-secret",
+            "azure.activedirectory.tenant-id = fake-tenant-id",
+            "azure.activedirectory.user-group.allowed-groups = group1, group2"
+        );
+        context.register(AzureActiveDirectoryConfiguration.class);
+        context.refresh();
 
-        repo = runner.getBean(AzureClientRegistrationRepository.class);
-        azure = repo.findByRegistrationId("azure");
-        graph = repo.findByRegistrationId("graph");
-    }
-
-    private AppRunner createApp() {
-        AppRunner result = new AppRunner(DumbApp.class);
-        result.property("azure.activedirectory.authorization-server-uri", "http://localhost");
-        result.property("azure.activedirectory.tenant-id", "fake-tenant-id");
-        result.property("azure.activedirectory.client-id", "fake-client-id");
-        result.property("azure.activedirectory.client-secret", "fake-client-secret");
-        result.property("azure.activedirectory.authorization.graph.scopes", "Calendars.Read");
-        return result;
-    }
-
-    @AfterEach
-    public void tearDownApp() {
-        runner.stop();
+        clientRepo = context.getBean(AzureClientRegistrationRepository.class);
+        azure = clientRepo.findByRegistrationId("azure");
+        graph = clientRepo.findByRegistrationId("graph");
     }
 
     @Test
     public void addScopeForDefaultClient() {
         MultiValueMap<String, String> body = convertedBodyOf(createCodeGrantRequest(azure));
         assertEquals(
-            "openid profile offline_access"
-                + " https://graph.microsoft.com/User.Read https://graph.microsoft.com/Directory.AccessAsUser.All",
+            "openid profile offline_access https://graph.microsoft.com/User.Read",
             body.getFirst("scope")
         );
     }
@@ -72,7 +65,7 @@ public class AuthzCodeGrantRequestEntityConverterTest {
     @SuppressWarnings("unchecked")
     private MultiValueMap<String, String> convertedBodyOf(OAuth2AuthorizationCodeGrantRequest request) {
         AuthzCodeGrantRequestEntityConverter converter =
-            new AuthzCodeGrantRequestEntityConverter(repo.getAzureClient());
+            new AuthzCodeGrantRequestEntityConverter(clientRepo.getAzureClient());
         RequestEntity<?> entity = converter.convert(request);
         return (MultiValueMap<String, String>) Optional.ofNullable(entity)
                                                        .map(HttpEntity::getBody)
@@ -104,11 +97,5 @@ public class AuthzCodeGrantRequestEntityConverterTest {
         builder.redirectUri("http://localhost");
         builder.state("fake-state");
         return builder.build();
-    }
-
-    @Configuration
-    @SpringBootApplication
-    @EnableWebSecurity
-    public static class DumbApp {
     }
 }
