@@ -19,20 +19,16 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AzureEnvironmentAutoConfiguration {
 
-    @Autowired(required = false)
-    private AzureProperties azureProperties;
-
     @Bean
     @ConditionalOnMissingBean
-    public EnvironmentProvider environmentProvider() {
+    public EnvironmentProvider environmentProvider(@Autowired(required = false) AzureProperties azureProperties) {
         DefaultEnvironmentProvider defaultEnvironmentProvider = new DefaultEnvironmentProvider();
-        if (this.azureProperties != null) {
+
+        if (azureProperties != null) {
             defaultEnvironmentProvider.setEnvironment(azureProperties.getEnvironment());
         }
 
         return defaultEnvironmentProvider;
     }
-    
-    
-    
+
 }
