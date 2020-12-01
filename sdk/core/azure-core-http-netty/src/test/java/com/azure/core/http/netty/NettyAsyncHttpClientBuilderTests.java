@@ -176,7 +176,7 @@ public class NettyAsyncHttpClientBuilderTests {
 
     @Test
     public void buildWithConfigurationProxy() {
-        Configuration configuration = new Configuration().put(PROPERTY_HTTP_PROXY, "http://localhost:8888");
+        Configuration configuration = new Configuration().put(PROPERTY_HTTP_PROXY, "http://localhost:12345");
 
         HttpClient validatorClient = HttpClient.create()
             .doOnChannelInit((connectionObserver, channel, socketAddress) ->

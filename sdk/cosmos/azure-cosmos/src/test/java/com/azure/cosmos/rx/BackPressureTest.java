@@ -82,7 +82,7 @@ public class BackPressureTest extends TestSuiteBase {
             if (!feedResponse.getResults().isEmpty()) {
                 valueCount.incrementAndGet();
             }
-        }).publishOn(Schedulers.elastic(), 1).subscribe(subscriber);
+        }).publishOn(Schedulers.boundedElastic(), 1).subscribe(subscriber);
 
         int sleepTimeInMillis = 10000; // 10 seconds
 
@@ -125,7 +125,7 @@ public class BackPressureTest extends TestSuiteBase {
         TestSubscriber<InternalObjectNode> subscriber = new TestSubscriber<>(1);
         queryObservable.doOnNext(feedResponse -> {
             valueCount.incrementAndGet();
-        }).publishOn(Schedulers.elastic(), 1).subscribe(subscriber);
+        }).publishOn(Schedulers.boundedElastic(), 1).subscribe(subscriber);
 
         int sleepTimeInMillis = 10000; // 10 seconds
 
@@ -170,7 +170,7 @@ public class BackPressureTest extends TestSuiteBase {
             if (!feedResponse.getResults().isEmpty()) {
                 valueCount.incrementAndGet();
             }
-        }).publishOn(Schedulers.elastic(), 1).subscribe(subscriber);
+        }).publishOn(Schedulers.boundedElastic(), 1).subscribe(subscriber);
 
         int sleepTimeInMillis = 10000;
 
@@ -213,7 +213,7 @@ public class BackPressureTest extends TestSuiteBase {
 
         queryObservable.doOnNext(internalObjectNode -> {
             valueCount.incrementAndGet();
-        }).publishOn(Schedulers.elastic(), 1).subscribe(subscriber);
+        }).publishOn(Schedulers.boundedElastic(), 1).subscribe(subscriber);
 
         int sleepTimeInMillis = 10000;
 

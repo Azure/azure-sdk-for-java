@@ -5,17 +5,18 @@ package com.azure.cosmos.implementation.changefeed.implementation;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.InternalObjectNode;
-import com.azure.cosmos.models.CosmosItemRequestOptions;
-import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.ServiceItemLease;
 import com.azure.cosmos.implementation.changefeed.ServiceItemLeaseUpdater;
 import com.azure.cosmos.implementation.changefeed.exceptions.LeaseConflictException;
 import com.azure.cosmos.implementation.changefeed.exceptions.LeaseLostException;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.PartitionKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 
 import java.time.Instant;
 import java.util.function.Function;
@@ -72,12 +73,12 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
                             CosmosException ex = (CosmosException) throwable;
                             if (ex.getStatusCode() == HTTP_STATUS_CODE_NOT_FOUND) {
                                 // Partition lease no longer exists
-                                throw new LeaseLostException(cachedLease);
+                                return Mono.error(new LeaseLostException(cachedLease));
                             }
                         }
                         return Mono.error(throwable);
                     })
-                    .map(cosmosItemResponse -> {
+                    .flatMap(cosmosItemResponse -> {
                         InternalObjectNode document =
                             BridgeInternal.getProperties(cosmosItemResponse);
                         ServiceItemLease serverLease = ServiceItemLease.fromDocument(document);
@@ -90,10 +91,10 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
                         cachedLease.setConcurrencyToken(serverLease.getConcurrencyToken());
                         cachedLease.setOwner(serverLease.getOwner());
 
-                        throw new LeaseConflictException(cachedLease, "Partition update failed");
+                        return Mono.error(new LeaseConflictException(cachedLease, "Partition update failed"));
                     });
             })
-            .retry(RETRY_COUNT_ON_CONFLICT, throwable -> {
+            .retryWhen(Retry.max(RETRY_COUNT_ON_CONFLICT).filter(throwable -> {
                 if (throwable instanceof LeaseConflictException) {
                     logger.info(
                         "Partition {} for the lease with token '{}' failed to update for owner '{}'; will retry.",
@@ -103,7 +104,7 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
                     return true;
                 }
                 return false;
-            })
+            }))
             .onErrorResume(throwable -> {
                 if (throwable instanceof LeaseConflictException) {
                     logger.warn(

@@ -127,7 +127,7 @@ public class RetryUtils {
         AddressSelector addressSelector) {
 
         addressSelector.resolveAddressesAsync(request, true)
-                       .publishOn(Schedulers.elastic())
+                       .publishOn(Schedulers.boundedElastic())
                        .subscribe(
                            r -> {
                            },

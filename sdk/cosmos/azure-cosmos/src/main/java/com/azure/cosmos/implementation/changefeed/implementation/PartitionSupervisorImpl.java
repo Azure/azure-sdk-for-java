@@ -46,7 +46,7 @@ class PartitionSupervisorImpl implements PartitionSupervisor, Closeable {
         this.scheduler = scheduler;
 
         if (scheduler == null) {
-            this.scheduler = Schedulers.elastic();
+            this.scheduler = Schedulers.boundedElastic();
         }
     }
 
