@@ -67,7 +67,10 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
         CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(
             firstParticipant.getId(), secondParticipant.getId());
-        chatThreadClient = client.createChatThread(threadRequest);
+
+        CreateChatThreadResult createChatThreadResult = client.createChatThread(threadRequest);
+        chatThreadClient = client.getChatThreadClient(createChatThreadResult.getThread().getId());
+
         threadId = chatThreadClient.getChatThreadId();
     }
 

@@ -73,9 +73,10 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
 
         // Act & Assert
         StepVerifier.create(client.createChatThread(threadRequest))
-            .assertNext(chatThreadClient -> {
-                assertNotNull(chatThreadClient);
-                assertNotNull(chatThreadClient.getChatThreadId());
+            .assertNext(result -> {
+                assertNotNull(result);
+                assertNotNull(result.getThread());
+                assertNotNull(result.getThread().getId());
             })
             .verifyComplete();
     }
@@ -91,9 +92,10 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
         // Act & Assert
         StepVerifier.create(client.createChatThreadWithResponse(threadRequest))
             .assertNext(chatThreadClientResponse -> {
-                ChatThreadAsyncClient chatThreadClient = chatThreadClientResponse.getValue();
-                assertNotNull(chatThreadClient);
-                assertNotNull(chatThreadClient.getChatThreadId());
+                CreateChatThreadResult result = chatThreadClientResponse.getValue();
+                assertNotNull(result);
+                assertNotNull(result.getThread());
+                assertNotNull(result.getThread().getId());
             })
             .verifyComplete();
     }
@@ -125,7 +127,8 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
         AtomicReference<ChatThreadAsyncClient> chatThreadClientRef = new AtomicReference<>();
         StepVerifier.create(
             client.createChatThread(threadRequest)
-                .flatMap(chatThreadClient -> {
+                .flatMap(createChatThreadResult -> {
+                    ChatThreadAsyncClient chatThreadClient = client.getChatThreadClient(createChatThreadResult.getThread().getId());
                     chatThreadClientRef.set(chatThreadClient);
                     return client.getChatThread(chatThreadClient.getChatThreadId());
                 }))
@@ -147,7 +150,8 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
         AtomicReference<ChatThreadAsyncClient> chatThreadClientRef = new AtomicReference<>();
         StepVerifier.create(
             client.createChatThread(threadRequest)
-            .flatMap(chatThreadClient -> {
+            .flatMap(createChatThreadResult -> {
+                ChatThreadAsyncClient chatThreadClient = client.getChatThreadClient(createChatThreadResult.getThread().getId());
                 chatThreadClientRef.set(chatThreadClient);
                 return client.getChatThreadWithResponse(chatThreadClient.getChatThreadId());
             }))
@@ -194,7 +198,8 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
         AtomicReference<ChatThreadAsyncClient> chatThreadClientRef = new AtomicReference<>();
         StepVerifier.create(
             client.createChatThread(threadRequest)
-                .flatMap(chatThreadClient -> {
+                .flatMap(createChatThreadResult -> {
+                    ChatThreadAsyncClient chatThreadClient = client.getChatThreadClient(createChatThreadResult.getThread().getId());
                     chatThreadClientRef.set(chatThreadClient);
                     return client.deleteChatThread(chatThreadClient.getChatThreadId());
                 })
@@ -214,7 +219,8 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
         AtomicReference<ChatThreadAsyncClient> chatThreadClientRef = new AtomicReference<>();
         StepVerifier.create(
             client.createChatThread(threadRequest)
-                .flatMap(chatThreadClient -> {
+                .flatMap(createChatThreadResult -> {
+                    ChatThreadAsyncClient chatThreadClient = client.getChatThreadClient(createChatThreadResult.getThread().getId());
                     chatThreadClientRef.set(chatThreadClient);
                     return client.deleteChatThreadWithResponse(chatThreadClient.getChatThreadId());
                 })

@@ -4,13 +4,15 @@ package com.azure.communication.chat;
 
 import reactor.core.publisher.Mono;
 
+import com.azure.communication.chat.models.ChatThread;
+import com.azure.communication.chat.models.ChatThreadInfo;
+import com.azure.communication.chat.models.CreateChatThreadOptions;
+import com.azure.communication.chat.models.CreateChatThreadResult;
+import com.azure.communication.chat.models.ListChatThreadsOptions;
 import com.azure.communication.chat.implementation.converters.ChatThreadConverter;
 import com.azure.communication.chat.implementation.converters.CreateChatThreadOptionsConverter;
 import com.azure.communication.chat.implementation.AzureCommunicationChatServiceImpl;
-import com.azure.communication.chat.models.CreateChatThreadOptions;
-import com.azure.communication.chat.models.ListChatThreadsOptions;
-import com.azure.communication.chat.models.ChatThread;
-import com.azure.communication.chat.models.ChatThreadInfo;
+import com.azure.communication.chat.implementation.ChatsImpl;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -33,11 +35,13 @@ public final class ChatAsyncClient {
     private final ClientLogger logger = new ClientLogger(ChatAsyncClient.class);
 
     private final AzureCommunicationChatServiceImpl chatServiceClient;
+    private final ChatsImpl chatsClient;
 
     private static final String THREAD_RESOURCE_STATUS_TYPE = "thread";
 
     ChatAsyncClient(AzureCommunicationChatServiceImpl chatServiceClient) {
         this.chatServiceClient = chatServiceClient;
+        this.chatsClient = chatServiceClient.getChats();
     }
 
     /**
@@ -59,11 +63,11 @@ public final class ChatAsyncClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ChatThreadAsyncClient> createChatThread(CreateChatThreadOptions options) {
+    public Mono<CreateChatThreadResult> createChatThread(CreateChatThreadOptions options) {
         try {
             return withContext(context -> createChatThread(options, context)
                 .flatMap(
-                    (Response<ChatThreadAsyncClient> res) -> {
+                    (Response<CreateChatThreadResult> res) -> {
                         if (res.getValue() != null) {
                             return Mono.just(res.getValue());
                         } else {
@@ -82,7 +86,7 @@ public final class ChatAsyncClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ChatThreadAsyncClient>> createChatThreadWithResponse(CreateChatThreadOptions options) {
+    public Mono<Response<CreateChatThreadResult>> createChatThreadWithResponse(CreateChatThreadOptions options) {
         try {
             return withContext(context -> createChatThread(options, context));
         } catch (RuntimeException ex) {
@@ -97,15 +101,15 @@ public final class ChatAsyncClient {
      * @param context The context to associate with this operation.
      * @return the response.
      */
-    Mono<Response<ChatThreadAsyncClient>> createChatThread(CreateChatThreadOptions options, Context context) {
+    Mono<Response<CreateChatThreadResult>> createChatThread(CreateChatThreadOptions options, Context context) {
         context = context == null ? Context.NONE : context;
 
         Objects.requireNonNull(options, "'options' cannot be null.");
 
-        return this.chatServiceClient.createChatThreadWithResponseAsync(
-            CreateChatThreadOptionsConverter.convert(options), context).map(
-                result -> new SimpleResponse<ChatThreadAsyncClient>(
-                    result, getChatThreadClient(result.getValue().getId())));
+        return this.chatsClient.createChatThreadWithResponseAsync(
+            CreateChatThreadOptionsConverter.convert(options), options.getRepeatabilityRequestID(), context).map(
+                result -> new SimpleResponse<CreateChatThreadResult>(
+                    result, result.getValue()));
     }
 
     /**
@@ -158,7 +162,7 @@ public final class ChatAsyncClient {
 
         Objects.requireNonNull(chatThreadId, "'chatThreadId' cannot be null.");
 
-        return this.chatServiceClient.getChatThreadWithResponseAsync(chatThreadId, context)
+        return this.chatsClient.getChatThreadWithResponseAsync(chatThreadId, context)
             .flatMap(
                 (Response<com.azure.communication.chat.implementation.models.ChatThread> res) -> {
                     return Mono.just(new SimpleResponse<ChatThread>(
@@ -177,9 +181,9 @@ public final class ChatAsyncClient {
 
         try {
             return new PagedFlux<>(
-                () -> withContext(context ->  this.chatServiceClient.listChatThreadsSinglePageAsync(
+                () -> withContext(context ->  this.chatsClient.listChatThreadsSinglePageAsync(
                     listThreadsOptions.getMaxPageSize(), listThreadsOptions.getStartTime(), context)),
-                nextLink -> withContext(context -> this.chatServiceClient.listChatThreadsNextSinglePageAsync(
+                nextLink -> withContext(context -> this.chatsClient.listChatThreadsNextSinglePageAsync(
                     nextLink, context)));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
@@ -199,9 +203,9 @@ public final class ChatAsyncClient {
 
         try {
             return new PagedFlux<>(
-                () -> withContext(context ->  this.chatServiceClient.listChatThreadsSinglePageAsync(
+                () -> withContext(context ->  this.chatsClient.listChatThreadsSinglePageAsync(
                     serviceListThreadsOptions.getMaxPageSize(), serviceListThreadsOptions.getStartTime(), context)),
-                nextLink -> withContext(context -> this.chatServiceClient.listChatThreadsNextSinglePageAsync(
+                nextLink -> withContext(context -> this.chatsClient.listChatThreadsNextSinglePageAsync(
                     nextLink, context)));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
@@ -219,7 +223,7 @@ public final class ChatAsyncClient {
         final ListChatThreadsOptions serviceListThreadsOptions
             = listThreadsOptions == null ? new ListChatThreadsOptions() : listThreadsOptions;
 
-        return this.chatServiceClient.listChatThreadsAsync(
+        return this.chatsClient.listChatThreadsAsync(
             serviceListThreadsOptions.getMaxPageSize(), serviceListThreadsOptions.getStartTime(), serviceContext);
     }
 
@@ -268,7 +272,7 @@ public final class ChatAsyncClient {
 
         Objects.requireNonNull(chatThreadId, "'chatThreadId' cannot be null.");
 
-        return this.chatServiceClient.deleteChatThreadWithResponseAsync(chatThreadId, context);
+        return this.chatsClient.deleteChatThreadWithResponseAsync(chatThreadId, context);
     }
 
 }

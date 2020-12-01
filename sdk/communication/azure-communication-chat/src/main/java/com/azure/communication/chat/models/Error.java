@@ -12,26 +12,26 @@ import java.util.List;
 @Immutable
 public final class Error {
     /*
-     * Error code
+     * Error code.
      */
     @JsonProperty(value = "code", access = JsonProperty.Access.WRITE_ONLY)
     private String code;
 
     /*
-     * Description of the error
+     * Description of the error.
      */
     @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /*
-     * If applicable, would be used to indicate the property causing the error
+     * If applicable, would be used to indicate the property causing the error.
      */
     @JsonProperty(value = "target", access = JsonProperty.Access.WRITE_ONLY)
     private String target;
 
     /*
      * If applicable, inner errors would be returned for more details on the
-     * error
+     * error.
      */
     @JsonProperty(value = "innerErrors", access = JsonProperty.Access.WRITE_ONLY)
     private List<Error> innerErrors;

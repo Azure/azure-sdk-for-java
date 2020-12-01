@@ -6,6 +6,7 @@ package com.azure.communication.chat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.azure.core.util.Context;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -69,7 +70,9 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
 
         CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(firstParticipant.getId(),
                 secondParticipant.getId());
-        chatThreadClient = client.createChatThread(threadRequest).block();
+
+        CreateChatThreadResult createChatThreadResult = client.createChatThread(threadRequest).block();
+        chatThreadClient = client.getChatThreadClient(createChatThreadResult.getThread().getId());
         threadId = chatThreadClient.getChatThreadId();
     }
 
@@ -103,7 +106,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         StepVerifier.create(
                 chatThreadClient.updateTopicWithResponse(newTopic)
                     .flatMap(updateThreadResponse -> {
-                        assertEquals(updateThreadResponse.getStatusCode(), 200);
+                        assertEquals(updateThreadResponse.getStatusCode(), 204);
                         return client.getChatThread(threadId);
                     })
 
@@ -344,7 +347,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
                         return chatThreadClient.updateMessageWithResponse(response, updateMessageRequest);
                     })
                     .flatMap((Response<Void> updateResponse) -> {
-                        assertEquals(updateResponse.getStatusCode(), 200);
+                        assertEquals(updateResponse.getStatusCode(), 204);
                         return chatThreadClient.getMessage(messageResponseRef.get());
                     })
                 )
