@@ -80,7 +80,7 @@ public abstract class SparkClientTestBase extends TestBase {
 
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         if (credential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(credential, SparkClientBuilder.DEFAULT_SCOPE));
+            policies.add(new BearerTokenAuthenticationPolicy(credential, SparkClientBuilder.DEFAULT_SCOPES));
         }
 
         policies.add(new RetryPolicy());

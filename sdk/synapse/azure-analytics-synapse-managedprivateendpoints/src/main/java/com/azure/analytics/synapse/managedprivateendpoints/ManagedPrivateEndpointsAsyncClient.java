@@ -32,8 +32,8 @@ public final class ManagedPrivateEndpointsAsyncClient {
     /**
      * Get Managed Private Endpoints.
      *
-     * @param managedVirtualNetworkName The managedVirtualNetworkName parameter.
-     * @param managedPrivateEndpointName The managedPrivateEndpointName parameter.
+     * @param managedVirtualNetworkName Managed virtual network name.
+     * @param managedPrivateEndpointName Managed private endpoint name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -48,8 +48,8 @@ public final class ManagedPrivateEndpointsAsyncClient {
     /**
      * Get Managed Private Endpoints.
      *
-     * @param managedVirtualNetworkName The managedVirtualNetworkName parameter.
-     * @param managedPrivateEndpointName The managedPrivateEndpointName parameter.
+     * @param managedVirtualNetworkName Managed virtual network name.
+     * @param managedPrivateEndpointName Managed private endpoint name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -63,9 +63,9 @@ public final class ManagedPrivateEndpointsAsyncClient {
     /**
      * Create Managed Private Endpoints.
      *
-     * @param managedVirtualNetworkName The managedVirtualNetworkName parameter.
-     * @param managedPrivateEndpointName The managedPrivateEndpointName parameter.
-     * @param managedPrivateEndpoint Managed private endpoint.
+     * @param managedVirtualNetworkName Managed virtual network name.
+     * @param managedPrivateEndpointName Managed private endpoint name.
+     * @param managedPrivateEndpoint Managed private endpoint properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -83,9 +83,9 @@ public final class ManagedPrivateEndpointsAsyncClient {
     /**
      * Create Managed Private Endpoints.
      *
-     * @param managedVirtualNetworkName The managedVirtualNetworkName parameter.
-     * @param managedPrivateEndpointName The managedPrivateEndpointName parameter.
-     * @param managedPrivateEndpoint Managed private endpoint.
+     * @param managedVirtualNetworkName Managed virtual network name.
+     * @param managedPrivateEndpointName Managed private endpoint name.
+     * @param managedPrivateEndpoint Managed private endpoint properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -103,8 +103,8 @@ public final class ManagedPrivateEndpointsAsyncClient {
     /**
      * Delete Managed Private Endpoints.
      *
-     * @param managedVirtualNetworkName The managedVirtualNetworkName parameter.
-     * @param managedPrivateEndpointName The managedPrivateEndpointName parameter.
+     * @param managedVirtualNetworkName Managed virtual network name.
+     * @param managedPrivateEndpointName Managed private endpoint name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -119,8 +119,8 @@ public final class ManagedPrivateEndpointsAsyncClient {
     /**
      * Delete Managed Private Endpoints.
      *
-     * @param managedVirtualNetworkName The managedVirtualNetworkName parameter.
-     * @param managedPrivateEndpointName The managedPrivateEndpointName parameter.
+     * @param managedVirtualNetworkName Managed virtual network name.
+     * @param managedPrivateEndpointName Managed private endpoint name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -134,7 +134,7 @@ public final class ManagedPrivateEndpointsAsyncClient {
     /**
      * List Managed Private Endpoints.
      *
-     * @param managedVirtualNetworkName The managedVirtualNetworkName parameter.
+     * @param managedVirtualNetworkName Managed virtual network name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -148,7 +148,7 @@ public final class ManagedPrivateEndpointsAsyncClient {
     /**
      * List Managed Private Endpoints.
      *
-     * @param managedVirtualNetworkName The managedVirtualNetworkName parameter.
+     * @param managedVirtualNetworkName Managed virtual network name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -162,7 +162,7 @@ public final class ManagedPrivateEndpointsAsyncClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink null
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

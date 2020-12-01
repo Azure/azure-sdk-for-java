@@ -7,11 +7,11 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Resource model. */
+/** Common fields that are returned in the response for all Azure Resource Manager resources. */
 @Immutable
 public class Resource {
     /*
-     * Fully qualified resource Id for the resource. Ex -
+     * Fully qualified resource ID for the resource. Ex -
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
      */
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
@@ -24,14 +24,14 @@ public class Resource {
     private String name;
 
     /*
-     * The type of the resource. Ex- Microsoft.Compute/virtualMachines or
-     * Microsoft.Storage/storageAccounts.
+     * The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
+     * "Microsoft.Storage/storageAccounts"
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource. Ex -
+     * Get the id property: Fully qualified resource ID for the resource. Ex -
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}.
      *
      * @return the id value.
@@ -50,8 +50,8 @@ public class Resource {
     }
 
     /**
-     * Get the type property: The type of the resource. Ex- Microsoft.Compute/virtualMachines or
-     * Microsoft.Storage/storageAccounts.
+     * Get the type property: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or
+     * "Microsoft.Storage/storageAccounts".
      *
      * @return the type value.
      */

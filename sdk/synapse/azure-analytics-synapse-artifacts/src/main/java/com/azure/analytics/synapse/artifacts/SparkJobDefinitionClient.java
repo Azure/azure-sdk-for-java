@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts;
 
 import com.azure.analytics.synapse.artifacts.implementation.SparkJobDefinitionsImpl;
+import com.azure.analytics.synapse.artifacts.models.ArtifactRenameRequest;
 import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
 import com.azure.analytics.synapse.artifacts.models.SparkBatchJob;
 import com.azure.analytics.synapse.artifacts.models.SparkJobDefinitionResource;
@@ -59,7 +60,7 @@ public final class SparkJobDefinitionClient {
      * Creates or updates a Spark Job Definition.
      *
      * @param sparkJobDefinitionName The spark job definition name.
-     * @param sparkJobDefinition Spark job definition resource type.
+     * @param sparkJobDefinition Spark Job Definition resource definition.
      * @param ifMatch ETag of the Spark Job Definition entity. Should only be specified for update, for which it should
      *     match existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -77,7 +78,7 @@ public final class SparkJobDefinitionClient {
      * Creates or updates a Spark Job Definition.
      *
      * @param sparkJobDefinitionName The spark job definition name.
-     * @param sparkJobDefinition Spark job definition resource type.
+     * @param sparkJobDefinition Spark Job Definition resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -93,7 +94,7 @@ public final class SparkJobDefinitionClient {
      * Creates or updates a Spark Job Definition.
      *
      * @param sparkJobDefinitionName The spark job definition name.
-     * @param sparkJobDefinition Spark job definition resource type.
+     * @param sparkJobDefinition Spark Job Definition resource definition.
      * @param ifMatch ETag of the Spark Job Definition entity. Should only be specified for update, for which it should
      *     match existing entity or can be * for unconditional update.
      * @param context The context to associate with this operation.
@@ -219,9 +220,40 @@ public final class SparkJobDefinitionClient {
     }
 
     /**
+     * Renames a sparkJobDefinition.
+     *
+     * @param sparkJobDefinitionName The spark job definition name.
+     * @param request proposed new name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void renameSparkJobDefinition(String sparkJobDefinitionName, ArtifactRenameRequest request) {
+        this.serviceClient.renameSparkJobDefinition(sparkJobDefinitionName, request);
+    }
+
+    /**
+     * Renames a sparkJobDefinition.
+     *
+     * @param sparkJobDefinitionName The spark job definition name.
+     * @param request proposed new name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> renameSparkJobDefinitionWithResponse(
+            String sparkJobDefinitionName, ArtifactRenameRequest request, Context context) {
+        return this.serviceClient.renameSparkJobDefinitionWithResponse(sparkJobDefinitionName, request, context);
+    }
+
+    /**
      * Debug the spark job definition.
      *
-     * @param sparkJobDefinitionAzureResource Spark job definition resource type.
+     * @param sparkJobDefinitionAzureResource Spark Job Definition resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -235,7 +267,7 @@ public final class SparkJobDefinitionClient {
     /**
      * Debug the spark job definition.
      *
-     * @param sparkJobDefinitionAzureResource Spark job definition resource type.
+     * @param sparkJobDefinitionAzureResource Spark Job Definition resource definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.

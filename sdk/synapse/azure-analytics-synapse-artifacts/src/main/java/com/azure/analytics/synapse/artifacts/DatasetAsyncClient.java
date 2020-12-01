@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts;
 
 import com.azure.analytics.synapse.artifacts.implementation.DatasetsImpl;
+import com.azure.analytics.synapse.artifacts.models.ArtifactRenameRequest;
 import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
 import com.azure.analytics.synapse.artifacts.models.DatasetResource;
 import com.azure.core.annotation.ReturnType;
@@ -57,7 +58,7 @@ public final class DatasetAsyncClient {
      * Creates or updates a dataset.
      *
      * @param datasetName The dataset name.
-     * @param dataset Dataset resource type.
+     * @param dataset Dataset resource definition.
      * @param ifMatch ETag of the dataset entity. Should only be specified for update, for which it should match
      *     existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -75,7 +76,7 @@ public final class DatasetAsyncClient {
      * Creates or updates a dataset.
      *
      * @param datasetName The dataset name.
-     * @param dataset Dataset resource type.
+     * @param dataset Dataset resource definition.
      * @param ifMatch ETag of the dataset entity. Should only be specified for update, for which it should match
      *     existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -92,7 +93,7 @@ public final class DatasetAsyncClient {
      * Creates or updates a dataset.
      *
      * @param datasetName The dataset name.
-     * @param dataset Dataset resource type.
+     * @param dataset Dataset resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -178,9 +179,39 @@ public final class DatasetAsyncClient {
     }
 
     /**
+     * Renames a dataset.
+     *
+     * @param datasetName The dataset name.
+     * @param request proposed new name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> renameDatasetWithResponse(String datasetName, ArtifactRenameRequest request) {
+        return this.serviceClient.renameDatasetWithResponseAsync(datasetName, request);
+    }
+
+    /**
+     * Renames a dataset.
+     *
+     * @param datasetName The dataset name.
+     * @param request proposed new name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> renameDataset(String datasetName, ArtifactRenameRequest request) {
+        return this.serviceClient.renameDatasetAsync(datasetName, request);
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink null
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

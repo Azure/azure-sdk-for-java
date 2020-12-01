@@ -58,7 +58,7 @@ public final class TriggerAsyncClient {
      * Creates or updates a trigger.
      *
      * @param triggerName The trigger name.
-     * @param trigger Trigger resource type.
+     * @param trigger Trigger resource definition.
      * @param ifMatch ETag of the trigger entity. Should only be specified for update, for which it should match
      *     existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -76,7 +76,7 @@ public final class TriggerAsyncClient {
      * Creates or updates a trigger.
      *
      * @param triggerName The trigger name.
-     * @param trigger Trigger resource type.
+     * @param trigger Trigger resource definition.
      * @param ifMatch ETag of the trigger entity. Should only be specified for update, for which it should match
      *     existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -93,7 +93,7 @@ public final class TriggerAsyncClient {
      * Creates or updates a trigger.
      *
      * @param triggerName The trigger name.
-     * @param trigger Trigger resource type.
+     * @param trigger Trigger resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -323,7 +323,7 @@ public final class TriggerAsyncClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink null
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

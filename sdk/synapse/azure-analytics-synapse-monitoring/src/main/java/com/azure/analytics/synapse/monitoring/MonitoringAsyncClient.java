@@ -31,7 +31,8 @@ public final class MonitoringAsyncClient {
     /**
      * Get list of spark applications for the workspace.
      *
-     * @param xMsClientRequestId The xMsClientRequestId parameter.
+     * @param xMsClientRequestId Can provide a guid, which is helpful for debugging and to provide better customer
+     *     support.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -45,7 +46,8 @@ public final class MonitoringAsyncClient {
     /**
      * Get list of spark applications for the workspace.
      *
-     * @param xMsClientRequestId The xMsClientRequestId parameter.
+     * @param xMsClientRequestId Can provide a guid, which is helpful for debugging and to provide better customer
+     *     support.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -71,7 +73,8 @@ public final class MonitoringAsyncClient {
     /**
      * Get SQL OD/DW Query for the workspace.
      *
-     * @param xMsClientRequestId The xMsClientRequestId parameter.
+     * @param xMsClientRequestId Can provide a guid, which is helpful for debugging and to provide better customer
+     *     support.
      * @param filter The filter parameter.
      * @param orderby The orderby parameter.
      * @param skip The skip parameter.
@@ -89,7 +92,8 @@ public final class MonitoringAsyncClient {
     /**
      * Get SQL OD/DW Query for the workspace.
      *
-     * @param xMsClientRequestId The xMsClientRequestId parameter.
+     * @param xMsClientRequestId Can provide a guid, which is helpful for debugging and to provide better customer
+     *     support.
      * @param filter The filter parameter.
      * @param orderby The orderby parameter.
      * @param skip The skip parameter.

@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.implementation;
 
+import com.azure.analytics.synapse.artifacts.models.ArtifactRenameRequest;
 import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
 import com.azure.analytics.synapse.artifacts.models.DatasetListResponse;
 import com.azure.analytics.synapse.artifacts.models.DatasetResource;
@@ -15,6 +16,7 @@ import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -92,11 +94,23 @@ public final class DatasetsImpl {
                 @QueryParam("api-version") String apiVersion,
                 Context context);
 
+        @Post("/datasets/{datasetName}/rename")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(CloudErrorException.class)
+        Mono<Response<Void>> renameDataset(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("datasetName") String datasetName,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") ArtifactRenameRequest request,
+                Context context);
+
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
         Mono<Response<DatasetListResponse>> getDatasetsByWorkspaceNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                Context context);
     }
 
     /**
@@ -206,7 +220,7 @@ public final class DatasetsImpl {
      * Creates or updates a dataset.
      *
      * @param datasetName The dataset name.
-     * @param dataset Dataset resource type.
+     * @param dataset Dataset resource definition.
      * @param ifMatch ETag of the dataset entity. Should only be specified for update, for which it should match
      *     existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -232,7 +246,7 @@ public final class DatasetsImpl {
      * Creates or updates a dataset.
      *
      * @param datasetName The dataset name.
-     * @param dataset Dataset resource type.
+     * @param dataset Dataset resource definition.
      * @param ifMatch ETag of the dataset entity. Should only be specified for update, for which it should match
      *     existing entity or can be * for unconditional update.
      * @param context The context to associate with this operation.
@@ -252,7 +266,7 @@ public final class DatasetsImpl {
      * Creates or updates a dataset.
      *
      * @param datasetName The dataset name.
-     * @param dataset Dataset resource type.
+     * @param dataset Dataset resource definition.
      * @param ifMatch ETag of the dataset entity. Should only be specified for update, for which it should match
      *     existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -278,7 +292,31 @@ public final class DatasetsImpl {
      * Creates or updates a dataset.
      *
      * @param datasetName The dataset name.
-     * @param dataset Dataset resource type.
+     * @param dataset Dataset resource definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dataset resource type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<DatasetResource> createOrUpdateDatasetAsync(String datasetName, DatasetResource dataset) {
+        final String ifMatch = null;
+        return createOrUpdateDatasetWithResponseAsync(datasetName, dataset, ifMatch)
+                .flatMap(
+                        (Response<DatasetResource> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Creates or updates a dataset.
+     *
+     * @param datasetName The dataset name.
+     * @param dataset Dataset resource definition.
      * @param ifMatch ETag of the dataset entity. Should only be specified for update, for which it should match
      *     existing entity or can be * for unconditional update.
      * @param context The context to associate with this operation.
@@ -305,31 +343,7 @@ public final class DatasetsImpl {
      * Creates or updates a dataset.
      *
      * @param datasetName The dataset name.
-     * @param dataset Dataset resource type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dataset resource type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DatasetResource> createOrUpdateDatasetAsync(String datasetName, DatasetResource dataset) {
-        final String ifMatch = null;
-        return createOrUpdateDatasetWithResponseAsync(datasetName, dataset, ifMatch)
-                .flatMap(
-                        (Response<DatasetResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * Creates or updates a dataset.
-     *
-     * @param datasetName The dataset name.
-     * @param dataset Dataset resource type.
+     * @param dataset Dataset resource definition.
      * @param ifMatch ETag of the dataset entity. Should only be specified for update, for which it should match
      *     existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -346,7 +360,7 @@ public final class DatasetsImpl {
      * Creates or updates a dataset.
      *
      * @param datasetName The dataset name.
-     * @param dataset Dataset resource type.
+     * @param dataset Dataset resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -362,7 +376,7 @@ public final class DatasetsImpl {
      * Creates or updates a dataset.
      *
      * @param datasetName The dataset name.
-     * @param dataset Dataset resource type.
+     * @param dataset Dataset resource definition.
      * @param ifMatch ETag of the dataset entity. Should only be specified for update, for which it should match
      *     existing entity or can be * for unconditional update.
      * @param context The context to associate with this operation.
@@ -447,17 +461,15 @@ public final class DatasetsImpl {
      * Gets a dataset.
      *
      * @param datasetName The dataset name.
-     * @param ifNoneMatch ETag of the dataset entity. Should only be specified for get. If the ETag matches the existing
-     *     entity tag, or if * was provided, then no content will be returned.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a dataset.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DatasetResource> getDatasetAsync(String datasetName, String ifNoneMatch, Context context) {
-        return getDatasetWithResponseAsync(datasetName, ifNoneMatch, context)
+    public Mono<DatasetResource> getDatasetAsync(String datasetName) {
+        final String ifNoneMatch = null;
+        return getDatasetWithResponseAsync(datasetName, ifNoneMatch)
                 .flatMap(
                         (Response<DatasetResource> res) -> {
                             if (res.getValue() != null) {
@@ -472,15 +484,17 @@ public final class DatasetsImpl {
      * Gets a dataset.
      *
      * @param datasetName The dataset name.
+     * @param ifNoneMatch ETag of the dataset entity. Should only be specified for get. If the ETag matches the existing
+     *     entity tag, or if * was provided, then no content will be returned.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a dataset.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DatasetResource> getDatasetAsync(String datasetName) {
-        final String ifNoneMatch = null;
-        return getDatasetWithResponseAsync(datasetName, ifNoneMatch)
+    public Mono<DatasetResource> getDatasetAsync(String datasetName, String ifNoneMatch, Context context) {
+        return getDatasetWithResponseAsync(datasetName, ifNoneMatch, context)
                 .flatMap(
                         (Response<DatasetResource> res) -> {
                             if (res.getValue() != null) {
@@ -629,6 +643,105 @@ public final class DatasetsImpl {
     }
 
     /**
+     * Renames a dataset.
+     *
+     * @param datasetName The dataset name.
+     * @param request proposed new name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> renameDatasetWithResponseAsync(String datasetName, ArtifactRenameRequest request) {
+        return FluxUtil.withContext(
+                context ->
+                        service.renameDataset(
+                                this.client.getEndpoint(), datasetName, this.client.getApiVersion(), request, context));
+    }
+
+    /**
+     * Renames a dataset.
+     *
+     * @param datasetName The dataset name.
+     * @param request proposed new name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> renameDatasetWithResponseAsync(
+            String datasetName, ArtifactRenameRequest request, Context context) {
+        return service.renameDataset(
+                this.client.getEndpoint(), datasetName, this.client.getApiVersion(), request, context);
+    }
+
+    /**
+     * Renames a dataset.
+     *
+     * @param datasetName The dataset name.
+     * @param request proposed new name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> renameDatasetAsync(String datasetName, ArtifactRenameRequest request) {
+        return renameDatasetWithResponseAsync(datasetName, request).flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Renames a dataset.
+     *
+     * @param datasetName The dataset name.
+     * @param request proposed new name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> renameDatasetAsync(String datasetName, ArtifactRenameRequest request, Context context) {
+        return renameDatasetWithResponseAsync(datasetName, request, context)
+                .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Renames a dataset.
+     *
+     * @param datasetName The dataset name.
+     * @param request proposed new name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void renameDataset(String datasetName, ArtifactRenameRequest request) {
+        renameDatasetAsync(datasetName, request).block();
+    }
+
+    /**
+     * Renames a dataset.
+     *
+     * @param datasetName The dataset name.
+     * @param request proposed new name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> renameDatasetWithResponse(
+            String datasetName, ArtifactRenameRequest request, Context context) {
+        return renameDatasetWithResponseAsync(datasetName, request, context).block();
+    }
+
+    /**
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
@@ -639,7 +752,8 @@ public final class DatasetsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DatasetResource>> getDatasetsByWorkspaceNextSinglePageAsync(String nextLink) {
-        return FluxUtil.withContext(context -> service.getDatasetsByWorkspaceNext(nextLink, context))
+        return FluxUtil.withContext(
+                        context -> service.getDatasetsByWorkspaceNext(nextLink, this.client.getEndpoint(), context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -664,7 +778,7 @@ public final class DatasetsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DatasetResource>> getDatasetsByWorkspaceNextSinglePageAsync(
             String nextLink, Context context) {
-        return service.getDatasetsByWorkspaceNext(nextLink, context)
+        return service.getDatasetsByWorkspaceNext(nextLink, this.client.getEndpoint(), context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(

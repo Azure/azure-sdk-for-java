@@ -91,7 +91,7 @@ public final class TriggerRunAsyncClient {
     /**
      * Query trigger runs.
      *
-     * @param filterParameters Query parameters for listing runs.
+     * @param filterParameters Parameters to filter the pipeline run.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -106,7 +106,7 @@ public final class TriggerRunAsyncClient {
     /**
      * Query trigger runs.
      *
-     * @param filterParameters Query parameters for listing runs.
+     * @param filterParameters Parameters to filter the pipeline run.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

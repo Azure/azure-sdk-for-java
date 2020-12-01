@@ -6,6 +6,7 @@ package com.azure.analytics.synapse.accesscontrol.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.UUID;
 
 /** Role Assignment response details. */
 @Fluent
@@ -19,14 +20,26 @@ public final class RoleAssignmentDetails {
     /*
      * Role ID of the Synapse Built-In Role
      */
-    @JsonProperty(value = "roleId")
-    private String roleId;
+    @JsonProperty(value = "roleDefinitionId")
+    private UUID roleDefinitionId;
 
     /*
      * Object ID of the AAD principal or security-group
      */
     @JsonProperty(value = "principalId")
-    private String principalId;
+    private UUID principalId;
+
+    /*
+     * Scope at the role assignment is created
+     */
+    @JsonProperty(value = "scope")
+    private String scope;
+
+    /*
+     * Type of the principal Id: User, Group or ServicePrincipal
+     */
+    @JsonProperty(value = "principalType")
+    private String principalType;
 
     /**
      * Get the id property: Role Assignment ID.
@@ -49,22 +62,22 @@ public final class RoleAssignmentDetails {
     }
 
     /**
-     * Get the roleId property: Role ID of the Synapse Built-In Role.
+     * Get the roleDefinitionId property: Role ID of the Synapse Built-In Role.
      *
-     * @return the roleId value.
+     * @return the roleDefinitionId value.
      */
-    public String getRoleId() {
-        return this.roleId;
+    public UUID getRoleDefinitionId() {
+        return this.roleDefinitionId;
     }
 
     /**
-     * Set the roleId property: Role ID of the Synapse Built-In Role.
+     * Set the roleDefinitionId property: Role ID of the Synapse Built-In Role.
      *
-     * @param roleId the roleId value to set.
+     * @param roleDefinitionId the roleDefinitionId value to set.
      * @return the RoleAssignmentDetails object itself.
      */
-    public RoleAssignmentDetails setRoleId(String roleId) {
-        this.roleId = roleId;
+    public RoleAssignmentDetails setRoleDefinitionId(UUID roleDefinitionId) {
+        this.roleDefinitionId = roleDefinitionId;
         return this;
     }
 
@@ -73,7 +86,7 @@ public final class RoleAssignmentDetails {
      *
      * @return the principalId value.
      */
-    public String getPrincipalId() {
+    public UUID getPrincipalId() {
         return this.principalId;
     }
 
@@ -83,8 +96,48 @@ public final class RoleAssignmentDetails {
      * @param principalId the principalId value to set.
      * @return the RoleAssignmentDetails object itself.
      */
-    public RoleAssignmentDetails setPrincipalId(String principalId) {
+    public RoleAssignmentDetails setPrincipalId(UUID principalId) {
         this.principalId = principalId;
+        return this;
+    }
+
+    /**
+     * Get the scope property: Scope at the role assignment is created.
+     *
+     * @return the scope value.
+     */
+    public String getScope() {
+        return this.scope;
+    }
+
+    /**
+     * Set the scope property: Scope at the role assignment is created.
+     *
+     * @param scope the scope value to set.
+     * @return the RoleAssignmentDetails object itself.
+     */
+    public RoleAssignmentDetails setScope(String scope) {
+        this.scope = scope;
+        return this;
+    }
+
+    /**
+     * Get the principalType property: Type of the principal Id: User, Group or ServicePrincipal.
+     *
+     * @return the principalType value.
+     */
+    public String getPrincipalType() {
+        return this.principalType;
+    }
+
+    /**
+     * Set the principalType property: Type of the principal Id: User, Group or ServicePrincipal.
+     *
+     * @param principalType the principalType value to set.
+     * @return the RoleAssignmentDetails object itself.
+     */
+    public RoleAssignmentDetails setPrincipalType(String principalType) {
+        this.principalType = principalType;
         return this;
     }
 }

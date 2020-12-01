@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts;
 
 import com.azure.analytics.synapse.artifacts.implementation.SqlScriptsImpl;
+import com.azure.analytics.synapse.artifacts.models.ArtifactRenameRequest;
 import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
 import com.azure.analytics.synapse.artifacts.models.SqlScriptResource;
 import com.azure.core.annotation.ReturnType;
@@ -58,7 +59,7 @@ public final class SqlScriptClient {
      * Creates or updates a Sql Script.
      *
      * @param sqlScriptName The sql script name.
-     * @param sqlScript Sql Script resource type.
+     * @param sqlScript Sql Script resource definition.
      * @param ifMatch ETag of the SQL script entity. Should only be specified for update, for which it should match
      *     existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -76,7 +77,7 @@ public final class SqlScriptClient {
      * Creates or updates a Sql Script.
      *
      * @param sqlScriptName The sql script name.
-     * @param sqlScript Sql Script resource type.
+     * @param sqlScript Sql Script resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -91,7 +92,7 @@ public final class SqlScriptClient {
      * Creates or updates a Sql Script.
      *
      * @param sqlScriptName The sql script name.
-     * @param sqlScript Sql Script resource type.
+     * @param sqlScript Sql Script resource definition.
      * @param ifMatch ETag of the SQL script entity. Should only be specified for update, for which it should match
      *     existing entity or can be * for unconditional update.
      * @param context The context to associate with this operation.
@@ -180,5 +181,36 @@ public final class SqlScriptClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteSqlScriptWithResponse(String sqlScriptName, Context context) {
         return this.serviceClient.deleteSqlScriptWithResponse(sqlScriptName, context);
+    }
+
+    /**
+     * Renames a sqlScript.
+     *
+     * @param sqlScriptName The sql script name.
+     * @param request proposed new name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void renameSqlScript(String sqlScriptName, ArtifactRenameRequest request) {
+        this.serviceClient.renameSqlScript(sqlScriptName, request);
+    }
+
+    /**
+     * Renames a sqlScript.
+     *
+     * @param sqlScriptName The sql script name.
+     * @param request proposed new name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> renameSqlScriptWithResponse(
+            String sqlScriptName, ArtifactRenameRequest request, Context context) {
+        return this.serviceClient.renameSqlScriptWithResponse(sqlScriptName, request, context);
     }
 }

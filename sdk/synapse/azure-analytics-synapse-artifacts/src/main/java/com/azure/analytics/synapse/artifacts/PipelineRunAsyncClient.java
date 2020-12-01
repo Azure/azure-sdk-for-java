@@ -33,7 +33,7 @@ public final class PipelineRunAsyncClient {
     /**
      * Query pipeline runs in the workspace based on input filter conditions.
      *
-     * @param filterParameters Query parameters for listing runs.
+     * @param filterParameters Parameters to filter the pipeline run.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -48,7 +48,7 @@ public final class PipelineRunAsyncClient {
     /**
      * Query pipeline runs in the workspace based on input filter conditions.
      *
-     * @param filterParameters Query parameters for listing runs.
+     * @param filterParameters Parameters to filter the pipeline run.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -92,7 +92,7 @@ public final class PipelineRunAsyncClient {
      *
      * @param pipelineName The pipeline name.
      * @param runId The pipeline run identifier.
-     * @param filterParameters Query parameters for listing runs.
+     * @param filterParameters Parameters to filter the activity runs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -109,7 +109,7 @@ public final class PipelineRunAsyncClient {
      *
      * @param pipelineName The pipeline name.
      * @param runId The pipeline run identifier.
-     * @param filterParameters Query parameters for listing runs.
+     * @param filterParameters Parameters to filter the activity runs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

@@ -16,7 +16,7 @@ import java.util.Map;
 @JsonTypeName("SynapseNotebook")
 @JsonFlatten
 @Fluent
-public class SynapseNotebookActivity extends Activity {
+public class SynapseNotebookActivity extends ExecutionActivity {
     /*
      * Synapse notebook reference.
      */

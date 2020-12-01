@@ -78,7 +78,7 @@ public abstract class ArtifactsClientTestBase extends TestBase {
 
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         if (credential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(credential, ArtifactsClientBuilder.DEFAULT_SCOPE));
+            policies.add(new BearerTokenAuthenticationPolicy(credential, ArtifactsClientBuilder.DEFAULT_SCOPES));
         }
 
         policies.add(new RetryPolicy());

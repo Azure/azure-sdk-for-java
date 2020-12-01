@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts;
 
 import com.azure.analytics.synapse.artifacts.implementation.LinkedServicesImpl;
+import com.azure.analytics.synapse.artifacts.models.ArtifactRenameRequest;
 import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
 import com.azure.analytics.synapse.artifacts.models.LinkedServiceResource;
 import com.azure.core.annotation.ReturnType;
@@ -58,7 +59,7 @@ public final class LinkedServiceClient {
      * Creates or updates a linked service.
      *
      * @param linkedServiceName The linked service name.
-     * @param linkedService Linked service resource type.
+     * @param linkedService Linked service resource definition.
      * @param ifMatch ETag of the linkedService entity. Should only be specified for update, for which it should match
      *     existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -76,7 +77,7 @@ public final class LinkedServiceClient {
      * Creates or updates a linked service.
      *
      * @param linkedServiceName The linked service name.
-     * @param linkedService Linked service resource type.
+     * @param linkedService Linked service resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -92,7 +93,7 @@ public final class LinkedServiceClient {
      * Creates or updates a linked service.
      *
      * @param linkedServiceName The linked service name.
-     * @param linkedService Linked service resource type.
+     * @param linkedService Linked service resource definition.
      * @param ifMatch ETag of the linkedService entity. Should only be specified for update, for which it should match
      *     existing entity or can be * for unconditional update.
      * @param context The context to associate with this operation.
@@ -182,5 +183,36 @@ public final class LinkedServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteLinkedServiceWithResponse(String linkedServiceName, Context context) {
         return this.serviceClient.deleteLinkedServiceWithResponse(linkedServiceName, context);
+    }
+
+    /**
+     * Renames a linked service.
+     *
+     * @param linkedServiceName The linked service name.
+     * @param request proposed new name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void renameLinkedService(String linkedServiceName, ArtifactRenameRequest request) {
+        this.serviceClient.renameLinkedService(linkedServiceName, request);
+    }
+
+    /**
+     * Renames a linked service.
+     *
+     * @param linkedServiceName The linked service name.
+     * @param request proposed new name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> renameLinkedServiceWithResponse(
+            String linkedServiceName, ArtifactRenameRequest request, Context context) {
+        return this.serviceClient.renameLinkedServiceWithResponse(linkedServiceName, request, context);
     }
 }

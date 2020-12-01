@@ -33,6 +33,8 @@ public final class MonitoringClientBuilder {
 
     private static final String SDK_VERSION = "version";
 
+    static final String[] DEFAULT_SCOPES = new String[] {"https://dev.azuresynapse.net/.default"};
+
     private final Map<String, String> properties = new HashMap<>();
 
     /** Create an instance of the MonitoringClientBuilder. */
@@ -211,7 +213,7 @@ public final class MonitoringClientBuilder {
         }
         List<HttpPipelinePolicy> policies = new ArrayList<>();
         if (tokenCredential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, "https://dev.azuresynapse.net/.default"));
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
         }
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");

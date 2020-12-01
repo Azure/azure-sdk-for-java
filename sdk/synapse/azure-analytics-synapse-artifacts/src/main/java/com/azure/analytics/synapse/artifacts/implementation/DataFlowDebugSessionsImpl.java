@@ -111,13 +111,15 @@ public final class DataFlowDebugSessionsImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
         Mono<Response<QueryDataFlowDebugSessionsResponse>> queryDataFlowDebugSessionsByWorkspaceNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                Context context);
     }
 
     /**
      * Creates a data flow debug session.
      *
-     * @param request Request body structure for creating data flow debug session.
+     * @param request Data flow debug session definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -135,7 +137,7 @@ public final class DataFlowDebugSessionsImpl {
     /**
      * Creates a data flow debug session.
      *
-     * @param request Request body structure for creating data flow debug session.
+     * @param request Data flow debug session definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -152,7 +154,7 @@ public final class DataFlowDebugSessionsImpl {
     /**
      * Creates a data flow debug session.
      *
-     * @param request Request body structure for creating data flow debug session.
+     * @param request Data flow debug session definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -175,7 +177,7 @@ public final class DataFlowDebugSessionsImpl {
     /**
      * Creates a data flow debug session.
      *
-     * @param request Request body structure for creating data flow debug session.
+     * @param request Data flow debug session definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -199,7 +201,7 @@ public final class DataFlowDebugSessionsImpl {
     /**
      * Creates a data flow debug session.
      *
-     * @param request Request body structure for creating data flow debug session.
+     * @param request Data flow debug session definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -213,7 +215,7 @@ public final class DataFlowDebugSessionsImpl {
     /**
      * Creates a data flow debug session.
      *
-     * @param request Request body structure for creating data flow debug session.
+     * @param request Data flow debug session definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -334,7 +336,7 @@ public final class DataFlowDebugSessionsImpl {
     /**
      * Add a data flow into debug session.
      *
-     * @param request Request body structure for starting data flow debug session.
+     * @param request Data flow debug session definition with debug content.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -351,7 +353,7 @@ public final class DataFlowDebugSessionsImpl {
     /**
      * Add a data flow into debug session.
      *
-     * @param request Request body structure for starting data flow debug session.
+     * @param request Data flow debug session definition with debug content.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -367,7 +369,7 @@ public final class DataFlowDebugSessionsImpl {
     /**
      * Add a data flow into debug session.
      *
-     * @param request Request body structure for starting data flow debug session.
+     * @param request Data flow debug session definition with debug content.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -389,7 +391,7 @@ public final class DataFlowDebugSessionsImpl {
     /**
      * Add a data flow into debug session.
      *
-     * @param request Request body structure for starting data flow debug session.
+     * @param request Data flow debug session definition with debug content.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -412,7 +414,7 @@ public final class DataFlowDebugSessionsImpl {
     /**
      * Add a data flow into debug session.
      *
-     * @param request Request body structure for starting data flow debug session.
+     * @param request Data flow debug session definition with debug content.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -426,7 +428,7 @@ public final class DataFlowDebugSessionsImpl {
     /**
      * Add a data flow into debug session.
      *
-     * @param request Request body structure for starting data flow debug session.
+     * @param request Data flow debug session definition with debug content.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -442,7 +444,7 @@ public final class DataFlowDebugSessionsImpl {
     /**
      * Deletes a data flow debug session.
      *
-     * @param request Request body structure for deleting data flow debug session.
+     * @param request Data flow debug session definition for deletion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -459,7 +461,7 @@ public final class DataFlowDebugSessionsImpl {
     /**
      * Deletes a data flow debug session.
      *
-     * @param request Request body structure for deleting data flow debug session.
+     * @param request Data flow debug session definition for deletion.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -476,7 +478,7 @@ public final class DataFlowDebugSessionsImpl {
     /**
      * Deletes a data flow debug session.
      *
-     * @param request Request body structure for deleting data flow debug session.
+     * @param request Data flow debug session definition for deletion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -490,7 +492,7 @@ public final class DataFlowDebugSessionsImpl {
     /**
      * Deletes a data flow debug session.
      *
-     * @param request Request body structure for deleting data flow debug session.
+     * @param request Data flow debug session definition for deletion.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -506,7 +508,7 @@ public final class DataFlowDebugSessionsImpl {
     /**
      * Deletes a data flow debug session.
      *
-     * @param request Request body structure for deleting data flow debug session.
+     * @param request Data flow debug session definition for deletion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -519,7 +521,7 @@ public final class DataFlowDebugSessionsImpl {
     /**
      * Deletes a data flow debug session.
      *
-     * @param request Request body structure for deleting data flow debug session.
+     * @param request Data flow debug session definition for deletion.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -535,7 +537,7 @@ public final class DataFlowDebugSessionsImpl {
     /**
      * Execute a data flow debug command.
      *
-     * @param request Request body structure for data flow expression preview.
+     * @param request Data flow debug command definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -553,7 +555,7 @@ public final class DataFlowDebugSessionsImpl {
     /**
      * Execute a data flow debug command.
      *
-     * @param request Request body structure for data flow expression preview.
+     * @param request Data flow debug command definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -569,7 +571,7 @@ public final class DataFlowDebugSessionsImpl {
     /**
      * Execute a data flow debug command.
      *
-     * @param request Request body structure for data flow expression preview.
+     * @param request Data flow debug command definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -591,7 +593,7 @@ public final class DataFlowDebugSessionsImpl {
     /**
      * Execute a data flow debug command.
      *
-     * @param request Request body structure for data flow expression preview.
+     * @param request Data flow debug command definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -615,7 +617,7 @@ public final class DataFlowDebugSessionsImpl {
     /**
      * Execute a data flow debug command.
      *
-     * @param request Request body structure for data flow expression preview.
+     * @param request Data flow debug command definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -629,7 +631,7 @@ public final class DataFlowDebugSessionsImpl {
     /**
      * Execute a data flow debug command.
      *
-     * @param request Request body structure for data flow expression preview.
+     * @param request Data flow debug command definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -654,7 +656,10 @@ public final class DataFlowDebugSessionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DataFlowDebugSessionInfo>> queryDataFlowDebugSessionsByWorkspaceNextSinglePageAsync(
             String nextLink) {
-        return FluxUtil.withContext(context -> service.queryDataFlowDebugSessionsByWorkspaceNext(nextLink, context))
+        return FluxUtil.withContext(
+                        context ->
+                                service.queryDataFlowDebugSessionsByWorkspaceNext(
+                                        nextLink, this.client.getEndpoint(), context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -679,7 +684,7 @@ public final class DataFlowDebugSessionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DataFlowDebugSessionInfo>> queryDataFlowDebugSessionsByWorkspaceNextSinglePageAsync(
             String nextLink, Context context) {
-        return service.queryDataFlowDebugSessionsByWorkspaceNext(nextLink, context)
+        return service.queryDataFlowDebugSessionsByWorkspaceNext(nextLink, this.client.getEndpoint(), context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(

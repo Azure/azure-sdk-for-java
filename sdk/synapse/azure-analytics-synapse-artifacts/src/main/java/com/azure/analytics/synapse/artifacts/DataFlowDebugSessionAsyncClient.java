@@ -41,7 +41,7 @@ public final class DataFlowDebugSessionAsyncClient {
     /**
      * Creates a data flow debug session.
      *
-     * @param request Request body structure for creating data flow debug session.
+     * @param request Data flow debug session definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -56,7 +56,7 @@ public final class DataFlowDebugSessionAsyncClient {
     /**
      * Creates a data flow debug session.
      *
-     * @param request Request body structure for creating data flow debug session.
+     * @param request Data flow debug session definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -95,7 +95,7 @@ public final class DataFlowDebugSessionAsyncClient {
     /**
      * Add a data flow into debug session.
      *
-     * @param request Request body structure for starting data flow debug session.
+     * @param request Data flow debug session definition with debug content.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -109,7 +109,7 @@ public final class DataFlowDebugSessionAsyncClient {
     /**
      * Add a data flow into debug session.
      *
-     * @param request Request body structure for starting data flow debug session.
+     * @param request Data flow debug session definition with debug content.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -123,7 +123,7 @@ public final class DataFlowDebugSessionAsyncClient {
     /**
      * Deletes a data flow debug session.
      *
-     * @param request Request body structure for deleting data flow debug session.
+     * @param request Data flow debug session definition for deletion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -137,7 +137,7 @@ public final class DataFlowDebugSessionAsyncClient {
     /**
      * Deletes a data flow debug session.
      *
-     * @param request Request body structure for deleting data flow debug session.
+     * @param request Data flow debug session definition for deletion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -151,7 +151,7 @@ public final class DataFlowDebugSessionAsyncClient {
     /**
      * Execute a data flow debug command.
      *
-     * @param request Request body structure for data flow expression preview.
+     * @param request Data flow debug command definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -166,7 +166,7 @@ public final class DataFlowDebugSessionAsyncClient {
     /**
      * Execute a data flow debug command.
      *
-     * @param request Request body structure for data flow expression preview.
+     * @param request Data flow debug command definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -180,7 +180,7 @@ public final class DataFlowDebugSessionAsyncClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink null
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

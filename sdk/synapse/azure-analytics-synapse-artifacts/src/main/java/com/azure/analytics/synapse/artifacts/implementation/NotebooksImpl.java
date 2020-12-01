@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.implementation;
 
+import com.azure.analytics.synapse.artifacts.models.ArtifactRenameRequest;
 import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
 import com.azure.analytics.synapse.artifacts.models.NotebookListResponse;
 import com.azure.analytics.synapse.artifacts.models.NotebookResource;
@@ -15,6 +16,7 @@ import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -99,17 +101,31 @@ public final class NotebooksImpl {
                 @QueryParam("api-version") String apiVersion,
                 Context context);
 
+        @Post("/notebooks/{notebookName}/rename")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(CloudErrorException.class)
+        Mono<Response<Void>> renameNotebook(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("notebookName") String notebookName,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") ArtifactRenameRequest request,
+                Context context);
+
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
         Mono<Response<NotebookListResponse>> getNotebooksByWorkspaceNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
         Mono<Response<NotebookListResponse>> getNotebookSummaryByWorkSpaceNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                Context context);
     }
 
     /**
@@ -322,7 +338,7 @@ public final class NotebooksImpl {
      * Creates or updates a Note Book.
      *
      * @param notebookName The notebook name.
-     * @param notebook Notebook resource type.
+     * @param notebook Note book resource definition.
      * @param ifMatch ETag of the Note book entity. Should only be specified for update, for which it should match
      *     existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -348,7 +364,7 @@ public final class NotebooksImpl {
      * Creates or updates a Note Book.
      *
      * @param notebookName The notebook name.
-     * @param notebook Notebook resource type.
+     * @param notebook Note book resource definition.
      * @param ifMatch ETag of the Note book entity. Should only be specified for update, for which it should match
      *     existing entity or can be * for unconditional update.
      * @param context The context to associate with this operation.
@@ -368,7 +384,7 @@ public final class NotebooksImpl {
      * Creates or updates a Note Book.
      *
      * @param notebookName The notebook name.
-     * @param notebook Notebook resource type.
+     * @param notebook Note book resource definition.
      * @param ifMatch ETag of the Note book entity. Should only be specified for update, for which it should match
      *     existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -394,7 +410,31 @@ public final class NotebooksImpl {
      * Creates or updates a Note Book.
      *
      * @param notebookName The notebook name.
-     * @param notebook Notebook resource type.
+     * @param notebook Note book resource definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return notebook resource type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<NotebookResource> createOrUpdateNotebookAsync(String notebookName, NotebookResource notebook) {
+        final String ifMatch = null;
+        return createOrUpdateNotebookWithResponseAsync(notebookName, notebook, ifMatch)
+                .flatMap(
+                        (Response<NotebookResource> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Creates or updates a Note Book.
+     *
+     * @param notebookName The notebook name.
+     * @param notebook Note book resource definition.
      * @param ifMatch ETag of the Note book entity. Should only be specified for update, for which it should match
      *     existing entity or can be * for unconditional update.
      * @param context The context to associate with this operation.
@@ -421,31 +461,7 @@ public final class NotebooksImpl {
      * Creates or updates a Note Book.
      *
      * @param notebookName The notebook name.
-     * @param notebook Notebook resource type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return notebook resource type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NotebookResource> createOrUpdateNotebookAsync(String notebookName, NotebookResource notebook) {
-        final String ifMatch = null;
-        return createOrUpdateNotebookWithResponseAsync(notebookName, notebook, ifMatch)
-                .flatMap(
-                        (Response<NotebookResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * Creates or updates a Note Book.
-     *
-     * @param notebookName The notebook name.
-     * @param notebook Notebook resource type.
+     * @param notebook Note book resource definition.
      * @param ifMatch ETag of the Note book entity. Should only be specified for update, for which it should match
      *     existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -462,7 +478,7 @@ public final class NotebooksImpl {
      * Creates or updates a Note Book.
      *
      * @param notebookName The notebook name.
-     * @param notebook Notebook resource type.
+     * @param notebook Note book resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -478,7 +494,7 @@ public final class NotebooksImpl {
      * Creates or updates a Note Book.
      *
      * @param notebookName The notebook name.
-     * @param notebook Notebook resource type.
+     * @param notebook Note book resource definition.
      * @param ifMatch ETag of the Note book entity. Should only be specified for update, for which it should match
      *     existing entity or can be * for unconditional update.
      * @param context The context to associate with this operation.
@@ -563,17 +579,15 @@ public final class NotebooksImpl {
      * Gets a Note Book.
      *
      * @param notebookName The notebook name.
-     * @param ifNoneMatch ETag of the Notebook entity. Should only be specified for get. If the ETag matches the
-     *     existing entity tag, or if * was provided, then no content will be returned.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Note Book.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NotebookResource> getNotebookAsync(String notebookName, String ifNoneMatch, Context context) {
-        return getNotebookWithResponseAsync(notebookName, ifNoneMatch, context)
+    public Mono<NotebookResource> getNotebookAsync(String notebookName) {
+        final String ifNoneMatch = null;
+        return getNotebookWithResponseAsync(notebookName, ifNoneMatch)
                 .flatMap(
                         (Response<NotebookResource> res) -> {
                             if (res.getValue() != null) {
@@ -588,15 +602,17 @@ public final class NotebooksImpl {
      * Gets a Note Book.
      *
      * @param notebookName The notebook name.
+     * @param ifNoneMatch ETag of the Notebook entity. Should only be specified for get. If the ETag matches the
+     *     existing entity tag, or if * was provided, then no content will be returned.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Note Book.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NotebookResource> getNotebookAsync(String notebookName) {
-        final String ifNoneMatch = null;
-        return getNotebookWithResponseAsync(notebookName, ifNoneMatch)
+    public Mono<NotebookResource> getNotebookAsync(String notebookName, String ifNoneMatch, Context context) {
+        return getNotebookWithResponseAsync(notebookName, ifNoneMatch, context)
                 .flatMap(
                         (Response<NotebookResource> res) -> {
                             if (res.getValue() != null) {
@@ -746,6 +762,109 @@ public final class NotebooksImpl {
     }
 
     /**
+     * Renames a notebook.
+     *
+     * @param notebookName The notebook name.
+     * @param request proposed new name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> renameNotebookWithResponseAsync(String notebookName, ArtifactRenameRequest request) {
+        return FluxUtil.withContext(
+                context ->
+                        service.renameNotebook(
+                                this.client.getEndpoint(),
+                                notebookName,
+                                this.client.getApiVersion(),
+                                request,
+                                context));
+    }
+
+    /**
+     * Renames a notebook.
+     *
+     * @param notebookName The notebook name.
+     * @param request proposed new name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> renameNotebookWithResponseAsync(
+            String notebookName, ArtifactRenameRequest request, Context context) {
+        return service.renameNotebook(
+                this.client.getEndpoint(), notebookName, this.client.getApiVersion(), request, context);
+    }
+
+    /**
+     * Renames a notebook.
+     *
+     * @param notebookName The notebook name.
+     * @param request proposed new name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> renameNotebookAsync(String notebookName, ArtifactRenameRequest request) {
+        return renameNotebookWithResponseAsync(notebookName, request).flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Renames a notebook.
+     *
+     * @param notebookName The notebook name.
+     * @param request proposed new name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> renameNotebookAsync(String notebookName, ArtifactRenameRequest request, Context context) {
+        return renameNotebookWithResponseAsync(notebookName, request, context)
+                .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Renames a notebook.
+     *
+     * @param notebookName The notebook name.
+     * @param request proposed new name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void renameNotebook(String notebookName, ArtifactRenameRequest request) {
+        renameNotebookAsync(notebookName, request).block();
+    }
+
+    /**
+     * Renames a notebook.
+     *
+     * @param notebookName The notebook name.
+     * @param request proposed new name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> renameNotebookWithResponse(
+            String notebookName, ArtifactRenameRequest request, Context context) {
+        return renameNotebookWithResponseAsync(notebookName, request, context).block();
+    }
+
+    /**
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
@@ -756,7 +875,8 @@ public final class NotebooksImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<NotebookResource>> getNotebooksByWorkspaceNextSinglePageAsync(String nextLink) {
-        return FluxUtil.withContext(context -> service.getNotebooksByWorkspaceNext(nextLink, context))
+        return FluxUtil.withContext(
+                        context -> service.getNotebooksByWorkspaceNext(nextLink, this.client.getEndpoint(), context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -781,7 +901,7 @@ public final class NotebooksImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<NotebookResource>> getNotebooksByWorkspaceNextSinglePageAsync(
             String nextLink, Context context) {
-        return service.getNotebooksByWorkspaceNext(nextLink, context)
+        return service.getNotebooksByWorkspaceNext(nextLink, this.client.getEndpoint(), context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -804,7 +924,9 @@ public final class NotebooksImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<NotebookResource>> getNotebookSummaryByWorkSpaceNextSinglePageAsync(String nextLink) {
-        return FluxUtil.withContext(context -> service.getNotebookSummaryByWorkSpaceNext(nextLink, context))
+        return FluxUtil.withContext(
+                        context ->
+                                service.getNotebookSummaryByWorkSpaceNext(nextLink, this.client.getEndpoint(), context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -829,7 +951,7 @@ public final class NotebooksImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<NotebookResource>> getNotebookSummaryByWorkSpaceNextSinglePageAsync(
             String nextLink, Context context) {
-        return service.getNotebookSummaryByWorkSpaceNext(nextLink, context)
+        return service.getNotebookSummaryByWorkSpaceNext(nextLink, this.client.getEndpoint(), context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(

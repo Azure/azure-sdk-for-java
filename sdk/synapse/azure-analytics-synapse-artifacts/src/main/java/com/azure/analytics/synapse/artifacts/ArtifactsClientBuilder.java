@@ -8,91 +8,209 @@ import com.azure.analytics.synapse.artifacts.implementation.ArtifactsClientImpl;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.AddDatePolicy;
-import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
-import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
-import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
-
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.time.temporal.ChronoUnit;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
-/**
- * A builder for creating a new instance of the ArtifactsClient type.
- */
-@ServiceClientBuilder(serviceClients = {
-    LinkedServiceAsyncClient.class,
-    DatasetAsyncClient.class,
-    PipelineAsyncClient.class,
-    PipelineRunAsyncClient.class,
-    TriggerAsyncClient.class,
-    TriggerRunAsyncClient.class,
-    DataFlowAsyncClient.class,
-    DataFlowDebugSessionAsyncClient.class,
-    SqlScriptAsyncClient.class,
-    SparkJobDefinitionAsyncClient.class,
-    NotebookAsyncClient.class,
-    LinkedServiceClient.class,
-    DatasetClient.class,
-    PipelineClient.class,
-    PipelineRunClient.class,
-    TriggerClient.class,
-    TriggerRunClient.class,
-    DataFlowClient.class,
-    DataFlowDebugSessionClient.class,
-    SqlScriptClient.class,
-    SparkJobDefinitionClient.class,
-    NotebookClient.class})
+/** A builder for creating a new instance of the ArtifactsClient type. */
+@ServiceClientBuilder(
+        serviceClients = {
+            LinkedServiceClient.class,
+            DatasetClient.class,
+            PipelineClient.class,
+            PipelineRunClient.class,
+            TriggerClient.class,
+            TriggerRunClient.class,
+            DataFlowClient.class,
+            DataFlowDebugSessionClient.class,
+            SqlScriptClient.class,
+            SparkJobDefinitionClient.class,
+            NotebookClient.class,
+            LinkedServiceAsyncClient.class,
+            DatasetAsyncClient.class,
+            PipelineAsyncClient.class,
+            PipelineRunAsyncClient.class,
+            TriggerAsyncClient.class,
+            TriggerRunAsyncClient.class,
+            DataFlowAsyncClient.class,
+            DataFlowDebugSessionAsyncClient.class,
+            SqlScriptAsyncClient.class,
+            SparkJobDefinitionAsyncClient.class,
+            NotebookAsyncClient.class
+        })
 public final class ArtifactsClientBuilder {
-    private static final String SYNAPSE_PROPERTIES = "azure-analytics-synapse-artifacts.properties";
-    private static final String NAME = "name";
-    private static final String VERSION = "version";
-    private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
-    static final String DEFAULT_SCOPE = "https://dev.azuresynapse.net/.default";
+    private static final String SDK_NAME = "name";
 
-    private final ClientLogger logger = new ClientLogger(ArtifactsClientBuilder.class);
-    private final List<HttpPipelinePolicy> policies;
-    private final HttpHeaders headers;
-    private final String clientName;
-    private final String clientVersion;
+    private static final String SDK_VERSION = "version";
 
-    private Configuration configuration;
+    static final String[] DEFAULT_SCOPES = new String[] {"https://dev.azuresynapse.net/.default"};
+
+    private final Map<String, String> properties = new HashMap<>();
+
+    /** Create an instance of the ArtifactsClientBuilder. */
+    public ArtifactsClientBuilder() {
+        this.pipelinePolicies = new ArrayList<>();
+    }
+
+    /*
+     * The workspace development endpoint, for example
+     * https://myworkspace.dev.azuresynapse.net.
+     */
     private String endpoint;
+
+    /**
+     * Sets The workspace development endpoint, for example https://myworkspace.dev.azuresynapse.net.
+     *
+     * @param endpoint the endpoint value.
+     * @return the ArtifactsClientBuilder.
+     */
+    public ArtifactsClientBuilder endpoint(String endpoint) {
+        this.endpoint = endpoint;
+        return this;
+    }
+
+    /*
+     * The HTTP pipeline to send requests through
+     */
+    private HttpPipeline pipeline;
+
+    /**
+     * Sets The HTTP pipeline to send requests through.
+     *
+     * @param pipeline the pipeline value.
+     * @return the ArtifactsClientBuilder.
+     */
+    public ArtifactsClientBuilder pipeline(HttpPipeline pipeline) {
+        this.pipeline = pipeline;
+        return this;
+    }
+
+    /*
+     * The serializer to serialize an object into a string
+     */
+    private SerializerAdapter serializerAdapter;
+
+    /**
+     * Sets The serializer to serialize an object into a string.
+     *
+     * @param serializerAdapter the serializerAdapter value.
+     * @return the ArtifactsClientBuilder.
+     */
+    public ArtifactsClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
+        this.serializerAdapter = serializerAdapter;
+        return this;
+    }
+
+    /*
+     * The HTTP client used to send the request.
+     */
     private HttpClient httpClient;
-    private HttpLogOptions httpLogOptions;
-    private HttpPipeline httpPipeline;
-    private RetryPolicy retryPolicy;
+
+    /**
+     * Sets The HTTP client used to send the request.
+     *
+     * @param httpClient the httpClient value.
+     * @return the ArtifactsClientBuilder.
+     */
+    public ArtifactsClientBuilder httpClient(HttpClient httpClient) {
+        this.httpClient = httpClient;
+        return this;
+    }
+
+    /*
+     * The configuration store that is used during construction of the service
+     * client.
+     */
+    private Configuration configuration;
+
+    /**
+     * Sets The configuration store that is used during construction of the service client.
+     *
+     * @param configuration the configuration value.
+     * @return the ArtifactsClientBuilder.
+     */
+    public ArtifactsClientBuilder configuration(Configuration configuration) {
+        this.configuration = configuration;
+        return this;
+    }
+
+    /*
+     * The TokenCredential used for authentication.
+     */
     private TokenCredential tokenCredential;
 
     /**
-     * The constructor with defaults.
+     * Sets The TokenCredential used for authentication.
+     *
+     * @param tokenCredential the tokenCredential value.
+     * @return the ArtifactsClientBuilder.
      */
-    public ArtifactsClientBuilder() {
-        policies = new ArrayList<>();
-        httpLogOptions = new HttpLogOptions();
+    public ArtifactsClientBuilder credential(TokenCredential tokenCredential) {
+        this.tokenCredential = tokenCredential;
+        return this;
+    }
 
-        Map<String, String> properties = CoreUtils.getProperties(SYNAPSE_PROPERTIES);
-        clientName = properties.getOrDefault(NAME, "UnknownName");
-        clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
+    /*
+     * The logging configuration for HTTP requests and responses.
+     */
+    private HttpLogOptions httpLogOptions;
 
-        headers = new HttpHeaders();
+    /**
+     * Sets The logging configuration for HTTP requests and responses.
+     *
+     * @param httpLogOptions the httpLogOptions value.
+     * @return the ArtifactsClientBuilder.
+     */
+    public ArtifactsClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
+        this.httpLogOptions = httpLogOptions;
+        return this;
+    }
+
+    /*
+     * The retry policy that will attempt to retry failed requests, if
+     * applicable.
+     */
+    private RetryPolicy retryPolicy;
+
+    /**
+     * Sets The retry policy that will attempt to retry failed requests, if applicable.
+     *
+     * @param retryPolicy the retryPolicy value.
+     * @return the ArtifactsClientBuilder.
+     */
+    public ArtifactsClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+        this.retryPolicy = retryPolicy;
+        return this;
+    }
+
+    /*
+     * The list of Http pipeline policies to add.
+     */
+    private List<HttpPipelinePolicy> pipelinePolicies;
+
+    /**
+     * Adds a custom Http pipeline policy.
+     *
+     * @param customPolicy The custom Http pipeline policy to add.
+     * @return the ArtifactsClientBuilder.
+     */
+    public ArtifactsClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
+        pipelinePolicies.add(customPolicy);
+        return this;
     }
 
     /**
@@ -101,173 +219,42 @@ public final class ArtifactsClientBuilder {
      * @return an instance of ArtifactsClientImpl.
      */
     private ArtifactsClientImpl buildInnerClient() {
-        // Global Env configuration store
-        final Configuration buildConfiguration = (configuration == null)
-            ? Configuration.getGlobalConfiguration().clone() : configuration;
-
-        // Endpoint cannot be null, which is required in request authentication
-        Objects.requireNonNull(endpoint, "'Endpoint' is required and can not be null.");
-
-        HttpPipeline pipeline = httpPipeline;
-        // Create a default Pipeline if it is not given
         if (pipeline == null) {
-            // Closest to API goes first, closest to wire goes last.
-            final List<HttpPipelinePolicy> policies = new ArrayList<>();
-
-            policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
-                buildConfiguration));
-            policies.add(new RequestIdPolicy());
-            policies.add(new AddHeadersPolicy(headers));
-
-            HttpPolicyProviders.addBeforeRetryPolicies(policies);
-
-            policies.add(retryPolicy == null ? DEFAULT_RETRY_POLICY : retryPolicy);
-
-            policies.add(new AddDatePolicy());
-            // Authentications
-            if (tokenCredential != null) {
-                // User token based policy
-                policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPE));
-            } else {
-                // Throw exception that credential and tokenCredential cannot be null
-                throw logger.logExceptionAsError(
-                    new IllegalArgumentException("Missing credential information while building a client."));
-            }
-
-            policies.addAll(this.policies);
-            HttpPolicyProviders.addAfterRetryPolicies(policies);
-
-            policies.add(new HttpLoggingPolicy(httpLogOptions));
-
-            pipeline = new HttpPipelineBuilder()
-                .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                .httpClient(httpClient)
-                .build();
+            this.pipeline = createHttpPipeline();
         }
-
-        return new ArtifactsClientImpl(pipeline, endpoint);
-    }
-
-    /**
-     * Sets the service endpoint for the Azure Synapse Analytics instance.
-     *
-     * @param endpoint The URL of the Azure Synapse Analytics instance service requests to and receive responses from.
-     * @return The updated {@link ArtifactsClientBuilder} object.
-     * @throws NullPointerException if {@code endpoint} is null
-     * @throws IllegalArgumentException if {@code endpoint} cannot be parsed into a valid URL.
-     */
-    public ArtifactsClientBuilder endpoint(String endpoint) {
-        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
-
-        try {
-            new URL(endpoint);
-        } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL.", ex));
+        if (serializerAdapter == null) {
+            this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
+        ArtifactsClientImpl client = new ArtifactsClientImpl(pipeline, serializerAdapter, endpoint);
+        return client;
+    }
 
-        if (endpoint.endsWith("/")) {
-            this.endpoint = endpoint.substring(0, endpoint.length() - 1);
-        } else {
-            this.endpoint = endpoint;
+    private HttpPipeline createHttpPipeline() {
+        Configuration buildConfiguration =
+                (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        if (httpLogOptions == null) {
+            httpLogOptions = new HttpLogOptions();
         }
-
-        return this;
-    }
-
-    /**
-     * Sets the {@link TokenCredential} used to authenticate HTTP requests.
-     *
-     * @param tokenCredential {@link TokenCredential} used to authenticate HTTP requests.
-     * @return The updated {@link ArtifactsClientBuilder} object.
-     * @throws NullPointerException If {@code tokenCredential} is {@code null}.
-     */
-    public ArtifactsClientBuilder credential(TokenCredential tokenCredential) {
-        Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
-        this.tokenCredential = tokenCredential;
-        return this;
-    }
-
-    /**
-     * Sets the logging configuration for HTTP requests and responses.
-     *
-     * <p> If logLevel is not provided, default value of {@link HttpLogDetailLevel#NONE} is set. </p>
-     *
-     * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
-     * @return The updated {@link ArtifactsClientBuilder} object.
-     */
-    public ArtifactsClientBuilder httpLogOptions(HttpLogOptions logOptions) {
-        this.httpLogOptions = logOptions;
-        return this;
-    }
-
-    /**
-     * Adds a policy to the set of existing policies that are executed after required policies.
-     *
-     * @param policy The retry policy for service requests.
-     * @return The updated {@link ArtifactsClientBuilder} object.
-     * @throws NullPointerException If {@code policy} is {@code null}.
-     */
-    public ArtifactsClientBuilder addPolicy(HttpPipelinePolicy policy) {
-        policies.add(Objects.requireNonNull(policy, "'policy' cannot be null."));
-        return this;
-    }
-
-    /**
-     * Sets the HTTP client to use for sending and receiving requests to and from the service.
-     *
-     * @param client The HTTP client to use for requests.
-     * @return The updated {@link ArtifactsClientBuilder} object.
-     */
-    public ArtifactsClientBuilder httpClient(HttpClient client) {
-        if (this.httpClient != null && client == null) {
-            logger.info("HttpClient is being set to 'null' when it was previously configured.");
+        List<HttpPipelinePolicy> policies = new ArrayList<>();
+        if (tokenCredential != null) {
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
         }
-
-        this.httpClient = client;
-        return this;
-    }
-
-    /**
-     * Sets the HTTP pipeline to use for the service client.
-     * <p>
-     * If {@code pipeline} is set, all other settings are ignored, aside from {@link
-     * ArtifactsClientBuilder#endpoint(String) endpoint}
-     *
-     * @param httpPipeline The HTTP pipeline to use for sending service requests and receiving responses.
-     * @return The updated {@link ArtifactsClientBuilder} object.
-     */
-    public ArtifactsClientBuilder pipeline(HttpPipeline httpPipeline) {
-        if (this.httpPipeline != null && httpPipeline == null) {
-            logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
-        }
-
-        this.httpPipeline = httpPipeline;
-        return this;
-    }
-
-    /**
-     * Sets the configuration store that is used during construction of the service client.
-     * <p>
-     * The default configuration store is a clone of the {@link Configuration#getGlobalConfiguration() global
-     * configuration store}, use {@link Configuration#NONE} to bypass using configuration settings during construction.
-     *
-     * @param configuration The configuration store used to
-     * @return The updated {@link ArtifactsClientBuilder} object.
-     */
-    public ArtifactsClientBuilder configuration(Configuration configuration) {
-        this.configuration = configuration;
-        return this;
-    }
-
-    /**
-     * Sets the {@link RetryPolicy} that is used when each request is sent.
-     *
-     * @param retryPolicy user's retry policy applied to each request.
-     * @return The updated {@link ArtifactsClientBuilder} object.
-     */
-    public ArtifactsClientBuilder retryPolicy(RetryPolicy retryPolicy) {
-        this.retryPolicy = retryPolicy;
-        return this;
+        String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
+        String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
+        policies.add(
+                new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion, buildConfiguration));
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
+        policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
+        policies.add(new CookiePolicy());
+        policies.addAll(this.pipelinePolicies);
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
+        policies.add(new HttpLoggingPolicy(httpLogOptions));
+        HttpPipeline httpPipeline =
+                new HttpPipelineBuilder()
+                        .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                        .httpClient(httpClient)
+                        .build();
+        return httpPipeline;
     }
 
     /**

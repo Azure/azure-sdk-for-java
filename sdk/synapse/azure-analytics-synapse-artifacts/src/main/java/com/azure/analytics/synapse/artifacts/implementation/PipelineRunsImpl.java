@@ -96,7 +96,7 @@ public final class PipelineRunsImpl {
     /**
      * Query pipeline runs in the workspace based on input filter conditions.
      *
-     * @param filterParameters Query parameters for listing runs.
+     * @param filterParameters Parameters to filter the pipeline run.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -114,7 +114,7 @@ public final class PipelineRunsImpl {
     /**
      * Query pipeline runs in the workspace based on input filter conditions.
      *
-     * @param filterParameters Query parameters for listing runs.
+     * @param filterParameters Parameters to filter the pipeline run.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -131,7 +131,7 @@ public final class PipelineRunsImpl {
     /**
      * Query pipeline runs in the workspace based on input filter conditions.
      *
-     * @param filterParameters Query parameters for listing runs.
+     * @param filterParameters Parameters to filter the pipeline run.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -153,7 +153,7 @@ public final class PipelineRunsImpl {
     /**
      * Query pipeline runs in the workspace based on input filter conditions.
      *
-     * @param filterParameters Query parameters for listing runs.
+     * @param filterParameters Parameters to filter the pipeline run.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -177,7 +177,7 @@ public final class PipelineRunsImpl {
     /**
      * Query pipeline runs in the workspace based on input filter conditions.
      *
-     * @param filterParameters Query parameters for listing runs.
+     * @param filterParameters Parameters to filter the pipeline run.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -191,7 +191,7 @@ public final class PipelineRunsImpl {
     /**
      * Query pipeline runs in the workspace based on input filter conditions.
      *
-     * @param filterParameters Query parameters for listing runs.
+     * @param filterParameters Parameters to filter the pipeline run.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -314,7 +314,7 @@ public final class PipelineRunsImpl {
      *
      * @param pipelineName The pipeline name.
      * @param runId The pipeline run identifier.
-     * @param filterParameters Query parameters for listing runs.
+     * @param filterParameters Parameters to filter the activity runs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -339,7 +339,7 @@ public final class PipelineRunsImpl {
      *
      * @param pipelineName The pipeline name.
      * @param runId The pipeline run identifier.
-     * @param filterParameters Query parameters for listing runs.
+     * @param filterParameters Parameters to filter the activity runs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -358,7 +358,7 @@ public final class PipelineRunsImpl {
      *
      * @param pipelineName The pipeline name.
      * @param runId The pipeline run identifier.
-     * @param filterParameters Query parameters for listing runs.
+     * @param filterParameters Parameters to filter the activity runs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -383,7 +383,7 @@ public final class PipelineRunsImpl {
      *
      * @param pipelineName The pipeline name.
      * @param runId The pipeline run identifier.
-     * @param filterParameters Query parameters for listing runs.
+     * @param filterParameters Parameters to filter the activity runs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -409,7 +409,7 @@ public final class PipelineRunsImpl {
      *
      * @param pipelineName The pipeline name.
      * @param runId The pipeline run identifier.
-     * @param filterParameters Query parameters for listing runs.
+     * @param filterParameters Parameters to filter the activity runs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -426,7 +426,7 @@ public final class PipelineRunsImpl {
      *
      * @param pipelineName The pipeline name.
      * @param runId The pipeline run identifier.
-     * @param filterParameters Query parameters for listing runs.
+     * @param filterParameters Parameters to filter the activity runs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -493,6 +493,21 @@ public final class PipelineRunsImpl {
      * Cancel a pipeline run by its run ID.
      *
      * @param runId The pipeline run identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> cancelPipelineRunAsync(String runId) {
+        final Boolean isRecursive = null;
+        return cancelPipelineRunWithResponseAsync(runId, isRecursive).flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Cancel a pipeline run by its run ID.
+     *
+     * @param runId The pipeline run identifier.
      * @param isRecursive If true, cancel all the Child pipelines that are triggered by the current pipeline.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -504,21 +519,6 @@ public final class PipelineRunsImpl {
     public Mono<Void> cancelPipelineRunAsync(String runId, Boolean isRecursive, Context context) {
         return cancelPipelineRunWithResponseAsync(runId, isRecursive, context)
                 .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Cancel a pipeline run by its run ID.
-     *
-     * @param runId The pipeline run identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> cancelPipelineRunAsync(String runId) {
-        final Boolean isRecursive = null;
-        return cancelPipelineRunWithResponseAsync(runId, isRecursive).flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**

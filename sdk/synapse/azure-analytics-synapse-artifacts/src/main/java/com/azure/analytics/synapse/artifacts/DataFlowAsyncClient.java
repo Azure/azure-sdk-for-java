@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts;
 
 import com.azure.analytics.synapse.artifacts.implementation.DataFlowsImpl;
+import com.azure.analytics.synapse.artifacts.models.ArtifactRenameRequest;
 import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
 import com.azure.analytics.synapse.artifacts.models.DataFlowResource;
 import com.azure.core.annotation.ReturnType;
@@ -33,7 +34,7 @@ public final class DataFlowAsyncClient {
      * Creates or updates a data flow.
      *
      * @param dataFlowName The data flow name.
-     * @param dataFlow Data flow resource type.
+     * @param dataFlow Data flow resource definition.
      * @param ifMatch ETag of the data flow entity. Should only be specified for update, for which it should match
      *     existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -51,7 +52,7 @@ public final class DataFlowAsyncClient {
      * Creates or updates a data flow.
      *
      * @param dataFlowName The data flow name.
-     * @param dataFlow Data flow resource type.
+     * @param dataFlow Data flow resource definition.
      * @param ifMatch ETag of the data flow entity. Should only be specified for update, for which it should match
      *     existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -69,7 +70,7 @@ public final class DataFlowAsyncClient {
      * Creates or updates a data flow.
      *
      * @param dataFlowName The data flow name.
-     * @param dataFlow Data flow resource type.
+     * @param dataFlow Data flow resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -155,6 +156,36 @@ public final class DataFlowAsyncClient {
     }
 
     /**
+     * Renames a dataflow.
+     *
+     * @param dataFlowName The data flow name.
+     * @param request proposed new name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> renameDataFlowWithResponse(String dataFlowName, ArtifactRenameRequest request) {
+        return this.serviceClient.renameDataFlowWithResponseAsync(dataFlowName, request);
+    }
+
+    /**
+     * Renames a dataflow.
+     *
+     * @param dataFlowName The data flow name.
+     * @param request proposed new name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> renameDataFlow(String dataFlowName, ArtifactRenameRequest request) {
+        return this.serviceClient.renameDataFlowAsync(dataFlowName, request);
+    }
+
+    /**
      * Lists data flows.
      *
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -181,7 +212,7 @@ public final class DataFlowAsyncClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink null
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

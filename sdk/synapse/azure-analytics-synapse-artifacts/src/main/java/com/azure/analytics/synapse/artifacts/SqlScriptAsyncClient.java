@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts;
 
 import com.azure.analytics.synapse.artifacts.implementation.SqlScriptsImpl;
+import com.azure.analytics.synapse.artifacts.models.ArtifactRenameRequest;
 import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
 import com.azure.analytics.synapse.artifacts.models.SqlScriptResource;
 import com.azure.core.annotation.ReturnType;
@@ -57,7 +58,7 @@ public final class SqlScriptAsyncClient {
      * Creates or updates a Sql Script.
      *
      * @param sqlScriptName The sql script name.
-     * @param sqlScript Sql Script resource type.
+     * @param sqlScript Sql Script resource definition.
      * @param ifMatch ETag of the SQL script entity. Should only be specified for update, for which it should match
      *     existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -75,7 +76,7 @@ public final class SqlScriptAsyncClient {
      * Creates or updates a Sql Script.
      *
      * @param sqlScriptName The sql script name.
-     * @param sqlScript Sql Script resource type.
+     * @param sqlScript Sql Script resource definition.
      * @param ifMatch ETag of the SQL script entity. Should only be specified for update, for which it should match
      *     existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -93,7 +94,7 @@ public final class SqlScriptAsyncClient {
      * Creates or updates a Sql Script.
      *
      * @param sqlScriptName The sql script name.
-     * @param sqlScript Sql Script resource type.
+     * @param sqlScript Sql Script resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -179,9 +180,39 @@ public final class SqlScriptAsyncClient {
     }
 
     /**
+     * Renames a sqlScript.
+     *
+     * @param sqlScriptName The sql script name.
+     * @param request proposed new name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> renameSqlScriptWithResponse(String sqlScriptName, ArtifactRenameRequest request) {
+        return this.serviceClient.renameSqlScriptWithResponseAsync(sqlScriptName, request);
+    }
+
+    /**
+     * Renames a sqlScript.
+     *
+     * @param sqlScriptName The sql script name.
+     * @param request proposed new name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> renameSqlScript(String sqlScriptName, ArtifactRenameRequest request) {
+        return this.serviceClient.renameSqlScriptAsync(sqlScriptName, request);
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink null
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

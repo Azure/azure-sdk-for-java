@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("SparkJob")
 @JsonFlatten
 @Fluent
-public class SynapseSparkJobDefinitionActivity extends Activity {
+public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
     /*
      * Synapse spark job reference.
      */

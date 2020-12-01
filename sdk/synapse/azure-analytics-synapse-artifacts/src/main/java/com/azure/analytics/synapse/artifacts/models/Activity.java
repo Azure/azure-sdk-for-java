@@ -37,8 +37,6 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "SetVariable", value = SetVariableActivity.class),
     @JsonSubTypes.Type(name = "AppendVariable", value = AppendVariableActivity.class),
     @JsonSubTypes.Type(name = "WebHook", value = WebHookActivity.class),
-    @JsonSubTypes.Type(name = "SynapseNotebook", value = SynapseNotebookActivity.class),
-    @JsonSubTypes.Type(name = "SparkJob", value = SynapseSparkJobDefinitionActivity.class),
     @JsonSubTypes.Type(name = "SqlPoolStoredProcedure", value = SqlPoolStoredProcedureActivity.class)
 })
 @Fluent

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts;
 
 import com.azure.analytics.synapse.artifacts.implementation.NotebooksImpl;
+import com.azure.analytics.synapse.artifacts.models.ArtifactRenameRequest;
 import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
 import com.azure.analytics.synapse.artifacts.models.NotebookResource;
 import com.azure.core.annotation.ReturnType;
@@ -84,7 +85,7 @@ public final class NotebookClient {
      * Creates or updates a Note Book.
      *
      * @param notebookName The notebook name.
-     * @param notebook Notebook resource type.
+     * @param notebook Note book resource definition.
      * @param ifMatch ETag of the Note book entity. Should only be specified for update, for which it should match
      *     existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -101,7 +102,7 @@ public final class NotebookClient {
      * Creates or updates a Note Book.
      *
      * @param notebookName The notebook name.
-     * @param notebook Notebook resource type.
+     * @param notebook Note book resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -116,7 +117,7 @@ public final class NotebookClient {
      * Creates or updates a Note Book.
      *
      * @param notebookName The notebook name.
-     * @param notebook Notebook resource type.
+     * @param notebook Note book resource definition.
      * @param ifMatch ETag of the Note book entity. Should only be specified for update, for which it should match
      *     existing entity or can be * for unconditional update.
      * @param context The context to associate with this operation.
@@ -205,5 +206,36 @@ public final class NotebookClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteNotebookWithResponse(String notebookName, Context context) {
         return this.serviceClient.deleteNotebookWithResponse(notebookName, context);
+    }
+
+    /**
+     * Renames a notebook.
+     *
+     * @param notebookName The notebook name.
+     * @param request proposed new name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void renameNotebook(String notebookName, ArtifactRenameRequest request) {
+        this.serviceClient.renameNotebook(notebookName, request);
+    }
+
+    /**
+     * Renames a notebook.
+     *
+     * @param notebookName The notebook name.
+     * @param request proposed new name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> renameNotebookWithResponse(
+            String notebookName, ArtifactRenameRequest request, Context context) {
+        return this.serviceClient.renameNotebookWithResponse(notebookName, request, context);
     }
 }

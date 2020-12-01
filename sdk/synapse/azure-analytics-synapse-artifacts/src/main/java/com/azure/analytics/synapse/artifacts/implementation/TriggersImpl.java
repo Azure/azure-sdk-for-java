@@ -143,7 +143,9 @@ public final class TriggersImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
         Mono<Response<TriggerListResponse>> getTriggersByWorkspaceNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                Context context);
     }
 
     /**
@@ -253,7 +255,7 @@ public final class TriggersImpl {
      * Creates or updates a trigger.
      *
      * @param triggerName The trigger name.
-     * @param trigger Trigger resource type.
+     * @param trigger Trigger resource definition.
      * @param ifMatch ETag of the trigger entity. Should only be specified for update, for which it should match
      *     existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -279,7 +281,7 @@ public final class TriggersImpl {
      * Creates or updates a trigger.
      *
      * @param triggerName The trigger name.
-     * @param trigger Trigger resource type.
+     * @param trigger Trigger resource definition.
      * @param ifMatch ETag of the trigger entity. Should only be specified for update, for which it should match
      *     existing entity or can be * for unconditional update.
      * @param context The context to associate with this operation.
@@ -299,7 +301,7 @@ public final class TriggersImpl {
      * Creates or updates a trigger.
      *
      * @param triggerName The trigger name.
-     * @param trigger Trigger resource type.
+     * @param trigger Trigger resource definition.
      * @param ifMatch ETag of the trigger entity. Should only be specified for update, for which it should match
      *     existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -325,7 +327,31 @@ public final class TriggersImpl {
      * Creates or updates a trigger.
      *
      * @param triggerName The trigger name.
-     * @param trigger Trigger resource type.
+     * @param trigger Trigger resource definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return trigger resource type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TriggerResource> createOrUpdateTriggerAsync(String triggerName, TriggerResource trigger) {
+        final String ifMatch = null;
+        return createOrUpdateTriggerWithResponseAsync(triggerName, trigger, ifMatch)
+                .flatMap(
+                        (Response<TriggerResource> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Creates or updates a trigger.
+     *
+     * @param triggerName The trigger name.
+     * @param trigger Trigger resource definition.
      * @param ifMatch ETag of the trigger entity. Should only be specified for update, for which it should match
      *     existing entity or can be * for unconditional update.
      * @param context The context to associate with this operation.
@@ -352,31 +378,7 @@ public final class TriggersImpl {
      * Creates or updates a trigger.
      *
      * @param triggerName The trigger name.
-     * @param trigger Trigger resource type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return trigger resource type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TriggerResource> createOrUpdateTriggerAsync(String triggerName, TriggerResource trigger) {
-        final String ifMatch = null;
-        return createOrUpdateTriggerWithResponseAsync(triggerName, trigger, ifMatch)
-                .flatMap(
-                        (Response<TriggerResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * Creates or updates a trigger.
-     *
-     * @param triggerName The trigger name.
-     * @param trigger Trigger resource type.
+     * @param trigger Trigger resource definition.
      * @param ifMatch ETag of the trigger entity. Should only be specified for update, for which it should match
      *     existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -393,7 +395,7 @@ public final class TriggersImpl {
      * Creates or updates a trigger.
      *
      * @param triggerName The trigger name.
-     * @param trigger Trigger resource type.
+     * @param trigger Trigger resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -409,7 +411,7 @@ public final class TriggersImpl {
      * Creates or updates a trigger.
      *
      * @param triggerName The trigger name.
-     * @param trigger Trigger resource type.
+     * @param trigger Trigger resource definition.
      * @param ifMatch ETag of the trigger entity. Should only be specified for update, for which it should match
      *     existing entity or can be * for unconditional update.
      * @param context The context to associate with this operation.
@@ -494,17 +496,15 @@ public final class TriggersImpl {
      * Gets a trigger.
      *
      * @param triggerName The trigger name.
-     * @param ifNoneMatch ETag of the trigger entity. Should only be specified for get. If the ETag matches the existing
-     *     entity tag, or if * was provided, then no content will be returned.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a trigger.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TriggerResource> getTriggerAsync(String triggerName, String ifNoneMatch, Context context) {
-        return getTriggerWithResponseAsync(triggerName, ifNoneMatch, context)
+    public Mono<TriggerResource> getTriggerAsync(String triggerName) {
+        final String ifNoneMatch = null;
+        return getTriggerWithResponseAsync(triggerName, ifNoneMatch)
                 .flatMap(
                         (Response<TriggerResource> res) -> {
                             if (res.getValue() != null) {
@@ -519,15 +519,17 @@ public final class TriggersImpl {
      * Gets a trigger.
      *
      * @param triggerName The trigger name.
+     * @param ifNoneMatch ETag of the trigger entity. Should only be specified for get. If the ETag matches the existing
+     *     entity tag, or if * was provided, then no content will be returned.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a trigger.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TriggerResource> getTriggerAsync(String triggerName) {
-        final String ifNoneMatch = null;
-        return getTriggerWithResponseAsync(triggerName, ifNoneMatch)
+    public Mono<TriggerResource> getTriggerAsync(String triggerName, String ifNoneMatch, Context context) {
+        return getTriggerWithResponseAsync(triggerName, ifNoneMatch, context)
                 .flatMap(
                         (Response<TriggerResource> res) -> {
                             if (res.getValue() != null) {
@@ -1196,7 +1198,8 @@ public final class TriggersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<TriggerResource>> getTriggersByWorkspaceNextSinglePageAsync(String nextLink) {
-        return FluxUtil.withContext(context -> service.getTriggersByWorkspaceNext(nextLink, context))
+        return FluxUtil.withContext(
+                        context -> service.getTriggersByWorkspaceNext(nextLink, this.client.getEndpoint(), context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -1221,7 +1224,7 @@ public final class TriggersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<TriggerResource>> getTriggersByWorkspaceNextSinglePageAsync(
             String nextLink, Context context) {
-        return service.getTriggersByWorkspaceNext(nextLink, context)
+        return service.getTriggersByWorkspaceNext(nextLink, this.client.getEndpoint(), context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(

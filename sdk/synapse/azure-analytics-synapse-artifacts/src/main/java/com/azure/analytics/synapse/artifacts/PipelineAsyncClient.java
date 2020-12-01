@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts;
 
 import com.azure.analytics.synapse.artifacts.implementation.PipelinesImpl;
+import com.azure.analytics.synapse.artifacts.models.ArtifactRenameRequest;
 import com.azure.analytics.synapse.artifacts.models.CloudErrorException;
 import com.azure.analytics.synapse.artifacts.models.CreateRunResponse;
 import com.azure.analytics.synapse.artifacts.models.PipelineResource;
@@ -59,7 +60,7 @@ public final class PipelineAsyncClient {
      * Creates or updates a pipeline.
      *
      * @param pipelineName The pipeline name.
-     * @param pipeline Pipeline resource type.
+     * @param pipeline Pipeline resource definition.
      * @param ifMatch ETag of the pipeline entity. Should only be specified for update, for which it should match
      *     existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -77,7 +78,7 @@ public final class PipelineAsyncClient {
      * Creates or updates a pipeline.
      *
      * @param pipelineName The pipeline name.
-     * @param pipeline Pipeline resource type.
+     * @param pipeline Pipeline resource definition.
      * @param ifMatch ETag of the pipeline entity. Should only be specified for update, for which it should match
      *     existing entity or can be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -95,7 +96,7 @@ public final class PipelineAsyncClient {
      * Creates or updates a pipeline.
      *
      * @param pipelineName The pipeline name.
-     * @param pipeline Pipeline resource type.
+     * @param pipeline Pipeline resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -181,6 +182,36 @@ public final class PipelineAsyncClient {
     }
 
     /**
+     * Renames a pipeline.
+     *
+     * @param pipelineName The pipeline name.
+     * @param request proposed new name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> renamePipelineWithResponse(String pipelineName, ArtifactRenameRequest request) {
+        return this.serviceClient.renamePipelineWithResponseAsync(pipelineName, request);
+    }
+
+    /**
+     * Renames a pipeline.
+     *
+     * @param pipelineName The pipeline name.
+     * @param request proposed new name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> renamePipeline(String pipelineName, ArtifactRenameRequest request) {
+        return this.serviceClient.renamePipelineAsync(pipelineName, request);
+    }
+
+    /**
      * Creates a run of a pipeline.
      *
      * @param pipelineName The pipeline name.
@@ -190,7 +221,8 @@ public final class PipelineAsyncClient {
      *     the new run will be grouped under the same groupId.
      * @param startActivityName In recovery mode, the rerun will start from this activity. If not specified, all
      *     activities will run.
-     * @param parameters An object mapping parameter names to argument values.
+     * @param parameters Parameters of the pipeline run. These parameters will be used only if the runId is not
+     *     specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -217,7 +249,8 @@ public final class PipelineAsyncClient {
      *     the new run will be grouped under the same groupId.
      * @param startActivityName In recovery mode, the rerun will start from this activity. If not specified, all
      *     activities will run.
-     * @param parameters An object mapping parameter names to argument values.
+     * @param parameters Parameters of the pipeline run. These parameters will be used only if the runId is not
+     *     specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -251,7 +284,7 @@ public final class PipelineAsyncClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink null
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
