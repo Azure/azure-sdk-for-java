@@ -123,8 +123,8 @@ participants.add(secondParticipant);
 CreateChatThreadOptions createChatThreadOptions = new CreateChatThreadOptions()
     .setTopic("Topic")
     .setParticipants(participants);
-ChatThreadClient chatThreadClient = chatClient.createChatThread(createChatThreadOptions);
-String chatThreadId = chatThreadClient.getChatThreadId();
+CreateChatThreadResult result = chatClient.createChatThread(createChatThreadOptions);
+String chatThreadId = result.getThread().getId();
 ```
 
 #### Get a chat thread
