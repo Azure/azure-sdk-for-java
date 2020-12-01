@@ -151,7 +151,7 @@ public final class RequestTimeline implements Iterable<RequestTimeline.Event> {
         return RntbdObjectMapper.toString(this);
     }
 
-    @JsonPropertyOrder({ "name", "startTimeUTC","durationInMicroSec" })
+    @JsonPropertyOrder({ "name", "startTimeUTC", "durationInMicroSec" })
     public static final class Event {
 
         @JsonIgnore
