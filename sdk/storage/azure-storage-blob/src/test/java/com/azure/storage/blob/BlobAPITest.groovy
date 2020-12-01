@@ -1092,7 +1092,8 @@ class BlobAPITest extends APISpec {
         bc.getProperties()
 
         then:
-        thrown(BlobStorageException)
+        def ex = thrown(BlobStorageException)
+        ex.getMessage().contains("BlobNotFound")
     }
 
     def "Set HTTP headers null"() {
