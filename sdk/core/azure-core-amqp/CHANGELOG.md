@@ -1,5 +1,8 @@
 # Release History
 
+## 2.1.0-beta.1 (Unreleased)
+
+
 ## 2.0.0 (2020-11-30)
 ### New Features
 - Added 'AmqpAddress' as a type to support 'AmqpMessageProperties#replyTo' and 'AmqpMessageProperties#to' properties.
