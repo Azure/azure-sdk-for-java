@@ -5,8 +5,8 @@ This sample project demonstrates how to use Azure Cosmos DB via Spring Boot Star
 
 ## Getting started
 
-### Environment setup
-We need to ensure that this [environment setup][environment-setup] is completed before the run.
+### Environment checklist
+We need to ensure that this [environment checklist][ready-to-run-checklist] is completed before the run.
 
 ### Create an Azure Cosmos DB on Azure
 
@@ -34,6 +34,8 @@ We need to ensure that this [environment setup][environment-setup] is completed 
 
 ### Run with Maven
 ```
+# Under sdk/spring project root directory
+mvn clean install -DskipTests
 cd azure-spring-boot-samples/azure-spring-boot-sample-cosmos
 mvn spring-boot:run
 ```
@@ -60,4 +62,4 @@ Please refer to [this article](https://docs.microsoft.com/java/azure/spring-fram
 
 <!-- LINKS -->
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[environment-setup]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#environment-setup
+[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist

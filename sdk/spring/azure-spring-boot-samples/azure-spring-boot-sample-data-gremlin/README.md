@@ -6,8 +6,8 @@ The sample of Spring Boot Starter `azure-spring-boot-starter-data-gremlin` pleas
 
 ## Getting started
 
-### Environment setup
-We need to ensure that this [environment setup][environment-setup] is completed before the run.
+### Environment checklist
+We need to ensure that this [environment checklist][ready-to-run-checklist] is completed before the run.
 
 ## Examples
 for this configuration item in application.properties
@@ -20,4 +20,4 @@ gremlin.ssl-enabled=true/false
 ## Contributing
 
 <!-- LINKS -->
-[environment-setup]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#environment-setup
+[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist

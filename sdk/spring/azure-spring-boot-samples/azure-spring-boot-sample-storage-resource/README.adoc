@@ -1,7 +1,7 @@
 :azure-spring-boot-starter-storage: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-storage
 :azure-storage: https://docs.microsoft.com/azure/storage/
 :application-properties: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-sample-storage-resource/src/main/resources/application.properties
-:environment-setup: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#environment-setup
+:ready-to-run-checklist: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
 :microsoft-account: https://azure.microsoft.com/account/
 :storage-howto-blob: https://docs.microsoft.com/azure/storage/storage-java-how-to-use-blob-storage
 :storage-howto-file: https://docs.microsoft.com/azure/storage/storage-java-how-to-use-file-storage
@@ -16,8 +16,8 @@ You can check the usage and bill at {microsoft-account}[this link].
 
 == Getting started
 
-=== Environment setup
-We need to ensure that this {environment setup}[environment-setup] is completed before the run.
+=== Environment checklist
+We need to ensure that this {ready-to-run-checklist}[environment checklist] is completed before the run.
 
 === Coordinates
 Maven coordinates:

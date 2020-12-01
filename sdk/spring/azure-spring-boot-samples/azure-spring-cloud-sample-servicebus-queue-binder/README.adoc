@@ -1,4 +1,4 @@
-:environment-setup: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#environment-setup
+:ready-to-run-checklist: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
 
 = Spring Cloud Azure Stream Binder for Service Bus queue Code Sample shared library for Java
 
@@ -12,8 +12,8 @@ Then message is sent through Azure Service Bus to a `sink` which simply logs the
 Running this sample will be charged by Azure.
 You can check the usage and bill at https://azure.microsoft.com/en-us/account/[this link].
 
-=== Environment setup
-We need to ensure that this {environment-setup}[environment setup] is completed before the run.
+=== Environment checklist
+We need to ensure that this {ready-to-run-checklist}[environment checklist] is completed before the run.
 
 === Connection string based usage
 

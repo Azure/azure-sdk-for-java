@@ -7,8 +7,8 @@ In this sample, a secret named `spring-datasource-url` is stored into an Azure K
 
 ## Getting started
 
-### Environment setup
-We need to ensure that this [environment setup][environment-setup] is completed before the run.
+### Environment checklist
+We need to ensure that this [environment checklist][ready-to-run-checklist] is completed before the run.
 
 ### Store Secret
 We need to store secret `spring-datasource-url` into Azure Key Vault.
@@ -91,6 +91,8 @@ If property not set, the property will be filled with the latest value.
 
 ## Run with Maven
 ```
+# Under sdk/spring project root directory
+mvn clean install -DskipTests
 cd azure-spring-boot-samples/azure-spring-boot-sample-keyvault-secrets
 mvn spring-boot:run
 ```
@@ -102,4 +104,4 @@ mvn spring-boot:run
 
 <!-- links -->
 [version_link]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-secrets/src/main/java/com/azure/security/keyvault/secrets/SecretServiceVersion.java#L12
-[environment-setup]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#environment-setup
+[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist

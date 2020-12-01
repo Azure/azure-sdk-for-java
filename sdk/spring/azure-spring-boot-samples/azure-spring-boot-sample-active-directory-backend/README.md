@@ -5,8 +5,8 @@ This sample illustrates how to use `azure-spring-boot-starter-active-directory` 
 
 ## Getting started
 
-### Environment setup
-We need to ensure that this [environment setup][environment-setup] is completed before the run.
+### Environment checklist
+We need to ensure that this [environment checklist][ready-to-run-checklist] is completed before the run.
 
 ### Register your application with your Azure Active Directory Tenant
 
@@ -41,6 +41,8 @@ If `azure.activedirectory.tenant-id` is **NOT** configured, `NoLoginSecurityConf
 
 ### Run with Maven
 ```shell
+# Under sdk/spring project root directory
+mvn clean install -DskipTests
 cd azure-spring-boot-samples/azure-spring-boot-sample-active-directory-backend
 mvn spring-boot:run
 ```
@@ -71,5 +73,5 @@ See [this issue][issuecomment-387090099] for details on this workaround.
 ## Contributing
 <!-- LINKS -->
 
-[environment-setup]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#environment-setup
+[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
 [issuecomment-387090099]: https://github.com/MicrosoftDocs/azure-docs/issues/8121#issuecomment-387090099

@@ -11,8 +11,8 @@ azure.activedirectory.user-group.object-id-key=id
 
 ## Getting started
 
-### Environment setup
-We need to ensure that this [environment setup][environment-setup] is completed before the run.
+### Environment checklist
+We need to ensure that this [environment checklist][ready-to-run-checklist] is completed before the run.
 
 ### Register your application with your Azure Active Directory Tenant
 
@@ -38,6 +38,8 @@ azure.activedirectory.user-group.allowed-groups=group1, group2
 
 ### Run with Maven
 ```shell
+# Under sdk/spring project root directory
+mvn clean install -DskipTests
 cd azure-spring-boot-samples/azure-spring-boot-sample-active-directory-backend-v2
 mvn spring-boot:run
 ```
@@ -63,4 +65,4 @@ In Azure portal, app registration manifest page, configure `oauth2AllowImplicitF
 ## Next steps
 ## Contributing
 <!-- LINKS -->
-[environment-setup]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#environment-setup
+[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist

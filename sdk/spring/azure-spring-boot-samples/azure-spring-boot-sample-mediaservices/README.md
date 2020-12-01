@@ -5,8 +5,8 @@ This sample project demonstrates how to use Azure Media Services with Spring Boo
 
 ## Getting started
 
-### Environment setup
-We need to ensure that this [environment setup][environment-setup] is completed before the run.
+### Environment checklist
+We need to ensure that this [environment checklist][ready-to-run-checklist] is completed before the run.
 
 ### Create Azure Media Services on Azure
 
@@ -40,6 +40,8 @@ and `REST API ENDPOINT` respectively.
 First, we need to ensure that this [instruction] is completed before run.
 
 ```
+# Under sdk/spring project root directory
+mvn clean install -DskipTests
 cd azure-spring-boot-samples/azure-spring-boot-sample-mediaservices
 mvn spring-boot:run
 ```
@@ -54,4 +56,4 @@ The video file `video.mp4` under `src/main/resources` folder is from GitHub repo
 
 <!-- LINKS -->
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[environment-setup]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#environment-setup
+[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
