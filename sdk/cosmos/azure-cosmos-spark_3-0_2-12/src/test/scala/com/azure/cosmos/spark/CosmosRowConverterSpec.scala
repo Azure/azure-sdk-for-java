@@ -25,7 +25,6 @@ class CosmosRowConverterSpec extends UnitSpec {
     val objectNode = CosmosRowConverter.rowToObjectNode(row)
     assertThat(objectNode.get(colName1).asInt()).isEqualTo(colVal1)
     assertThat(objectNode.get(colName2).asText()).isEqualTo(colVal2)
-    assertThat(1).isEqualTo(2)
   }
 
   "null type in spark row" should "translate to null in ObjectNode" in {
