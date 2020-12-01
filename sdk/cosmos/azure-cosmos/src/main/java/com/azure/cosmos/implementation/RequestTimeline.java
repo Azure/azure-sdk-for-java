@@ -157,7 +157,7 @@ public final class RequestTimeline implements Iterable<RequestTimeline.Event> {
         @JsonIgnore
         private final Duration duration;
 
-        @JsonSerialize(using = ToStringSerializer.class)
+        @JsonProperty
         private final long durationInMicroSec;
 
         @JsonProperty("eventName")
