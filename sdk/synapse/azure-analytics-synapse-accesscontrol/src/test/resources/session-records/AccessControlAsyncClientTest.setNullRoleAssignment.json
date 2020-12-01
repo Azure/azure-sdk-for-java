@@ -1,0 +1,84 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.dev.azuresynapse.net/rbac/roleAssignments?api-version=2020-02-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-analytics-synapse-accesscontrol/1.0.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4873d130-5425-488b-b367-0d70e32cf2f4"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "x-ms-failure-cause" : "gateway",
+      "retry-after" : "0",
+      "Content-Length" : "863",
+      "StatusCode" : "500",
+      "x-ms-request-id" : "048254f9-784a-4adf-a4cc-3cb507770eaa",
+      "Body" : "{\"error\":{\"code\":\"HttpWrapOperationAsyncFailed\",\"message\":\"System.NullReferenceException : Object reference not set to an instance of an object.\\r\\n   at Microsoft.Analytics.WorkspaceApiSvc.Controllers.Rbac.RbacRoleAssignmentsController.<>c__DisplayClass5_0.<<CreateRoleAssignment>b__0>d.MoveNext() in S:\\\\src\\\\services\\\\workspace\\\\Microsoft.Analytics.WorkspaceApiSvc\\\\Controllers\\\\Rbac\\\\RbacRoleAssignmentsController.cs:line 86\\r\\n--- End of stack trace from previous location where exception was thrown ---\\r\\n   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\\r\\n   at Microsoft.Analytics.Common.Http.BaseController.<HttpWrapOperationAsync>d__9.MoveNext() in S:\\\\src\\\\common\\\\Microsoft.Analytics.Common\\\\Http\\\\BaseController.cs:line 53\"}}",
+      "Date" : "Tue, 20 Oct 2020 09:14:38 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.dev.azuresynapse.net/rbac/roleAssignments?api-version=2020-02-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-analytics-synapse-accesscontrol/1.0.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4873d130-5425-488b-b367-0d70e32cf2f4"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "x-ms-failure-cause" : "gateway",
+      "retry-after" : "0",
+      "Content-Length" : "863",
+      "StatusCode" : "500",
+      "x-ms-request-id" : "eb825e20-877f-4843-87ba-8d87b4cb4460",
+      "Body" : "{\"error\":{\"code\":\"HttpWrapOperationAsyncFailed\",\"message\":\"System.NullReferenceException : Object reference not set to an instance of an object.\\r\\n   at Microsoft.Analytics.WorkspaceApiSvc.Controllers.Rbac.RbacRoleAssignmentsController.<>c__DisplayClass5_0.<<CreateRoleAssignment>b__0>d.MoveNext() in S:\\\\src\\\\services\\\\workspace\\\\Microsoft.Analytics.WorkspaceApiSvc\\\\Controllers\\\\Rbac\\\\RbacRoleAssignmentsController.cs:line 86\\r\\n--- End of stack trace from previous location where exception was thrown ---\\r\\n   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\\r\\n   at Microsoft.Analytics.Common.Http.BaseController.<HttpWrapOperationAsync>d__9.MoveNext() in S:\\\\src\\\\common\\\\Microsoft.Analytics.Common\\\\Http\\\\BaseController.cs:line 53\"}}",
+      "Date" : "Tue, 20 Oct 2020 09:14:39 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.dev.azuresynapse.net/rbac/roleAssignments?api-version=2020-02-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-analytics-synapse-accesscontrol/1.0.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4873d130-5425-488b-b367-0d70e32cf2f4"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "x-ms-failure-cause" : "gateway",
+      "retry-after" : "0",
+      "Content-Length" : "863",
+      "StatusCode" : "500",
+      "x-ms-request-id" : "3b551afc-098c-48d9-90aa-eb31678a8c4d",
+      "Body" : "{\"error\":{\"code\":\"HttpWrapOperationAsyncFailed\",\"message\":\"System.NullReferenceException : Object reference not set to an instance of an object.\\r\\n   at Microsoft.Analytics.WorkspaceApiSvc.Controllers.Rbac.RbacRoleAssignmentsController.<>c__DisplayClass5_0.<<CreateRoleAssignment>b__0>d.MoveNext() in S:\\\\src\\\\services\\\\workspace\\\\Microsoft.Analytics.WorkspaceApiSvc\\\\Controllers\\\\Rbac\\\\RbacRoleAssignmentsController.cs:line 86\\r\\n--- End of stack trace from previous location where exception was thrown ---\\r\\n   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\\r\\n   at Microsoft.Analytics.Common.Http.BaseController.<HttpWrapOperationAsync>d__9.MoveNext() in S:\\\\src\\\\common\\\\Microsoft.Analytics.Common\\\\Http\\\\BaseController.cs:line 53\"}}",
+      "Date" : "Tue, 20 Oct 2020 09:14:41 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.dev.azuresynapse.net/rbac/roleAssignments?api-version=2020-02-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-analytics-synapse-accesscontrol/1.0.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4873d130-5425-488b-b367-0d70e32cf2f4"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "x-ms-failure-cause" : "gateway",
+      "retry-after" : "0",
+      "Content-Length" : "863",
+      "StatusCode" : "500",
+      "x-ms-request-id" : "1d17585c-fae0-4a3f-ae48-43580c53231f",
+      "Body" : "{\"error\":{\"code\":\"HttpWrapOperationAsyncFailed\",\"message\":\"System.NullReferenceException : Object reference not set to an instance of an object.\\r\\n   at Microsoft.Analytics.WorkspaceApiSvc.Controllers.Rbac.RbacRoleAssignmentsController.<>c__DisplayClass5_0.<<CreateRoleAssignment>b__0>d.MoveNext() in S:\\\\src\\\\services\\\\workspace\\\\Microsoft.Analytics.WorkspaceApiSvc\\\\Controllers\\\\Rbac\\\\RbacRoleAssignmentsController.cs:line 86\\r\\n--- End of stack trace from previous location where exception was thrown ---\\r\\n   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\\r\\n   at Microsoft.Analytics.Common.Http.BaseController.<HttpWrapOperationAsync>d__9.MoveNext() in S:\\\\src\\\\common\\\\Microsoft.Analytics.Common\\\\Http\\\\BaseController.cs:line 53\"}}",
+      "Date" : "Tue, 20 Oct 2020 09:14:44 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
