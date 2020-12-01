@@ -39,20 +39,20 @@ The way to obtain group relationship that will determine which graph api will be
 * **direct**: the default value, get groups that the user is a direct member of. For details, see [list memberOf][graph-api-list-member-of] api.
 * **transitive**: Get groups that the user is a member of, and will also return all groups the user is a nested member of. For details, see [list transitive memberOf][graph-api-list-transitive-member-of] api.
 
-### Web Server
-Based on Azure AD as a Web Server, it uses OAuth2 authorization code flow to authentication, and authorizes resources based on the scopes or roles claim in the access token. 
-Provide a convenient way to quickly access other resource server, other resources should be registered as `ClientRegistration`, use `@RegisteredOAuth2AuthorizedClient` annotation to mark the client resource, Security will help automatically obtain valid access tokens based on the root refresh token, business methods will use the corresponding access token to request client resources.
+### Web application
+Based on Azure AD as a Web application, it uses OAuth2 authorization code flow to authentication, and authorizes resources based on the scopes or roles claim in the access token. 
+Provide a convenient way to quickly access other resource server, other resources should be registered as `ClientRegistration`, use `@RegisteredOAuth2AuthorizedClient` annotation to mark the client resource, Spring Security will help automatically obtain valid access tokens based on the root refresh token, business methods will use the corresponding access token to request client resources.
 
-#### Standalone web server usage
-Only as a Web Server, no further access to other resources protected by Azure AD.
-![Standalone Web Server](resource/aad-based-standalone-web-server.png)
+#### Standalone web application usage
+Only as a Web application, no further access to other resources protected by Azure AD.
+![Standalone Web Application](resource/aad-based-standalone-web-application.png)
 
-* Access restricted resources of Web Server, login with credentials using default scopes.
+* Access restricted resources of web application, login with credentials using default scopes.
 * Return secured data.
 
-#### Web server access resources usage
-Web Server and resource server use scenarios, Web server access the resources of resource server which is protected by Azure AD.
-![Web Server Access Resources](resource/add-based-web-server-access-resources.png)
+#### Web application access resources usage
+Web application and resource server use scenarios, web application access the resources of resource server which is protected by Azure AD.
+![Web Application Access Resources](resource/add-based-web-application-access-resources.png)
 
 * Login with credentials, the scope includes all other clients. 
 * Auto-refresh the access token of other clients based on the root refresh token.
@@ -60,7 +60,7 @@ Web Server and resource server use scenarios, Web server access the resources of
 * Return secured data.
 
 ### Resource Server
-Based on Azure AD as a Resource Server, it uses `BearerTokenAuthenticationFilter` authorize request. The current resource server also can access other resources, there's a similar method to the Web server usage to obtain access to the client access token, the difference is the access token obtained based on the `MSAL On-Behalf-Of` process.
+Based on Azure AD as a Resource Server, it uses `BearerTokenAuthenticationFilter` authorize request. The current resource server also can access other resources, there's a similar method to the web application usage to obtain access to the client access token, the difference is the access token obtained based on the `MSAL On-Behalf-Of` process.
 
 #### Standalone resource server usage
 Only as a Resource Server, no further access to other resources protected by Azure AD.
