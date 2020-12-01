@@ -105,7 +105,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         StepVerifier.create(
                 chatThreadClient.updateTopicWithResponse(newTopic)
                     .flatMap(updateThreadResponse -> {
-                        assertEquals(updateThreadResponse.getStatusCode(), 204);
+                        assertEquals(204, updateThreadResponse.getStatusCode());
                         return client.getChatThread(threadId);
                     })
 
@@ -135,7 +135,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
                 // process the iterableByPage
                 List<ChatParticipant> returnedParticipants = new ArrayList<ChatParticipant>();
                 participantsResponse.iterableByPage().forEach(resp -> {
-                    assertEquals(resp.getStatusCode(), 200);
+                    assertEquals(200, resp.getStatusCode());
                     resp.getItems().forEach(item -> returnedParticipants.add(item));
                 });
 
@@ -165,13 +165,13 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         // Action & Assert
         StepVerifier.create(chatThreadClient.addParticipantsWithResponse(options))
             .assertNext(addParticipantsResponse -> {
-                assertEquals(addParticipantsResponse.getStatusCode(), 207);
+                assertEquals(207, addParticipantsResponse.getStatusCode());
                 PagedIterable<ChatParticipant> participantsResponse = new PagedIterable<>(chatThreadClient.listParticipants());
 
                 // process the iterableByPage
                 List<ChatParticipant> returnedParticipants = new ArrayList<ChatParticipant>();
                 participantsResponse.iterableByPage().forEach(resp -> {
-                    assertEquals(resp.getStatusCode(), 200);
+                    assertEquals(200, resp.getStatusCode());
                     resp.getItems().forEach(item -> returnedParticipants.add(item));
                 });
 
@@ -185,7 +185,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         for (ChatParticipant participant: options.getParticipants()) {
             StepVerifier.create(chatThreadClient.removeParticipantWithResponse(participant.getUser()))
                 .assertNext(resp -> {
-                    assertEquals(resp.getStatusCode(), 204);
+                    assertEquals(204, resp.getStatusCode());
                 })
                 .verifyComplete();
         }
@@ -254,7 +254,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         StepVerifier
             .create(chatThreadClient.sendMessageWithResponse(messageRequest)
                 .flatMap(sendResponse -> {
-                    assertEquals(sendResponse.getStatusCode(), 201);
+                    assertEquals(201, sendResponse.getStatusCode());
                     return chatThreadClient.getMessageWithResponse(sendResponse.getValue());
                 })
             )
@@ -346,7 +346,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
                         return chatThreadClient.updateMessageWithResponse(response, updateMessageRequest);
                     })
                     .flatMap((Response<Void> updateResponse) -> {
-                        assertEquals(updateResponse.getStatusCode(), 204);
+                        assertEquals(204, updateResponse.getStatusCode());
                         return chatThreadClient.getMessage(messageResponseRef.get());
                     })
                 )
@@ -374,7 +374,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
                 // process the iterableByPage
                 List<ChatMessage> returnedMessages = new ArrayList<ChatMessage>();
                 messagesResponse.iterableByPage().forEach(resp -> {
-                    assertEquals(resp.getStatusCode(), 200);
+                    assertEquals(200, resp.getStatusCode());
                     resp.getItems().forEach(item -> {
                         if (item.getType().equals("Text")) {
                             returnedMessages.add(item);
@@ -406,7 +406,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
                 // process the iterableByPage
                 List<ChatMessage> returnedMessages = new ArrayList<ChatMessage>();
                 messagesResponse.iterableByPage().forEach(resp -> {
-                    assertEquals(resp.getStatusCode(), 200);
+                    assertEquals(200, resp.getStatusCode());
                     resp.getItems().forEach(item -> {
                         if (item.getType().equals("Text")) {
                             returnedMessages.add(item);
@@ -434,7 +434,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         setupTest(httpClient);
         StepVerifier.create(chatThreadClient.sendTypingNotificationWithResponse())
             .assertNext(response -> {
-                assertEquals(response.getStatusCode(), 200);
+                assertEquals(200, response.getStatusCode());
             })
             .verifyComplete();
     }
@@ -464,7 +464,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
                 // process the iterableByPage
                 List<ChatMessageReadReceipt> returnedReadReceipts = new ArrayList<>();
                 readReceiptsResponse.iterableByPage().forEach(resp -> {
-                    assertEquals(resp.getStatusCode(), 200);
+                    assertEquals(200, resp.getStatusCode());
                     resp.getItems().forEach(item -> returnedReadReceipts.add(item));
                 });
                 assertTrue(returnedReadReceipts.size() > 0);
@@ -492,13 +492,13 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
                 })
             )
             .assertNext(receiptResponse -> {
-                assertEquals(receiptResponse.getStatusCode(), 201);
+                assertEquals(201, receiptResponse.getStatusCode());
                 PagedIterable<ChatMessageReadReceipt> readReceiptsResponse = new PagedIterable<>(chatThreadClient.listReadReceipts());
 
                 // process the iterableByPage
                 List<ChatMessageReadReceipt> returnedReadReceipts = new ArrayList<>();
                 readReceiptsResponse.iterableByPage().forEach(resp -> {
-                    assertEquals(resp.getStatusCode(), 200);
+                    assertEquals(200, resp.getStatusCode());
                     resp.getItems().forEach(item -> returnedReadReceipts.add(item));
                 });
 
