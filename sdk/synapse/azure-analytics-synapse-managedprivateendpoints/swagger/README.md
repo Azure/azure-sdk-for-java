@@ -1,4 +1,4 @@
-# Azure Synapse Analytics Spark Service for Java
+# Azure Synapse Analytics Managed Private Endpoints Service for Java
 
 > see https://aka.ms/autorest
 
@@ -26,12 +26,12 @@ repo: https://github.com/Azure/azure-rest-api-specs/blob/$(branch)
 
 ```yaml
 input-file:
-    - $(repo)/specification/synapse/data-plane/Microsoft.Synapse/preview/2019-11-01-preview/sparkJob.json
+    - $(repo)/specification/synapse/data-plane/Microsoft.Synapse/preview/2019-06-01-preview/managedPrivateEndpoints.json
 java: true
 output-folder: ..\
 generate-client-as-impl: true
 generate-sync-async-clients: true
-namespace: com.azure.analytics.synapse.spark
+namespace: com.azure.analytics.synapse.managedprivateendpoints
 generate-client-interfaces: false
 sync-methods: all
 license-header: MICROSOFT_MIT_SMALL

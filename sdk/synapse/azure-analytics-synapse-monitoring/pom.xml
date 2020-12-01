@@ -12,11 +12,11 @@
   </parent>
 
   <groupId>com.azure</groupId>
-  <artifactId>azure-analytics-synapse-accesscontrol</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-analytics-synapse-accesscontrol;current} -->
+  <artifactId>azure-analytics-synapse-monitoring</artifactId>
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-analytics-synapse-monitoring;current} -->
 
-  <name>Microsoft Azure client library for Synapse Access Control</name>
-  <description>This package contains the Microsoft Azure Synapse Analytics Access Control SDK.</description>
+  <name>Microsoft Azure client library for Synapse Monitoring</name>
+  <description>This package contains the Microsoft Azure Synapse Analytics Monitoring SDK.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <distributionManagement>

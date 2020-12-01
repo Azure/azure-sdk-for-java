@@ -27,8 +27,9 @@ repo: https://github.com/Azure/azure-rest-api-specs/blob/$(branch)
 
 ```yaml
 input-file:
-    - $(repo)/specification/synapse/data-plane/Microsoft.Synapse/preview/2020-02-01-preview/roleAssignments.json
-    - $(repo)/specification/synapse/data-plane/Microsoft.Synapse/preview/2020-02-01-preview/roles.json
+    - $(repo)/specification/synapse/data-plane/Microsoft.Synapse/preview/2020-08-01-preview/checkAccessSynapseRbac.json
+    - $(repo)/specification/synapse/data-plane/Microsoft.Synapse/preview/2020-08-01-preview/roleDefinitions.json
+    - $(repo)/specification/synapse/data-plane/Microsoft.Synapse/preview/2020-08-01-preview/roleAssignments.json
 java: true
 output-folder: ../
 generate-client-as-impl: true
@@ -39,7 +40,8 @@ sync-methods: all
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: models
-custom-types-subpackage: models
 context-client-method-parameter: true
 required-parameter-client-methods: true
+credential-types: tokencredential
+credential-scopes: https://dev.azuresynapse.net/.default
 ```

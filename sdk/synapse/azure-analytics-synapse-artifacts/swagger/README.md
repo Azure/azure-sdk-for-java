@@ -37,7 +37,8 @@ sync-methods: all
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: models
-custom-types-subpackage: models
 context-client-method-parameter: true
 required-parameter-client-methods: true
+credential-types: tokencredential
+credential-scopes: https://dev.azuresynapse.net/.default
 ```
