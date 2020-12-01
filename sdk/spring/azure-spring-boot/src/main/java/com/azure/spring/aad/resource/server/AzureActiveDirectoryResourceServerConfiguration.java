@@ -4,20 +4,26 @@ package com.azure.spring.aad.resource.server;
 
 
 import com.azure.spring.aad.implementation.AuthorizationServerEndpoints;
+import com.azure.spring.aad.implementation.AzureClientRegistrationRepository;
 import com.azure.spring.aad.resource.server.validator.AzureJwtAudienceValidator;
 import com.azure.spring.aad.resource.server.validator.AzureJwtIssuerValidator;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.azure.spring.autoconfigure.aad.AADOAuth2OboAuthorizedClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -90,6 +96,28 @@ public class AzureActiveDirectoryResourceServerConfiguration {
                 .jwt()
                 .jwtAuthenticationConverter(new AzureJwtBearerTokenAuthenticationConverter());
         }
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
+    @ConditionalOnClass(BearerTokenAuthenticationToken.class)
+    @ConditionalOnProperty(prefix = "azure.activedirectory", value = { "client-id", "client-secret", "tenant-id" })
+    public OAuth2AuthorizedClientRepository aadOAuth2OboAuthorizedClientRepository(AzureClientRegistrationRepository repo) {
+        return new AADOAuth2OboAuthorizedClientRepository(repo,jwtDecoder());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(JwtDecoder.class)
+    public JwtDecoder jwtDecoder() {
+        if (StringUtils.isEmpty(aadAuthenticationProperties.getTenantId())) {
+            aadAuthenticationProperties.setTenantId("common");
+        }
+        AuthorizationServerEndpoints identityEndpoints = new AuthorizationServerEndpoints(
+            aadAuthenticationProperties.getAuthorizationServerUri());
+        NimbusJwtDecoder nimbusJwtDecoder = NimbusJwtDecoder
+            .withJwkSetUri(identityEndpoints.jwkSetEndpoint(aadAuthenticationProperties.getTenantId())).build();
+        return nimbusJwtDecoder;
     }
 }
 
