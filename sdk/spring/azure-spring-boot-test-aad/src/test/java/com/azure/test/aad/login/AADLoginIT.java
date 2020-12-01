@@ -11,6 +11,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
@@ -64,7 +66,9 @@ public class AADLoginIT {
             } else {
                 throw new IllegalStateException("Can not recognize osName. osName = " + System.getProperty("os.name"));
             }
-        } catch (Exception e) {
+        } catch (IllegalStateException e) {
+            throw e;
+        } catch (InterruptedException | IOException e) {
             throw new RuntimeException(e);
         } finally {
             if (process != null) {
@@ -76,7 +80,11 @@ public class AADLoginIT {
     @Test
     public void loginTest() {
         this.runApp(app -> {
-            WebDriver driver = new ChromeDriver();
+            ChromeOptions options = new ChromeOptions();
+            options.addArguments("--headless");
+            options.addArguments("--no-sandbox");
+            options.addArguments("--disable-dev-shm-usage");
+            WebDriver driver = new ChromeDriver(options);
             WebDriverWait wait = new WebDriverWait(driver, 10);
             try {
                 driver.get(app.root() + "api/home");
@@ -84,11 +92,11 @@ public class AADLoginIT {
                     .sendKeys(System.getenv(AAD_USER_NAME_1) + Keys.ENTER);
                 wait.until(presenceOfElementLocated(By.name("passwd")))
                     .sendKeys(System.getenv(AAD_USER_PASSWORD_1));
-                Thread.sleep(3000);
+                Thread.sleep(5000);
                 driver.findElement(By.cssSelector("input[type='submit']")).click();
-                Thread.sleep(3000);
+                Thread.sleep(5000);
                 driver.findElement(By.cssSelector("input[type='submit']")).click();
-                Thread.sleep(3000);
+                Thread.sleep(5000);
                 Assert.assertEquals("home", driver.findElement(By.tagName("body")).getText());
 
                 driver.get(app.root() + "api/group1");
