@@ -213,12 +213,12 @@ public final class BlobsImpl {
         @Get("{containerName}/{blob}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<BlobsGetTagsResponse> getTags(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("snapshot") String snapshot, @QueryParam("versionid") String versionId, @HeaderParam("x-ms-if-tags") String ifTags, @QueryParam("comp") String comp, Context context);
+        Mono<BlobsGetTagsResponse> getTags(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("snapshot") String snapshot, @QueryParam("versionid") String versionId, @HeaderParam("x-ms-if-tags") String ifTags, @HeaderParam("x-ms-lease-id") String leaseId, @QueryParam("comp") String comp, Context context);
 
         @Put("{containerName}/{blob}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<BlobsSetTagsResponse> setTags(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @HeaderParam("x-ms-version") String version, @QueryParam("timeout") Integer timeout, @QueryParam("versionid") String versionId, @HeaderParam("Content-MD5") String transactionalContentMD5, @HeaderParam("x-ms-content-crc64") String transactionalContentCrc64, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-if-tags") String ifTags, @BodyParam("application/xml; charset=utf-8") BlobTags tags, @QueryParam("comp") String comp, Context context);
+        Mono<BlobsSetTagsResponse> setTags(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @HeaderParam("x-ms-version") String version, @QueryParam("timeout") Integer timeout, @QueryParam("versionid") String versionId, @HeaderParam("Content-MD5") String transactionalContentMD5, @HeaderParam("x-ms-content-crc64") String transactionalContentCrc64, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-if-tags") String ifTags, @HeaderParam("x-ms-lease-id") String leaseId, @BodyParam("application/xml; charset=utf-8") BlobTags tags, @QueryParam("comp") String comp, Context context);
     }
 
     /**
@@ -1466,8 +1466,9 @@ public final class BlobsImpl {
         final String snapshot = null;
         final String versionId = null;
         final String ifTags = null;
+        final String leaseId = null;
         final String comp = "tags";
-        return service.getTags(containerName, blob, this.client.getUrl(), timeout, this.client.getVersion(), requestId, snapshot, versionId, ifTags, comp, context);
+        return service.getTags(containerName, blob, this.client.getUrl(), timeout, this.client.getVersion(), requestId, snapshot, versionId, ifTags, leaseId, comp, context);
     }
 
     /**
@@ -1480,14 +1481,15 @@ public final class BlobsImpl {
      * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob snapshot to retrieve. For more information on working with blob snapshots, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating a Snapshot of a Blob.&lt;/a&gt;.
      * @param versionId The version id parameter is an opaque DateTime value that, when present, specifies the version of the blob to operate on. It's for service version 2019-10-10 and newer.
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlobsGetTagsResponse> getTagsWithRestResponseAsync(String containerName, String blob, Integer timeout, String requestId, String snapshot, String versionId, String ifTags, Context context) {
+    public Mono<BlobsGetTagsResponse> getTagsWithRestResponseAsync(String containerName, String blob, Integer timeout, String requestId, String snapshot, String versionId, String ifTags, String leaseId, Context context) {
         final String comp = "tags";
-        return service.getTags(containerName, blob, this.client.getUrl(), timeout, this.client.getVersion(), requestId, snapshot, versionId, ifTags, comp, context);
+        return service.getTags(containerName, blob, this.client.getUrl(), timeout, this.client.getVersion(), requestId, snapshot, versionId, ifTags, leaseId, comp, context);
     }
 
     /**
@@ -1505,11 +1507,12 @@ public final class BlobsImpl {
         final String versionId = null;
         final String requestId = null;
         final String ifTags = null;
+        final String leaseId = null;
         final BlobTags tags = null;
         final String comp = "tags";
         String transactionalContentMD5Converted = null;
         String transactionalContentCrc64Converted = null;
-        return service.setTags(containerName, blob, this.client.getUrl(), this.client.getVersion(), timeout, versionId, transactionalContentMD5Converted, transactionalContentCrc64Converted, requestId, ifTags, tags, comp, context);
+        return service.setTags(containerName, blob, this.client.getUrl(), this.client.getVersion(), timeout, versionId, transactionalContentMD5Converted, transactionalContentCrc64Converted, requestId, ifTags, leaseId, tags, comp, context);
     }
 
     /**
@@ -1523,16 +1526,17 @@ public final class BlobsImpl {
      * @param transactionalContentCrc64 Specify the transactional crc64 for the body, to be validated by the service.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param ifTags Specify a SQL where clause on blob tags to operate only on blobs with a matching value.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param tags Blob tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlobsSetTagsResponse> setTagsWithRestResponseAsync(String containerName, String blob, Integer timeout, String versionId, byte[] transactionalContentMD5, byte[] transactionalContentCrc64, String requestId, String ifTags, BlobTags tags, Context context) {
+    public Mono<BlobsSetTagsResponse> setTagsWithRestResponseAsync(String containerName, String blob, Integer timeout, String versionId, byte[] transactionalContentMD5, byte[] transactionalContentCrc64, String requestId, String ifTags, String leaseId, BlobTags tags, Context context) {
         final String comp = "tags";
         String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
         String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
-        return service.setTags(containerName, blob, this.client.getUrl(), this.client.getVersion(), timeout, versionId, transactionalContentMD5Converted, transactionalContentCrc64Converted, requestId, ifTags, tags, comp, context);
+        return service.setTags(containerName, blob, this.client.getUrl(), this.client.getVersion(), timeout, versionId, transactionalContentMD5Converted, transactionalContentCrc64Converted, requestId, ifTags, leaseId, tags, comp, context);
     }
 }

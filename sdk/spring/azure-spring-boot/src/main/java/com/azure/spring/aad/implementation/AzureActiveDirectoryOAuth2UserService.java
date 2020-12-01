@@ -5,8 +5,10 @@ package com.azure.spring.aad.implementation;
 
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import com.azure.spring.autoconfigure.aad.AADTokenClaim;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
@@ -17,7 +19,10 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.util.StringUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpSession;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
@@ -35,6 +40,7 @@ public class AzureActiveDirectoryOAuth2UserService implements OAuth2UserService<
     private final OidcUserService oidcUserService;
     private final AADAuthenticationProperties properties;
     private final GraphClient graphClient;
+    private static final String DEFAULT_OIDC_USER = "defaultOidcUser";
 
     public AzureActiveDirectoryOAuth2UserService(
         AADAuthenticationProperties properties
@@ -48,6 +54,14 @@ public class AzureActiveDirectoryOAuth2UserService implements OAuth2UserService<
     public OidcUser loadUser(OidcUserRequest userRequest) throws OAuth2AuthenticationException {
         // Delegate to the default implementation for loading a user
         OidcUser oidcUser = oidcUserService.loadUser(userRequest);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpSession session = attr.getRequest().getSession(true);
+
+        if (authentication != null) {
+            return (DefaultOidcUser) session.getAttribute(DEFAULT_OIDC_USER);
+        }
+
         Set<String> groups = Optional.of(userRequest)
                                      .map(OAuth2UserRequest::getAccessToken)
                                      .map(AbstractOAuth2Token::getTokenValue)
@@ -72,6 +86,9 @@ public class AzureActiveDirectoryOAuth2UserService implements OAuth2UserService<
                     .filter(StringUtils::hasText)
                     .orElse(AADTokenClaim.NAME);
         // Create a copy of oidcUser but use the mappedAuthorities instead
-        return new DefaultOidcUser(authorities, oidcUser.getIdToken(), nameAttributeKey);
+        DefaultOidcUser defaultOidcUser = new DefaultOidcUser(authorities, oidcUser.getIdToken(), nameAttributeKey);
+
+        session.setAttribute(DEFAULT_OIDC_USER, defaultOidcUser);
+        return defaultOidcUser;
     }
 }

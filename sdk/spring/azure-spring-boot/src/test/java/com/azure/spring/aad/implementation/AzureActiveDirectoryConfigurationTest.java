@@ -163,6 +163,38 @@ public class AzureActiveDirectoryConfigurationTest {
         assertEquals(endpoints.jwkSetEndpoint("fake-tenant-id"), azure.getProviderDetails().getJwkSetUri());
     }
 
+    @Test
+    public void clientRequiresOnDemandPermissions() {
+        AnnotationConfigApplicationContext context = getContext();
+        TestPropertySourceUtils.addInlinedPropertiesToEnvironment(context,
+            "azure.activedirectory.authorization.graph.scopes = Calendars.Read",
+            "azure.activedirectory.authorization.graph.on-demand = true",
+            "azure.activedirectory.authorization.arm.scopes = https://management.core.windows.net/user_impersonation"
+        );
+        context.refresh();
+
+        AzureClientRegistrationRepository repo = context.getBean(AzureClientRegistrationRepository.class);
+        ClientRegistration azure = repo.findByRegistrationId("azure");
+        ClientRegistration graph = repo.findByRegistrationId("graph");
+        ClientRegistration arm = repo.findByRegistrationId("arm");
+
+        assertNotNull(azure);
+        assertDefaultScopes(
+            azure,
+            "openid",
+            "profile",
+            "https://graph.microsoft.com/User.Read",
+            "offline_access",
+            "https://management.core.windows.net/user_impersonation");
+
+        assertFalse(repo.isAuthzClient(graph));
+        assertTrue(repo.isAuthzClient(arm));
+        assertFalse(repo.isAuthzClient("graph"));
+        assertTrue(repo.isAuthzClient("arm"));
+
+
+    }
+
     private void assertDefaultScopes(ClientRegistration client, String... scopes) {
         assertEquals(scopes.length, client.getScopes().size());
         for (String s : scopes) {
