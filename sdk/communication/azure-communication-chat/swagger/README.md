@@ -79,7 +79,7 @@ directive:
       delete $.CreateChatThreadRequest;
     }
 - from: swagger-document
-  where: $["paths"]["/chat/threads"].post.parameters[1]
+  where: $["paths"]["/chat/threads"].post.parameters[2]
   transform: >
     if ($.schema && $.schema.$ref && $.schema.$ref.endsWith("CreateChatThreadRequest")) {
         const path = $.schema.$ref.replace(/[#].*$/, "#/definitions/CreateChatThreadOptions");
