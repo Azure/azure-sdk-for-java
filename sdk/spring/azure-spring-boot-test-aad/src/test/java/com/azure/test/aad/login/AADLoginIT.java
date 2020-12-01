@@ -89,15 +89,17 @@ public class AADLoginIT {
             WebDriverWait wait = new WebDriverWait(driver, 10);
             try {
                 driver.get(app.root() + "api/home");
+                Thread.sleep(10000);
                 wait.until(presenceOfElementLocated(By.name("loginfmt")))
                     .sendKeys(System.getenv(AAD_USER_NAME_1) + Keys.ENTER);
+                Thread.sleep(10000);
                 wait.until(presenceOfElementLocated(By.name("passwd")))
                     .sendKeys(System.getenv(AAD_USER_PASSWORD_1));
-                Thread.sleep(5000);
+                Thread.sleep(10000);
                 driver.findElement(By.cssSelector("input[type='submit']")).click();
-                Thread.sleep(5000);
+                Thread.sleep(10000);
                 driver.findElement(By.cssSelector("input[type='submit']")).click();
-                Thread.sleep(5000);
+                Thread.sleep(10000);
                 Assert.assertEquals("home", driver.findElement(By.tagName("body")).getText());
 
                 driver.get(app.root() + "api/group1");
