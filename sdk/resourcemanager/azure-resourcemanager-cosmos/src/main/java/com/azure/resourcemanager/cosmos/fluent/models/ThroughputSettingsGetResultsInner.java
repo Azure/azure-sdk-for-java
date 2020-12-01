@@ -11,6 +11,7 @@ import com.azure.resourcemanager.cosmos.models.ArmResourceProperties;
 import com.azure.resourcemanager.cosmos.models.ThroughputSettingsGetPropertiesResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** An Azure Cosmos DB resource throughput. */
 @JsonFlatten
@@ -41,6 +42,20 @@ public class ThroughputSettingsGetResultsInner extends ArmResourceProperties {
      */
     public ThroughputSettingsGetResultsInner withResource(ThroughputSettingsGetPropertiesResource resource) {
         this.resource = resource;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ThroughputSettingsGetResultsInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ThroughputSettingsGetResultsInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 
