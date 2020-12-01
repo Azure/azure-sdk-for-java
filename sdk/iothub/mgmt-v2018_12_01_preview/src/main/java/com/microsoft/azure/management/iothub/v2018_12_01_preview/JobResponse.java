@@ -11,14 +11,14 @@ package com.microsoft.azure.management.iothub.v2018_12_01_preview;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.iothub.v2018_12_01_preview.implementation.JobResponseInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.iothub.v2018_12_01_preview.implementation.IoTHubManager;
+import com.microsoft.azure.management.iothub.v2018_12_01_preview.implementation.DevicesManager;
 import com.microsoft.rest.DateTimeRfc1123;
 import org.joda.time.DateTime;
 
 /**
  * Type representing JobResponse.
  */
-public interface JobResponse extends HasInner<JobResponseInner>, HasManager<IoTHubManager> {
+public interface JobResponse extends HasInner<JobResponseInner>, HasManager<DevicesManager> {
     /**
      * @return the endTimeUtc value.
      */
