@@ -8,19 +8,19 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.PagedResponseBase;
-import com.azure.core.util.FluxUtil;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.util.ReferenceCountUtil;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.io.BufferedOutputStream;
@@ -30,11 +30,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.StandardOpenOption;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -67,10 +69,13 @@ public class NettyFluxTests {
                             throw Exceptions.propagate(ioe);
                         }
                     })
-                .block()
-                .toByteArray();
+                .map(ByteArrayOutputStream::toByteArray)
+                .block();
+
             assertEquals("ell", new String(bytes, StandardCharsets.UTF_8));
         }
+
+        assertTrue(file.delete());
     }
 
     @Test
@@ -92,10 +97,12 @@ public class NettyFluxTests {
                             throw Exceptions.propagate(ioe);
                         }
                     })
-                .block()
-                .toByteArray();
-            assertEquals(0, bytes.length);
+                .map(ByteArrayOutputStream::toByteArray)
+                .block();
+
+            assertTrue(bytes != null && bytes.length == 0);
         }
+
         assertTrue(file.delete());
     }
 
@@ -113,8 +120,8 @@ public class NettyFluxTests {
                     return bt;
                 })
                 .limitRequest(1)
-                .subscribeOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
-                .publishOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
+                .subscribeOn(Schedulers.newBoundedElastic(30, 1024, "io"))
+                .publishOn(Schedulers.newBoundedElastic(30, 1024, "io"))
                 .collect(ByteArrayOutputStream::new,
                     (bos, b) -> {
                         try {
@@ -123,10 +130,11 @@ public class NettyFluxTests {
                             throw Exceptions.propagate(ioe);
                         }
                     })
-                .block()
-                .toByteArray();
+                .map(ByteArrayOutputStream::toByteArray)
+                .block();
             assertEquals("hello there", new String(bytes, StandardCharsets.UTF_8));
         }
+
         assertTrue(file.delete());
     }
 
@@ -134,7 +142,7 @@ public class NettyFluxTests {
 
     @Test
     public void testAsynchronousLongInput() throws IOException, NoSuchAlgorithmException {
-        File file = createFileIfNotExist("target/test4");
+        File file = createFileIfNotExist("target/test5");
         byte[] array = "1234567690".getBytes(StandardCharsets.UTF_8);
         MessageDigest digest = MessageDigest.getInstance("MD5");
         try (BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file))) {
@@ -147,52 +155,49 @@ public class NettyFluxTests {
         byte[] expected = digest.digest();
         digest.reset();
         try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ)) {
-            FluxUtil.readFile(channel)
-                .subscribeOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
-                .publishOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
-                .toIterable().forEach(digest::update);
+            StepVerifier.create(FluxUtil.readFile(channel)
+                .doOnNext(buffer -> digest.update(buffer.duplicate())))
+                .thenConsumeWhile(ByteBuffer::hasRemaining)
+                .verifyComplete();
 
             assertArrayEquals(expected, digest.digest());
         }
+
         assertTrue(file.delete());
     }
 
     @Test
-    @Disabled("Need to sync with smaldini to find equivalent for rx.test.awaitDone")
     public void testBackpressureLongInput() throws IOException, NoSuchAlgorithmException {
-//        File file = new File("target/test4");
-//        byte[] array = "1234567690".getBytes(StandardCharsets.UTF_8);
-//        MessageDigest digest = MessageDigest.getInstance("MD5");
-//        try (BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file))) {
-//            for (int i = 0; i < NUM_CHUNKS_IN_LONG_INPUT; i++) {
-//                out.write(array);
-//                digest.update(array);
-//            }
-//        }
-//        byte[] expected = digest.digest();
-//        digest.reset();
-//
-//        try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ)) {
-//            FluxUtil1.byteBufferStreamFromFile(channel)
-//                    .rebatchRequests(1)
-//                    .subscribeOn(Schedulers.io())
-//                    .observeOn(Schedulers.io())
-//                    .doOnNext(bb -> digest.update(bb))
-//                    .test(0)
-//                    .assertNoValues()
-//                    .requestMore(1)
-//                    .awaitCount(1)
-//                    .assertValueCount(1)
-//                    .requestMore(1)
-//                    .awaitCount(2)
-//                    .assertValueCount(2)
-//                    .requestMore(Long.MAX_VALUE)
-//                    .awaitDone(20, TimeUnit.SECONDS)
-//                    .assertComplete();
-//        }
-//
-//        assertArrayEquals(expected, digest.digest());
-//        assertTrue(file.delete());
+        File file = new File("target/test4");
+        byte[] array = "1234567690".getBytes(StandardCharsets.UTF_8);
+        MessageDigest digest = MessageDigest.getInstance("MD5");
+        try (BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file))) {
+            for (int i = 0; i < NUM_CHUNKS_IN_LONG_INPUT; i++) {
+                out.write(array);
+                digest.update(array);
+            }
+        }
+
+        byte[] expected = digest.digest();
+        digest.reset();
+
+        try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ)) {
+            StepVerifier.create(FluxUtil.readFile(channel)
+                .subscribeOn(Schedulers.boundedElastic())
+                .publishOn(Schedulers.boundedElastic())
+                .doOnNext(buffer -> digest.update(buffer.duplicate())))
+                .thenRequest(1)
+                .expectNextCount(1)
+                .thenRequest(2)
+                .expectNextCount(2)
+                .thenRequest(Long.MAX_VALUE)
+                .thenConsumeWhile(ByteBuffer::hasRemaining)
+                .expectComplete()
+                .verify(Duration.ofSeconds(20));
+        }
+
+        assertArrayEquals(expected, digest.digest());
+        assertTrue(file.delete());
     }
 
     @Test
@@ -216,11 +221,7 @@ public class NettyFluxTests {
                 NettyFluxTestUtils.split(bb, 3)
                     .doOnNext(b -> digest.update(b.nioBuffer()))
                     .subscribe();
-//
-//            StepVerifier.create(FluxUtil1.split(bb, 3).doOnNext(b -> digest.update(b)))
-//                    .expectNextCount(?) // TODO: ? is Unknown. Check with smaldini - what is the Verifier way to ignore all next calls and simply check stream completes?
-//                    .verifyComplete();
-//
+
                 assertArrayEquals(expected, digest.digest());
             }
         } finally {
@@ -246,46 +247,11 @@ public class NettyFluxTests {
         }
     }
 
-//    @Test
-//    public void toByteArrayWithEmptyByteBuffer() {
-//        assertArrayEquals(new byte[0], byteBufToArray(Unpooled.wrappedBuffer(new byte[0])));
-//    }
-//
-//    @Test
-//    public void toByteArrayWithNonEmptyByteBuffer() {
-//        final ByteBuf byteBuffer = Unpooled.wrappedBuffer(new byte[] { 0, 1, 2, 3, 4 });
-//        assertEquals(5, byteBuffer.readableBytes());
-//        final byte[] byteArray = byteBufToArray(byteBuffer);
-//        assertArrayEquals(new byte[] { 0, 1, 2, 3, 4 }, byteArray);
-//        assertEquals(5, byteBuffer.readableBytes());
-//    }
-//
-//    @Test
-//    public void testCollectByteBufStream() {
-//        Flux<ByteBuf> byteBufFlux = Flux
-//            .just(Unpooled.copyInt(1), Unpooled.copyInt(255), Unpooled.copyInt(256));
-//        Mono<ByteBuf> result = collectByteBufStream(byteBufFlux, false);
-//        byte[] bytes = ByteBufUtil.getBytes(result.block());
-//        assertEquals(12, bytes.length);
-//        assertArrayEquals(new byte[]{
-//            0, 0, 0, 1,
-//            0, 0, 0, (byte) 255,
-//            0, 0, 1, 0}, bytes);
-//    }
-//
-//    @Test
-//    public void testToMono() {
-//        String value = "test";
-//        Assertions.assertEquals(getMonoRestResponse(value).flatMap(FluxUtil::toMono).block(), value);
-//        Assertions.assertEquals(getMonoRestResponse("").flatMap(FluxUtil::toMono).block(), "");
-//    }
-
     @Test
     public void testCallWithContextGetPagedCollection() throws Exception {
         // Simulates the customer code that includes context
         getPagedCollection()
-            .subscriberContext(
-                reactor.util.context.Context.of("Key1", "Val1", "Key2", "Val2"))
+            .contextWrite(reactor.util.context.Context.of("Key1", "Val1", "Key2", "Val2"))
             .doOnNext(System.out::println)
             .subscribe();
     }

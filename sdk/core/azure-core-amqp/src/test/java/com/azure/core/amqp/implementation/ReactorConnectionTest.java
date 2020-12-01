@@ -62,7 +62,7 @@ class ReactorConnectionTest {
         + "://test-event-hub.servicebus.windows.net/;SharedAccessKeyName=dummySharedKeyName;"
         + "SharedAccessKey=dummySharedKeyValue;EntityPath=eventhub1;");
     private static final String HOSTNAME = CREDENTIAL_INFO.getEndpoint().getHost();
-    private static final Scheduler SCHEDULER = Schedulers.elastic();
+    private static final Scheduler SCHEDULER = Schedulers.boundedElastic();
     private static final String PRODUCT = "test";
     private static final String CLIENT_VERSION = "1.0.0-test";
     private static final VerifyMode VERIFY_MODE = VerifyMode.VERIFY_PEER_NAME;

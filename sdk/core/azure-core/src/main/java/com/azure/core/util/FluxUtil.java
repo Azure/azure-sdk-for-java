@@ -14,6 +14,7 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Operators;
+import reactor.util.context.ContextView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -151,7 +152,7 @@ public final class FluxUtil {
     }
 
     /**
-     * This method converts the incoming {@code subscriberContext} from {@link reactor.util.context.Context Reactor
+     * This method converts the incoming {@code deferContextual} from {@link reactor.util.context.Context Reactor
      * Context} to {@link Context Azure Context} and calls the given lambda function with this context and returns a
      * single entity of type {@code T}
      * <p>
@@ -170,7 +171,7 @@ public final class FluxUtil {
     }
 
     /**
-     * This method converts the incoming {@code subscriberContext} from {@link reactor.util.context.Context Reactor
+     * This method converts the incoming {@code deferContextual} from {@link reactor.util.context.Context Reactor
      * Context} to {@link Context Azure Context}, adds the specified context attributes and calls the given lambda
      * function with this context and returns a single entity of type {@code T}
      * <p>
@@ -185,22 +186,20 @@ public final class FluxUtil {
      */
     public static <T> Mono<T> withContext(Function<Context, Mono<T>> serviceCall,
         Map<String, String> contextAttributes) {
-        return Mono.subscriberContext()
-            .map(context -> {
-                final Context[] azureContext = new Context[] { Context.NONE };
+        return Mono.deferContextual(context -> {
+            final Context[] azureContext = new Context[] { Context.NONE };
 
-                if (!CoreUtils.isNullOrEmpty(contextAttributes)) {
-                    contextAttributes.forEach((key, value) -> azureContext[0] = azureContext[0].addData(key, value));
-                }
+            if (!CoreUtils.isNullOrEmpty(contextAttributes)) {
+                contextAttributes.forEach((key, value) -> azureContext[0] = azureContext[0].addData(key, value));
+            }
 
-                if (!context.isEmpty()) {
-                    context.stream().forEach(entry ->
-                        azureContext[0] = azureContext[0].addData(entry.getKey(), entry.getValue()));
-                }
+            if (!context.isEmpty()) {
+                context.stream().forEach(entry ->
+                    azureContext[0] = azureContext[0].addData(entry.getKey(), entry.getValue()));
+            }
 
-                return azureContext[0];
-            })
-            .flatMap(serviceCall);
+            return serviceCall.apply(azureContext[0]);
+        });
     }
 
     /**
@@ -251,7 +250,7 @@ public final class FluxUtil {
     }
 
     /**
-     * This method converts the incoming {@code subscriberContext} from {@link reactor.util.context.Context Reactor
+     * This method converts the incoming {@code deferContextual} from {@link reactor.util.context.Context Reactor
      * Context} to {@link Context Azure Context} and calls the given lambda function with this context and returns a
      * collection of type {@code T}
      * <p>
@@ -266,9 +265,7 @@ public final class FluxUtil {
      * @return The response from service call
      */
     public static <T> Flux<T> fluxContext(Function<Context, Flux<T>> serviceCall) {
-        return Mono.subscriberContext()
-            .map(FluxUtil::toAzureContext)
-            .flatMapMany(serviceCall);
+        return Flux.deferContextual(context -> serviceCall.apply(toAzureContext(context)));
     }
 
     /**
@@ -278,7 +275,7 @@ public final class FluxUtil {
      * @param context The reactor context
      * @return The azure context
      */
-    private static Context toAzureContext(reactor.util.context.Context context) {
+    private static Context toAzureContext(ContextView context) {
         final Context[] azureContext = new Context[] { Context.NONE };
 
         if (!context.isEmpty()) {

@@ -22,6 +22,7 @@ import io.opentelemetry.trace.Tracer;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Signal;
 import reactor.util.context.Context;
+import reactor.util.context.ContextView;
 
 import java.util.Optional;
 
@@ -85,7 +86,7 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
         // run the next policy and handle success and error
         return next.process()
             .doOnEach(OpenTelemetryHttpPolicy::handleResponse)
-            .subscriberContext(Context.of("TRACING_SPAN", span, "REQUEST", request));
+            .contextWrite(Context.of("TRACING_SPAN", span, "REQUEST", request));
     }
 
     private static void addSpanRequestAttributes(Span span, HttpRequest request,
@@ -94,9 +95,8 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
         putAttributeIfNotEmptyOrNull(span, HTTP_METHOD, request.getHttpMethod().toString());
         putAttributeIfNotEmptyOrNull(span, HTTP_URL, request.getUrl().toString());
         Optional<Object> tracingNamespace = context.getData(AZ_TRACING_NAMESPACE_KEY);
-        if (tracingNamespace.isPresent()) {
-            putAttributeIfNotEmptyOrNull(span, OpenTelemetryTracer.AZ_NAMESPACE_KEY, tracingNamespace.get().toString());
-        }
+        tracingNamespace.ifPresent(o ->
+            putAttributeIfNotEmptyOrNull(span, OpenTelemetryTracer.AZ_NAMESPACE_KEY, o.toString()));
     }
 
     private static void putAttributeIfNotEmptyOrNull(Span span, String key, String value) {
@@ -118,7 +118,7 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
         }
 
         // Get the context that was added to the mono, this will contain the information needed to end the span.
-        Context context = signal.getContext();
+        ContextView context = signal.getContextView();
         Optional<Span> tracingSpan = context.getOrEmpty("TRACING_SPAN");
 
         if (!tracingSpan.isPresent()) {

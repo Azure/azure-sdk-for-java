@@ -41,7 +41,7 @@
     <dependency>
       <groupId>io.projectreactor.netty</groupId>
       <artifactId>reactor-netty</artifactId>
-      <version>0.9.13.RELEASE</version> <!-- {x-version-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
+      <version>1.0.1</version> <!-- {x-version-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
     </dependency>
   </dependencies>
 

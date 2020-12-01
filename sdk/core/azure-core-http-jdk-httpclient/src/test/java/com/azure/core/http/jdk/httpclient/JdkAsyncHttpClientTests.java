@@ -174,7 +174,7 @@ public class JdkAsyncHttpClientTests {
                     socket.close();
                     return 1;
                 })
-                    .subscribeOn(Schedulers.elastic())
+                    .subscribeOn(Schedulers.boundedElastic())
                     .subscribe();
                 //
                 latch.await();

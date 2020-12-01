@@ -87,12 +87,12 @@ public class Sample {
       Context traceContext = Context.of(PARENT_SPAN_KEY, TRACER.getCurrentSpan());
 
       client.setSecret(new KeyVaultSecret("Secret1", "password1"))
-              .subscriberContext(traceContext)
+              .contextWrite(traceContext)
               .subscribe(secretResponse -> System.out.printf("Secret with name: %s%n", secretResponse.getName()));
       client.listPropertiesOfSecrets()
-              .subscriberContext(traceContext)
+              .contextWrite(traceContext)
               .subscribe(secretBase -> client.getSecret(secretBase.getName())
-                      .subscriberContext(traceContext)
+                      .contextWrite(traceContext)
                       .subscribe(secret -> System.out.printf("Secret with name: %s%n", secret.getName())));
 
       Thread.sleep(10000);

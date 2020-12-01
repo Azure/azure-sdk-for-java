@@ -62,7 +62,7 @@ public class PerCallRequestIdExample {
     /**
      * This examples shows how to pass {@code x-ms-client-request-id} when using an asynchronous client.
      * <p>
-     * Asynchronous clients are able to accept {@link Context} in all APIs using Reactor's {@code subscriberContext}.
+     * Asynchronous clients are able to accept {@link Context} in all APIs using Reactor's {@code contextWrite}.
      */
     private static void asynchronousApiCall() {
         SearchAsyncClient client = createBuilder().buildAsyncClient();

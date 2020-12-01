@@ -28,7 +28,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
-import reactor.netty.channel.BootstrapHandlers;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.resources.ConnectionProvider;
 import reactor.test.StepVerifier;
@@ -39,6 +38,8 @@ import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
+import static com.azure.core.util.Configuration.PROPERTY_HTTP_PROXY;
+import static com.azure.core.util.Configuration.PROPERTY_NO_PROXY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -112,7 +113,8 @@ public class NettyAsyncHttpClientBuilderTests {
      */
     @Test
     public void buildWithConnectionProvider() {
-        ConnectionProvider connectionProvider = bootstrap -> {
+        ConnectionProvider connectionProvider = (transportConfig, connectionObserver, supplier,
+            addressResolverGroup) -> {
             throw new UnsupportedOperationException("Bad connection provider");
         };
 
@@ -130,10 +132,9 @@ public class NettyAsyncHttpClientBuilderTests {
     @ParameterizedTest
     @EnumSource(ProxyOptions.Type.class)
     public void buildWithProxy(ProxyOptions.Type proxyType) {
-        HttpClient validatorClient = HttpClient.create().tcpConfiguration(tcpClient -> tcpClient
-            .bootstrap(bootstrap -> BootstrapHandlers.updateConfiguration(bootstrap, "TestProxyHandler",
-                (connectionObserver, channel) ->
-                    channel.pipeline().addFirst("TestProxyHandler", new TestProxyValidator(proxyType)))));
+        HttpClient validatorClient = HttpClient.create()
+            .doOnChannelInit((connectionObserver, channel, socketAddress) ->
+                channel.pipeline().addFirst("TestProxyHandler", new TestProxyValidator(proxyType)));
 
         ProxyOptions proxyOptions = new ProxyOptions(proxyType, new InetSocketAddress("localhost", 12345));
 
@@ -147,10 +148,9 @@ public class NettyAsyncHttpClientBuilderTests {
 
     @Test
     public void buildWithAuthenticatedProxy() {
-        HttpClient validatorClient = HttpClient.create().tcpConfiguration(tcpClient -> tcpClient
-            .bootstrap(bootstrap -> BootstrapHandlers.updateConfiguration(bootstrap, "TestProxyHandler",
-                (connectionObserver, channel) ->
-                    channel.pipeline().addFirst("TestProxyHandler", new TestProxyValidator(ProxyOptions.Type.HTTP)))));
+        HttpClient validatorClient = HttpClient.create()
+            .doOnChannelInit((connectionObserver, channel, socketAddress) ->
+                channel.pipeline().addFirst("TestProxyHandler", new TestProxyValidator(ProxyOptions.Type.HTTP)));
 
         ProxyOptions proxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 12345))
             .setCredentials("1", "1");
@@ -176,13 +176,11 @@ public class NettyAsyncHttpClientBuilderTests {
 
     @Test
     public void buildWithConfigurationProxy() {
-        Configuration configuration = new Configuration()
-            .put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:8888");
+        Configuration configuration = new Configuration().put(PROPERTY_HTTP_PROXY, "http://localhost:8888");
 
-        HttpClient validatorClient = HttpClient.create().tcpConfiguration(tcpClient -> tcpClient
-            .bootstrap(bootstrap -> BootstrapHandlers.updateConfiguration(bootstrap, "TestProxyHandler",
-                (connectionObserver, channel) ->
-                    channel.pipeline().addFirst("TestProxyHandler", new TestProxyValidator(ProxyOptions.Type.HTTP)))));
+        HttpClient validatorClient = HttpClient.create()
+            .doOnChannelInit((connectionObserver, channel, socketAddress) ->
+                channel.pipeline().addFirst("TestProxyHandler", new TestProxyValidator(ProxyOptions.Type.HTTP)));
 
         NettyAsyncHttpClient nettyClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder(validatorClient)
             .configuration(configuration)
@@ -195,8 +193,8 @@ public class NettyAsyncHttpClientBuilderTests {
     @Test
     public void buildWithNonProxyConfigurationProxy() {
         Configuration configuration = new Configuration()
-            .put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:8888")
-            .put(Configuration.PROPERTY_NO_PROXY, "localhost");
+            .put(PROPERTY_HTTP_PROXY, "http://localhost:8888")
+            .put(PROPERTY_NO_PROXY, "localhost");
 
         NettyAsyncHttpClient nettyClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder()
             .configuration(configuration)
@@ -210,8 +208,8 @@ public class NettyAsyncHttpClientBuilderTests {
     @Test
     public void buildWithAuthenticatedNonProxyConfigurationProxy() {
         Configuration configuration = new Configuration()
-            .put(Configuration.PROPERTY_HTTP_PROXY, "http://1:1@localhost:8888")
-            .put(Configuration.PROPERTY_NO_PROXY, "localhost");
+            .put(PROPERTY_HTTP_PROXY, "http://1:1@localhost:8888")
+            .put(PROPERTY_NO_PROXY, "localhost");
 
         NettyAsyncHttpClient nettyClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder()
             .configuration(configuration)
@@ -272,7 +270,7 @@ public class NettyAsyncHttpClientBuilderTests {
      */
     @Test
     public void buildWiretappedClient() {
-        HttpClient validatorClient = HttpClient.create().doAfterResponse((response, connection) ->
+        HttpClient validatorClient = HttpClient.create().doAfterResponseSuccess((response, connection) ->
             assertNotNull(connection.channel().pipeline().get(LoggingHandler.class)));
 
         NettyAsyncHttpClient nettyClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder(validatorClient)
@@ -299,13 +297,13 @@ public class NettyAsyncHttpClientBuilderTests {
     }
 
     /**
-     * Tests that a custom {@link io.netty.channel.EventLoopGroup} is properly applied to the Netty client
-     * to handle sending and receiving requests and responses.
+     * Tests that a custom {@link io.netty.channel.EventLoopGroup} is properly applied to the Netty client to handle
+     * sending and receiving requests and responses.
      */
     @Test
     public void buildEventLoopClient() {
         String expectedThreadName = "testEventLoop";
-        HttpClient validatorClient = HttpClient.create().doAfterResponse((response, connection) -> {
+        HttpClient validatorClient = HttpClient.create().doAfterResponseSuccess((response, connection) -> {
             // Validate that the EventLoop being used is a NioEventLoop.
             NioEventLoop eventLoop = (NioEventLoop) connection.channel().eventLoop();
             assertNotNull(eventLoop);

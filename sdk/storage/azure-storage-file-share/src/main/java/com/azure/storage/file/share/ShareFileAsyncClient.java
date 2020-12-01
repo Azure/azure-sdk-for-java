@@ -26,7 +26,9 @@ import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.models.CopyFileSmbInfo;
+import com.azure.storage.file.share.implementation.models.FileCreateHeaders;
 import com.azure.storage.file.share.implementation.models.FileGetPropertiesHeaders;
+import com.azure.storage.file.share.implementation.models.FileSetHTTPHeadersHeaders;
 import com.azure.storage.file.share.implementation.models.FileStartCopyHeaders;
 import com.azure.storage.file.share.implementation.models.FileUploadRangeFromURLHeaders;
 import com.azure.storage.file.share.implementation.models.FileUploadRangeHeaders;
@@ -82,9 +84,9 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -93,6 +95,7 @@ import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.FluxUtil.writeFile;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 
@@ -135,7 +138,7 @@ public class ShareFileAsyncClient {
      * @param snapshot The snapshot of the share
      */
     ShareFileAsyncClient(AzureFileStorageImpl azureFileStorageClient, String shareName, String filePath,
-                         String snapshot, String accountName, ShareServiceVersion serviceVersion) {
+        String snapshot, String accountName, ShareServiceVersion serviceVersion) {
         Objects.requireNonNull(shareName, "'shareName' cannot be null.");
         Objects.requireNonNull(filePath, "'filePath' cannot be null.");
         this.shareName = shareName;
@@ -213,7 +216,7 @@ public class ShareFileAsyncClient {
     }
 
     private boolean checkDoesNotExistStatusCode(Throwable t) {
-            // ShareStorageException
+        // ShareStorageException
         return (t instanceof ShareStorageException
             && ((ShareStorageException) t).getStatusCode() == 404
             && (((ShareStorageException) t).getErrorCode() == ShareErrorCode.RESOURCE_NOT_FOUND
@@ -243,8 +246,8 @@ public class ShareFileAsyncClient {
      *
      * @param maxSize The maximum size in bytes for the file.
      * @return A response containing the file info and the status of creating the file.
-     * @throws ShareStorageException If the file has already existed, the parent directory does not exist or fileName
-     * is an invalid resource name.
+     * @throws ShareStorageException If the file has already existed, the parent directory does not exist or fileName is
+     * an invalid resource name.
      */
     public Mono<ShareFileInfo> create(long maxSize) {
         try {
@@ -437,16 +440,16 @@ public class ShareFileAsyncClient {
             (pollingContext) -> {
                 try {
                     return withContext(context -> azureFileStorageClient.files()
-                            .startCopyWithRestResponseAsync(shareName, filePath, copySource, null,
-                                metadata, filePermission, tempSmbProperties.getFilePermissionKey(),
-                                finalRequestConditions.getLeaseId(), copyFileSmbInfo, context))
-                            .map(response -> {
-                                final FileStartCopyHeaders headers = response.getDeserializedHeaders();
-                                copyId.set(headers.getCopyId());
+                        .startCopyWithRestResponseAsync(shareName, filePath, copySource, null,
+                            metadata, filePermission, tempSmbProperties.getFilePermissionKey(),
+                            finalRequestConditions.getLeaseId(), copyFileSmbInfo, context))
+                        .map(response -> {
+                            final FileStartCopyHeaders headers = response.getDeserializedHeaders();
+                            copyId.set(headers.getCopyId());
 
-                                return new ShareFileCopyInfo(sourceUrl, headers.getCopyId(), headers.getCopyStatus(),
-                                        headers.getETag(), headers.getLastModified(), headers.getErrorCode());
-                            });
+                            return new ShareFileCopyInfo(sourceUrl, headers.getCopyId(), headers.getCopyStatus(),
+                                headers.getETag(), headers.getLastModified(), headers.getErrorCode());
+                        });
                 } catch (RuntimeException ex) {
                     return monoError(logger, ex);
                 }
@@ -461,7 +464,7 @@ public class ShareFileAsyncClient {
             (pollingContext, firstResponse) -> {
                 if (firstResponse == null || firstResponse.getValue() == null) {
                     return Mono.error(logger.logExceptionAsError(
-                            new IllegalArgumentException("Cannot cancel a poll response that never started.")));
+                        new IllegalArgumentException("Cannot cancel a poll response that never started.")));
                 }
                 final String copyIdentifier = firstResponse.getValue().getCopyId();
                 if (!CoreUtils.isNullOrEmpty(copyIdentifier)) {
@@ -485,7 +488,7 @@ public class ShareFileAsyncClient {
         if (lastInfo == null) {
             logger.warning("ShareFileCopyInfo does not exist. Activation operation failed.");
             return Mono.just(new PollResponse<>(LongRunningOperationStatus.fromString("COPY_START_FAILED",
-                    true), null));
+                true), null));
         }
 
         return getPropertiesWithResponse(requestConditions)
@@ -516,7 +519,7 @@ public class ShareFileAsyncClient {
 
                 return new PollResponse<>(operationStatus, result);
             }).onErrorReturn(new PollResponse<>(LongRunningOperationStatus.fromString("POLLING_FAILED",
-                        true), lastInfo));
+                true), lastInfo));
     }
 
     /**
@@ -697,14 +700,10 @@ public class ShareFileAsyncClient {
                 return chunks;
             }).flatMapMany(Flux::fromIterable).flatMap(chunk ->
                 downloadWithResponse(chunk, false, requestConditions, context)
-                .map(ShareFileDownloadAsyncResponse::getValue)
-                .subscribeOn(Schedulers.elastic())
-                .flatMap(fbb -> FluxUtil
-                    .writeFile(fbb, channel, chunk.getStart() - (range == null ? 0 : range.getStart()))
-                    .subscribeOn(Schedulers.elastic())
-                    .timeout(Duration.ofSeconds(DOWNLOAD_UPLOAD_CHUNK_TIMEOUT))
-                    .retry(3, throwable -> throwable instanceof IOException
-                        || throwable instanceof TimeoutException)))
+                    .map(ShareFileDownloadAsyncResponse::getValue)
+                    .publishOn(Schedulers.boundedElastic())
+                    .flatMap(fbb -> writeFile(fbb, channel, chunk.getStart() - (range == null ? 0 : range.getStart()))
+                        .timeout(Duration.ofSeconds(DOWNLOAD_UPLOAD_CHUNK_TIMEOUT))))
             .then(Mono.just(response));
     }
 
@@ -782,8 +781,8 @@ public class ShareFileAsyncClient {
      *
      * @param range Optional byte range which returns file data only from the specified range.
      * @param rangeGetContentMD5 Optional boolean which the service returns the MD5 hash for the range when it sets to
-     * @param requestConditions {@link ShareRequestConditions}
-     * true, as long as the range is less than or equal to 4 MB in size.
+     * @param requestConditions {@link ShareRequestConditions} true, as long as the range is less than or equal to 4 MB
+     * in size.
      * @return A reactive response containing response data and the file data.
      */
     public Mono<ShareFileDownloadAsyncResponse> downloadWithResponse(ShareFileRange range, Boolean rangeGetContentMD5,
@@ -961,8 +960,7 @@ public class ShareFileAsyncClient {
      * Sets the user-defined file properties to associate to the file.
      *
      * <p>If {@code null} is passed for the fileProperties.httpHeaders it will clear the httpHeaders associated to the
-     * file.
-     * If {@code null} is passed for the fileProperties.filesmbproperties it will preserve the filesmb properties
+     * file. If {@code null} is passed for the fileProperties.filesmbproperties it will preserve the filesmb properties
      * associated with the file.</p>
      *
      * <p><strong>Code Samples</strong></p>
@@ -986,7 +984,7 @@ public class ShareFileAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
     public Mono<ShareFileInfo> setProperties(long newFileSize, ShareFileHttpHeaders httpHeaders,
-                                        FileSmbProperties smbProperties, String filePermission) {
+        FileSmbProperties smbProperties, String filePermission) {
         try {
             return setPropertiesWithResponse(newFileSize, httpHeaders, smbProperties, filePermission)
                 .flatMap(FluxUtil::toMono);
@@ -1023,7 +1021,7 @@ public class ShareFileAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
     public Mono<Response<ShareFileInfo>> setPropertiesWithResponse(long newFileSize, ShareFileHttpHeaders httpHeaders,
-                                                              FileSmbProperties smbProperties, String filePermission) {
+        FileSmbProperties smbProperties, String filePermission) {
         return this.setPropertiesWithResponse(newFileSize, httpHeaders, smbProperties, filePermission, null);
     }
 
@@ -1235,10 +1233,10 @@ public class ShareFileAsyncClient {
      * @param data The data which will upload to the storage file.
      * @param length Specifies the number of bytes being transmitted in the request body. When the
      * ShareFileRangeWriteType is set to clear, the value of this header must be set to zero.
-     * @param offset Optional starting point of the upload range. It will start from the beginning if it is
-     * {@code null}.
-     * @return A response containing the {@link ShareFileUploadInfo file upload info} with headers and response
-     * status code.
+     * @param offset Optional starting point of the upload range. It will start from the beginning if it is {@code
+     * null}.
+     * @return A response containing the {@link ShareFileUploadInfo file upload info} with headers and response status
+     * code.
      * @throws ShareStorageException If you attempt to upload a range that is larger than 4 MB, the service returns
      * status code 413 (Request Entity Too Large)
      */
@@ -1262,11 +1260,11 @@ public class ShareFileAsyncClient {
      * @param data The data which will upload to the storage file.
      * @param length Specifies the number of bytes being transmitted in the request body. When the
      * ShareFileRangeWriteType is set to clear, the value of this header must be set to zero.
-     * @param offset Optional starting point of the upload range. It will start from the beginning if it is
-     * {@code null}.
+     * @param offset Optional starting point of the upload range. It will start from the beginning if it is {@code
+     * null}.
      * @param requestConditions {@link ShareRequestConditions}
-     * @return A response containing the {@link ShareFileUploadInfo file upload info} with headers and response
-     * status code.
+     * @return A response containing the {@link ShareFileUploadInfo file upload info} with headers and response status
+     * code.
      * @throws ShareStorageException If you attempt to upload a range that is larger than 4 MB, the service returns
      * status code 413 (Request Entity Too Large)
      */
@@ -1435,10 +1433,10 @@ public class ShareFileAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
      * @param length Specifies the number of bytes being cleared in the request body.
-     * @param offset Optional starting point of the upload range. It will start from the beginning if it is
-     * {@code null}
-     * @return A response of {@link ShareFileUploadInfo file upload info} that only contains headers and response
-     * status code.
+     * @param offset Optional starting point of the upload range. It will start from the beginning if it is {@code
+     * null}
+     * @return A response of {@link ShareFileUploadInfo file upload info} that only contains headers and response status
+     * code.
      */
     public Mono<Response<ShareFileUploadInfo>> clearRangeWithResponse(long length, long offset) {
         return this.clearRangeWithResponse(length, offset, null);
@@ -1458,11 +1456,11 @@ public class ShareFileAsyncClient {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-range">Azure Docs</a>.</p>
      *
      * @param length Specifies the number of bytes being cleared in the request body.
-     * @param offset Optional starting point of the upload range. It will start from the beginning if it is
-     * {@code null}
+     * @param offset Optional starting point of the upload range. It will start from the beginning if it is {@code
+     * null}
      * @param requestConditions {@link ShareRequestConditions}
-     * @return A response of {@link ShareFileUploadInfo file upload info} that only contains headers and response
-     * status code.
+     * @return A response of {@link ShareFileUploadInfo file upload info} that only contains headers and response status
+     * code.
      */
     public Mono<Response<ShareFileUploadInfo>> clearRangeWithResponse(long length, long offset,
         ShareRequestConditions requestConditions) {
@@ -1534,9 +1532,7 @@ public class ShareFileAsyncClient {
                     .flatMap(chunk -> uploadWithResponse(FluxUtil.readFile(channel, chunk.getStart(),
                         chunk.getEnd() - chunk.getStart() + 1), chunk.getEnd() - chunk.getStart() + 1,
                         chunk.getStart(), requestConditions)
-                        .timeout(Duration.ofSeconds(DOWNLOAD_UPLOAD_CHUNK_TIMEOUT))
-                        .retry(3,
-                            throwable -> throwable instanceof IOException || throwable instanceof TimeoutException))
+                        .timeout(Duration.ofSeconds(DOWNLOAD_UPLOAD_CHUNK_TIMEOUT)))
                     .then(), this::channelCleanUp);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -1839,9 +1835,9 @@ public class ShareFileAsyncClient {
     public Mono<CloseHandlesInfo> forceCloseAllHandles() {
         try {
             return withContext(context -> forceCloseAllHandlesWithOptionalTimeout(null,
-                context).reduce(new CloseHandlesInfo(0, 0),
-                    (accu, next) -> new CloseHandlesInfo(accu.getClosedHandles() + next.getClosedHandles(),
-                        accu.getFailedHandles() + next.getFailedHandles())));
+                context).reduce(new CloseHandlesInfo(0, 0), (accu, next) ->
+                    new CloseHandlesInfo(accu.getClosedHandles() + next.getClosedHandles(),
+                    accu.getFailedHandles() + next.getFailedHandles())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1926,8 +1922,8 @@ public class ShareFileAsyncClient {
     }
 
     /**
-     * Generates a service SAS for the file using the specified {@link ShareServiceSasSignatureValues}
-     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * Generates a service SAS for the file using the specified {@link ShareServiceSasSignatureValues} Note : The client
+     * must be authenticated via {@link StorageSharedKeyCredential}
      * <p>See {@link ShareServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
      *
      * <p><strong>Code Samples</strong></p>
@@ -1935,7 +1931,6 @@ public class ShareFileAsyncClient {
      * {@codesnippet com.azure.storage.file.share.ShareFileAsyncClient.generateSas#ShareServiceSasSignatureValues}
      *
      * @param shareServiceSasSignatureValues {@link ShareServiceSasSignatureValues}
-     *
      * @return A {@code String} representing all SAS query parameters.
      */
     public String generateSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues) {
@@ -1944,20 +1939,22 @@ public class ShareFileAsyncClient {
     }
 
     private Response<ShareFileInfo> createFileInfoResponse(final FilesCreateResponse response) {
-        String eTag = response.getDeserializedHeaders().getETag();
-        OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
-        boolean isServerEncrypted = response.getDeserializedHeaders().isServerEncrypted();
-        FileSmbProperties smbProperties = new FileSmbProperties(response.getHeaders());
-        ShareFileInfo shareFileInfo = new ShareFileInfo(eTag, lastModified, isServerEncrypted, smbProperties);
-        return new SimpleResponse<>(response, shareFileInfo);
+        FileCreateHeaders headers = response.getDeserializedHeaders();
+
+        return createShareFileInfo(response, headers.getETag(), headers.getLastModified(), headers.isServerEncrypted());
     }
 
     private Response<ShareFileInfo> setPropertiesResponse(final FilesSetHTTPHeadersResponse response) {
-        String eTag = response.getDeserializedHeaders().getETag();
-        OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
-        boolean isServerEncrypted = response.getDeserializedHeaders().isServerEncrypted();
+        FileSetHTTPHeadersHeaders headers = response.getDeserializedHeaders();
+
+        return createShareFileInfo(response, headers.getETag(), headers.getLastModified(), headers.isServerEncrypted());
+    }
+
+    private Response<ShareFileInfo> createShareFileInfo(Response<?> response, String eTag, OffsetDateTime lastModified,
+        boolean isServerEncrypted) {
         FileSmbProperties smbProperties = new FileSmbProperties(response.getHeaders());
         ShareFileInfo shareFileInfo = new ShareFileInfo(eTag, lastModified, isServerEncrypted, smbProperties);
+
         return new SimpleResponse<>(response, shareFileInfo);
     }
 
@@ -2031,13 +2028,14 @@ public class ShareFileAsyncClient {
     }
 
     /**
-     * Verifies that the file permission and file permission key are not both set and if the file permission is set,
-     * the file permission is of valid length.
+     * Verifies that the file permission and file permission key are not both set and if the file permission is set, the
+     * file permission is of valid length.
+     *
      * @param filePermission The file permission.
      * @param filePermissionKey The file permission key.
      * @throws IllegalArgumentException for invalid file permission or file permission keys.
      */
-    private void validateFilePermissionAndKey(String filePermission, String  filePermissionKey) {
+    private void validateFilePermissionAndKey(String filePermission, String filePermissionKey) {
         if (filePermission != null && filePermissionKey != null) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 FileConstants.MessageConstants.FILE_PERMISSION_FILE_PERMISSION_KEY_INVALID));

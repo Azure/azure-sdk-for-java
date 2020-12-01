@@ -376,7 +376,7 @@ public final class BlockBlobClient extends BlobClientBase {
             BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, true);
 
         Mono<Response<Void>> response = client.stageBlockWithResponse(base64BlockId,
-            fbb.subscribeOn(Schedulers.elastic()), length, contentMd5, leaseId, context);
+            fbb.publishOn(Schedulers.boundedElastic()), length, contentMd5, leaseId, context);
         return blockWithOptionalTimeout(response, timeout);
     }
 

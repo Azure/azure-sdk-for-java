@@ -40,7 +40,7 @@ public class ChunkedDownloadUtils {
             ? range.getCount() : parallelTransferOptions.getBlockSizeLong();
 
         return downloader.apply(new BlobRange(range.getOffset(), initialChunkSize), requestConditions)
-            .subscribeOn(Schedulers.elastic())
+            .publishOn(Schedulers.boundedElastic())
             .flatMap(response -> {
                 /*
                 Either the etag was set and it matches because the download succeeded, so this is a no-op, or there
@@ -75,7 +75,7 @@ public class ChunkedDownloadUtils {
                     .getHeaders().getValue("Content-Range")) == 0) {
 
                     return downloader.apply(new BlobRange(0, 0L), requestConditions)
-                        .subscribeOn(Schedulers.elastic())
+                        .publishOn(Schedulers.boundedElastic())
                         .flatMap(response -> {
                             /*
                             Ensure the blob is still 0 length by checking our download was the full length.
@@ -111,7 +111,7 @@ public class ChunkedDownloadUtils {
 
         // Make the download call.
         return downloader.apply(chunkRange, requestConditions)
-            .subscribeOn(Schedulers.elastic())
+            .publishOn(Schedulers.boundedElastic())
             .flatMapMany(returnTransformer);
     }
 

@@ -127,7 +127,7 @@ class NettyAsyncHttpClient implements HttpClient {
                     .doFinally(ignored -> closeConnection(reactorNettyConnection));
 
                 return FluxUtil.collectBytesInByteBufferStream(body)
-                    .map(bytes -> new BufferedReactorNettyResponse(reactorNettyResponse, restRequest, bytes));
+                    .map(bytes -> new BufferedReactorNettyHttpResponse(reactorNettyResponse, restRequest, bytes));
 
             } else {
                 return Mono.just(new ReactorNettyHttpResponse(reactorNettyResponse, reactorNettyConnection, restRequest,

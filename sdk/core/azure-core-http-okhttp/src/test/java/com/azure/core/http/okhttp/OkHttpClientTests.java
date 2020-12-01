@@ -169,7 +169,7 @@ public class OkHttpClientTests {
                     // kill the socket with HTTP response body incomplete
                     socket.close();
                     return 1;
-                }).subscribeOn(Schedulers.elastic()).subscribe();
+                }).subscribeOn(Schedulers.boundedElastic()).subscribe();
                 //
                 latch.await();
                 HttpClient client = new OkHttpAsyncHttpClientBuilder().build();

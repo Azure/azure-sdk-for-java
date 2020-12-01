@@ -222,7 +222,7 @@ public final class AppendBlobClient extends BlobClientBase {
         Objects.requireNonNull(data, "'data' cannot be null.");
         Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length, MAX_APPEND_BLOCK_BYTES, true);
         Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlockWithResponse(
-            fbb.subscribeOn(Schedulers.elastic()), length, contentMd5, appendBlobRequestConditions, context);
+            fbb.publishOn(Schedulers.boundedElastic()), length, contentMd5, appendBlobRequestConditions, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 

@@ -184,7 +184,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
             Flux<ByteBuffer> fbb = Flux.range(0, 1).concatMap(pos -> Mono.fromCallable(() ->
                 ByteBuffer.wrap(data, (int) offset, writeLength)));
 
-            return this.appendBlock(fbb.subscribeOn(Schedulers.elastic()), writeLength);
+            return this.appendBlock(fbb.publishOn(Schedulers.boundedElastic()), writeLength);
         }
 
         @Override
@@ -334,7 +334,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
                     new RuntimeException("The input data length is larger than the page range."));
             }
             pageRange.setStart(pageRange.getStart() + writeLength);
-            return this.writePages(fbb.subscribeOn(Schedulers.elastic()), writeLength, pageOffset);
+            return this.writePages(fbb.publishOn(Schedulers.boundedElastic()), writeLength, pageOffset);
         }
 
         @Override

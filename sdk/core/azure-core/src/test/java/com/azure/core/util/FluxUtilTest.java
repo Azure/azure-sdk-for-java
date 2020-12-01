@@ -46,7 +46,7 @@ public class FluxUtilTest {
     @Test
     public void testCallWithContextGetSingle() {
         String response = getSingle()
-            .subscriberContext(reactor.util.context.Context.of("FirstName", "Foo", "LastName", "Bar"))
+            .contextWrite(reactor.util.context.Context.of("FirstName", "Foo", "LastName", "Bar"))
             .block();
         assertEquals("Hello, Foo Bar", response);
     }
@@ -56,7 +56,7 @@ public class FluxUtilTest {
         List<String> expectedLines = Arrays.asList("Hello,", "Foo", "Bar");
         List<String> actualLines = new ArrayList<>();
         getCollection()
-            .subscriberContext(reactor.util.context.Context.of("FirstName", "Foo", "LastName", "Bar"))
+            .contextWrite(reactor.util.context.Context.of("FirstName", "Foo", "LastName", "Bar"))
             .doOnNext(actualLines::add)
             .subscribe();
         assertEquals(expectedLines, actualLines);
@@ -65,7 +65,7 @@ public class FluxUtilTest {
     @Test
     public void testCallWithDefaultContextGetSingle() {
         String response = getSingleWithContextAttributes()
-            .subscriberContext(reactor.util.context.Context.of("FirstName", "Foo"))
+            .contextWrite(reactor.util.context.Context.of("FirstName", "Foo"))
             .block();
         assertEquals("Hello, Foo additionalContextValue", response);
     }
