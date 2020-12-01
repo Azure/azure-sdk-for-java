@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.communication.chat;
 
+import com.azure.communication.chat.implementation.converters.CreateChatThreadResultConverter;
 import reactor.core.publisher.Mono;
 
 import com.azure.communication.chat.models.ChatThread;
@@ -109,7 +110,7 @@ public final class ChatAsyncClient {
         return this.chatsClient.createChatThreadWithResponseAsync(
             CreateChatThreadOptionsConverter.convert(options), options.getRepeatabilityRequestID(), context).map(
                 result -> new SimpleResponse<CreateChatThreadResult>(
-                    result, result.getValue()));
+                    result, CreateChatThreadResultConverter.convert(result.getValue())));
     }
 
     /**
