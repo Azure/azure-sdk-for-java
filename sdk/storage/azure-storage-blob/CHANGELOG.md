@@ -1,6 +1,7 @@
 # Release History
 
 ## 12.10.0-beta.1 (Unreleased)
+- Added support to lock on version id by specifying a concurrency control when opening a BlobInputStream.
 - Added ability to get container client from blob clients and service client from container clients
 - Fixed a bug where the error message would not be displayed the exception message of a HEAD request.
 

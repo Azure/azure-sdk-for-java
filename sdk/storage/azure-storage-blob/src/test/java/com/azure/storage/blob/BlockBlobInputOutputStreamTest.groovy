@@ -1,7 +1,9 @@
 package com.azure.storage.blob
 
 import com.azure.storage.blob.models.BlobRequestConditions
+import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.BlobType
+import com.azure.storage.blob.models.ConcurrencyControl
 import com.azure.storage.blob.options.BlobInputStreamOptions
 import com.azure.storage.blob.specialized.BlobOutputStream
 import com.azure.storage.blob.specialized.BlockBlobClient
@@ -149,7 +151,7 @@ class BlockBlobInputOutputStreamTest extends APISpec {
 
     // Only run this test in live mode as BlobOutputStream dynamically assigns blocks
     @Requires({ liveMode() })
-    def "Input stream etag lock"() {
+    def "Input stream etag lock default"() {
         setup:
         int length = 6 * Constants.MB
         byte[] randomBytes = getRandomByteArray(length)
@@ -173,4 +175,149 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         then:
         thrown(IOException)
     }
+
+    @Requires({ liveMode() })
+    def "Input stream concurrency control none"() {
+        setup:
+        int length = 6 * Constants.MB
+        byte[] randomBytes = getRandomByteArray(length)
+        BlobOutputStream outStream = bc.getBlobOutputStream()
+        outStream.write(randomBytes, 1 * Constants.MB, 5 * Constants.MB)
+        outStream.close()
+
+        // Read from the input stream
+        // Note: Setting block size to 1 is inefficient but helps demonstrate the purpose of this test.
+        def inputStream = bc.openInputStream(new BlobInputStreamOptions().setBlockSize(1).setConcurrencyControl(ConcurrencyControl.NONE))
+        inputStream.read()
+
+        // Modify the blob again.
+        outStream = bc.getBlobOutputStream(true)
+        outStream.write(randomBytes, 1 * Constants.MB, 5 * Constants.MB)
+        outStream.close()
+
+        when:
+        inputStream.read()
+
+        then: "Exception should not be thrown even though blob was modified"
+        notThrown(IOException)
+    }
+
+    @Requires({ liveMode() })
+    def "Input stream concurrency control none error"() {
+        setup:
+        int length = 6 * Constants.MB
+        byte[] randomBytes = getRandomByteArray(length)
+        def blobContainerClient = versionedBlobServiceClient.createBlobContainer(containerName)
+        def blobClient = blobContainerClient.getBlobClient(generateBlobName())
+        BlobOutputStream outStream = blobClient.getBlockBlobClient().getBlobOutputStream()
+        outStream.write(randomBytes, 1 * Constants.MB, 5 * Constants.MB)
+        outStream.close()
+        def properties = blobClient.getProperties()
+
+        when:
+        blobClient.openInputStream(new BlobInputStreamOptions().setBlockSize(1).setConcurrencyControl(ConcurrencyControl.NONE)
+            .setRequestConditions(new BlobRequestConditions().setIfMatch(properties.getETag())))
+
+        then:
+        thrown(UnsupportedOperationException)
+
+        when:
+        blobClient.getVersionClient(properties.getVersionId()).openInputStream(new BlobInputStreamOptions().setBlockSize(1).setConcurrencyControl(ConcurrencyControl.NONE))
+
+        then:
+        thrown(UnsupportedOperationException)
+    }
+
+    @Requires({ liveMode() })
+    def "Input stream concurrency control etag"() {
+        setup:
+        int length = 6 * Constants.MB
+        byte[] randomBytes = getRandomByteArray(length)
+        def blobContainerClient = versionedBlobServiceClient.createBlobContainer(containerName)
+        def blobClient = blobContainerClient.getBlobClient(generateBlobName())
+        BlobOutputStream outStream = blobClient.getBlockBlobClient().getBlobOutputStream()
+        outStream.write(randomBytes, 1 * Constants.MB, 5 * Constants.MB)
+        outStream.close()
+        def properties = blobClient.getProperties()
+
+        when: "Use recent eTag"
+        def inputStream = blobClient.openInputStream(new BlobInputStreamOptions().setConcurrencyControl(ConcurrencyControl.E_TAG)
+            .setRequestConditions(new BlobRequestConditions().setIfMatch(properties.getETag())))
+
+        then:
+        def outputStream = new ByteArrayOutputStream()
+        def b
+        try {
+            while ((b = inputStream.read()) != -1) {
+                outputStream.write(b)
+            }
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex)
+        }
+        byte[] randomBytes2 = outputStream.toByteArray()
+        assert randomBytes2 == Arrays.copyOfRange(randomBytes, 1 * Constants.MB, 6 * Constants.MB)
+
+        when: "Use old eTag"
+        // Write more bytes (just to change eTag).
+        outStream = blobClient.getBlockBlobClient().getBlobOutputStream(true)
+        outStream.write(getRandomByteArray(length), 1 * Constants.MB, 5 * Constants.MB)
+        outStream.close()
+
+        blobClient.openInputStream(new BlobInputStreamOptions().setBlockSize(1).setConcurrencyControl(ConcurrencyControl.E_TAG)
+            .setRequestConditions(new BlobRequestConditions().setIfMatch(properties.getETag()))).read()
+
+        then: "An old etag will fail due to ConditionNotMet"
+        thrown(IOException)
+    }
+
+    @Requires({ liveMode() })
+    def "Input stream concurrency control version"() {
+        setup:
+        int length = 6 * Constants.MB
+        byte[] randomBytes = getRandomByteArray(length)
+        def blobContainerClient = versionedBlobServiceClient.createBlobContainer(containerName)
+        def blobClient = blobContainerClient.getBlobClient(generateBlobName())
+        BlobOutputStream outStream = blobClient.getBlockBlobClient().getBlobOutputStream()
+        outStream.write(randomBytes, 1 * Constants.MB, 5 * Constants.MB)
+        outStream.close()
+        def oldProperties = blobClient.getProperties()
+
+        when: "Use recent version"
+        def inputStream = blobClient.openInputStream(new BlobInputStreamOptions().setConcurrencyControl(ConcurrencyControl.VERSION_ID))
+        // Write more bytes (just to change version).
+        outStream = blobClient.getBlockBlobClient().getBlobOutputStream(true)
+        outStream.write(getRandomByteArray(length), 1 * Constants.MB, 5 * Constants.MB)
+        outStream.close()
+
+        then:
+        def outputStream = new ByteArrayOutputStream()
+        def b
+        try {
+            while ((b = inputStream.read()) != -1) {
+                outputStream.write(b)
+            }
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex)
+        }
+        byte[] randomBytes2 = outputStream.toByteArray()
+        assert randomBytes2 == Arrays.copyOfRange(randomBytes, 1 * Constants.MB, 6 * Constants.MB)
+
+        when: "Use old version"
+        inputStream = blobClient.getVersionClient(oldProperties.getVersionId()).openInputStream(new BlobInputStreamOptions().setConcurrencyControl(ConcurrencyControl.VERSION_ID))
+
+        outputStream = new ByteArrayOutputStream()
+        try {
+            while ((b = inputStream.read()) != -1) {
+                outputStream.write(b)
+            }
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex)
+        }
+        randomBytes2 = outputStream.toByteArray()
+
+        then:
+        assert randomBytes2 == Arrays.copyOfRange(randomBytes, 1 * Constants.MB, 6 * Constants.MB)
+    }
+
+
 }

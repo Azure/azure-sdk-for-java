@@ -12,9 +12,12 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.storage.blob.BlobAsyncClient;
+import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.implementation.util.ModelHelper;
+import com.azure.storage.blob.models.ConcurrencyControl;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.models.BlobProperties;
@@ -261,21 +264,58 @@ public class BlobClientBase {
      */
     public BlobInputStream openInputStream(BlobInputStreamOptions options) {
         options = options == null ? new BlobInputStreamOptions() : options;
+        ConcurrencyControl concurrencyControl = options.getConcurrencyControl() == null ? ConcurrencyControl.E_TAG
+            : options.getConcurrencyControl();
 
         BlobProperties properties = getProperties();
+        String eTag = properties.getETag();
+        String versionId = properties.getVersionId();
 
         BlobRange range = options.getRange() == null ? new BlobRange(0) : options.getRange();
         int chunkSize = options.getBlockSize() == null ? 4 * Constants.MB : options.getBlockSize();
 
         BlobRequestConditions requestConditions = options.getRequestConditions() == null
             ? new BlobRequestConditions() : options.getRequestConditions();
-        // Target the user specified version by default. If not provided, target the latest version.
-        if (requestConditions.getIfMatch() == null) {
-            requestConditions.setIfMatch(properties.getETag());
+        BlobAsyncClientBase client = this.client;
+
+        switch (concurrencyControl) {
+            case NONE:
+                if (requestConditions.getIfMatch() != null) {
+                    throw logger.logExceptionAsError(generateNoneException("requestConditions.ifMatch", "E_TAG"));
+                }
+                if (this.client.getVersionId() != null) {
+                    throw logger.logExceptionAsError(generateNoneException("client.versionId", "VERSION_ID"));
+                }
+                break;
+            case E_TAG:
+                // Target the user specified eTag by default. If not provided, target the latest eTag.
+                if (requestConditions.getIfMatch() == null) {
+                    requestConditions.setIfMatch(eTag);
+                }
+                break;
+            case VERSION_ID:
+                if (versionId == null) {
+                    throw logger.logExceptionAsError(
+                        new UnsupportedOperationException("Versioning is not supported on this account."));
+                } else {
+                    // Target the user specified version by default. If not provided, target the latest version.
+                    if (this.client.getVersionId() == null) {
+                        client = this.client.getVersionClient(versionId);
+                    }
+                }
+                break;
+            default:
+                throw logger.logExceptionAsError(
+                    new UnsupportedOperationException("Concurrency control type not supported."));
         }
 
         return new BlobInputStream(client, range.getOffset(), range.getCount(), chunkSize,
             requestConditions, properties);
+    }
+
+    private UnsupportedOperationException generateNoneException(String wrongValue, String toSet) {
+        return new UnsupportedOperationException(String.format("'%s' can not be set when 'concurrencyControl'"
+            + " is set to NONE. Set 'concurrencyControl' to %s.", wrongValue, toSet));
     }
 
     /**
