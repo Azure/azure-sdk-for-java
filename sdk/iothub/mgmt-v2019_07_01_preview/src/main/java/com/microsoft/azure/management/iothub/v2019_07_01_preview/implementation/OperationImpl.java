@@ -13,14 +13,14 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.iothub.v2019_07_01_preview.OperationDisplay;
 
 class OperationImpl extends WrapperImpl<OperationInner> implements Operation {
-    private final IoTHubManager manager;
-    OperationImpl(OperationInner inner, IoTHubManager manager) {
+    private final DevicesManager manager;
+    OperationImpl(OperationInner inner, DevicesManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public IoTHubManager manager() {
+    public DevicesManager manager() {
         return this.manager;
     }
 

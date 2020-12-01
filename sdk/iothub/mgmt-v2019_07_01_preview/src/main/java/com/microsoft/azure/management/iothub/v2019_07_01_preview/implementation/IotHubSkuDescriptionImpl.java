@@ -15,15 +15,15 @@ import com.microsoft.azure.management.iothub.v2019_07_01_preview.IotHubCapacity;
 import com.microsoft.azure.management.iothub.v2019_07_01_preview.IotHubSkuInfo;
 
 class IotHubSkuDescriptionImpl extends WrapperImpl<IotHubSkuDescriptionInner> implements IotHubSkuDescription {
-    private final IoTHubManager manager;
+    private final DevicesManager manager;
 
-    IotHubSkuDescriptionImpl(IotHubSkuDescriptionInner inner,  IoTHubManager manager) {
+    IotHubSkuDescriptionImpl(IotHubSkuDescriptionInner inner,  DevicesManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public IoTHubManager manager() {
+    public DevicesManager manager() {
         return this.manager;
     }
 

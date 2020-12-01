@@ -10,13 +10,13 @@ package com.microsoft.azure.management.iothub.v2019_07_01_preview;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.iothub.v2019_07_01_preview.implementation.IoTHubManager;
+import com.microsoft.azure.management.iothub.v2019_07_01_preview.implementation.DevicesManager;
 import com.microsoft.azure.management.iothub.v2019_07_01_preview.implementation.CertificateWithNonceDescriptionInner;
 
 /**
  * Type representing CertificateWithNonceDescription.
  */
-public interface CertificateWithNonceDescription extends HasInner<CertificateWithNonceDescriptionInner>, HasManager<IoTHubManager> {
+public interface CertificateWithNonceDescription extends HasInner<CertificateWithNonceDescriptionInner>, HasManager<DevicesManager> {
     /**
      * @return the etag value.
      */

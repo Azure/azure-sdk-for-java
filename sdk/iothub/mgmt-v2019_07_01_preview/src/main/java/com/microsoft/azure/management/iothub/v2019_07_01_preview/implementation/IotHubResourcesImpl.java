@@ -32,14 +32,14 @@ import com.microsoft.azure.management.iothub.v2019_07_01_preview.TestAllRoutesIn
 import com.microsoft.azure.management.iothub.v2019_07_01_preview.TestRouteInput;
 
 class IotHubResourcesImpl extends WrapperImpl<IotHubResourcesInner> implements IotHubResources {
-    private final IoTHubManager manager;
+    private final DevicesManager manager;
 
-    IotHubResourcesImpl(IoTHubManager manager) {
+    IotHubResourcesImpl(DevicesManager manager) {
         super(manager.inner().iotHubResources());
         this.manager = manager;
     }
 
-    public IoTHubManager manager() {
+    public DevicesManager manager() {
         return this.manager;
     }
 

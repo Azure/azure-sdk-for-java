@@ -11,12 +11,12 @@ package com.microsoft.azure.management.iothub.v2019_07_01_preview;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.iothub.v2019_07_01_preview.implementation.IotHubSkuDescriptionInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.iothub.v2019_07_01_preview.implementation.IoTHubManager;
+import com.microsoft.azure.management.iothub.v2019_07_01_preview.implementation.DevicesManager;
 
 /**
  * Type representing IotHubSkuDescription.
  */
-public interface IotHubSkuDescription extends HasInner<IotHubSkuDescriptionInner>, HasManager<IoTHubManager> {
+public interface IotHubSkuDescription extends HasInner<IotHubSkuDescriptionInner>, HasManager<DevicesManager> {
     /**
      * @return the capacity value.
      */

@@ -17,14 +17,14 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.management.iothub.v2019_07_01_preview.Operation;
 
 class OperationsImpl extends WrapperImpl<OperationsInner> implements Operations {
-    private final IoTHubManager manager;
+    private final DevicesManager manager;
 
-    OperationsImpl(IoTHubManager manager) {
+    OperationsImpl(DevicesManager manager) {
         super(manager.inner().operations());
         this.manager = manager;
     }
 
-    public IoTHubManager manager() {
+    public DevicesManager manager() {
         return this.manager;
     }
 
