@@ -77,10 +77,14 @@ class LabsImpl extends WrapperImpl<LabsInner> implements Labs {
     public Observable<Lab> getAsync(String resourceGroupName, String labAccountName, String labName) {
         LabsInner client = this.inner();
         return client.getAsync(resourceGroupName, labAccountName, labName)
-        .map(new Func1<LabInner, Lab>() {
+        .flatMap(new Func1<LabInner, Observable<Lab>>() {
             @Override
-            public Lab call(LabInner inner) {
-                return wrapModel(inner);
+            public Observable<Lab> call(LabInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((Lab)wrapModel(inner));
+                }
             }
        });
     }

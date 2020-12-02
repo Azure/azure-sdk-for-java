@@ -89,10 +89,14 @@ class EnvironmentsImpl extends WrapperImpl<EnvironmentsInner> implements Environ
     public Observable<Environment> getAsync(String resourceGroupName, String labAccountName, String labName, String environmentSettingName, String environmentName) {
         EnvironmentsInner client = this.inner();
         return client.getAsync(resourceGroupName, labAccountName, labName, environmentSettingName, environmentName)
-        .map(new Func1<EnvironmentInner, Environment>() {
+        .flatMap(new Func1<EnvironmentInner, Observable<Environment>>() {
             @Override
-            public Environment call(EnvironmentInner inner) {
-                return wrapModel(inner);
+            public Observable<Environment> call(EnvironmentInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((Environment)wrapModel(inner));
+                }
             }
        });
     }

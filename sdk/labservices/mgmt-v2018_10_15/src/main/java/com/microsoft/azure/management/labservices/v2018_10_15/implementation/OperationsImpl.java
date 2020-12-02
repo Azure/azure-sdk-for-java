@@ -35,10 +35,14 @@ class OperationsImpl extends WrapperImpl<OperationsInner> implements Operations 
     public Observable<OperationResult> getAsync(String locationName, String operationName) {
         OperationsInner client = this.inner();
         return client.getAsync(locationName, operationName)
-        .map(new Func1<OperationResultInner, OperationResult>() {
+        .flatMap(new Func1<OperationResultInner, Observable<OperationResult>>() {
             @Override
-            public OperationResult call(OperationResultInner inner) {
-                return wrapModel(inner);
+            public Observable<OperationResult> call(OperationResultInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((OperationResult)wrapModel(inner));
+                }
             }
        });
     }

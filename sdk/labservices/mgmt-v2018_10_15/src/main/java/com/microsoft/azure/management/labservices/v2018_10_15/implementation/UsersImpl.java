@@ -64,10 +64,14 @@ class UsersImpl extends WrapperImpl<UsersInner> implements Users {
     public Observable<User> getAsync(String resourceGroupName, String labAccountName, String labName, String userName) {
         UsersInner client = this.inner();
         return client.getAsync(resourceGroupName, labAccountName, labName, userName)
-        .map(new Func1<UserInner, User>() {
+        .flatMap(new Func1<UserInner, Observable<User>>() {
             @Override
-            public User call(UserInner inner) {
-                return wrapModel(inner);
+            public Observable<User> call(UserInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((User)wrapModel(inner));
+                }
             }
        });
     }
