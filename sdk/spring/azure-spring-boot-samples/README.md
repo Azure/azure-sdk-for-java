@@ -16,13 +16,13 @@ If you just want to run sample code with released version(not current), instead 
 
   For master branch, the version number in dependencies is up to date, which means if you want to run a sample module, you may need to build the dependencies and install the module to you local maven repo manually, since the dependencies has not been published to maven central.
 
-  If you want to clone from master, jump to [Clone project from master branch](#Clone project from master branch).
+  If you want to clone from master, jump to [Clone project from master branch](#clone-project-from-master-branch).
 
 - Clone from released version tag
 
   For released version tag, the dependencies should have published to maven central, which means you can run sample code directly after necessary configuration.
 
-  If you want to clone from released version tag, jump to [Clone from specific version tag](#Clone from specific version tag (recommend)).
+  If you want to clone from released version tag, jump to [Clone from specific version tag](#clone-from-specific-version-tag-(recommend)).
 
 #### Clone project from master branch
 It means cloning the master branch, all the code, dependencies, and readme files are up to date.
