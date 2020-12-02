@@ -3,6 +3,7 @@
 package com.azure.resourcemanager.cosmos.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.cosmos.CosmosManager;
 import com.azure.resourcemanager.cosmos.fluent.models.DatabaseAccountGetResultsInner;
 import com.azure.resourcemanager.cosmos.models.Capability;
@@ -19,6 +20,7 @@ import com.azure.resourcemanager.cosmos.models.DatabaseAccountRegenerateKeyParam
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.DefaultConsistencyLevel;
 import com.azure.resourcemanager.cosmos.models.FailoverPolicy;
+import com.azure.resourcemanager.cosmos.models.IpAddressOrRange;
 import com.azure.resourcemanager.cosmos.models.KeyKind;
 import com.azure.resourcemanager.cosmos.models.Location;
 import com.azure.resourcemanager.cosmos.models.PrivateEndpointConnection;
@@ -33,6 +35,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -76,7 +79,15 @@ class CosmosDBAccountImpl
 
     @Override
     public String ipRangeFilter() {
-        return this.innerModel().ipRangeFilter();
+        if (CoreUtils.isNullOrEmpty(ipRules())) {
+            return null;
+        }
+        return this.ipRules().stream().map(IpAddressOrRange::ipAddressOrRange).collect(Collectors.joining(","));
+    }
+
+    @Override
+    public List<IpAddressOrRange> ipRules() {
+        return Collections.unmodifiableList(this.innerModel().ipRules());
     }
 
     @Override
@@ -362,7 +373,19 @@ class CosmosDBAccountImpl
 
     @Override
     public CosmosDBAccountImpl withIpRangeFilter(String ipRangeFilter) {
-        this.innerModel().withIpRangeFilter(ipRangeFilter);
+        List<IpAddressOrRange> rules = new ArrayList<>();
+        if (!CoreUtils.isNullOrEmpty(ipRangeFilter)) {
+            for (String ip : ipRangeFilter.split(",")) {
+                rules.add(new IpAddressOrRange().withIpAddressOrRange(ip));
+            }
+        }
+        this.innerModel().withIpRules(rules);
+        return this;
+    }
+
+    @Override
+    public CosmosDBAccountImpl withIpRules(List<IpAddressOrRange> ipRules) {
+        this.innerModel().withIpRules(ipRules);
         return this;
     }
 
@@ -463,7 +486,7 @@ class CosmosDBAccountImpl
         createUpdateParametersInner.withConsistencyPolicy(inner.consistencyPolicy());
         //        createUpdateParametersInner.withDatabaseAccountOfferType(
         //                DatabaseAccountOfferType.STANDARD.toString()); // Enum to Constant
-        createUpdateParametersInner.withIpRangeFilter(inner.ipRangeFilter());
+        createUpdateParametersInner.withIpRules(inner.ipRules());
         createUpdateParametersInner.withKind(inner.kind());
         createUpdateParametersInner.withCapabilities(inner.capabilities());
         createUpdateParametersInner.withTags(inner.tags());
@@ -490,7 +513,7 @@ class CosmosDBAccountImpl
         updateParameters.withTags(inner.tags());
         updateParameters.withLocation(this.regionName().toLowerCase(Locale.ROOT));
         updateParameters.withConsistencyPolicy(inner.consistencyPolicy());
-        updateParameters.withIpRangeFilter(inner.ipRangeFilter());
+        updateParameters.withIpRules(inner.ipRules());
         updateParameters.withIsVirtualNetworkFilterEnabled(inner.isVirtualNetworkFilterEnabled());
         updateParameters.withEnableAutomaticFailover(inner.enableAutomaticFailover());
         updateParameters.withCapabilities(inner.capabilities());

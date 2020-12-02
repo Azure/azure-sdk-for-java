@@ -34,8 +34,15 @@ public interface CosmosDBAccount
     /** @return the offer type for the CosmosDB database account */
     DatabaseAccountOfferType databaseAccountOfferType();
 
-    /** @return specifies the set of IP addresses or IP address ranges in CIDR form. */
+    /**
+     * @return specifies the set of IP addresses or IP address ranges in CIDR form.
+     * @deprecated use {@link #ipRules()}
+     */
+    @Deprecated
     String ipRangeFilter();
+
+    /** @return specifies the set of IP addresses or IP address ranges in CIDR form. */
+    List<IpAddressOrRange> ipRules();
 
     /** @return the consistency policy for the CosmosDB database account */
     ConsistencyPolicy consistencyPolicy();
@@ -275,7 +282,7 @@ public interface CosmosDBAccount
         }
 
         /** The stage of the cosmos db definition allowing to set the IP range filter. */
-        interface WithIpRangeFilter {
+        interface WithIpRules {
             /**
              * CosmosDB Firewall Support: This value specifies the set of IP addresses or IP address ranges in CIDR form
              * to be included as the allowed list of client IPs for a given database account. IP addresses/ranges must
@@ -283,8 +290,19 @@ public interface CosmosDBAccount
              *
              * @param ipRangeFilter specifies the set of IP addresses or IP address ranges
              * @return the next stage of the definition
+             * @deprecated use {{@link #withIpRules(List)}}
              */
+            @Deprecated
             WithCreate withIpRangeFilter(String ipRangeFilter);
+
+            /**
+             * CosmosDB Firewall Support: This value specifies the set of IP addresses or IP address ranges in CIDR form
+             * to be included as the allowed list of client IPs for a given database account.
+             *
+             * @param ipRules specifies the set of IP addresses or IP address ranges
+             * @return the next stage of the definition
+             */
+            WithCreate withIpRules(List<IpAddressOrRange> ipRules);
         }
 
         /** The stage of the cosmos db definition allowing the definition of a read location. */
@@ -385,7 +403,7 @@ public interface CosmosDBAccount
             extends Creatable<CosmosDBAccount>,
                 WithConsistencyPolicy,
                 WithReadReplication,
-                WithIpRangeFilter,
+                WithIpRules,
                 WithVirtualNetworkRule,
                 WithMultipleLocations,
                 WithConnector,
@@ -411,7 +429,7 @@ public interface CosmosDBAccount
                 UpdateStages.WithConnector,
                 UpdateStages.WithKeyBasedMetadataWriteAccess,
                 UpdateStages.WithPrivateEndpointConnection,
-                UpdateStages.WithIpRangeFilter {
+                UpdateStages.WithIpRules {
         }
 
         /** The stage of the cosmos db definition allowing the definition of a write location. */
@@ -467,7 +485,7 @@ public interface CosmosDBAccount
         }
 
         /** The stage of the cosmos db definition allowing to set the IP range filter. */
-        interface WithIpRangeFilter {
+        interface WithIpRules {
             /**
              * CosmosDB Firewall Support: This value specifies the set of IP addresses or IP address ranges in CIDR form
              * to be included as the allowed list of client IPs for a given database account. IP addresses/ranges must
@@ -475,8 +493,19 @@ public interface CosmosDBAccount
              *
              * @param ipRangeFilter specifies the set of IP addresses or IP address ranges
              * @return the next stage of the update definition
+             * @deprecated use {{@link #withIpRules(List)}}
              */
+            @Deprecated
             WithOptionals withIpRangeFilter(String ipRangeFilter);
+
+            /**
+             * CosmosDB Firewall Support: This value specifies the set of IP addresses or IP address ranges in CIDR form
+             * to be included as the allowed list of client IPs for a given database account.
+             *
+             * @param ipRules specifies the set of IP addresses or IP address ranges
+             * @return the next stage of the update definition
+             */
+            WithOptionals withIpRules(List<IpAddressOrRange> ipRules);
         }
 
         /** The stage of the Cosmos DB update definition allowing the definition of a Virtual Network ACL Rule. */

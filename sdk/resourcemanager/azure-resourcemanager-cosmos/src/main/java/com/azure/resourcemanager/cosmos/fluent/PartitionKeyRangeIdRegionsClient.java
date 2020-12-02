@@ -16,7 +16,7 @@ public interface PartitionKeyRangeIdRegionsClient {
     /**
      * Retrieves the metrics determined by the given filter for the given partition key range id and region.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param region Cosmos DB region, with spaces between words and each word capitalized.
      * @param databaseRid Cosmos DB database rid.
@@ -43,7 +43,7 @@ public interface PartitionKeyRangeIdRegionsClient {
     /**
      * Retrieves the metrics determined by the given filter for the given partition key range id and region.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param region Cosmos DB region, with spaces between words and each word capitalized.
      * @param databaseRid Cosmos DB database rid.
@@ -70,7 +70,7 @@ public interface PartitionKeyRangeIdRegionsClient {
     /**
      * Retrieves the metrics determined by the given filter for the given partition key range id and region.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param region Cosmos DB region, with spaces between words and each word capitalized.
      * @param databaseRid Cosmos DB database rid.
