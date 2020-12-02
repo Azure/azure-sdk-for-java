@@ -1,6 +1,7 @@
 # Release History
 
 ## 12.8.0-beta.1 (Unreleased)
+- Exposed ClientOptions on all client builders, allowing users to set a custom application id and custom headers.
 - Fixed a bug where snapshot would be appended to a share snapshot instead of sharesnapshot.
 - Fixed a bug where the sharesnapshot query parameter would be ignored in share and share file client builders.
 - Fixed a bug where the error message would not be displayed the exception message of a HEAD request.
