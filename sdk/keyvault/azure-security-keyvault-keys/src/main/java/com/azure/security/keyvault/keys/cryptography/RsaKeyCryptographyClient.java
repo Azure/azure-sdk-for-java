@@ -25,6 +25,7 @@ import java.security.InvalidKeyException;
 import java.security.KeyPair;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Objects;
 
 class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
     private KeyPair keyPair;
@@ -52,16 +53,20 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
     }
 
     @Override
-    Mono<EncryptResult> encryptAsync(EncryptionAlgorithm algorithm, byte[] plaintext, Context context,
-                                     JsonWebKey jsonWebKey) {
+    Mono<EncryptResult> encryptAsync(EncryptOptions encryptOptions, Context context, JsonWebKey jsonWebKey) {
+        Objects.requireNonNull(encryptOptions, "'encryptOptions' cannot be null.");
+        Objects.requireNonNull(encryptOptions.getAlgorithm(), "Encryption algorithm cannot be null.");
+        Objects.requireNonNull(encryptOptions.getPlainText(), "Plain text content to be encrypted cannot be null.");
+
         keyPair = getKeyPair(jsonWebKey);
 
         // Interpret the requested algorithm
+        EncryptionAlgorithm algorithm = encryptOptions.getAlgorithm();
         Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm.toString());
 
         if (baseAlgorithm == null) {
             if (serviceCryptoAvailable()) {
-                return serviceClient.encrypt(algorithm, plaintext, context);
+                return serviceClient.encrypt(encryptOptions, context);
             }
             return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
         } else if (!(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
@@ -70,7 +75,7 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         if (keyPair.getPublic() == null) {
             if (serviceCryptoAvailable()) {
-                return serviceClient.encrypt(algorithm, plaintext, context);
+                return serviceClient.encrypt(encryptOptions, context);
             }
             return Mono.error(new IllegalArgumentException(
                 "Public portion of the key not available to perform encrypt operation"));
@@ -82,7 +87,8 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         try {
             transform = algo.createEncryptor(keyPair);
-            return Mono.just(new EncryptResult(transform.doFinal(plaintext), algorithm, jsonWebKey.getId()));
+            return Mono.just(new EncryptResult(transform.doFinal(encryptOptions.getPlainText()), algorithm,
+                jsonWebKey.getId()));
         } catch (InvalidKeyException
             | NoSuchAlgorithmException
             | NoSuchPaddingException
@@ -93,16 +99,20 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
     }
 
     @Override
-    Mono<DecryptResult> decryptAsync(EncryptionAlgorithm algorithm, byte[] cipherText, Context context,
-                                     JsonWebKey jsonWebKey) {
+    Mono<DecryptResult> decryptAsync(DecryptOptions decryptOptions, Context context, JsonWebKey jsonWebKey) {
+        Objects.requireNonNull(decryptOptions, "'decryptOptions' cannot be null.");
+        Objects.requireNonNull(decryptOptions.getAlgorithm(), "Encryption algorithm cannot be null.");
+        Objects.requireNonNull(decryptOptions.getCipherText(), "Cipher text content to be decrypted cannot be null.");
 
         keyPair = getKeyPair(jsonWebKey);
 
+        // Interpret the requested algorithm
+        EncryptionAlgorithm algorithm = decryptOptions.getAlgorithm();
         Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm.toString());
 
         if (baseAlgorithm == null) {
             if (serviceCryptoAvailable()) {
-                return serviceClient.decrypt(algorithm, cipherText, context);
+                return serviceClient.decrypt(decryptOptions, context);
             }
             return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
         } else if (!(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
@@ -111,7 +121,7 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         if (keyPair.getPrivate() == null) {
             if (serviceCryptoAvailable()) {
-                return serviceClient.decrypt(algorithm, cipherText, context);
+                return serviceClient.decrypt(decryptOptions, context);
             }
             return Mono.error(new IllegalArgumentException(
                 "Private portion of the key not available to perform decrypt operation"));
@@ -123,7 +133,8 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         try {
             transform = algo.createDecryptor(keyPair);
-            return Mono.just(new DecryptResult(transform.doFinal(cipherText), algorithm, jsonWebKey.getId()));
+            return Mono.just(new DecryptResult(transform.doFinal(decryptOptions.getCipherText()), algorithm,
+                jsonWebKey.getId()));
         } catch (InvalidKeyException
             | NoSuchAlgorithmException
             | NoSuchPaddingException
@@ -156,7 +167,6 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
 
     @Override
     Mono<WrapResult> wrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] key, Context context, JsonWebKey jsonWebKey) {
-
         keyPair = getKeyPair(jsonWebKey);
 
         Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm.toString());
@@ -197,7 +207,6 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
     @Override
     Mono<UnwrapResult> unwrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context,
                                       JsonWebKey jsonWebKey) {
-
         keyPair = getKeyPair(jsonWebKey);
 
         // Interpret the requested algorithm

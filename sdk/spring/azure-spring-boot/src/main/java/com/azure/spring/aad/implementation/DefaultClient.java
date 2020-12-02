@@ -5,28 +5,27 @@ package com.azure.spring.aad.implementation;
 
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class DefaultClient {
 
-    private final ClientRegistration clientRegistration;
-    private final String[] scope;
+    private final ClientRegistration client;
+    private final List<String> scopes;
 
-    public DefaultClient(ClientRegistration clientRegistration, String[] scope) {
-        this.clientRegistration = clientRegistration;
-        this.scope = scope.clone();
+    public DefaultClient(ClientRegistration client, List<String> scopes) {
+        this.client = client;
+        this.scopes = scopes;
     }
 
-    public ClientRegistration getClientRegistration() {
-        return clientRegistration;
+    public ClientRegistration client() {
+        return client;
     }
 
-    public String[] getScope() {
-        return scope.clone();
+    public List<String> scope() {
+        return scopes;
     }
 
-    public List<String> getScopeList() {
-        return Arrays.asList(scope);
+    public List<String> scopes() {
+        return scopes;
     }
 }

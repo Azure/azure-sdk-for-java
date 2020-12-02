@@ -3,9 +3,7 @@
 
 package com.azure.spring.sample.aad.security;
 
-import com.azure.spring.autoconfigure.aad.AADAuthenticationFailureHandler;
 import com.azure.spring.autoconfigure.aad.AADOAuth2AuthorizationRequestResolver;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -31,16 +29,15 @@ public class AADOAuth2LoginSecurityConfig extends WebSecurityConfigurerAdapter {
         final ClientRegistrationRepository clientRegistrationRepository =
                 applicationContext.getBean(ClientRegistrationRepository.class);
         http.authorizeRequests()
-                .anyRequest().authenticated()
-                .and()
-                .oauth2Login()
-                .userInfoEndpoint()
-                .oidcUserService(oidcUserService)
-                .and()
-                .authorizationEndpoint()
-                .authorizationRequestResolver(
-                        new AADOAuth2AuthorizationRequestResolver(clientRegistrationRepository))
-                .and()
-                .failureHandler(new AADAuthenticationFailureHandler());
+            .anyRequest().authenticated()
+            .and()
+            .oauth2Login()
+            .userInfoEndpoint()
+            .oidcUserService(oidcUserService)
+            .and()
+            .authorizationEndpoint()
+            .authorizationRequestResolver(
+                new AADOAuth2AuthorizationRequestResolver(clientRegistrationRepository)
+            );
     }
 }

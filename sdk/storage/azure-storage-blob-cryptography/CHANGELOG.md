@@ -1,5 +1,8 @@
 # Release History
 
+## 12.10.0-beta.1 (Unreleased)
+
+
 ## 12.9.0 (2020-11-11)
 - Added support to specify whether or not a pipeline policy should be added per call or per retry.
 

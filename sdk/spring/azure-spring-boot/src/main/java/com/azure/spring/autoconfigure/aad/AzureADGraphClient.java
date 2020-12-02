@@ -60,9 +60,9 @@ public class AzureADGraphClient {
         this.aadAuthenticationProperties = aadAuthenticationProperties;
         this.serviceEndpoints = serviceEndpointsProps.getServiceEndpoints(aadAuthenticationProperties.getEnvironment());
         this.graphApiVersionIsV2 = Optional.of(aadAuthenticationProperties)
-                .map(AADAuthenticationProperties::getEnvironment)
-                .map(environment -> environment.contains(V2_VERSION_ENV_FLAG))
-                .orElse(false);
+                                           .map(AADAuthenticationProperties::getEnvironment)
+                                           .map(environment -> environment.contains(V2_VERSION_ENV_FLAG))
+                                           .orElse(false);
     }
 
     private String getUserMemberships(String accessToken, String urlString) throws IOException {
@@ -119,7 +119,7 @@ public class AzureADGraphClient {
     public Set<String> getGroups(String graphApiToken) throws IOException {
         final Set<String> groups = new LinkedHashSet<>();
         final ObjectMapper objectMapper = JacksonObjectMapperFactory.getInstance();
-        String aadMembershipRestUri = getAadMembershipRestUri();
+        String aadMembershipRestUri = serviceEndpoints.getAadMembershipRestUri();
         while (aadMembershipRestUri != null) {
             String membershipsJson = getUserMemberships(graphApiToken, aadMembershipRestUri);
             Memberships memberships = objectMapper.readValue(membershipsJson, Memberships.class);
@@ -134,20 +134,6 @@ public class AzureADGraphClient {
                                            .orElse(null);
         }
         return groups;
-    }
-
-    /**
-     * Get the rest url to get the groups that the user is a member of.
-     * @return rest url
-     */
-    private String getAadMembershipRestUri() {
-        if (AADAuthenticationProperties.getDirectGroupRelationship()
-                                       .equalsIgnoreCase(aadAuthenticationProperties
-                                           .getUserGroup().getGroupRelationship())) {
-            return serviceEndpoints.getAadMembershipRestUri();
-        } else {
-            return serviceEndpoints.getAadTransitiveMemberRestUri();
-        }
     }
 
     private boolean isGroupObject(final Membership membership) {
@@ -176,6 +162,7 @@ public class AzureADGraphClient {
 
     /**
      * Acquire access token for calling Graph API.
+     *
      * @param idToken The token used to perform an OBO request.
      * @param tenantId The tenant id.
      * @return The access token for Graph service.

@@ -4,10 +4,12 @@ package com.azure.cosmos.spark
 
 import java.util
 
-import org.apache.spark.sql.connector.catalog.{SupportsWrite, Table, TableCapability}
+import org.apache.spark.sql.connector.catalog.{SupportsRead, SupportsWrite, Table, TableCapability}
 import org.apache.spark.sql.connector.expressions.Transform
+import org.apache.spark.sql.connector.read.ScanBuilder
 import org.apache.spark.sql.connector.write.{LogicalWriteInfo, WriteBuilder}
 import org.apache.spark.sql.types.{IntegerType, StringType, StructField, StructType}
+import org.apache.spark.sql.util.CaseInsensitiveStringMap
 
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
@@ -17,12 +19,15 @@ import scala.collection.JavaConverters._
  * CosmosTable is the entry point this is registered in the spark
  * @param userProvidedSchema
  * @param transforms
- * @param map
+ * @param userConfig
  */
 class CosmosTable(val userProvidedSchema: StructType,
                   val transforms: Array[Transform],
-                  val map: util.Map[String, String])
-  extends Table with SupportsWrite with CosmosLoggingTrait {
+                  val userConfig: util.Map[String, String])
+  extends Table
+    with SupportsWrite
+    with SupportsRead
+    with CosmosLoggingTrait {
   logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
   override def name(): String = "com.azure.cosmos.spark.write"
@@ -33,8 +38,16 @@ class CosmosTable(val userProvidedSchema: StructType,
     StructType(Seq(StructField("number", IntegerType), StructField("word", StringType)))
   }
 
-  override def capabilities(): util.Set[TableCapability] = Set(TableCapability.BATCH_WRITE).asJava
+  override def capabilities(): util.Set[TableCapability] = Set(
+    TableCapability.BATCH_WRITE,
+    TableCapability.BATCH_READ).asJava
 
-  override def newWriteBuilder(logicalWriteInfo: LogicalWriteInfo): WriteBuilder = new CosmosWriterBuilder
+  override def newScanBuilder(options: CaseInsensitiveStringMap): ScanBuilder = {
+    // TODO moderakh how options and userConfig should be merged? is there any difference?
+    CosmosScanBuilder(options)
+  }
 
+  override def newWriteBuilder(logicalWriteInfo: LogicalWriteInfo): WriteBuilder = {
+    new CosmosWriterBuilder(userConfig.asScala.toMap)
+  }
 }
