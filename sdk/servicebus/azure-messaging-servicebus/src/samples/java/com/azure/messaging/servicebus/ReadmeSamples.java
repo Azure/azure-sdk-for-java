@@ -230,9 +230,9 @@ public class ReadmeSamples {
 
         // create the processor client via the builder and its sub-builder
         ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()
-                                        .connectionString("connection-string")
+                                        .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
                                         .processor()
-                                        .queueName("queue-name")
+                                        .queueName("<< QUEUE NAME >>")
                                         .processMessage(processMessage)
                                         .processError(processError)
                                         .buildProcessorClient();
