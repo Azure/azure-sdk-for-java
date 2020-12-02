@@ -130,10 +130,20 @@ public final class PhoneNumberAsyncClient {
         LocationOptionsQueries locationOptionsQueries = new LocationOptionsQueries();
         locationOptionsQueries.setLocationOptions(locationOptions);
 
+        if (locationOptions == null) {
+            Mono.error(new NullPointerException("'locationType' cannot be null."));
+        }
+        if (countryCode == null) {
+            Mono.error(new NullPointerException("'countryCode' cannot be null."));
+        }
+        if (phonePlanId == null) {
+            Mono.error(new NullPointerException("'phonePlanId' cannot be null."));
+        }
+
         try {
-            Objects.requireNonNull(locationType, "'locationType' cannot be null.");
-            Objects.requireNonNull(countryCode, "'countryCode' cannot be null.");
-            Objects.requireNonNull(phonePlanId, "'phonePlanId' cannot be null.");
+
+
+
             if (context == null) {
                 return phoneNumberAdministrations.getAllAreaCodesWithResponseAsync(
                     locationType, countryCode, phonePlanId, locationOptionsQueries);
@@ -329,10 +339,10 @@ public final class PhoneNumberAsyncClient {
         try {
             Objects.requireNonNull(phoneNumber, "'phoneNumber' cannot be null.");
             Objects.requireNonNull(pstnConfiguration, "'pstnConfiguration' cannot be null.");
-    
+
             NumberConfiguration numberConfiguration = new NumberConfiguration();
             numberConfiguration.setPhoneNumber(phoneNumber.getValue()).setPstnConfiguration(pstnConfiguration);
-    
+
             if (context == null) {
                 return phoneNumberAdministrations.configureNumberWithResponseAsync(numberConfiguration);
             } else {
@@ -370,7 +380,7 @@ public final class PhoneNumberAsyncClient {
             Objects.requireNonNull(phoneNumber, "'phoneNumber' cannot be null.");
             NumberConfigurationPhoneNumber configurationPhoneNumber = new NumberConfigurationPhoneNumber();
             configurationPhoneNumber.setPhoneNumber(phoneNumber.getValue());
-            
+
             if (context == null) {
                 return phoneNumberAdministrations.unconfigureNumberWithResponseAsync(configurationPhoneNumber);
             } else {
