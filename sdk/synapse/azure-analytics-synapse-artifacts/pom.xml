@@ -32,6 +32,11 @@
     <tag>HEAD</tag>
   </scm>
 
+  <properties>
+    <!-- synapse artifacts temporarily skipping code coverage until tests are added -->
+    <jacoco.skip.coverage.check>true</jacoco.skip.coverage.check>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
