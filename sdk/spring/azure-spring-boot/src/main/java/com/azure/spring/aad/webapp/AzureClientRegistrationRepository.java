@@ -15,12 +15,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Manage all AAD oauth2 clients configured by property "azure.activedirectory.xxx"
+ */
 public class AzureClientRegistrationRepository implements ClientRegistrationRepository, Iterable<ClientRegistration> {
 
     private final AzureClientRegistration azureClient;
     private final List<ClientRegistration> otherClients;
     private final Map<String, ClientRegistration> allClients;
-    private AADAuthenticationProperties properties;
+    private final AADAuthenticationProperties properties;
 
     public AzureClientRegistrationRepository(AzureClientRegistration azureClient,
                                              List<ClientRegistration> otherClients,

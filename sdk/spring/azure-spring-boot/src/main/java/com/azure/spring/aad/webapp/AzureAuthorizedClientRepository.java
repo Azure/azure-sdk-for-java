@@ -15,10 +15,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
+/**
+ * OAuth2AuthorizedClientRepository used for AAD oauth2 clients.
+ */
 public class AzureAuthorizedClientRepository implements OAuth2AuthorizedClientRepository {
 
-    private AzureClientRegistrationRepository repo;
-    private OAuth2AuthorizedClientRepository delegate;
+    private final AzureClientRegistrationRepository repo;
+    private final OAuth2AuthorizedClientRepository delegate;
 
     private static OAuth2AuthorizedClientRepository createDefaultDelegate(ClientRegistrationRepository repo) {
         return new HttpSessionOAuth2AuthorizedClientRepository();

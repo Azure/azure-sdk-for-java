@@ -25,6 +25,10 @@ import java.util.LinkedHashSet;
 import java.util.Optional;
 import java.util.Set;
 
+/**
+ * GraphClient is used to access graph server.
+ * Mainly used to get groups information of a user.
+ */
 public class GraphClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(GraphClient.class);
 

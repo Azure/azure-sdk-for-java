@@ -11,6 +11,9 @@ import org.springframework.util.MultiValueMap;
 
 import java.util.Optional;
 
+/**
+ * Used to set "scope" parameter when use "auth-code" to get "access_token".
+ */
 public class AuthzCodeGrantRequestEntityConverter extends OAuth2AuthorizationCodeGrantRequestEntityConverter {
 
     private final AzureClientRegistration azureClient;

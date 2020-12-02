@@ -28,6 +28,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Configure the necessary beans used for aad authentication and authorization.
+ */
 @Configuration
 @ConditionalOnClass(ClientRegistrationRepository.class)
 @EnableConfigurationProperties(AADAuthenticationProperties.class)
@@ -140,6 +143,9 @@ public class AzureActiveDirectoryConfiguration {
         return result;
     }
 
+    /**
+     * Sample configuration to make AzureActiveDirectoryOAuth2UserService take effect.
+     */
     @Configuration
     @ConditionalOnBean(ObjectPostProcessor.class)
     @ConditionalOnMissingBean(WebSecurityConfigurerAdapter.class)

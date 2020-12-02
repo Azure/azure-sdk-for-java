@@ -5,6 +5,9 @@ package com.azure.spring.aad.webapp;
 
 import java.util.List;
 
+/**
+ * Properties for an oauth2 client.
+ */
 public class AuthorizationProperties {
 
     private List<String> scopes;

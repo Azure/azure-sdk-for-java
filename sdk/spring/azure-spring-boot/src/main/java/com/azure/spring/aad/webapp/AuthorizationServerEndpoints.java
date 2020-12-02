@@ -5,6 +5,9 @@ package com.azure.spring.aad.webapp;
 
 import com.nimbusds.oauth2.sdk.util.StringUtils;
 
+/**
+ * Used to get endpoints for Microsoft Identity authorization server.
+ */
 public class AuthorizationServerEndpoints {
 
     private static final String IDENTITY_PLATFORM = "https://login.microsoftonline.com/";

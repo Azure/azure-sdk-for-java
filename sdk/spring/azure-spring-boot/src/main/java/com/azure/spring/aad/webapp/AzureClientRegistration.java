@@ -7,6 +7,12 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 
 import java.util.Set;
 
+/**
+ * Azure oauth2 client registration.
+ * It have 2 kind of scopes:
+ * 1. AzureClientRegistration.client.scopes: used to authorize.
+ * 2. AzureClientRegistration.accessTokenScopes: used to get access_token.
+ */
 public class AzureClientRegistration {
 
     private final ClientRegistration client;

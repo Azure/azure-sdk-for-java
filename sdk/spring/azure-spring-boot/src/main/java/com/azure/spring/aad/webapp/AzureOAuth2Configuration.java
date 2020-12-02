@@ -10,6 +10,10 @@ import org.springframework.security.oauth2.client.endpoint.DefaultAuthorizationC
 import org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
 
+/**
+ * Abstract configuration class, used to make AzureClientRegistrationRepository
+ * and AuthzCodeGrantRequestEntityConverter take effect.
+ */
 public abstract class AzureOAuth2Configuration extends WebSecurityConfigurerAdapter {
 
     @Autowired
