@@ -26,7 +26,7 @@ import java.nio.ByteBuffer;
  *      Overview</a>
  */
 @Immutable
-public class ServiceBusTransactionContext {
+public final class ServiceBusTransactionContext {
     private final ByteBuffer transactionId;
 
     ServiceBusTransactionContext(ByteBuffer transactionId) {

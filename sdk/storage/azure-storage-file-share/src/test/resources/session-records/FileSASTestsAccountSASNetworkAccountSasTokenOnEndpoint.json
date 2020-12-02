@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.file.core.windows.net/filesastestsaccountsasnetworkaccountsastokenonendpoint31533?restype=share&sv=2020-02-10&se=2020-08-14T19%3A26%3A10Z&sp=rc&sig=REDACTED&ss=f&srt=sco",
+    "Uri" : "https://REDACTED.file.core.windows.net/filesastestsaccountsasnetworkaccountsastokenonendpoint31533?restype=share&sv=2020-04-08&se=2020-08-14T19%3A26%3A10Z&sp=rc&sig=REDACTED&ss=f&srt=sco",
     "Headers" : {
       "x-ms-version" : "2020-02-10",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.6.0-beta.2 (11.0.7; Windows 10; 10.0)",
@@ -22,7 +22,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.file.core.windows.net/filesastestsaccountsasnetworkaccountsastokenonendpoint31533/filesastestsaccountsasnetworkaccountsastokenonendpoint54209?sv=2020-02-10&se=2020-08-14T19%3A26%3A10Z&sp=rc&sig=REDACTED&ss=f&srt=sco",
+    "Uri" : "https://REDACTED.file.core.windows.net/filesastestsaccountsasnetworkaccountsastokenonendpoint31533/filesastestsaccountsasnetworkaccountsastokenonendpoint54209?sv=2020-04-08&se=2020-08-14T19%3A26%3A10Z&sp=rc&sig=REDACTED&ss=f&srt=sco",
     "Headers" : {
       "x-ms-version" : "2020-02-10",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.6.0-beta.2 (11.0.7; Windows 10; 10.0)",
@@ -51,7 +51,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.file.core.windows.net/filesastestsaccountsasnetworkaccountsastokenonendpoint31533/filesastestsaccountsasnetworkaccountsastokenonendpoint54209?sv=2020-02-10&se=2020-08-14T19%3A26%3A10Z&sp=rc&sig=REDACTED&ss=f&srt=sco",
+    "Uri" : "https://REDACTED.file.core.windows.net/filesastestsaccountsasnetworkaccountsastokenonendpoint31533/filesastestsaccountsasnetworkaccountsastokenonendpoint54209?sv=2020-04-08&se=2020-08-14T19%3A26%3A10Z&sp=rc&sig=REDACTED&ss=f&srt=sco",
     "Headers" : {
       "x-ms-version" : "2020-02-10",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.6.0-beta.2 (11.0.7; Windows 10; 10.0)",

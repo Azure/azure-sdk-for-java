@@ -3,6 +3,7 @@
 
 package com.azure.spring.aad.implementation;
 
+import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
@@ -19,11 +20,15 @@ public class AzureClientRegistrationRepository implements ClientRegistrationRepo
     private final AzureClientRegistration azureClient;
     private final List<ClientRegistration> otherClients;
     private final Map<String, ClientRegistration> allClients;
+    private AADAuthenticationProperties properties;
 
     public AzureClientRegistrationRepository(AzureClientRegistration azureClient,
-                                             List<ClientRegistration> otherClients) {
+                                             List<ClientRegistration> otherClients,
+                                             AADAuthenticationProperties properties) {
         this.azureClient = azureClient;
         this.otherClients = new ArrayList<>(otherClients);
+        this.properties = properties;
+
         allClients = new HashMap<>();
         addClientRegistration(azureClient.getClient());
         for (ClientRegistration c : otherClients) {
@@ -51,11 +56,14 @@ public class AzureClientRegistrationRepository implements ClientRegistrationRepo
     }
 
     public boolean isAuthzClient(ClientRegistration client) {
-        return otherClients.contains(client);
+        return otherClients.contains(client)
+            && properties.getAuthorization().get(client.getClientName()) != null
+            && !properties.getAuthorization().get(client.getClientName()).isOnDemand();
     }
 
     public boolean isAuthzClient(String id) {
         ClientRegistration client = findByRegistrationId(id);
         return client != null && isAuthzClient(client);
     }
+
 }

@@ -817,6 +817,8 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(diagnostics).contains("\"eventName\":\"transitTime\"");
         assertThat(diagnostics).contains("\"eventName\":\"received\"");
         assertThat(diagnostics).contains("\"eventName\":\"completed\"");
+        assertThat(diagnostics).contains("\"startTimeUTC\"");
+        assertThat(diagnostics).contains("\"durationInMicroSec\"");
     }
 
     private void validateJson(String jsonInString) {

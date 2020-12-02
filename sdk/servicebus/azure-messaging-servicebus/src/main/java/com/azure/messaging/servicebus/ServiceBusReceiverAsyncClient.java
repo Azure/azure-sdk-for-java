@@ -457,8 +457,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws ServiceBusException if an error occurs while peeking at the message.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
-    public Mono<ServiceBusReceivedMessage> peekMessageAt(long sequenceNumber) {
-        return peekMessageAt(sequenceNumber, receiverOptions.getSessionId());
+    public Mono<ServiceBusReceivedMessage> peekMessage(long sequenceNumber) {
+        return peekMessage(sequenceNumber, receiverOptions.getSessionId());
     }
 
     /**
@@ -472,7 +472,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws IllegalStateException if receiver is already disposed.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
-    Mono<ServiceBusReceivedMessage> peekMessageAt(long sequenceNumber, String sessionId) {
+    Mono<ServiceBusReceivedMessage> peekMessage(long sequenceNumber, String sessionId) {
         if (isDisposed.get()) {
             return monoError(logger, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "peekAt")));
@@ -560,8 +560,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws ServiceBusException if an error occurs while peeking at messages.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
-    public Flux<ServiceBusReceivedMessage> peekMessagesAt(int maxMessages, long sequenceNumber) {
-        return peekMessagesAt(maxMessages, sequenceNumber, receiverOptions.getSessionId());
+    public Flux<ServiceBusReceivedMessage> peekMessages(int maxMessages, long sequenceNumber) {
+        return peekMessages(maxMessages, sequenceNumber, receiverOptions.getSessionId());
     }
 
     /**
@@ -577,7 +577,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws IllegalStateException if receiver is already disposed.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
-    Flux<ServiceBusReceivedMessage> peekMessagesAt(int maxMessages, long sequenceNumber, String sessionId) {
+    Flux<ServiceBusReceivedMessage> peekMessages(int maxMessages, long sequenceNumber, String sessionId) {
         if (isDisposed.get()) {
             return fluxError(logger, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "peekBatchAt")));

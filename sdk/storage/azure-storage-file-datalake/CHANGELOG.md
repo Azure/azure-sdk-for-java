@@ -2,6 +2,7 @@
 
 ## 12.4.0-beta.1 (Unreleased)
 - Added support to list paths on a directory.
+- Fixed a bug where the error message would not be displayed the exception message of a HEAD request.
 
 ## 12.3.0 (2020-11-11)
 - Added support to specify whether or not a pipeline policy should be added per call or per retry.

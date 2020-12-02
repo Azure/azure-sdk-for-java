@@ -48,7 +48,7 @@ import java.util.Objects;
  */
 @ServiceClientBuilder(serviceClients = {ServiceBusAdministrationClient.class,
     ServiceBusAdministrationAsyncClient.class})
-public class ServiceBusAdministrationClientBuilder {
+public final class ServiceBusAdministrationClientBuilder {
     private final ClientLogger logger = new ClientLogger(ServiceBusAdministrationClientBuilder.class);
     private final ServiceBusManagementSerializer serializer = new ServiceBusManagementSerializer();
     private final List<HttpPipelinePolicy> userPolicies = new ArrayList<>();
