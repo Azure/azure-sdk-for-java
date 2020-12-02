@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.aad.resource.server;
 
+package com.azure.spring.aad.resource.server;
 
 import com.azure.spring.aad.implementation.AuthorizationServerEndpoints;
 import com.azure.spring.aad.implementation.AzureClientRegistrationRepository;
@@ -11,7 +11,6 @@ import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.azure.spring.autoconfigure.aad.AADOAuth2OboAuthorizedClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -98,26 +97,19 @@ public class AzureActiveDirectoryResourceServerConfiguration {
         }
     }
 
+    /**
+     * Use AzureClientRegistrationRepository to create AADOAuth2OboAuthorizedClientRepository
+     *
+     * @return AADOAuth2OboAuthorizedClientRepository Bean
+     */
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
     @ConditionalOnClass(BearerTokenAuthenticationToken.class)
     @ConditionalOnProperty(prefix = "azure.activedirectory", value = { "client-id", "client-secret", "tenant-id" })
     public OAuth2AuthorizedClientRepository aadOAuth2OboAuthorizedClientRepository(AzureClientRegistrationRepository repo) {
-        return new AADOAuth2OboAuthorizedClientRepository(repo,jwtDecoder());
+        return new AADOAuth2OboAuthorizedClientRepository(repo);
     }
 
-    @Bean
-    @ConditionalOnMissingBean(JwtDecoder.class)
-    public JwtDecoder jwtDecoder() {
-        if (StringUtils.isEmpty(aadAuthenticationProperties.getTenantId())) {
-            aadAuthenticationProperties.setTenantId("common");
-        }
-        AuthorizationServerEndpoints identityEndpoints = new AuthorizationServerEndpoints(
-            aadAuthenticationProperties.getAuthorizationServerUri());
-        NimbusJwtDecoder nimbusJwtDecoder = NimbusJwtDecoder
-            .withJwkSetUri(identityEndpoints.jwkSetEndpoint(aadAuthenticationProperties.getTenantId())).build();
-        return nimbusJwtDecoder;
-    }
 }
 

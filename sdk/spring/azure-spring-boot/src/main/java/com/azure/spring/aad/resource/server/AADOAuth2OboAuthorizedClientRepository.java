@@ -1,4 +1,7 @@
-package com.azure.spring.autoconfigure.aad;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.spring.aad.resource.server;
 
 import com.azure.spring.aad.implementation.AzureClientRegistrationRepository;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
@@ -6,6 +9,8 @@ import com.microsoft.aad.msal4j.ConfidentialClientApplication;
 import com.microsoft.aad.msal4j.IClientSecret;
 import com.microsoft.aad.msal4j.OnBehalfOfParameters;
 import com.microsoft.aad.msal4j.UserAssertion;
+import com.nimbusds.jwt.JWT;
+import com.nimbusds.jwt.JWTParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
@@ -14,18 +19,17 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.core.AbstractOAuth2Token;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
-import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.server.resource.authentication.AbstractOAuth2TokenAuthenticationToken;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.net.MalformedURLException;
+import java.text.ParseException;
 import java.time.Instant;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedClientRepository {
 
@@ -35,13 +39,8 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
 
     private Map<String, ConfidentialClientApplication> confidentialClientApplicationMap = new HashMap<>();
 
-    private JwtDecoder jwtDecoder;
-
-    private Map<ClientRegistration,OAuth2AuthorizedClient> oAuth2AuthorizedClientMap =new ConcurrentHashMap<>();
-
-    public AADOAuth2OboAuthorizedClientRepository(AzureClientRegistrationRepository azureClientRegistrationRepository,JwtDecoder jwtDecoder) {
+    public AADOAuth2OboAuthorizedClientRepository(AzureClientRegistrationRepository azureClientRegistrationRepository) {
         this.azureClientRegistrationRepository = azureClientRegistrationRepository;
-        this.jwtDecoder = jwtDecoder;
         Iterator<ClientRegistration> iterator = azureClientRegistrationRepository.iterator();
         while (iterator.hasNext()) {
             ClientRegistration next = iterator.next();
@@ -58,7 +57,6 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
             ClientRegistration clientRegistration = azureClientRegistrationRepository
                 .findByRegistrationId(registrationId);
 
-            if(oAuth2AuthorizedClientMap.get(clientRegistration) == null){
                 AbstractOAuth2TokenAuthenticationToken<AbstractOAuth2Token> authenticationToken = (AbstractOAuth2TokenAuthenticationToken)
                     authentication;
 
@@ -71,31 +69,21 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
                 ConfidentialClientApplication clientApplication = confidentialClientApplicationMap.get(clientRegistration.getClientId());
 
                 String oboAccessToken = clientApplication.acquireToken(parameters).get().accessToken();
-                //TODO can't decode graph Jwt
-                Jwt jwt = this.jwtDecoder.decode(oboAccessToken);
 
-                Map<String, Object> claims = jwt.getClaims();
-
-                Instant iat =  (Instant) this.jwtDecoder.decode(oboAccessToken).getClaims().get("iat");
-                Instant exp =  (Instant) this.jwtDecoder.decode(oboAccessToken).getClaims().get("exp");
-
-                OAuth2AccessToken oAuth2AccessToken = new OAuth2AccessToken(OAuth2AccessToken.TokenType.BEARER,oboAccessToken,iat,exp);
+                OAuth2AccessToken oAuth2AccessToken = new OAuth2AccessToken(OAuth2AccessToken.TokenType.BEARER,oboAccessToken,
+                    dateToInstant(oboAccessToken,"iat"),dateToInstant(oboAccessToken,"exp"));
 
                 OAuth2AuthorizedClient oAuth2AuthorizedClient = new OAuth2AuthorizedClient(clientRegistration,
                     authenticationToken.getName(), oAuth2AccessToken);
 
-                oAuth2AuthorizedClientMap.put(clientRegistration,oAuth2AuthorizedClient);
-
                 return (T) oAuth2AuthorizedClient;
-            }
-            return (T) oAuth2AuthorizedClientMap.get(clientRegistration);
 
         } catch (Throwable throwable) {
             LOG.debug("Failed to loadAuthorizedClient");
             throwable.printStackTrace();
         }
         return null;
-    }
+}
 
     @Override
     public void saveAuthorizedClient(OAuth2AuthorizedClient oAuth2AuthorizedClient, Authentication authentication,
@@ -137,6 +125,21 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
             }
         }
         return null;
+    }
+
+    private Instant dateToInstant(String tokenValue,String claimName){
+        try {
+            JWT parse = JWTParser.parse(tokenValue);
+            Date date =(Date) parse.getJWTClaimsSet().getClaim(claimName);
+            return Instant.ofEpochMilli(date.getTime());
+
+        } catch (ParseException e) {
+            LOG.debug("Failed to convert to Instant");
+            e.printStackTrace();
+        }
+
+        return null;
+
     }
 
 
