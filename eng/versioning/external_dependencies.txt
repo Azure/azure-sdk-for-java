@@ -272,6 +272,7 @@ org.revapi:revapi-maven-plugin;0.11.2
 test_jar_com.microsoft.azure:azure-mgmt-resources;1.3.1-SNAPSHOT
 
 # everything under sdk\cosmos
+cosmos_org.scalatest:scalatest-maven-plugin;2.0.2
 cosmos_com.fasterxml.jackson.module:jackson-module-afterburner;2.11.2
 cosmos_com.google.guava:guava;25.0-jre
 cosmos_io.dropwizard.metrics:metrics-core;4.1.0
