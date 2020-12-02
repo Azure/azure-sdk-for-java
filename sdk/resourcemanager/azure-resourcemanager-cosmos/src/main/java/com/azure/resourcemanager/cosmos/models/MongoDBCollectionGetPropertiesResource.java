@@ -8,6 +8,8 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
+import java.util.Map;
 
 /** The MongoDBCollectionGetPropertiesResource model. */
 @Immutable
@@ -25,7 +27,7 @@ public final class MongoDBCollectionGetPropertiesResource extends MongoDBCollect
      * the resource.
      */
     @JsonProperty(value = "_ts", access = JsonProperty.Access.WRITE_ONLY)
-    private Object ts;
+    private Float ts;
 
     /*
      * A system generated property representing the resource etag required for
@@ -48,7 +50,7 @@ public final class MongoDBCollectionGetPropertiesResource extends MongoDBCollect
      *
      * @return the ts value.
      */
-    public Object ts() {
+    public Float ts() {
         return this.ts;
     }
 
@@ -60,6 +62,34 @@ public final class MongoDBCollectionGetPropertiesResource extends MongoDBCollect
      */
     public String etag() {
         return this.etag;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MongoDBCollectionGetPropertiesResource withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MongoDBCollectionGetPropertiesResource withShardKey(Map<String, String> shardKey) {
+        super.withShardKey(shardKey);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MongoDBCollectionGetPropertiesResource withIndexes(List<MongoIndex> indexes) {
+        super.withIndexes(indexes);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MongoDBCollectionGetPropertiesResource withAnalyticalStorageTtl(Integer analyticalStorageTtl) {
+        super.withAnalyticalStorageTtl(analyticalStorageTtl);
+        return this;
     }
 
     /**

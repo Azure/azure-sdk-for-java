@@ -22,7 +22,9 @@ public class PhoneNumberIntegrationTestBase extends TestBase {
         Configuration.getGlobalConfiguration().get("COMMUNICATION_SERVICE_ENDPOINT", "https://REDACTED.communication.azure.com");
     private static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_LIVETEST_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
-
+    
+    protected static final String PHONE_NUMBER = 
+        Configuration.getGlobalConfiguration().get("COMMUNICATION_PHONE_NUMBER", "+11234567891");
     protected static final String COUNTRY_CODE =
         Configuration.getGlobalConfiguration().get("COUNTRY_CODE", "US");   
     protected static final String AREA_CODE =
