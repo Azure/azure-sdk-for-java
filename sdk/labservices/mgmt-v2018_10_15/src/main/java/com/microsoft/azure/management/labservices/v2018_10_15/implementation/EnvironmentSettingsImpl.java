@@ -88,10 +88,14 @@ class EnvironmentSettingsImpl extends WrapperImpl<EnvironmentSettingsInner> impl
     public Observable<EnvironmentSetting> getAsync(String resourceGroupName, String labAccountName, String labName, String environmentSettingName) {
         EnvironmentSettingsInner client = this.inner();
         return client.getAsync(resourceGroupName, labAccountName, labName, environmentSettingName)
-        .map(new Func1<EnvironmentSettingInner, EnvironmentSetting>() {
+        .flatMap(new Func1<EnvironmentSettingInner, Observable<EnvironmentSetting>>() {
             @Override
-            public EnvironmentSetting call(EnvironmentSettingInner inner) {
-                return wrapModel(inner);
+            public Observable<EnvironmentSetting> call(EnvironmentSettingInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((EnvironmentSetting)wrapModel(inner));
+                }
             }
        });
     }

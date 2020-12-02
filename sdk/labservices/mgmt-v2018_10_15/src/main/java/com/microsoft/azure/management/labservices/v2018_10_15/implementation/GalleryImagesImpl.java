@@ -64,10 +64,14 @@ class GalleryImagesImpl extends WrapperImpl<GalleryImagesInner> implements Galle
     public Observable<GalleryImage> getAsync(String resourceGroupName, String labAccountName, String galleryImageName) {
         GalleryImagesInner client = this.inner();
         return client.getAsync(resourceGroupName, labAccountName, galleryImageName)
-        .map(new Func1<GalleryImageInner, GalleryImage>() {
+        .flatMap(new Func1<GalleryImageInner, Observable<GalleryImage>>() {
             @Override
-            public GalleryImage call(GalleryImageInner inner) {
-                return wrapModel(inner);
+            public Observable<GalleryImage> call(GalleryImageInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((GalleryImage)wrapModel(inner));
+                }
             }
        });
     }
