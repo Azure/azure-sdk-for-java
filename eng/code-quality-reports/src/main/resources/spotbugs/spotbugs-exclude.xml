@@ -2260,18 +2260,18 @@
   <!-- SKIPPED_CLASS_TOO_BIG - Nothing we can do about this -->
   <Match>
     <Or>
-      <Class name="~com\.azure\.resourcemanager(\.[^.]+)*\.fluent\.(.+)Client"/>
-      <Class name="~com\.azure\.resourcemanager(\.[^.]+)*\.implementation\.(.+)ClientImpl"/>
+      <Class name="~com\.azure\.resourcemanager(\.[^.]+)*\.fluent\.([^.]+)Client"/>
+      <Class name="~com\.azure\.resourcemanager(\.[^.]+)*\.implementation\.([^.]+)ClientImpl"/>
     </Or>
     <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE,SKIPPED_CLASS_TOO_BIG,UPM_UNCALLED_PRIVATE_METHOD"/>
   </Match>
   <Match>
-    <Class name="~com\.azure\.resourcemanager(\.[^.]+)*\.implementation\.(.+)ClientImpl(.+)"/>
+    <Class name="~com\.azure\.resourcemanager(\.[^.]+)*\.implementation\.([^.]+)ClientImpl([^.]*)"/>
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
   </Match>
   <Match>
     <And>
-      <Class name="~com\.azure\.resourcemanager(\.[^.]+)*\.implementation\.(.+)Impl"/>
+      <Class name="~com\.azure\.resourcemanager(\.[^.]+)*\.implementation\.([^.]+)Impl"/>
       <Method name="manager"/>
     </And>
     <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
