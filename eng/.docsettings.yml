@@ -112,9 +112,6 @@ known_presence_issues:
   - ['sdk/servicebus/microsoft-azure-servicebus/CHANGELOG.md', '#2847']
   - ['sdk/storage/microsoft-azure-storage-blob/CHANGELOG.md', '#2847']
   - ['sdk/keyvault/microsoft-azure-keyvault-complete/CHANGELOG.md', '#2847']
-  - ['sdk/synapse/azure-analytics-synapse-accesscontrol/swagger/README.md', '#2847']
-  - ['sdk/synapse/azure-analytics-synapse-managedprivateendpoints/swagger/README.md', '#2847']
-  - ['sdk/synapse/azure-analytics-synapse-monitoring/swagger/README.md', '#2847']
 
 known_content_issues:
   - ['README.md', '#3113']

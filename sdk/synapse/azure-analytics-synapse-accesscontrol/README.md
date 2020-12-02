@@ -62,6 +62,15 @@ Here is an [Azure Cloud Shell](https://shell.azure.com/bash) snippet below to
     }
     ```
 
+## Key concepts
+
+(coming soon)
+
+## Examples
+
+(coming soon)
+
+## Troubleshooting
 
 ### Default HTTP client
 All client libraries by default use the Netty HTTP client. Adding the above dependency will automatically configure the client library to use the Netty HTTP client. Configuring or changing the HTTP client is detailed in the [HTTP clients wiki](https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients).
