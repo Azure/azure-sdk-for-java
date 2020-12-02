@@ -67,10 +67,14 @@ class WCFRelaysImpl extends WrapperImpl<WCFRelaysInner> implements WCFRelays {
     public Observable<WcfRelay> getAsync(String resourceGroupName, String namespaceName, String relayName) {
         WCFRelaysInner client = this.inner();
         return client.getAsync(resourceGroupName, namespaceName, relayName)
-        .map(new Func1<WcfRelayInner, WcfRelay>() {
+        .flatMap(new Func1<WcfRelayInner, Observable<WcfRelay>>() {
             @Override
-            public WcfRelay call(WcfRelayInner inner) {
-                return wrapModel(inner);
+            public Observable<WcfRelay> call(WcfRelayInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((WcfRelay)wrapModel(inner));
+                }
             }
        });
     }
@@ -107,10 +111,14 @@ class WCFRelaysImpl extends WrapperImpl<WCFRelaysInner> implements WCFRelays {
     public Observable<WcfRelayNamespaceAuthorizationRule> getAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String relayName, String authorizationRuleName) {
         WCFRelaysInner client = this.inner();
         return client.getAuthorizationRuleAsync(resourceGroupName, namespaceName, relayName, authorizationRuleName)
-        .map(new Func1<AuthorizationRuleInner, WcfRelayNamespaceAuthorizationRule>() {
+        .flatMap(new Func1<AuthorizationRuleInner, Observable<WcfRelayNamespaceAuthorizationRule>>() {
             @Override
-            public WcfRelayNamespaceAuthorizationRule call(AuthorizationRuleInner inner) {
-                return wrapWcfRelayNamespaceAuthorizationRuleModel(inner);
+            public Observable<WcfRelayNamespaceAuthorizationRule> call(AuthorizationRuleInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((WcfRelayNamespaceAuthorizationRule)wrapWcfRelayNamespaceAuthorizationRuleModel(inner));
+                }
             }
        });
     }
