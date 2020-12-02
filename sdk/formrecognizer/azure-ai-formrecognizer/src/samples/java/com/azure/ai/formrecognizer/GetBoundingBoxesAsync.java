@@ -82,22 +82,15 @@ public class GetBoundingBoxesAsync {
                             System.out.printf("Cell text %s has following words: %n", formTableCell.getText());
                             // FormElements only exists if you set includeFieldElements to true in your
                             // call to beginRecognizeCustomFormsFromUrl
-                            // It is also a list of FormWords and FormLines, but in this example, we only deal with
-                            // FormWords
+                            // It is also a list of FormWords, FormLines and FormSelectionMarks, but in this example,
+                            // we only deal with FormWords.
                             formTableCell.getFieldElements().stream()
                                 .filter(formContent -> formContent instanceof FormWord)
                                 .map(formContent -> (FormWord) (formContent))
-                                .forEach(formWordElement -> {
-                                    final StringBuilder boundingBoxStr = new StringBuilder();
-                                    if (formWordElement.getBoundingBox() != null) {
-                                        formWordElement.getBoundingBox().getPoints().forEach(point ->
-                                            boundingBoxStr.append(String.format("[%.2f, %.2f]", point.getX(),
-                                                point.getY())));
-                                    }
+                                .forEach(formWordElement ->
                                     System.out.printf("Word '%s' within bounding box %s with a confidence of %.2f.%n",
-                                        formWordElement.getText(), boundingBoxStr,
-                                        formWordElement.getConfidence());
-                                });
+                                        formWordElement.getText(), formWordElement.getBoundingBox().toString(),
+                                        formWordElement.getConfidence()));
                         });
                         System.out.println();
                     }

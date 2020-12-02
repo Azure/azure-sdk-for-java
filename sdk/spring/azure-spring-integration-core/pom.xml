@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-integration-core</artifactId>
-  <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-core;current} -->
+  <version>2.0.0-beta.2</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-core;current} -->
 
   <name>Azure Spring Integration Core</name>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
@@ -26,17 +26,17 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-context</artifactId>
-      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-context;current} -->
+      <version>2.0.0-beta.2</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-context;current} -->
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-messaging</artifactId>
-      <version>5.2.9.RELEASE</version> <!-- {x-version-update;org.springframework:spring-messaging;external_dependency} -->
+      <version>5.2.10.RELEASE</version> <!-- {x-version-update;org.springframework:spring-messaging;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.integration</groupId>
       <artifactId>spring-integration-core</artifactId>
-      <version>5.3.2.RELEASE</version> <!-- {x-version-update;org.springframework.integration:spring-integration-core;external_dependency} -->
+      <version>5.3.3.RELEASE</version> <!-- {x-version-update;org.springframework.integration:spring-integration-core;external_dependency} -->
     </dependency>
     <!-- Added this dependency to include necessary annotations used by reactor core.
         Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
@@ -59,8 +59,8 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework.integration:spring-integration-core:[5.3.2.RELEASE]</include> <!-- {x-include-update;org.springframework.integration:spring-integration-core;external_dependency} -->
-                <include>org.springframework:spring-messaging:[5.2.9.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-messaging;external_dependency} -->
+                <include>org.springframework.integration:spring-integration-core:[5.3.3.RELEASE]</include> <!-- {x-include-update;org.springframework.integration:spring-integration-core;external_dependency} -->
+                <include>org.springframework:spring-messaging:[5.2.10.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-messaging;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

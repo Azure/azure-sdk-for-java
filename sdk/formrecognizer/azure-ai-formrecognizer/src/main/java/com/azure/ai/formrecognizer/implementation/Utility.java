@@ -65,6 +65,8 @@ public final class Utility {
                         contentType[0] = ContentType.IMAGE_PNG;
                     } else if (isTiff(header)) {
                         contentType[0] = ContentType.IMAGE_TIFF;
+                    } else if (isBmp(header)) {
+                        contentType[0] = ContentType.IMAGE_BMP;
                     }
                     // Got a four bytes matching or not, either way no need to read more byte return false
                     // so that takeWhile can cut the subscription on data
@@ -113,6 +115,10 @@ public final class Utility {
             && header[1] == (byte) 0x4d
             && header[2] == (byte) 0x0
             && header[3] == (byte) 0x2a);
+    }
+
+    private static boolean isBmp(byte[] header) {
+        return (header[0] == (byte) 0x42 && header[1] == (byte) 0x4D);
     }
 
     /**

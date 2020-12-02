@@ -133,7 +133,7 @@ public final class ManageNetworkInterface {
                     .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
                     .withAdminUsername(userName)
                     .withAdminPassword(password)
-                    .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                     .withExistingSecondaryNetworkInterface(networkInterface2)
                     .withExistingSecondaryNetworkInterface(networkInterface3)
                     .create();

@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-cloud-starter-cache</artifactId>
-  <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-starter-cache;current} -->
+  <version>2.0.0-beta.2</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-starter-cache;current} -->
 
   <name>Azure Spring Cloud Starter Cache</name>
 
@@ -20,17 +20,17 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-autoconfigure</artifactId>
-      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-autoconfigure;current} -->
+      <version>2.0.0-beta.2</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-autoconfigure;current} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-cache</artifactId>
-      <version>2.3.4.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-cache;external_dependency} -->
+      <version>2.3.5.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-cache;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-redis</artifactId>
-      <version>2.3.4.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-data-redis;external_dependency} -->
+      <version>2.3.5.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-data-redis;external_dependency} -->
     </dependency>
   </dependencies>
   <build>
@@ -43,8 +43,8 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework.boot:spring-boot-starter-cache:[2.3.4.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-cache;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-starter-data-redis:[2.3.4.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-data-redis;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter-cache:[2.3.5.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-cache;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter-data-redis:[2.3.5.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-data-redis;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

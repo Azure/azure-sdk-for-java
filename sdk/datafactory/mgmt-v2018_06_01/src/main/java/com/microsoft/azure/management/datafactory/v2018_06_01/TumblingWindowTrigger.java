@@ -34,7 +34,7 @@ public class TumblingWindowTrigger extends TriggerInner {
 
     /**
      * The frequency of the time windows. Possible values include: 'Minute',
-     * 'Hour'.
+     * 'Hour', 'Month'.
      */
     @JsonProperty(value = "typeProperties.frequency", required = true)
     private TumblingWindowFrequency frequency;
@@ -111,7 +111,7 @@ public class TumblingWindowTrigger extends TriggerInner {
     }
 
     /**
-     * Get the frequency of the time windows. Possible values include: 'Minute', 'Hour'.
+     * Get the frequency of the time windows. Possible values include: 'Minute', 'Hour', 'Month'.
      *
      * @return the frequency value
      */
@@ -120,7 +120,7 @@ public class TumblingWindowTrigger extends TriggerInner {
     }
 
     /**
-     * Set the frequency of the time windows. Possible values include: 'Minute', 'Hour'.
+     * Set the frequency of the time windows. Possible values include: 'Minute', 'Hour', 'Month'.
      *
      * @param frequency the frequency value to set
      * @return the TumblingWindowTrigger object itself.

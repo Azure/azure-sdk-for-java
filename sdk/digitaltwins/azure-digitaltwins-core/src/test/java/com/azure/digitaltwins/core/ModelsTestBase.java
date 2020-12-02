@@ -22,6 +22,7 @@ public abstract class ModelsTestBase extends DigitalTwinsTestBase {
 
     @Test
     public abstract void getModelThrowsIfModelDoesNotExist(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion);
+
     @Test
     public abstract void createModelThrowsIfModelAlreadyExists(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion);
 
@@ -55,12 +56,12 @@ public abstract class ModelsTestBase extends DigitalTwinsTestBase {
 
     static void assertModelDataAreEqual(DigitalTwinsModelData expected, DigitalTwinsModelData actual, boolean compareModel) {
         assertEquals(expected.getModelId(), actual.getModelId());
-        assertEquals(expected.getUploadTime(), actual.getUploadTime());
+        assertEquals(expected.getUploadedOn(), actual.getUploadedOn());
 
         // ModelData objects that are obtained through the createModels API do not populate the model field, so it isn't
         // worth comparing those ModelData objects with ModelData objects retrieved through getModel calls
         if (compareModel) {
-            assertEquals(expected.getModel(), actual.getModel());
+            assertEquals(expected.getDtdlModel(), actual.getDtdlModel());
         }
 
         assertEquals(expected.getDescriptionLanguageMap().size(), actual.getDescriptionLanguageMap().size());

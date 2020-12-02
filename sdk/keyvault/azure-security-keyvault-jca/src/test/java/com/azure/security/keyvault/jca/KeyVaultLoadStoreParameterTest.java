@@ -9,8 +9,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * The JUnit tests for the KeyVaultLoadStoreParameter class.
- *
- * @author Manfred Riem (manfred.riem@microsoft.com)
  */
 public class KeyVaultLoadStoreParameterTest {
 
@@ -21,6 +19,7 @@ public class KeyVaultLoadStoreParameterTest {
     public void testGetProtectionParameter() {
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
             System.getProperty("azure.keyvault.uri"),
+            System.getProperty("azure.keyvault.aadAuthenticationUrl"),
             null,
             null,
             null

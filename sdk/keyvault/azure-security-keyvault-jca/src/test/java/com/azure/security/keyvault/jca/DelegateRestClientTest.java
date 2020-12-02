@@ -9,8 +9,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * The JUnit tests for the DelegateRestClient class.
- *
- * @author Manfred Riem (manfred.riem@microsoft.com)
  */
 public class DelegateRestClientTest {
 

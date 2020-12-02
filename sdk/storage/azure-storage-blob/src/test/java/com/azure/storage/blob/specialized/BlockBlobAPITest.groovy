@@ -8,6 +8,7 @@ import com.azure.core.http.HttpMethod
 import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpRequest
+import com.azure.core.http.RequestConditions
 import com.azure.core.util.Context
 import com.azure.core.util.FluxUtil
 import com.azure.identity.DefaultAzureCredentialBuilder
@@ -25,6 +26,7 @@ import com.azure.storage.blob.options.BlobParallelUploadOptions
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobStorageException
+import com.azure.storage.blob.options.BlobUploadFromUrlOptions
 import com.azure.storage.blob.options.BlockBlobCommitBlockListOptions
 import com.azure.storage.blob.options.BlockBlobListBlocksOptions
 import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions
@@ -33,6 +35,8 @@ import com.azure.storage.blob.models.CustomerProvidedKey
 import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.options.BlobUploadFromFileOptions
+import com.azure.storage.blob.sas.BlobContainerSasPermission
+import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.policy.RequestRetryOptions
 import reactor.core.publisher.Flux
@@ -47,6 +51,7 @@ import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.security.MessageDigest
 import java.time.Duration
+import java.time.OffsetDateTime
 
 class BlockBlobAPITest extends APISpec {
     BlockBlobClient blockBlobClient
@@ -171,6 +176,26 @@ class BlockBlobAPITest extends APISpec {
 
         then:
         thrown(BlobStorageException)
+    }
+
+    def "Stage block retry on transient failure"() {
+        setup:
+        def clientWithFailure = getBlobClient(
+            primaryCredential,
+            blobClient.getBlobUrl(),
+            new TransientFailureInjectingHttpPipelinePolicy()
+        ).getBlockBlobClient()
+
+        when:
+        def data = getRandomByteArray(10)
+        def blockId = getBlockID()
+        clientWithFailure.stageBlock(blockId, new ByteArrayInputStream(data), data.size())
+        blobClient.getBlockBlobClient().commitBlockList([blockId] as List<String>, true)
+
+        then:
+        def os = new ByteArrayOutputStream()
+        blobClient.download(os)
+        os.toByteArray() == data
     }
 
     def "Stage block from url"() {
@@ -546,7 +571,7 @@ class BlockBlobAPITest extends APISpec {
         null     | null       | garbageEtag | null         | null           | null
         null     | null       | null        | receivedEtag | null           | null
         null     | null       | null        | null         | garbageLeaseID | null
-        null     | null       | null         | null        | null           | "\"notfoo\" = 'notbar'"
+        null     | null       | null        | null         | null           | "\"notfoo\" = 'notbar'"
     }
 
     def "Commit block list error"() {
@@ -1109,7 +1134,7 @@ class BlockBlobAPITest extends APISpec {
         null     | null       | garbageEtag | null         | null           | null
         null     | null       | null        | receivedEtag | null           | null
         null     | null       | null        | null         | garbageLeaseID | null
-        null     | null       | null         | null        | null           | "\"notfoo\" = 'notbar'"
+        null     | null       | null        | null         | null           | "\"notfoo\" = 'notbar'"
     }
 
     def "Upload error"() {
@@ -1150,6 +1175,24 @@ class BlockBlobAPITest extends APISpec {
 
         then:
         notThrown(Throwable)
+    }
+
+    def "Upload retry on transient failure"() {
+        setup:
+        def clientWithFailure = getBlobClient(
+            primaryCredential,
+            blobClient.getBlobUrl(),
+            new TransientFailureInjectingHttpPipelinePolicy()
+        ).getBlockBlobClient()
+
+        when:
+        def data = getRandomByteArray(10)
+        clientWithFailure.upload(new ByteArrayInputStream(data), data.size(), true)
+
+        then:
+        def os = new ByteArrayOutputStream()
+        blobClient.download(os)
+        os.toByteArray() == data
     }
 
     @Requires({ liveMode() })
@@ -1242,10 +1285,10 @@ class BlockBlobAPITest extends APISpec {
         blobAsyncClient.uploadWithResponse(new BlobParallelUploadOptions(flux).setParallelTransferOptions(parallelTransferOptions).setComputeMd5(true)).block().getStatusCode() == 201
 
         where:
-        size           | maxSingleUploadSize | blockSize               | byteBufferCount
-        Constants.KB   | null                | null                    | 1                  // Simple case where uploadFull is called.
-        Constants.KB   | Constants.KB        | 500 * Constants.KB      | 1000               // uploadChunked 2 blocks staged
-        Constants.KB   | Constants.KB        | 5 * Constants.KB        | 1000               // uploadChunked 100 blocks staged
+        size         | maxSingleUploadSize | blockSize          | byteBufferCount
+        Constants.KB | null                | null               | 1                  // Simple case where uploadFull is called.
+        Constants.KB | Constants.KB        | 500 * Constants.KB | 1000               // uploadChunked 2 blocks staged
+        Constants.KB | Constants.KB        | 5 * Constants.KB   | 1000               // uploadChunked 100 blocks staged
     }
 
     def compareListToBuffer(List<ByteBuffer> buffers, ByteBuffer result) {
@@ -1417,12 +1460,13 @@ class BlockBlobAPITest extends APISpec {
             new TransientFailureInjectingHttpPipelinePolicy()
         )
 
+        when:
         def dataList = [] as List<ByteBuffer>
         dataSizeList.each { size -> dataList.add(getRandomData(size)) }
         def uploadOperation = clientWithFailure.upload(Flux.fromIterable(dataList).publish().autoConnect(),
             new ParallelTransferOptions().setMaxSingleUploadSizeLong(4 * Constants.MB), true)
 
-        expect:
+        then:
         StepVerifier.create(uploadOperation.then(collectBytesInBuffer(blockBlobAsyncClient.download())))
             .assertNext({ assert compareListToBuffer(dataList, it) })
             .verifyComplete()
@@ -1433,8 +1477,41 @@ class BlockBlobAPITest extends APISpec {
 
         where:
         dataSizeList                         | blockCount
+        [10, 100, 1000, 10000]               | 0
         [4 * Constants.MB + 1, 10]           | 2
         [4 * Constants.MB, 4 * Constants.MB] | 2
+    }
+
+    @Unroll
+    @Requires({ liveMode() })
+    def "Buffered upload sync handle pathing with transient failure"() {
+        /*
+        This test ensures that although we no longer mark and reset the source stream for buffered upload, it still
+        supports retries in all cases for the sync client.
+         */
+        setup:
+        def clientWithFailure = getBlobClient(
+            primaryCredential,
+            blobClient.getBlobUrl(),
+            new TransientFailureInjectingHttpPipelinePolicy()
+        )
+
+        def data = getRandomByteArray(dataSize)
+        clientWithFailure.uploadWithResponse(new ByteArrayInputStream(data), dataSize,
+            new ParallelTransferOptions().setMaxSingleUploadSizeLong(2 * Constants.MB)
+                .setBlockSizeLong(2 * Constants.MB), null, null, null, null, null, null)
+
+        expect:
+        def os = new ByteArrayOutputStream(dataSize)
+        blobClient.download(os)
+        data == os.toByteArray()
+
+        blobClient.getBlockBlobClient().listBlocks(BlockListType.ALL).getCommittedBlocks().size() == blockCount
+
+        where:
+        dataSize              | blockCount
+        11110                 | 0
+        2 * Constants.MB + 11 | 2
     }
 
     def "Buffered upload illegal arguments null"() {
@@ -1447,8 +1524,8 @@ class BlockBlobAPITest extends APISpec {
     def "Buffered upload illegal args out of bounds"() {
         when:
         new ParallelTransferOptions()
-        .setBlockSizeLong(bufferSize)
-        .setMaxConcurrency(numBuffs)
+            .setBlockSizeLong(bufferSize)
+            .setMaxConcurrency(numBuffs)
 
         then:
         thrown(IllegalArgumentException)
@@ -1798,6 +1875,20 @@ class BlockBlobAPITest extends APISpec {
         file.delete()
     }
 
+    def "Buffered upload nonMarkableStream"() {
+        setup:
+        def file = getRandomFile(10)
+        def fileStream = new FileInputStream(file)
+        def outFile = getRandomFile(10)
+
+        when:
+        blobClient.upload(fileStream, file.size(), true)
+
+        then:
+        blobClient.downloadToFile(outFile.toPath().toString(), true)
+        compareFiles(file, outFile, 0, file.size())
+    }
+
     def "Get Container Name"() {
         expect:
         containerName == blockBlobClient.getContainerName()
@@ -1865,5 +1956,182 @@ class BlockBlobAPITest extends APISpec {
         then:
         notThrown(BlobStorageException)
         response.getHeaders().getValue("x-ms-version") == "2017-11-09"
+    }
+
+    def "Upload from Url min"() {
+        setup:
+        def sourceBlob = primaryBlobServiceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName())
+        sourceBlob.upload(defaultInputStream.get(), defaultDataSize)
+        def sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)))
+        if (blockBlobClient.exists()) {
+            blockBlobClient.delete()
+        }
+
+        when:
+        def blockBlobItem = blockBlobClient.uploadFromUrl(sourceBlob.getBlobUrl() + "?" + sas)
+        def os = new ByteArrayOutputStream()
+        blockBlobClient.download(os)
+
+        then:
+        notThrown(BlobStorageException)
+        blockBlobItem != null
+        blockBlobItem.ETag != null
+        blockBlobItem.lastModified != null
+        os.toByteArray() == defaultData.array()
+    }
+
+    def "Upload from Url overwrite"() {
+        setup:
+        def sourceBlob = primaryBlobServiceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName())
+        sourceBlob.upload(defaultInputStream.get(), defaultDataSize)
+        def sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)))
+        blockBlobClient.upload(new ByteArrayInputStream(), 0, true)
+
+        when:
+        def blockBlobItem = blockBlobClient.uploadFromUrl(sourceBlob.getBlobUrl() + "?" + sas, true)
+        def os = new ByteArrayOutputStream()
+        blockBlobClient.download(os)
+
+        then:
+        notThrown(BlobStorageException)
+        blockBlobItem != null
+        blockBlobItem.ETag != null
+        blockBlobItem.lastModified != null
+        os.toByteArray() == defaultData.array()
+    }
+
+    def "Upload from Url overwrite fails on existing blob"() {
+        setup:
+        def sourceBlob = primaryBlobServiceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName())
+        sourceBlob.upload(defaultInputStream.get(), defaultDataSize)
+        def sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)))
+        blockBlobClient.upload(new ByteArrayInputStream(), 0, true)
+
+        when:
+        blockBlobClient.uploadFromUrl(sourceBlob.getBlobUrl() + "?" + sas, false)
+
+        then:
+        def e = thrown(BlobStorageException)
+        e.getErrorCode() == BlobErrorCode.BLOB_ALREADY_EXISTS
+
+        when:
+        blockBlobClient.uploadFromUrl(sourceBlob.getBlobUrl() + "?" + sas)
+
+        then:
+        e = thrown(BlobStorageException)
+        e.getErrorCode() == BlobErrorCode.BLOB_ALREADY_EXISTS
+    }
+
+    def "Upload from Url max"() {
+        setup:
+        def sourceBlob = primaryBlobServiceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName())
+        sourceBlob.upload(defaultInputStream.get(), defaultDataSize)
+        sourceBlob.setHttpHeaders(new BlobHttpHeaders().setContentLanguage("en-GB"))
+        byte[] sourceBlobMD5 = MessageDigest.getInstance("MD5").digest(defaultData.array())
+        def sourceProperties = sourceBlob.getProperties()
+        def sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)))
+        blockBlobClient.upload(new ByteArrayInputStream(), 0, true)
+        def destinationPropertiesBefore = blockBlobClient.getProperties()
+
+        when:
+        def options = new BlobUploadFromUrlOptions(sourceBlob.getBlobUrl() + "?" + sas)
+            .setContentMd5(sourceBlobMD5)
+            .setCopySourceBlobProperties(true)
+            .setDestinationRequestConditions(new BlobRequestConditions().setIfMatch(destinationPropertiesBefore.getETag()))
+            .setSourceRequestConditions(new BlobRequestConditions().setIfMatch(sourceProperties.getETag()))
+            .setHeaders(new BlobHttpHeaders().setContentType("text"))
+            .setTier(AccessTier.COOL)
+        def response = blockBlobClient.uploadFromUrlWithResponse(options, null, null)
+        def destinationProperties = blobClient.getProperties()
+        def os = new ByteArrayOutputStream()
+        blockBlobClient.download(os)
+
+        then:
+        notThrown(BlobStorageException)
+        response != null
+        response.request != null
+        response.headers != null
+        def blockBlobItem = response.value
+        blockBlobItem != null
+        blockBlobItem.ETag != null
+        blockBlobItem.lastModified != null
+        os.toByteArray() == defaultData.array()
+        destinationProperties.getContentLanguage() == "en-GB"
+        destinationProperties.getContentType() == "text"
+        destinationProperties.getAccessTier() == AccessTier.COOL
+    }
+
+    def "Upload from with invalid source MD5"() {
+        setup:
+        def sourceBlob = primaryBlobServiceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName())
+        sourceBlob.upload(defaultInputStream.get(), defaultDataSize)
+        byte[] sourceBlobMD5 = MessageDigest.getInstance("MD5").digest("garbage".getBytes(StandardCharsets.UTF_8))
+        def sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)))
+        blockBlobClient.upload(new ByteArrayInputStream(), 0, true)
+
+        when:
+        def options = new BlobUploadFromUrlOptions(sourceBlob.getBlobUrl() + "?" + sas)
+            .setContentMd5(sourceBlobMD5)
+        def response = blockBlobClient.uploadFromUrlWithResponse(options, null, null)
+
+        then:
+        def e = thrown(BlobStorageException)
+        e.getErrorCode() == BlobErrorCode.MD5MISMATCH
+    }
+
+    @Unroll
+    def "Upload from Url source request conditions"() {
+        setup:
+        def sourceBlob = primaryBlobServiceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName())
+        sourceBlob.upload(defaultInputStream.get(), defaultDataSize)
+        def sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)))
+        blockBlobClient.upload(new ByteArrayInputStream(), 0, true)
+
+        when:
+        def options = new BlobUploadFromUrlOptions(sourceBlob.getBlobUrl() + "?" + sas).setSourceRequestConditions(requestConditions)
+        blockBlobClient.uploadFromUrlWithResponse(options, null, null)
+
+        then:
+        def e = thrown(BlobStorageException)
+        e.getErrorCode() == errorCode
+
+        where:
+        requestConditions | errorCode
+        new BlobRequestConditions().setIfMatch("dummy") | BlobErrorCode.SOURCE_CONDITION_NOT_MET
+        new BlobRequestConditions().setIfModifiedSince(OffsetDateTime.now().plusSeconds(10)) | BlobErrorCode.CANNOT_VERIFY_COPY_SOURCE
+        new BlobRequestConditions().setIfUnmodifiedSince(OffsetDateTime.now().minusDays(1)) | BlobErrorCode.CANNOT_VERIFY_COPY_SOURCE
+    }
+
+    @Unroll
+    def "Upload from Url destination request conditions"() {
+        setup:
+        def sourceBlob = primaryBlobServiceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName())
+        sourceBlob.upload(defaultInputStream.get(), defaultDataSize)
+        def sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)))
+        blockBlobClient.upload(new ByteArrayInputStream(), 0, true)
+        createLeaseClient(blobClient).acquireLease(60)
+
+        when:
+        def options = new BlobUploadFromUrlOptions(sourceBlob.getBlobUrl() + "?" + sas).setDestinationRequestConditions(requestConditions)
+        blockBlobClient.uploadFromUrlWithResponse(options, null, null)
+
+        then:
+        def e = thrown(BlobStorageException)
+        e.getErrorCode() == errorCode
+
+        where:
+        requestConditions | errorCode
+        new BlobRequestConditions().setIfMatch("dummy") | BlobErrorCode.TARGET_CONDITION_NOT_MET
+        new BlobRequestConditions().setIfNoneMatch("*") | BlobErrorCode.BLOB_ALREADY_EXISTS
+        new BlobRequestConditions().setIfModifiedSince(OffsetDateTime.now().plusSeconds(10)) | BlobErrorCode.CONDITION_NOT_MET
+        new BlobRequestConditions().setIfUnmodifiedSince(OffsetDateTime.now().minusDays(1)) | BlobErrorCode.CONDITION_NOT_MET
+        new BlobRequestConditions().setLeaseId("9260fd2d-34c1-42b5-9217-8fb7c6484bfb")| BlobErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION
     }
 }

@@ -10,12 +10,15 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.ItemDeserializer;
 import com.azure.cosmos.implementation.Offer;
+import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.BatchExecutor;
+import com.azure.cosmos.implementation.batch.BulkExecutor;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.models.CosmosConflictProperties;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -25,6 +28,7 @@ import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
@@ -34,7 +38,6 @@ import com.azure.cosmos.models.ThroughputResponse;
 import com.azure.cosmos.util.Beta;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
-
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -261,8 +264,12 @@ public class CosmosAsyncContainer {
         return database.getClient().getTracerProvider().traceEnabledCosmosItemResponsePublisher(responseMono,
             context,
             this.createItemSpanName,
+            getId(),
             database.getId(),
-            database.getClient().getServiceEndpoint());
+            database.getClient(),
+            ModelBridgeInternal.getConsistencyLevel(options),
+            OperationType.Create,
+            ResourceType.Document);
     }
 
     private <T> Mono<CosmosItemResponse<T>> createItemInternal(T item, CosmosItemRequestOptions options) {
@@ -360,9 +367,8 @@ public class CosmosAsyncContainer {
      */
     <T> CosmosPagedFlux<T> readAllItems(CosmosQueryRequestOptions options, Class<T> classType) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
-            pagedFluxOptions.setTracerInformation(this.getDatabase().getClient().getTracerProvider(),
-                this.readAllItemsSpanName,
-                this.getDatabase().getClient().getServiceEndpoint(), database.getId());
+            pagedFluxOptions.setTracerAndTelemetryInformation(this.readAllItemsSpanName, database.getId(),
+                this.getId(), OperationType.ReadFeed, ResourceType.Document, this.getDatabase().getClient());
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDatabase().getDocClientWrapper().readDocuments(getLink(), options).map(
                 response -> prepareFeedResponse(response, classType));
@@ -456,8 +462,8 @@ public class CosmosAsyncContainer {
         SqlQuerySpec sqlQuerySpec, CosmosQueryRequestOptions cosmosQueryRequestOptions, Class<T> classType) {
         Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> pagedFluxOptionsFluxFunction = (pagedFluxOptions -> {
             String spanName = this.queryItemsSpanName;
-            pagedFluxOptions.setTracerInformation(this.getDatabase().getClient().getTracerProvider(), spanName,
-                this.getDatabase().getClient().getServiceEndpoint(), database.getId());
+            pagedFluxOptions.setTracerAndTelemetryInformation(spanName, database.getId(),
+                this.getId(), OperationType.Query, ResourceType.Document, this.getDatabase().getClient());
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, cosmosQueryRequestOptions);
 
                 return getDatabase().getDocClientWrapper()
@@ -586,6 +592,74 @@ public class CosmosAsyncContainer {
     }
 
     /**
+     * Executes flux of operations in Bulk.
+     *
+     * @param <TContext> The context for the bulk processing.
+     * @param operations Flux of operation which will be executed by this container.
+     *
+     * @return A Flux of {@link CosmosBulkOperationResponse} which contains operation and it's response or exception.
+     * <p>
+     *     To create a operation which can be executed here, use {@link BulkOperations}. For eg.
+     *     for a upsert operation use {@link BulkOperations#getUpsertItemOperation(Object, PartitionKey)}
+     * </p>
+     * <p>
+     *     We can get the corresponding operation using {@link CosmosBulkOperationResponse#getOperation()} and
+     *     it's response using {@link CosmosBulkOperationResponse#getResponse()}. If the operation was executed
+     *     successfully, the value returned by {@link CosmosBulkItemResponse#isSuccessStatusCode()} will be true. To get
+     *     actual status use {@link CosmosBulkItemResponse#getStatusCode()}.
+     * </p>
+     * To check if the operation had any exception, use {@link CosmosBulkOperationResponse#getException()} to
+     * get the exception.
+     */
+    @Beta(Beta.SinceVersion.V4_9_0)
+    public <TContext> Flux<CosmosBulkOperationResponse<TContext>> processBulkOperations(
+        Flux<CosmosItemOperation> operations) {
+
+        return this.processBulkOperations(operations, new BulkProcessingOptions<>());
+    }
+
+    /**
+     * Executes flux of operations in Bulk.
+     *
+     * @param <TContext> The context for the bulk processing.
+     *
+     * @param operations Flux of operation which will be executed by this container.
+     * @param bulkOptions Options that apply for this Bulk request which specifies options regarding execution like
+     *                    concurrency, batching size, interval and context.
+     *
+     * @return A Flux of {@link CosmosBulkOperationResponse} which contains operation and it's response or exception.
+     * <p>
+     *     To create a operation which can be executed here, use {@link BulkOperations}. For eg.
+     *     for a upsert operation use {@link BulkOperations#getUpsertItemOperation(Object, PartitionKey)}
+     * </p>
+     * <p>
+     *     We can get the corresponding operation using {@link CosmosBulkOperationResponse#getOperation()} and
+     *     it's response using {@link CosmosBulkOperationResponse#getResponse()}. If the operation was executed
+     *     successfully, the value returned by {@link CosmosBulkItemResponse#isSuccessStatusCode()} will be true. To get
+     *     actual status use {@link CosmosBulkItemResponse#getStatusCode()}.
+     * </p>
+     * To check if the operation had any exception, use {@link CosmosBulkOperationResponse#getException()} to
+     * get the exception.
+     */
+    @Beta(Beta.SinceVersion.V4_9_0)
+    public <TContext> Flux<CosmosBulkOperationResponse<TContext>> processBulkOperations(
+        Flux<CosmosItemOperation> operations,
+        BulkProcessingOptions<TContext> bulkOptions) {
+
+        if (bulkOptions == null) {
+            bulkOptions = new BulkProcessingOptions<>();
+        }
+
+        final BulkProcessingOptions<TContext> bulkProcessingOptions = bulkOptions;
+
+        return Flux.deferWithContext(context -> {
+            final BulkExecutor<TContext> executor = new BulkExecutor<>(this, operations, bulkProcessingOptions);
+
+            return executor.execute();
+        });
+    }
+
+    /**
      * Reads an item.
      * <p>
      * After subscription the operation will be performed.
@@ -700,18 +774,17 @@ public class CosmosAsyncContainer {
      * @param partitionKey the partition key value of the documents that need to be read
      * @param options the feed options.
      * @param classType the class type.
-     * @return a {@link CosmosPagedFlux} containing one or several feed response pages 
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages
      * of the read Cosmos items or an error.
      */
     public <T> CosmosPagedFlux<T> readAllItems(
         PartitionKey partitionKey,
         CosmosQueryRequestOptions options,
         Class<T> classType) {
-            
+
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
-            pagedFluxOptions.setTracerInformation(this.getDatabase().getClient().getTracerProvider(),
-                this.readAllItemsSpanName,
-                this.getDatabase().getClient().getServiceEndpoint(), database.getId());
+            pagedFluxOptions.setTracerAndTelemetryInformation(this.readAllItemsSpanName, database.getId(),
+                this.getId(), OperationType.ReadFeed, ResourceType.Document, this.getDatabase().getClient());
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDatabase()
                 .getDocClientWrapper()
@@ -856,6 +929,7 @@ public class CosmosAsyncContainer {
             pagedFluxOptions.setTracerInformation(this.getDatabase().getClient().getTracerProvider(),
                 this.readAllConflictsSpanName,
                 this.getDatabase().getClient().getServiceEndpoint(), database.getId());
+
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, requestOptions);
             return database.getDocClientWrapper().readConflicts(getLink(), requestOptions)
                 .map(response -> BridgeInternal.createFeedResponse(
@@ -960,8 +1034,12 @@ public class CosmosAsyncContainer {
         return database.getClient().getTracerProvider().traceEnabledCosmosItemResponsePublisher(responseMono,
             context,
             this.deleteItemSpanName,
+            this.getId(),
             database.getId(),
-            database.getClient().getServiceEndpoint());
+            database.getClient(),
+            requestOptions.getConsistencyLevel(),
+            OperationType.Delete,
+            ResourceType.Document);
     }
 
     private <T> Mono<CosmosItemResponse<T>> replaceItemInternal(
@@ -976,7 +1054,14 @@ public class CosmosAsyncContainer {
             .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType, getItemDeserializer()))
             .single();
         return database.getClient().getTracerProvider().traceEnabledCosmosItemResponsePublisher(responseMono,
-            context, this.replaceItemSpanName, database.getId(), database.getClient().getServiceEndpoint());
+            context,
+            this.replaceItemSpanName,
+            this.getId(),
+            database.getId(),
+            database.getClient(),
+            ModelBridgeInternal.getConsistencyLevel(options),
+            OperationType.Replace,
+            ResourceType.Document);
     }
 
     private <T> Mono<CosmosItemResponse<T>> upsertItemInternal(T item, CosmosItemRequestOptions options, Context context) {
@@ -991,8 +1076,12 @@ public class CosmosAsyncContainer {
         return database.getClient().getTracerProvider().traceEnabledCosmosItemResponsePublisher(responseMono,
             context,
             this.upsertItemSpanName,
+            this.getId(),
             database.getId(),
-            database.getClient().getServiceEndpoint());
+            database.getClient(),
+            ModelBridgeInternal.getConsistencyLevel(options),
+            OperationType.Upsert,
+            ResourceType.Document);
     }
 
     private <T> Mono<CosmosItemResponse<T>> readItemInternal(
@@ -1006,8 +1095,12 @@ public class CosmosAsyncContainer {
         return database.getClient().getTracerProvider().traceEnabledCosmosItemResponsePublisher(responseMono,
             context,
             this.readItemSpanName,
+            this.getId(),
             database.getId(),
-            database.getClient().getServiceEndpoint());
+            database.getClient(),
+            requestOptions.getConsistencyLevel(),
+            OperationType.Read,
+            ResourceType.Document);
     }
 
     Mono<CosmosContainerResponse> read(CosmosContainerRequestOptions options, Context context) {
@@ -1123,5 +1216,16 @@ public class CosmosAsyncContainer {
 
     ItemDeserializer getItemDeserializer() {
         return getDatabase().getDocClientWrapper().getItemDeserializer();
+    }
+
+    /**
+     * Obtains a list of {@link FeedRange} that can be used to parallelize Feed
+     * operations.
+     *
+     * @return An unmodifiable list of {@link FeedRange}
+     */
+    @Beta(Beta.SinceVersion.V4_9_0)
+    public Mono<List<FeedRange>> getFeedRanges() {
+        return this.getDatabase().getDocClientWrapper().getFeedRanges(getLink());
     }
 }

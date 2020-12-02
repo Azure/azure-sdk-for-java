@@ -50,8 +50,8 @@ public class UserPrincipalManager {
     private final Boolean explicitAudienceCheck;
     private final Set<String> validAudiences = new HashSet<>();
 
-    /**ø
-     * Creates a new {@link UserPrincipalManager} with a predefined {@link JWKSource}.
+    /**
+     * ø Creates a new {@link UserPrincipalManager} with a predefined {@link JWKSource}.
      * <p>
      * This is helpful in cases the JWK is not a remote JWKSet or for unit testing.
      *
@@ -138,6 +138,7 @@ public class UserPrincipalManager {
 
     /**
      * Parse the id token to {@link UserPrincipal}.
+     *
      * @param aadIssuedBearerToken The token issued by AAD.
      * @return The parsed {@link UserPrincipal}.
      * @throws ParseException If the token couldn't be parsed to a valid JWS object.

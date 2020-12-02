@@ -3,7 +3,11 @@
 
 package com.azure.ai.formrecognizer.training;
 
-import com.azure.ai.formrecognizer.implementation.PrivateFieldAccessHelper;
+import com.azure.ai.formrecognizer.implementation.CustomFormModelHelper;
+import com.azure.ai.formrecognizer.implementation.CustomFormModelInfoHelper;
+import com.azure.ai.formrecognizer.implementation.CustomFormModelPropertiesHelper;
+import com.azure.ai.formrecognizer.implementation.CustomFormSubmodelHelper;
+import com.azure.ai.formrecognizer.implementation.TrainingDocumentInfoHelper;
 import com.azure.ai.formrecognizer.implementation.models.Model;
 import com.azure.ai.formrecognizer.implementation.models.ModelInfo;
 import com.azure.ai.formrecognizer.implementation.models.ModelStatus;
@@ -12,15 +16,14 @@ import com.azure.ai.formrecognizer.models.FormRecognizerError;
 import com.azure.ai.formrecognizer.training.models.CustomFormModel;
 import com.azure.ai.formrecognizer.training.models.CustomFormModelField;
 import com.azure.ai.formrecognizer.training.models.CustomFormModelInfo;
+import com.azure.ai.formrecognizer.training.models.CustomFormModelProperties;
 import com.azure.ai.formrecognizer.training.models.CustomFormModelStatus;
 import com.azure.ai.formrecognizer.training.models.CustomFormSubmodel;
-import com.azure.ai.formrecognizer.training.models.CustomFormModelProperties;
 import com.azure.ai.formrecognizer.training.models.TrainingDocumentInfo;
 import com.azure.ai.formrecognizer.training.models.TrainingStatus;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,7 +38,6 @@ import static com.azure.ai.formrecognizer.implementation.Utility.forEachWithInde
  */
 final class CustomModelTransforms {
     private static final ClientLogger LOGGER = new ClientLogger(CustomModelTransforms.class);
-    static final Duration DEFAULT_DURATION = Duration.ofSeconds(5);
 
     private CustomModelTransforms() {
     }
@@ -103,22 +105,20 @@ final class CustomModelTransforms {
         CustomFormModelProperties customFormModelProperties = new CustomFormModelProperties();
 
         if (modelInfo.getAttributes() != null) {
-            PrivateFieldAccessHelper.set(customFormModelProperties, "isComposed",
+            CustomFormModelPropertiesHelper.setIsComposed(customFormModelProperties,
                 modelInfo.getAttributes().isComposed());
-            PrivateFieldAccessHelper.set(customFormModel, "customFormModelProperties",
-                customFormModelProperties);
+
+            CustomFormModelHelper.setCustomFormModelProperties(customFormModel, customFormModelProperties);
             if (modelInfo.getAttributes().isComposed()) {
-                PrivateFieldAccessHelper.set(customFormModel, "trainingDocuments",
-                    trainingDocumentInfoList);
+                CustomFormModelHelper.setTrainingDocuments(customFormModel, trainingDocumentInfoList);
             }
         } else {
             // default to false
-            PrivateFieldAccessHelper.set(customFormModel, "customFormModelProperties",
-                customFormModelProperties);
+            CustomFormModelHelper.setCustomFormModelProperties(customFormModel, customFormModelProperties);
         }
 
         if (modelInfo.getModelName() != null) {
-            PrivateFieldAccessHelper.set(customFormModel, "modelName", modelInfo.getModelName());
+            CustomFormModelHelper.setModelName(customFormModel, modelInfo.getModelName());
         }
         return customFormModel;
     }
@@ -134,7 +134,7 @@ final class CustomModelTransforms {
                     trainingDocumentItem.getPages(),
                     transformTrainingErrors(trainingDocumentItem.getErrors())))
             .peek(trainingDocumentInfo ->
-                PrivateFieldAccessHelper.set(trainingDocumentInfo, "modelId", modelId))
+                TrainingDocumentInfoHelper.setModelId(trainingDocumentInfo, modelId))
             .collect(Collectors.toList());
     }
 
@@ -153,7 +153,7 @@ final class CustomModelTransforms {
                 modelResponse.getTrainResult().getAverageModelAccuracy(),
                 fieldMap,
                 formType);
-        PrivateFieldAccessHelper.set(customFormSubmodel, "modelId", modelId);
+        CustomFormSubmodelHelper.setModelId(customFormSubmodel, modelId);
         subModelList.add(customFormSubmodel);
         return subModelList;
     }
@@ -173,7 +173,7 @@ final class CustomModelTransforms {
                     null,
                     fieldMap,
                     "form-" + clusterKey);
-                PrivateFieldAccessHelper.set(customFormSubmodel, "modelId", modelId);
+                CustomFormSubmodelHelper.setModelId(customFormSubmodel, modelId);
                 subModelList.add(customFormSubmodel);
             });
         return subModelList;
@@ -199,8 +199,7 @@ final class CustomModelTransforms {
                     composedTrainResultItem.getAverageModelAccuracy(),
                     fieldMap,
                     formType);
-            PrivateFieldAccessHelper.set(customFormSubmodel, "modelId",
-                composedTrainResultItem.getModelId().toString());
+            CustomFormSubmodelHelper.setModelId(customFormSubmodel, composedTrainResultItem.getModelId().toString());
             subModelList.add(customFormSubmodel);
         }
         return subModelList;
@@ -222,13 +221,13 @@ final class CustomModelTransforms {
                     modelInfo.getLastUpdatedDateTime());
                 if (modelInfo.getAttributes() != null) {
                     CustomFormModelProperties customFormModelProperties = new CustomFormModelProperties();
-                    PrivateFieldAccessHelper.set(customFormModelProperties, "isComposed",
+                    CustomFormModelPropertiesHelper.setIsComposed(customFormModelProperties,
                         modelInfo.getAttributes().isComposed());
-                    PrivateFieldAccessHelper.set(customFormModelInfo, "customFormModelProperties",
+                    CustomFormModelInfoHelper.setCustomFormModelProperties(customFormModelInfo,
                         customFormModelProperties);
                 }
                 if (modelInfo.getModelName() != null) {
-                    PrivateFieldAccessHelper.set(customFormModelInfo, "modelName",
+                    CustomFormModelInfoHelper.setModelName(customFormModelInfo,
                         modelInfo.getModelName());
                 }
                 return customFormModelInfo;

@@ -1,18 +1,29 @@
 # Release History
 
-## 12.7.0-beta.2 (Unreleased)
+## 12.8.0-beta.1 (Unreleased)
+- Exposed ClientOptions on all client builders, allowing users to set a custom application id and custom headers.
+- Fixed a bug where snapshot would be appended to a share snapshot instead of sharesnapshot.
+- Fixed a bug where the sharesnapshot query parameter would be ignored in share and share file client builders.
+- Fixed a bug where the error message would not be displayed the exception message of a HEAD request.
+- Added support for the 2020-04-08 service version. 
+- Added support for specifying enabled protocols on share creation
+- Added support for setting root squash on share creation and through set properties.
+
+## 12.7.0 (2020-11-11)
 - Added support to specify whether or not a pipeline policy should be added per call or per retry.
 - Added support for setting access tier on a share through ShareClient.create, ShareClient.setAccessTier.
 - Added support for getting access tier on a share through ShareClient.getProperties, ShareServiceClient.listShares
+- Fixed a bug where interspersed element types returned by range diff listing would deserialize incorrectly.
 - Renamed setAccessTier to setProperties and deprecated setQuotaInGb in favor of setProperties.
 - Renamed DeleteSnapshotsOptionType to ShareSnapshotsDeleteOptionType in ShareClient.delete
+- Removed ability to create a ShareLeaseClient for a Share or Share Snapshot. This feature has been rescheduled for future release.
 
 ## 12.7.0-beta.1 (2020-10-01)
 - Added support for the 2020-02-10 service version. 
 - Added support to getFileRanges on a previous snapshot by adding the getFileRangesDiff API. 
 - Added support to set whether or not smb multichannel is enabled.
 - Added support to lease shares and snapshot shares.
-- Added support to specify a lease id for share operations. 
+- Added support to specify a lease id for share operations.
 - Fixed a bug where getProperties on a file client would throw a HttpResponseException instead of ShareStorageException.
 - Fixed a bug where snapshot would be appended to a share snapshot instead of sharesnapshot.
 - Fixed a bug that would cause auth failures when building a client by passing an endpoint which had a sas token with protocol set to https,http

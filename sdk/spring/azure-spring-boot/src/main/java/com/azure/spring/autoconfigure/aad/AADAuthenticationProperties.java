@@ -3,22 +3,23 @@
 
 package com.azure.spring.autoconfigure.aad;
 
+import com.azure.spring.aad.implementation.AuthorizationProperties;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.concurrent.TimeUnit;
+import javax.annotation.PostConstruct;
+import javax.validation.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
 import org.springframework.validation.annotation.Validated;
-
-import javax.annotation.PostConstruct;
-import javax.validation.constraints.NotEmpty;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Configuration properties for Azure Active Directory Authentication.
@@ -30,6 +31,7 @@ public class AADAuthenticationProperties {
     private static final Logger LOGGER = LoggerFactory.getLogger(AADAuthenticationProperties.class);
     private static final String DEFAULT_SERVICE_ENVIRONMENT = "global";
     private static final long DEFAULT_JWK_SET_CACHE_LIFESPAN = TimeUnit.MINUTES.toMillis(5);
+    private static final long DEFAULT_JWK_SET_CACHE_REFRESH_TIME = DEFAULT_JWK_SET_CACHE_LIFESPAN;
 
     /**
      * Default UserGroup configuration.
@@ -42,28 +44,20 @@ public class AADAuthenticationProperties {
     private String environment = DEFAULT_SERVICE_ENVIRONMENT;
 
     /**
-     * Registered application ID in Azure AD.
-     * Must be configured when OAuth2 authentication is done in front end
+     * Registered application ID in Azure AD. Must be configured when OAuth2 authentication is done in front end
      */
     private String clientId;
 
     /**
-     * API Access Key of the registered application.
-     * Must be configured when OAuth2 authentication is done in front end
+     * API Access Key of the registered application. Must be configured when OAuth2 authentication is done in front end
      */
     private String clientSecret;
 
     /**
-     * Redirection Endpoint: Used by the authorization server
-     * to return responses containing authorization credentials to the client via the resource owner user-agent.
+     * Redirection Endpoint: Used by the authorization server to return responses containing authorization credentials
+     * to the client via the resource owner user-agent.
      */
     private String redirectUriTemplate;
-
-    /**
-     * Optional. scope doc:
-     * https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-permissions-and-consent#scopes-and-permissions
-     */
-    private List<String> scope = Arrays.asList("openid", "https://graph.microsoft.com/user.read", "profile");
 
     /**
      * App ID URI which might be used in the <code>"aud"</code> claim of an <code>id_token</code>.
@@ -91,6 +85,11 @@ public class AADAuthenticationProperties {
     private long jwkSetCacheLifespan = DEFAULT_JWK_SET_CACHE_LIFESPAN;
 
     /**
+     * The refresh time of the cached JWK set before it expires, default is 5 minutes.
+     */
+    private long jwkSetCacheRefreshTime = DEFAULT_JWK_SET_CACHE_REFRESH_TIME;
+
+    /**
      * Azure Tenant ID.
      */
     private String tenantId;
@@ -101,10 +100,16 @@ public class AADAuthenticationProperties {
     private boolean allowTelemetry = true;
 
     /**
-     * If <code>true</code> activates the stateless auth filter {@link AADAppRoleStatelessAuthenticationFilter}.
-     * The default is <code>false</code> which activates {@link AADAuthenticationFilter}.
+     * If <code>true</code> activates the stateless auth filter {@link AADAppRoleStatelessAuthenticationFilter}. The
+     * default is <code>false</code> which activates {@link AADAuthenticationFilter}.
      */
     private Boolean sessionStateless = false;
+
+    private String authorizationServerUri = "https://login.microsoftonline.com/";
+
+    private String graphMembershipUri = "https://graph.microsoft.com/v1.0/me/memberOf";
+
+    private Map<String, AuthorizationProperties> authorization = new HashMap<>();
 
     @DeprecatedConfigurationProperty(
         reason = "Configuration moved to UserGroup class to keep UserGroup properties together",
@@ -112,6 +117,7 @@ public class AADAuthenticationProperties {
     public List<String> getActiveDirectoryGroups() {
         return userGroup.getAllowedGroups();
     }
+
     /**
      * Properties dedicated to changing the behavior of how the groups are mapped from the Azure AD response. Depending
      * on the graph API used the object will not be the same.
@@ -136,7 +142,7 @@ public class AADAuthenticationProperties {
          * Node is a UserGroup.
          */
         @NotEmpty
-        private String value = MemberShip.OBJECT_TYPE_GROUP;
+        private String value = Membership.OBJECT_TYPE_GROUP;
 
         /**
          * Key of the JSON Node containing the Azure Object ID for the {@code UserGroup}.
@@ -179,11 +185,11 @@ public class AADAuthenticationProperties {
         @Override
         public String toString() {
             return "UserGroupProperties{"
-                +  "allowedGroups=" + allowedGroups
-                +  ", key='" + key + '\''
-                +  ", value='" + value + '\''
-                +  ", objectIDKey='" + objectIDKey + '\''
-                +  '}';
+                + "allowedGroups=" + allowedGroups
+                + ", key='" + key + '\''
+                + ", value='" + value + '\''
+                + ", objectIDKey='" + objectIDKey + '\''
+                + '}';
         }
 
         @Override
@@ -272,14 +278,6 @@ public class AADAuthenticationProperties {
         this.redirectUriTemplate = redirectUriTemplate;
     }
 
-    public void setScope(List<String> scope) {
-        this.scope = scope;
-    }
-
-    public List<String> getScope() {
-        return scope;
-    }
-
     @Deprecated
     public void setActiveDirectoryGroups(List<String> activeDirectoryGroups) {
         this.userGroup.setAllowedGroups(activeDirectoryGroups);
@@ -325,6 +323,14 @@ public class AADAuthenticationProperties {
         this.jwkSetCacheLifespan = jwkSetCacheLifespan;
     }
 
+    public long getJwkSetCacheRefreshTime() {
+        return jwkSetCacheRefreshTime;
+    }
+
+    public void setJwkSetCacheRefreshTime(long jwkSetCacheRefreshTime) {
+        this.jwkSetCacheRefreshTime = jwkSetCacheRefreshTime;
+    }
+
     public String getTenantId() {
         return tenantId;
     }
@@ -347,6 +353,30 @@ public class AADAuthenticationProperties {
 
     public void setSessionStateless(Boolean sessionStateless) {
         this.sessionStateless = sessionStateless;
+    }
+
+    public String getAuthorizationServerUri() {
+        return authorizationServerUri;
+    }
+
+    public void setAuthorizationServerUri(String authorizationServerUri) {
+        this.authorizationServerUri = authorizationServerUri;
+    }
+
+    public String getGraphMembershipUri() {
+        return graphMembershipUri;
+    }
+
+    public void setGraphMembershipUri(String graphMembershipUri) {
+        this.graphMembershipUri = graphMembershipUri;
+    }
+
+    public Map<String, AuthorizationProperties> getAuthorization() {
+        return authorization;
+    }
+
+    public void setAuthorization(Map<String, AuthorizationProperties> authorization) {
+        this.authorization = authorization;
     }
 
     public boolean isAllowedGroup(String group) {

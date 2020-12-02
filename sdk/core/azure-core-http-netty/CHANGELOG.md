@@ -1,7 +1,23 @@
 # Release History
 
-## 1.7.0-beta.1 (Unreleased)
+## 1.8.0-beta.1 (Unreleased)
 
+
+## 1.7.0 (2020-11-24)
+
+### New Features
+
+- Added functionality to eagerly read HTTP response bodies into memory when they will be deserialized into a POJO.
+
+### Bug Fixes
+
+- Fixed a bug where a connection would remain active when timed out instead of being closed.
+
+## 1.6.3 (2020-10-29)
+
+### Dependency updates
+
+- Updated `azure-core` to `1.10.0`.
 
 ## 1.6.2 (2020-10-01)
 

@@ -11,21 +11,22 @@ import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder;
-import com.azure.messaging.servicebus.models.AbandonOptions;
-import com.azure.messaging.servicebus.models.CompleteOptions;
-import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.LockContainer;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLinkProcessor;
+import com.azure.messaging.servicebus.models.AbandonOptions;
+import com.azure.messaging.servicebus.models.CompleteOptions;
+import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.DeferOptions;
-import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -35,6 +36,7 @@ import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
@@ -45,43 +47,41 @@ import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPE
 
 /**
  * An <b>asynchronous</b> receiver responsible for receiving {@link ServiceBusReceivedMessage} from a specific queue or
- * topic on Azure Service Bus.
+ * topic subscription on Azure Service Bus.
  *
  * <p><strong>Create an instance of receiver</strong></p>
- * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation}
+ * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation}
  *
  * <p><strong>Create an instance of receiver using default credential</strong></p>
- * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiateWithDefaultCredential}
+ * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiateWithDefaultCredential}
  *
  * <p><strong>Receive all messages from Service Bus resource</strong></p>
- * <p>This returns an infinite stream of messages from Service Bus. The stream ends when the subscription is disposed or
- * other terminal scenarios. See {@link #receiveMessages()} for more information.</p>
- * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#all}
+ * <p>This returns an infinite stream of messages from Service Bus. The stream ends when the subscription is disposed
+ * or other terminal scenarios. See {@link #receiveMessages()} for more information.</p>
+ * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverasyncclient.receive#all}
  *
- * <p><strong>Receive messages in {@link ReceiveMode#RECEIVE_AND_DELETE} mode from Service Bus resource</strong></p>
- * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.receiveWithReceiveAndDeleteMode}
+ * <p><strong>Receive messages in {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode from a Service Bus
+ * entity</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverasyncclient.receiveWithReceiveAndDeleteMode}
  *
  * <p><strong>Receive messages from a specific session</strong></p>
- * <p>To fetch messages from a specific session, set {@link ServiceBusSessionReceiverClientBuilder#sessionId(String)}.
+ * <p>To fetch messages from a specific session, switch to {@link ServiceBusSessionReceiverClientBuilder} and
+ * build the session receiver client. Use {@link ServiceBusSessionReceiverAsyncClient#acceptSession(String)} to create
+ * a session-bound {@link ServiceBusReceiverAsyncClient}.
  * </p>
- * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#sessionId}
+ * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#sessionId}
  *
- * <p><strong>Process messages from multiple sessions</strong></p>
- * <p>To process messages from multiple sessions, set
- * {@link ServiceBusSessionReceiverClientBuilder#maxConcurrentSessions(int)}. This will process in parallel at most
- * {@code maxConcurrentSessions}. In addition, when all the messages in a session have been consumed, it will find the
- * next available session to process.</p>
- * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#multiplesessions}
+ * <p><strong>Receive messages from the first available session</strong></p>
+ * <p>To process messages from the first available session, switch to {@link ServiceBusSessionReceiverClientBuilder}
+ * and build the session receiver client. Use
+ * {@link ServiceBusSessionReceiverAsyncClient#acceptNextSession() acceptNextSession()} to find the first available
+ * session to process messages from.</p>
+ * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#nextsession}
  *
- * <p><strong>Process messages from the first available session</strong></p>
- * <p>To process messages from the first available session, switch to {@link ServiceBusSessionReceiverClientBuilder} and
- * build the receiver client. It will find the first available session to process messages from.</p>
- * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#singlesession}
- *
- * <p><strong>Rate limiting consumption of messages from Service Bus resource</strong></p>
+ * <p><strong>Rate limiting consumption of messages from a Service Bus entity</strong></p>
  * <p>For message receivers that need to limit the number of messages they receive at a given time, they can use
  * {@link BaseSubscriber#request(long)}.</p>
- * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#basesubscriber}
+ * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverasyncclient.receive#basesubscriber}
  *
  * @see ServiceBusClientBuilder
  * @see ServiceBusReceiverClient To communicate with a Service Bus resource using a synchronous client.
@@ -104,10 +104,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     private final MessageSerializer messageSerializer;
     private final Runnable onClientClose;
     private final ServiceBusSessionManager sessionManager;
+    private final Semaphore completionLock = new Semaphore(1);
 
     // Starting at -1 because that is before the beginning of the stream.
     private final AtomicLong lastPeekedSequenceNumber = new AtomicLong(-1);
-
     private final AtomicReference<ServiceBusAsyncConsumer> consumer = new AtomicReference<>();
 
     /**
@@ -137,7 +137,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         this.managementNodeLocks = new LockContainer<>(cleanupInterval);
         this.renewalContainer = new LockContainer<>(Duration.ofMinutes(2), renewal -> {
-            logger.info("Closing expired renewal operation. lockToken[{}]. status[{}]. throwable[{}].",
+            logger.verbose("Closing expired renewal operation. lockToken[{}]. status[{}]. throwable[{}].",
                 renewal.getLockToken(), renewal.getStatus(), renewal.getThrowable());
             renewal.close();
         });
@@ -188,15 +188,18 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Abandon a {@link ServiceBusReceivedMessage message}. This will make the message available
-     * again for processing. Abandoning a message will increase the delivery count on the message.
+     * Abandons a {@link ServiceBusReceivedMessage message}. This will make the message available again for processing.
+     * Abandoning a message will increase the delivery count on the message.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
      *
      * @return A {@link Mono} that completes when the Service Bus abandon operation completes.
+     *
      * @throws NullPointerException if {@code message} is null.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
-     *     mode.
+     * @throws UnsupportedOperationException if the receiver was opened in
+     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from
+     * @throws IllegalStateException if receiver is already disposed.
+     * @throws ServiceBusException if the message could not be abandoned.
      */
     public Mono<Void> abandon(ServiceBusReceivedMessage message) {
         return updateDisposition(message, DispositionStatus.ABANDONED, null, null,
@@ -204,23 +207,20 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Abandon a {@link ServiceBusReceivedMessage message} updates the message's properties.
-     * This will make the message available again for processing. Abandoning a message will increase the delivery count
-     * on the message.
+     * Abandons a {@link ServiceBusReceivedMessage message} updates the message's properties. This will make the
+     * message available again for processing. Abandoning a message will increase the delivery count on the message.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
-     * @param options to abandon the message. You can specify
-     *     {@link AbandonOptions#setPropertiesToModify(Map) properties} to modify on the Message. The
-     *     {@code transactionContext} can be set using
-     *     {@link AbandonOptions#setTransactionContext(ServiceBusTransactionContext)}. The transaction should be
-     *     created first by {@link ServiceBusReceiverAsyncClient#createTransaction()} or
-     *     {@link ServiceBusSenderAsyncClient#createTransaction()}.
+     * @param options The options to set while abandoning the message.
      *
      * @return A {@link Mono} that completes when the Service Bus operation finishes.
      * @throws NullPointerException if {@code message} or {@code options} is null. Also if
      *     {@code transactionContext.transactionId} is null when {@code options.transactionContext} is specified.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
-     *     mode.
+     * @throws UnsupportedOperationException if the receiver was opened in
+     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from
+     *     {@link ServiceBusReceiverAsyncClient#peekMessage() peekMessage}.
+     * @throws IllegalStateException if receiver is already disposed.
+     * @throws ServiceBusException if the message could not be abandoned.
      */
     public Mono<Void> abandon(ServiceBusReceivedMessage message, AbandonOptions options) {
         if (Objects.isNull(options)) {
@@ -241,9 +241,13 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
      *
      * @return A {@link Mono} that finishes when the message is completed on Service Bus.
+     *
      * @throws NullPointerException if {@code message} is null.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
-     *     mode.
+     * @throws UnsupportedOperationException if the receiver was opened in
+     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from
+     *     {@link ServiceBusReceiverAsyncClient#peekMessage() peekMessage}.
+     * @throws IllegalStateException if receiver is already disposed.
+     * @throws ServiceBusException if the message could not be completed.
      */
     public Mono<Void> complete(ServiceBusReceivedMessage message) {
         return updateDisposition(message, DispositionStatus.COMPLETED, null, null,
@@ -251,20 +255,21 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Completes a {@link ServiceBusReceivedMessage message}. This will delete the message from the
-     * service.
+     * Completes a {@link ServiceBusReceivedMessage message} with the given options. This will delete the message from
+     * the service.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
-     * @param options to complete the message. The {@code transactionContext} can be set using
-     *     {@link CompleteOptions#setTransactionContext(ServiceBusTransactionContext)}. The transaction should be
-     *     created first by {@link ServiceBusReceiverAsyncClient#createTransaction()} or
-     *     {@link ServiceBusSenderAsyncClient#createTransaction()}.
+     * @param options Options used to complete the message.
      *
      * @return A {@link Mono} that finishes when the message is completed on Service Bus.
+     *
      * @throws NullPointerException if {@code message} or {@code options} is null. Also if
      *     {@code transactionContext.transactionId} is null when {@code options.transactionContext} is specified.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
-     *     mode.
+     * @throws UnsupportedOperationException if the receiver was opened in
+     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from
+     *     {@link ServiceBusReceiverAsyncClient#peekMessage() peekMessage}.
+     * @throws IllegalStateException if receiver is already disposed.
+     * @throws ServiceBusException if the message could not be completed.
      */
     public Mono<Void> complete(ServiceBusReceivedMessage message, CompleteOptions options) {
         if (Objects.isNull(options)) {
@@ -280,13 +285,18 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Defers a {@link ServiceBusReceivedMessage message}. This will move message into the deferred subqueue.
+     * Defers a {@link ServiceBusReceivedMessage message}. This will move message into the deferred sub-queue.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
      *
      * @return A {@link Mono} that completes when the Service Bus defer operation finishes.
+     *
      * @throws NullPointerException if {@code message} is null.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE} mode.
+     * @throws UnsupportedOperationException if the receiver was opened in
+     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from
+     *     {@link ServiceBusReceiverAsyncClient#peekMessage() peekMessage}.
+     * @throws IllegalStateException if receiver is already disposed.
+     * @throws ServiceBusException if the message could not be deferred.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
      */
     public Mono<Void> defer(ServiceBusReceivedMessage message) {
@@ -295,21 +305,21 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Defers a {@link ServiceBusReceivedMessage message} with modified message property. This will move message into
-     * the deferred subqueue.
+     * Defers a {@link ServiceBusReceivedMessage message} with the options set. This will move message into
+     * the deferred sub-queue.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
-     * @param options to defer the message. You can specify {@link DeferOptions#setPropertiesToModify(Map) properties}
-     *     to modify on the Message. The {@code transactionContext} can be set using
-     *     {@link DeferOptions#setTransactionContext(ServiceBusTransactionContext)}. The transaction should be
-     *     created first by {@link ServiceBusReceiverAsyncClient#createTransaction()} or
-     *     {@link ServiceBusSenderAsyncClient#createTransaction()}.
+     * @param options Options used to defer the message.
      *
      * @return A {@link Mono} that completes when the defer operation finishes.
+     *
      * @throws NullPointerException if {@code message} or {@code options} is null. Also if
      *     {@code transactionContext.transactionId} is null when {@code options.transactionContext} is specified.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
-     *     mode.
+     * @throws UnsupportedOperationException if the receiver was opened in
+     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from
+     *     {@link ServiceBusReceiverAsyncClient#peekMessage() peekMessage}.
+     * @throws IllegalStateException if receiver is already disposed.
+     * @throws ServiceBusException if the message could not be deferred.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
      */
     public Mono<Void> defer(ServiceBusReceivedMessage message, DeferOptions options) {
@@ -326,14 +336,18 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Moves a {@link ServiceBusReceivedMessage message} to the deadletter sub-queue.
+     * Moves a {@link ServiceBusReceivedMessage message} to the dead-letter sub-queue.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
      *
      * @return A {@link Mono} that completes when the dead letter operation finishes.
+     *
      * @throws NullPointerException if {@code message} is null.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
-     *     mode.
+     * @throws UnsupportedOperationException if the receiver was opened in
+     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from
+     *     {@link ServiceBusReceiverAsyncClient#peekMessage() peekMessage}.
+     * @throws IllegalStateException if receiver is already disposed.
+     * @throws ServiceBusException if the message could not be dead-lettered.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-dead-letter-queues">Dead letter
      *     queues</a>
      */
@@ -342,20 +356,20 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Moves a {@link ServiceBusReceivedMessage message} to the deadletter sub-queue.
+     * Moves a {@link ServiceBusReceivedMessage message} to the dead-letter sub-queue with the given options.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
-     * @param options to deadLetter the message. You can specify
-     *     {@link DeadLetterOptions#setPropertiesToModify(Map) properties} to modify on the Message. The
-     *     {@code transactionContext} can be set using
-     *     {@link DeadLetterOptions#setTransactionContext(ServiceBusTransactionContext)}. The transaction should be
-     *     created first by {@link ServiceBusReceiverAsyncClient#createTransaction()} or
-     *     {@link ServiceBusSenderAsyncClient#createTransaction()}.
+     * @param options Options used to dead-letter the message.
+     *
      * @return A {@link Mono} that completes when the dead letter operation finishes.
+     *
      * @throws NullPointerException if {@code message} or {@code options} is null. Also if
      *     {@code transactionContext.transactionId} is null when {@code options.transactionContext} is specified.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
-     *     mode.
+     * @throws UnsupportedOperationException if the receiver was opened in
+     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from
+     *     {@link ServiceBusReceiverAsyncClient#peekMessage() peekMessage}.
+     * @throws IllegalStateException if receiver is already disposed.
+     * @throws ServiceBusException if the message could not be dead-lettered.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-dead-letter-queues">Dead letter
      *     queues</a>
      */
@@ -367,34 +381,20 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             return monoError(logger, new NullPointerException(
                 "'options.transactionContext.transactionId' cannot be null."));
         }
-        return  updateDisposition(message, DispositionStatus.SUSPENDED, options.getDeadLetterReason(),
+        return updateDisposition(message, DispositionStatus.SUSPENDED, options.getDeadLetterReason(),
             options.getDeadLetterErrorDescription(), options.getPropertiesToModify(),
             options.getTransactionContext());
     }
 
     /**
-     * Gets the state of a session given its identifier.
-     *
-     * @param sessionId Identifier of session to get.
+     * Gets the state of the session if this receiver is a session receiver.
      *
      * @return The session state or an empty Mono if there is no state set for the session.
-     * @throws IllegalStateException if the receiver is a non-session receiver.
+     * @throws IllegalStateException if the receiver is a non-session receiver or receiver is already closed.
+     * @throws ServiceBusException if the session state could not be acquired.
      */
-    public Mono<byte[]> getSessionState(String sessionId) {
-        if (isDisposed.get()) {
-            return monoError(logger, new IllegalStateException(
-                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "getSessionState")));
-        } else if (!receiverOptions.isSessionReceiver()) {
-            return monoError(logger, new IllegalStateException("Cannot get session state on a non-session receiver."));
-        }
-
-        if (sessionManager != null) {
-            return sessionManager.getSessionState(sessionId);
-        } else {
-            return connectionProcessor
-                .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-                .flatMap(channel -> channel.getSessionState(sessionId, getLinkName(sessionId)));
-        }
+    public Mono<byte[]> getSessionState() {
+        return getSessionState(receiverOptions.getSessionId());
     }
 
     /**
@@ -403,6 +403,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * message in the entity.
      *
      * @return A peeked {@link ServiceBusReceivedMessage}.
+     * @throws IllegalStateException if receiver is already disposed.
+     * @throws ServiceBusException if an error occurs while peeking at the message.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
     public Mono<ServiceBusReceivedMessage> peekMessage() {
@@ -420,7 +422,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws IllegalStateException if the receiver is disposed.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
-    public Mono<ServiceBusReceivedMessage> peekMessage(String sessionId) {
+    Mono<ServiceBusReceivedMessage> peekMessage(String sessionId) {
         if (isDisposed.get()) {
             return monoError(logger, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "peek")));
@@ -450,10 +452,13 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @param sequenceNumber The sequence number from where to read the message.
      *
      * @return A peeked {@link ServiceBusReceivedMessage}.
+     *
+     * @throws IllegalStateException if receiver is already disposed.
+     * @throws ServiceBusException if an error occurs while peeking at the message.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
-    public Mono<ServiceBusReceivedMessage> peekMessageAt(long sequenceNumber) {
-        return peekMessageAt(sequenceNumber, receiverOptions.getSessionId());
+    public Mono<ServiceBusReceivedMessage> peekMessage(long sequenceNumber) {
+        return peekMessage(sequenceNumber, receiverOptions.getSessionId());
     }
 
     /**
@@ -464,14 +469,14 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @param sessionId Session id of the message to peek from. {@code null} if there is no session.
      *
      * @return A peeked {@link ServiceBusReceivedMessage}.
+     * @throws IllegalStateException if receiver is already disposed.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
-    public Mono<ServiceBusReceivedMessage> peekMessageAt(long sequenceNumber, String sessionId) {
+    Mono<ServiceBusReceivedMessage> peekMessage(long sequenceNumber, String sessionId) {
         if (isDisposed.get()) {
             return monoError(logger, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "peekAt")));
         }
-
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMap(node -> node.peek(sequenceNumber, sessionId, getLinkName(sessionId)));
@@ -483,7 +488,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @param maxMessages The number of messages.
      *
      * @return A {@link Flux} of {@link ServiceBusReceivedMessage messages} that are peeked.
+     *
      * @throws IllegalArgumentException if {@code maxMessages} is not a positive integer.
+     * @throws IllegalStateException if receiver is already disposed.
+     * @throws ServiceBusException if an error occurs while peeking at messages.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
     public Flux<ServiceBusReceivedMessage> peekMessages(int maxMessages) {
@@ -498,9 +506,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      *
      * @return An {@link IterableStream} of {@link ServiceBusReceivedMessage messages} that are peeked.
      * @throws IllegalArgumentException if {@code maxMessages} is not a positive integer.
+     * @throws IllegalStateException if receiver is already disposed.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
-    public Flux<ServiceBusReceivedMessage> peekMessages(int maxMessages, String sessionId) {
+    Flux<ServiceBusReceivedMessage> peekMessages(int maxMessages, String sessionId) {
         if (isDisposed.get()) {
             return fluxError(logger, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "peekBatch")));
@@ -519,7 +528,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 // the same sequence number.
                 final Mono<ServiceBusReceivedMessage> handle = messages
                     .switchIfEmpty(Mono.fromCallable(() -> {
-                        ServiceBusReceivedMessage emptyMessage = new ServiceBusReceivedMessage(new byte[0]);
+                        ServiceBusReceivedMessage emptyMessage = new ServiceBusReceivedMessage(BinaryData
+                            .fromBytes(new byte[0]));
                         emptyMessage.setSequenceNumber(lastPeekedSequenceNumber.get());
                         return emptyMessage;
                     }))
@@ -543,12 +553,15 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @param maxMessages The number of messages.
      * @param sequenceNumber The sequence number from where to start reading messages.
      *
-     * @return A {@link Flux} of {@link ServiceBusReceivedMessage} peeked.
+     * @return A {@link Flux} of {@link ServiceBusReceivedMessage messages} peeked.
+     *
      * @throws IllegalArgumentException if {@code maxMessages} is not a positive integer.
+     * @throws IllegalStateException if receiver is already disposed.
+     * @throws ServiceBusException if an error occurs while peeking at messages.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
-    public Flux<ServiceBusReceivedMessage> peekMessagesAt(int maxMessages, long sequenceNumber) {
-        return peekMessagesAt(maxMessages, sequenceNumber, receiverOptions.getSessionId());
+    public Flux<ServiceBusReceivedMessage> peekMessages(int maxMessages, long sequenceNumber) {
+        return peekMessages(maxMessages, sequenceNumber, receiverOptions.getSessionId());
     }
 
     /**
@@ -561,9 +574,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      *
      * @return An {@link IterableStream} of {@link ServiceBusReceivedMessage} peeked.
      * @throws IllegalArgumentException if {@code maxMessages} is not a positive integer.
+     * @throws IllegalStateException if receiver is already disposed.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
-    public Flux<ServiceBusReceivedMessage> peekMessagesAt(int maxMessages, long sequenceNumber, String sessionId) {
+    Flux<ServiceBusReceivedMessage> peekMessages(int maxMessages, long sequenceNumber, String sessionId) {
         if (isDisposed.get()) {
             return fluxError(logger, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "peekBatchAt")));
@@ -587,21 +601,80 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * </ul>
      *
      * @return An <b>infinite</b> stream of messages from the Service Bus entity.
+     * @throws IllegalStateException if receiver is already disposed.
+     * @throws ServiceBusException if an error occurs while receiving messages.
      */
-    public Flux<ServiceBusReceivedMessageContext> receiveMessages() {
-        if (sessionManager != null) {
-            return sessionManager.receive();
-        } else {
-            final Flux<ServiceBusReceivedMessageContext> messageFlux = getOrCreateConsumer().receive()
-                .map(ServiceBusReceivedMessageContext::new);
-
-            if (receiverOptions.isAutoLockRenewEnabled()) {
-                return new FluxAutoLockRenew(messageFlux, receiverOptions.getMaxLockRenewDuration(), renewalContainer,
-                    this::renewMessageLock);
-            } else {
-                return messageFlux;
-            }
+    public Flux<ServiceBusReceivedMessage> receiveMessages() {
+        if (isDisposed.get()) {
+            return fluxError(logger, new IllegalStateException(
+                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "receiveMessages")));
         }
+        // Without limitRate(), if the user calls receiveMessages().subscribe(), it will call
+        // ServiceBusReceiveLinkProcessor.request(long request) where request = Long.MAX_VALUE.
+        // We turn this one-time non-backpressure request to continuous requests with backpressure.
+        // If receiverOptions.prefetchCount is set to non-zero, it will be passed to ServiceBusReceiveLinkProcessor
+        // to auto-refill the prefetch buffer. A request will retrieve one message from this buffer.
+        // If receiverOptions.prefetchCount is 0 (default value),
+        // the request will add a link credit so one message is retrieved from the service.
+        return receiveMessagesNoBackPressure().limitRate(1, 0);
+    }
+
+    Flux<ServiceBusReceivedMessage> receiveMessagesNoBackPressure() {
+        return receiveMessagesWithContext(0)
+            .handle((serviceBusMessageContext, sink) -> {
+                if (serviceBusMessageContext.hasError()) {
+                    sink.error(serviceBusMessageContext.getThrowable());
+                    return;
+                }
+                sink.next(serviceBusMessageContext.getMessage());
+            });
+    }
+
+    /**
+     * Receives an <b>infinite</b> stream of {@link ServiceBusReceivedMessage messages} from the Service Bus entity.
+     * This Flux continuously receives messages from a Service Bus entity until either:
+     *
+     * <ul>
+     *     <li>The receiver is closed.</li>
+     *     <li>The subscription to the Flux is disposed.</li>
+     *     <li>A terminal signal from a downstream subscriber is propagated upstream (ie. {@link Flux#take(long)} or
+     *     {@link Flux#take(Duration)}).</li>
+     *     <li>An {@link AmqpException} occurs that causes the receive link to stop.</li>
+     * </ul>
+     *
+     * @return An <b>infinite</b> stream of messages from the Service Bus entity.
+     */
+    Flux<ServiceBusMessageContext> receiveMessagesWithContext() {
+        return receiveMessagesWithContext(1);
+    }
+
+    Flux<ServiceBusMessageContext> receiveMessagesWithContext(int highTide) {
+        final Flux<ServiceBusMessageContext> messageFlux = sessionManager != null
+            ? sessionManager.receive()
+            : getOrCreateConsumer().receive().map(ServiceBusMessageContext::new);
+
+        final Flux<ServiceBusMessageContext> withAutoLockRenewal;
+        if (receiverOptions.isAutoLockRenewEnabled()) {
+            withAutoLockRenewal = new FluxAutoLockRenew(messageFlux, receiverOptions.getMaxLockRenewDuration(),
+                renewalContainer, this::renewMessageLock);
+        } else {
+            withAutoLockRenewal = messageFlux;
+        }
+
+        Flux<ServiceBusMessageContext> result;
+        if (receiverOptions.isEnableAutoComplete()) {
+            result = new FluxAutoComplete(withAutoLockRenewal, completionLock,
+                context -> context.getMessage() != null ? complete(context.getMessage()) : Mono.empty(),
+                context -> context.getMessage() != null ? abandon(context.getMessage()) : Mono.empty());
+        } else {
+            result = withAutoLockRenewal;
+        }
+
+        if (highTide > 0) {
+            result = result.limitRate(highTide, 0);
+        }
+        return result
+            .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RECEIVE));
     }
 
     /**
@@ -612,8 +685,15 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      *     message.
      *
      * @return A deferred message with the matching {@code sequenceNumber}.
+     *
+     * @throws IllegalStateException if receiver is already disposed.
+     * @throws ServiceBusException if deferred message cannot be received.
      */
     public Mono<ServiceBusReceivedMessage> receiveDeferredMessage(long sequenceNumber) {
+        if (isDisposed.get()) {
+            return monoError(logger, new IllegalStateException(
+                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "receiveDeferredMessage")));
+        }
         return receiveDeferredMessage(sequenceNumber, receiverOptions.getSessionId());
     }
 
@@ -626,8 +706,13 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @param sessionId Session id of the deferred message. {@code null} if there is no session.
      *
      * @return A deferred message with the matching {@code sequenceNumber}.
+     * @throws IllegalStateException if receiver is already disposed.
      */
-    public Mono<ServiceBusReceivedMessage> receiveDeferredMessage(long sequenceNumber, String sessionId) {
+    Mono<ServiceBusReceivedMessage> receiveDeferredMessage(long sequenceNumber, String sessionId) {
+        if (isDisposed.get()) {
+            return monoError(logger, new IllegalStateException(
+                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "receiveDeferredMessage")));
+        }
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMap(node -> node.receiveDeferredMessages(receiverOptions.getReceiveMode(),
@@ -636,7 +721,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 if (CoreUtils.isNullOrEmpty(receivedMessage.getLockToken())) {
                     return receivedMessage;
                 }
-                if (receiverOptions.getReceiveMode() == ReceiveMode.PEEK_LOCK) {
+                if (receiverOptions.getReceiveMode() == ServiceBusReceiveMode.PEEK_LOCK) {
                     receivedMessage.setLockedUntil(managementNodeLocks.addOrUpdate(receivedMessage.getLockToken(),
                         receivedMessage.getLockedUntil(),
                         receivedMessage.getLockedUntil()));
@@ -653,6 +738,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @param sequenceNumbers The sequence numbers of the deferred messages.
      *
      * @return A {@link Flux} of deferred {@link ServiceBusReceivedMessage messages}.
+     *
+     * @throws NullPointerException if {@code sequenceNumbers} is null.
+     * @throws IllegalStateException if receiver is already disposed.
+     * @throws ServiceBusException if deferred messages cannot be received.
      */
     public Flux<ServiceBusReceivedMessage> receiveDeferredMessages(Iterable<Long> sequenceNumbers) {
         return receiveDeferredMessages(sequenceNumbers, receiverOptions.getSessionId());
@@ -666,14 +755,13 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @param sessionId Session id of the deferred messages. {@code null} if there is no session.
      *
      * @return An {@link IterableStream} of deferred {@link ServiceBusReceivedMessage messages}.
+     * @throws IllegalStateException if receiver is already disposed.
      */
-    public Flux<ServiceBusReceivedMessage> receiveDeferredMessages(Iterable<Long> sequenceNumbers,
-        String sessionId) {
+    Flux<ServiceBusReceivedMessage> receiveDeferredMessages(Iterable<Long> sequenceNumbers, String sessionId) {
         if (isDisposed.get()) {
             return fluxError(logger, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "receiveDeferredMessageBatch")));
         }
-
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMapMany(node -> node.receiveDeferredMessages(receiverOptions.getReceiveMode(),
@@ -682,7 +770,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 if (CoreUtils.isNullOrEmpty(receivedMessage.getLockToken())) {
                     return receivedMessage;
                 }
-                if (receiverOptions.getReceiveMode() == ReceiveMode.PEEK_LOCK) {
+                if (receiverOptions.getReceiveMode() == ServiceBusReceiveMode.PEEK_LOCK) {
                     receivedMessage.setLockedUntil(managementNodeLocks.addOrUpdate(receivedMessage.getLockToken(),
                         receivedMessage.getLockedUntil(),
                         receivedMessage.getLockedUntil()));
@@ -694,18 +782,19 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
     /**
      * Asynchronously renews the lock on the message. The lock will be renewed based on the setting specified on the
-     * entity. When a message is received in {@link ReceiveMode#PEEK_LOCK} mode, the message is locked on the server for
-     * this receiver instance for a duration as specified during the entity creation (LockDuration). If processing of
-     * the message requires longer than this duration, the lock needs to be renewed. For each renewal, the lock is reset
-     * to the entity's LockDuration value.
+     * entity. When a message is received in {@link ServiceBusReceiveMode#PEEK_LOCK} mode, the message is locked on the
+     * server for this receiver instance for a duration as specified during the entity creation (LockDuration). If
+     * processing of the message requires longer than this duration, the lock needs to be renewed. For each renewal, the
+     * lock is reset to the entity's LockDuration value.
      *
      * @param message The {@link ServiceBusReceivedMessage} to perform auto-lock renewal.
      *
      * @return The new expiration time for the message.
+     *
      * @throws NullPointerException if {@code message} or {@code message.getLockToken()} is null.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
-     *     mode.
-     * @throws IllegalStateException if the receiver is a session receiver.
+     * @throws UnsupportedOperationException if the receiver was opened in
+     *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from peekMessage.
+     * @throws IllegalStateException if the receiver is a session receiver or receiver is already disposed.
      * @throws IllegalArgumentException if {@code message.getLockToken()} is an empty value.
      */
     public Mono<OffsetDateTime> renewMessageLock(ServiceBusReceivedMessage message) {
@@ -719,11 +808,12 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         } else if (message.getLockToken().isEmpty()) {
             return monoError(logger, new IllegalArgumentException("'message.getLockToken()' cannot be empty."));
         } else if (receiverOptions.isSessionReceiver()) {
-            return monoError(logger, new IllegalStateException(
-                String.format("Cannot renew message lock [%s] for a session receiver.", message.getLockToken())));
+            final String errorMessage = "Renewing message lock is an invalid operation when working with sessions.";
+            return monoError(logger, new IllegalStateException(errorMessage));
         }
 
-        return renewMessageLock(message.getLockToken());
+        return renewMessageLock(message.getLockToken())
+            .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RENEW_LOCK));
     }
 
     /**
@@ -733,9 +823,13 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @param lockToken to be renewed.
      *
      * @return The new expiration time for the message.
+     * @throws IllegalStateException if receiver is already disposed.
      */
     Mono<OffsetDateTime> renewMessageLock(String lockToken) {
-
+        if (isDisposed.get()) {
+            return monoError(logger, new IllegalStateException(
+                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "renewMessageLock")));
+        }
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMap(serviceBusManagementNode ->
@@ -750,11 +844,14 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @param message The {@link ServiceBusReceivedMessage} to perform this operation.
      * @param maxLockRenewalDuration Maximum duration to keep renewing the lock token.
      *
-     * @return A lock renewal operation for the message.
-     * @throws NullPointerException if {@code message}, {@code message.getLockToken()} or {@code
-     *     maxLockRenewalDuration} is null.
+     * @return A Mono that completes when the message renewal operation has completed up until
+     *      {@code maxLockRenewalDuration}.
+     *
+     * @throws NullPointerException if {@code message}, {@code message.getLockToken()}, or
+     *      {@code maxLockRenewalDuration} is null.
      * @throws IllegalStateException if the receiver is a session receiver or the receiver is disposed.
      * @throws IllegalArgumentException if {@code message.getLockToken()} is an empty value.
+     * @throws ServiceBusException If the message lock cannot be renewed.
      */
     public Mono<Void> renewMessageLock(ServiceBusReceivedMessage message, Duration maxLockRenewalDuration) {
         if (isDisposed.get()) {
@@ -780,104 +877,59 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         renewalContainer.addOrUpdate(message.getLockToken(), OffsetDateTime.now().plus(maxLockRenewalDuration),
             operation);
 
-        return operation.getCompletionOperation();
+        return operation.getCompletionOperation()
+            .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RENEW_LOCK));
     }
 
     /**
-     * Renews the session lock.
-     *
-     * @param sessionId Identifier of session to get.
+     * Renews the session lock if this receiver is a session receiver.
      *
      * @return The next expiration time for the session lock.
-     * @throws IllegalStateException if the receiver is a non-session receiver.
+     * @throws IllegalStateException if the receiver is a non-session receiver or if receiver is already disposed.
+     * @throws ServiceBusException if the session lock cannot be renewed.
      */
-    public Mono<OffsetDateTime> renewSessionLock(String sessionId) {
-        if (isDisposed.get()) {
-            return monoError(logger, new IllegalStateException(
-                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "renewSessionLock")));
-        } else if (!receiverOptions.isSessionReceiver()) {
-            return monoError(logger, new IllegalStateException("Cannot renew session lock on a non-session receiver."));
-        }
-
-        final String linkName = sessionManager != null
-            ? sessionManager.getLinkName(sessionId)
-            : null;
-
-        return connectionProcessor
-            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-            .flatMap(channel -> channel.renewSessionLock(sessionId, linkName));
+    public Mono<OffsetDateTime> renewSessionLock() {
+        return renewSessionLock(receiverOptions.getSessionId());
     }
 
     /**
-     * Starts the auto lock renewal for a session id.
+     * Starts the auto lock renewal for the session this receiver works for.
      *
-     * @param sessionId Id for the session to renew.
      * @param maxLockRenewalDuration Maximum duration to keep renewing the session lock.
      *
      * @return A lock renewal operation for the message.
-     * @throws NullPointerException if {@code sessionId} or {@code maxLockRenewalDuration} is null.
-     * @throws IllegalArgumentException if {@code sessionId} is an empty string.
+     *
+     * @throws NullPointerException if {@code maxLockRenewalDuration} is null.
      * @throws IllegalStateException if the receiver is a non-session receiver or the receiver is disposed.
+     * @throws ServiceBusException if the session lock renewal operation cannot be started.
      */
-    public Mono<Void> renewSessionLock(String sessionId, Duration maxLockRenewalDuration) {
-        if (isDisposed.get()) {
-            return monoError(logger, new IllegalStateException(
-                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "getAutoRenewSessionLock")));
-        } else if (!receiverOptions.isSessionReceiver()) {
-            return monoError(logger, new IllegalStateException(
-                "Cannot renew session lock on a non-session receiver."));
-        } else if (maxLockRenewalDuration == null) {
-            return monoError(logger, new NullPointerException("'maxLockRenewalDuration' cannot be null."));
-        } else if (maxLockRenewalDuration.isNegative()) {
-            return monoError(logger, new IllegalArgumentException(
-                "'maxLockRenewalDuration' cannot be negative."));
-        } else if (Objects.isNull(sessionId)) {
-            return monoError(logger, new NullPointerException("'sessionId' cannot be null."));
-        } else if (sessionId.isEmpty()) {
-            return monoError(logger, new IllegalArgumentException("'sessionId' cannot be empty."));
-        }
-
-        final LockRenewalOperation operation = new LockRenewalOperation(sessionId, maxLockRenewalDuration, true,
-            this::renewSessionLock);
-
-        renewalContainer.addOrUpdate(sessionId, OffsetDateTime.now().plus(maxLockRenewalDuration), operation);
-        return operation.getCompletionOperation();
+    public Mono<Void> renewSessionLock(Duration maxLockRenewalDuration) {
+        return this.renewSessionLock(receiverOptions.getSessionId(), maxLockRenewalDuration);
     }
 
     /**
-     * Sets the state of a session given its identifier.
+     * Sets the state of the session this receiver works for.
      *
-     * @param sessionId Identifier of session to get.
      * @param sessionState State to set on the session.
      *
      * @return A Mono that completes when the session is set
-     * @throws IllegalStateException if the receiver is a non-session receiver.
+     * @throws IllegalStateException if the receiver is a non-session receiver or receiver is already disposed.
+     * @throws ServiceBusException if the session state cannot be set.
      */
-    public Mono<Void> setSessionState(String sessionId, byte[] sessionState) {
-        if (isDisposed.get()) {
-            return monoError(logger, new IllegalStateException(
-                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "setSessionState")));
-        } else if (!receiverOptions.isSessionReceiver()) {
-            return monoError(logger, new IllegalStateException("Cannot set session state on a non-session receiver."));
-        }
-
-        final String linkName = sessionManager != null
-            ? sessionManager.getLinkName(sessionId)
-            : null;
-
-        return connectionProcessor
-            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-            .flatMap(channel -> channel.setSessionState(sessionId, sessionState, linkName));
+    public Mono<Void> setSessionState(byte[] sessionState) {
+        return this.setSessionState(receiverOptions.getSessionId(), sessionState);
     }
 
     /**
-     * Starts a new service side transaction. The {@link ServiceBusTransactionContext} should be passed to all
-     * operations that needs to be in this transaction.
+     * Starts a new service side transaction. The {@link ServiceBusTransactionContext transaction context} should be
+     * passed to all operations that needs to be in this transaction.
      *
-     * <p><strong>Create a transaction</strong></p>
-     * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.createTransaction}
+     * <p><strong>Creating and using a transaction</strong></p>
+     * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverasyncclient.committransaction#servicebustransactioncontext}
      *
      * @return The {@link Mono} that finishes this operation on service bus resource.
+     * @throws IllegalStateException if receiver is already disposed.
+     * @throws ServiceBusException if a transaction cannot be created.
      */
     public Mono<ServiceBusTransactionContext> createTransaction() {
         if (isDisposed.get()) {
@@ -892,15 +944,18 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Commits the transaction given {@link ServiceBusTransactionContext}. This will make a call to Service Bus.
-     * <p><strong>Commit a transaction</strong></p>
-     * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.commitTransaction}
+     * Commits the transaction and all the operations associated with it.
      *
-     * @param transactionContext to be committed.
+     * <p><strong>Creating and using a transaction</strong></p>
+     * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverasyncclient.committransaction#servicebustransactioncontext}
+     *
+     * @param transactionContext The transaction to be commit.
      *
      * @return The {@link Mono} that finishes this operation on service bus resource.
-     * @throws NullPointerException if {@code transactionContext} or {@code transactionContext.transactionId} is
-     *     null.
+     *
+     * @throws NullPointerException if {@code transactionContext} or {@code transactionContext.transactionId} is null.
+     * @throws IllegalStateException if receiver is already disposed.
+     * @throws ServiceBusException if the transaction could not be committed.
      */
     public Mono<Void> commitTransaction(ServiceBusTransactionContext transactionContext) {
         if (isDisposed.get()) {
@@ -920,15 +975,17 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Rollbacks the transaction given {@link ServiceBusTransactionContext}. This will make a call to Service Bus.
-     * <p><strong>Rollback a transaction</strong></p>
-     * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.rollbackTransaction}
+     * Rollbacks the transaction given and all operations associated with it.
      *
-     * @param transactionContext to be rollbacked.
+     * <p><strong>Creating and using a transaction</strong></p>
+     * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverasyncclient.committransaction#servicebustransactioncontext}
+     *
+     * @param transactionContext The transaction to rollback.
      *
      * @return The {@link Mono} that finishes this operation on service bus resource.
-     * @throws NullPointerException if {@code transactionContext} or {@code transactionContext.transactionId} is
-     *     null.
+     * @throws NullPointerException if {@code transactionContext} or {@code transactionContext.transactionId} is null.
+     * @throws IllegalStateException if receiver is already disposed.
+     * @throws ServiceBusException if the transaction could not be rolled back.
      */
     public Mono<Void> rollbackTransaction(ServiceBusTransactionContext transactionContext) {
         if (isDisposed.get()) {
@@ -948,14 +1005,25 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Disposes of the consumer by closing the underlying connection to the service.
+     * Disposes of the consumer by closing the underlying links to the service.
      */
     @Override
     public void close() {
+        if (isDisposed.get()) {
+            return;
+        }
+
+        try {
+            completionLock.acquire();
+        } catch (InterruptedException e) {
+            logger.info("Unable to obtain completion lock.", e);
+        }
+
         if (isDisposed.getAndSet(true)) {
             return;
         }
 
+        // Blocking until the last message has been completed.
         logger.info("Removing receiver links.");
         final ServiceBusAsyncConsumer disposed = consumer.getAndSet(null);
         if (disposed != null) {
@@ -1003,9 +1071,19 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         final String lockToken = message.getLockToken();
         final String sessionId = message.getSessionId();
 
-        if (receiverOptions.getReceiveMode() != ReceiveMode.PEEK_LOCK) {
+        if (receiverOptions.getReceiveMode() != ServiceBusReceiveMode.PEEK_LOCK) {
             return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format(
                 "'%s' is not supported on a receiver opened in ReceiveMode.RECEIVE_AND_DELETE.", dispositionStatus))));
+        } else if (message.isSettled()) {
+            return Mono.error(logger.logExceptionAsError(
+                new IllegalArgumentException("The message has either been deleted or already settled.")));
+        } else if (message.getLockToken() == null) {
+            // message must be a peeked message (or somehow they created a message w/o a lock token)
+            final String errorMessage = "This operation is not supported for peeked messages. "
+                + "Only messages received using receiveMessages() in PEEK_LOCK mode can be settled.";
+            return Mono.error(
+                logger.logExceptionAsError(new UnsupportedOperationException(errorMessage))
+            );
         }
 
         final String sessionIdToUse;
@@ -1015,7 +1093,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             sessionIdToUse = sessionId;
         }
 
-        logger.info("{}: Update started. Disposition: {}. Lock: {}. SessionId {}.", entityPath, dispositionStatus,
+        logger.verbose("{}: Update started. Disposition: {}. Lock: {}. SessionId: {}.", entityPath, dispositionStatus,
             lockToken, sessionIdToUse);
 
         // This operation is not kicked off until it is subscribed to.
@@ -1027,15 +1105,18 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 logger.info("{}: Management node Update completed. Disposition: {}. Lock: {}.",
                     entityPath, dispositionStatus, lockToken);
 
+                message.setIsSettled();
                 managementNodeLocks.remove(lockToken);
                 renewalContainer.remove(lockToken);
             }));
 
+        Mono<Void> updateDispositionOperation;
         if (sessionManager != null) {
-            return sessionManager.updateDisposition(lockToken, sessionId, dispositionStatus, propertiesToModify,
-                deadLetterReason, deadLetterErrorDescription, transactionContext)
+            updateDispositionOperation = sessionManager.updateDisposition(lockToken, sessionId, dispositionStatus,
+                propertiesToModify, deadLetterReason, deadLetterErrorDescription, transactionContext)
                 .flatMap(isSuccess -> {
                     if (isSuccess) {
+                        message.setIsSettled();
                         renewalContainer.remove(lockToken);
                         return Mono.empty();
                     }
@@ -1043,20 +1124,38 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                     logger.info("Could not perform on session manger. Performing on management node.");
                     return performOnManagement;
                 });
+        } else {
+            final ServiceBusAsyncConsumer existingConsumer = consumer.get();
+            if (isManagementToken(lockToken) || existingConsumer == null) {
+                updateDispositionOperation = performOnManagement;
+            } else {
+                updateDispositionOperation = existingConsumer.updateDisposition(lockToken, dispositionStatus,
+                    deadLetterReason, deadLetterErrorDescription, propertiesToModify, transactionContext)
+                    .then(Mono.fromRunnable(() -> {
+                        logger.verbose("{}: Update completed. Disposition: {}. Lock: {}.",
+                            entityPath, dispositionStatus, lockToken);
+
+                        message.setIsSettled();
+                        renewalContainer.remove(lockToken);
+                    }));
+            }
         }
 
-        final ServiceBusAsyncConsumer existingConsumer = consumer.get();
-        if (isManagementToken(lockToken) || existingConsumer == null) {
-            return performOnManagement;
-        } else {
-            return existingConsumer.updateDisposition(lockToken, dispositionStatus, deadLetterReason,
-                deadLetterErrorDescription, propertiesToModify, transactionContext)
-                .then(Mono.fromRunnable(() -> {
-                    logger.info("{}: Update completed. Disposition: {}. Lock: {}.",
-                        entityPath, dispositionStatus, lockToken);
-                    renewalContainer.remove(lockToken);
-                }));
-        }
+        return updateDispositionOperation
+            .onErrorMap(throwable -> {
+                if (throwable instanceof ServiceBusException) {
+                    return throwable;
+                }
+
+                switch (dispositionStatus) {
+                    case COMPLETED:
+                        return new ServiceBusException(throwable, ServiceBusErrorSource.COMPLETE);
+                    case ABANDONED:
+                        return new ServiceBusException(throwable, ServiceBusErrorSource.ABANDON);
+                    default:
+                        return new ServiceBusException(throwable, ServiceBusErrorSource.UNKNOWN);
+                }
+            });
     }
 
     private ServiceBusAsyncConsumer getOrCreateConsumer() {
@@ -1118,5 +1217,99 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             final ServiceBusAsyncConsumer existing = consumer.get();
             return existing != null ? existing.getLinkName() : null;
         }
+    }
+
+    Mono<OffsetDateTime> renewSessionLock(String sessionId) {
+        if (isDisposed.get()) {
+            return monoError(logger, new IllegalStateException(
+                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "renewSessionLock")));
+        } else if (!receiverOptions.isSessionReceiver()) {
+            return monoError(logger, new IllegalStateException("Cannot renew session lock on a non-session receiver."));
+        }
+        final String linkName = sessionManager != null
+            ? sessionManager.getLinkName(sessionId)
+            : null;
+
+        return connectionProcessor
+            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
+            .flatMap(channel -> channel.renewSessionLock(sessionId, linkName))
+            .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RENEW_LOCK));
+    }
+
+    Mono<Void> renewSessionLock(String sessionId, Duration maxLockRenewalDuration) {
+        if (isDisposed.get()) {
+            return monoError(logger, new IllegalStateException(
+                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "renewSessionLock")));
+        } else if (!receiverOptions.isSessionReceiver()) {
+            return monoError(logger, new IllegalStateException(
+                "Cannot renew session lock on a non-session receiver."));
+        } else if (maxLockRenewalDuration == null) {
+            return monoError(logger, new NullPointerException("'maxLockRenewalDuration' cannot be null."));
+        } else if (maxLockRenewalDuration.isNegative()) {
+            return monoError(logger, new IllegalArgumentException(
+                "'maxLockRenewalDuration' cannot be negative."));
+        } else if (Objects.isNull(sessionId)) {
+            return monoError(logger, new NullPointerException("'sessionId' cannot be null."));
+        } else if (sessionId.isEmpty()) {
+            return monoError(logger, new IllegalArgumentException("'sessionId' cannot be empty."));
+        }
+        final LockRenewalOperation operation = new LockRenewalOperation(sessionId,
+            maxLockRenewalDuration, true, this::renewSessionLock);
+
+        renewalContainer.addOrUpdate(sessionId, OffsetDateTime.now().plus(maxLockRenewalDuration), operation);
+        return operation.getCompletionOperation()
+            .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RENEW_LOCK));
+    }
+
+    Mono<Void> setSessionState(String sessionId, byte[] sessionState) {
+        if (isDisposed.get()) {
+            return monoError(logger, new IllegalStateException(
+                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "setSessionState")));
+        } else if (!receiverOptions.isSessionReceiver()) {
+            return monoError(logger, new IllegalStateException("Cannot set session state on a non-session receiver."));
+        }
+        final String linkName = sessionManager != null
+            ? sessionManager.getLinkName(sessionId)
+            : null;
+
+        return connectionProcessor
+            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
+            .flatMap(channel -> channel.setSessionState(sessionId, sessionState, linkName))
+            .onErrorMap((err) -> mapError(err, ServiceBusErrorSource.RECEIVE));
+    }
+
+    Mono<byte[]> getSessionState(String sessionId) {
+        if (isDisposed.get()) {
+            return monoError(logger, new IllegalStateException(
+                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "getSessionState")));
+        } else if (!receiverOptions.isSessionReceiver()) {
+            return monoError(logger, new IllegalStateException("Cannot get session state on a non-session receiver."));
+        }
+
+        Mono<byte[]> result;
+
+        if (sessionManager != null) {
+            result = sessionManager.getSessionState(sessionId);
+        } else {
+            result = connectionProcessor
+                .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
+                .flatMap(channel -> channel.getSessionState(sessionId, getLinkName(sessionId)));
+        }
+
+        return result.onErrorMap((err) -> mapError(err, ServiceBusErrorSource.RECEIVE));
+    }
+
+    /**
+     * Map the error to {@link ServiceBusException}
+     */
+    private Throwable mapError(Throwable throwable, ServiceBusErrorSource errorSource) {
+        if (!(throwable instanceof ServiceBusException)) {
+            return new ServiceBusException(throwable, errorSource);
+        }
+        return throwable;
+    }
+
+    boolean isConnectionClosed() {
+        return this.connectionProcessor.isChannelClosed();
     }
 }

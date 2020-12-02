@@ -6,7 +6,7 @@
 ###########
 
 # Catch all
-/sdk/                                               @joshfree @jonathangiles @srnagar @hemanttanwar @anuchandy @conniey @jianghaolu @bsiegel
+/sdk/                                               @joshfree @srnagar @hemanttanwar @anuchandy @conniey @jianghaolu @bsiegel
 
 # BOM
 # PRLabel: %Azure.Core
@@ -26,7 +26,7 @@
 /sdk/batch/                                         @xingwu1 @bgklein @matthchr
 
 # PRLabel: %Communication
-/sdk/communication/                                 @RezaJooyandeh @JianpingChen @ankitarorabit @Azure/azure-sdk-communication-code-reviewers
+/sdk/communication/                                 @RezaJooyandeh @JianpingChen @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
 
 # PRLabel: %Azure.Core
 /sdk/core/                                          @alzimmermsft @jianghaolu @srnagar @hemanttanwar @anuchandy
@@ -35,7 +35,7 @@
 /sdk/core/azure-core-tracing-opentelemetry/         @samvaity @alzimmermsft
 
 # PRLabel: %Cosmos
-/sdk/cosmos/                                        @moderakh @kushagraThapar @David-Noble-at-work @kirankumarkolli @mbhaskar @simplynaveen20 @xinlian12 @milismsft
+/sdk/cosmos/                                        @moderakh @kushagraThapar @FabianMeiswinkel @kirankumarkolli @mbhaskar @simplynaveen20 @xinlian12 @milismsft
 # PRLabel: %azure-spring
 /sdk/cosmos/azure-spring-data-cosmos/               @kushagraThapar @saragluna @yiliuTo @chenrujun @backwind1233 @jialindai @mbhaskar
 # PRLabel: %azure-spring
@@ -61,8 +61,12 @@
 
 # PRLabel: %KeyVault
 /sdk/keyvault/                                      @g2vinay @vcolin7 @samvaity
+# PRLabel: %azure-spring
+/sdk/keyvault/azure-security-keyvault-jca           @saragluna @yiliuTo @chenrujun @backwind1233 @jialindai @mnriem
 
 /sdk/loganalytics/microsoft-azure-loganalytics/     @divya-jay @geneh @alongafni
+
+/sdk/monitor/microsoft-opentelemetry-exporter-azuremonitor    @trask @joshfree @srnagar
 
 # PRLabel: %Schema Registry
 /sdk/schemaregistry/                                @arerlend @sjkwak
@@ -84,6 +88,10 @@
 
 # PRLabel: %azure-spring
 /sdk/spring/                                        @saragluna @yiliuTo @chenrujun @backwind1233 @jialindai
+# PRLabel: %azure-spring
+/sdk/spring/azure-spring-boot-starter-keyvault-certificates    @saragluna @yiliuTo @chenrujun @backwind1233 @jialindai @mnriem
+# PRLabel: %azure-spring
+/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-keyvault-certificates          @saragluna @yiliuTo @chenrujun @backwind1233 @jialindai @mnriem
 
 # end to end tests
 # PRLabel: %Azure.Identity

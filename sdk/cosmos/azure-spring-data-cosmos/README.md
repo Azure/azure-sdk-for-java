@@ -78,10 +78,10 @@ If you are using Maven, add the following dependency.
 - Java Development Kit 8
 - An active Azure account. If you don't have one, you can sign up for a [free account][azure_subscription]. Alternatively, you can use the [Azure Cosmos DB Emulator][local_emulator] for development and testing. As emulator https certificate is self signed, you need to import its certificate to java trusted cert store, [explained here][local_emulator_export_ssl_certificates]
 - (Optional) SLF4J is a logging facade.
-- (Optional) [SLF4J binding](http://www.slf4j.org/manual.html) is used to associate a specific logging framework with SLF4J.
+- (Optional) [SLF4J binding](https://www.slf4j.org/manual.html) is used to associate a specific logging framework with SLF4J.
 - (Optional) Maven
 
-SLF4J is only needed if you plan to use logging, please also download an SLF4J binding which will link the SLF4J API with the logging implementation of your choice. See the [SLF4J user manual](http://www.slf4j.org/manual.html) for more information.
+SLF4J is only needed if you plan to use logging, please also download an SLF4J binding which will link the SLF4J API with the logging implementation of your choice. See the [SLF4J user manual](https://www.slf4j.org/manual.html) for more information.
 
 ### Setup Configuration Class
 - In order to set up configuration class, you'll need to extend `AbstractCosmosConfiguration`
@@ -297,7 +297,7 @@ Azure spring data cosmos supports specifying annotated queries in the repositori
 ```java
 public interface AnnotatedQueriesUserRepositoryCodeSnippet extends CosmosRepository<User, String> {
     @Query(value = "select * from c where c.firstName = @firstName and c.lastName = @lastName")
-    List<User> getUsersByTitleAndValue(@Param("firstName") int firstName, @Param("lastName") String lastName);
+    List<User> getUsersByFirstNameAndLastName(@Param("firstName") String firstName, @Param("lastName") String lastName);
 
     @Query(value = "select * from c offset @offset limit @limit")
     List<User> getUsersWithOffsetLimit(@Param("offset") int offset, @Param("limit") int limit);
@@ -515,7 +515,7 @@ azure.cosmos.secondary.populateQueryMetrics=if-populate-query-metrics
 - The `@EnableReactiveCosmosRepositories` or `@EnableCosmosRepositories` support user-define the cosmos template, use `reactiveCosmosTemplateRef` or `cosmosTemplateRef` to config the name of the `ReactiveCosmosTemplate` or `CosmosTemplate` bean to be used with the repositories detected.
 - If you have multiple cosmos database accounts, you can define multiple `CosmosAsyncClient`. If the single cosmos account has multiple databases, you can use the same `CosmosAsyncClient` to initialize the cosmos template.
 
-<!-- embedme src/samples/java/com/azure/spring/data/cosmos/multidatasource/PrimaryDatabaseConfiguration.java#L23-L62 -->
+<!-- embedme src/samples/java/com/azure/spring/data/cosmos/multidatasource/PrimaryDatasourceConfiguration.java#L23-L62 -->
 ```java
 @Configuration
 public class PrimaryDatasourceConfiguration {
@@ -559,7 +559,7 @@ public class PrimaryDatasourceConfiguration {
 }
 ```
 
-<!-- embedme src/samples/java/com/azure/spring/data/cosmos/multidatasource/SecondaryDatabaseConfiguration.java#L28-L84 -->
+<!-- embedme src/samples/java/com/azure/spring/data/cosmos/multidatasource/SecondaryDatasourceConfiguration.java#L28-L84 -->
 ```java
 @Configuration
 public class SecondaryDatasourceConfiguration {
@@ -622,7 +622,7 @@ public class SecondaryDatasourceConfiguration {
 
 - In the above example, we have two cosmos account, each account has two databases. For each account, we can use the same Cosmos Client. You can create the `CosmosAsyncClient` like this:
 
-<!-- embedme src/samples/java/com/azure/spring/data/cosmos/multidatasource/SecondaryDatabaseConfiguration.java#L41-L56 -->
+<!-- embedme src/samples/java/com/azure/spring/data/cosmos/multidatasource/SecondaryDatasourceConfiguration.java#L41-L56 -->
 ```java
 @Bean("secondaryCosmosClient")
 public CosmosAsyncClient getCosmosAsyncClient(@Qualifier("secondary") CosmosProperties secondaryProperties) {
@@ -630,11 +630,21 @@ public CosmosAsyncClient getCosmosAsyncClient(@Qualifier("secondary") CosmosProp
         .key(secondaryProperties.getKey())
         .endpoint(secondaryProperties.getUri()));
 }
+
+@Bean("secondaryCosmosConfig")
+public CosmosConfig getCosmosConfig() {
+    return CosmosConfig.builder()
+        .enableQueryMetrics(true)
+        .responseDiagnosticsProcessor(new ResponseDiagnosticsProcessorImplementation())
+        .build();
+}
+
+@EnableCosmosRepositories(basePackages = "com.azure.cosmos.multidatasource.secondary.database3",
 ```
 
 - Besides, if you want to define `queryMetricsEnabled` or `ResponseDiagnosticsProcessor` , you can create the `CosmosConfig` for your cosmos template.
 
-<!-- embedme src/samples/java/com/azure/spring/data/cosmos/multidatasource/SecondaryDatabaseConfiguration.java#L48-L54-->
+<!-- embedme src/samples/java/com/azure/spring/data/cosmos/multidatasource/SecondaryDatasourceConfiguration.java#L48-L54-->
 ```java
 @Bean("secondaryCosmosConfig")
 public CosmosConfig getCosmosConfig() {

@@ -35,19 +35,25 @@ parameters:
       JavaTestVersion: '1.11'
       DisplayName: 'Windows - Java 11'
       AZURE_TEST_HTTP_CLIENTS: okhttp
+    Linux From Source - Java 11:
+      OSVmImage: 'ubuntu-18.04'
+      JavaTestVersion: '1.11'
+      RunTitle: 'From Source: Linux on Java 1.11'
+      AZURE_TEST_HTTP_CLIENTS: netty
+      TestFromSource: true
   PreRunSteps: []
   PostRunSteps: []
   TestName: LiveTest
   TestCanary: false
   TimeoutInMinutes: 60
   TestStepMavenInputs:
-    options: '-Dmaven.wagon.http.pool=false -DtrimStackTrace=false $(DefaultOptions) -pl $(ProjectList)'
+    options: '$(DefaultOptions) -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -DtrimStackTrace=false -pl $(ProjectList)'
     mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '$(JavaTestVersion)'
     jdkArchitectureOption: 'x64'
     publishJUnitResults: false
-    goals: 'test'
+    goals: 'verify'
   TestResultsFiles: ''
   SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
   ResourceGroupLocationCanary: "centraluseuap"
@@ -69,15 +75,15 @@ jobs:
         value: ${{ parameters.Location }}
 
     strategy:
-      matrix: 
+      matrix:
         ${{ insert }}: ${{ parameters.Matrix }}
-        ${{ if eq(parameters.TestCanary, 'true') }}:          
-          Linux - Java 11 (AzureCloudCanary):            
+        ${{ if eq(parameters.TestCanary, 'true') }}:
+          Linux - Java 11 (AzureCloudCanary):
             OSVmImage: 'ubuntu-18.04'
             JavaTestVersion: '1.11'
-            DisplayName: 'Linux - Java 11'          
-            SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)            
-            Location: ${{ parameters.ResourceGroupLocationCanary }}            
+            DisplayName: 'Linux - Java 11'
+            SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)
+            Location: ${{ parameters.ResourceGroupLocationCanary }}
             AZURE_TEST_HTTP_CLIENTS: netty
       maxParallel: ${{ parameters.MaxParallel }}
 
@@ -103,16 +109,36 @@ jobs:
         parameters:
           Artifacts: ${{parameters.Artifacts}}
           AdditionalModules: ${{parameters.AdditionalModules}}
+      
+      - task: UsePythonVersion@0
+        displayName: 'Use Python 3.6'
+        inputs:
+          versionSpec: '3.6'
+        condition: and(succeeded(), eq(variables['TestFromSource'],'true'))
+
+      - task: PythonScript@0
+        displayName: 'Set versions for source build'
+        inputs:
+          scriptPath: 'eng/versioning/set_versions.py'
+          arguments: '--build-type client --pst'
+        condition: and(succeeded(), eq(variables['TestFromSource'],'true'))
+
+      - task: PythonScript@0
+        displayName: 'Update versions for source build'
+        inputs:
+          scriptPath: 'eng/versioning/update_versions.py'
+          arguments: '--update-type library --build-type client --sr'
+        condition: and(succeeded(), eq(variables['ShouldRunSourceTests'],'true'))
 
       - task: Maven@3
-        displayName: 'Build and Install, JDK Version: $(JavaBuildVersion)'
+        displayName: 'Build and Install, JDK Version: $(JavaTestVersion)'
         inputs:
           mavenPomFile: pom.xml
           goals: 'install'
-          options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
+          options: '$(DefaultOptions) -T 1C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
-          jdkVersionOption: $(JavaBuildVersion)
+          jdkVersionOption: $(JavaTestVersion)
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
 
@@ -131,6 +157,7 @@ jobs:
             ServiceDirectory: '${{ parameters.ServiceDirectory }}'
             SubscriptionConfiguration: $(SubscriptionConfiguration)
 
+      - template: ../steps/upload-repository-on-failure.yml
 
       - task: PublishTestResults@2
         condition: always()

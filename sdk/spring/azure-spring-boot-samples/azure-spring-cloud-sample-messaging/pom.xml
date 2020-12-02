@@ -12,7 +12,7 @@
   <artifactId>azure-spring-cloud-sample-messaging</artifactId>
   <groupId>com.azure.spring</groupId>
   <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-sample-messaging;current} -->
-  <name>Azure Spring Cloud Messaging Sample</name>
+  <name>Azure Spring Cloud Sample Messaging</name>
 
   <dependencyManagement>
     <dependencies>
@@ -30,7 +30,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-starter-eventhubs</artifactId>
-      <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-starter-eventhubs;current} -->
+      <version>2.0.0-beta.2</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-starter-eventhubs;current} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>

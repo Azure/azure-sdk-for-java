@@ -93,4 +93,16 @@ public class ContentTypeDetectionTest {
         Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(sourceFile.toPath())));
         assertThrows(RuntimeException.class, () -> detectContentType(buffer).block());
     }
+
+    /**
+     * Test for BMP file content type detection for {@link Utility#detectContentType} method.
+     *
+     * @throws IOException if an I/O error occurs reading from the stream
+     */
+    @Test
+    public void bmpContentDetectionTest() throws IOException {
+        File sourceFile = new File("src/test/resources/sample_files/Test/sample_bmp.bmp");
+        Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(Files.readAllBytes(sourceFile.toPath())));
+        assertEquals(ContentType.IMAGE_BMP, detectContentType(buffer).block());
+    }
 }

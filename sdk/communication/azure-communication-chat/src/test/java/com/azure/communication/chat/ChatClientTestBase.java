@@ -11,16 +11,12 @@ import com.azure.communication.chat.models.ErrorException;
 import com.azure.communication.chat.models.*;
 import com.azure.communication.common.CommunicationUserCredential;
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.policy.FixedDelay;
-import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 
-
-import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -41,10 +37,8 @@ public class ChatClientTestBase extends TestBase {
     protected static final String ENDPOINT = Configuration.getGlobalConfiguration()
         .get("CHAT_SERVICE_ENDPOINT", "https://playback.chat.azurefd.net");
 
-    protected static final String CONNSTRING = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_SERVICES_CONNECTION_STRING", "pw==");
-
-    protected static final FixedDelay RETRY_STRATEGY = new FixedDelay(3, Duration.ofMillis(1000));
+    protected static final String ACCESS_KEY = Configuration.getGlobalConfiguration()
+        .get("COMMUNICATION_SERVICES_ACCESS_KEY", "pw==");
 
     protected ChatClientBuilder getChatClientBuilder(String token, HttpClient httpClient) {
         ChatClientBuilder builder = new ChatClientBuilder();
@@ -60,10 +54,7 @@ public class ChatClientTestBase extends TestBase {
             builder.credential(new CommunicationUserCredential(token));
         }
 
-        if (interceptorManager.isLiveMode()) {
-            builder.addPolicy(new RetryPolicy(RETRY_STRATEGY));
-        }
-        else {
+        if (getTestMode() == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
@@ -73,7 +64,7 @@ public class ChatClientTestBase extends TestBase {
     protected CommunicationIdentityClientBuilder getCommunicationIdentityClientBuilder(HttpClient httpClient) {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
         builder.endpoint(ENDPOINT)
-            .accessKey(CONNSTRING)
+            .accessKey(ACCESS_KEY)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.RECORD) {

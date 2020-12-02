@@ -12,6 +12,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
@@ -138,6 +139,19 @@ public class BlobClientBase {
     }
 
     /**
+     * Gets a client pointing to the parent container.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.getContainerClient}
+     *
+     * @return {@link BlobContainerClient}
+     */
+    public BlobContainerClient getContainerClient() {
+        return client.getContainerClientBuilder().buildClient();
+    }
+
+    /**
      * Decodes and gets the blob name.
      *
      * <p><strong>Code Samples</strong></p>
@@ -247,11 +261,21 @@ public class BlobClientBase {
      */
     public BlobInputStream openInputStream(BlobInputStreamOptions options) {
         options = options == null ? new BlobInputStreamOptions() : options;
+
+        BlobProperties properties = getProperties();
+
         BlobRange range = options.getRange() == null ? new BlobRange(0) : options.getRange();
         int chunkSize = options.getBlockSize() == null ? 4 * Constants.MB : options.getBlockSize();
 
+        BlobRequestConditions requestConditions = options.getRequestConditions() == null
+            ? new BlobRequestConditions() : options.getRequestConditions();
+        // Target the user specified version by default. If not provided, target the latest version.
+        if (requestConditions.getIfMatch() == null) {
+            requestConditions.setIfMatch(properties.getETag());
+        }
+
         return new BlobInputStream(client, range.getOffset(), range.getCount(), chunkSize,
-            options.getRequestConditions(), getProperties());
+            requestConditions, properties);
     }
 
     /**
@@ -673,7 +697,7 @@ public class BlobClientBase {
         return downloadToFileWithResponse(new BlobDownloadToFileOptions(filePath).setRange(range)
             .setParallelTransferOptions(finalParallelTransferOptions)
             .setDownloadRetryOptions(downloadRetryOptions).setRequestConditions(requestConditions)
-            .setRangeGetContentMd5(rangeGetContentMd5).setOpenOptions(openOptions), timeout, context);
+            .setRetrieveContentRangeMd5(rangeGetContentMd5).setOpenOptions(openOptions), timeout, context);
     }
 
     /**

@@ -24,7 +24,7 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  * @see ServiceBusAdministrationAsyncClient#createTopic(String, CreateTopicOptions)
  * @see ServiceBusAdministrationClient#createTopic(String, CreateTopicOptions)
  */
-public class CreateTopicOptions {
+public final class CreateTopicOptions {
     private final List<AuthorizationRule> authorizationRules;
 
     private Duration autoDeleteOnIdle;
@@ -49,12 +49,12 @@ public class CreateTopicOptions {
      *     <li>{@link #setDefaultMessageTimeToLive(Duration)} is max duration value.</li>
      *     <li>{@link #setDuplicateDetectionHistoryTimeWindow(Duration)} is max duration value, but duplication
      *     detection is disabled.</li>
-     *     <li>{@link #setRequiresDuplicateDetection(boolean)} is false.</li>
-     *     <li>{@link #setEnableBatchedOperations(boolean)} is true.</li>
+     *     <li>{@link #setDuplicateDetectionRequired(boolean)} is false.</li>
+     *     <li>{@link #setBatchedOperationsEnabled(boolean)} (boolean)} is true.</li>
      *     <li>{@link #setLockDuration(Duration)} is 1 minute.</li>
      *     <li>{@link #setMaxDeliveryCount(int)} is 10.</li>
      *     <li>{@link #setMaxSizeInMegabytes(long)} is 1024MB.</li>
-     *     <li>{@link #setRequiresSession(boolean)} is false.</li>
+     *     <li>{@link #setSessionRequired(boolean)} is false.</li>
      *     <li>{@link #setStatus(EntityStatus)} is {@link EntityStatus#ACTIVE}.</li>
      * </ul>
      *
@@ -89,11 +89,11 @@ public class CreateTopicOptions {
         this.autoDeleteOnIdle = topic.getAutoDeleteOnIdle();
         this.defaultMessageTimeToLive = topic.getDefaultMessageTimeToLive();
         this.duplicateDetectionHistoryTimeWindow = topic.getDuplicateDetectionHistoryTimeWindow();
-        this.enableBatchedOperations = topic.enableBatchedOperations();
-        this.enablePartitioning = topic.enablePartitioning();
+        this.enableBatchedOperations = topic.isBatchedOperationsEnabled();
+        this.enablePartitioning = topic.isPartitioningEnabled();
         this.maxSizeInMegabytes = topic.getMaxSizeInMegabytes();
-        this.requiresDuplicateDetection = topic.requiresDuplicateDetection();
-        this.supportOrdering = topic.supportOrdering();
+        this.requiresDuplicateDetection = topic.isDuplicateDetectionRequired();
+        this.supportOrdering = topic.isOrderingSupported();
         this.status = topic.getStatus();
         this.userMetadata = topic.getUserMetadata();
     }
@@ -184,7 +184,7 @@ public class CreateTopicOptions {
      *
      * @return the enableBatchedOperations value.
      */
-    public Boolean enableBatchedOperations() {
+    public Boolean isBatchedOperationsEnabled() {
         return this.enableBatchedOperations;
     }
 
@@ -196,7 +196,7 @@ public class CreateTopicOptions {
      *
      * @return the CreateTopicOptions object itself.
      */
-    public CreateTopicOptions setEnableBatchedOperations(boolean enableBatchedOperations) {
+    public CreateTopicOptions setBatchedOperationsEnabled(boolean enableBatchedOperations) {
         this.enableBatchedOperations = enableBatchedOperations;
         return this;
     }
@@ -207,7 +207,7 @@ public class CreateTopicOptions {
      *
      * @return the enablePartitioning value.
      */
-    public Boolean enablePartitioning() {
+    public Boolean isPartitioningEnabled() {
         return this.enablePartitioning;
     }
 
@@ -219,7 +219,7 @@ public class CreateTopicOptions {
      *
      * @return the CreateTopicOptions object itself.
      */
-    public CreateTopicOptions setEnablePartitioning(boolean enablePartitioning) {
+    public CreateTopicOptions setPartitioningEnabled(boolean enablePartitioning) {
         this.enablePartitioning = enablePartitioning;
         return this;
     }
@@ -263,7 +263,7 @@ public class CreateTopicOptions {
      *
      * @return the CreateTopicOptions object itself.
      */
-    public CreateTopicOptions setSupportOrdering(boolean supportOrdering) {
+    public CreateTopicOptions setOrderingSupported(boolean supportOrdering) {
         this.supportOrdering = supportOrdering;
         return this;
     }
@@ -344,7 +344,7 @@ public class CreateTopicOptions {
      *
      * @return the requiresDuplicateDetection value.
      */
-    public Boolean requiresDuplicateDetection() {
+    public Boolean isDuplicateDetectionRequired() {
         return this.requiresDuplicateDetection;
     }
 
@@ -355,7 +355,7 @@ public class CreateTopicOptions {
      *
      * @return the CreateTopicOptions object itself.
      */
-    public CreateTopicOptions setRequiresDuplicateDetection(boolean requiresDuplicateDetection) {
+    public CreateTopicOptions setDuplicateDetectionRequired(boolean requiresDuplicateDetection) {
         this.requiresDuplicateDetection = requiresDuplicateDetection;
         return this;
     }
@@ -365,7 +365,7 @@ public class CreateTopicOptions {
      *
      * @return the requiresSession value.
      */
-    public Boolean requiresSession() {
+    public Boolean isSessionRequired() {
         return this.requiresSession;
     }
 
@@ -376,7 +376,7 @@ public class CreateTopicOptions {
      *
      * @return the CreateTopicOptions object itself.
      */
-    public CreateTopicOptions setRequiresSession(boolean requiresSession) {
+    public CreateTopicOptions setSessionRequired(boolean requiresSession) {
         this.requiresSession = requiresSession;
         return this;
     }

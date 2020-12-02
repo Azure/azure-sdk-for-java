@@ -1,17 +1,10 @@
 # Release History
 
-## 3.0.0-beta.1 (Unreleased)
+## 3.0.0-beta.2 (Unreleased)
+
+
+## 3.0.0-beta.1 (2020-11-18)
 ### Breaking Changes
-- Configuration items like `spring.security.oauth2.client.xxx` is not supported anymore. Please use the following configuration items instead:
-    ```
-    azure.activedirectory.tenant-id=xxxxxx-your-tenant-id-xxxxxx
-    azure.activedirectory.client-id=xxxxxx-your-client-id-xxxxxx
-    azure.activedirectory.client-secret=xxxxxx-your-client-secret-xxxxxx
-    azure.activedirectory.user-group.allowed-groups=group1, group2
-    azure.activedirectory.scope = your-customized-scope1, your-customized-scope2
-    azure.activedirectory.redirect-uri-template=xxxxxx-your-redirect-uri-xxxxxx
-    ```
-- Check scope parameter for AAD authorization requests before configuration. Necessary permissions would be automatically added if needed.
 - Update `com.azure` group id to `com.azure.spring`.
 - Deprecated azure-spring-boot-metrics-starter.
 - Change group id from `com.microsoft.azure` to `com.azure.spring`.

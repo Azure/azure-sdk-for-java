@@ -11,7 +11,7 @@ while protecting the identities of your customers at the same time.
 ### Prerequisites
 - [Java Development Kit (JDK)][jdk_link] with version 8 or above
 - [Azure Subscription][azure_subscription]
-- [Maven](http://maven.apache.org/) 3.0 and above
+- [Maven](https://maven.apache.org/) 3.0 and above
 
 ### Include the package
 [//]: # "{x-version-update-start;com.azure.spring:azure-spring-boot-starter-active-directory-b2c;current}"
@@ -43,7 +43,7 @@ while protecting the identities of your customers at the same time.
 
 1. Select **Azure AD B2C** from the portal menu, click **Applications**, and then click **Add**.
 
-2. Specify your application **Name**, add `http://localhost:8080/home` for the **Reply URL**, record the
+2. Specify your application **Name**, add `https://localhost:8080/home` for the **Reply URL**, record the
 **Application ID** as your `${your-client-id}` and then click **Save**.
 
 3. Select **Keys** from your application, click **Generate key** to generate `${your-client-secret}` and then **Save**.
@@ -101,6 +101,10 @@ application to use the Spring annotations and classes to protect the web app.
            sign-up-or-sign-in: ${your-sign-up-or-in-user-flow}
            profile-edit: ${your-profile-edit-user-flow}     # optional
            password-reset: ${your-password-reset-user-flow} # optional
+         authenticate-additional-parameters: 
+           prompt: [login,none,consent]   # optional
+           login_hint: xxxxxxxxx          # optional
+           domain_hint: xxxxxxxxx         # optional
    ```
    Where:
 
@@ -198,7 +202,7 @@ respectively that completed earlier.
    mvn spring-boot:run
    ```
 
-3. After your application is built and started by Maven, open <http://localhost:8080/> in a web browser; 
+3. After your application is built and started by Maven, open <https://localhost:8080/> in a web browser; 
 you should be redirected to login page.
 
 4. Click linke with name of `${your-sign-up-or-in}` user flow, you should be rediected Azure AD B2C to start the authentication process.
@@ -234,7 +238,7 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 
 <!-- LINKS -->
 [docs]: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-active-directory-b2c-oidc
-[refdocs]: https://azure.github.io/azure-sdk-for-java/spring.html#azure-active-directory-b2c-spring-boot-starter
+[refdocs]: https://azure.github.io/azure-sdk-for-java/springboot.html#azure-spring-boot
 [package]: https://mvnrepository.com/artifact/com.microsoft.azure/azure-active-directory-b2c-spring-boot-starter
 [sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-b2c-oidc
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application

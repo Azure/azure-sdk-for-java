@@ -157,13 +157,14 @@ public final class RequestTimeline implements Iterable<RequestTimeline.Event> {
         @JsonIgnore
         private final Duration duration;
 
-        @JsonSerialize(using = ToStringSerializer.class)
+        @JsonProperty
         private final long durationInMicroSec;
 
         @JsonProperty("eventName")
         private final String name;
 
         @JsonSerialize(using = ToStringSerializer.class)
+        @JsonProperty("startTimeUTC")
         private final Instant startTime;
 
         public Event(final String name, final Instant from, final Instant to) {
@@ -173,8 +174,15 @@ public final class RequestTimeline implements Iterable<RequestTimeline.Event> {
             this.name = name;
             this.startTime = from;
 
-            this.duration = from == null ? null : to == null ? Duration.ZERO : Duration.between(from, to);
-            if(this.duration != null) {
+            if (from == null) {
+                this.duration = null;
+            } else if (to == null) {
+                this.duration = Duration.ZERO;
+            } else {
+                this.duration = Duration.between(from, to);
+            }
+
+            if (duration != null) {
                 this.durationInMicroSec = duration.toNanos()/1000L;
             } else {
                 this.durationInMicroSec = 0;
