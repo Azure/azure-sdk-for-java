@@ -15,13 +15,11 @@ If you just want to run sample code with released version(not current), instead 
 - Clone from master branch
 
   For master branch, the version number in dependencies is up to date, which means if you want to run a sample module, you may need to build the dependencies and install the module to you local maven repo manually, since the dependencies has not been published to maven central.
-
   If you want to clone from master, jump to [Clone project from master branch](#clone-project-from-master-branch).
 
 - Clone from released version tag
 
   For released version tag, the dependencies should have published to maven central, which means you can run sample code directly after necessary configuration.
-
   If you want to clone from released version tag, jump to [Clone from specific version tag](#clone-from-specific-version-tag-recommend).
 
 #### Clone project from master branch
@@ -41,7 +39,6 @@ It means cloning the master branch, all the code, dependencies, and readme files
    mvn clean install -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -Djacoco.skip=true -DskipTests -Dparallel-test-playback
    ```
 
-4. Reload the dependencies in `pom.xml` file of the project
 
 #### Clone from specific version tag (recommend)
 
@@ -52,7 +49,6 @@ It means cloning the master branch, all the code, dependencies, and readme files
     git clone -b <replace-the-tag> https://github.com/Azure/azure-sdk-for-java.git
     ```
     
-- Reload the dependencies in `pom.xml` file of the project
 
 <!-- Links -->
 [maven]: https://maven.apache.org/
