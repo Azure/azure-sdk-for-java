@@ -523,6 +523,9 @@
   <!-- Suppress the long package name in Synapse managed private endpoints -->
   <suppress checks="PackageName" files="com.azure.analytics.synapse.managedprivateendpoints.*" />
 
+  <!-- Suppress the long line in endpoint path -->
+  <suppress checks="LineLength" files="com.azure.analytics.synapse.managedprivateendpoints.implementation.ManagedPrivateEndpointsImpl.java"/>
+
   <!-- TODO: Fix with https://github.com/Azure/azure-sdk-for-java/issues#6716 Method name should follow a common vocabulary. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files=".*[/\\]textanalytics[/\\].*"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files=".*[/\\]schemaregistry[/\\].*"/>
