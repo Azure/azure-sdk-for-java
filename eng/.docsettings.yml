@@ -165,6 +165,8 @@ known_content_issues:
   - ['sdk/synapse/azure-analytics-synapse-accesscontrol/swagger/README.md', '#3113']
   - ['sdk/synapse/azure-analytics-synapse-artifacts/swagger/README.md', '#3113']
   - ['sdk/synapse/azure-analytics-synapse-spark/swagger/README.md', '#3113']
+  - ['sdk/synapse/azure-analytics-synapse-managedprivateendpoints/swagger/README.md', '#3113']
+  - ['sdk/synapse/azure-analytics-synapse-monitoring/swagger/README.md', '#3113']
   - ['sdk/tables/azure-data-tables/swagger/README.md', '#3113']
   - ['sdk/template/azure-sdk-template/README.md','has other required sections']
   - ['sdk/textanalytics/azure-ai-textanalytics/swagger/README.md', '#3113']
