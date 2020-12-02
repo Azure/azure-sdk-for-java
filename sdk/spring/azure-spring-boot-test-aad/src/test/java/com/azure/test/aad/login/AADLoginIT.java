@@ -22,6 +22,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
@@ -83,21 +84,18 @@ public class AADLoginIT {
         this.runApp(app -> {
             ChromeOptions options = new ChromeOptions();
             options.addArguments("--incognito");
-            options.addArguments("--headless");
+//            options.addArguments("--headless");
             options.addArguments("--no-sandbox");
             options.addArguments("--disable-dev-shm-usage");
             WebDriver driver = new ChromeDriver(options);
             WebDriverWait wait = new WebDriverWait(driver, 10);
             try {
                 driver.get(app.root() + "api/home");
-                Thread.sleep(10000);
                 wait.until(presenceOfElementLocated(By.name("loginfmt")))
                     .sendKeys(System.getenv(AAD_USER_NAME_1) + Keys.ENTER);
                 Thread.sleep(10000);
-                wait.until(presenceOfElementLocated(By.name("passwd")))
-                    .sendKeys(System.getenv(AAD_USER_PASSWORD_1));
-                Thread.sleep(10000);
-                driver.findElement(By.cssSelector("input[type='submit']")).click();
+                driver.findElement(By.name("passwd"))
+                      .sendKeys(System.getenv(AAD_USER_PASSWORD_1) + Keys.ENTER);
                 Thread.sleep(10000);
                 driver.findElement(By.cssSelector("input[type='submit']")).click();
                 Thread.sleep(10000);
@@ -127,6 +125,10 @@ public class AADLoginIT {
                 System.getenv(AAD_MULTI_TENANT_CLIENT_ID));
             app.property("spring.security.oauth2.client.registration.azure.client-secret",
                 System.getenv(AAD_MULTI_TENANT_CLIENT_SECRET));
+            app.property("azure.activedirectory.environment", "global-v2-graph");
+            app.property("azure.activedirectory.user-group.key", "@odata.type");
+            app.property("azure.activedirectory.user-group.value", "#microsoft.graph.group");
+            app.property("azure.activedirectory.user-group.object-id-key", "id");
 
             app.property("azure.activedirectory.tenant-id", System.getenv(AAD_TENANT_ID_1));
             app.property("azure.activedirectory.client-id", System.getenv(AAD_MULTI_TENANT_CLIENT_ID));
@@ -164,7 +166,7 @@ public class AADLoginIT {
 
         @GetMapping(value = "/api/home")
         public ResponseEntity<String> home(Principal principal) {
-            LOGGER.info(principal.toString());
+            LOGGER.info(((OAuth2AuthenticationToken) principal).getAuthorities().toString());
             return ResponseEntity.ok("home");
         }
 
