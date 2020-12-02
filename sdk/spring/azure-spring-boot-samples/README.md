@@ -22,7 +22,7 @@ If you just want to run sample code with released version(not current), instead 
 
   For released version tag, the dependencies should have published to maven central, which means you can run sample code directly after necessary configuration.
 
-  If you want to clone from released version tag, jump to [Clone from specific version tag](#clone-from-specific-version-tag-(recommend)).
+  If you want to clone from released version tag, jump to [Clone from specific version tag](#clone-from-specific-version-tag-recommend).
 
 #### Clone project from master branch
 It means cloning the master branch, all the code, dependencies, and readme files are up to date.
