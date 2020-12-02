@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import com.azure.spring.aad.resource.server.validator.AzureJwtIssuerValidator;
+import com.azure.spring.aad.webapi.validator.AzureJwtIssuerValidator;
 import org.junit.Test;
 import org.springframework.security.oauth2.core.OAuth2TokenValidatorResult;
 import org.springframework.security.oauth2.jwt.Jwt;

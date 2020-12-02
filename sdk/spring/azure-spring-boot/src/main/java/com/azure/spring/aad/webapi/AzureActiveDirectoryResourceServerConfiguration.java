@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.aad.resource.server;
+package com.azure.spring.aad.webapi;
 
 
 import com.azure.spring.aad.implementation.AuthorizationServerEndpoints;
-import com.azure.spring.aad.resource.server.validator.AzureJwtAudienceValidator;
-import com.azure.spring.aad.resource.server.validator.AzureJwtIssuerValidator;
+import com.azure.spring.aad.webapi.validator.AzureJwtAudienceValidator;
+import com.azure.spring.aad.webapi.validator.AzureJwtIssuerValidator;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.aad.resource.server;
+package com.azure.spring.aad.webapi;
 
 import static org.springframework.security.core.authority.AuthorityUtils.NO_AUTHORITIES;
 
