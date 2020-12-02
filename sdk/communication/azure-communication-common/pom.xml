@@ -17,7 +17,7 @@
 
   <name>Microsoft Azure common library for communication service client</name>
   <description>
-    This package contains data structures commonly used for communicating with Microsoft Azure Communication Services. 
+    This package contains data structures commonly used for communicating with Microsoft Azure Communication Services.
     For this release, see notes - https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-common/README.md and https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-common/CHANGELOG.md.
   </description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
@@ -48,10 +48,20 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
+      <artifactId>azure-communication-administration</artifactId>
+      <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-communication-administration;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-communication-chat</artifactId>
+      <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-communication-chat;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
       <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
       <scope>compile</scope>
-    </dependency>    
+    </dependency>
     <dependency>
       <groupId>com.nimbusds</groupId>
       <artifactId>nimbus-jose-jwt</artifactId>

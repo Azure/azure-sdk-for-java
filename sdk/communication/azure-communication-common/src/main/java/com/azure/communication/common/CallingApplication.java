@@ -11,9 +11,9 @@ public class CallingApplication extends CommunicationIdentifier {
 
     private final String id;
 
-    /**
+    /**mvn
      * Creates a CallingApplication object
-     * 
+     *
      * @param id the string identifier representing the identity
      * @throws IllegalArgumentException thrown if id parameter fail the validation.
      */
