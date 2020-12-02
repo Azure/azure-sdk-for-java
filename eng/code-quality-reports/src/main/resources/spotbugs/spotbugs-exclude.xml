@@ -2272,7 +2272,10 @@
   <Match>
     <And>
       <Class name="~com\.azure\.resourcemanager(\.[^.]+)*\.implementation\.([^.]+)Impl"/>
-      <Method name="manager"/>
+      <Or>
+        <Method name="manager"/>
+        <Method name="serviceClient"/>
+      </Or>
     </And>
     <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
   </Match>
