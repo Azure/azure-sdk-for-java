@@ -2236,17 +2236,6 @@
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
 
-  <!-- Known issue in autorest of inner Enumeration for InputStream response -->
-  <!-- Not much can be done if spotbugs think the class is too big for analysis -->
-  <Match>
-    <Or>
-      <Class name="com.azure.resourcemanager.appservice.fluent.WebAppsClient"/>
-      <Class name="com.azure.resourcemanager.appservice.implementation.WebAppsClientImpl"/>
-      <Class name="~com\.azure\.resourcemanager\.appservice\.implementation\.WebAppsClientImpl(.+)"/>
-    </Or>
-    <Bug pattern="SKIPPED_CLASS_TOO_BIG,SIC_INNER_SHOULD_BE_STATIC_ANON"/>
-  </Match>
-
   <!-- Exclude REC_CATCH_EXCEPTION and false positive error for management samples. All samples in management catch Exception instead of throw it. -->
   <Match>
     <Package name="~com\.azure\.resourcemanager(\.[^.]+)*\.samples(\.[^.]+)*"/>
@@ -2264,12 +2253,28 @@
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
 
-  <!-- Exclude for Fluent Lite generated code -->
+  <!-- Exclude for Resource Manager generated code -->
+  <!-- NP_LOAD_OF_KNOWN_NULL_VALUE - Known issue in autorest of setting parameters when calling REST API -->
+  <!-- SIC_INNER_SHOULD_BE_STATIC_ANON - Known issue in autorest of inner Enumeration for InputStream response -->
+  <!-- UPM_UNCALLED_PRIVATE_METHOD - Known issue in autorest to generated method that might be uncalled -->
+  <!-- SKIPPED_CLASS_TOO_BIG - Nothing we can do about this -->
   <Match>
     <Or>
-      <Package name="~com\.azure\.resourcemanager(\.[^.]+)*\.generated(\.[^.]+)*"/>
+      <Class name="~com\.azure\.resourcemanager(\.[^.]+)*\.fluent\.(.+)Client"/>
+      <Class name="~com\.azure\.resourcemanager(\.[^.]+)*\.implementation\.(.+)ClientImpl"/>
     </Or>
-    <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE,SIC_INNER_SHOULD_BE_STATIC_ANON,SKIPPED_CLASS_TOO_BIG,UPM_UNCALLED_PRIVATE_METHOD"/>
+    <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE,SKIPPED_CLASS_TOO_BIG,UPM_UNCALLED_PRIVATE_METHOD"/>
+  </Match>
+  <Match>
+    <Class name="~com\.azure\.resourcemanager(\.[^.]+)*\.implementation\.(.+)ClientImpl(.+)"/>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
+  <Match>
+    <And>
+      <Class name="~com\.azure\.resourcemanager(\.[^.]+)*\.implementation\.(.+)Impl"/>
+      <Method name="manager"/>
+    </And>
+    <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
   </Match>
 
   <!-- Exclude from spring related classes -->
