@@ -3,12 +3,23 @@
 
 package com.azure.spring.autoconfigure.aad;
 
+import static com.azure.spring.autoconfigure.aad.Constants.BEARER_PREFIX;
 import com.microsoft.aad.msal4j.MsalServiceException;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.jwk.source.JWKSetCache;
 import com.nimbusds.jose.proc.BadJOSEException;
 import com.nimbusds.jose.util.ResourceRetriever;
 import com.nimbusds.jwt.proc.BadJWTException;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.text.ParseException;
+import java.util.Optional;
+import javax.naming.ServiceUnavailableException;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -19,24 +30,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.naming.ServiceUnavailableException;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.text.ParseException;
-import java.util.Optional;
-
-import static com.azure.spring.autoconfigure.aad.Constants.BEARER_PREFIX;
-
 /**
  * A stateful authentication filter which uses Microsoft Graph groups to authorize. Both ID token and access token are
  * supported. In the case of access token, only access token issued for the exact same application this filter used for
  * could be accepted, e.g. access token issued for Microsoft Graph could not be processed by users' application.
  */
+@Deprecated
 public class AADAuthenticationFilter extends OncePerRequestFilter {
     private static final Logger LOGGER = LoggerFactory.getLogger(AADAuthenticationFilter.class);
     private static final String CURRENT_USER_PRINCIPAL = "CURRENT_USER_PRINCIPAL";
