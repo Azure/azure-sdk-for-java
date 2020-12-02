@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.spring.sample.aad.controller;
 
 import org.springframework.http.HttpEntity;
@@ -24,7 +27,7 @@ public class HelloController {
         return callMicrosoftGraphMeEndpoint(accessToken.getTokenValue());
     }
 
-    private String callMicrosoftGraphMeEndpoint(String accessToken){
+    private String callMicrosoftGraphMeEndpoint(String accessToken) {
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();

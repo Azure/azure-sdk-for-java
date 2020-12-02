@@ -24,7 +24,6 @@ import org.springframework.security.oauth2.server.resource.authentication.Abstra
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.net.MalformedURLException;
-import java.text.ParseException;
 import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
@@ -57,33 +56,40 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
             ClientRegistration clientRegistration = azureClientRegistrationRepository
                 .findByRegistrationId(registrationId);
 
-                AbstractOAuth2TokenAuthenticationToken<AbstractOAuth2Token> authenticationToken = (AbstractOAuth2TokenAuthenticationToken)
+            AbstractOAuth2TokenAuthenticationToken<AbstractOAuth2Token> authenticationToken =
+                (AbstractOAuth2TokenAuthenticationToken)
                     authentication;
 
-                String accessToken = authenticationToken.getToken().getTokenValue();
+            String accessToken = authenticationToken.getToken().getTokenValue();
 
-                OnBehalfOfParameters parameters = OnBehalfOfParameters
-                    .builder(clientRegistration.getScopes(), new UserAssertion(accessToken))
-                    .build();
+            OnBehalfOfParameters parameters = OnBehalfOfParameters
+                .builder(clientRegistration.getScopes(), new UserAssertion(accessToken))
+                .build();
 
-                ConfidentialClientApplication clientApplication = confidentialClientApplicationMap.get(clientRegistration.getClientId());
+            ConfidentialClientApplication clientApplication = confidentialClientApplicationMap.get(clientRegistration
+                .getClientId());
 
-                String oboAccessToken = clientApplication.acquireToken(parameters).get().accessToken();
+            String oboAccessToken = clientApplication.acquireToken(parameters).get().accessToken();
 
-                OAuth2AccessToken oAuth2AccessToken = new OAuth2AccessToken(OAuth2AccessToken.TokenType.BEARER,oboAccessToken,
-                    dateToInstant(oboAccessToken,"iat"),dateToInstant(oboAccessToken,"exp"));
+            JWT parser = JWTParser.parse(oboAccessToken);
 
-                OAuth2AuthorizedClient oAuth2AuthorizedClient = new OAuth2AuthorizedClient(clientRegistration,
-                    authenticationToken.getName(), oAuth2AccessToken);
+            Date iat = (Date) parser.getJWTClaimsSet().getClaim("iat");
+            Date exp = (Date) parser.getJWTClaimsSet().getClaim("exp");
 
-                return (T) oAuth2AuthorizedClient;
+            OAuth2AccessToken oAuth2AccessToken = new OAuth2AccessToken(OAuth2AccessToken.TokenType.BEARER,
+                oboAccessToken,
+                Instant.ofEpochMilli(iat.getTime()), Instant.ofEpochMilli(exp.getTime()));
+
+            OAuth2AuthorizedClient oAuth2AuthorizedClient = new OAuth2AuthorizedClient(clientRegistration,
+                authenticationToken.getName(), oAuth2AccessToken);
+
+            return (T) oAuth2AuthorizedClient;
 
         } catch (Throwable throwable) {
-            LOG.debug("Failed to loadAuthorizedClient");
-            throwable.printStackTrace();
+            LOG.error("Failed to loadAuthorizedClient", throwable);
         }
         return null;
-}
+    }
 
     @Override
     public void saveAuthorizedClient(OAuth2AuthorizedClient oAuth2AuthorizedClient, Authentication authentication,
@@ -107,8 +113,7 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
                                                 .authority(authority)
                                                 .build();
         } catch (MalformedURLException e) {
-            LOG.debug("Failed to create ConfidentialClientApplication");
-            e.printStackTrace();
+            LOG.error("Failed to create ConfidentialClientApplication", e);
         }
         return null;
     }
@@ -126,21 +131,5 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
         }
         return null;
     }
-
-    private Instant dateToInstant(String tokenValue,String claimName){
-        try {
-            JWT parse = JWTParser.parse(tokenValue);
-            Date date =(Date) parse.getJWTClaimsSet().getClaim(claimName);
-            return Instant.ofEpochMilli(date.getTime());
-
-        } catch (ParseException e) {
-            LOG.debug("Failed to convert to Instant");
-            e.printStackTrace();
-        }
-
-        return null;
-
-    }
-
 
 }

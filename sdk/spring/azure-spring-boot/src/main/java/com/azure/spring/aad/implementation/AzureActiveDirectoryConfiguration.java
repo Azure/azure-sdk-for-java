@@ -50,7 +50,7 @@ public class AzureActiveDirectoryConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnMissingClass({"org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken"})
+    @ConditionalOnMissingClass({ "org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken" })
     public OAuth2AuthorizedClientRepository authorizedClientRepository(AzureClientRegistrationRepository repo) {
         return new AzureAuthorizedClientRepository(repo);
     }
