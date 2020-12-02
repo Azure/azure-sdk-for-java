@@ -138,6 +138,41 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void canAddListAndRemoveParticipantsWithOptions(HttpClient httpClient) throws InterruptedException {
+        // Arrange
+        setupTest(httpClient);
+        firstAddedParticipant = communicationClient.createUser();
+        secondAddedParticipant = communicationClient.createUser();
+
+        AddChatParticipantsOptions options = ChatOptionsProvider.addParticipantsOptions(
+            firstAddedParticipant.getId(), secondAddedParticipant.getId());
+
+        // Action & Assert
+        chatThreadClient.addParticipants(options);
+
+        PagedIterable<ChatParticipant> participantsResponse = chatThreadClient.listParticipants(
+            new ListParticipantsOptions().setMaxPageSize(2));
+
+        // process the iterableByPage
+        List<ChatParticipant> returnedParticipants = new ArrayList<ChatParticipant>();
+        participantsResponse.iterableByPage().forEach(resp -> {
+            assertEquals(200, resp.getStatusCode());
+            resp.getItems().forEach(item -> returnedParticipants.add(item));
+        });
+
+        for (ChatParticipant participant: options.getParticipants()) {
+            assertTrue(checkParticipantsListContainsParticipantId(returnedParticipants, participant.getUser().getId()));
+        }
+
+        assertTrue(returnedParticipants.size() == 4);
+
+        for (ChatParticipant participant: options.getParticipants()) {
+            chatThreadClient.removeParticipant(participant.getUser());
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void canAddListAndRemoveParticipantsWithResponse(HttpClient httpClient) throws InterruptedException {
         // Arrange
         setupTest(httpClient);
@@ -382,6 +417,35 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         chatThreadClient.sendReadReceipt(response);
 
         PagedIterable<ChatMessageReadReceipt> readReceiptsResponse = chatThreadClient.listReadReceipts();
+
+        // process the iterableByPage
+        List<ChatMessageReadReceipt> returnedReadReceipts = new ArrayList<ChatMessageReadReceipt>();
+        readReceiptsResponse.iterableByPage().forEach(resp -> {
+            assertEquals(200, resp.getStatusCode());
+            resp.getItems().forEach(item -> returnedReadReceipts.add(item));
+        });
+
+        assertTrue(returnedReadReceipts.size() > 0);
+        checkReadReceiptListContainsMessageId(returnedReadReceipts, response);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)")
+    public void canSendThenListReadReceiptsWithOptions(HttpClient httpClient) throws InterruptedException {
+        // Arrange
+        setupTest(httpClient);
+        SendChatMessageOptions messageRequest = ChatOptionsProvider.sendMessageOptions();
+
+        String response = chatThreadClient.sendMessage(messageRequest);
+
+        // Action & Assert
+        chatThreadClient.sendReadReceipt(response);
+
+        PagedIterable<ChatMessageReadReceipt> readReceiptsResponse = chatThreadClient.listReadReceipts(
+            new ListReadReceiptOptions().setMaxPageSize(1));
 
         // process the iterableByPage
         List<ChatMessageReadReceipt> returnedReadReceipts = new ArrayList<ChatMessageReadReceipt>();

@@ -6,6 +6,8 @@ package com.azure.communication.chat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import com.azure.core.http.rest.Response;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -25,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.UUID;
 
 /**
  * Set the AZURE_TEST_MODE environment variable to either PLAYBACK or RECORD to determine if tests are playback or
@@ -96,6 +99,38 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
                 assertNotNull(result);
                 assertNotNull(result.getThread());
                 assertNotNull(result.getThread().getId());
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void canRepeatCreateThread(HttpClient httpClient) {
+        // Arrange
+        setupTest(httpClient);
+        UUID uuid = UUID.randomUUID();
+        CreateChatThreadOptions threadRequest = ChatOptionsProvider
+            .createThreadOptions(
+                firstThreadMember.getId(),
+                secondThreadMember.getId()
+            )
+            .setRepeatabilityRequestID(uuid.toString());
+
+        Response<CreateChatThreadResult> response1 = client.createChatThreadWithResponse(threadRequest).block();
+        assertNotNull(response1.getValue());
+        assertNotNull(response1.getValue().getThread());
+        assertNotNull(response1.getValue().getThread().getId());
+
+        String expectedThreadId = response1.getValue().getThread().getId();
+
+        // Act & Assert
+        StepVerifier.create(client.createChatThreadWithResponse(threadRequest))
+            .assertNext(response2 -> {
+                CreateChatThreadResult result = response2.getValue();
+                assertNotNull(result);
+                assertNotNull(result.getThread());
+                assertNotNull(result.getThread().getId());
+                assertEquals(expectedThreadId, result.getThread().getId());
             })
             .verifyComplete();
     }
