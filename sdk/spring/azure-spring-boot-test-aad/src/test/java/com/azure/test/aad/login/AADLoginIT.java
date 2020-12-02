@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.Principal;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
@@ -162,7 +163,8 @@ public class AADLoginIT {
         }
 
         @GetMapping(value = "/api/home")
-        public ResponseEntity<String> home() {
+        public ResponseEntity<String> home(Principal principal) {
+            LOGGER.info(principal.toString());
             return ResponseEntity.ok("home");
         }
 
