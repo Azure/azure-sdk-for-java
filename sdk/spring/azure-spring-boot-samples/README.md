@@ -17,8 +17,7 @@ If you just want to run sample code with released version(not current), instead 
   If you want to clone from master, jump to [Clone project from master branch](#clone-project-from-master-branch).
 
 - Clone from released version tag
-
-  For released version tag, the dependencies should have published to maven central, which means you can run sample code directly after necessary configuration.
+  For released version tag, the dependencies should have published to maven central, which means you can run sample code directly after necessary configuration.  
   If you want to clone from released version tag, jump to [Clone from specific version tag](#clone-from-specific-version-tag-recommend).
 
 #### Clone project from master branch
