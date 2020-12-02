@@ -503,12 +503,16 @@
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.ai.metricsadvisor.implementation.util.MetricFeedbackTransforms.java"/>
 
   <!-- Suppress the check on code-gen classes -->
-  <suppress checks="Indentation" files="com.azure.analytics.synapse.accesscontrol.implementation.AccessControlClientImpl" />
-  <suppress checks="Indentation" files="com.azure.analytics.synapse.accesscontrol.implementation.AccessControlsImpl" />
+  <suppress checks="Indentation" files="com.azure.analytics.synapse.accesscontrol.implementation..*ClientImpl" />
+  <suppress checks="Indentation" files="com.azure.analytics.synapse.accesscontrol.implementation..*Impl" />
   <suppress checks="Indentation" files="com.azure.analytics.synapse.artifacts.implementation..*ClientImpl" />
   <suppress checks="Indentation" files="com.azure.analytics.synapse.artifacts.implementation..*Impl" />
   <suppress checks="Indentation" files="com.azure.analytics.synapse.spark.implementation..*ClientImpl" />
   <suppress checks="Indentation" files="com.azure.analytics.synapse.spark.implementation..*Impl" />
+  <suppress checks="Indentation" files="com.azure.analytics.synapse.managedprivateendpoints.implementation..*ClientImpl" />
+  <suppress checks="Indentation" files="com.azure.analytics.synapse.managedprivateendpoints.implementation..*Impl" />
+  <suppress checks="Indentation" files="com.azure.analytics.synapse.monitoring.implementation..*ClientImpl" />
+  <suppress checks="Indentation" files="com.azure.analytics.synapse.monitoring.implementation..*Impl" />
 
   <!-- empty class Pattern in Synapse artifacts -->
   <suppress checks="WhitespaceAround" files=".*[/\\]synapse[/\\]azure-analytics-synapse-artifacts[/\\].*"/>
