@@ -2256,7 +2256,7 @@
   <!-- Exclude for Resource Manager generated code -->
   <!-- NP_LOAD_OF_KNOWN_NULL_VALUE - Known issue in autorest of setting parameters when calling REST API -->
   <!-- SIC_INNER_SHOULD_BE_STATIC_ANON - Known issue in autorest of inner Enumeration for InputStream response -->
-  <!-- UPM_UNCALLED_PRIVATE_METHOD - Known issue in autorest to generated method that might be uncalled -->
+  <!-- UPM_UNCALLED_PRIVATE_METHOD - Known issue in autorest to generate method that might not be called -->
   <!-- SKIPPED_CLASS_TOO_BIG - Nothing we can do about this -->
   <Match>
     <Or>
