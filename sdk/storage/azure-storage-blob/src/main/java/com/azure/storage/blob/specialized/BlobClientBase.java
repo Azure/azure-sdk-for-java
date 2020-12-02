@@ -262,10 +262,10 @@ public class BlobClientBase {
      */
     public BlobInputStream openInputStream(BlobInputStreamOptions options) {
         options = options == null ? new BlobInputStreamOptions() : options;
-        ConcurrencyControl concurrencyControl = options.getConcurrencyControl() == null ? ConcurrencyControl.E_TAG
+        ConcurrencyControl concurrencyControl = options.getConcurrencyControl() == null ? ConcurrencyControl.ETAG
             : options.getConcurrencyControl();
 
-        BlobProperties properties = getProperties();
+        BlobProperties properties = getPropertiesWithResponse(options.getRequestConditions(), null, null).getValue();
         String eTag = properties.getETag();
         String versionId = properties.getVersionId();
 
@@ -279,19 +279,29 @@ public class BlobClientBase {
         switch (concurrencyControl) {
             case NONE:
                 if (requestConditions.getIfMatch() != null) {
-                    throw logger.logExceptionAsError(generateNoneException("requestConditions.ifMatch", "E_TAG"));
+                    throw logger.logExceptionAsError(generateControlException("requestConditions.ifMatch",
+                        ConcurrencyControl.NONE.toString(), ConcurrencyControl.ETAG.toString()));
                 }
                 if (this.client.getVersionId() != null) {
-                    throw logger.logExceptionAsError(generateNoneException("client.versionId", "VERSION_ID"));
+                    throw logger.logExceptionAsError(generateControlException("client.versionId",
+                        ConcurrencyControl.NONE.toString(), ConcurrencyControl.VERSION_ID.toString()));
                 }
                 break;
-            case E_TAG:
+            case ETAG:
+                if (this.client.getVersionId() != null) {
+                    throw logger.logExceptionAsError(generateControlException("client.versionId",
+                        ConcurrencyControl.ETAG.toString(), ConcurrencyControl.VERSION_ID.toString()));
+                }
                 // Target the user specified eTag by default. If not provided, target the latest eTag.
                 if (requestConditions.getIfMatch() == null) {
                     requestConditions.setIfMatch(eTag);
                 }
                 break;
             case VERSION_ID:
+                if (requestConditions.getIfMatch() != null) {
+                    throw logger.logExceptionAsError(generateControlException("requestConditions.ifMatch",
+                        ConcurrencyControl.VERSION_ID.toString(), ConcurrencyControl.ETAG.toString()));
+                }
                 if (versionId == null) {
                     throw logger.logExceptionAsError(
                         new UnsupportedOperationException("Versioning is not supported on this account."));
@@ -303,17 +313,18 @@ public class BlobClientBase {
                 }
                 break;
             default:
-                throw logger.logExceptionAsError(
-                    new UnsupportedOperationException("Concurrency control type not supported."));
+                throw logger.logExceptionAsError(new IllegalArgumentException("Concurrency control type not "
+                    + "supported."));
         }
 
         return new BlobInputStream(client, range.getOffset(), range.getCount(), chunkSize,
             requestConditions, properties);
     }
 
-    private UnsupportedOperationException generateNoneException(String wrongValue, String toSet) {
-        return new UnsupportedOperationException(String.format("'%s' can not be set when 'concurrencyControl'"
-            + " is set to NONE. Set 'concurrencyControl' to %s.", wrongValue, toSet));
+    private IllegalStateException generateControlException(String wrongVariable, String originalControl,
+        String expectedControl) {
+        return new IllegalStateException(String.format("'%s' can not be set when 'concurrencyControl'"
+            + " is set to '%s'. Set 'concurrencyControl' to '%s'.", wrongVariable, originalControl, expectedControl));
     }
 
     /**

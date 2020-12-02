@@ -8,7 +8,7 @@ import com.azure.storage.blob.BlobClient;
 /**
  * Defines values for ConcurrencyControl.
  * {@link #NONE}
- * {@link #E_TAG}
+ * {@link #ETAG}
  * {@link #VERSION_ID}
  */
 public enum ConcurrencyControl {
@@ -22,7 +22,7 @@ public enum ConcurrencyControl {
      * If {@link BlobRequestConditions#getIfMatch()} is set, the client will honor this value.
      * Otherwise, {@link BlobRequestConditions#getIfMatch()} is set to the latest eTag.
      */
-    E_TAG,
+    ETAG,
 
     /**
      * Concurrency control based on versionId. NOTE: Versioning must be supported by the account to use this value.

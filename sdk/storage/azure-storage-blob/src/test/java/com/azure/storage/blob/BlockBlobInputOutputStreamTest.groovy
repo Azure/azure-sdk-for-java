@@ -1,7 +1,6 @@
 package com.azure.storage.blob
 
 import com.azure.storage.blob.models.BlobRequestConditions
-import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.BlobType
 import com.azure.storage.blob.models.ConcurrencyControl
 import com.azure.storage.blob.options.BlobInputStreamOptions
@@ -241,7 +240,7 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         def properties = blobClient.getProperties()
 
         when: "Use recent eTag"
-        def inputStream = blobClient.openInputStream(new BlobInputStreamOptions().setConcurrencyControl(ConcurrencyControl.E_TAG)
+        def inputStream = blobClient.openInputStream(new BlobInputStreamOptions().setConcurrencyControl(ConcurrencyControl.ETAG)
             .setRequestConditions(new BlobRequestConditions().setIfMatch(properties.getETag())))
 
         then:
@@ -263,7 +262,7 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         outStream.write(getRandomByteArray(length), 1 * Constants.MB, 5 * Constants.MB)
         outStream.close()
 
-        blobClient.openInputStream(new BlobInputStreamOptions().setBlockSize(1).setConcurrencyControl(ConcurrencyControl.E_TAG)
+        blobClient.openInputStream(new BlobInputStreamOptions().setBlockSize(1).setConcurrencyControl(ConcurrencyControl.ETAG)
             .setRequestConditions(new BlobRequestConditions().setIfMatch(properties.getETag()))).read()
 
         then: "An old etag will fail due to ConditionNotMet"
