@@ -502,7 +502,7 @@
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.ai.metricsadvisor.implementation.util.AlertConfigurationTransforms.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.ai.metricsadvisor.implementation.util.MetricFeedbackTransforms.java"/>
 
-  <!-- Suppress the check on code-gen classes -->
+  <!-- Suppress the check on synapse code-gen classes -->
   <suppress checks="Indentation" files="com.azure.analytics.synapse.accesscontrol.implementation..*ClientImpl" />
   <suppress checks="Indentation" files="com.azure.analytics.synapse.accesscontrol.implementation..*Impl" />
   <suppress checks="Indentation" files="com.azure.analytics.synapse.artifacts.implementation..*ClientImpl" />
@@ -519,6 +519,9 @@
 
   <!-- Checkstyle suppressions for naming issues reported in the Synapse artifacts related clients-->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files=".*[/\\]synapse[/\\].*"/>
+
+  <!-- Suppress the long package name in Synapse managed private endpoints -->
+  <support checks="PackageName" files="com.azure.analytics.synapse.managedprivateendpoints.*" />
 
   <!-- TODO: Fix with https://github.com/Azure/azure-sdk-for-java/issues#6716 Method name should follow a common vocabulary. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files=".*[/\\]textanalytics[/\\].*"/>
