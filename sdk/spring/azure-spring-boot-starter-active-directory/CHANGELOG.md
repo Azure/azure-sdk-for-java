@@ -2,16 +2,6 @@
 
 ## 3.0.0-beta.2 (Unreleased)
 ### Breaking Changes
-- Conditional access policy is not supported temporary, we may recover it in the future.
-- Configuration items like `spring.security.oauth2.client.xxx` is not supported anymore. Please use the following configuration items instead:
-    ```
-    azure.activedirectory.tenant-id=xxxxxx-your-tenant-id-xxxxxx
-    azure.activedirectory.client-id=xxxxxx-your-client-id-xxxxxx
-    azure.activedirectory.client-secret=xxxxxx-your-client-secret-xxxxxx
-    azure.activedirectory.user-group.allowed-groups=group1, group2
-    azure.activedirectory.scope = your-customized-scope1, your-customized-scope2
-    ```
-- Check scope parameter for AAD authorization requests before configuration. Necessary permissions would be automatically added if needed.
 - Change group id from `com.microsoft.azure` to `com.azure.spring`.
 - Change artifact id from `azure-active-directory-spring-boot-starter` to `azure-spring-boot-starter-active-directory`.
 

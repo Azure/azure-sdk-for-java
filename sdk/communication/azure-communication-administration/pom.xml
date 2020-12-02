@@ -49,15 +49,15 @@
   <properties>
     <src.dir>src/main</src.dir>
     <test.dir>src/test</test.dir>
-    <jacoco.min.linecoverage>0.65</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.45</jacoco.min.branchcoverage>
+    <jacoco.min.linecoverage>0.75</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.55</jacoco.min.branchcoverage>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.10.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.11.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -109,7 +109,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-okhttp</artifactId>
-      <version>1.3.3</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
+      <version>1.4.0</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
