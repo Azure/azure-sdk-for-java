@@ -40,7 +40,7 @@ The way to obtain group relationship that will determine which graph api will be
 * **transitive**: Get groups that the user is a member of, and will also return all groups the user is a nested member of. For details, see [list transitive memberOf][graph-api-list-transitive-member-of] api.
 
 ### Web application
-Based on Azure AD as a Web application, it uses OAuth2 authorization code flow to authentication, and authorizes resources based on the scopes or roles claim in the access token. 
+Based on Azure AD as a Web application, it uses OAuth2 authorization code flow to authentication, and authorizes resources based on the groups or roles claim in the access token. 
 Provide a convenient way to quickly access other resource server, other resources should be registered as `ClientRegistration`, use `@RegisteredOAuth2AuthorizedClient` annotation to mark the client resource, Spring Security will help automatically obtain valid access tokens based on the root refresh token, business methods will use the corresponding access token to request client resources.
 
 #### Standalone web application usage
@@ -55,7 +55,7 @@ Web application and resource server use scenarios, web application access the re
 ![Web Application Access Resources](resource/add-based-web-application-access-resources.png)
 
 * Login with credentials, the scope includes all other clients. 
-* Auto-refresh the access token of other clients based on the root refresh token.
+* Auto-acquire the access token of other clients based on the root refresh token.
 * Use each client's access token to request restricted resource.
 * Return secured data.
 
