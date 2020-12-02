@@ -84,7 +84,7 @@ public class AADLoginIT {
         this.runApp(app -> {
             ChromeOptions options = new ChromeOptions();
             options.addArguments("--incognito");
-//            options.addArguments("--headless");
+            options.addArguments("--headless");
             options.addArguments("--no-sandbox");
             options.addArguments("--disable-dev-shm-usage");
             WebDriver driver = new ChromeDriver(options);
