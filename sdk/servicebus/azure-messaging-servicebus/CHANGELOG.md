@@ -29,7 +29,8 @@
 
 ### Known issues 
 ### Can not resolve 'BinaryData' 
-  Can not resolve 'BinaryData' When using 'azure-messaging-servicebus:7.0.0' and other Azure SDKs in the same pom.xml.
+  Can not resolve 'BinaryData' When using 'azure-messaging-servicebus:7.0.0' and other Azure SDKs in the same pom.xml
+  file.
 - **Issue**: This compile time error occurs due to a known 'azure-core:1.11.0' dependency conflict between 
   'azure-messaging-servicebus:7.0.0' and other Azure SDKs, such as 'azure-identity:1.2.0', which depend on older 
   versions of azure-core. 
