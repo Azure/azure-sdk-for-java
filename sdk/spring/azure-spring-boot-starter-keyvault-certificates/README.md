@@ -1,4 +1,4 @@
-# Azure Key Vault Certificates Spring Boot starter 
+# Azure Key Vault Certificates Spring Boot starter client library for Java
 Azure Key Vault Certificates Spring Boot Starter is Spring starter for [Azure Key Vault Certificates](https://docs.microsoft.com/rest/api/keyvault/about-keys--secrets-and-certificates#BKMK_WorkingWithSecrets), it allows you to securely manage and tightly control your certificates.
 
 [Package (Maven)][package] | [API reference documentation][refdocs] | [Samples][sample]
