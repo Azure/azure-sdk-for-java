@@ -83,11 +83,7 @@ class SparkE2EWriteSpec extends IntegrationSpec {
     client.close()
     spark.close()
   }
-
-  // TODO: moderakh should we tag tests at the test class level or test method level?
-  "basic test" should  "fail" taggedAs (RequiresCosmosEndpoint) in {
-    assertThat(1).isEqualTo(2)
-  }
+  
   //scalastyle:on magic.number
   //scalastyle:on multiple.string.literals
 }
