@@ -9,10 +9,9 @@ import com.azure.cosmos.implementation.TestConfigurations
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.sql.SparkSession
 import org.assertj.core.api.Assertions.assertThat
-import org.scalatest.flatspec.AnyFlatSpec
-import org.scalatest.funspec.AnyFunSpec
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
+// scalastyle:on underscore.import
 
 
 // TODO moderakh we need to clean up databases after creation.
@@ -65,9 +64,9 @@ class SparkE2EWriteSpec extends IntegrationSpec {
 
     // verify data is written
 
-    // TODO: moderakh note unless if we use an account with strong consisteny there is no gareentee
-    // that the write by spark is visible by the query
-    // wait for a second to ensure replication is completed.
+    // TODO: moderakh note unless if we use an account with strong consistency there is no guarantee
+    // that the write by spark is visible by the client query
+    // wait for a second to allow replication is completed.
     Thread.sleep(1000)
 
     val results = client.getDatabase(cosmosDatabase).getContainer(cosmosContainer)

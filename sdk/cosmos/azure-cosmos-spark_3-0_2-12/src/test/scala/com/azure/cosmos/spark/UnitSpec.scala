@@ -5,7 +5,6 @@ package com.azure.cosmos.spark
 
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, Inside, Inspectors, OptionValues}
 import org.scalatest.flatspec.AnyFlatSpec
-import org.scalatest.funspec.AnyFunSpecLike
 import org.scalatest.matchers.should.Matchers
 
 abstract class UnitSpec extends AnyFlatSpec
