@@ -87,7 +87,9 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @MethodSource("getTestParameters")
     public void createEcKey(HttpClient httpClient, KeyServiceVersion keyServiceVersion) {
         createKeyAsyncClient(httpClient, keyServiceVersion);
-        createEcKeyRunner((expected) -> assertNotNull(client.createEcKey(expected)));
+        createEcKeyRunner((expected) -> StepVerifier.create(client.createEcKey(expected))
+            .assertNext(response -> assertKeyEquals(expected, response))
+            .verifyComplete());
     }
 
     /**

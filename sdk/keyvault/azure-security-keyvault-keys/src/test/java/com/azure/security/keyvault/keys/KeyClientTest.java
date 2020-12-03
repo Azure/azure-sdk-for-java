@@ -83,7 +83,7 @@ public class KeyClientTest extends KeyClientTestBase {
     @MethodSource("getTestParameters")
     public void createEcKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         getKeyClient(httpClient, serviceVersion);
-        createEcKeyRunner((expected) -> assertNotNull(client.createEcKey(expected)));
+        createEcKeyRunner((expected) -> assertKeyEquals(expected, client.createEcKey(expected)));
     }
 
     /**
