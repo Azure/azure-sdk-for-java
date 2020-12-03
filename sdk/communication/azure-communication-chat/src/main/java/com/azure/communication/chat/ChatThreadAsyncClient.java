@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.communication.chat;
 
-import com.azure.communication.chat.implementation.ChatThreadsImpl;
+import com.azure.communication.chat.implementation.ChatThreadImpl;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -53,13 +53,13 @@ public final class ChatThreadAsyncClient {
     private final ClientLogger logger = new ClientLogger(ChatThreadAsyncClient.class);
 
     private final AzureCommunicationChatServiceImpl chatServiceClient;
-    private final ChatThreadsImpl threadClient;
+    private final ChatThreadImpl chatThreadClient;
 
     private final String chatThreadId;
 
     ChatThreadAsyncClient(AzureCommunicationChatServiceImpl chatServiceClient, String chatThreadId) {
         this.chatServiceClient = chatServiceClient;
-        this.threadClient = chatServiceClient.getChatThreads();
+        this.chatThreadClient = chatServiceClient.getChatThreadClient();
         this.chatThreadId = chatThreadId;
     }
 
@@ -117,7 +117,7 @@ public final class ChatThreadAsyncClient {
     Mono<Response<Void>> updateTopic(String topic, Context context) {
         context = context == null ? Context.NONE : context;
 
-        return this.threadClient.updateChatThreadWithResponseAsync(
+        return this.chatThreadClient.updateChatThreadWithResponseAsync(
             chatThreadId,
             new UpdateChatThreadOptions()
                 .setTopic(topic),
@@ -213,7 +213,7 @@ public final class ChatThreadAsyncClient {
 
         Objects.requireNonNull(options, "'options' cannot be null.");
 
-        return this.threadClient.addChatParticipantsWithResponseAsync(
+        return this.chatThreadClient.addChatParticipantsWithResponseAsync(
             chatThreadId, AddChatParticipantsOptionsConverter.convert(options), context);
     }
 
@@ -265,7 +265,7 @@ public final class ChatThreadAsyncClient {
         Objects.requireNonNull(user, "'user' cannot be null.");
         Objects.requireNonNull(user.getId(), "'user.getId()' cannot be null.");
 
-        return this.threadClient.removeChatParticipantWithResponseAsync(chatThreadId, user.getId(), context);
+        return this.chatThreadClient.removeChatParticipantWithResponseAsync(chatThreadId, user.getId(), context);
     }
 
     /**
@@ -287,16 +287,18 @@ public final class ChatThreadAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ChatParticipant> listParticipants(ListParticipantsOptions listParticipantsOptions) {
+        final ListParticipantsOptions serviceListParticipantsOptions =
+            listParticipantsOptions == null ? new ListParticipantsOptions() : listParticipantsOptions;
         try {
             return pagedFluxConvert(new PagedFlux<>(
                 () -> withContext(context ->
-                    this.threadClient.listChatParticipantsSinglePageAsync(
+                    this.chatThreadClient.listChatParticipantsSinglePageAsync(
                         chatThreadId,
-                        listParticipantsOptions.getMaxPageSize(),
-                        listParticipantsOptions.getSkip(),
+                        serviceListParticipantsOptions.getMaxPageSize(),
+                        serviceListParticipantsOptions.getSkip(),
                         context)),
                 nextLink -> withContext(context ->
-                    this.threadClient.listChatParticipantsNextSinglePageAsync(nextLink, context))),
+                    this.chatThreadClient.listChatParticipantsNextSinglePageAsync(nextLink, context))),
                 f -> ChatParticipantConverter.convert(f));
         } catch (RuntimeException ex) {
 
@@ -324,17 +326,19 @@ public final class ChatThreadAsyncClient {
      */
     PagedFlux<ChatParticipant> listParticipants(ListParticipantsOptions listParticipantsOptions, Context context) {
         final Context serviceContext = context == null ? Context.NONE : context;
+        final ListParticipantsOptions serviceListParticipantsOptions =
+            listParticipantsOptions == null ? new ListParticipantsOptions() : listParticipantsOptions;
 
         try {
             return pagedFluxConvert(new PagedFlux<>(
                 () ->
-                    this.threadClient.listChatParticipantsSinglePageAsync(
+                    this.chatThreadClient.listChatParticipantsSinglePageAsync(
                         chatThreadId,
-                        listParticipantsOptions.getMaxPageSize(),
-                        listParticipantsOptions.getSkip(),
+                        serviceListParticipantsOptions.getMaxPageSize(),
+                        serviceListParticipantsOptions.getSkip(),
                         serviceContext),
                 nextLink ->
-                    this.threadClient.listChatParticipantsNextSinglePageAsync(nextLink, serviceContext)),
+                    this.chatThreadClient.listChatParticipantsNextSinglePageAsync(nextLink, serviceContext)),
                 f -> ChatParticipantConverter.convert(f));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
@@ -387,7 +391,7 @@ public final class ChatThreadAsyncClient {
 
         Objects.requireNonNull(options, "'options' cannot be null.");
 
-        return this.threadClient.sendChatMessageWithResponseAsync(
+        return this.chatThreadClient.sendChatMessageWithResponseAsync(
             chatThreadId, options, context).map(
                 result -> new SimpleResponse<String>(
                     result, SendChatMessageResultConverter.convert(result.getValue())));
@@ -445,7 +449,7 @@ public final class ChatThreadAsyncClient {
 
         Objects.requireNonNull(chatMessageId, "'chatMessageId' cannot be null.");
 
-        return this.threadClient.getChatMessageWithResponseAsync(chatThreadId, chatMessageId, context).map(
+        return this.chatThreadClient.getChatMessageWithResponseAsync(chatThreadId, chatMessageId, context).map(
             result -> new SimpleResponse<ChatMessage>(
                 result, ChatMessageConverter.convert(result.getValue())));
     }
@@ -460,9 +464,9 @@ public final class ChatThreadAsyncClient {
         ListChatMessagesOptions listMessagesOptions = new ListChatMessagesOptions();
         try {
             return pagedFluxConvert(new PagedFlux<>(
-                () -> withContext(context ->  this.threadClient.listChatMessagesSinglePageAsync(
+                () -> withContext(context ->  this.chatThreadClient.listChatMessagesSinglePageAsync(
                     chatThreadId, listMessagesOptions.getMaxPageSize(), listMessagesOptions.getStartTime(), context)),
-                nextLink -> withContext(context -> this.threadClient.listChatMessagesNextSinglePageAsync(
+                nextLink -> withContext(context -> this.chatThreadClient.listChatMessagesNextSinglePageAsync(
                     nextLink, context))),
                 f -> ChatMessageConverter.convert(f));
         } catch (RuntimeException ex) {
@@ -484,12 +488,12 @@ public final class ChatThreadAsyncClient {
 
         try {
             return pagedFluxConvert(new PagedFlux<>(
-                () -> withContext(context ->  this.threadClient.listChatMessagesSinglePageAsync(
+                () -> withContext(context ->  this.chatThreadClient.listChatMessagesSinglePageAsync(
                     chatThreadId,
                     serviceListMessagesOptions.getMaxPageSize(),
                     serviceListMessagesOptions.getStartTime(),
                     context)),
-                nextLink -> withContext(context -> this.threadClient.listChatMessagesNextSinglePageAsync(
+                nextLink -> withContext(context -> this.chatThreadClient.listChatMessagesNextSinglePageAsync(
                     nextLink, context))),
                 f -> ChatMessageConverter.convert(f));
         } catch (RuntimeException ex) {
@@ -512,12 +516,12 @@ public final class ChatThreadAsyncClient {
 
         try {
             return pagedFluxConvert(new PagedFlux<>(
-                () ->  this.threadClient.listChatMessagesSinglePageAsync(
+                () ->  this.chatThreadClient.listChatMessagesSinglePageAsync(
                     chatThreadId,
                     serviceListMessagesOptions.getMaxPageSize(),
                     serviceListMessagesOptions.getStartTime(),
                     serviceContext),
-                nextLink -> this.threadClient.listChatMessagesNextSinglePageAsync(
+                nextLink -> this.chatThreadClient.listChatMessagesNextSinglePageAsync(
                     nextLink, serviceContext)),
                 f -> ChatMessageConverter.convert(f));
         } catch (RuntimeException ex) {
@@ -577,7 +581,7 @@ public final class ChatThreadAsyncClient {
         Objects.requireNonNull(chatMessageId, "'chatMessageId' cannot be null.");
         Objects.requireNonNull(options, "'options' cannot be null.");
 
-        return this.threadClient.updateChatMessageWithResponseAsync(chatThreadId, chatMessageId, options, context);
+        return this.chatThreadClient.updateChatMessageWithResponseAsync(chatThreadId, chatMessageId, options, context);
     }
 
     /**
@@ -627,7 +631,7 @@ public final class ChatThreadAsyncClient {
 
         Objects.requireNonNull(chatMessageId, "'chatMessageId' cannot be null.");
 
-        return this.threadClient.deleteChatMessageWithResponseAsync(chatThreadId, chatMessageId, context);
+        return this.chatThreadClient.deleteChatMessageWithResponseAsync(chatThreadId, chatMessageId, context);
     }
 
     /**
@@ -672,7 +676,7 @@ public final class ChatThreadAsyncClient {
     Mono<Response<Void>> sendTypingNotification(Context context) {
         context = context == null ? Context.NONE : context;
 
-        return this.threadClient.sendTypingNotificationWithResponseAsync(chatThreadId, context);
+        return this.chatThreadClient.sendTypingNotificationWithResponseAsync(chatThreadId, context);
     }
 
     /**
@@ -724,7 +728,7 @@ public final class ChatThreadAsyncClient {
 
         SendReadReceiptRequest request = new SendReadReceiptRequest()
             .setChatMessageId(chatMessageId);
-        return this.threadClient.sendChatReadReceiptWithResponseAsync(chatThreadId, request, context);
+        return this.chatThreadClient.sendChatReadReceiptWithResponseAsync(chatThreadId, request, context);
     }
 
     /**
@@ -746,14 +750,16 @@ public final class ChatThreadAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ChatMessageReadReceipt> listReadReceipts(ListReadReceiptOptions listReadReceiptOptions) {
+        final ListReadReceiptOptions serviceListReadReceiptOptions =
+            listReadReceiptOptions == null ? new ListReadReceiptOptions() : listReadReceiptOptions;
         try {
             return pagedFluxConvert(new PagedFlux<>(
-                () -> withContext(context ->  this.threadClient.listChatReadReceiptsSinglePageAsync(
+                () -> withContext(context ->  this.chatThreadClient.listChatReadReceiptsSinglePageAsync(
                     chatThreadId,
-                    listReadReceiptOptions.getMaxPageSize(),
-                    listReadReceiptOptions.getSkip(),
+                    serviceListReadReceiptOptions.getMaxPageSize(),
+                    serviceListReadReceiptOptions.getSkip(),
                     context)),
-                nextLink -> withContext(context -> this.threadClient.listChatReadReceiptsNextSinglePageAsync(
+                nextLink -> withContext(context -> this.chatThreadClient.listChatReadReceiptsNextSinglePageAsync(
                     nextLink, context))),
                 f -> ChatMessageReadReceiptConverter.convert(f));
         } catch (RuntimeException ex) {
@@ -784,15 +790,17 @@ public final class ChatThreadAsyncClient {
      */
     PagedFlux<ChatMessageReadReceipt> listReadReceipts(ListReadReceiptOptions listReadReceiptOptions, Context context) {
         final Context serviceContext = context == null ? Context.NONE : context;
+        final ListReadReceiptOptions serviceListReadReceiptOptions =
+            listReadReceiptOptions == null ? new ListReadReceiptOptions() : listReadReceiptOptions;
 
         try {
             return pagedFluxConvert(new PagedFlux<>(
-                () -> this.threadClient.listChatReadReceiptsSinglePageAsync(
+                () -> this.chatThreadClient.listChatReadReceiptsSinglePageAsync(
                     chatThreadId,
-                    listReadReceiptOptions.getMaxPageSize(),
-                    listReadReceiptOptions.getSkip(),
+                    serviceListReadReceiptOptions.getMaxPageSize(),
+                    serviceListReadReceiptOptions.getSkip(),
                     serviceContext),
-                nextLink -> this.threadClient.listChatReadReceiptsNextSinglePageAsync(
+                nextLink -> this.chatThreadClient.listChatReadReceiptsNextSinglePageAsync(
                     nextLink, serviceContext)),
                 f -> ChatMessageReadReceiptConverter.convert(f));
         } catch (RuntimeException ex) {

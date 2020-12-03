@@ -40,7 +40,7 @@ import reactor.core.publisher.Mono;
 /**
  * An instance of this class provides access to all the operations defined in Chats.
  */
-public final class ChatsImpl {
+public final class ChatImpl {
     /**
      * The proxy service used to perform REST calls.
      */
@@ -56,7 +56,7 @@ public final class ChatsImpl {
      *
      * @param client the instance of the service client containing this operation class.
      */
-    ChatsImpl(AzureCommunicationChatServiceImpl client) {
+    ChatImpl(AzureCommunicationChatServiceImpl client) {
         this.service = RestProxy.create(ChatsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }

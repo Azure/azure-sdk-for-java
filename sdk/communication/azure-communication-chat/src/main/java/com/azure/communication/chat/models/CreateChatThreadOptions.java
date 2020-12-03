@@ -22,7 +22,7 @@ public final class CreateChatThreadOptions {
     @JsonProperty(value = "participants", required = true)
     private List<ChatParticipant> participants;
 
-    private String repeatabilityRequestID;
+    private String repeatabilityRequestId;
 
     /**
      * Get the topic property: The chat thread topic.
@@ -69,8 +69,8 @@ public final class CreateChatThreadOptions {
      *
      * @return the repeatabilityRequestID.
      */
-    public String getRepeatabilityRequestID() {
-        return this.repeatabilityRequestID;
+    public String getRepeatabilityRequestId() {
+        return this.repeatabilityRequestId;
     }
 
     /**
@@ -81,11 +81,11 @@ public final class CreateChatThreadOptions {
      * globally unique for all time, identifier for the request.
      * It is recommended to use version 4 (random) UUIDs.
      *
-     * @param repeatabilityRequestID the repeatabilityRequestID.
+     * @param repeatabilityRequestId the repeatabilityRequestID.
      * @return the CreateChatThreadOptions object itself.
      */
-    public CreateChatThreadOptions setRepeatabilityRequestID(String repeatabilityRequestID) {
-        this.repeatabilityRequestID = repeatabilityRequestID;
+    public CreateChatThreadOptions setRepeatabilityRequestId(String repeatabilityRequestId) {
+        this.repeatabilityRequestId = repeatabilityRequestId;
         return this;
     }
 }

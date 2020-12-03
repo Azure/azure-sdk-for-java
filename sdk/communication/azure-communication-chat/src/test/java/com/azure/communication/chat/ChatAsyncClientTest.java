@@ -114,7 +114,7 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
                 firstThreadMember.getId(),
                 secondThreadMember.getId()
             )
-            .setRepeatabilityRequestID(uuid.toString());
+            .setRepeatabilityRequestId(uuid.toString());
 
         Response<CreateChatThreadResult> response1 = client.createChatThreadWithResponse(threadRequest).block();
         assertNotNull(response1.getValue());

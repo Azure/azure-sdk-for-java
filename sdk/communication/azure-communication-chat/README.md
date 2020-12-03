@@ -102,7 +102,7 @@ Use the `createChatThread` method to create a chat thread.
 - Use `topic` to give a thread topic;
 - Use `participants` to list the thread participants to be added to the thread;
 
-`CreateChatThreadResult` is the response returned from creating a thread. 
+`CreateChatThreadResult` is the response returned from creating a chat thread. 
 It contains a `getThread()` method which returns the `ChatThread` object that can be used to get the thread client from which you can get the `ChatThreadClient` for performing operations on the created thread: add participants, send message, etc.
 The `ChatThread` object also contains the `getId()` method which retrieves the unique ID of the thread.
 
