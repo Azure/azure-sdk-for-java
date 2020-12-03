@@ -1,12 +1,10 @@
-# Azure Spring Cloud App Configuration Conversion Sample client library for Java
-
+# Azure Spring Boot Key Vault Certificates client library for Java
 ## Key concepts
 ## Getting started
 
 ### Environment checklist
 We need to ensure that this [environment checklist][ready-to-run-checklist] is completed before the run.
 
-## Key concepts
 ## Examples
 ## Troubleshooting
 ## Next steps

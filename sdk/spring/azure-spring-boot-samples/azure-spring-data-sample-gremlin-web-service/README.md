@@ -1,5 +1,4 @@
-# Azure Spring Cloud Messaging Sample client library for Java
-
+# Azure Spring Data Gremlin Web Service client library for Java
 ## Key concepts
 ## Getting started
 
