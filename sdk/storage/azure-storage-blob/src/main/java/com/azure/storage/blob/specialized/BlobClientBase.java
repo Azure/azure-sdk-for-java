@@ -15,7 +15,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.implementation.util.ModelHelper;
-import com.azure.storage.blob.models.ConcurrencyControl;
+import com.azure.storage.blob.models.ConsistentReadControl;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.models.BlobProperties;
@@ -262,8 +262,8 @@ public class BlobClientBase {
      */
     public BlobInputStream openInputStream(BlobInputStreamOptions options) {
         options = options == null ? new BlobInputStreamOptions() : options;
-        ConcurrencyControl concurrencyControl = options.getConcurrencyControl() == null ? ConcurrencyControl.ETAG
-            : options.getConcurrencyControl();
+        ConsistentReadControl consistentReadControl = options.getConsistentReadControl() == null ? ConsistentReadControl.ETAG
+            : options.getConsistentReadControl();
 
         BlobProperties properties = getPropertiesWithResponse(options.getRequestConditions(), null, null).getValue();
         String eTag = properties.getETag();
@@ -276,21 +276,21 @@ public class BlobClientBase {
             ? new BlobRequestConditions() : options.getRequestConditions();
         BlobAsyncClientBase client = this.client;
 
-        switch (concurrencyControl) {
+        switch (consistentReadControl) {
             case NONE:
                 if (requestConditions.getIfMatch() != null) {
-                    throw logger.logExceptionAsError(generateControlException("requestConditions.ifMatch",
-                        ConcurrencyControl.NONE.toString(), ConcurrencyControl.ETAG.toString()));
+                    throw logger.logExceptionAsError(generateConsistentReadControlException("requestConditions.ifMatch",
+                        ConsistentReadControl.NONE.toString(), ConsistentReadControl.ETAG.toString()));
                 }
                 if (this.client.getVersionId() != null) {
-                    throw logger.logExceptionAsError(generateControlException("client.versionId",
-                        ConcurrencyControl.NONE.toString(), ConcurrencyControl.VERSION_ID.toString()));
+                    throw logger.logExceptionAsError(generateConsistentReadControlException("client.versionId",
+                        ConsistentReadControl.NONE.toString(), ConsistentReadControl.VERSION_ID.toString()));
                 }
                 break;
             case ETAG:
                 if (this.client.getVersionId() != null) {
-                    throw logger.logExceptionAsError(generateControlException("client.versionId",
-                        ConcurrencyControl.ETAG.toString(), ConcurrencyControl.VERSION_ID.toString()));
+                    throw logger.logExceptionAsError(generateConsistentReadControlException("client.versionId",
+                        ConsistentReadControl.ETAG.toString(), ConsistentReadControl.VERSION_ID.toString()));
                 }
                 // Target the user specified eTag by default. If not provided, target the latest eTag.
                 if (requestConditions.getIfMatch() == null) {
@@ -299,8 +299,8 @@ public class BlobClientBase {
                 break;
             case VERSION_ID:
                 if (requestConditions.getIfMatch() != null) {
-                    throw logger.logExceptionAsError(generateControlException("requestConditions.ifMatch",
-                        ConcurrencyControl.VERSION_ID.toString(), ConcurrencyControl.ETAG.toString()));
+                    throw logger.logExceptionAsError(generateConsistentReadControlException("requestConditions.ifMatch",
+                        ConsistentReadControl.VERSION_ID.toString(), ConsistentReadControl.ETAG.toString()));
                 }
                 if (versionId == null) {
                     throw logger.logExceptionAsError(
@@ -321,7 +321,7 @@ public class BlobClientBase {
             requestConditions, properties);
     }
 
-    private IllegalStateException generateControlException(String wrongVariable, String originalControl,
+    private IllegalStateException generateConsistentReadControlException(String wrongVariable, String originalControl,
         String expectedControl) {
         return new IllegalStateException(String.format("'%s' can not be set when 'concurrencyControl'"
             + " is set to '%s'. Set 'concurrencyControl' to '%s'.", wrongVariable, originalControl, expectedControl));

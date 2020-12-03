@@ -11,7 +11,7 @@ import com.azure.storage.blob.BlobClient;
  * {@link #ETAG}
  * {@link #VERSION_ID}
  */
-public enum ConcurrencyControl {
+public enum ConsistentReadControl {
     /**
      * No concurrency control. 'requestConditions.ifMatch' and 'client.versionId' must not be set.
      */

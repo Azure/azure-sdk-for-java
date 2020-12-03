@@ -2,7 +2,7 @@ package com.azure.storage.blob
 
 import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobType
-import com.azure.storage.blob.models.ConcurrencyControl
+import com.azure.storage.blob.models.ConsistentReadControl
 import com.azure.storage.blob.options.BlobInputStreamOptions
 import com.azure.storage.blob.specialized.BlobOutputStream
 import com.azure.storage.blob.specialized.BlockBlobClient
@@ -186,7 +186,7 @@ class BlockBlobInputOutputStreamTest extends APISpec {
 
         // Read from the input stream
         // Note: Setting block size to 1 is inefficient but helps demonstrate the purpose of this test.
-        def inputStream = bc.openInputStream(new BlobInputStreamOptions().setBlockSize(1).setConcurrencyControl(ConcurrencyControl.NONE))
+        def inputStream = bc.openInputStream(new BlobInputStreamOptions().setBlockSize(1).setConsistentReadControl(ConsistentReadControl.NONE))
         inputStream.read()
 
         // Modify the blob again.
@@ -214,14 +214,14 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         def properties = blobClient.getProperties()
 
         when:
-        blobClient.openInputStream(new BlobInputStreamOptions().setBlockSize(1).setConcurrencyControl(ConcurrencyControl.NONE)
+        blobClient.openInputStream(new BlobInputStreamOptions().setBlockSize(1).setConsistentReadControl(ConsistentReadControl.NONE)
             .setRequestConditions(new BlobRequestConditions().setIfMatch(properties.getETag())))
 
         then:
         thrown(UnsupportedOperationException)
 
         when:
-        blobClient.getVersionClient(properties.getVersionId()).openInputStream(new BlobInputStreamOptions().setBlockSize(1).setConcurrencyControl(ConcurrencyControl.NONE))
+        blobClient.getVersionClient(properties.getVersionId()).openInputStream(new BlobInputStreamOptions().setBlockSize(1).setConsistentReadControl(ConsistentReadControl.NONE))
 
         then:
         thrown(UnsupportedOperationException)
@@ -240,7 +240,7 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         def properties = blobClient.getProperties()
 
         when: "Use recent eTag"
-        def inputStream = blobClient.openInputStream(new BlobInputStreamOptions().setConcurrencyControl(ConcurrencyControl.ETAG)
+        def inputStream = blobClient.openInputStream(new BlobInputStreamOptions().setConsistentReadControl(ConsistentReadControl.ETAG)
             .setRequestConditions(new BlobRequestConditions().setIfMatch(properties.getETag())))
 
         then:
@@ -262,7 +262,7 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         outStream.write(getRandomByteArray(length), 1 * Constants.MB, 5 * Constants.MB)
         outStream.close()
 
-        blobClient.openInputStream(new BlobInputStreamOptions().setBlockSize(1).setConcurrencyControl(ConcurrencyControl.ETAG)
+        blobClient.openInputStream(new BlobInputStreamOptions().setBlockSize(1).setConsistentReadControl(ConsistentReadControl.ETAG)
             .setRequestConditions(new BlobRequestConditions().setIfMatch(properties.getETag()))).read()
 
         then: "An old etag will fail due to ConditionNotMet"
@@ -282,7 +282,7 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         def oldProperties = blobClient.getProperties()
 
         when: "Use recent version"
-        def inputStream = blobClient.openInputStream(new BlobInputStreamOptions().setConcurrencyControl(ConcurrencyControl.VERSION_ID))
+        def inputStream = blobClient.openInputStream(new BlobInputStreamOptions().setConsistentReadControl(ConsistentReadControl.VERSION_ID))
         // Write more bytes (just to change version).
         outStream = blobClient.getBlockBlobClient().getBlobOutputStream(true)
         outStream.write(getRandomByteArray(length), 1 * Constants.MB, 5 * Constants.MB)
@@ -302,7 +302,7 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         assert randomBytes2 == Arrays.copyOfRange(randomBytes, 1 * Constants.MB, 6 * Constants.MB)
 
         when: "Use old version"
-        inputStream = blobClient.getVersionClient(oldProperties.getVersionId()).openInputStream(new BlobInputStreamOptions().setConcurrencyControl(ConcurrencyControl.VERSION_ID))
+        inputStream = blobClient.getVersionClient(oldProperties.getVersionId()).openInputStream(new BlobInputStreamOptions().setConsistentReadControl(ConsistentReadControl.VERSION_ID))
 
         outputStream = new ByteArrayOutputStream()
         try {

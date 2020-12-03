@@ -6,7 +6,7 @@ package com.azure.storage.blob.options;
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
-import com.azure.storage.blob.models.ConcurrencyControl;
+import com.azure.storage.blob.models.ConsistentReadControl;
 
 /**
  * Extended options that may be passed when opening a blob input stream.
@@ -17,7 +17,7 @@ public class BlobInputStreamOptions {
     private BlobRange range;
     private BlobRequestConditions requestConditions;
     private Integer blockSize;
-    private ConcurrencyControl concurrencyControl;
+    private ConsistentReadControl consistentReadControl;
 
     /**
      * @return {@link BlobRange}
@@ -72,18 +72,18 @@ public class BlobInputStreamOptions {
     }
 
     /**
-     * @return {@link ConcurrencyControl} Default is E-Tag.
+     * @return {@link ConsistentReadControl} Default is E-Tag.
      */
-    public ConcurrencyControl getConcurrencyControl() {
-        return concurrencyControl;
+    public ConsistentReadControl getConsistentReadControl() {
+        return consistentReadControl;
     }
 
     /**
-     * @param concurrencyControl {@link ConcurrencyControl} Default is E-Tag.
+     * @param consistentReadControl {@link ConsistentReadControl} Default is E-Tag.
      * @return The updated options.
      */
-    public BlobInputStreamOptions setConcurrencyControl(ConcurrencyControl concurrencyControl) {
-        this.concurrencyControl = concurrencyControl;
+    public BlobInputStreamOptions setConsistentReadControl(ConsistentReadControl consistentReadControl) {
+        this.consistentReadControl = consistentReadControl;
         return this;
     }
 }
