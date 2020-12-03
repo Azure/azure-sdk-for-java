@@ -262,8 +262,8 @@ public class BlobClientBase {
      */
     public BlobInputStream openInputStream(BlobInputStreamOptions options) {
         options = options == null ? new BlobInputStreamOptions() : options;
-        ConsistentReadControl consistentReadControl = options.getConsistentReadControl() == null ? ConsistentReadControl.ETAG
-            : options.getConsistentReadControl();
+        ConsistentReadControl consistentReadControl = options.getConsistentReadControl() == null
+            ? ConsistentReadControl.ETAG : options.getConsistentReadControl();
 
         BlobProperties properties = getPropertiesWithResponse(options.getRequestConditions(), null, null).getValue();
         String eTag = properties.getETag();
