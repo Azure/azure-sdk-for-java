@@ -1,4 +1,4 @@
-:instruction: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/CONTRIBUTING.md#building-from-source
+:ready-to-run-checklist: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
 
 = Spring Cloud Azure Event Hub Operation Code Sample shared library for Java
 
@@ -13,14 +13,17 @@ You can check the usage and bill at https://azure.microsoft.com/en-us/account/[t
 We have several ways to config the Azure Event Hub.
 You can choose anyone of them.
 
+=== Environment checklist
+We need to ensure that this {ready-to-run-checklist}[environment checklist] is completed before the run.
+
 === Method 1: Connection string based usage
 
 1. Create https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-create[Azure Event Hubs].
 Please note `Basic` tier is unsupported.
 
-2. Create https://docs.microsoft.com/en-us/azure/storage/[Azure Storage] for checkpoint use.
+1. Create https://docs.microsoft.com/en-us/azure/storage/[Azure Storage] for checkpoint use.
 
-3. Update link:src/main/resources/application.properties[application.properties]
+1. Update link:src/main/resources/application.properties[application.properties]
 
 +
 ....
@@ -73,9 +76,7 @@ spring.cloud.azure.eventhub.checkpoint-container=[checkpoint-container]
 ....
 
 === How to run
-First, we need to ensure that this {instruction}[instruction] is completed before run.
-
-4. Update environment if not is Global in link:src/main/resources/application.properties[application.properties]
+1. Update environment if not is Global in link:src/main/resources/application.properties[application.properties]
 
 +
 ....
@@ -84,24 +85,24 @@ First, we need to ensure that this {instruction}[instruction] is completed befor
 # spring.cloud.azure.environment=[environment]
 ....
 
-5. Update event hub name and consumer group in link:src/main/java/com/example/WebController.java#L29[WebController].
+2. Update event hub name and consumer group in link:src/main/java/com/example/WebController.java#L29[WebController].
 
-6. Run the `mvn clean spring-boot:run` in the root of the code sample to get the app running.
+3. Run the `mvn clean spring-boot:run` in the root of the code sample to get the app running.
 
-7. Send a POST request
+4. Send a POST request
 +
 ....
 $ curl -X POST http://localhost:8080/messages?message=hello
 ....
 
-8. Verify in your app's logs that a similar message was posted:
+5. Verify in your app's logs that a similar message was posted:
 +
 ....
 New message received: 'hello'
 Message 'hello' successfully checkpointed
 ....
 
-9. Delete the resources on http://ms.portal.azure.com/[Azure Portal] to avoid unexpected charges.
+6. Delete the resources on http://ms.portal.azure.com/[Azure Portal] to avoid unexpected charges.
 
 == Examples
 == Troubleshooting

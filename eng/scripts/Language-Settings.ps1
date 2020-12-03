@@ -157,6 +157,8 @@ function Publish-java-GithubIODocs ($DocLocation, $PublicArtifactLocation)
 }
 
 function Get-java-GithubIoDocIndex() {
+  # Update the main.js and docfx.json language content
+  UpdateDocIndexFiles -appTitleLang "Java"
   # Fetch out all package metadata from csv file.
   $metadata = Get-CSVMetadata -MetadataUri $MetadataUri
   # Leave the track 2 packages if multiple packages fetched out.
