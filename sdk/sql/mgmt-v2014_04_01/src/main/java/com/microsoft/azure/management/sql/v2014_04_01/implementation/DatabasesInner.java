@@ -122,14 +122,6 @@ public class DatabasesInner {
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/recommendedElasticPools/{recommendedElasticPoolName}/databases")
         Observable<Response<ResponseBody>> listByRecommendedElasticPool(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("recommendedElasticPoolName") String recommendedElasticPoolName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2014_04_01.Databases importMethod" })
-        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/import")
-        Observable<Response<ResponseBody>> importMethod(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Query("api-version") String apiVersion, @Body ImportRequest parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2014_04_01.Databases beginImportMethod" })
-        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/import")
-        Observable<Response<ResponseBody>> beginImportMethod(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Query("api-version") String apiVersion, @Body ImportRequest parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2014_04_01.Databases createImportOperation" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/extensions/{extensionName}")
         Observable<Response<ResponseBody>> createImportOperation(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Path("extensionName") String extensionName, @Query("api-version") String apiVersion, @Body ImportExtensionRequest parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -137,6 +129,14 @@ public class DatabasesInner {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2014_04_01.Databases beginCreateImportOperation" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/extensions/{extensionName}")
         Observable<Response<ResponseBody>> beginCreateImportOperation(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Path("extensionName") String extensionName, @Query("api-version") String apiVersion, @Body ImportExtensionRequest parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2014_04_01.Databases importMethod" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/import")
+        Observable<Response<ResponseBody>> importMethod(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Query("api-version") String apiVersion, @Body ImportRequest parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2014_04_01.Databases beginImportMethod" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/import")
+        Observable<Response<ResponseBody>> beginImportMethod(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Query("api-version") String apiVersion, @Body ImportRequest parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2014_04_01.Databases export" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/export")
@@ -1526,7 +1526,7 @@ public class DatabasesInner {
     }
 
     /**
-     * Gets a database inside of a recommented elastic pool.
+     * Gets a database inside of a recommended elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
@@ -1542,7 +1542,7 @@ public class DatabasesInner {
     }
 
     /**
-     * Gets a database inside of a recommented elastic pool.
+     * Gets a database inside of a recommended elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
@@ -1557,7 +1557,7 @@ public class DatabasesInner {
     }
 
     /**
-     * Gets a database inside of a recommented elastic pool.
+     * Gets a database inside of a recommended elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
@@ -1576,7 +1576,7 @@ public class DatabasesInner {
     }
 
     /**
-     * Gets a database inside of a recommented elastic pool.
+     * Gets a database inside of a recommended elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
@@ -1626,7 +1626,7 @@ public class DatabasesInner {
     }
 
     /**
-     * Returns a list of databases inside a recommented elastic pool.
+     * Returns a list of databases inside a recommended elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
@@ -1641,7 +1641,7 @@ public class DatabasesInner {
     }
 
     /**
-     * Returns a list of databases inside a recommented elastic pool.
+     * Returns a list of databases inside a recommended elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
@@ -1655,7 +1655,7 @@ public class DatabasesInner {
     }
 
     /**
-     * Returns a list of databases inside a recommented elastic pool.
+     * Returns a list of databases inside a recommended elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
@@ -1673,7 +1673,7 @@ public class DatabasesInner {
     }
 
     /**
-     * Returns a list of databases inside a recommented elastic pool.
+     * Returns a list of databases inside a recommended elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
@@ -1719,178 +1719,6 @@ public class DatabasesInner {
     private ServiceResponse<PageImpl<DatabaseInner>> listByRecommendedElasticPoolDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<DatabaseInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<DatabaseInner>>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Imports a bacpac into a new database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param parameters The required parameters for importing a Bacpac into a database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the ImportExportResponseInner object if successful.
-     */
-    public ImportExportResponseInner importMethod(String resourceGroupName, String serverName, ImportRequest parameters) {
-        return importMethodWithServiceResponseAsync(resourceGroupName, serverName, parameters).toBlocking().last().body();
-    }
-
-    /**
-     * Imports a bacpac into a new database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param parameters The required parameters for importing a Bacpac into a database.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<ImportExportResponseInner> importMethodAsync(String resourceGroupName, String serverName, ImportRequest parameters, final ServiceCallback<ImportExportResponseInner> serviceCallback) {
-        return ServiceFuture.fromResponse(importMethodWithServiceResponseAsync(resourceGroupName, serverName, parameters), serviceCallback);
-    }
-
-    /**
-     * Imports a bacpac into a new database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param parameters The required parameters for importing a Bacpac into a database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    public Observable<ImportExportResponseInner> importMethodAsync(String resourceGroupName, String serverName, ImportRequest parameters) {
-        return importMethodWithServiceResponseAsync(resourceGroupName, serverName, parameters).map(new Func1<ServiceResponse<ImportExportResponseInner>, ImportExportResponseInner>() {
-            @Override
-            public ImportExportResponseInner call(ServiceResponse<ImportExportResponseInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Imports a bacpac into a new database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param parameters The required parameters for importing a Bacpac into a database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    public Observable<ServiceResponse<ImportExportResponseInner>> importMethodWithServiceResponseAsync(String resourceGroupName, String serverName, ImportRequest parameters) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (serverName == null) {
-            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        if (parameters == null) {
-            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
-        }
-        Validator.validate(parameters);
-        Observable<Response<ResponseBody>> observable = service.importMethod(this.client.subscriptionId(), resourceGroupName, serverName, this.client.apiVersion(), parameters, this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<ImportExportResponseInner>() { }.getType());
-    }
-
-    /**
-     * Imports a bacpac into a new database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param parameters The required parameters for importing a Bacpac into a database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the ImportExportResponseInner object if successful.
-     */
-    public ImportExportResponseInner beginImportMethod(String resourceGroupName, String serverName, ImportRequest parameters) {
-        return beginImportMethodWithServiceResponseAsync(resourceGroupName, serverName, parameters).toBlocking().single().body();
-    }
-
-    /**
-     * Imports a bacpac into a new database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param parameters The required parameters for importing a Bacpac into a database.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<ImportExportResponseInner> beginImportMethodAsync(String resourceGroupName, String serverName, ImportRequest parameters, final ServiceCallback<ImportExportResponseInner> serviceCallback) {
-        return ServiceFuture.fromResponse(beginImportMethodWithServiceResponseAsync(resourceGroupName, serverName, parameters), serviceCallback);
-    }
-
-    /**
-     * Imports a bacpac into a new database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param parameters The required parameters for importing a Bacpac into a database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ImportExportResponseInner object
-     */
-    public Observable<ImportExportResponseInner> beginImportMethodAsync(String resourceGroupName, String serverName, ImportRequest parameters) {
-        return beginImportMethodWithServiceResponseAsync(resourceGroupName, serverName, parameters).map(new Func1<ServiceResponse<ImportExportResponseInner>, ImportExportResponseInner>() {
-            @Override
-            public ImportExportResponseInner call(ServiceResponse<ImportExportResponseInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Imports a bacpac into a new database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param parameters The required parameters for importing a Bacpac into a database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ImportExportResponseInner object
-     */
-    public Observable<ServiceResponse<ImportExportResponseInner>> beginImportMethodWithServiceResponseAsync(String resourceGroupName, String serverName, ImportRequest parameters) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (serverName == null) {
-            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        if (parameters == null) {
-            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
-        }
-        Validator.validate(parameters);
-        return service.beginImportMethod(this.client.subscriptionId(), resourceGroupName, serverName, this.client.apiVersion(), parameters, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImportExportResponseInner>>>() {
-                @Override
-                public Observable<ServiceResponse<ImportExportResponseInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<ImportExportResponseInner> clientResponse = beginImportMethodDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<ImportExportResponseInner> beginImportMethodDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<ImportExportResponseInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<ImportExportResponseInner>() { }.getType())
-                .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -2078,6 +1906,178 @@ public class DatabasesInner {
     private ServiceResponse<ImportExportResponseInner> beginCreateImportOperationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<ImportExportResponseInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(201, new TypeToken<ImportExportResponseInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Imports a bacpac into a new database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param parameters The required parameters for importing a Bacpac into a database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ImportExportResponseInner object if successful.
+     */
+    public ImportExportResponseInner importMethod(String resourceGroupName, String serverName, ImportRequest parameters) {
+        return importMethodWithServiceResponseAsync(resourceGroupName, serverName, parameters).toBlocking().last().body();
+    }
+
+    /**
+     * Imports a bacpac into a new database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param parameters The required parameters for importing a Bacpac into a database.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ImportExportResponseInner> importMethodAsync(String resourceGroupName, String serverName, ImportRequest parameters, final ServiceCallback<ImportExportResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(importMethodWithServiceResponseAsync(resourceGroupName, serverName, parameters), serviceCallback);
+    }
+
+    /**
+     * Imports a bacpac into a new database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param parameters The required parameters for importing a Bacpac into a database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ImportExportResponseInner> importMethodAsync(String resourceGroupName, String serverName, ImportRequest parameters) {
+        return importMethodWithServiceResponseAsync(resourceGroupName, serverName, parameters).map(new Func1<ServiceResponse<ImportExportResponseInner>, ImportExportResponseInner>() {
+            @Override
+            public ImportExportResponseInner call(ServiceResponse<ImportExportResponseInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Imports a bacpac into a new database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param parameters The required parameters for importing a Bacpac into a database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<ImportExportResponseInner>> importMethodWithServiceResponseAsync(String resourceGroupName, String serverName, ImportRequest parameters) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (serverName == null) {
+            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        }
+        Validator.validate(parameters);
+        Observable<Response<ResponseBody>> observable = service.importMethod(this.client.subscriptionId(), resourceGroupName, serverName, this.client.apiVersion(), parameters, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<ImportExportResponseInner>() { }.getType());
+    }
+
+    /**
+     * Imports a bacpac into a new database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param parameters The required parameters for importing a Bacpac into a database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ImportExportResponseInner object if successful.
+     */
+    public ImportExportResponseInner beginImportMethod(String resourceGroupName, String serverName, ImportRequest parameters) {
+        return beginImportMethodWithServiceResponseAsync(resourceGroupName, serverName, parameters).toBlocking().single().body();
+    }
+
+    /**
+     * Imports a bacpac into a new database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param parameters The required parameters for importing a Bacpac into a database.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ImportExportResponseInner> beginImportMethodAsync(String resourceGroupName, String serverName, ImportRequest parameters, final ServiceCallback<ImportExportResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginImportMethodWithServiceResponseAsync(resourceGroupName, serverName, parameters), serviceCallback);
+    }
+
+    /**
+     * Imports a bacpac into a new database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param parameters The required parameters for importing a Bacpac into a database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ImportExportResponseInner object
+     */
+    public Observable<ImportExportResponseInner> beginImportMethodAsync(String resourceGroupName, String serverName, ImportRequest parameters) {
+        return beginImportMethodWithServiceResponseAsync(resourceGroupName, serverName, parameters).map(new Func1<ServiceResponse<ImportExportResponseInner>, ImportExportResponseInner>() {
+            @Override
+            public ImportExportResponseInner call(ServiceResponse<ImportExportResponseInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Imports a bacpac into a new database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param parameters The required parameters for importing a Bacpac into a database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ImportExportResponseInner object
+     */
+    public Observable<ServiceResponse<ImportExportResponseInner>> beginImportMethodWithServiceResponseAsync(String resourceGroupName, String serverName, ImportRequest parameters) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (serverName == null) {
+            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        }
+        Validator.validate(parameters);
+        return service.beginImportMethod(this.client.subscriptionId(), resourceGroupName, serverName, this.client.apiVersion(), parameters, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImportExportResponseInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ImportExportResponseInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ImportExportResponseInner> clientResponse = beginImportMethodDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ImportExportResponseInner> beginImportMethodDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ImportExportResponseInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ImportExportResponseInner>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

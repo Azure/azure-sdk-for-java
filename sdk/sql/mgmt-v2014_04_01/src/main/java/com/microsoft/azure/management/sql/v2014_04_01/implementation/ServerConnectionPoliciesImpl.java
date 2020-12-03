@@ -44,10 +44,14 @@ class ServerConnectionPoliciesImpl extends WrapperImpl<ServerConnectionPoliciesI
     public Observable<ServerConnectionPolicy> getAsync(String resourceGroupName, String serverName) {
         ServerConnectionPoliciesInner client = this.inner();
         return client.getAsync(resourceGroupName, serverName)
-        .map(new Func1<ServerConnectionPolicyInner, ServerConnectionPolicy>() {
+        .flatMap(new Func1<ServerConnectionPolicyInner, Observable<ServerConnectionPolicy>>() {
             @Override
-            public ServerConnectionPolicy call(ServerConnectionPolicyInner inner) {
-                return wrapModel(inner);
+            public Observable<ServerConnectionPolicy> call(ServerConnectionPolicyInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ServerConnectionPolicy)wrapModel(inner));
+                }
             }
        });
     }
