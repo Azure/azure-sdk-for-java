@@ -130,19 +130,11 @@ public final class PhoneNumberAsyncClient {
         LocationOptionsQueries locationOptionsQueries = new LocationOptionsQueries();
         locationOptionsQueries.setLocationOptions(locationOptions);
 
-        if (locationOptions == null) {
-            Mono.error(new NullPointerException("'locationType' cannot be null."));
-        }
-        if (countryCode == null) {
-            Mono.error(new NullPointerException("'countryCode' cannot be null."));
-        }
-        if (phonePlanId == null) {
-            Mono.error(new NullPointerException("'phonePlanId' cannot be null."));
-        }
-
         try {
 
-
+            Objects.requireNonNull(locationType, "'locationType' cannot be null.");
+            Objects.requireNonNull(countryCode, "'countryCode' cannot be null.");
+            Objects.requireNonNull(phonePlanId, "'phonePlanId' cannot be null.");
 
             if (context == null) {
                 return phoneNumberAdministrations.getAllAreaCodesWithResponseAsync(
