@@ -49,14 +49,14 @@ class RuleSetImpl extends CreatableUpdatableImpl<RuleSet, RuleSetInner, RuleSetI
     @Override
     public Observable<RuleSet> createResourceAsync() {
         RuleSetsInner client = this.manager().inner().ruleSets();
-        return client.createAsync(this.resourceGroupName, this.profileName, this.ruleSetName)
+        return client.createAsync(this.resourceGroupName, this.profileName, this.ruleSetName, this.inner())
             .map(innerToFluentMap(this));
     }
 
     @Override
     public Observable<RuleSet> updateResourceAsync() {
         RuleSetsInner client = this.manager().inner().ruleSets();
-        return client.createAsync(this.resourceGroupName, this.profileName, this.ruleSetName)
+        return client.createAsync(this.resourceGroupName, this.profileName, this.ruleSetName, this.inner())
             .map(innerToFluentMap(this));
     }
 

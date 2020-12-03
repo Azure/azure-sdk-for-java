@@ -326,8 +326,8 @@ public class RuleSetsInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RuleSetInner object if successful.
      */
-    public RuleSetInner create(String resourceGroupName, String profileName, String ruleSetName) {
-        return createWithServiceResponseAsync(resourceGroupName, profileName, ruleSetName).toBlocking().last().body();
+    public RuleSetInner create(String resourceGroupName, String profileName, String ruleSetName, RuleSetInner ruleSet) {
+        return createWithServiceResponseAsync(resourceGroupName, profileName, ruleSetName, ruleSet).toBlocking().last().body();
     }
 
     /**
@@ -340,8 +340,8 @@ public class RuleSetsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<RuleSetInner> createAsync(String resourceGroupName, String profileName, String ruleSetName, final ServiceCallback<RuleSetInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createWithServiceResponseAsync(resourceGroupName, profileName, ruleSetName), serviceCallback);
+    public ServiceFuture<RuleSetInner> createAsync(String resourceGroupName, String profileName, String ruleSetName, RuleSetInner ruleSet, final ServiceCallback<RuleSetInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createWithServiceResponseAsync(resourceGroupName, profileName, ruleSetName, ruleSet), serviceCallback);
     }
 
     /**
@@ -353,8 +353,8 @@ public class RuleSetsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<RuleSetInner> createAsync(String resourceGroupName, String profileName, String ruleSetName) {
-        return createWithServiceResponseAsync(resourceGroupName, profileName, ruleSetName).map(new Func1<ServiceResponse<RuleSetInner>, RuleSetInner>() {
+    public Observable<RuleSetInner> createAsync(String resourceGroupName, String profileName, String ruleSetName, RuleSetInner ruleSet) {
+        return createWithServiceResponseAsync(resourceGroupName, profileName, ruleSetName, ruleSet).map(new Func1<ServiceResponse<RuleSetInner>, RuleSetInner>() {
             @Override
             public RuleSetInner call(ServiceResponse<RuleSetInner> response) {
                 return response.body();
@@ -371,7 +371,7 @@ public class RuleSetsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<RuleSetInner>> createWithServiceResponseAsync(String resourceGroupName, String profileName, String ruleSetName) {
+    public Observable<ServiceResponse<RuleSetInner>> createWithServiceResponseAsync(String resourceGroupName, String profileName, String ruleSetName, RuleSetInner ruleSet) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -402,8 +402,8 @@ public class RuleSetsInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RuleSetInner object if successful.
      */
-    public RuleSetInner beginCreate(String resourceGroupName, String profileName, String ruleSetName) {
-        return beginCreateWithServiceResponseAsync(resourceGroupName, profileName, ruleSetName).toBlocking().single().body();
+    public RuleSetInner beginCreate(String resourceGroupName, String profileName, String ruleSetName, RuleSetInner ruleSet) {
+        return beginCreateWithServiceResponseAsync(resourceGroupName, profileName, ruleSetName, ruleSet).toBlocking().single().body();
     }
 
     /**
@@ -416,8 +416,8 @@ public class RuleSetsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<RuleSetInner> beginCreateAsync(String resourceGroupName, String profileName, String ruleSetName, final ServiceCallback<RuleSetInner> serviceCallback) {
-        return ServiceFuture.fromResponse(beginCreateWithServiceResponseAsync(resourceGroupName, profileName, ruleSetName), serviceCallback);
+    public ServiceFuture<RuleSetInner> beginCreateAsync(String resourceGroupName, String profileName, String ruleSetName, RuleSetInner ruleSet, final ServiceCallback<RuleSetInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateWithServiceResponseAsync(resourceGroupName, profileName, ruleSetName, ruleSet), serviceCallback);
     }
 
     /**
@@ -429,8 +429,8 @@ public class RuleSetsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RuleSetInner object
      */
-    public Observable<RuleSetInner> beginCreateAsync(String resourceGroupName, String profileName, String ruleSetName) {
-        return beginCreateWithServiceResponseAsync(resourceGroupName, profileName, ruleSetName).map(new Func1<ServiceResponse<RuleSetInner>, RuleSetInner>() {
+    public Observable<RuleSetInner> beginCreateAsync(String resourceGroupName, String profileName, String ruleSetName, RuleSetInner ruleSet) {
+        return beginCreateWithServiceResponseAsync(resourceGroupName, profileName, ruleSetName, ruleSet).map(new Func1<ServiceResponse<RuleSetInner>, RuleSetInner>() {
             @Override
             public RuleSetInner call(ServiceResponse<RuleSetInner> response) {
                 return response.body();
@@ -447,7 +447,7 @@ public class RuleSetsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RuleSetInner object
      */
-    public Observable<ServiceResponse<RuleSetInner>> beginCreateWithServiceResponseAsync(String resourceGroupName, String profileName, String ruleSetName) {
+    public Observable<ServiceResponse<RuleSetInner>> beginCreateWithServiceResponseAsync(String resourceGroupName, String profileName, String ruleSetName, RuleSetInner ruleSet) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
