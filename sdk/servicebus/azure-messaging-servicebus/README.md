@@ -91,6 +91,9 @@ platform. First, add the package:
 ```
 [//]: # ({x-version-update-end})
 
+- Known Issue: The pom.xml file should list 'azure-messaging-servicebus' before 'azure-identity' client libraries. 
+  Check [here][known-issue-binarydata-notfound] for more detail.
+
 The implemented ways to request a credential are under the `com.azure.identity.credential` package. The sample below
 shows how to use an Azure Active Directory (AAD) application client secret to authorize with Azure Service Bus.
 
@@ -366,5 +369,6 @@ Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING
 [subscription_concept]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-queues-topics-subscriptions#topics-and-subscriptions
 [topic_concept]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messaging-overview#topics
 [wiki_identity]: https://github.com/Azure/azure-sdk-for-java/wiki/Identity-and-Authentication
+[known-issue-binarydata-notfound]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/CHANGELOG.md#known-issues
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fservicebus%2Fazure-messaging-servicebus%2FREADME.png)

@@ -27,7 +27,7 @@
 - Upgraded `azure-core` dependency to `1.11.0`.
 - Upgraded `azure-core-amqp` dependency to `2.0.0`.
 
-### Known issues 
+### Known issues
 ### Can not resolve 'BinaryData' 
   Can not resolve 'BinaryData' When using 'azure-messaging-servicebus:7.0.0' and other Azure SDKs in the same pom.xml
   file.
