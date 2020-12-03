@@ -268,7 +268,7 @@ org.revapi:revapi-maven-plugin;0.11.2
 # data track. It's also using a SNAPSHOT version which should be disallowed but there is
 # going to be some investigation necessary to find, at the very least, a newer version
 # which is, hopefully, not a SNAPSHOT.
-# sdk\batch\microsoft-azure-batch\pom.xml
+# sdk\batch\microsoft-azure-batch\pShareFileAsyncClientom.xml
 # sdk\keyvault\microsoft-azure-keyvault\pom.xml
 # sdk\keyvault\microsoft-azure-keyvault-extensions\pom.xml
 # sdk\keyvault\microsoft-azure-keyvault-test\pom.xml

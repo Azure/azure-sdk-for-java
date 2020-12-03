@@ -193,7 +193,7 @@ public class NettyFluxTests {
                 .thenRequest(Long.MAX_VALUE)
                 .thenConsumeWhile(ByteBuffer::hasRemaining)
                 .expectComplete()
-                .verify(Duration.ofSeconds(20));
+                .verify(Duration.ofSeconds(120));
         }
 
         assertArrayEquals(expected, digest.digest());

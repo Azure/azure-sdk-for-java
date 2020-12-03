@@ -280,9 +280,9 @@ public class ReactorNettyClientTests {
             .publishOn(Schedulers.newBoundedElastic(30, 1024, "io"));
 
         StepVerifier.create(numBytesMono)
-            .expectNext((long) (numRequests * LONG_BODY.getBytes(StandardCharsets.UTF_8).length))
+            .expectNext((long) numRequests * LONG_BODY.getBytes(StandardCharsets.UTF_8).length)
             .expectComplete()
-            .verify(Duration.ofSeconds(60));
+            .verify(Duration.ofSeconds(120));
     }
 
     private static MessageDigest md5Digest() {
