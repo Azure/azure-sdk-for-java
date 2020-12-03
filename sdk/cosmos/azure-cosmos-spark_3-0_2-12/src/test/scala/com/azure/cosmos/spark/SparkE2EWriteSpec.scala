@@ -14,6 +14,7 @@ import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
 
+// TODO moderakh rely on the shared database/container for the tests to avoid creating many
 // TODO moderakh we need to clean up databases after creation.
 // TODO use facility from V4 SDk?
 // TODO do proper clean up for spark session, client, etc
@@ -83,7 +84,7 @@ class SparkE2EWriteSpec extends IntegrationSpec {
     client.close()
     spark.close()
   }
-  
+
   //scalastyle:on magic.number
   //scalastyle:on multiple.string.literals
 }
