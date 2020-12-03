@@ -217,7 +217,6 @@ Licensed under the MIT License.
               <value>2</value>
             </property>
           </properties>
-          <skipTests>true</skipTests>
         </configuration>
       </plugin>
 
@@ -259,7 +258,6 @@ Licensed under the MIT License.
             <artifactId>maven-surefire-plugin</artifactId>
             <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
-              <skipTests>true</skipTests>
             </configuration>
           </plugin>
         </plugins>
@@ -281,7 +279,6 @@ Licensed under the MIT License.
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/fast-testng.xml</suiteXmlFile>
               </suiteXmlFiles>
-              <skipTests>true</skipTests>
             </configuration>
           </plugin>
         </plugins>
