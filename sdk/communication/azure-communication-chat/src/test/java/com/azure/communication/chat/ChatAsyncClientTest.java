@@ -177,8 +177,7 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
         setupTest(httpClient);
         StepVerifier.create(client.getChatThreadWithResponse("19:020082a8df7b44dd8c722bea8fe7167f@thread.v2"))
             .expectErrorMatches(exception ->
-                ((HttpResponseException) exception).getResponse().getStatusCode() == 404
-            )
+                ((HttpResponseException) exception).getResponse().getStatusCode() == 404)
             .verify();
     }
 
