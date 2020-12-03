@@ -62,7 +62,7 @@ public class IntelliJCacheAccessor {
     }
 
     private String getAzureToolsforIntelliJPluginConfigPath() {
-        return Paths.get(System.getProperty("user.home"), "AzureToolsForIntelliJ").toString();
+        return Paths.get(System.getProperty("user.home"), ".AzureToolsForIntelliJ").toString();
     }
 
     /**
