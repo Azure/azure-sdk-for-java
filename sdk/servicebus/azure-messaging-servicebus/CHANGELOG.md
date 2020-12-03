@@ -28,9 +28,7 @@
 - Upgraded `azure-core-amqp` dependency to `2.0.0`.
 
 ### Known issues 
-#### Can not resolve 'BinaryData
-Can not resolve 'BinaryData' when using 'azure-messaging-servicebus:7.0.0' and other Azure SDKs in the same pom.xml 
-file.  
+### Can not resolve 'BinaryData' when using 'azure-messaging-servicebus:7.0.0' and other Azure SDKs in the same pom.xml.
 - **Issue**: This compile time error occurs due to a known 'azure-core:1.11.0' dependency conflict between 
   'azure-messaging-servicebus:7.0.0' and other Azure SDKs, such as 'azure-identity:1.2.0', which depend on older 
   versions of azure-core.
@@ -38,7 +36,7 @@ file.
   sees and ignores the others.
 - **Resolution**: A workaround is to change the order of dependencies in the application's pom.xml file to list 
   'azure-messaging-servicebus' before any other 'azure-*' client libraries. A Fix for the January 2021 release is being 
-  tracked https://github.com/Azure/azure-sdk-for-java/issues/17942 .
+  tracked at https://github.com/Azure/azure-sdk-for-java/issues/17942 .
 - **Additional Information**: More information on diagnosing and resolving dependency conflicts can be found at
   https://github.com/Azure/azure-sdk-for-java/wiki/Frequently-Asked-Questions#dependency-conflict 
 
