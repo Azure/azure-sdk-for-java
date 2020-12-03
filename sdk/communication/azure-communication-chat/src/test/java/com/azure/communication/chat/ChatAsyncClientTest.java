@@ -310,34 +310,6 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void canListChatThreadsWithOption(HttpClient httpClient) throws InterruptedException {
-        // Arrange
-        setupTest(httpClient);
-        CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(
-            firstThreadMember.getId(), secondThreadMember.getId());
-        ListChatThreadsOptions chatThreadOptions = new ListChatThreadsOptions();
-        chatThreadOptions.setMaxPageSize(10);
-        
-        StepVerifier.create(
-                client.createChatThread(threadRequest)
-                    .concatWith(client.createChatThread(threadRequest)))
-            .assertNext(chatThreadClient -> {
-                // Act & Assert
-                PagedIterable<ChatThreadInfo> threadsResponse = new PagedIterable<>(client.listChatThreads(chatThreadOptions));
-
-                // process the iterableByPage
-                List<ChatThreadInfo> returnedThreads = new ArrayList<ChatThreadInfo>();
-                threadsResponse.iterableByPage().forEach(resp -> {
-                    assertEquals(resp.getStatusCode(), 200);
-                    resp.getItems().forEach(item -> returnedThreads.add(item));
-                });
-
-                assertTrue(returnedThreads.size() == 2);
-            });
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void canListChatThreadsWithMaxPageSize(HttpClient httpClient) throws InterruptedException {
         // Arrange
         setupTest(httpClient);
