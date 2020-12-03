@@ -100,6 +100,28 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void cannotCreateThreadWithNullOptions(HttpClient httpClient) {
+        // Arrange
+        setupTest(httpClient);
+
+        // Act & Assert
+        StepVerifier.create(client.createChatThread(null))
+            .verifyError(NullPointerException.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void cannotCreateThreadWithResponseWithNullOptions(HttpClient httpClient) {
+        // Arrange
+        setupTest(httpClient);
+        
+        // Act & Assert
+        StepVerifier.create(client.createChatThread(null))
+            .verifyError(NullPointerException.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void canGetChatThreadClient(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient);
@@ -183,6 +205,24 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void cannotGetChatThreadWithNullId(HttpClient httpClient) {
+        // Act & Assert
+        setupTest(httpClient);
+        StepVerifier.create(client.getChatThread(null))
+            .verifyError(NullPointerException.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void cannotGetChatThreadWithResponseWithNullId(HttpClient httpClient) {
+        // Act & Assert
+        setupTest(httpClient);
+        StepVerifier.create(client.getChatThreadWithResponse(null))
+            .verifyError(NullPointerException.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void canDeleteChatThread(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient);
@@ -226,6 +266,24 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void cannotDeleteChatThreadWithNullId(HttpClient httpClient) {
+        // Act & Assert
+        setupTest(httpClient);
+        StepVerifier.create(client.deleteChatThread(null))
+            .verifyError(NullPointerException.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void cannotDeleteChatThreadWithResponseWithNullId(HttpClient httpClient) {
+        // Act & Assert
+        setupTest(httpClient);
+        StepVerifier.create(client.deleteChatThreadWithResponse(null))
+            .verifyError(NullPointerException.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void canListChatThreads(HttpClient httpClient) throws InterruptedException {
         // Arrange
         setupTest(httpClient);
@@ -238,6 +296,34 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
             .assertNext(chatThreadClient -> {
                 // Act & Assert
                 PagedIterable<ChatThreadInfo> threadsResponse = new PagedIterable<>(client.listChatThreads());
+
+                // process the iterableByPage
+                List<ChatThreadInfo> returnedThreads = new ArrayList<ChatThreadInfo>();
+                threadsResponse.iterableByPage().forEach(resp -> {
+                    assertEquals(resp.getStatusCode(), 200);
+                    resp.getItems().forEach(item -> returnedThreads.add(item));
+                });
+
+                assertTrue(returnedThreads.size() == 2);
+            });
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void canListChatThreadsWithOption(HttpClient httpClient) throws InterruptedException {
+        // Arrange
+        setupTest(httpClient);
+        CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(
+            firstThreadMember.getId(), secondThreadMember.getId());
+        ListChatThreadsOptions chatThreadOptions = new ListChatThreadsOptions();
+        chatThreadOptions.setMaxPageSize(10);
+        
+        StepVerifier.create(
+                client.createChatThread(threadRequest)
+                    .concatWith(client.createChatThread(threadRequest)))
+            .assertNext(chatThreadClient -> {
+                // Act & Assert
+                PagedIterable<ChatThreadInfo> threadsResponse = new PagedIterable<>(client.listChatThreads(chatThreadOptions));
 
                 // process the iterableByPage
                 List<ChatThreadInfo> returnedThreads = new ArrayList<ChatThreadInfo>();
