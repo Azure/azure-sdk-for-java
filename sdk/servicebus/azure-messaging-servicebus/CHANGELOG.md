@@ -2,7 +2,6 @@
 
 ## 7.1.0-beta.1 (Unreleased)
 
-
 ## 7.0.0 (2020-11-30)
 
 ### New Features
@@ -27,6 +26,12 @@
 ### Dependency Updates   
 - Upgraded `azure-core` dependency to `1.11.0`.
 - Upgraded `azure-core-amqp` dependency to `2.0.0`.
+
+### Known issues
+- ClassNotFoundException for BinaryData : When user add 'azure-identity' and 'azure-messaging-servicebus' as 
+  dependency in pom file in this order. Maven will pick older transitive dependency 'azure-core:1.10.0' from 
+  'azure-identity'. You can fix this issue by listing 'azure-messaging-servicebus' before 'azure-identity' in pom.xml. 
+  Our next patch release for 'azure-messaging-servicebus' should fix this issue.
 
 ## 7.0.0-beta.7 (2020-11-06)
 ### New Features
