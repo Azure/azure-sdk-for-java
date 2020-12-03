@@ -20,6 +20,33 @@ public final class PartitionedQueryExecutionInfo extends JsonSerializable {
 
     private QueryInfo queryInfo;
     private List<Range<String>> queryRanges;
+    private static PartitionedQueryExecutionInfo DEFAULT_PARTITIONED_QUERY_EXECUTION_INFO;
+    private static final String defaultPartitionedQueryInfoJson = "{" +
+                                                                      "\"partitionedQueryExecutionInfoVersion\":2," +
+                                                                      "\"queryInfo\":{" +
+                                                                      "\"distinctType\":\"None\"," +
+                                                                      "\"top\":null," +
+                                                                      "\"offset\":null," +
+                                                                      "\"limit\":null," +
+                                                                      "\"orderBy\":[]," +
+                                                                      "\"orderByExpressions" +
+                                                                      "\":[]," +
+                                                                      "\"groupByExpressions\":[]," +
+                                                                      "\"groupByAliases\":[]," +
+                                                                      "\"aggregates\":[],\n" +
+                                                                      "\"groupByAliasToAggregateType\":{}," +
+                                                                      "\"rewrittenQuery\":\"\"," +
+                                                                      "\"hasSelectValue\":false" +
+                                                                      "},\n" +
+                                                                      "\"queryRanges\":[" +
+                                                                      "{" +
+                                                                      "\"min\":\"\"," +
+                                                                      "\"max\":\"FF\"," +
+                                                                      "\"isMinInclusive\":true," +
+                                                                      "\"isMaxInclusive\":false" +
+                                                                      "}" +
+                                                                      "]" +
+                                                                      "}";
 
     PartitionedQueryExecutionInfo(QueryInfo queryInfo, List<Range<String>> queryRanges) {
         this.queryInfo = queryInfo;
@@ -28,6 +55,15 @@ public final class PartitionedQueryExecutionInfo extends JsonSerializable {
         BridgeInternal.setProperty(this,
                 PartitionedQueryExecutionInfoInternal.PARTITIONED_QUERY_EXECUTION_INFO_VERSION_PROPERTY,
                 Constants.PartitionedQueryExecutionInfo.VERSION_1);
+    }
+
+
+    public static PartitionedQueryExecutionInfo getDefaultParitionedQueryExecutionInfo() {
+
+        if (DEFAULT_PARTITIONED_QUERY_EXECUTION_INFO == null) {
+            DEFAULT_PARTITIONED_QUERY_EXECUTION_INFO = new PartitionedQueryExecutionInfo(defaultPartitionedQueryInfoJson);
+        }
+        return DEFAULT_PARTITIONED_QUERY_EXECUTION_INFO;
     }
 
     public PartitionedQueryExecutionInfo(byte[] bytes) {

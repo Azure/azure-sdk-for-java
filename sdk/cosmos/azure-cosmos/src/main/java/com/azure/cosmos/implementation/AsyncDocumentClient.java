@@ -83,6 +83,7 @@ public interface AsyncDocumentClient {
         boolean sessionCapturingOverride;
         boolean transportClientSharing;
         boolean contentResponseOnWriteEnabled;
+        boolean queryPlanCachingEnabled;
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {
@@ -191,6 +192,21 @@ public interface AsyncDocumentClient {
             return this;
         }
 
+        /**
+         * Sets whether to allow the query plan to be cached when possible, during query execution. Caching query plan
+         * improves the latency/throughput of the query execution when same queries are executed again. It is recommended
+         * to use parameterized queries when trying to cache query plan.
+         * <p>
+         *     DEFAULT value is false
+         * </p>
+         * @param queryPlanCachingEnabled flag to enable query plan cache
+         * @return current AsyncDocumentClient.Builder
+         */
+        public Builder withQueryPlanCachingEnabled(boolean queryPlanCachingEnabled) {
+            this.queryPlanCachingEnabled = queryPlanCachingEnabled;
+            return this;
+        }
+
         private void ifThrowIllegalArgException(boolean value, String error) {
             if (value) {
                 throw new IllegalArgumentException(error);
@@ -219,7 +235,8 @@ public interface AsyncDocumentClient {
                 tokenCredential,
                 sessionCapturingOverride,
                 transportClientSharing,
-                contentResponseOnWriteEnabled);
+                contentResponseOnWriteEnabled,
+                queryPlanCachingEnabled);
 
             client.init();
             return client;
@@ -334,6 +351,13 @@ public interface AsyncDocumentClient {
      * @return a boolean indicating whether resource will be included in the response or not.
      */
     boolean isContentResponseOnWriteEnabled();
+
+    /**
+     * Gets where to allow query plan to be cached during query execution
+     *
+     * @return flag to allow query plan to be cached during query execution
+     */
+    boolean isQueryPlanCachingEnabled();
 
     /**
      * Gets the connection policy

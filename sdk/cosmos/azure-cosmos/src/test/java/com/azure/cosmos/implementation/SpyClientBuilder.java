@@ -23,7 +23,8 @@ public class SpyClientBuilder extends AsyncDocumentClient.Builder {
             desiredConsistencyLevel,
             configs,
             credential,
-            contentResponseOnWriteEnabled);
+            contentResponseOnWriteEnabled,
+            queryPlanCachingEnabled);
     }
 
     public SpyClientUnderTestFactory.ClientWithGatewaySpy buildWithGatewaySpy() {
@@ -34,7 +35,8 @@ public class SpyClientBuilder extends AsyncDocumentClient.Builder {
             desiredConsistencyLevel,
             configs,
             credential,
-            contentResponseOnWriteEnabled);
+            contentResponseOnWriteEnabled,
+            queryPlanCachingEnabled);
     }
 
     public SpyClientUnderTestFactory.DirectHttpsClientUnderTest buildWithDirectHttps() {
@@ -44,6 +46,7 @@ public class SpyClientBuilder extends AsyncDocumentClient.Builder {
             connectionPolicy,
             desiredConsistencyLevel,
             credential,
-            contentResponseOnWriteEnabled);
+            contentResponseOnWriteEnabled,
+            queryPlanCachingEnabled);
     }
 }

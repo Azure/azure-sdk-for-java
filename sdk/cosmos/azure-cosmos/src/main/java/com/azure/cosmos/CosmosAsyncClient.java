@@ -63,6 +63,7 @@ public final class CosmosAsyncClient implements Closeable {
     private final TracerProvider tracerProvider;
     private final boolean contentResponseOnWriteEnabled;
     private static final Tracer TRACER;
+    private final boolean queryPlanCachingEnabled;
 
     static {
         ServiceLoader<Tracer> serviceLoader = ServiceLoader.load(Tracer.class);
@@ -88,6 +89,7 @@ public final class CosmosAsyncClient implements Closeable {
         this.enableTransportClientSharing = builder.isConnectionSharingAcrossClientsEnabled();
         this.clientTelemetryEnabled = builder.isClientTelemetryEnabled();
         this.contentResponseOnWriteEnabled = builder.isContentResponseOnWriteEnabled();
+        this.queryPlanCachingEnabled = builder.isQueryPlanCachingEnabled();
         this.tracerProvider = new TracerProvider(TRACER);
         this.asyncDocumentClient = new AsyncDocumentClient.Builder()
                                        .withServiceEndpoint(this.serviceEndpoint)
@@ -101,6 +103,7 @@ public final class CosmosAsyncClient implements Closeable {
                                        .withTransportClientSharing(this.enableTransportClientSharing)
                                        .withContentResponseOnWriteEnabled(this.contentResponseOnWriteEnabled)
                                        .withTokenCredential(this.tokenCredential)
+                                       .withQueryPlanCachingEnabled(this.queryPlanCachingEnabled)
                                        .build();
     }
 

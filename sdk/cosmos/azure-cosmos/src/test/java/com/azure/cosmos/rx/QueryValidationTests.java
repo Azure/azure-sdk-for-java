@@ -18,13 +18,16 @@ import com.azure.cosmos.models.CosmosTriggerProperties;
 import com.azure.cosmos.models.CosmosUserDefinedFunctionProperties;
 import com.azure.cosmos.models.CosmosUserProperties;
 import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PermissionMode;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.TriggerOperation;
 import com.azure.cosmos.models.TriggerType;
 import com.azure.cosmos.util.CosmosPagedFlux;
+import io.reactivex.subscribers.TestSubscriber;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
@@ -34,6 +37,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -57,7 +61,7 @@ public class QueryValidationTests extends TestSuiteBase {
 
     @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
-        client = this.getClientBuilder().buildAsyncClient();
+        client = this.getClientBuilder().queryPlanCachingEnabled(true).buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);
         createdContainer = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdContainer);
@@ -203,6 +207,53 @@ public class QueryValidationTests extends TestSuiteBase {
             assertThat(exception.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.BADREQUEST);
         }
         createdContainer.readAllConflicts(null).byPage(1).blockFirst();
+    }
+
+    @DataProvider(name = "query")
+    private Object[][] query() {
+        return new Object[][]{
+            new Object[] { "Select * from c "},
+            new Object[] { "Select top 5 * from c"},
+            new Object[] { "select * from c order by c.prop ASC"},
+        };
+    }
+
+    @Test(groups = {"simple"}, dataProvider = "query", timeOut = TIMEOUT)
+    public void queryPlanCacheSinglePartitionCorrectness(String query) {
+
+        String pk1 = "pk1";
+        String pk2 = "pk2";
+        int partitionDocCount = 5;
+
+        List<TestObject> documentsInserted = new ArrayList<>();
+        documentsInserted.addAll(this.insertDocuments(
+            partitionDocCount,
+            Collections.singletonList(pk1),
+            createdContainer));
+        documentsInserted.addAll(this.insertDocuments(
+            partitionDocCount,
+            Collections.singletonList(pk2),
+            createdContainer));
+
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        options.setPartitionKey(new PartitionKey(pk2));
+
+        List<TestObject> values1 = queryAndGetResults(query, options, TestObject.class);
+        List<String> ids1 = values1.stream().map(TestObject::getId).collect(Collectors.toList());
+        // Second time the query plan has to be fetched from the query plan cache and complete the query.
+        List<TestObject> values2 = queryAndGetResults(query, options, TestObject.class);
+        List<String> ids2 = values2.stream().map(TestObject::getId).collect(Collectors.toList());
+
+        assertThat(ids1).containsExactlyElementsOf(ids2);
+
+    }
+
+    private <T> List<T> queryAndGetResults(String query, CosmosQueryRequestOptions options, Class<T> type) {
+        CosmosPagedFlux<T> queryPagedFlux = createdContainer.queryItems(query, options, type);
+        TestSubscriber<T> testSubscriber = new TestSubscriber<>();
+        queryPagedFlux.subscribe(testSubscriber);
+        testSubscriber.awaitTerminalEvent(TIMEOUT, TimeUnit.MILLISECONDS);
+        return testSubscriber.values();
     }
 
     private <T> List<T> queryWithContinuationTokens(String query, int pageSize, CosmosAsyncContainer container, Class<T> klass) {

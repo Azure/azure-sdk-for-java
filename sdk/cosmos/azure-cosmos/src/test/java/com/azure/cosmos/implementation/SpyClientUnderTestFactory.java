@@ -32,8 +32,12 @@ public class SpyClientUnderTestFactory {
 
     public static abstract class SpyBaseClass<T> extends RxDocumentClientImpl {
 
-        public SpyBaseClass(URI serviceEndpoint, String masterKeyOrResourceToken, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, Configs configs, AzureKeyCredential credential, boolean contentResponseOnWriteEnabled) {
-            super(serviceEndpoint, masterKeyOrResourceToken, connectionPolicy, consistencyLevel, configs, credential, null, false, false, contentResponseOnWriteEnabled);
+        public SpyBaseClass(URI serviceEndpoint, String masterKeyOrResourceToken, ConnectionPolicy connectionPolicy,
+                            ConsistencyLevel consistencyLevel, Configs configs, AzureKeyCredential credential,
+                            boolean contentResponseOnWriteEnabled, boolean queryPlanCachingEnabled ) {
+            super(serviceEndpoint, masterKeyOrResourceToken, connectionPolicy, consistencyLevel, configs, credential,
+                  null, false, false,
+                  contentResponseOnWriteEnabled, queryPlanCachingEnabled);
         }
 
         public abstract List<T> getCapturedRequests();
@@ -55,8 +59,11 @@ public class SpyClientUnderTestFactory {
         private List<RxDocumentServiceRequest> requests;
 
 
-        ClientWithGatewaySpy(URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, Configs configs, AzureKeyCredential credential, boolean contentResponseOnWriteEnabled) {
-            super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, credential, contentResponseOnWriteEnabled);
+        ClientWithGatewaySpy(URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy,
+                             ConsistencyLevel consistencyLevel, Configs configs, AzureKeyCredential credential,
+                             boolean contentResponseOnWriteEnabled, boolean queryPlanCachingEnabled) {
+            super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, credential,
+                  contentResponseOnWriteEnabled, queryPlanCachingEnabled);
             init();
         }
 
@@ -117,8 +124,11 @@ public class SpyClientUnderTestFactory {
         List<Pair<HttpRequest, Future<HttpHeaders>>> requestsResponsePairs =
                 Collections.synchronizedList(new ArrayList<>());
 
-        ClientUnderTest(URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, Configs configs, AzureKeyCredential credential, boolean contentResponseOnWriteEnabled) {
-            super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, credential, contentResponseOnWriteEnabled);
+        ClientUnderTest(URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy,
+                        ConsistencyLevel consistencyLevel, Configs configs, AzureKeyCredential credential,
+                        boolean contentResponseOnWriteEnabled, boolean queryPlanCachingEnabled) {
+            super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, credential,
+                  contentResponseOnWriteEnabled, queryPlanCachingEnabled);
             init();
         }
 
@@ -170,8 +180,11 @@ public class SpyClientUnderTestFactory {
         List<Pair<HttpRequest, Future<HttpHeaders>>> requestsResponsePairs =
                 Collections.synchronizedList(new ArrayList<>());
 
-        DirectHttpsClientUnderTest(URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, AzureKeyCredential credential, boolean contentResponseOnWriteEnabled) {
-            super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, createConfigsSpy(Protocol.HTTPS), credential, contentResponseOnWriteEnabled);
+        DirectHttpsClientUnderTest(URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy,
+                                   ConsistencyLevel consistencyLevel, AzureKeyCredential credential,
+                                   boolean contentResponseOnWriteEnabled, boolean queryPlanCachingEnabled) {
+            super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, createConfigsSpy(Protocol.HTTPS),
+                  credential, contentResponseOnWriteEnabled, queryPlanCachingEnabled);
             assert connectionPolicy.getConnectionMode() == ConnectionMode.DIRECT;
             init();
 
@@ -233,8 +246,10 @@ public class SpyClientUnderTestFactory {
                                                                   ConsistencyLevel consistencyLevel,
                                                                   Configs configs,
                                                                   AzureKeyCredential credential,
-                                                                  boolean contentResponseOnWriteEnabled) {
-        return new ClientWithGatewaySpy(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, credential, contentResponseOnWriteEnabled);
+                                                                  boolean contentResponseOnWriteEnabled,
+                                                                  boolean queryPlanCachingEnabled) {
+        return new ClientWithGatewaySpy(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs,
+                                        credential, contentResponseOnWriteEnabled, queryPlanCachingEnabled);
     }
 
     public static ClientUnderTest createClientUnderTest(AsyncDocumentClient.Builder builder) {
@@ -251,8 +266,10 @@ public class SpyClientUnderTestFactory {
                                                         ConsistencyLevel consistencyLevel,
                                                         Configs configs,
                                                         AzureKeyCredential credential,
-                                                        boolean contentResponseOnWriteEnabled) {
-        return new ClientUnderTest(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, credential, contentResponseOnWriteEnabled) {
+                                                        boolean contentResponseOnWriteEnabled,
+                                                        boolean queryPlanCachingEnabled) {
+        return new ClientUnderTest(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs,
+                                   credential, contentResponseOnWriteEnabled, queryPlanCachingEnabled) {
 
             @Override
             RxGatewayStoreModel createRxGatewayProxy(ISessionContainer sessionContainer,
@@ -281,7 +298,9 @@ public class SpyClientUnderTestFactory {
     }
 
     public static DirectHttpsClientUnderTest createDirectHttpsClientUnderTest(
-        URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, AzureKeyCredential credential, boolean contentResponseOnWriteEnabled) {
-        return new DirectHttpsClientUnderTest(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, credential, contentResponseOnWriteEnabled);
+        URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel,
+        AzureKeyCredential credential, boolean contentResponseOnWriteEnabled, boolean queryPlanCachingEnabled) {
+        return new DirectHttpsClientUnderTest(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel,
+                                              credential, contentResponseOnWriteEnabled, queryPlanCachingEnabled);
     }
 }

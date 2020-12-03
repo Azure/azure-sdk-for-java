@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.azure.cosmos.implementation.routing.LocationHelper;
 import com.azure.cosmos.models.CosmosPermissionProperties;
+import com.azure.cosmos.util.Beta;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -105,6 +106,7 @@ public class CosmosClientBuilder {
     private boolean multipleWriteRegionsEnabled = true;
     private boolean readRequestsFallbackEnabled = true;
     private boolean clientTelemetryEnabled = false;
+    private boolean queryPlanCachingEnabled = false;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -620,6 +622,23 @@ public class CosmosClientBuilder {
     }
 
     /**
+     * Sets whether to allow the query plan to be cached when possible, during query execution. Caching query plan
+     * improves the latency/throughput of the query execution when same queries are executed again. It is recommended
+     * to use parameterized queries when trying to cache query plan.
+     * <p>
+     * DEFAULT value is false
+     * </p>
+     *
+     * @param queryPlanCachingEnabled flag to enable query plan cache
+     * @return current CosmosClientBuilder
+     */
+    @Beta(Beta.SinceVersion.V4_9_0)
+    public CosmosClientBuilder queryPlanCachingEnabled(boolean queryPlanCachingEnabled) {
+        this.queryPlanCachingEnabled = queryPlanCachingEnabled;
+        return this;
+    }
+
+    /**
      * Gets the GATEWAY connection configuration to be used.
      *
      * @return gateway connection config
@@ -715,6 +734,15 @@ public class CosmosClientBuilder {
      */
     boolean isReadRequestsFallbackEnabled() {
         return readRequestsFallbackEnabled;
+    }
+
+    /**
+     * Gets where to allow query plan to be cached during query execution
+     *
+     * @return flag to allow query plan to be cached during query execution
+     */
+    boolean isQueryPlanCachingEnabled() {
+        return this.queryPlanCachingEnabled;
     }
 
     /**
