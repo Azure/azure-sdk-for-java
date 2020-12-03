@@ -64,10 +64,14 @@ class FirewallRulesImpl extends WrapperImpl<FirewallRulesInner> implements Firew
     public Observable<FirewallRule> getAsync(String resourceGroupName, String serverName, String firewallRuleName) {
         FirewallRulesInner client = this.inner();
         return client.getAsync(resourceGroupName, serverName, firewallRuleName)
-        .map(new Func1<FirewallRuleInner, FirewallRule>() {
+        .flatMap(new Func1<FirewallRuleInner, Observable<FirewallRule>>() {
             @Override
-            public FirewallRule call(FirewallRuleInner inner) {
-                return wrapModel(inner);
+            public Observable<FirewallRule> call(FirewallRuleInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((FirewallRule)wrapModel(inner));
+                }
             }
        });
     }
