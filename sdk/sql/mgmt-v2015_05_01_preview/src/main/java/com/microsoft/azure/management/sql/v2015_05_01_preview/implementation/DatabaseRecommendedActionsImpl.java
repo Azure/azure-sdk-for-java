@@ -54,10 +54,14 @@ class DatabaseRecommendedActionsImpl extends WrapperImpl<DatabaseRecommendedActi
     public Observable<RecommendedAction> getAsync(String resourceGroupName, String serverName, String databaseName, String advisorName, String recommendedActionName) {
         DatabaseRecommendedActionsInner client = this.inner();
         return client.getAsync(resourceGroupName, serverName, databaseName, advisorName, recommendedActionName)
-        .map(new Func1<RecommendedActionInner, RecommendedAction>() {
+        .flatMap(new Func1<RecommendedActionInner, Observable<RecommendedAction>>() {
             @Override
-            public RecommendedAction call(RecommendedActionInner inner) {
-                return wrapModel(inner);
+            public Observable<RecommendedAction> call(RecommendedActionInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((RecommendedAction)wrapModel(inner));
+                }
             }
        });
     }
