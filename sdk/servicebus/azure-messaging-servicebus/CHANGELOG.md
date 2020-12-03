@@ -38,9 +38,9 @@
   sees and ignores the others.
 - **Resolution**: A workaround is to change the order of dependencies in the application's pom.xml file to list 
   'azure-messaging-servicebus' before any other 'azure-*' client libraries. A Fix for the January 2021 release is being 
-  tracked at https://github.com/Azure/azure-sdk-for-java/issues/17942 .
+  tracked at https://github.com/Azure/azure-sdk-for-java/issues/17942.
 - **Additional Information**: More information on diagnosing and resolving dependency conflicts can be found at
-  https://github.com/Azure/azure-sdk-for-java/wiki/Frequently-Asked-Questions#dependency-conflict .
+  https://github.com/Azure/azure-sdk-for-java/wiki/Frequently-Asked-Questions#im-getting-a-nosuchmethoderror-or-noclassdeffounderror.
 
 ## 7.0.0-beta.7 (2020-11-06)
 ### New Features
