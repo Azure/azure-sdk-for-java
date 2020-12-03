@@ -3,12 +3,11 @@
 
 package com.azure.cosmos.spark
 
-import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, Inside, Inspectors, OptionValues}
 import org.scalatest.flatspec.AnyFlatSpec
-import org.scalatest.funspec.AnyFunSpecLike
 import org.scalatest.matchers.should.Matchers
+import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, Inside, Inspectors, OptionValues}
 
-abstract class UnitSpec extends AnyFlatSpec
+abstract class IntegrationSpec extends AnyFlatSpec
   with BeforeAndAfterAll
   with BeforeAndAfterEach
   with Matchers
