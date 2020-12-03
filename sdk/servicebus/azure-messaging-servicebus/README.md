@@ -175,7 +175,7 @@ To receive messages, you will need to create a `ServiceBusProcessorClient` with 
 
 By default, the `autoComplete` feature is enabled on the processor client which means that after executing your callback for the message, the client will complete the message i.e. remove it from the queue/subscription. If your callback throws an error, then the client will abandon the message i.e. make it available to be received again. You can disable this feature when creating the processor client.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L215-L241 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L215-L242 -->
 ```java
 // Sample code that processes a single message
 Consumer<ServiceBusReceivedMessageContext> processMessage = messageContext -> {
@@ -200,6 +200,7 @@ ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()
                                 .queueName("<< QUEUE NAME >>")
                                 .processMessage(processMessage)
                                 .processError(processError)
+                                .disableAutoComplete()
                                 .buildProcessorClient();
 
 // Starts the processor in the background and returns immediately

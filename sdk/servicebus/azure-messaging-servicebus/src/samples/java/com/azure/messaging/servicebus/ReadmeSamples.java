@@ -235,6 +235,7 @@ public class ReadmeSamples {
                                         .queueName("<< QUEUE NAME >>")
                                         .processMessage(processMessage)
                                         .processError(processError)
+                                        .disableAutoComplete()
                                         .buildProcessorClient();
 
         // Starts the processor in the background and returns immediately
