@@ -29,9 +29,9 @@
 
 ### Known issues
 - ClassNotFoundException for BinaryData : When user add 'azure-identity' and 'azure-messaging-servicebus' as 
-  dependency in pom file in this order. Maven will pick older transitive dependency 'azure-core:1.10.0' from 
-  'azure-identity'. You can fix this issue by listing 'azure-messaging-servicebus' before 'azure-identity' in pom.xml. 
-  Our next patch release for 'azure-messaging-servicebus' should fix this issue.
+  dependency in pom file in this order. Since 'azure-identity' is listed first, maven will pick older transitive 
+  dependency 'azure-core:1.10.0' from 'azure-identity'. You can fix this issue by listing 'azure-messaging-servicebus' 
+  before 'azure-identity' in pom.xml. Our next patch release for 'azure-messaging-servicebus' should fix this issue.
 
 ## 7.0.0-beta.7 (2020-11-06)
 ### New Features
