@@ -34,7 +34,7 @@ public class CreationSource {
         if (createOption == DiskCreateOption.COPY) {
             String sourceResourceId = this.creationData.sourceResourceId();
             if (sourceResourceId == null && this.creationData.sourceUri() != null) {
-               sourceResourceId = this.creationData.sourceUri();
+                sourceResourceId = this.creationData.sourceUri();
             }
             if (sourceResourceId != null) {
                 String resourceType = ResourceUtils.resourceTypeFromResourceId(sourceResourceId);
