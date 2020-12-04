@@ -257,3 +257,16 @@ function SetPackageVersion ($PackageName, $Version, $ServiceDirectory, $ReleaseD
   & "$EngCommonScriptsDir/Update-ChangeLog.ps1" -Version $Version -ServiceDirectory $ServiceDirectory -PackageName $PackageName `
   -Unreleased $False -ReplaceLatestEntryTitle $True -ReleaseDate $ReleaseDate
 }
+
+  function GetExistingPackageVersions ($PackageName, $GroupId=$null)
+{
+  try {
+    $Uri = 'https://search.maven.org/solrsearch/select?q=g:"' + $GroupId + '"+AND+a:"' + $PackageName +'"&core=gav&rows=20&wt=json'
+    $existingVersion = Invoke-RestMethod -Method GET -Uri $Uri
+    return $existingVersion.response.docs.v
+  }
+  catch {
+    LogError "Failed to retieve package versions. `n$_"
+    return $null
+  }
+}
