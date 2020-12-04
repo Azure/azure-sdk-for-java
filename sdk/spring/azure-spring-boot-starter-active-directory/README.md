@@ -35,9 +35,17 @@ The authorization flow is composed of 3 phrases:
 * Evaluate the permission based on membership info to grant or deny access
 
 ### Group membership
-The way to obtain group relationship that will determine which graph api will be used. You can change it using the `azure.activedirectory.user-group.group-relationship` configuration.
-* **direct**: the default value, get groups that the user is a direct member of. For details, see [list memberOf][graph-api-list-member-of] api.
-* **transitive**: Get groups that the user is a member of, and will also return all groups the user is a nested member of. For details, see [list transitive memberOf][graph-api-list-transitive-member-of] api.
+The way to get group relationship depends on the graph api used, the default to get membership is the direct group of the user. 
+If you want to get all transitive relationships, you should confirm first which environment or region name you are using, default region is *global*, then override the uri configuration. For details, see [list transitive membership][graph-api-list-transitive-member-of] api.
+
+The following are configuration items for all regions:
+
+```properties
+azure.service.endpoints.cn.aadMembershipRestUri=https://graph.chinacloudapi.cn/me/transitiveMemberOf?api-version=1.6
+azure.service.endpoints.cn-v2-graph.aadMembershipRestUri=https://microsoftgraph.chinacloudapi.cn/v1.0/me/transitiveMemberOf
+azure.service.endpoints.global.aadMembershipRestUri=https://graph.windows.net/me/transitiveMemberOf?api-version=1.6
+azure.service.endpoints.global-v2-graph.aadMembershipRestUri=https://graph.microsoft.com/v1.0/me/transitiveMemberOf
+``` 
 
 ### Web application
 Based on Azure AD as a Web application, it uses OAuth2 authorization code flow to authentication, and authorizes resources based on the groups or roles claim in the access token. 
