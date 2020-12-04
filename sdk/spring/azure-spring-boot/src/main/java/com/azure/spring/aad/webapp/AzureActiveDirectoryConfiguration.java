@@ -146,7 +146,7 @@ public class AzureActiveDirectoryConfiguration {
         Map<String, Object> configurationMetadata = new LinkedHashMap<>();
         String tenantId = this.properties.getTenantId();
         String endSessionEndpoint = String.format("https://login.microsoftonline.com/%s/oauth2/v2.0/logout",
-            StringUtils.hasText(tenantId) ? id : "common");
+            StringUtils.hasText(tenantId) ? tenantId : "common");
         configurationMetadata.put("end_session_endpoint", endSessionEndpoint);
         result.providerConfigurationMetadata(configurationMetadata);
 
