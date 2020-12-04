@@ -1,7 +1,5 @@
-package com.azure.spring.aad.resource.server;
+package com.azure.spring.aad.webapi;
 
-import com.azure.spring.aad.webapi.AADOAuth2OboAuthorizedClientRepository;
-import com.azure.spring.aad.webapp.AzureActiveDirectoryConfiguration;
 import com.azure.spring.aad.webapp.AzureClientRegistrationRepository;
 import org.junit.Before;
 import org.junit.jupiter.api.Assertions;
@@ -44,9 +42,10 @@ public class AADOboAuthorizedClientRepoTest {
             "azure.activedirectory.tenant-id = fake-tenant-id",
             "azure.activedirectory.client-id = fake-client-id",
             "azure.activedirectory.client-secret = fake-client-secret",
-            "azure.activedirectory.authorization.graph.scopes = https://graph.microsoft.com/.default"
+            "azure.activedirectory.authorization.graph.scopes = https://graph.microsoft.com/.default",
+            "azure.activedirectory.app-id-uri = fake-client-id"
         );
-        context.register(AzureActiveDirectoryConfiguration.class);
+        context.register(AzureActiveDirectoryResourceServerClientConfiguration.class);
         context.refresh();
 
         AzureClientRegistrationRepository clientRepo = context.getBean(AzureClientRegistrationRepository.class);
