@@ -37,13 +37,13 @@ public class CreationSource {
                sourceResourceId = this.creationData.sourceUri();
             }
             if (sourceResourceId != null) {
-               String resourceType = ResourceUtils.resourceTypeFromResourceId(sourceResourceId);
-               if ("disks".equalsIgnoreCase(resourceType)) {
-                  return CreationSourceType.COPIED_FROM_DISK;
-               }
-               if ("snapshots".equalsIgnoreCase(resourceType)) {
-                  return CreationSourceType.COPIED_FROM_SNAPSHOT;
-               }
+                String resourceType = ResourceUtils.resourceTypeFromResourceId(sourceResourceId);
+                if ("disks".equalsIgnoreCase(resourceType)) {
+                    return CreationSourceType.COPIED_FROM_DISK;
+                }
+                if ("snapshots".equalsIgnoreCase(resourceType)) {
+                    return CreationSourceType.COPIED_FROM_SNAPSHOT;
+                }
             }
         }
         if (createOption == DiskCreateOption.EMPTY) {
