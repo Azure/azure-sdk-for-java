@@ -22,10 +22,13 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -139,6 +142,13 @@ public class AzureActiveDirectoryConfiguration {
         result.authorizationUri(endpoints.authorizationEndpoint(properties.getTenantId()));
         result.tokenUri(endpoints.tokenEndpoint(properties.getTenantId()));
         result.jwkSetUri(endpoints.jwkSetEndpoint(properties.getTenantId()));
+
+        Map<String, Object> configurationMetadata = new LinkedHashMap<>();
+        String tenantId = this.properties.getTenantId();
+        String endSessionEndpoint = String.format("https://login.microsoftonline.com/%s/oauth2/v2.0/logout",
+            StringUtils.hasText(tenantId) ? id : "common");
+        configurationMetadata.put("end_session_endpoint", endSessionEndpoint);
+        result.providerConfigurationMetadata(configurationMetadata);
 
         return result;
     }
