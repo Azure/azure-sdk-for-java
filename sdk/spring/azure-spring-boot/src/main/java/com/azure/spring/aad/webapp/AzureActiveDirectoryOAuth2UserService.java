@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.aad.implementation;
+package com.azure.spring.aad.webapp;
 
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import com.azure.spring.autoconfigure.aad.AADTokenClaim;
@@ -32,8 +32,8 @@ import static com.azure.spring.autoconfigure.aad.Constants.DEFAULT_AUTHORITY_SET
 import static com.azure.spring.autoconfigure.aad.Constants.ROLE_PREFIX;
 
 /**
- * This implementation will retrieve group info of user from Microsoft Graph and map groups to {@link
- * GrantedAuthority}.
+ * This implementation will retrieve group info of user from Microsoft Graph.
+ * Then map group to {@link GrantedAuthority}.
  */
 public class AzureActiveDirectoryOAuth2UserService implements OAuth2UserService<OidcUserRequest, OidcUser> {
 

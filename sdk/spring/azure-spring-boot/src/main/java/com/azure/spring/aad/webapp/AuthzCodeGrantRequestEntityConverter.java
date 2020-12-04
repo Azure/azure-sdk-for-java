@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.aad.implementation;
+package com.azure.spring.aad.webapp;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.RequestEntity;
@@ -11,6 +11,9 @@ import org.springframework.util.MultiValueMap;
 
 import java.util.Optional;
 
+/**
+ * Used to set "scope" parameter when use "auth-code" to get "access_token".
+ */
 public class AuthzCodeGrantRequestEntityConverter extends OAuth2AuthorizationCodeGrantRequestEntityConverter {
 
     private final AzureClientRegistration azureClient;

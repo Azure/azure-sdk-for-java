@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.aad.implementation;
+package com.azure.spring.aad.webapp;
 
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import com.azure.spring.autoconfigure.aad.JacksonObjectMapperFactory;
@@ -25,6 +25,10 @@ import java.util.LinkedHashSet;
 import java.util.Optional;
 import java.util.Set;
 
+/**
+ * GraphClient is used to access graph server.
+ * Mainly used to get groups information of a user.
+ */
 public class GraphClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(GraphClient.class);
 

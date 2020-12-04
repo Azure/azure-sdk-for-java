@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.aad.implementation;
+package com.azure.spring.aad.webapp;
 
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +28,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Configure the necessary beans used for aad authentication and authorization.
+ */
 @Configuration
 @ConditionalOnClass(ClientRegistrationRepository.class)
 @EnableConfigurationProperties(AADAuthenticationProperties.class)
@@ -140,6 +143,9 @@ public class AzureActiveDirectoryConfiguration {
         return result;
     }
 
+    /**
+     * Sample configuration to make AzureActiveDirectoryOAuth2UserService take effect.
+     */
     @Configuration
     @ConditionalOnBean(ObjectPostProcessor.class)
     @ConditionalOnMissingBean(WebSecurityConfigurerAdapter.class)

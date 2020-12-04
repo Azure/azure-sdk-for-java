@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.aad.implementation;
+package com.azure.spring.aad.webapp;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -10,6 +10,10 @@ import org.springframework.security.oauth2.client.endpoint.DefaultAuthorizationC
 import org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
 
+/**
+ * Abstract configuration class, used to make AzureClientRegistrationRepository
+ * and AuthzCodeGrantRequestEntityConverter take effect.
+ */
 public abstract class AzureOAuth2Configuration extends WebSecurityConfigurerAdapter {
 
     @Autowired

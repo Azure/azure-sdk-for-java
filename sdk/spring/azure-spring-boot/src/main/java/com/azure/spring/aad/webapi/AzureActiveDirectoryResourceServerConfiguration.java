@@ -3,7 +3,7 @@
 package com.azure.spring.aad.webapi;
 
 
-import com.azure.spring.aad.implementation.AuthorizationServerEndpoints;
+import com.azure.spring.aad.webapp.AuthorizationServerEndpoints;
 import com.azure.spring.aad.webapi.validator.AzureJwtAudienceValidator;
 import com.azure.spring.aad.webapi.validator.AzureJwtIssuerValidator;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
