@@ -16,6 +16,8 @@ import rx.functions.Func1;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.management.mysql.v2020_01_01.QueryText;
 
+import java.util.List;
+
 class QueryTextsImpl extends WrapperImpl<QueryTextsInner> implements QueryTexts {
     private final MySQLManager manager;
 

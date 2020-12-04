@@ -12,6 +12,8 @@ import rx.Observable;
 import com.microsoft.azure.management.mysql.v2020_01_01.implementation.QueryTextsInner;
 import com.microsoft.azure.arm.model.HasInner;
 
+import java.util.List;
+
 /**
  * Type representing QueryTexts.
  */

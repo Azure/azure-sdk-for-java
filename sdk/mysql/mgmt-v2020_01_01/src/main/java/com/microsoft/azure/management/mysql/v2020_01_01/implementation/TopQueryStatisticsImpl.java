@@ -11,6 +11,7 @@ package com.microsoft.azure.management.mysql.v2020_01_01.implementation;
 
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.mysql.v2020_01_01.TopQueryStatistics;
+import com.microsoft.azure.management.mysql.v2020_01_01.TopQueryStatisticsInput;
 import rx.Observable;
 import rx.functions.Func1;
 import com.microsoft.azure.Page;
