@@ -58,7 +58,8 @@ function IsMavenPackageVersionPublished($pkgId, $pkgVersion, $groupId)
 }
 
 # Parse out package publishing information given a maven POM file
-function Get-java-PackageInfoFromPackageFile ($pkg, $workingDirectory) {
+function Get-java-PackageInfoFromPackageFile ($pkg, $workingDirectory)
+{
   [xml]$contentXML = Get-Content $pkg
 
   $pkgId = $contentXML.project.artifactId
@@ -156,7 +157,8 @@ function Publish-java-GithubIODocs ($DocLocation, $PublicArtifactLocation)
   }
 }
 
-function Get-java-GithubIoDocIndex() {
+function Get-java-GithubIoDocIndex()
+{
   # Update the main.js and docfx.json language content
   UpdateDocIndexFiles -appTitleLang "Java"
   # Fetch out all package metadata from csv file.
@@ -175,7 +177,8 @@ function Get-java-GithubIoDocIndex() {
 
 # a "package.json configures target packages for all the monikers in a Repository, it also has a slightly different
 # schema than the moniker-specific json config that is seen in python and js
-function Update-java-CIConfig($pkgs, $ciRepo, $locationInDocRepo, $monikerId=$null){
+function Update-java-CIConfig($pkgs, $ciRepo, $locationInDocRepo, $monikerId=$null)
+{
   $pkgJsonLoc = (Join-Path -Path $ciRepo -ChildPath $locationInDocRepo)
   
   if (-not (Test-Path $pkgJsonLoc)) {
@@ -217,7 +220,6 @@ function Update-java-CIConfig($pkgs, $ciRepo, $locationInDocRepo, $monikerId=$nu
   Set-Content -Path $pkgJsonLoc -Value $jsonContent
 }
 
-
 # function is used to filter packages to submit to API view tool
 function Find-java-Artifacts-For-Apireview($artifactDir, $pkgName = "")
 {
@@ -241,4 +243,17 @@ function Find-java-Artifacts-For-Apireview($artifactDir, $pkgName = "")
   }
 
   return $packages
+}
+
+function GetExistingPackageVersions ($PackageName, $GroupId=$null)
+{
+  try {
+    $Uri = 'https://search.maven.org/solrsearch/select?q=g:"' + $GroupId + '"+AND+a:"' + $PackageName +'"&core=gav&rows=20&wt=json'
+    $existingVersion = Invoke-RestMethod -Method GET -Uri $Uri
+    return $existingVersion.response.docs.v
+  }
+  catch {
+    LogError "Failed to retieve package versions. `n$_"
+    return $null
+  }
 }
