@@ -3,4 +3,4 @@
 /**
  * Package com.azure.spring.aad.resource.server
  */
-package com.azure.spring.aad.resource.server;
+package com.azure.spring.aad.webapi;
