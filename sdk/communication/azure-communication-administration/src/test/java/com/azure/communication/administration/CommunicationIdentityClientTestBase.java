@@ -50,11 +50,7 @@ public class CommunicationIdentityClientTestBase extends TestBase {
             .endpoint(ENDPOINT)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
-        if (getTestMode() == TestMode.PLAYBACK) {
-            builder.credential(new FakeCredentials());
-        } else {
-            builder.credential(new DefaultAzureCredentialBuilder().build());
-        }
+        builder.credential(new DefaultAzureCredentialBuilder().build());
 
         if (getTestMode() == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
