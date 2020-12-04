@@ -9,12 +9,10 @@ import com.azure.communication.common.HmacAuthenticationPolicy;
 import com.azure.communication.administration.implementation.CommunicationIdentityClientImpl;
 import com.azure.communication.administration.implementation.CommunicationIdentityClientImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.AzureKeyCredentialPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -221,7 +219,7 @@ public final class CommunicationIdentityClientBuilder {
     private HttpPipelinePolicy createHttpPipelineAuthPolicy() {
         HttpPipelinePolicy authPolicy;
         if (this.tokenCredential != null) { 
-            authPolicy = new BearerTokenAuthenticationPolicy(this.tokenCredential, "https://communication.azure.com/.default");          
+            authPolicy = new BearerTokenAuthenticationPolicy(this.tokenCredential, "https://communication.azure.com//.default");          
         } else if (this.credential != null) {
             authPolicy = new HmacAuthenticationPolicy(this.credential);            
         } else {
