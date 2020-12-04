@@ -30,17 +30,8 @@
 ### Known issues
 ### Can not resolve 'BinaryData' or 'NoClassDefFoundError' 
   NoClassDefFoundError When using 'azure-messaging-servicebus:7.0.0' and other Azure SDKs in the same pom.xml file.
-- **Issue**: This error occurs due to a known 'azure-core:1.11.0' dependency conflict between 
-  'azure-messaging-servicebus:7.0.0' and other Azure SDKs, such as 'azure-identity:1.2.0', which depend on older 
-  versions of azure-core. 
-  When two libraries depend on different versions of the same package, Maven will simply pick the first version that it 
-  sees and ignores the others.
-- **Resolution**: A workaround is to change the order of dependencies in the application's pom.xml file to list 
-  'azure-messaging-servicebus' before any other 'azure-*' client libraries. A Fix for the January 2021 release is being 
-  tracked at https://github.com/Azure/azure-sdk-for-java/issues/17942.
-- **Additional Information**: More information on diagnosing and resolving dependency conflicts can be found at
-  https://github.com/Azure/azure-sdk-for-java/wiki/Frequently-Asked-Questions#im-getting-a-nosuchmethoderror-or-noclassdeffounderror.
-
+  Check [here][known-issue-binarydata-notfound] for more detail.
+  
 ## 7.0.0-beta.7 (2020-11-06)
 ### New Features
 - Added automatic message and session lock renewal feature on the receiver clients. By default, this will be done 
@@ -147,5 +138,7 @@ our efforts can be found in the [Azure SDK Design Guidelines for
 ### Known issues
 
 - Following features are not implemented Transactions, Sessions, Managing filter rules on Subscription.
+
+[known-issue-binarydata-notfound]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/known-issues.md#known-issues
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fservicebus%2Fazure-messaging-servicebus%2FCHANGELOG.png)
