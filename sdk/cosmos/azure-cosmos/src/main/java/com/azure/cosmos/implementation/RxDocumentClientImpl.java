@@ -11,7 +11,6 @@ import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.DirectConnectionConfig;
-import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.batch.BatchResponseParser;
 import com.azure.cosmos.implementation.batch.PartitionKeyRangeServerBatchRequest;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
@@ -2221,6 +2220,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 },
                 invalidPartitionExceptionRetryPolicy);
         });
+    }
+
+    @Override
+    public LRUCache<String, PartitionedQueryExecutionInfo> getQueryPlanCache() {
+        return queryPlanCache;
     }
 
     @Override

@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.clientTelemetry.ClientTelemetry;
+import com.azure.cosmos.implementation.query.PartitionedQueryExecutionInfo;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
@@ -1482,6 +1483,8 @@ public interface AsyncDocumentClient {
         PartitionKey partitionKey,
         CosmosQueryRequestOptions options
     );
+
+    LRUCache<String, PartitionedQueryExecutionInfo> getQueryPlanCache();
 
     /**
      * Gets the collection cache.

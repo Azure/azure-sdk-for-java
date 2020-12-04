@@ -156,11 +156,12 @@ public class DocumentQueryExecutionContextFactory {
     }
 
     private static boolean canCacheQuery(QueryInfo queryInfo) {
-        // Queries which match below conditions will not be cached.
+        // Query plan will not be cached for the types below
         return !queryInfo.hasAggregates()
                    && !queryInfo.hasDistinct()
                    && !queryInfo.hasGroupBy()
                    && !queryInfo.hasLimit()
+                   && !queryInfo.hasTop()
                    && !queryInfo.hasOffset();
     }
 

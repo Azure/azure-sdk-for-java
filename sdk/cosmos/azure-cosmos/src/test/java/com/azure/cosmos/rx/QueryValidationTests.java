@@ -5,8 +5,10 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
+import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
@@ -20,6 +22,7 @@ import com.azure.cosmos.models.CosmosUserProperties;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PermissionMode;
+import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.TriggerOperation;
@@ -230,6 +233,7 @@ public class QueryValidationTests extends TestSuiteBase {
             partitionDocCount,
             Collections.singletonList(pk1),
             createdContainer));
+        AsyncDocumentClient contextClient = CosmosBridgeInternal.getContextClient(createdContainer);
         documentsInserted.addAll(this.insertDocuments(
             partitionDocCount,
             Collections.singletonList(pk2),
@@ -238,18 +242,69 @@ public class QueryValidationTests extends TestSuiteBase {
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setPartitionKey(new PartitionKey(pk2));
 
-        List<TestObject> values1 = queryAndGetResults(query, options, TestObject.class);
+        assertThat(contextClient.getQueryPlanCache().containsKey(query)).isFalse();
+        List<TestObject> values1 = queryAndGetResults(new SqlQuerySpec(query), options, TestObject.class);
         List<String> ids1 = values1.stream().map(TestObject::getId).collect(Collectors.toList());
         // Second time the query plan has to be fetched from the query plan cache and complete the query.
-        List<TestObject> values2 = queryAndGetResults(query, options, TestObject.class);
+        assertThat(contextClient.getQueryPlanCache().containsKey(query)).isTrue();
+        List<TestObject> values2 = queryAndGetResults(new SqlQuerySpec(query), options, TestObject.class);
         List<String> ids2 = values2.stream().map(TestObject::getId).collect(Collectors.toList());
 
         assertThat(ids1).containsExactlyElementsOf(ids2);
 
     }
 
-    private <T> List<T> queryAndGetResults(String query, CosmosQueryRequestOptions options, Class<T> type) {
-        CosmosPagedFlux<T> queryPagedFlux = createdContainer.queryItems(query, options, type);
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void queryPlanCacheSinglePartitionParameterizedQueriesCorrectness() {
+        SqlQuerySpec sqlQuerySpec = new SqlQuerySpec();
+        sqlQuerySpec.setQueryText("select * from c where c.id = @id");
+
+        String pk1 = "pk1";
+        String pk2 = "pk2";
+        int partitionDocCount = 5;
+
+        List<TestObject> documentsInserted = new ArrayList<>();
+        documentsInserted.addAll(this.insertDocuments(
+            partitionDocCount,
+            Collections.singletonList(pk1),
+            createdContainer));
+        AsyncDocumentClient contextClient = CosmosBridgeInternal.getContextClient(createdContainer);
+        List<TestObject> pk2Docs = this.insertDocuments(
+            partitionDocCount,
+            Collections.singletonList(pk2),
+            createdContainer);
+        documentsInserted.addAll(pk2Docs);
+
+
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        options.setPartitionKey(new PartitionKey(pk2));
+
+        sqlQuerySpec.setParameters(Collections.singletonList(new SqlParameter("@id", pk2Docs.get(0).getId())));
+        assertThat(contextClient.getQueryPlanCache().containsKey(sqlQuerySpec.getQueryText())).isFalse();
+        List<TestObject> values1 = queryAndGetResults(sqlQuerySpec, options, TestObject.class);
+        List<String> ids1 = values1.stream().map(TestObject::getId).collect(Collectors.toList());
+
+        // Second time the query plan has to be fetched from the query plan cache and complete the query.
+        sqlQuerySpec.setParameters(Collections.singletonList(new SqlParameter("@id", pk2Docs.get(1).getId())));
+        assertThat(contextClient.getQueryPlanCache().containsKey(sqlQuerySpec.getQueryText())).isTrue();
+        List<TestObject> values2 = queryAndGetResults(sqlQuerySpec, options, TestObject.class);
+        List<String> ids2 = values2.stream().map(TestObject::getId).collect(Collectors.toList());
+
+        // Since the value of parameters changed, query results should not match
+        assertThat(ids1).doesNotContainAnyElementsOf(ids2);
+
+        sqlQuerySpec.setQueryText("select top @top * from c");
+        int topValue = 2;
+        sqlQuerySpec.setParameters(Collections.singletonList(new SqlParameter("@top", 2)));
+        assertThat(contextClient.getQueryPlanCache().containsKey(sqlQuerySpec.getQueryText())).isFalse();
+        values1 = queryAndGetResults(sqlQuerySpec, options, TestObject.class);
+        // Top query should not be cached
+        assertThat(contextClient.getQueryPlanCache().containsKey(sqlQuerySpec.getQueryText())).isFalse();
+
+    }
+
+    private <T> List<T> queryAndGetResults(SqlQuerySpec querySpec, CosmosQueryRequestOptions options, Class<T> type) {
+        CosmosPagedFlux<T> queryPagedFlux = createdContainer.queryItems(querySpec, options, type);
         TestSubscriber<T> testSubscriber = new TestSubscriber<>();
         queryPagedFlux.subscribe(testSubscriber);
         testSubscriber.awaitTerminalEvent(TIMEOUT, TimeUnit.MILLISECONDS);
