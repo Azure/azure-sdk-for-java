@@ -5,8 +5,8 @@ This article lists known issues in Azure Service Bus SDK releases. The list is u
 ### Can not resolve 'BinaryData' or 'NoClassDefFoundError' (version 7.0.0) 
 NoClassDefFoundError When using 'azure-messaging-servicebus:7.0.0' and other Azure SDKs in the same pom.xml file.
 
-- **Applicable**: This issue applies to 'azure-messaging-servicebus:7.0.0' when it is listed with other Azure SDKs in  
-  the same pom.xml file.
+- **Applicable**: This issue applies to 'azure-messaging-servicebus:7.0.0' when it is listed with other Azure SDKs in 
+   the same pom.xml file.
 - **Cause**: This error occurs due to a known 'azure-core:1.11.0' dependency conflict between 
   'azure-messaging-servicebus:7.0.0' and other Azure SDKs, such as 'azure-identity:1.2.0', which depend on older 
   versions of azure-core. When two libraries depend on different versions of the same package, Maven will simply pick 
