@@ -36,7 +36,11 @@ import org.springframework.web.filter.OncePerRequestFilter;
  * implementation so the principal will not be stored in session. By using roles claim in the token it will not call
  * Microsoft Graph to retrieve users' groups.
  * <p>
- * @deprecated See the <a href="https://github.com/Azure/azure-sdk-for-java/issues/17860">Alternative method</a>.
+ *
+ * @deprecated For AADAppRoleStatelessAuthenticationFilter, suggest use spring-security resource-server directly and
+ * include azure-spring-boot-starter-active-directory dependencies into your project.Automatic configuration of the
+ * associated AAD will be started, they will work well together.
+ * See the <a href="https://github.com/Azure/azure-sdk-for-java/issues/17860">Alternative method</a>.
  */
 @Deprecated
 public class AADAppRoleStatelessAuthenticationFilter extends OncePerRequestFilter {
