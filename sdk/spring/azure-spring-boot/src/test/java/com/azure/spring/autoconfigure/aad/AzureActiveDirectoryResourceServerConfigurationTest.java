@@ -4,8 +4,8 @@ package com.azure.spring.autoconfigure.aad;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.azure.spring.aad.resource.server.AzureActiveDirectoryResourceServerConfiguration;
-import com.azure.spring.aad.resource.server.AzureActiveDirectoryResourceServerConfiguration.DefaultAzureOAuth2ResourceServerWebSecurityConfigurerAdapter;
+import com.azure.spring.aad.webapi.AzureActiveDirectoryResourceServerConfiguration;
+import com.azure.spring.aad.webapi.AzureActiveDirectoryResourceServerConfiguration.DefaultAzureOAuth2ResourceServerWebSecurityConfigurerAdapter;
 import java.util.List;
 import org.junit.Test;
 import org.springframework.boot.test.context.FilteredClassLoader;

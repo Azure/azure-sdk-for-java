@@ -298,7 +298,7 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
 
                                 NumberUpdateCapabilities update = new NumberUpdateCapabilities();
                                 update.setAdd(capabilitiesToAdd);
-                        
+
                                 Map<PhoneNumber, NumberUpdateCapabilities> updateMap = new HashMap<>();
                                 updateMap.put(new PhoneNumber(purchasedNumber), update);
                                 return this.getClient(httpClient).updateCapabilitiesWithResponse(updateMap)
@@ -538,7 +538,7 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
             null, COUNTRY_CODE, "PHONE_PLAN_ID", locationOptions, Context.NONE);
 
         StepVerifier.create(mono)
-            .verifyError(NullPointerException.class);
+            .verifyError(java.lang.RuntimeException.class);
     }
 
     @ParameterizedTest
@@ -549,7 +549,7 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
             "selection", null, "PHONE_PLAN_ID", locationOptions, Context.NONE);
 
         StepVerifier.create(mono)
-            .verifyError(NullPointerException.class);
+            .verifyError(java.lang.RuntimeException.class);
     }
 
     @ParameterizedTest
@@ -560,7 +560,7 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
             "selection", COUNTRY_CODE, null, locationOptions, Context.NONE);
 
         StepVerifier.create(mono)
-            .verifyError(NullPointerException.class);
+            .verifyError(java.lang.RuntimeException.class);
     }
 
     @ParameterizedTest
@@ -688,7 +688,7 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
         Duration duration = Duration.ofSeconds(1);
         return this.getClient(httpClient).beginCreateReservation(createReservationOptions, duration);
     }
- 
+
     private  PollerFlux<Void, Void> beginPurchaseReservation(HttpClient httpClient, String reservationId) {
         Duration pollInterval = Duration.ofSeconds(1);
         return this.getClient(httpClient).beginPurchaseReservation(reservationId, pollInterval);
