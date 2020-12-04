@@ -10,8 +10,10 @@ import com.azure.core.http.HttpRequest
 import com.azure.core.http.HttpResponse
 import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.test.http.MockHttpResponse
+import com.azure.core.util.ClientOptions
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.DateTimeRfc1123
+import com.azure.core.util.Header
 import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.policy.RequestRetryOptions
@@ -21,6 +23,7 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 import spock.lang.Specification
+import spock.lang.Unroll
 
 class BuilderHelperTest extends Specification {
     static def credentials = new StorageSharedKeyCredential("accountName", "accountKey")
@@ -37,7 +40,7 @@ class BuilderHelperTest extends Specification {
      */
     def "Fresh date applied on retry"() {
         when:
-        def pipeline = BuilderHelper.buildPipeline(credentials, null, null, endpoint, requestRetryOptions, BuilderHelper.getDefaultHttpLogOptions(),
+        def pipeline = BuilderHelper.buildPipeline(credentials, null, null, endpoint, requestRetryOptions, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(),
             new FreshDateTestClient(), new ArrayList<>(), new ArrayList<>(), null, new ClientLogger(BuilderHelperTest.class))
 
         then:
@@ -116,57 +119,81 @@ class BuilderHelperTest extends Specification {
     /**
      * Tests that a user application id will be honored in the UA string when using the default pipeline builder.
      */
+    @Unroll
     def "Custom application id in UA string"() {
         when:
-        def pipeline = BuilderHelper.buildPipeline(credentials, null, null, endpoint, new RequestRetryOptions(), new HttpLogOptions().setApplicationId("custom-id"),
-            new ApplicationIdUAStringTestClient(), new ArrayList<>(), new ArrayList<>(), null, new ClientLogger(BuilderHelperTest.class))
+        def pipeline = BuilderHelper.buildPipeline(credentials, null, null, endpoint, new RequestRetryOptions(), new HttpLogOptions().setApplicationId(logOptionsUA), new ClientOptions().setApplicationId(clientOptionsUA),
+            new ApplicationIdUAStringTestClient(expectedUA), new ArrayList<>(), new ArrayList<>(), null, new ClientLogger(BuilderHelperTest.class))
 
         then:
         StepVerifier.create(pipeline.send(request(endpoint)))
             .assertNext({ it.getStatusCode() == 200 })
             .verifyComplete()
+
+        where:
+        logOptionsUA     | clientOptionsUA     || expectedUA
+        "log-options-id" | null                || "log-options-id"
+        null             | "client-options-id" || "client-options-id"
+        "log-options-id" | "client-options-id" || "client-options-id"   // Client options preferred over log options
     }
 
     /**
      * Tests that a user application id will be honored in the UA string when using the service client builder's default pipeline.
      */
+    @Unroll
     def "Service client custom application id in UA string"() {
         when:
         def serviceClient = new DataLakeServiceClientBuilder()
             .endpoint(endpoint)
             .credential(credentials)
-            .httpClient(new ApplicationIdUAStringTestClient())
-            .httpLogOptions(new HttpLogOptions().setApplicationId("custom-id"))
+            .httpClient(new ApplicationIdUAStringTestClient(expectedUA))
+            .httpLogOptions(new HttpLogOptions().setApplicationId(logOptionsUA))
+            .clientOptions(new ClientOptions().setApplicationId(clientOptionsUA))
             .buildClient()
 
         then:
         StepVerifier.create(serviceClient.getHttpPipeline().send(request(serviceClient.getAccountUrl())))
             .assertNext({ it.getStatusCode() == 200 })
             .verifyComplete()
+
+        where:
+        logOptionsUA     | clientOptionsUA     || expectedUA
+        "log-options-id" | null                || "log-options-id"
+        null             | "client-options-id" || "client-options-id"
+        "log-options-id" | "client-options-id" || "client-options-id"   // Client options preferred over log options
     }
 
     /**
      * Tests that a user application id will be honored in the UA string when using the file system client builder's default pipeline.
      */
+    @Unroll
     def "File system client custom application id in UA string"() {
         when:
         def fileSystemClient = new DataLakeFileSystemClientBuilder()
             .endpoint(endpoint)
             .fileSystemName("fileSystem")
             .credential(credentials)
-            .httpClient(new ApplicationIdUAStringTestClient())
-            .httpLogOptions(new HttpLogOptions().setApplicationId("custom-id"))
+            .httpClient(new ApplicationIdUAStringTestClient(expectedUA))
+            .httpLogOptions(new HttpLogOptions().setApplicationId(logOptionsUA))
+            .clientOptions(new ClientOptions().setApplicationId(clientOptionsUA))
             .buildClient()
 
         then:
         StepVerifier.create(fileSystemClient.getHttpPipeline().send(request(fileSystemClient.getFileSystemUrl())))
             .assertNext({ it.getStatusCode() == 200 })
             .verifyComplete()
+
+        where:
+        logOptionsUA     | clientOptionsUA     || expectedUA
+        "log-options-id" | null                || "log-options-id"
+        null             | "client-options-id" || "client-options-id"
+        "log-options-id" | "client-options-id" || "client-options-id"   // Client options preferred over log options
     }
 
     /**
      * Tests that a user application id will be honored in the UA string when using the path client builder's default pipeline.
      */
+    @Unroll
     def "Path client custom application id in UA string"() {
         setup:
         def pathClientBuilder = new DataLakePathClientBuilder()
@@ -174,8 +201,9 @@ class BuilderHelperTest extends Specification {
             .fileSystemName("fileSystem")
             .pathName("path")
             .credential(credentials)
-            .httpClient(new ApplicationIdUAStringTestClient())
-            .httpLogOptions(new HttpLogOptions().setApplicationId("custom-id"))
+            .httpClient(new ApplicationIdUAStringTestClient(expectedUA))
+            .httpLogOptions(new HttpLogOptions().setApplicationId(logOptionsUA))
+            .clientOptions(new ClientOptions().setApplicationId(clientOptionsUA))
 
         when:
         def directoryClient = pathClientBuilder.buildDirectoryClient()
@@ -192,6 +220,12 @@ class BuilderHelperTest extends Specification {
         StepVerifier.create(fileClient.getHttpPipeline().send(request(fileClient.getFileUrl())))
             .assertNext({ it.getStatusCode() == 200 })
             .verifyComplete()
+
+        where:
+        logOptionsUA     | clientOptionsUA     || expectedUA
+        "log-options-id" | null                || "log-options-id"
+        null             | "client-options-id" || "client-options-id"
+        "log-options-id" | "client-options-id" || "client-options-id"   // Client options preferred over log options
     }
 
     private static final class FreshDateTestClient implements HttpClient {
@@ -218,12 +252,50 @@ class BuilderHelperTest extends Specification {
     }
 
     private static final class ApplicationIdUAStringTestClient implements HttpClient {
+
+        private final String expectedUA;
+
+        ApplicationIdUAStringTestClient(String expectedUA) {
+            this.expectedUA = expectedUA;
+        }
+
         @Override
         Mono<HttpResponse> send(HttpRequest request) {
             if (CoreUtils.isNullOrEmpty(request.getHeaders().getValue("User-Agent"))) {
                 throw new RuntimeException("Failed to set 'User-Agent' header.")
             }
-            assert request.getHeaders().getValue("User-Agent").startsWith("custom-id")
+            assert request.getHeaders().getValue("User-Agent").startsWith(expectedUA)
+            return Mono.just(new MockHttpResponse(request, 200))
+        }
+    }
+
+    private static final class ClientOptionsHeadersTestClient implements HttpClient {
+
+        private final Iterable<Header> headers;
+
+        ClientOptionsHeadersTestClient(Iterable<Header> headers) {
+            this.headers = headers;
+        }
+
+        @Override
+        Mono<HttpResponse> send(HttpRequest request) {
+
+            headers.forEach({ header ->
+                if (CoreUtils.isNullOrEmpty(request.getHeaders().getValue(header.getName()))) {
+                    throw new RuntimeException("Failed to set custom header " + header.getName())
+                }
+                // This is meant to not match.
+                if (header.getName() == "Authorization") {
+                    if (request.getHeaders().getValue(header.getName()) == header.getValue()) {
+                        throw new RuntimeException("Custom header " + header.getName() + " did not match expectation.")
+                    }
+                } else {
+                    if (request.getHeaders().getValue(header.getName()) != header.getValue()) {
+                        throw new RuntimeException("Custom header " + header.getName() + " did not match expectation.")
+                    }
+                }
+
+            })
             return Mono.just(new MockHttpResponse(request, 200))
         }
     }
