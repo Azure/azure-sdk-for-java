@@ -121,7 +121,7 @@ class EventHubProducerAsyncClientTest {
     private EventHubConnectionProcessor connectionProcessor;
     private TracerProvider tracerProvider;
     private ConnectionOptions connectionOptions;
-    private final Scheduler testScheduler = Schedulers.newElastic("test");
+    private final Scheduler testScheduler = Schedulers.newBoundedElastic(30, 4096, "test");
 
     @BeforeAll
     static void beforeAll() {

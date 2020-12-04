@@ -833,7 +833,7 @@ public class StoreReader {
 
     void startBackgroundAddressRefresh(RxDocumentServiceRequest request) {
         this.addressSelector.resolveAllUriAsync(request, true, true)
-                .publishOn(Schedulers.boundedElastic())
+                .publishOn(Schedulers.elastic())
                 .subscribe(
                         r -> {
                         },

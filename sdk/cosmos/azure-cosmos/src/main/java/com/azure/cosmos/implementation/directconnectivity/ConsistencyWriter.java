@@ -369,7 +369,7 @@ public class ConsistencyWriter {
 
     void startBackgroundAddressRefresh(RxDocumentServiceRequest request) {
         this.addressSelector.resolvePrimaryUriAsync(request, true)
-                            .publishOn(Schedulers.boundedElastic())
+                            .publishOn(Schedulers.elastic())
                             .subscribe(
                                 r -> {
                                 },

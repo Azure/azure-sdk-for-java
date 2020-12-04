@@ -493,7 +493,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
         }
 
         if (this.scheduler == null) {
-            this.scheduler = Schedulers.boundedElastic();
+            this.scheduler = Schedulers.elastic();
         }
 
         return this;
@@ -635,6 +635,6 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
 
     @Override
     public void close() {
-        this.stop().subscribeOn(Schedulers.boundedElastic()).subscribe();
+        this.stop().subscribeOn(Schedulers.elastic()).subscribe();
     }
 }

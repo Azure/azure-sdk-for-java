@@ -198,7 +198,7 @@ public class OkHttpClientTests {
 
         Mono<Long> numBytesMono = Flux.range(1, numRequests)
             .parallel(10)
-            .runOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
+            .runOn(Schedulers.newBoundedElastic(30, 1024, "io"))
             .flatMap(n -> Mono.fromCallable(() -> getResponse(client, "/long")).flatMapMany(response -> {
                 MessageDigest md = md5Digest();
                 return response.getBody()
@@ -214,8 +214,8 @@ public class OkHttpClientTests {
             // Thread.currentThread().getName()))
             .map(nbb -> (long) nbb.bb.limit())
             .reduce(Long::sum)
-            .subscribeOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
-            .publishOn(reactor.core.scheduler.Schedulers.newElastic("io", 30));
+            .subscribeOn(Schedulers.newBoundedElastic(30, 1024, "io"))
+            .publishOn(Schedulers.newBoundedElastic(30, 1024, "io"));
 
         StepVerifier.create(numBytesMono)
 //              .awaitDone(timeoutSeconds, TimeUnit.SECONDS)

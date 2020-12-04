@@ -73,12 +73,12 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
                             CosmosException ex = (CosmosException) throwable;
                             if (ex.getStatusCode() == HTTP_STATUS_CODE_NOT_FOUND) {
                                 // Partition lease no longer exists
-                                return Mono.error(new LeaseLostException(cachedLease));
+                                throw new LeaseLostException(cachedLease);
                             }
                         }
                         return Mono.error(throwable);
                     })
-                    .flatMap(cosmosItemResponse -> {
+                    .map(cosmosItemResponse -> {
                         InternalObjectNode document =
                             BridgeInternal.getProperties(cosmosItemResponse);
                         ServiceItemLease serverLease = ServiceItemLease.fromDocument(document);
@@ -91,7 +91,7 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
                         cachedLease.setConcurrencyToken(serverLease.getConcurrencyToken());
                         cachedLease.setOwner(serverLease.getOwner());
 
-                        return Mono.error(new LeaseConflictException(cachedLease, "Partition update failed"));
+                        throw new LeaseConflictException(cachedLease, "Partition update failed");
                     });
             })
             .retryWhen(Retry.max(RETRY_COUNT_ON_CONFLICT).filter(throwable -> {

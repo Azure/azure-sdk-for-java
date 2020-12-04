@@ -320,7 +320,7 @@ public final class RntbdTransportClient extends TransportClient {
                             RntbdObjectMapper.toJson(throwable));
                     }
                 });
-        }).contextWrite(reactorContext);
+        }).subscriberContext(reactorContext);
     }
 
     /**
