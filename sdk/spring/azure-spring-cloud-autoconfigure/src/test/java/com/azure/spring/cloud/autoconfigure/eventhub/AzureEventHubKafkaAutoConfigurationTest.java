@@ -105,7 +105,7 @@ public class AzureEventHubKafkaAutoConfigurationTest {
 
     static <T> PagedIterable<T> buildPagedIterable(T element) {
         return new PagedIterable<>(new PagedFlux<>(() -> Mono.just(
-            new PagedResponseBase<String, T>(null, 200, null, new Page<>() {
+            new PagedResponseBase<String, T>(null, 200, null, new Page<T>() {
 
                 @Override
                 public IterableStream<T> getElements() {

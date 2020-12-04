@@ -3,6 +3,8 @@
 
 package com.azure.spring.cloud.context.core.impl;
 
+import com.azure.core.management.exception.ManagementError;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.redis.models.RedisCache;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
@@ -31,7 +33,15 @@ public class RedisCacheManager extends AzureManager<RedisCache, String> {
 
     @Override
     public RedisCache internalGet(String name) {
-        return azureResourceManager.redisCaches().getByResourceGroup(resourceGroup, name);
+        try {
+            return azureResourceManager.redisCaches().getByResourceGroup(resourceGroup, name);
+        } catch (ManagementException e) {
+            if (e.getResponse().getStatusCode() == 404) {
+                return null;
+            } else {
+                throw e;
+            }
+        }
     }
 
     @Override
