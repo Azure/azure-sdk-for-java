@@ -10,7 +10,7 @@
   </parent>
 
   <groupId>com.azure.spring</groupId>
-  <artifactId>azure-spring-boot-sample-active-directory-spring-oauth2-resource-server</artifactId>
+  <artifactId>azure-spring-boot-sample-active-directory-spring-security-resource-server</artifactId>
   <version>1.0.0</version>
   <packaging>jar</packaging>
 
