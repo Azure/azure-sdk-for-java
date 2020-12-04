@@ -9,7 +9,7 @@ import java.util.Set;
 
 /**
  * Azure oauth2 client registration.
- * It have 2 kind of scopes:
+ * It has 2 kind of scopes:
  * 1. AzureClientRegistration.client.scopes: used to authorize.
  * 2. AzureClientRegistration.accessTokenScopes: used to get access_token.
  */
