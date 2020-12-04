@@ -22,10 +22,13 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Configuration
@@ -39,6 +42,12 @@ public class AzureActiveDirectoryConfiguration {
     private AADAuthenticationProperties properties;
 
     @Bean
+    @ConditionalOnMissingBean
+    public OAuth2AuthorizedClientRepository authorizedClientRepository(AzureClientRegistrationRepository repo) {
+        return new AzureAuthorizedClientRepository(repo);
+    }
+
+    @Bean
     @ConditionalOnMissingBean({ ClientRegistrationRepository.class, AzureClientRegistrationRepository.class })
     public AzureClientRegistrationRepository clientRegistrationRepository() {
         return new AzureClientRegistrationRepository(
@@ -48,33 +57,9 @@ public class AzureActiveDirectoryConfiguration {
     }
 
     @Bean
-    @ConditionalOnMissingBean
-    public OAuth2AuthorizedClientRepository authorizedClientRepository(AzureClientRegistrationRepository repo) {
-        return new AzureAuthorizedClientRepository(repo);
-    }
-
-    @Bean
     @ConditionalOnProperty(prefix = "azure.activedirectory.user-group", value = "allowed-groups")
     public OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService(AADAuthenticationProperties properties) {
         return new AzureActiveDirectoryOAuth2UserService(properties);
-    }
-
-    private AzureClientRegistration createDefaultClient() {
-        ClientRegistration.Builder builder = createClientBuilder(AZURE_CLIENT_REGISTRATION_ID);
-        builder.scope(allScopes());
-        ClientRegistration client = builder.build();
-
-        return new AzureClientRegistration(client, accessTokenScopes());
-    }
-
-    private Set<String> allScopes() {
-        Set<String> result = accessTokenScopes();
-        for (AuthorizationProperties authProperties : properties.getAuthorization().values()) {
-            if (!authProperties.isOnDemand()) {
-                result.addAll(authProperties.getScopes());
-            }
-        }
-        return result;
     }
 
     private Set<String> accessTokenScopes() {
@@ -93,13 +78,12 @@ public class AzureActiveDirectoryConfiguration {
         }
     }
 
-    private Set<String> openidScopes() {
-        Set<String> result = new HashSet<>();
-        result.add("openid");
-        result.add("profile");
-
-        if (!properties.getAuthorization().isEmpty()) {
-            result.add("offline_access");
+    private Set<String> allScopes() {
+        Set<String> result = accessTokenScopes();
+        for (AuthorizationProperties authProperties : properties.getAuthorization().values()) {
+            if (!authProperties.isOnDemand()) {
+                result.addAll(authProperties.getScopes());
+            }
         }
         return result;
     }
@@ -137,6 +121,32 @@ public class AzureActiveDirectoryConfiguration {
         result.tokenUri(endpoints.tokenEndpoint(properties.getTenantId()));
         result.jwkSetUri(endpoints.jwkSetEndpoint(properties.getTenantId()));
 
+        Map<String, Object> configurationMetadata = new LinkedHashMap<>();
+        String tenantId = this.properties.getTenantId();
+        String endSessionEndpoint = String.format("https://login.microsoftonline.com/%s/oauth2/v2.0/logout",
+            StringUtils.hasText(tenantId) ? tenantId : "common");
+        configurationMetadata.put("end_session_endpoint", endSessionEndpoint);
+        result.providerConfigurationMetadata(configurationMetadata);
+
+        return result;
+    }
+
+    private AzureClientRegistration createDefaultClient() {
+        ClientRegistration.Builder builder = createClientBuilder(AZURE_CLIENT_REGISTRATION_ID);
+        builder.scope(allScopes());
+        ClientRegistration client = builder.build();
+
+        return new AzureClientRegistration(client, accessTokenScopes());
+    }
+
+    private Set<String> openidScopes() {
+        Set<String> result = new HashSet<>();
+        result.add("openid");
+        result.add("profile");
+
+        if (!properties.getAuthorization().isEmpty()) {
+            result.add("offline_access");
+        }
         return result;
     }
 
