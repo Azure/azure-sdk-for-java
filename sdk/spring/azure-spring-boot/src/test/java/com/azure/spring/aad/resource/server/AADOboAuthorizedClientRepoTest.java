@@ -1,7 +1,8 @@
 package com.azure.spring.aad.resource.server;
 
-import com.azure.spring.aad.implementation.AzureActiveDirectoryConfiguration;
-import com.azure.spring.aad.implementation.AzureClientRegistrationRepository;
+import com.azure.spring.aad.webapi.AADOAuth2OboAuthorizedClientRepository;
+import com.azure.spring.aad.webapp.AzureActiveDirectoryConfiguration;
+import com.azure.spring.aad.webapp.AzureClientRegistrationRepository;
 import org.junit.Before;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
