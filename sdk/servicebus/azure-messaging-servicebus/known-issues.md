@@ -2,7 +2,7 @@
 
 This article lists known issues in Azure Service Bus SDK releases. The list is updated as new issues are identified.
 
-### Version 7.0.0 : Can not resolve 'BinaryData' or 'NoClassDefFoundError' 
+### Can not resolve 'BinaryData' or 'NoClassDefFoundError' (v 7.0.0) 
 NoClassDefFoundError When using 'azure-messaging-servicebus:7.0.0' and other Azure SDKs in the same pom.xml file.
 
 - **Applicable**: This issue applies to 'azure-messaging-servicebus:7.0.0'.
