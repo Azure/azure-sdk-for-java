@@ -11,6 +11,7 @@ package com.microsoft.azure.management.recoveryservices.v2016_06_01.implementati
 
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.recoveryservices.v2016_06_01.RegisteredIdentities;
+import rx.Completable;
 
 class RegisteredIdentitiesImpl extends WrapperImpl<RegisteredIdentitiesInner> implements RegisteredIdentities {
     private final RecoveryServicesManager manager;
@@ -24,4 +25,8 @@ class RegisteredIdentitiesImpl extends WrapperImpl<RegisteredIdentitiesInner> im
         return this.manager;
     }
 
+    @Override
+    public Completable deleteAsync(String resourceGroupName, String vaultName, String identityName) {
+        return inner().deleteAsync(resourceGroupName, vaultName, identityName).toCompletable();
+    }
 }
