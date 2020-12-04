@@ -4,23 +4,19 @@
 package com.azure.spring.aad.resource.server;
 
 import com.azure.spring.aad.implementation.AuthorizationServerEndpoints;
-import com.azure.spring.aad.implementation.AzureClientRegistrationRepository;
 import com.azure.spring.aad.resource.server.validator.AzureJwtAudienceValidator;
 import com.azure.spring.aad.resource.server.validator.AzureJwtIssuerValidator;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -36,10 +32,11 @@ import java.util.List;
 /**
  * <p>
  * The configuration will not be activated if no {@link BearerTokenAuthenticationToken} class provided.
- * <p>
+ * </p>
  * By default, creating a JwtDecoder through JwkKeySetUri will be auto-configured.
  */
 @Configuration(proxyBeanMethods = false)
+@ConditionalOnResource(resources = "classpath:aad.enable.config")
 @EnableConfigurationProperties({ AADAuthenticationProperties.class })
 @ConditionalOnClass(BearerTokenAuthenticationToken.class)
 public class AzureActiveDirectoryResourceServerConfiguration {
@@ -97,22 +94,5 @@ public class AzureActiveDirectoryResourceServerConfiguration {
                 .jwtAuthenticationConverter(new AzureJwtBearerTokenAuthenticationConverter());
         }
     }
-
-    /**
-     * Use AzureClientRegistrationRepository to create AADOAuth2OboAuthorizedClientRepository
-     *
-     * @return AADOAuth2OboAuthorizedClientRepository Bean
-     */
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnBean(AzureClientRegistrationRepository.class)
-    @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
-    @ConditionalOnClass(BearerTokenAuthenticationToken.class)
-    @ConditionalOnProperty(prefix = "azure.activedirectory", value = { "client-id", "client-secret", "tenant-id" })
-    public OAuth2AuthorizedClientRepository aadOAuth2OboAuthorizedClientRepository(AzureClientRegistrationRepository
-                                                                                       repo) {
-        return new AADOAuth2OboAuthorizedClientRepository(repo);
-    }
-
 }
 

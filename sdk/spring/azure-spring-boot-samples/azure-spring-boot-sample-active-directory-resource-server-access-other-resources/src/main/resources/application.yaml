@@ -1,0 +1,33 @@
+server:
+  port: 8081
+
+azure:
+  activedirectory:
+    user-group:
+      allowed-groups:
+        - group1
+        - group2
+    client-id: [resource-server-application-client-id]
+    client-secret: [resource-server-application-client-secret]
+    tenant-id: [teanant-id-registered-by-application]
+    app-id-uri: [current-expose-application-id-url]
+    authorization:
+      graph:
+        scopes:
+          - openid
+          - offline_access
+          - User.read
+      custom:
+        scopes:
+          - openid
+          - offline_access
+          - [custom-resource-server-expose-api-scope]
+
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          azure:
+            client-id: [resource-server-application-client-id-same-as-above]
+            client-secret: [resource-server-application-client-secret-same-as-above]

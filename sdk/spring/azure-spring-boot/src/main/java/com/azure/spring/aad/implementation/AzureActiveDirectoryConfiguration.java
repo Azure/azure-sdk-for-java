@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Set;
 
 @Configuration
+@ConditionalOnMissingClass({ "org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken" })
 @ConditionalOnClass(ClientRegistrationRepository.class)
 @EnableConfigurationProperties(AADAuthenticationProperties.class)
 public class AzureActiveDirectoryConfiguration {
@@ -50,7 +51,6 @@ public class AzureActiveDirectoryConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnMissingClass({ "org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken" })
     public OAuth2AuthorizedClientRepository authorizedClientRepository(AzureClientRegistrationRepository repo) {
         return new AzureAuthorizedClientRepository(repo);
     }
