@@ -6,7 +6,12 @@ This sample illustrates how to use [Azure Spring Boot Starter Key Vault Secrets 
 In this sample, a secret named `spring-datasource-url` is stored into an Azure Key Vault, and a sample Spring application will use its value as a configuration property value.
 
 ## Getting started
-First, we need to store secret `spring-datasource-url` into Azure Key Vault.
+
+### Environment checklist
+We need to ensure that this [environment checklist][ready-to-run-checklist] is completed before the run.
+
+### Store Secret
+We need to store secret `spring-datasource-url` into Azure Key Vault.
 
 - Create one azure service principal by using Azure CLI or via [Azure Portal](https://docs.microsoft.com/azure/azure-resource-manager/resource-group-create-service-principal-portal). Save your service principal id and password for later use.
 You can use the following az cli commands to create a service principal:
@@ -85,7 +90,6 @@ The valid secret-service-version value can be found [here][version_link].
 If property not set, the property will be filled with the latest value.
 
 ## Run with Maven
-First, we need to ensure that this [instruction] is completed before run.
 ```
 # Under sdk/spring project root directory
 mvn clean install -DskipTests
@@ -100,4 +104,4 @@ mvn spring-boot:run
 
 <!-- links -->
 [version_link]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-secrets/src/main/java/com/azure/security/keyvault/secrets/SecretServiceVersion.java#L12
-[instruction]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/CONTRIBUTING.md#building-from-source
+[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
