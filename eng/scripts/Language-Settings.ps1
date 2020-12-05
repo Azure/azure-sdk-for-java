@@ -270,3 +270,15 @@ function SetPackageVersion ($PackageName, $Version, $ServiceDirectory, $ReleaseD
     return $null
   }
 }
+
+function SetPackageVersion ($PackageName, $Version, $ServiceName, $ReleaseDate, $BuildType, $GroupName) {
+  if($null -eq $ReleaseDate)
+  {
+    $ReleaseDate = Get-Date -Format "yyyy-MM-dd"
+  }
+  python "$EngDir/versioning/set_versions.py" --build-type $BuildType --new-version $Version --ai $PackageName --gi $GroupName
+  python "$EngDir/versioning/update_versions.py" --update-type library --build-type $BuildType --sr
+  & "$EngCommonScriptsDir/Update-ChangeLog.ps1" -Version $Version -ServiceDirectory $ServiceName -PackageName $PackageName `
+  -Unreleased $False -ReplaceLatestEntryTitle $True -ReleaseDate $ReleaseDate
+}
+
