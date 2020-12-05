@@ -1034,6 +1034,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             sessionManager.close();
         }
 
+        managementNodeLocks.close();
+        renewalContainer.close();
+
         onClientClose.run();
     }
 
