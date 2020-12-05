@@ -159,6 +159,13 @@ public class ProjectRepositoryIT {
 
         assertProjectListEquals(projects, Arrays.asList(PROJECT_0, PROJECT_4));
     }
+    
+    @Test
+    public void testFindByWithRepeatedParameters() {
+        List<Project> projects = TestUtils.toList(this.repository.findByNameAndCreatorOrNameAndCreator(NAME_1, CREATOR_1, NAME_2, CREATOR_2));
+
+        assertProjectListEquals(projects, Arrays.asList(PROJECT_1, PROJECT_2));
+    }
 
     @Test
     public void testFindByWithOrPartition() {
