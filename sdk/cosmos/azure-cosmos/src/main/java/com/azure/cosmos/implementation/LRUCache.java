@@ -8,7 +8,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class LRUCache<K, V> extends LinkedHashMap<K, V> {
+    private static final long serialVersionUID = 1L;
     private int maxSize;
+
     public LRUCache(int maxSize) {
         super(maxSize, 1.0f, true);
         this.maxSize = maxSize;
