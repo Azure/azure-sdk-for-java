@@ -1315,4 +1315,12 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     boolean isConnectionClosed() {
         return this.connectionProcessor.isChannelClosed();
     }
+
+    boolean isManagementNodeLocksClosed() {
+        return this.managementNodeLocks.isClosed();
+    }
+
+    boolean isRenewalContainerClosed() {
+        return this.renewalContainer.isClosed();
+    }
 }
