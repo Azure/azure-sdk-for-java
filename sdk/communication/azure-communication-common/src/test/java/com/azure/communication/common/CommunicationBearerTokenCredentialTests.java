@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.communication.common;
 
+import com.azure.communication.common.implementation.CommunicationBearerTokenCredential;
 import com.azure.communication.common.implementation.JwtTokenMocker;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
@@ -30,24 +31,24 @@ public class CommunicationTokenCrendentialTests {
     @Test
     public void constructWithValidTokenWithoutFresher() throws InterruptedException, ExecutionException, IOException {
         String tokenStr = tokenMocker.generateRawToken("resourceId", "userIdentity", 3 * 60);
-        CommunicationUserCredential userCredential = new CommunicationUserCredential(tokenStr);
-        CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(userCredential);
+        CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(tokenStr);
+        CommunicationBearerTokenCredential bearerTokenCredential = new CommunicationBearerTokenCredential(tokenCredential);
 
-        AccessToken token = tokenCredential.getToken(mockTokenRequestContext()).block();
+        AccessToken token = bearerTokenCredential.getToken(mockTokenRequestContext()).block();
         assertFalse(token.isExpired(),
                 "Statically cached AccessToken should not expire when expiry is set to 3 minutes later");
         assertEquals(tokenStr, token.getToken());
-        userCredential.close();
+        tokenCredential.close();
     }
 
     @Test
     public void constructWithExpiredTokenWithoutRefresher() throws InterruptedException, ExecutionException, IOException {
         String tokenStr = tokenMocker.generateRawToken("resourceId", "userIdentity", -3 * 60);
-        CommunicationUserCredential userCredential = new CommunicationUserCredential(tokenStr);
-        CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(userCredential);
-        AccessToken token = tokenCredential.getToken(mockTokenRequestContext()).block();
+        CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(tokenStr);
+        CommunicationBearerTokenCredential bearerTokenCredential = new CommunicationBearerTokenCredential(tokenCredential);
+        AccessToken token = bearerTokenCredential.getToken(mockTokenRequestContext()).block();
         assertTrue(token.isExpired(),
                 "Statically cached AccessToken should expire when expiry is set to 3 minutes before");
-        userCredential.close();
+        tokenCredential.close();
     }
 }
