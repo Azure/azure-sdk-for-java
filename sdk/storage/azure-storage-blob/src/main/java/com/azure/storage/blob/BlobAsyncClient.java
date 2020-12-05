@@ -366,7 +366,6 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
      * @param headers {@link BlobHttpHeaders}
      * @param metadata Metadata to associate with the blob. If there is leading or trailing whitespace in any
-     * metadata key or value, it must be removed or encoded. If there is leading or trailing whitespace in any
      * metadata key or value, it must be removed or encoded.
      * @param tier {@link AccessTier} for the destination blob.
      * @param requestConditions {@link BlobRequestConditions}
@@ -594,7 +593,6 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * transfers parameter is ignored.
      * @param headers {@link BlobHttpHeaders}
      * @param metadata Metadata to associate with the blob. If there is leading or trailing whitespace in any
-     * metadata key or value, it must be removed or encoded. If there is leading or trailing whitespace in any
      * metadata key or value, it must be removed or encoded.
      * @param tier {@link AccessTier} for the destination blob.
      * @param requestConditions {@link BlobRequestConditions}
