@@ -146,7 +146,7 @@ jobs:
         inputs:
           mavenPomFile: $(PomFile)
           goals: 'exec:java'
-          options: '$(DefaultOptions) $(ProfileFlag) -Dexec.mainClass="com.azure.App"'
+          options: '$(DefaultOptions) $(ProfileFlag) -Dexec.mainClass="com.azure.smoketest.App"'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaTestVersion)
           jdkArchitectureOption: 'x64'
