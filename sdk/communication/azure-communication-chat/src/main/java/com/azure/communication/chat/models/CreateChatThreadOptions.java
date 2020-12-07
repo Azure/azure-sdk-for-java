@@ -22,6 +22,8 @@ public final class CreateChatThreadOptions {
     @JsonProperty(value = "participants", required = true)
     private List<ChatParticipant> participants;
 
+    private String repeatabilityRequestId;
+
     /**
      * Get the topic property: The chat thread topic.
      *
@@ -59,6 +61,31 @@ public final class CreateChatThreadOptions {
      */
     public CreateChatThreadOptions setParticipants(List<ChatParticipant> participants) {
         this.participants = participants;
+        return this;
+    }
+
+    /**
+     * Get the repeatabilityRequestID property
+     *
+     * @return the repeatabilityRequestID.
+     */
+    public String getRepeatabilityRequestId() {
+        return this.repeatabilityRequestId;
+    }
+
+    /**
+     * Set the repeatabilityRequestID property: If specified, the client directs that the request is repeatable;
+     * that is, that the client can make the request multiple times with the same Repeatability-Request-ID
+     * and get back an appropriate response without the server executing the request multiple times.
+     * The value of the Repeatability-Request-ID is an opaque string representing a client-generated,
+     * globally unique for all time, identifier for the request.
+     * It is recommended to use version 4 (random) UUIDs.
+     *
+     * @param repeatabilityRequestId the repeatabilityRequestID.
+     * @return the CreateChatThreadOptions object itself.
+     */
+    public CreateChatThreadOptions setRepeatabilityRequestId(String repeatabilityRequestId) {
+        this.repeatabilityRequestId = repeatabilityRequestId;
         return this;
     }
 }

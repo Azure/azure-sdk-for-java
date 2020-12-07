@@ -69,7 +69,8 @@ public class ChatClientTest extends ChatClientTestBase {
             firstThreadMember.getId(), secondThreadMember.getId());
 
         // Action & Assert
-        ChatThreadClient chatThreadClient = client.createChatThread(threadRequest);
+        CreateChatThreadResult createChatThreadResult = client.createChatThread(threadRequest);
+        ChatThreadClient chatThreadClient = client.getChatThreadClient(createChatThreadResult.getThread().getId());
         assertNotNull(chatThreadClient);
         assertNotNull(chatThreadClient.getChatThreadId());
     }
@@ -83,7 +84,8 @@ public class ChatClientTest extends ChatClientTestBase {
             firstThreadMember.getId(), secondThreadMember.getId());
 
         // Action & Assert
-        ChatThreadClient chatThreadClient = client.createChatThreadWithResponse(threadRequest, Context.NONE).getValue();
+        CreateChatThreadResult createChatThreadResult = client.createChatThread(threadRequest);
+        ChatThreadClient chatThreadClient = client.getChatThreadClient(createChatThreadResult.getThread().getId());
         assertNotNull(chatThreadClient);
         assertNotNull(chatThreadClient.getChatThreadId());
     }
@@ -108,7 +110,8 @@ public class ChatClientTest extends ChatClientTestBase {
         setupTest(httpClient, "canGetExistingChatThreadSync");
         CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(
             firstThreadMember.getId(), secondThreadMember.getId());
-        ChatThreadClient chatThreadClient = client.createChatThread(threadRequest);
+        CreateChatThreadResult createChatThreadResult = client.createChatThread(threadRequest);
+        ChatThreadClient chatThreadClient = client.getChatThreadClient(createChatThreadResult.getThread().getId());
 
         // Action & Assert
         ChatThread chatThread = client.getChatThread(chatThreadClient.getChatThreadId());
@@ -122,7 +125,9 @@ public class ChatClientTest extends ChatClientTestBase {
         setupTest(httpClient, "canGetExistingChatThreadWithResponseSync");
         CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(
             firstThreadMember.getId(), secondThreadMember.getId());
-        ChatThreadClient chatThreadClient = client.createChatThread(threadRequest);
+
+        CreateChatThreadResult createChatThreadResult = client.createChatThread(threadRequest);
+        ChatThreadClient chatThreadClient = client.getChatThreadClient(createChatThreadResult.getThread().getId());
 
         // Action & Assert
         ChatThread chatThread = client.getChatThreadWithResponse(chatThreadClient.getChatThreadId(), Context.NONE).getValue();
@@ -158,7 +163,8 @@ public class ChatClientTest extends ChatClientTestBase {
         setupTest(httpClient, "canDeleteChatThreadSync");
         CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(
             firstThreadMember.getId(), secondThreadMember.getId());
-        ChatThreadClient chatThreadClient = client.createChatThread(threadRequest);
+        CreateChatThreadResult createChatThreadResult = client.createChatThread(threadRequest);
+        ChatThreadClient chatThreadClient = client.getChatThreadClient(createChatThreadResult.getThread().getId());
 
         // Action & Assert
         client.deleteChatThread(chatThreadClient.getChatThreadId());
@@ -171,7 +177,8 @@ public class ChatClientTest extends ChatClientTestBase {
         setupTest(httpClient, "canDeleteChatThreadWithResponseSync");
         CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(
             firstThreadMember.getId(), secondThreadMember.getId());
-        ChatThreadClient chatThreadClient = client.createChatThread(threadRequest);
+        CreateChatThreadResult createChatThreadResult = client.createChatThread(threadRequest);
+        ChatThreadClient chatThreadClient = client.getChatThreadClient(createChatThreadResult.getThread().getId());
 
         // Action & Assert
         client.deleteChatThreadWithResponse(chatThreadClient.getChatThreadId(), Context.NONE);

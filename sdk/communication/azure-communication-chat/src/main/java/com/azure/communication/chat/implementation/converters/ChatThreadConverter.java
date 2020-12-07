@@ -3,10 +3,8 @@
 
 package com.azure.communication.chat.implementation.converters;
 
-import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.communication.common.CommunicationUser;
 import com.azure.communication.chat.models.ChatThread;
-
-import java.util.stream.Collectors;
 
 /**
  * A converter between {@link com.azure.communication.chat.implementation.models.ChatThread} and
@@ -25,11 +23,7 @@ public final class ChatThreadConverter {
             .setId(obj.getId())
             .setTopic(obj.getTopic())
             .setCreatedOn(obj.getCreatedOn())
-            .setCreatedBy(new CommunicationUserIdentifier(obj.getCreatedBy()))
-            .setMembers(obj.getParticipants()
-                .stream()
-                .map(participant -> ChatParticipantConverter.convert(participant))
-                .collect(Collectors.toList()));
+            .setCreatedBy(new CommunicationUser(obj.getCreatedBy()));
 
         return chatThread;
     }
