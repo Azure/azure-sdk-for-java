@@ -13,7 +13,7 @@ import reactor.core.publisher.Mono;
 import java.util.UUID;
 
 public abstract class ShareTest<TOptions extends PerfStressOptions> extends ServiceTest<TOptions> {
-    private static final String SHARE_NAME = "perfstress-share-" + UUID.randomUUID().toString();
+    private static final String SHARE_NAME = "perfstress-sharev11-" + UUID.randomUUID().toString();
 
     protected final ShareClient shareClient;
     protected final ShareAsyncClient shareAsyncClient;

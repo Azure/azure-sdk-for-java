@@ -13,7 +13,7 @@ import reactor.core.publisher.Mono;
 import java.util.UUID;
 
 public abstract class DirectoryTest<TOptions extends PerfStressOptions> extends ShareTest<TOptions> {
-    private static final String DIRECTORY_NAME = "perfstress-directory-" + UUID.randomUUID().toString();
+    private static final String DIRECTORY_NAME = "perfstress-directoryv11-" + UUID.randomUUID().toString();
 
     protected final ShareDirectoryClient shareDirectoryClient;
     protected final ShareDirectoryAsyncClient shareDirectoryAsyncClient;
@@ -28,12 +28,12 @@ public abstract class DirectoryTest<TOptions extends PerfStressOptions> extends 
     // NOTE: the pattern setup the parent first, then yourself.
     @Override
     public Mono<Void> globalSetupAsync() {
-        return super.globalSetupAsync().then(shareAsyncClient.create().then());
+        return super.globalSetupAsync().then(shareDirectoryAsyncClient.create().then());
     }
 
     // NOTE: the pattern, cleanup yourself, then the parent.
     @Override
     public Mono<Void> globalCleanupAsync() {
-        return shareAsyncClient.delete().then(super.globalCleanupAsync());
+        return shareDirectoryAsyncClient.delete().then(super.globalCleanupAsync());
     }
 }

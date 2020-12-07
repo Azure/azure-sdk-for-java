@@ -4,28 +4,31 @@
 package com.azure.storage.file.share.perf;
 
 import com.azure.perf.test.core.PerfStressOptions;
+import com.azure.perf.test.core.TestDataCreationHelper;
 import com.azure.storage.file.share.ShareFileAsyncClient;
 import com.azure.storage.file.share.ShareFileClient;
 import com.azure.storage.file.share.perf.core.DirectoryTest;
 import com.azure.storage.file.share.perf.core.FileTestBase;
 import reactor.core.publisher.Mono;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URISyntaxException;
 import java.util.UUID;
 
 import static com.azure.perf.test.core.TestDataCreationHelper.createRandomByteBufferFlux;
 
-public class DownloadFileShareTest extends DirectoryTest<PerfStressOptions> {
+public class DownloadToFileShareTest extends DirectoryTest<PerfStressOptions> {
     private static final int BUFFER_SIZE = 16 * 1024 * 1024;
-    private static final OutputStream DEV_NULL = new NullOutputStream();
-    private static final String FILE_NAME = "perfstress-filev11-" + UUID.randomUUID().toString();
+    private static final String FILE_NAME = "perfstress-file-" + UUID.randomUUID().toString();
+
+    private final byte[] buffer = new byte[BUFFER_SIZE];
 
     protected final ShareFileClient shareFileClient;
     protected final ShareFileAsyncClient shareFileAsyncClient;
 
-    private final byte[] buffer = new byte[BUFFER_SIZE];
-
-    public DownloadFileShareTest(PerfStressOptions options) {
+    public DownloadToFileShareTest(PerfStressOptions options) {
         super(options);
         shareFileClient = shareDirectoryClient.getFileClient(FILE_NAME);
         shareFileAsyncClient = shareDirectoryAsyncClient.getFileClient(FILE_NAME);
@@ -42,36 +45,19 @@ public class DownloadFileShareTest extends DirectoryTest<PerfStressOptions> {
     // Perform the API call to be tested here
     @Override
     public void run() {
-        shareFileClient.download(DEV_NULL);
-    }
-
-    static class NullOutputStream extends OutputStream {
-        @Override
-        public void write(int b) {
-
-        }
-
-        @Override
-        public void write(byte[] b) {
-        }
-
-        @Override
-        public void write(byte[] b, int off, int len) {
-        }
+        File file = new File(UUID.randomUUID().toString());
+        file.deleteOnExit();
+        shareFileClient.downloadToFile(file.getAbsolutePath());
     }
 
     @Override
     public Mono<Void> runAsync() {
-        return shareFileAsyncClient.download()
-            .map(b -> {
-                int readCount = 0;
-                int remaining = b.remaining();
-                while (readCount < remaining) {
-                    int expectedReadCount = Math.min(remaining - readCount, BUFFER_SIZE);
-                    b.get(buffer, 0, expectedReadCount);
-                    readCount += expectedReadCount;
-                }
-                return 1;
+        File file = new File(UUID.randomUUID().toString());
+        file.deleteOnExit();
+        return shareFileAsyncClient.downloadToFile(file.getAbsolutePath())
+            .map(shareFileProperties -> {
+                shareFileProperties.getContentMd5();
+                return shareFileProperties;
             }).then();
     }
 

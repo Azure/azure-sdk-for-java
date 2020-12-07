@@ -1,10 +1,11 @@
-package com.azure.storage.file.share.perf.core;// Copyright (c) Microsoft Corporation. All rights reserved.
+package com.microsoft.azure.storage.file.share.perf.core;// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
 
 import com.azure.perf.test.core.PerfStressOptions;
-import com.azure.storage.file.share.ShareFileAsyncClient;
-import com.azure.storage.file.share.ShareFileClient;
+import com.azure.perf.test.core.TestDataCreationHelper;
+import com.microsoft.azure.storage.StorageException;
+import com.microsoft.azure.storage.file.CloudFile;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -16,21 +17,18 @@ import java.util.UUID;
 public abstract class FileTestBase<TOptions extends PerfStressOptions> extends DirectoryTest<TOptions> {
 
     public static final int DEFAULT_BUFFER_SIZE = 8192;
-    protected final ShareFileClient shareFileClient;
-    protected final ShareFileAsyncClient shareFileAsyncClient;
+    protected final CloudFile cloudFile;
 
     public FileTestBase(TOptions options) {
         super(options);
 
         String fileName = "randomfiletest-" + UUID.randomUUID().toString();
 
-        shareFileClient =  shareDirectoryClient.getFileClient(fileName);
-        shareFileAsyncClient = shareDirectoryAsyncClient.getFileClient(fileName);
-    }
-
-    @Override
-    public Mono<Void> setupAsync() {
-        return shareFileAsyncClient.create(options.getSize()+DEFAULT_BUFFER_SIZE).then(super.cleanupAsync());
+        try {
+            cloudFile =  cloudFileDirectory.getFileReference(fileName);
+        } catch (URISyntaxException | StorageException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public long copyStream(InputStream input, OutputStream out) throws IOException {
@@ -46,6 +44,13 @@ public abstract class FileTestBase<TOptions extends PerfStressOptions> extends D
 
     @Override
     public Mono<Void> cleanupAsync() {
-        return shareFileAsyncClient.delete().then(super.cleanupAsync());
+        return Mono.defer(() -> {
+            try {
+                cloudFile.delete();
+            } catch (StorageException | URISyntaxException e) {
+                return Mono.error(e);
+            }
+            return Mono.empty();
+        }).then(super.cleanupAsync());
     }
 }

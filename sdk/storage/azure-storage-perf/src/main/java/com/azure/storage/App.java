@@ -5,6 +5,15 @@ package com.azure.storage;
 
 import com.azure.perf.test.core.PerfStressProgram;
 import com.azure.storage.blob.perf.*;
+import com.azure.storage.file.datalake.perf.AppendFileDatalakeTest;
+import com.azure.storage.file.datalake.perf.ReadFileDatalakeTest;
+import com.azure.storage.file.datalake.perf.UploadFileDatalakeTest;
+import com.azure.storage.file.datalake.perf.UploadFromFileDatalakeTest;
+import com.azure.storage.file.share.perf.DownloadFileShareTest;
+import com.azure.storage.file.share.perf.DownloadToFileShareTest;
+import com.azure.storage.file.share.perf.UploadFileShareTest;
+import com.azure.storage.file.share.perf.UploadFromFileShareTest;
+import com.azure.storage.file.share.perf.core.ShareTest;
 
 /**
  * Runs the Storage performance test.
@@ -24,7 +33,15 @@ public class App {
             UploadBlobTest.class,
             UploadBlockBlobTest.class,
             UploadFromFileTest.class,
-            UploadOutputStreamTest.class
+            UploadOutputStreamTest.class,
+            DownloadFileShareTest.class,
+            DownloadToFileShareTest.class,
+            UploadFileShareTest.class,
+            UploadFromFileShareTest.class,
+            AppendFileDatalakeTest.class,
+            ReadFileDatalakeTest.class,
+            UploadFileDatalakeTest.class,
+            UploadFromFileDatalakeTest.class
         }, args);
     }
 }
