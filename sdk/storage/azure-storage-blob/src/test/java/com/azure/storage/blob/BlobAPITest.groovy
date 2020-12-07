@@ -1331,7 +1331,10 @@ class BlobAPITest extends APISpec {
         bc.setMetadata(metadata)
 
         then:
-        thrown(IllegalArgumentException)
+        def e = thrown(Exception)
+        e instanceof IllegalArgumentException || e instanceof Exceptions.ReactiveException
+        // Need this second error type since for the first case, Netty throws IllegalArgumentException, and that is recorded in the playback file.
+        // On Playback, the framework will throw Exceptions.ReactiveException.
 
         where:
         key     | value  || _
