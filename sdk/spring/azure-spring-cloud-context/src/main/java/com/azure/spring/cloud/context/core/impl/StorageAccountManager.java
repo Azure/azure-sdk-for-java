@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.context.core.impl;
 
+import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
@@ -33,7 +34,15 @@ public class StorageAccountManager extends AzureManager<StorageAccount, String> 
 
     @Override
     public StorageAccount internalGet(String key) {
-        return azureResourceManager.storageAccounts().getByResourceGroup(resourceGroup, key);
+        try {
+            return azureResourceManager.storageAccounts().getByResourceGroup(resourceGroup, key);
+        } catch (ManagementException e) {
+            if (e.getResponse().getStatusCode() == 404) {
+                return null;
+            } else {
+                throw e;
+            }
+        }
     }
 
     @Override

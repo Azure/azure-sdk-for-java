@@ -13,19 +13,7 @@ import org.springframework.lang.Nullable;
 public class AzureManagedIdentityProperties {
 
     @Nullable
-    private String objectId; // Optional: object_id of the managed identity
-
-    @Nullable
-    private String clientId; // Optional: client_id of the managed identity
-
-    @Nullable
-    public String getObjectId() {
-        return objectId;
-    }
-
-    public void setObjectId(@Nullable String objectId) {
-        this.objectId = objectId;
-    }
+    private String clientId; // Optional: id of the managed identity
 
     @Nullable
     public String getClientId() {

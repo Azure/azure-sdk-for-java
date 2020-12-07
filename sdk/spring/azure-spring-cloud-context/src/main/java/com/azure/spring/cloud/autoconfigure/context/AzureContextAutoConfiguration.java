@@ -60,7 +60,7 @@ public class AzureContextAutoConfiguration {
     @ConditionalOnMissingBean
     public AzureProfile azureProfile(AzureProperties azureProperties) {
         return new AzureProfile(azureProperties.getTenantId(), azureProperties.getSubscriptionId(),
-            azureProperties.getEnvironment());
+            azureProperties.getEnvironment().getAzureEnvironment());
     }
 
     @Bean

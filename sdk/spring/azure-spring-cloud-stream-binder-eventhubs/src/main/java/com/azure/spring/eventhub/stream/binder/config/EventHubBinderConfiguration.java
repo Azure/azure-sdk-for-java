@@ -20,6 +20,7 @@ import com.azure.spring.eventhub.stream.binder.provisioning.EventHubChannelProvi
 import com.azure.spring.eventhub.stream.binder.provisioning.EventHubChannelResourceManagerProvisioner;
 import com.azure.spring.integration.eventhub.api.EventHubOperation;
 import com.azure.spring.integration.eventhub.factory.EventHubConnectionStringProvider;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -53,10 +54,10 @@ public class EventHubBinderConfiguration {
     @ConditionalOnMissingBean
     public EventHubChannelProvisioner eventHubChannelProvisioner(
         EventHubConnectionStringProvider eventHubConnectionStringProvider,
-        EventHubNamespaceManager eventHubNamespaceManager,
-        EventHubManager eventHubManager,
-        EventHubConsumerGroupManager consumerGroupManager,
-        AzureEventHubProperties eventHubProperties) {
+        AzureEventHubProperties eventHubProperties,
+        @Autowired(required = false) EventHubNamespaceManager eventHubNamespaceManager,
+        @Autowired(required = false) EventHubManager eventHubManager,
+        @Autowired(required = false) EventHubConsumerGroupManager consumerGroupManager) {
 
         final String connectionString = eventHubConnectionStringProvider.getConnectionString();
         String namespace = eventHubProperties.getNamespace();

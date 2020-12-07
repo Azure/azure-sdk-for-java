@@ -3,18 +3,16 @@
 ## Key concepts
 
 This starter is based on spring-boot-starter-data-redis. It fetches and
-auto configures redis properties via Azure Redis Cache Management SDK.
+auto-configures redis properties via Azure Redis Cache Management SDK.
 
 
 ## Getting started
 
-Running this sample will be charged by Azure.
-You can check the usage and bill at [this link][azure-account].
+Running this sample will be charged by Azure. You can check the usage and bill at [this link][azure-account].
 
 ### Environment checklist
 
-We need to ensure that this [environment
-checklist][ready-to-run-checklist] is completed before the run.
+We need to ensure that this [environment checklist][ready-to-run-checklist] is completed before the run.
 
 ### Coordinates
 
@@ -61,17 +59,17 @@ checklist][ready-to-run-checklist] is completed before the run.
     > :notes: if you want to auto create the redis cache, please specify the spring profile to use `autocreate` and fill
       in the subscription-id and region properties in `application-autocreate.yaml`.     
 
-5.  Run the application using the `$ mvn spring-boot:run` command.
+1.  Run the application using the `$ mvn spring-boot:run` command.
 
-6.  Send a GET request to check, where `name` could be any string:
+1.  Send a GET request to check, where `name` could be any string:
 
         $ curl -XGET http://localhost:8080/{name}
 
-7.  Confirm from Azure Redis Cache console in Azure Portal
+1.  Confirm from Azure Redis Cache console in Azure Portal
 
         $ keys *
 
-8.  Delete the resources on [Azure Portal][azure-portal] to avoid unexpected charges.
+1.  Delete the resources on [Azure Portal][azure-portal] to avoid unexpected charges.
 
 
 ## Troubleshooting

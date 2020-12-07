@@ -1,0 +1,25 @@
+spring:
+  cloud:
+    azure:
+      eventhub:
+        connection-string: [eventhub-namespace-connection-string]
+        checkpoint-storage-account: [checkpoint-storage-account]
+        checkpoint-access-key: [checkpoint-access-key]
+        checkpoint-container: [checkpoint-container]
+
+    stream:
+      bindings:
+        input:
+          destination: [eventhub-name]
+          group: [consumer-group]
+        output:
+          destination: [the-same-eventhub-name-as-above]
+
+      eventhub:
+        bindings:
+          input:
+            consumer:
+              checkpoint-mode: MANUAL
+      default:
+        producer:
+          errorChannelEnabled: true

@@ -18,6 +18,8 @@ import com.azure.spring.integration.eventhub.api.EventHubOperation;
 import com.azure.spring.integration.eventhub.factory.DefaultEventHubClientFactory;
 import com.azure.spring.integration.eventhub.factory.EventHubConnectionStringProvider;
 import com.azure.spring.integration.eventhub.impl.EventHubTemplate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -42,6 +44,9 @@ import javax.annotation.PostConstruct;
 @ConditionalOnProperty(value = "spring.cloud.azure.eventhub.enabled", matchIfMissing = true)
 @EnableConfigurationProperties(AzureEventHubProperties.class)
 public class AzureEventHubAutoConfiguration {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AzureEventHubAutoConfiguration.class);
+
     private static final String EVENT_HUB = "EventHub";
     private static final String NAMESPACE = "Namespace";
 
@@ -96,6 +101,9 @@ public class AzureEventHubAutoConfiguration {
         } else if (namespaceManager != null && StringUtils.hasText(namespace)) {
             return new EventHubConnectionStringProvider(namespaceManager.getOrCreate(namespace));
         }
+
+        LOGGER.warn("Can't construct the EventHubConnectionStringProvider, namespace: {}, connectionString: {}",
+            namespace, connectionString);
         return null;
     }
 

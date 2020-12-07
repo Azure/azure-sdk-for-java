@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.context.core.impl;
 
+import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.eventhubs.models.EventHub;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
@@ -33,9 +34,18 @@ public class EventHubManager extends AzureManager<EventHub, Tuple<EventHubNamesp
 
     @Override
     public EventHub internalGet(Tuple<EventHubNamespace, String> namespaceAndName) {
-        return azureResourceManager.eventHubs()
-                                   .getByName(resourceGroup, namespaceAndName.getFirst().name(),
-                                       namespaceAndName.getSecond());
+        try {
+            return azureResourceManager.eventHubs()
+                                       .getByName(resourceGroup, namespaceAndName.getFirst().name(),
+                                           namespaceAndName.getSecond());
+        } catch (
+            ManagementException e) {
+            if (e.getResponse().getStatusCode() == 404) {
+                return null;
+            } else {
+                throw e;
+            }
+        }
     }
 
     @Override

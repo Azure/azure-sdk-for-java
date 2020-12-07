@@ -5,6 +5,7 @@ package com.azure.spring.cloud.context.core.config;
 
 import com.azure.core.management.AzureEnvironment;
 import com.azure.spring.cloud.context.core.api.CredentialSupplier;
+import com.azure.spring.cloud.context.core.enums.AzureEnvironments;
 import com.google.common.base.Strings;
 
 import javax.annotation.PostConstruct;
@@ -28,7 +29,7 @@ public class AzureProperties implements CredentialSupplier {
 
     private String resourceGroup;
 
-    private AzureEnvironment environment = AzureEnvironment.AZURE;
+    private AzureEnvironments environment = AzureEnvironments.Azure;
 
     private String region;
 
@@ -86,11 +87,11 @@ public class AzureProperties implements CredentialSupplier {
         this.resourceGroup = resourceGroup;
     }
 
-    public AzureEnvironment getEnvironment() {
+    public AzureEnvironments getEnvironment() {
         return environment;
     }
 
-    public void setEnvironment(AzureEnvironment environment) {
+    public void setEnvironment(AzureEnvironments environment) {
         this.environment = environment;
     }
 

@@ -38,7 +38,7 @@ public class DefaultCredentialsProvider implements CredentialsProvider {
                 .clientId(clientId)
                 .clientSecret(clientSecret)
                 .tenantId(tenantId)
-                .authorityHost(azureProperties.getEnvironment().getActiveDirectoryEndpoint())
+                .authorityHost(azureProperties.getEnvironment().getAzureEnvironment().getActiveDirectoryEndpoint())
                 .build();
         }
 
