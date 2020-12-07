@@ -1320,6 +1320,26 @@ class BlobAPITest extends APISpec {
         null     | null       | null         | null        | null           | "\"notfoo\" = 'notbar'"
     }
 
+    @Unroll
+    def "Set metadata whitespace error"() {
+        setup:
+        def metadata = new HashMap<String, String>()
+        metadata.put(key, value)
+
+        when:
+        bc.setMetadata(metadata)
+
+        then:
+        thrown(IllegalArgumentException)
+
+        where:
+        key     | value  || _
+        " foo"  | "bar"  || _ // Leading whitespace key
+        "foo "  | "bar"  || _ // Trailing whitespace key
+        "foo"   | " bar" || _ // Leading whitespace value
+        "foo"   | "bar " || _ // Trailing whitespace value
+    }
+
     def "Set metadata error"() {
         setup:
         bc = cc.getBlobClient(generateBlobName())

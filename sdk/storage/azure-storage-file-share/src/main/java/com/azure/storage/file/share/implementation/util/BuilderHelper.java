@@ -19,6 +19,7 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.policy.MetadataWhitespacePolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
@@ -80,6 +81,7 @@ public final class BuilderHelper {
         if (headers.getSize() > 0) {
             policies.add(new AddHeadersPolicy(headers));
         }
+        policies.add(new MetadataWhitespacePolicy());
 
         HttpPipelinePolicy credentialPolicy = credentialPolicySupplier.get();
         if (credentialPolicy != null) {

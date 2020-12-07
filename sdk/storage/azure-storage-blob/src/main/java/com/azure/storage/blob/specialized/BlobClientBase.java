@@ -353,8 +353,8 @@ public class BlobClientBase {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/copy-blob">Azure Docs</a></p>
      *
      * @param sourceUrl The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
-     * @param metadata Metadata to associate with the destination blob. If there is leading or trailing whitespace in any
-     * metadata key or value, it must be removed or encoded.
+     * @param metadata Metadata to associate with the destination blob. If there is leading or trailing whitespace in
+     * any metadata key or value, it must be removed or encoded.
      * @param tier {@link AccessTier} for the destination blob.
      * @param priority {@link RehydratePriority} for rehydrating the blob.
      * @param sourceModifiedRequestConditions {@link RequestConditions} against the source. Standard HTTP Access
@@ -471,8 +471,8 @@ public class BlobClientBase {
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob-from-url">Azure Docs</a></p>
      *
      * @param copySource The source URL to copy from. URLs outside of Azure may only be copied to block blobs.
-     * @param metadata Metadata to associate with the destination blob. If there is leading or trailing whitespace in any
-     * metadata key or value, it must be removed or encoded.
+     * @param metadata Metadata to associate with the destination blob. If there is leading or trailing whitespace in
+     * any metadata key or value, it must be removed or encoded.
      * @param tier {@link AccessTier} for the destination blob.
      * @param sourceModifiedRequestConditions {@link RequestConditions} against the source. Standard HTTP Access
      * conditions related to the modification of data. ETag and LastModifiedTime are used to construct conditions
