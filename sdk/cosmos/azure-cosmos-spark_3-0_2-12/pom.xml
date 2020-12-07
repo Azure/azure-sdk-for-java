@@ -106,6 +106,13 @@
       <scope>test</scope>
     </dependency>
 
+    <dependency>
+      <groupId>org.apache.spark</groupId>
+      <artifactId>spark-hive_2.12</artifactId>
+      <version>3.0.1</version>
+      <scope>test</scope>
+    </dependency>
+
     <!-- Added this provided dependency to include necessary annotations used by "reactor-core".
          Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
          which is used in @Nullable annotation in reactor core classes.
