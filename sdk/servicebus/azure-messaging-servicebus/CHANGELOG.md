@@ -26,7 +26,7 @@
 ### Known issues
 ### Can not resolve `BinaryData` or `NoClassDefFoundError` 
   NoClassDefFoundError When using `azure-messaging-servicebus:7.0.0` and other Azure SDKs in the same pom.xml file.
-  Check [here][known-issue-binarydata-notfound] for more detail.
+  Check [here][known-issue-binarydata-notfound] for more details.
    
 ### Dependency Updates   
 - Upgraded `azure-core` dependency to `1.11.0`.
