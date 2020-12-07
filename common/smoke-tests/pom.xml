@@ -43,6 +43,9 @@
             <configuration>
               <source>1.8</source>
               <target>1.8</target>
+              <excludes>
+                <exclude>module-info.java</exclude>
+              </excludes>
               <showWarnings>true</showWarnings>
               <showDeprecation>true</showDeprecation>
               <compilerArgument>-Xlint:all</compilerArgument>
