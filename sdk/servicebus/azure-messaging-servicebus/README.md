@@ -91,7 +91,7 @@ platform. First, add the package:
 ```
 [//]: # ({x-version-update-end})
 
-- Known Issue: The pom.xml file should list 'azure-messaging-servicebus' before 'azure-identity' client libraries. 
+- Known Issue: The pom.xml file should list `azure-messaging-servicebus` before `azure-identity` client libraries. 
   Check [here][known-issue-binarydata-notfound] for more detail.
 
 The implemented ways to request a credential are under the `com.azure.identity.credential` package. The sample below
