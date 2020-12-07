@@ -32,11 +32,9 @@ public class MetadataValidationPolicy implements HttpPipelinePolicy {
                 .forEach(header -> {
                     boolean foundWhitespace = Character.isWhitespace(header.getName()
                         .charAt(Constants.HeaderConstants.X_MS_META.length()))
-                        || Character.isWhitespace(header.getName().charAt(header.getName().length() - 1));
-                    for (String value: header.getValues()) {
-                        foundWhitespace |= Character.isWhitespace(value.charAt(0))
-                            || Character.isWhitespace(value.charAt(value.length() - 1));
-                    }
+                        || Character.isWhitespace(header.getName().charAt(header.getName().length() - 1))
+                        || Character.isWhitespace(header.getValue().charAt(0))
+                        || Character.isWhitespace(header.getValue().charAt(header.getValue().length() - 1));
                     if (foundWhitespace) {
                         throw new IllegalArgumentException("Metadata keys and values can not contain leading or "
                             + "trailing whitespace. Please remove or encode them.");
