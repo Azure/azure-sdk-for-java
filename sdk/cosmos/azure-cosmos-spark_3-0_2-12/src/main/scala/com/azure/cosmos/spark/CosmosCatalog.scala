@@ -287,7 +287,7 @@ class CosmosCatalog extends CatalogPlugin
   }
 
   object CosmosContainerProperties {
-    private val partitionKeyPath = "partition_key_path"
+    private val partitionKeyPath = "partitionKeyPath"
     private val defaultPartitionKeyPath = "/id"
     def getPartitionKeyPath(properties: Map[String, String]) : String = {
       properties.getOrElse(partitionKeyPath, defaultPartitionKeyPath)
@@ -297,8 +297,8 @@ class CosmosCatalog extends CatalogPlugin
   }
 
   object CosmosThroughputProperties {
-    private val manualThroughputFieldName = "manual_throughput"
-    private val autoscaleMaxThroughputName = "autoscale_max_throughput"
+    private val manualThroughputFieldName = "manualThroughput"
+    private val autoscaleMaxThroughputName = "autoscaleMaxThroughput"
 
     def tryGetThroughputProperties(properties: Map[String, String]): Option[ThroughputProperties] = {
       properties.get(manualThroughputFieldName).map(
