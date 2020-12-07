@@ -46,7 +46,7 @@ public class AuthorizationServerEndpoints {
         return baseUri + tenant + JWK_SET_ENDPOINT;
     }
 
-    public String endSessionEndpoint(String tenant){
+    public String endSessionEndpoint(String tenant) {
         return baseUri + tenant + END_SESSION_ENDPOINT;
     }
 }
