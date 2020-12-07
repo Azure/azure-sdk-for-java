@@ -29,10 +29,7 @@
     <profile>
       <id>java8</id>
       <activation>
-        <activeByDefault>true</activeByDefault>
-        <property>
-          <name>!java-lts</name>
-        </property>
+        <jdk>[1.8,9)</jdk>
       </activation>
       <build>
         <plugins>
@@ -58,9 +55,7 @@
     <profile>
       <id>java-lts</id>
       <activation>
-        <property>
-          <name>java-lts</name>
-        </property>
+        <jdk>[11,)</jdk>
       </activation>
       <build>
         <plugins>
