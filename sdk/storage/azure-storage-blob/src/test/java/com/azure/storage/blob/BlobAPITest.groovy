@@ -1230,7 +1230,7 @@ class BlobAPITest extends APISpec {
     def "Set metadata min"() {
         setup:
         def metadata = new HashMap<String, String>()
-        metadata.put("foo", "bar")
+        metadata.put("foo", "bar, bar2")
 
         when:
         bc.setMetadata(metadata)
