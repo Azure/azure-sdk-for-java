@@ -8,6 +8,7 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.common.implementation.Constants;
 import reactor.core.publisher.Mono;
 
 import java.util.Locale;
@@ -15,6 +16,8 @@ import java.util.Locale;
 /**
  * This is a request policy in an {@link com.azure.core.http.HttpPipeline} to validate that metadata does not contain
  * leading or trailing whitespace characters.
+ * We do this since the service trims whitespace for the string to sign, but the client does not, resulting in an auth
+ * failure.
  */
 public class MetadataWhitespacePolicy implements HttpPipelinePolicy {
 
@@ -23,18 +26,14 @@ public class MetadataWhitespacePolicy implements HttpPipelinePolicy {
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         context.getHttpRequest().getHeaders().stream()
-            .filter(header -> header.getName().toLowerCase(Locale.ROOT).startsWith("x-ms-meta"))
+            .filter(header -> header.getName().toLowerCase(Locale.ROOT).startsWith(Constants.HeaderConstants.X_MS_META))
             .forEach(header -> {
-                String name = header.getName().substring("x-ms-meta".length());
-                System.out.println(name);
+                String name = header.getName().substring(Constants.HeaderConstants.X_MS_META.length());
                 boolean foundWhitespace = Character.isWhitespace(name.charAt(0))
                     || Character.isWhitespace(name.charAt(name.length() - 1));
-                System.out.println(foundWhitespace);
                 for (String value: header.getValues()) {
-                    System.out.println(value);
                     foundWhitespace |= Character.isWhitespace(value.charAt(0))
                         || Character.isWhitespace(value.charAt(value.length() - 1));
-                    System.out.println(foundWhitespace);
                 }
                 if (foundWhitespace) {
                     throw logger.logExceptionAsError(new IllegalArgumentException("Metadata keys and values can "
