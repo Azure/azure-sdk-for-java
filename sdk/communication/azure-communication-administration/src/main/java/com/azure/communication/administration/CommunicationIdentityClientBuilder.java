@@ -80,7 +80,6 @@ public final class CommunicationIdentityClientBuilder {
      * @return The updated {@link CommunicationIdentityClientBuilder} object.
      * @throws NullPointerException If {@code tokenCredential} is null.
      */
-
     public CommunicationIdentityClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
         return this;
@@ -217,17 +216,15 @@ public final class CommunicationIdentityClientBuilder {
     }
 
     private HttpPipelinePolicy createHttpPipelineAuthPolicy() {
-        HttpPipelinePolicy authPolicy;
         if (this.tokenCredential != null) { 
-            authPolicy = new BearerTokenAuthenticationPolicy(
+            return new BearerTokenAuthenticationPolicy(
                 this.tokenCredential, "https://communication.azure.com//.default");          
         } else if (this.credential != null) {
-            authPolicy = new HmacAuthenticationPolicy(this.credential);            
+            return new HmacAuthenticationPolicy(this.credential);            
         } else {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Missing credential information while building a client."));
         }
-        return authPolicy;
     }
 
     private HttpPipeline createHttpPipeline(HttpClient httpClient,

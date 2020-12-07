@@ -14,7 +14,7 @@
         "retry-after" : "0",
         "X-Azure-Ref" : "0KmzJXwAAAADyBVf0Du24TofZ8x38MV62TEFYRURHRTEyMjEAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
         "StatusCode" : "200",
-        "Body" : "{\"id\":\"8:acs:bff431b2-eb28-43ab-b2fc-546ea8974212_00000006-cab0-2e34-8337-3b3a0d0000b7\"}",
+        "Body" : "{\"id\":\"REDACTED\"}",
         "Date" : "Thu, 03 Dec 2020 22:52:26 GMT",
         "x-ms-client-request-id" : "68f2d849-c077-401f-9d61-68935734bc98",
         "Content-Type" : "application/json; charset=utf-8"
