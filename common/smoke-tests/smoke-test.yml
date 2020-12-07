@@ -10,7 +10,6 @@ jobs:
     strategy:
       matrix:
         Java 8 Windows (AzureCloud):
-          ProfileFlag: ''
           JavaTestVersion: '1.8'
           OSVmImage: windows-2019
           SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
@@ -21,7 +20,6 @@ jobs:
           SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
           ArmTemplateParameters: $(azureCloudArmParameters)
         Java 8 Linux (AzureCloud):
-          ProfileFlag: ''
           JavaTestVersion: '1.8'
           OSVmImage: ubuntu-18.04
           SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
@@ -38,7 +36,6 @@ jobs:
           ArmTemplateParameters: $(azureCloudArmParameters)
           Location: 'eastus2euap'
         Java 8 MacOS (AzureCloud):
-          ProfileFlag: ''
           JavaTestVersion: '1.8'
           OSVmImage: macOS-10.15
           SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
@@ -49,7 +46,6 @@ jobs:
           SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
           ArmTemplateParameters: $(azureCloudArmParameters)
         Java 8 Windows (AzureUSGovernment):
-          ProfileFlag: ''
           JavaTestVersion: '1.8'
           OSVmImage: windows-2019
           SubscriptionConfiguration: $(sub-config-gov-test-resources)
@@ -60,7 +56,6 @@ jobs:
           SubscriptionConfiguration: $(sub-config-gov-test-resources)
           ArmTemplateParameters: $(azureUSGovernmentArmParameters)
         Java 8 Windows (AzureChinaCloud):
-          ProfileFlag: ''
           JavaTestVersion: '1.8'
           OSVmImage: windows-2019
           SubscriptionConfiguration: $(sub-config-cn-test-resources)
@@ -86,7 +81,7 @@ jobs:
         inputs:
           mavenPomFile: $(PomFile)
           goals: 'versions:use-latest-versions'
-          options: '$(DefaultOptions) $(ProfileFlag) --no-transfer-progress -DskipTests "-Dincludes=com.azure:*"'
+          options: '$(DefaultOptions) --no-transfer-progress -DskipTests "-Dincludes=com.azure:*"'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaTestVersion)
           jdkArchitectureOption: 'x64'
@@ -112,7 +107,7 @@ jobs:
         inputs:
           mavenPomFile: $(PomFile)
           goals: 'dependency:tree'
-          options: '$(DefaultOptions) $(ProfileFlag) --no-transfer-progress -DskipTests'
+          options: '$(DefaultOptions) --no-transfer-progress -DskipTests'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaTestVersion)
           jdkArchitectureOption: 'x64'
@@ -123,7 +118,7 @@ jobs:
         inputs:
           mavenPomFile: $(PomFile)
           goals: 'package'
-          options: '$(DefaultOptions) $(ProfileFlag) --no-transfer-progress -DskipTests'
+          options: '$(DefaultOptions) --no-transfer-progress -DskipTests'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaTestVersion)
           jdkArchitectureOption: 'x64'
@@ -140,7 +135,7 @@ jobs:
         inputs:
           mavenPomFile: $(PomFile)
           goals: 'exec:java'
-          options: '$(DefaultOptions) $(ProfileFlag) -Dexec.mainClass="com.azure.smoketest.App"'
+          options: '$(DefaultOptions) -Dexec.mainClass="com.azure.smoketest.App"'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaTestVersion)
           jdkArchitectureOption: 'x64'
