@@ -22,6 +22,7 @@ import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.models.DeleteSnapshotsOptionType;
 import com.azure.storage.file.share.implementation.models.ListSharesIncludeType;
+import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.models.ShareCorsRule;
 import com.azure.storage.file.share.models.ShareServiceProperties;
 import com.azure.storage.file.share.models.ShareStorageException;
@@ -32,9 +33,11 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
@@ -217,12 +220,20 @@ public final class ShareServiceAsyncClient {
             nextMarker -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.services()
                     .listSharesSegmentWithRestResponseAsync(
                         prefix, nextMarker, maxResultsPerPage, include, null, context), timeout)
-                .map(response -> new PagedResponseBase<>(response.getRequest(),
-                    response.getStatusCode(),
-                    response.getHeaders(),
-                    response.getValue().getShareItems(),
-                    response.getValue().getNextMarker(),
-                    response.getDeserializedHeaders()));
+                .map(response -> {
+                    List<ShareItem> value = response.getValue().getShareItems() == null
+                        ? Collections.emptyList()
+                        : response.getValue().getShareItems().stream()
+                        .map(ModelHelper::populateShareItem)
+                        .collect(Collectors.toList());
+
+                    return new PagedResponseBase<>(response.getRequest(),
+                        response.getStatusCode(),
+                        response.getHeaders(),
+                        value,
+                        response.getValue().getNextMarker(),
+                        response.getDeserializedHeaders());
+                });
         return new PagedFlux<>(() -> retriever.apply(marker), retriever);
     }
 
