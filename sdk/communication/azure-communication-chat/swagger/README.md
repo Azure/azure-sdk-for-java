@@ -31,13 +31,13 @@ To update generated files for chat service, run the following command
 
 ### Code generation settings
 ``` yaml
-input-file: https://int.chatgateway.trafficmanager.net/swagger/2020-11-01-preview3/swagger.json
+input-file: swagger.json
 java: true
 output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL
 namespace: com.azure.communication.chat
 generate-client-as-impl: true
-custom-types: ChatMessagePriority,ChatThreadInfo,CreateChatThreadResult,PostReadReceiptOptions,SendChatMessageOptions,UpdateChatMessageOptions,UpdateChatThreadOptions,Error,ErrorException
+custom-types: ChatMessagePriority,ChatThreadInfo,PostReadReceiptOptions,SendChatMessageOptions,UpdateChatMessageOptions,UpdateChatThreadOptions,Error,ErrorException,CreateChatThreadErrors
 custom-types-subpackage: models
 models-subpackage: implementation.models
 generate-client-interfaces: false
@@ -79,7 +79,7 @@ directive:
       delete $.CreateChatThreadRequest;
     }
 - from: swagger-document
-  where: $["paths"]["/chat/threads"].post.parameters[1]
+  where: $["paths"]["/chat/threads"].post.parameters[2]
   transform: >
     if ($.schema && $.schema.$ref && $.schema.$ref.endsWith("CreateChatThreadRequest")) {
         const path = $.schema.$ref.replace(/[#].*$/, "#/definitions/CreateChatThreadOptions");
