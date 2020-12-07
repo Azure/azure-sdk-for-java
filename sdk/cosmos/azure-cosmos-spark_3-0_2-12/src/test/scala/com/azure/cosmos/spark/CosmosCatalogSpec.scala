@@ -42,7 +42,7 @@ class CosmosCatalogSpec extends IntegrationSpec {
 
     val databaseName = RandomStringUtils.randomAlphabetic(5)
 
-    spark.sql(s"CREATE DATABASE testCatalog.${databaseName} WITH DBPROPERTIES ('manualThroughput' = '1000');")
+    spark.sql(s"CREATE DATABASE testCatalog.${databaseName} WITH DBPROPERTIES ('manual_throughput' = '1000');")
 
     client.getDatabase(databaseName).read().block()
     val throughput = client.getDatabase(databaseName).readThroughput().block()
@@ -146,7 +146,7 @@ class CosmosCatalogSpec extends IntegrationSpec {
 
     spark.sql(s"CREATE DATABASE cosmoscatalog.${databaseName};")
     spark.sql(s"CREATE TABLE cosmoscatalog.${databaseName}.${containerName} (word STRING, number INT) using cosmos.items " +
-      s"TBLPROPERTIES(partition_key_path = '/mypk', manualThroughput = '1100')")
+      s"TBLPROPERTIES(partition_key_path = '/mypk', manual_throughput = '1100')")
 
     val containerProperties = client.getDatabase(databaseName).getContainer(containerName).read().block().getProperties
     containerProperties.getPartitionKeyDefinition.getPaths.asScala.toArray should equal(Array("/mypk"))

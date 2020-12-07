@@ -297,8 +297,8 @@ class CosmosCatalog extends CatalogPlugin
   }
 
   object CosmosThroughputProperties {
-    private val manualThroughputFieldName = "manualThroughput"
-    private val autoscaleMaxThroughputName = "autoscaleMaxThroughput"
+    private val manualThroughputFieldName = "manual_throughput"
+    private val autoscaleMaxThroughputName = "autoscale_max_throughput"
 
     def tryGetThroughputProperties(properties: Map[String, String]): Option[ThroughputProperties] = {
       properties.get(manualThroughputFieldName).map(
