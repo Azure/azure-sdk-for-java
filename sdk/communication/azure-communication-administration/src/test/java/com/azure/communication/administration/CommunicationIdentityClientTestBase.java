@@ -52,8 +52,7 @@ public class CommunicationIdentityClientTestBase extends TestBase {
         
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new FakeCredentials());
-        }
-        else {
+        } else {
             builder.credential(new DefaultAzureCredentialBuilder().build());
         }
 
