@@ -144,9 +144,7 @@ public class AzureActiveDirectoryConfiguration {
         result.jwkSetUri(endpoints.jwkSetEndpoint(properties.getTenantId()));
 
         Map<String, Object> configurationMetadata = new LinkedHashMap<>();
-        String tenantId = this.properties.getTenantId();
-        String endSessionEndpoint = String.format("https://login.microsoftonline.com/%s/oauth2/v2.0/logout",
-            StringUtils.hasText(tenantId) ? tenantId : "common");
+        String endSessionEndpoint = endpoints.endSessionEndpoint(properties.getTenantId());
         configurationMetadata.put("end_session_endpoint", endSessionEndpoint);
         result.providerConfigurationMetadata(configurationMetadata);
 
