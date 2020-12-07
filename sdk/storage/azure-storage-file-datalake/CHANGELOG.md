@@ -4,6 +4,7 @@
 - Added support to list paths on a directory.
 - Exposed ClientOptions on all client builders, allowing users to set a custom application id and custom headers.
 - Fixed a bug where the error message would not be displayed the exception message of a HEAD request.
+- Added a MetadataValidationPolicy to check for leading and trailing whitespace in metadata that would cause Auth failures.
 
 ## 12.3.0 (2020-11-11)
 - Added support to specify whether or not a pipeline policy should be added per call or per retry.
