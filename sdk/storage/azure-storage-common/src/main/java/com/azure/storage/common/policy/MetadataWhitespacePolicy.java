@@ -18,19 +18,23 @@ import java.util.Locale;
  */
 public class MetadataWhitespacePolicy implements HttpPipelinePolicy {
 
-    private static ClientLogger logger = new ClientLogger(MetadataWhitespacePolicy.class);
+    private final ClientLogger logger = new ClientLogger(MetadataWhitespacePolicy.class);
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         context.getHttpRequest().getHeaders().stream()
-            .filter(header -> header.getName().toLowerCase(Locale.ROOT).startsWith("x-ms-"))
+            .filter(header -> header.getName().toLowerCase(Locale.ROOT).startsWith("x-ms-meta"))
             .forEach(header -> {
-                String name = header.getName().substring("x-ms-".length());
+                String name = header.getName().substring("x-ms-meta".length());
+                System.out.println(name);
                 boolean foundWhitespace = Character.isWhitespace(name.charAt(0))
                     || Character.isWhitespace(name.charAt(name.length() - 1));
+                System.out.println(foundWhitespace);
                 for (String value: header.getValues()) {
+                    System.out.println(value);
                     foundWhitespace |= Character.isWhitespace(value.charAt(0))
                         || Character.isWhitespace(value.charAt(value.length() - 1));
+                    System.out.println(foundWhitespace);
                 }
                 if (foundWhitespace) {
                     throw logger.logExceptionAsError(new IllegalArgumentException("Metadata keys and values can "
