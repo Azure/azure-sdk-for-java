@@ -3,6 +3,7 @@ $PackageRepository = "Maven"
 $packagePattern = "*.pom"
 $MetadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/master/_data/releases/latest/java-packages.csv"
 $BlobStorageUrl = "https://azuresdkdocs.blob.core.windows.net/%24web?restype=container&comp=list&prefix=java%2F&delimiter=%2F"
+$PACKAGE_INSTALL_NOTES_REGEX = "<artifactId>(?<PackageName>.*)<\/artifactId>\r\n\s+<version>(?<Version>.*)<\/version>"
 
 function Get-java-PackageInfoFromRepo ($pkgPath, $serviceDirectory, $pkgName)
 {
@@ -25,7 +26,7 @@ function Get-java-PackageInfoFromRepo ($pkgPath, $serviceDirectory, $pkgName)
 }
 
 # Returns the maven (really sonatype) publish status of a package id and version.
-function IsMavenPackageVersionPublished($pkgId, $pkgVersion, $groupId) 
+function IsMavenPackageVersionPublished($pkgId, $pkgVersion, $groupId)
 {
   try 
   {
@@ -253,19 +254,23 @@ function GetExistingPackageVersions ($PackageName, $GroupId=$null)
     return $existingVersion.response.docs.v
   }
   catch {
-    LogError "Failed to retieve package versions. `n$_"
+    LogError "Failed to retrieve package versions. `n$_"
     return $null
   }
 }
-
-function SetPackageVersion ($PackageName, $Version, $ServiceName, $ReleaseDate, $BuildType, $GroupName) {
+function SetPackageVersion ($PackageName, $Version, $ServiceDirectory, $ReleaseDate, $BuildType, $GroupId)
+{
   if($null -eq $ReleaseDate)
   {
     $ReleaseDate = Get-Date -Format "yyyy-MM-dd"
   }
-  python "$EngDir/versioning/set_versions.py" --build-type $BuildType --new-version $Version --ai $PackageName --gi $GroupName
+  python "$EngDir/versioning/set_versions.py" --build-type $BuildType --new-version $Version --ai $PackageName --gi $GroupId
   python "$EngDir/versioning/update_versions.py" --update-type library --build-type $BuildType --sr
-  & "$EngCommonScriptsDir/Update-ChangeLog.ps1" -Version $Version -ServiceDirectory $ServiceName -PackageName $PackageName `
+  & "$EngCommonScriptsDir/Update-ChangeLog.ps1" -Version $Version -ServiceDirectory $ServiceDirectory -PackageName $PackageName `
   -Unreleased $False -ReplaceLatestEntryTitle $True -ReleaseDate $ReleaseDate
+}
+function GetPackageInstallNote ($PackageName, $Version, $GroupId=$null)
+{
+  return "<dependency>`n  <groupId>$GroupId</groupId>`n  <artifactId>$PackageName</artifactId>`n  <version>$Version</version>`n</dependency>`n`n";
 }
 
