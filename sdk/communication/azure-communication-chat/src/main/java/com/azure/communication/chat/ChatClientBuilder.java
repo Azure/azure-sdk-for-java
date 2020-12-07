@@ -4,8 +4,9 @@
 package com.azure.communication.chat;
 
 import com.azure.communication.chat.implementation.AzureCommunicationChatServiceImplBuilder;
+import com.azure.communication.chat.implementation.CommunicationBearerTokenCredential;
+
 import com.azure.communication.common.CommunicationTokenCredential;
-import com.azure.communication.common.implementation.CommunicationBearerTokenCredential;
 
 import java.util.ArrayList;
 import java.util.Map;
