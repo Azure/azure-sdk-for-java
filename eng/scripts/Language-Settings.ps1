@@ -258,27 +258,17 @@ function SetPackageVersion ($PackageName, $Version, $ServiceDirectory, $ReleaseD
   -Unreleased $False -ReplaceLatestEntryTitle $True -ReleaseDate $ReleaseDate
 }
 
-  function GetExistingPackageVersions ($PackageName, $GroupId=$null)
+function GetExistingPackageVersions ($PackageName, $GroupId=$null)
 {
   try {
     $Uri = 'https://search.maven.org/solrsearch/select?q=g:"' + $GroupId + '"+AND+a:"' + $PackageName +'"&core=gav&rows=20&wt=json'
     $existingVersion = Invoke-RestMethod -Method GET -Uri $Uri
-    return $existingVersion.response.docs.v
+    $existingVersion = $existingVersion.response.docs.v
+    [Array]::Reverse($existingVersion)
+    return $existingVersion
   }
   catch {
-    LogError "Failed to retieve package versions. `n$_"
+    LogError "Failed to retrieve package versions. `n$_"
     return $null
   }
 }
-
-function SetPackageVersion ($PackageName, $Version, $ServiceName, $ReleaseDate, $BuildType, $GroupName) {
-  if($null -eq $ReleaseDate)
-  {
-    $ReleaseDate = Get-Date -Format "yyyy-MM-dd"
-  }
-  python "$EngDir/versioning/set_versions.py" --build-type $BuildType --new-version $Version --ai $PackageName --gi $GroupName
-  python "$EngDir/versioning/update_versions.py" --update-type library --build-type $BuildType --sr
-  & "$EngCommonScriptsDir/Update-ChangeLog.ps1" -Version $Version -ServiceDirectory $ServiceName -PackageName $PackageName `
-  -Unreleased $False -ReplaceLatestEntryTitle $True -ReleaseDate $ReleaseDate
-}
-
