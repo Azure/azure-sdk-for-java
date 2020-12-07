@@ -7,7 +7,6 @@ package com.azure.communication.chat.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
-import java.util.List;
 
 /** The ChatThread model. */
 @Fluent
@@ -43,12 +42,6 @@ public final class ChatThread {
      */
     @JsonProperty(value = "deletedOn")
     private OffsetDateTime deletedOn;
-
-    /*
-     * Chat participants.
-     */
-    @JsonProperty(value = "participants")
-    private List<ChatParticipant> participants;
 
     /**
      * Get the id property: Chat thread id.
@@ -117,26 +110,6 @@ public final class ChatThread {
      */
     public ChatThread setDeletedOn(OffsetDateTime deletedOn) {
         this.deletedOn = deletedOn;
-        return this;
-    }
-
-    /**
-     * Get the participants property: Chat participants.
-     *
-     * @return the participants value.
-     */
-    public List<ChatParticipant> getParticipants() {
-        return this.participants;
-    }
-
-    /**
-     * Set the participants property: Chat participants.
-     *
-     * @param participants the participants value to set.
-     * @return the ChatThread object itself.
-     */
-    public ChatThread setParticipants(List<ChatParticipant> participants) {
-        this.participants = participants;
         return this;
     }
 }

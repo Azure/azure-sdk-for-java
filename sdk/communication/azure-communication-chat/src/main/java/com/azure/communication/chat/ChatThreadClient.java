@@ -7,6 +7,8 @@ import com.azure.communication.chat.models.ChatMessage;
 import com.azure.communication.chat.models.ChatParticipant;
 import com.azure.communication.chat.models.ChatMessageReadReceipt;
 import com.azure.communication.chat.models.ListChatMessagesOptions;
+import com.azure.communication.chat.models.ListParticipantsOptions;
+import com.azure.communication.chat.models.ListReadReceiptOptions;
 import com.azure.communication.chat.models.SendChatMessageOptions;
 import com.azure.communication.chat.models.UpdateChatMessageOptions;
 import com.azure.communication.common.CommunicationUser;
@@ -163,6 +165,17 @@ public final class ChatThreadClient {
     /**
      * Gets the participants of a thread.
      *
+     * @param listParticipantsOptions The request options.
+     * @return the participants of a thread.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ChatParticipant> listParticipants(ListParticipantsOptions listParticipantsOptions) {
+        return new PagedIterable<>(this.client.listParticipants(listParticipantsOptions));
+    }
+
+    /**
+     * Gets the participants of a thread.
+     *
      * @param context The context to associate with this operation.
      * @return the participants of a thread.
      */
@@ -170,6 +183,19 @@ public final class ChatThreadClient {
     public PagedIterable<ChatParticipant> listParticipants(Context context) {
 
         return new PagedIterable<>(this.client.listParticipants(context));
+    }
+
+    /**
+     * Gets the participants of a thread.
+     *
+     * @param listParticipantsOptions The request options.
+     * @param context The context to associate with this operation.
+     * @return the participants of a thread.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ChatParticipant> listParticipants(ListParticipantsOptions listParticipantsOptions,
+                                                           Context context) {
+        return new PagedIterable<>(this.client.listParticipants(listParticipantsOptions, context));
     }
 
     /**
@@ -356,6 +382,17 @@ public final class ChatThreadClient {
     /**
      * Gets read receipts for a thread.
      *
+     * @param listReadReceiptOptions The additional options for this operation.
+     * @return read receipts for a thread.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ChatMessageReadReceipt> listReadReceipts(ListReadReceiptOptions listReadReceiptOptions) {
+        return new PagedIterable<>(this.client.listReadReceipts(listReadReceiptOptions));
+    }
+
+    /**
+     * Gets read receipts for a thread.
+     *
      * @param context The context to associate with this operation.
      * @return read receipts for a thread.
      */
@@ -363,5 +400,18 @@ public final class ChatThreadClient {
     public PagedIterable<ChatMessageReadReceipt> listReadReceipts(Context context) {
 
         return new PagedIterable<>(this.client.listReadReceipts(context));
+    }
+
+    /**
+     * Gets read receipts for a thread.
+     *
+     * @param listReadReceiptOptions The additional options for this operation.
+     * @param context The context to associate with this operation.
+     * @return read receipts for a thread.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ChatMessageReadReceipt> listReadReceipts(ListReadReceiptOptions listReadReceiptOptions,
+                                                                  Context context) {
+        return new PagedIterable<>(this.client.listReadReceipts(listReadReceiptOptions, context));
     }
 }

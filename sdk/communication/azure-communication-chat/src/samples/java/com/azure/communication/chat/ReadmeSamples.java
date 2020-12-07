@@ -10,9 +10,9 @@ import com.azure.communication.chat.models.ChatThread;
 import com.azure.communication.chat.models.ChatParticipant;
 import com.azure.communication.chat.models.ChatMessageReadReceipt;
 import com.azure.communication.chat.models.CreateChatThreadOptions;
+import com.azure.communication.chat.models.CreateChatThreadResult;
 import com.azure.communication.chat.models.SendChatMessageOptions;
 import com.azure.communication.chat.models.UpdateChatMessageOptions;
-
 
 import com.azure.communication.common.CommunicationUser;
 import com.azure.communication.common.CommunicationUserCredential;
@@ -84,8 +84,8 @@ public class ReadmeSamples {
         CreateChatThreadOptions createChatThreadOptions = new CreateChatThreadOptions()
             .setTopic("Topic")
             .setParticipants(participants);
-        ChatThreadClient chatThreadClient = chatClient.createChatThread(createChatThreadOptions);
-        String chatThreadId = chatThreadClient.getChatThreadId();
+        CreateChatThreadResult result = chatClient.createChatThread(createChatThreadOptions);
+        String chatThreadId = result.getThread().getId();
     }
 
     /**

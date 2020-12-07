@@ -24,12 +24,6 @@ public final class ChatThreadInfo {
     private String topic;
 
     /*
-     * Flag if a chat thread is soft deleted.
-     */
-    @JsonProperty(value = "isDeleted")
-    private Boolean isDeleted;
-
-    /*
      * The timestamp when the chat thread was deleted. The timestamp is in
      * ISO8601 format: `yyyy-MM-ddTHH:mm:ssZ`.
      */
@@ -69,26 +63,6 @@ public final class ChatThreadInfo {
      */
     public ChatThreadInfo setTopic(String topic) {
         this.topic = topic;
-        return this;
-    }
-
-    /**
-     * Get the isDeleted property: Flag if a chat thread is soft deleted.
-     *
-     * @return the isDeleted value.
-     */
-    public Boolean isDeleted() {
-        return this.isDeleted;
-    }
-
-    /**
-     * Set the isDeleted property: Flag if a chat thread is soft deleted.
-     *
-     * @param isDeleted the isDeleted value to set.
-     * @return the ChatThreadInfo object itself.
-     */
-    public ChatThreadInfo setIsDeleted(Boolean isDeleted) {
-        this.isDeleted = isDeleted;
         return this;
     }
 
