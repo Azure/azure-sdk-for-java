@@ -47,6 +47,7 @@ public class RetryUtilTest {
     @Test
     public void withRetryFlux() {
         // Arrange
+        final String timeoutMessage = "Operation timed out.";
         final AmqpRetryOptions options = new AmqpRetryOptions()
             .setDelay(Duration.ofSeconds(1))
             .setMaxRetries(2);
@@ -54,12 +55,11 @@ public class RetryUtilTest {
         final Duration timeout = Duration.ofMillis(500);
 
         final AtomicInteger resubscribe = new AtomicInteger();
-        final AmqpRetryPolicy retryPolicy = new FixedAmqpRetryPolicy(options);
         final Flux<AmqpTransportType> neverFlux = Flux.<AmqpTransportType>never()
             .doOnSubscribe(s -> resubscribe.incrementAndGet());
 
         // Act & Assert
-        StepVerifier.create(RetryUtil.withRetry(neverFlux, timeout, retryPolicy))
+        StepVerifier.create(RetryUtil.withRetry(neverFlux, timeout, options, timeoutMessage))
             .expectSubscription()
             .thenAwait(totalWaitTime)
             .expectError(TimeoutException.class)
@@ -71,6 +71,7 @@ public class RetryUtilTest {
     @Test
     public void withRetryMono() {
         // Arrange
+        final String timeoutMessage = "Operation timed out.";
         final AmqpRetryOptions options = new AmqpRetryOptions()
             .setDelay(Duration.ofSeconds(1))
             .setMaxRetries(2);
@@ -78,12 +79,11 @@ public class RetryUtilTest {
         final Duration timeout = Duration.ofMillis(500);
 
         final AtomicInteger resubscribe = new AtomicInteger();
-        final AmqpRetryPolicy retryPolicy = new FixedAmqpRetryPolicy(options);
         final Mono<AmqpTransportType> neverFlux = Mono.<AmqpTransportType>never()
             .doOnSubscribe(s -> resubscribe.incrementAndGet());
 
         // Act & Assert
-        StepVerifier.create(RetryUtil.withRetry(neverFlux, timeout, retryPolicy))
+        StepVerifier.create(RetryUtil.withRetry(neverFlux, timeout, options, timeoutMessage))
             .expectSubscription()
             .thenAwait(totalWaitTime)
             .expectError(TimeoutException.class)
