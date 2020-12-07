@@ -67,10 +67,10 @@ public class AzureActiveDirectoryResourceServerConfiguration {
         if (!StringUtils.isEmpty(aadAuthenticationProperties.getAppIdUri())) {
             validAudiences.add(aadAuthenticationProperties.getAppIdUri());
         }
-        if(!StringUtils.isEmpty(aadAuthenticationProperties.getClientId())){
+        if (!StringUtils.isEmpty(aadAuthenticationProperties.getClientId())) {
             validAudiences.add(aadAuthenticationProperties.getClientId());
         }
-        if(!validAudiences.isEmpty()){
+        if (!validAudiences.isEmpty()) {
             validators.add(new AzureJwtAudienceValidator(validAudiences));
         }
         validators.add(new AzureJwtIssuerValidator());
