@@ -115,7 +115,8 @@ public class BlobDecryptionPolicy implements HttpPipelinePolicy {
                 boolean padding = encryptedRange.toBlobRange().getOffset()
                     + encryptedRange.toBlobRange().getCount() > (blobSize(responseHeaders) - ENCRYPTION_BLOCK_SIZE);
                 String encryptedDataString = responseHeaders
-                    .getValue(Constants.HeaderConstants.X_MS_META + CryptographyConstants.ENCRYPTION_DATA_KEY);
+                    .getValue(Constants.HeaderConstants.X_MS_META + "-"
+                        + CryptographyConstants.ENCRYPTION_DATA_KEY);
 
                 Flux<ByteBuffer> plainTextData = this.decryptBlob(encryptedDataString,
                     httpResponse.getBody(), encryptedRange, padding);

@@ -28,7 +28,8 @@ public class MetadataValidationPolicy implements HttpPipelinePolicy {
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         try {
             context.getHttpRequest().getHeaders().stream()
-                .filter(header -> header.getName().toLowerCase(Locale.ROOT).startsWith(Constants.HeaderConstants.X_MS_META))
+                .filter(header -> header.getName().toLowerCase(Locale.ROOT)
+                    .startsWith(Constants.HeaderConstants.X_MS_META))
                 .forEach(header -> {
                     boolean foundWhitespace = Character.isWhitespace(header.getName()
                         .charAt(Constants.HeaderConstants.X_MS_META.length()))
@@ -36,8 +37,8 @@ public class MetadataValidationPolicy implements HttpPipelinePolicy {
                         || Character.isWhitespace(header.getValue().charAt(0))
                         || Character.isWhitespace(header.getValue().charAt(header.getValue().length() - 1));
                     if (foundWhitespace) {
-                        throw new IllegalArgumentException("Metadata keys and values can not contain leading or "
-                            + "trailing whitespace. Please remove or encode them.");
+                        throw logger.logExceptionAsError(new IllegalArgumentException("Metadata keys and values "
+                            + "can not contain leading or trailing whitespace. Please remove or encode them."));
                     }
                 });
         } catch (IllegalArgumentException ex) {
