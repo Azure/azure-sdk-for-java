@@ -37,6 +37,7 @@ io.fabric8:kubernetes-client;4.10.3
 io.micrometer:micrometer-core;1.5.6
 io.micrometer:micrometer-registry-azure-monitor;1.5.6
 io.micrometer:micrometer-registry-graphite;1.5.6
+io.netty:netty-bom;4.1.54.Final
 io.netty:netty-buffer;4.1.53.Final
 io.netty:netty-common;4.1.53.Final
 io.netty:netty-codec-http;4.1.53.Final
@@ -163,6 +164,7 @@ com.sun.activation:jakarta.activation;1.2.2
 io.opentelemetry:opentelemetry-api;0.8.0
 io.opentelemetry:opentelemetry-sdk;0.8.0
 io.grpc:grpc-context;1.30.2
+io.projectreactor:reactor-bom;2020.0.1
 io.projectreactor:reactor-test;3.3.11.RELEASE
 junit:junit;4.13.1
 commons-cli:commons-cli;1.3
