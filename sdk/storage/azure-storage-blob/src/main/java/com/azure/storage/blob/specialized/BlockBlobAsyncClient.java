@@ -202,7 +202,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data emitted by the {@code Flux}.
      * @param headers {@link BlobHttpHeaders}
-     * @param metadata Metadata to associate with the blob.
+     * @param metadata Metadata to associate with the blob. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param tier {@link AccessTier} for the destination blob.
      * @param contentMd5 An MD5 hash of the blob content. This hash is used to verify the integrity of the blob during
      * transport. When this header is specified, the storage service compares the hash of the content that has arrived
@@ -688,7 +689,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * @param base64BlockIds A list of base64 encode {@code String}s that specifies the block IDs to be committed.
      * @param headers {@link BlobHttpHeaders}
-     * @param metadata Metadata to associate with the blob.
+     * @param metadata Metadata to associate with the blob. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param tier {@link AccessTier} for the destination blob.
      * @param requestConditions {@link BlobRequestConditions}
      * @return A reactive response containing the information of the block blob.

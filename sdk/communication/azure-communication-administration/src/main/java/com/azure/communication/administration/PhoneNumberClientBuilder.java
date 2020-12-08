@@ -82,7 +82,7 @@ public final class PhoneNumberClientBuilder {
      * @throws NullPointerException If {@code httpClient} is {@code null}.
      */
     public PhoneNumberClientBuilder httpClient(HttpClient httpClient) {
-        this.httpClient = Objects.requireNonNull(httpClient, "'httpClient' cannot be null.");
+        this.httpClient = httpClient;
         return this;
     }
 

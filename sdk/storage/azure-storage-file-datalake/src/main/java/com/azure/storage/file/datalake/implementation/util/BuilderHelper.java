@@ -27,6 +27,7 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
+import com.azure.storage.common.policy.MetadataValidationPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
@@ -90,6 +91,7 @@ public final class BuilderHelper {
         if (headers.getSize() > 0) {
             policies.add(new AddHeadersPolicy(headers));
         }
+        policies.add(new MetadataValidationPolicy());
 
         HttpPipelinePolicy credentialPolicy;
         if (storageSharedKeyCredential != null) {

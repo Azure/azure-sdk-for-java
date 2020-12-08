@@ -63,7 +63,7 @@ public class BlobClient extends BlobClientBase {
      */
     public static final int BLOB_DEFAULT_NUMBER_OF_BUFFERS = BlobAsyncClient.BLOB_DEFAULT_NUMBER_OF_BUFFERS;
     /**
-     * If a blob is known to be greater than 100MB, using a larger block size will trigger some server-side
+     * If a blob  is known to be greater than 100MB, using a larger block size will trigger some server-side
      * optimizations. If the block size is not set and the size of the blob is known to be greater than 100MB, this
      * value will be used.
      */
@@ -182,7 +182,8 @@ public class BlobClient extends BlobClientBase {
      * data provided in the {@link InputStream}.
      * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
      * @param headers {@link BlobHttpHeaders}
-     * @param metadata Metadata to associate with the blob.
+     * @param metadata Metadata to associate with the blob. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param tier {@link AccessTier} for the destination blob.
      * @param requestConditions {@link BlobRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -286,7 +287,8 @@ public class BlobClient extends BlobClientBase {
      * @param parallelTransferOptions {@link ParallelTransferOptions} to use to upload from file. Number of parallel
      *        transfers parameter is ignored.
      * @param headers {@link BlobHttpHeaders}
-     * @param metadata Metadata to associate with the blob.
+     * @param metadata Metadata to associate with the blob. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param tier {@link AccessTier} for the uploaded blob
      * @param requestConditions {@link BlobRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.

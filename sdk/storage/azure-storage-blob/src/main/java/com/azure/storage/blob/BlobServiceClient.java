@@ -114,7 +114,8 @@ public final class BlobServiceClient {
      * {@codesnippet com.azure.storage.blob.BlobServiceClient.createBlobContainerWithResponse#String-Map-PublicAccessType-Context}
      *
      * @param containerName Name of the container to create
-     * @param metadata Metadata to associate with the container.
+     * @param metadata Metadata to associate with the container. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param accessType Specifies how the data in this container is available to the public. See the
      * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
      * @param context Additional context that is passed through the Http pipeline during the service call.
