@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.spring.aad.webapp;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -16,6 +19,15 @@ import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * An implementation of an {@link OAuth2AuthorizedClientRepository} that stores
+ * {@link OAuth2AuthorizedClient}'s in the {@code HttpSession}. To make it compatible
+ * with different spring versions.
+ * Refs: https://github.com/spring-projects/spring-security/issues/9204
+ *
+ * @see OAuth2AuthorizedClientRepository
+ * @see OAuth2AuthorizedClient
+ */
 public class JacksonHttpSessionOAuth2AuthorizedClientRepository implements OAuth2AuthorizedClientRepository {
     private static final String DEFAULT_AUTHORIZED_CLIENTS_ATTR_NAME =
         HttpSessionOAuth2AuthorizedClientRepository.class.getName() + ".AUTHORIZED_CLIENTS";
