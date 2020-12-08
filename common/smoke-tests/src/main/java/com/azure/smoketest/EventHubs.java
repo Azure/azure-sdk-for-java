@@ -1,18 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure;
+package com.azure.smoketest;
 
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
-import com.azure.messaging.eventhubs.models.EventPosition;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.Disposable;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
@@ -21,9 +19,6 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import java.time.Duration;
-
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 
 
 public class EventHubs {
