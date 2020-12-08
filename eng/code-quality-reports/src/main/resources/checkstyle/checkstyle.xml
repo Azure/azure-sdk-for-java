@@ -15,6 +15,10 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <property name="fileNamePattern" value="module\-info\.java$"/>
   </module>
 
+  <module name="DeclarationOrder"/>
+
+  <module name="SimplifyBooleanReturn"/>
+  
   <module name="SuppressionFilter">
     <property name="file" value="${samedir}/checkstyle-suppressions.xml"/>
     <property name="optional" value="true"/>
@@ -404,3 +408,6 @@ page at http://checkstyle.sourceforge.net/config.html -->
 <!--    </module>-->
   </module>
 </module>
+
+
+

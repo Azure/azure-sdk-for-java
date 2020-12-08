@@ -81,7 +81,7 @@ public class ServiceClientCheck extends AbstractCheck {
         "Synchronous method with annotation @ServiceMethod must has ''%s'' as a method parameter.";
 
     private static final Set<String> COMMON_NAMING_PREFIX_SET = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
-        "upsert", "set", "create", "update", "replace", "delete", "add", "get", "list"
+        "upsert", "set", "create", "update", "replace", "delete", "add", "get", "list", "begin"
     )));
 
     // Add all imported classes into a map, key is the name of class and value is the full package path of class.

@@ -19,7 +19,6 @@ import java.util.Stack;
  * </ol>
  */
 public class ServiceClientBuilderCheck extends AbstractCheck {
-    private static final String SERVICE_CLIENT_BUILDER = "ServiceClientBuilder";
 
     private Stack<Boolean> hasServiceClientBuilderAnnotationStack = new Stack<>();
     private Stack<Boolean> hasBuildMethodStack = new Stack<>();
