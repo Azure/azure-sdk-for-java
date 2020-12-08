@@ -34,8 +34,6 @@ We need to ensure that this [environment checklist][ready-to-run-checklist] is c
 ### How to run
 1. Run with Maven
     ```
-    # Under sdk/spring project root directory
-    mvn clean install -DskipTests
     cd azure-spring-boot-samples/azure-spring-boot-sample-servicebus-jms-queue
     mvn spring-boot:run
     ```

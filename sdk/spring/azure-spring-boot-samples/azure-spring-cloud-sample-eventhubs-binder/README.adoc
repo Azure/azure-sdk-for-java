@@ -200,7 +200,7 @@ See https://docs.microsoft.com/azure/role-based-access-control/role-assignments-
 If you update the `spring.cloud.azure.managed-identity.client-id` property after deploying the app, or update the role assignment for services, then redeploy the app again.
 
 === How to run
-1. Run the `mvn clean spring-boot:run` in the root of the code sample to get the app running.
+1. Run the `mvn spring-boot:run` in the root of the code sample to get the app running.
 
 2. Send a POST request
 +

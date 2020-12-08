@@ -15,6 +15,7 @@ public class AuthorizationServerEndpoints {
     private static final String AUTHORIZATION_ENDPOINT = "/oauth2/v2.0/authorize";
     private static final String TOKEN_ENDPOINT = "/oauth2/v2.0/token";
     private static final String JWK_SET_ENDPOINT = "/discovery/v2.0/keys";
+    private static final String END_SESSION_ENDPOINT = "/oauth2/v2.0/logout";
 
     private final String baseUri;
 
@@ -43,5 +44,9 @@ public class AuthorizationServerEndpoints {
 
     public String jwkSetEndpoint(String tenant) {
         return baseUri + tenant + JWK_SET_ENDPOINT;
+    }
+
+    public String endSessionEndpoint(String tenant) {
+        return baseUri + tenant + END_SESSION_ENDPOINT;
     }
 }

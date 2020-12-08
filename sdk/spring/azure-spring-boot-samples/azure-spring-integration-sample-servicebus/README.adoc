@@ -69,7 +69,7 @@ link:src/main/java/com/example/QueueSendController.java#L32[QueueSendController]
 link:src/main/java/com/example/TopicReceiveController.java#L29[TopicReceiveController] and
 link:src/main/java/com/example/TopicSendController.java#L31[TopicSendController].
 
-2. Run the `mvn clean spring-boot:run` in the root of the code sample to get the app running.
+2. Run the `mvn spring-boot:run` in the root of the code sample to get the app running.
 
 3. Send a POST request to service bus queue
 +
