@@ -37,6 +37,8 @@ public class AmqpRetryOptions {
      * @throws NullPointerException if {@code retryOptions} is null.
      */
     public AmqpRetryOptions(AmqpRetryOptions retryOptions) {
+        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+
         this.maxDelay = retryOptions.getMaxDelay();
         this.delay = retryOptions.getDelay();
         this.maxRetries = retryOptions.getMaxRetries();

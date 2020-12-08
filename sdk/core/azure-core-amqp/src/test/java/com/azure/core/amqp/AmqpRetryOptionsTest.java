@@ -29,6 +29,15 @@ public class AmqpRetryOptionsTest {
     }
 
     /**
+     * Asserts that constructor throws exception if null is passed.
+     */
+    @Test
+    public void constructorNull() {
+        // Act
+        Assertions.assertThrows(NullPointerException.class, () -> new AmqpRetryOptions(null));
+    }
+
+    /**
      * Verifies we can set new properties.
      */
     @Test

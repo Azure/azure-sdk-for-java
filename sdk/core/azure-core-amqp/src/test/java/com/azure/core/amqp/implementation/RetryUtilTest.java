@@ -19,6 +19,8 @@ import java.time.Duration;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 public class RetryUtilTest {
     @Test
     public void getCorrectModeFixed() {
@@ -48,21 +50,22 @@ public class RetryUtilTest {
     public void withRetryFlux() {
         // Arrange
         final String timeoutMessage = "Operation timed out.";
+        final Duration timeout = Duration.ofMillis(500);
         final AmqpRetryOptions options = new AmqpRetryOptions()
             .setDelay(Duration.ofSeconds(1))
-            .setMaxRetries(2);
+            .setMaxRetries(2)
+            .setTryTimeout(timeout);
         final Duration totalWaitTime = Duration.ofSeconds(options.getMaxRetries() * options.getDelay().getSeconds());
-        final Duration timeout = Duration.ofMillis(500);
 
         final AtomicInteger resubscribe = new AtomicInteger();
         final Flux<AmqpTransportType> neverFlux = Flux.<AmqpTransportType>never()
             .doOnSubscribe(s -> resubscribe.incrementAndGet());
 
         // Act & Assert
-        StepVerifier.create(RetryUtil.withRetry(neverFlux, timeout, options, timeoutMessage))
+        StepVerifier.create(RetryUtil.withRetry(neverFlux, options, timeoutMessage))
             .expectSubscription()
             .thenAwait(totalWaitTime)
-            .expectError(TimeoutException.class)
+            .expectErrorSatisfies(error -> assertTrue(error.getCause() instanceof TimeoutException))
             .verify();
 
         Assertions.assertEquals(options.getMaxRetries() + 1, resubscribe.get());
@@ -72,21 +75,22 @@ public class RetryUtilTest {
     public void withRetryMono() {
         // Arrange
         final String timeoutMessage = "Operation timed out.";
+        final Duration timeout = Duration.ofMillis(500);
         final AmqpRetryOptions options = new AmqpRetryOptions()
             .setDelay(Duration.ofSeconds(1))
-            .setMaxRetries(2);
+            .setMaxRetries(2)
+            .setTryTimeout(timeout);
         final Duration totalWaitTime = Duration.ofSeconds(options.getMaxRetries() * options.getDelay().getSeconds());
-        final Duration timeout = Duration.ofMillis(500);
 
         final AtomicInteger resubscribe = new AtomicInteger();
         final Mono<AmqpTransportType> neverFlux = Mono.<AmqpTransportType>never()
             .doOnSubscribe(s -> resubscribe.incrementAndGet());
 
         // Act & Assert
-        StepVerifier.create(RetryUtil.withRetry(neverFlux, timeout, options, timeoutMessage))
+        StepVerifier.create(RetryUtil.withRetry(neverFlux, options, timeoutMessage))
             .expectSubscription()
             .thenAwait(totalWaitTime)
-            .expectError(TimeoutException.class)
+            .expectErrorSatisfies(error -> assertTrue(error.getCause() instanceof TimeoutException))
             .verify();
 
         Assertions.assertEquals(options.getMaxRetries() + 1, resubscribe.get());
