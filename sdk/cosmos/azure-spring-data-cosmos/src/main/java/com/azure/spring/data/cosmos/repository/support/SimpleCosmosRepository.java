@@ -55,13 +55,14 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
     }
 
     private boolean shouldUpdateIndexingPolicy(CosmosContainerProperties currentProperties) {
-        return currentProperties != null && !currentProperties.getIndexingPolicy().equals(information.getIndexingPolicy());
+        return currentProperties != null
+            && !currentProperties.getIndexingPolicy().equals(information.getIndexingPolicy());
     }
 
     private CosmosContainerProperties getContainerProperties() {
         try {
             return this.operation.getContainerProperties(this.information.getContainerName());
-        } catch(CosmosException ex) {
+        } catch (CosmosException ex) {
             if (ex.getStatusCode() == 404) {
                 return null;
             } else {

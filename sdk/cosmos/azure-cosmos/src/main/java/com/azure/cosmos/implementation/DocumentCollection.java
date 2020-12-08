@@ -90,7 +90,6 @@ public final class DocumentCollection extends Resource {
         }
 
         this.indexingPolicy = indexingPolicy;
-        setProperty(this, Constants.Properties.INDEXING_POLICY, this.indexingPolicy);
     }
 
     /**
@@ -122,7 +121,6 @@ public final class DocumentCollection extends Resource {
         }
 
         this.partitionKeyDefinition = partitionKey;
-        setProperty(this, Constants.Properties.PARTITION_KEY, this.partitionKeyDefinition);
     }
 
     /**
@@ -163,7 +161,6 @@ public final class DocumentCollection extends Resource {
         } else if (super.has(Constants.Properties.DEFAULT_TTL)) {
             remove(Constants.Properties.DEFAULT_TTL);
         }
-        this.populatePropertyBag();
     }
 
     /**

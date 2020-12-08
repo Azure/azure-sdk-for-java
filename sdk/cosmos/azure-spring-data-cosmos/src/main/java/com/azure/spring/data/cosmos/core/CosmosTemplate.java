@@ -496,7 +496,8 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     }
 
     @Override
-    public CosmosContainerProperties replaceContainerProperties(String containerName, CosmosContainerProperties properties) {
+    public CosmosContainerProperties replaceContainerProperties(String containerName,
+                                                                CosmosContainerProperties properties) {
         CosmosContainerResponse response = this.cosmosAsyncClient.getDatabase(this.databaseName)
             .getContainer(containerName)
             .replace(properties)
