@@ -48,43 +48,32 @@ public class SampleController {
         ServletRequestAttributes sra = (ServletRequestAttributes) requestAttributes;
         OAuth2AuthorizedClient graph = oAuth2AuthorizedClientRepository
             .loadAuthorizedClient("graph", principal, sra.getRequest());
-        String graphResponse = callMicrosoftGraphMeEndpoint(graph);
-        LOG.info("Response from Graph: {}", graphResponse);
-        return "graph response: " + graphResponse;
+        return callMicrosoftGraphMeEndpoint(graph);
     }
 
     /**
      * Call the graph resource only with annotation, return user information
-     * @param graph authorized client
+     * @param graph authorized client for Graph
      * @return Response with graph data
      */
     @GetMapping("call-graph-only-with-annotation")
     @PreAuthorize("hasAuthority('SCOPE_ResourceAccessGraph.read')")
     public String callGraphOnlyWithAnnotation(@RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient graph) {
-        String graphResponse = callMicrosoftGraphMeEndpoint(graph);
-        LOG.info("Response from Graph: {}", graphResponse);
-        return "graph response: " + graphResponse;
+        return callMicrosoftGraphMeEndpoint(graph);
     }
 
     /**
-     * Call the graph and custom(local) resources, combine all the resources and return.
-     * @param graph
-     * @param custom
-     * @return
+     * Call the graph and custom(local) resources, combine all the response and return.
+     * @param graph authorized client for Graph
+     * @param custom authorized client for Custom
+     * @return Response Graph and Custom data.
      */
-    @PreAuthorize("hasAuthority('SCOPE_ResourceAccessCustomResources.read')")
+    @PreAuthorize("hasAuthority('SCOPE_ResourceAccessGraphCustomResources.read')")
     @GetMapping("call-graph-and-custom-resources")
     public String callGraphAndCustomResources(
         @RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient graph,
         @RegisteredOAuth2AuthorizedClient("custom") OAuth2AuthorizedClient custom) {
-
-        String graphResponse = callMicrosoftGraphMeEndpoint(graph);
-        LOG.info("Response from Graph: {}", graphResponse);
-
-        String customResponse = callCustomLocalFileEndpoint(custom);
-        LOG.info("Response from Custom(local): {}", customResponse);
-        return "graph response: " + graphResponse + "\n" +
-            "custom(local) response: " + customResponse;
+        return callMicrosoftGraphMeEndpoint(graph) + "; " + callCustomLocalFileEndpoint(custom);
     }
 
     /**
@@ -100,7 +89,8 @@ public class SampleController {
             .retrieve()
             .bodyToMono(String.class)
             .block();
-        return body;
+        LOG.info("Response from Graph: {}", body);
+        return "Graph response " + (null != body ? "success." : "failed.");
     }
 
     /**
@@ -116,6 +106,7 @@ public class SampleController {
             .retrieve()
             .bodyToMono(String.class)
             .block();
-        return body;
+        LOG.info("Response from Custom(local): {}", body);
+        return "Custom(local) response " + (null != body ? "success." : "failed.");
     }
 }
