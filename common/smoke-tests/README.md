@@ -74,8 +74,8 @@ All the classes in this sample not depend on each other.
 
 It is possible to run them individually:
 ```java
-package com.azure;
-import com.azure.smoketest.StorageBlob;import java.io.IOException;
+package com.azure.smoketest;
+import java.io.IOException;
 
 public class App {
     public static void main(String[] args) throws IllegalArgumentException, IOException {
