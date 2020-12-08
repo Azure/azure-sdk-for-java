@@ -10,5 +10,5 @@ our efforts can be found in the
 - It uses Azure Synapse 2019-08-01-preview API
 - Two client design:
     - `RoleDefinitionsClient` to manage role definitions in Synapse
-    - `roleAssignmentsClient` to manage role assignments in Synapse
+    - `RoleAssignmentsClient` to manage role assignments in Synapse
 - Reactive streams support using [Project Reactor](https://projectreactor.io/)
