@@ -276,7 +276,8 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @param filePath Path of the file to upload
      * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
      * @param headers {@link PathHttpHeaders}
-     * @param metadata Metadata to associate with the resource.
+     * @param metadata Metadata to associate with the resource. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @throws UncheckedIOException If an I/O error occurs

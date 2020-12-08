@@ -222,6 +222,8 @@ public final class Constants {
 
         public static final String DIRECTORY_METADATA_KEY = "hdi_isfolder";
 
+        public static final String X_MS_META = "x-ms-meta";
+
         public static final String SMB_PROTOCOL = "SMB";
 
         public static final String NFS_PROTOCOL = "NFS";
