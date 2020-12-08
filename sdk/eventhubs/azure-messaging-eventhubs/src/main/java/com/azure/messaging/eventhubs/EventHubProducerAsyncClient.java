@@ -462,7 +462,9 @@ public class EventHubProducerAsyncClient implements Closeable {
                 ? link.send(messages.get(0))
                 : link.send(messages));
 
-        return sendMessage.publishOn(scheduler)
+        return withRetry(sendMessage, retryOptions,
+            String.format("partitionId[%s]: Sending messages timed out.", batch.getPartitionId()))
+            .publishOn(scheduler)
             .doOnEach(signal -> {
                 if (isTracingEnabled) {
                     tracerProvider.endSpan(parentContext.get(), signal);
@@ -515,9 +517,8 @@ public class EventHubProducerAsyncClient implements Closeable {
         final String entityPath = getEntityPath(partitionId);
         final String linkName = getEntityPath(partitionId);
 
-        return withRetry(connectionProcessor.flatMap(connection ->
-                connection.createSendLink(linkName, entityPath, retryOptions)),
-            retryOptions, String.format("linkName[%s], partitionId[%s]: Getting send link.", linkName, entityPath));
+        return connectionProcessor
+            .flatMap(connection -> connection.createSendLink(linkName, entityPath, retryOptions));
     }
 
     /**
