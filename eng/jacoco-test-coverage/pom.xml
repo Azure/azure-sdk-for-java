@@ -78,6 +78,21 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
+      <artifactId>azure-analytics-synapse-accesscontrol</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-analytics-synapse-accesscontrol;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-analytics-synapse-artifacts</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-analytics-synapse-artifacts;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-analytics-synapse-spark</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-analytics-synapse-spark;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
       <version>1.12.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>

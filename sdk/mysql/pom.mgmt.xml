@@ -11,5 +11,6 @@
   <modules>
     <module>mgmt-v2017_12_01</module>
     <module>mgmt-v2017_12_01_preview</module>
+    <module>mgmt-v2020_01_01</module>
   </modules>
 </project>
