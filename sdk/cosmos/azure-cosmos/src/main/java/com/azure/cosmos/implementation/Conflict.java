@@ -103,7 +103,7 @@ public final class Conflict extends Resource {
      * Gets the json string content of the conflic.
      * @return The content string.
      */
-    public String getItemAsString() {
+    public String getItemAsJson() {
         return super.getString(Constants.Properties.CONTENT);
     }
 }

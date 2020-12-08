@@ -6,7 +6,6 @@ import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
@@ -21,10 +20,12 @@ import com.azure.cosmos.models.CosmosStoredProcedureProperties;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
+import com.azure.cosmos.rx.TestSuiteBase;
 import org.apache.commons.io.IOUtils;
 import org.assertj.core.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
@@ -38,13 +39,14 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
-public class CosmosConflictsTest {
+public class CosmosConflictsTest extends TestSuiteBase {
+    private static final int CONFLICT_TIMEOUT = 120000;
     private static Logger logger = LoggerFactory.getLogger(CosmosConflictsTest.class);
     private String sprocBody;
     private CosmosAsyncClient globalClient;
     private List<CosmosAsyncClient> regionalClients;
 
-    @BeforeClass(groups = {"multi-master"})
+    @BeforeClass(groups = {"multi-master"}, timeOut = SETUP_TIMEOUT)
     public void before_ConflictTests() throws Exception {
         sprocBody = IOUtils.toString(
             getClass().getClassLoader().getResourceAsStream("conflict-resolver-sproc"), "UTF-8");
@@ -74,52 +76,27 @@ public class CosmosConflictsTest {
         }
     }
 
-    @Test(groups = {"multi-master"})
+    @Test(groups = {"multi-master"}, timeOut = CONFLICT_TIMEOUT)
     public void conflictDefaultLWW() throws InterruptedException {
         String conflictId = "conflict";
+        CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(globalClient);
         if (this.regionalClients.size() > 1) {
             List<CosmosAsyncContainer> containers = new ArrayList<>();
-            warmingUpClient(containers, "TestDB", "TestColl");
-
-            for (int i = 0; i < containers.size(); i++) {
-                int finalI = i;
-                List<CosmosAsyncContainer> finalContainers = containers;
-                new Thread(() -> {
-                    ConflictTestPojo conflictObject = new ConflictTestPojo();
-                    conflictObject.setId(conflictId);
-                    conflictObject.setMypk(conflictId);
-                    conflictObject.setRegionId(finalI);
-                    tryInsertDocumentTest(finalContainers.get(finalI), conflictObject).block();
-                }).start();
-            }
+            warmingUpClient(containers, asyncContainer.getDatabase().getId(), asyncContainer.getId());
+            createItemsInParallelForConflicts(containers, conflictId);
             Thread.sleep(10000); // Wait for conflict item to replicate
 
             Iterator<FeedResponse<CosmosConflictProperties>> iterator =
                 containers.get(0).readAllConflicts(new CosmosQueryRequestOptions()).byPage().toIterable().iterator();
             List<ConflictTestPojo> testPojos = new ArrayList<>();
-            while (iterator.hasNext()) {
-                for (CosmosConflictProperties conflict : iterator.next().getResults()) {
-                    testPojos.add(conflict.getItem(ConflictTestPojo.class));
-                }
-            }
+            readConflicts(iterator, testPojos, null);
             assertThat(testPojos.size()).isEqualTo(0);
 
             CosmosItemResponse<ConflictTestPojo> itemResponse = containers.get(0).readItem(conflictId,
                 new PartitionKey(conflictId), null, ConflictTestPojo.class).block();
 
             //Verify delete should always win
-            for (int i = 0; i < containers.size(); i++) {
-                int finalI = i;
-                if (i == 0) {
-                    new Thread(() -> {
-                        tryReplaceDocumentTest(containers.get(finalI), itemResponse.getItem()).block();
-                    }).start();
-                } else {
-                    new Thread(() -> {
-                        tryDeleteDocumentTest(containers.get(finalI), itemResponse.getItem().getId()).block();
-                    }).start();
-                }
-            }
+            replaceDeleteItemInParallelForConflicts(containers, itemResponse);
             Thread.sleep(10000); // Wait for conflict item to replicate
 
             try {
@@ -133,10 +110,10 @@ public class CosmosConflictsTest {
         }
     }
 
-    @Test(groups = {"multi-master"})
+    @Test(groups = {"multi-master"}, timeOut = CONFLICT_TIMEOUT)
     public void conflictCustomLWW() throws InterruptedException {
         if (this.regionalClients.size() > 1) {
-            CosmosAsyncDatabase database = this.regionalClients.get(0).getDatabase("TestDB");
+            CosmosAsyncDatabase database = getSharedCosmosDatabase(globalClient);
             //getSharedCosmosDatabase(this.regionalClients.get(0));
             CosmosContainerProperties containerProperties = new CosmosContainerProperties("conflictCustomLWWContainer"
                 , "/mypk");
@@ -152,26 +129,13 @@ public class CosmosConflictsTest {
 
                 //Creating conflict by creating item in every region simultaneously
                 String conflictId = "conflict";
-                for (int i = 0; i < containers.size(); i++) {
-                    int finalI = i;
-                    new Thread(() -> {
-                        ConflictTestPojo conflictObject = new ConflictTestPojo();
-                        conflictObject.setId(conflictId);
-                        conflictObject.setMypk(conflictId);
-                        conflictObject.setRegionId(finalI);
-                        tryInsertDocumentTest(containers.get(finalI), conflictObject).block();
-                    }).start();
-                }
+                createItemsInParallelForConflicts(containers, conflictId);
                 Thread.sleep(10000); // Wait for conflict item to replicate
 
                 Iterator<FeedResponse<CosmosConflictProperties>> iterator =
                     containers.get(0).readAllConflicts(new CosmosQueryRequestOptions()).byPage().toIterable().iterator();
                 List<ConflictTestPojo> testPojos = new ArrayList<>();
-                while (iterator.hasNext()) {
-                    for (CosmosConflictProperties conflict : iterator.next().getResults()) {
-                        testPojos.add(conflict.getItem(ConflictTestPojo.class));
-                    }
-                }
+                readConflicts(iterator, testPojos, null);
                 //There should be no conflict
                 assertThat(testPojos.size()).isEqualTo(0);
 
@@ -181,18 +145,7 @@ public class CosmosConflictsTest {
                 assertThat(itemResponse.getItem().getRegionId()).isEqualTo(containers.size() - 1);
 
                 //Verify delete should always win
-                for (int i = 0; i < containers.size(); i++) {
-                    int finalI = i;
-                    if (i == 0) {
-                        new Thread(() -> {
-                            tryReplaceDocumentTest(containers.get(finalI), itemResponse.getItem()).block();
-                        }).start();
-                    } else {
-                        new Thread(() -> {
-                            tryDeleteDocumentTest(containers.get(finalI), itemResponse.getItem().getId()).block();
-                        }).start();
-                    }
-                }
+                replaceDeleteItemInParallelForConflicts(containers, itemResponse);
                 Thread.sleep(10000); // Wait for conflict item to replicate
 
                 try {
@@ -210,10 +163,10 @@ public class CosmosConflictsTest {
         }
     }
 
-    @Test(groups = {"simple"})
+    @Test(groups = {"multi-master"}, timeOut = CONFLICT_TIMEOUT)
     public void conflictCustomSproc() throws InterruptedException {
         if (this.regionalClients.size() > 1) {
-            CosmosAsyncDatabase database = this.regionalClients.get(0).getDatabase("TestDB");
+            CosmosAsyncDatabase database = getSharedCosmosDatabase(globalClient);
             //getSharedCosmosDatabase(this.regionalClients.get(0));
 
             //Creating container with sproc as conflict resolver
@@ -239,26 +192,13 @@ public class CosmosConflictsTest {
 
                 //Creating conflict by creating item in every region simultaneously
                 String conflictId = "conflict";
-                for (int i = 0; i < containers.size(); i++) {
-                    int finalI = i;
-                    new Thread(() -> {
-                        ConflictTestPojo conflictObject = new ConflictTestPojo();
-                        conflictObject.setId(conflictId);
-                        conflictObject.setMypk(conflictId);
-                        conflictObject.setRegionId(finalI);
-                        tryInsertDocumentTest(containers.get(finalI), conflictObject).block();
-                    }).start();
-                }
+                createItemsInParallelForConflicts(containers, conflictId);
                 Thread.sleep(10000); // Wait for conflict item to replicate
 
                 Iterator<FeedResponse<CosmosConflictProperties>> iterator =
                     containers.get(0).readAllConflicts(new CosmosQueryRequestOptions()).byPage().toIterable().iterator();
                 List<ConflictTestPojo> testPojos = new ArrayList<>();
-                while (iterator.hasNext()) {
-                    for (CosmosConflictProperties conflict : iterator.next().getResults()) {
-                        testPojos.add(conflict.getItem(ConflictTestPojo.class));
-                    }
-                }
+                readConflicts(iterator, testPojos, null);
                 assertThat(testPojos.size()).isEqualTo(0);
 
                 CosmosItemResponse<ConflictTestPojo> itemResponse = containers.get(0).readItem(conflictId,
@@ -267,18 +207,7 @@ public class CosmosConflictsTest {
                 assertThat(itemResponse.getItem().getRegionId()).isEqualTo(0);
 
                 //Verify delete should always win
-                for (int i = 0; i < containers.size(); i++) {
-                    int finalI = i;
-                    if (i == 0) {
-                        new Thread(() -> {
-                            tryReplaceDocumentTest(containers.get(finalI), itemResponse.getItem()).block();
-                        }).start();
-                    } else {
-                        new Thread(() -> {
-                            tryDeleteDocumentTest(containers.get(finalI), itemResponse.getItem().getId()).block();
-                        }).start();
-                    }
-                }
+                replaceDeleteItemInParallelForConflicts(containers, itemResponse);
                 Thread.sleep(10000); // Wait for conflict item to replicate
 
                 try {
@@ -296,10 +225,10 @@ public class CosmosConflictsTest {
         }
     }
 
-    @Test(groups = {"simple"})
+    @Test(groups = {"multi-master"})
     public void conflictNonExistingCustomSproc() throws InterruptedException {
         if (this.regionalClients.size() > 1) {
-            CosmosAsyncDatabase database = this.regionalClients.get(0).getDatabase("TestDB");
+            CosmosAsyncDatabase database = getSharedCosmosDatabase(globalClient);
             //getSharedCosmosDatabase(this.regionalClients.get(0));
 
             //Creating container with sproc as conflict resolver
@@ -319,40 +248,39 @@ public class CosmosConflictsTest {
                 warmingUpClient(containers, database.getId(), containerProperties.getId());
 
                 String conflictId = "conflict";
-                for (int i = 0; i < containers.size(); i++) {
-                    int finalI = i;
-                    new Thread(() -> {
-                        ConflictTestPojo conflictObject = new ConflictTestPojo();
-                        conflictObject.setId(conflictId);
-                        conflictObject.setMypk(conflictId);
-                        conflictObject.setRegionId(finalI);
-                        tryInsertDocumentTest(containers.get(finalI), conflictObject).block();
-                    }).start();
-                }
-                Thread.sleep(10000); // Wait for conflict item to replicate
-
                 List<ConflictTestPojo> testPojos = new ArrayList<>();
                 List<String> conflictIds = new ArrayList<>();
                 Iterator<FeedResponse<CosmosConflictProperties>> iterator = null;
-                for (int i = 1; i <= 4; i++) {
-                    //Testing readAllConflicts()
-                    iterator =
-                        containers.get(0).readAllConflicts(new CosmosQueryRequestOptions()).byPage().toIterable().iterator();
+                for (int j = 0; j < 5; j++) {
+                    conflictId = conflictId + j;
+                    boolean conflictCreated = false;
+                    createItemsInParallelForConflicts(containers, conflictId);
 
-                    while (iterator.hasNext()) {
-                        for (CosmosConflictProperties conflict : iterator.next().getResults()) {
-                            conflictIds.add(conflict.getId());
-                            testPojos.add(conflict.getItem(ConflictTestPojo.class));
+                    Thread.sleep(5000); // Wait for conflict item to replicate
+
+                    for (int i = 1; i < 4; i++) {
+                        //Testing readAllConflicts()
+                        iterator =
+                            containers.get(0).readAllConflicts(new CosmosQueryRequestOptions()).byPage().toIterable().iterator();
+
+                        readConflicts(iterator, testPojos, conflictIds);
+                        if (testPojos.size() == 0) {
+                            logger.error("Conflict on {} insert operation has not reflected yet, retrying read after " +
+                                    "5 sec",
+                                containers.get(0).getId());
+                            Thread.sleep(5000); // retry after 5 sec
+                        } else {
+                            conflictCreated = true;
+                            break;
                         }
                     }
-                    if (testPojos.size() == 0) {
-                        logger.error("Conflict on {} create has not reflected yet, retrying after 5 sec",
-                            containers.get(0).getId());
-                        Thread.sleep(5000); // retry after 5 sec
-                    } else {
+                    if (conflictCreated) {
                         break;
                     }
+                    logger.error("Conflict on {} not created, retrying again",
+                        containers.get(0).getId());
                 }
+
                 //We will see some conflicts, as there is no sproc to resolve
                 assertThat(testPojos.size()).isEqualTo(containers.size() - 1);
 
@@ -363,11 +291,8 @@ public class CosmosConflictsTest {
                 CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
                 options.setPartitionKey(new PartitionKey(conflictId));
                 iterator = containers.get(0).queryConflicts(query, options).byPage().toIterable().iterator();
-                while (iterator.hasNext()) {
-                    for (CosmosConflictProperties conflict : iterator.next().getResults()) {
-                        testPojos.add(conflict.getItem(ConflictTestPojo.class));
-                    }
-                }
+                readConflicts(iterator, testPojos, null);
+
                 //We will see some conflicts, as there is no sproc to resolve
                 assertThat(testPojos.size()).isEqualTo(containers.size() - 1);
 
@@ -375,11 +300,8 @@ public class CosmosConflictsTest {
                 //Testing queryConflicts(String query)
                 testPojos.clear();
                 iterator = containers.get(0).queryConflicts(query).byPage().toIterable().iterator();
-                while (iterator.hasNext()) {
-                    for (CosmosConflictProperties conflict : iterator.next().getResults()) {
-                        testPojos.add(conflict.getItem(ConflictTestPojo.class));
-                    }
-                }
+                readConflicts(iterator, testPojos, null);
+
                 //We will see some conflicts, as there is no sproc to resolve
                 assertThat(testPojos.size()).isEqualTo(containers.size() - 1);
 
@@ -393,12 +315,8 @@ public class CosmosConflictsTest {
                 iterator =
                     containers.get(0).readAllConflicts(new CosmosQueryRequestOptions()).byPage().toIterable().iterator();
                 testPojos.clear();
-                while (iterator.hasNext()) {
-                    for (CosmosConflictProperties conflict : iterator.next().getResults()) {
-                        conflictIds.add(conflict.getId());
-                        testPojos.add(conflict.getItem(ConflictTestPojo.class));
-                    }
-                }
+                readConflicts(iterator, testPojos, null);
+
                 //Making sure all conflicts are deleted
                 assertThat(testPojos.size()).isEqualTo(0);
 
@@ -414,17 +332,15 @@ public class CosmosConflictsTest {
         }
     }
 
-    private Mono<CosmosItemResponse<InternalObjectNode>> tryInsertDocument(CosmosAsyncContainer container,
-                                                                           InternalObjectNode internalObjectNode) {
-        return container.createItem(internalObjectNode, new PartitionKey(internalObjectNode.getId()),
-            new CosmosItemRequestOptions())
-            .onErrorResume(e -> {
-                if (hasCosmosConflictException(e, 409)) {
-                    return Mono.empty();
-                } else {
-                    return Mono.error(e);
-                }
-            });
+    @AfterClass(groups = {"multi-master"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    public void afterClass() {
+        if (this.globalClient != null) {
+            this.globalClient.close();
+        }
+        for (CosmosAsyncClient asyncClient : this.regionalClients)
+            if (asyncClient != null) {
+                asyncClient.close();
+            }
     }
 
     private Mono<CosmosItemResponse<ConflictTestPojo>> tryInsertDocumentTest(CosmosAsyncContainer container,
@@ -472,13 +388,17 @@ public class CosmosConflictsTest {
         return false;
     }
 
-    private InternalObjectNode getInternalObjectNode() {
-        InternalObjectNode internalObjectNode = new InternalObjectNode();
-        String uuid = UUID.randomUUID().toString();
-        internalObjectNode.setId(uuid);
-        BridgeInternal.setProperty(internalObjectNode, "mypk", uuid);
-        BridgeInternal.setProperty(internalObjectNode, "regionId", 0);
-        return internalObjectNode;
+    private void readConflicts(Iterator<FeedResponse<CosmosConflictProperties>> iterator,
+                               List<ConflictTestPojo> pojoList,
+                               List<String> conflictIds) {
+        while (iterator.hasNext()) {
+            for (CosmosConflictProperties conflict : iterator.next().getResults()) {
+                pojoList.add(conflict.getItem(ConflictTestPojo.class));
+                if (conflictIds != null) {
+                    conflictIds.add(conflict.getId());
+                }
+            }
+        }
     }
 
     private ConflictTestPojo getTest() {
@@ -507,6 +427,35 @@ public class CosmosConflictsTest {
             }
             container.readItem(warmUpItem.getId(), new PartitionKey(warmUpItem.getId()), null,
                 ConflictTestPojo.class).block();
+        }
+    }
+
+    private void createItemsInParallelForConflicts(List<CosmosAsyncContainer> containers, String conflictId) {
+        for (int i = 0; i < containers.size(); i++) {
+            int finalI = i;
+            new Thread(() -> {
+                ConflictTestPojo conflictObject = new ConflictTestPojo();
+                conflictObject.setId(conflictId);
+                conflictObject.setMypk(conflictId);
+                conflictObject.setRegionId(finalI);
+                tryInsertDocumentTest(containers.get(finalI), conflictObject).block();
+            }).start();
+        }
+    }
+
+    private void replaceDeleteItemInParallelForConflicts(List<CosmosAsyncContainer> containers,
+                                                         CosmosItemResponse<ConflictTestPojo> itemResponse) {
+        for (int i = 0; i < containers.size(); i++) {
+            int finalI = i;
+            if (i == 0) {
+                new Thread(() -> {
+                    tryReplaceDocumentTest(containers.get(finalI), itemResponse.getItem()).block();
+                }).start();
+            } else {
+                new Thread(() -> {
+                    tryDeleteDocumentTest(containers.get(finalI), itemResponse.getItem().getId()).block();
+                }).start();
+            }
         }
     }
 }

@@ -3,6 +3,9 @@
 
 package com.azure.cosmos;
 
+/**
+ * POJO Class for usage in  {@link CosmosConflictsTest}
+ */
 public class ConflictTestPojo {
     private String id;
     private String mypk;

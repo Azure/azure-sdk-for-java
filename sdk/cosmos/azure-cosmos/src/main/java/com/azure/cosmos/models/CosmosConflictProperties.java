@@ -3,7 +3,6 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Conflict;
-import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.OperationKind;
 import com.azure.cosmos.implementation.Resource;
 
@@ -70,8 +69,8 @@ public final class CosmosConflictProperties {
      * Gets the json content of the conflict.
      * @return The content string.
      */
-    public String getItemAsString() {
-        return this.conflict.getItemAsString();
+    public String getItemAsJson() {
+        return this.conflict.getItemAsJson();
     }
 
     /**
