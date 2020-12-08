@@ -80,7 +80,7 @@ HttpClient httpClient = httpClientBuilder.build();
 
 // Your user access token retrieved from your trusted service
 String token = "SECRET";
-communicationTokenCredential credential = new communicationTokenCredential(token);
+CommunicationTokenCredential credential = new CommunicationTokenCredential(token);
 
 // Initialize the chat client
 final ChatClientBuilder builder = new ChatClientBuilder();
