@@ -201,22 +201,12 @@ public final class ManagementLocksImpl
     }
 
     @Override
-    public PagedIterable<ManagementLock> listByResource(String resourceId) {
-        return wrapList(this.manager().managementLockClient().getManagementLocks().listAtResourceLevel(
-                ResourceUtils.groupFromResourceId(resourceId),
-                ResourceUtils.resourceProviderFromResourceId(resourceId),
-                ResourceUtils.parentRelativePathFromResourceId(resourceId),
-                ResourceUtils.resourceTypeFromResourceId(resourceId),
-                ResourceUtils.nameFromResourceId(resourceId)));
+    public PagedIterable<ManagementLock> listForResource(String resourceId) {
+        return wrapList(this.manager().managementLockClient().getManagementLocks().listByScope(resourceId));
     }
 
     @Override
-    public PagedFlux<ManagementLock> listByResourceAsync(String resourceId) {
-        return wrapPageAsync(this.manager().managementLockClient().getManagementLocks().listAtResourceLevelAsync(
-                ResourceUtils.groupFromResourceId(resourceId),
-                ResourceUtils.resourceProviderFromResourceId(resourceId),
-                ResourceUtils.parentRelativePathFromResourceId(resourceId),
-                ResourceUtils.resourceTypeFromResourceId(resourceId),
-                ResourceUtils.nameFromResourceId(resourceId)));
+    public PagedFlux<ManagementLock> listForResourceAsync(String resourceId) {
+        return wrapPageAsync(this.manager().managementLockClient().getManagementLocks().listByScopeAsync(resourceId));
     }
 }

@@ -62,7 +62,7 @@ public class LocksTests extends ResourceManagementTest {
         Assertions.assertEquals(resourceGroup.id(), lock.lockedResourceId());
         Assertions.assertEquals(LockLevel.CAN_NOT_DELETE, lock.level());
 
-        PagedIterable<ManagementLock> locks = resourceClient.managementLocks().list();
+        PagedIterable<ManagementLock> locks = resourceClient.managementLocks().listForResource(resourceGroup.id());
         ManagementLock foundLock = null;
         for (ManagementLock lock1 : locks) {
             if (lockName.equals(lock1.name())) {
