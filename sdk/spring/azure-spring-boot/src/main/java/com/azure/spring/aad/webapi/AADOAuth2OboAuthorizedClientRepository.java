@@ -43,7 +43,7 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
         Iterator<ClientRegistration> iterator = azureClientRegistrationRepository.iterator();
         while (iterator.hasNext()) {
             ClientRegistration next = iterator.next();
-            this.confidentialClientApplicationMap.put(next.getClientId(), createApp(next));
+            this.confidentialClientApplicationMap.put(next.getRegistrationId(), createApp(next));
         }
     }
 
@@ -57,7 +57,7 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
                 .findByRegistrationId(registrationId);
 
             AbstractOAuth2TokenAuthenticationToken<AbstractOAuth2Token> authenticationToken =
-                (AbstractOAuth2TokenAuthenticationToken)
+                (AbstractOAuth2TokenAuthenticationToken<AbstractOAuth2Token>)
                     authentication;
 
             String accessToken = authenticationToken.getToken().getTokenValue();
@@ -67,7 +67,7 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
                 .build();
 
             ConfidentialClientApplication clientApplication = getClientApplication(clientRegistration
-                .getClientId());
+                .getRegistrationId());
 
             String oboAccessToken = clientApplication.acquireToken(parameters).get().accessToken();
 

@@ -28,7 +28,7 @@ import org.springframework.security.oauth2.server.resource.BearerTokenAuthentica
 @ConditionalOnResource(resources = "classpath:aad.enable.config")
 @EnableConfigurationProperties({ AADAuthenticationProperties.class })
 @ConditionalOnClass({BearerTokenAuthenticationToken.class, OAuth2LoginAuthenticationFilter.class})
-@ConditionalOnProperty(prefix = "azure.activedirectory", value = { "app-id-uri" })
+@ConditionalOnProperty(prefix = "azure.activedirectory", value = { "client-id", "client-secret", "tenant-id" })
 public class AzureActiveDirectoryResourceServerClientConfiguration {
 
     @Autowired
@@ -52,8 +52,7 @@ public class AzureActiveDirectoryResourceServerClientConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean
-    public OAuth2AuthorizedClientRepository oAuth2AuthorizedClientRepository(AzureClientRegistrationRepository
-                                                                                 repo) {
+    public OAuth2AuthorizedClientRepository oAuth2AuthorizedClientRepository(AzureClientRegistrationRepository repo) {
         return new AADOAuth2OboAuthorizedClientRepository(repo);
     }
 }
