@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.1 (2020-12-04)
+## 1.2.1 (2020-12-08)
 ### Dependency Updates
 - Upgraded `azure-core` dependency to 1.11.0
 
