@@ -80,7 +80,7 @@ spring.cloud.stream.bindings.output.destination=[servicebus-topic-name-same-as-a
 ....
 +
 
-2. Run the `mvn clean spring-boot:run` in the root of the code sample to get the app running.
+2. Run the `mvn spring-boot:run` in the root of the code sample to get the app running.
 
 3. Send a POST request
 +

@@ -46,7 +46,8 @@ public class ShareCreateOptions {
     }
 
     /**
-     * @param metadata Metadata to associate with the share.
+     * @param metadata Metadata to associate with the share. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @return The updated options.
      */
     public ShareCreateOptions setMetadata(Map<String, String> metadata) {

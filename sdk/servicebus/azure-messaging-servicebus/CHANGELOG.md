@@ -2,7 +2,6 @@
 
 ## 7.1.0-beta.1 (Unreleased)
 
-
 ## 7.0.0 (2020-11-30)
 
 ### New Features
@@ -23,11 +22,16 @@
 ### Bug Fixes
 - Set the default 'prefetch' to 0 instead of 1 in both 'RECEIVE_AND_DELETE' and 'PEEK_LOCK' mode. User can set this 
   value in builder.
+
+### Known issues
+### Can not resolve `BinaryData` or `NoClassDefFoundError` 
+  NoClassDefFoundError When using `azure-messaging-servicebus:7.0.0` and other Azure SDKs in the same pom.xml file.
+  Check [here][known-issue-binarydata-notfound] for more details.
    
 ### Dependency Updates   
 - Upgraded `azure-core` dependency to `1.11.0`.
 - Upgraded `azure-core-amqp` dependency to `2.0.0`.
-
+  
 ## 7.0.0-beta.7 (2020-11-06)
 ### New Features
 - Added automatic message and session lock renewal feature on the receiver clients. By default, this will be done 
@@ -133,6 +137,6 @@ our efforts can be found in the [Azure SDK Design Guidelines for
 
 ### Known issues
 
-- Following features are not implemented Transactions, Sessions, Managing filter rules on Subscription.
+[known-issue-binarydata-notfound]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/known-issues.md#can-not-resolve-binarydata-or-noclassdeffounderror-version-700
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fservicebus%2Fazure-messaging-servicebus%2FCHANGELOG.png)

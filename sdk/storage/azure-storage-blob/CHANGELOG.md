@@ -1,8 +1,9 @@
 # Release History
 
-## 12.10.0-beta.1 (Unreleased)
+## 12.10.0-beta.1 (2020-12-07)
 - Exposed ClientOptions on all client builders, allowing users to set a custom application id and custom headers.
 - Added ability to get container client from blob clients and service client from container clients
+- Added a MetadataValidationPolicy to check for leading and trailing whitespace in metadata that would cause Auth failures.
 - Fixed a bug where the error message would not be displayed the exception message of a HEAD request.
 - Added support for the 2020-04-08 service version. 
 - Added support to upload block blob from URL.

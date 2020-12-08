@@ -78,6 +78,21 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
+      <artifactId>azure-analytics-synapse-accesscontrol</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-analytics-synapse-accesscontrol;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-analytics-synapse-artifacts</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-analytics-synapse-artifacts;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-analytics-synapse-spark</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-analytics-synapse-spark;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
       <version>1.12.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
@@ -169,7 +184,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.3.0-beta.1</version> <!-- {x-version-update;com.azure:azure-identity;current} -->
+      <version>1.2.1</version> <!-- {x-version-update;com.azure:azure-identity;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -259,7 +274,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-internal-avro</artifactId>
-      <version>12.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-internal-avro;current} -->
+      <version>12.0.2-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-internal-avro;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>

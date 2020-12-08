@@ -3,7 +3,7 @@
 
 package com.azure.spring.autoconfigure.aad;
 
-import com.azure.spring.aad.implementation.AuthorizationProperties;
+import com.azure.spring.aad.webapp.AuthorizationProperties;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import java.util.ArrayList;
 import java.util.Collections;
