@@ -1,5 +1,8 @@
 # Release History
 
+## 5.4.0-beta.2 (Unreleased)
+
+
 ## 5.4.0-beta.1 (2020-11-12)
 ### Breaking changes
 - Removed `ObjectBatch` and related `createBatch()` and `send()` operations in favor of
