@@ -66,7 +66,7 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
                 .builder(clientRegistration.getScopes(), new UserAssertion(accessToken))
                 .build();
 
-            ConfidentialClientApplication clientApplication = confidentialClientApplicationMap.get(clientRegistration
+            ConfidentialClientApplication clientApplication = getClientApplication(clientRegistration
                 .getClientId());
 
             String oboAccessToken = clientApplication.acquireToken(parameters).get().accessToken();
@@ -99,6 +99,10 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
     @Override
     public void removeAuthorizedClient(String s, Authentication authentication,
                                        HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+    }
+
+    ConfidentialClientApplication getClientApplication(String registrationId) {
+        return confidentialClientApplicationMap.get(registrationId);
     }
 
     private ConfidentialClientApplication createApp(ClientRegistration clientRegistration) {
