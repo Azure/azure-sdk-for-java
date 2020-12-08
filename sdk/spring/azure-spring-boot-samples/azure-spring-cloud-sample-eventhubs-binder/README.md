@@ -206,7 +206,7 @@ spring:
 
 ## Examples
 
-1.  Run the `mvn clean spring-boot:run` in the root of the code sample to get the app running.
+1.  Run the `mvn spring-boot:run` in the root of the code sample to get the app running.
 
 1.  Send a POST request
 
@@ -223,11 +223,11 @@ spring:
 
 1.  Delete the resources on [Azure Portal][azure-portal] to avoid unexpected charges.
 
-# Troubleshooting
+## Troubleshooting
 
-# Next steps
+## Next steps
 
-# Contributing
+## Contributing
 
 
 <!-- LINKS -->
