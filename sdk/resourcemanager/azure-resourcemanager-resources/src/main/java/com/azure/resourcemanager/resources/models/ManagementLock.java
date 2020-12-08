@@ -8,6 +8,7 @@ import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluent.models.ManagementLockObjectInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
@@ -15,6 +16,8 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
+
+import java.util.List;
 
 /**
  * Management lock.
@@ -26,7 +29,8 @@ public interface ManagementLock extends
     Updatable<ManagementLock.Update>,
     HasInnerModel<ManagementLockObjectInner>,
     HasManager<ResourceManager>,
-    HasId {
+    HasId,
+    HasName {
 
     /**
      * @return the lock level
@@ -42,6 +46,11 @@ public interface ManagementLock extends
      * @return any notes associated with the lock
      */
     String notes();
+
+    /**
+     * @return the owners of the lock
+     */
+    List<ManagementLockOwner> owners();
 
     /**
      * Container interface for all the definitions.

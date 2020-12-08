@@ -41,7 +41,7 @@ public interface ManagementLocks extends
      * @param resourceId the resource ID of the resource
      * @return management locks
      */
-    PagedIterable<ManagementLock> listForResource(String resourceId);
+    PagedIterable<ManagementLock> listByResource(String resourceId);
 
     /**
      * Lists management locks associated with the specified resource, its resource group, and
@@ -50,5 +50,5 @@ public interface ManagementLocks extends
      * @param resourceId the resource Id of the resource
      * @return management locks
      */
-    PagedFlux<ManagementLock> listForResourceAsync(String resourceId);
+    PagedFlux<ManagementLock> listByResourceAsync(String resourceId);
 }

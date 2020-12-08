@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.resources.implementation;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluent.models.ManagementLockObjectInner;
@@ -10,8 +11,12 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.azure.resourcemanager.resources.models.LockLevel;
 import com.azure.resourcemanager.resources.models.ManagementLock;
+import com.azure.resourcemanager.resources.models.ManagementLockOwner;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import reactor.core.publisher.Mono;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  *  Implementation for ManagementLock and its create and update interfaces.
@@ -38,7 +43,7 @@ final class ManagementLockImpl
     @Override
     protected Mono<ManagementLockObjectInner> getInnerAsync() {
         return this.manager().managementLockClient().getManagementLocks()
-            .getByScopeAsync(this.lockedResourceId, this.name());
+            .getByScopeAsync(this.lockedResourceId(), this.name());
     }
 
     @Override
@@ -55,7 +60,11 @@ final class ManagementLockImpl
 
     @Override
     public ManagementLockImpl withLockedResource(String resourceId) {
-        this.lockedResourceId = resourceId;
+        if (!CoreUtils.isNullOrEmpty(resourceId)) {
+            this.lockedResourceId = resourceId;
+        } else {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing resource ID."));
+        }
         return this;
     }
 
@@ -94,7 +103,7 @@ final class ManagementLockImpl
     public Mono<ManagementLock> createResourceAsync() {
         return this.manager().managementLockClient()
             .getManagementLocks()
-            .createOrUpdateByScopeAsync(this.lockedResourceId, this.name(), this.innerModel())
+            .createOrUpdateByScopeAsync(this.lockedResourceId(), this.name(), this.innerModel())
             .map(innerToFluentMap(this));
     }
 
@@ -110,12 +119,23 @@ final class ManagementLockImpl
 
     @Override
     public String lockedResourceId() {
-        return ManagementLocksImpl.resourceIdFromLockId(this.innerModel().id());
+        if (this.lockedResourceId == null) {
+            this.lockedResourceId = ManagementLocksImpl.resourceIdFromLockId(this.innerModel().id());
+        }
+        return this.lockedResourceId;
     }
 
     @Override
     public String notes() {
         return this.innerModel().notes();
+    }
+
+    @Override
+    public List<ManagementLockOwner> owners() {
+        if (this.innerModel().owners() == null) {
+            return null;
+        }
+        return Collections.unmodifiableList(this.innerModel().owners());
     }
 
     @Override

@@ -5,6 +5,7 @@ package com.azure.resourcemanager.resources.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluent.models.ManagementLockObjectInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
@@ -37,9 +38,9 @@ public final class ManagementLocksImpl
      * @param lockId a lock resource ID
      * @return a resource ID
      */
-    public static String resourceIdFromLockId(String lockId) {
+    static String resourceIdFromLockId(String lockId) {
         String[] lockIdParts = lockIdParts(lockId);
-        if (lockIdParts.length == 0) {
+        if (CoreUtils.isNullOrEmpty(lockIdParts)) {
             return null;
         }
 
@@ -54,7 +55,7 @@ public final class ManagementLocksImpl
     }
 
     private static String[] lockIdParts(String lockId) {
-        if (lockId == null) {
+        if (CoreUtils.isNullOrEmpty(lockId)) {
             return new String[0];
         }
 
@@ -91,7 +92,7 @@ public final class ManagementLocksImpl
         if (inner == null) {
             return null;
         }
-        return new ManagementLockImpl(inner.id(), inner, this.manager());
+        return new ManagementLockImpl(inner.name(), inner, this.manager());
     }
 
     @Override
@@ -200,7 +201,7 @@ public final class ManagementLocksImpl
     }
 
     @Override
-    public PagedIterable<ManagementLock> listForResource(String resourceId) {
+    public PagedIterable<ManagementLock> listByResource(String resourceId) {
         return wrapList(this.manager().managementLockClient().getManagementLocks().listAtResourceLevel(
                 ResourceUtils.groupFromResourceId(resourceId),
                 ResourceUtils.resourceProviderFromResourceId(resourceId),
@@ -210,7 +211,7 @@ public final class ManagementLocksImpl
     }
 
     @Override
-    public PagedFlux<ManagementLock> listForResourceAsync(String resourceId) {
+    public PagedFlux<ManagementLock> listByResourceAsync(String resourceId) {
         return wrapPageAsync(this.manager().managementLockClient().getManagementLocks().listAtResourceLevelAsync(
                 ResourceUtils.groupFromResourceId(resourceId),
                 ResourceUtils.resourceProviderFromResourceId(resourceId),
