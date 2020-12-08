@@ -1,7 +1,11 @@
 package com.azure.spring.aad.webapp;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.jackson2.OAuth2ClientJackson2Module;
 import org.springframework.security.oauth2.client.web.HttpSessionOAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.util.Assert;
@@ -14,12 +18,19 @@ import java.util.Map;
 
 public class JacksonHttpSessionOAuth2AuthorizedClientRepository implements OAuth2AuthorizedClientRepository {
     private static final String DEFAULT_AUTHORIZED_CLIENTS_ATTR_NAME =
-        HttpSessionOAuth2AuthorizedClientRepository.class.getName() +  ".AUTHORIZED_CLIENTS";
+        HttpSessionOAuth2AuthorizedClientRepository.class.getName() + ".AUTHORIZED_CLIENTS";
     private final String sessionAttributeName = DEFAULT_AUTHORIZED_CLIENTS_ATTR_NAME;
+    private final ObjectMapper objectMapper;
+
+    public JacksonHttpSessionOAuth2AuthorizedClientRepository() {
+        objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new OAuth2ClientJackson2Module());
+    }
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T extends OAuth2AuthorizedClient> T loadAuthorizedClient(String clientRegistrationId, Authentication principal,
+    public <T extends OAuth2AuthorizedClient> T loadAuthorizedClient(String clientRegistrationId,
+                                                                     Authentication principal,
                                                                      HttpServletRequest request) {
         Assert.hasText(clientRegistrationId, "clientRegistrationId cannot be empty");
         Assert.notNull(request, "request cannot be null");
@@ -34,7 +45,7 @@ public class JacksonHttpSessionOAuth2AuthorizedClientRepository implements OAuth
         Assert.notNull(response, "response cannot be null");
         Map<String, OAuth2AuthorizedClient> authorizedClients = this.getAuthorizedClients(request);
         authorizedClients.put(authorizedClient.getClientRegistration().getRegistrationId(), authorizedClient);
-        request.getSession().setAttribute(this.sessionAttributeName, authorizedClients);
+        request.getSession().setAttribute(this.sessionAttributeName, toString(authorizedClients));
     }
 
     @Override
@@ -46,7 +57,7 @@ public class JacksonHttpSessionOAuth2AuthorizedClientRepository implements OAuth
         if (!authorizedClients.isEmpty()) {
             if (authorizedClients.remove(clientRegistrationId) != null) {
                 if (!authorizedClients.isEmpty()) {
-                    request.getSession().setAttribute(this.sessionAttributeName, authorizedClients);
+                    request.getSession().setAttribute(this.sessionAttributeName, toString(authorizedClients));
                 } else {
                     request.getSession().removeAttribute(this.sessionAttributeName);
                 }
@@ -54,11 +65,28 @@ public class JacksonHttpSessionOAuth2AuthorizedClientRepository implements OAuth
         }
     }
 
-    @SuppressWarnings("unchecked")
+    private String toString(Map<String, OAuth2AuthorizedClient> authorizedClients) {
+        String result;
+        try {
+            result = objectMapper.writeValueAsString(authorizedClients);
+        } catch (JsonProcessingException e) {
+            throw new IllegalStateException(e);
+        }
+        return result;
+    }
+
     private Map<String, OAuth2AuthorizedClient> getAuthorizedClients(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        Map<String, OAuth2AuthorizedClient> authorizedClients = session == null ? null :
-            (Map<String, OAuth2AuthorizedClient>) session.getAttribute(this.sessionAttributeName);
+        String authorizedClientsString = session == null ? null :
+            (String) session.getAttribute(this.sessionAttributeName);
+        TypeReference<Map<String, OAuth2AuthorizedClient>> typeReference = new TypeReference<>() {
+        };
+        Map<String, OAuth2AuthorizedClient> authorizedClients;
+        try {
+            authorizedClients = objectMapper.readValue(authorizedClientsString, typeReference);
+        } catch (JsonProcessingException e) {
+            throw new IllegalStateException(e);
+        }
         if (authorizedClients == null) {
             authorizedClients = new HashMap<>();
         }
