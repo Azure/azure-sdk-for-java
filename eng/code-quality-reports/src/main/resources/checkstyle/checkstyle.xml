@@ -18,7 +18,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
   <module name="DeclarationOrder"/>
 
   <module name="SimplifyBooleanReturn"/>
-  
+
   <module name="SuppressionFilter">
     <property name="file" value="${samedir}/checkstyle-suppressions.xml"/>
     <property name="optional" value="true"/>
@@ -291,6 +291,12 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <module name="MissingJavadocType"/>
     <module name="MissingJavadocPackage"/>
 
+    <!-- To configure the check to produce a violation on a return statement from within a catch or finally block -->
+    <module name="DescendantToken">
+      <property name="tokens" value="LITERAL_FINALLY,LITERAL_CATCH"/>
+      <property name="limitedTokens" value="LITERAL_RETURN"/>
+      <property name="maximumNumber" value="0"/>
+    </module>
 
     <!-- Verifies that all throws in the public API have JavaDocs explaining why and when they are thrown. -->
     <!-- The check verifies both checked (in the throws clause) and unchecked throws -->
@@ -399,6 +405,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
       <property name="blacklistedWords" value="URL, HTTP, XML, JSON, SAS, CPK, API" />
     </module>
 
+    <module name="CommentsIndentation" />
     <!-- CUSTOM CHECKS -->
     <!-- Fluent method checks:
     (1) A method returns an instance of the class, and that have one parameter,

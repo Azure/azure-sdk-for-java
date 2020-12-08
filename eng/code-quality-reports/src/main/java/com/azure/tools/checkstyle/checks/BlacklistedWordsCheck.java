@@ -6,7 +6,7 @@ package com.azure.tools.checkstyle.checks;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
-import com.puppycrawl.tools.checkstyle.checks.naming.AccessModifier;
+import com.puppycrawl.tools.checkstyle.checks.naming.AccessModifierOption;
 import com.puppycrawl.tools.checkstyle.utils.CheckUtil;
 
 import java.util.Arrays;
@@ -24,8 +24,8 @@ import java.util.stream.Collectors;
  */
 public class BlacklistedWordsCheck extends AbstractCheck {
     private final Set<String> blacklistedWords = new HashSet<>(Arrays.asList());
-    private final String ERROR_MESSAGE = "%s, All Public API Classes, Fields and Methods should follow " +
-        "Camelcase standards for the following words: %s.";
+    private final String ERROR_MESSAGE = "%s, All Public API Classes, Fields and Methods should follow "
+        + "Camelcase standards for the following words: %s.";
 
     /**
      * Adds words that Classes, Methods and Variables that should follow Camelcasing standards
@@ -82,9 +82,10 @@ public class BlacklistedWordsCheck extends AbstractCheck {
     private boolean isPublicApi(DetailAST token) {
         final DetailAST modifiersAST =
             token.findFirstToken(TokenTypes.MODIFIERS);
-        final AccessModifier accessModifier = CheckUtil.getAccessModifierFromModifiersToken(modifiersAST);
+        final AccessModifierOption accessModifier = CheckUtil.getAccessModifierFromModifiersToken(modifiersAST);
         final boolean isStatic = modifiersAST.findFirstToken(TokenTypes.LITERAL_STATIC) != null;
-        return (accessModifier.equals(AccessModifier.PUBLIC) || accessModifier.equals(AccessModifier.PROTECTED)) && !isStatic;
+        return (accessModifier.equals(AccessModifierOption.PUBLIC)
+            || accessModifier.equals(AccessModifierOption.PROTECTED)) && !isStatic;
     }
 
     /**

@@ -215,7 +215,7 @@ com.beust:jcommander;1.78
 com.google.code.findbugs:jsr305;3.0.2
 com.nimbusds:nimbus-jose-jwt;8.19
 com.nimbusds:oauth2-oidc-sdk;7.1.1
-com.puppycrawl.tools:checkstyle;8.29
+com.puppycrawl.tools:checkstyle;8.38
 commons-io:commons-io;2.5
 commons-validator:commons-validator;1.6
 io.dropwizard.metrics:metrics-core;4.1.14

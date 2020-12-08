@@ -7,7 +7,7 @@ import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
-import com.puppycrawl.tools.checkstyle.checks.naming.AccessModifier;
+import com.puppycrawl.tools.checkstyle.checks.naming.AccessModifierOption;
 import com.puppycrawl.tools.checkstyle.utils.CheckUtil;
 import com.puppycrawl.tools.checkstyle.utils.TokenUtil;
 
@@ -164,8 +164,8 @@ public class ServiceClientCheck extends AbstractCheck {
     private void checkConstructor(DetailAST ctorToken) {
         final DetailAST modifiersToken = ctorToken.findFirstToken(TokenTypes.MODIFIERS);
         // find constructor's modifier accessibility, no public or protected constructor
-        final AccessModifier accessModifier = CheckUtil.getAccessModifierFromModifiersToken(modifiersToken);
-        if (accessModifier.equals(AccessModifier.PUBLIC) || accessModifier.equals(AccessModifier.PROTECTED)) {
+        final AccessModifierOption accessModifier = CheckUtil.getAccessModifierFromModifiersToken(modifiersToken);
+        if (accessModifier.equals(AccessModifierOption.PUBLIC) || accessModifier.equals(AccessModifierOption.PROTECTED)) {
             log(modifiersToken, "@ServiceClient class should not have any public or protected constructor.");
         }
     }
@@ -183,8 +183,8 @@ public class ServiceClientCheck extends AbstractCheck {
 
         final DetailAST modifiersToken = methodDefToken.findFirstToken(TokenTypes.MODIFIERS);
         // find method's modifier accessibility, should not have a public static method called 'builder'
-        final AccessModifier accessModifier = CheckUtil.getAccessModifierFromModifiersToken(modifiersToken);
-        if (accessModifier.equals(AccessModifier.PUBLIC) && modifiersToken.branchContains(TokenTypes.LITERAL_STATIC)) {
+        final AccessModifierOption accessModifier = CheckUtil.getAccessModifierFromModifiersToken(modifiersToken);
+        if (accessModifier.equals(AccessModifierOption.PUBLIC) && modifiersToken.branchContains(TokenTypes.LITERAL_STATIC)) {
             log(modifiersToken, "@ServiceClient class should not have a public static method named ''builder''.");
         }
     }
