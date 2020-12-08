@@ -94,6 +94,9 @@ public class JacksonHttpSessionOAuth2AuthorizedClientRepository implements OAuth
         TypeReference<Map<String, OAuth2AuthorizedClient>> typeReference =
             new TypeReference<Map<String, OAuth2AuthorizedClient>>() {
         };
+        if (authorizedClientsString == null) {
+            return new HashMap<>();
+        }
         Map<String, OAuth2AuthorizedClient> authorizedClients;
         try {
             authorizedClients = objectMapper.readValue(authorizedClientsString, typeReference);
