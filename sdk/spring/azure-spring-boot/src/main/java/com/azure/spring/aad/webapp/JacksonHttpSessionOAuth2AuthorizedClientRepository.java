@@ -91,7 +91,8 @@ public class JacksonHttpSessionOAuth2AuthorizedClientRepository implements OAuth
         HttpSession session = request.getSession(false);
         String authorizedClientsString = session == null ? null :
             (String) session.getAttribute(this.sessionAttributeName);
-        TypeReference<Map<String, OAuth2AuthorizedClient>> typeReference = new TypeReference<>() {
+        TypeReference<Map<String, OAuth2AuthorizedClient>> typeReference =
+            new TypeReference<Map<String, OAuth2AuthorizedClient>>() {
         };
         Map<String, OAuth2AuthorizedClient> authorizedClients;
         try {
