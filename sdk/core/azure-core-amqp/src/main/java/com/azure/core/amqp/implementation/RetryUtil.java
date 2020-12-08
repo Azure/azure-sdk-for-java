@@ -9,7 +9,6 @@ import com.azure.core.amqp.ExponentialAmqpRetryPolicy;
 import com.azure.core.amqp.FixedAmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.util.logging.ClientLogger;
-import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.retry.Retry;
@@ -51,10 +50,6 @@ public class RetryUtil {
                 throw new IllegalArgumentException(
                     String.format(Locale.ROOT, "Mode is not supported: %s", options.getMode()));
         }
-    }
-
-    public static AmqpRetryOptions getRetryOptions(AmqpRetryPolicy policy) {
-
     }
 
     /**

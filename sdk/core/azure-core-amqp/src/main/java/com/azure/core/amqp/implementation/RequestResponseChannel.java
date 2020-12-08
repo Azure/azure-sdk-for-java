@@ -235,7 +235,7 @@ public class RequestResponseChannel implements Disposable {
             sendLinkHandler.getEndpointStates().takeUntil(x -> x == EndpointState.ACTIVE),
             receiveLinkHandler.getEndpointStates().takeUntil(x -> x == EndpointState.ACTIVE));
 
-        return RetryUtil.withRetry(activeEndpoints, operationTimeout, retryOptions, activeEndpointTimeoutMessage)
+        return RetryUtil.withRetry(activeEndpoints, retryOptions, activeEndpointTimeoutMessage)
             .then(Mono.create(sink -> {
                 try {
                     logger.verbose("connectionId[{}], linkName[{}]: Scheduling on dispatcher. MessageId[{}]",

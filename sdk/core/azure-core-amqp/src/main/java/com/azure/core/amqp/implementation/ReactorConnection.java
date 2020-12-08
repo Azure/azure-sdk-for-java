@@ -140,8 +140,7 @@ public class ReactorConnection implements AmqpConnection {
         }
 
         final Flux<AmqpEndpointState> activeEndpointState = RetryUtil.withRetry(
-            getEndpointStates().takeUntil(x -> x == AmqpEndpointState.ACTIVE),
-            connectionOptions.getRetry().getTryTimeout(), connectionOptions.getRetry(),
+            getEndpointStates().takeUntil(x -> x == AmqpEndpointState.ACTIVE), connectionOptions.getRetry(),
             "ReactorConnection: Retries exhausted waiting for ACTIVE endpoint state on CBS node.");
 
         return Mono.when(connectionMono, activeEndpointState).then(Mono.fromCallable(() -> getOrCreateCBSNode()));
@@ -229,8 +228,7 @@ public class ReactorConnection implements AmqpConnection {
      */
     protected AmqpSession createSession(String sessionName, Session session, SessionHandler handler) {
         return new ReactorSession(session, handler, sessionName, reactorProvider, handlerProvider,
-            getClaimsBasedSecurityNode(), tokenManagerProvider, messageSerializer,
-            connectionOptions.getRetry().getTryTimeout(), retryPolicy);
+            getClaimsBasedSecurityNode(), tokenManagerProvider, messageSerializer, connectionOptions.getRetry());
     }
 
     /**
