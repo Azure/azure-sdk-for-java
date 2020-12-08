@@ -39,7 +39,7 @@ public final class ManagementLocksImpl
      */
     public static String resourceIdFromLockId(String lockId) {
         String[] lockIdParts = lockIdParts(lockId);
-        if (lockIdParts == null) {
+        if (lockIdParts.length == 0) {
             return null;
         }
 
