@@ -1,0 +1,168 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Azure SDK for Java | Azure SDK for Java </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Azure SDK for Java | Azure SDK for Java ">
+    <meta name="generator" content="docfx 2.43.2.0">
+    
+    <link rel="shortcut icon" href="https://c.s-microsoft.com/favicon.ico?v2">
+    <link rel="stylesheet" href="styles/docfx.vendor.css">
+    <link rel="stylesheet" href="styles/docfx.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <meta property="docfx:navrel" content="navtoc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    <meta property="docfx:newtab" content="true">
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="index.html">
+                <img id="logo" class="svg" src="logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="azure-sdk-for-java">Azure SDK for Java</h1>
+
+<p><a href="https://azure.github.io/azure-sdk/releases/latest/java.html"><img src="https://img.shields.io/badge/packages-latest-blue.svg" alt="Packages"></a> <a href="https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/staging/dependencies.html"><img src="https://img.shields.io/badge/dependency-report-blue.svg" alt="Dependencies"></a> <a href="https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/staging/InterdependencyGraph.html"><img src="https://img.shields.io/badge/dependency-graph-blue.svg" alt="DepGraph"></a> <a href="https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/index.html"><img src="https://img.shields.io/badge/documentation-published-blue.svg" alt="Build Documentation"></a> <a href="https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/staging/spotbugsXml.html"><img src="https://img.shields.io/badge/SpotBugs-Clean-success.svg" alt="SpotBugs"></a> <a href="https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/staging/checkstyle-aggregate.html"><img src="https://img.shields.io/badge/CheckStyle-Clean-success.svg" alt="CheckStyle"></a></p>
+<p>This repository is for active development of the Azure SDK for Java. For consumers of the SDK we recommend visiting our <a href="https://docs.microsoft.com/java/azure/">public developer docs</a> or our versioned <a href="https://azure.github.io/azure-sdk-for-java">developer docs</a>.</p>
+<h2 id="getting-started">Getting started</h2>
+<p>To get started with a specific service library, see the <strong>README.md</strong> file located in the library's project folder. You can find service libraries in the <code>/sdk</code> directory. For a list of all the services we support access our <a href="https://azure.github.io/azure-sdk/releases/latest/all/java.html">list of all existing libraries</a>.</p>
+<p>For tutorials, samples, quick starts and other documentation, visit <a href="https://docs.microsoft.com/java/azure/">Azure for Java Developers</a>.</p>
+<h3 id="prerequisites">Prerequisites</h3>
+<p>Java 8 or later is required to use libraries under the <code>com.azure</code> package, for libraries under the <code>com.microsoft.azure</code> package Java 7 or later is required.</p>
+<h2 id="available-packages">Available packages</h2>
+<p>Each service might have a number of libraries available from each of the following categories:</p>
+<ul>
+<li><a href="#client-new-releases">Client: New Releases</a></li>
+<li><a href="#client-previous-versions">Client: Previous Versions</a></li>
+<li><a href="#management-new-releases">Management: New Releases</a></li>
+<li><a href="#management-previous-versions">Management: Previous Versions</a></li>
+</ul>
+<h3 id="client-new-releases">Client: New Releases</h3>
+<p>New wave of packages that follow the <a href="https://azure.github.io/azure-sdk/java/guidelines/">Azure SDK Design Guidelines for Java</a> and share a number of core features such as HTTP retries, logging, transport protocols, authentication protocols, etc., so that once you learn how to use these features in one client library, you will know how to use them in other client libraries. You can learn about these shared features <a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/README.md">here</a>.
+These libraries can be easily identified by folder, package, and namespaces names starting with <code>azure-</code>, e.g. <code>azure-keyvault</code>.</p>
+<p>You can find the <strong><a href="https://azure.github.io/azure-sdk/releases/latest/index.html#java">most up to date list of all of the new packages on our page</a></strong>. This list includes the most recent releases: both GA and preview.</p>
+<blockquote>
+<p>NOTE: If you need to ensure your code is ready for production use one of the stable, non-preview libraries.</p>
+</blockquote>
+<h3 id="client-previous-versions">Client: Previous Versions</h3>
+<p>Last stable versions of packages that have been provided for usage with Azure and are production-ready. These libraries provide similar functionalities to the new libraries, as they allow you to use and consume existing resources and interact with them, for example: upload a blob. Previous library directories start with <code>microsoft-azure-</code>, e.g. <code>microsoft-azure-keyvault</code>. They might not implement the <a href="https://azure.github.io/azure-sdk/java_introduction.html">guidelines</a> or have the same feature set as the new releases. They do however offer wider coverage of services.</p>
+<h3 id="management-new-releases">Management: New Releases</h3>
+<p>A new set of management libraries that follow the <a href="https://azure.github.io/azure-sdk/java/guidelines/">Azure SDK Design Guidelines for Java</a> are now Generally Available (GA) and ready for production uses. These new libraries provide a higher-level, object-oriented API for <em>managing</em> Azure resources, that is optimized for ease of use, succinctness and consistency. You can find the list of new packages <strong><a href="https://azure.github.io/azure-sdk/releases/latest/java.html">on this page</a></strong>.</p>
+<p><strong>For general documentation on how to use the new libraries for Azure Resource Management, please <a href="https://aka.ms/azsdk/java/mgmt">visit here</a></strong>. We have also prepared <strong><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/SAMPLE.md">plenty of code samples</a></strong> as well as <strong><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/MIGRATION_GUIDE.md">migraton guide</a></strong> in case you are upgrading from previous versions.</p>
+<p>New Management libraries can be identified by namespaces that start with <code>azure-resourcemanager</code>, e.g. <code>azure-resourcemanager-compute</code></p>
+<h3 id="management-previous-versions">Management: Previous Versions</h3>
+<p>For a complete list of management libraries which enable you to provision and manage Azure resources, please check <a href="https://azure.github.io/azure-sdk/releases/latest/all/java.html">here</a>. They might not have the same feature set as the new releases but they do offer wider coverage of services.
+Previous versions of management libraries can be identified by namespaces that start with <code>azure-mgmt-</code>, e.g. <code>azure-mgmt-compute</code></p>
+<h2 id="need-help">Need help?</h2>
+<ul>
+<li>For reference documentation visit the <a href="https://aka.ms/java-docs">Azure SDK for Java documentation</a>.</li>
+<li>For tutorials, samples, quick starts and other documentation, visit <a href="https://docs.microsoft.com/java/azure/">Azure for Java Developers</a>.</li>
+<li>For build reports on code quality, test coverage, etc, visit <a href="https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/index.html">Azure Java SDK</a>.</li>
+<li>File an issue via <a href="https://github.com/Azure/azure-sdk-for-java/issues/new/choose">Github Issues</a>.</li>
+<li>Check <a href="https://stackoverflow.com/questions/tagged/azure-java-sdk">previous questions</a> or ask new ones on StackOverflow using <code>azure-java-sdk</code> tag.</li>
+</ul>
+<h2 id="navigating-the-repository">Navigating the repository</h2>
+<h3 id="master-branch">Master branch</h3>
+<p>The master branch has the most recent code with new features and bug fixes. It does <strong>not</strong> represent latest released <strong>GA</strong> SDK. See <a href="#client-new-releases">above</a> for latest <strong>GA</strong> release.<br></p>
+<h3 id="release-branches-release-tagging">Release branches (Release tagging)</h3>
+<p>For each package we release there will be a unique git tag created that contains the name and the version of the package to mark the commit of the code that produced the package. This tag will be used for servicing via hotfix branches as well as debugging the code for a particular preview or stable release version.
+Format of the release tags are <code>&lt;package-name&gt;_&lt;package-version&gt;</code>. For more information please see <a href="https://github.com/Azure/azure-sdk/blob/master/docs/policies/repobranching.md#release-tagging">our branching strategy</a>.</p>
+<h2 id="contributing">Contributing</h2>
+<p>For details on contributing to this repository, see the <a href="https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING.md">contributing guide</a>.</p>
+<p>This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, view <a href="https://cla.microsoft.com">Microsoft's CLA</a>.</p>
+<p>When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repositories using our CLA.</p>
+<p>This project has adopted the <a href="https://opensource.microsoft.com/codeofconduct/">Microsoft Open Source Code of Conduct</a>. For more information see the <a href="https://opensource.microsoft.com/codeofconduct/faq/">Code of Conduct FAQ</a> or contact <a href="mailto:opencode@microsoft.com">opencode@microsoft.com</a> with any additional questions or comments.</p>
+<h3 id="additional-helpful-links-for-contributors">Additional Helpful Links for Contributors</h3>
+<p>Many people all over the world have helped make this project better.  You'll want to check out:</p>
+<ul>
+<li><a href="https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3A%22up+for+grabs%22">What are some good first issues for new contributors to the repo?</a></li>
+<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING.md#developer-guide">How to build and test your change</a></li>
+<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING.md#pull-requests">How you can make a change happen!</a></li>
+<li>Frequently Asked Questions (FAQ) and Conceptual Topics in the detailed <a href="https://github.com/azure/azure-sdk-for-java/wiki">Azure SDK for Java wiki</a>.</li>
+</ul>
+<h3 id="community">Community</h3>
+<p>Chat with other community members <a href="https://gitter.im/azure/azure-sdk-for-java?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://badges.gitter.im/Join%20Chat.svg" alt="Join the chat at https://gitter.im/azure/azure-sdk-for-java"></a></p>
+<h3 id="reporting-security-issues-and-security-bugs">Reporting security issues and security bugs</h3>
+<p>Security issues and bugs should be reported privately, via email, to the Microsoft Security Response Center (MSRC) <a href="mailto:secure@microsoft.com">secure@microsoft.com</a>. You should receive a response within 24 hours. If for some reason you do not, please follow up via email to ensure we received your original message. Further information, including the MSRC PGP key, can be found in the <a href="https://www.microsoft.com/msrc/faqs-report-an-issue">Security TechCenter</a>.</p>
+<h3 id="license">License</h3>
+<p>Azure SDK for Java is licensed under the <a href="https://github.com/Azure/azure-sdk-for-java/blob/master/LICENSE.txt">MIT</a> license.</p>
+<!-- Links -->
+<p><img src="https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2FREADME.png" alt="Impressions"></p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Azure SDK for Java
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="styles/docfx.js"></script>
+    <script type="text/javascript" src="styles/main.js"></script>
+  </body>
+</html>
