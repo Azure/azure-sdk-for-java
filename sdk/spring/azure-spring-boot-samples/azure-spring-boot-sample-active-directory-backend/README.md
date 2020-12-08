@@ -41,8 +41,6 @@ If `azure.activedirectory.tenant-id` is **NOT** configured, `NoLoginSecurityConf
 
 ### Run with Maven
 ```shell
-# Under sdk/spring project root directory
-mvn clean install -DskipTests
 cd azure-spring-boot-samples/azure-spring-boot-sample-active-directory-backend
 mvn spring-boot:run
 ```

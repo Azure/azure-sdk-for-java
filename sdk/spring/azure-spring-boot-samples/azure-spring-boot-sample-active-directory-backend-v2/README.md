@@ -38,8 +38,6 @@ azure.activedirectory.user-group.allowed-groups=group1, group2
 
 ### Run with Maven
 ```shell
-# Under sdk/spring project root directory
-mvn clean install -DskipTests
 cd azure-spring-boot-samples/azure-spring-boot-sample-active-directory-backend-v2
 mvn spring-boot:run
 ```

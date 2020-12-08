@@ -98,12 +98,6 @@ In this section, you clone a containerized Spring Boot application and test it l
 
 #### Run the sample
 
-1. Build the JAR file using Maven; for example:
-
-   ```shell
-   mvn clean package
-   ```
-
 1. When the web app has been created, start the web app using Maven; for example:
 
    ```shell
@@ -274,12 +268,6 @@ In this section, you clone a containerized Spring Boot application and test it l
     ```
 
 #### Run the updated sample
-
-1. Build the JAR file using Maven; for example:
-
-   ```shell
-   mvn clean package
-   ```
 
 1. When the web app has been created, start the web app using Maven; for example:
 
