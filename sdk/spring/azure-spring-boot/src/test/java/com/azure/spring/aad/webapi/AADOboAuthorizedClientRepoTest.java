@@ -40,7 +40,6 @@ public class AADOboAuthorizedClientRepoTest {
         addInlinedPropertiesToEnvironment(
             context,
             AAD_PROPERTY_PREFIX + "user-group.allowed-groups = group1",
-            // using resource server
             AAD_PROPERTY_PREFIX + "tenant-id = fake-tenant-id",
             AAD_PROPERTY_PREFIX + "client-id = fake-client-id",
             AAD_PROPERTY_PREFIX + "client-secret = fake-client-secret",
@@ -53,9 +52,9 @@ public class AADOboAuthorizedClientRepoTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void loadAzureAuthorizedClient() throws ExecutionException, InterruptedException {
 
-        // perform obo function
         ConfidentialClientApplication confidentialClientApplication = mock(ConfidentialClientApplication.class);
 
         CompletableFuture<IAuthenticationResult> acquireTokenFuture = mock(CompletableFuture.class);
