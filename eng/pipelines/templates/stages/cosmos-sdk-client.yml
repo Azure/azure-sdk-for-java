@@ -119,6 +119,14 @@ stages:
             PROTOCOLS: '["Tcp"]'
             DESIRED_CONSISTENCIES: '["Session"]'
             AdditionalArgs: '-DargLine="-DACCOUNT_HOST=https://localhost:8081/"'
+          Spark_Integration_Tests_Java8:
+            OSVmImage: 'windows-2019'
+            JavaTestVersion: '1.8'
+            ProfileFlag: '-PsparkE2E'
+            DisplayName: 'Spark Integration Tests targeting Cosmos Emulator'
+            PROTOCOLS: '["Tcp"]'
+            DESIRED_CONSISTENCIES: '["Session"]'
+            AdditionalArgs: '-DargLine="-DACCOUNT_HOST=https://localhost:8081/"'
 
         TestStepMavenInputs:
           goals: clean verify

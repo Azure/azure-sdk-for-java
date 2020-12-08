@@ -51,7 +51,21 @@ case class CosmosScanBuilder(config: CaseInsensitiveStringMap)
     CosmosScan(config.asScala.toMap, this.processedPredicates.get.cosmosParametrizedQuery)
   }
 
+  /**
+    * Applies column pruning w.r.t. the given requiredSchema.
+    *
+    * Implementation should try its best to prune the unnecessary columns or nested fields, but it's
+    * also OK to do the pruning partially, e.g., a data source may not be able to prune nested
+    * fields, and only prune top-level columns.
+    *
+    * Note that, {@link Scan# readSchema ( )} implementation should take care of the column
+    * pruning applied here.
+    */
   override def pruneColumns(requiredSchema: StructType): Unit = {
-    // TODO moderakh add projection to the query
+    // TODO moderakh: we need to decide whether do a push down or not on the projection
+    // spark will do column pruning on the returned data.
+    // pushing down projection to cosmos has tradeoffs:
+    //   - it increases consumed RU in cosmos query engine
+    //   - it decrease the networking layer latency
   }
 }
