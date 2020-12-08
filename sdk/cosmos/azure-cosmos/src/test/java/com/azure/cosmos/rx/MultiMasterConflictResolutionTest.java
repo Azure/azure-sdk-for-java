@@ -2,10 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
-import com.azure.core.http.ProxyOptions;
-import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.models.ConflictResolutionMode;
 import com.azure.cosmos.models.ConflictResolutionPolicy;
 import com.azure.cosmos.CosmosAsyncClient;
@@ -27,7 +24,6 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
-import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.UUID;
 

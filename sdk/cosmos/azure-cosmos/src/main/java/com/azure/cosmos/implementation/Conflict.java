@@ -64,7 +64,7 @@ public final class Conflict extends Resource {
      * @param klass The returned type of conflicting resource.
      * @return The conflicting resource.
      */
-    public <T > T getResource(Class<T> klass) {
+    public <T extends Resource> T getResource(Class<T> klass) {
         String resourceAsString = super.getString(Constants.Properties.CONTENT);
 
         if (!Strings.isNullOrEmpty(resourceAsString)) {
@@ -100,7 +100,7 @@ public final class Conflict extends Resource {
     }
 
     /**
-     * Gets the json string content of the conflic.
+     * Gets the json content of the conflicting resource.
      * @return The content string.
      */
     public String getItemAsJson() {
