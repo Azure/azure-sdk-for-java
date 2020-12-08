@@ -54,8 +54,8 @@ import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_NAMESPACE_VALUE;
-import static com.azure.messaging.eventhubs.implementation.ClientConstants.MAX_MESSAGE_LENGTH_BYTES;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_TRACING_SERVICE_NAME;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.MAX_MESSAGE_LENGTH_BYTES;
 
 /**
  * An <b>asynchronous</b> producer responsible for transmitting {@link EventData} to a specific Event Hub, grouped
@@ -457,12 +457,12 @@ public class EventHubProducerAsyncClient implements Closeable {
             parentContext.set(tracerProvider.startSpan(AZ_TRACING_SERVICE_NAME, finalSharedContext, ProcessKind.SEND));
         }
 
-        return withRetry(getSendLink(batch.getPartitionId())
-            .flatMap(link ->
-                messages.size() == 1
-                    ? link.send(messages.get(0))
-                    : link.send(messages)), retryOptions.getTryTimeout(), retryPolicy)
-            .publishOn(scheduler)
+        final Mono<Void> sendMessage = getSendLink(batch.getPartitionId())
+            .flatMap(link -> messages.size() == 1
+                ? link.send(messages.get(0))
+                : link.send(messages));
+
+        return sendMessage.publishOn(scheduler)
             .doOnEach(signal -> {
                 if (isTracingEnabled) {
                     tracerProvider.endSpan(parentContext.get(), signal);
@@ -515,8 +515,9 @@ public class EventHubProducerAsyncClient implements Closeable {
         final String entityPath = getEntityPath(partitionId);
         final String linkName = getEntityPath(partitionId);
 
-        return connectionProcessor
-            .flatMap(connection -> connection.createSendLink(linkName, entityPath, retryOptions));
+        return withRetry(connectionProcessor.flatMap(connection ->
+                connection.createSendLink(linkName, entityPath, retryOptions)),
+            retryOptions, String.format("linkName[%s], partitionId[%s]: Getting send link.", linkName, entityPath));
     }
 
     /**
