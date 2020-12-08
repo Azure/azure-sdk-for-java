@@ -41,7 +41,7 @@ public final class CommunicationIdentityClientBuilder {
 
     private final ClientLogger logger = new ClientLogger(CommunicationIdentityClientBuilder.class);
     private String endpoint;
-    private CommunicationClientCredential credential;
+    private CommunicationClientCredential accessKeyCredential;
     private TokenCredential tokenCredential;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions = new HttpLogOptions();
@@ -93,7 +93,7 @@ public final class CommunicationIdentityClientBuilder {
      */
     public CommunicationIdentityClientBuilder accessKey(String accessKey) {
         Objects.requireNonNull(accessKey, "'accessKey' cannot be null.");
-        this.credential = new CommunicationClientCredential(accessKey);
+        this.accessKeyCredential = new CommunicationClientCredential(accessKey);
         return this;
     }
 
@@ -216,11 +216,15 @@ public final class CommunicationIdentityClientBuilder {
     }
 
     private HttpPipelinePolicy createHttpPipelineAuthPolicy() {
+        if (this.tokenCredential != null && this.accessKeyCredential != null) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Both 'credential' and 'accessKey' are set. Just one may be used."));
+        }
         if (this.tokenCredential != null) { 
             return new BearerTokenAuthenticationPolicy(
                 this.tokenCredential, "https://communication.azure.com//.default");          
-        } else if (this.credential != null) {
-            return new HmacAuthenticationPolicy(this.credential);            
+        } else if (this.accessKeyCredential != null) {
+            return new HmacAuthenticationPolicy(this.accessKeyCredential);            
         } else {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Missing credential information while building a client."));
