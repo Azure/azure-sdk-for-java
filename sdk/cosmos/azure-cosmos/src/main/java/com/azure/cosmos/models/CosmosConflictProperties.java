@@ -3,6 +3,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Conflict;
+import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.OperationKind;
 import com.azure.cosmos.implementation.Resource;
 
@@ -53,6 +54,24 @@ public final class CosmosConflictProperties {
 
     Resource getResource() {
         return this.conflict;
+    }
+
+    /**
+     * Gets the conflicting resource in the Azure Cosmos DB service.
+     * @param <T> the type of the object.
+     * @param klass The returned type of conflicting resource.
+     * @return The conflicting resource.
+     */
+    public <T> T getItem(Class<T> klass) {
+        return this.conflict.getItem(klass);
+    }
+
+    /**
+     * Gets the json content of the conflict.
+     * @return The content string.
+     */
+    public String getItemAsString() {
+        return this.conflict.getItemAsString();
     }
 
     /**

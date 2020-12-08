@@ -121,4 +121,8 @@ public class CosmosStoredProcedure {
                    .blockStoredProcedureResponse(storedProcedure.replace(storedProcedureProperties, options));
 
     }
+
+    String getParentLink() {
+        return container.asyncContainer.getLink();
+    }
 }

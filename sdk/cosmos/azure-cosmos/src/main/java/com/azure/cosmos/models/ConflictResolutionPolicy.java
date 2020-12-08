@@ -4,8 +4,12 @@
 package com.azure.cosmos.models;
 
 
+import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosAsyncStoredProcedure;
+import com.azure.cosmos.CosmosStoredProcedure;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.JsonSerializable;
+import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.StoredProcedure;
 import com.azure.cosmos.implementation.Strings;
@@ -124,6 +128,54 @@ public final class ConflictResolutionPolicy {
         policy.setMode(ConflictResolutionMode.CUSTOM);
         if (conflictResolutionStoredProcName != null) {
             policy.setConflictResolutionProcedure(conflictResolutionStoredProcName);
+        }
+        return policy;
+    }
+
+    /**
+     * Creates a CUSTOM {@link ConflictResolutionPolicy} which uses the specified stored procedure
+     * to perform conflict resolution
+     * <p>
+     * This stored procedure may be created after the {@link CosmosContainerProperties} is created and can be changed as
+     * required.
+     *
+     * <ul>
+     * <li>In case the stored procedure fails or throws an exception,
+     * the conflict resolution will default to registering conflicts in the conflicts feed</li>
+     * </ul>
+     *
+     * @param storedProcedure stored procedure to perform conflict resolution.
+     * @return ConflictResolutionPolicy.
+     */
+    public static ConflictResolutionPolicy createCustomPolicy(CosmosStoredProcedure storedProcedure) {
+        ConflictResolutionPolicy policy = new ConflictResolutionPolicy();
+        policy.setMode(ConflictResolutionMode.CUSTOM);
+        if (storedProcedure != null) {
+            policy.setConflictResolutionProcedure(getLink(storedProcedure));
+        }
+        return policy;
+    }
+
+    /**
+     * Creates a CUSTOM {@link ConflictResolutionPolicy} which uses the specified stored procedure
+     * to perform conflict resolution
+     * <p>
+     * This stored procedure may be created after the {@link CosmosContainerProperties} is created and can be changed as
+     * required.
+     *
+     * <ul>
+     * <li>In case the stored procedure fails or throws an exception,
+     * the conflict resolution will default to registering conflicts in the conflicts feed</li>
+     * </ul>
+     *
+     * @param storedProcedure stored procedure to perform conflict resolution.
+     * @return ConflictResolutionPolicy.
+     */
+    public static ConflictResolutionPolicy createCustomPolicy(CosmosAsyncStoredProcedure storedProcedure) {
+        ConflictResolutionPolicy policy = new ConflictResolutionPolicy();
+        policy.setMode(ConflictResolutionMode.CUSTOM);
+        if (storedProcedure != null) {
+            policy.setConflictResolutionProcedure(getLink(storedProcedure));
         }
         return policy;
     }
@@ -266,4 +318,24 @@ public final class ConflictResolutionPolicy {
     }
 
     JsonSerializable getJsonSerializable() { return this.jsonSerializable; }
+
+    private static String getLink(CosmosAsyncStoredProcedure storedProcedure) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(BridgeInternal.getSprocParentLinkAsync(storedProcedure));
+        builder.append("/");
+        builder.append(Paths.STORED_PROCEDURES_PATH_SEGMENT);
+        builder.append("/");
+        builder.append(storedProcedure.getId());
+        return builder.toString();
+    }
+
+    private static String getLink(CosmosStoredProcedure storedProcedure) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(BridgeInternal.getSprocParentLinkSync(storedProcedure));
+        builder.append("/");
+        builder.append(Paths.STORED_PROCEDURES_PATH_SEGMENT);
+        builder.append("/");
+        builder.append(storedProcedure.getId());
+        return builder.toString();
+    }
 }

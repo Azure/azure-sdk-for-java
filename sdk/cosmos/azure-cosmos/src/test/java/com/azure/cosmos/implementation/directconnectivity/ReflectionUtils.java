@@ -9,6 +9,7 @@ import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ConnectionPolicy;
+import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxStoreModel;
@@ -178,6 +179,9 @@ public class ReflectionUtils {
         return get(RxStoreModel.class, rxDocumentClient, "storeModel");
     }
 
+    public static GlobalEndpointManager getGlobalEndpointManager(RxDocumentClientImpl rxDocumentClient){
+        return get(GlobalEndpointManager.class, rxDocumentClient, "globalEndpointManager");
+    }
 
     public static void setGatewayProxy(RxDocumentClientImpl client, RxStoreModel storeModel) {
         set(client, storeModel, "gatewayProxy");

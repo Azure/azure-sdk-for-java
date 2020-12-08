@@ -3,6 +3,9 @@
 
 package com.azure.cosmos.implementation;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.lang.reflect.InvocationTargetException;
 
 /**
@@ -12,6 +15,7 @@ import java.lang.reflect.InvocationTargetException;
  * respective conflict instances  for resources and operations in conflict.
  */
 public final class Conflict extends Resource {
+    private final static ObjectMapper mapper = Utils.getSimpleObjectMapper();
     /**
      * Initialize a conflict object.
      */
@@ -60,7 +64,7 @@ public final class Conflict extends Resource {
      * @param klass The returned type of conflicting resource.
      * @return The conflicting resource.
      */
-    public <T extends Resource> T getResource(Class<T> klass) {
+    public <T > T getResource(Class<T> klass) {
         String resourceAsString = super.getString(Constants.Properties.CONTENT);
 
         if (!Strings.isNullOrEmpty(resourceAsString)) {
@@ -73,5 +77,33 @@ public final class Conflict extends Resource {
         } else {
             return null;
         }
+    }
+
+    /**
+     * Gets the conflicting resource in the Azure Cosmos DB service.
+     * @param <T> the type of the object.
+     * @param klass The returned type of conflicting resource.
+     * @return The conflicting resource.
+     */
+    public <T > T getItem(Class<T> klass) {
+        String resourceAsString = super.getString(Constants.Properties.CONTENT);
+
+        if (!Strings.isNullOrEmpty(resourceAsString)) {
+                try {
+                    return mapper.readValue(resourceAsString, klass);
+                } catch (JsonProcessingException ex) {
+                    throw new IllegalStateException("Failed to deserialize  class object.", ex);
+                }
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Gets the json string content of the conflic.
+     * @return The content string.
+     */
+    public String getItemAsString() {
+        return super.getString(Constants.Properties.CONTENT);
     }
 }

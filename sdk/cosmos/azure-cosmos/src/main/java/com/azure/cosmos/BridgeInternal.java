@@ -641,6 +641,17 @@ public final class BridgeInternal {
         return transactionalBatchRequestOptions.toRequestOptions();
     }
 
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static String getSprocParentLinkAsync(CosmosAsyncStoredProcedure storedProcedure) {
+        return storedProcedure.getParentLink();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static String getSprocParentLinkSync(CosmosStoredProcedure storedProcedure) {
+        return storedProcedure.getParentLink();
+    }
+
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static TransactionalBatchOperationResult createTransactionBatchResult(
         String eTag,
