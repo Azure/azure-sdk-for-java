@@ -36,14 +36,16 @@ import javax.annotation.PostConstruct;
  */
 @Configuration
 @ConditionalOnMissingBean(Binder.class)
-@Import({ AzureEventHubAutoConfiguration.class, AzureEnvironmentAutoConfiguration.class,
-    AzureContextAutoConfiguration.class })
+@Import({
+    AzureEnvironmentAutoConfiguration.class,
+    AzureContextAutoConfiguration.class,
+    AzureEventHubAutoConfiguration.class,
+})
 @EnableConfigurationProperties({ AzureEventHubProperties.class, EventHubExtendedBindingProperties.class })
 public class EventHubBinderConfiguration {
 
     private static final String EVENT_HUB_BINDER = "EventHubBinder";
     private static final String NAMESPACE = "Namespace";
-
 
     @PostConstruct
     public void collectTelemetry() {
@@ -52,6 +54,22 @@ public class EventHubBinderConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
+    @ConditionalOnBean(EventHubNamespaceManager.class)
+    public EventHubManager eventHubManager(AzureResourceManager azureResourceManager, AzureProperties azureProperties) {
+        return new EventHubManager(azureResourceManager, azureProperties);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnBean(EventHubNamespaceManager.class)
+    public EventHubConsumerGroupManager eventHubConsumerGroupManager(AzureResourceManager azureResourceManager,
+                                                                     AzureProperties azureProperties) {
+        return new EventHubConsumerGroupManager(azureResourceManager, azureProperties);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnBean(EventHubConnectionStringProvider.class)
     public EventHubChannelProvisioner eventHubChannelProvisioner(
         EventHubConnectionStringProvider eventHubConnectionStringProvider,
         AzureEventHubProperties eventHubProperties,
@@ -84,6 +102,7 @@ public class EventHubBinderConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
+    @ConditionalOnBean(EventHubConnectionStringProvider.class)
     public EventHubMessageChannelBinder eventHubBinder(EventHubChannelProvisioner eventHubChannelProvisioner,
                                                        EventHubOperation eventHubOperation,
                                                        EventHubExtendedBindingProperties bindingProperties) {
@@ -93,18 +112,4 @@ public class EventHubBinderConfiguration {
         return binder;
     }
 
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnBean(AzureResourceManager.class)
-    public EventHubManager eventHubManager(AzureResourceManager azureResourceManager, AzureProperties azureProperties) {
-        return new EventHubManager(azureResourceManager, azureProperties);
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnBean(EventHubManager.class)
-    public EventHubConsumerGroupManager eventHubConsumerGroupManager(AzureResourceManager azureResourceManager,
-                                                                     AzureProperties azureProperties) {
-        return new EventHubConsumerGroupManager(azureResourceManager, azureProperties);
-    }
 }

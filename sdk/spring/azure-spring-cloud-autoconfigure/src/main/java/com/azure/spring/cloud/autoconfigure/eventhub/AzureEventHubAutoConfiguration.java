@@ -57,12 +57,6 @@ public class AzureEventHubAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public EventHubOperation eventHubOperation(EventHubClientFactory clientFactory) {
-        return new EventHubTemplate(clientFactory);
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
     @ConditionalOnBean(AzureResourceManager.class)
     public EventHubNamespaceManager eventHubNamespaceManager(AzureResourceManager azureResourceManager,
                                                              AzureProperties azureProperties) {
@@ -109,13 +103,16 @@ public class AzureEventHubAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnBean(EventHubConnectionStringProvider.class)
-    public EventHubClientFactory clientFactory(
+    public EventHubClientFactory eventhubClientFactory(
         @Autowired(required = false) EnvironmentProvider environmentProvider,
         @Autowired(required = false) StorageAccountManager storageAccountManager,
         EventHubConnectionStringProvider eventHubConnectionStringProvider,
         AzureEventHubProperties properties
     ) {
+        if (eventHubConnectionStringProvider == null) {
+            LOGGER.info("No event hub connection string provided.");
+            return null;
+        }
 
         final String eventHubConnectionString = eventHubConnectionStringProvider.getConnectionString();
         final String storageConnectionString = getStorageConnectionString(properties,
@@ -129,6 +126,13 @@ public class AzureEventHubAutoConfiguration {
         return new DefaultEventHubClientFactory(eventHubConnectionString, storageConnectionString,
             properties.getCheckpointContainer());
     }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public EventHubOperation eventHubOperation(EventHubClientFactory clientFactory) {
+        return new EventHubTemplate(clientFactory);
+    }
+
 
     private String getStorageConnectionString(AzureEventHubProperties properties,
                                               StorageAccountManager storageAccountManager,

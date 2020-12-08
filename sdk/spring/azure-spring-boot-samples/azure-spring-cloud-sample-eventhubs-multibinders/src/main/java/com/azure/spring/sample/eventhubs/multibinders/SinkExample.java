@@ -16,20 +16,20 @@ public class SinkExample {
 
     @StreamListener(CustomProcessor.INPUT)
     public void handleMessage(String message, @Header(AzureHeaders.CHECKPOINTER) Checkpointer checkpointer) {
-        System.out.println(String.format("[1] New message received: '%s'", message));
+        System.out.printf("[1] New message received: '%s'%n", message);
         checkpointer.success()
-            .doOnSuccess(s -> System.out.println(String.format("[1] Message '%s' successfully checkpointed",
-                message)))
+            .doOnSuccess(s -> System.out.printf("[1] Message '%s' successfully checkpointed%n",
+                message))
             .doOnError(System.out::println)
             .subscribe();
     }
 
     @StreamListener(CustomProcessor.INPUT1)
     public void handleMessage1(String message, @Header(AzureHeaders.CHECKPOINTER) Checkpointer checkpointer) {
-        System.out.println(String.format("[2] New message received: '%s'", message));
+        System.out.printf("[2] New message received: '%s'%n", message);
         checkpointer.success()
-            .doOnSuccess(s -> System.out.println(String.format("[2] Message '%s' successfully checkpointed",
-                message)))
+            .doOnSuccess(s -> System.out.printf("[2] Message '%s' successfully checkpointed%n",
+                message))
             .doOnError(System.out::println)
             .subscribe();
     }

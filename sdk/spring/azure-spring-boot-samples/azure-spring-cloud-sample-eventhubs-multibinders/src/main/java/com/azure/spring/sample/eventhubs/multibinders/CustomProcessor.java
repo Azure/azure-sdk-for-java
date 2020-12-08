@@ -9,7 +9,7 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.SubscribableChannel;
 
 /**
- * @author Xiaolu Dai, 2019-09-09.
+ * @author Xiaolu Dai
  */
 public interface CustomProcessor {
 

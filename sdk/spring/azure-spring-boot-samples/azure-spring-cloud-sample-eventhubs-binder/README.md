@@ -88,53 +88,10 @@ Event Hub. You can choose anyone of them.
         
 #### Method 3: MSI credential based usage
 
-##### Overview
-
-[MSI][managed-identities] (Managed Service Identity, aka Managed Identity) for Azure resources
-provides Azure services with an automatically managed identity in [Azure AD][azure-ad].
-You can use this identity to authenticate to any service that supports Azure AD authentication 
-without having any credentials in your code.
 
 ##### Set up managed identity
 
-Please note your application should run in VM (Virtual Machine) or App Services on Azure for 
-support of MSI. Choose any of them.
-
-###### Method 1: Set up VM and assign identity
-
-1.  Create VM in Azure portal. Please refer to 
-    [Create a Windows virtual machine in the Azure portal][create-vm-windows]
-    or [Create a Linux virtual machine in the Azure portal][create-vm-linux].
-    Choose either one according to your needs.
-
-1.  Create a user-assigned identity in Azure Portal. Please refer to
-    [Create a user-assigned managed identity][create-user-assigned-mi].
-
-1.  Assign the user-assigned identity to the VM. Please refer to 
-    [Assign an user-assigned managed identity to an existing VM][assign-user-assigned-mi-to-vm].
-
-###### Method 2: Set up App Service and assign identity
-
-1. Deploy this sample’s Spring Boot JAR file to App Service.
-   You can follow 
-   [Deploy a Spring Boot JAR file to Azure App Service][deploy-spring-boot-application-to-app-service]
-   to deploy the JAR file. 
-   Another way to deploy an executable JAR is via FTP/S. Follow 
-   [Deploy your app to App Service using FTP/S][deploy-to-app-service-via-ftp]. 
-   Please note that the JAR file’s name must be `app.jar`.
-   
-1. Create a managed identity for App Service. 
-   - If you choose system-assigned identity, follow [Adding a system assigned identity][app-service-add-system-assigned-mi].
-   - If you choose user-assigned identity, follow [Adding a user assigned identity][app-service-add-user-assigned-mi].
-
-##### Add Role Assignment for Resource Group
-
-1. Resource Group: assign `Reader` role for managed identity. See 
-   [Add or remove Azure role assignments][role-assignment] 
-   to add the role assignment for Resource Group.
-
-For different built-in role’s descriptions, please see [Built-in role
-descriptions][built-in-roles].
+Please follow [create managed identity][create-managed-identity] to set up managed identity.
 
 ##### Create other Azure resources
 
@@ -187,6 +144,10 @@ If you update the `spring.cloud.azure.managed-identity.client-id`
 property after deploying the app, or update the role assignment for
 services, please try to redeploy the app again.
 
+> You can follow 
+> [Deploy a Spring Boot JAR file to Azure App Service][deploy-spring-boot-application-to-app-service] 
+> to deploy this application to App Service
+
 #### Enable auto create
 
 If you want to auto create the Azure Event Hub and Azure Storage account instances,
@@ -231,22 +192,13 @@ spring:
 
 
 <!-- LINKS -->
-[app-service-add-system-assigned-mi]: https://docs.microsoft.com/azure/app-service/overview-managed-identity#adding-a-system-assigned-identity
-[app-service-add-user-assigned-mi]: https://docs.microsoft.com/azure/app-service/overview-managed-identity#adding-a-user-assigned-identity
-[assign-user-assigned-mi-to-vm]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/qs-configure-portal-windows-vm#assign-a-user-assigned-managed-identity-to-an-existing-vm
+
 [azure-account]: https://azure.microsoft.com/account/
-[azure-ad]: https://docs.microsoft.com/azure/active-directory/fundamentals/active-directory-whatis 
 [azure-portal]: http://ms.portal.azure.com/
-[built-in-roles]: https://docs.microsoft.com/azure/role-based-access-control/built-in-roles 
 [create-event-hubs]: https://docs.microsoft.com/azure/event-hubs/ 
 [create-azure-storage]: https://docs.microsoft.com/azure/storage/ 
 [create-sp-using-azure-cli]: ../create-sp-using-azure-cli.md
-[create-user-assigned-mi]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/how-to-manage-ua-identity-portal#create-a-user-assigned-managed-identity
-[create-vm-windows]: https://docs.microsoft.com/azure/virtual-machines/windows/quick-create-portal
-[create-vm-linux]: https://docs.microsoft.com/azure/virtual-machines/linux/quick-create-portal
+[create-managed-identity]: ../create-managed-identity.md
 [deploy-spring-boot-application-to-app-service]: https://docs.microsoft.com/java/azure/spring-framework/deploy-spring-boot-java-app-with-maven-plugin?toc=%2Fazure%2Fapp-service%2Fcontainers%2Ftoc.json&view=azure-java-stable
-[deploy-to-app-service-via-ftp]: https://docs.microsoft.com/azure/app-service/deploy-ftp
-[managed-identities]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/
 [ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
-[role-assignment]: https://docs.microsoft.com/azure/role-based-access-control/role-assignments-portal
 
