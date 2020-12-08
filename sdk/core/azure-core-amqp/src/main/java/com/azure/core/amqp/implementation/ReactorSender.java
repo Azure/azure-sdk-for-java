@@ -82,7 +82,7 @@ class ReactorSender implements AmqpSendLink {
     private final MessageSerializer messageSerializer;
     private final AmqpRetryPolicy retry;
     private final AmqpRetryOptions retryOptions;
-    private final String activeEndpointTimeoutMessage;
+    private final String activeTimeoutMessage;
     private final Timer sendTimeoutTimer = new Timer("SendTimeout-timer");
 
     private final Object errorConditionLock = new Object();
@@ -102,7 +102,7 @@ class ReactorSender implements AmqpSendLink {
         this.messageSerializer = messageSerializer;
         this.retryOptions = retryOptions;
         this.retry = RetryUtil.getRetryPolicy(retryOptions);
-        this.activeEndpointTimeoutMessage = String.format(
+        this.activeTimeoutMessage = String.format(
             "ReactorSender connectionId[%s], linkName[%s]: Waiting for send and receive handler to be ACTIVE",
             handler.getConnectionId(), handler.getLinkName());
 
@@ -266,22 +266,20 @@ class ReactorSender implements AmqpSendLink {
                 return Mono.just(linkSize);
             }
 
-            return RetryUtil.withRetry(
-                getEndpointStates().takeUntil(state -> state == AmqpEndpointState.ACTIVE), retryOptions,
-                "")
+            return RetryUtil.withRetry(getEndpointStates().takeUntil(state -> state == AmqpEndpointState.ACTIVE),
+                retryOptions, activeTimeoutMessage)
                 .then(Mono.fromCallable(() -> {
-                        final UnsignedLong remoteMaxMessageSize = sender.getRemoteMaxMessageSize();
-
-                        if (remoteMaxMessageSize != null) {
-                            linkSize = remoteMaxMessageSize.intValue();
-                        } else {
-                            logger.warning("connectionId[{}], linkName[{}]: Could not get the getRemoteMaxMessageSize."
+                    final UnsignedLong remoteMaxMessageSize = sender.getRemoteMaxMessageSize();
+                    if (remoteMaxMessageSize != null) {
+                        linkSize = remoteMaxMessageSize.intValue();
+                    } else {
+                        logger.warning("connectionId[{}], linkName[{}]: Could not get the getRemoteMaxMessageSize."
                                 + " Returning current link size: {}", handler.getConnectionId(), handler.getLinkName(),
-                                linkSize);
-                        }
+                            linkSize);
+                    }
 
-                        return linkSize;
-                    }));
+                    return linkSize;
+                }));
         }
     }
 
@@ -327,7 +325,7 @@ class ReactorSender implements AmqpSendLink {
     public Mono<DeliveryState> send(byte[] bytes, int arrayOffset, int messageFormat, DeliveryState deliveryState) {
         final Flux<EndpointState> activeEndpointFlux = RetryUtil.withRetry(
             handler.getEndpointStates().takeUntil(state -> state == EndpointState.ACTIVE), retryOptions,
-            activeEndpointTimeoutMessage);
+            activeTimeoutMessage);
 
         return activeEndpointFlux.then(Mono.create(sink -> {
             sendWork(new RetriableWorkItem(bytes, arrayOffset, messageFormat, sink, retryOptions.getTryTimeout(),

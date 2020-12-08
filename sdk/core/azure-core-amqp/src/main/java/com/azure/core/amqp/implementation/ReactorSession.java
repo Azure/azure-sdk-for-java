@@ -286,31 +286,31 @@ public class ReactorSession implements AmqpSession {
 
         final TokenManager tokenManager = tokenManagerProvider.getTokenManager(cbsNodeSupplier, entityPath);
         return Mono.when(onActiveEndpoint(), tokenManager.authorize()).then(Mono.create(sink -> {
-                try {
-                    // This has to be executed using reactor dispatcher because it's possible to run into race
-                    // conditions with proton-j.
-                    provider.getReactorDispatcher().invoke(() -> {
-                        final LinkSubscription<AmqpReceiveLink> computed = openReceiveLinks.compute(linkName,
-                            (linkNameKey, existing) -> {
-                                if (existing != null) {
-                                    logger.info("linkName[{}]: Another receive link exists. Disposing of new one.",
-                                        linkName);
-                                    tokenManager.close();
+            try {
+                // This has to be executed using reactor dispatcher because it's possible to run into race
+                // conditions with proton-j.
+                provider.getReactorDispatcher().invoke(() -> {
+                    final LinkSubscription<AmqpReceiveLink> computed = openReceiveLinks.compute(linkName,
+                        (linkNameKey, existing) -> {
+                            if (existing != null) {
+                                logger.info("linkName[{}]: Another receive link exists. Disposing of new one.",
+                                    linkName);
+                                tokenManager.close();
 
-                                    return existing;
-                                }
+                                return existing;
+                            }
 
-                                logger.info("Creating a new receiver link with linkName {}", linkName);
-                                return getSubscription(linkNameKey, entityPath, sourceFilters, receiverProperties,
-                                    receiverDesiredCapabilities, senderSettleMode, receiverSettleMode, tokenManager);
-                            });
+                            logger.info("Creating a new receiver link with linkName {}", linkName);
+                            return getSubscription(linkNameKey, entityPath, sourceFilters, receiverProperties,
+                                receiverDesiredCapabilities, senderSettleMode, receiverSettleMode, tokenManager);
+                        });
 
-                        sink.success(computed.getLink());
-                    });
-                } catch (IOException e) {
-                    sink.error(e);
-                }
-            }));
+                    sink.success(computed.getLink());
+                });
+            } catch (IOException e) {
+                sink.error(e);
+            }
+        }));
     }
 
     /**
@@ -432,15 +432,18 @@ public class ReactorSession implements AmqpSession {
 
         final ReactorSender reactorSender = new ReactorSender(entityPath, sender, sendLinkHandler, provider,
             tokenManager, messageSerializer, options);
+
+        //@formatter:off
         final Disposable subscription = reactorSender.getEndpointStates().subscribe(state -> {
         }, error -> {
-            logger.info("linkName[{}]: Error occurred. Removing and disposing send link.",
-                linkName, error);
-            removeLink(openSendLinks, linkName);
-        }, () -> {
-            logger.info("linkName[{}]: Complete. Removing and disposing send link.", linkName);
-            removeLink(openSendLinks, linkName);
-        });
+                logger.info("linkName[{}]: Error occurred. Removing and disposing send link.",
+                    linkName, error);
+                removeLink(openSendLinks, linkName);
+            }, () -> {
+                logger.info("linkName[{}]: Complete. Removing and disposing send link.", linkName);
+                removeLink(openSendLinks, linkName);
+            });
+        //@formatter:on
 
         return new LinkSubscription<>(reactorSender, subscription);
     }
