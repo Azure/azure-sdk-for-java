@@ -17,6 +17,22 @@ We need to ensure that this [environment checklist][ready-to-run-checklist] is c
 ### Register your application with your Azure Active Directory Tenant
 
 Follow the guide [here](https://docs.microsoft.com/azure/active-directory/develop/quickstart-register-app).
+### Platform configurations
+
+![Platform configurations](docs/image-platform-configurations.png "Platform configurations")
+
+- Set redirect URIs with `http://localhost:8080/login/oauth2/code/azure`.
+- Ensure **Access tokens** and **ID tokens** are selected.
+### Configure necessary API permissions
+The sample retrieves user's group memberships using Microsoft graph API which requires the registered app to have `Directory.AccessAsUser.All` "Access the directory as the signed-in user" under `Delegated Permissions`. You need AAD admin privilege to be able to grant the permission in API ACCESS -> Required permission. You can follow the below steps:	
+
+* In the list of pages for the app, select **API permissions**	
+   - Click the **Add a permission** button and then,	
+   - Ensure that the **Microsoft APIs** tab is selected	
+   - In the *Commonly used Microsoft APIs* section, click on **Microsoft Graph**	
+   - In the **Delegated permissions** section, ensure that the right permissions are checked: **Directory.AccessAsUser.All**	
+   - Select the **Add permissions** button
+   - Click **Grant Permissions...** and Yes when prompted.
 
 ### Configure groups for sign in user
 
