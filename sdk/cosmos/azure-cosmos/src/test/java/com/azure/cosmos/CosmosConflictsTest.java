@@ -225,7 +225,7 @@ public class CosmosConflictsTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"multi-master"})
+    @Test(groups = {"multi-master"}, timeOut = CONFLICT_TIMEOUT)
     public void conflictNonExistingCustomSproc() throws InterruptedException {
         if (this.regionalClients.size() > 1) {
             CosmosAsyncDatabase database = getSharedCosmosDatabase(globalClient);
