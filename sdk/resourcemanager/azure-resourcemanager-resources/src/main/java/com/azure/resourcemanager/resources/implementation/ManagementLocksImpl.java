@@ -55,20 +55,20 @@ public final class ManagementLocksImpl
 
     private static String[] lockIdParts(String lockId) {
         if (lockId == null) {
-            return null;
+            return new String[0];
         }
 
         String[] parts = lockId.split("/");
         if (parts.length < 4) {
             // ID too short to be possibly a lock ID
-            return null;
+            return new String[0];
         }
 
         if (!parts[parts.length - 2].equalsIgnoreCase("locks")
                 || !parts[parts.length - 3].equalsIgnoreCase("Microsoft.Authorization")
                 || !parts[parts.length - 4].equalsIgnoreCase("providers")) {
             // Not a lock ID
-            return null;
+            return new String[0];
         }
 
         return parts;
