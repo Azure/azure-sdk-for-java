@@ -1,4 +1,4 @@
-:instruction: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/CONTRIBUTING.md#building-from-source
+:ready-to-run-checklist: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
 
 = Spring Cloud Azure Storage Queue Integration Code Sample shared library for Java
 
@@ -9,6 +9,9 @@ This code sample demonstrates how to use Spring Integration for Azure Storage Qu
 
 Running this sample will be charged by Azure.
 You can check the usage and bill at https://azure.microsoft.com/en-us/account/[this link].
+
+=== Environment checklist
+We need to ensure that this {ready-to-run-checklist}[environment checklist] is completed before the run.
 
 === Access key based usage
 
@@ -50,7 +53,7 @@ spring.cloud.azure.auto-create-resources=true
 spring.cloud.azure.region=[region]
 ....
 
-5. Update link:src/main/resources/application.properties[application.properties]
+4. Update link:src/main/resources/application.properties[application.properties]
 +
 ....
 
@@ -63,9 +66,7 @@ spring.cloud.azure.storage.account=[account-name]
 ....
 
 === How to run
-First, we need to ensure that this {instruction}[instruction] is completed before run.
-
-2. Update environment if not is Global in link:src/main/resources/application.properties[application.properties]
+1. Update environment if not is Global in link:src/main/resources/application.properties[application.properties]
 
 +
 ....
@@ -74,25 +75,25 @@ First, we need to ensure that this {instruction}[instruction] is completed befor
 # spring.cloud.azure.environment=[environment]
 ....
 
-3. Update queue name in link:src/main/java/com/example/SendController.java#L30[SendController] and
+2. Update queue name in link:src/main/java/com/example/SendController.java#L30[SendController] and
 link:src/main/java/com/example/ReceiveController.java#L22[ReceiveController]
 
-4. Run the `mvn clean spring-boot:run` in the root of the code sample to get the app running.
+3. Run the `mvn spring-boot:run` in the root of the code sample to get the app running.
 
-5. Send a POST request
+4. Send a POST request
 +
 ....
 $ curl -X POST localhost:8080/messages?message=hello
 ....
 
-6. Verify in your app's logs that a similar message was posted:
+5. Verify in your app's logs that a similar message was posted:
 +
 ....
 New message received: 'hello'
 Message 'hello' successfully checkpointed
 ....
 
-7. Delete the resources on http://ms.portal.azure.com/[Azure Portal] to avoid unexpected charges.
+6. Delete the resources on http://ms.portal.azure.com/[Azure Portal] to avoid unexpected charges.
 
 == Examples
 == Troubleshooting

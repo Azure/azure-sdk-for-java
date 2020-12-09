@@ -15,7 +15,7 @@ import com.azure.communication.chat.models.SendChatMessageResult;
 import com.azure.communication.chat.models.UpdateChatMessageOptions;
 import com.azure.communication.chat.models.UpdateChatThreadOptions;
 import com.azure.communication.common.CommunicationUser;
-import com.azure.communication.common.CommunicationUserCredential;
+import com.azure.communication.common.CommunicationTokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.rest.PagedIterable;
@@ -47,7 +47,7 @@ public class ReadmeSamples {
 
         // Your user access token retrieved from your trusted service
         String token = "SECRET";
-        CommunicationUserCredential credential = new CommunicationUserCredential(token);
+        CommunicationTokenCredential credential = new CommunicationTokenCredential(token);
 
         // Initialize the chat client
         final ChatClientBuilder builder = new ChatClientBuilder();
