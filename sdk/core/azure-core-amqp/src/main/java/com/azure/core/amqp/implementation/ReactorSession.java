@@ -235,8 +235,8 @@ public class ReactorSession implements AmqpSession {
             return Mono.just(existing);
         }
 
-        final String linkName = TRANSACTION_LINK_NAME;
-        return createProducer(linkName, linkName, new Coordinator(), retryOptions, null, false)
+        return createProducer(TRANSACTION_LINK_NAME, TRANSACTION_LINK_NAME, new Coordinator(), retryOptions, null,
+            false)
             .map(link -> {
                 final TransactionCoordinator newCoordinator = new TransactionCoordinator(link, messageSerializer);
                 if (transactionCoordinator.compareAndSet(null, newCoordinator)) {
