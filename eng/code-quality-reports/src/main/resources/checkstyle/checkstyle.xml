@@ -15,10 +15,6 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <property name="fileNamePattern" value="module\-info\.java$"/>
   </module>
 
-  <module name="DeclarationOrder"/>
-
-  <module name="SimplifyBooleanReturn"/>
-
   <module name="SuppressionFilter">
     <property name="file" value="${samedir}/checkstyle-suppressions.xml"/>
     <property name="optional" value="true"/>
@@ -59,7 +55,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <property name="max" value="120"/>
     <!-- Allow codeSnippet to override max line length -->
     <!-- Allow comment with single word to override max line length -->
-    <property name="ignorePattern" value=".*(\{@codesnippet.*\}|&lt;a href)|^ *\* *[^ ]+$"/>
+    <property name="ignorePattern" value=".*(\{@codesnippet.*\}|&lt;a href)||http://|https://|^ *\* *[^ ]+$"/>
   </module>
 
   <!-- All Java AST specific tests live under TreeWalker module. -->
@@ -211,7 +207,6 @@ page at http://checkstyle.sourceforge.net/config.html -->
       <property name="severity" value="error"/>
     </module>
 
-
     <!-- WHITESPACE CHECKS -->
     <module name="Indentation">
       <property name="basicOffset" value="4"/>
@@ -297,6 +292,36 @@ page at http://checkstyle.sourceforge.net/config.html -->
       <property name="limitedTokens" value="LITERAL_RETURN"/>
       <property name="maximumNumber" value="0"/>
     </module>
+
+    <module name="EmptyCatchBlock">
+      <property name="exceptionVariableName" value="expected"/>
+    </module>
+
+    <module name="CommentsIndentation">
+      <property name="tokens" value="SINGLE_LINE_COMMENT, BLOCK_COMMENT_BEGIN"/>
+    </module>
+
+    <module name="SimplifyBooleanReturn"/>
+
+    <module name="CustomImportOrder">
+      <property name="sortImportsInGroupAlphabetically" value="true"/>
+      <property name="separateLineBetweenGroups" value="true"/>
+      <property name="customImportOrderRules" value="STATIC###THIRD_PARTY_PACKAGE"/>
+      <property name="tokens" value="IMPORT, STATIC_IMPORT, PACKAGE_DEF"/>
+    </module>
+
+    <!--  The parts of a class or interface declaration should appear in the following order:
+      1. Class (static) variables. First the public class variables, then protected, then package level (no access modifier), and then private.
+      2. Instance variables. First the public class variables, then protected, then package level (no access modifier), and then private.
+      3.Constructors
+      4. Methods -->
+    <module name="DeclarationOrder"/>
+
+    <!--  Group method overloads  -->
+    <module name="OverloadMethodsDeclarationOrder"/>
+
+    <!-- Checks that the order of modifiers conforms to the suggestions in the Java Language specification  -->
+    <module name="ModifierOrder"/>
 
     <!-- Verifies that all throws in the public API have JavaDocs explaining why and when they are thrown. -->
     <!-- The check verifies both checked (in the throws clause) and unchecked throws -->
@@ -405,7 +430,6 @@ page at http://checkstyle.sourceforge.net/config.html -->
       <property name="blacklistedWords" value="URL, HTTP, XML, JSON, SAS, CPK, API" />
     </module>
 
-    <module name="CommentsIndentation" />
     <!-- CUSTOM CHECKS -->
     <!-- Fluent method checks:
     (1) A method returns an instance of the class, and that have one parameter,
