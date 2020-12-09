@@ -38,6 +38,7 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "AzureSqlMITable", value = AzureSqlMITableDataset.class),
     @JsonSubTypes.Type(name = "AzureSqlDWTable", value = AzureSqlDWTableDataset.class),
     @JsonSubTypes.Type(name = "CassandraTable", value = CassandraTableDataset.class),
+    @JsonSubTypes.Type(name = "CustomDataset", value = CustomDataset.class),
     @JsonSubTypes.Type(name = "CosmosDbSqlApiCollection", value = CosmosDbSqlApiCollectionDataset.class),
     @JsonSubTypes.Type(name = "DocumentDbCollection", value = DocumentDbCollectionDataset.class),
     @JsonSubTypes.Type(name = "DynamicsEntity", value = DynamicsEntityDataset.class),
