@@ -102,7 +102,7 @@ class SparkE2EConfigResolutionSpec extends IntegrationSpec {
     objectNode.put("number", 27)
     objectNode.put("id", UUID.randomUUID().toString)
     container.createItem(objectNode).block()
-    
+
     val sparkConfig = new SparkConf()
     sparkConfig.set("spark.cosmos.accountEndpoint", cosmosEndpoint)
     sparkConfig.set("spark.cosmos.accountKey", cosmosMasterKey)
