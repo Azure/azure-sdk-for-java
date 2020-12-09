@@ -1,4 +1,5 @@
 {
+  "$schema": "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/documentation/sdkautomation/SwaggerToSdkConfigSchema.json",
   "initOptions": {
     "initScript": {
       "path": "./eng/mgmt/automation/init.sh",
@@ -17,7 +18,7 @@
       "path": "./eng/mgmt/automation/install_instruction.py"
     }
   },
-  "advanceOptions": {
+  "advancedOptions": {
     "generationCallMode": "one-per-config"
   }
 }
