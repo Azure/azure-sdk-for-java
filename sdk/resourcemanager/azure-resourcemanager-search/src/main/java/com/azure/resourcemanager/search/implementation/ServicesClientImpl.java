@@ -38,9 +38,9 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDe
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import com.azure.resourcemanager.search.fluent.ServicesClient;
-import com.azure.resourcemanager.search.fluent.models.CheckNameAvailabilityOutputInner;
 import com.azure.resourcemanager.search.fluent.models.SearchServiceInner;
 import com.azure.resourcemanager.search.models.CheckNameAvailabilityInput;
+import com.azure.resourcemanager.search.models.CheckNameAvailabilityOutput;
 import com.azure.resourcemanager.search.models.SearchServiceListResult;
 import java.nio.ByteBuffer;
 import java.util.UUID;
@@ -175,7 +175,7 @@ public final class ServicesClientImpl
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Search/checkNameAvailability")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CheckNameAvailabilityOutputInner>> checkNameAvailability(
+        Mono<Response<CheckNameAvailabilityOutput>> checkNameAvailability(
             @HostParam("$host") String endpoint,
             @HeaderParam("x-ms-client-request-id") UUID clientRequestId,
             @QueryParam("api-version") String apiVersion,
@@ -1570,7 +1570,7 @@ public final class ServicesClientImpl
      * @return output of check name availability API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CheckNameAvailabilityOutputInner>> checkNameAvailabilityWithResponseAsync(
+    public Mono<Response<CheckNameAvailabilityOutput>> checkNameAvailabilityWithResponseAsync(
         String name, UUID clientRequestId) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1621,7 +1621,7 @@ public final class ServicesClientImpl
      * @return output of check name availability API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckNameAvailabilityOutputInner>> checkNameAvailabilityWithResponseAsync(
+    private Mono<Response<CheckNameAvailabilityOutput>> checkNameAvailabilityWithResponseAsync(
         String name, UUID clientRequestId, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1668,10 +1668,10 @@ public final class ServicesClientImpl
      * @return output of check name availability API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CheckNameAvailabilityOutputInner> checkNameAvailabilityAsync(String name, UUID clientRequestId) {
+    public Mono<CheckNameAvailabilityOutput> checkNameAvailabilityAsync(String name, UUID clientRequestId) {
         return checkNameAvailabilityWithResponseAsync(name, clientRequestId)
             .flatMap(
-                (Response<CheckNameAvailabilityOutputInner> res) -> {
+                (Response<CheckNameAvailabilityOutput> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1693,11 +1693,11 @@ public final class ServicesClientImpl
      * @return output of check name availability API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CheckNameAvailabilityOutputInner> checkNameAvailabilityAsync(String name) {
+    public Mono<CheckNameAvailabilityOutput> checkNameAvailabilityAsync(String name) {
         final UUID clientRequestId = null;
         return checkNameAvailabilityWithResponseAsync(name, clientRequestId)
             .flatMap(
-                (Response<CheckNameAvailabilityOutputInner> res) -> {
+                (Response<CheckNameAvailabilityOutput> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1719,7 +1719,7 @@ public final class ServicesClientImpl
      * @return output of check name availability API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckNameAvailabilityOutputInner checkNameAvailability(String name) {
+    public CheckNameAvailabilityOutput checkNameAvailability(String name) {
         final UUID clientRequestId = null;
         return checkNameAvailabilityAsync(name, clientRequestId).block();
     }
@@ -1740,7 +1740,7 @@ public final class ServicesClientImpl
      * @return output of check name availability API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CheckNameAvailabilityOutputInner> checkNameAvailabilityWithResponse(
+    public Response<CheckNameAvailabilityOutput> checkNameAvailabilityWithResponse(
         String name, UUID clientRequestId, Context context) {
         return checkNameAvailabilityWithResponseAsync(name, clientRequestId, context).block();
     }

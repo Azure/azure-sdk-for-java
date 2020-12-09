@@ -16,8 +16,8 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
-import com.azure.resourcemanager.search.fluent.models.CheckNameAvailabilityOutputInner;
 import com.azure.resourcemanager.search.fluent.models.SearchServiceInner;
+import com.azure.resourcemanager.search.models.CheckNameAvailabilityOutput;
 import java.nio.ByteBuffer;
 import java.util.UUID;
 import reactor.core.publisher.Flux;
@@ -617,7 +617,7 @@ public interface ServicesClient
      * @return output of check name availability API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<CheckNameAvailabilityOutputInner>> checkNameAvailabilityWithResponseAsync(
+    Mono<Response<CheckNameAvailabilityOutput>> checkNameAvailabilityWithResponseAsync(
         String name, UUID clientRequestId);
 
     /**
@@ -635,7 +635,7 @@ public interface ServicesClient
      * @return output of check name availability API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CheckNameAvailabilityOutputInner> checkNameAvailabilityAsync(String name, UUID clientRequestId);
+    Mono<CheckNameAvailabilityOutput> checkNameAvailabilityAsync(String name, UUID clientRequestId);
 
     /**
      * Checks whether or not the given Search service name is available for use. Search service names must be globally
@@ -650,7 +650,7 @@ public interface ServicesClient
      * @return output of check name availability API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CheckNameAvailabilityOutputInner> checkNameAvailabilityAsync(String name);
+    Mono<CheckNameAvailabilityOutput> checkNameAvailabilityAsync(String name);
 
     /**
      * Checks whether or not the given Search service name is available for use. Search service names must be globally
@@ -665,7 +665,7 @@ public interface ServicesClient
      * @return output of check name availability API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckNameAvailabilityOutputInner checkNameAvailability(String name);
+    CheckNameAvailabilityOutput checkNameAvailability(String name);
 
     /**
      * Checks whether or not the given Search service name is available for use. Search service names must be globally
@@ -683,6 +683,6 @@ public interface ServicesClient
      * @return output of check name availability API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckNameAvailabilityOutputInner> checkNameAvailabilityWithResponse(
+    Response<CheckNameAvailabilityOutput> checkNameAvailabilityWithResponse(
         String name, UUID clientRequestId, Context context);
 }
