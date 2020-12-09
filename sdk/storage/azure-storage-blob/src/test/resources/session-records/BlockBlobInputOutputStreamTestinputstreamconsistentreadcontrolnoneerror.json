@@ -1,0 +1,209 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtcinputstreamconsistentreadcontrolnoneerror050376f583da?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-04-08",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.10.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "31eb4d01-ed66-428f-9446-888abb1bd9e3"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-04-08",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D89C913DECF6D3",
+      "Last-Modified" : "Wed, 09 Dec 2020 22:24:49 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "36b197cb-301e-003a-2e7a-ce3fd1000000",
+      "Date" : "Wed, 09 Dec 2020 22:24:48 GMT",
+      "x-ms-client-request-id" : "31eb4d01-ed66-428f-9446-888abb1bd9e3"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtcinputstreamconsistentreadcontrolnoneerror050376f583da?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-04-08",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.10.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0ce40aec-1f62-4847-8f34-f295d77896f0"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-04-08",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D89C913E594500",
+      "Last-Modified" : "Wed, 09 Dec 2020 22:24:50 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "5e69cdd8-901e-003b-7f7a-ce0804000000",
+      "Date" : "Wed, 09 Dec 2020 22:24:50 GMT",
+      "x-ms-client-request-id" : "0ce40aec-1f62-4847-8f34-f295d77896f0"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtcinputstreamconsistentreadcontrolnoneerror050376f583da/javablobinputstreamconsistentreadcontrolnoneerror237779f271",
+    "Headers" : {
+      "x-ms-version" : "2020-04-08",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.10.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b0d7a139-1948-42bd-9008-94501c7d0006",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-04-08",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-content-crc64" : "AAAAAAAAAAA=",
+      "Last-Modified" : "Wed, 09 Dec 2020 22:24:50 GMT",
+      "x-ms-version-id" : "2020-12-09T22:24:50.5393914Z",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Wed, 09 Dec 2020 22:24:50 GMT",
+      "Content-MD5" : "1B2M2Y8AsgTpgAmY7PhCfg==",
+      "ETag" : "0x8D89C913E7B4BE2",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "5e69cddd-901e-003b-017a-ce0804000000",
+      "x-ms-client-request-id" : "b0d7a139-1948-42bd-9008-94501c7d0006"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "HEAD",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtcinputstreamconsistentreadcontrolnoneerror050376f583da/javablobinputstreamconsistentreadcontrolnoneerror237779f271",
+    "Headers" : {
+      "x-ms-version" : "2020-04-08",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.10.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "eb200421-7619-4c5a-8a68-d8b2b2f5b25a"
+    },
+    "Response" : {
+      "x-ms-is-current-version" : "true",
+      "x-ms-version" : "2020-04-08",
+      "x-ms-lease-status" : "unlocked",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-lease-state" : "available",
+      "x-ms-version-id" : "2020-12-09T22:24:50.5393914Z",
+      "Last-Modified" : "Wed, 09 Dec 2020 22:24:50 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Wed, 09 Dec 2020 22:24:50 GMT",
+      "x-ms-blob-type" : "BlockBlob",
+      "Content-MD5" : "1B2M2Y8AsgTpgAmY7PhCfg==",
+      "Accept-Ranges" : "bytes",
+      "x-ms-server-encrypted" : "true",
+      "x-ms-access-tier-inferred" : "true",
+      "x-ms-access-tier" : "Hot",
+      "ETag" : "0x8D89C913E7B4BE2",
+      "x-ms-creation-time" : "Wed, 09 Dec 2020 22:24:50 GMT",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "5e69cde1-901e-003b-037a-ce0804000000",
+      "x-ms-client-request-id" : "eb200421-7619-4c5a-8a68-d8b2b2f5b25a",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "HEAD",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtcinputstreamconsistentreadcontrolnoneerror050376f583da/javablobinputstreamconsistentreadcontrolnoneerror237779f271",
+    "Headers" : {
+      "x-ms-version" : "2020-04-08",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.10.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d662eda3-9a86-4dfa-964b-01ef83bebcba"
+    },
+    "Response" : {
+      "x-ms-is-current-version" : "true",
+      "x-ms-version" : "2020-04-08",
+      "x-ms-lease-status" : "unlocked",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-lease-state" : "available",
+      "x-ms-version-id" : "2020-12-09T22:24:50.5393914Z",
+      "Last-Modified" : "Wed, 09 Dec 2020 22:24:50 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Wed, 09 Dec 2020 22:24:50 GMT",
+      "x-ms-blob-type" : "BlockBlob",
+      "Content-MD5" : "1B2M2Y8AsgTpgAmY7PhCfg==",
+      "Accept-Ranges" : "bytes",
+      "x-ms-server-encrypted" : "true",
+      "x-ms-access-tier-inferred" : "true",
+      "x-ms-access-tier" : "Hot",
+      "ETag" : "0x8D89C913E7B4BE2",
+      "x-ms-creation-time" : "Wed, 09 Dec 2020 22:24:50 GMT",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "5e69cde7-901e-003b-077a-ce0804000000",
+      "x-ms-client-request-id" : "d662eda3-9a86-4dfa-964b-01ef83bebcba",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "HEAD",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtcinputstreamconsistentreadcontrolnoneerror050376f583da/javablobinputstreamconsistentreadcontrolnoneerror237779f271?versionid=2020-12-09T22%3A24%3A50.5393914Z",
+    "Headers" : {
+      "x-ms-version" : "2020-04-08",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.10.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "329edbea-0f4e-4653-9e8e-2bc304ca6507"
+    },
+    "Response" : {
+      "x-ms-is-current-version" : "true",
+      "x-ms-version" : "2020-04-08",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-version-id" : "2020-12-09T22:24:50.5393914Z",
+      "Last-Modified" : "Wed, 09 Dec 2020 22:24:50 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Wed, 09 Dec 2020 22:24:50 GMT",
+      "x-ms-blob-type" : "BlockBlob",
+      "Content-MD5" : "1B2M2Y8AsgTpgAmY7PhCfg==",
+      "Accept-Ranges" : "bytes",
+      "x-ms-server-encrypted" : "true",
+      "x-ms-access-tier-inferred" : "true",
+      "x-ms-access-tier" : "Hot",
+      "ETag" : "0x8D89C913E7B4BE2",
+      "x-ms-creation-time" : "Wed, 09 Dec 2020 22:24:50 GMT",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "5e69cdea-901e-003b-0a7a-ce0804000000",
+      "x-ms-client-request-id" : "329edbea-0f4e-4653-9e8e-2bc304ca6507",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.blob.core.windows.net?prefix=jtcinputstreamconsistentreadcontrolnoneerror&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2020-04-08",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.10.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c8879c57-3a22-425d-b40e-21920f8d11ff"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-04-08",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "36b19832-301e-003a-057a-ce3fd1000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://gapracanary.blob.core.windows.net/\"><Prefix>jtcinputstreamconsistentreadcontrolnoneerror</Prefix><Containers><Container><Name>jtcinputstreamconsistentreadcontrolnoneerror050376f583da</Name><Properties><Last-Modified>Wed, 09 Dec 2020 22:24:49 GMT</Last-Modified><Etag>\"0x8D89C913DECF6D3\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Wed, 09 Dec 2020 22:24:51 GMT",
+      "x-ms-client-request-id" : "c8879c57-3a22-425d-b40e-21920f8d11ff",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtcinputstreamconsistentreadcontrolnoneerror050376f583da?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-04-08",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.10.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b35281c0-e45f-4e32-95c3-d098727ec82a"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-04-08",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "36b19835-301e-003a-087a-ce3fd1000000",
+      "Date" : "Wed, 09 Dec 2020 22:24:51 GMT",
+      "x-ms-client-request-id" : "b35281c0-e45f-4e32-95c3-d098727ec82a"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "jtcinputstreamconsistentreadcontrolnoneerror050376f583da", "javablobinputstreamconsistentreadcontrolnoneerror16750346fc", "javablobinputstreamconsistentreadcontrolnoneerror237779f271" ]
+}
