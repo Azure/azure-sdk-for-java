@@ -30,13 +30,18 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+/**
+ * <p>
+ * AADOAuth2OboAuthorizedClientRepository
+ * </p>
+ */
 public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedClientRepository {
 
     private static final Logger LOG = LoggerFactory.getLogger(AADOAuth2OboAuthorizedClientRepository.class);
 
     private final AzureClientRegistrationRepository azureClientRegistrationRepository;
 
-    private Map<String, ConfidentialClientApplication> confidentialClientApplicationMap = new HashMap<>();
+    private final Map<String, ConfidentialClientApplication> confidentialClientApplicationMap = new HashMap<>();
 
     public AADOAuth2OboAuthorizedClientRepository(AzureClientRegistrationRepository azureClientRegistrationRepository) {
         this.azureClientRegistrationRepository = azureClientRegistrationRepository;
@@ -53,34 +58,36 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
                                                                      Authentication authentication,
                                                                      HttpServletRequest request) {
         try {
-            if (request.getAttribute(registrationId) != null){
+            if (request.getAttribute(registrationId) != null) {
                 return (T) request.getAttribute(registrationId);
             }
 
-            ClientRegistration clientRegistration = azureClientRegistrationRepository.findByRegistrationId(registrationId);
+            ClientRegistration clientRegistration =
+                azureClientRegistrationRepository.findByRegistrationId(registrationId);
             AbstractOAuth2TokenAuthenticationToken<AbstractOAuth2Token> authenticationToken =
                 (AbstractOAuth2TokenAuthenticationToken<AbstractOAuth2Token>)
                     authentication;
 
             String accessToken = authenticationToken.getToken().getTokenValue();
             OnBehalfOfParameters parameters = OnBehalfOfParameters
-                                              .builder(clientRegistration.getScopes(), new UserAssertion(accessToken))
-                                              .build();
-            ConfidentialClientApplication clientApplication = getClientApplication(clientRegistration.getRegistrationId());
+                .builder(clientRegistration.getScopes(), new UserAssertion(accessToken))
+                .build();
+            ConfidentialClientApplication clientApplication =
+                getClientApplication(clientRegistration.getRegistrationId());
             String oboAccessToken = clientApplication.acquireToken(parameters).get().accessToken();
 
             JWT parser = JWTParser.parse(oboAccessToken);
             Date iat = (Date) parser.getJWTClaimsSet().getClaim("iat");
             Date exp = (Date) parser.getJWTClaimsSet().getClaim("exp");
             OAuth2AccessToken oAuth2AccessToken = new OAuth2AccessToken(OAuth2AccessToken.TokenType.BEARER,
-                                                                        oboAccessToken,
-                                                                        Instant.ofEpochMilli(iat.getTime()),
-                                                                        Instant.ofEpochMilli(exp.getTime()));
+                oboAccessToken,
+                Instant.ofEpochMilli(iat.getTime()),
+                Instant.ofEpochMilli(exp.getTime()));
 
             OAuth2AuthorizedClient oAuth2AuthorizedClient = new OAuth2AuthorizedClient(clientRegistration,
                 authenticationToken.getName(), oAuth2AccessToken);
 
-            request.setAttribute(registrationId,(T) oAuth2AuthorizedClient);
+            request.setAttribute(registrationId, (T) oAuth2AuthorizedClient);
             return (T) oAuth2AuthorizedClient;
         } catch (Throwable throwable) {
             LOG.error("Failed to loadAuthorizedClient", throwable);
