@@ -100,14 +100,7 @@ class ChangeFeedQueryImpl<T extends Resource> {
     }
 
     private Mono<FeedResponse<T>> executeRequestAsync(RxDocumentServiceRequest request) {
-        // TODO fabianm bullshit - wire up handleNoChanges
         return client.readFeed(request)
-                     .map(rsp -> BridgeInternal.toChangeFeedResponsePage(rsp, klass))
-                     .map(this::updateContinuation);
-    }
-
-    private FeedResponse<T> updateContinuation(FeedResponse<T> response) {
-        // TODO fabianm bullshit
-        return response;
+                     .map(rsp -> BridgeInternal.toChangeFeedResponsePage(rsp, klass));
     }
 }
