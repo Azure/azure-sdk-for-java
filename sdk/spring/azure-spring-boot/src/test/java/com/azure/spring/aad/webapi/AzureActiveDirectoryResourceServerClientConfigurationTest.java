@@ -13,7 +13,7 @@ import org.springframework.security.oauth2.server.resource.BearerTokenAuthentica
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class AADOboConfigurationTest {
+public class AzureActiveDirectoryResourceServerClientConfigurationTest {
 
     private static final String AAD_PROPERTY_PREFIX = "azure.activedirectory.";
 
@@ -21,7 +21,8 @@ public class AADOboConfigurationTest {
         .withPropertyValues(AAD_PROPERTY_PREFIX + "user-group.allowed-groups=group1",
             AAD_PROPERTY_PREFIX + "tenant-id=fake-tenant-id",
             AAD_PROPERTY_PREFIX + "client-id=fake-client-id",
-            AAD_PROPERTY_PREFIX + "client-secret=fake-client-secret");
+            AAD_PROPERTY_PREFIX + "client-secret=fake-client-secret",
+            AAD_PROPERTY_PREFIX + "web-application.enabled=false");
 
     @Test
     public void testNotExistBearerTokenAuthenticationToken() {
