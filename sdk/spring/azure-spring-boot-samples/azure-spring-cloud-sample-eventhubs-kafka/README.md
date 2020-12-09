@@ -76,5 +76,5 @@ completed before the run.
 [azure-account]: https://azure.microsoft.com/account/
 [azure-portal]: http://ms.portal.azure.com/
 [create-event-hubs]: https://docs.microsoft.com/azure/event-hubs/
-[create-sp-using-azure-cli]: ../create-sp-using-azure-cli.md
+[create-sp-using-azure-cli]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/create-sp-using-azure-cli.md
 [ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist

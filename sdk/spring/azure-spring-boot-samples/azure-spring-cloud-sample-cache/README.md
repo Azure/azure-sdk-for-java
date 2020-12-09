@@ -82,6 +82,6 @@ We need to ensure that this [environment checklist][ready-to-run-checklist] is c
 [azure-account]: https://azure.microsoft.com/account/
 [azure-portal]: http://ms.portal.azure.com/
 [create-azure-cache-for-redis]: https://docs.microsoft.com/azure/azure-cache-for-redis/quickstart-create-redis
-[create-sp-using-azure-cli]: ../create-sp-using-azure-cli.md
+[create-sp-using-azure-cli]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/create-sp-using-azure-cli.md
 [ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
 

@@ -133,10 +133,8 @@ processing.
 [azure-portal]: http://ms.portal.azure.com/
 [create-event-hubs]: https://docs.microsoft.com/azure/event-hubs/
 [create-azure-storage]: https://docs.microsoft.com/azure/storage/
-[create-sp-using-azure-cli]: ../create-sp-using-azure-cli.md
-[create-user-assigned-mi]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/how-to-manage-ua-identity-portal#create-a-user-assigned-managed-identity
-[create-vm-windows]: https://docs.microsoft.com/azure/virtual-machines/windows/quick-create-portal
-[create-vm-linux]: https://docs.microsoft.com/azure/virtual-machines/linux/quick-create-portal
+[create-sp-using-azure-cli]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/create-sp-using-azure-cli.md
+[create-managed-identity]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/create-managed-identity.md
 [deploy-spring-boot-application-to-app-service]: https://docs.microsoft.com/java/azure/spring-framework/deploy-spring-boot-java-app-with-maven-plugin?toc=%2Fazure%2Fapp-service%2Fcontainers%2Ftoc.json&view=azure-java-stable
 [deploy-to-app-service-via-ftp]: https://docs.microsoft.com/azure/app-service/deploy-ftp
 [managed-identities]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/
