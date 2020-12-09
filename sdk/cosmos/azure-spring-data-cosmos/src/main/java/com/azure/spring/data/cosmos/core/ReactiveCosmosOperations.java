@@ -49,7 +49,8 @@ public interface ReactiveCosmosOperations {
      * @param properties CosmosContainerProperties
      * @return CosmosContainerProperties
      */
-    Mono<CosmosContainerProperties> replaceContainerProperties(String containerName, CosmosContainerProperties properties);
+    Mono<CosmosContainerProperties> replaceContainerProperties(String containerName,
+                                                               CosmosContainerProperties properties);
 
     /**
      * Find all items in a given container

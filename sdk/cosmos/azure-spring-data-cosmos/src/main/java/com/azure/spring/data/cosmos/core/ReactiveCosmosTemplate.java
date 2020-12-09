@@ -38,7 +38,6 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.util.UUID;
-import java.util.function.Function;
 
 /**
  * Template class of reactive cosmos
