@@ -240,11 +240,11 @@ public class CosmosContainerTest extends TestSuiteBase {
         assertThat(replaceResponse.getProperties().getIndexingPolicy().isAutomatic())
             .isEqualTo(false);
 
-        CosmosContainerResponse replaceResponse1 = createdDatabase.getContainer(containerProperties.getId())
+        replaceResponse = createdDatabase.getContainer(containerProperties.getId())
                                                           .replace(containerResponse.getProperties().setIndexingPolicy(
                                                               new IndexingPolicy().setAutomatic(true).setIndexingMode(IndexingMode.CONSISTENT)),
                                                               options);
-        assertThat(replaceResponse1.getProperties().getIndexingPolicy().getIndexingMode())
+        assertThat(replaceResponse.getProperties().getIndexingPolicy().getIndexingMode())
             .isEqualTo(IndexingMode.CONSISTENT);
         assertThat(replaceResponse.getProperties().getIndexingPolicy().isAutomatic())
             .isEqualTo(true);
