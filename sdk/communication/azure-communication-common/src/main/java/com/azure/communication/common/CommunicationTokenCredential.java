@@ -30,7 +30,7 @@ public final class CommunicationTokenCredential implements AutoCloseable {
     private final ClientLogger logger = new ClientLogger(CommunicationTokenCredential.class);
 
     private AccessToken accessToken;
-    private TokenNext tokenNext;
+    private TokenAccessor tokenAccessor;
     private final TokenParser tokenParser = new TokenParser();
     private TokenRefresher refresher;
     private FetchingTask fetchingTask;
@@ -81,17 +81,17 @@ public final class CommunicationTokenCredential implements AutoCloseable {
         }
     }
 
-    private class TokenNext extends Mono<AccessToken> {
-        private final Mono<String> clientTokenNext;
+    private class TokenAccessor extends Mono<AccessToken> {
+        private final Mono<String> clientTokenAccessor;
         private boolean hasRetrievedToken;
 
-        TokenNext(Mono<String> tokenStringNext) {
-            this.clientTokenNext = tokenStringNext;
+        TokenAccessor(Mono<String> tokenAsync) {
+            this.clientTokenAccessor = tokenAsync;
         }
 
         @Override
         public AccessToken block() {
-            String freshToken = clientTokenNext.block();
+            String freshToken = clientTokenAccessor.block();
             setToken(freshToken);
             hasRetrievedToken = true;
             return accessToken;
@@ -99,7 +99,7 @@ public final class CommunicationTokenCredential implements AutoCloseable {
 
         @Override
         public AccessToken block(Duration timeout) {
-            String freshToken = clientTokenNext.block(timeout);
+            String freshToken = clientTokenAccessor.block(timeout);
             setToken(freshToken);
             hasRetrievedToken = true;
             return accessToken;
@@ -129,11 +129,11 @@ public final class CommunicationTokenCredential implements AutoCloseable {
         }
         // no valid token to return and can refresh
         if ((accessToken == null || accessToken.isExpired()) && refresher != null) {
-            // if tokenNext is null or has already retrieved token
-            if (tokenNext == null || tokenNext.hasRetrievedToken()) {
-                tokenNext = new TokenNext(fetchFreshToken());
+            // if tokenAccessor is null or has already retrieved token
+            if (tokenAccessor == null || tokenAccessor.hasRetrievedToken()) {
+                tokenAccessor = new TokenAccessor(fetchFreshToken());
             }
-            return tokenNext;
+            return tokenAccessor;
         }
 
         return Mono.just(accessToken);
@@ -164,13 +164,13 @@ public final class CommunicationTokenCredential implements AutoCloseable {
     }
 
     private Mono<String> fetchFreshToken() {
-        Mono<String> fetchNext = refresher.getFetchTokenNext();
-        if (fetchNext == null) {
+        Mono<String> tokenAsync = refresher.getTokenAsync();
+        if (tokenAsync == null) {
             throw logger.logExceptionAsError(
-                    new RuntimeException("TokenRefresher returned null when getFetchTokenNext is called"));
+                    new RuntimeException("TokenRefresher returned null when getTokenAsync is called"));
         }
-        tokenNext = new TokenNext(fetchNext);
-        return fetchNext;
+        tokenAccessor = new TokenAccessor(tokenAsync);
+        return tokenAsync;
     }
 
     private static class FetchingTask {
@@ -226,8 +226,8 @@ public final class CommunicationTokenCredential implements AutoCloseable {
             @Override
             public void run() {
                 try {
-                    Mono<String> tokenStringNext = tokenCache.fetchFreshToken();
-                    tokenCache.setToken(tokenStringNext.block());
+                    Mono<String> tokenAsync = tokenCache.fetchFreshToken();
+                    tokenCache.setToken(tokenAsync.block());
                 } catch (Exception exception) {
                     logger.logExceptionAsError(new RuntimeException(exception));
                 }

@@ -12,5 +12,5 @@ public interface TokenRefresher {
      * Asynchronous call to fetch a fresh token
      * @return Wrapper for asynchronous call
      */
-    Mono<String> getFetchTokenNext();
+    Mono<String> getTokenAsync();
 }

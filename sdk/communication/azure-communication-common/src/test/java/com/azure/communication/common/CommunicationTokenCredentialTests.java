@@ -71,7 +71,7 @@ public class CommunicationTokenCredentialTests {
         }
 
         @Override
-        public Mono<String> getFetchTokenNext() {
+        public Mono<String> getTokenAsync() {
             numCalls++;
             if (this.onCallReturn != null) {
                 this.onCallReturn.run();
@@ -243,7 +243,7 @@ public class CommunicationTokenCredentialTests {
         }
 
         @Override
-        public Mono<String> getFetchTokenNext() {
+        public Mono<String> getTokenAsync() {
             numCalls++;
             if (this.onCallReturn != null) {
                 this.onCallReturn.run();
@@ -298,7 +298,7 @@ public class CommunicationTokenCredentialTests {
         }
 
         @Override
-        public Mono<String> getFetchTokenNext() {
+        public Mono<String> getTokenAsync() {
             numCalls++;
             return new LongRunningMono(onCallReturn);
         }
