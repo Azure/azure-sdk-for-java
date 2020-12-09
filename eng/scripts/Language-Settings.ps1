@@ -216,3 +216,24 @@ function Update-java-CIConfig($pkgs, $ciRepo, $locationInDocRepo, $monikerId=$nu
 
   Set-Content -Path $pkgJsonLoc -Value $jsonContent
 }
+
+
+# function is used to filter packages to submit to API view tool
+function Find-Artifacts-For-Apireview($artifactDir, $pkgName = $null){
+  $packages = @{}
+  $filter = "azure-*sources.jar"
+
+  if ($pkgName -ne $null){
+    $filter = $pkgName + "*sources.jar"
+  }
+
+  # Find all nupkg files in given artifact directory and skip any symbol files
+  $files = Get-ChildItem -Path $artifactDir -Recurse -Include $filter | Select-Object Name, FullName
+  if($files){
+    foreach($f in $files){
+      $packages[$f.Name] = $f.FullName
+    }
+  }
+
+  return $packages
+}
