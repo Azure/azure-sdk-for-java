@@ -334,13 +334,9 @@ public class CosmosConflictsTest extends TestSuiteBase {
 
     @AfterClass(groups = {"multi-master"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        if (this.globalClient != null) {
-            this.globalClient.close();
-        }
+        safeClose(this.globalClient);
         for (CosmosAsyncClient asyncClient : this.regionalClients)
-            if (asyncClient != null) {
-                asyncClient.close();
-            }
+            safeClose(asyncClient);
     }
 
     private Mono<CosmosItemResponse<ConflictTestPojo>> tryInsertDocumentTest(CosmosAsyncContainer container,

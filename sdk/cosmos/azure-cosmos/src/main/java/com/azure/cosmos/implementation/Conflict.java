@@ -87,23 +87,14 @@ public final class Conflict extends Resource {
      */
     public <T > T getItem(Class<T> klass) {
         String resourceAsString = super.getString(Constants.Properties.CONTENT);
-
         if (!Strings.isNullOrEmpty(resourceAsString)) {
-                try {
-                    return mapper.readValue(resourceAsString, klass);
-                } catch (JsonProcessingException ex) {
-                    throw new IllegalStateException("Failed to deserialize  class object.", ex);
-                }
+            try {
+                return mapper.readValue(resourceAsString, klass);
+            } catch (JsonProcessingException ex) {
+                throw new IllegalStateException("Failed to deserialize  class object.", ex);
+            }
         } else {
             return null;
         }
-    }
-
-    /**
-     * Gets the json content of the conflicting resource.
-     * @return The content string.
-     */
-    public String getItemAsJson() {
-        return super.getString(Constants.Properties.CONTENT);
     }
 }
