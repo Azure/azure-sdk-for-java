@@ -40,17 +40,22 @@ com.azure:azure-ai-anomalydetector;3.0.0-beta.1;3.0.0-beta.2
 com.azure:azure-ai-formrecognizer;3.0.3;3.1.0-beta.2
 com.azure:azure-ai-metricsadvisor;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-ai-textanalytics;5.0.1;5.1.0-beta.4
+com.azure:azure-analytics-synapse-accesscontrol;1.0.0-beta.1;1.0.0-beta.1
+com.azure:azure-analytics-synapse-artifacts;1.0.0-beta.1;1.0.0-beta.1
+com.azure:azure-analytics-synapse-spark;1.0.0-beta.1;1.0.0-beta.1
+com.azure:azure-analytics-synapse-managedprivateendpoints;1.0.0-beta.1;1.0.0-beta.1
+com.azure:azure-analytics-synapse-monitoring;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-communication-chat;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-communication-common;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-communication-administration;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-communication-sms;1.0.0-beta.3;1.0.0-beta.4
-com.azure:azure-core;1.10.0;1.11.0
-com.azure:azure-core-amqp;1.6.0;1.7.0-beta.3
+com.azure:azure-core;1.11.0;1.12.0-beta.1
+com.azure:azure-core-amqp;2.0.0;2.1.0-beta.1
 com.azure:azure-core-amqp-experimental;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-core-experimental;1.0.0-beta.8;1.0.0-beta.9
 com.azure:azure-core-http-jdk-httpclient;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-core-http-netty;1.6.3;1.7.0
-com.azure:azure-core-http-okhttp;1.3.3;1.4.0
+com.azure:azure-core-http-netty;1.7.0;1.8.0-beta.1
+com.azure:azure-core-http-okhttp;1.4.0;1.5.0-beta.1
 com.azure:azure-core-management;1.0.0;1.1.0-beta.1
 com.azure:azure-core-serializer-avro-apache;1.0.0-beta.5;1.0.0-beta.6
 com.azure:azure-core-serializer-avro-jackson;1.0.0-beta.1;1.0.0-beta.2
@@ -68,12 +73,12 @@ com.azure:azure-data-schemaregistry-avro;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-data-tables;12.0.0-beta.3;12.0.0-beta.4
 com.azure:azure-digitaltwins-core;1.0.1;1.1.0-beta.1
 com.azure:azure-e2e;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-identity;1.2.0;1.3.0-beta.1
+com.azure:azure-identity;1.2.0;1.2.1
 com.azure:azure-identity-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-eventgrid;2.0.0-beta.3;2.0.0-beta.4
 com.azure:azure-messaging-eventhubs;5.3.1;5.4.0-beta.2
 com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.3.1;1.4.0-beta.2
-com.azure:azure-messaging-servicebus;7.0.0-beta.7;7.0.0-beta.8
+com.azure:azure-messaging-servicebus;7.0.0;7.1.0-beta.1
 com.azure:azure-messaging-servicebus-track1-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-servicebus-track2-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-search-documents;11.1.2;11.2.0-beta.4
@@ -94,7 +99,7 @@ com.azure:azure-storage-blob-nio;12.0.0-beta.2;12.0.0-beta.3
 com.azure:azure-storage-common;12.9.0;12.10.0-beta.1
 com.azure:azure-storage-file-share;12.7.0;12.8.0-beta.1
 com.azure:azure-storage-file-datalake;12.3.0;12.4.0-beta.1
-com.azure:azure-storage-internal-avro;12.0.1;12.1.0-beta.1
+com.azure:azure-storage-internal-avro;12.0.1;12.0.2-beta.1
 com.azure:azure-storage-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-storage-queue;12.7.0;12.8.0-beta.1
 com.azure:perf-test-core;1.0.0-beta.1;1.0.0-beta.1
@@ -168,6 +173,7 @@ com.azure.resourcemanager:azure-resourcemanager-sql;2.1.0;2.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-storage;2.1.0;2.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-trafficmanager;2.1.0;2.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-test;2.0.0-beta.1;2.0.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-datadog;1.0.0-beta.1;1.0.0-beta.1
 com.microsoft:microsoft-opentelemetry-exporter-azuremonitor;1.0.0-beta.1;1.0.0-beta.2
 
 
@@ -176,9 +182,7 @@ com.microsoft:microsoft-opentelemetry-exporter-azuremonitor;1.0.0-beta.1;1.0.0-b
 # Format;
 # unreleased_<groupId>:<artifactId>;dependency-version
 # note: The unreleased dependencies will not be manipulated with the automatic PR creation code.
-unreleased_com.azure:azure-core;1.11.0
-unreleased_com.azure:azure-core-amqp;1.7.0-beta.3
-unreleased_com.azure:azure-messaging-servicebus;7.0.0-beta.7
+unreleased_com.azure:azure-messaging-servicebus;7.0.0
 
 # Released Beta dependencies: Copy the entry from above, prepend "beta_", remove the current
 # version and set the version to the released beta. Released beta dependencies are only valid
@@ -188,4 +192,3 @@ unreleased_com.azure:azure-messaging-servicebus;7.0.0-beta.7
 # beta_<groupId>:<artifactId>;dependency-version
 # note: Released beta versions will not be manipulated with the automatic PR creation code.
 beta_com.azure:azure-security-keyvault-keys;4.3.0-beta.1
-beta_com.azure:azure-core-amqp;1.7.0-beta.2
