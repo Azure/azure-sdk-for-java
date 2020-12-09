@@ -216,7 +216,6 @@ public class QueryValidationTests extends TestSuiteBase {
     private Object[][] query() {
         return new Object[][]{
             new Object[] { "Select * from c "},
-            new Object[] { "Select top 5 * from c"},
             new Object[] { "select * from c order by c.prop ASC"},
         };
     }
