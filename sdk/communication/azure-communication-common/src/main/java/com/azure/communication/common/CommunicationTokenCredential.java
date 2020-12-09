@@ -49,9 +49,10 @@ public final class CommunicationTokenCredential implements AutoCloseable {
     /**
      * Create with a tokenRefresher
      * 
-     * @param tokenRefresher implementation to supply fresh token when reqested
+     * @param tokenRefreshOptions implementation to supply fresh token when reqested
      */
-    public CommunicationTokenCredential(TokenRefresher tokenRefresher) {
+    public CommunicationTokenCredential(TokenRefreshOptions tokenRefreshOptions) {
+        TokenRefresher tokenRefresher = tokenRefreshOptions.getTokenRefresher();
         Objects.requireNonNull(tokenRefresher, "'tokenRefresher' cannot be null.");
         refresher = tokenRefresher;
     }
@@ -63,19 +64,14 @@ public final class CommunicationTokenCredential implements AutoCloseable {
      * CallbackOffsetMinutes defaulted to two minutes. To modify this default, call
      * setCallbackOffsetMinutes after construction
      * 
-     * @param tokenRefresher implementation to supply fresh token when reqested
+     * @param tokenRefreshOptions implementation to supply fresh token when reqested
      * @param initialToken serialized JWT token
-     * @param refreshProactively when set to true, turn on proactive fetching to call
-     *                           tokenRefresher before token expiry by minutes set
-     *                           with setCallbackOffsetMinutes or default value of
-     *                           two minutes
      */
-    public CommunicationTokenCredential(TokenRefresher tokenRefresher, String initialToken,
-            boolean refreshProactively) {
-        this(tokenRefresher);
+    public CommunicationTokenCredential(TokenRefreshOptions tokenRefreshOptions, String initialToken) {
+        this(tokenRefreshOptions);
         Objects.requireNonNull(initialToken, "'initialToken' cannot be null.");
         setToken(initialToken);
-        if (refreshProactively) {
+        if (tokenRefreshOptions.getRefreshProactively()) {
             OffsetDateTime nextFetchTime = accessToken.getExpiresAt().minusMinutes(DEFAULT_EXPIRING_OFFSET_MINUTES);
             fetchingTask = new FetchingTask(this, nextFetchTime);
         }
