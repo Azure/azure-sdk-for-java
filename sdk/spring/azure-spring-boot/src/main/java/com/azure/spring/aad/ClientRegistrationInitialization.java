@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.spring.aad;
 
 import com.azure.spring.aad.webapp.AuthorizationProperties;
@@ -19,7 +22,7 @@ public class ClientRegistrationInitialization {
 
     private static final String AZURE_CLIENT_REGISTRATION_ID = "azure";
 
-    private AADAuthenticationProperties aadAuthenticationProperties;
+    private final AADAuthenticationProperties aadAuthenticationProperties;
 
     public ClientRegistrationInitialization(AADAuthenticationProperties aadAuthenticationProperties) {
         this.aadAuthenticationProperties = aadAuthenticationProperties;
@@ -107,5 +110,4 @@ public class ClientRegistrationInitialization {
 
         return result;
     }
-
 }
