@@ -3,46 +3,49 @@
 trigger:
   branches:
     include:
-      - master
-      - hotfix/*
-      - release/*
+    - master
+    - hotfix/*
+    - release/*
   paths:
     include:
-      - sdk/eventhubs/
+    - sdk/eventhubs/
     exclude:
-      - sdk/eventhubs/mgmt-v2015_08_01
-      - sdk/eventhubs/mgmt-v2017_04_01
-      - sdk/eventhubs/mgmt-v2018_01_01_preview
-      - sdk/eventhubs/microsoft-azure-eventhubs
-      - sdk/eventhubs/microsoft-azure-eventhubs-eph
-      - sdk/eventhubs/microsoft-azure-eventhubs-extensions
+    - sdk/eventhubs/mgmt-v2015_08_01
+    - sdk/eventhubs/mgmt-v2017_04_01
+    - sdk/eventhubs/mgmt-v2018_01_01_preview
+    - sdk/eventhubs/microsoft-azure-eventhubs
+    - sdk/eventhubs/microsoft-azure-eventhubs-eph
+    - sdk/eventhubs/microsoft-azure-eventhubs-extensions
 
 pr:
   branches:
     include:
-      - master
-      - feature/*
-      - hotfix/*
-      - release/*
+    - master
+    - feature/*
+    - hotfix/*
+    - release/*
   paths:
     include:
-      - sdk/eventhubs/
+    - sdk/eventhubs/
     exclude:
-      - sdk/eventhubs/mgmt-v2015_08_01
-      - sdk/eventhubs/mgmt-v2017_04_01
-      - sdk/eventhubs/mgmt-v2018_01_01_preview
-      - sdk/eventhubs/microsoft-azure-eventhubs
-      - sdk/eventhubs/microsoft-azure-eventhubs-eph
-      - sdk/eventhubs/microsoft-azure-eventhubs-extensions
+    - sdk/eventhubs/mgmt-v2015_08_01
+    - sdk/eventhubs/mgmt-v2017_04_01
+    - sdk/eventhubs/mgmt-v2018_01_01_preview
+    - sdk/eventhubs/microsoft-azure-eventhubs
+    - sdk/eventhubs/microsoft-azure-eventhubs-eph
+    - sdk/eventhubs/microsoft-azure-eventhubs-extensions
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: eventhubs
     Artifacts:
-      - name: azure-messaging-eventhubs
-        groupId: com.azure
-        safeName: azuremessagingeventhubs
-      - name: azure-messaging-eventhubs-checkpointstore-blob
-        groupId: com.azure
-        safeName: azuremessagingeventhubscheckpointstoreblob
+    - name: azure-messaging-eventhubs
+      groupId: com.azure
+      safeName: azuremessagingeventhubs
+    - name: azure-messaging-eventhubs-checkpointstore-blob
+      groupId: com.azure
+      safeName: azuremessagingeventhubscheckpointstoreblob
+    - name: azure-resourcemanager-eventhubs-generated
+      groupId: com.azure.resourcemanager
+      safeName: azureresourcemanagereventhubsgenerated
