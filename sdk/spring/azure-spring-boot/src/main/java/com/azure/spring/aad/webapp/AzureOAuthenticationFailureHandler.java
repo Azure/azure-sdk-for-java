@@ -29,8 +29,8 @@ public class AzureOAuthenticationFailureHandler implements AuthenticationFailure
         String claims = Optional.of(exception)
             .map(e -> (OAuth2AuthenticationException) e)
             .map(OAuth2AuthenticationException::getError)
-            .map(e -> (AzureOAuthError)e)
-            .map(AzureOAuthError ::getClaims)
+            .map(e -> (AzureOAuth2Error)e)
+            .map(AzureOAuth2Error::getClaims)
             .orElse(null);
 
         if (claims == null) {
