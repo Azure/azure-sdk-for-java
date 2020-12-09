@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.implementation.util;
 
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.UserDelegationKey;
@@ -140,14 +141,20 @@ public class BlobSasImplUtil {
      * @param storageSharedKeyCredentials {@link StorageSharedKeyCredential}
      * @return A String representing the Sas
      */
-    public String generateSas(StorageSharedKeyCredential storageSharedKeyCredentials) {
+    public String generateSas(StorageSharedKeyCredential storageSharedKeyCredentials, Context context) {
         StorageImplUtils.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
 
         ensureState();
 
         // Signature is generated on the un-url-encoded values.
         final String canonicalName = getCanonicalName(storageSharedKeyCredentials.getAccountName());
-        final String signature = storageSharedKeyCredentials.computeHmac256(stringToSign(canonicalName));
+        final String stringToSign = stringToSign(canonicalName);
+        if (context != null && Boolean.TRUE.equals(context.getData("Log-String-To-Sign").orElse(false))) {
+            logger.info("The string to sign computed by the SDK is: %s\nPlease remember to disable "
+                    + "'Log-String-To-Sign' before going to production as this message can potentially contain PII.",
+                stringToSign);
+        }
+        final String signature = storageSharedKeyCredentials.computeHmac256(stringToSign);
 
         return encode(null /* userDelegationKey */, signature);
     }
@@ -159,7 +166,7 @@ public class BlobSasImplUtil {
      * @param accountName The account name
      * @return A String representing the Sas
      */
-    public String generateUserDelegationSas(UserDelegationKey delegationKey, String accountName) {
+    public String generateUserDelegationSas(UserDelegationKey delegationKey, String accountName, Context context) {
         StorageImplUtils.assertNotNull("delegationKey", delegationKey);
         StorageImplUtils.assertNotNull("accountName", accountName);
 
@@ -167,8 +174,13 @@ public class BlobSasImplUtil {
 
         // Signature is generated on the un-url-encoded values.
         final String canonicalName = getCanonicalName(accountName);
-        String signature = StorageImplUtils.computeHMac256(
-            delegationKey.getValue(), stringToSign(delegationKey, canonicalName));
+        final String stringToSign = stringToSign(delegationKey, canonicalName);
+        if (context != null && Boolean.TRUE.equals(context.getData("Log-String-To-Sign").orElse(false))) {
+            logger.info("The string to sign computed by the SDK is: %s\nPlease remember to disable "
+                    + "'Log-String-To-Sign' before going to production as this message can potentially contain PII.",
+                stringToSign);
+        }
+        String signature = StorageImplUtils.computeHMac256(delegationKey.getValue(), stringToSign);
 
         return encode(delegationKey, signature);
     }

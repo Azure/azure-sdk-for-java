@@ -13,6 +13,8 @@ import com.azure.core.http.HttpRequest
 import com.azure.core.http.HttpResponse
 import com.azure.core.http.ProxyOptions
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
+import com.azure.core.http.policy.HttpLogDetailLevel
+import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
 import com.azure.core.test.InterceptorManager
@@ -322,6 +324,10 @@ class APISpec extends Specification {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(endpoint)
             .httpClient(getHttpClient())
+            .httpLogOptions(new HttpLogOptions()
+                .setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+                .setAllowedHeaderNames(Set.of("x-ms-meta-foo"))
+                .setAllowedQueryParamNames(Set.of("sv")))
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)

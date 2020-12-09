@@ -48,6 +48,7 @@ import spock.lang.Requires
 import spock.lang.Unroll
 import spock.lang.Ignore
 
+import javax.naming.Context
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import java.nio.file.FileAlreadyExistsException
@@ -1233,7 +1234,7 @@ class BlobAPITest extends APISpec {
         metadata.put("foo", "bar")
 
         when:
-        bc.setMetadata(metadata)
+        bc.setMetadataWithResponse(metadata, null, null, new com.azure.core.util.Context("Log-String-To-Sign", true))
 
         then:
         bc.getProperties().getMetadata() == metadata

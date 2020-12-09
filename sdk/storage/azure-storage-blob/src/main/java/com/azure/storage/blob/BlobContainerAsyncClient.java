@@ -1058,7 +1058,7 @@ public final class BlobContainerAsyncClient {
     public String generateUserDelegationSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues,
         UserDelegationKey userDelegationKey) {
         return new BlobSasImplUtil(blobServiceSasSignatureValues, getBlobContainerName())
-            .generateUserDelegationSas(userDelegationKey, getAccountName());
+            .generateUserDelegationSas(userDelegationKey, getAccountName(), Context.NONE);
     }
 
     /**
@@ -1076,7 +1076,7 @@ public final class BlobContainerAsyncClient {
      */
     public String generateSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues) {
         return new BlobSasImplUtil(blobServiceSasSignatureValues, getBlobContainerName())
-            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()));
+            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), Context.NONE);
     }
 
     private boolean validateNoETag(BlobRequestConditions modifiedRequestConditions) {
