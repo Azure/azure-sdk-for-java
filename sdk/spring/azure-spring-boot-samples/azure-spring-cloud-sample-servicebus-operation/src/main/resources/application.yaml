@@ -1,0 +1,5 @@
+spring:
+  cloud:
+    azure:
+      servicebus:
+        connection-string: [servicebus-namespace-connection-string]

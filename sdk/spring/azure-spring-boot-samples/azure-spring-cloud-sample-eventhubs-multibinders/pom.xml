@@ -87,8 +87,8 @@
         <version>1.12.0</version>
         <configuration>
           <schemaVersion>V2</schemaVersion>
-          <resourceGroup>xiada-rg</resourceGroup>
-          <appName>xiada-as</appName>
+          <resourceGroup>[your-resource-group]</resourceGroup>
+          <appName>[your-app-name]</appName>
           <runtime>
             <os>Linux</os>
             <javaVersion>Java 8</javaVersion>
