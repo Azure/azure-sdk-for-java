@@ -87,7 +87,7 @@ public class ServiceBusReceivedMessageTest {
 
         // Assert
         assertNotNull(serviceBusMessageData.getBody());
-        assertArrayEquals(PAYLOAD_BYTES, serviceBusMessageData.getBodyAsBytes());
+        assertArrayEquals(PAYLOAD_BYTES, serviceBusMessageData.getBody().toBytes());
     }
 
     @Test

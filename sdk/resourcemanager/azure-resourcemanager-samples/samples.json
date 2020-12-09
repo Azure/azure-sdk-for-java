@@ -180,7 +180,7 @@
       "filePath": "azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/cdn/samples/ManageCdn.java",
       "githubPath": "Azure-Samples/cdn-java-manage-cdn",
       "description": "Getting started on managing CDN using Java"
-    },	
+    },
     {
       "owner": "yungezz",
       "filePath": "azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/cdn/samples/ManageCdnWithCustomDomain.java",
@@ -660,6 +660,12 @@
       "filePath": "azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/resources/samples/DeployVirtualMachineUsingARMTemplate.java",
       "githubPath": "Azure-Samples/resources-java-deploy-virtual-machine-with-managed-disks-using-arm-template",
       "description": "Getting started with deploying a Virtual Machine with managed disks using an ARM Template using Java"
+    },
+    {
+      "owner": "yungezz",
+      "filePath": "azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/resources/samples/ManageLocks.java",
+      "githubPath": "Azure-Samples/locks-java-manage-locks",
+      "description": "Getting started with managing resource locks using Java"
     },
     {
       "owner": "yungezz",

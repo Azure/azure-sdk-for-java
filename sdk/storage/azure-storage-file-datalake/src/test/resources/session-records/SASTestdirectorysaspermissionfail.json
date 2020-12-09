@@ -107,7 +107,7 @@
     "Exception" : null
   }, {
     "Method" : "HEAD",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsdirectorysaspermissionfail07713196e8849c7bbf4/javapathdirectorysaspermissionfail260320bcc2b77d6e4?sv=2020-02-10&spr=https%2Chttp&st=2020-08-26T20%3A22%3A31Z&se=2020-08-28T20%3A22%3A31Z&sip=0.0.0.0-255.255.255.255&sr=d&sp=cwd&sdd=1&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsdirectorysaspermissionfail07713196e8849c7bbf4/javapathdirectorysaspermissionfail260320bcc2b77d6e4?sv=2020-04-08&spr=https%2Chttp&st=2020-08-26T20%3A22%3A31Z&se=2020-08-28T20%3A22%3A31Z&sip=0.0.0.0-255.255.255.255&sr=d&sp=cwd&sdd=1&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
     "Headers" : {
       "x-ms-version" : "2020-02-10",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.9.0-beta.1 (11.0.7; Windows 10; 10.0)",

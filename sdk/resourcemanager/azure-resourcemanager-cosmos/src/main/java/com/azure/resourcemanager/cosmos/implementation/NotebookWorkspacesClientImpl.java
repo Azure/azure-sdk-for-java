@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -70,7 +71,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
     @Host("{$host}")
     @ServiceInterface(name = "CosmosDBManagementCl")
     private interface NotebookWorkspacesService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/notebookWorkspaces")
@@ -82,9 +83,10 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("accountName") String accountName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/notebookWorkspaces/{notebookWorkspaceName}")
@@ -97,9 +99,10 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             @QueryParam("api-version") String apiVersion,
             @PathParam("accountName") String accountName,
             @PathParam("notebookWorkspaceName") NotebookWorkspaceName notebookWorkspaceName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/notebookWorkspaces/{notebookWorkspaceName}")
@@ -113,9 +116,10 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             @PathParam("accountName") String accountName,
             @PathParam("notebookWorkspaceName") NotebookWorkspaceName notebookWorkspaceName,
             @BodyParam("application/json") ArmProxyResource notebookCreateUpdateParameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/notebookWorkspaces/{notebookWorkspaceName}")
@@ -128,9 +132,10 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             @QueryParam("api-version") String apiVersion,
             @PathParam("accountName") String accountName,
             @PathParam("notebookWorkspaceName") NotebookWorkspaceName notebookWorkspaceName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/notebookWorkspaces/{notebookWorkspaceName}/listConnectionInfo")
@@ -143,9 +148,10 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             @QueryParam("api-version") String apiVersion,
             @PathParam("accountName") String accountName,
             @PathParam("notebookWorkspaceName") NotebookWorkspaceName notebookWorkspaceName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/notebookWorkspaces/{notebookWorkspaceName}/regenerateAuthToken")
@@ -158,9 +164,10 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             @QueryParam("api-version") String apiVersion,
             @PathParam("accountName") String accountName,
             @PathParam("notebookWorkspaceName") NotebookWorkspaceName notebookWorkspaceName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/notebookWorkspaces/{notebookWorkspaceName}/start")
@@ -173,6 +180,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             @QueryParam("api-version") String apiVersion,
             @PathParam("accountName") String accountName,
             @PathParam("notebookWorkspaceName") NotebookWorkspaceName notebookWorkspaceName,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -208,7 +216,8 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -219,6 +228,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
                             resourceGroupName,
                             apiVersion,
                             accountName,
+                            accept,
                             context))
             .<PagedResponse<NotebookWorkspaceInner>>map(
                 res ->
@@ -260,7 +270,8 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByDatabaseAccount(
@@ -269,6 +280,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
                 resourceGroupName,
                 apiVersion,
                 accountName,
+                accept,
                 context)
             .map(
                 res ->
@@ -377,7 +389,8 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter notebookWorkspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -389,6 +402,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
                             apiVersion,
                             accountName,
                             notebookWorkspaceName,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -431,7 +445,8 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter notebookWorkspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -441,6 +456,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
                 apiVersion,
                 accountName,
                 notebookWorkspaceName,
+                accept,
                 context);
     }
 
@@ -554,7 +570,8 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
         } else {
             notebookCreateUpdateParameters.validate();
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -567,6 +584,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
                             accountName,
                             notebookWorkspaceName,
                             notebookCreateUpdateParameters,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -623,7 +641,8 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
         } else {
             notebookCreateUpdateParameters.validate();
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -634,6 +653,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
                 accountName,
                 notebookWorkspaceName,
                 notebookCreateUpdateParameters,
+                accept,
                 context);
     }
 
@@ -893,7 +913,8 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter notebookWorkspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -905,6 +926,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
                             apiVersion,
                             accountName,
                             notebookWorkspaceName,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -947,7 +969,8 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter notebookWorkspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -957,6 +980,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
                 apiVersion,
                 accountName,
                 notebookWorkspaceName,
+                accept,
                 context);
     }
 
@@ -1147,7 +1171,8 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter notebookWorkspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1159,6 +1184,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
                             apiVersion,
                             accountName,
                             notebookWorkspaceName,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -1201,7 +1227,8 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter notebookWorkspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listConnectionInfo(
@@ -1211,6 +1238,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
                 apiVersion,
                 accountName,
                 notebookWorkspaceName,
+                accept,
                 context);
     }
 
@@ -1312,7 +1340,8 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter notebookWorkspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1324,6 +1353,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
                             apiVersion,
                             accountName,
                             notebookWorkspaceName,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -1366,7 +1396,8 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter notebookWorkspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .regenerateAuthToken(
@@ -1376,6 +1407,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
                 apiVersion,
                 accountName,
                 notebookWorkspaceName,
+                accept,
                 context);
     }
 
@@ -1568,7 +1600,8 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter notebookWorkspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1580,6 +1613,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
                             apiVersion,
                             accountName,
                             notebookWorkspaceName,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -1622,7 +1656,8 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
             return Mono
                 .error(new IllegalArgumentException("Parameter notebookWorkspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .start(
@@ -1632,6 +1667,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
                 apiVersion,
                 accountName,
                 notebookWorkspaceName,
+                accept,
                 context);
     }
 

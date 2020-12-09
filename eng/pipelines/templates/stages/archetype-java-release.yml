@@ -161,7 +161,7 @@ stages:
               environment: github
               dependsOn: PublishPackage
               variables:
-                CIConfigs: "{'targets':[{'path_to_config':'package.json','mode':'Preview','monikerid':'1'},{'path_to_config':'package.json','mode':'Latest','monikerid':'0'}]}"
+                CIConfigs: "{'targets':[{'path_to_config':'package.json','mode':'Preview','monikerid':'1','content_folder':'docs-ref-services/preview'},{'path_to_config':'package.json','mode':'Latest','monikerid':'0','content_folder':'docs-ref-services/latest'}]}"
                 skipComponentGovernanceDetection: true
               pool:
                 vmImage: vs2017-win2016
