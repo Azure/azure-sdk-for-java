@@ -48,8 +48,8 @@ public class AADOboConfigurationTest {
         this.contextRunner
             .withUserConfiguration(AzureActiveDirectoryResourceServerClientConfiguration.class)
             .run(context -> {
-                final OAuth2AuthorizedClientRepository aadOboRepo = context.getBean
-                    (AADOAuth2OboAuthorizedClientRepository.class);
+                final OAuth2AuthorizedClientRepository aadOboRepo = context.getBean(
+                    AADOAuth2OboAuthorizedClientRepository.class);
                 assertThat(aadOboRepo).isNotNull();
                 assertThat(aadOboRepo).isExactlyInstanceOf(AADOAuth2OboAuthorizedClientRepository.class);
             });
