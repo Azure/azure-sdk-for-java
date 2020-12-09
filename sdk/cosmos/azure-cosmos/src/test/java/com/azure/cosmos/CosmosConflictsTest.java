@@ -25,6 +25,7 @@ import org.apache.commons.io.IOUtils;
 import org.assertj.core.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -42,6 +43,8 @@ import static org.assertj.core.api.Assertions.fail;
 public class CosmosConflictsTest extends TestSuiteBase {
     private static final int CONFLICT_TIMEOUT = 120000;
     private static Logger logger = LoggerFactory.getLogger(CosmosConflictsTest.class);
+    private static final String SKIP_SINGLE_REGION_MM_ACCOUNT = "Multi master account doesn't have multiple write " +
+        "regions to test this";
     private String sprocBody;
     private CosmosAsyncClient globalClient;
     private List<CosmosAsyncClient> regionalClients;
@@ -107,6 +110,8 @@ public class CosmosConflictsTest extends TestSuiteBase {
             } catch (CosmosException ex) {
                 assertThat(ex.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
             }
+        } else {
+            throw new SkipException(SKIP_SINGLE_REGION_MM_ACCOUNT);
         }
     }
 
@@ -158,6 +163,8 @@ public class CosmosConflictsTest extends TestSuiteBase {
             } finally {
                 database.getContainer(containerProperties.getId()).delete().block();
             }
+        } else {
+            throw new SkipException(SKIP_SINGLE_REGION_MM_ACCOUNT);
         }
     }
 
@@ -218,6 +225,8 @@ public class CosmosConflictsTest extends TestSuiteBase {
             } finally {
                 database.getContainer(containerProperties.getId()).delete().block();
             }
+        } else {
+            throw new SkipException(SKIP_SINGLE_REGION_MM_ACCOUNT);
         }
     }
 
@@ -323,6 +332,8 @@ public class CosmosConflictsTest extends TestSuiteBase {
             } finally {
                 database.getContainer(containerProperties.getId()).delete().block();
             }
+        } else {
+            throw new SkipException(SKIP_SINGLE_REGION_MM_ACCOUNT);
         }
     }
 
