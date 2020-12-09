@@ -104,6 +104,9 @@ public class RetryUtil {
         return retrySpec.jitter(JITTER_FACTOR)
             .maxBackoff(options.getMaxDelay())
             .filter(error -> error instanceof TimeoutException
-                || error instanceof AmqpException && ((AmqpException) error).isTransient());
+                || error instanceof AmqpException && ((AmqpException) error).isTransient())
+            .doBeforeRetry(retry -> {
+                LOGGER.
+            });
     }
 }
