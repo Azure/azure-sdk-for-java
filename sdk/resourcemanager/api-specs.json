@@ -283,7 +283,7 @@
   "search": {
     "dir": "azure-resourcemanager-search",
     "source": "specification/search/resource-manager/readme.md",
-    "package": "com.microsoft.azure.resourcemanager.search",
+    "package": "com.azure.resourcemanager.search",
     "args": "--payload-flattening-threshold=1 --tag=package-2015-08"
   },
   "servermanagement": {
