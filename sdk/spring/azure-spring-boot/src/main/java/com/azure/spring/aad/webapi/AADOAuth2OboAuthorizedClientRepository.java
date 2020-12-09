@@ -39,6 +39,8 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
 
     private static final Logger LOG = LoggerFactory.getLogger(AADOAuth2OboAuthorizedClientRepository.class);
 
+    private static final String OBO_AUTHORIZEDCLIENT_PREFIX = "obo_authorizedclient_";
+
     private final AzureClientRegistrationRepository azureClientRegistrationRepository;
 
     private final Map<String, ConfidentialClientApplication> confidentialClientApplicationMap = new HashMap<>();
@@ -58,8 +60,9 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
                                                                      Authentication authentication,
                                                                      HttpServletRequest request) {
         try {
-            if (request.getAttribute(registrationId) != null) {
-                return (T) request.getAttribute(registrationId);
+            String oboAuthorizedClientAttributeName = OBO_AUTHORIZEDCLIENT_PREFIX + registrationId;
+            if (request.getAttribute(oboAuthorizedClientAttributeName) != null) {
+                return (T) request.getAttribute(oboAuthorizedClientAttributeName);
             }
 
             ClientRegistration clientRegistration =
@@ -87,7 +90,7 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
             OAuth2AuthorizedClient oAuth2AuthorizedClient = new OAuth2AuthorizedClient(clientRegistration,
                 authenticationToken.getName(), oAuth2AccessToken);
 
-            request.setAttribute(registrationId, (T) oAuth2AuthorizedClient);
+            request.setAttribute(oboAuthorizedClientAttributeName, (T) oAuth2AuthorizedClient);
             return (T) oAuth2AuthorizedClient;
         } catch (Throwable throwable) {
             LOG.error("Failed to loadAuthorizedClient", throwable);
