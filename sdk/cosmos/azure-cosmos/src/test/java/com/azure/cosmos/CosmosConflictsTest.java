@@ -65,11 +65,13 @@ public class CosmosConflictsTest extends TestSuiteBase {
         regionalClients = new ArrayList<>();
         while (locationIterator.hasNext()) {
             DatabaseAccountLocation accountLocation = locationIterator.next();
+            List<String> prefferedLocations = new ArrayList<>();
+            prefferedLocations.add(accountLocation.getName());
             CosmosAsyncClient regionalClient = new CosmosClientBuilder()
-                .endpoint(accountLocation.getEndpoint())
+                .endpoint(TestConfigurations.HOST)
                 .key(TestConfigurations.MASTER_KEY)
                 .contentResponseOnWriteEnabled(true)
-                .endpointDiscoveryEnabled(false)
+                .preferredRegions(prefferedLocations)
                 .directMode()
                 .buildAsyncClient();
             regionalClients.add(regionalClient);
@@ -105,8 +107,6 @@ public class CosmosConflictsTest extends TestSuiteBase {
             } catch (CosmosException ex) {
                 assertThat(ex.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
             }
-        } else {
-            fail("Unable to find multi master account");
         }
     }
 
@@ -158,8 +158,6 @@ public class CosmosConflictsTest extends TestSuiteBase {
             } finally {
                 database.getContainer(containerProperties.getId()).delete().block();
             }
-        } else {
-            fail("Unable to find multi master account");
         }
     }
 
@@ -220,8 +218,6 @@ public class CosmosConflictsTest extends TestSuiteBase {
             } finally {
                 database.getContainer(containerProperties.getId()).delete().block();
             }
-        } else {
-            fail("Unable to find multi master account");
         }
     }
 
@@ -327,8 +323,6 @@ public class CosmosConflictsTest extends TestSuiteBase {
             } finally {
                 database.getContainer(containerProperties.getId()).delete().block();
             }
-        } else {
-            fail("Unable to find multi master account");
         }
     }
 
