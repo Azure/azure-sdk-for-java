@@ -25,7 +25,9 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -139,6 +141,11 @@ public class AzureActiveDirectoryConfiguration {
         result.authorizationUri(endpoints.authorizationEndpoint(properties.getTenantId()));
         result.tokenUri(endpoints.tokenEndpoint(properties.getTenantId()));
         result.jwkSetUri(endpoints.jwkSetEndpoint(properties.getTenantId()));
+
+        Map<String, Object> configurationMetadata = new LinkedHashMap<>();
+        String endSessionEndpoint = endpoints.endSessionEndpoint(properties.getTenantId());
+        configurationMetadata.put("end_session_endpoint", endSessionEndpoint);
+        result.providerConfigurationMetadata(configurationMetadata);
 
         return result;
     }

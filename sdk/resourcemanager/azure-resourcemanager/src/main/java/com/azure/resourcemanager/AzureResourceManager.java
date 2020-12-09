@@ -95,6 +95,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils
 import com.azure.resourcemanager.resources.models.Deployments;
 import com.azure.resourcemanager.resources.models.Features;
 import com.azure.resourcemanager.resources.models.GenericResources;
+import com.azure.resourcemanager.resources.models.ManagementLocks;
 import com.azure.resourcemanager.resources.models.PolicyAssignments;
 import com.azure.resourcemanager.resources.models.PolicyDefinitions;
 import com.azure.resourcemanager.resources.models.Providers;
@@ -471,6 +472,11 @@ public final class AzureResourceManager {
     /** @return entry point to managing policy assignments. */
     public PolicyAssignments policyAssignments() {
         return resourceManager.policyAssignments();
+    }
+
+    /** @return entry point to managing locks. */
+    public ManagementLocks managementLocks() {
+        return resourceManager.managementLocks();
     }
 
     /** @return entry point to managing storage accounts */

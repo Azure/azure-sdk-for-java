@@ -355,6 +355,10 @@
         "code": "java.method.removed",
         "old": "method void com.azure.core.amqp.models.AmqpAnnotatedMessage::<init>(com.azure.core.amqp.models.AmqpAnnotatedMessage)",
         "justification": "Removed copy constructor, It is not required for Service bus message."
+      },      {
+        "code": "java.method.defaultMethodAddedToInterface",
+        "new": "method reactor.core.publisher.Mono<com.azure.core.http.HttpResponse> com.azure.core.http.HttpClient::send(com.azure.core.http.HttpRequest, com.azure.core.util.Context)",
+        "justification": "Default interface method"
       }
     ]
   }

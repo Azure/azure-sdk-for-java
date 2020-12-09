@@ -140,8 +140,6 @@ msalProvider.init(
 
 * Run with Maven 
  ```
- # Under sdk/spring project root directory
- mvn clean install
  cd azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server
  mvn spring-boot:run
  ```
