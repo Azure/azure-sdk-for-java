@@ -13,7 +13,7 @@ import org.apache.spark.sql.util.CaseInsensitiveStringMap
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
-case class CosmosScanBuilder(config: CaseInsensitiveStringMap)
+case class CosmosScanBuilder(config: CaseInsensitiveStringMap, inputSchema: StructType)
   extends ScanBuilder
     with SupportsPushDownFilters
     with SupportsPushDownRequiredColumns
@@ -48,7 +48,9 @@ case class CosmosScanBuilder(config: CaseInsensitiveStringMap)
 
   override def build(): Scan = {
     assert(this.processedPredicates.isDefined)
-    CosmosScan(config.asScala.toMap, this.processedPredicates.get.cosmosParametrizedQuery)
+
+    // TODO moderakh when inferring schema we should consolidate the schema from pruneColumns
+    CosmosScan(inputSchema, config.asScala.toMap, this.processedPredicates.get.cosmosParametrizedQuery)
   }
 
   /**
