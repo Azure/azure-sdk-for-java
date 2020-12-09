@@ -3,6 +3,8 @@
 ## 1.0.0-beta.4 (Unreleased)
 ### Breaking Changes
 - Renamed `CommunicationUserCredential` to `CommunicationTokenCredential`
+- Replaced constructor `CommunicationTokenCredential(TokenRefresher tokenRefresher, String initialToken,	boolean refreshProactively)` with `CommunicationTokenCredential(TokenRefreshOptions tokenRefreshOptions, String initialToken)`
+- Replaced constructor `CommunicationTokenCredential(TokenRefresher tokenRefresher)` with `CommunicationTokenCredential(TokenRefreshOptions tokenRefreshOptions)`
 
 ## 1.0.0-beta.3 (2020-11-16)
 Updated `azure-communication-common` version
@@ -17,3 +19,8 @@ This is a Public Preview version, so breaking changes are possible in subsequent
 
 <!-- LINKS -->
 [read_me]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-common/README.md
+
+CommunicationTokenCredential(	    public CommunicationTokenCredential(TokenRefreshOptions tokenRefreshOptions, String initialToken) {
+        TokenRefresher tokenRefresher,
+        String initialToken,	
+        boolean refreshProactively) 
