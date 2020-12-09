@@ -161,7 +161,7 @@ public final class ManagementLocksImpl
     @Override
     public Mono<Void> deleteByResourceGroupAsync(String resourceGroupName, String name) {
         return this.manager().managementLockClient().getManagementLocks()
-            .deleteAtResourceGroupLevelAsync(resourceGroupName, name);
+            .deleteAsync(resourceGroupName, name);
     }
 
     @Override
