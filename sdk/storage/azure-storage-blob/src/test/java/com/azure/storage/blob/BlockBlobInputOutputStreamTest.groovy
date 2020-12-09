@@ -1,6 +1,7 @@
 package com.azure.storage.blob
 
 import com.azure.storage.blob.models.BlobRequestConditions
+import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.BlobType
 import com.azure.storage.blob.models.ConsistentReadControl
 import com.azure.storage.blob.options.BlobInputStreamOptions
@@ -233,7 +234,7 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         }
 
         byte[] randomBytes2 = outputStream.toByteArray()
-        assert randomBytes2 == Arrays.copyOfRange(randomBytes, 1 * Constants.MB, 6 * Constants.MB)
+        assert randomBytes2 == randomBytes
 
         when: "Use old eTag"
         // Write more bytes (just to change eTag).
@@ -243,7 +244,7 @@ class BlockBlobInputOutputStreamTest extends APISpec {
             .setRequestConditions(new BlobRequestConditions().setIfMatch(properties.getETag()))).read()
 
         then: "An old etag will fail due to ConditionNotMet"
-        thrown(IOException)
+        thrown(BlobStorageException)
     }
 
     def "Input stream concurrency control version"() {
