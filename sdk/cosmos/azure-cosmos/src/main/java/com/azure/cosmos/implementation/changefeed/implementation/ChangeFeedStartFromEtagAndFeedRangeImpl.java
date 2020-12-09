@@ -48,7 +48,7 @@ class ChangeFeedStartFromEtagAndFeedRangeImpl extends ChangeFeedStartFromInterna
         }
 
         return  this.etag.compareTo(otherStartFrom.etag) == 0 &&
-            this.feedRange.equals(otherStartFrom.etag);
+            this.feedRange.equals(otherStartFrom.feedRange);
     }
 
     @Override

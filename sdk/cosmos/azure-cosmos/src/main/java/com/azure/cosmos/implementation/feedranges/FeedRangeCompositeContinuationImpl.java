@@ -386,7 +386,7 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof ChangeFeedStateV1)) {
+        if (!(o instanceof FeedRangeCompositeContinuationImpl)) {
             return false;
         }
 

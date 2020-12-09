@@ -49,7 +49,7 @@ class ChangeFeedStartFromPointInTimeImpl extends ChangeFeedStartFromInternal {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof ChangeFeedStartFromEtagAndFeedRangeImpl)) {
+        if (!(obj instanceof ChangeFeedStartFromPointInTimeImpl)) {
             return false;
         }
 

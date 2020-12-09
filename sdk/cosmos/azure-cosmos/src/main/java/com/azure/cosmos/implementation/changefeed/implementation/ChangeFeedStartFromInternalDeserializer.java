@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 
 import java.io.IOException;
 import java.time.Instant;
+import java.util.Locale;
 
 public class ChangeFeedStartFromInternalDeserializer extends StdDeserializer<ChangeFeedStartFromInternal>  {
 
@@ -57,7 +58,7 @@ public class ChangeFeedStartFromInternalDeserializer extends StdDeserializer<Cha
 
         ChangeFeedStartFromTypes type;
         try {
-            type = ChangeFeedStartFromTypes.valueOf(typeNode.textValue().toUpperCase());
+            type = ChangeFeedStartFromTypes.valueOf(typeNode.textValue().toUpperCase(Locale.ROOT));
         }
         catch (IllegalArgumentException argException) {
             throw JsonMappingException.from(
