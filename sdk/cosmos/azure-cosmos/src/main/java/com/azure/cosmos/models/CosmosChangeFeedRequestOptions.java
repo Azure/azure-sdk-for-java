@@ -231,22 +231,4 @@ public final class CosmosChangeFeedRequestOptions {
     Map<String, Object> getProperties() {
         return properties;
     }
-
-    private static FeedRangeContinuation toFeedRangeContinuation(String continuation) {
-        final FeedRangeContinuation feedRangeContinuation =
-            FeedRangeContinuation.tryParse(continuation);
-
-        if (Strings.isNullOrWhiteSpace(continuation)) {
-            throw new NullPointerException("continuation");
-        }
-
-        if (feedRangeContinuation == null) {
-            final String message = String.format(
-                "The provided string '%s' does not represent any known format.",
-                continuation);
-            throw new IllegalArgumentException(message);
-        }
-
-        return feedRangeContinuation;
-    }
 }

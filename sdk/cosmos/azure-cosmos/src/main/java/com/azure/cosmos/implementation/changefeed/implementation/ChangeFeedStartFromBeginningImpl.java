@@ -14,7 +14,7 @@ class ChangeFeedStartFromBeginningImpl extends ChangeFeedStartFromInternal {
 
     @Override
     void accept(ChangeFeedStartFromVisitor visitor, RxDocumentServiceRequest request) {
-        visitor.Visit(this, request);
+        visitor.visit(this, request);
     }
 
     @Override

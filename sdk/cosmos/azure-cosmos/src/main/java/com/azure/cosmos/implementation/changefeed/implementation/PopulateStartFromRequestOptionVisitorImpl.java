@@ -26,7 +26,7 @@ class PopulateStartFromRequestOptionVisitorImpl extends ChangeFeedStartFromVisit
     }
 
     @Override
-    public void Visit(
+    public void visit(
         ChangeFeedStartFromNowImpl startFromNow,
         RxDocumentServiceRequest request) {
 
@@ -39,7 +39,7 @@ class PopulateStartFromRequestOptionVisitorImpl extends ChangeFeedStartFromVisit
     }
 
     @Override
-    public void Visit(
+    public void visit(
         ChangeFeedStartFromPointInTimeImpl startFromTime,
         RxDocumentServiceRequest request) {
 
@@ -61,7 +61,7 @@ class PopulateStartFromRequestOptionVisitorImpl extends ChangeFeedStartFromVisit
     }
 
     @Override
-    public void Visit(
+    public void visit(
         ChangeFeedStartFromEtagAndFeedRangeImpl startFromEtagAndFeedRange,
         RxDocumentServiceRequest request) {
 
@@ -81,7 +81,7 @@ class PopulateStartFromRequestOptionVisitorImpl extends ChangeFeedStartFromVisit
     }
 
     @Override
-    public void Visit(
+    public void visit(
         ChangeFeedStartFromBeginningImpl startFromBeginning,
         RxDocumentServiceRequest request) {
 

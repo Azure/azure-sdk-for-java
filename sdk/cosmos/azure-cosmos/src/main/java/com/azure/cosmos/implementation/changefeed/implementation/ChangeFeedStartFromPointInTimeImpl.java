@@ -28,7 +28,7 @@ class ChangeFeedStartFromPointInTimeImpl extends ChangeFeedStartFromInternal {
 
     @Override
     void accept(ChangeFeedStartFromVisitor visitor, RxDocumentServiceRequest request) {
-        visitor.Visit(this, request);
+        visitor.visit(this, request);
     }
 
     @Override
@@ -45,5 +45,20 @@ class ChangeFeedStartFromPointInTimeImpl extends ChangeFeedStartFromInternal {
             this,
             Constants.Properties.CHANGE_FEED_START_FROM_POINT_IN_TIME_MS,
             this.pointInTime.toEpochMilli());
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof ChangeFeedStartFromEtagAndFeedRangeImpl)) {
+            return false;
+        }
+
+        ChangeFeedStartFromPointInTimeImpl otherStartFrom = (ChangeFeedStartFromPointInTimeImpl) obj;
+        return  this.pointInTime.equals(otherStartFrom.pointInTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return this.pointInTime.hashCode();
     }
 }

@@ -14,6 +14,7 @@ import com.azure.cosmos.implementation.ShouldRetryResult;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
+import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.directconnectivity.GatewayAddressCache;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 import com.azure.cosmos.implementation.routing.Range;
@@ -29,6 +30,7 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Queue;
 
 import static com.azure.cosmos.BridgeInternal.setProperty;
@@ -380,5 +382,29 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
                 ioError);
             return null;
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof ChangeFeedStateV1)) {
+            return false;
+        }
+
+        FeedRangeCompositeContinuationImpl other = (FeedRangeCompositeContinuationImpl)o;
+        return Objects.equals(this.feedRange, other.feedRange) &&
+            Objects.equals(this.getContainerRid(), other.getContainerRid()) &&
+            Objects.equals(this.initialNoResultsRange, other.initialNoResultsRange) &&
+            Objects.equals(this.currentToken, other.currentToken) &&
+            Objects.equals(this.compositeContinuationTokens, other.compositeContinuationTokens);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+            this.feedRange,
+            this.getContainerRid(),
+            this.initialNoResultsRange,
+            this.currentToken,
+            this.compositeContinuationTokens);
     }
 }

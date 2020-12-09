@@ -10,10 +10,12 @@ import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.feedranges.FeedRangeRxDocumentServiceRequestPopulatorVisitorImpl;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 
+import java.util.Objects;
+
 import static com.azure.cosmos.BridgeInternal.setProperty;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-public class ChangeFeedStateV1 extends ChangeFeedState{
+public class ChangeFeedStateV1 extends ChangeFeedState {
     private final ChangeFeedMode mode;
     private final String containerRid;
     private final FeedRangeInternal feedRange;
@@ -177,5 +179,29 @@ public class ChangeFeedStateV1 extends ChangeFeedState{
         } else {
             this.feedRange.setProperties(this, true);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof ChangeFeedStateV1)) {
+            return false;
+        }
+
+        ChangeFeedStateV1 other = (ChangeFeedStateV1)o;
+        return Objects.equals(this.feedRange, other.feedRange) &&
+            Objects.equals(this.containerRid, other.containerRid) &&
+            Objects.equals(this.startFromSettings, other.startFromSettings) &&
+            Objects.equals(this.mode, other.mode) &&
+            Objects.equals(this.continuation, other.continuation);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(
+            this.feedRange,
+            this.containerRid,
+            this.startFromSettings,
+            this.mode,
+            this.continuation);
     }
 }

@@ -70,7 +70,7 @@ class ChangeFeedFetcher<T extends Resource> extends Fetcher<T> {
             .flatMap((r) -> {
                FeedRangeContinuation continuationSnapshot = this.changeFeedState.getContinuation();
 
-               if (continuationSnapshot != null &
+               if (continuationSnapshot != null &&
                    continuationSnapshot.handleChangeFeedNotModified(r) == ShouldRetryResult.RETRY_IMMEDIATELY)
                {
                    return Mono.empty();

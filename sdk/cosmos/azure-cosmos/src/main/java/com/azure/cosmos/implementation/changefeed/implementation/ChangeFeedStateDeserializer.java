@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 
 import java.io.IOException;
+import java.util.Locale;
 
 public class ChangeFeedStateDeserializer extends StdDeserializer<ChangeFeedState>  {
 
@@ -74,7 +75,7 @@ public class ChangeFeedStateDeserializer extends StdDeserializer<ChangeFeedState
         ChangeFeedMode mode;
 
         try {
-            mode = ChangeFeedMode.valueOf(modeNode.textValue().toUpperCase());
+            mode = ChangeFeedMode.valueOf(modeNode.textValue().toUpperCase(Locale.ROOT));
         }
         catch (IllegalArgumentException argException) {
             throw JsonMappingException.from(

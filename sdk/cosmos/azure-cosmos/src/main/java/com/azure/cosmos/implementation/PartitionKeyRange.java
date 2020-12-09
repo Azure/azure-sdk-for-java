@@ -107,7 +107,7 @@ public class PartitionKeyRange extends Resource {
 
     @Override
     public int hashCode() {
-        int hash = 0;
+        int hash = 1;
         hash = (hash * 397) ^ this.getId().hashCode();
         hash = (hash * 397) ^ this.getMinInclusive().hashCode();
         hash = (hash * 397) ^ this.getMaxExclusive().hashCode();

@@ -53,7 +53,6 @@ public class FeedRangeContinuationDeserializer extends StdDeserializer<FeedRange
                     "Required property '%s' missing or does not have a valid value.",
                     Constants.Properties.FEED_RANGE_COMPOSITE_CONTINUATION_VERSION));
         }
-        int version = versionNode.intValue();
 
         JsonNode ridNode = rootNode.get(Constants.Properties.FEED_RANGE_COMPOSITE_CONTINUATION_RESOURCE_ID);
         if (ridNode == null || !ridNode.isTextual()) {
