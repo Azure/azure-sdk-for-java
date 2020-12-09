@@ -640,16 +640,6 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static String getSprocParentLinkAsync(CosmosAsyncStoredProcedure storedProcedure) {
-        return storedProcedure.getParentLink();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static String getSprocParentLinkSync(CosmosStoredProcedure storedProcedure) {
-        return storedProcedure.getParentLink();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static TransactionalBatchOperationResult createTransactionBatchResult(
         String eTag,
         double requestCharge,

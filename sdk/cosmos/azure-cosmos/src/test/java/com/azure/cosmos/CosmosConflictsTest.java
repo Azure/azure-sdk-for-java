@@ -178,9 +178,7 @@ public class CosmosConflictsTest extends TestSuiteBase {
             String sprocId = "conflictCustomSproc";
             CosmosContainerProperties containerProperties = new CosmosContainerProperties("conflictSprocContainer",
                 "/mypk");
-            CosmosAsyncStoredProcedure storedProcedure =
-                database.getContainer(containerProperties.getId()).getScripts().getStoredProcedure(sprocId);
-            ConflictResolutionPolicy resolutionPolicy = ConflictResolutionPolicy.createCustomPolicy(storedProcedure);
+            ConflictResolutionPolicy resolutionPolicy = ConflictResolutionPolicy.createCustomPolicy(database.getId(), containerProperties.getId(), sprocId);
             containerProperties.setConflictResolutionPolicy(resolutionPolicy);
             database.createContainer(containerProperties, ThroughputProperties.createManualThroughput(400)).block();
             Thread.sleep(5000); //waiting for container to get available across multi region
@@ -241,9 +239,7 @@ public class CosmosConflictsTest extends TestSuiteBase {
             CosmosContainerProperties containerProperties = new CosmosContainerProperties(
                 "conflictNonExistingSprocContainer",
                 "/mypk");
-            CosmosAsyncStoredProcedure storedProcedure =
-                database.getContainer(containerProperties.getId()).getScripts().getStoredProcedure(sprocId);
-            ConflictResolutionPolicy resolutionPolicy = ConflictResolutionPolicy.createCustomPolicy(storedProcedure);
+            ConflictResolutionPolicy resolutionPolicy = ConflictResolutionPolicy.createCustomPolicy(database.getId(), containerProperties.getId(), sprocId);
             containerProperties.setConflictResolutionPolicy(resolutionPolicy);
             database.createContainer(containerProperties, ThroughputProperties.createManualThroughput(400)).block();
             Thread.sleep(5000); //waiting for container to get available across multi region
