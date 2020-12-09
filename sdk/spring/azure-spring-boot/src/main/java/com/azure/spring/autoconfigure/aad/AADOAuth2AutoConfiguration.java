@@ -7,6 +7,7 @@ import com.azure.spring.telemetry.TelemetrySender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
@@ -59,6 +60,7 @@ public class AADOAuth2AutoConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = "azure.activedirectory.user-group", value = "allowed-groups")
     public OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService() {
         return new AADOAuth2UserService(aadAuthenticationProperties, serviceEndpointsProperties);

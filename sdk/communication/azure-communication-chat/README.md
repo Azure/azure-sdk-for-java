@@ -80,7 +80,7 @@ HttpClient httpClient = httpClientBuilder.build();
 
 // Your user access token retrieved from your trusted service
 String token = "SECRET";
-CommunicationUserCredential credential = new CommunicationUserCredential(token);
+CommunicationTokenCredential credential = new CommunicationTokenCredential(token);
 
 // Initialize the chat client
 final ChatClientBuilder builder = new ChatClientBuilder();
@@ -94,7 +94,7 @@ ChatClient chatClient = builder.buildClient();
 
 #### Create a chat thread
 
-To create a chat client, you will use the Communications Service endpoint and the access token that was generated as part of pre-requisite steps. User access tokens enable you to build client applications that directly authenticate to Azure Communication Services. Once you generate these tokens on your server, pass them back to a client device. You need to use the CommunicationUserCredential class from the Common SDK to pass the token to your chat client.
+To create a chat client, you will use the Communications Service endpoint and the access token that was generated as part of pre-requisite steps. User access tokens enable you to build client applications that directly authenticate to Azure Communication Services. Once you generate these tokens on your server, pass them back to a client device. You need to use the CommunicationTokenCredential class from the Common SDK to pass the token to your chat client.
 
 Use the `createChatThread` method to create a chat thread.
 `createChatThreadOptions` is used to describe the thread request, an example is shown in the code snippet below.

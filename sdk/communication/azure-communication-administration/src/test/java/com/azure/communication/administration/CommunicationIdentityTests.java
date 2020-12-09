@@ -28,6 +28,19 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void createIdentityClientUsingManagedIdentity(HttpClient httpClient) {
+        // Arrange
+        client = getCommunicationIdentityClientBuilderUsingManagedIdentity(httpClient).buildClient();
+        assertNotNull(client);
+
+        // Action & Assert
+        CommunicationUser communicationUser = client.createUser();
+        assertNotNull(communicationUser.getId());
+        assertFalse(communicationUser.getId().isEmpty());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createIdentityClientUsingConnectionString(HttpClient httpClient) {
         // Arrange
         client = getCommunicationIdentityClientUsingConnectionString(httpClient).buildClient();

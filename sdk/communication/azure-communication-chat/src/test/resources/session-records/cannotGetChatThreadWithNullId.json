@@ -1,0 +1,68 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.communication.azure.com/identities?api-version=2020-07-20-preview2",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-administration/1.0.0-beta.4 (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "api-supported-versions" : "2020-01-15-preview3, 2020-07-20-preview1, 2020-07-20-preview2",
+      "X-Processing-Time" : "19ms",
+      "MS-CV" : "W18CUuLdDEyrXeUlanoI4g.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0AHjIXwAAAAB3Jsa7rCw4SJJEyjTHCipFWVZSMzBFREdFMDMxMwA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"8:acs:8d0de54a-ca74-4b37-89ea-75a8ab565166_00000006-c6f6-65ca-4332-3b3a0d001eb4\"}",
+      "Date" : "Thu, 03 Dec 2020 05:30:39 GMT",
+      "x-ms-client-request-id" : "82efd9b1-6b78-487a-8d15-83d3e78e9e40",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.communication.azure.com/identities?api-version=2020-07-20-preview2",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-administration/1.0.0-beta.4 (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "api-supported-versions" : "2020-01-15-preview3, 2020-07-20-preview1, 2020-07-20-preview2",
+      "X-Processing-Time" : "33ms",
+      "MS-CV" : "TaAYU7CRSkmMkjnO9TTfRg.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0AHjIXwAAAADCl3PGQK5gQJKiLlhzi4HiWVZSMzBFREdFMDMxMwA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"8:acs:8d0de54a-ca74-4b37-89ea-75a8ab565166_00000006-c6f6-6673-4332-3b3a0d001eb5\"}",
+      "Date" : "Thu, 03 Dec 2020 05:30:40 GMT",
+      "x-ms-client-request-id" : "ea3fa93b-cbdb-4df9-a287-46015bb34546",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.communication.azure.com/identities/8:acs:8d0de54a-ca74-4b37-89ea-75a8ab565166_00000006-c6f6-65ca-4332-3b3a0d001eb4/token?api-version=2020-07-20-preview2",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-administration/1.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "api-supported-versions" : "2020-01-15-preview3, 2020-07-20-preview1, 2020-07-20-preview2",
+      "X-Processing-Time" : "26ms",
+      "MS-CV" : "7accl8h91k2XGdc3jzzS6A.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0AHjIXwAAAACp/WdP9E0cSLeJ3/OHMP58WVZSMzBFREdFMDMxMwA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"8:acs:8d0de54a-ca74-4b37-89ea-75a8ab565166_00000006-c6f6-65ca-4332-3b3a0d001eb4\",\"token\":\"eyJhbGciOiJSUzI1NiIsImtpZCI6IjEwMiIsInR5cCI6IkpXVCJ9.eyJza3lwZWlkIjoiYWNzOjhkMGRlNTRhLWNhNzQtNGIzNy04OWVhLTc1YThhYjU2NTE2Nl8wMDAwMDAwNi1jNmY2LTY1Y2EtNDMzMi0zYjNhMGQwMDFlYjQiLCJzY3AiOjE3OTIsImNzaSI6IjE2MDY5NzM0NDAiLCJpYXQiOjE2MDY5NzM0NDAsImV4cCI6MTYwNzA1OTg0MCwiYWNzU2NvcGUiOiJjaGF0IiwicmVzb3VyY2VJZCI6IjhkMGRlNTRhLWNhNzQtNGIzNy04OWVhLTc1YThhYjU2NTE2NiJ9.rvXdUjMVqVVRb3NoSiO_0_vxsZ5-esuLW3SLFSFnMQjvvOjr5-PcQM9oht4Rkn0PwJF3ODCVYR8WGcxT1k3XyfCuhaVIkw2L0JDBUZNPgofMws-LJBHtGdjKorm0EDdvfjJ6wH9UgfVCxhSwX1FkLGueorjKDLhgut8O1JVnIkOatPk7DiJlmP99wGmUnGsLKUELpLenBWgc9_gCcC0LNUID8FokMlAfv4u0TU5qlG2-hef5lt2Zxb5-zzVmlsB96T9cxGl86hffn6-lg8xVUPzx_O9eIHyy2_QDUjVPBOm2_W39ttPsPO_x5T8mva6g8sg9XJgZTi1PeRrL01PZYQ\",\"expiresOn\":\"2020-12-04T05:30:39.7534042+00:00\"}",
+      "Date" : "Thu, 03 Dec 2020 05:30:40 GMT",
+      "x-ms-client-request-id" : "d44e0c94-9d11-4c25-8b06-9c59b1904ffd",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

@@ -86,7 +86,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsfilesaspermission0sastestfilesaspermission2c148439241b/javapathfilesaspermission1sastestfilesaspermission2c14992386?sv=2020-02-10&spr=https%2Chttp&st=2020-08-26T20%3A22%3A28Z&se=2020-08-28T20%3A22%3A28Z&sip=0.0.0.0-255.255.255.255&sr=b&sp=racwdlmeop&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsfilesaspermission0sastestfilesaspermission2c148439241b/javapathfilesaspermission1sastestfilesaspermission2c14992386?sv=2020-04-08&spr=https%2Chttp&st=2020-08-26T20%3A22%3A28Z&se=2020-08-28T20%3A22%3A28Z&sip=0.0.0.0-255.255.255.255&sr=b&sp=racwdlmeop&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
     "Headers" : {
       "x-ms-version" : "2020-02-10",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.9.0-beta.1 (11.0.7; Windows 10; 10.0)",
@@ -118,7 +118,7 @@
     "Exception" : null
   }, {
     "Method" : "HEAD",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsfilesaspermission0sastestfilesaspermission2c148439241b/javapathfilesaspermission1sastestfilesaspermission2c14992386?sv=2020-02-10&spr=https%2Chttp&st=2020-08-26T20%3A22%3A28Z&se=2020-08-28T20%3A22%3A28Z&sip=0.0.0.0-255.255.255.255&sr=b&sp=racwdlmeop&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsfilesaspermission0sastestfilesaspermission2c148439241b/javapathfilesaspermission1sastestfilesaspermission2c14992386?sv=2020-04-08&spr=https%2Chttp&st=2020-08-26T20%3A22%3A28Z&se=2020-08-28T20%3A22%3A28Z&sip=0.0.0.0-255.255.255.255&sr=b&sp=racwdlmeop&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
     "Headers" : {
       "x-ms-version" : "2020-02-10",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.9.0-beta.1 (11.0.7; Windows 10; 10.0)",

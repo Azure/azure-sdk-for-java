@@ -1,4 +1,4 @@
-:instruction: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/CONTRIBUTING.md#building-from-source
+:ready-to-run-checklist: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
 
 = Spring Cloud Azure Stream Binder for Service Bus queue Code Sample shared library for Java
 
@@ -11,6 +11,9 @@ Then message is sent through Azure Service Bus to a `sink` which simply logs the
 
 Running this sample will be charged by Azure.
 You can check the usage and bill at https://azure.microsoft.com/en-us/account/[this link].
+
+=== Environment checklist
+We need to ensure that this {ready-to-run-checklist}[environment checklist] is completed before the run.
 
 === Connection string based usage
 
@@ -63,9 +66,7 @@ spring.cloud.azure.servicebus.namespace=[servicebus-namespace]
 ....
 
 === How to run
-First, we need to ensure that this {instruction}[instruction] is completed before run.
-
-4. Update stream binding related properties in link:src/main/resources/application.properties[application.properties] file
+1. Update stream binding related properties in link:src/main/resources/application.properties[application.properties] file
 +
 ....
 # For example here, the destination name of input and output should be the same.
@@ -73,22 +74,22 @@ spring.cloud.stream.bindings.input.destination=[servicebus-queue-name]
 spring.cloud.stream.bindings.output.destination=[servicebus-queue-name-same-as-above]
 ....
 
-5. Run the `mvn clean spring-boot:run` in the root of the code sample to get the app running.
+2. Run the `mvn spring-boot:run` in the root of the code sample to get the app running.
 
-6. Send a POST request
+3. Send a POST request
 +
 ....
 $ curl -X POST localhost:8080/messages?message=hello
 ....
 
-7. Verify in your app's logs that a similar message was posted:
+4. Verify in your app's logs that a similar message was posted:
 +
 ....
 New message received: 'hello'
 Message 'hello' successfully checkpointed
 ....
 
-8. Delete the resources on http://ms.portal.azure.com/[Azure Portal] to avoid unexpected charges.
+5. Delete the resources on http://ms.portal.azure.com/[Azure Portal] to avoid unexpected charges.
 
 == Examples
 == Troubleshooting

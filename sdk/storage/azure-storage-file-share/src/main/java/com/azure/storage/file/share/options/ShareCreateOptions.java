@@ -5,6 +5,8 @@ package com.azure.storage.file.share.options;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.file.share.models.ShareAccessTier;
+import com.azure.storage.file.share.models.ShareProtocols;
+import com.azure.storage.file.share.models.ShareRootSquash;
 
 import java.util.Map;
 
@@ -17,6 +19,8 @@ public class ShareCreateOptions {
     private Integer quotaInGb;
     private Map<String, String> metadata;
     private ShareAccessTier accessTier;
+    private ShareProtocols protocols;
+    private ShareRootSquash rootSquash;
 
     /**
      * @return Size in GB to limit the share's growth.
@@ -42,7 +46,8 @@ public class ShareCreateOptions {
     }
 
     /**
-     * @param metadata Metadata to associate with the share.
+     * @param metadata Metadata to associate with the share. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @return The updated options.
      */
     public ShareCreateOptions setMetadata(Map<String, String> metadata) {
@@ -63,6 +68,38 @@ public class ShareCreateOptions {
      */
     public ShareCreateOptions setAccessTier(ShareAccessTier accessTier) {
         this.accessTier = accessTier;
+        return this;
+    }
+
+    /**
+     * @return {@link ShareProtocols}
+     */
+    public ShareProtocols getProtocols() {
+        return protocols;
+    }
+
+    /**
+     * @param protocols {@link ShareProtocols}
+     * @return The updated options.
+     */
+    public ShareCreateOptions setProtocols(ShareProtocols protocols) {
+        this.protocols = protocols;
+        return this;
+    }
+
+    /**
+     * @return The root squash to set for the share. Only valid for NFS.
+     */
+    public ShareRootSquash getRootSquash() {
+        return rootSquash;
+    }
+
+    /**
+     * @param rootSquash The root squash to set for the share. Only valid for NFS.
+     * @return The updated options.
+     */
+    public ShareCreateOptions setRootSquash(ShareRootSquash rootSquash) {
+        this.rootSquash = rootSquash;
         return this;
     }
 }

@@ -107,7 +107,7 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsaccountsasfiledeleteerror069296216972fe5ec24b/javapathaccountsasfiledeleteerror262152880fccf505cd?sv=2020-02-10&ss=b&srt=sco&se=2020-08-28T20%3A23%3A21Z&sp=r&sig=REDACTED",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsaccountsasfiledeleteerror069296216972fe5ec24b/javapathaccountsasfiledeleteerror262152880fccf505cd?sv=2020-04-08&ss=b&srt=sco&se=2020-08-28T20%3A23%3A21Z&sp=r&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2020-02-10",
       "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.3.0-beta.1 (11.0.7; Windows 10; 10.0)",
