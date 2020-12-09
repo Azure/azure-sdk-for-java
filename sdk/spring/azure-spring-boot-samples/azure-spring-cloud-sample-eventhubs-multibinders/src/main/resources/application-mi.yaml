@@ -10,7 +10,6 @@ spring:
     #     Uncomment below configurations if you want to enable auto creating resources.
     #      auto-create-resources: true
     #      region: [region]
-    #      subscription-id: [subscription-id]
     stream:
       bindings:
         input:
@@ -20,7 +19,7 @@ spring:
           destination: [the-same-eventhub-1-name-as-above]
         input1:
           binder: eventhub-2
-          destination: [eventhub-1-name]
+          destination: [eventhub-2-name]
           group: [consumer-group]
         output1:
           binder: eventhub-2

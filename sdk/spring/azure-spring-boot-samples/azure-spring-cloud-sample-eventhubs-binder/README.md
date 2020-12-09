@@ -134,8 +134,7 @@ Please follow [create managed identity][create-managed-identity] to set up manag
             output:
               destination: [the-same-eventhub-name-as-above]
     ```
-    > Since we're not using the default profile to run the application,
-      we should specify `spring.profiles.active=mi` run the Spring Boot application. 
+    > We should specify `spring.profiles.active=mi` to run the Spring Boot application. 
       For App Service, please add a configuration entry for this.
 
 ##### Redeploy Application
@@ -201,4 +200,5 @@ spring:
 [create-managed-identity]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/create-managed-identity.md
 [deploy-spring-boot-application-to-app-service]: https://docs.microsoft.com/java/azure/spring-framework/deploy-spring-boot-java-app-with-maven-plugin?toc=%2Fazure%2Fapp-service%2Fcontainers%2Ftoc.json&view=azure-java-stable
 [ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
+[role-assignment]: https://docs.microsoft.com/azure/role-based-access-control/role-assignments-portal
 

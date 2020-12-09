@@ -26,70 +26,71 @@ is completed before the run.
 
 1.  Create [Azure Storage][create-azure-storage] for checkpoint use.
 
-1.  [Optional] if you want to use service principal, please follow 
+1.  **[Optional]** if you want to use service principal, please follow 
     [create service principal from Azure CLI][create-sp-using-azure-cli] to create one.
 
-1.  [Optional] if you want to      
-
-
+1.  **[Optional]** if you want to use managed identity, please follow
+    [create managed identity][create-managed-identity] to set up managed identity. 
 
 ## Examples
 
 1.  Update stream binding related properties in
-    [application.yaml](src/main/resources/application.yaml)
+    [application.yaml](src/main/resources/application.yaml). If you choose to use 
+    service principal or managed identity, update the `application-sp.yaml` or 
+    `application-mi.yaml` respectively.
 
-```yaml
-spring:
-  cloud:
-    stream:
-      bindings:
-        input:
-          destination: [eventhub-1-name]
-          group: [consumer-group]
-        output:
-          destination: [the-same-eventhub-1-name-as-above]
-        input1:
-          binder: eventhub-2
-          destination: [eventhub-1-name]
-          group: [consumer-group]
-        output1:
-          binder: eventhub-2
-          destination: [the-same-eventhub-2-name-as-above]
-      
-      binders:
-        eventhub-1:
-          type: eventhub
-          default-candidate: true
-          environment:
-            spring:
-              cloud:
-                azure:
-                  eventhub:
-                    connection-string: [connection-string-of-first-eventhub-namespace]
-                    checkpoint-storage-account: [checkpoint-storage-account]
-                    checkpoint-access-key: [checkpoint-access-key]
-                    checkpoint-container: [checkpoint-container-1]
-        eventhub-2:
-          type: eventhub
-          default-candidate: false
-          environment:
-            spring:
-              cloud:
-                azure:
-                  eventhub:
-                    connection-string: [connection-string-of-second-eventhub-namespace]
-                    checkpoint-storage-account: [checkpoint-storage-account]
-                    checkpoint-access-key: [checkpoint-access-key]
-                    checkpoint-container: [checkpoint-container-2]
-      eventhub:
-        bindings:
-          input:
-            consumer:
-              checkpoint-mode: MANUAL
-          input1:
-            consumer:
-              checkpoint-mode: MANUAL            
-```
+    ```yaml
+    spring:
+      cloud:
+        stream:
+          bindings:
+            input:
+              destination: [eventhub-1-name]
+              group: [consumer-group]
+            output:
+              destination: [the-same-eventhub-1-name-as-above]
+            input1:
+              binder: eventhub-2
+              destination: [eventhub-1-name]
+              group: [consumer-group]
+            output1:
+              binder: eventhub-2
+              destination: [the-same-eventhub-2-name-as-above]
+          
+          binders:
+            eventhub-1:
+              type: eventhub
+              default-candidate: true
+              environment:
+                spring:
+                  cloud:
+                    azure:
+                      eventhub:
+                        connection-string: [connection-string-of-first-eventhub-namespace]
+                        checkpoint-storage-account: [checkpoint-storage-account]
+                        checkpoint-access-key: [checkpoint-access-key]
+                        checkpoint-container: [checkpoint-container-1]
+            eventhub-2:
+              type: eventhub
+              default-candidate: false
+              environment:
+                spring:
+                  cloud:
+                    azure:
+                      eventhub:
+                        connection-string: [connection-string-of-second-eventhub-namespace]
+                        checkpoint-storage-account: [checkpoint-storage-account]
+                        checkpoint-access-key: [checkpoint-access-key]
+                        checkpoint-container: [checkpoint-container-2]
+          eventhub:
+            bindings:
+              input:
+                consumer:
+                  checkpoint-mode: MANUAL
+              input1:
+                consumer:
+                  checkpoint-mode: MANUAL            
+    ```
 
 > The **defaultCandidate** configuration item:
 Whether the binder configuration is a candidate for being considered a
