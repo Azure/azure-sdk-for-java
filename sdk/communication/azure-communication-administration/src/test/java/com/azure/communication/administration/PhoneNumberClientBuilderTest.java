@@ -411,8 +411,6 @@ public class PhoneNumberClientBuilderTest {
         final AtomicReference<HttpLogOptions> defaultHttpLogOptionsRef = new AtomicReference<>();
         final ArgumentCaptor<PhoneNumberAdminClientImpl> phoneNumberAdminClientArg =
             ArgumentCaptor.forClass(PhoneNumberAdminClientImpl.class);
-        final ArgumentCaptor<CommunicationClientCredential> credentialArg =
-            ArgumentCaptor.forClass(CommunicationClientCredential.class);
         final ArgumentCaptor<String> uaPolicyAppIdArg = ArgumentCaptor.forClass(String.class);
         final ArgumentCaptor<String> uaPolicySdkNameArg = ArgumentCaptor.forClass(String.class);
         final ArgumentCaptor<String> uaPolicySdkVersionArg = ArgumentCaptor.forClass(String.class);
@@ -429,7 +427,7 @@ public class PhoneNumberClientBuilderTest {
                 this.authenticationPolicyRef.set((HmacAuthenticationPolicy) invocation.callRealMethod());
                 return this.authenticationPolicyRef.get();
             };
-            doAnswer(createCommunicationClientCredentialPolicy).when(this.clientBuilder).createAuthenticationPolicy(any());
+            doAnswer(createCommunicationClientCredentialPolicy).when(this.clientBuilder).createAuthenticationPolicy();
 
             Answer<UserAgentPolicy> createUserAgentPolicy = (invocation) -> {
                 this.userAgentPolicyRef.set(mock(UserAgentPolicy.class));
@@ -469,7 +467,7 @@ public class PhoneNumberClientBuilderTest {
 
         void captureHttpPipelineSettings() {
             verify(this.clientBuilder, times(1))
-                .createAuthenticationPolicy(this.credentialArg.capture());
+                .createAuthenticationPolicy();
             verify(this.clientBuilder, times(1))
                 .createUserAgentPolicy(
                     this.uaPolicyAppIdArg.capture(),
