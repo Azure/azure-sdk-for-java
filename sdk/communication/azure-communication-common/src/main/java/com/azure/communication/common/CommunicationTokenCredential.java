@@ -91,17 +91,21 @@ public final class CommunicationTokenCredential implements AutoCloseable {
 
         @Override
         public AccessToken block() {
-            String freshToken = clientTokenRetriever.block();
-            setToken(freshToken);
-            hasRetrievedToken = true;
+            if (clientTokenRetriever != null) {
+                String freshToken = clientTokenRetriever.block();
+                setToken(freshToken);
+                hasRetrievedToken = true;
+            }
             return accessToken;
         }
 
         @Override
         public AccessToken block(Duration timeout) {
-            String freshToken = clientTokenRetriever.block(timeout);
-            setToken(freshToken);
-            hasRetrievedToken = true;
+            if (clientTokenRetriever != null) {
+                String freshToken = clientTokenRetriever.block(timeout);
+                setToken(freshToken);
+                hasRetrievedToken = true;
+            }
             return accessToken;
         }
 
