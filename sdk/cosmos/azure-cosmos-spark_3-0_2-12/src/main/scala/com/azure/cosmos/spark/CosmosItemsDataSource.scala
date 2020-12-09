@@ -4,11 +4,16 @@ package com.azure.cosmos.spark
 
 import java.util
 
+import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.connector.catalog.{Table, TableProvider}
 import org.apache.spark.sql.connector.expressions.Transform
 import org.apache.spark.sql.sources.DataSourceRegister
 import org.apache.spark.sql.types.StructType
 import org.apache.spark.sql.util.CaseInsensitiveStringMap
+
+// scalastyle:off underscore.import
+import scala.collection.JavaConverters._
+// scalastyle:on underscore.import
 
 class CosmosItemsDataSource extends DataSourceRegister with TableProvider with CosmosLoggingTrait {
   logInfo(s"Instantiated ${this.getClass.getSimpleName}")
@@ -25,6 +30,6 @@ class CosmosItemsDataSource extends DataSourceRegister with TableProvider with C
 
   override def getTable(structType: StructType, transforms: Array[Transform], map: util.Map[String, String]): Table = {
     // getTable - This is used for loading table with user specified schema and other transformations.
-    new CosmosTable(structType, transforms, map)
+    new CosmosTable(structType, transforms, CosmosConfig.getEffectiveConfig(map.asScala.toMap).asJava)
   }
 }

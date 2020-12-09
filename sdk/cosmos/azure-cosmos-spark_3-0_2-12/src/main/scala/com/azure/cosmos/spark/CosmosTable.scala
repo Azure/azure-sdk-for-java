@@ -4,6 +4,7 @@ package com.azure.cosmos.spark
 
 import java.util
 
+import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.connector.catalog.{SupportsRead, SupportsWrite, Table, TableCapability}
 import org.apache.spark.sql.connector.expressions.Transform
 import org.apache.spark.sql.connector.read.ScanBuilder
@@ -44,10 +45,10 @@ class CosmosTable(val userProvidedSchema: StructType,
 
   override def newScanBuilder(options: CaseInsensitiveStringMap): ScanBuilder = {
     // TODO moderakh how options and userConfig should be merged? is there any difference?
-    CosmosScanBuilder(options)
+    CosmosScanBuilder(new CaseInsensitiveStringMap(CosmosConfig.getEffectiveConfig(options.asCaseSensitiveMap().asScala.toMap).asJava))
   }
 
   override def newWriteBuilder(logicalWriteInfo: LogicalWriteInfo): WriteBuilder = {
-    new CosmosWriterBuilder(userConfig.asScala.toMap)
+    new CosmosWriterBuilder(new CaseInsensitiveStringMap(CosmosConfig.getEffectiveConfig(userConfig.asScala.toMap).asJava))
   }
 }
