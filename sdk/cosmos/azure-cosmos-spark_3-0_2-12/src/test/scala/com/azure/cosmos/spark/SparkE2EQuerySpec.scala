@@ -15,7 +15,7 @@ import org.codehaus.jackson.map.ObjectMapper
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
-class SparkE2EQueySpec extends IntegrationSpec {
+class SparkE2EQuerySpec extends IntegrationSpec {
   //scalastyle:off multiple.string.literals
   //scalastyle:off magic.number
 

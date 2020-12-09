@@ -21,7 +21,7 @@ case class CosmosScanBuilder(config: CaseInsensitiveStringMap, inputSchema: Stru
   logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
   var processedPredicates : Option[AnalyzedFilters] = Option.empty
-  
+
   /**
     * Pushes down filters, and returns filters that need to be evaluated after scanning.
     * @param filters pushed down filters.
