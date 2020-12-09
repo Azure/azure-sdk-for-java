@@ -11,13 +11,16 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.resources.fluent.models.ManagementLockObjectInner;
+import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ManagementLocksClient. */
 public interface ManagementLocksClient
-    extends InnerSupportsGet<ManagementLockObjectInner>, InnerSupportsListing<ManagementLockObjectInner> {
+    extends InnerSupportsGet<ManagementLockObjectInner>,
+        InnerSupportsListing<ManagementLockObjectInner>,
+        InnerSupportsDelete<Void> {
     /**
      * When you apply a lock at a parent scope, all child resources inherit the same lock. To create management locks,
      * you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/* actions. Of the built-in
@@ -26,7 +29,7 @@ public interface ManagementLocksClient
      * @param resourceGroupName The name of the resource group to lock.
      * @param lockName The lock name. The lock name can be a maximum of 260 characters. It cannot contain &lt;, &gt; %,
      *     &amp;, :, \, ?, /, or any control characters.
-     * @param parameters The lock information.
+     * @param parameters The management lock parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -44,7 +47,7 @@ public interface ManagementLocksClient
      * @param resourceGroupName The name of the resource group to lock.
      * @param lockName The lock name. The lock name can be a maximum of 260 characters. It cannot contain &lt;, &gt; %,
      *     &amp;, :, \, ?, /, or any control characters.
-     * @param parameters The lock information.
+     * @param parameters The management lock parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -62,7 +65,7 @@ public interface ManagementLocksClient
      * @param resourceGroupName The name of the resource group to lock.
      * @param lockName The lock name. The lock name can be a maximum of 260 characters. It cannot contain &lt;, &gt; %,
      *     &amp;, :, \, ?, /, or any control characters.
-     * @param parameters The lock information.
+     * @param parameters The management lock parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -80,7 +83,7 @@ public interface ManagementLocksClient
      * @param resourceGroupName The name of the resource group to lock.
      * @param lockName The lock name. The lock name can be a maximum of 260 characters. It cannot contain &lt;, &gt; %,
      *     &amp;, :, \, ?, /, or any control characters.
-     * @param parameters The lock information.
+     * @param parameters The management lock parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -103,7 +106,7 @@ public interface ManagementLocksClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deleteAtResourceGroupLevelWithResponseAsync(String resourceGroupName, String lockName);
+    Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String lockName);
 
     /**
      * To delete management locks, you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/*
@@ -117,7 +120,7 @@ public interface ManagementLocksClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteAtResourceGroupLevelAsync(String resourceGroupName, String lockName);
+    Mono<Void> deleteAsync(String resourceGroupName, String lockName);
 
     /**
      * To delete management locks, you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/*
@@ -130,7 +133,7 @@ public interface ManagementLocksClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void deleteAtResourceGroupLevel(String resourceGroupName, String lockName);
+    void delete(String resourceGroupName, String lockName);
 
     /**
      * To delete management locks, you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/*
@@ -145,7 +148,7 @@ public interface ManagementLocksClient
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteAtResourceGroupLevelWithResponse(String resourceGroupName, String lockName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String lockName, Context context);
 
     /**
      * Gets a management lock at the resource group level.
@@ -211,7 +214,7 @@ public interface ManagementLocksClient
      *     '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePathIfPresent}/{resourceType}/{resourceName}'
      *     for resources.
      * @param lockName The name of lock.
-     * @param parameters The lock information.
+     * @param parameters Create or update management lock parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -230,7 +233,7 @@ public interface ManagementLocksClient
      *     '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePathIfPresent}/{resourceType}/{resourceName}'
      *     for resources.
      * @param lockName The name of lock.
-     * @param parameters The lock information.
+     * @param parameters Create or update management lock parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -249,7 +252,7 @@ public interface ManagementLocksClient
      *     '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePathIfPresent}/{resourceType}/{resourceName}'
      *     for resources.
      * @param lockName The name of lock.
-     * @param parameters The lock information.
+     * @param parameters Create or update management lock parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -268,7 +271,7 @@ public interface ManagementLocksClient
      *     '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePathIfPresent}/{resourceType}/{resourceName}'
      *     for resources.
      * @param lockName The name of lock.
-     * @param parameters The lock information.
+     * @param parameters Create or update management lock parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -396,7 +399,7 @@ public interface ManagementLocksClient
      * @param resourceName The name of the resource to lock.
      * @param lockName The name of lock. The lock name can be a maximum of 260 characters. It cannot contain &lt;, &gt;
      *     %, &amp;, :, \, ?, /, or any control characters.
-     * @param parameters The lock information.
+     * @param parameters Parameters for creating or updating a management lock.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -424,7 +427,7 @@ public interface ManagementLocksClient
      * @param resourceName The name of the resource to lock.
      * @param lockName The name of lock. The lock name can be a maximum of 260 characters. It cannot contain &lt;, &gt;
      *     %, &amp;, :, \, ?, /, or any control characters.
-     * @param parameters The lock information.
+     * @param parameters Parameters for creating or updating a management lock.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -452,7 +455,7 @@ public interface ManagementLocksClient
      * @param resourceName The name of the resource to lock.
      * @param lockName The name of lock. The lock name can be a maximum of 260 characters. It cannot contain &lt;, &gt;
      *     %, &amp;, :, \, ?, /, or any control characters.
-     * @param parameters The lock information.
+     * @param parameters Parameters for creating or updating a management lock.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -480,7 +483,7 @@ public interface ManagementLocksClient
      * @param resourceName The name of the resource to lock.
      * @param lockName The name of lock. The lock name can be a maximum of 260 characters. It cannot contain &lt;, &gt;
      *     %, &amp;, :, \, ?, /, or any control characters.
-     * @param parameters The lock information.
+     * @param parameters Parameters for creating or updating a management lock.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -696,7 +699,7 @@ public interface ManagementLocksClient
      *
      * @param lockName The name of lock. The lock name can be a maximum of 260 characters. It cannot contain &lt;, &gt;
      *     %, &amp;, :, \, ?, /, or any control characters.
-     * @param parameters The lock information.
+     * @param parameters The management lock parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -713,7 +716,7 @@ public interface ManagementLocksClient
      *
      * @param lockName The name of lock. The lock name can be a maximum of 260 characters. It cannot contain &lt;, &gt;
      *     %, &amp;, :, \, ?, /, or any control characters.
-     * @param parameters The lock information.
+     * @param parameters The management lock parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -730,7 +733,7 @@ public interface ManagementLocksClient
      *
      * @param lockName The name of lock. The lock name can be a maximum of 260 characters. It cannot contain &lt;, &gt;
      *     %, &amp;, :, \, ?, /, or any control characters.
-     * @param parameters The lock information.
+     * @param parameters The management lock parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -746,7 +749,7 @@ public interface ManagementLocksClient
      *
      * @param lockName The name of lock. The lock name can be a maximum of 260 characters. It cannot contain &lt;, &gt;
      *     %, &amp;, :, \, ?, /, or any control characters.
-     * @param parameters The lock information.
+     * @param parameters The management lock parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
