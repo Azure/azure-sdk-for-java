@@ -1255,10 +1255,11 @@ class BlobAPITest extends APISpec {
         bc.getProperties().getMetadata() == metadata
 
         where:
-        key1  | value1 | key2   | value2 || statusCode
-        null  | null   | null   | null   || 200
-        "foo" | "bar"  | "fizz" | "buzz" || 200
-        "i0"  | "a"    | "i_"   | "a"    || 200 /* Test culture sensitive word sort */
+        key1  | value1        | key2   | value2 || statusCode
+        null  | null          | null   | null   || 200
+        "foo" | "bar"         | "fizz" | "buzz" || 200
+        "i0"  | "a"           | "i_"   | "a"    || 200 /* Test culture sensitive word sort */
+        "foo" | "bar0, bar1"  | null   | null   || 200 /* Test comma separated values */
     }
 
     @Unroll
@@ -1318,6 +1319,29 @@ class BlobAPITest extends APISpec {
         null     | null       | null        | receivedEtag | null           | null
         null     | null       | null        | null         | garbageLeaseID | null
         null     | null       | null         | null        | null           | "\"notfoo\" = 'notbar'"
+    }
+
+    @Unroll
+    def "Set metadata whitespace error"() {
+        setup:
+        def metadata = new HashMap<String, String>()
+        metadata.put(key, value)
+
+        when:
+        bc.setMetadata(metadata)
+
+        then:
+        def e = thrown(Exception)
+        e instanceof IllegalArgumentException || e instanceof Exceptions.ReactiveException
+        // Need this second error type since for the first case, Netty throws IllegalArgumentException, and that is recorded in the playback file.
+        // On Playback, the framework will throw Exceptions.ReactiveException.
+
+        where:
+        key     | value  || _
+        " foo"  | "bar"  || _ // Leading whitespace key
+        "foo "  | "bar"  || _ // Trailing whitespace key
+        "foo"   | " bar" || _ // Leading whitespace value
+        "foo"   | "bar " || _ // Trailing whitespace value
     }
 
     def "Set metadata error"() {

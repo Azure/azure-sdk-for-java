@@ -136,7 +136,7 @@ extends:
         groupId: com.azure.spring
       - name: azure-spring-boot-sample-active-directory-backend
         groupId: com.azure.spring
-      - name: azure-spring-boot-sample-active-directory-obo
+      - name: azure-spring-boot-sample-active-directory-resource-server-access-other-resources
         groupId: com.azure.spring
       - name: azure-spring-boot-sample-active-directory-backend-v2
         groupId: com.azure.spring

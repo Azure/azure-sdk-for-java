@@ -38,3 +38,9 @@ extends:
       - name: azure-analytics-synapse-spark
         groupId: com.azure
         safeName: azureanalyticssynapsespark
+      - name: azure-analytics-synapse-managedprivateendpoints
+        groupId: com.azure
+        safeName: azureanalyticssynapsemanagedprivateendpoints
+      - name: azure-analytics-synapse-monitoring
+        groupId: com.azure
+        safeName: azureanalyticssynapsemonitoring
