@@ -4,7 +4,7 @@
 package com.azure.spring.sample.aad.security;
 
 
-import com.azure.spring.aad.resource.server.AzureJwtBearerTokenAuthenticationConverter;
+import com.azure.spring.aad.webapi.AzureJwtBearerTokenAuthenticationConverter;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
