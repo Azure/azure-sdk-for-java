@@ -86,8 +86,11 @@ public final class CommunicationTokenCredential implements AutoCloseable {
         private boolean hasRetrievedToken;
 
         TokenRetriever(Mono<String> tokenAsync) {
-            Objects.requireNonNull(tokenAsync, "'tokenAsync' cannot be null.");
-            clientTokenRetriever = tokenAsync;
+            if (tokenAsync == null) {
+                clientTokenRetriever = Mono.empty();
+            } else {
+                clientTokenRetriever = tokenAsync;
+            }
         }
 
         @Override
