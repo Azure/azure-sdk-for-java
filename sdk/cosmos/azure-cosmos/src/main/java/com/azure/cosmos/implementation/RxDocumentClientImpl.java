@@ -352,7 +352,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.retryPolicy = new RetryPolicy(this, this.globalEndpointManager, this.connectionPolicy);
             this.resetSessionTokenRetryPolicy = retryPolicy;
             CpuMemoryMonitor.register(this);
-            this.queryPlanCache = new LRUCache<>(30);
+            this.queryPlanCache = new LRUCache<>(CACHE_SIZE);
         } catch (RuntimeException e) {
             logger.error("unexpected failure in initializing client.", e);
             close();
