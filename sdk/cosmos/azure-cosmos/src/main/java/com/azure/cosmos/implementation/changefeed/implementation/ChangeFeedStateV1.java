@@ -78,7 +78,15 @@ public class ChangeFeedStateV1 extends ChangeFeedState{
     }
 
     @Override
-    public Pair<FeedRangeInternal, ChangeFeedStartFromInternal> getEffectiveRangeAndStartFromSettings() {
+    public void populateEffectiveRangeAndStartFromSettingsToRequest(
+        RxDocumentServiceRequest request
+    ) {
+        // populate the request headers based on the aggregated FeedRange used
+        // this could be a wider scope than EPK like PK or PKRange
+        this.feedRange.accept(
+            FeedRangeRxDocumentServiceRequestPopulatorVisitorImpl.SINGLETON,
+            request);
+
         final FeedRangeInternal effectiveFeedRange;
         final ChangeFeedStartFromInternal effectiveStartFrom;
         final CompositeContinuationToken continuationToken;
@@ -99,7 +107,20 @@ public class ChangeFeedStateV1 extends ChangeFeedState{
                 effectiveFeedRange);
         }
 
-        return Pair.of(effectiveFeedRange, effectiveStartFrom);
+        // The also populate the request headers for the specific range
+        // available in the composite continuation token
+        // this is necessary because when merging continuation tokens
+        // for example you could have a PkRange feed range
+        // with multiple composite continuations for different
+        // sub ranges with different etags/continuations
+        // worst case this is the same range as above.
+        effectiveFeedRange.accept(
+            FeedRangeRxDocumentServiceRequestPopulatorVisitorImpl.SINGLETON,
+            request);
+
+        effectiveStartFrom.accept(
+            PopulateStartFromRequestOptionVisitorImpl.SINGLETON,
+            request);
     }
 
     @Override
@@ -119,19 +140,7 @@ public class ChangeFeedStateV1 extends ChangeFeedState{
             throw new IllegalStateException("Unsupported change feed mode");
         }
 
-        Pair<FeedRangeInternal, ChangeFeedStartFromInternal> effectiveRangeAndStartFromSettings =
-            this.getEffectiveRangeAndStartFromSettings();
-
-        final FeedRangeInternal effectiveFeedRange = effectiveRangeAndStartFromSettings.getLeft();
-        final ChangeFeedStartFromInternal effectiveStartFrom = effectiveRangeAndStartFromSettings.getRight();
-
-        effectiveStartFrom.accept(
-            PopulateStartFromRequestOptionVisitorImpl.SINGLETON,
-            request);
-
-        effectiveFeedRange.accept(
-            FeedRangeRxDocumentServiceRequestPopulatorVisitorImpl.SINGLETON,
-            request);
+        this.populateEffectiveRangeAndStartFromSettingsToRequest(request);
     }
 
     @Override

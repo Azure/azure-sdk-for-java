@@ -45,7 +45,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ChangeFeedTest extends TestSuiteBase {
 
     private static final int SETUP_TIMEOUT = 40000;
-    private static final int TIMEOUT = 30000;
+    private static final int TIMEOUT = 30000000;
     private static final String PartitionKeyFieldName = "mypk";
     private Database createdDatabase;
     private DocumentCollection createdCollection;
@@ -258,8 +258,7 @@ public class ChangeFeedTest extends TestSuiteBase {
             .block();
 
         // READ change feed from continuation
-        changeFeedOption.setRequestContinuation(changeFeedContinuation);
-
+        changeFeedOption = CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(changeFeedContinuation);
 
         FeedResponse<Document> changeFeedResults2 = client
             .queryDocumentChangeFeed(getCollectionLink(), changeFeedOption)

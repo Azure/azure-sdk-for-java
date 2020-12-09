@@ -40,7 +40,7 @@ public abstract class ChangeFeedState extends JsonSerializable {
         }
     }
 
-    public abstract Pair<FeedRangeInternal, ChangeFeedStartFromInternal> getEffectiveRangeAndStartFromSettings();
+    public abstract void populateEffectiveRangeAndStartFromSettingsToRequest(RxDocumentServiceRequest request);
 
     public abstract FeedRangeContinuation getContinuation();
 

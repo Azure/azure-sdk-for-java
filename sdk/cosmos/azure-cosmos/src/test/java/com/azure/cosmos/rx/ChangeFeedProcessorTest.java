@@ -567,7 +567,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
             AsyncDocumentClient contextClient = getContextClient(createdDatabase);
             Flux.just(1).subscribeOn(Schedulers.elastic())
                 .flatMap(value -> {
-                    log.warn("Reading current hroughput change.");
+                    log.warn("Reading current throughput change.");
                     return contextClient.readPartitionKeyRanges(partitionKeyRangesPath, null);
                 })
                 .map(partitionKeyRangeFeedResponse -> {

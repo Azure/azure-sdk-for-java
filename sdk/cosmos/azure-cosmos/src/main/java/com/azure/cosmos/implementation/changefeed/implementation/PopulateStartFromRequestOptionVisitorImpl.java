@@ -3,15 +3,18 @@
 package com.azure.cosmos.implementation.changefeed.implementation;
 
 import java.time.Instant;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.feedranges.FeedRangeRxDocumentServiceRequestPopulatorVisitorImpl;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 class PopulateStartFromRequestOptionVisitorImpl extends ChangeFeedStartFromVisitor {
+
     public static final PopulateStartFromRequestOptionVisitorImpl SINGLETON =
         new PopulateStartFromRequestOptionVisitorImpl();
 
@@ -53,7 +56,7 @@ class PopulateStartFromRequestOptionVisitorImpl extends ChangeFeedStartFromVisit
         {
             request.getHeaders().put(
                 HttpConstants.HttpHeaders.IF_MODIFIED_SINCE,
-                DateTimeFormatter.RFC_1123_DATE_TIME.format(pointInTime));
+                Utils.instantAsUTCRFC1123(pointInTime));
         }
     }
 

@@ -51,7 +51,11 @@ abstract class Fetcher<T extends Resource> {
         return shouldFetchMore;
     }
 
-    public final Mono<FeedResponse<T>> nextPage() {
+    public Mono<FeedResponse<T>> nextPage() {
+        return this.nextPageCore();
+    }
+
+    protected final Mono<FeedResponse<T>> nextPageCore() {
         RxDocumentServiceRequest request = createRequest();
         return nextPage(request);
     }

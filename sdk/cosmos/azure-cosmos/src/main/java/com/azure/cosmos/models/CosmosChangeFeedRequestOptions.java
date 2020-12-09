@@ -13,6 +13,7 @@ import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 import com.azure.cosmos.util.Beta;
 
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.Map;
 
 @Beta(Beta.SinceVersion.WHATEVER_NEW_VERSION)
@@ -21,7 +22,7 @@ public final class CosmosChangeFeedRequestOptions {
     private final FeedRangeInternal feedRangeInternal;
     private Integer maxItemCount;
     private ChangeFeedStartFromInternal startFromInternal;
-    private Map<String, Object> properties;
+    private final Map<String, Object> properties;
     private ChangeFeedMode mode;
     private final ChangeFeedState continuationState;
 
@@ -54,6 +55,7 @@ public final class CosmosChangeFeedRequestOptions {
         }
 
         this.mode = mode;
+        this.properties = new HashMap<>();
     }
 
     ChangeFeedState getContinuation() {
@@ -100,7 +102,7 @@ public final class CosmosChangeFeedRequestOptions {
     }
 
     // TODO fabianm remove or at least make internal
-    public void setRequestContinuation(String etag) {
+    void setRequestContinuation(String etag) {
         this.startFromInternal = ChangeFeedStartFromInternal.createFromEtagAndFeedRange(
             etag,
             this.feedRangeInternal);
@@ -228,17 +230,6 @@ public final class CosmosChangeFeedRequestOptions {
      */
     Map<String, Object> getProperties() {
         return properties;
-    }
-
-    /**
-     * Sets the properties used to identify the request token.
-     *
-     * @param properties the properties.
-     * @return the FeedOptionsBase.
-     */
-    CosmosChangeFeedRequestOptions setProperties(Map<String, Object> properties) {
-        this.properties = properties;
-        return this;
     }
 
     private static FeedRangeContinuation toFeedRangeContinuation(String continuation) {

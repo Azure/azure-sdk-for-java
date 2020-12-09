@@ -38,6 +38,7 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -476,6 +477,10 @@ public class Utils {
 
     public static String zonedDateTimeAsUTCRFC1123(OffsetDateTime offsetDateTime){
         return Utils.RFC_1123_DATE_TIME.format(offsetDateTime.atZoneSameInstant(GMT_ZONE_ID));
+    }
+
+    public static String instantAsUTCRFC1123(Instant instant){
+        return Utils.RFC_1123_DATE_TIME.format(instant.atZone(GMT_ZONE_ID));
     }
 
     public static int getValueOrDefault(Integer val, int defaultValue) {

@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Integers;
 import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.ShouldRetryResult;
@@ -16,6 +17,7 @@ import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.directconnectivity.GatewayAddressCache;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -39,8 +41,6 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(FeedRangeCompositeContinuationImpl.class);
-    private final static ShouldRetryResult NO_RETRY = ShouldRetryResult.noRetry();
-    private final static ShouldRetryResult RETRY = ShouldRetryResult.retryAfter(Duration.ZERO);
     private final Queue<CompositeContinuationToken> compositeContinuationTokens;
     private CompositeContinuationToken currentToken;
     private String initialNoResultsRange;
@@ -174,33 +174,26 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
     }
 
     @Override
-    public ShouldRetryResult handleChangeFeedNotModified(final RxDocumentServiceResponse response) {
+    public <T extends Resource> ShouldRetryResult handleChangeFeedNotModified(final FeedResponse<T> response) {
         checkNotNull(response, "Argument 'response' must not be null");
-        final int statusCode = response.getStatusCode();
-        if (statusCode >= HttpConstants.StatusCodes.MINIMUM_SUCCESS_STATUSCODE
-            && statusCode <= HttpConstants.StatusCodes.MAXIMUM_SUCCESS_STATUSCODE) {
-
-            this.initialNoResultsRange = null;
-            return NO_RETRY;
-        }
-
-        if (statusCode == HttpConstants.StatusCodes.NOT_MODIFIED && this.compositeContinuationTokens.size() > 1) {
+        if (ModelBridgeInternal.<T>noChanges(response) &&
+            this.compositeContinuationTokens.size() > 1) {
 
             final String eTag = response.getResponseHeaders().get(HttpConstants.HttpHeaders.E_TAG);
             if (this.initialNoResultsRange == null) {
 
                 this.initialNoResultsRange = this.currentToken.getRange().getMin();
                 this.replaceContinuation(eTag);
-                return RETRY;
+                return ShouldRetryResult.RETRY_IMMEDIATELY;
             }
 
             if (!this.initialNoResultsRange.equalsIgnoreCase(this.currentToken.getRange().getMin())) {
                 this.replaceContinuation(eTag);
-                return RETRY;
+                return ShouldRetryResult.RETRY_IMMEDIATELY;
             }
         }
 
-        return NO_RETRY;
+        return ShouldRetryResult.NO_RETRY;
     }
 
     @Override
@@ -223,7 +216,7 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
                 || nSubStatus == HttpConstants.SubStatusCodes.COMPLETING_SPLIT);
 
         if (!partitionSplit) {
-            return Mono.just(NO_RETRY);
+            return Mono.just(ShouldRetryResult.NO_RETRY);
         }
 
         final RxPartitionKeyRangeCache partitionKeyRangeCache = client.getPartitionKeyRangeCache();
@@ -238,7 +231,7 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
                 this.createChildRanges(resolvedRanges.v);
             }
 
-            return Mono.just(RETRY);
+            return Mono.just(ShouldRetryResult.RETRY_IMMEDIATELY);
         });
     }
 

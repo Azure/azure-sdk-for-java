@@ -774,4 +774,13 @@ public final class ModelBridgeInternal {
         checkNotNull(requestOptions, "Argument 'requestOptions' must not be null.");
         return requestOptions.getContinuation();
     }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static void setChangeFeedRequestOptionsContinuation(
+        String eTag,
+        CosmosChangeFeedRequestOptions options) {
+
+        checkNotNull(options, "Argument 'options' must not be null.");
+        options.setRequestContinuation(eTag);
+    }
 }

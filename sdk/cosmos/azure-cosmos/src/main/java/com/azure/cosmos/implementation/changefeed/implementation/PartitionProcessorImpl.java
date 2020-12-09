@@ -80,7 +80,9 @@ class PartitionProcessorImpl implements PartitionProcessor {
         this.lastContinuation = this.settings.getStartContinuation();
         this.isFirstQueryForChangeFeeds = true;
 
-        this.options.setRequestContinuation(this.lastContinuation);
+        ModelBridgeInternal.setChangeFeedRequestOptionsContinuation(
+            this.lastContinuation,
+            this.options);
 
         return Flux.just(this)
             .flatMap( value -> {
@@ -116,12 +118,16 @@ class PartitionProcessorImpl implements PartitionProcessor {
                             logger.debug("Exception was thrown from thread {}", Thread.currentThread().getId(), throwable);
                         })
                         .doOnSuccess((Void) -> {
-                        this.options.setRequestContinuation(this.lastContinuation);
+                            ModelBridgeInternal.setChangeFeedRequestOptionsContinuation(
+                                this.lastContinuation,
+                                this.options);
 
                             if (cancellationToken.isCancellationRequested()) throw new TaskCancelledException();
                         });
                 }
-                this.options.setRequestContinuation(this.lastContinuation);
+                ModelBridgeInternal.setChangeFeedRequestOptionsContinuation(
+                    this.lastContinuation,
+                    this.options);
 
                 if (cancellationToken.isCancellationRequested()) {
                     return Flux.error(new TaskCancelledException());
