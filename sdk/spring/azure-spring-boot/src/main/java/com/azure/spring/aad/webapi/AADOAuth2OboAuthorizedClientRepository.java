@@ -55,7 +55,7 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public <T extends OAuth2AuthorizedClient> T loadAuthorizedClient(String registrationId,
                                                                      Authentication authentication,
                                                                      HttpServletRequest request) {
@@ -65,11 +65,13 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
                 return (T) request.getAttribute(oboAuthorizedClientAttributeName);
             }
 
+            if (!(authentication instanceof AbstractOAuth2TokenAuthenticationToken)) {
+                throw new IllegalStateException("Not support token implementation");
+            }
+            AbstractOAuth2TokenAuthenticationToken<AbstractOAuth2Token> authenticationToken =
+                (AbstractOAuth2TokenAuthenticationToken) authentication;
             ClientRegistration clientRegistration =
                 azureClientRegistrationRepository.findByRegistrationId(registrationId);
-            AbstractOAuth2TokenAuthenticationToken<AbstractOAuth2Token> authenticationToken =
-                (AbstractOAuth2TokenAuthenticationToken<AbstractOAuth2Token>)
-                    authentication;
 
             String accessToken = authenticationToken.getToken().getTokenValue();
             OnBehalfOfParameters parameters = OnBehalfOfParameters

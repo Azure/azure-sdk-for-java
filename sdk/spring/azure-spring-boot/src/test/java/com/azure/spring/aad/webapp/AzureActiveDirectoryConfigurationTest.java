@@ -26,7 +26,8 @@ public class AzureActiveDirectoryConfigurationTest {
             "azure.activedirectory.client-id = fake-client-id",
             "azure.activedirectory.client-secret = fake-client-secret",
             "azure.activedirectory.tenant-id = fake-tenant-id",
-            "azure.activedirectory.user-group.allowed-groups = group1, group2"
+            "azure.activedirectory.user-group.allowed-groups = group1, group2",
+            "azure.activedirectory.resource-server.enabled=false"
         );
         context.register(AzureActiveDirectoryConfiguration.class);
         return context;
