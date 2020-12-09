@@ -34,10 +34,6 @@ class SparkE2EConfigResolutionSpec extends IntegrationSpec {
     client.createDatabaseIfNotExists(cosmosDatabase).block()
     client.getDatabase(cosmosDatabase).createContainerIfNotExists(cosmosContainer, "/id").block()
 
-    val cfg = Map("spark.cosmos.database" -> cosmosDatabase,
-      "spark.cosmos.container" -> cosmosContainer
-    )
-
     val sparkConfig = new SparkConf()
     sparkConfig.set("spark.cosmos.accountEndpoint", cosmosEndpoint)
     sparkConfig.set("spark.cosmos.accountKey", cosmosMasterKey)
@@ -59,7 +55,12 @@ class SparkE2EConfigResolutionSpec extends IntegrationSpec {
     ).toDF("number", "word")
     df.printSchema()
 
-    df.write.format("cosmos.items").mode("append").options(cfg).save()
+
+    val options = Map(
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> cosmosContainer
+    )
+    df.write.format("cosmos.items").mode("append").options(options).save()
 
     // verify data is written
 
@@ -101,10 +102,7 @@ class SparkE2EConfigResolutionSpec extends IntegrationSpec {
     objectNode.put("number", 27)
     objectNode.put("id", UUID.randomUUID().toString)
     container.createItem(objectNode).block()
-    val cfg = Map("spark.cosmos.database" -> cosmosDatabase,
-      "spark.cosmos.container" -> cosmosContainer
-    )
-
+    
     val sparkConfig = new SparkConf()
     sparkConfig.set("spark.cosmos.accountEndpoint", cosmosEndpoint)
     sparkConfig.set("spark.cosmos.accountKey", cosmosMasterKey)
@@ -115,7 +113,12 @@ class SparkE2EConfigResolutionSpec extends IntegrationSpec {
       .config(sparkConfig)
       .getOrCreate()
 
-    val df = spark.read.format("cosmos.items").options(cfg).load()
+    val options = Map(
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> cosmosContainer
+    )
+    val df = spark.read.format("cosmos.items").options(options).load()
+
     val rowsArray = df.where("number = '27'").collect()
     rowsArray should have size 1
 
