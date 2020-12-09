@@ -4,7 +4,6 @@ package com.azure.cosmos.spark
 
 import java.util
 
-import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.connector.catalog.{Table, TableProvider}
 import org.apache.spark.sql.connector.expressions.Transform
 import org.apache.spark.sql.sources.DataSourceRegister
@@ -18,18 +17,41 @@ import scala.collection.JavaConverters._
 class CosmosItemsDataSource extends DataSourceRegister with TableProvider with CosmosLoggingTrait {
   logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
-  override def inferSchema(caseInsensitiveStringMap: CaseInsensitiveStringMap): StructType = {
-    // scalastyle:off null
-    getTable(null,
-      Array.empty[Transform],
-      caseInsensitiveStringMap.asCaseSensitiveMap()).schema()
-    // scalastyle:on null
+  /**
+    * Infer the schema of the table identified by the given options.
+    * @param options an immutable case-insensitive string-to-string
+    * @return StructType inferred schema
+    */
+  override def inferSchema(options: CaseInsensitiveStringMap): StructType = {
+    new CosmosTable(Array.empty, options).schema()
   }
 
+  /**
+    * Represents the format that this data source provider uses.
+    */
   override def shortName(): String = "cosmos.items"
 
-  override def getTable(structType: StructType, transforms: Array[Transform], map: util.Map[String, String]): Table = {
+  /**
+    * Return a {@link Table} instance with the specified table schema, partitioning and properties
+    * to do read/write. The returned table should report the same schema and partitioning with the
+    * specified ones, or Spark may fail the operation.
+    *
+    * @param schema The specified table schema.
+    * @param partitioning The specified table partitioning.
+    * @param properties The specified table properties. It's case preserving (contains exactly what
+    *                   users specified) and implementations are free to use it case sensitively or
+    *                   insensitively. It should be able to identify a table, e.g. file path, Kafka
+    *                   topic name, etc.
+    */
+  override def getTable(schema: StructType, partitioning: Array[Transform], properties: util.Map[String, String]): Table = {
     // getTable - This is used for loading table with user specified schema and other transformations.
-    new CosmosTable(structType, transforms, CosmosConfig.getEffectiveConfig(map.asScala.toMap).asJava)
+    new CosmosTable(partitioning, CosmosConfig.getEffectiveConfig(properties.asScala.toMap).asJava, Option.apply(schema))
   }
+
+  /**
+    * Returns true if the source has the ability of accepting external table metadata when getting
+    * tables. The external table metadata includes user-specified schema from
+    * `DataFrameReader`/`DataStreamReader` and schema/partitioning stored in Spark catalog.
+    */
+  override def supportsExternalMetadata(): Boolean = true
 }

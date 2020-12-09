@@ -4,7 +4,6 @@ package com.azure.cosmos.spark
 
 import java.util
 
-import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.connector.catalog.{SupportsRead, SupportsWrite, Table, TableCapability}
 import org.apache.spark.sql.connector.expressions.Transform
 import org.apache.spark.sql.connector.read.ScanBuilder
@@ -22,21 +21,29 @@ import scala.collection.JavaConverters._
  * @param transforms
  * @param userConfig
  */
-class CosmosTable(val userProvidedSchema: StructType,
-                  val transforms: Array[Transform],
-                  val userConfig: util.Map[String, String])
+class CosmosTable(val transforms: Array[Transform],
+                  val userConfig: util.Map[String, String],
+                  val userProvidedSchema: Option[StructType] = Option.empty)
   extends Table
     with SupportsWrite
     with SupportsRead
     with CosmosLoggingTrait {
   logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
+  // TODO: FIXME moderakh
+  // A name to identify this table. Implementations should provide a meaningful name, like the
+  // database and table name from catalog, or the location of files for this table.
   override def name(): String = "com.azure.cosmos.spark.write"
 
+  /**
+    * Returns the schema of this table. If the table is not readable and doesn't have a schema, an
+    * empty schema can be returned here.
+    */
   override def schema(): StructType = {
     // TODO: moderakh add support for schema inference
     // for now schema is hard coded to make TestE2EMain to work
-    StructType(Seq(StructField("number", IntegerType), StructField("word", StringType)))
+    val hardCodedSchema = StructType(Seq(StructField("number", IntegerType), StructField("word", StringType)))
+    userProvidedSchema.getOrElse(hardCodedSchema)
   }
 
   override def capabilities(): util.Set[TableCapability] = Set(
@@ -45,10 +52,14 @@ class CosmosTable(val userProvidedSchema: StructType,
 
   override def newScanBuilder(options: CaseInsensitiveStringMap): ScanBuilder = {
     // TODO moderakh how options and userConfig should be merged? is there any difference?
-    CosmosScanBuilder(new CaseInsensitiveStringMap(CosmosConfig.getEffectiveConfig(options.asCaseSensitiveMap().asScala.toMap).asJava))
+    CosmosScanBuilder(new CaseInsensitiveStringMap(CosmosConfig.getEffectiveConfig(options.asCaseSensitiveMap().asScala.toMap).asJava), schema())
   }
 
   override def newWriteBuilder(logicalWriteInfo: LogicalWriteInfo): WriteBuilder = {
-    new CosmosWriterBuilder(new CaseInsensitiveStringMap(CosmosConfig.getEffectiveConfig(userConfig.asScala.toMap).asJava))
+    // TODO: moderakh merge logicalWriteInfo config with other configs
+    new CosmosWriterBuilder(
+      new CaseInsensitiveStringMap(CosmosConfig.getEffectiveConfig(userConfig.asScala.toMap).asJava),
+      logicalWriteInfo.schema()
+    )
   }
 }

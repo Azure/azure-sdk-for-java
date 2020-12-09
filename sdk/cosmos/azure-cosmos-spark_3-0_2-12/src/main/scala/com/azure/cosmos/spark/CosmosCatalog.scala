@@ -195,7 +195,7 @@ class CosmosCatalog extends CatalogPlugin
     checkNamespace(ident.namespace())
     getContainerMetadata(ident) // validates that table exists
     // scalastyle:off null
-    new CosmosTable(null, null, tableOptions.asJava)
+    new CosmosTable(Array[Transform](), tableOptions.asJava, Option.empty)
     // scalastyle:off on
   }
 
@@ -232,7 +232,7 @@ class CosmosCatalog extends CatalogPlugin
       ).block()
     }
       // TODO: moderakh this needs to be wired up against CosmosTabl
-    new CosmosTable(schema, partitions, tableOptions.asJava)
+    new CosmosTable(partitions, tableOptions.asJava, Option.apply(schema))
   }
 
   @throws(classOf[UnsupportedOperationException])
