@@ -115,7 +115,7 @@ public class UserPrincipal implements Serializable {
         return jwtClaimsSet == null ? null : (String) jwtClaimsSet.getClaim("preferred_username");
     }
 
-    public boolean isPersonalAccount(){
+    public boolean isPersonalAccount() {
         return PERSONAL_ACCOUNT_TENANT_ID.equals(getTenantId());
     }
 }
