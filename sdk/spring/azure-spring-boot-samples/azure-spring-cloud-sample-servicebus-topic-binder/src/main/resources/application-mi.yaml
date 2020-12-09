@@ -1,0 +1,22 @@
+spring:
+  cloud:
+    azure:
+      msi-enabled: true
+      managed-identity:
+        client-id: [the-id-of-managed-identity]
+      resource-group: [resource-group]
+      subscription-id: [subscription-id]
+      servicebus:
+        namespace: [servicebus-namespace]
+    stream:
+      bindings:
+        input:
+          destination: [servicebus-queue-name]
+        output:
+          destination: [servicebus-queue-name-same-as-above]
+      servicebus:
+        topic:
+          bindings:
+            input:
+              consumer:
+                checkpoint-mode: MANUAL
