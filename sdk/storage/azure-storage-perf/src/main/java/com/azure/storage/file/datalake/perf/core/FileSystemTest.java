@@ -13,7 +13,7 @@ import reactor.core.publisher.Mono;
 import java.util.UUID;
 
 public abstract class FileSystemTest<TOptions extends PerfStressOptions> extends ServiceTest<TOptions> {
-    private static final String SHARE_NAME = "perfstress-sharev11-" + UUID.randomUUID().toString();
+    private static final String SHARE_NAME = "perfstress-dl-" + UUID.randomUUID().toString();
 
     protected final DataLakeFileSystemClient dataLakeFileSystemClient;
     protected final DataLakeFileSystemAsyncClient dataLakeFileSystemAsyncClient;
@@ -28,7 +28,7 @@ public abstract class FileSystemTest<TOptions extends PerfStressOptions> extends
     // NOTE: the pattern setup the parent first, then yourself.
     @Override
     public Mono<Void> globalSetupAsync() {
-        return super.globalSetupAsync().then(dataLakeFileSystemAsyncClient.create().then());
+        return super.globalSetupAsync().then(dataLakeFileSystemAsyncClient.create()).then();
     }
 
     // NOTE: the pattern, cleanup yourself, then the parent.

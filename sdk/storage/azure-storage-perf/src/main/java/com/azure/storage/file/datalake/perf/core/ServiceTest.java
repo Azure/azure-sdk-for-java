@@ -7,6 +7,8 @@ import com.azure.core.util.CoreUtils;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.perf.test.core.PerfStressTest;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
+import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
 import com.azure.storage.file.datalake.DataLakeServiceAsyncClient;
 import com.azure.storage.file.datalake.DataLakeServiceClient;
 import com.azure.storage.file.datalake.DataLakeServiceClientBuilder;
@@ -22,23 +24,27 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
 
     public ServiceTest(TOptions options) {
         super(options);
-        String accountName = System.getenv("STORAGE_DATALAKE_ACCOUNT_NAME");
-        String accountKey = System.getenv("STORAGE_DATALAKE_ACCOUNT_KEY");
-        String endpoint = System.getenv("STORAGE_DATALAKE_ENDPOINT");
+        String connectionString = System.getenv("STORAGE_CONNECTION_STRING");
 
-        if (CoreUtils.isNullOrEmpty(accountName) || CoreUtils.isNullOrEmpty(accountKey)) {
-            System.out.println("Environment variable STORAGE_DATALAKE_ENDPOINT must be set");
+        if (CoreUtils.isNullOrEmpty(connectionString)) {
+            System.out.println("Environment variable STORAGE_CONNECTION_STRING must be set");
             System.exit(1);
         }
 
+        StorageConnectionString storageConnectionString
+            = StorageConnectionString.create(connectionString, null);
+        StorageEndpoint endpoint = storageConnectionString.getBlobEndpoint();
+
         dataLakeServiceClient = new DataLakeServiceClientBuilder()
-            .endpoint(endpoint)
-            .credential(new StorageSharedKeyCredential(accountName, accountKey))
+            .endpoint(endpoint.getPrimaryUri())
+            .credential(new StorageSharedKeyCredential(storageConnectionString.getAccountName(),
+                storageConnectionString.getStorageAuthSettings().getAccount().getAccessKey()))
             .buildClient();
 
         dataLakeServiceAsyncClient = new DataLakeServiceClientBuilder()
-            .endpoint(endpoint)
-            .credential(new StorageSharedKeyCredential(accountName, accountKey))
+            .endpoint(endpoint.getPrimaryUri())
+            .credential(new StorageSharedKeyCredential(storageConnectionString.getAccountName(),
+                storageConnectionString.getStorageAuthSettings().getAccount().getAccessKey()))
             .buildAsyncClient();
     }
 }

@@ -36,7 +36,7 @@ public class ReadFileDatalakeTest extends DirectoryTest<PerfStressOptions> {
     public Mono<Void> globalSetupAsync() {
         return super.globalSetupAsync()
             .then(dataLakeFileAsyncClient.create())
-            .then(dataLakeFileAsyncClient.upload(createRandomByteBufferFlux(options.getSize()), null))
+            .then(dataLakeFileAsyncClient.upload(createRandomByteBufferFlux(options.getSize()), null, true))
             .then();
     }
 

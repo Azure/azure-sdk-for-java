@@ -127,10 +127,6 @@ public class TestDataCreationHelper {
             this.pos = this.mark;
         }
 
-        @Override
-        public synchronized void mark(int readlimit) {
-            this.mark = readlimit;
-        }
 
         @Override
         public boolean markSupported() {

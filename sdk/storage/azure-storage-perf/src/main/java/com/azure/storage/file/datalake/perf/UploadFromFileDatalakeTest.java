@@ -63,11 +63,11 @@ public class UploadFromFileDatalakeTest extends FileTestBase<PerfStressOptions> 
 
     @Override
     public void run() {
-        dataLakeFileClient.uploadFromFile(TEMP_FILE.toString());
+        dataLakeFileClient.uploadFromFile(TEMP_FILE.toString(), true);
     }
 
     @Override
     public Mono<Void> runAsync() {
-        return dataLakeFileAsyncClient.uploadFromFile(TEMP_FILE.toString());
+        return dataLakeFileAsyncClient.uploadFromFile(TEMP_FILE.toString(), true);
     }
 }

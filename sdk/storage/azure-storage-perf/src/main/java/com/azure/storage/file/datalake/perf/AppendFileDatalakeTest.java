@@ -4,15 +4,12 @@
 package com.azure.storage.file.datalake.perf;
 
 import com.azure.perf.test.core.PerfStressOptions;
+import com.azure.perf.test.core.TestDataCreationHelper;
 import com.azure.storage.file.datalake.DataLakeFileAsyncClient;
 import com.azure.storage.file.datalake.DataLakeFileClient;
 import com.azure.storage.file.datalake.perf.core.DirectoryTest;
-import com.azure.storage.file.datalake.perf.core.FileTestBase;
-import com.azure.storage.file.share.ShareFileAsyncClient;
-import com.azure.storage.file.share.ShareFileClient;
 import reactor.core.publisher.Mono;
 
-import java.io.File;
 import java.util.UUID;
 
 import static com.azure.perf.test.core.TestDataCreationHelper.createRandomByteBufferFlux;
@@ -36,20 +33,19 @@ public class AppendFileDatalakeTest extends DirectoryTest<PerfStressOptions> {
     public Mono<Void> globalSetupAsync() {
         return super.globalSetupAsync()
             .then(dataLakeFileAsyncClient.create())
-//            .then(dataLakeFileAsyncClient.upload(createRandomByteBufferFlux(options.getSize()), null))
+            .then(dataLakeFileAsyncClient.upload(createRandomByteBufferFlux(options.getSize()), null, true))
             .then();
     }
 
     // Perform the API call to be tested here
     @Override
     public void run() {
-        dataLakeFileAsyncClient.append(createRandomByteBufferFlux(options.getSize()), 0, options.getSize());
+        dataLakeFileClient.append(TestDataCreationHelper.createRandomInputStream(options.getSize()), 0, options.getSize());
     }
 
     @Override
     public Mono<Void> runAsync() {
-        return dataLakeFileAsyncClient.append(createRandomByteBufferFlux(options.getSize()), 0, options.getSize())
-            .then();
+        return dataLakeFileAsyncClient.append(createRandomByteBufferFlux(options.getSize()), 0, options.getSize());
     }
 
     // Required resource setup goes here, upload the file to be downloaded during tests.

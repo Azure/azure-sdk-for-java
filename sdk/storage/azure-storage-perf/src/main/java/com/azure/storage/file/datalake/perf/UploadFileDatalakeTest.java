@@ -17,12 +17,12 @@ public class UploadFileDatalakeTest extends FileTestBase<PerfStressOptions> {
 
     @Override
     public void run() {
-        dataLakeFileClient.upload(createRandomInputStream(options.getSize()), options.getSize());
+        dataLakeFileClient.upload(createRandomInputStream(options.getSize()), options.getSize(), true);
     }
 
     @Override
     public Mono<Void> runAsync() {
-        return dataLakeFileAsyncClient.upload(createRandomByteBufferFlux(options.getSize()), null)
+        return dataLakeFileAsyncClient.upload(createRandomByteBufferFlux(options.getSize()), null, true)
             .then();
     }
 }

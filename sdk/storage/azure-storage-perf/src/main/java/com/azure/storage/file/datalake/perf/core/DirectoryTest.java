@@ -13,7 +13,7 @@ import reactor.core.publisher.Mono;
 import java.util.UUID;
 
 public abstract class DirectoryTest<TOptions extends PerfStressOptions> extends FileSystemTest<TOptions> {
-    private static final String DIRECTORY_NAME = "perfstress-directoryv11-" + UUID.randomUUID().toString();
+    private static final String DIRECTORY_NAME = "perfstress-dl-" + UUID.randomUUID().toString();
 
     protected final DataLakeDirectoryClient dataLakeDirectoryClient;
     protected final DataLakeDirectoryAsyncClient dataLakeDirectoryAsyncClient;
@@ -28,7 +28,7 @@ public abstract class DirectoryTest<TOptions extends PerfStressOptions> extends 
     // NOTE: the pattern setup the parent first, then yourself.
     @Override
     public Mono<Void> globalSetupAsync() {
-        return super.globalSetupAsync().then(dataLakeDirectoryAsyncClient.create().then());
+        return super.globalSetupAsync().then(dataLakeDirectoryAsyncClient.create()).then();
     }
 
     // NOTE: the pattern, cleanup yourself, then the parent.
