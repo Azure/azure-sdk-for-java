@@ -10,12 +10,13 @@ import org.apache.spark.sql.catalyst.InternalRow
 import org.apache.spark.sql.connector.write.{DataWriter, DataWriterFactory, WriterCommitMessage}
 import org.apache.spark.sql.types.{IntegerType, StringType, StructField, StructType}
 
-class CosmosDataWriteFactory(userConfig: Map[String, String]) extends DataWriterFactory with CosmosLoggingTrait {
+class CosmosDataWriteFactory(userConfig: Map[String, String],
+                             inputSchema: StructType) extends DataWriterFactory with CosmosLoggingTrait {
   logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
-  override def createWriter(i: Int, l: Long): DataWriter[InternalRow] = new CosmosWriter()
+  override def createWriter(i: Int, l: Long): DataWriter[InternalRow] = new CosmosWriter(inputSchema)
 
-  class CosmosWriter() extends DataWriter[InternalRow] {
+  class CosmosWriter(inputSchema: StructType) extends DataWriter[InternalRow] {
     logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
     val cosmosAccountConfig = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
@@ -30,9 +31,7 @@ class CosmosDataWriteFactory(userConfig: Map[String, String]) extends DataWriter
 
     override def write(internalRow: InternalRow): Unit = {
       // TODO moderakh: schema is hard coded for now to make end to end TestE2EMain work implement schema inference code
-      val userProvidedSchema = StructType(Seq(StructField("number", IntegerType), StructField("word", StringType)))
-
-      val objectNode = CosmosRowConverter.internalRowToObjectNode(internalRow, userProvidedSchema)
+      val objectNode = CosmosRowConverter.internalRowToObjectNode(internalRow, inputSchema)
       // TODO: moderakh how should we handle absence of id?
       if (!objectNode.has("id")) {
         objectNode.put("id", UUID.randomUUID().toString)

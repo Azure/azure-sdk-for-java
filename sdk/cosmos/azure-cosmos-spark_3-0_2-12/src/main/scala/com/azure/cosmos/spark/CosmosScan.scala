@@ -6,16 +6,19 @@ import com.azure.cosmos.models.CosmosParametrizedQuery
 import org.apache.spark.sql.connector.read.{Batch, InputPartition, PartitionReaderFactory, Scan}
 import org.apache.spark.sql.types.{IntegerType, StringType, StructField, StructType}
 
-case class CosmosScan(config: Map[String, String], cosmosQuery: CosmosParametrizedQuery)
+case class CosmosScan(schema: StructType,
+                      config: Map[String, String], cosmosQuery: CosmosParametrizedQuery)
   extends Scan
     with Batch
     with CosmosLoggingTrait {
   logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
+  /**
+    * Returns the actual schema of this data source scan, which may be different from the physical
+    * schema of the underlying storage, as column pruning or other optimizations may happen.
+    */
   override def readSchema(): StructType = {
-    // TODO: moderakh add support for schema inference
-    // for now schema is hard coded to make TestE2EMain to work
-    StructType(Seq(StructField("number", IntegerType), StructField("word", StringType)))
+    schema
   }
 
   override def planInputPartitions(): Array[InputPartition] = {
@@ -25,7 +28,7 @@ case class CosmosScan(config: Map[String, String], cosmosQuery: CosmosParametriz
   }
 
   override def createReaderFactory(): PartitionReaderFactory = {
-    CosmosScanPartitionReaderFactory(config, readSchema, cosmosQuery)
+    CosmosScanPartitionReaderFactory(config, schema, cosmosQuery)
   }
 
   override def toBatch: Batch = {
