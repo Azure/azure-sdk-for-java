@@ -96,6 +96,36 @@ See [Authentication][authenticate] for more options.
 
 See [Samples][sample] for code snippets and samples.
 
+### Standalone packages
+
+The standalone packages, of which services are unavailable inside `azure-resourcemanager`, follow the same naming patterns and design principals.
+
+For example, to use the standalone package for media services, please include as below:
+
+<!-- TODO: package update start -->
+```xml
+<dependency>
+  <groupId>com.azure.resourcemanager</groupId>
+  <artifactId>azure-resourcemanager-mediaservices</artifactId>
+  <version>1.0.0-beta.1</version>
+</dependency>
+```
+<!-- TODO: package package end -->
+
+After above configuration, the manager can be authenticated by following code:
+
+<!-- TODO: embedme -->
+```java
+AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+TokenCredential credential = new DefaultAzureCredentialBuilder()
+    .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
+    .build();
+MediaservicesManager mediaservicesManager = MediaservicesManager.configure()
+    .authenticate(credential, profile);
+```
+
+Comparing to `azure-resourcemanager`, the standalone packages will have different release cycles, which mainly depend on the demand of Azure services. To check the full list of standalone packages with the consumed API versions, please see [Packages](docs/Packages.md).
+
 ## Key concepts
 
 The key concepts of Azure Management Libraries includes:
