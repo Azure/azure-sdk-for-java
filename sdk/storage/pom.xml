@@ -9,20 +9,18 @@
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
   <modules>
-<!--   <module>microsoft-azure-storage-blob</module>-->
-    <!-- NOTE: Commenting out because these should now be binary composed.
-    -->
-    <module>azure-storage-common</module>
+    <module>azure-resourcemanager-storage-generated</module>
     <module>azure-storage-blob</module>
     <module>azure-storage-blob-batch</module>
     <module>azure-storage-blob-changefeed</module>
     <module>azure-storage-blob-cryptography</module>
     <module>azure-storage-blob-nio</module>
-    <module>azure-storage-file-share</module>
+    <module>azure-storage-common</module>
     <module>azure-storage-file-datalake</module>
+    <module>azure-storage-file-share</module>
     <module>azure-storage-internal-avro</module>
-    <module>azure-storage-queue</module>
     <module>azure-storage-perf</module>
+    <module>azure-storage-queue</module>
     <module>microsoft-azure-storage-blob</module>
   </modules>
 </project>
