@@ -3,15 +3,16 @@
 package com.azure.communication.common;
 
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 import com.azure.core.util.logging.ClientLogger;
+
+import reactor.core.CoreSubscriber;
+import reactor.core.publisher.Mono;
 
 import com.azure.core.credential.AccessToken;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Date;
 import java.util.Objects;
@@ -29,45 +30,11 @@ public final class CommunicationTokenCredential implements AutoCloseable {
     private final ClientLogger logger = new ClientLogger(CommunicationTokenCredential.class);
 
     private AccessToken accessToken;
-    private Future<AccessToken> tokenFuture;
+    private TokenNext tokenNext;
     private final TokenParser tokenParser = new TokenParser();
     private TokenRefresher refresher;
     private FetchingTask fetchingTask;
     private boolean isClosed = false;
-
-    private static class TokenImmediate implements Future<AccessToken> {
-        private final AccessToken accessToken;
-
-        TokenImmediate(AccessToken accessToken) {
-            this.accessToken = accessToken;
-        }
-
-        @Override
-        public boolean cancel(boolean mayInterruptIfRunning) {
-            return false;
-        }
-
-        @Override
-        public boolean isCancelled() {
-            return false;
-        }
-
-        @Override
-        public boolean isDone() {
-            return true;
-        }
-
-        @Override
-        public AccessToken get() throws InterruptedException, ExecutionException {
-            return this.accessToken;
-        }
-
-        @Override
-        public AccessToken get(long timeout, TimeUnit unit)
-                throws InterruptedException, ExecutionException, TimeoutException {
-            return this.accessToken;
-        }
-    }
 
     /**
      * Create with serialized JWT token
@@ -77,7 +44,6 @@ public final class CommunicationTokenCredential implements AutoCloseable {
     public CommunicationTokenCredential(String initialToken) {
         Objects.requireNonNull(initialToken, "'initialToken' cannot be null.");
         setToken(initialToken);
-        tokenFuture = new TokenImmediate(accessToken);
     }
 
     /**
@@ -92,30 +58,60 @@ public final class CommunicationTokenCredential implements AutoCloseable {
 
     /**
      * Create with serialized JWT token and a token supplier to auto-refresh the
-     * token before it expires. Callback function tokenRefresher will be called ahead
-     * of the token expiry by the number of minutes specified by
+     * token before it expires. Callback function tokenRefresher will be called
+     * ahead of the token expiry by the number of minutes specified by
      * CallbackOffsetMinutes defaulted to two minutes. To modify this default, call
      * setCallbackOffsetMinutes after construction
      * 
      * @param tokenRefresher implementation to supply fresh token when reqested
      * @param initialToken serialized JWT token
-     * @param refreshProactively when set to true, turn on proactive fetching to
-     *                           call tokenRefresher before token expiry by minutes
-     *                           set with setCallbackOffsetMinutes or default value
-     *                           of two minutes
+     * @param refreshProactively when set to true, turn on proactive fetching to call
+     *                           tokenRefresher before token expiry by minutes set
+     *                           with setCallbackOffsetMinutes or default value of
+     *                           two minutes
      */
-    public CommunicationTokenCredential(
-        TokenRefresher tokenRefresher, 
-        String initialToken,
-        boolean refreshProactively) 
-    {
+    public CommunicationTokenCredential(TokenRefresher tokenRefresher, String initialToken,
+            boolean refreshProactively) {
         this(tokenRefresher);
         Objects.requireNonNull(initialToken, "'initialToken' cannot be null.");
         setToken(initialToken);
-        tokenFuture = new TokenImmediate(accessToken);
         if (refreshProactively) {
             OffsetDateTime nextFetchTime = accessToken.getExpiresAt().minusMinutes(DEFAULT_EXPIRING_OFFSET_MINUTES);
             fetchingTask = new FetchingTask(this, nextFetchTime);
+        }
+    }
+
+    private class TokenNext extends Mono<AccessToken> {
+        private final Mono<String> clientTokenNext;
+        private boolean hasRetrievedToken;
+
+        TokenNext(Mono<String> tokenStringNext) {
+            this.clientTokenNext = tokenStringNext;
+        }
+
+        @Override
+        public AccessToken block() {
+            String freshToken = clientTokenNext.block();
+            setToken(freshToken);
+            hasRetrievedToken = true;
+            return accessToken;
+        }
+
+        @Override
+        public AccessToken block(Duration timeout) {
+            String freshToken = clientTokenNext.block(timeout);
+            setToken(freshToken);
+            hasRetrievedToken = true;
+            return accessToken;
+        }
+
+        @Override
+        public void subscribe(CoreSubscriber<? super AccessToken> actual) {
+            super.subscribe();
+        }
+
+        public boolean hasRetrievedToken() {
+            return hasRetrievedToken;
         }
     }
 
@@ -126,18 +122,21 @@ public final class CommunicationTokenCredential implements AutoCloseable {
      * @throws ExecutionException when supplier throws this exception
      * @throws InterruptedException when supplier throws this exception
      */
-    public Future<AccessToken> getToken() throws InterruptedException, ExecutionException {
+    public Mono<AccessToken> getToken() throws InterruptedException, ExecutionException {
         if (isClosed) {
             throw logger.logExceptionAsError(
                 new RuntimeException("getToken called on closed CommunicationTokenCredential object"));
         }
-        if ((accessToken == null || accessToken.isExpired()) // no valid token to return
-            && refresher != null // can refresh
-            && (tokenFuture == null || tokenFuture.isDone())) { // no fetching in progress, proactive or on-demand 
-            fetchFreshToken();
+        // no valid token to return and can refresh
+        if ((accessToken == null || accessToken.isExpired()) && refresher != null) {
+            // if tokenNext is null or has already retrieved token
+            if (tokenNext == null || tokenNext.hasRetrievedToken()) {
+                tokenNext = new TokenNext(fetchFreshToken());
+            }
+            return tokenNext;
         }
 
-        return tokenFuture;
+        return Mono.just(accessToken);
     }
 
     @Override
@@ -155,61 +154,23 @@ public final class CommunicationTokenCredential implements AutoCloseable {
         return fetchingTask != null;
     }
 
-    private void setToken(String freshToken) {        
+    private void setToken(String freshToken) {
         accessToken = tokenParser.parseJWTToken(freshToken);
-        
+
         if (fetchingTask != null) {
             OffsetDateTime nextFetchTime = accessToken.getExpiresAt().minusMinutes(DEFAULT_EXPIRING_OFFSET_MINUTES);
             fetchingTask.setNextFetchTime(nextFetchTime);
         }
     }
-        
-    private Future<String> fetchFreshToken() {
-        Future<String> fetchFuture = refresher.getFetchTokenFuture();
-        if (fetchFuture == null) {
+
+    private Mono<String> fetchFreshToken() {
+        Mono<String> fetchNext = refresher.getFetchTokenNext();
+        if (fetchNext == null) {
             throw logger.logExceptionAsError(
-                new RuntimeException("TokenRefresher returned null when getFetchTokenFuture is called"));
+                    new RuntimeException("TokenRefresher returned null when getFetchTokenNext is called"));
         }
-        tokenFuture = new TokenFuture(fetchFuture);
-        return fetchFuture;
-    }
-
-    private class TokenFuture implements Future<AccessToken> {
-        private final Future<String> clientTokenFuture;
-
-        TokenFuture(Future<String> tokenStringFuture) {
-            this.clientTokenFuture = tokenStringFuture;
-        }
-
-        @Override
-        public boolean cancel(boolean mayInterruptIfRunning) {
-            return clientTokenFuture.cancel(mayInterruptIfRunning);
-        }
-
-        @Override
-        public boolean isCancelled() {
-            return clientTokenFuture.isCancelled();
-        }
-
-        @Override
-        public boolean isDone() {
-            return clientTokenFuture.isDone();
-        }
-
-        @Override
-        public AccessToken get() throws InterruptedException, ExecutionException {
-            String freshToken = clientTokenFuture.get();
-            setToken(freshToken);            
-            return accessToken;
-        }
-
-        @Override
-        public AccessToken get(long timeout, TimeUnit unit)
-                throws InterruptedException, ExecutionException, TimeoutException {
-            String freshToken = clientTokenFuture.get(timeout, unit);
-            setToken(freshToken);
-            return accessToken;
-        }
+        tokenNext = new TokenNext(fetchNext);
+        return fetchNext;
     }
 
     private static class FetchingTask {
@@ -246,7 +207,7 @@ public final class CommunicationTokenCredential implements AutoCloseable {
             expiringTimer = null;
         }
 
-        private Future<String> fetchFreshToken() {
+        private Mono<String> fetchFreshToken() {
             return host.fetchFreshToken();
         }
 
@@ -265,8 +226,8 @@ public final class CommunicationTokenCredential implements AutoCloseable {
             @Override
             public void run() {
                 try {
-                    Future<String> tokenStringFuture = tokenCache.fetchFreshToken();
-                    tokenCache.setToken(tokenStringFuture.get());
+                    Mono<String> tokenStringNext = tokenCache.fetchFreshToken();
+                    tokenCache.setToken(tokenStringNext.block());
                 } catch (Exception exception) {
                     logger.logExceptionAsError(new RuntimeException(exception));
                 }
