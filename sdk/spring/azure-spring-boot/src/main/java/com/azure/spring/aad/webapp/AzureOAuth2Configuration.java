@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.oauth2.client.endpoint.DefaultAuthorizationCodeTokenResponseClient;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.core.http.converter.OAuth2AccessTokenResponseHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
@@ -26,7 +27,9 @@ public abstract class AzureOAuth2Configuration extends WebSecurityConfigurerAdap
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.oauth2Login().tokenEndpoint().accessTokenResponseClient(accessTokenResponseClient());
+        http.
+            oauth2Login().tokenEndpoint().accessTokenResponseClient(accessTokenResponseClient())
+            .and().authorizationEndpoint().authorizationRequestResolver(requestResolver());
     }
 
     protected OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient() {
@@ -37,5 +40,9 @@ public abstract class AzureOAuth2Configuration extends WebSecurityConfigurerAdap
         result.setRestOperations(restTemplate);
         result.setRequestEntityConverter(new AuthzCodeGrantRequestEntityConverter(repo.getAzureClient()));
         return result;
+    }
+
+    protected OAuth2AuthorizationRequestResolver requestResolver(){
+        return new AzureOAuth2AuthorizationRequestResolver(repo);
     }
 }
