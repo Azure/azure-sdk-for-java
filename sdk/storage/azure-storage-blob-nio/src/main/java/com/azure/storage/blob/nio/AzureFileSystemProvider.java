@@ -14,6 +14,7 @@ import com.azure.storage.blob.models.ParallelTransferOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -373,7 +374,8 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         // Write and truncate must be specified
         if (!optionsList.contains(StandardOpenOption.WRITE)
             || !optionsList.contains(StandardOpenOption.TRUNCATE_EXISTING)) {
-            throw new IllegalArgumentException("Write and TruncateExisting must be specified to open an OutputStream");
+            throw logger.logThrowableAsError(
+                new IllegalArgumentException("Write and TruncateExisting must be specified to open an OutputStream"));
         }
 
         AzureResource resource = new AzureResource(path);
@@ -785,11 +787,14 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     }
 
     /**
-     * Unsupported.
+     * Checks the existence, and optionally the accessibility, of a file.
+     * <p>
+     * This method may only be used to check the existence of a file. It is not possible to determine the permissions
+     * granted to a given client, so if any mode argument is specified, an {@link UnsupportedOperationException} will be
+     * thrown.
      *
-     * @param path path
-     * @param accessModes accessMode
-     * @throws UnsupportedOperationException Operation is not supported.
+     * @param path the path to the file to check
+     * @param accessModes The access modes to check; may have zero elements
      * @throws NoSuchFileException if a file does not exist
      * @throws java.nio.file.AccessDeniedException the requested access would be denied or the access cannot be
      * determined because the Java virtual machine has insufficient privileges or other reasons
@@ -798,7 +803,19 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      */
     @Override
     public void checkAccess(Path path, AccessMode... accessModes) throws IOException {
-        throw new UnsupportedOperationException();
+        if (accessModes != null && accessModes.length != 0) {
+            throw logger.logThrowableAsError(
+                new UnsupportedOperationException("Specifying modes on a check access call is not supported"));
+        }
+        AzurePath.ensureFileSystemOpen(path);
+
+        try {
+            readAttributes(path, BasicFileAttributes.class);
+        } catch (BlobStorageException e) {
+            if (e.getErrorCode().equals(BlobErrorCode.BLOB_NOT_FOUND)) {
+                throw logger.logThrowableAsError(new FileNotFoundException(path.toString()));
+            }
+        }
     }
 
     /**
