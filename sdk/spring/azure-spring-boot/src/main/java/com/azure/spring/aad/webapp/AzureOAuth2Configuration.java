@@ -14,6 +14,7 @@ import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCo
 import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.core.http.converter.OAuth2AccessTokenResponseHttpMessageConverter;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
@@ -34,8 +35,8 @@ public abstract class AzureOAuth2Configuration extends WebSecurityConfigurerAdap
             .oauth2Login()
             .tokenEndpoint()
             .accessTokenResponseClient(accessTokenResponseClient())
-            .and().authorizationEndpoint().authorizationRequestResolver(new AzureOAuth2AuthorizationRequestResolver(this.repo))
-            .and().failureHandler(new AzureOAuthenticationFailureHandler());
+            .and().authorizationEndpoint().authorizationRequestResolver(requestResolver())
+            .and().failureHandler(failureHandler());
     }
 
     protected OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient() {
@@ -46,5 +47,13 @@ public abstract class AzureOAuth2Configuration extends WebSecurityConfigurerAdap
         result.setRestOperations(restTemplate);
         result.setRequestEntityConverter(new AuthzCodeGrantRequestEntityConverter(repo.getAzureClient()));
         return result;
+    }
+
+    protected OAuth2AuthorizationRequestResolver requestResolver() {
+        return new AzureOAuth2AuthorizationRequestResolver(this.repo);
+    }
+
+    protected AuthenticationFailureHandler failureHandler() {
+        return new AzureOAuthenticationFailureHandler();
     }
 }

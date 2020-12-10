@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.spring.aad.webapp;
 
 import com.nimbusds.oauth2.sdk.token.BearerTokenError;
@@ -16,13 +19,16 @@ import org.springframework.web.client.ResponseErrorHandler;
 import java.io.IOException;
 import java.util.Map;
 
+/**
+ * Handle resource server error response
+ */
 public class AzureOAuth2ResponseErrorHandler implements ResponseErrorHandler {
 
     private final OAuth2ErrorHttpMessageConverter oauth2ErrorConverter = new OAuth2ErrorHttpMessageConverter();
 
     private final ResponseErrorHandler defaultErrorHandler = new DefaultResponseErrorHandler();
 
-    AzureOAuth2ResponseErrorHandler(){
+    protected AzureOAuth2ResponseErrorHandler() {
         this.oauth2ErrorConverter.setErrorConverter(new AADOAuth2ErrorConverter());
     }
 
@@ -59,11 +65,12 @@ public class AzureOAuth2ResponseErrorHandler implements ResponseErrorHandler {
             return null;
         }
 
-        String errorCode = bearerTokenError.getCode() != null ?
-            bearerTokenError.getCode() : OAuth2ErrorCodes.SERVER_ERROR;
+        String errorCode = bearerTokenError.getCode() != null
+            ? bearerTokenError.getCode() : OAuth2ErrorCodes.SERVER_ERROR;
         String errorDescription = bearerTokenError.getDescription();
-        String errorUri = bearerTokenError.getURI() != null ?
-            bearerTokenError.getURI().toString() : null;
+
+        String errorUri = bearerTokenError.getURI() != null
+            ? bearerTokenError.getURI().toString() : null;
 
         return new OAuth2Error(errorCode, errorDescription, errorUri);
     }
@@ -73,16 +80,17 @@ public class AzureOAuth2ResponseErrorHandler implements ResponseErrorHandler {
         @Override
         public OAuth2Error convert(Map<String, String> parameters) {
             String errorCode = parameters.get("error");
-            String description =  parameters.get("error_description");
-            String error_codes = parameters.get("error_codes");
+            String description = parameters.get("error_description");
+            String errorCodes = parameters.get("error_codes");
             String timestamp = parameters.get("timestamp");
-            String trace_id = parameters.get("trace_id");
-            String correlation_id = parameters.get("correlation_id");
+            String traceId = parameters.get("trace_id");
+            String correlationId = parameters.get("correlation_id");
             String uri = parameters.get("error_uri");
-            String sub_error = parameters.get("suberror");
+            String subError = parameters.get("suberror");
             String claims = parameters.get("claims");
 
-            return new AzureOAuth2Error(errorCode,description,error_codes,timestamp,trace_id,correlation_id,uri,sub_error,claims);
+            return new AzureOAuth2Error(errorCode, description, errorCodes, timestamp, traceId, correlationId,
+                uri, subError, claims);
         }
     }
 }

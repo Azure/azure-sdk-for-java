@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.spring.aad.webapp;
 
 import com.azure.spring.autoconfigure.aad.Constants;
@@ -13,6 +16,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
+/**
+ * Handle the redirect URL that OAuthentication failed
+ */
 public class AzureOAuthenticationFailureHandler implements AuthenticationFailureHandler {
     private static final String DEFAULT_FAILURE_URL = "/login?error";
     private final AuthenticationFailureHandler defaultHandler;
@@ -27,11 +33,11 @@ public class AzureOAuthenticationFailureHandler implements AuthenticationFailure
                                         AuthenticationException exception) throws IOException, ServletException {
 
         String claims = Optional.of(exception)
-            .map(e -> (OAuth2AuthenticationException) e)
-            .map(OAuth2AuthenticationException::getError)
-            .map(e -> (AzureOAuth2Error)e)
-            .map(AzureOAuth2Error::getClaims)
-            .orElse(null);
+                                .map(e -> (OAuth2AuthenticationException) e)
+                                .map(OAuth2AuthenticationException::getError)
+                                .map(e -> (AzureOAuth2Error) e)
+                                .map(AzureOAuth2Error::getClaims)
+                                .orElse(null);
 
         if (claims == null) {
             // Default handle logic
@@ -39,13 +45,13 @@ public class AzureOAuthenticationFailureHandler implements AuthenticationFailure
         } else {
             // Put claims into session and redirect
             response.setStatus(302);
-            request.getSession().setAttribute(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS,claims);
+            request.getSession().setAttribute(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS, claims);
             String redirectUrl = Optional.of(request)
-                .map(HttpServletRequest::getSession)
-                .map(s -> s.getAttribute(Constants.SAVED_REQUEST))
-                .map(r -> (DefaultSavedRequest) r)
-                .map(DefaultSavedRequest::getRedirectUrl)
-                .orElse(null);
+                                         .map(HttpServletRequest::getSession)
+                                         .map(s -> s.getAttribute(Constants.SAVED_REQUEST))
+                                         .map(r -> (DefaultSavedRequest) r)
+                                         .map(DefaultSavedRequest::getRedirectUrl)
+                                         .orElse(null);
             response.sendRedirect(redirectUrl);
         }
     }
