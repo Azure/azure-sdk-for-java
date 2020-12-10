@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.context.core.impl;
 
+import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.servicebus.models.Queue;
 import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
@@ -30,7 +31,15 @@ public class ServiceBusQueueManager extends AzureManager<Queue, Tuple<ServiceBus
 
     @Override
     public Queue internalGet(Tuple<ServiceBusNamespace, String> namespaceAndName) {
-        return namespaceAndName.getFirst().queues().getByName(namespaceAndName.getSecond());
+        try {
+            return namespaceAndName.getFirst().queues().getByName(namespaceAndName.getSecond());
+        } catch (ManagementException e) {
+            if (e.getResponse().getStatusCode() == 404) {
+                return null;
+            } else {
+                throw e;
+            }
+        }
     }
 
     @Override

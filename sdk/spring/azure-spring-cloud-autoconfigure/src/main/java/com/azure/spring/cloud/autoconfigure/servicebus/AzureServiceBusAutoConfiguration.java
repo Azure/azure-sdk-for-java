@@ -80,6 +80,9 @@ public class AzureServiceBusAutoConfiguration {
             return new ServiceBusConnectionStringProvider(namespaceManager.getOrCreate(namespace));
         }
 
+        LOGGER.warn("Can't construct the ServiceBusConnectionStringProvider, namespace: {}, connectionString: {}",
+            namespace, connectionString);
+
         return null;
     }
 

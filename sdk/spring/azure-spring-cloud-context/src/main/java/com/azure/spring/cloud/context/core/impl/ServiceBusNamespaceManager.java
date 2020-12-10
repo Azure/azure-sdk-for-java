@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.context.core.impl;
 
+import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
@@ -33,11 +34,12 @@ public class ServiceBusNamespaceManager extends AzureManager<ServiceBusNamespace
     public ServiceBusNamespace internalGet(String namespace) {
         try {
             return azureResourceManager.serviceBusNamespaces().getByResourceGroup(resourceGroup, namespace);
-        } catch (NullPointerException e) {
-            // azure management api has no way to determine whether an eventhub namespace
-            // exists
-            // Workaround for this is by catching NPE
-            return null;
+        } catch (ManagementException e) {
+            if (e.getResponse().getStatusCode() == 404) {
+                return null;
+            } else {
+                throw e;
+            }
         }
     }
 

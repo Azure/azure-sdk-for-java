@@ -2,7 +2,7 @@ spring:
   cloud:
     azure:
       servicebus:
-        connection-string:
+        connection-string: [servicebus-namespace-connection-string]
     stream:
       bindings:
         input:

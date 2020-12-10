@@ -7,6 +7,7 @@ import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.eventhubs.models.AuthorizationRule;
 import com.azure.resourcemanager.eventhubs.models.EventHubAuthorizationKey;
 import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
+import com.azure.resourcemanager.eventhubs.models.EventHubNamespaceAuthorizationRule;
 import com.azure.spring.cloud.autoconfigure.context.AzureContextAutoConfiguration;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
 import com.azure.spring.cloud.context.core.impl.EventHubNamespaceManager;
@@ -95,7 +96,7 @@ public class AzureEventHubKafkaAutoConfiguration {
         return eventHubNamespace.listAuthorizationRules()
                                 .stream()
                                 .findFirst()
-                                .map(AuthorizationRule::getKeys)
+                                .map(AuthorizationRule<EventHubNamespaceAuthorizationRule>::getKeys)
                                 .map(EventHubAuthorizationKey::primaryConnectionString)
                                 .orElseThrow(() -> new IllegalStateException(
                                     String.format("Failed to fetch connection string of namespace '%s'",

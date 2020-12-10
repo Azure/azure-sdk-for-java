@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.context;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.autoconfigure.telemetry.SubscriptionSupplier;
@@ -46,6 +47,7 @@ public class AzureContextAutoConfiguration {
     public AzureResourceManager azureResourceManager(TokenCredential credential, AzureProfile profile) {
         // TODO (xiada) USER AGENT
         return AzureResourceManager.configure()
+//                                   .withLogLevel(HttpLogDetailLevel.BASIC)
                                    .authenticate(credential, profile)
                                    .withDefaultSubscription();
     }
