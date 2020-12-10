@@ -10,6 +10,10 @@ import org.apache.spark.sql.sources.DataSourceRegister
 import org.apache.spark.sql.types.StructType
 import org.apache.spark.sql.util.CaseInsensitiveStringMap
 
+// scalastyle:off underscore.import
+import scala.collection.JavaConverters._
+// scalastyle:on underscore.import
+
 class CosmosItemsDataSource extends DataSourceRegister with TableProvider with CosmosLoggingTrait {
   logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
@@ -41,7 +45,7 @@ class CosmosItemsDataSource extends DataSourceRegister with TableProvider with C
     */
   override def getTable(schema: StructType, partitioning: Array[Transform], properties: util.Map[String, String]): Table = {
     // getTable - This is used for loading table with user specified schema and other transformations.
-    new CosmosTable(partitioning, properties, Option.apply(schema))
+    new CosmosTable(partitioning, CosmosConfig.getEffectiveConfig(properties.asScala.toMap).asJava, Option.apply(schema))
   }
 
   /**

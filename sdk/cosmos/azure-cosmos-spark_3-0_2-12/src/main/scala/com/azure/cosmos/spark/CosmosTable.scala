@@ -52,14 +52,13 @@ class CosmosTable(val transforms: Array[Transform],
 
   override def newScanBuilder(options: CaseInsensitiveStringMap): ScanBuilder = {
     // TODO moderakh how options and userConfig should be merged? is there any difference?
-    CosmosScanBuilder(options, schema())
+    CosmosScanBuilder(new CaseInsensitiveStringMap(CosmosConfig.getEffectiveConfig(options.asCaseSensitiveMap().asScala.toMap).asJava), schema())
   }
 
   override def newWriteBuilder(logicalWriteInfo: LogicalWriteInfo): WriteBuilder = {
     // TODO: moderakh merge logicalWriteInfo config with other configs
-
     new CosmosWriterBuilder(
-      userConfig.asScala.toMap,
+      new CaseInsensitiveStringMap(CosmosConfig.getEffectiveConfig(userConfig.asScala.toMap).asJava),
       logicalWriteInfo.schema()
     )
   }

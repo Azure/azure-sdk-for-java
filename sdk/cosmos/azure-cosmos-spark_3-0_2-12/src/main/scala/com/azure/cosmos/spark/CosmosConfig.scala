@@ -6,6 +6,12 @@ package com.azure.cosmos.spark
 import java.net.URL
 import java.util.Locale
 
+import org.apache.spark.SparkConf
+import org.apache.spark.sql.SparkSession
+
+// scalastyle:off underscore.import
+import scala.collection.JavaConverters._
+// scalastyle:on underscore.import
 
 // each config category will be a case class:
 // TODO moderakh more configs
@@ -13,6 +19,27 @@ import java.util.Locale
 //case class CosmosBatchWriteConfig()
 
 case class CosmosAccountConfig(endpoint: String, key: String)
+
+object CosmosConfig {
+
+  def getEffectiveConfig(sparkConf: SparkConf, // spark application config
+                         userProvidedOptions: Map[String, String] // user provided config
+                        ) : Map[String, String] = {
+    val conf = sparkConf.clone()
+    conf.setAll(userProvidedOptions).getAll.toMap
+  }
+
+  @throws[IllegalStateException] // if there is no active spark session
+  def getEffectiveConfig(userProvidedOptions: Map[String, String] = Map().empty) : Map[String, String] = {
+    val session = SparkSession.active
+
+    // TODO: moderakh we should investigate how spark sql config should be merged:
+    // TODO: session.conf.getAll, // spark sql runtime config
+    getEffectiveConfig(
+      session.sparkContext.getConf, // spark application config
+      userProvidedOptions) // user provided config
+  }
+}
 
 object CosmosAccountConfig {
   val CosmosAccountEndpointUri = CosmosConfigEntry[String](key = "spark.cosmos.accountEndpoint",
@@ -70,6 +97,7 @@ case class CosmosConfigEntry[T](key: String,
                                 defaultValue: Option[String] = Option.empty,
                                 parseFromStringFunction: String => T,
                                 helpMessage: String) {
+  CosmosConfigEntry.configEntriesDefinitions.put(key, this)
 
   def parse(paramAsString: String) : T = {
     try {
@@ -82,6 +110,12 @@ case class CosmosConfigEntry[T](key: String,
 
 // TODO: moderakh how to merge user config with SparkConf application config?
 object CosmosConfigEntry {
+  private val configEntriesDefinitions = new java.util.HashMap[String, CosmosConfigEntry[_]]()
+
+  def allConfigNames(): Seq[String] = {
+    configEntriesDefinitions.keySet().asScala.toSeq
+  }
+
   def parse[T](configuration: Map[String, String], configEntry: CosmosConfigEntry[T]): Option[T] = {
     // TODO moderakh: where should we handle case sensitivity?
     // we are doing this here per config parsing for now
