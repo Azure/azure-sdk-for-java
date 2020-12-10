@@ -19,6 +19,7 @@ parameters:
   GHTeamReviewersVariable: '' # externally set, as eng-common does not have the identity-resolver. Run as pre-step
   OnboardingBranch: ''
   CloseAfterOpenForTesting: false
+  SkipPackageJson: false
 
 steps:
 - pwsh: |
@@ -53,7 +54,7 @@ steps:
   env:
     GH_TOKEN: $(azuresdk-github-pat)
 
-  - ${{if ne(artifact.skipUpdatePackageJson, 'true')}}:
+  - ${{if ne(SkipPackageJson, 'true')}}:
     - task: PowerShell@2
       displayName: 'Update Docs.MS CI Targeted Packages'
       condition: and(succeededOrFailed(), eq('${{ parameters.OnboardingBranch }}',''))
