@@ -21,13 +21,15 @@ public enum ConsistentReadControl {
      * Default value. Consistent read control based on eTag.
      * If {@link BlobRequestConditions#getIfMatch()} is set, the client will honor this value.
      * Otherwise, {@link BlobRequestConditions#getIfMatch()} is set to the latest eTag.
+     * Note: Reading will fail if the underlying blob is changed (thus modifying its eTag).
      */
     ETAG,
 
     /**
-     * Consistent control based on versionId. NOTE: Versioning must be supported by the account to use this value.
+     * Consistent control based on versionId. Note: Versioning must be supported by the account to use this value.
      * If {@link BlobClient#getVersionId()} is set, the client will honor this value.
      * Otherwise, {@link BlobClient#getVersionId()} is set to the latest versionId.
+     * Note: Reading will succeed if the underlying blob is changed (thus modifying its version).
      */
     VERSION_ID
 }
