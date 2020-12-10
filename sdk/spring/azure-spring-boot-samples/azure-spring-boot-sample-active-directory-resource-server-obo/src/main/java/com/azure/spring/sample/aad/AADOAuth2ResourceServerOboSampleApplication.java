@@ -7,9 +7,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class AADOAuth2ResourceServerAccessOtherResourcesSampleApp {
+public class AADOAuth2ResourceServerOboSampleApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(AADOAuth2ResourceServerAccessOtherResourcesSampleApp.class, args);
+        SpringApplication.run(AADOAuth2ResourceServerOboSampleApplication.class, args);
     }
 }

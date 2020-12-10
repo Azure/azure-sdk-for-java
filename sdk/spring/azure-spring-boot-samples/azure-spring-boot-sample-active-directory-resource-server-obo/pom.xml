@@ -9,10 +9,10 @@
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
   <groupId>com.azure.spring</groupId>
-  <artifactId>azure-spring-boot-sample-active-directory-resource-server-access-other-resources</artifactId>
+  <artifactId>azure-spring-boot-sample-active-directory-resource-server-obo</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>Azure Spring Boot Azure AD Starter Sample - Resource Server Access other Resources</name>
-  <description>Azure AD Spring Security Integration Spring Boot Resource Server access other Resources Sample</description>
+  <name>Azure Spring Boot Azure AD Starter Sample - Resource Server OBO</name>
+  <description>Azure AD Spring Security Integration Spring Boot Resource Server OBO</description>
 
   <dependencies>
     <dependency>
@@ -45,11 +45,6 @@
       <groupId>com.microsoft.azure</groupId>
       <artifactId>msal4j</artifactId>
       <version>1.8.0</version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>com.nimbusds</groupId>
-      <artifactId>nimbus-jose-jwt</artifactId>
-      <version>8.19</version> <!-- {x-version-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.nimbusds</groupId>
