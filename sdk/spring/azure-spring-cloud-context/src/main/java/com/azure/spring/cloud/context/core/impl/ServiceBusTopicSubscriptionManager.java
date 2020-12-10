@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.context.core.impl;
 
+import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.servicebus.models.ServiceBusSubscription;
 import com.azure.resourcemanager.servicebus.models.Topic;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
@@ -32,11 +33,12 @@ public class ServiceBusTopicSubscriptionManager extends AzureManager<ServiceBusS
     public ServiceBusSubscription internalGet(Tuple<Topic, String> topicAndSubscriptionName) {
         try {
             return topicAndSubscriptionName.getFirst().subscriptions().getByName(topicAndSubscriptionName.getSecond());
-        } catch (NullPointerException ignore) {
-            // azure management api has no way to determine whether an service bus topic
-            // subscription exists
-            // Workaround for this is by catching NPE
-            return null;
+        } catch (ManagementException e) {
+            if (e.getResponse().getStatusCode() == 404) {
+                return null;
+            } else {
+                throw e;
+            }
         }
     }
 
