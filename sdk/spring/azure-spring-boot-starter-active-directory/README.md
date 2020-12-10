@@ -245,26 +245,8 @@ spring.security.oauth2.client.registration.azure.scope = openid, profile, https:
 ``` 
 Note, if you don't configure the 3 mentioned permissions, this starter will add them automatically.
 
-## Troubleshooting
-### Enable client logging
-Azure SDKs for Java offers a consistent logging story to help aid in troubleshooting application errors and expedite their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
-
-### Enable Spring logging
-Spring allow all the supported logging systems to set logger levels set in the Spring Environment (for example, in application.properties) by using `logging.level.<logger-name>=<level>` where level is one of TRACE, DEBUG, INFO, WARN, ERROR, FATAL, or OFF. The root logger can be configured by using logging.level.root.
-
-The following example shows potential logging settings in `application.properties`:
-
-```properties
-logging.level.root=WARN
-logging.level.org.springframework.web=DEBUG
-logging.level.org.hibernate=ERROR
-```
-
-For more information about setting logging in spring, please refer to the [official doc](https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging).
- 
-
 ### Protect the Resource API through Resource Server
-Please refer to [azure-spring-boot-sample-active-directory-spring-oauth2-resource-server](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-spring-security-resource-server/README.md) for access resource api.
+Please refer to [azure-spring-boot-sample-active-directory-spring-oauth2-resource-server][resource-server] for access resource api.
 
 #### Include the package
 ```xml
@@ -284,14 +266,6 @@ Please refer to [azure-spring-boot-sample-active-directory-spring-oauth2-resourc
   </dependencies>
 ```
 
-####  Configure application.properties:
-```properties
-azure.activedirectory.app-id-uri=xxxxxxxx-app-id-uri-xxxxxxxxxx
-azure.activedirectory.session-stateless=true
-#Use a port that is not occupied
-server.port=8081
-```
-
 #### Using `AADOAuth2ResourceServerSecurityConfig` to extends `WebSecurityConfigurerAdapter`:
 
 ```java
@@ -308,6 +282,24 @@ public class AADOAuth2ResourceServerSecurityConfig extends WebSecurityConfigurer
     }
 }
 ```
+
+## Troubleshooting
+### Enable client logging
+Azure SDKs for Java offers a consistent logging story to help aid in troubleshooting application errors and expedite their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
+
+### Enable Spring logging
+Spring allow all the supported logging systems to set logger levels set in the Spring Environment (for example, in application.properties) by using `logging.level.<logger-name>=<level>` where level is one of TRACE, DEBUG, INFO, WARN, ERROR, FATAL, or OFF. The root logger can be configured by using logging.level.root.
+
+The following example shows potential logging settings in `application.properties`:
+
+```properties
+logging.level.root=WARN
+logging.level.org.springframework.web=DEBUG
+logging.level.org.hibernate=ERROR
+```
+
+For more information about setting logging in spring, please refer to the [official doc](https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging).
+ 
 
 ## Next steps
 The following section provides sample projects illustrating how to use the starter in different cases.
@@ -332,3 +324,4 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 
 [graph-api-list-member-of]: https://docs.microsoft.com/graph/api/user-list-memberof?view=graph-rest-1.0
 [graph-api-list-transitive-member-of]: https://docs.microsoft.com/graph/api/user-list-transitivememberof?view=graph-rest-1.0
+[resource-server]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-spring-security-resource-server/README.md

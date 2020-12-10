@@ -5,7 +5,7 @@ This sample illustrates how to protect a Java web API by restricting access to i
 
 1. The bearer token is obtained from the request header. 
 2. `JwtDecoder`  is used to parse the token into `Jwt`.
-3. Claims, Headers etc in `Jwt` will be extracted, they will be wrapped in `AzureOAuth2AuthenticatedPrincipal` object.
+3. Claims, headers etc in `Jwt` will be extracted, they will be wrapped in `AzureOAuth2AuthenticatedPrincipal` object.
 4. `AzureOAuth2AuthenticatedPrincipal` will eventually be set into SecurityContext.
 
 
@@ -22,6 +22,9 @@ To run this sample, you'll need:
 - An Azure Active Directory (Azure AD) tenant. For more information on how to get an Azure AD tenant, see [How to get an Azure AD tenant](https://azure.microsoft.com/documentation/articles/active-directory-howto-tenant/)
 - You register your web APP in App registrations in the Azure portal.
 - A Web APP runtime that requires access to a Web API.
+
+### Environment checklist
+We need to ensure that this [environment checklist][ready-to-run-checklist] is completed before the run.
 
 ## Include the package
 ```xml
@@ -62,7 +65,7 @@ To register your apps manually, choose the Azure Active Directory (Azure AD) ten
 3. When the Register an application page opens, enter your application's registration information:
     ![Scope Config](docs/image-register-an-application.png "Register an application")
     
-4. In the **Expose an API** section, select **Add a scope**, accept the proposed Application ID URI `(api://{clientId})` (back up the Application ID URI here,which will be used in the properties file) by selecting **Save and Continue**.
+4. In the **Expose an API** section, select **Add a scope**, accept the proposed Application ID URI `(api://{clientId})` (back up the Application ID URI here, which will be used in the properties file) by selecting **Save and Continue**.
    ![App-Id-Uri Config](docs/image-app-id-uri-config.png "App-id-uri Config")
    Then enter the following information:
    - For **Scope name**, enter **File.read**.
@@ -75,19 +78,11 @@ To register your apps manually, choose the Azure Active Directory (Azure AD) ten
    - Select **Add scope**.
    ![Scope Config](docs/image-scope-configurations.png "Scope Config")
 
+If you still don't understand, you can look at this [register app or web api][Register app or web API] and another [expose scoped permission to web api][Expose scoped permission to web API]. I believe it will also help you.
+
 ## Examples
 
-### Configure application.properties
-
-```properties
-azure.activedirectory.app-id-uri=xxxxxxxx-app-id-uri-xxxxxxxxxx
-azure.activedirectory.session-stateless=true
-#Use a port that is not occupied
-server.port=8081
-```
-
 ### Run with Maven 
-First, we need to ensure that this [instruction] is completed before run.
 ```shell
 # Under sdk/spring project root directory
 mvn clean install -DskipTests
@@ -95,9 +90,16 @@ cd azure-spring-boot-samples/azure-spring-boot-sample-active-directory-spring-oa
 mvn spring-boot:run
 ```
 
-### Access the Web App Url
-
-Access a URL in the browser that requires you to go to webAPI for a resource.
+### Access the Web API
+We could use Postman to simulate a Web APP to send a request to a Web API.
+```http request
+GET /file HTTP/1.1
+Authorization: Bearer eyJ0eXAiO ... 0X2tnSQLEANnSPHY0gKcgw
+```
+```http request
+GET /user HTTP/1.1
+Authorization: Bearer eyJ0eXAiO ... 0X2tnSQLEANnSPHY0gKcgw
+```
 
 ### Check authorization
 
@@ -110,4 +112,6 @@ Access a URL in the browser that requires you to go to webAPI for a resource.
 ## Contributing
 <!-- LINKS -->
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[instruction]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/CONTRIBUTING.md#building-from-source
+[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
+[Register app or web API]: https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app
+[Expose scoped permission to web API]: https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-configure-app-expose-web-apis
