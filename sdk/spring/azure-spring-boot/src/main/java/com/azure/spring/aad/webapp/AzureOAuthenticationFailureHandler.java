@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 /**
- * Handle the redirect URL that OAuthentication failed
+ * Redirect URL for handling OAuthentication failure
  */
 public class AzureOAuthenticationFailureHandler implements AuthenticationFailureHandler {
     private static final String DEFAULT_FAILURE_URL = "/login?error";
@@ -31,7 +31,7 @@ public class AzureOAuthenticationFailureHandler implements AuthenticationFailure
     public void onAuthenticationFailure(HttpServletRequest request,
                                         HttpServletResponse response,
                                         AuthenticationException exception) throws IOException, ServletException {
-
+        //Handle conditional access policy, step 2.
         String claims = Optional.of(exception)
                                 .map(e -> (OAuth2AuthenticationException) e)
                                 .map(OAuth2AuthenticationException::getError)

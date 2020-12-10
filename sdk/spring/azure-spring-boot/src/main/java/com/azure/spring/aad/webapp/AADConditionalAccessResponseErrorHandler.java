@@ -20,15 +20,15 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * Handle resource server error response
+ * Handle conditional access.
  */
-public class AzureOAuth2ResponseErrorHandler implements ResponseErrorHandler {
+public class AADConditionalAccessResponseErrorHandler implements ResponseErrorHandler {
 
     private final OAuth2ErrorHttpMessageConverter oauth2ErrorConverter = new OAuth2ErrorHttpMessageConverter();
 
     private final ResponseErrorHandler defaultErrorHandler = new DefaultResponseErrorHandler();
 
-    protected AzureOAuth2ResponseErrorHandler() {
+    protected AADConditionalAccessResponseErrorHandler() {
         this.oauth2ErrorConverter.setErrorConverter(new AADOAuth2ErrorConverter());
     }
 
@@ -49,6 +49,8 @@ public class AzureOAuth2ResponseErrorHandler implements ResponseErrorHandler {
         if (oauth2Error == null) {
             oauth2Error = this.oauth2ErrorConverter.read(OAuth2Error.class, response);
         }
+        //Handle conditional access policy, step 1.
+        //About conditional access: https://docs.microsoft.com/en-us/azure/active-directory/conditional-access/howto-conditional-access-policy-all-users-mfa
         throw new OAuth2AuthorizationException(oauth2Error);
     }
 

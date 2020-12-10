@@ -693,6 +693,9 @@
 
   <!-- ### end: Spring related suppression -->
 
+  <!--  Checkstyle suppressions of LineLength for com.azure.spring.aad.webapp.AADConditionalAccessResponseErrorHandler-->
+  <suppress checks="LineLength" files="com.azure.spring.aad.webapp.AADConditionalAccessResponseErrorHandler.java"/>
+
   <!-- These suppressions were added due to limitations in our custom Checkstyle rules and should be addressed in the future. -->
   <!-- API naming is too restrictive -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.search.documents.indexes.SearchIndexerAsyncClient.java"
