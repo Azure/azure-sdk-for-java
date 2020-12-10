@@ -4,7 +4,7 @@
 package com.azure.communication.administration;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.communication.common.CommunicationUser;
+import com.azure.communication.common.CommunicationUserIdentifier;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
@@ -18,7 +18,7 @@ public final class CommunicationUserToken {
      * Identifier of the identity owning the token.
      */
     @JsonProperty(value = "user", required = true)
-    private CommunicationUser user;
+    private CommunicationUserIdentifier user;
 
     /*
      * The token issued for the identity.
@@ -33,21 +33,21 @@ public final class CommunicationUserToken {
     private OffsetDateTime expiresOn;
 
     /**
-     * Get the associated CommunicationUser object.
+     * Get the associated CommunicationUserIdentifier object.
      *
-     * @return the CommunicationUser object.
+     * @return the CommunicationUserIdentifier object.
      */
-    public CommunicationUser getUser() {
+    public CommunicationUserIdentifier getUser() {
         return this.user;
     }
 
     /**
-     * Set the CommunicationUser object.
+     * Set the CommunicationUserIdentifier object.
      *
      * @param user the id value to set.
      * @return the CommunicationIdentityToken object itself.
      */
-    public CommunicationUserToken setUser(CommunicationUser user) {
+    public CommunicationUserToken setUser(CommunicationUserIdentifier user) {
         this.user = user;
         return this;
     }

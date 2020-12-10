@@ -7,7 +7,7 @@ import com.azure.core.util.CoreUtils;
 /**
  * Communication identifier for Communication Services representing a PhoneNumber
  */
-public class PhoneNumber extends CommunicationIdentifier {
+public class PhoneNumberIdentifier extends CommunicationIdentifier {
 
     private final String value;
 
@@ -18,7 +18,7 @@ public class PhoneNumber extends CommunicationIdentifier {
      * E.164 is a phone number formatted as +[CountryCode][AreaCode][LocalNumber] eg. "+18005555555"
      * @throws IllegalArgumentException thrown if phoneNumber parameter fail the validation.
      */
-    public PhoneNumber(String phoneNumber) {
+    public PhoneNumberIdentifier(String phoneNumber) {
         if (CoreUtils.isNullOrEmpty(phoneNumber)) {
             throw new IllegalArgumentException("The initialization parameter [phoneNumber] cannot be null to empty.");
         }

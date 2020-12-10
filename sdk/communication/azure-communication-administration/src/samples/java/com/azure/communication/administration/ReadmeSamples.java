@@ -19,8 +19,8 @@ import com.azure.communication.administration.models.PhoneNumberReservation;
 import com.azure.communication.administration.models.PhonePlan;
 import com.azure.communication.administration.models.PhonePlanGroup;
 import com.azure.communication.administration.models.PstnConfiguration;
-import com.azure.communication.common.CommunicationUser;
-import com.azure.communication.common.PhoneNumber;
+import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.rest.PagedIterable;
@@ -75,9 +75,9 @@ public class ReadmeSamples {
      *
      * @return the created user
      */
-    public CommunicationUser createNewUser() {
+    public CommunicationUserIdentifier createNewUser() {
         CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
-        CommunicationUser user = communicationIdentityClient.createUser();
+        CommunicationUserIdentifier user = communicationIdentityClient.createUser();
         System.out.println("User id: " + user.getId());
         return user;
     }
@@ -89,7 +89,7 @@ public class ReadmeSamples {
      */
     public CommunicationUserToken issueUserToken() {
         CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
-        CommunicationUser user = communicationIdentityClient.createUser();
+        CommunicationUserIdentifier user = communicationIdentityClient.createUser();
         List<String> scopes = new ArrayList<>(Arrays.asList("chat"));
         CommunicationUserToken userToken = communicationIdentityClient.issueToken(user, scopes);
         System.out.println("Token: " + userToken.getToken());
@@ -102,7 +102,7 @@ public class ReadmeSamples {
       */
     public void revokeUserToken() {
         CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
-        CommunicationUser user = createNewUser();
+        CommunicationUserIdentifier user = createNewUser();
         List<String> scopes = new ArrayList<>(Arrays.asList("chat"));
         communicationIdentityClient.issueToken(user, scopes);
         // revoke tokens issued for the user prior to now
@@ -114,7 +114,7 @@ public class ReadmeSamples {
      */
     public void deleteUser() {
         CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
-        CommunicationUser user = communicationIdentityClient.createUser();
+        CommunicationUserIdentifier user = communicationIdentityClient.createUser();
         // delete a previously created user
         communicationIdentityClient.deleteUser(user);
     }
@@ -298,7 +298,7 @@ public class ReadmeSamples {
      * Sample code to configure a phone number
      */
     public void configurePhoneNumber() {
-        PhoneNumber phoneNumber = new PhoneNumber("PHONENUMBER_TO_CONFIGURE");
+        PhoneNumberIdentifier phoneNumber = new PhoneNumberIdentifier("PHONENUMBER_TO_CONFIGURE");
         PstnConfiguration pstnConfiguration = new PstnConfiguration();
         pstnConfiguration.setApplicationId("APPLICATION_ID");
         pstnConfiguration.setCallbackUrl("CALLBACK_URL");
@@ -355,8 +355,8 @@ public class ReadmeSamples {
      */
     public void beginReleasePhoneNumbers() {
         Duration duration = Duration.ofSeconds(1);
-        PhoneNumber phoneNumber = new PhoneNumber("PHONE_NUMBER_TO_RELEASE");
-        List<PhoneNumber> phoneNumbers = new ArrayList<>();
+        PhoneNumberIdentifier phoneNumber = new PhoneNumberIdentifier("PHONE_NUMBER_TO_RELEASE");
+        List<PhoneNumberIdentifier> phoneNumbers = new ArrayList<>();
         phoneNumbers.add(phoneNumber);
         PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
 

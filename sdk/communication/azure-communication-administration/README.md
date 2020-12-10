@@ -105,7 +105,7 @@ unique ID of the user that was created.
 
 <!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L80-L81 -->
 ```java
-CommunicationUser user = communicationIdentityClient.createUser();
+CommunicationUserIdentifier user = communicationIdentityClient.createUser();
 System.out.println("User id: " + user.getId());
 ```
 
