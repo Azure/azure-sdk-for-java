@@ -9,6 +9,10 @@ import com.azure.cosmos.models.IndexingPolicy;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Class for determining if the index policy currenlt applied to the container matches the index policy that is
+ * specified on an entities' @CosmosIndexingPolicy annotation
+ */
 public class IndexPolicyCompareService {
 
     public static boolean policyNeedsUpdate(IndexingPolicy existingPolicy, IndexingPolicy newPolicy) {
@@ -33,7 +37,9 @@ public class IndexPolicyCompareService {
             .collect(Collectors.toList());
 
         return (existingListDiff.size() == 0 && newListDiff.size() == 0)
-            || (newListDiff.size() == 0 && existingListDiff.size() == 1 && existingListDiff.get(0).getPath().equals("/*"));
+            || (newListDiff.size() == 0
+            && existingListDiff.size() == 1
+            && existingListDiff.get(0).getPath().equals("/*"));
     }
 
     // Returns true if the lists are the same or the only difference is that the existing paths contain the etag field
@@ -47,7 +53,9 @@ public class IndexPolicyCompareService {
             .collect(Collectors.toList());
 
         return (existingListDiff.size() == 0 && newListDiff.size() == 0)
-            || (newListDiff.size() == 0 && existingListDiff.size() == 1 && existingListDiff.get(0).getPath().equals("/\"_etag\"/?"));
+            || (newListDiff.size() == 0
+            && existingListDiff.size() == 1
+            && existingListDiff.get(0).getPath().equals("/\"_etag\"/?"));
     }
 
 
