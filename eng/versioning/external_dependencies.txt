@@ -110,6 +110,7 @@ org.springframework.kafka:spring-kafka;2.5.7.RELEASE
 org.springframework.security:spring-security-config;5.3.5.RELEASE
 org.springframework.security:spring-security-core;5.3.5.RELEASE
 org.springframework.security:spring-security-oauth2-client;5.3.5.RELEASE
+org.springframework.security:spring-security-oauth2-resource-server;5.3.5.RELEASE
 org.springframework.security:spring-security-oauth2-core;5.3.5.RELEASE
 org.springframework.security:spring-security-oauth2-jose;5.3.5.RELEASE
 org.springframework.security:spring-security-web;5.3.5.RELEASE
