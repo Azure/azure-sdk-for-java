@@ -91,18 +91,19 @@ public final class CommunicationTokenCredential implements AutoCloseable {
             throw logger.logExceptionAsError(
                 new RuntimeException("getToken called on closed CommunicationTokenCredential object"));
         }
-        synchronized (this) {
-            // no valid token to return and can refresh
-            if ((accessToken == null || accessToken.isExpired()) && refresher != null) {
-                return fetchFreshToken()
-                    .map(token -> {
-                        accessToken = tokenParser.parseJWTToken(token);
-                        return accessToken;
-                    });
-                
+        if ((accessToken == null || accessToken.isExpired()) && refresher != null) {
+            synchronized (this) {
+                // no valid token to return and can refresh
+                if ((accessToken == null || accessToken.isExpired()) && refresher != null) {
+                    return fetchFreshToken()
+                        .map(token -> {
+                            accessToken = tokenParser.parseJWTToken(token);
+                            return accessToken;
+                        });
+                }
             }
-            return Mono.just(accessToken);
         }
+        return Mono.just(accessToken);
     }
 
     @Override
