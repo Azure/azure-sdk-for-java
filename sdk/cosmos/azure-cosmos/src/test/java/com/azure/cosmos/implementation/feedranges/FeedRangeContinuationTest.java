@@ -8,7 +8,6 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternalUtils;
 import com.azure.cosmos.implementation.routing.Range;
 import org.testng.annotations.Test;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -17,53 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class FeedRangeContinuationTest {
     @Test(groups = "unit")
-    public void feedRangeCompositeContinuation_PKRangeId_toJsonFromJson() throws IOException {
-        String continuationDummy = UUID.randomUUID().toString();
-        String pkRangeId = UUID.randomUUID().toString();
-        FeedRangePartitionKeyRangeImpl feedRange = new FeedRangePartitionKeyRangeImpl(pkRangeId);
-
-        List<Range<String>> ranges = new ArrayList<>();
-        ranges.add(new Range<>("AA", "BB", true, false));
-        ranges.add(new Range<>("CC", "DD", true, false));
-
-        String containerRid =  "/cols/" + UUID.randomUUID().toString();
-
-        FeedRangeCompositeContinuationImpl continuation = new FeedRangeCompositeContinuationImpl(
-            containerRid,
-            feedRange,
-            ranges,
-            continuationDummy
-        );
-
-        String representation = continuation.toJson();
-        assertThat(representation)
-            .isEqualTo(
-                String.format(
-                    "{\"V\":0," +
-                    "\"Rid\":\"%s\"," +
-                    "\"Continuation\":[" +
-                        "{\"token\":\"%s\",\"range\":{\"min\":\"AA\",\"max\":\"BB\"}}," +
-                        "{\"token\":\"%s\",\"range\":{\"min\":\"CC\",\"max\":\"DD\"}}" +
-                    "]," +
-                    "\"PKRangeId\":\"%s\"}",
-                    containerRid,
-                    continuationDummy,
-                    continuationDummy,
-                    pkRangeId));
-
-        assertThat(FeedRangeContinuation.tryParse(representation))
-            .isNotNull()
-            .isInstanceOf(FeedRangeCompositeContinuationImpl.class);
-
-        FeedRangeCompositeContinuationImpl continuationDeserialized =
-            (FeedRangeCompositeContinuationImpl)FeedRangeContinuation.tryParse(representation);
-
-        String representationAfterDeserialization = continuationDeserialized.toJson();
-        assertThat(representationAfterDeserialization).isEqualTo(representation);
-    }
-
-    @Test(groups = "unit")
-    public void feedRangeCompositeContinuation_Epk_toJsonFromJson() throws IOException {
+    public void feedRangeCompositeContinuation_Epk_toJsonFromJson() {
         String continuationDummy = UUID.randomUUID().toString();
         Range<String> range = new Range<>("AA", "EE", true, false);
         FeedRangeEpkImpl feedRange = new FeedRangeEpkImpl(range);
@@ -72,7 +25,7 @@ public class FeedRangeContinuationTest {
         ranges.add(new Range<>("AA", "BB", true, false));
         ranges.add(new Range<>("CC", "DD", true, false));
 
-        String containerRid =  "/cols/" + UUID.randomUUID().toString();
+        String containerRid = "/cols/" + UUID.randomUUID().toString();
 
         FeedRangeCompositeContinuationImpl continuation = new FeedRangeCompositeContinuationImpl(
             containerRid,
@@ -108,7 +61,53 @@ public class FeedRangeContinuationTest {
     }
 
     @Test(groups = "unit")
-    public void feedRangeCompositeContinuation_PK_toJsonFromJson() throws IOException {
+    public void feedRangeCompositeContinuation_PKRangeId_toJsonFromJson() {
+        String continuationDummy = UUID.randomUUID().toString();
+        String pkRangeId = UUID.randomUUID().toString();
+        FeedRangePartitionKeyRangeImpl feedRange = new FeedRangePartitionKeyRangeImpl(pkRangeId);
+
+        List<Range<String>> ranges = new ArrayList<>();
+        ranges.add(new Range<>("AA", "BB", true, false));
+        ranges.add(new Range<>("CC", "DD", true, false));
+
+        String containerRid = "/cols/" + UUID.randomUUID().toString();
+
+        FeedRangeCompositeContinuationImpl continuation = new FeedRangeCompositeContinuationImpl(
+            containerRid,
+            feedRange,
+            ranges,
+            continuationDummy
+        );
+
+        String representation = continuation.toJson();
+        assertThat(representation)
+            .isEqualTo(
+                String.format(
+                    "{\"V\":0," +
+                        "\"Rid\":\"%s\"," +
+                        "\"Continuation\":[" +
+                        "{\"token\":\"%s\",\"range\":{\"min\":\"AA\",\"max\":\"BB\"}}," +
+                        "{\"token\":\"%s\",\"range\":{\"min\":\"CC\",\"max\":\"DD\"}}" +
+                        "]," +
+                        "\"PKRangeId\":\"%s\"}",
+                    containerRid,
+                    continuationDummy,
+                    continuationDummy,
+                    pkRangeId));
+
+        assertThat(FeedRangeContinuation.tryParse(representation))
+            .isNotNull()
+            .isInstanceOf(FeedRangeCompositeContinuationImpl.class);
+
+        FeedRangeCompositeContinuationImpl continuationDeserialized =
+            (FeedRangeCompositeContinuationImpl)FeedRangeContinuation.tryParse(representation);
+
+        String representationAfterDeserialization = continuationDeserialized.toJson();
+        assertThat(representationAfterDeserialization).isEqualTo(representation);
+    }
+
+    @Test(groups = "unit")
+    public void feedRangeCompositeContinuation_PK_toJsonFromJson() {
         String continuationDummy = UUID.randomUUID().toString();
         PartitionKeyInternal partitionKey = PartitionKeyInternalUtils.createPartitionKeyInternal(
             "Test");
@@ -118,7 +117,7 @@ public class FeedRangeContinuationTest {
         ranges.add(new Range<>("AA", "BB", true, false));
         ranges.add(new Range<>("CC", "DD", true, false));
 
-        String containerRid =  "/cols/" + UUID.randomUUID().toString();
+        String containerRid = "/cols/" + UUID.randomUUID().toString();
 
         FeedRangeCompositeContinuationImpl continuation = new FeedRangeCompositeContinuationImpl(
             containerRid,

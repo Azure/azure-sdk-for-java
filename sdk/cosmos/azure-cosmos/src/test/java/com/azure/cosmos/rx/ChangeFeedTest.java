@@ -106,7 +106,7 @@ public class ChangeFeedTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = 5 * TIMEOUT)
-    public void changesFromPartitionKeyRangeId_FromBeginning() throws Exception {
+    public void changesFromPartitionKeyRangeId_FromBeginning() {
         List<String> partitionKeyRangeIds = client.readPartitionKeyRanges(getCollectionLink(), null)
                 .flatMap(p -> Flux.fromIterable(p.getResults()), 1)
                 .map(Resource::getId)

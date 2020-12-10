@@ -9,19 +9,15 @@ import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState
 import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
-import com.azure.cosmos.implementation.routing.Range;
 import org.testng.annotations.Test;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ChangeFeedStateTest {
     @Test(groups = "unit")
-    public void changeFeedState_startFromNow_PKRangeId_toJsonFromJson() throws IOException {
+    public void changeFeedState_startFromNow_PKRangeId_toJsonFromJson() {
         String containerRid = "/cols/" + UUID.randomUUID().toString();
         String pkRangeId = UUID.randomUUID().toString();
         FeedRangePartitionKeyRangeImpl feedRange = new FeedRangePartitionKeyRangeImpl(pkRangeId);
@@ -38,10 +34,10 @@ public class ChangeFeedStateTest {
             .isEqualTo(
                 String.format(
                     "{\"V\":0," +
-                    "\"Rid\":\"%s\"," +
-                    "\"Mode\":\"INCREMENTAL\"," +
-                    "\"StartFrom\":{\"Type\":\"NOW\"}," +
-                    "\"PKRangeId\":\"%s\"}",
+                        "\"Rid\":\"%s\"," +
+                        "\"Mode\":\"INCREMENTAL\"," +
+                        "\"StartFrom\":{\"Type\":\"NOW\"}," +
+                        "\"PKRangeId\":\"%s\"}",
                     containerRid,
                     pkRangeId));
 
@@ -54,10 +50,6 @@ public class ChangeFeedStateTest {
 
         String representationAfterDeserialization = stateWithoutContinuationDeserialized.toJson();
         assertThat(representationAfterDeserialization).isEqualTo(representation);
-
-        List<Range<String>> ranges = new ArrayList<>();
-        ranges.add(new Range<>("AA", "BB", true, false));
-        ranges.add(new Range<>("CC", "DD", true, false));
 
         String continuationDummy = UUID.randomUUID().toString();
         String continuationJson = String.format(
@@ -75,7 +67,8 @@ public class ChangeFeedStateTest {
 
         FeedRangeContinuation continuation = FeedRangeContinuation.convert(continuationJson);
 
-        ChangeFeedState stateWithContinuation = stateWithoutContinuation.setContinuation(continuation);
+        ChangeFeedState stateWithContinuation =
+            stateWithoutContinuation.setContinuation(continuation);
         representation = stateWithContinuation.toJson();
         assertThat(representation)
             .isEqualTo(
