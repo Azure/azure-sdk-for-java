@@ -65,7 +65,7 @@ jobs:
 
       - pwsh: |
           $(Build.SourcesDirectory)/eng/common/TestResources/Import-AzModules.ps1
-          
+
           $subscriptionConfiguration = @"
             $(SubscriptionConfiguration)
           "@ | ConvertFrom-Json -AsHashtable;
@@ -92,9 +92,17 @@ jobs:
           workingDir: common/smoke-test/
         displayName: List packages installed from the feed
 
-      - script: npm run smoke-test -- --devops-logging
-        workingDirectory: common/smoke-test/
-        displayName: Run smoke tests
+      - task: Maven@3
+        displayName: 'Build and Install again, JDK Version: $(JavaBuildVersion) '
+            inputs:
+                mavenPomFile: pom_generated.xml
+                goals: 'install'
+                options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
+                mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+                javaHomeOption: 'JDKVersion'
+                jdkVersionOption: $(JavaBuildVersion)
+                jdkArchitectureOption: 'x64'
+                publishJUnitResults: false
 
       - template: /eng/common/TestResources/remove-test-resources.yml
         parameters:
