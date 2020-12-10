@@ -12,7 +12,6 @@ import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
 import com.azure.spring.data.cosmos.repository.ReactiveCosmosRepository;
 import org.reactivestreams.Publisher;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
@@ -27,9 +26,6 @@ import static com.azure.spring.data.cosmos.repository.support.IndexPolicyCompare
  * Repository class for simple reactive Cosmos operation
  */
 public class SimpleReactiveCosmosRepository<T, K extends Serializable> implements ReactiveCosmosRepository<T, K> {
-
-    @Autowired
-    IndexPolicyCompareService indexPolicyCompareService;
 
     private final CosmosEntityInformation<T, K> entityInformation;
     private final ReactiveCosmosOperations cosmosOperations;
