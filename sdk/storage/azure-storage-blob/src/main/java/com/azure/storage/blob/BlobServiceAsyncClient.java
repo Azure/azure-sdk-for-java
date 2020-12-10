@@ -815,7 +815,6 @@ public final class BlobServiceAsyncClient {
      * @return A {@code String} representing all SAS query parameters.
      */
     public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues) {
-        throwOnAnonymousAccess();
         return generateAccountSas(accountSasSignatureValues, Context.NONE);
     }
 

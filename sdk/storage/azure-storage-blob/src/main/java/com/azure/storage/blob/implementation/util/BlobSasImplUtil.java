@@ -304,7 +304,7 @@ public class BlobSasImplUtil {
             this.expiryTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
             canonicalName,
             this.identifier == null ? "" : this.identifier,
-            this.sasIpRange == null ? "" : "this.sasIpRange.toString()",
+            this.sasIpRange == null ? "" : this.sasIpRange.toString(),
             this.protocol == null ? "" : this.protocol.toString(),
             version,
             resource,

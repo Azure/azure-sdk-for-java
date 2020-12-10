@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.datalake.implementation.util;
 
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.file.datalake.DataLakeServiceVersion;
@@ -129,16 +130,19 @@ public class DataLakeSasImplUtil {
      * Generates a Sas signed with a {@link StorageSharedKeyCredential}
      *
      * @param storageSharedKeyCredentials {@link StorageSharedKeyCredential}
+     * @param context Additional context that is passed through the code when generating a SAS.
      * @return A String representing the Sas
      */
-    public String generateSas(StorageSharedKeyCredential storageSharedKeyCredentials) {
+    public String generateSas(StorageSharedKeyCredential storageSharedKeyCredentials, Context context) {
         StorageImplUtils.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
 
         ensureState();
 
         // Signature is generated on the un-url-encoded values.
         final String canonicalName = getCanonicalName(storageSharedKeyCredentials.getAccountName());
-        final String signature = storageSharedKeyCredentials.computeHmac256(stringToSign(canonicalName));
+        final String stringToSign = stringToSign(canonicalName);
+        StorageImplUtils.logStringToSign(logger, stringToSign, context);
+        final String signature = storageSharedKeyCredentials.computeHmac256(stringToSign);
 
         return encode(null /* userDelegationKey */, signature);
     }
@@ -148,9 +152,10 @@ public class DataLakeSasImplUtil {
      *
      * @param delegationKey {@link UserDelegationKey}
      * @param accountName The account name
+     * @param context Additional context that is passed through the code when generating a SAS.
      * @return A String representing the Sas
      */
-    public String generateUserDelegationSas(UserDelegationKey delegationKey, String accountName) {
+    public String generateUserDelegationSas(UserDelegationKey delegationKey, String accountName, Context context) {
         StorageImplUtils.assertNotNull("delegationKey", delegationKey);
         StorageImplUtils.assertNotNull("accountName", accountName);
 
@@ -158,8 +163,9 @@ public class DataLakeSasImplUtil {
 
         // Signature is generated on the un-url-encoded values.
         final String canonicalName = getCanonicalName(accountName);
-        String signature = StorageImplUtils.computeHMac256(
-            delegationKey.getValue(), stringToSign(delegationKey, canonicalName));
+        final String stringToSign = stringToSign(delegationKey, canonicalName);
+        StorageImplUtils.logStringToSign(logger, stringToSign, context);
+        String signature = StorageImplUtils.computeHMac256(delegationKey.getValue(), stringToSign);
 
         return encode(delegationKey, signature);
     }
