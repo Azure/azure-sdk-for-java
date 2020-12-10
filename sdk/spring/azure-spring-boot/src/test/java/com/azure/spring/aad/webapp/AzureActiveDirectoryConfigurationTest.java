@@ -130,8 +130,9 @@ public class AzureActiveDirectoryConfigurationTest {
         assertTrue(clientRepo.isAuthzClient("graph"));
 
         List<ClientRegistration> clients = collectClients(clientRepo);
-        assertEquals(1, clients.size());
-        assertEquals("azure", clients.get(0).getRegistrationId());
+        assertEquals(2, clients.size());
+        assertEquals("graph", clients.get(0).getRegistrationId());
+        assertEquals("azure", clients.get(1).getRegistrationId());
     }
 
     @Test

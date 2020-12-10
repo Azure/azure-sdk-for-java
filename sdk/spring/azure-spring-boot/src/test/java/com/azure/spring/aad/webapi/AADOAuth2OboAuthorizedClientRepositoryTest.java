@@ -54,7 +54,7 @@ public class AADOAuth2OboAuthorizedClientRepositoryTest {
 
     @Test
     @SuppressWarnings("unchecked")
-    public void loadAzureAuthorizedClient() throws ExecutionException, InterruptedException {
+    public void testLoadAzureAuthorizedClient() throws ExecutionException, InterruptedException {
 
         ConfidentialClientApplication confidentialClientApplication = mock(ConfidentialClientApplication.class);
 

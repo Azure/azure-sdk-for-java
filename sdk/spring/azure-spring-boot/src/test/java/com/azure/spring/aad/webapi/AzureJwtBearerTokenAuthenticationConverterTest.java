@@ -6,8 +6,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import com.azure.spring.aad.webapi.AzureJwtBearerTokenAuthenticationConverter;
-import com.azure.spring.aad.webapi.AzureOAuth2AuthenticatedPrincipal;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
