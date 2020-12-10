@@ -12,7 +12,6 @@ import com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate;
 import com.azure.spring.data.cosmos.domain.ComplexIndexPolicyEntity;
 import com.azure.spring.data.cosmos.domain.IndexPolicyEntity;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
-import com.azure.spring.data.cosmos.repository.repository.ReactiveIndexPolicyRepository;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import com.azure.spring.data.cosmos.repository.support.SimpleReactiveCosmosRepository;
 import org.junit.Test;
@@ -33,9 +32,6 @@ public class ReactiveIndexPolicyUpdateIT {
 
     @Autowired
     CosmosAsyncClient cosmosAsyncClient;
-
-    @Autowired
-    ReactiveIndexPolicyRepository indexPolicyRepository;
 
     @Autowired
     ReactiveCosmosTemplate template;
