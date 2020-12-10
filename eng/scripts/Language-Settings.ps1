@@ -227,7 +227,7 @@ function Find-Artifacts-For-Apireview($artifactDir, $pkgName = $null){
     $filter = $pkgName + "*sources.jar"
   }
 
-  # Find all nupkg files in given artifact directory and skip any symbol files
+  # Find all source jar files in given artifact directory
   $files = Get-ChildItem -Path $artifactDir -Recurse -Include $filter | Select-Object Name, FullName
   if($files){
     foreach($f in $files){
