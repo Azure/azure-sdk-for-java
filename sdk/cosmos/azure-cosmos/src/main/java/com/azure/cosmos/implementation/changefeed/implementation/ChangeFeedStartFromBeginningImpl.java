@@ -13,11 +13,6 @@ class ChangeFeedStartFromBeginningImpl extends ChangeFeedStartFromInternal {
     }
 
     @Override
-    void accept(ChangeFeedStartFromVisitor visitor, RxDocumentServiceRequest request) {
-        visitor.visit(this, request);
-    }
-
-    @Override
     public void populatePropertyBag() {
         super.populatePropertyBag();
 
@@ -25,5 +20,12 @@ class ChangeFeedStartFromBeginningImpl extends ChangeFeedStartFromInternal {
             this,
             Constants.Properties.CHANGE_FEED_START_FROM_TYPE,
             ChangeFeedStartFromTypes.BEGINNING);
+    }
+
+    @Override
+    public void populateRequest(ChangeFeedStartFromVisitor visitor,
+                                RxDocumentServiceRequest request) {
+
+        visitor.visit(this, request);
     }
 }

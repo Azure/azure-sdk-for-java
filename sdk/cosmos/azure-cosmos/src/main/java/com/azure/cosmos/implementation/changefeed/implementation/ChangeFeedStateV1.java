@@ -3,7 +3,6 @@ package com.azure.cosmos.implementation.changefeed.implementation;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
@@ -16,9 +15,9 @@ import static com.azure.cosmos.BridgeInternal.setProperty;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class ChangeFeedStateV1 extends ChangeFeedState {
-    private final ChangeFeedMode mode;
     private final String containerRid;
     private final FeedRangeInternal feedRange;
+    private final ChangeFeedMode mode;
     private final ChangeFeedStartFromInternal startFromSettings;
     private FeedRangeContinuation continuation;
 
@@ -39,17 +38,17 @@ public class ChangeFeedStateV1 extends ChangeFeedState {
     }
 
     @Override
+    public FeedRangeContinuation getContinuation() {
+        return this.continuation;
+    }
+
+    @Override
     public ChangeFeedState setContinuation(FeedRangeContinuation continuation) {
         checkNotNull(continuation, "Argument 'continuation' must not be null.");
         continuation.validateContainer(this.containerRid);
         this.continuation = continuation;
 
         return this;
-    }
-
-    @Override
-    public FeedRangeContinuation getContinuation() {
-        return this.continuation;
     }
 
     @Override
@@ -69,10 +68,12 @@ public class ChangeFeedStateV1 extends ChangeFeedState {
 
     @Override
     public String applyServerResponseContinuation(String serverContinuationToken) {
-        checkNotNull(serverContinuationToken, "Argument 'serverContinuationToken' must not be null");
+        checkNotNull(serverContinuationToken, "Argument 'serverContinuationToken' must not be " +
+            "null");
 
         if (this.continuation == null) {
-            this.continuation = FeedRangeContinuation.createForFullFeedRange(this.containerRid, this.feedRange);
+            this.continuation = FeedRangeContinuation.createForFullFeedRange(this.containerRid,
+                this.feedRange);
         }
 
         this.continuation.replaceContinuation(serverContinuationToken);
@@ -101,10 +102,9 @@ public class ChangeFeedStateV1 extends ChangeFeedState {
         if (continuationToken == null) {
             effectiveFeedRange = this.feedRange;
             effectiveStartFrom = this.startFromSettings;
-        }
-        else {
+        } else {
             effectiveFeedRange = new FeedRangeEpkImpl(continuationToken.getRange());
-            effectiveStartFrom = new ChangeFeedStartFromEtagAndFeedRangeImpl(
+            effectiveStartFrom = new ChangeFeedStartFromETagAndFeedRangeImpl(
                 continuationToken.getToken(),
                 effectiveFeedRange);
         }
@@ -114,35 +114,15 @@ public class ChangeFeedStateV1 extends ChangeFeedState {
         // this is necessary because when merging continuation tokens
         // for example you could have a PkRange feed range
         // with multiple composite continuations for different
-        // sub ranges with different etags/continuations
+        // sub ranges with different eTags/continuations
         // worst case this is the same range as above.
         effectiveFeedRange.accept(
             FeedRangeRxDocumentServiceRequestPopulatorVisitorImpl.SINGLETON,
             request);
 
-        effectiveStartFrom.accept(
+        effectiveStartFrom.populateRequest(
             PopulateStartFromRequestOptionVisitorImpl.SINGLETON,
             request);
-    }
-
-    @Override
-    public void populateRequest(RxDocumentServiceRequest request, int maxItemCount) {
-        // Page size
-        request.getHeaders().put(
-            HttpConstants.HttpHeaders.PAGE_SIZE,
-            String.valueOf(maxItemCount));
-
-        if (this.mode == ChangeFeedMode.INCREMENTAL) {
-            request.getHeaders().put(
-                HttpConstants.HttpHeaders.A_IM,
-                HttpConstants.A_IMHeaderValues.INCREMENTAL_FEED);
-        } else {
-
-            // TODO fabianm implement full fiedelity
-            throw new IllegalStateException("Unsupported change feed mode");
-        }
-
-        this.populateEffectiveRangeAndStartFromSettingsToRequest(request);
     }
 
     @Override
@@ -179,6 +159,26 @@ public class ChangeFeedStateV1 extends ChangeFeedState {
         } else {
             this.feedRange.setProperties(this, true);
         }
+    }
+
+    @Override
+    public void populateRequest(RxDocumentServiceRequest request, int maxItemCount) {
+        // Page size
+        request.getHeaders().put(
+            HttpConstants.HttpHeaders.PAGE_SIZE,
+            String.valueOf(maxItemCount));
+
+        if (this.mode == ChangeFeedMode.INCREMENTAL) {
+            request.getHeaders().put(
+                HttpConstants.HttpHeaders.A_IM,
+                HttpConstants.A_IMHeaderValues.INCREMENTAL_FEED);
+        } else {
+
+            // TODO fabianm implement full fidelity
+            throw new IllegalStateException("Unsupported change feed mode");
+        }
+
+        this.populateEffectiveRangeAndStartFromSettingsToRequest(request);
     }
 
     @Override

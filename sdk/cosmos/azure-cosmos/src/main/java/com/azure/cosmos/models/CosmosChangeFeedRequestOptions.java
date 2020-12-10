@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedStartFromInternal;
 import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState;
@@ -103,7 +102,7 @@ public final class CosmosChangeFeedRequestOptions {
 
     // TODO fabianm remove or at least make internal
     void setRequestContinuation(String etag) {
-        this.startFromInternal = ChangeFeedStartFromInternal.createFromEtagAndFeedRange(
+        this.startFromInternal = ChangeFeedStartFromInternal.createFromETagAndFeedRange(
             etag,
             this.feedRangeInternal);
     }
@@ -150,7 +149,7 @@ public final class CosmosChangeFeedRequestOptions {
                 String etag = continuationToken.getToken();
                 return new CosmosChangeFeedRequestOptions(
                     feedRange,
-                    ChangeFeedStartFromInternal.createFromEtagAndFeedRange(etag, feedRange),
+                    ChangeFeedStartFromInternal.createFromETagAndFeedRange(etag, feedRange),
                     mode,
                     changeFeedState);
             }
@@ -176,7 +175,7 @@ public final class CosmosChangeFeedRequestOptions {
         if (etag != null) {
             return new CosmosChangeFeedRequestOptions(
                 FeedRangeInternal.convert(feedRange),
-                ChangeFeedStartFromInternal.createFromEtagAndFeedRange(etag, FeedRangeInternal.convert(feedRange)),
+                ChangeFeedStartFromInternal.createFromETagAndFeedRange(etag, FeedRangeInternal.convert(feedRange)),
                 ChangeFeedMode.INCREMENTAL,
                 null);
         }

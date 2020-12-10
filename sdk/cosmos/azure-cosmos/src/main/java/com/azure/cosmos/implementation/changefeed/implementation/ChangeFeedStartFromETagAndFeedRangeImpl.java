@@ -8,21 +8,21 @@ import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-class ChangeFeedStartFromEtagAndFeedRangeImpl extends ChangeFeedStartFromInternal {
-    private final String etag;
+class ChangeFeedStartFromETagAndFeedRangeImpl extends ChangeFeedStartFromInternal {
+    private final String eTag;
     private final FeedRangeInternal feedRange;
 
-    public ChangeFeedStartFromEtagAndFeedRangeImpl(String etag, FeedRangeInternal feedRange) {
+    public ChangeFeedStartFromETagAndFeedRangeImpl(String eTag, FeedRangeInternal feedRange) {
         super();
 
         checkNotNull(feedRange, "Argument 'feedRange' must not be null");
 
-        this.etag = etag;
+        this.eTag = eTag;
         this.feedRange = feedRange;
     }
 
-    public String getEtag() {
-        return this.etag;
+    public String getETag() {
+        return this.eTag;
     }
 
     public FeedRangeInternal getFeedRange() {
@@ -30,24 +30,20 @@ class ChangeFeedStartFromEtagAndFeedRangeImpl extends ChangeFeedStartFromInterna
     }
 
     @Override
-    void accept(ChangeFeedStartFromVisitor visitor, RxDocumentServiceRequest request) {
-        visitor.visit(this, request);
-    }
-
-    @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof ChangeFeedStartFromEtagAndFeedRangeImpl)) {
+        if (!(obj instanceof ChangeFeedStartFromETagAndFeedRangeImpl)) {
             return false;
         }
 
-        ChangeFeedStartFromEtagAndFeedRangeImpl otherStartFrom = (ChangeFeedStartFromEtagAndFeedRangeImpl) obj;
+        ChangeFeedStartFromETagAndFeedRangeImpl otherStartFrom =
+            (ChangeFeedStartFromETagAndFeedRangeImpl)obj;
 
-        if (this.etag == null) {
-            return otherStartFrom.etag == null &&
+        if (this.eTag == null) {
+            return otherStartFrom.eTag == null &&
                 this.feedRange.equals(otherStartFrom.feedRange);
         }
 
-        return  this.etag.compareTo(otherStartFrom.etag) == 0 &&
+        return this.eTag.compareTo(otherStartFrom.eTag) == 0 &&
             this.feedRange.equals(otherStartFrom.feedRange);
     }
 
@@ -56,10 +52,17 @@ class ChangeFeedStartFromEtagAndFeedRangeImpl extends ChangeFeedStartFromInterna
         int hash = 1;
         hash = (hash * 397) ^ this.feedRange.hashCode();
 
-        if (this.etag != null) {
-            hash = (hash * 397) ^ this.etag.hashCode();
+        if (this.eTag != null) {
+            hash = (hash * 397) ^ this.eTag.hashCode();
         }
 
         return hash;
+    }
+
+    @Override
+    public void populateRequest(ChangeFeedStartFromVisitor visitor,
+                                RxDocumentServiceRequest request) {
+
+        visitor.visit(this, request);
     }
 }

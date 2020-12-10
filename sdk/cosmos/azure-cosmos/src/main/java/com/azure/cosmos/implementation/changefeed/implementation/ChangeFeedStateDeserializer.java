@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import java.io.IOException;
 import java.util.Locale;
 
-public class ChangeFeedStateDeserializer extends StdDeserializer<ChangeFeedState>  {
+public class ChangeFeedStateDeserializer extends StdDeserializer<ChangeFeedState> {
 
     private static final long serialVersionUID = 1L;
 
@@ -76,8 +76,7 @@ public class ChangeFeedStateDeserializer extends StdDeserializer<ChangeFeedState
 
         try {
             mode = ChangeFeedMode.valueOf(modeNode.textValue().toUpperCase(Locale.ROOT));
-        }
-        catch (IllegalArgumentException argException) {
+        } catch (IllegalArgumentException argException) {
             throw JsonMappingException.from(
                 parser,
                 String.format(
@@ -101,7 +100,8 @@ public class ChangeFeedStateDeserializer extends StdDeserializer<ChangeFeedState
 
         FeedRangeInternal feedRange;
         FeedRangeContinuation continuation = null;
-        JsonNode continuationNode = rootNode.get(Constants.Properties.CHANGE_FEED_STATE_CONTINUATION);
+        JsonNode continuationNode =
+            rootNode.get(Constants.Properties.CHANGE_FEED_STATE_CONTINUATION);
         if (continuationNode != null) {
             continuation = FeedRangeContinuationDeserializer
                 .deserializeFeedRangeContinuation(continuationNode, mapper, parser);

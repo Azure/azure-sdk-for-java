@@ -8,12 +8,15 @@ abstract class ChangeFeedStartFromVisitor {
     public abstract void visit(
         ChangeFeedStartFromNowImpl startFromNow,
         RxDocumentServiceRequest request);
+
     public abstract void visit(
         ChangeFeedStartFromPointInTimeImpl startFromTime,
         RxDocumentServiceRequest request);
+
     public abstract void visit(
-        ChangeFeedStartFromEtagAndFeedRangeImpl startFromEtagAndFeedRange,
+        ChangeFeedStartFromETagAndFeedRangeImpl startFromETagAndFeedRange,
         RxDocumentServiceRequest request);
+
     public abstract void visit(
         ChangeFeedStartFromBeginningImpl startFromBeginning,
         RxDocumentServiceRequest request);

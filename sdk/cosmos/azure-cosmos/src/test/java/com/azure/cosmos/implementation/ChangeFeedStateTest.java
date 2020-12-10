@@ -98,6 +98,4 @@ public class ChangeFeedStateTest {
         representationAfterDeserialization = stateWithContinuationDeserialized.toJson();
         assertThat(representationAfterDeserialization).isEqualTo(representation);
     }
-
-    // TODO fabianm - add more unit tests
 }

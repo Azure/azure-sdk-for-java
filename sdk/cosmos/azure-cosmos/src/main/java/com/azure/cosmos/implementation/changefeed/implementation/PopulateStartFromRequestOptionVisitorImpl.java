@@ -3,8 +3,6 @@
 package com.azure.cosmos.implementation.changefeed.implementation;
 
 import java.time.Instant;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
@@ -62,17 +60,17 @@ class PopulateStartFromRequestOptionVisitorImpl extends ChangeFeedStartFromVisit
 
     @Override
     public void visit(
-        ChangeFeedStartFromEtagAndFeedRangeImpl startFromEtagAndFeedRange,
+        ChangeFeedStartFromETagAndFeedRangeImpl startFromEtagAndFeedRange,
         RxDocumentServiceRequest request) {
 
         checkNotNull(startFromEtagAndFeedRange, "Argument 'startFromEtagAndFeedRange' must not be null.");
         checkNotNull(request, "Argument 'request' must not be null.");
 
-        if (startFromEtagAndFeedRange.getEtag() != null) {
+        if (startFromEtagAndFeedRange.getETag() != null) {
             // On REST level, change feed is using IfNoneMatch/ETag instead of continuation
             request.getHeaders().put(
                 HttpConstants.HttpHeaders.IF_NONE_MATCH,
-                startFromEtagAndFeedRange.getEtag());
+                startFromEtagAndFeedRange.getETag());
         }
 
         startFromEtagAndFeedRange.getFeedRange().accept(

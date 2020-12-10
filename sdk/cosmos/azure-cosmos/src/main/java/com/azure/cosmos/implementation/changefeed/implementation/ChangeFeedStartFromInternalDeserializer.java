@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.time.Instant;
 import java.util.Locale;
 
-public class ChangeFeedStartFromInternalDeserializer extends StdDeserializer<ChangeFeedStartFromInternal>  {
+public class ChangeFeedStartFromInternalDeserializer extends StdDeserializer<ChangeFeedStartFromInternal> {
 
     private static final long serialVersionUID = 1L;
 
@@ -45,7 +45,7 @@ public class ChangeFeedStartFromInternalDeserializer extends StdDeserializer<Cha
     public static ChangeFeedStartFromInternal deserializeStartFromInternal(
         JsonNode rootNode,
         ObjectMapper mapper,
-        JsonParser parser)  throws IOException {
+        JsonParser parser) throws IOException {
 
         JsonNode typeNode = rootNode.get(Constants.Properties.CHANGE_FEED_START_FROM_TYPE);
         if (typeNode == null || !typeNode.isTextual() || Strings.isNullOrWhiteSpace(typeNode.textValue())) {
@@ -59,8 +59,7 @@ public class ChangeFeedStartFromInternalDeserializer extends StdDeserializer<Cha
         ChangeFeedStartFromTypes type;
         try {
             type = ChangeFeedStartFromTypes.valueOf(typeNode.textValue().toUpperCase(Locale.ROOT));
-        }
-        catch (IllegalArgumentException argException) {
+        } catch (IllegalArgumentException argException) {
             throw JsonMappingException.from(
                 parser,
                 String.format(
@@ -78,7 +77,8 @@ public class ChangeFeedStartFromInternalDeserializer extends StdDeserializer<Cha
                 return new ChangeFeedStartFromNowImpl();
 
             case POINT_IN_TIME:
-                JsonNode pitNode = rootNode.get(Constants.Properties.CHANGE_FEED_START_FROM_POINT_IN_TIME_MS);
+                JsonNode pitNode =
+                    rootNode.get(Constants.Properties.CHANGE_FEED_START_FROM_POINT_IN_TIME_MS);
                 if (pitNode == null || !pitNode.isLong()) {
                     throw JsonMappingException.from(
                         parser,
@@ -89,8 +89,8 @@ public class ChangeFeedStartFromInternalDeserializer extends StdDeserializer<Cha
                 return new ChangeFeedStartFromPointInTimeImpl(Instant.ofEpochMilli(pitNode.longValue()));
 
             case LEASE:
-                JsonNode etagNode = rootNode.get(Constants.Properties.CHANGE_FEED_START_FROM_ETAG);
-                if (etagNode == null || !etagNode.isTextual() || Strings.isNullOrWhiteSpace(etagNode.textValue())) {
+                JsonNode eTagNode = rootNode.get(Constants.Properties.CHANGE_FEED_START_FROM_ETAG);
+                if (eTagNode == null || !eTagNode.isTextual() || Strings.isNullOrWhiteSpace(eTagNode.textValue())) {
                     throw JsonMappingException.from(
                         parser,
                         String.format(
@@ -99,8 +99,8 @@ public class ChangeFeedStartFromInternalDeserializer extends StdDeserializer<Cha
                 }
                 FeedRangeInternal feedRange = FeedRangeInternalDeserializer
                     .deserializeFeedRange(rootNode, mapper, parser);
-                return new ChangeFeedStartFromEtagAndFeedRangeImpl(
-                    etagNode.textValue(),
+                return new ChangeFeedStartFromETagAndFeedRangeImpl(
+                    eTagNode.textValue(),
                     feedRange);
 
             default:
