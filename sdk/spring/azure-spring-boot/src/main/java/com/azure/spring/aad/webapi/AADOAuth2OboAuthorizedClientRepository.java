@@ -32,12 +32,12 @@ import java.util.Map;
 
 /**
  * <p>
- * AADOAuth2OboAuthorizedClientRepository
+ * OAuth2AuthorizedClientRepository for obo flow
  * </p>
  */
 public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedClientRepository {
 
-    private static final Logger LOG = LoggerFactory.getLogger(AADOAuth2OboAuthorizedClientRepository.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AADOAuth2OboAuthorizedClientRepository.class);
 
     private static final String OBO_AUTHORIZEDCLIENT_PREFIX = "obo_authorizedclient_";
 
@@ -95,7 +95,7 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
             request.setAttribute(oboAuthorizedClientAttributeName, (T) oAuth2AuthorizedClient);
             return (T) oAuth2AuthorizedClient;
         } catch (Throwable throwable) {
-            LOG.error("Failed to loadAuthorizedClient", throwable);
+            LOGGER.error("Failed to loadAuthorizedClient", throwable);
         }
         return null;
     }
@@ -126,7 +126,7 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
                                                 .authority(authority)
                                                 .build();
         } catch (MalformedURLException e) {
-            LOG.error("Failed to create ConfidentialClientApplication", e);
+            LOGGER.error("Failed to create ConfidentialClientApplication", e);
         }
         return null;
     }

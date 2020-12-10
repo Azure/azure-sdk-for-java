@@ -30,7 +30,7 @@
     <module>azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server</module>
     <module>azure-spring-boot-samples/azure-spring-boot-sample-active-directory-b2c-oidc</module>
     <module>azure-spring-boot-samples/azure-spring-boot-sample-active-directory-backend</module>
-    <module>azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-access-other-resources</module>
+    <module>azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-obo</module>
     <module>azure-spring-boot-samples/azure-spring-boot-sample-active-directory-backend-v2</module>
     <module>azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-stateless</module>
     <module>azure-spring-boot-samples/azure-spring-boot-sample-cosmos</module>
