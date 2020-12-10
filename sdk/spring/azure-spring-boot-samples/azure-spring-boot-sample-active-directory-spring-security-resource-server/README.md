@@ -113,5 +113,5 @@ Authorization: Bearer eyJ0eXAiO ... 0X2tnSQLEANnSPHY0gKcgw
 <!-- LINKS -->
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
-[Register app or web API]: https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app
-[Expose scoped permission to web API]: https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-configure-app-expose-web-apis
+[Register app or web API]: https://docs.microsoft.com/azure/active-directory/develop/quickstart-register-app
+[Expose scoped permission to web API]: https://docs.microsoft.com/azure/active-directory/develop/quickstart-configure-app-expose-web-apis
