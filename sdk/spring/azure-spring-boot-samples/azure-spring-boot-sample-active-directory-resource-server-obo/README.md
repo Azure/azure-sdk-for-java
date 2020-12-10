@@ -1,4 +1,4 @@
-# OAuth 2.0 Sample for Azure AD Spring Boot Starter Resource Server library for Java
+# OAuth 2.0 Sample for azure-spring-boot-sample-active-directory-resource-server-obo library for Java
 
 ## Key concepts
 [Resource server access other resources usage][resource-server-access-other-resources-usage] is more common, this is an extension of the [spring security resource server sample][azure-spring-boot-sample-active-directory-spring-security-resource-server]. Similarly, this sample illustrates how to protect a Java web API by restricting access to its resources to authorized accounts, and the restricted resource will access other restricted resource, such as Graph API and Custom API.
@@ -41,17 +41,27 @@ We need to ensure that this [environment checklist][ready-to-run-checklist] is c
       <artifactId>msal4j</artifactId>
       <version>1.8.0</version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
     </dependency>
+    <dependency>
+      <groupId>com.nimbusds</groupId>
+      <artifactId>nimbus-jose-jwt</artifactId>
+      <version>8.19</version> <!-- {x-version-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.nimbusds</groupId>
+      <artifactId>oauth2-oidc-sdk</artifactId>
+      <version>7.1.1</version> <!-- {x-version-update;com.nimbusds:oauth2-oidc-sdk;external_dependency} -->
+    </dependency>
 </dependencies>
 ```
 
 ### Register your Web API
 You can follow [Register the Web API][register-the-web-api] to add `ResourceAccessGraph.read`, `ResourceAccessGraphCustomResources.read` scopes. 
-Convention current application id url is `api://sample-client-id`, application name is `azure-spring-boot-sample-active-directory-resource-server-access-other-resources`; the application id url of the sample [spring security resource server sample][azure-spring-boot-sample-active-directory-spring-security-resource-server] is `custom-client-id`, the application name is `azure-spring-boot-sample-active-directory-spring-security-resource-server`.  
+Convention current application id url is `api://sample-client-id`, application name is `azure-spring-boot-sample-active-directory-resource-server-obo`; the application id url of the sample [spring security resource server sample][azure-spring-boot-sample-active-directory-spring-security-resource-server] is `custom-client-id`, the application name is `azure-spring-boot-sample-active-directory-spring-security-resource-server`.  
 After adding as shown below:
 
-   ![API Permissions](resource/resource-access-other-resources-add-scope.png)
+   ![API Permissions](resource/resource-server-obo-add-scope.png)
 
-### Add Custom API permissions
+### Add API permissions
 The current Web API will access Graph API and Custom API. 
 
 Sign in to the [Azure portal][azure-portal]. If you have access to multiple tenants, use the **Directory + subscription** filter  in the top menu to select the tenant containing your client app's registration.
@@ -59,7 +69,7 @@ Sign in to the [Azure portal][azure-portal]. If you have access to multiple tena
 #### Add Graph API Permission
 1. Select **Azure Active Directory** > **App registrations**, and then select your current sample application (not your web API).
 
-2. Select **API permissions** > **Add a permission** > **Microsoft APIs** > **Microsoft Graph** > **Delegated permissions**, select **offline_access**, **openid**, **User.Read**, select **Add permission** to complete the process.
+2. Select **API permissions** > **Add a permission** > **Microsoft APIs** > **Microsoft Graph** > **Delegated permissions**, select **User.Read**, select **Add permission** to complete the process.
 
 #### Add Custom API Permission
 
@@ -71,7 +81,7 @@ Sign in to the [Azure portal][azure-portal]. If you have access to multiple tena
 
 ### Grant consent for your tenant
 Respectively grant admin consent to the Graph and Custom permissions. After adding as shown below:
-   ![API Permissions](resource/resource-access-other-resources-add-permissions.png)
+   ![API Permissions](resource/resource-server-obo-add-permissions.png)
 
 ## Examples
 
@@ -80,27 +90,26 @@ Respectively grant admin consent to the Graph and Custom permissions. After addi
 ```yaml
 azure:
   activedirectory:
+    resource-server:
+      obo:
+        enabled: true
     client-id: [resource-server-application-client-id]
     client-secret: [resource-server-application-client-secret]
-    tenant-id: [teanant-id-registered-by-application]
+    tenant-id: [tenant-id-registered-by-application]
     app-id-uri: api://sample-client-id
     authorization:
       graph:
         scopes:
-          - openid
-          - offline_access
           - User.read
       custom:
         scopes:
-          - openid
-          - offline_access
           - api://custom-client-id/File.read
 ```
 
 ### Run with Maven 
 
 ```shell
-cd azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-access-other-resources
+cd azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-obo
 mvn spring-boot:run
 ```
 

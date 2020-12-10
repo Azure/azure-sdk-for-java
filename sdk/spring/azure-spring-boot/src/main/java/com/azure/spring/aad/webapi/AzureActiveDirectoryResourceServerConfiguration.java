@@ -10,7 +10,6 @@ import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -39,7 +38,6 @@ import java.util.List;
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnResource(resources = "classpath:aad.enable.config")
 @EnableConfigurationProperties({ AADAuthenticationProperties.class })
-@ConditionalOnProperty(value = "azure.activedirectory.resource-server.enabled", matchIfMissing = true)
 @ConditionalOnClass(BearerTokenAuthenticationToken.class)
 public class AzureActiveDirectoryResourceServerConfiguration {
 

@@ -41,6 +41,21 @@
       <artifactId>msal4j</artifactId>
       <version>1.8.0</version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
     </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>msal4j</artifactId>
+      <version>1.8.0</version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.nimbusds</groupId>
+      <artifactId>nimbus-jose-jwt</artifactId>
+      <version>8.19</version> <!-- {x-version-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.nimbusds</groupId>
+      <artifactId>oauth2-oidc-sdk</artifactId>
+      <version>7.1.1</version> <!-- {x-version-update;com.nimbusds:oauth2-oidc-sdk;external_dependency} -->
+    </dependency>
   </dependencies>
 
   <build>

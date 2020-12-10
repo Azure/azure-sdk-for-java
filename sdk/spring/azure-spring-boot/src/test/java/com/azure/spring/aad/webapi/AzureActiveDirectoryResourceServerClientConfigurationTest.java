@@ -22,7 +22,7 @@ public class AzureActiveDirectoryResourceServerClientConfigurationTest {
             AAD_PROPERTY_PREFIX + "tenant-id=fake-tenant-id",
             AAD_PROPERTY_PREFIX + "client-id=fake-client-id",
             AAD_PROPERTY_PREFIX + "client-secret=fake-client-secret",
-            AAD_PROPERTY_PREFIX + "web-application.enabled=false");
+            AAD_PROPERTY_PREFIX + "resource-server.obo.enabled=true");
 
     @Test
     public void testNotExistBearerTokenAuthenticationToken() {

@@ -24,7 +24,7 @@ import static org.springframework.security.oauth2.client.web.reactive.function.c
 @RestController
 public class SampleController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SampleController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SampleController.class);
 
     private static final String GRAPH_ME_ENDPOINT = "https://graph.microsoft.com/v1.0/me";
 
@@ -89,7 +89,7 @@ public class SampleController {
             .retrieve()
             .bodyToMono(String.class)
             .block();
-        LOG.info("Response from Graph: {}", body);
+        LOGGER.info("Response from Graph: {}", body);
         return "Graph response " + (null != body ? "success." : "failed.");
     }
 
@@ -106,7 +106,7 @@ public class SampleController {
             .retrieve()
             .bodyToMono(String.class)
             .block();
-        LOG.info("Response from Custom(local): {}", body);
+        LOGGER.info("Response from Custom(local): {}", body);
         return "Custom(local) response " + (null != body ? "success." : "failed.");
     }
 }

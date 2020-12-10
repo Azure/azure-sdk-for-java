@@ -28,7 +28,7 @@ import org.springframework.security.oauth2.server.resource.BearerTokenAuthentica
 @ConditionalOnResource(resources = "classpath:aad.enable.config")
 @EnableConfigurationProperties({ AADAuthenticationProperties.class })
 @ConditionalOnClass({BearerTokenAuthenticationToken.class, OAuth2LoginAuthenticationFilter.class})
-@ConditionalOnProperty(value = "azure.activedirectory.resource-server.enabled", matchIfMissing = true)
+@ConditionalOnProperty(prefix = "azure.activedirectory.resource-server.obo", name = "enabled", havingValue = "true")
 public class AzureActiveDirectoryResourceServerClientConfiguration {
 
     @Autowired

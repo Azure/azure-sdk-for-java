@@ -34,10 +34,10 @@ import java.util.Set;
  * Configure the necessary beans used for aad authentication and authorization.
  */
 @Configuration
-//@ConditionalOnMissingClass({ "org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken" })
 @ConditionalOnClass(ClientRegistrationRepository.class)
 @EnableConfigurationProperties(AADAuthenticationProperties.class)
-@ConditionalOnProperty(value = "azure.activedirectory.web-application.enabled", matchIfMissing = true)
+@ConditionalOnProperty(prefix = "azure.activedirectory.resource-server.obo",
+    name = "enabled", havingValue = "false", matchIfMissing = true)
 public class AzureActiveDirectoryConfiguration {
 
     private static final String AZURE_CLIENT_REGISTRATION_ID = "azure";

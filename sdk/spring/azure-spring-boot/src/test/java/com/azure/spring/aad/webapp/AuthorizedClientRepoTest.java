@@ -44,8 +44,7 @@ public class AuthorizedClientRepoTest {
             "azure.activedirectory.tenant-id = fake-tenant-id",
             "azure.activedirectory.client-id = fake-client-id",
             "azure.activedirectory.client-secret = fake-client-secret",
-            "azure.activedirectory.authorization.graph.scopes = Calendars.Read",
-            "azure.activedirectory.resource-server.enabled=false"
+            "azure.activedirectory.authorization.graph.scopes = Calendars.Read"
         );
         context.register(AzureActiveDirectoryConfiguration.class);
         context.refresh();
