@@ -150,9 +150,10 @@ public class BlobSasImplUtil {
         final String canonicalName = getCanonicalName(storageSharedKeyCredentials.getAccountName());
         final String stringToSign = stringToSign(canonicalName);
         if (context != null && Boolean.TRUE.equals(context.getData("Log-String-To-Sign").orElse(false))) {
-            logger.info("The string to sign computed by the SDK is: %s\nPlease remember to disable "
-                    + "'Log-String-To-Sign' before going to production as this message can potentially contain PII.",
-                stringToSign);
+            logger.info("The string to sign computed by the SDK is: {}{}", stringToSign,
+                System.getProperty("line.separator"));
+            logger.warning("Please remember to disable 'Log-String-To-Sign' before going to production as this "
+                + "string can potentially contain PII.");
         }
         final String signature = storageSharedKeyCredentials.computeHmac256(stringToSign);
 
@@ -176,9 +177,10 @@ public class BlobSasImplUtil {
         final String canonicalName = getCanonicalName(accountName);
         final String stringToSign = stringToSign(delegationKey, canonicalName);
         if (context != null && Boolean.TRUE.equals(context.getData("Log-String-To-Sign").orElse(false))) {
-            logger.info("The string to sign computed by the SDK is: %s\nPlease remember to disable "
-                    + "'Log-String-To-Sign' before going to production as this message can potentially contain PII.",
-                stringToSign);
+            logger.info("The string to sign computed by the SDK is: {}{}", stringToSign,
+                System.getProperty("line.separator"));
+            logger.warning("Please remember to disable 'Log-String-To-Sign' before going to production as this "
+                + "string can potentially contain PII.");
         }
         String signature = StorageImplUtils.computeHMac256(delegationKey.getValue(), stringToSign);
 

@@ -153,9 +153,10 @@ public final class StorageSharedKeyCredential {
             getCanonicalizedResource(requestURL));
 
         if (logStringToSign) {
-            logger.info("The string to sign computed by the SDK is: %s\nPlease remember to disable "
-                + "'Log-String-To-Sign' before going to production as this message can potentially contain PII.",
-                stringToSign);
+            logger.info("The string to sign computed by the SDK is: {}{}", stringToSign,
+                System.getProperty("line.separator"));
+            logger.warning("Please remember to disable 'Log-String-To-Sign' before going to production as this "
+                + "string can potentially contain PII.");
         }
 
         return stringToSign;

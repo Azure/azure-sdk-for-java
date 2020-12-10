@@ -324,10 +324,6 @@ class APISpec extends Specification {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(endpoint)
             .httpClient(getHttpClient())
-            .httpLogOptions(new HttpLogOptions()
-                .setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                .setAllowedHeaderNames(Set.of("x-ms-meta-foo"))
-                .setAllowedQueryParamNames(Set.of("sv")))
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)
