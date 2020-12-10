@@ -2,9 +2,11 @@
 
 ## Key concepts
 This sample illustrates how to protect a Java web API by restricting access to its resources to authorized accounts only.
-The bearer token is obtained in the request header and Use `JwtDecoder` to parse token into `Jwt`.
-Then, claims, and Headers etc in `Jwt` will be extracted,They will be wrapped in `AzureOAuth2AuthenticatedPrincipal` object.
-In the end,`AzureOAuth2AuthenticatedPrincipal` will eventually be set into the SecurityContext.
+
+1. The bearer token is obtained from the request header. 
+2. `JwtDecoder`  is used to parse the token into `Jwt`.
+3. Claims, Headers etc in `Jwt` will be extracted, they will be wrapped in `AzureOAuth2AuthenticatedPrincipal` object.
+4. `AzureOAuth2AuthenticatedPrincipal` will eventually be set into SecurityContext.
 
 
 ## Getting started
@@ -59,7 +61,7 @@ To register your apps manually, choose the Azure Active Directory (Azure AD) ten
 
 3. When the Register an application page opens, enter your application's registration information:
     ![Scope Config](docs/image-register-an-application.png "Register an application")
-        
+    
 4. In the **Expose an API** section, select **Add a scope**, accept the proposed Application ID URI `(api://{clientId})` (back up the Application ID URI here,which will be used in the properties file) by selecting **Save and Continue**.
    ![App-Id-Uri Config](docs/image-app-id-uri-config.png "App-id-uri Config")
    Then enter the following information:
