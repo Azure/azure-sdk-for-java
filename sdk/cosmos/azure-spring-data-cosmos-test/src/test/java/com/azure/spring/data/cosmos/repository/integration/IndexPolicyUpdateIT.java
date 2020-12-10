@@ -9,6 +9,7 @@ import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.IndexingMode;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
+import com.azure.spring.data.cosmos.domain.ComplexIndexPolicyEntity;
 import com.azure.spring.data.cosmos.domain.IndexPolicyEntity;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.IndexPolicyRepository;
@@ -42,12 +43,17 @@ public class IndexPolicyUpdateIT {
     @Autowired
     ApplicationContext context;
 
-    CosmosEntityInformation<IndexPolicyEntity, String> entityInformation = new CosmosEntityInformation<>(IndexPolicyEntity.class);
+    CosmosEntityInformation<IndexPolicyEntity, String> defaultIndexPolicyEntityInformation = new CosmosEntityInformation<>(IndexPolicyEntity.class);
+
+    CosmosEntityInformation<ComplexIndexPolicyEntity, String> complexIndexPolicyEntityInformation = new CosmosEntityInformation<>(ComplexIndexPolicyEntity.class);
 
     @Test
     public void testIndexPolicyUpdatesOnRepoInitialization() {
+        // set index policy from entity annotation
+        new SimpleCosmosRepository<>(defaultIndexPolicyEntityInformation, template);
+
         // get original index policy
-        CosmosContainerProperties properties = template.getContainerProperties(entityInformation.getContainerName());
+        CosmosContainerProperties properties = template.getContainerProperties(defaultIndexPolicyEntityInformation.getContainerName());
 
         // assert
         assertThat(properties.getIndexingPolicy().getIncludedPaths().size()).isEqualTo(1);
@@ -63,12 +69,12 @@ public class IndexPolicyUpdateIT {
         newIndexPolicy.setExcludedPaths(Collections.singletonList(new ExcludedPath("/*")));
 
         // apply new index policy
-        CosmosEntityInformation<IndexPolicyEntity, String> spyEntityInformation = Mockito.spy(entityInformation);
+        CosmosEntityInformation<IndexPolicyEntity, String> spyEntityInformation = Mockito.spy(defaultIndexPolicyEntityInformation);
         Mockito.doReturn(newIndexPolicy).when(spyEntityInformation).getIndexingPolicy();
         new SimpleCosmosRepository<>(spyEntityInformation, template);
 
         // retrieve updated index policy
-        properties = template.getContainerProperties(entityInformation.getContainerName());
+        properties = template.getContainerProperties(defaultIndexPolicyEntityInformation.getContainerName());
 
         // assert
         assertThat(properties.getIndexingPolicy().getIncludedPaths().size()).isEqualTo(1);
@@ -80,4 +86,19 @@ public class IndexPolicyUpdateIT {
         assertThat(properties.getIndexingPolicy().getIndexingMode()).isEqualTo(IndexingMode.CONSISTENT);
     }
 
+    @Test
+    public void testContainerReplaceShouldNotOccurIfDefaultIndexIsUnchanged() {
+        new SimpleCosmosRepository<>(defaultIndexPolicyEntityInformation, template);
+        CosmosTemplate spyTemplate = Mockito.spy(template);
+        new SimpleCosmosRepository<>(defaultIndexPolicyEntityInformation, spyTemplate);
+        Mockito.verify(spyTemplate, Mockito.never()).replaceContainerProperties(Mockito.any(), Mockito.any());
+    }
+
+    @Test
+    public void testContainerReplaceShouldNotOccurIfComplexIndexIsUnchanged() {
+        new SimpleCosmosRepository<>(complexIndexPolicyEntityInformation, template);
+        CosmosTemplate spyTemplate = Mockito.spy(template);
+        new SimpleCosmosRepository<>(complexIndexPolicyEntityInformation, spyTemplate);
+        Mockito.verify(spyTemplate, Mockito.never()).replaceContainerProperties(Mockito.any(), Mockito.any());
+    }
 }

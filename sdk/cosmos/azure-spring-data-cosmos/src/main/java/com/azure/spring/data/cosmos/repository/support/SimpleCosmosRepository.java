@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
 
+import static com.azure.spring.data.cosmos.repository.support.IndexPolicyCompareService.policyNeedsUpdate;
+
 /**
  * Repository class for simple Cosmos operation
  */
@@ -48,15 +50,11 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
         }
 
         CosmosContainerProperties currentProperties = getContainerProperties();
-        if (shouldUpdateIndexingPolicy(currentProperties)) {
+        if (currentProperties != null
+            && policyNeedsUpdate(currentProperties.getIndexingPolicy(), information.getIndexingPolicy())) {
             currentProperties.setIndexingPolicy(information.getIndexingPolicy());
             replaceContainerProperties(currentProperties);
         }
-    }
-
-    private boolean shouldUpdateIndexingPolicy(CosmosContainerProperties currentProperties) {
-        return currentProperties != null
-            && !currentProperties.getIndexingPolicy().equals(information.getIndexingPolicy());
     }
 
     private CosmosContainerProperties getContainerProperties() {

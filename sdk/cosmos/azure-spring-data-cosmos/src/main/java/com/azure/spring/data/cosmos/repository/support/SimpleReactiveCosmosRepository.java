@@ -12,6 +12,7 @@ import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
 import com.azure.spring.data.cosmos.repository.ReactiveCosmosRepository;
 import org.reactivestreams.Publisher;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
@@ -20,10 +21,15 @@ import reactor.core.publisher.Mono;
 
 import java.io.Serializable;
 
+import static com.azure.spring.data.cosmos.repository.support.IndexPolicyCompareService.policyNeedsUpdate;
+
 /**
  * Repository class for simple reactive Cosmos operation
  */
 public class SimpleReactiveCosmosRepository<T, K extends Serializable> implements ReactiveCosmosRepository<T, K> {
+
+    @Autowired
+    IndexPolicyCompareService indexPolicyCompareService;
 
     private final CosmosEntityInformation<T, K> entityInformation;
     private final ReactiveCosmosOperations cosmosOperations;
@@ -44,15 +50,11 @@ public class SimpleReactiveCosmosRepository<T, K extends Serializable> implement
         }
 
         CosmosContainerProperties currentProperties = getContainerProperties();
-        if (shouldUpdateIndexingPolicy(currentProperties)) {
+        if (currentProperties != null
+            && policyNeedsUpdate(currentProperties.getIndexingPolicy(), entityInformation.getIndexingPolicy())) {
             currentProperties.setIndexingPolicy(entityInformation.getIndexingPolicy());
             replaceContainerProperties(currentProperties);
         }
-    }
-
-    private boolean shouldUpdateIndexingPolicy(CosmosContainerProperties currentProperties) {
-        return currentProperties != null
-            && !currentProperties.getIndexingPolicy().equals(entityInformation.getIndexingPolicy());
     }
 
     private CosmosContainerProperties getContainerProperties() {
