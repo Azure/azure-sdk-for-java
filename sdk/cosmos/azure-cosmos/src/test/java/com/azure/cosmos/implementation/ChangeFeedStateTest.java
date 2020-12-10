@@ -39,7 +39,7 @@ public class ChangeFeedStateTest {
                 String.format(
                     "{\"V\":0," +
                     "\"Rid\":\"%s\"," +
-                    "\"Mode\":\"LATEST_SNAPSHOT\"," +
+                    "\"Mode\":\"INCREMENTAL\"," +
                     "\"StartFrom\":{\"Type\":\"NOW\"}," +
                     "\"PKRangeId\":\"%s\"}",
                     containerRid,
@@ -82,7 +82,7 @@ public class ChangeFeedStateTest {
                 String.format(
                     "{\"V\":0," +
                         "\"Rid\":\"%s\"," +
-                        "\"Mode\":\"LATEST_SNAPSHOT\"," +
+                        "\"Mode\":\"INCREMENTAL\"," +
                         "\"StartFrom\":{\"Type\":\"NOW\"}," +
                         "\"Continuation\":%s}",
                     containerRid,
