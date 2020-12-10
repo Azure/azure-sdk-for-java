@@ -53,8 +53,7 @@ steps:
     pwsh: true
   env:
     GH_TOKEN: $(azuresdk-github-pat)
-
-  - ${{if ne(parameters.SkipPackageJson, 'true')}}:
+  - ${{if ne(${{ parameters.SkipPackageJson }}, 'true')}}:
     - task: PowerShell@2
       displayName: 'Update Docs.MS CI Targeted Packages'
       condition: and(succeededOrFailed(), eq('${{ parameters.OnboardingBranch }}',''))
