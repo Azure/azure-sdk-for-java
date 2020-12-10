@@ -8,6 +8,7 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.Constants;
 import reactor.core.publisher.Mono;
 
 /**
@@ -37,7 +38,7 @@ public final class StorageSharedKeyCredentialPolicy implements HttpPipelinePolic
         String authorizationValue = credential.generateAuthorizationHeader(context.getHttpRequest().getUrl(),
             context.getHttpRequest().getHttpMethod().toString(),
             context.getHttpRequest().getHeaders().toMap(),
-            Boolean.TRUE.equals(context.getData("Log-String-To-Sign").orElse(false)));
+            Boolean.TRUE.equals(context.getData(Constants.STORAGE_LOG_STRING_TO_SIGN).orElse(false)));
         context.getHttpRequest().setHeader("Authorization", authorizationValue);
         return next.process();
     }

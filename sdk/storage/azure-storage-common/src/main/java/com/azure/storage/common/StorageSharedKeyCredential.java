@@ -5,9 +5,11 @@ package com.azure.storage.common;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import java.net.URL;
@@ -153,10 +155,8 @@ public final class StorageSharedKeyCredential {
             getCanonicalizedResource(requestURL));
 
         if (logStringToSign) {
-            logger.info("The string to sign computed by the SDK is: {}{}", stringToSign,
-                System.getProperty("line.separator"));
-            logger.warning("Please remember to disable 'Log-String-To-Sign' before going to production as this "
-                + "string can potentially contain PII.");
+            StorageImplUtils.logStringToSign(logger, stringToSign,
+                new Context(Constants.STORAGE_LOG_STRING_TO_SIGN, true));
         }
 
         return stringToSign;

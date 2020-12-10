@@ -285,6 +285,26 @@ public class BlobServiceClientJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippet for {@link BlobServiceClient#generateAccountSas(AccountSasSignatureValues, Context)}
+     */
+    public void generateAccountSasWithContext() {
+        // BEGIN: com.azure.storage.blob.BlobServiceClient.generateAccountSas#AccountSasSignatureValues-Context
+        AccountSasPermission permissions = new AccountSasPermission()
+            .setListPermission(true)
+            .setReadPermission(true);
+        AccountSasResourceType resourceTypes = new AccountSasResourceType().setContainer(true);
+        AccountSasService services = new AccountSasService().setBlobAccess(true).setFileAccess(true);
+        OffsetDateTime expiryTime = OffsetDateTime.now().plus(Duration.ofDays(2));
+
+        AccountSasSignatureValues sasValues =
+            new AccountSasSignatureValues(expiryTime, permissions, services, resourceTypes);
+
+        // Client must be authenticated via StorageSharedKeyCredential
+        String sas = client.generateAccountSas(sasValues, new Context("key", "value"));
+        // END: com.azure.storage.blob.BlobServiceClient.generateAccountSas#AccountSasSignatureValues-Context
+    }
+
+    /**
      * Code snippet for {@link BlobServiceClient#undeleteBlobContainer(String, String)}.
      */
     public void undeleteBlobContainer() {

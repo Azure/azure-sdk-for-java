@@ -139,6 +139,7 @@ public class BlobSasImplUtil {
      * Generates a Sas signed with a {@link StorageSharedKeyCredential}
      *
      * @param storageSharedKeyCredentials {@link StorageSharedKeyCredential}
+     * @param context Additional context that is passed through the code when generating a SAS.
      * @return A String representing the Sas
      */
     public String generateSas(StorageSharedKeyCredential storageSharedKeyCredentials, Context context) {
@@ -149,12 +150,7 @@ public class BlobSasImplUtil {
         // Signature is generated on the un-url-encoded values.
         final String canonicalName = getCanonicalName(storageSharedKeyCredentials.getAccountName());
         final String stringToSign = stringToSign(canonicalName);
-        if (context != null && Boolean.TRUE.equals(context.getData("Log-String-To-Sign").orElse(false))) {
-            logger.info("The string to sign computed by the SDK is: {}{}", stringToSign,
-                System.getProperty("line.separator"));
-            logger.warning("Please remember to disable 'Log-String-To-Sign' before going to production as this "
-                + "string can potentially contain PII.");
-        }
+        StorageImplUtils.logStringToSign(logger, stringToSign, context);
         final String signature = storageSharedKeyCredentials.computeHmac256(stringToSign);
 
         return encode(null /* userDelegationKey */, signature);
@@ -165,6 +161,7 @@ public class BlobSasImplUtil {
      *
      * @param delegationKey {@link UserDelegationKey}
      * @param accountName The account name
+     * @param context Additional context that is passed through the code when generating a SAS.
      * @return A String representing the Sas
      */
     public String generateUserDelegationSas(UserDelegationKey delegationKey, String accountName, Context context) {
@@ -176,12 +173,7 @@ public class BlobSasImplUtil {
         // Signature is generated on the un-url-encoded values.
         final String canonicalName = getCanonicalName(accountName);
         final String stringToSign = stringToSign(delegationKey, canonicalName);
-        if (context != null && Boolean.TRUE.equals(context.getData("Log-String-To-Sign").orElse(false))) {
-            logger.info("The string to sign computed by the SDK is: {}{}", stringToSign,
-                System.getProperty("line.separator"));
-            logger.warning("Please remember to disable 'Log-String-To-Sign' before going to production as this "
-                + "string can potentially contain PII.");
-        }
+        StorageImplUtils.logStringToSign(logger, stringToSign, context);
         String signature = StorageImplUtils.computeHMac256(delegationKey.getValue(), stringToSign);
 
         return encode(delegationKey, signature);
@@ -312,7 +304,7 @@ public class BlobSasImplUtil {
             this.expiryTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
             canonicalName,
             this.identifier == null ? "" : this.identifier,
-            this.sasIpRange == null ? "" : this.sasIpRange.toString(),
+            this.sasIpRange == null ? "" : "this.sasIpRange.toString()",
             this.protocol == null ? "" : this.protocol.toString(),
             version,
             resource,
