@@ -38,7 +38,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
  * <p>
  *
  * @deprecated For AADAppRoleStatelessAuthenticationFilter, suggest use spring-security resource-server directly and
- * include azure-spring-boot-starter-active-directory dependencies into your project.Automatic configuration of the
+ * include azure-spring-boot-starter-active-directory dependencies into your project. Automatic configuration of the
  * associated AAD will be started, they will work well together.
  * See the <a href="https://github.com/Azure/azure-sdk-for-java/issues/17860">Alternative method</a>.
  */
