@@ -7,7 +7,6 @@ import com.azure.core.credential.AccessToken;
 
 import org.junit.jupiter.api.Test;
 
-import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Mono;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -16,7 +15,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.IOException;
-import java.time.Duration;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 
@@ -76,25 +74,7 @@ public class CommunicationTokenCredentialTests {
             if (this.onCallReturn != null) {
                 this.onCallReturn.run();
             }
-            return new MockSyncNext();
-        }
-    }
-
-    class MockSyncNext extends Mono<String> {
-
-        @Override
-        public String block() {
-            return tokenMocker.generateRawToken("Mock", "user", 10 * 60 + 1);
-        }
-
-        @Override
-        public String block(Duration timeout) {
-            return null;
-        }
-
-        @Override
-        public void subscribe(CoreSubscriber<? super String> actual) {
-            super.subscribe();
+            return Mono.just(tokenMocker.generateRawToken("Mock", "user", 10 * 60 + 1));
         }
     }
 
@@ -107,6 +87,7 @@ public class CommunicationTokenCredentialTests {
         immediateFresher.resetCallCount();
         CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(immediateFresher, tokenStr, true);
         AccessToken token = tokenCredential.getToken().block();
+
         assertFalse(token.isExpired(),
                 "Refreshable AccessToken should not expire when expiry is set to 5 minutes later");
         assertEquals(tokenStr, token.getToken());
@@ -280,94 +261,10 @@ public class CommunicationTokenCredentialTests {
         assertEquals(1, exceptionRefresher.numCalls());
         tokenCredential.close();
     }
-
-    class MockLongRunningRefresher implements TokenRefresher {
-        private int numCalls = 0;
-        private Runnable onCallReturn;
-
-        public int numCalls() {
-            return numCalls;
-        }
-
-        public void setOnCallReturn(Runnable onCallReturn) {
-            this.onCallReturn = onCallReturn;
-        }
-
-        public void resetCallCount() {
-            numCalls = 0;
-        }
-
-        @Override
-        public Mono<String> getTokenAsync() {
-            numCalls++;
-            return new LongRunningMono(onCallReturn);
-        }
-    }
-
-    class LongRunningMono extends Mono<String> {
-        private Runnable onCallReturn;
-
-        LongRunningMono(Runnable onCallReturn) {
-            this.onCallReturn = onCallReturn;
-        }
-
-        @Override
-        public String block() {
-            if (this.onCallReturn != null) {
-                this.onCallReturn.run();
-            }
-            return tokenMocker.generateRawToken("Mock", "user", 601);
-        }
-
-        @Override
-        public String block(Duration timeout) {
-            return null;
-        }
-
-        @Override
-        public void subscribe(CoreSubscriber<? super String> actual) {
-            super.subscribe();
-        }
-    }
-
-    final MockLongRunningRefresher longRunningRefresher = new MockLongRunningRefresher();
-
-    @Test
-    public void shouldCallRefresherOnlyOnceWhileRefreshingIsInProgress()
-            throws InterruptedException, ExecutionException, IOException {
-        longRunningRefresher.resetCallCount();
-        CountDownLatch countDownLatch = new CountDownLatch(1);
-        longRunningRefresher.setOnCallReturn(countDownLatch::countDown);
-        String tokenStr = tokenMocker.generateRawToken("resourceId", "userIdentity", -5 * 60);
-
-        CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(longRunningRefresher, tokenStr, true);
-
-        countDownLatch.await();
-        assertEquals(1, longRunningRefresher.numCalls());
-        for (int i = 0; i < 3; i++) {
-            tokenCredential.getToken();
-            assertEquals(1, longRunningRefresher.numCalls(), "No additional call is made by getToken");
-        }
-        tokenCredential.close();
-    }
-
-    @Test
-    public void withoutInitialTokenShouldCallFresherOnlyOnceWhileRefreshingIsInProgress()
-            throws InterruptedException, ExecutionException, IOException {
-        longRunningRefresher.resetCallCount();
-        CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(longRunningRefresher);
-        tokenCredential.getToken();
-        assertEquals(1, longRunningRefresher.numCalls());
-        for (int i = 0; i < 3; i++) {
-            tokenCredential.getToken();
-            assertEquals(1, longRunningRefresher.numCalls(), "No additional calls made by getToken call");
-        }
-        tokenCredential.close();
-    }
    
     @Test
     public void shouldThrowWhenGetTokenCalledOnClosedObject() throws IOException {
-        CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(longRunningRefresher);
+        CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(immediateFresher);
         tokenCredential.close();
         assertThrows(RuntimeException.class, () -> {
             tokenCredential.getToken();

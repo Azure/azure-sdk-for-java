@@ -6,13 +6,11 @@ import java.util.concurrent.ExecutionException;
 
 import com.azure.core.util.logging.ClientLogger;
 
-import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Mono;
 
 import com.azure.core.credential.AccessToken;
 
 import java.io.IOException;
-import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Date;
 import java.util.Objects;
@@ -30,7 +28,6 @@ public final class CommunicationTokenCredential implements AutoCloseable {
     private final ClientLogger logger = new ClientLogger(CommunicationTokenCredential.class);
 
     private AccessToken accessToken;
-    private TokenRetriever tokenRetriever;
     private final TokenParser tokenParser = new TokenParser();
     private TokenRefresher refresher;
     private FetchingTask fetchingTask;
@@ -81,43 +78,6 @@ public final class CommunicationTokenCredential implements AutoCloseable {
         }
     }
 
-    private class TokenRetriever extends Mono<AccessToken> {
-        private final Mono<String> clientTokenRetriever;
-        private boolean hasRetrievedToken;
-
-        TokenRetriever(Mono<String> tokenAsync) {
-            if (tokenAsync == null) {
-                clientTokenRetriever = Mono.empty();
-            } else {
-                clientTokenRetriever = tokenAsync;
-            }
-        }
-
-        @Override
-        public AccessToken block() {
-            String freshToken = clientTokenRetriever.block();
-            CommunicationTokenCredential.this.setToken(freshToken);
-            hasRetrievedToken = true;
-            return accessToken;
-        }
-
-        @Override
-        public AccessToken block(Duration timeout) {
-            String freshToken = clientTokenRetriever.block(timeout);
-            CommunicationTokenCredential.this.setToken(freshToken);
-            hasRetrievedToken = true;         
-            return accessToken;
-        }
-
-        @Override
-        public void subscribe(CoreSubscriber<? super AccessToken> actual) {
-            super.subscribe();
-        }
-
-        public boolean hasRetrievedToken() {
-            return hasRetrievedToken;
-        }
-    }
 
     /**
      * Get Azure core access token from credential
@@ -131,16 +91,18 @@ public final class CommunicationTokenCredential implements AutoCloseable {
             throw logger.logExceptionAsError(
                 new RuntimeException("getToken called on closed CommunicationTokenCredential object"));
         }
-        // no valid token to return and can refresh
-        if ((accessToken == null || accessToken.isExpired()) && refresher != null) {
-            // if tokenRetriever is null or has already retrieved token
-            if (tokenRetriever == null || tokenRetriever.hasRetrievedToken()) {
-                tokenRetriever = new TokenRetriever(fetchFreshToken());
+        synchronized (this) {
+            // no valid token to return and can refresh
+            if ((accessToken == null || accessToken.isExpired()) && refresher != null) {
+                return fetchFreshToken()
+                    .map(token -> {
+                        accessToken = tokenParser.parseJWTToken(token);
+                        return accessToken;
+                    });
+                
             }
-            return tokenRetriever;
+            return Mono.just(accessToken);
         }
-
-        return Mono.just(accessToken);
     }
 
     @Override
@@ -173,7 +135,6 @@ public final class CommunicationTokenCredential implements AutoCloseable {
             throw logger.logExceptionAsError(
                     new RuntimeException("TokenRefresher returned null when getTokenAsync is called"));
         }
-        tokenRetriever = new TokenRetriever(tokenAsync);
         return tokenAsync;
     }
 
