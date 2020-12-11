@@ -11,20 +11,14 @@ This sample illustrates how to protect a Java web API by restricting access to i
 
 ## Getting started
 
-To run this sample, you'll need:
+### Environment checklist
+We need to ensure that this [environment checklist][ready-to-run-checklist] is completed before the run.
 
-- A [Java Development Kit (JDK)][jdk_link], version 1.8 or above.
-- [Maven](https://maven.apache.org/) 3.0 or above
-- An Internet connection
-- A Windows machine (necessary if you want to run the app on Windows)
-- An OS X machine (necessary if you want to run the app on Mac)
-- A Linux machine (necessary if you want to run the app on Linux)
-- An Azure Active Directory (Azure AD) tenant. For more information on how to get an Azure AD tenant, see [How to get an Azure AD tenant](https://azure.microsoft.com/documentation/articles/active-directory-howto-tenant/)
+To run this sample, you'll need:
+- An Azure Active Directory (Azure AD) tenant. For more information on how to get an Azure AD tenant, see [How to get an Azure AD tenant][How to get an Azure AD tenant]
 - You register your web APP in App registrations in the Azure portal.
 - A Web APP runtime that requires access to a Web API.
 
-### Environment checklist
-We need to ensure that this [environment checklist][ready-to-run-checklist] is completed before the run.
 
 ## Include the package
 ```xml
@@ -93,7 +87,6 @@ azure.activedirectory.session-stateless=true
 ### Run with Maven 
 ```shell
 # Under sdk/spring project root directory
-mvn clean install -DskipTests
 cd azure-spring-boot-samples/azure-spring-boot-sample-active-directory-spring-oauth2-resource-server
 mvn spring-boot:run
 ```
@@ -123,3 +116,4 @@ Authorization: Bearer eyJ0eXAiO ... 0X2tnSQLEANnSPHY0gKcgw
 [ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
 [Register app or web API]: https://docs.microsoft.com/azure/active-directory/develop/quickstart-register-app
 [Expose scoped permission to web API]: https://docs.microsoft.com/azure/active-directory/develop/quickstart-configure-app-expose-web-apis
+[How to get an Azure AD tenant]: https://azure.microsoft.com/documentation/articles/active-directory-howto-tenant
