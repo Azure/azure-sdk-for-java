@@ -82,6 +82,14 @@ If you still don't understand, you can look at this [register app or web api][Re
 
 ## Examples
 
+### Configure application.properties
+
+```properties
+azure.activedirectory.client-id=xxxxxx-your-client-id-xxxxxx
+azure.activedirectory.app-id-uri=xxxxxxxx-app-id-uri-xxxxxxxxxx
+azure.activedirectory.session-stateless=true
+```
+
 ### Run with Maven 
 ```shell
 # Under sdk/spring project root directory
