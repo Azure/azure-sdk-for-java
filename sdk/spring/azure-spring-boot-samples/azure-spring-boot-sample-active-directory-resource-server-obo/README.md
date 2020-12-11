@@ -1,7 +1,7 @@
 # OAuth 2.0 Sample for azure-spring-boot-sample-active-directory-resource-server-obo library for Java
 
 ## Key concepts
-[Resource server access other resources usage][resource-server-access-other-resources-usage] is more common, this is an extension of the [spring security resource server sample][azure-spring-boot-sample-active-directory-spring-security-resource-server]. Similarly, this sample illustrates how to protect a Java web API by restricting access to its resources to authorized accounts, and the restricted resource will access other restricted resource, such as Graph API and Custom API.
+[Resource server access other resources usage][resource-server-access-other-resources-usage] is an extension scenario of the *azure-spring-boot-sample-active-directory-spring-security-resource-server* sample. Similarly, this sample illustrates how to protect a Java web API by restricting access to its resources to authorized accounts, and the restricted resource will access other restricted resource, such as Graph API and Custom API.
 
 
 ## Getting started
@@ -42,21 +42,21 @@ We need to ensure that this [environment checklist][ready-to-run-checklist] is c
       <version>1.8.0</version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
     </dependency>
     <dependency>
-      <groupId>com.nimbusds</groupId>
-      <artifactId>nimbus-jose-jwt</artifactId>
-      <version>8.19</version> <!-- {x-version-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>msal4j</artifactId>
+      <version>1.8.0</version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
     </dependency>
     <dependency>
-      <groupId>com.nimbusds</groupId>
-      <artifactId>oauth2-oidc-sdk</artifactId>
-      <version>7.1.1</version> <!-- {x-version-update;com.nimbusds:oauth2-oidc-sdk;external_dependency} -->
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-oauth2-jose</artifactId>
+      <version>5.3.5.RELEASE</version> <!-- {x-version-update;org.springframework.security:spring-security-oauth2-jose;external_dependency} -->
     </dependency>
 </dependencies>
 ```
 
 ### Register your Web API
-You can follow [Register the Web API][register-the-web-api] to add `ResourceAccessGraph.read`, `ResourceAccessGraphCustomResources.read` scopes. 
-Convention current application id url is `api://sample-client-id`, application name is `azure-spring-boot-sample-active-directory-resource-server-obo`; the application id url of the sample [spring security resource server sample][azure-spring-boot-sample-active-directory-spring-security-resource-server] is `custom-client-id`, the application name is `azure-spring-boot-sample-active-directory-spring-security-resource-server`.  
+You can follow *azure-spring-boot-sample-active-directory-spring-security-resource-server* sample to add `ResourceAccessGraph.read`, `ResourceAccessGraphCustomResources.read` scopes. 
+Convention current application id url is `api://sample-client-id`, ; the application id url of the sample *azure-spring-boot-sample-active-directory-spring-security-resource-server* is `custom-client-id`.  
 After adding as shown below:
 
    ![API Permissions](resource/resource-server-obo-add-scope.png)
@@ -148,7 +148,7 @@ curl localhost:8081/call-graph-and-custom-resources -H "Authorization: Bearer <r
 
 Verify response:
 ```text
-Graph response success.; Custom(local) response success.
+Graph response success. Custom(local) response success.
 ```
 
 ## Troubleshooting
@@ -159,6 +159,4 @@ Graph response success.; Custom(local) response success.
 <!-- LINKS -->
 [azure-portal]: https://portal.azure.com/
 [ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
-[azure-spring-boot-sample-active-directory-spring-security-resource-server]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-spring-security-resource-server
-[register-the-web-api]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-spring-security-resource-server#register-the-web-api
 [resource-server-access-other-resources-usage]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-starter-active-directory#resource-server-access-other-resources-usage

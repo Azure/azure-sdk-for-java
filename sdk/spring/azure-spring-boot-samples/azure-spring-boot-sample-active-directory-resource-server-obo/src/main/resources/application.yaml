@@ -7,9 +7,6 @@ azure:
       allowed-groups:
         - group1
         - group2
-    resource-server:
-      obo:
-        enabled: true
     client-id: [resource-server-application-client-id]
     client-secret: [resource-server-application-client-secret]
     tenant-id: [teanant-id-registered-by-application]

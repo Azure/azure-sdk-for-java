@@ -15,9 +15,9 @@ public class AADSampleSecurityConfiguration extends WebSecurityConfigurerAdapter
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().anyRequest().authenticated()
-            .and().oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
+		http.authorizeRequests()
+            .anyRequest().authenticated()
+            .and()
+            .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
     }
-
-
 }

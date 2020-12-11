@@ -47,8 +47,7 @@ public class AADOAuth2OboAuthorizedClientRepositoryTest {
             AAD_PROPERTY_PREFIX + "tenant-id = fake-tenant-id",
             AAD_PROPERTY_PREFIX + "client-id = fake-client-id",
             AAD_PROPERTY_PREFIX + "client-secret = fake-client-secret",
-            AAD_PROPERTY_PREFIX + "authorization.fake-graph.scopes = https://graph.microsoft.com/.default",
-            AAD_PROPERTY_PREFIX + "resource-server.obo.enabled = true"
+            AAD_PROPERTY_PREFIX + "authorization.fake-graph.scopes = https://graph.microsoft.com/.default"
         );
         context.register(AzureActiveDirectoryResourceServerClientConfiguration.class);
         context.refresh();

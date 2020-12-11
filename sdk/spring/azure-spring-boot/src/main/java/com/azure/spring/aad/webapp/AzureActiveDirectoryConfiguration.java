@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -34,10 +35,9 @@ import java.util.Set;
  * Configure the necessary beans used for aad authentication and authorization.
  */
 @Configuration
+@ConditionalOnMissingClass({ "org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken" })
 @ConditionalOnClass(ClientRegistrationRepository.class)
 @EnableConfigurationProperties(AADAuthenticationProperties.class)
-@ConditionalOnProperty(prefix = "azure.activedirectory.resource-server.obo",
-    name = "enabled", havingValue = "false", matchIfMissing = true)
 public class AzureActiveDirectoryConfiguration {
 
     private static final String AZURE_CLIENT_REGISTRATION_ID = "azure";

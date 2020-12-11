@@ -21,8 +21,7 @@ public class AzureActiveDirectoryResourceServerClientConfigurationTest {
         .withPropertyValues(AAD_PROPERTY_PREFIX + "user-group.allowed-groups=group1",
             AAD_PROPERTY_PREFIX + "tenant-id=fake-tenant-id",
             AAD_PROPERTY_PREFIX + "client-id=fake-client-id",
-            AAD_PROPERTY_PREFIX + "client-secret=fake-client-secret",
-            AAD_PROPERTY_PREFIX + "resource-server.obo.enabled=true");
+            AAD_PROPERTY_PREFIX + "client-secret=fake-client-secret");
 
     @Test
     public void testNotExistBearerTokenAuthenticationToken() {

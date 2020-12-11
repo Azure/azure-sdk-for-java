@@ -73,7 +73,7 @@ public class SampleController {
     public String callGraphAndCustomResources(
         @RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient graph,
         @RegisteredOAuth2AuthorizedClient("custom") OAuth2AuthorizedClient custom) {
-        return callMicrosoftGraphMeEndpoint(graph) + "; " + callCustomLocalFileEndpoint(custom);
+        return callMicrosoftGraphMeEndpoint(graph) + " " + callCustomLocalFileEndpoint(custom);
     }
 
     /**

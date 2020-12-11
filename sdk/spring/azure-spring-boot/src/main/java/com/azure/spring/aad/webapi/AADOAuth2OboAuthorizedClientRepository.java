@@ -17,7 +17,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
-import org.springframework.security.oauth2.core.AbstractOAuth2Token;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.server.resource.authentication.AbstractOAuth2TokenAuthenticationToken;
 
@@ -59,27 +58,32 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
     public <T extends OAuth2AuthorizedClient> T loadAuthorizedClient(String registrationId,
                                                                      Authentication authentication,
                                                                      HttpServletRequest request) {
+        String oboAuthorizedClientAttributeName = OBO_AUTHORIZEDCLIENT_PREFIX + registrationId;
+        if (request.getAttribute(oboAuthorizedClientAttributeName) != null) {
+            return (T) request.getAttribute(oboAuthorizedClientAttributeName);
+        }
+
         try {
-            String oboAuthorizedClientAttributeName = OBO_AUTHORIZEDCLIENT_PREFIX + registrationId;
-            if (request.getAttribute(oboAuthorizedClientAttributeName) != null) {
-                return (T) request.getAttribute(oboAuthorizedClientAttributeName);
-            }
-
             if (!(authentication instanceof AbstractOAuth2TokenAuthenticationToken)) {
-                throw new IllegalStateException("Not support token implementation");
+                throw new IllegalStateException("Unsupported token implementation " + authentication.getClass());
             }
 
+            String accessToken =
+                ((AbstractOAuth2TokenAuthenticationToken<?>) authentication).getToken().getTokenValue();
             ClientRegistration clientRegistration =
                 azureClientRegistrationRepository.findByRegistrationId(registrationId);
-
-            String accessToken = ((AbstractOAuth2TokenAuthenticationToken<?>) authentication).getToken().getTokenValue();
             OnBehalfOfParameters parameters = OnBehalfOfParameters
                 .builder(clientRegistration.getScopes(), new UserAssertion(accessToken))
                 .build();
             ConfidentialClientApplication clientApplication =
                 getClientApplication(clientRegistration.getRegistrationId());
-            String oboAccessToken = clientApplication.acquireToken(parameters).get().accessToken();
+            if (null == clientApplication) {
+                LOGGER.warn("Not found the " + clientRegistration.getRegistrationId()
+                    + " ConfidentialClientApplication.");
+                return null;
+            }
 
+            String oboAccessToken = clientApplication.acquireToken(parameters).get().accessToken();
             JWT parser = JWTParser.parse(oboAccessToken);
             Date iat = (Date) parser.getJWTClaimsSet().getClaim("iat");
             Date exp = (Date) parser.getJWTClaimsSet().getClaim("exp");
@@ -87,14 +91,12 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
                 oboAccessToken,
                 Instant.ofEpochMilli(iat.getTime()),
                 Instant.ofEpochMilli(exp.getTime()));
-
             OAuth2AuthorizedClient oAuth2AuthorizedClient = new OAuth2AuthorizedClient(clientRegistration,
                 authentication.getName(), oAuth2AccessToken);
-
             request.setAttribute(oboAuthorizedClientAttributeName, (T) oAuth2AuthorizedClient);
             return (T) oAuth2AuthorizedClient;
         } catch (Throwable throwable) {
-            LOGGER.error("Failed to loadAuthorizedClient", throwable);
+            LOGGER.error("Failed to load authorized client.", throwable);
         }
         return null;
     }
@@ -114,12 +116,10 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
     }
 
     private ConfidentialClientApplication createApp(ClientRegistration clientRegistration) {
-
         String authorizationUri = clientRegistration.getProviderDetails().getAuthorizationUri();
-
         String authority = interceptAuthorizationUri(authorizationUri);
-
-        IClientSecret clientCredential = ClientCredentialFactory.createFromSecret(clientRegistration.getClientSecret());
+        IClientSecret clientCredential = ClientCredentialFactory
+            .createFromSecret(clientRegistration.getClientSecret());
         try {
             return ConfidentialClientApplication.builder(clientRegistration.getClientId(), clientCredential)
                                                 .authority(authority)
@@ -143,5 +143,4 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
         }
         return null;
     }
-
 }
