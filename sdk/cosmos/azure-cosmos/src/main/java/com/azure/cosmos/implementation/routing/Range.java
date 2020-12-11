@@ -109,7 +109,7 @@ public final class Range<T extends Comparable<T>> extends JsonSerializable {
         if (isMinInclusive) {
             BridgeInternal.remove(this, Range.IS_MIN_INCLUSIVE_PROPERTY);
         } else {
-            BridgeInternal.setProperty(this, Range.IS_MIN_INCLUSIVE_PROPERTY, true);
+            BridgeInternal.setProperty(this, Range.IS_MIN_INCLUSIVE_PROPERTY, false);
         }
     }
 
