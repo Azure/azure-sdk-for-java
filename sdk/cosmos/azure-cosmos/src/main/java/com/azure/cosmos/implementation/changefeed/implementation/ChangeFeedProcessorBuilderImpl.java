@@ -6,6 +6,7 @@ import com.azure.cosmos.ChangeFeedProcessor;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
+import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.CosmosAsyncContainer;
@@ -24,7 +25,6 @@ import com.azure.cosmos.implementation.changefeed.PartitionSupervisorFactory;
 import com.azure.cosmos.implementation.changefeed.RequestOptionsFactory;
 import com.azure.cosmos.models.ChangeFeedProcessorState;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
-import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
@@ -155,12 +155,12 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
 
         return this.leaseStoreManager.getAllLeases()
             .flatMap(lease -> {
-                final CosmosChangeFeedRequestOptions options;
-                String requestContinuation = lease.getContinuationToken();
-                final FeedRange feedRange = new FeedRangePartitionKeyRangeImpl(lease.getLeaseToken());
-                options = ModelBridgeInternal.createChangeFeedRequestOptionsForEtagAndFeedRange(
-                    requestContinuation,
-                    feedRange);
+                final FeedRangeInternal feedRange = new FeedRangePartitionKeyRangeImpl(lease.getLeaseToken());
+                final CosmosChangeFeedRequestOptions options =
+                    ModelBridgeInternal.createChangeFeedRequestOptionsForChangeFeedState(
+                        lease.getContinuationState(
+                            this.collectionResourceId,
+                            feedRange));
                 options.setMaxItemCount(1);
 
                 return this.feedContextClient.createDocumentChangeFeedQuery(
@@ -232,12 +232,12 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
 
         return this.leaseStoreManager.getAllLeases()
             .flatMap(lease -> {
-                final CosmosChangeFeedRequestOptions options;
-                String requestContinuation = lease.getContinuationToken();
-                final FeedRange feedRange = new FeedRangePartitionKeyRangeImpl(lease.getLeaseToken());
-                options = ModelBridgeInternal.createChangeFeedRequestOptionsForEtagAndFeedRange(
-                    requestContinuation,
-                    feedRange);
+                final FeedRangeInternal feedRange = new FeedRangePartitionKeyRangeImpl(lease.getLeaseToken());
+                final CosmosChangeFeedRequestOptions options =
+                    ModelBridgeInternal.createChangeFeedRequestOptionsForChangeFeedState(
+                        lease.getContinuationState(
+                            this.collectionResourceId,
+                            feedRange));
                 options.setMaxItemCount(1);
 
                 return this.feedContextClient.createDocumentChangeFeedQuery(
@@ -487,7 +487,8 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
             leaseStoreManager,
             leaseStoreManager,
             DEFAULT_DEGREE_OF_PARALLELISM,
-            DEFAULT_QUERY_PARTITIONS_MAX_BATCH_SIZE
+            DEFAULT_QUERY_PARTITIONS_MAX_BATCH_SIZE,
+            this.collectionResourceId
         );
 
         Bootstrapper bootstrapper = new BootstrapperImpl(synchronizer, leaseStoreManager, this.lockTime, this.sleepTime);
@@ -498,7 +499,8 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
                 this.feedContextClient,
                 this.changeFeedProcessorOptions,
                 leaseStoreManager,
-                this.feedContextClient.getContainerClient()),
+                this.feedContextClient.getContainerClient(),
+                this.collectionResourceId),
             this.changeFeedProcessorOptions,
             this.scheduler
         );

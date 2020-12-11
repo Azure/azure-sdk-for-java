@@ -3,10 +3,8 @@
 package com.azure.cosmos.implementation.changefeed.implementation;
 
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
-import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.implementation.changefeed.CancellationToken;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
@@ -41,7 +39,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
     private final ProcessorSettings settings;
     private final PartitionCheckpointer checkpointer;
     private final ChangeFeedObserver observer;
-    private final CosmosChangeFeedRequestOptions options;
+    private CosmosChangeFeedRequestOptions options;
     private final ChangeFeedContextClient documentClient;
     private volatile RuntimeException resultException;
 
@@ -54,35 +52,14 @@ class PartitionProcessorImpl implements PartitionProcessor {
         this.settings = settings;
         this.checkpointer = checkpointer;
 
-        String requestContinuation = settings.getStartContinuation();
-        FeedRange feedRange = new FeedRangePartitionKeyRangeImpl(settings.getPartitionKeyRangeId());
-        if (!Strings.isNullOrWhiteSpace(requestContinuation)) {
-            options = ModelBridgeInternal.createChangeFeedRequestOptionsForEtagAndFeedRange(
-                requestContinuation,
-                feedRange);
-        }
-        else {
-            if (settings.getStartTime() != null) {
-                this.options = CosmosChangeFeedRequestOptions.createForProcessingFromPointInTime(
-                    settings.getStartTime(),
-                    feedRange);
-            } else if (settings.isStartFromBeginning()) {
-                this.options = CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(feedRange);
-            } else {
-                this.options = CosmosChangeFeedRequestOptions.createForProcessingFromNow(feedRange);
-            }
-        }
+        ChangeFeedState state = settings.getStartState();
+        this.options = ModelBridgeInternal.createChangeFeedRequestOptionsForChangeFeedState(state);
         this.options.setMaxItemCount(settings.getMaxItemCount());
     }
 
     @Override
     public Mono<Void> run(CancellationToken cancellationToken) {
-        this.lastContinuation = this.settings.getStartContinuation();
         this.isFirstQueryForChangeFeeds = true;
-
-        ModelBridgeInternal.setChangeFeedRequestOptionsContinuation(
-            this.lastContinuation,
-            this.options);
 
         return Flux.just(this)
             .flatMap( value -> {
@@ -114,20 +91,20 @@ class PartitionProcessorImpl implements PartitionProcessor {
                 this.lastContinuation = documentFeedResponse.getContinuationToken();
                 if (documentFeedResponse.getResults() != null && documentFeedResponse.getResults().size() > 0) {
                     return this.dispatchChanges(documentFeedResponse)
-                        .doOnError(throwable -> {
-                            logger.debug("Exception was thrown from thread {}", Thread.currentThread().getId(), throwable);
-                        })
+                        .doOnError(throwable -> logger.debug(
+                            "Exception was thrown from thread {}",
+                            Thread.currentThread().getId(), throwable))
                         .doOnSuccess((Void) -> {
-                            ModelBridgeInternal.setChangeFeedRequestOptionsContinuation(
-                                this.lastContinuation,
-                                this.options);
+                            this.options =
+                                CosmosChangeFeedRequestOptions
+                                    .createForProcessingFromContinuation(this.lastContinuation);
 
                             if (cancellationToken.isCancellationRequested()) throw new TaskCancelledException();
                         });
                 }
-                ModelBridgeInternal.setChangeFeedRequestOptionsContinuation(
-                    this.lastContinuation,
-                    this.options);
+                this.options =
+                    CosmosChangeFeedRequestOptions
+                        .createForProcessingFromContinuation(this.lastContinuation);
 
                 if (cancellationToken.isCancellationRequested()) {
                     return Flux.error(new TaskCancelledException());
@@ -144,8 +121,8 @@ class PartitionProcessorImpl implements PartitionProcessor {
                 if (throwable instanceof CosmosException) {
 
                     CosmosException clientException = (CosmosException) throwable;
-                    logger.warn("CosmosException: partition {} from thread {}",
-                        this.settings.getPartitionKeyRangeId(), Thread.currentThread().getId(), clientException);
+                    logger.warn("CosmosException: FeedRange {} from thread {}",
+                        this.settings.getStartState().getFeedRange().toString(), Thread.currentThread().getId(), clientException);
                     StatusCodeErrorType docDbError = ExceptionClassifier.classifyClientException(clientException);
 
                     switch (docDbError) {
@@ -193,12 +170,12 @@ class PartitionProcessorImpl implements PartitionProcessor {
                         }
                     }
                 } else if (throwable instanceof LeaseLostException) {
-                        logger.info("LeaseLoseException with partition {} from thread {}",
-                            this.settings.getPartitionKeyRangeId(), Thread.currentThread().getId());
+                        logger.info("LeaseLoseException with FeedRange {} from thread {}",
+                            this.settings.getStartState().getFeedRange().toString(), Thread.currentThread().getId());
                         this.resultException = (LeaseLostException) throwable;
                 } else if (throwable instanceof TaskCancelledException) {
-                    logger.debug("Task cancelled exception: partition {} from {}",
-                        this.settings.getPartitionKeyRangeId(), Thread.currentThread().getId(), throwable);
+                    logger.debug("Task cancelled exception: FeedRange {} from {}",
+                        this.settings.getStartState().getFeedRange().toString(), Thread.currentThread().getId(), throwable);
                     this.resultException = (TaskCancelledException) throwable;
                 } else {
                     logger.warn("Unexpected exception from thread {}", Thread.currentThread().getId(), throwable);
@@ -229,7 +206,11 @@ class PartitionProcessorImpl implements PartitionProcessor {
     }
 
     private Mono<Void> dispatchChanges(FeedResponse<JsonNode> response) {
-        ChangeFeedObserverContext context = new ChangeFeedObserverContextImpl(this.settings.getPartitionKeyRangeId(), response, this.checkpointer);
+        ChangeFeedObserverContext context = new ChangeFeedObserverContextImpl(
+            // TODO fabianm - move observer to FeedRange
+            ((FeedRangePartitionKeyRangeImpl)this.settings.getStartState().getFeedRange()).getPartitionKeyRangeId(),
+            response,
+            this.checkpointer);
 
         return this.observer.processChanges(context, response.getResults());
     }

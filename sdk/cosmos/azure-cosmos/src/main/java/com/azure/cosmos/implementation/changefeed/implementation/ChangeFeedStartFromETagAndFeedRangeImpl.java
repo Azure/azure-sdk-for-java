@@ -3,9 +3,11 @@
 
 package com.azure.cosmos.implementation.changefeed.implementation;
 
+import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 
+import static com.azure.cosmos.BridgeInternal.setProperty;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 class ChangeFeedStartFromETagAndFeedRangeImpl extends ChangeFeedStartFromInternal {
@@ -16,7 +18,6 @@ class ChangeFeedStartFromETagAndFeedRangeImpl extends ChangeFeedStartFromInterna
         super();
 
         checkNotNull(feedRange, "Argument 'feedRange' must not be null");
-
         this.eTag = eTag;
         this.feedRange = feedRange;
     }
@@ -64,5 +65,24 @@ class ChangeFeedStartFromETagAndFeedRangeImpl extends ChangeFeedStartFromInterna
                                 RxDocumentServiceRequest request) {
 
         visitor.visit(this, request);
+    }
+
+    @Override
+    public void populatePropertyBag() {
+        super.populatePropertyBag();
+
+        setProperty(
+            this,
+            Constants.Properties.CHANGE_FEED_START_FROM_TYPE,
+            ChangeFeedStartFromTypes.LEASE);
+
+        setProperty(
+            this,
+            Constants.Properties.CHANGE_FEED_START_FROM_ETAG,
+            this.eTag);
+
+        this.feedRange.setProperties(
+            this,
+            true);
     }
 }

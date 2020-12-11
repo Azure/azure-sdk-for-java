@@ -220,7 +220,6 @@ public final class Constants {
 
         // Change feed startFrom
         public static final String CHANGE_FEED_START_FROM_TYPE = "Type";
-        public static final String CHANGE_FEED_START_FROM_CONTINUATION = "Continuation";
         public static final String CHANGE_FEED_START_FROM_POINT_IN_TIME_MS = "PointInTimeMs";
         public static final String CHANGE_FEED_START_FROM_ETAG = "Etag";
     }

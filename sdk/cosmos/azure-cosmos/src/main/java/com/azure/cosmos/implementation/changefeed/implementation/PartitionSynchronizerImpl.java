@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation.changefeed.implementation;
 
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
@@ -32,6 +33,7 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
     private final LeaseManager leaseManager;
     private final int degreeOfParallelism;
     private final int maxBatchSize;
+    private final String collectionResourceId;
 
     public PartitionSynchronizerImpl(
             ChangeFeedContextClient documentClient,
@@ -39,7 +41,8 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
             LeaseContainer leaseContainer,
             LeaseManager leaseManager,
             int degreeOfParallelism,
-            int maxBatchSize) {
+            int maxBatchSize,
+            String collectionResourceId) {
 
         this.documentClient = documentClient;
         this.collectionSelfLink = collectionSelfLink;
@@ -47,6 +50,7 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
         this.leaseManager = leaseManager;
         this.degreeOfParallelism = degreeOfParallelism;
         this.maxBatchSize = maxBatchSize;
+        this.collectionResourceId = collectionResourceId;
     }
 
     @Override
@@ -74,7 +78,24 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
         }
 
         String leaseToken = lease.getLeaseToken();
-        String lastContinuationToken = lease.getContinuationToken();
+
+        ChangeFeedState lastContinuationState = lease.getContinuationState(
+            this.collectionResourceId,
+            new FeedRangePartitionKeyRangeImpl(leaseToken)
+        );
+
+        // TODO fabianm - this needs more elaborate processing in case the initial
+        // FeedRangeContinuation has continuation state for multiple feed Ranges
+        // and with merge multiple CompositeContinuationItems
+        // Means Split/Merge needs to be pushed into the FeedRangeContinuation
+        // Will be necessary for merge anyway
+        // but efficient testing only works if at least EPK filtering is available in Emulator
+        // or at least Service - this will be part of the next set of changes
+        // For now - no merge just simple V0 of lease contract
+        // this simplification will work
+        final String lastContinuationToken = lastContinuationState.getContinuation() != null ?
+            lastContinuationState.getContinuation().getCurrentContinuationToken().getToken() :
+            null;
 
         logger.info("Partition {} is gone due to split.", leaseToken);
 

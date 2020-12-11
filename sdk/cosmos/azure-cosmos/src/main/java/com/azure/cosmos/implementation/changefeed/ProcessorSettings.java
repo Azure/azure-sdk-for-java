@@ -3,38 +3,30 @@
 package com.azure.cosmos.implementation.changefeed;
 
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState;
 
 import java.time.Duration;
-import java.time.Instant;
+
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * Implementation for the partition processor properties.
  */
 public class ProcessorSettings {
-    private CosmosAsyncContainer collectionSelfLink;
-    private String partitionKeyRangeId;
     private Integer maxItemCount;
     private Duration feedPollDelay;
-    private String startContinuation;
-    private Instant startTime;
-//    private STRING sessionToken;
+    private final ChangeFeedState startState;
+    private final CosmosAsyncContainer collectionSelfLink;
 
-    public CosmosAsyncContainer getCollectionSelfLink() {
-        return this.collectionSelfLink;
-    }
+    public ProcessorSettings(
+        ChangeFeedState startState,
+        CosmosAsyncContainer collectionSelfLink) {
 
-    public ProcessorSettings withCollectionLink(CosmosAsyncContainer collectionLink) {
-        this.collectionSelfLink = collectionLink;
-        return this;
-    }
+        checkNotNull(startState, "Argument 'startState' must not be null");
+        checkNotNull(collectionSelfLink, "Argument 'collectionSelfLink' must not be null");
 
-    public String getPartitionKeyRangeId() {
-        return this.partitionKeyRangeId;
-    }
-
-    public ProcessorSettings withPartitionKeyRangeId(String partitionKeyRangeId) {
-        this.partitionKeyRangeId = partitionKeyRangeId;
-        return this;
+        this.collectionSelfLink = collectionSelfLink;
+        this.startState = startState;
     }
 
     public int getMaxItemCount() {
@@ -55,42 +47,11 @@ public class ProcessorSettings {
         return this;
     }
 
-    public String getStartContinuation() {
-        return this.startContinuation;
+    public ChangeFeedState getStartState() {
+        return this.startState;
     }
 
-    public ProcessorSettings withStartContinuation(String startContinuation) {
-        this.startContinuation = startContinuation;
-        return this;
+    public CosmosAsyncContainer getCollectionSelfLink() {
+        return this.collectionSelfLink;
     }
-
-    private boolean startFromBeginning;
-
-    public boolean isStartFromBeginning() {
-        return this.startFromBeginning;
-    }
-
-    public ProcessorSettings withStartFromBeginning(boolean startFromBeginning) {
-        this.startFromBeginning = startFromBeginning;
-        return this;
-    }
-
-    public Instant getStartTime() {
-        return this.startTime;
-    }
-
-    public ProcessorSettings withStartTime(Instant startTime) {
-        this.startTime = startTime;
-        return this;
-    }
-
-    // This is not currently supported in Java implementation.
-//    public STRING sessionToken() {
-//        return this.sessionToken;
-//    }
-//
-//    public ProcessorSettings sessionToken(STRING sessionToken) {
-//        this.sessionToken = sessionToken;
-//        return this;
-//    }
 }

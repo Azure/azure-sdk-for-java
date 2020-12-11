@@ -26,7 +26,6 @@ import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.RequestVerb;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.ResourceResponse;
-import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.StoredProcedure;
 import com.azure.cosmos.implementation.StoredProcedureResponse;
@@ -745,6 +744,13 @@ public final class ModelBridgeInternal {
         String etag, FeedRange feedRange) {
 
         return CosmosChangeFeedRequestOptions.createForProcessingFromEtagAndFeedRange(etag, feedRange);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static CosmosChangeFeedRequestOptions createChangeFeedRequestOptionsForChangeFeedState(
+        ChangeFeedState state) {
+
+        return CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(state);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
