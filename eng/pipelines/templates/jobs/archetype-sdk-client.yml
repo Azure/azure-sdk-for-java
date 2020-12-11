@@ -353,6 +353,11 @@ jobs:
           mergeTestResults: true
           testRunTitle: $(RunTitle)
 
+      - task: Bash@3
+        inputs:
+          targetType: 'inline'
+          script: pwd;ls -lah;
+
       # Azure DevOps only seems to respect the last code coverage result published, so only do this for Linux + Java LTS.
       # Code coverage reporting is setup only for Track 2 modules.
       - task: PublishCodeCoverageResults@1
