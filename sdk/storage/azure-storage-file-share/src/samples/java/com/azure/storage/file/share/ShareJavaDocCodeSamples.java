@@ -746,7 +746,8 @@ public class ShareJavaDocCodeSamples {
         ShareServiceSasSignatureValues values = new ShareServiceSasSignatureValues(expiryTime, permission)
             .setStartTime(OffsetDateTime.now());
 
-        ShareClient.generateSas(values, new Context("key", "value")); // Client must be authenticated via StorageSharedKeyCredential
+        // Client must be authenticated via StorageSharedKeyCredential
+        ShareClient.generateSas(values, new Context("key", "value"));
         // END: com.azure.storage.file.share.ShareClient.generateSas#ShareServiceSasSignatureValues-Context
     }
 }

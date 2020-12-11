@@ -4,7 +4,6 @@
 package com.azure.storage.file.datalake.models;
 
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpResponse;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
