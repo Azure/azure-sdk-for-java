@@ -1,0 +1,65 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.blob.core.windows.net?prefix=jtccheckaccessioexception&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2020-04-08",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.10.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "cde0d5da-e28d-40f2-9775-e08ec21904f8"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Access-Control-Expose-Headers" : "x-ms-client-request-id",
+      "x-ms-version" : "2020-04-08",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "Access-Control-Allow-Origin" : "*",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "9ba89e3c-d01e-00ac-5c04-d0e588000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://seansoftdeletecanary.blob.core.windows.net/\"><Prefix>jtccheckaccessioexception</Prefix><Containers><Container><Name>jtccheckaccessioexception1119416e7cdcecb4314ff3</Name><Properties><Last-Modified>Fri, 11 Dec 2020 21:28:12 GMT</Last-Modified><Etag>\"0x8D89E1BA9EA7C34\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container><Container><Name>jtccheckaccessioexception205005967c7d1cc16d4938</Name><Properties><Last-Modified>Fri, 11 Dec 2020 21:28:12 GMT</Last-Modified><Etag>\"0x8D89E1BAA20B482\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Fri, 11 Dec 2020 21:28:13 GMT",
+      "x-ms-client-request-id" : "cde0d5da-e28d-40f2-9775-e08ec21904f8",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtccheckaccessioexception1119416e7cdcecb4314ff3?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-04-08",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.10.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0a36abd4-9aea-4338-b1e0-b2daad81d7d7"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-04-08",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "9ba89e49-d01e-00ac-6904-d0e588000000",
+      "Date" : "Fri, 11 Dec 2020 21:28:13 GMT",
+      "x-ms-client-request-id" : "0a36abd4-9aea-4338-b1e0-b2daad81d7d7"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtccheckaccessioexception205005967c7d1cc16d4938?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-04-08",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.10.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "556bdea3-0ae2-45d6-9959-66c6116c118d"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-04-08",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "9ba89e54-d01e-00ac-7304-d0e588000000",
+      "Date" : "Fri, 11 Dec 2020 21:28:13 GMT",
+      "x-ms-client-request-id" : "556bdea3-0ae2-45d6-9959-66c6116c118d"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "jtccheckaccessioexception08932806761b63b1de438b", "jtccheckaccessioexception1119416e7cdcecb4314ff3", "jtccheckaccessioexception205005967c7d1cc16d4938", "javablobcheckaccessioexception30643910cbb3714c3f4" ]
+}
