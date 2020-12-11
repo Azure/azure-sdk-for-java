@@ -58,7 +58,7 @@ public class CosmosExceptionTest {
     @Test(groups = { "unit" })
     public void sdkVersionPresent() {
         CosmosException dce = BridgeInternal.createCosmosException(0);
-        assertThat(dce.toString()).contains("userAgent=" + Utils.getUserAgent());
+        assertThat(dce.toString()).contains("\"userAgent\":\"" + Utils.getUserAgent());
     }
 
     @Test(groups = { "unit" })
