@@ -68,12 +68,11 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
             if (!(authentication instanceof AbstractOAuth2TokenAuthenticationToken)) {
                 throw new IllegalStateException("Not support token implementation");
             }
-            AbstractOAuth2TokenAuthenticationToken<AbstractOAuth2Token> authenticationToken =
-                (AbstractOAuth2TokenAuthenticationToken) authentication;
+
             ClientRegistration clientRegistration =
                 azureClientRegistrationRepository.findByRegistrationId(registrationId);
 
-            String accessToken = authenticationToken.getToken().getTokenValue();
+            String accessToken = ((AbstractOAuth2TokenAuthenticationToken<?>) authentication).getToken().getTokenValue();
             OnBehalfOfParameters parameters = OnBehalfOfParameters
                 .builder(clientRegistration.getScopes(), new UserAssertion(accessToken))
                 .build();
@@ -90,7 +89,7 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
                 Instant.ofEpochMilli(exp.getTime()));
 
             OAuth2AuthorizedClient oAuth2AuthorizedClient = new OAuth2AuthorizedClient(clientRegistration,
-                authenticationToken.getName(), oAuth2AccessToken);
+                authentication.getName(), oAuth2AccessToken);
 
             request.setAttribute(oboAuthorizedClientAttributeName, (T) oAuth2AuthorizedClient);
             return (T) oAuth2AuthorizedClient;
