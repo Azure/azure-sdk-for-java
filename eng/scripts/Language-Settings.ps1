@@ -232,7 +232,7 @@ function Find-java-Artifacts-For-Apireview($artifactDir, $pkgName = "")
     Write-Host "$($Location) does not have any package"
     exit(1)
   }
-  else if($files.Count -ne 1)
+  elseif($files.Count -ne 1)
   {
     Write-Host "$($artifactDir) should contain only one (1) published source jar package"
     Write-Host "No of Packages $($files.Count)"
