@@ -276,4 +276,25 @@ public class QueueServiceJavaDocCodeSamples {
         String sas = queueServiceClient.generateAccountSas(sasValues);
         // END: com.azure.storage.queue.QueueServiceClient.generateAccountSas#AccountSasSignatureValues
     }
+
+    /**
+     * Code snippet for {@link QueueServiceClient#generateAccountSas(AccountSasSignatureValues, Context)}
+     */
+    public void generateAccountSasWithContext() {
+        QueueServiceClient queueServiceClient = createClientWithCredential();
+        // BEGIN: com.azure.storage.queue.QueueServiceClient.generateAccountSas#AccountSasSignatureValues-Context
+        AccountSasPermission permissions = new AccountSasPermission()
+            .setListPermission(true)
+            .setReadPermission(true);
+        AccountSasResourceType resourceTypes = new AccountSasResourceType().setContainer(true).setObject(true);
+        AccountSasService services = new AccountSasService().setQueueAccess(true).setFileAccess(true);
+        OffsetDateTime expiryTime = OffsetDateTime.now().plus(Duration.ofDays(2));
+
+        AccountSasSignatureValues sasValues =
+            new AccountSasSignatureValues(expiryTime, permissions, services, resourceTypes);
+
+        // Client must be authenticated via StorageSharedKeyCredential
+        String sas = queueServiceClient.generateAccountSas(sasValues, new Context("key", "value"));
+        // END: com.azure.storage.queue.QueueServiceClient.generateAccountSas#AccountSasSignatureValues-Context
+    }
 }

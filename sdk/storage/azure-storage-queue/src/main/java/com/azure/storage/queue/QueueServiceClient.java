@@ -435,4 +435,23 @@ public final class QueueServiceClient {
     public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues) {
         return this.client.generateAccountSas(accountSasSignatureValues);
     }
+
+    /**
+     * Generates an account SAS for the Azure Storage account using the specified {@link AccountSasSignatureValues}.
+     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link AccountSasSignatureValues} for more information on how to construct an account SAS.</p>
+     *
+     * <p><strong>Generating an account SAS</strong></p>
+     * <p>The snippet below generates an AccountSasSignatureValues object that lasts for two days and gives the user
+     * read and list access to queue and file shares.</p>
+     * {@codesnippet com.azure.storage.queue.QueueServiceClient.generateAccountSas#AccountSasSignatureValues-Context}
+     *
+     * @param accountSasSignatureValues {@link AccountSasSignatureValues}
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing all SAS query parameters.
+     */
+    public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues, Context context) {
+        return this.client.generateAccountSas(accountSasSignatureValues, context);
+    }
 }
