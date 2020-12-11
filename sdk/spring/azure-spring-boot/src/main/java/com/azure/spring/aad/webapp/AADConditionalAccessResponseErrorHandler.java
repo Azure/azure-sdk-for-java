@@ -49,8 +49,10 @@ public class AADConditionalAccessResponseErrorHandler implements ResponseErrorHa
         if (oauth2Error == null) {
             oauth2Error = this.oauth2ErrorConverter.read(OAuth2Error.class, response);
         }
-        //Handle conditional access policy, step 1.
-        //About conditional access: https://docs.microsoft.com/en-us/azure/active-directory/conditional-access/howto-conditional-access-policy-all-users-mfa
+        /**
+         *  Handle conditional access policy, step 1.
+         *  https://docs.microsoft.com/en-us/azure/active-directory/conditional-access/howto-conditional-access-policy-all-users-mfa
+         */
         throw new OAuth2AuthorizationException(oauth2Error);
     }
 
