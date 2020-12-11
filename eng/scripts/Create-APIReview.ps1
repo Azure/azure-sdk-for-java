@@ -44,6 +44,7 @@ function Submit-APIReview($packagename, $filePath, $uri, $apiKey, $apiLabel)
     }
     catch
     {
+        Write-Host "Failed to create API review $($_.Exception.Response)"
         $StatusCode = $_.Exception.Response.StatusCode
     }
 
@@ -76,6 +77,7 @@ if ($packages)
 else
 {
     Write-Host "No package is found in artifact path to submit review request"
+    exit(1)
 }
 
 $FoundFailure = $False
