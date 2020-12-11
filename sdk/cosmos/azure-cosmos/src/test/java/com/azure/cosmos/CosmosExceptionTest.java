@@ -118,7 +118,7 @@ public class CosmosExceptionTest {
             constructor.setAccessible(true);
             final CosmosException instance = constructor.newInstance("some-message", null, "some-uri");
             assertEquals(instance.getStatusCode(), expectedStatusCode);
-            assertThat(instance.toString()).contains("userAgent=" + Utils.getUserAgent());
+            assertThat(instance.toString()).contains("\"userAgent\":\"" + Utils.getUserAgent());
         } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException error) {
             String message = lenientFormat("could not create instance of %s due to %s", type, error);
             throw new AssertionError(message, error);
