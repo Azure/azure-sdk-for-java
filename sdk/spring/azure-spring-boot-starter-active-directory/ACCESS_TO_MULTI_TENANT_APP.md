@@ -23,5 +23,3 @@
 
 ![administrators-revoke-access-1](resource/access-to-multi-tenant-app/administrators-revoke-access-1.png)
 ![administrators-revoke-access-2](resource/access-to-multi-tenant-app/administrators-revoke-access-2.png)
-
-* Refer: [Sign in any Azure Active Directory user using the multi-tenant application pattern](https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-convert-app-to-be-multi-tenant)
