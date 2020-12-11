@@ -356,7 +356,7 @@ jobs:
       # Azure DevOps only seems to respect the last code coverage result published, so only do this for Linux + Java LTS.
       # Code coverage reporting is setup only for Track 2 modules.
       - task: PublishCodeCoverageResults@1
-        condition: and(eq(variables['OsName'], 'Linux'), eq(variables['JavaVersion'], '1.11'))
+        condition: and(eq(variables['OsName'], 'Linux'), eq(variables['JavaBuildVersion'], '1.11'))
         inputs:
           codeCoverageTool: JaCoCo
           summaryFileLocation: sdk/${{ parameters.ArtifactDirectory }}/${{ parameters.ArtifactID }}/target/site/test-coverage/jacoco.xml
