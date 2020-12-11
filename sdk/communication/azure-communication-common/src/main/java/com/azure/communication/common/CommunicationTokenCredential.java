@@ -89,7 +89,8 @@ public final class CommunicationTokenCredential implements AutoCloseable {
      */
     public Mono<AccessToken> getToken() throws InterruptedException, ExecutionException {
         if (isClosed) {
-            return FluxUtil.monoError(logger, new RuntimeException("getToken called on closed CommunicationTokenCredential object"));
+            return FluxUtil.monoError(logger, 
+                new RuntimeException("getToken called on closed CommunicationTokenCredential object"));
         }
         if ((accessToken == null || accessToken.isExpired()) && refresher != null) {
             synchronized (this) {
@@ -133,7 +134,8 @@ public final class CommunicationTokenCredential implements AutoCloseable {
     private Mono<String> fetchFreshToken() {
         Mono<String> tokenAsync = refresher.getTokenAsync();
         if (tokenAsync == null) {
-            return FluxUtil.monoError(logger, new RuntimeException("TokenRefresher returned null when getTokenAsync is called"));
+            return FluxUtil.monoError(logger, 
+                new RuntimeException("TokenRefresher returned null when getTokenAsync is called"));
         }
         return tokenAsync;
     }

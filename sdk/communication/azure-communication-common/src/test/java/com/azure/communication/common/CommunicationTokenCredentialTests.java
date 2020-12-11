@@ -4,6 +4,8 @@ package com.azure.communication.common;
 
 import com.azure.communication.common.implementation.JwtTokenMocker;
 import com.azure.core.credential.AccessToken;
+import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 
 import org.junit.jupiter.api.Test;
 
@@ -230,7 +232,8 @@ public class CommunicationTokenCredentialTests {
             if (this.onCallReturn != null) {
                 this.onCallReturn.run();
             }
-            throw new RuntimeException("Lost internet connection");
+            final ClientLogger logger = new ClientLogger(CommunicationTokenCredential.class);
+            return FluxUtil.monoError(logger, new RuntimeException("Lost Internet Connection"));
         }
     }
 
@@ -257,16 +260,19 @@ public class CommunicationTokenCredentialTests {
         exceptionRefresher.resetCallCount();
         CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(exceptionRefresher, tokenStr, false);
         StepVerifier.create(tokenCredential.getToken())
-            .verifyError(Exception.class);
+            .verifyError(RuntimeException.class);
         assertEquals(1, exceptionRefresher.numCalls());
         tokenCredential.close();
     }
    
     @Test
-    public void shouldThrowWhenGetTokenCalledOnClosedObject() throws IOException {
+    public void shouldThrowWhenGetTokenCalledOnClosedObject() throws IOException, InterruptedException,
+            ExecutionException {
         CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(immediateFresher);
         tokenCredential.close();
+
         StepVerifier.create(tokenCredential.getToken())
             .verifyError(RuntimeException.class);
+        
     }
 }
