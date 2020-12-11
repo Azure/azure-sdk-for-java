@@ -1,11 +1,16 @@
 ## Release History
 
-## 4.9.0-beta.1 (Unreleased)
+### 4.9.0 (2020-12-11)
 #### New Features
 * Added Beta API for Bulk Operations.
+* Added `getRegionsContacted` API in `CosmosDiagnostics`.
+* Added Diagnostics for `CosmosStoredProcedureResponse`.
+* Added trouble shooting guide links to `CosmosException`.
 
 #### Key Bug Fixes
-* Adding automatic retries on client-side transient failures on writes while possible with still being idempotent.  
+* Adding automatic retries on client-side transient failures on writes while possible with still being idempotent.
+* Fixed NPE on `getDiagnostics` for `CosmosStoredProcedureResponse`.
+* Fixed empty `resourceAddress` in `CosmosException`.
 
 ### 4.8.0 (2020-10-27)
 #### New Features
