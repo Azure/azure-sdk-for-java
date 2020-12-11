@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.integration;
 
-import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.ExcludedPath;
 import com.azure.cosmos.models.IncludedPath;
@@ -29,9 +28,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class IndexPolicyUpdateIT {
-
-    @Autowired
-    CosmosAsyncClient cosmosAsyncClient;
 
     @Autowired
     CosmosTemplate template;
