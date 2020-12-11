@@ -356,7 +356,7 @@ jobs:
       - task: Bash@3
         inputs:
           targetType: 'inline'
-          script: pwd;ls -lahR;echo ${{ parameters.ArtifactDirectory }};echo ${{ parameters.ArtifactID }}
+          script: pwd;echo ${{ parameters.ServiceDirectory }};ls -lahR;
 
       # Azure DevOps only seems to respect the last code coverage result published, so only do this for Linux + Java LTS.
       # Code coverage reporting is setup only for Track 2 modules.
@@ -364,6 +364,6 @@ jobs:
         condition: and(eq(variables['OsName'], 'Linux'), eq(variables['JavaBuildVersion'], '1.11'))
         inputs:
           codeCoverageTool: JaCoCo
-          summaryFileLocation: sdk/${{ parameters.ArtifactDirectory }}/${{ parameters.ArtifactID }}/target/site/test-coverage/jacoco.xml
-          reportDirectory: sdk/${{ parameters.ArtifactDirectory }}/${{ parameters.ArtifactID }}/target/site/test-coverage/
+          summaryFileLocation: sdk/${{ parameters.ServiceDirectory }}/target/site/test-coverage/jacoco.xml
+          reportDirectory: sdk/${{ parameters.ServiceDirectory }}/target/site/test-coverage/
           failIfCoverageEmpty: false
