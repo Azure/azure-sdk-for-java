@@ -437,7 +437,8 @@ public class FileSystemClientJavaDocCodeSamples {
         DataLakeServiceSasSignatureValues values = new DataLakeServiceSasSignatureValues(expiryTime, permission)
             .setStartTime(OffsetDateTime.now());
 
-        client.generateSas(values, new Context("key", "value")); // Client must be authenticated via StorageSharedKeyCredential
+        // Client must be authenticated via StorageSharedKeyCredential
+        client.generateSas(values, new Context("key", "value"));
         // END: com.azure.storage.file.datalake.DataLakeFileSystemClient.generateSas#DataLakeServiceSasSignatureValues-Context
 
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileSystemClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey-String-Context

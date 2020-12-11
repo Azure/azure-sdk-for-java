@@ -604,7 +604,8 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
         BlobServiceSasSignatureValues values = new BlobServiceSasSignatureValues(expiryTime, permission)
             .setStartTime(OffsetDateTime.now());
 
-        client.generateSas(values, new Context("key", "value")); // Client must be authenticated via StorageSharedKeyCredential
+        // Client must be authenticated via StorageSharedKeyCredential
+        client.generateSas(values, new Context("key", "value"));
         // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.generateSas#BlobServiceSasSignatureValues-Context
 
         // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey-String-Context

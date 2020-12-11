@@ -769,7 +769,8 @@ public class ShareAsyncJavaDocCodeSamples {
         ShareServiceSasSignatureValues values = new ShareServiceSasSignatureValues(expiryTime, permission)
             .setStartTime(OffsetDateTime.now());
 
-        shareAsyncClient.generateSas(values, new Context("key", "value")); // Client must be authenticated via StorageSharedKeyCredential
+        // Client must be authenticated via StorageSharedKeyCredential
+        shareAsyncClient.generateSas(values, new Context("key", "value"));
         // END: com.azure.storage.file.share.ShareAsyncClient.generateSas#ShareServiceSasSignatureValues-Context
     }
 }

@@ -460,7 +460,8 @@ public class QueueJavaDocCodeSamples {
         QueueServiceSasSignatureValues values = new QueueServiceSasSignatureValues(expiryTime, permission)
             .setStartTime(OffsetDateTime.now());
 
-        client.generateSas(values, new Context("key", "value")); // Client must be authenticated via StorageSharedKeyCredential
+        // Client must be authenticated via StorageSharedKeyCredential
+        client.generateSas(values, new Context("key", "value"));
         // END: com.azure.storage.queue.QueueClient.generateSas#QueueServiceSasSignatureValues-Context
     }
 }

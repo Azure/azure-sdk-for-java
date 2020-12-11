@@ -597,7 +597,8 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
         ShareServiceSasSignatureValues values = new ShareServiceSasSignatureValues(expiryTime, permission)
             .setStartTime(OffsetDateTime.now());
 
-        shareDirectoryAsyncClient.generateSas(values, new Context("key", "value")); // Client must be authenticated via StorageSharedKeyCredential
+        // Client must be authenticated via StorageSharedKeyCredential
+        shareDirectoryAsyncClient.generateSas(values, new Context("key", "value"));
         // END: com.azure.storage.file.share.ShareDirectoryAsyncClient.generateSas#ShareServiceSasSignatureValues-Context
     }
 }

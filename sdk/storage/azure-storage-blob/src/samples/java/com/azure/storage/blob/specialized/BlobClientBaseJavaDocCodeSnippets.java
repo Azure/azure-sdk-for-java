@@ -561,7 +561,8 @@ public class BlobClientBaseJavaDocCodeSnippets {
         BlobServiceSasSignatureValues values = new BlobServiceSasSignatureValues(expiryTime, permission)
             .setStartTime(OffsetDateTime.now());
 
-        client.generateSas(values, new Context(key1, value1)); // Client must be authenticated via StorageSharedKeyCredential
+        // Client must be authenticated via StorageSharedKeyCredential
+        client.generateSas(values, new Context(key1, value1));
         // END: com.azure.storage.blob.specialized.BlobClientBase.generateSas#BlobServiceSasSignatureValues-Context
 
         // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey-String-Context

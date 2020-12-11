@@ -993,7 +993,8 @@ public class ShareFileJavaDocCodeSamples {
         ShareServiceSasSignatureValues values = new ShareServiceSasSignatureValues(expiryTime, permission)
             .setStartTime(OffsetDateTime.now());
 
-        shareFileClient.generateSas(values, new Context("key", "value")); // Client must be authenticated via StorageSharedKeyCredential
+        // Client must be authenticated via StorageSharedKeyCredential
+        shareFileClient.generateSas(values, new Context("key", "value"));
         // END: com.azure.storage.file.share.ShareFileClient.generateSas#ShareServiceSasSignatureValues-Context
     }
 }
