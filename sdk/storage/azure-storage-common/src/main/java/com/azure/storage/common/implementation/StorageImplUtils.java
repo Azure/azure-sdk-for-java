@@ -343,7 +343,8 @@ public class StorageImplUtils {
                     + message;
             }
             if (response.getRequest() != null && response.getRequest().getHttpMethod() != null
-                && response.getRequest().getHttpMethod().equals(HttpMethod.HEAD)) {
+                && response.getRequest().getHttpMethod().equals(HttpMethod.HEAD)
+                && response.getHeaders().getValue(ERROR_CODE) != null) {
                 return message.replaceFirst("(empty body)", response.getHeaders().getValue(ERROR_CODE));
             }
         }
