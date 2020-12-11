@@ -34,14 +34,14 @@ public class CompositeIndexIT {
         CosmosContainerProperties properties = template.getContainerProperties(information.getContainerName());
         List<List<CompositePath>> indexes = properties.getIndexingPolicy().getCompositeIndexes();
 
-        assertThat(indexes.get(0).get(0).getPath()).isEqualTo("/fieldOne/?");
+        assertThat(indexes.get(0).get(0).getPath()).isEqualTo("/fieldOne");
         assertThat(indexes.get(0).get(0).getOrder()).isEqualTo(CompositePathSortOrder.ASCENDING);
-        assertThat(indexes.get(0).get(1).getPath()).isEqualTo("/fieldTwo/?");
+        assertThat(indexes.get(0).get(1).getPath()).isEqualTo("/fieldTwo");
         assertThat(indexes.get(0).get(1).getOrder()).isEqualTo(CompositePathSortOrder.ASCENDING);
 
-        assertThat(indexes.get(1).get(0).getPath()).isEqualTo("/fieldThree/?");
+        assertThat(indexes.get(1).get(0).getPath()).isEqualTo("/fieldThree");
         assertThat(indexes.get(1).get(0).getOrder()).isEqualTo(CompositePathSortOrder.DESCENDING);
-        assertThat(indexes.get(1).get(1).getPath()).isEqualTo("/fieldFour/?");
+        assertThat(indexes.get(1).get(1).getPath()).isEqualTo("/fieldFour");
         assertThat(indexes.get(1).get(1).getOrder()).isEqualTo(CompositePathSortOrder.DESCENDING);
     }
 

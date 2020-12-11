@@ -25,6 +25,7 @@ import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
@@ -412,7 +413,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
         final CosmosIndexingPolicy annotation = domainType.getAnnotation(CosmosIndexingPolicy.class);
 
         if (annotation == null || annotation.compositeIndexes().length == 0) {
-            return null; // Align the default value of IndexingPolicy
+            return Collections.emptyList();
         }
 
         final CompositeIndex[] compositeIndexes = annotation.compositeIndexes();

@@ -10,14 +10,14 @@ import org.springframework.data.annotation.Id;
 @Container
 @CosmosIndexingPolicy(compositeIndexes = {
     @CompositeIndex(paths = {
-        @CompositeIndexPath(path = "/fieldOne/?"),
-        @CompositeIndexPath(path = "/fieldTwo/?")
+        @CompositeIndexPath(path = "/fieldOne"),
+        @CompositeIndexPath(path = "/fieldTwo")
     }),
     @CompositeIndex(paths = {
-        @CompositeIndexPath(path = "/fieldThree/?", order = CompositePathSortOrder.DESCENDING),
-        @CompositeIndexPath(path = "/fieldFour/?", order = CompositePathSortOrder.DESCENDING)
+        @CompositeIndexPath(path = "/fieldThree", order = CompositePathSortOrder.DESCENDING),
+        @CompositeIndexPath(path = "/fieldFour", order = CompositePathSortOrder.DESCENDING)
     })
-} )
+})
 public class CompositeIndexEntity {
 
     @Id
