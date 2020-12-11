@@ -323,8 +323,9 @@ public class BlobClientBase {
 
     private IllegalStateException generateConsistentReadControlException(String wrongVariable, String originalControl,
         String expectedControl) {
-        return new IllegalStateException(String.format("'%s' can not be set when 'concurrencyControl'"
-            + " is set to '%s'. Set 'concurrencyControl' to '%s'.", wrongVariable, originalControl, expectedControl));
+        return new IllegalStateException(String.format("'%s' can not be set when 'consistentReadControl'"
+            + " is set to '%s'. Set 'consistentReadControl' to '%s'.", wrongVariable, originalControl,
+            expectedControl));
     }
 
     /**

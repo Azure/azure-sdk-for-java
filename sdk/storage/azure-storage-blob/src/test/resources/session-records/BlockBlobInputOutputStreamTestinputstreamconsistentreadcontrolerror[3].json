@@ -1,0 +1,176 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtcinputstreamconsistentreadcontrolerror0311636d84b2e9?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-04-08",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.10.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "28b644ea-60fd-41ca-b240-9025835a41d2"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-04-08",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D89E22B8543DA7",
+      "Last-Modified" : "Fri, 11 Dec 2020 22:18:43 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "e20e17dd-d01e-0022-730b-d0e0b6000000",
+      "Date" : "Fri, 11 Dec 2020 22:18:42 GMT",
+      "x-ms-client-request-id" : "28b644ea-60fd-41ca-b240-9025835a41d2"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtcinputstreamconsistentreadcontrolerror0311636d84b2e9?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-04-08",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.10.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "076ee561-fcc1-41a5-ad19-25171016a3df"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-04-08",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D89E22B864F392",
+      "Last-Modified" : "Fri, 11 Dec 2020 22:18:43 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "6787bf4c-401e-0081-520b-d0ed7a000000",
+      "Date" : "Fri, 11 Dec 2020 22:18:43 GMT",
+      "x-ms-client-request-id" : "076ee561-fcc1-41a5-ad19-25171016a3df"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtcinputstreamconsistentreadcontrolerror0311636d84b2e9/javablobinputstreamconsistentreadcontrolerror2250279a7d06",
+    "Headers" : {
+      "x-ms-version" : "2020-04-08",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.10.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "af97ea31-516c-42a3-8e49-cabe4bc25017",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-04-08",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-content-crc64" : "AAAAAAAAAAA=",
+      "Last-Modified" : "Fri, 11 Dec 2020 22:18:43 GMT",
+      "x-ms-version-id" : "2020-12-11T22:18:43.3735322Z",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Fri, 11 Dec 2020 22:18:43 GMT",
+      "Content-MD5" : "1B2M2Y8AsgTpgAmY7PhCfg==",
+      "ETag" : "0x8D89E22B875E29A",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "6787bf55-401e-0081-580b-d0ed7a000000",
+      "x-ms-client-request-id" : "af97ea31-516c-42a3-8e49-cabe4bc25017"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "HEAD",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtcinputstreamconsistentreadcontrolerror0311636d84b2e9/javablobinputstreamconsistentreadcontrolerror2250279a7d06",
+    "Headers" : {
+      "x-ms-version" : "2020-04-08",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.10.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7120f561-52f0-4738-ac6b-543efc6de46a"
+    },
+    "Response" : {
+      "x-ms-is-current-version" : "true",
+      "x-ms-version" : "2020-04-08",
+      "x-ms-lease-status" : "unlocked",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-lease-state" : "available",
+      "x-ms-version-id" : "2020-12-11T22:18:43.3735322Z",
+      "Last-Modified" : "Fri, 11 Dec 2020 22:18:43 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Fri, 11 Dec 2020 22:18:43 GMT",
+      "x-ms-blob-type" : "BlockBlob",
+      "Content-MD5" : "1B2M2Y8AsgTpgAmY7PhCfg==",
+      "Accept-Ranges" : "bytes",
+      "x-ms-server-encrypted" : "true",
+      "x-ms-access-tier-inferred" : "true",
+      "x-ms-access-tier" : "Hot",
+      "ETag" : "0x8D89E22B875E29A",
+      "x-ms-creation-time" : "Fri, 11 Dec 2020 22:18:43 GMT",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "6787bf61-401e-0081-610b-d0ed7a000000",
+      "x-ms-client-request-id" : "7120f561-52f0-4738-ac6b-543efc6de46a",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "HEAD",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtcinputstreamconsistentreadcontrolerror0311636d84b2e9/javablobinputstreamconsistentreadcontrolerror2250279a7d06?versionid=2020-12-11T22%3A18%3A43.3735322Z",
+    "Headers" : {
+      "x-ms-version" : "2020-04-08",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.10.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b25b3878-b056-488a-bbdd-61873b9e6f83"
+    },
+    "Response" : {
+      "x-ms-is-current-version" : "true",
+      "x-ms-version" : "2020-04-08",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-version-id" : "2020-12-11T22:18:43.3735322Z",
+      "Last-Modified" : "Fri, 11 Dec 2020 22:18:43 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Fri, 11 Dec 2020 22:18:43 GMT",
+      "x-ms-blob-type" : "BlockBlob",
+      "Content-MD5" : "1B2M2Y8AsgTpgAmY7PhCfg==",
+      "Accept-Ranges" : "bytes",
+      "x-ms-server-encrypted" : "true",
+      "x-ms-access-tier-inferred" : "true",
+      "x-ms-access-tier" : "Hot",
+      "ETag" : "0x8D89E22B875E29A",
+      "x-ms-creation-time" : "Fri, 11 Dec 2020 22:18:43 GMT",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "6787bf6b-401e-0081-6a0b-d0ed7a000000",
+      "x-ms-client-request-id" : "b25b3878-b056-488a-bbdd-61873b9e6f83",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.blob.core.windows.net?prefix=jtcinputstreamconsistentreadcontrolerror&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2020-04-08",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.10.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "33f4d0b6-4aba-4c2e-bceb-1cdadb7dbc5d"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-04-08",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "e20e1806-d01e-0022-0d0b-d0e0b6000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://gapracanary.blob.core.windows.net/\"><Prefix>jtcinputstreamconsistentreadcontrolerror</Prefix><Containers><Container><Name>jtcinputstreamconsistentreadcontrolerror0311636d84b2e9</Name><Properties><Last-Modified>Fri, 11 Dec 2020 22:18:43 GMT</Last-Modified><Etag>\"0x8D89E22B8543DA7\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Fri, 11 Dec 2020 22:18:43 GMT",
+      "x-ms-client-request-id" : "33f4d0b6-4aba-4c2e-bceb-1cdadb7dbc5d",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtcinputstreamconsistentreadcontrolerror0311636d84b2e9?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-04-08",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.10.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7a76b4e1-1fe7-4a8a-b28f-67464a8525cd"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-04-08",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "e20e1815-d01e-0022-180b-d0e0b6000000",
+      "Date" : "Fri, 11 Dec 2020 22:18:43 GMT",
+      "x-ms-client-request-id" : "7a76b4e1-1fe7-4a8a-b28f-67464a8525cd"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "jtcinputstreamconsistentreadcontrolerror0311636d84b2e9", "javablobinputstreamconsistentreadcontrolerror1685031ef2e7", "javablobinputstreamconsistentreadcontrolerror2250279a7d06" ]
+}

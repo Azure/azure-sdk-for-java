@@ -191,29 +191,7 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         notThrown(IOException)
     }
 
-    def "Input stream consistent read control none error"() {
-        setup:
-        def blobContainerClient = versionedBlobServiceClient.createBlobContainer(containerName)
-        def blobClient = blobContainerClient.getBlobClient(generateBlobName())
-        blobClient.upload(new ByteArrayInputStream(new byte[0]), 0, true)
-        def properties = blobClient.getProperties()
-
-        when: "Using eTag"
-        blobClient.openInputStream(new BlobInputStreamOptions().setBlockSize(1).setConsistentReadControl(ConsistentReadControl.NONE)
-            .setRequestConditions(new BlobRequestConditions().setIfMatch(properties.getETag())))
-
-        then:
-        thrown(IllegalStateException)
-
-        when: "Using versionId"
-        blobClient.getVersionClient(properties.getVersionId()).openInputStream(new BlobInputStreamOptions().setBlockSize(1)
-            .setConsistentReadControl(ConsistentReadControl.NONE))
-
-        then:
-        thrown(IllegalStateException)
-    }
-
-    def "Input stream concurrency control etag"() {
+    def "Input stream consistent read control etag"() {
         setup:
         int length = 6 * Constants.MB
         byte[] randomBytes = getRandomByteArray(length)
@@ -247,7 +225,7 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         thrown(BlobStorageException)
     }
 
-    def "Input stream concurrency control version"() {
+    def "Input stream consistent read control version"() {
         setup:
         int length = 6 * Constants.MB
         byte[] randomBytes = getRandomByteArray(length)
@@ -283,5 +261,36 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         assert randomBytes2 == randomBytes
     }
 
+    @Unroll
+    def "Input stream consistent read control error"() {
+        setup:
+        def blobContainerClient = versionedBlobServiceClient.createBlobContainer(containerName)
+        def blobClient = blobContainerClient.getBlobClient(generateBlobName())
+        blobClient.upload(new ByteArrayInputStream(new byte[0]), 0, true)
+        def properties = blobClient.getProperties()
+
+        when:
+        if (useVersionId) {
+            blobClient = blobClient.getVersionClient(properties.getVersionId())
+        }
+        def requestConditions = null
+        if (useETag) {
+            requestConditions = new BlobRequestConditions().setIfMatch(properties.getETag())
+        }
+        blobClient.openInputStream(new BlobInputStreamOptions().setConsistentReadControl(consistentReadControl)
+            .setRequestConditions(requestConditions))
+
+        then:
+        thrown(IllegalStateException)
+
+        where:
+        useETag | useVersionId | consistentReadControl            || _
+        true    | false        | ConsistentReadControl.NONE       || _
+        false   | true         | ConsistentReadControl.NONE       || _
+        true    | false        | ConsistentReadControl.VERSION_ID || _
+        false   | true         | ConsistentReadControl.ETAG       || _
+        true    | true         | ConsistentReadControl.VERSION_ID || _
+        true    | true         | ConsistentReadControl.ETAG       || _
+    }
 
 }
