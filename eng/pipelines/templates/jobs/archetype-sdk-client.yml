@@ -356,7 +356,7 @@ jobs:
       - task: Bash@3
         inputs:
           targetType: 'inline'
-          script: pwd;ls -lah;
+          script: pwd;ls -lahR;echo ${{ parameters.ArtifactDirectory }};echo ${{ parameters.ArtifactID }}
 
       # Azure DevOps only seems to respect the last code coverage result published, so only do this for Linux + Java LTS.
       # Code coverage reporting is setup only for Track 2 modules.
