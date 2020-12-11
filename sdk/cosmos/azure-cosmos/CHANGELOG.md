@@ -1,11 +1,16 @@
 ## Release History
 
 ## 4.9.0-beta.1 (Unreleased)
+#### New Features
+* Added Beta API for Bulk Operations.
 
+#### Key Bug Fixes
+* Adding automatic retries on client-side transient failures on writes while possible with still being idempotent.  
 
 ### 4.8.0 (2020-10-27)
 #### New Features
 * Added `contentResponseOnWriteEnabled` feature to `CosmosItemRequestOptions`.
+
 #### Key Bug Fixes
 * Fixed an issue which may affect query behaviour when resuming from a continuation token.
 
@@ -15,7 +20,7 @@
 
 ### 4.7.0 (2020-10-17) NOTE: WE STRONGLY RECOMMEND OUR CUSTOMERS TO USE VERSION 4.7.0 AND ABOVE
 #### New Features
-* Added Beta for transactional batches.
+* Added Beta API for transactional batches.
 
 #### Key Bug Fixes
 * Fixed an error parsing query metrics on locales with ',' as floating-point delimiter.
