@@ -40,6 +40,11 @@
 
   <dependencies>
     <dependency>
+      <groupId>org.reflections</groupId>
+      <artifactId>reflections</artifactId>
+      <version>0.9.12</version>
+    </dependency>
+    <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
       <version>1.11.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->

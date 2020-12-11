@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
+import org.junit.jupiter.api.Tag;
 import reactor.core.Disposable;
 
 import java.util.concurrent.TimeUnit;
@@ -20,6 +21,7 @@ import java.util.concurrent.TimeUnit;
  * </ul>
  *
  */
+@Tag("sample")
 public class ReceiveMessageAndSettleAsyncSample {
 
     /**

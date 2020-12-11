@@ -12,7 +12,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-smoketest-samples</artifactId>
   <version>1.0.0-beta.1</version>
-  <!-- {x-version-update;com.azure:azure-smoketest-samples;current}  -->
+  <!-- {x-version-update;com.azure:azure-smoketest-samples;current} -->
   <name>Microsoft Azure client library for Service Bus</name>
   <description>Libraries built on Microsoft Azure Service Bus</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
@@ -33,34 +33,21 @@
   </properties>
   <dependencies>
     <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
-      <version>5.6.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
-    </dependency>
-
-
-    <dependency>
-      <groupId>org.reflections</groupId>
-      <artifactId>reflections</artifactId>
-      <version>0.9.12</version>
-    </dependency>
-
-    <dependency>
-      <!-- must be on the classpath -->
-      <groupId>org.jacoco</groupId>
-      <artifactId>org.jacoco.agent</artifactId>
-      <classifier>runtime</classifier>
-      <version>0.8.5</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>3.3.3</version>
+      <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-messaging-servicebus</artifactId>
-      <version>7.1.0-beta.1</version>
+      <artifactId>azure-core-amqp</artifactId>
+      <version>2.0.0</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-identity</artifactId>
-      <version>1.2.1</version>
+      <artifactId>azure-core-http-netty</artifactId>
+      <version>1.7.0</version>
     </dependency>
   </dependencies>
   <build>
@@ -81,23 +68,36 @@
   </build>
   <profiles>
     <profile>
-      <id>run-smoke-test</id>
-      <properties>
-        <jacoco.skip>true</jacoco.skip>
-      </properties>
+      <id>java-lts</id>
       <activation>
         <jdk>[11,)</jdk>
       </activation>
       <build>
-        <resources>
-          <resource>
-            <directory>${project.basedir}/../../sdk/servicebus/azure-messaging-servicebus/src/samples/java</directory>
-            <targetPath>${project.basedir}/src/main/java</targetPath>
-            <includes>
-              <include>**/*.java</include>
-            </includes>
-          </resource>
-        </resources>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M3</version>
+            <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+              <argLine>
+                --add-opens com.azure.messaging.servicebus/com.azure.messaging.servicebus=ALL-UNNAMED
+                --add-opens com.azure.messaging.servicebus/com.azure.messaging.servicebus.implementation=ALL-UNNAMED
+                --add-opens com.azure.messaging.servicebus/com.azure.messaging.servicebus.administration=ALL-UNNAMED
+                --add-opens com.azure.messaging.servicebus/com.azure.messaging.servicebus.administration.models=ALL-UNNAMED
+              </argLine>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>run-smoke-test</id>
+      <activation>
+        <jdk>[11,)</jdk>
+      </activation>
+      <build>
         <plugins>
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
@@ -112,6 +112,10 @@
                 </goals>
                 <configuration>
                   <mainClass>com.azure.smoke.test.core.RunSmokeTest</mainClass>
+                  <arguments>
+                    <argument>arg0</argument>
+                    <argument>arg1</argument>
+                  </arguments>
                 </configuration>
               </execution>
             </executions>
