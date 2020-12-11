@@ -92,7 +92,7 @@ public class AADAuthenticationProperties {
     /**
      * Azure Tenant ID.
      */
-    private String tenantId;
+    private String tenantId = "common";
 
     /**
      * If Telemetry events should be published to Azure AD.

@@ -169,6 +169,7 @@ import com.azure.resourcemanager.redis.models.RedisCachePremium;
 import com.azure.resourcemanager.redis.models.ScheduleEntry;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+import com.azure.resourcemanager.resources.models.ManagementLock;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.servicebus.models.AuthorizationKeys;
 import com.azure.resourcemanager.servicebus.models.NamespaceAuthorizationRule;
@@ -774,18 +775,18 @@ public final class Utils {
         System.out.println(redisKeys.toString());
     }
 
-//    /**
-//     * Print management lock.
-//     *
-//     * @param lock a management lock
-//     */
-//    public static void print(ManagementLock lock) {
-//        StringBuilder info = new StringBuilder();
-//        info.append("\nLock ID: ").append(lock.id())
-//                .append("\nLocked resource ID: ").append(lock.lockedResourceId())
-//                .append("\nLevel: ").append(lock.level());
-//        System.out.println(info.toString());
-//    }
+    /**
+     * Print management lock.
+     *
+     * @param lock a management lock
+     */
+    public static void print(ManagementLock lock) {
+        StringBuilder info = new StringBuilder();
+        info.append("\nLock ID: ").append(lock.id())
+                .append("\nLocked resource ID: ").append(lock.lockedResourceId())
+                .append("\nLevel: ").append(lock.level());
+        System.out.println(info.toString());
+    }
 
     /**
      * Print load balancer.

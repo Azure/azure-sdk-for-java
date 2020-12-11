@@ -49,9 +49,6 @@ public class AzureActiveDirectoryResourceServerConfiguration {
     @Bean
     @ConditionalOnMissingBean(JwtDecoder.class)
     public JwtDecoder jwtDecoderByJwkKeySetUri() {
-        if (StringUtils.isEmpty(aadAuthenticationProperties.getTenantId())) {
-            aadAuthenticationProperties.setTenantId("common");
-        }
         AuthorizationServerEndpoints identityEndpoints = new AuthorizationServerEndpoints(
             aadAuthenticationProperties.getAuthorizationServerUri());
         NimbusJwtDecoder nimbusJwtDecoder = NimbusJwtDecoder

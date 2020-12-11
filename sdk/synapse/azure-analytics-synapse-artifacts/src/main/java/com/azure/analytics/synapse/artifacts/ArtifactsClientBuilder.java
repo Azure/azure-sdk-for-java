@@ -40,6 +40,11 @@ import java.util.Map;
             SqlScriptClient.class,
             SparkJobDefinitionClient.class,
             NotebookClient.class,
+            WorkspaceClient.class,
+            SqlPoolsClient.class,
+            BigDataPoolsClient.class,
+            IntegrationRuntimesClient.class,
+            WorkspaceGitRepoManagementClient.class,
             LinkedServiceAsyncClient.class,
             DatasetAsyncClient.class,
             PipelineAsyncClient.class,
@@ -50,7 +55,12 @@ import java.util.Map;
             DataFlowDebugSessionAsyncClient.class,
             SqlScriptAsyncClient.class,
             SparkJobDefinitionAsyncClient.class,
-            NotebookAsyncClient.class
+            NotebookAsyncClient.class,
+            WorkspaceAsyncClient.class,
+            SqlPoolsAsyncClient.class,
+            BigDataPoolsAsyncClient.class,
+            IntegrationRuntimesAsyncClient.class,
+            WorkspaceGitRepoManagementAsyncClient.class
         })
 public final class ArtifactsClientBuilder {
     private static final String SDK_NAME = "name";
@@ -357,6 +367,51 @@ public final class ArtifactsClientBuilder {
     }
 
     /**
+     * Builds an instance of WorkspaceAsyncClient async client.
+     *
+     * @return an instance of WorkspaceAsyncClient.
+     */
+    public WorkspaceAsyncClient buildWorkspaceAsyncClient() {
+        return new WorkspaceAsyncClient(buildInnerClient().getWorkspaces());
+    }
+
+    /**
+     * Builds an instance of SqlPoolsAsyncClient async client.
+     *
+     * @return an instance of SqlPoolsAsyncClient.
+     */
+    public SqlPoolsAsyncClient buildSqlPoolsAsyncClient() {
+        return new SqlPoolsAsyncClient(buildInnerClient().getSqlPools());
+    }
+
+    /**
+     * Builds an instance of BigDataPoolsAsyncClient async client.
+     *
+     * @return an instance of BigDataPoolsAsyncClient.
+     */
+    public BigDataPoolsAsyncClient buildBigDataPoolsAsyncClient() {
+        return new BigDataPoolsAsyncClient(buildInnerClient().getBigDataPools());
+    }
+
+    /**
+     * Builds an instance of IntegrationRuntimesAsyncClient async client.
+     *
+     * @return an instance of IntegrationRuntimesAsyncClient.
+     */
+    public IntegrationRuntimesAsyncClient buildIntegrationRuntimesAsyncClient() {
+        return new IntegrationRuntimesAsyncClient(buildInnerClient().getIntegrationRuntimes());
+    }
+
+    /**
+     * Builds an instance of WorkspaceGitRepoManagementAsyncClient async client.
+     *
+     * @return an instance of WorkspaceGitRepoManagementAsyncClient.
+     */
+    public WorkspaceGitRepoManagementAsyncClient buildWorkspaceGitRepoManagementAsyncClient() {
+        return new WorkspaceGitRepoManagementAsyncClient(buildInnerClient().getWorkspaceGitRepoManagements());
+    }
+
+    /**
      * Builds an instance of LinkedServiceClient sync client.
      *
      * @return an instance of LinkedServiceClient.
@@ -453,5 +508,50 @@ public final class ArtifactsClientBuilder {
      */
     public NotebookClient buildNotebookClient() {
         return new NotebookClient(buildInnerClient().getNotebooks());
+    }
+
+    /**
+     * Builds an instance of WorkspaceClient sync client.
+     *
+     * @return an instance of WorkspaceClient.
+     */
+    public WorkspaceClient buildWorkspaceClient() {
+        return new WorkspaceClient(buildInnerClient().getWorkspaces());
+    }
+
+    /**
+     * Builds an instance of SqlPoolsClient sync client.
+     *
+     * @return an instance of SqlPoolsClient.
+     */
+    public SqlPoolsClient buildSqlPoolsClient() {
+        return new SqlPoolsClient(buildInnerClient().getSqlPools());
+    }
+
+    /**
+     * Builds an instance of BigDataPoolsClient sync client.
+     *
+     * @return an instance of BigDataPoolsClient.
+     */
+    public BigDataPoolsClient buildBigDataPoolsClient() {
+        return new BigDataPoolsClient(buildInnerClient().getBigDataPools());
+    }
+
+    /**
+     * Builds an instance of IntegrationRuntimesClient sync client.
+     *
+     * @return an instance of IntegrationRuntimesClient.
+     */
+    public IntegrationRuntimesClient buildIntegrationRuntimesClient() {
+        return new IntegrationRuntimesClient(buildInnerClient().getIntegrationRuntimes());
+    }
+
+    /**
+     * Builds an instance of WorkspaceGitRepoManagementClient sync client.
+     *
+     * @return an instance of WorkspaceGitRepoManagementClient.
+     */
+    public WorkspaceGitRepoManagementClient buildWorkspaceGitRepoManagementClient() {
+        return new WorkspaceGitRepoManagementClient(buildInnerClient().getWorkspaceGitRepoManagements());
     }
 }

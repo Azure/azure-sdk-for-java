@@ -9,16 +9,34 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.HashMap;
 import java.util.Map;
 
 /** Dataset location. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type",
+        defaultImpl = DatasetLocation.class)
 @JsonTypeName("DatasetLocation")
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "AzureBlobStorageLocation", value = AzureBlobStorageLocation.class),
+    @JsonSubTypes.Type(name = "AzureBlobFSLocation", value = AzureBlobFSLocation.class),
+    @JsonSubTypes.Type(name = "AzureDataLakeStoreLocation", value = AzureDataLakeStoreLocation.class),
+    @JsonSubTypes.Type(name = "AmazonS3Location", value = AmazonS3Location.class),
+    @JsonSubTypes.Type(name = "FileServerLocation", value = FileServerLocation.class),
+    @JsonSubTypes.Type(name = "AzureFileStorageLocation", value = AzureFileStorageLocation.class),
+    @JsonSubTypes.Type(name = "GoogleCloudStorageLocation", value = GoogleCloudStorageLocation.class),
+    @JsonSubTypes.Type(name = "FtpServerLocation", value = FtpServerLocation.class),
+    @JsonSubTypes.Type(name = "SftpLocation", value = SftpLocation.class),
+    @JsonSubTypes.Type(name = "HttpServerLocation", value = HttpServerLocation.class),
+    @JsonSubTypes.Type(name = "HdfsLocation", value = HdfsLocation.class)
+})
 @Fluent
-public final class DatasetLocation {
+public class DatasetLocation {
     /*
      * Specify the folder path of dataset. Type: string (or Expression with
      * resultType string)

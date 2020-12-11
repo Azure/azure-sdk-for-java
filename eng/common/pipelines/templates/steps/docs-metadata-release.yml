@@ -8,8 +8,8 @@ parameters:
   ScriptDirectory: eng/common/scripts
   TargetDocRepoName: ''
   TargetDocRepoOwner: ''
-  PRBranchName: 'smoke-test-rdme'
-  SourceBranchName: 'smoke-test'
+  PRBranchName: 'master-rdme'
+  SourceBranchName: 'master'
   PRLabels: 'auto-merge'
   ArtifactName: ''
   Language: ''
@@ -21,6 +21,16 @@ parameters:
   CloseAfterOpenForTesting: false
 
 steps:
+- pwsh: |
+    if ($IsWindows) {
+      REG ADD HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem /f /v LongPathsEnabled /t REG_DWORD /d 1
+      git config --system core.longpaths true
+    }
+    else {
+      Write-Host "This script is not executing on Windows, skipping registry modification."
+    }
+  displayName: Enable Long Paths if Necessary
+  
 - pwsh: |
     git clone https://github.com/${{ parameters.TargetDocRepoOwner }}/${{ parameters.TargetDocRepoName }} ${{ parameters.WorkingDirectory }}/repo
 

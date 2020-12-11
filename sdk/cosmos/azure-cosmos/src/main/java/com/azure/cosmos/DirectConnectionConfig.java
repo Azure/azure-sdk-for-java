@@ -53,7 +53,7 @@ public final class DirectConnectionConfig {
      *
      * @return {@code true} if Direct TCP connection endpoint rediscovery is enabled; {@code false} otherwise.
      */
-    @Beta(Beta.SinceVersion.V4_8_0)
+    @Beta(value = Beta.SinceVersion.V4_8_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public boolean isConnectionEndpointRediscoveryEnabled() {
         return this.connectionEndpointRediscoveryEnabled;
     }
@@ -70,7 +70,7 @@ public final class DirectConnectionConfig {
      *
      * @return the {@linkplain DirectConnectionConfig}.
      */
-    @Beta(Beta.SinceVersion.V4_8_0)
+    @Beta(value = Beta.SinceVersion.V4_8_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public DirectConnectionConfig setConnectionEndpointRediscoveryEnabled(boolean connectionEndpointRediscoveryEnabled) {
         this.connectionEndpointRediscoveryEnabled = connectionEndpointRediscoveryEnabled;
         return this;
