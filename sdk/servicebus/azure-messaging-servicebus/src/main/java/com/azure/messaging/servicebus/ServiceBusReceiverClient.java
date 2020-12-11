@@ -392,8 +392,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
 
     /**
      * Receives an iterable stream of {@link ServiceBusReceivedMessage messages} from the Service Bus entity. The
-     * receive operation will wait for a default 1 minute for receiving a message before it times out. You can it
-     * override by using {@link #receiveMessages(int, Duration)}.
+     * receive operation will wait for a default 1 minute for receiving a message before it times out. You can
+     * override it by using {@link #receiveMessages(int, Duration)}.
      *
      * @param maxMessages The maximum number of messages to receive.
      *
@@ -538,6 +538,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws NullPointerException if {@code message} or {@code maxLockRenewalDuration} is null.
      * @throws IllegalStateException if the receiver is a session receiver or the receiver is disposed.
      * @throws IllegalArgumentException if {@code message.getLockToken()} is an empty value.
+     * @throws ServiceBusException If the message lock cannot be renewed.
      */
     public void renewMessageLock(ServiceBusReceivedMessage message, Duration maxLockRenewalDuration,
         Consumer<Throwable> onError) {
