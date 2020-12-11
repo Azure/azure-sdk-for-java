@@ -10,6 +10,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.AccountSasImplUtil;
+import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.file.share.models.ShareCorsRule;
@@ -433,6 +435,24 @@ public final class ShareServiceClient {
      */
     public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues) {
         return this.shareServiceAsyncClient.generateAccountSas(accountSasSignatureValues);
+    }
+
+    /**
+     * Generates an account SAS for the Azure Storage account using the specified {@link AccountSasSignatureValues}.
+     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link AccountSasSignatureValues} for more information on how to construct an account SAS.</p>
+     *
+     * <p>The snippet below generates a SAS that lasts for two days and gives the user read and list access to blob
+     * containers and file shares.</p>
+     * {@codesnippet com.azure.storage.file.share.ShareServiceClient.generateAccountSas#AccountSasSignatureValues-Context}
+     *
+     * @param accountSasSignatureValues {@link AccountSasSignatureValues}
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing all SAS query parameters.
+     */
+    public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues, Context context) {
+        return this.shareServiceAsyncClient.generateAccountSas(accountSasSignatureValues, context);
     }
 
     /**

@@ -294,6 +294,27 @@ public class ShareServiceJavaDocCodeSamples {
     }
 
     /**
+     * Code snippet for {@link ShareServiceClient#generateAccountSas(AccountSasSignatureValues, Context)}
+     */
+    public void generateAccountSasWithContext() {
+        ShareServiceClient fileServiceClient = createClientWithCredential();
+        // BEGIN: com.azure.storage.file.share.ShareServiceClient.generateAccountSas#AccountSasSignatureValues-Context
+        AccountSasPermission permissions = new AccountSasPermission()
+            .setListPermission(true)
+            .setReadPermission(true);
+        AccountSasResourceType resourceTypes = new AccountSasResourceType().setContainer(true);
+        AccountSasService services = new AccountSasService().setBlobAccess(true).setFileAccess(true);
+        OffsetDateTime expiryTime = OffsetDateTime.now().plus(Duration.ofDays(2));
+
+        AccountSasSignatureValues sasValues =
+            new AccountSasSignatureValues(expiryTime, permissions, services, resourceTypes);
+
+        // Client must be authenticated via StorageSharedKeyCredential
+        String sas = fileServiceClient.generateAccountSas(sasValues, new Context("key", "value"));
+        // END: com.azure.storage.file.share.ShareServiceClient.generateAccountSas#AccountSasSignatureValues-Context
+    }
+
+    /**
      * Code snippet for {@link ShareServiceClient#undeleteShare(String, String)}.
      */
     public void undeleteShare() {

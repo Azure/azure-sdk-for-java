@@ -554,4 +554,20 @@ public class ShareDirectoryJavaDocCodeSamples {
         shareDirectoryClient.generateSas(values); // Client must be authenticated via StorageSharedKeyCredential
         // END: com.azure.storage.file.share.ShareDirectoryClient.generateSas#ShareServiceSasSignatureValues
     }
+
+    /**
+     * Code snippet for {@link ShareDirectoryClient#generateSas(ShareServiceSasSignatureValues, Context)}
+     */
+    public void generateSasWithContext() {
+        ShareDirectoryClient shareDirectoryClient = createClientWithCredential();
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.generateSas#ShareServiceSasSignatureValues-Context
+        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
+        ShareFileSasPermission permission = new ShareFileSasPermission().setReadPermission(true);
+
+        ShareServiceSasSignatureValues values = new ShareServiceSasSignatureValues(expiryTime, permission)
+            .setStartTime(OffsetDateTime.now());
+
+        shareDirectoryClient.generateSas(values, new Context("key", "value")); // Client must be authenticated via StorageSharedKeyCredential
+        // END: com.azure.storage.file.share.ShareDirectoryClient.generateSas#ShareServiceSasSignatureValues-Context
+    }
 }

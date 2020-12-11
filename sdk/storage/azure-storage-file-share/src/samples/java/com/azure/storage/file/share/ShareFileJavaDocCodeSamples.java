@@ -980,4 +980,20 @@ public class ShareFileJavaDocCodeSamples {
         shareFileClient.generateSas(values); // Client must be authenticated via StorageSharedKeyCredential
         // END: com.azure.storage.file.share.ShareFileClient.generateSas#ShareServiceSasSignatureValues
     }
+
+    /**
+     * Code snippet for {@link ShareFileClient#generateSas(ShareServiceSasSignatureValues, Context)}
+     */
+    public void generateSasWithContext() {
+        ShareFileClient shareFileClient = createClientWithCredential();
+        // BEGIN: com.azure.storage.file.share.ShareFileClient.generateSas#ShareServiceSasSignatureValues-Context
+        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
+        ShareFileSasPermission permission = new ShareFileSasPermission().setReadPermission(true);
+
+        ShareServiceSasSignatureValues values = new ShareServiceSasSignatureValues(expiryTime, permission)
+            .setStartTime(OffsetDateTime.now());
+
+        shareFileClient.generateSas(values, new Context("key", "value")); // Client must be authenticated via StorageSharedKeyCredential
+        // END: com.azure.storage.file.share.ShareFileClient.generateSas#ShareServiceSasSignatureValues-Context
+    }
 }
