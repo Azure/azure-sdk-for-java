@@ -224,12 +224,14 @@ function Find-java-Artifacts-For-Apireview($artifactDir, $pkgName = "")
   $filter = "*sources.jar"
 
   Write-Host "Checking for source jar in artifact path $($artifactDir)"
+  $files = Get-ChildItem "${artifactDir}"
+  Write-Host $files
   # Find all source jar files in given artifact directory
   $files = Get-ChildItem "${artifactDir}" -Include $filter
   Write-Host $files
   if (!$files)
   {
-    Write-Host "$($Location) does not have any package"
+    Write-Host "$($artifactDir) does not have any package"
     exit(1)
   }
   elseif($files.Count -ne 1)
