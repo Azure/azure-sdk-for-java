@@ -17,7 +17,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 /**
  * Response of a {@link TransactionalBatch} request.
  */
-@Beta(Beta.SinceVersion.V4_7_0)
+@Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public class TransactionalBatchResponse {
 
     private final Map<String, String> responseHeaders;

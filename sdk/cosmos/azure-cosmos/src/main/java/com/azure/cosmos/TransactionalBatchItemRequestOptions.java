@@ -9,7 +9,7 @@ import com.azure.cosmos.util.Beta;
 /**
  * Encapsulates options that can be specified for an operation within a {@link TransactionalBatch}.
  */
-@Beta(Beta.SinceVersion.V4_7_0)
+@Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class TransactionalBatchItemRequestOptions {
     private String ifMatchETag;
     private String ifNoneMatchETag;

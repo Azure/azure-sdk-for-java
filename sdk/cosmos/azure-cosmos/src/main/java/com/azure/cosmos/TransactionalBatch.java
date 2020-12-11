@@ -82,7 +82,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * <b>See:</b>
  * <a href="https://docs.microsoft.com/azure/cosmos-db/concepts-limits">Limits on TransactionalBatch requests</a>.
  */
-@Beta(Beta.SinceVersion.V4_7_0)
+@Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class TransactionalBatch {
 
     private final List<ItemBatchOperation<?>> operations;

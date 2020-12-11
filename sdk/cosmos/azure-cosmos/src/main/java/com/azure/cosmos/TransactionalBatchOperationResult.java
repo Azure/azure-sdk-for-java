@@ -13,7 +13,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 /**
  * Represents a result for a specific operation that was part of a {@link TransactionalBatch} request.
  */
-@Beta(Beta.SinceVersion.V4_7_0)
+@Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class TransactionalBatchOperationResult {
 
     private final String eTag;
