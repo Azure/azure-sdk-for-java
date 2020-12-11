@@ -3,6 +3,7 @@
 
 package com.azure.spring.autoconfigure.aad;
 
+import com.azure.spring.aad.webapp.AuthorizationServerEndpoints;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSObject;
@@ -33,7 +34,6 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * A user principal manager to load user info from JWT.
@@ -64,16 +64,16 @@ public class UserPrincipalManager {
     }
 
     /**
-     * Create a new {@link UserPrincipalManager} based of the {@link ServiceEndpoints#getAadKeyDiscoveryUri()} and
-     * {@link AADAuthenticationProperties#getEnvironment()}.
+     * Create a new {@link UserPrincipalManager} based of the
+     * {@link AuthorizationServerEndpoints#jwkSetEndpoint(String)}
      *
-     * @param serviceEndpointsProps - used to retrieve the JWKS URL
+     * @param authorizationServerEndpoints - used to retrieve the JWKS URL
      * @param aadAuthenticationProperties - used to retrieve the environment.
      * @param resourceRetriever - configures the {@link RemoteJWKSet} call.
      * @param explicitAudienceCheck Whether explicitly check the audience.
      * @throws IllegalArgumentException If AAD key discovery URI is malformed.
      */
-    public UserPrincipalManager(ServiceEndpointsProperties serviceEndpointsProps,
+    public UserPrincipalManager(AuthorizationServerEndpoints authorizationServerEndpoints,
                                 AADAuthenticationProperties aadAuthenticationProperties,
                                 ResourceRetriever resourceRetriever,
                                 boolean explicitAudienceCheck) {
@@ -86,7 +86,8 @@ public class UserPrincipalManager {
             this.validAudiences.add(this.aadAuthenticationProperties.getAppIdUri());
         }
         try {
-            String aadKeyDiscoveryUri = getAadKeyDiscoveryUri(serviceEndpointsProps);
+            String aadKeyDiscoveryUri =
+                authorizationServerEndpoints.jwkSetEndpoint(this.aadAuthenticationProperties.getTenantId());
             keySource = new RemoteJWKSet<>(new URL(aadKeyDiscoveryUri), resourceRetriever);
         } catch (MalformedURLException e) {
             LOGGER.error("Failed to parse active directory key discovery uri.", e);
@@ -94,19 +95,12 @@ public class UserPrincipalManager {
         }
     }
 
-    private String getAadKeyDiscoveryUri(ServiceEndpointsProperties serviceEndpointsProps) {
-        return Optional.of(aadAuthenticationProperties)
-                       .map(AADAuthenticationProperties::getEnvironment)
-                       .map(serviceEndpointsProps::getServiceEndpoints)
-                       .map(ServiceEndpoints::getAadKeyDiscoveryUri)
-                       .orElse("");
-    }
-
     /**
-     * Create a new {@link UserPrincipalManager} based of the {@link ServiceEndpoints#getAadKeyDiscoveryUri()} and
-     * {@link AADAuthenticationProperties#getEnvironment()}.
+     * Create a new {@link UserPrincipalManager} based of the
+     * {@link AuthorizationServerEndpoints#jwkSetEndpoint(String)}
+     * ()}
      *
-     * @param serviceEndpointsProps - used to retrieve the JWKS URL
+     * @param authorizationServerEndpoints - used to retrieve the JWKS URL
      * @param aadAuthenticationProperties - used to retrieve the environment.
      * @param resourceRetriever - configures the {@link RemoteJWKSet} call.
      * @param jwkSetCache - used to cache the JWK set for a finite time, default set to 5 minutes which matches
@@ -114,7 +108,7 @@ public class UserPrincipalManager {
      * @param explicitAudienceCheck Whether explicitly check the audience.
      * @throws IllegalArgumentException If AAD key discovery URI is malformed.
      */
-    public UserPrincipalManager(ServiceEndpointsProperties serviceEndpointsProps,
+    public UserPrincipalManager(AuthorizationServerEndpoints authorizationServerEndpoints,
                                 AADAuthenticationProperties aadAuthenticationProperties,
                                 ResourceRetriever resourceRetriever,
                                 boolean explicitAudienceCheck,
@@ -128,7 +122,8 @@ public class UserPrincipalManager {
             this.validAudiences.add(this.aadAuthenticationProperties.getAppIdUri());
         }
         try {
-            String aadKeyDiscoveryUri = getAadKeyDiscoveryUri(serviceEndpointsProps);
+            String aadKeyDiscoveryUri =
+                authorizationServerEndpoints.jwkSetEndpoint(this.aadAuthenticationProperties.getTenantId());
             keySource = new RemoteJWKSet<>(new URL(aadKeyDiscoveryUri), resourceRetriever, jwkSetCache);
         } catch (MalformedURLException e) {
             LOGGER.error("Failed to parse active directory key discovery uri.", e);
@@ -155,8 +150,8 @@ public class UserPrincipalManager {
         Set<String> roles = Optional.of(userPrincipal)
                                     .map(p -> p.getClaim(AADTokenClaim.ROLES))
                                     .map(r -> (JSONArray) r)
-                                    .map(Collection<Object>::stream)
-                                    .orElseGet(Stream::empty)
+                                    .stream()
+                                    .flatMap(Collection::stream)
                                     .map(Object::toString)
                                     .collect(Collectors.toSet());
         userPrincipal.setRoles(roles);
@@ -187,7 +182,7 @@ public class UserPrincipalManager {
         final JWSKeySelector<SecurityContext> keySelector = new JWSVerificationKeySelector<>(jwsAlgorithm, keySource);
         jwtProcessor.setJWSKeySelector(keySelector);
         //TODO: would it make sense to inject it? and make it configurable or even allow to provide own implementation
-        jwtProcessor.setJWTClaimsSetVerifier(new DefaultJWTClaimsVerifier<SecurityContext>() {
+        jwtProcessor.setJWTClaimsSetVerifier(new DefaultJWTClaimsVerifier<>() {
             @Override
             public void verify(JWTClaimsSet claimsSet, SecurityContext ctx) throws BadJWTException {
                 super.verify(claimsSet, ctx);

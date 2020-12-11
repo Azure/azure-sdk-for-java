@@ -3,6 +3,7 @@
 
 package com.azure.spring.autoconfigure.aad;
 
+import com.azure.spring.aad.webapp.AuthorizationServerEndpoints;
 import com.azure.spring.telemetry.TelemetrySender;
 import com.nimbusds.jose.jwk.source.DefaultJWKSetCache;
 import com.nimbusds.jose.jwk.source.JWKSetCache;
@@ -42,19 +43,19 @@ import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName
 @ConditionalOnWebApplication
 @ConditionalOnResource(resources = "classpath:aad.enable.config")
 @ConditionalOnProperty(prefix = AADAuthenticationFilterAutoConfiguration.PROPERTY_PREFIX, value = { "client-id" })
-@EnableConfigurationProperties({ AADAuthenticationProperties.class, ServiceEndpointsProperties.class })
+@EnableConfigurationProperties({ AADAuthenticationProperties.class })
 @PropertySource(value = "classpath:service-endpoints.properties")
 public class AADAuthenticationFilterAutoConfiguration {
     public static final String PROPERTY_PREFIX = "azure.activedirectory";
     private static final Logger LOG = LoggerFactory.getLogger(AADAuthenticationProperties.class);
 
     private final AADAuthenticationProperties aadAuthenticationProperties;
-    private final ServiceEndpointsProperties serviceEndpointsProperties;
+    private final AuthorizationServerEndpoints authorizationServerEndpoints;
 
     public AADAuthenticationFilterAutoConfiguration(AADAuthenticationProperties aadAuthenticationProperties,
-                                                    ServiceEndpointsProperties serviceEndpointsProperties) {
+                                                    AuthorizationServerEndpoints authorizationServerEndpoints) {
         this.aadAuthenticationProperties = aadAuthenticationProperties;
-        this.serviceEndpointsProperties = serviceEndpointsProperties;
+        this.authorizationServerEndpoints = authorizationServerEndpoints;
     }
 
     /**
@@ -71,7 +72,7 @@ public class AADAuthenticationFilterAutoConfiguration {
         LOG.info("AzureADJwtTokenFilter Constructor.");
         return new AADAuthenticationFilter(
             aadAuthenticationProperties,
-            serviceEndpointsProperties,
+            authorizationServerEndpoints,
             getJWTResourceRetriever(),
             getJWKSetCache()
         );
@@ -86,7 +87,7 @@ public class AADAuthenticationFilterAutoConfiguration {
         LOG.info("Creating AzureADStatelessAuthFilter bean.");
         return new AADAppRoleStatelessAuthenticationFilter(
             new UserPrincipalManager(
-                serviceEndpointsProperties,
+                authorizationServerEndpoints,
                 aadAuthenticationProperties,
                 resourceRetriever,
                 true

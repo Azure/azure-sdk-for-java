@@ -39,11 +39,6 @@ public class AADAuthenticationProperties {
     private UserGroupProperties userGroup = new UserGroupProperties();
 
     /**
-     * Azure service environment/region name, e.g., cn, global
-     */
-    private String environment = DEFAULT_SERVICE_ENVIRONMENT;
-
-    /**
      * Registered application ID in Azure AD. Must be configured when OAuth2 authentication is done in front end
      */
     private String clientId;
@@ -244,14 +239,6 @@ public class AADAuthenticationProperties {
 
     public void setUserGroup(UserGroupProperties userGroup) {
         this.userGroup = userGroup;
-    }
-
-    public String getEnvironment() {
-        return environment;
-    }
-
-    public void setEnvironment(String environment) {
-        this.environment = environment;
     }
 
     public String getClientId() {

@@ -3,6 +3,7 @@
 
 package com.azure.spring.autoconfigure.aad;
 
+import com.azure.spring.aad.webapp.AuthorizationServerEndpoints;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
@@ -46,46 +47,33 @@ public class AzureADGraphClient {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureADGraphClient.class);
     private static final String MICROSOFT_GRAPH_SCOPE = "https://graph.microsoft.com/user.read";
-    private static final String AAD_GRAPH_API_SCOPE = "https://graph.windows.net/user.read";
     // We use "aadfeed5" as suffix when client library is ADAL, upgrade to "aadfeed6" for MSAL
     private static final String REQUEST_ID_SUFFIX = "aadfeed6";
-    private static final String V2_VERSION_ENV_FLAG = "v2-graph";
 
     private final String clientId;
     private final String clientSecret;
-    private final ServiceEndpoints serviceEndpoints;
+    private final AuthorizationServerEndpoints authorizationServerEndpoints;
     private final AADAuthenticationProperties aadAuthenticationProperties;
-    private final boolean graphApiVersionIsV2;
 
     public AzureADGraphClient(String clientId,
                               String clientSecret,
         AADAuthenticationProperties aadAuthenticationProperties,
-                              ServiceEndpointsProperties serviceEndpointsProps) {
+                              AuthorizationServerEndpoints authorizationServerEndpoints) {
         this.clientId = clientId;
         this.clientSecret = clientSecret;
         this.aadAuthenticationProperties = aadAuthenticationProperties;
-        this.serviceEndpoints = serviceEndpointsProps.getServiceEndpoints(aadAuthenticationProperties.getEnvironment());
-        this.graphApiVersionIsV2 = Optional.of(aadAuthenticationProperties)
-                                           .map(AADAuthenticationProperties::getEnvironment)
-                                           .map(environment -> environment.contains(V2_VERSION_ENV_FLAG))
-                                           .orElse(false);
+        this.authorizationServerEndpoints = authorizationServerEndpoints;
     }
 
     private String getUserMemberships(String accessToken, String urlString) throws IOException {
         URL url = new URL(urlString);
         final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        // Set the appropriate header fields in the request header.
-        if (this.graphApiVersionIsV2) {
-            connection.setRequestMethod(HttpMethod.GET.toString());
-            connection.setRequestProperty(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", accessToken));
-            connection.setRequestProperty(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
-            connection.setRequestProperty(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE);
-        } else {
-            connection.setRequestMethod(HttpMethod.GET.toString());
-            connection.setRequestProperty("api-version", "1.6");
-            connection.setRequestProperty(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", accessToken));
-            connection.setRequestProperty(HttpHeaders.ACCEPT, "application/json;odata=minimalmetadata");
-        }
+
+        connection.setRequestMethod(HttpMethod.GET.toString());
+        connection.setRequestProperty(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", accessToken));
+        connection.setRequestProperty(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
+        connection.setRequestProperty(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE);
+
         final String responseInJson = getResponseString(connection);
         final int responseCode = connection.getResponseCode();
         if (responseCode == HTTPResponse.SC_OK) {
@@ -93,15 +81,6 @@ public class AzureADGraphClient {
         } else {
             throw new IllegalStateException(
                 "Response is not " + HTTPResponse.SC_OK + ", response json: " + responseInJson);
-        }
-    }
-
-    private String getUrlStringFromODataNextLink(String odataNextLink) {
-        if (this.graphApiVersionIsV2) {
-            return odataNextLink;
-        } else {
-            String skipToken = odataNextLink.split("/memberOf\\?")[1];
-            return serviceEndpoints.getAadMembershipRestUri() + "&" + skipToken;
         }
     }
 
@@ -125,7 +104,7 @@ public class AzureADGraphClient {
     public Set<String> getGroups(String graphApiToken) throws IOException {
         final Set<String> groups = new LinkedHashSet<>();
         final ObjectMapper objectMapper = JacksonObjectMapperFactory.getInstance();
-        String aadMembershipRestUri = serviceEndpoints.getAadMembershipRestUri();
+        String aadMembershipRestUri = this.aadAuthenticationProperties.getGraphMembershipUri();
         while (aadMembershipRestUri != null) {
             String membershipsJson = getUserMemberships(graphApiToken, aadMembershipRestUri);
             Memberships memberships = objectMapper.readValue(membershipsJson, Memberships.class);
@@ -136,7 +115,6 @@ public class AzureADGraphClient {
                        .forEach(groups::add);
             aadMembershipRestUri = Optional.of(memberships)
                                            .map(Memberships::getOdataNextLink)
-                                           .map(this::getUrlStringFromODataNextLink)
                                            .orElse(null);
         }
         return groups;
@@ -175,11 +153,11 @@ public class AzureADGraphClient {
         try {
             final ConfidentialClientApplication application = ConfidentialClientApplication
                 .builder(clientId, clientCredential)
-                .authority(serviceEndpoints.getAadSigninUri() + tenantId + "/")
+                .authority("https://login.microsoftonline.com/" + tenantId + "/")
                 .correlationId(getCorrelationId())
                 .build();
             final Set<String> scopes = new HashSet<>();
-            scopes.add(graphApiVersionIsV2 ? MICROSOFT_GRAPH_SCOPE : AAD_GRAPH_API_SCOPE);
+            scopes.add(MICROSOFT_GRAPH_SCOPE);
             final OnBehalfOfParameters onBehalfOfParameters = OnBehalfOfParameters.builder(scopes, assertion).build();
             result = application.acquireToken(onBehalfOfParameters).get();
         } catch (ExecutionException | InterruptedException | MalformedURLException e) {
