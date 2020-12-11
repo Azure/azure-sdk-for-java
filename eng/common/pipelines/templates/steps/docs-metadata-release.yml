@@ -66,7 +66,7 @@ steps:
 #- ${{if ne( parameters['SkipPackageJson'], true)}}:
 - task: PowerShell@2
   displayName: 'Update Docs.MS CI Targeted Packages ${{parameters.SkipPackageJson}}'
-  condition: and(succeededOrFailed(), eq('${{ parameters.OnboardingBranch }}',''), ne('${{ parameters.SkipPackageJson }}', 'true'))
+  condition: and(succeededOrFailed(), eq('${{ parameters.OnboardingBranch }}',''), ne('${{ parameters.SkipPackageJson }}', true))
   inputs:
     targetType: filePath
     filePath: ${{ parameters.ScriptDirectory }}/update-docs-ci.ps1
