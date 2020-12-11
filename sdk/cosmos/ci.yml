@@ -3,53 +3,56 @@
 trigger:
   branches:
     include:
-      - master
-      - hotfix/*
-      - release/*
+    - master
+    - hotfix/*
+    - release/*
   paths:
     include:
-      - sdk/cosmos/
+    - sdk/cosmos/
     exclude:
-      - sdk/cosmos/mgmt
-      - sdk/cosmos/mgmt-v2015_04_08
-      - sdk/cosmos/mgmt-v2019_08_01
-      - sdk/cosmos/mgmt-v2019_08_01_preview
-      - sdk/cosmos/mgmt-v2019_12_12
+    - sdk/cosmos/mgmt
+    - sdk/cosmos/mgmt-v2015_04_08
+    - sdk/cosmos/mgmt-v2019_08_01
+    - sdk/cosmos/mgmt-v2019_08_01_preview
+    - sdk/cosmos/mgmt-v2019_12_12
 
 pr:
   branches:
     include:
-      - master
-      - feature/*
-      - hotfix/*
-      - release/*
+    - master
+    - feature/*
+    - hotfix/*
+    - release/*
   paths:
     include:
-      - sdk/cosmos/
+    - sdk/cosmos/
     exclude:
-      - sdk/cosmos/mgmt
-      - sdk/cosmos/mgmt-v2015_04_08
-      - sdk/cosmos/mgmt-v2019_08_01
-      - sdk/cosmos/mgmt-v2019_08_01_preview
-      - sdk/cosmos/mgmt-v2019_12_12
+    - sdk/cosmos/mgmt
+    - sdk/cosmos/mgmt-v2015_04_08
+    - sdk/cosmos/mgmt-v2019_08_01
+    - sdk/cosmos/mgmt-v2019_08_01_preview
+    - sdk/cosmos/mgmt-v2019_12_12
 
 extends:
-  template: ../../eng/pipelines/templates/stages/cosmos-sdk-client.yml #NOTE: Non-standard template.
+  template: ../../eng/pipelines/templates/stages/cosmos-sdk-client.yml
   parameters:
     ServiceDirectory: cosmos
     SDKType: client
     Artifacts:
-      - name: azure-cosmos
-        groupId: com.azure
-        safeName: azurecosmos
-      - name: azure-spring-data-cosmos
-        groupId: com.azure
-        safeName: azurespringdatacosmos
-      - name: azure-cosmos-encryption
-        groupId: com.azure
-        safeName: azurecosmosencryption
+    - name: azure-cosmos
+      groupId: com.azure
+      safeName: azurecosmos
+    - name: azure-spring-data-cosmos
+      groupId: com.azure
+      safeName: azurespringdatacosmos
+    - name: azure-cosmos-encryption
+      groupId: com.azure
+      safeName: azurecosmosencryption
+    - name: azure-resourcemanager-cosmos-generated
+      groupId: com.azure.resourcemanager
+      safeName: azureresourcemanagercosmosgenerated
     AdditionalModules:
-      - name: azure-cosmos-benchmark
-        groupId: com.azure
-      - name: azure-spring-data-cosmos-test
-        groupId: com.azure
+    - name: azure-cosmos-benchmark
+      groupId: com.azure
+    - name: azure-spring-data-cosmos-test
+      groupId: com.azure
