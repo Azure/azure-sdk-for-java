@@ -4,6 +4,7 @@ package com.azure.communication.common;
 
 import java.util.concurrent.ExecutionException;
 
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 
 import reactor.core.publisher.Mono;
@@ -88,8 +89,7 @@ public final class CommunicationTokenCredential implements AutoCloseable {
      */
     public Mono<AccessToken> getToken() throws InterruptedException, ExecutionException {
         if (isClosed) {
-            throw logger.logExceptionAsError(
-                new RuntimeException("getToken called on closed CommunicationTokenCredential object"));
+            return FluxUtil.monoError(logger, new RuntimeException("getToken called on closed CommunicationTokenCredential object"));
         }
         if ((accessToken == null || accessToken.isExpired()) && refresher != null) {
             synchronized (this) {
@@ -133,8 +133,7 @@ public final class CommunicationTokenCredential implements AutoCloseable {
     private Mono<String> fetchFreshToken() {
         Mono<String> tokenAsync = refresher.getTokenAsync();
         if (tokenAsync == null) {
-            throw logger.logExceptionAsError(
-                    new RuntimeException("TokenRefresher returned null when getTokenAsync is called"));
+            return FluxUtil.monoError(logger, new RuntimeException("TokenRefresher returned null when getTokenAsync is called"));
         }
         return tokenAsync;
     }

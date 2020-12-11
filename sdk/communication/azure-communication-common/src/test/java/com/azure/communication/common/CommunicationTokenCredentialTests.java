@@ -8,6 +8,7 @@ import com.azure.core.credential.AccessToken;
 import org.junit.jupiter.api.Test;
 
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -255,9 +256,8 @@ public class CommunicationTokenCredentialTests {
         String tokenStr = tokenMocker.generateRawToken("resourceId", "userIdentity", -5 * 60);
         exceptionRefresher.resetCallCount();
         CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(exceptionRefresher, tokenStr, false);
-        assertThrows(Exception.class, () -> {
-            tokenCredential.getToken();
-        }, "Should not swallow exception when client throws");
+        StepVerifier.create(tokenCredential.getToken())
+            .verifyError(Exception.class);
         assertEquals(1, exceptionRefresher.numCalls());
         tokenCredential.close();
     }
@@ -266,8 +266,7 @@ public class CommunicationTokenCredentialTests {
     public void shouldThrowWhenGetTokenCalledOnClosedObject() throws IOException {
         CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(immediateFresher);
         tokenCredential.close();
-        assertThrows(RuntimeException.class, () -> {
-            tokenCredential.getToken();
-        });
+        StepVerifier.create(tokenCredential.getToken())
+            .verifyError(RuntimeException.class);
     }
 }
