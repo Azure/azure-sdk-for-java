@@ -3,11 +3,14 @@
 
 package com.azure.spring.data.cosmos.repository.support;
 
+import com.azure.cosmos.models.CompositePath;
 import com.azure.cosmos.models.ExcludedPath;
 import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.IndexingMode;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.spring.data.cosmos.Constants;
+import com.azure.spring.data.cosmos.core.mapping.CompositeIndex;
+import com.azure.spring.data.cosmos.core.mapping.CompositeIndexPath;
 import com.azure.spring.data.cosmos.core.mapping.Container;
 import com.azure.spring.data.cosmos.core.mapping.CosmosIndexingPolicy;
 import com.azure.spring.data.cosmos.common.Memoizer;
@@ -248,6 +251,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
         policy.setIndexingMode(this.getIndexingPolicyMode(domainType));
         policy.setIncludedPaths(this.getIndexingPolicyIncludePaths(domainType));
         policy.setExcludedPaths(this.getIndexingPolicyExcludePaths(domainType));
+        policy.setCompositeIndexes(this.getIndexingPolicyCompositeIndexes(domainType));
 
         return policy;
     }
@@ -401,6 +405,29 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
         }
 
         return pathArrayList;
+    }
+
+    private List<List<CompositePath>> getIndexingPolicyCompositeIndexes(Class<?> domainType) {
+        final List<List<CompositePath>> compositePathList = new ArrayList<>();
+        final CosmosIndexingPolicy annotation = domainType.getAnnotation(CosmosIndexingPolicy.class);
+
+        if (annotation == null || annotation.compositeIndexes().length == 0) {
+            return null; // Align the default value of IndexingPolicy
+        }
+
+        final CompositeIndex[] compositeIndexes = annotation.compositeIndexes();
+        for (final CompositeIndex index: compositeIndexes) {
+            final List<CompositePath> paths = new ArrayList<>();
+            compositePathList.add(paths);
+            for (final CompositeIndexPath path : index.paths()) {
+                CompositePath compositePath = new CompositePath();
+                compositePath.setPath(path.path());
+                compositePath.setOrder(path.order());
+                paths.add(compositePath);
+            }
+        }
+
+        return compositePathList;
     }
 
     private Field getVersionedField(Class<T> domainClass) {

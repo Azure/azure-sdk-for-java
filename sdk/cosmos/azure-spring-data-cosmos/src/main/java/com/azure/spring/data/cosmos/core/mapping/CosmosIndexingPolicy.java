@@ -44,4 +44,11 @@ public @interface CosmosIndexingPolicy {
      * @return String[]
      */
     String[] excludePaths() default {};
+
+
+    /**
+     * Composite Indexes
+     * @return List<CompositeIndexDefinition>
+     */
+    CompositeIndex[] compositeIndexes() default {};
 }
