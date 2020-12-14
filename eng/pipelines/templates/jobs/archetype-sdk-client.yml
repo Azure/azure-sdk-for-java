@@ -308,6 +308,7 @@ jobs:
 
       - task: Maven@3
         displayName: 'Generate aggregate code coverage report'
+        condition: and(eq(variables['OsName'], 'Linux'), eq(variables['JavaBuildVersion'], '1.11'))
         inputs:
           mavenPomFile: sdk/${{ parameters.ServiceDirectory }}/pom.xml
           options: -Pcoverage
