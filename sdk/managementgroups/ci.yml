@@ -1,0 +1,31 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+    - master
+    - hotfix/*
+    - release/*
+  paths:
+    include:
+    - sdk/managementgroups/
+
+pr:
+  branches:
+    include:
+    - master
+    - feature/*
+    - hotfix/*
+    - release/*
+  paths:
+    include:
+    - sdk/managementgroups/
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: managementgroups
+    Artifacts:
+    - name: azure-resourcemanager-managementgroups
+      groupId: com.azure.resourcemanager
+      safeName: azureresourcemanagermanagementgroups
