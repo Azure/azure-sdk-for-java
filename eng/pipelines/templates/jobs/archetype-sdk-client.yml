@@ -378,6 +378,6 @@ jobs:
         condition: and(eq(variables['OsName'], 'Linux'), eq(variables['JavaBuildVersion'], '1.11'))
         inputs:
           codeCoverageTool: JaCoCo
-          summaryFileLocation: sdk/${{ parameters.ServiceDirectory }}/target/site/test-coverage/jacoco.xml
-          reportDirectory: sdk/${{ parameters.ServiceDirectory }}/target/site/test-coverage/
+          summaryFileLocation: sdk/${{ parameters.ServiceDirectory }}/target/site/jacoco-aggregate/jacoco.xml
+          reportDirectory: sdk/${{ parameters.ServiceDirectory }}/target/site/jacoco-aggregate/
           failIfCoverageEmpty: false
