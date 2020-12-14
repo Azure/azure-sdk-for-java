@@ -25,10 +25,6 @@ public final class CopyAuthorization {
 
     private static final SerializerAdapter SERIALIZER = new JacksonAdapter();
 
-    CopyAuthorization() {
-        super();
-    }
-
     /*
      * Model identifier.
      */
@@ -57,6 +53,10 @@ public final class CopyAuthorization {
 
     @JsonIgnore
     private OffsetDateTime expiresOn;
+
+    CopyAuthorization() {
+        super();
+    }
 
     /**
      * Create a CopyAuthorization object
@@ -105,8 +105,7 @@ public final class CopyAuthorization {
     }
 
     /**
-     * Get the Azure Resource Id of the target Form Recognizer resource
-     * where the model will be copied to.
+     * Get the Azure Resource Id of the target Form Recognizer resource where the model will be copied to.
      *
      * @return the {@code resourceId} value.
      */
@@ -127,6 +126,7 @@ public final class CopyAuthorization {
      * Converts the CopyAuthorization object to its equivalent json string representation.
      *
      * @return the json string representation of the CopyAuthorization object.
+     *
      * @throws IllegalStateException exception if the serialization failed
      */
     public String toJson() {
@@ -143,6 +143,7 @@ public final class CopyAuthorization {
      * @param copyAuthorization the json string representation of the object.
      *
      * @return the CopyAuthorization object equivalent of the json string.
+     *
      * @throws IllegalStateException exception if the deserialization failed
      */
     public static CopyAuthorization fromJson(String copyAuthorization) {

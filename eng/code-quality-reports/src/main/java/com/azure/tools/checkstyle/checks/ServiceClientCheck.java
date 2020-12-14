@@ -165,7 +165,8 @@ public class ServiceClientCheck extends AbstractCheck {
         final DetailAST modifiersToken = ctorToken.findFirstToken(TokenTypes.MODIFIERS);
         // find constructor's modifier accessibility, no public or protected constructor
         final AccessModifierOption accessModifier = CheckUtil.getAccessModifierFromModifiersToken(modifiersToken);
-        if (accessModifier.equals(AccessModifierOption.PUBLIC) || accessModifier.equals(AccessModifierOption.PROTECTED)) {
+        if (accessModifier.equals(AccessModifierOption.PUBLIC)
+            || accessModifier.equals(AccessModifierOption.PROTECTED)) {
             log(modifiersToken, "@ServiceClient class should not have any public or protected constructor.");
         }
     }

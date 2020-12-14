@@ -3,17 +3,14 @@
 
 package com.azure.perf.test.core;
 
-import java.lang.reflect.Field;
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
-
+import java.lang.reflect.Field;
+import java.net.MalformedURLException;
+import java.net.URL;
 import reactor.core.publisher.Mono;
 
 /**
@@ -38,7 +35,7 @@ public class PerfStressHttpClient {
 
         return httpClient;
     }
-     
+
     private static void makeInsecure(HttpClient httpClient) {
         Field nettyClientField;
         try {
@@ -69,29 +66,30 @@ public class PerfStressHttpClient {
         private final HttpClient httpClient;
         private final String host;
         private final int port;
-    
+
         ChangeUriHttpClient(HttpClient httpClient, String host, int port) {
             this.httpClient = httpClient;
             this.host = host;
             this.port = port;
         }
-    
+
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {
             request.getHeaders().put("Host", request.getUrl().getHost());
-    
+
             String protocol = request.getUrl().getProtocol();
             String host = this.host;
             int port = this.port;
             String file = request.getUrl().getFile();
-    
+
             try {
                 request.setUrl(new URL(protocol, host, port, file));
             } catch (MalformedURLException e) {
                 throw new RuntimeException(e);
             }
-    
+
             return httpClient.send(request);
         }
-    }    
+    }
 }
+

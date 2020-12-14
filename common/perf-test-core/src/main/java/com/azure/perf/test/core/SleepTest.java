@@ -4,10 +4,9 @@
 package com.azure.perf.test.core;
 
 import com.azure.core.util.logging.ClientLogger;
-import reactor.core.publisher.Mono;
-
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
+import reactor.core.publisher.Mono;
 
 
 class SleepTest extends PerfStressTest<PerfStressOptions> {

@@ -110,6 +110,9 @@
       checks="com\.azure\.tools\.checkstyle\.checks\.(ExternalDependencyExposedCheck|NoImplInPublicAPI|ServiceClientCheck|ServiceClientBuilderCheck|ServiceInterfaceCheck|JavaDocFormatting|JavadocThrowsChecks|EnforceFinalFieldsCheck)"
       files=".*[/\\]implementation[/\\].*\.java"/>
 
+  <!-- Suppress OverloadMethodsDeclarationOrder and DeclarationOrder for implementation files. -->
+  <suppress checks="OverloadMethodsDeclarationOrder|DeclarationOrder" files=".*[/\\]implementation[/\\].*\.java"/>
+
   <!-- Don't apply custom Checkstyle rules to files under samples package -->
   <suppress
       checks="com\.azure\.tools\.checkstyle\.checks\.(ExternalDependencyExposedCheck|HttpPipelinePolicyCheck|EnforceFinalFieldsCheck|ThrowFromClientLoggerCheck|GoodLoggingCheck|JavadocThrowsChecks|LineLength|JavadocPackage)"
@@ -138,6 +141,12 @@
   <!-- Suppress warnings for KeyEncryptionKey and LocalCrypto client as it is a specialized client and doesn't follow the guidelines completely -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files=".*KeyEncryptionKeyClientBuilder.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files=".*LocalCryptographyClientBuilder.java"/>
+
+  <!-- Return type expected to be PagedFlux but is PollerFLux since it is an LRO -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.ai.formrecognizer.FormRecognizerAsyncClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.ai.formrecognizer.FormRecognizerClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.ai.formrecognizer.training.FormTrainingClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.java"/>
 
   <!-- Suppress warnings for ServiceBusReceiverClientBuilder and ServiceBusSenderClientBuilder. They are created from
   the main ServiceBusClientBuilder. -->
@@ -301,14 +310,6 @@
   <!-- suppress the runtime exception in the KeyVaultClient class-->
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
             files="com.azure.security.keyvault.jca.KeyVaultClient.java"/>
-
-  <!-- Suppress the check on any implementation code and codegen classes -->
-  <suppress checks="LineLength" files="com.azure.storage.blob.models.BlobErrorCode.java"/>
-  <suppress checks="LineLength" files="com.azure.storage.file.share.models.ShareErrorCode.java"/>
-  <suppress checks="LineLength" files="com.azure.storage.queue.models.QueueErrorCode.java"/>
-
-  <!-- Suppress datalake for now as it is new development -->
-  <suppress checks="LineLength" files=".*[/\\]storage[/\\]file[/\\]datalake[/\\]models[/\\].*"/>
 
   <!-- Suppress CRUD operation names as they won't feel fluent -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"

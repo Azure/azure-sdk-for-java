@@ -73,6 +73,8 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {FormTrainingAsyncClient.class, FormTrainingClient.class})
 public final class FormTrainingClientBuilder {
 
+    private static final String DEFAULT_SCOPE = "https://cognitiveservices.azure.com/.default";
+    private static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
     private static final String ECHO_REQUEST_ID_HEADER = "x-ms-return-client-request-id";
     private static final String CONTENT_TYPE_HEADER_VALUE = ContentType.APPLICATION_JSON;
     private static final String ACCEPT_HEADER = "Accept";
@@ -96,9 +98,6 @@ public final class FormTrainingClientBuilder {
     private RetryPolicy retryPolicy;
     private TokenCredential tokenCredential;
     private FormRecognizerServiceVersion version;
-
-    private static final String DEFAULT_SCOPE = "https://cognitiveservices.azure.com/.default";
-    private static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
 
     /**
      * The constructor with defaults.
