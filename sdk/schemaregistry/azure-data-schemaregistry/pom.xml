@@ -38,11 +38,6 @@
     <tag>HEAD</tag>
   </scm>
 
-<!--  <properties>-->
-<!--    &lt;!&ndash; SchemaRegistrySkip temporarily relaxing code coverage &ndash;&gt;-->
-<!--    <jacoco.skip.coverage.check>true</jacoco.skip.coverage.check>-->
-<!--  </properties>-->
-
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
