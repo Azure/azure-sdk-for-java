@@ -340,7 +340,7 @@ public class CosmosException extends AzureException {
             }
 
             return mapper.writeValueAsString(exceptionMessageNode);
-        } catch (Exception ex) {
+        } catch (JsonProcessingException ex) {
             return getClass().getSimpleName() + "{" + USER_AGENT_KEY +"=" + USER_AGENT + ", error=" + cosmosError + ", " +
                 "resourceAddress='"
                 + resourceAddress + ", statusCode=" + statusCode + ", message=" + getMessage()
