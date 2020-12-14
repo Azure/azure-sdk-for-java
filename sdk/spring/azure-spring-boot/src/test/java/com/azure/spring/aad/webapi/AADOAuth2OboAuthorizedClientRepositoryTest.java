@@ -39,6 +39,12 @@ public class AADOAuth2OboAuthorizedClientRepositoryTest {
 
     private AzureClientRegistrationRepository clientRegistrationsRepo;
 
+    private OAuth2AuthorizedClient client;
+    private IAuthenticationResult authenticationResult;
+    private AADOAuth2OboAuthorizedClientRepository authorizedRepo;
+    private JwtAuthenticationToken jwtAuthenticationToken;
+    private MockHttpServletRequest mockHttpServletRequest;
+
     @BeforeEach
     public void setup() {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
@@ -57,14 +63,12 @@ public class AADOAuth2OboAuthorizedClientRepositoryTest {
         clientRegistrationsRepo = context.getBean(AzureClientRegistrationRepository.class);
     }
 
-    @Test
     @SuppressWarnings("unchecked")
-    public void testLoadAzureAuthorizedClient() throws ExecutionException, InterruptedException {
-
+    public void setupForAzureAuthorizedClient() throws ExecutionException, InterruptedException {
         ConfidentialClientApplication confidentialClientApplication = mock(ConfidentialClientApplication.class);
 
         CompletableFuture<IAuthenticationResult> acquireTokenFuture = mock(CompletableFuture.class);
-        IAuthenticationResult authenticationResult = mock(IAuthenticationResult.class);
+        authenticationResult = mock(IAuthenticationResult.class);
 
         when(acquireTokenFuture.get()).thenReturn(authenticationResult);
         when(authenticationResult.accessToken()).thenReturn(OBO_ACCESS_TOKEN_1);
@@ -72,7 +76,7 @@ public class AADOAuth2OboAuthorizedClientRepositoryTest {
         when(confidentialClientApplication.acquireToken(any(OnBehalfOfParameters.class)))
             .thenReturn(acquireTokenFuture);
 
-        AADOAuth2OboAuthorizedClientRepository authorizedRepo = new AADOAuth2OboAuthorizedClientRepository(
+        authorizedRepo = new AADOAuth2OboAuthorizedClientRepository(
             clientRegistrationsRepo) {
 
             @Override
@@ -90,15 +94,28 @@ public class AADOAuth2OboAuthorizedClientRepositoryTest {
         when(mockJwt.getTokenValue()).thenReturn("fake-token-value");
         when(mockJwt.getSubject()).thenReturn("fake-principal-name");
 
-        JwtAuthenticationToken jwtAuthenticationToken = new JwtAuthenticationToken(mockJwt);
-        MockHttpServletRequest mockHttpServletRequest = new MockHttpServletRequest();
-        OAuth2AuthorizedClient client = authorizedRepo.loadAuthorizedClient("fake-graph",
+        jwtAuthenticationToken = new JwtAuthenticationToken(mockJwt);
+        mockHttpServletRequest = new MockHttpServletRequest();
+        client = authorizedRepo.loadAuthorizedClient("fake-graph",
             jwtAuthenticationToken,
             mockHttpServletRequest
         );
+    }
+
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testLoadAzureAuthorizedClient() throws ExecutionException, InterruptedException {
+        setupForAzureAuthorizedClient();
+        Assertions.assertEquals(OBO_ACCESS_TOKEN_1, client.getAccessToken().getTokenValue());
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testAuthorizedClientRequestLevelCache() throws ExecutionException, InterruptedException {
+        setupForAzureAuthorizedClient();
 
         Assertions.assertEquals(OBO_ACCESS_TOKEN_1, client.getAccessToken().getTokenValue());
-
         when(authenticationResult.accessToken()).thenReturn(OBO_ACCESS_TOKEN_2);
         client = authorizedRepo.loadAuthorizedClient("fake-graph",
             jwtAuthenticationToken,
@@ -108,6 +125,7 @@ public class AADOAuth2OboAuthorizedClientRepositoryTest {
         Assertions.assertEquals(OBO_ACCESS_TOKEN_1, client.getAccessToken().getTokenValue());
         Assertions.assertNotEquals(OBO_ACCESS_TOKEN_2, client.getAccessToken().getTokenValue());
     }
+
 
     @Test
     @SuppressWarnings("unchecked")
