@@ -7,9 +7,12 @@ import com.azure.spring.aad.webapp.AzureClientRegistrationRepository;
 import org.junit.Test;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
+
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -56,14 +59,67 @@ public class AzureActiveDirectoryResourceServerClientConfigurationTest {
     }
 
     @Test
-    public void testClientRegistrationRepository() {
+    public void testDefaultClientRegistrationRepository() {
         this.contextRunner
             .withUserConfiguration(AzureActiveDirectoryResourceServerClientConfiguration.class)
             .run(context -> {
-                final AzureClientRegistrationRepository azureRepo = context.getBean(AzureClientRegistrationRepository
+                AzureClientRegistrationRepository azureRepo = context.getBean(AzureClientRegistrationRepository
                     .class);
+                ClientRegistration graph = azureRepo.findByRegistrationId("graph");
+                ClientRegistration azure = azureRepo.findByRegistrationId("azure");
+
                 assertThat(azureRepo).isNotNull();
                 assertThat(azureRepo).isExactlyInstanceOf(AzureClientRegistrationRepository.class);
+
+                assertThat(graph).isNull();
+
+                assertThat(azure).isNotNull();
+                assertThat(azure.getScopes()).hasSize(3);
+
+            });
+    }
+
+    @Test
+    public void testExistGraphClient() {
+        this.contextRunner
+            .withUserConfiguration(AzureActiveDirectoryResourceServerClientConfiguration.class)
+            .withPropertyValues(AAD_PROPERTY_PREFIX + "authorization.graph.scopes=User.read")
+            .run(context -> {
+                AzureClientRegistrationRepository azureRepo = context.getBean(AzureClientRegistrationRepository
+                    .class);
+                ClientRegistration azure = azureRepo.findByRegistrationId("azure");
+                ClientRegistration graph = azureRepo.findByRegistrationId("graph");
+                Set<String> azureScopes = azure.getScopes();
+                Set<String> graphScopes = graph.getScopes();
+
+                assertThat(azureRepo).isExactlyInstanceOf(AzureClientRegistrationRepository.class);
+                assertThat(azure).isNotNull();
+                assertThat(azureScopes).hasSize(5);
+
+                assertThat(graph).isNotNull();
+                assertThat(graphScopes).hasSize(1);
+
+            });
+    }
+    @Test
+    public void testExistAzureClient() {
+        this.contextRunner
+            .withUserConfiguration(AzureActiveDirectoryResourceServerClientConfiguration.class)
+            .withPropertyValues(AAD_PROPERTY_PREFIX + "authorization.azure.scopes=User.read")
+            .run(context -> {
+                AzureClientRegistrationRepository azureRepo = context.getBean(AzureClientRegistrationRepository
+                    .class);
+
+                ClientRegistration azure = azureRepo.findByRegistrationId("azure");
+                ClientRegistration graph = azureRepo.findByRegistrationId("graph");
+                Set<String> azureScopes = azure.getScopes();
+
+                assertThat(azureRepo).isExactlyInstanceOf(AzureClientRegistrationRepository.class);
+                assertThat(azure).isNotNull();
+                assertThat(azureScopes).hasSize(5);
+
+                assertThat(graph).isNull();
+
             });
     }
 

@@ -15,10 +15,12 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
+import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
+import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -105,6 +107,60 @@ public class AADOAuth2OboAuthorizedClientRepositoryTest {
 
         Assertions.assertEquals(OBO_ACCESS_TOKEN_1, client.getAccessToken().getTokenValue());
         Assertions.assertNotEquals(OBO_ACCESS_TOKEN_2, client.getAccessToken().getTokenValue());
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testLoadNotExistClientRegistration() {
+
+        AADOAuth2OboAuthorizedClientRepository authorizedRepo = new AADOAuth2OboAuthorizedClientRepository(
+            clientRegistrationsRepo);
+
+        final Jwt mockJwt = mock(Jwt.class);
+        OAuth2AuthorizedClient client = authorizedRepo.loadAuthorizedClient("fake-graph-fake", new
+            JwtAuthenticationToken(mockJwt), new MockHttpServletRequest());
+        Assertions.assertNull(client);
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testUnsupportedTokenImplementation() {
+
+        AADOAuth2OboAuthorizedClientRepository authorizedRepo = new AADOAuth2OboAuthorizedClientRepository(
+            clientRegistrationsRepo);
+
+        PreAuthenticatedAuthenticationToken preToken = mock(PreAuthenticatedAuthenticationToken.class);
+        try {
+            authorizedRepo.loadAuthorizedClient("fake-graph",
+                preToken, new MockHttpServletRequest());
+            fail("Expected an IllegalStateException to be thrown");
+        } catch (IllegalStateException e) {
+        }
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void testNotExistClientApplication() {
+
+        AADOAuth2OboAuthorizedClientRepository authorizedRepo = new AADOAuth2OboAuthorizedClientRepository(
+            clientRegistrationsRepo) {
+            @Override
+            ConfidentialClientApplication getClientApplication(String registrationId) {
+                if ("fake-graph".equals(registrationId)) {
+                    return null;
+                } else {
+                    return null;
+                }
+
+            }
+        };
+
+        final Jwt mockJwt = mock(Jwt.class);
+        when(mockJwt.getTokenValue()).thenReturn("fake-token-value");
+        OAuth2AuthorizedClient client = authorizedRepo.loadAuthorizedClient("fake-graph", new
+            JwtAuthenticationToken(mockJwt), new MockHttpServletRequest());
+
+        Assertions.assertNull(client);
     }
 
 }
