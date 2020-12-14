@@ -10,7 +10,13 @@ public enum PartitionKind {
     /**
      * The Partition of a item is calculated based on the hash value of the PartitionKey.
      */
-    HASH("Hash");
+    HASH("Hash"),
+
+    RANGE("Range"),
+    /**
+     * The Partition of a item is calculated based on the hash value of multiple PartitionKeys.
+     */
+    MULTI_HASH("MultiHash");
 
     PartitionKind(String overWireValue) {
         this.overWireValue = overWireValue;

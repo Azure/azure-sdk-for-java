@@ -92,6 +92,32 @@ public class PartitionKeyInternalHelper {
         }
     }
 
+    static String getEffectivePartitionKeyForMultiHashPartitioning(PartitionKeyInternal partitionKeyInternal) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < partitionKeyInternal.components.size(); i++) {
+            try(ByteBufferOutputStream byteArrayBuffer = new ByteBufferOutputStream())  {
+
+                partitionKeyInternal.components.get(i).writeForHashingV2(byteArrayBuffer);
+
+
+                ByteBuffer byteBuffer = byteArrayBuffer.asByteBuffer();
+                UInt128 hashAsUnit128 = MurmurHash3_128.hash128(byteBuffer.array(), byteBuffer.limit());
+
+                byte[] hash = uIntToBytes(hashAsUnit128);
+                Bytes.reverse(hash);
+
+                // Reset 2 most significant bits, as max exclusive value is 'FF'.
+                // Plus one more just in case.
+                hash[0] &= 0x3F;
+
+                stringBuilder.append(HexConvert.bytesToHex(hash));
+            } catch (IOException e) {
+                throw new IllegalArgumentException(e);
+            }
+        }
+        return stringBuilder.toString();
+    }
+
     static String getEffectivePartitionKeyForHashPartitioning(PartitionKeyInternal partitionKeyInternal) {
         IPartitionKeyComponent[] truncatedComponents = new IPartitionKeyComponent[partitionKeyInternal.components.size()];
 
@@ -138,7 +164,7 @@ public class PartitionKeyInternalHelper {
             return MaximumExclusiveEffectivePartitionKey;
         }
 
-        if (partitionKeyInternal.components.size() < partitionKeyDefinition.getPaths().size()) {
+        if (partitionKeyInternal.components.size() < partitionKeyDefinition.getPaths().size() && partitionKeyDefinition.getKind() != PartitionKind.MULTI_HASH) {
             throw new IllegalArgumentException(RMResources.TooFewPartitionKeyComponents);
         }
 
@@ -160,6 +186,9 @@ public class PartitionKeyInternalHelper {
                     // V1
                     return getEffectivePartitionKeyForHashPartitioning(partitionKeyInternal);
                 }
+
+            case MULTI_HASH:
+                return getEffectivePartitionKeyForMultiHashPartitioning(partitionKeyInternal);
 
             default:
                 return toHexEncodedBinaryString(partitionKeyInternal.components);
