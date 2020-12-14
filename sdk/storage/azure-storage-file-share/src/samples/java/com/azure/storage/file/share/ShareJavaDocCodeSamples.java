@@ -711,9 +711,9 @@ public class ShareJavaDocCodeSamples {
      * Generates a code sample for using {@link ShareClient#getShareName()}
      */
     public void getShareName() {
-        ShareClient ShareClient = createClientWithSASToken();
+        ShareClient shareClient = createClientWithSASToken();
         // BEGIN: com.azure.storage.file.share.ShareClient.getShareName
-        String shareName = ShareClient.getShareName();
+        String shareName = shareClient.getShareName();
         System.out.println("The name of the share is " + shareName);
         // END: com.azure.storage.file.share.ShareClient.getShareName
     }
@@ -738,7 +738,7 @@ public class ShareJavaDocCodeSamples {
      * Code snippet for {@link ShareClient#generateSas(ShareServiceSasSignatureValues, Context)}
      */
     public void generateSasWithContext() {
-        ShareClient ShareClient = createClientWithCredential();
+        ShareClient shareClient = createClientWithCredential();
         // BEGIN: com.azure.storage.file.share.ShareClient.generateSas#ShareServiceSasSignatureValues-Context
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
         ShareSasPermission permission = new ShareSasPermission().setReadPermission(true);
@@ -747,7 +747,7 @@ public class ShareJavaDocCodeSamples {
             .setStartTime(OffsetDateTime.now());
 
         // Client must be authenticated via StorageSharedKeyCredential
-        ShareClient.generateSas(values, new Context("key", "value"));
+        shareClient.generateSas(values, new Context("key", "value"));
         // END: com.azure.storage.file.share.ShareClient.generateSas#ShareServiceSasSignatureValues-Context
     }
 }
