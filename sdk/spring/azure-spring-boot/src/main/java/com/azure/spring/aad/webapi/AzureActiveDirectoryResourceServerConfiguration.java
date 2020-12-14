@@ -3,7 +3,6 @@
 package com.azure.spring.aad.webapi;
 
 
-import com.azure.spring.aad.OAuth2ClientPropertiesBeanPostProcessor;
 import com.azure.spring.aad.webapp.AuthorizationServerEndpoints;
 import com.azure.spring.aad.webapi.validator.AzureJwtAudienceValidator;
 import com.azure.spring.aad.webapi.validator.AzureJwtIssuerValidator;
@@ -43,11 +42,6 @@ public class AzureActiveDirectoryResourceServerConfiguration {
 
     @Autowired
     private AADAuthenticationProperties aadAuthenticationProperties;
-
-    @Bean
-    public OAuth2ClientPropertiesBeanPostProcessor oAuth2ClientPropertiesBeanPostProcessor() {
-        return new OAuth2ClientPropertiesBeanPostProcessor(aadAuthenticationProperties);
-    }
 
     /**
      * Use JwkKeySetUri to create JwtDecoder

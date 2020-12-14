@@ -176,6 +176,7 @@ public class AzureActiveDirectoryConfigurationTest {
                 "azure.activedirectory.client-id = fake-client-id",
                 "azure.activedirectory.client-secret = fake-client-secret",
                 "azure.activedirectory.tenant-id = fake-tenant-id",
+                "azure.activedirectory.user-group.allowed-groups = group1, group2",
                 "azure.activedirectory.authorization-server-uri = http://localhost/"
             )
             .run(context -> {

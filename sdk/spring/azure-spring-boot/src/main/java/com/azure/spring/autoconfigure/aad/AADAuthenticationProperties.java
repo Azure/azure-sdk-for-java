@@ -230,7 +230,7 @@ public class AADAuthenticationProperties {
     @PostConstruct
     public void validateUserGroupProperties() {
         // current implementation is not required, this is only used for compatibility with the previous usage
-        if (authorization.size() > 0 || isWebApplication() || isResourceServer()) {
+        if (authorization.size() > 0 || isResourceServer()) {
             return;
         }
 
