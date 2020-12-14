@@ -3,63 +3,66 @@
 trigger:
   branches:
     include:
-      - master
-      - hotfix/*
-      - release/*
+    - master
+    - hotfix/*
+    - release/*
   paths:
     include:
-      - sdk/keyvault/
+    - sdk/keyvault/
     exclude:
-      - sdk/keyvault/mgmt
-      - sdk/keyvault/mgmt-v2015_06_01
-      - sdk/keyvault/mgmt-v2016_10_01
-      - sdk/keyvault/microsoft-azure-keyvault
-      - sdk/keyvault/microsoft-azure-keyvault-complete
-      - sdk/keyvault/microsoft-azure-keyvault-core
-      - sdk/keyvault/microsoft-azure-keyvault-cryptography
-      - sdk/keyvault/microsoft-azure-keyvault-extensions
-      - sdk/keyvault/microsoft-azure-keyvault-test
-      - sdk/keyvault/microsoft-azure-keyvault-webkey
+    - sdk/keyvault/mgmt
+    - sdk/keyvault/mgmt-v2015_06_01
+    - sdk/keyvault/mgmt-v2016_10_01
+    - sdk/keyvault/microsoft-azure-keyvault
+    - sdk/keyvault/microsoft-azure-keyvault-complete
+    - sdk/keyvault/microsoft-azure-keyvault-core
+    - sdk/keyvault/microsoft-azure-keyvault-cryptography
+    - sdk/keyvault/microsoft-azure-keyvault-extensions
+    - sdk/keyvault/microsoft-azure-keyvault-test
+    - sdk/keyvault/microsoft-azure-keyvault-webkey
 
 pr:
   branches:
     include:
-      - master
-      - feature/*
-      - hotfix/*
-      - release/*
+    - master
+    - feature/*
+    - hotfix/*
+    - release/*
   paths:
     include:
-      - sdk/keyvault/
+    - sdk/keyvault/
     exclude:
-      - sdk/keyvault/mgmt
-      - sdk/keyvault/mgmt-v2015_06_01
-      - sdk/keyvault/mgmt-v2016_10_01
-      - sdk/keyvault/microsoft-azure-keyvault
-      - sdk/keyvault/microsoft-azure-keyvault-complete
-      - sdk/keyvault/microsoft-azure-keyvault-core
-      - sdk/keyvault/microsoft-azure-keyvault-cryptography
-      - sdk/keyvault/microsoft-azure-keyvault-extensions
-      - sdk/keyvault/microsoft-azure-keyvault-test
-      - sdk/keyvault/microsoft-azure-keyvault-webkey
+    - sdk/keyvault/mgmt
+    - sdk/keyvault/mgmt-v2015_06_01
+    - sdk/keyvault/mgmt-v2016_10_01
+    - sdk/keyvault/microsoft-azure-keyvault
+    - sdk/keyvault/microsoft-azure-keyvault-complete
+    - sdk/keyvault/microsoft-azure-keyvault-core
+    - sdk/keyvault/microsoft-azure-keyvault-cryptography
+    - sdk/keyvault/microsoft-azure-keyvault-extensions
+    - sdk/keyvault/microsoft-azure-keyvault-test
+    - sdk/keyvault/microsoft-azure-keyvault-webkey
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: keyvault
     Artifacts:
-      - name: azure-security-keyvault-administration
-        groupId: com.azure
-        safeName: azuresecuritykeyvaultadministration
-      - name: azure-security-keyvault-certificates
-        groupId: com.azure
-        safeName: azuresecuritykeyvaultcertificates
-      - name: azure-security-keyvault-jca
-        groupId: com.azure
-        safeName: azuresecuritykeyvaultjca
-      - name: azure-security-keyvault-keys
-        groupId: com.azure
-        safeName: azuresecuritykeyvaultkeys
-      - name: azure-security-keyvault-secrets
-        groupId: com.azure
-        safeName: azuresecuritykeyvaultsecrets
+    - name: azure-security-keyvault-administration
+      groupId: com.azure
+      safeName: azuresecuritykeyvaultadministration
+    - name: azure-security-keyvault-certificates
+      groupId: com.azure
+      safeName: azuresecuritykeyvaultcertificates
+    - name: azure-security-keyvault-jca
+      groupId: com.azure
+      safeName: azuresecuritykeyvaultjca
+    - name: azure-security-keyvault-keys
+      groupId: com.azure
+      safeName: azuresecuritykeyvaultkeys
+    - name: azure-security-keyvault-secrets
+      groupId: com.azure
+      safeName: azuresecuritykeyvaultsecrets
+    - name: azure-resourcemanager-keyvault-generated
+      groupId: com.azure.resourcemanager
+      safeName: azureresourcemanagerkeyvaultgenerated
