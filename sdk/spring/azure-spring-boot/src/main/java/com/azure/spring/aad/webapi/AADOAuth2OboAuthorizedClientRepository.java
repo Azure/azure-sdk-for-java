@@ -114,7 +114,7 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
     }
 
     @Override
-    public void removeAuthorizedClient(String s, Authentication authentication,
+    public void removeAuthorizedClient(String clientRegistrationId, Authentication authentication,
                                        HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
     }
 
