@@ -1,7 +1,7 @@
 # Release History
 
 ## 12.10.0-beta.2 (Unreleased)
-
+- Added support for the 2020-06-12 service version. 
 
 
 ## 12.10.0-beta.1 (2020-12-07)

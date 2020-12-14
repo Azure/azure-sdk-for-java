@@ -1,303 +1,303 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtfssetaclrecursivebatchesresume050887ba37f519d40b?restype=container",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfssetaclrecursivebatchesresume004420c6c36a398a6f?restype=container",
     "Headers" : {
-      "x-ms-version" : "2020-02-10",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.9.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "0e49dc23-df51-4115-bc88-ccc44c8df548"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.10.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "768ca8a5-b183-422a-b480-84bdca394954"
     },
     "Response" : {
-      "x-ms-version" : "2020-02-10",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D84AB9D6AAB8EF",
-      "Last-Modified" : "Thu, 27 Aug 2020 18:48:50 GMT",
+      "ETag" : "0x8D8A066B64D57C0",
+      "Last-Modified" : "Mon, 14 Dec 2020 19:30:27 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "5cde24ed-a01e-001f-72a2-7cfea4000000",
-      "Date" : "Thu, 27 Aug 2020 18:48:49 GMT",
-      "x-ms-client-request-id" : "0e49dc23-df51-4115-bc88-ccc44c8df548"
+      "x-ms-request-id" : "62fddd20-001e-0090-074f-d277ce000000",
+      "Date" : "Mon, 14 Dec 2020 19:30:27 GMT",
+      "x-ms-client-request-id" : "768ca8a5-b183-422a-b480-84bdca394954"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfssetaclrecursivebatchesresume050887ba37f519d40b/javapathsetaclrecursivebatchesresume1783481011e27307?resource=directory",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfssetaclrecursivebatchesresume004420c6c36a398a6f/javapathsetaclrecursivebatchesresume196455af8f1ad8d3?resource=directory",
     "Headers" : {
-      "x-ms-version" : "2020-02-10",
-      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "b1ba1ca9-557f-46c4-ad97-030a14171c45"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.4.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "65d06918-7b5e-4e05-b5ad-bdf2821482b6"
     },
     "Response" : {
-      "x-ms-version" : "2020-02-10",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D84AB9D7319FCC",
-      "Last-Modified" : "Thu, 27 Aug 2020 18:48:51 GMT",
+      "ETag" : "0x8D8A066B6A20C6D",
+      "Last-Modified" : "Mon, 14 Dec 2020 19:30:28 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "b34812b8-901f-0014-44a2-7c05cf000000",
-      "Date" : "Thu, 27 Aug 2020 18:48:51 GMT",
-      "x-ms-client-request-id" : "b1ba1ca9-557f-46c4-ad97-030a14171c45"
+      "x-ms-request-id" : "bd728d04-d01f-0093-554f-d296aa000000",
+      "Date" : "Mon, 14 Dec 2020 19:30:27 GMT",
+      "x-ms-client-request-id" : "65d06918-7b5e-4e05-b5ad-bdf2821482b6"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfssetaclrecursivebatchesresume050887ba37f519d40b/javapathsetaclrecursivebatchesresume1783481011e27307/javapathsetaclrecursivebatchesresume258737629ba7e201?resource=directory",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfssetaclrecursivebatchesresume004420c6c36a398a6f/javapathsetaclrecursivebatchesresume196455af8f1ad8d3/javapathsetaclrecursivebatchesresume2090504c8843045a?resource=directory",
     "Headers" : {
-      "x-ms-version" : "2020-02-10",
-      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "b49b1d01-51ce-4dcc-99c0-57a9f4b79148"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.4.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "575f9c15-85f0-4709-b86f-892913c7b0d8"
     },
     "Response" : {
-      "x-ms-version" : "2020-02-10",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D84AB9D74798B6",
-      "Last-Modified" : "Thu, 27 Aug 2020 18:48:51 GMT",
+      "ETag" : "0x8D8A066B6B3C071",
+      "Last-Modified" : "Mon, 14 Dec 2020 19:30:28 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "b34812b9-901f-0014-45a2-7c05cf000000",
-      "Date" : "Thu, 27 Aug 2020 18:48:51 GMT",
-      "x-ms-client-request-id" : "b49b1d01-51ce-4dcc-99c0-57a9f4b79148"
+      "x-ms-request-id" : "bd728d06-d01f-0093-564f-d296aa000000",
+      "Date" : "Mon, 14 Dec 2020 19:30:27 GMT",
+      "x-ms-client-request-id" : "575f9c15-85f0-4709-b86f-892913c7b0d8"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfssetaclrecursivebatchesresume050887ba37f519d40b/javapathsetaclrecursivebatchesresume1783481011e27307/javapathsetaclrecursivebatchesresume258737629ba7e201/javapathsetaclrecursivebatchesresume372980c8b579de97?resource=file",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfssetaclrecursivebatchesresume004420c6c36a398a6f/javapathsetaclrecursivebatchesresume196455af8f1ad8d3/javapathsetaclrecursivebatchesresume2090504c8843045a/javapathsetaclrecursivebatchesresume3225186834b42a90?resource=file",
     "Headers" : {
-      "x-ms-version" : "2020-02-10",
-      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "64b2485e-dace-4173-8eb6-5f5bcff1e7ad"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.4.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "1345c394-6e17-4910-aec7-fc6cf08d8c86"
     },
     "Response" : {
-      "x-ms-version" : "2020-02-10",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D84AB9D75F5779",
-      "Last-Modified" : "Thu, 27 Aug 2020 18:48:51 GMT",
+      "ETag" : "0x8D8A066B6C6D2C8",
+      "Last-Modified" : "Mon, 14 Dec 2020 19:30:28 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "b34812ba-901f-0014-46a2-7c05cf000000",
-      "Date" : "Thu, 27 Aug 2020 18:48:51 GMT",
-      "x-ms-client-request-id" : "64b2485e-dace-4173-8eb6-5f5bcff1e7ad"
+      "x-ms-request-id" : "bd728d07-d01f-0093-574f-d296aa000000",
+      "Date" : "Mon, 14 Dec 2020 19:30:27 GMT",
+      "x-ms-client-request-id" : "1345c394-6e17-4910-aec7-fc6cf08d8c86"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfssetaclrecursivebatchesresume050887ba37f519d40b/javapathsetaclrecursivebatchesresume1783481011e27307/javapathsetaclrecursivebatchesresume258737629ba7e201/javapathsetaclrecursivebatchesresume442549179fbda778?resource=file",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfssetaclrecursivebatchesresume004420c6c36a398a6f/javapathsetaclrecursivebatchesresume196455af8f1ad8d3/javapathsetaclrecursivebatchesresume2090504c8843045a/javapathsetaclrecursivebatchesresume4610850bb98468d9?resource=file",
     "Headers" : {
-      "x-ms-version" : "2020-02-10",
-      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "aa3152ed-e6ef-45ee-bcc6-44d813b92b0e"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.4.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "6dd65433-0a1c-49f2-857a-ec5c9058ad2c"
     },
     "Response" : {
-      "x-ms-version" : "2020-02-10",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D84AB9D76FBDA0",
-      "Last-Modified" : "Thu, 27 Aug 2020 18:48:51 GMT",
+      "ETag" : "0x8D8A066B6D5AC40",
+      "Last-Modified" : "Mon, 14 Dec 2020 19:30:28 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "b34812bb-901f-0014-47a2-7c05cf000000",
-      "Date" : "Thu, 27 Aug 2020 18:48:51 GMT",
-      "x-ms-client-request-id" : "aa3152ed-e6ef-45ee-bcc6-44d813b92b0e"
+      "x-ms-request-id" : "bd728d08-d01f-0093-584f-d296aa000000",
+      "Date" : "Mon, 14 Dec 2020 19:30:27 GMT",
+      "x-ms-client-request-id" : "6dd65433-0a1c-49f2-857a-ec5c9058ad2c"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfssetaclrecursivebatchesresume050887ba37f519d40b/javapathsetaclrecursivebatchesresume1783481011e27307/javapathsetaclrecursivebatchesresume533077fe040464d9?resource=directory",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfssetaclrecursivebatchesresume004420c6c36a398a6f/javapathsetaclrecursivebatchesresume196455af8f1ad8d3/javapathsetaclrecursivebatchesresume573940aa6a21da8e?resource=directory",
     "Headers" : {
-      "x-ms-version" : "2020-02-10",
-      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "d4b7973b-9081-4aa6-95ec-4f4a587398a0"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.4.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "eb7a0254-2b88-4554-ad07-dff1ad6e881a"
     },
     "Response" : {
-      "x-ms-version" : "2020-02-10",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D84AB9D785801F",
-      "Last-Modified" : "Thu, 27 Aug 2020 18:48:51 GMT",
+      "ETag" : "0x8D8A066B6E49315",
+      "Last-Modified" : "Mon, 14 Dec 2020 19:30:28 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "b34812bc-901f-0014-48a2-7c05cf000000",
-      "Date" : "Thu, 27 Aug 2020 18:48:51 GMT",
-      "x-ms-client-request-id" : "d4b7973b-9081-4aa6-95ec-4f4a587398a0"
+      "x-ms-request-id" : "bd728d09-d01f-0093-594f-d296aa000000",
+      "Date" : "Mon, 14 Dec 2020 19:30:27 GMT",
+      "x-ms-client-request-id" : "eb7a0254-2b88-4554-ad07-dff1ad6e881a"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfssetaclrecursivebatchesresume050887ba37f519d40b/javapathsetaclrecursivebatchesresume1783481011e27307/javapathsetaclrecursivebatchesresume533077fe040464d9/javapathsetaclrecursivebatchesresume601291895e64d310?resource=file",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfssetaclrecursivebatchesresume004420c6c36a398a6f/javapathsetaclrecursivebatchesresume196455af8f1ad8d3/javapathsetaclrecursivebatchesresume573940aa6a21da8e/javapathsetaclrecursivebatchesresume69814054e20ba1a5?resource=file",
     "Headers" : {
-      "x-ms-version" : "2020-02-10",
-      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "afd7dcaa-b750-40f6-9a75-d66be2d9cf61"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.4.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f4754cf4-e6c5-4b88-9ee9-7beada84381f"
     },
     "Response" : {
-      "x-ms-version" : "2020-02-10",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D84AB9D79A8780",
-      "Last-Modified" : "Thu, 27 Aug 2020 18:48:51 GMT",
+      "ETag" : "0x8D8A066B6F4D035",
+      "Last-Modified" : "Mon, 14 Dec 2020 19:30:28 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "b34812be-901f-0014-49a2-7c05cf000000",
-      "Date" : "Thu, 27 Aug 2020 18:48:51 GMT",
-      "x-ms-client-request-id" : "afd7dcaa-b750-40f6-9a75-d66be2d9cf61"
+      "x-ms-request-id" : "bd728d0a-d01f-0093-5a4f-d296aa000000",
+      "Date" : "Mon, 14 Dec 2020 19:30:28 GMT",
+      "x-ms-client-request-id" : "f4754cf4-e6c5-4b88-9ee9-7beada84381f"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfssetaclrecursivebatchesresume050887ba37f519d40b/javapathsetaclrecursivebatchesresume1783481011e27307/javapathsetaclrecursivebatchesresume7878455d942a0eb9?resource=file",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfssetaclrecursivebatchesresume004420c6c36a398a6f/javapathsetaclrecursivebatchesresume196455af8f1ad8d3/javapathsetaclrecursivebatchesresume77957449248cb32d?resource=file",
     "Headers" : {
-      "x-ms-version" : "2020-02-10",
-      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "124095b4-553e-4787-be67-994d13faf612"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.4.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2bfad99c-427d-4332-bf61-4fd14a79f123"
     },
     "Response" : {
-      "x-ms-version" : "2020-02-10",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D84AB9D7B81B26",
-      "Last-Modified" : "Thu, 27 Aug 2020 18:48:52 GMT",
+      "ETag" : "0x8D8A066B704B1AF",
+      "Last-Modified" : "Mon, 14 Dec 2020 19:30:29 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "b34812bf-901f-0014-4aa2-7c05cf000000",
-      "Date" : "Thu, 27 Aug 2020 18:48:52 GMT",
-      "x-ms-client-request-id" : "124095b4-553e-4787-be67-994d13faf612"
+      "x-ms-request-id" : "bd728d0b-d01f-0093-5b4f-d296aa000000",
+      "Date" : "Mon, 14 Dec 2020 19:30:28 GMT",
+      "x-ms-client-request-id" : "2bfad99c-427d-4332-bf61-4fd14a79f123"
     },
     "Exception" : null
   }, {
     "Method" : "PATCH",
-    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfssetaclrecursivebatchesresume050887ba37f519d40b/javapathsetaclrecursivebatchesresume1783481011e27307?mode=set&forceFlag=false&maxRecords=2&action=setAccessControlRecursive",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfssetaclrecursivebatchesresume004420c6c36a398a6f/javapathsetaclrecursivebatchesresume196455af8f1ad8d3?mode=set&forceFlag=false&maxRecords=2&action=setAccessControlRecursive",
     "Headers" : {
-      "x-ms-version" : "2020-02-10",
-      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "f03c6f06-9461-41e9-a7bc-3821910a5128"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.4.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e0dcb3c4-a2f3-4ff1-91e0-52eba8984867"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "x-ms-namespace-enabled" : "true",
-      "x-ms-version" : "2020-02-10",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "Content-Length" : "84",
       "StatusCode" : "200",
-      "x-ms-continuation" : "VBbf6MKVwKq+zrcBGIkCGIMCL2dhcHJhaG5zY2FuYXJ5ATAxRDYxRjMyQjc2MjUzRTgvanRmc3NldGFjbHJlY3Vyc2l2ZWJhdGNoZXNyZXN1bWUwNTA4ODdiYTM3ZjUxOWQ0MGIBMDFENjdDQTJCNDM0MTlDMy9qYXZhcGF0aHNldGFjbHJlY3Vyc2l2ZWJhdGNoZXNyZXN1bWUxNzgzNDgxMDExZTI3MzA3L2phdmFwYXRoc2V0YWNscmVjdXJzaXZlYmF0Y2hlc3Jlc3VtZTI1ODczNzYyOWJhN2UyMDEvamF2YXBhdGhzZXRhY2xyZWN1cnNpdmViYXRjaGVzcmVzdW1lMzcyOTgwYzhiNTc5ZGU5NxYAAAA=",
-      "x-ms-request-id" : "b34812c0-901f-0014-4ba2-7c05cf000000",
+      "x-ms-continuation" : "VBagkp+KlIqHm5YBGIkCGIMCL2dhcHJhaG5zY2FuYXJ5ATAxRDYxRjMyQjc2MjUzRTgvanRmc3NldGFjbHJlY3Vyc2l2ZWJhdGNoZXNyZXN1bWUwMDQ0MjBjNmMzNmEzOThhNmYBMDFENkQyNEY5M0Q2RDc2Qi9qYXZhcGF0aHNldGFjbHJlY3Vyc2l2ZWJhdGNoZXNyZXN1bWUxOTY0NTVhZjhmMWFkOGQzL2phdmFwYXRoc2V0YWNscmVjdXJzaXZlYmF0Y2hlc3Jlc3VtZTIwOTA1MDRjODg0MzA0NWEvamF2YXBhdGhzZXRhY2xyZWN1cnNpdmViYXRjaGVzcmVzdW1lMzIyNTE4NjgzNGI0MmE5MBYAAAA=",
+      "x-ms-request-id" : "bd728d0c-d01f-0093-5c4f-d296aa000000",
       "Body" : "{\"directoriesSuccessful\":2,\"failedEntries\":[],\"failureCount\":0,\"filesSuccessful\":0}\n",
-      "Date" : "Thu, 27 Aug 2020 18:48:52 GMT",
-      "x-ms-client-request-id" : "f03c6f06-9461-41e9-a7bc-3821910a5128"
+      "Date" : "Mon, 14 Dec 2020 19:30:28 GMT",
+      "x-ms-client-request-id" : "e0dcb3c4-a2f3-4ff1-91e0-52eba8984867"
     },
     "Exception" : null
   }, {
     "Method" : "PATCH",
-    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfssetaclrecursivebatchesresume050887ba37f519d40b/javapathsetaclrecursivebatchesresume1783481011e27307?continuation=VBbf6MKVwKq%2BzrcBGIkCGIMCL2dhcHJhaG5zY2FuYXJ5ATAxRDYxRjMyQjc2MjUzRTgvanRmc3NldGFjbHJlY3Vyc2l2ZWJhdGNoZXNyZXN1bWUwNTA4ODdiYTM3ZjUxOWQ0MGIBMDFENjdDQTJCNDM0MTlDMy9qYXZhcGF0aHNldGFjbHJlY3Vyc2l2ZWJhdGNoZXNyZXN1bWUxNzgzNDgxMDExZTI3MzA3L2phdmFwYXRoc2V0YWNscmVjdXJzaXZlYmF0Y2hlc3Jlc3VtZTI1ODczNzYyOWJhN2UyMDEvamF2YXBhdGhzZXRhY2xyZWN1cnNpdmViYXRjaGVzcmVzdW1lMzcyOTgwYzhiNTc5ZGU5NxYAAAA%3D&mode=set&forceFlag=false&maxRecords=2&action=setAccessControlRecursive",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfssetaclrecursivebatchesresume004420c6c36a398a6f/javapathsetaclrecursivebatchesresume196455af8f1ad8d3?continuation=VBagkp%2BKlIqHm5YBGIkCGIMCL2dhcHJhaG5zY2FuYXJ5ATAxRDYxRjMyQjc2MjUzRTgvanRmc3NldGFjbHJlY3Vyc2l2ZWJhdGNoZXNyZXN1bWUwMDQ0MjBjNmMzNmEzOThhNmYBMDFENkQyNEY5M0Q2RDc2Qi9qYXZhcGF0aHNldGFjbHJlY3Vyc2l2ZWJhdGNoZXNyZXN1bWUxOTY0NTVhZjhmMWFkOGQzL2phdmFwYXRoc2V0YWNscmVjdXJzaXZlYmF0Y2hlc3Jlc3VtZTIwOTA1MDRjODg0MzA0NWEvamF2YXBhdGhzZXRhY2xyZWN1cnNpdmViYXRjaGVzcmVzdW1lMzIyNTE4NjgzNGI0MmE5MBYAAAA%3D&mode=set&forceFlag=false&maxRecords=2&action=setAccessControlRecursive",
     "Headers" : {
-      "x-ms-version" : "2020-02-10",
-      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "4416f1e1-37b3-4697-ad47-1baaf6d5957a"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.4.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7407bd3e-6eb2-4a86-9398-05ac6595a4b5"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "x-ms-namespace-enabled" : "true",
-      "x-ms-version" : "2020-02-10",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "Content-Length" : "84",
       "StatusCode" : "200",
-      "x-ms-continuation" : "VBb6+srlvJHm66MBGNQBGM4BL2dhcHJhaG5zY2FuYXJ5ATAxRDYxRjMyQjc2MjUzRTgvanRmc3NldGFjbHJlY3Vyc2l2ZWJhdGNoZXNyZXN1bWUwNTA4ODdiYTM3ZjUxOWQ0MGIBMDFENjdDQTJCNDM0MTlDMy9qYXZhcGF0aHNldGFjbHJlY3Vyc2l2ZWJhdGNoZXNyZXN1bWUxNzgzNDgxMDExZTI3MzA3L2phdmFwYXRoc2V0YWNscmVjdXJzaXZlYmF0Y2hlc3Jlc3VtZTUzMzA3N2ZlMDQwNDY0ZDkWAAAA",
-      "x-ms-request-id" : "b34812c1-901f-0014-4ca2-7c05cf000000",
+      "x-ms-continuation" : "VBbO/o7e5ffys7EBGNQBGM4BL2dhcHJhaG5zY2FuYXJ5ATAxRDYxRjMyQjc2MjUzRTgvanRmc3NldGFjbHJlY3Vyc2l2ZWJhdGNoZXNyZXN1bWUwMDQ0MjBjNmMzNmEzOThhNmYBMDFENkQyNEY5M0Q2RDc2Qi9qYXZhcGF0aHNldGFjbHJlY3Vyc2l2ZWJhdGNoZXNyZXN1bWUxOTY0NTVhZjhmMWFkOGQzL2phdmFwYXRoc2V0YWNscmVjdXJzaXZlYmF0Y2hlc3Jlc3VtZTU3Mzk0MGFhNmEyMWRhOGUWAAAA",
+      "x-ms-request-id" : "20ebe2af-f01f-0070-014f-d2f457000000",
       "Body" : "{\"directoriesSuccessful\":0,\"failedEntries\":[],\"failureCount\":0,\"filesSuccessful\":2}\n",
-      "Date" : "Thu, 27 Aug 2020 18:48:52 GMT",
-      "x-ms-client-request-id" : "4416f1e1-37b3-4697-ad47-1baaf6d5957a"
+      "Date" : "Mon, 14 Dec 2020 19:30:30 GMT",
+      "x-ms-client-request-id" : "7407bd3e-6eb2-4a86-9398-05ac6595a4b5"
     },
     "Exception" : null
   }, {
     "Method" : "PATCH",
-    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfssetaclrecursivebatchesresume050887ba37f519d40b/javapathsetaclrecursivebatchesresume1783481011e27307?continuation=VBb6%2BsrlvJHm66MBGNQBGM4BL2dhcHJhaG5zY2FuYXJ5ATAxRDYxRjMyQjc2MjUzRTgvanRmc3NldGFjbHJlY3Vyc2l2ZWJhdGNoZXNyZXN1bWUwNTA4ODdiYTM3ZjUxOWQ0MGIBMDFENjdDQTJCNDM0MTlDMy9qYXZhcGF0aHNldGFjbHJlY3Vyc2l2ZWJhdGNoZXNyZXN1bWUxNzgzNDgxMDExZTI3MzA3L2phdmFwYXRoc2V0YWNscmVjdXJzaXZlYmF0Y2hlc3Jlc3VtZTUzMzA3N2ZlMDQwNDY0ZDkWAAAA&mode=set&forceFlag=false&maxRecords=2&action=setAccessControlRecursive",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfssetaclrecursivebatchesresume004420c6c36a398a6f/javapathsetaclrecursivebatchesresume196455af8f1ad8d3?continuation=VBbO/o7e5ffys7EBGNQBGM4BL2dhcHJhaG5zY2FuYXJ5ATAxRDYxRjMyQjc2MjUzRTgvanRmc3NldGFjbHJlY3Vyc2l2ZWJhdGNoZXNyZXN1bWUwMDQ0MjBjNmMzNmEzOThhNmYBMDFENkQyNEY5M0Q2RDc2Qi9qYXZhcGF0aHNldGFjbHJlY3Vyc2l2ZWJhdGNoZXNyZXN1bWUxOTY0NTVhZjhmMWFkOGQzL2phdmFwYXRoc2V0YWNscmVjdXJzaXZlYmF0Y2hlc3Jlc3VtZTU3Mzk0MGFhNmEyMWRhOGUWAAAA&mode=set&forceFlag=false&maxRecords=2&action=setAccessControlRecursive",
     "Headers" : {
-      "x-ms-version" : "2020-02-10",
-      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "8dd5035e-b78a-4d8a-87c1-1b2d10309987"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.4.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0326d83d-cc3d-4bb2-81d6-1fc613f73732"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "x-ms-namespace-enabled" : "true",
-      "x-ms-version" : "2020-02-10",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "Content-Length" : "84",
       "StatusCode" : "200",
-      "x-ms-continuation" : "VBaXgrSJ5v6k1OcBGNQBGM4BL2dhcHJhaG5zY2FuYXJ5ATAxRDYxRjMyQjc2MjUzRTgvanRmc3NldGFjbHJlY3Vyc2l2ZWJhdGNoZXNyZXN1bWUwNTA4ODdiYTM3ZjUxOWQ0MGIBMDFENjdDQTJCNDM0MTlDMy9qYXZhcGF0aHNldGFjbHJlY3Vyc2l2ZWJhdGNoZXNyZXN1bWUxNzgzNDgxMDExZTI3MzA3L2phdmFwYXRoc2V0YWNscmVjdXJzaXZlYmF0Y2hlc3Jlc3VtZTc4Nzg0NTVkOTQyYTBlYjkWAAAA",
-      "x-ms-request-id" : "b34812c2-901f-0014-4da2-7c05cf000000",
+      "x-ms-continuation" : "VBbAkIL9w5ri+I8BGNQBGM4BL2dhcHJhaG5zY2FuYXJ5ATAxRDYxRjMyQjc2MjUzRTgvanRmc3NldGFjbHJlY3Vyc2l2ZWJhdGNoZXNyZXN1bWUwMDQ0MjBjNmMzNmEzOThhNmYBMDFENkQyNEY5M0Q2RDc2Qi9qYXZhcGF0aHNldGFjbHJlY3Vyc2l2ZWJhdGNoZXNyZXN1bWUxOTY0NTVhZjhmMWFkOGQzL2phdmFwYXRoc2V0YWNscmVjdXJzaXZlYmF0Y2hlc3Jlc3VtZTc3OTU3NDQ5MjQ4Y2IzMmQWAAAA",
+      "x-ms-request-id" : "71c30de3-f01f-004f-244f-d23cf4000000",
       "Body" : "{\"directoriesSuccessful\":1,\"failedEntries\":[],\"failureCount\":0,\"filesSuccessful\":1}\n",
-      "Date" : "Thu, 27 Aug 2020 18:48:52 GMT",
-      "x-ms-client-request-id" : "8dd5035e-b78a-4d8a-87c1-1b2d10309987"
+      "Date" : "Mon, 14 Dec 2020 19:30:31 GMT",
+      "x-ms-client-request-id" : "0326d83d-cc3d-4bb2-81d6-1fc613f73732"
     },
     "Exception" : null
   }, {
     "Method" : "PATCH",
-    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfssetaclrecursivebatchesresume050887ba37f519d40b/javapathsetaclrecursivebatchesresume1783481011e27307?continuation=VBaXgrSJ5v6k1OcBGNQBGM4BL2dhcHJhaG5zY2FuYXJ5ATAxRDYxRjMyQjc2MjUzRTgvanRmc3NldGFjbHJlY3Vyc2l2ZWJhdGNoZXNyZXN1bWUwNTA4ODdiYTM3ZjUxOWQ0MGIBMDFENjdDQTJCNDM0MTlDMy9qYXZhcGF0aHNldGFjbHJlY3Vyc2l2ZWJhdGNoZXNyZXN1bWUxNzgzNDgxMDExZTI3MzA3L2phdmFwYXRoc2V0YWNscmVjdXJzaXZlYmF0Y2hlc3Jlc3VtZTc4Nzg0NTVkOTQyYTBlYjkWAAAA&mode=set&forceFlag=false&maxRecords=2&action=setAccessControlRecursive",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfssetaclrecursivebatchesresume004420c6c36a398a6f/javapathsetaclrecursivebatchesresume196455af8f1ad8d3?continuation=VBbAkIL9w5ri%2BI8BGNQBGM4BL2dhcHJhaG5zY2FuYXJ5ATAxRDYxRjMyQjc2MjUzRTgvanRmc3NldGFjbHJlY3Vyc2l2ZWJhdGNoZXNyZXN1bWUwMDQ0MjBjNmMzNmEzOThhNmYBMDFENkQyNEY5M0Q2RDc2Qi9qYXZhcGF0aHNldGFjbHJlY3Vyc2l2ZWJhdGNoZXNyZXN1bWUxOTY0NTVhZjhmMWFkOGQzL2phdmFwYXRoc2V0YWNscmVjdXJzaXZlYmF0Y2hlc3Jlc3VtZTc3OTU3NDQ5MjQ4Y2IzMmQWAAAA&mode=set&forceFlag=false&maxRecords=2&action=setAccessControlRecursive",
     "Headers" : {
-      "x-ms-version" : "2020-02-10",
-      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "9f20cbf5-34e6-4c3d-ad87-264be4fa111c"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.4.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2f26d5ee-3088-4650-b883-cb33873a2c52"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "x-ms-namespace-enabled" : "true",
-      "x-ms-version" : "2020-02-10",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "Content-Length" : "84",
       "StatusCode" : "200",
-      "x-ms-request-id" : "b34812c3-901f-0014-4ea2-7c05cf000000",
+      "x-ms-request-id" : "735d6a06-d01f-0005-0c4f-d29f7b000000",
       "Body" : "{\"directoriesSuccessful\":0,\"failedEntries\":[],\"failureCount\":0,\"filesSuccessful\":1}\n",
-      "Date" : "Thu, 27 Aug 2020 18:48:53 GMT",
-      "x-ms-client-request-id" : "9f20cbf5-34e6-4c3d-ad87-264be4fa111c"
+      "Date" : "Mon, 14 Dec 2020 19:30:32 GMT",
+      "x-ms-client-request-id" : "2f26d5ee-3088-4650-b883-cb33873a2c52"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
     "Uri" : "https://REDACTED.blob.core.windows.net?prefix=jtfssetaclrecursivebatchesresume&comp=list",
     "Headers" : {
-      "x-ms-version" : "2020-02-10",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.9.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "ec5222f5-0320-406d-a94d-214e7112ab23"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.10.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ee00450d-526f-43c0-991d-2c55982e8b4b"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-ms-version" : "2020-02-10",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "5cde2581-a01e-001f-59a2-7cfea4000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://gaprahnscanary.blob.core.windows.net/\"><Prefix>jtfssetaclrecursivebatchesresume</Prefix><Containers><Container><Name>jtfssetaclrecursivebatchesresume050887ba37f519d40b</Name><Properties><Last-Modified>Thu, 27 Aug 2020 18:48:50 GMT</Last-Modified><Etag>\"0x8D84AB9D6AAB8EF\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
-      "Date" : "Thu, 27 Aug 2020 18:48:52 GMT",
-      "x-ms-client-request-id" : "ec5222f5-0320-406d-a94d-214e7112ab23",
+      "x-ms-request-id" : "62fddeb4-001e-0090-384f-d277ce000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://gaprahnscanary.blob.core.windows.net/\"><Prefix>jtfssetaclrecursivebatchesresume</Prefix><Containers><Container><Name>jtfssetaclrecursivebatchesresume004420c6c36a398a6f</Name><Properties><Last-Modified>Mon, 14 Dec 2020 19:30:27 GMT</Last-Modified><Etag>\"0x8D8A066B64D57C0\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Mon, 14 Dec 2020 19:30:32 GMT",
+      "x-ms-client-request-id" : "ee00450d-526f-43c0-991d-2c55982e8b4b",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtfssetaclrecursivebatchesresume050887ba37f519d40b?restype=container",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfssetaclrecursivebatchesresume004420c6c36a398a6f?restype=container",
     "Headers" : {
-      "x-ms-version" : "2020-02-10",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.9.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "293a887b-0d4f-4759-a71f-4cde010679a1"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.10.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "56b573d9-c8f4-4425-9a77-69a53e693c33"
     },
     "Response" : {
-      "x-ms-version" : "2020-02-10",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "5cde2592-a01e-001f-67a2-7cfea4000000",
-      "Date" : "Thu, 27 Aug 2020 18:48:52 GMT",
-      "x-ms-client-request-id" : "293a887b-0d4f-4759-a71f-4cde010679a1"
+      "x-ms-request-id" : "62fddeba-001e-0090-3d4f-d277ce000000",
+      "Date" : "Mon, 14 Dec 2020 19:30:32 GMT",
+      "x-ms-client-request-id" : "56b573d9-c8f4-4425-9a77-69a53e693c33"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtfssetaclrecursivebatchesresume050887ba37f519d40b", "javapathsetaclrecursivebatchesresume1783481011e27307", "javapathsetaclrecursivebatchesresume258737629ba7e201", "javapathsetaclrecursivebatchesresume372980c8b579de97", "javapathsetaclrecursivebatchesresume442549179fbda778", "javapathsetaclrecursivebatchesresume533077fe040464d9", "javapathsetaclrecursivebatchesresume601291895e64d310", "javapathsetaclrecursivebatchesresume7878455d942a0eb9" ]
+  "variables" : [ "jtfssetaclrecursivebatchesresume004420c6c36a398a6f", "javapathsetaclrecursivebatchesresume196455af8f1ad8d3", "javapathsetaclrecursivebatchesresume2090504c8843045a", "javapathsetaclrecursivebatchesresume3225186834b42a90", "javapathsetaclrecursivebatchesresume4610850bb98468d9", "javapathsetaclrecursivebatchesresume573940aa6a21da8e", "javapathsetaclrecursivebatchesresume69814054e20ba1a5", "javapathsetaclrecursivebatchesresume77957449248cb32d" ]
 }
