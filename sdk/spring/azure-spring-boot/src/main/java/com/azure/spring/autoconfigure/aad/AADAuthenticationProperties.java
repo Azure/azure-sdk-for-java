@@ -124,26 +124,6 @@ public class AADAuthenticationProperties {
          */
         private List<String> allowedGroups = new ArrayList<>();
 
-        /**
-         * Key of the JSON Node to get from the Azure AD response object that will be checked to contain the {@code
-         * azure.activedirectory.user-group.value}  to signify that this node is a valid {@code UserGroup}.
-         */
-        @NotEmpty
-        private String key = "objectType";
-
-        /**
-         * Value of the JSON Node identified by the {@code azure.activedirectory.user-group.key} to validate the JSON
-         * Node is a UserGroup.
-         */
-        @NotEmpty
-        private String value = Membership.OBJECT_TYPE_GROUP;
-
-        /**
-         * Key of the JSON Node containing the Azure Object ID for the {@code UserGroup}.
-         */
-        @NotEmpty
-        private String objectIDKey = "objectId";
-
         public List<String> getAllowedGroups() {
             return allowedGroups;
         }
@@ -152,59 +132,6 @@ public class AADAuthenticationProperties {
             this.allowedGroups = allowedGroups;
         }
 
-        public String getKey() {
-            return key;
-        }
-
-        public void setKey(String key) {
-            this.key = key;
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        public void setValue(String value) {
-            this.value = value;
-        }
-
-        public String getObjectIDKey() {
-            return objectIDKey;
-        }
-
-        public void setObjectIDKey(String objectIDKey) {
-            this.objectIDKey = objectIDKey;
-        }
-
-        @Override
-        public String toString() {
-            return "UserGroupProperties{"
-                + "allowedGroups=" + allowedGroups
-                + ", key='" + key + '\''
-                + ", value='" + value + '\''
-                + ", objectIDKey='" + objectIDKey + '\''
-                + '}';
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) {
-                return true;
-            }
-            if (o == null || getClass() != o.getClass()) {
-                return false;
-            }
-            UserGroupProperties that = (UserGroupProperties) o;
-            return Objects.equals(allowedGroups, that.allowedGroups)
-                && Objects.equals(key, that.key)
-                && Objects.equals(value, that.value)
-                && Objects.equals(objectIDKey, that.objectIDKey);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(allowedGroups, key, value, objectIDKey);
-        }
     }
 
     public boolean allowedGroupsConfigured() {

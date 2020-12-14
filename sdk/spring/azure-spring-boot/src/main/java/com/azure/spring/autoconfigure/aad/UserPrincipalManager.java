@@ -87,9 +87,9 @@ public class UserPrincipalManager {
             this.validAudiences.add(this.aadAuthenticationProperties.getAppIdUri());
         }
         try {
-            String aadKeyDiscoveryUri =
+            String jwkSetEndpoint =
                 authorizationServerEndpoints.jwkSetEndpoint(this.aadAuthenticationProperties.getTenantId());
-            keySource = new RemoteJWKSet<>(new URL(aadKeyDiscoveryUri), resourceRetriever);
+            keySource = new RemoteJWKSet<>(new URL(jwkSetEndpoint), resourceRetriever);
         } catch (MalformedURLException e) {
             LOGGER.error("Failed to parse active directory key discovery uri.", e);
             throw new IllegalArgumentException("Failed to parse active directory key discovery uri.", e);
@@ -123,9 +123,9 @@ public class UserPrincipalManager {
             this.validAudiences.add(this.aadAuthenticationProperties.getAppIdUri());
         }
         try {
-            String aadKeyDiscoveryUri =
+            String jwkSetEndpoint =
                 authorizationServerEndpoints.jwkSetEndpoint(this.aadAuthenticationProperties.getTenantId());
-            keySource = new RemoteJWKSet<>(new URL(aadKeyDiscoveryUri), resourceRetriever, jwkSetCache);
+            keySource = new RemoteJWKSet<>(new URL(jwkSetEndpoint), resourceRetriever, jwkSetCache);
         } catch (MalformedURLException e) {
             LOGGER.error("Failed to parse active directory key discovery uri.", e);
             throw new IllegalArgumentException("Failed to parse active directory key discovery uri.", e);
