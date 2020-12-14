@@ -12,7 +12,7 @@ public class CommunicationUserIdentifier extends CommunicationIdentifier {
     private final String id;
 
     /**
-     * Creates a CommunicationUser object
+     * Creates a CommunicationUserIdentifier object
      * 
      * @param id the string identifier representing the identity
      * @throws IllegalArgumentException thrown if id parameter fail the validation.
