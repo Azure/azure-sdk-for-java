@@ -4,6 +4,7 @@
 package com.azure.spring.autoconfigure.aad;
 
 import com.azure.spring.aad.webapp.AuthorizationServerEndpoints;
+import com.azure.spring.aad.webapp.AzureActiveDirectoryConfiguration;
 import com.azure.spring.telemetry.TelemetrySender;
 import com.nimbusds.jose.jwk.source.DefaultJWKSetCache;
 import com.nimbusds.jose.jwk.source.JWKSetCache;
@@ -20,7 +21,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplicat
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.util.ClassUtils;
 
 import javax.annotation.PostConstruct;
@@ -41,10 +41,10 @@ import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName
  */
 @Configuration
 @ConditionalOnWebApplication
+@ConditionalOnMissingBean(AzureActiveDirectoryConfiguration.class)
 @ConditionalOnResource(resources = "classpath:aad.enable.config")
 @ConditionalOnProperty(prefix = AADAuthenticationFilterAutoConfiguration.PROPERTY_PREFIX, value = { "client-id" })
 @EnableConfigurationProperties({ AADAuthenticationProperties.class })
-@PropertySource(value = "classpath:service-endpoints.properties")
 public class AADAuthenticationFilterAutoConfiguration {
     public static final String PROPERTY_PREFIX = "azure.activedirectory";
     private static final Logger LOG = LoggerFactory.getLogger(AADAuthenticationProperties.class);
@@ -52,10 +52,9 @@ public class AADAuthenticationFilterAutoConfiguration {
     private final AADAuthenticationProperties aadAuthenticationProperties;
     private final AuthorizationServerEndpoints authorizationServerEndpoints;
 
-    public AADAuthenticationFilterAutoConfiguration(AADAuthenticationProperties aadAuthenticationProperties,
-                                                    AuthorizationServerEndpoints authorizationServerEndpoints) {
+    public AADAuthenticationFilterAutoConfiguration(AADAuthenticationProperties aadAuthenticationProperties) {
         this.aadAuthenticationProperties = aadAuthenticationProperties;
-        this.authorizationServerEndpoints = authorizationServerEndpoints;
+        this.authorizationServerEndpoints = new AuthorizationServerEndpoints();
     }
 
     /**
