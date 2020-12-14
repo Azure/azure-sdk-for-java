@@ -44,7 +44,7 @@ public class AzureOAuth2AuthorizationRequestResolver implements OAuth2Authorizat
         if (oAuth2AuthorizationRequest == null || httpServletRequest == null) {
             return oAuth2AuthorizationRequest;
         }
-        // Handle conditional access policy, step 4.
+        // Handle conditional access policy, step 3.
         final String conditionalAccessPolicyClaims =
             Optional.of(httpServletRequest)
                     .map(HttpServletRequest::getSession)
