@@ -1,5 +1,8 @@
 # Release History
 
+## 12.10.0-beta.2 (Unreleased)
+
+
 ## 12.10.0-beta.1 (2020-12-07)
 - Added ability to specify timeout units in RequestRetryOptions.
 - Fixed bug where query params were being parsed incorrectly if an encoded comma was the query value.

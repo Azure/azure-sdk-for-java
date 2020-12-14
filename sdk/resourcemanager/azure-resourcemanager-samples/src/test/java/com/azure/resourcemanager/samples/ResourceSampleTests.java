@@ -10,6 +10,7 @@ import com.azure.resourcemanager.resources.samples.DeployUsingARMTemplateWithDep
 import com.azure.resourcemanager.resources.samples.DeployUsingARMTemplateWithProgress;
 import com.azure.resourcemanager.resources.samples.DeployUsingARMTemplateWithTags;
 import com.azure.resourcemanager.resources.samples.DeployVirtualMachineUsingARMTemplate;
+import com.azure.resourcemanager.resources.samples.ManageLocks;
 import com.azure.resourcemanager.resources.samples.ManageResource;
 import com.azure.resourcemanager.resources.samples.ManageResourceGroup;
 import org.junit.jupiter.api.Assertions;
@@ -63,5 +64,10 @@ public class ResourceSampleTests extends SamplesTestBase {
     @Test
     public void testDeployVirtualMachineUsingARMTemplate() throws IOException, IllegalAccessException {
         Assertions.assertTrue(DeployVirtualMachineUsingARMTemplate.runSample(azureResourceManager));
+    }
+
+    @Test
+    public void testManageLocks() {
+        Assertions.assertTrue(ManageLocks.runSample(azureResourceManager));
     }
 }

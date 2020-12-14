@@ -22,6 +22,8 @@ public class AzureOAuth2AuthenticatedPrincipal implements OAuth2AuthenticatedPri
 
     private static final long serialVersionUID = -3625690847771476854L;
 
+    private static final String PERSONAL_ACCOUNT_TENANT_ID = "9188040d-6c67-4c5b-b112-36a304b66dad";
+
     private final Collection<GrantedAuthority> authorities;
 
     private final Map<String, Object> headers;
@@ -96,6 +98,10 @@ public class AzureOAuth2AuthenticatedPrincipal implements OAuth2AuthenticatedPri
 
     public String getTenantId() {
         return jwtClaimsSet == null ? null : (String) jwtClaimsSet.getClaim("tid");
+    }
+
+    public boolean isPersonalAccount() {
+        return PERSONAL_ACCOUNT_TENANT_ID.equals(getTenantId());
     }
 
 }

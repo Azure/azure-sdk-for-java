@@ -8,6 +8,8 @@ import com.azure.spring.aad.webapp.AuthorizationServerEndpoints;
 import com.azure.spring.aad.webapi.validator.AzureJwtAudienceValidator;
 import com.azure.spring.aad.webapi.validator.AzureJwtIssuerValidator;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -26,9 +28,6 @@ import org.springframework.security.oauth2.jwt.JwtTimestampValidator;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
 import org.springframework.util.StringUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * <p>
@@ -58,9 +57,6 @@ public class AzureActiveDirectoryResourceServerConfiguration {
     @Bean
     @ConditionalOnMissingBean(JwtDecoder.class)
     public JwtDecoder jwtDecoder() {
-        if (StringUtils.isEmpty(aadAuthenticationProperties.getTenantId())) {
-            aadAuthenticationProperties.setTenantId("common");
-        }
         AuthorizationServerEndpoints identityEndpoints = new AuthorizationServerEndpoints(
             aadAuthenticationProperties.getAuthorizationServerUri());
         NimbusJwtDecoder nimbusJwtDecoder = NimbusJwtDecoder

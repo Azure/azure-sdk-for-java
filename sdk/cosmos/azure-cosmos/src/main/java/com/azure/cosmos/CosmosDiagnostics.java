@@ -5,6 +5,7 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -83,6 +84,7 @@ public final class CosmosDiagnostics {
      * Regions contacted for this request
      * @return set of regions contacted for this request
      */
+    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Set<URI> getRegionsContacted() {
         return this.clientSideRequestStatistics.getRegionsContacted();
     }
