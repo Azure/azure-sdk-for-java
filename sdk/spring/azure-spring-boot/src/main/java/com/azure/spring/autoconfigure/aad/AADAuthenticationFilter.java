@@ -3,7 +3,6 @@
 
 package com.azure.spring.autoconfigure.aad;
 
-import com.azure.spring.aad.webapp.AuthorizationServerEndpoints;
 import com.microsoft.aad.msal4j.MsalServiceException;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.jwk.source.JWKSetCache;
@@ -46,13 +45,13 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
     private final AzureADGraphClient azureADGraphClient;
 
     public AADAuthenticationFilter(AADAuthenticationProperties aadAuthenticationProperties,
-                                   AuthorizationServerEndpoints authorizationServerEndpoints,
+                                   ServiceEndpointsProperties serviceEndpointsProperties,
                                    ResourceRetriever resourceRetriever) {
         this(
             aadAuthenticationProperties,
-            authorizationServerEndpoints,
+            serviceEndpointsProperties,
             new UserPrincipalManager(
-                authorizationServerEndpoints,
+                serviceEndpointsProperties,
                 aadAuthenticationProperties,
                 resourceRetriever,
                 false
@@ -61,14 +60,14 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
     }
 
     public AADAuthenticationFilter(AADAuthenticationProperties aadAuthenticationProperties,
-                                   AuthorizationServerEndpoints authorizationServerEndpoints,
+                                   ServiceEndpointsProperties serviceEndpointsProperties,
                                    ResourceRetriever resourceRetriever,
                                    JWKSetCache jwkSetCache) {
         this(
             aadAuthenticationProperties,
-            authorizationServerEndpoints,
+            serviceEndpointsProperties,
             new UserPrincipalManager(
-                authorizationServerEndpoints,
+                serviceEndpointsProperties,
                 aadAuthenticationProperties,
                 resourceRetriever,
                 false,
@@ -78,14 +77,14 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
     }
 
     public AADAuthenticationFilter(AADAuthenticationProperties aadAuthenticationProperties,
-                                   AuthorizationServerEndpoints authorizationServerEndpoints,
+                                   ServiceEndpointsProperties serviceEndpointsProperties,
                                    UserPrincipalManager userPrincipalManager) {
         this.userPrincipalManager = userPrincipalManager;
         this.azureADGraphClient = new AzureADGraphClient(
             aadAuthenticationProperties.getClientId(),
             aadAuthenticationProperties.getClientSecret(),
             aadAuthenticationProperties,
-            authorizationServerEndpoints
+            serviceEndpointsProperties
         );
     }
 
