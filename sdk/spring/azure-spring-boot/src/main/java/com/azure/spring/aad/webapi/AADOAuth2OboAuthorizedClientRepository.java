@@ -68,7 +68,6 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
         }
 
         try {
-
             String accessToken =
                 ((AbstractOAuth2TokenAuthenticationToken<?>) authentication).getToken().getTokenValue();
             ClientRegistration clientRegistration =
@@ -109,13 +108,13 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
     }
 
     @Override
-    public void saveAuthorizedClient(OAuth2AuthorizedClient oAuth2AuthorizedClient, Authentication authentication,
-                                     HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+    public void saveAuthorizedClient(OAuth2AuthorizedClient authorizedClient, Authentication principal,
+                                     HttpServletRequest request, HttpServletResponse response) {
     }
 
     @Override
-    public void removeAuthorizedClient(String s, Authentication authentication,
-                                       HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+    public void removeAuthorizedClient(String clientRegistrationId, Authentication principal,
+                                       HttpServletRequest request, HttpServletResponse response) {
     }
 
     ConfidentialClientApplication getClientApplication(String registrationId) {
