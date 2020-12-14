@@ -54,7 +54,7 @@ azure.activedirectory.user-group.allowed-groups=group1, group2
 
 ### Run with Maven
 ```shell
-cd azure-spring-boot-samples/azure-spring-boot-sample-active-directory-backend-v2
+cd azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp
 mvn spring-boot:run
 ```
 
