@@ -15,10 +15,7 @@ import java.util.UUID;
 import static com.azure.perf.test.core.TestDataCreationHelper.createRandomByteBufferFlux;
 
 public class AppendFileDatalakeTest extends DirectoryTest<PerfStressOptions> {
-    private static final int BUFFER_SIZE = 16 * 1024 * 1024;
     private static final String FILE_NAME = "perfstress-file-" + UUID.randomUUID().toString();
-
-    private final byte[] buffer = new byte[BUFFER_SIZE];
 
     protected final DataLakeFileClient dataLakeFileClient;
     protected final DataLakeFileAsyncClient dataLakeFileAsyncClient;
@@ -33,14 +30,14 @@ public class AppendFileDatalakeTest extends DirectoryTest<PerfStressOptions> {
     public Mono<Void> globalSetupAsync() {
         return super.globalSetupAsync()
             .then(dataLakeFileAsyncClient.create())
-            .then(dataLakeFileAsyncClient.upload(createRandomByteBufferFlux(options.getSize()), null, true))
             .then();
     }
 
     // Perform the API call to be tested here
     @Override
     public void run() {
-        dataLakeFileClient.append(TestDataCreationHelper.createRandomInputStream(options.getSize()), 0, options.getSize());
+        dataLakeFileClient.append(TestDataCreationHelper.createRandomInputStream(options.getSize()),
+            0, options.getSize());
     }
 
     @Override

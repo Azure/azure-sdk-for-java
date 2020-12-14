@@ -3,12 +3,12 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-<!--  <parent>-->
-<!--    <groupId>com.azure</groupId>-->
-<!--    <artifactId>azure-client-sdk-parent</artifactId>-->
-<!--    <version>1.7.0</version> &lt;!&ndash; {x-version-update;com.azure:azure-client-sdk-parent;current} &ndash;&gt;-->
-<!--    <relativePath>../../parents/azure-client-sdk-parent</relativePath>-->
-<!--  </parent>-->
+  <parent>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-client-sdk-parent</artifactId>
+    <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
+    <relativePath>../../parents/azure-client-sdk-parent</relativePath>
+  </parent>
   
   <modelVersion>4.0.0</modelVersion>
 
@@ -72,6 +72,21 @@
         <configuration>
           <source>8</source>
           <target>8</target>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <configuration>
+          <rules>
+            <bannedDependencies>
+              <includes>
+                <include>com.microsoft.azure:azure-storage:[8.6.5]</include> <!-- {x-include-update;com.microsoft.azure:azure-storage-file-share;external_dependency} -->
+              </includes>
+            </bannedDependencies>
+          </rules>
         </configuration>
       </plugin>
     </plugins>

@@ -40,8 +40,8 @@ public abstract class ShareTest<TOptions extends PerfStressOptions> extends Serv
     @Override
     public Mono<Void> globalCleanupAsync() {
         return Mono.fromCallable(() -> {
-                cloudFileShare.delete();
-                return 1;
-            }).then(super.globalCleanupAsync());
+            cloudFileShare.delete();
+            return 1;
+        }).then(super.globalCleanupAsync());
     }
 }

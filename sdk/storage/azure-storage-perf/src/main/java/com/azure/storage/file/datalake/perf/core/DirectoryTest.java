@@ -6,8 +6,6 @@ package com.azure.storage.file.datalake.perf.core;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient;
 import com.azure.storage.file.datalake.DataLakeDirectoryClient;
-import com.azure.storage.file.share.ShareDirectoryAsyncClient;
-import com.azure.storage.file.share.ShareDirectoryClient;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;

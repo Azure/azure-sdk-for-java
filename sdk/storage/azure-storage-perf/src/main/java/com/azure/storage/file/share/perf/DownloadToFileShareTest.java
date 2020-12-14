@@ -4,26 +4,18 @@
 package com.azure.storage.file.share.perf;
 
 import com.azure.perf.test.core.PerfStressOptions;
-import com.azure.perf.test.core.TestDataCreationHelper;
 import com.azure.storage.file.share.ShareFileAsyncClient;
 import com.azure.storage.file.share.ShareFileClient;
 import com.azure.storage.file.share.perf.core.DirectoryTest;
-import com.azure.storage.file.share.perf.core.FileTestBase;
 import reactor.core.publisher.Mono;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.URISyntaxException;
 import java.util.UUID;
 
 import static com.azure.perf.test.core.TestDataCreationHelper.createRandomByteBufferFlux;
 
 public class DownloadToFileShareTest extends DirectoryTest<PerfStressOptions> {
-    private static final int BUFFER_SIZE = 16 * 1024 * 1024;
     private static final String FILE_NAME = "perfstress-file-" + UUID.randomUUID().toString();
-
-    private final byte[] buffer = new byte[BUFFER_SIZE];
 
     protected final ShareFileClient shareFileClient;
     protected final ShareFileAsyncClient shareFileAsyncClient;
@@ -54,11 +46,7 @@ public class DownloadToFileShareTest extends DirectoryTest<PerfStressOptions> {
     public Mono<Void> runAsync() {
         File file = new File(UUID.randomUUID().toString());
         file.deleteOnExit();
-        return shareFileAsyncClient.downloadToFile(file.getAbsolutePath())
-            .map(shareFileProperties -> {
-                shareFileProperties.getContentMd5();
-                return shareFileProperties;
-            }).then();
+        return shareFileAsyncClient.downloadToFile(file.getAbsolutePath()).then();
     }
 
     // Required resource setup goes here, upload the file to be downloaded during tests.

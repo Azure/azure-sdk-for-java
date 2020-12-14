@@ -92,7 +92,7 @@ public class TestDataCreationHelper {
     private static final class RepeatingInputStream extends InputStream {
         private final int size;
 
-        private int mark = 0;
+        private final int mark = 0;
         private int pos = 0;
 
         private RepeatingInputStream(int size) {
@@ -132,5 +132,25 @@ public class TestDataCreationHelper {
         public boolean markSupported() {
             return true;
         }
+    }
+
+    /**
+     * Writes the data from InputStream into the OutputStream.
+     *
+     * @param inputStream stream to read from.
+     * @param outputStream stream to write into.
+     * @param bufferSize number of bytes to read in a single read.
+     * @throws IOException If an IO error occurs.
+     * @return the number of bytes transferred.
+     */
+    public static long copyStream(InputStream inputStream, OutputStream outputStream, int bufferSize) throws IOException {
+        long transferred = 0;
+        byte[] buffer = new byte[bufferSize];
+        int read;
+        while ((read = inputStream.read(buffer, 0, bufferSize)) >= 0) {
+            outputStream.write(buffer, 0, read);
+            transferred += read;
+        }
+        return transferred;
     }
 }

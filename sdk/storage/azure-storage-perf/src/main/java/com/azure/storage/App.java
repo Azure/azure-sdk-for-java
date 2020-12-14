@@ -4,7 +4,12 @@
 package com.azure.storage;
 
 import com.azure.perf.test.core.PerfStressProgram;
-import com.azure.storage.blob.perf.*;
+import com.azure.storage.blob.perf.DownloadBlobTest;
+import com.azure.storage.blob.perf.ListBlobsTest;
+import com.azure.storage.blob.perf.UploadBlobTest;
+import com.azure.storage.blob.perf.UploadBlockBlobTest;
+import com.azure.storage.blob.perf.UploadFromFileTest;
+import com.azure.storage.blob.perf.UploadOutputStreamTest;
 import com.azure.storage.file.datalake.perf.AppendFileDatalakeTest;
 import com.azure.storage.file.datalake.perf.ReadFileDatalakeTest;
 import com.azure.storage.file.datalake.perf.UploadFileDatalakeTest;
@@ -13,7 +18,6 @@ import com.azure.storage.file.share.perf.DownloadFileShareTest;
 import com.azure.storage.file.share.perf.DownloadToFileShareTest;
 import com.azure.storage.file.share.perf.UploadFileShareTest;
 import com.azure.storage.file.share.perf.UploadFromFileShareTest;
-import com.azure.storage.file.share.perf.core.ShareTest;
 
 /**
  * Runs the Storage performance test.

@@ -12,9 +12,6 @@ import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
 import com.azure.storage.file.datalake.DataLakeServiceAsyncClient;
 import com.azure.storage.file.datalake.DataLakeServiceClient;
 import com.azure.storage.file.datalake.DataLakeServiceClientBuilder;
-import com.azure.storage.file.share.ShareServiceAsyncClient;
-import com.azure.storage.file.share.ShareServiceClient;
-import com.azure.storage.file.share.ShareServiceClientBuilder;
 
 public abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStressTest<TOptions> {
 
@@ -27,8 +24,7 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
         String connectionString = System.getenv("STORAGE_CONNECTION_STRING");
 
         if (CoreUtils.isNullOrEmpty(connectionString)) {
-            System.out.println("Environment variable STORAGE_CONNECTION_STRING must be set");
-            System.exit(1);
+            throw new IllegalStateException("Environment variable STORAGE_CONNECTION_STRING must be set");
         }
 
         StorageConnectionString storageConnectionString

@@ -3,11 +3,10 @@
 
 package com.azure.storage.file.datalake.perf;
 
+import com.azure.perf.test.core.NullOutputStream;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.storage.file.datalake.DataLakeFileAsyncClient;
 import com.azure.storage.file.datalake.DataLakeFileClient;
-import com.azure.storage.file.share.ShareFileAsyncClient;
-import com.azure.storage.file.share.ShareFileClient;
 import com.azure.storage.file.datalake.perf.core.DirectoryTest;
 import reactor.core.publisher.Mono;
 
@@ -44,21 +43,6 @@ public class ReadFileDatalakeTest extends DirectoryTest<PerfStressOptions> {
     @Override
     public void run() {
         dataLakeFileClient.read(DEV_NULL);
-    }
-
-    static class NullOutputStream extends OutputStream {
-        @Override
-        public void write(int b) {
-
-        }
-
-        @Override
-        public void write(byte[] b) {
-        }
-
-        @Override
-        public void write(byte[] b, int off, int len) {
-        }
     }
 
     @Override

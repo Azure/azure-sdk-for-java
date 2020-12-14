@@ -9,7 +9,6 @@ import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.file.CloudFile;
 import com.microsoft.azure.storage.file.share.perf.core.DirectoryTest;
 import reactor.core.publisher.Mono;
-import com.microsoft.azure.storage.file.share.perf.core.FileTestBase;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -17,14 +16,10 @@ import java.net.URISyntaxException;
 import java.util.UUID;
 
 public class DownloadFileShareTest extends DirectoryTest<PerfStressOptions> {
-    private static final int BUFFER_SIZE = 16 * 1024 * 1024;
     private static final OutputStream DEV_NULL = new NullOutputStream();
     private static final String FILE_NAME = "perfstress-file-" + UUID.randomUUID().toString();
 
     private final CloudFile cloudFile;
-
-
-    private final byte[] buffer = new byte[BUFFER_SIZE];
 
     public DownloadFileShareTest(PerfStressOptions options) {
         super(options);
@@ -40,14 +35,15 @@ public class DownloadFileShareTest extends DirectoryTest<PerfStressOptions> {
     @Override
     public Mono<Void> globalSetupAsync() {
         return super.globalSetupAsync()
-            .doOnTerminate(() -> {
+            .then(Mono.fromCallable(() -> {
                 try {
                     cloudFile.upload(TestDataCreationHelper.createRandomInputStream(options.getSize()),
                         options.getSize());
+                    return 1;
                 } catch (URISyntaxException | StorageException | IOException e) {
                     throw new RuntimeException(e);
                 }
-            }).then();
+            })).then();
     }
 
 

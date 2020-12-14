@@ -20,8 +20,7 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
         super(options);
         String connectionString = System.getenv("STORAGE_CONNECTION_STRING");
         if (CoreUtils.isNullOrEmpty(connectionString)) {
-            System.out.println("Environment variable STORAGE_CONNECTION_STRING must be set");
-            System.exit(1);
+            throw new IllegalStateException("Environment variable STORAGE_CONNECTION_STRING must be set");
         }
 
         shareServiceClient = new ShareServiceClientBuilder().connectionString(connectionString).

@@ -1,6 +1,7 @@
-package com.azure.storage.file.share.perf.core;// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+package com.azure.storage.file.share.perf.core;
 
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.storage.file.share.ShareFileAsyncClient;
@@ -10,7 +11,6 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URISyntaxException;
 import java.util.UUID;
 
 public abstract class FileTestBase<TOptions extends PerfStressOptions> extends DirectoryTest<TOptions> {
@@ -30,7 +30,7 @@ public abstract class FileTestBase<TOptions extends PerfStressOptions> extends D
 
     @Override
     public Mono<Void> setupAsync() {
-        return shareFileAsyncClient.create(options.getSize()+DEFAULT_BUFFER_SIZE).then(super.cleanupAsync());
+        return shareFileAsyncClient.create(options.getSize() + DEFAULT_BUFFER_SIZE).then(super.cleanupAsync());
     }
 
     public long copyStream(InputStream input, OutputStream out) throws IOException {

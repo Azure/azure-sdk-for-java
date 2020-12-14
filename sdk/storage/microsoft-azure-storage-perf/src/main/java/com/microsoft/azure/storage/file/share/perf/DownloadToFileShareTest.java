@@ -8,21 +8,16 @@ import com.azure.perf.test.core.TestDataCreationHelper;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.file.CloudFile;
 import com.microsoft.azure.storage.file.share.perf.core.DirectoryTest;
-import com.microsoft.azure.storage.file.share.perf.core.FileTestBase;
 import reactor.core.publisher.Mono;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.util.UUID;
 
 public class DownloadToFileShareTest extends DirectoryTest<PerfStressOptions> {
-    private static final int BUFFER_SIZE = 16 * 1024 * 1024;
-    private static final OutputStream DEV_NULL = new NullOutputStream();
     private static final String FILE_NAME = "perfstress-file-" + UUID.randomUUID().toString();
 
-    private final byte[] buffer = new byte[BUFFER_SIZE];
     private final CloudFile cloudFile;
 
     public DownloadToFileShareTest(PerfStressOptions options) {
@@ -38,14 +33,15 @@ public class DownloadToFileShareTest extends DirectoryTest<PerfStressOptions> {
     @Override
     public Mono<Void> globalSetupAsync() {
         return super.globalSetupAsync()
-            .doOnTerminate(() -> {
+            .then(Mono.fromCallable(() -> {
                 try {
                     cloudFile.upload(TestDataCreationHelper.createRandomInputStream(options.getSize()),
                         options.getSize());
+                    return 1;
                 } catch (URISyntaxException | StorageException | IOException e) {
                     throw new RuntimeException(e);
                 }
-            });
+            })).then();
     }
 
     // Perform the API call to be tested here
@@ -57,21 +53,6 @@ public class DownloadToFileShareTest extends DirectoryTest<PerfStressOptions> {
             cloudFile.downloadToFile(tempFile.getAbsolutePath());
         } catch (StorageException | IOException e) {
             throw new RuntimeException(e);
-        }
-    }
-
-    static class NullOutputStream extends OutputStream {
-        @Override
-        public void write(int b) {
-
-        }
-
-        @Override
-        public void write(byte[] b) {
-        }
-
-        @Override
-        public void write(byte[] b, int off, int len) {
         }
     }
 

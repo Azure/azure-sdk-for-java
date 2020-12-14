@@ -1,12 +1,11 @@
-package com.azure.storage.file.datalake.perf.core;// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+package com.azure.storage.file.datalake.perf.core;
 
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.storage.file.datalake.DataLakeFileAsyncClient;
 import com.azure.storage.file.datalake.DataLakeFileClient;
-import com.azure.storage.file.share.ShareFileAsyncClient;
-import com.azure.storage.file.share.ShareFileClient;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;

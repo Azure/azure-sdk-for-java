@@ -3,11 +3,11 @@
 
 package com.azure.storage.file.share.perf;
 
+import com.azure.perf.test.core.NullOutputStream;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.storage.file.share.ShareFileAsyncClient;
 import com.azure.storage.file.share.ShareFileClient;
 import com.azure.storage.file.share.perf.core.DirectoryTest;
-import com.azure.storage.file.share.perf.core.FileTestBase;
 import reactor.core.publisher.Mono;
 
 import java.io.OutputStream;
@@ -43,21 +43,6 @@ public class DownloadFileShareTest extends DirectoryTest<PerfStressOptions> {
     @Override
     public void run() {
         shareFileClient.download(DEV_NULL);
-    }
-
-    static class NullOutputStream extends OutputStream {
-        @Override
-        public void write(int b) {
-
-        }
-
-        @Override
-        public void write(byte[] b) {
-        }
-
-        @Override
-        public void write(byte[] b, int off, int len) {
-        }
     }
 
     @Override
