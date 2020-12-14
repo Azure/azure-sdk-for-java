@@ -14,7 +14,6 @@ import com.azure.storage.blob.models.ParallelTransferOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -813,7 +812,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         // Read attributes already wraps BlobStorageException in an IOException.
         try {
             readAttributes(path, BasicFileAttributes.class);
-        } catch(IOException e) {
+        } catch (IOException e) {
             if (e.getCause() != null && e.getCause() instanceof BlobStorageException
                 && BlobErrorCode.BLOB_NOT_FOUND.equals(((BlobStorageException) e.getCause()).getErrorCode())) {
                 throw logger.logThrowableAsError(new NoSuchFileException(path.toString()));

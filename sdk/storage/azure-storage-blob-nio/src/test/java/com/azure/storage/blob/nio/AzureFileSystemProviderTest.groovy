@@ -27,7 +27,6 @@ import java.nio.file.AccessDeniedException
 import java.nio.file.AccessMode
 import java.nio.file.DirectoryNotEmptyException
 import java.nio.file.FileAlreadyExistsException
-import java.nio.file.Files
 import java.nio.file.FileSystem
 import java.nio.file.FileSystemAlreadyExistsException
 import java.nio.file.FileSystemNotFoundException
@@ -1109,7 +1108,7 @@ class AzureFileSystemProviderTest extends APISpec {
 
     def "CheckAccess IOException"() {
         setup:
-        config = initializeConfigMap(new checkAccessIoExceptionPolicy())
+        config = initializeConfigMap(new CheckAccessIoExceptionPolicy())
         def fs = createFS(config)
         def path = fs.getPath(generateBlobName())
         def os = fs.provider().newOutputStream(path)
@@ -1123,7 +1122,7 @@ class AzureFileSystemProviderTest extends APISpec {
         !(e instanceof NoSuchFileException)
     }
 
-    class checkAccessIoExceptionPolicy implements HttpPipelinePolicy {
+    class CheckAccessIoExceptionPolicy implements HttpPipelinePolicy {
         @Override
         Mono<HttpResponse> process(HttpPipelineCallContext httpPipelineCallContext, HttpPipelineNextPolicy httpPipelineNextPolicy) {
             HttpRequest request = httpPipelineCallContext.getHttpRequest()
