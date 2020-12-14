@@ -3,27 +3,27 @@
 trigger:
   branches:
     include:
-      - master
-      - hotfix/*
-      - release/*
+    - master
+    - hotfix/*
+    - release/*
   paths:
     include:
-      - sdk/loganalytics/
+    - sdk/loganalytics/
     exclude:
-      - sdk/loganalytics/mgmt-v2015_03_20
+    - sdk/loganalytics/mgmt-v2015_03_20
 
 pr:
   branches:
     include:
-      - master
-      - feature/*
-      - hotfix/*
-      - release/*
+    - master
+    - feature/*
+    - hotfix/*
+    - release/*
   paths:
     include:
-      - sdk/loganalytics/
+    - sdk/loganalytics/
     exclude:
-      - sdk/loganalytics/mgmt-v2015_03_20
+    - sdk/loganalytics/mgmt-v2015_03_20
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -31,6 +31,9 @@ extends:
     SDKType: data
     ServiceDirectory: loganalytics
     Artifacts:
-      - name: azure-loganalytics
-        groupId: com.microsoft.azure
-        safeName: azureloganalytics
+    - name: azure-loganalytics
+      groupId: com.microsoft.azure
+      safeName: azureloganalytics
+    - name: azure-resourcemanager-loganalytics
+      groupId: com.azure.resourcemanager
+      safeName: azureresourcemanagerloganalytics
