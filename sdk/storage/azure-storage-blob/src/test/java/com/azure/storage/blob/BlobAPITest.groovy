@@ -1234,7 +1234,7 @@ class BlobAPITest extends APISpec {
         metadata.put("foo", "bar")
 
         when:
-        bc.setMetadataWithResponse(metadata, null, null, new com.azure.core.util.Context("Log-String-To-Sign", true))
+        bc.setMetadata(metadata)
 
         then:
         bc.getProperties().getMetadata() == metadata
