@@ -14,6 +14,8 @@ import com.azure.spring.integration.servicebus.factory.ServiceBusQueueClientFact
 import com.azure.spring.integration.servicebus.queue.ServiceBusQueueOperation;
 import com.azure.spring.integration.servicebus.queue.ServiceBusQueueTemplate;
 import com.microsoft.azure.servicebus.QueueClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -38,6 +40,9 @@ import static com.azure.spring.cloud.autoconfigure.servicebus.ServiceBusUtils.ge
 @ConditionalOnClass(value = { QueueClient.class, ServiceBusQueueClientFactory.class })
 @ConditionalOnProperty(value = "spring.cloud.azure.servicebus.enabled", matchIfMissing = true)
 public class AzureServiceBusQueueAutoConfiguration {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AzureServiceBusQueueAutoConfiguration.class);
+
     private static final String SERVICE_BUS_QUEUE = "ServiceBusQueue";
     private static final String NAMESPACE = "Namespace";
 
@@ -56,12 +61,18 @@ public class AzureServiceBusQueueAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(ServiceBusConnectionStringProvider.class)
-    public ServiceBusQueueClientFactory queueClientFactory(ServiceBusConnectionStringProvider connectionStrProvider,
-                                                           @Autowired(required = false) ServiceBusNamespaceManager namespaceManager,
-                                                           @Autowired(required = false) ServiceBusQueueManager queueManager,
-                                                           AzureServiceBusProperties properties) {
+    public ServiceBusQueueClientFactory queueClientFactory(
+        ServiceBusConnectionStringProvider connectionStringProvider,
+        @Autowired(required = false) ServiceBusNamespaceManager namespaceManager,
+        @Autowired(required = false) ServiceBusQueueManager queueManager,
+        AzureServiceBusProperties properties) {
 
-        String connectionString = connectionStrProvider.getConnectionString();
+        if (connectionStringProvider == null) {
+            LOGGER.info("No service bus connection string provided.");
+            return null;
+        }
+
+        String connectionString = connectionStringProvider.getConnectionString();
 
         Assert.notNull(connectionString, "Service Bus connection string must not be null");
 

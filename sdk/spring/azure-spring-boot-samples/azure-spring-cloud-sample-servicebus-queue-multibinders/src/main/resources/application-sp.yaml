@@ -1,5 +1,16 @@
 spring:
   cloud:
+    azure:
+      client-id: [service-principal-id]
+      client-secret: [service-principal-secret]
+      tenant-id: [tenant-id]
+      resource-group: [resource-group]
+
+#     Uncomment below configurations if you want to enable auto creating resources.
+#      auto-create-resources: true
+#      region: [region]
+#      subscription-id: [subscription-id]
+
     stream:
       bindings:
         input:
@@ -22,7 +33,7 @@ spring:
               cloud:
                 azure:
                   servicebus:
-                    connection-string: [servicebus-namespace-1-connection-string]
+                    namespace: [first-servicebus-namespace]
         servicebus-2:
           type: servicebus-queue
           default-candidate: false
@@ -31,7 +42,7 @@ spring:
               cloud:
                 azure:
                   servicebus:
-                    connection-string: [servicebus-namespace-2-connection-string]
+                    namespace: [second-servicebus-namespace]
       servicebus:
         queue:
           bindings:

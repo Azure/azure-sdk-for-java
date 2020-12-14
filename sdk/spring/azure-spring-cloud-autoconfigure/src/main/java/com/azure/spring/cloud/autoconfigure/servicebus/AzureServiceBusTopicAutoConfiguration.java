@@ -15,6 +15,8 @@ import com.azure.spring.integration.servicebus.factory.ServiceBusTopicClientFact
 import com.azure.spring.integration.servicebus.topic.ServiceBusTopicOperation;
 import com.azure.spring.integration.servicebus.topic.ServiceBusTopicTemplate;
 import com.microsoft.azure.servicebus.TopicClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -40,37 +42,14 @@ import static com.azure.spring.cloud.autoconfigure.servicebus.ServiceBusUtils.ge
 @ConditionalOnProperty(value = "spring.cloud.azure.servicebus.enabled", matchIfMissing = true)
 public class AzureServiceBusTopicAutoConfiguration {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AzureServiceBusTopicAutoConfiguration.class);
+
     private static final String SERVICE_BUS_TOPIC = "ServiceBusTopic";
     private static final String NAMESPACE = "Namespace";
 
     @PostConstruct
     public void collectTelemetry() {
         TelemetryCollector.getInstance().addService(SERVICE_BUS_TOPIC);
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnBean(ServiceBusConnectionStringProvider.class)
-    public ServiceBusTopicClientFactory topicClientFactory(
-        @Autowired(required = false) ServiceBusNamespaceManager namespaceManager,
-        @Autowired(required = false) ServiceBusTopicManager topicManager,
-        @Autowired(required = false) ServiceBusTopicSubscriptionManager topicSubscriptionManager,
-        ServiceBusConnectionStringProvider connectionStringProvider,
-        AzureServiceBusProperties properties) {
-
-        String connectionString = connectionStringProvider.getConnectionString();
-
-        Assert.notNull(connectionString, "Service Bus connection string must not be null");
-
-        DefaultServiceBusTopicClientFactory clientFactory = new DefaultServiceBusTopicClientFactory(connectionString);
-        clientFactory.setNamespace(properties.getNamespace());
-        clientFactory.setServiceBusNamespaceManager(namespaceManager);
-        clientFactory.setServiceBusTopicManager(topicManager);
-        clientFactory.setServiceBusTopicSubscriptionManager(topicSubscriptionManager);
-
-        TelemetryCollector.getInstance().addProperty(SERVICE_BUS_TOPIC, NAMESPACE, getNamespace(connectionString));
-
-        return clientFactory;
     }
 
     @Bean
@@ -85,6 +64,36 @@ public class AzureServiceBusTopicAutoConfiguration {
     @ConditionalOnBean(ServiceBusTopicManager.class)
     public ServiceBusTopicSubscriptionManager serviceBusTopicSubscriptionManager(AzureProperties azureProperties) {
         return new ServiceBusTopicSubscriptionManager(azureProperties);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnBean(ServiceBusConnectionStringProvider.class)
+    public ServiceBusTopicClientFactory topicClientFactory(
+        @Autowired(required = false) ServiceBusNamespaceManager namespaceManager,
+        @Autowired(required = false) ServiceBusTopicManager topicManager,
+        @Autowired(required = false) ServiceBusTopicSubscriptionManager topicSubscriptionManager,
+        ServiceBusConnectionStringProvider connectionStringProvider,
+        AzureServiceBusProperties properties) {
+
+        if (connectionStringProvider == null) {
+            LOGGER.info("No service bus connection string provided.");
+            return null;
+        }
+
+        String connectionString = connectionStringProvider.getConnectionString();
+
+        Assert.notNull(connectionString, "Service Bus connection string must not be null");
+
+        DefaultServiceBusTopicClientFactory clientFactory = new DefaultServiceBusTopicClientFactory(connectionString);
+        clientFactory.setNamespace(properties.getNamespace());
+        clientFactory.setServiceBusNamespaceManager(namespaceManager);
+        clientFactory.setServiceBusTopicManager(topicManager);
+        clientFactory.setServiceBusTopicSubscriptionManager(topicSubscriptionManager);
+
+        TelemetryCollector.getInstance().addProperty(SERVICE_BUS_TOPIC, NAMESPACE, getNamespace(connectionString));
+
+        return clientFactory;
     }
 
     @Bean
