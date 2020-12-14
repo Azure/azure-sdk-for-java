@@ -1109,9 +1109,7 @@ class AzureFileSystemProviderTest extends APISpec {
 
     def "CheckAccess IOException"() {
         setup:
-        HttpPipelinePolicy[] policies = new HttpPipelinePolicy[1]
-        policies[0] = new checkAccessIoExceptionPolicy()
-        config.put(AzureFileSystem.AZURE_STORAGE_HTTP_POLICIES, policies)
+        config = initializeConfigMap(new checkAccessIoExceptionPolicy())
         def fs = createFS(config)
         def path = fs.getPath(generateBlobName())
         def os = fs.provider().newOutputStream(path)
