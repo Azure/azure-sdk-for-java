@@ -23,6 +23,8 @@ If you are an existing user of the older version of Azure management library for
 
 ### Include the package
 
+For your convenience, we have provided a wrapper package that includes some of the most highly used Azure services. We recommend using this package when you are dealing with mutiple services.
+
 [//]: # ({x-version-update-start;com.azure.resourcemanager:azure-resourcemanager;current})
 ```xml
 <dependency>
@@ -32,6 +34,71 @@ If you are an existing user of the older version of Azure management library for
 </dependency>
 ```
 [//]: # ({x-version-update-end})
+
+The services available via `azure-resourcemanager` are listed as below:
+
+<details>
+<summary> Services list </summary>
+
+- App Services
+- Authorization
+- CDN
+- Compute
+- Container Instance
+- Container Registry
+- Container Services (AKS)
+- Cosmos DB
+- DNS
+- Event Hubs
+- Insight (Monitor)
+- Key Vault
+- Managed Identity
+- Network
+- Private DNS
+- Redis
+- Resources
+- Service Bus
+- Spring Cloud
+- SQL
+- Storage
+- Traffic Manager
+</details>
+
+<br/>
+In the case where you are interested in certain service above or the service not included in the wrapper package, you can choose to use the standalone package for each service. Those packages follow the same naming patterns and design principals. For example, the package for Media Services has the following artifact information.
+
+<!-- TODO: package update start -->
+```xml
+<dependency>
+  <groupId>com.azure.resourcemanager</groupId>
+  <artifactId>azure-resourcemanager-mediaservices</artifactId>
+  <version>1.0.0-beta.1</version>
+</dependency>
+```
+<!-- TODO: package package end -->
+
+After above configuration, the manager can be authenticated by following code:
+
+<!-- TODO: embedme -->
+```java
+// share the same http client and credential
+HttpClient httpClient = HttpClient.createDefault();
+TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+AzureProfile azureProfile = new AzureProfile(AzureEnvironment.AZURE);
+
+// init AzureResourceManager using azure-resourcemanager
+AzureResourceManager azureResourceManager = AzureResourceManager.configure()
+    .withHttpClient(httpClient)
+    .authenticate(tokenCredential, azureProfile)
+    .withDefaultSubscription();
+
+// init MediaservicesManager using azure-resourcemanager-mediaservices
+MediaservicesManager mediaservicesManager = MediaservicesManager.configure()
+    .withHttpClient(httpClient)
+    .authenticate(tokenCredential, azureProfile);
+```
+
+Please note that some of those standalone packages might have different release cycles compared to `azure-resourcemanager`. This is mostly because of various demands of different Azure services. See [Standalone Packages][standalone_packages] for a complete list of standalone packages with the API versions they are consuming.
 
 ### Include the recommended packages
 
@@ -95,36 +162,6 @@ See [Authentication][authenticate] for more options.
 ### Code snippets and samples
 
 See [Samples][sample] for code snippets and samples.
-
-### Standalone packages
-
-The standalone packages, of which services are unavailable inside `azure-resourcemanager`, follow the same naming patterns and design principals.
-
-For example, to use the standalone package for media services, please include as below:
-
-<!-- TODO: package update start -->
-```xml
-<dependency>
-  <groupId>com.azure.resourcemanager</groupId>
-  <artifactId>azure-resourcemanager-mediaservices</artifactId>
-  <version>1.0.0-beta.1</version>
-</dependency>
-```
-<!-- TODO: package package end -->
-
-After above configuration, the manager can be authenticated by following code:
-
-<!-- TODO: embedme -->
-```java
-AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
-TokenCredential credential = new DefaultAzureCredentialBuilder()
-    .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
-    .build();
-MediaservicesManager mediaservicesManager = MediaservicesManager.configure()
-    .authenticate(credential, profile);
-```
-
-Comparing to `azure-resourcemanager`, the standalone packages will have different release cycles, which mainly depend on the demand of Azure services. To check the full list of standalone packages with the consumed API versions, please see [Packages](docs/Packages.md).
 
 ## Key concepts
 
@@ -385,6 +422,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 [azure_core_http_okhttp]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core-http-okhttp
 [azure_core]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
+[standalone_packages]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/STANDALONE_PACKAGES.md
 [authenticate]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/AUTH.md
 [sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/SAMPLE.md
 [design]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/DESIGN.md
