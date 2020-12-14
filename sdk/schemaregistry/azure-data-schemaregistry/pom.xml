@@ -38,10 +38,10 @@
     <tag>HEAD</tag>
   </scm>
 
-  <properties>
-    <!-- SchemaRegistrySkip temporarily relaxing code coverage -->
-    <jacoco.skip.coverage.check>true</jacoco.skip.coverage.check>
-  </properties>
+<!--  <properties>-->
+<!--    &lt;!&ndash; SchemaRegistrySkip temporarily relaxing code coverage &ndash;&gt;-->
+<!--    <jacoco.skip.coverage.check>true</jacoco.skip.coverage.check>-->
+<!--  </properties>-->
 
   <dependencies>
     <dependency>

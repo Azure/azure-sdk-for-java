@@ -307,6 +307,20 @@ jobs:
         condition: and(succeeded(), ne(variables['TestFromSource'],'true'))
 
       - task: Maven@3
+        displayName: 'Generate aggregate code coverage report'
+        inputs:
+          mavenPomFile: sdk/${{ parameters.ServiceDirectory }}/pom.xml
+          options: -Pcoverage
+          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: $(JavaTestVersion)
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+          goals: jacoco:report-aggregate
+          # we want to run this when TestFromSource isn't true
+          condition: and(succeeded(), ne(variables['TestFromSource'],'true'))
+
+      - task: Maven@3
         displayName: 'Build for From Source run'
         inputs:
           mavenPomFile: ClientAggregatePom.xml
