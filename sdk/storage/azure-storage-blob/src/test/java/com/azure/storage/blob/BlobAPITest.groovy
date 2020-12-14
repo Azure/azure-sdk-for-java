@@ -48,7 +48,6 @@ import spock.lang.Requires
 import spock.lang.Unroll
 import spock.lang.Ignore
 
-import javax.naming.Context
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
 import java.nio.file.FileAlreadyExistsException
