@@ -29,7 +29,6 @@ import org.springframework.validation.annotation.Validated;
 public class AADAuthenticationProperties {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AADAuthenticationProperties.class);
-    private static final String DEFAULT_SERVICE_ENVIRONMENT = "global";
     private static final long DEFAULT_JWK_SET_CACHE_LIFESPAN = TimeUnit.MINUTES.toMillis(5);
     private static final long DEFAULT_JWK_SET_CACHE_REFRESH_TIME = DEFAULT_JWK_SET_CACHE_LIFESPAN;
 

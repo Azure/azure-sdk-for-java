@@ -153,7 +153,7 @@ public class AzureADGraphClient {
         try {
             final ConfidentialClientApplication application = ConfidentialClientApplication
                 .builder(clientId, clientCredential)
-                .authority("https://login.microsoftonline.com/" + tenantId + "/")
+                .authority(authorizationServerEndpoints.getBaseUri() + tenantId + "/")
                 .correlationId(getCorrelationId())
                 .build();
             final Set<String> scopes = new HashSet<>();

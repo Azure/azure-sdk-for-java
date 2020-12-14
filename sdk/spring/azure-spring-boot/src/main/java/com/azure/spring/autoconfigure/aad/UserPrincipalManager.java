@@ -34,6 +34,7 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * A user principal manager to load user info from JWT.
@@ -150,8 +151,8 @@ public class UserPrincipalManager {
         Set<String> roles = Optional.of(userPrincipal)
                                     .map(p -> p.getClaim(AADTokenClaim.ROLES))
                                     .map(r -> (JSONArray) r)
-                                    .stream()
-                                    .flatMap(Collection::stream)
+                                    .map(Collection<Object>::stream)
+                                    .orElseGet(Stream::empty)
                                     .map(Object::toString)
                                     .collect(Collectors.toSet());
         userPrincipal.setRoles(roles);
@@ -182,7 +183,7 @@ public class UserPrincipalManager {
         final JWSKeySelector<SecurityContext> keySelector = new JWSVerificationKeySelector<>(jwsAlgorithm, keySource);
         jwtProcessor.setJWSKeySelector(keySelector);
         //TODO: would it make sense to inject it? and make it configurable or even allow to provide own implementation
-        jwtProcessor.setJWTClaimsSetVerifier(new DefaultJWTClaimsVerifier<>() {
+        jwtProcessor.setJWTClaimsSetVerifier(new DefaultJWTClaimsVerifier<SecurityContext>() {
             @Override
             public void verify(JWTClaimsSet claimsSet, SecurityContext ctx) throws BadJWTException {
                 super.verify(claimsSet, ctx);
