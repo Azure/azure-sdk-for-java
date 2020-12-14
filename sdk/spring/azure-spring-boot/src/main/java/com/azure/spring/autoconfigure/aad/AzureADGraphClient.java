@@ -121,7 +121,7 @@ public class AzureADGraphClient {
     }
 
     private boolean isGroupObject(final Membership membership) {
-        return membership.getObjectType().equals(aadAuthenticationProperties.getUserGroup().getValue());
+        return membership.getObjectType().equals(Membership.OBJECT_TYPE_GROUP);
     }
 
     public Set<SimpleGrantedAuthority> toGrantedAuthoritySet(final Set<String> groups) {
