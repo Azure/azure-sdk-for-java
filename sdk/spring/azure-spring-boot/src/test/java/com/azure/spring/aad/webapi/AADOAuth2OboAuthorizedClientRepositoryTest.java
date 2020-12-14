@@ -63,6 +63,7 @@ public class AADOAuth2OboAuthorizedClientRepositoryTest {
         clientRegistrationsRepo = context.getBean(AzureClientRegistrationRepository.class);
     }
 
+    @SuppressWarnings("unchecked")
     public void setupForAzureAuthorizedClient() throws ExecutionException, InterruptedException {
         ConfidentialClientApplication confidentialClientApplication = mock(ConfidentialClientApplication.class);
 
