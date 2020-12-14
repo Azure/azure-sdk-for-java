@@ -22,7 +22,7 @@ import java.util.Objects;
 import static com.azure.core.util.FluxUtil.monoError;
 
 /**
- * This session receiver client is used to acquire session locks from a queue or topic and create
+ * This <b>asynchronous</b> session receiver client is used to acquire session locks from a queue or topic and create
  * {@link ServiceBusReceiverAsyncClient} instances that are tied to the locked sessions.
  *
  * <p><strong>Receive messages from a specific session</strong></p>
