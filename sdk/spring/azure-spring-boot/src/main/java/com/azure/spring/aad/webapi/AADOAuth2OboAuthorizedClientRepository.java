@@ -108,13 +108,13 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
     }
 
     @Override
-    public void saveAuthorizedClient(OAuth2AuthorizedClient authorizedClient, Authentication principal,
-                                     HttpServletRequest request, HttpServletResponse response) {
+    public void saveAuthorizedClient(OAuth2AuthorizedClient oAuth2AuthorizedClient, Authentication authentication,
+                                     HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
     }
 
     @Override
-    public void removeAuthorizedClient(String clientRegistrationId, Authentication principal,
-                                       HttpServletRequest request, HttpServletResponse response) {
+    public void removeAuthorizedClient(String clientRegistrationId, Authentication authentication,
+                                       HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
     }
 
     ConfidentialClientApplication getClientApplication(String registrationId) {

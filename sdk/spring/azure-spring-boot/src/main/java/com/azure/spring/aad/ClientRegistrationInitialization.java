@@ -110,4 +110,8 @@ public class ClientRegistrationInitialization {
 
         return result;
     }
+
+    public static String getDefaultClientRegistrationId() {
+        return AZURE_CLIENT_REGISTRATION_ID;
+    }
 }

@@ -3,6 +3,7 @@
 
 package com.azure.spring.aad.webapp;
 
+import com.azure.spring.aad.OAuth2ClientPropertiesBeanPostProcessor;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -44,6 +45,11 @@ public class AzureActiveDirectoryConfiguration {
 
     @Autowired
     private AADAuthenticationProperties properties;
+
+    @Bean
+    public OAuth2ClientPropertiesBeanPostProcessor oAuth2ClientPropertiesBeanPostProcessor() {
+        return new OAuth2ClientPropertiesBeanPostProcessor(properties);
+    }
 
     @Bean
     @ConditionalOnMissingBean({ ClientRegistrationRepository.class, AzureClientRegistrationRepository.class })

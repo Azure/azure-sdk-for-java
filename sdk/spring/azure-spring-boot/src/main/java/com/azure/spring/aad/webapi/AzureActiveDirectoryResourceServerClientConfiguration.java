@@ -34,7 +34,7 @@ public class AzureActiveDirectoryResourceServerClientConfiguration {
 
     @Bean
     @ConditionalOnMissingBean({ ClientRegistrationRepository.class, AzureClientRegistrationRepository.class })
-    public AzureClientRegistrationRepository clientRegistrationRepository() {
+    public AzureClientRegistrationRepository azureClientRegistrationRepository() {
         ClientRegistrationInitialization clientRegistrationInitialization =
             new ClientRegistrationInitialization(aadAuthenticationProperties);
         return new AzureClientRegistrationRepository(
