@@ -107,7 +107,7 @@ public final class CosmosDiagnostics {
                 try {
                     stringBuilder.append(OBJECT_MAPPER.writeValueAsString(this.clientSideRequestStatistics));
                 } catch (JsonProcessingException e) {
-                    LOGGER.error("Error while parsing diagnostics " + e);
+                    LOGGER.error("Error while parsing diagnostics ", e);
                 }
             }
         }
