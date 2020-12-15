@@ -1,5 +1,9 @@
 # Release History
 
+## 12.10.0-beta.2 (Unreleased)
+
+
+
 ## 12.10.0-beta.1 (2020-12-07)
 - Exposed ClientOptions on all client builders, allowing users to set a custom application id and custom headers.
 - Added ability to get container client from blob clients and service client from container clients
