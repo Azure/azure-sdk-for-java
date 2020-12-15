@@ -1,13 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.autoconfigure.aad;
+package com.azure.spring.aad.webapi;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import com.azure.spring.aad.webapi.AzureJwtBearerTokenAuthenticationConverter;
-import com.azure.spring.aad.webapi.AzureOAuth2AuthenticatedPrincipal;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
