@@ -1,10 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.autoconfigure.aad;
+package com.azure.spring.aad.webapi;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.azure.spring.aad.webapi.AzureActiveDirectoryResourceServerConfiguration;
 import com.azure.spring.aad.webapi.AzureActiveDirectoryResourceServerConfiguration.DefaultAzureOAuth2ResourceServerWebSecurityConfigurerAdapter;
 import java.util.List;
 import org.junit.Test;
