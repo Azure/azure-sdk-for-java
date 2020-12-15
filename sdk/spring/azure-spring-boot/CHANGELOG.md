@@ -1,7 +1,17 @@
 # Release History
 
 ## 3.0.0-beta.2 (Unreleased)
-- Deprecated `AADAppRoleStatelessAuthenticationFilter` and `AADAuthenticationFilter`
+### Breaking Changes
+- Deprecated `AADAppRoleStatelessAuthenticationFilter` and `AADAuthenticationFilter`.
+
+### New Features
+- Support consent multiple client-registration when login.
+- Support on-demand client-registration.
+- Support the use of `@RegisteredOAuth2AuthorizedClient` to get `OAuth2AuthorizedClient`.
+- Support to obtain the claim in access token, such as `scp`, `roles` etc, to carry out permission control.
+- Support on-behave-of flow when the `azure-spring-boot-starter-active-directory` used in resource-server.
+- Provide some AAD specific token validation, such as audience validation, issuer validation.
+- Expose a flag in the `AzureOAuth2AuthenticatedPrincipal` to tell which account type is being used, work account or personal account.
 
 ## 3.0.0-beta.1 (2020-11-18)
 ### Breaking Changes
