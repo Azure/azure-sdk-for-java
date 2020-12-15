@@ -69,4 +69,8 @@ public class AzureClientRegistrationRepository implements ClientRegistrationRepo
         return client != null && isAuthzClient(client);
     }
 
+    public List<ClientRegistration> getOtherClients() {
+        return otherClients;
+    }
+
 }
