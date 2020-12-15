@@ -10,8 +10,14 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.net.InetSocketAddress;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
+import static com.azure.core.http.ProxyOptions.fromConfiguration;
+import static java.util.regex.Pattern.compile;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -62,7 +68,7 @@ public class ProxyOptionsTests {
     @MethodSource("loadFromEnvironmentSupplier")
     public void loadFromEnvironment(Configuration configuration, String expectedHost, int expectedPort,
         String expectedUsername, String expectedPassword, String expectedNonProxyHosts) {
-        ProxyOptions proxyOptions = ProxyOptions.fromConfiguration(configuration);
+        ProxyOptions proxyOptions = fromConfiguration(configuration);
 
         assertNotNull(proxyOptions);
         assertEquals(expectedHost, proxyOptions.getAddress().getHostName());
@@ -153,7 +159,7 @@ public class ProxyOptionsTests {
      */
     @Test
     public void loadFromEnvironmentThrowsWhenPassedConfigurationNone() {
-        assertThrows(IllegalArgumentException.class, () -> ProxyOptions.fromConfiguration(Configuration.NONE));
+        assertThrows(IllegalArgumentException.class, () -> fromConfiguration(Configuration.NONE));
     }
 
     /**
@@ -162,7 +168,7 @@ public class ProxyOptionsTests {
     @ParameterizedTest
     @MethodSource("javaProxiesRequireUseSystemProxiesSupplier")
     public void javaProxiesRequireUseSystemProxies(Configuration configuration) {
-        assertNull(ProxyOptions.fromConfiguration(configuration));
+        assertNull(fromConfiguration(configuration));
     }
 
     private static Stream<Arguments> javaProxiesRequireUseSystemProxiesSupplier() {
@@ -209,5 +215,76 @@ public class ProxyOptionsTests {
 
     private static String getJavaNonProxyHosts() {
         return Configuration.getGlobalConfiguration().get(JAVA_NON_PROXY_HOSTS);
+    }
+
+    @ParameterizedTest
+    @MethodSource("nonProxyHostsSupplier")
+    public void nonProxyHosts(Pattern pattern, String host, boolean expected) {
+        assertEquals(expected, pattern.matcher(host).find());
+    }
+
+    private static Stream<Arguments> nonProxyHostsSupplier() {
+        String[] rawNonProxyHosts = new String[] {
+            "localhost", "127.0.0.1", "*.prod.linkedin.com", "*.azure.linkedin.com", "*.blob.core.windows.net"
+        };
+
+        String javaNonProxyHosts = String.join("|", rawNonProxyHosts);
+        String noProxyNonProxyHosts = String.join(",", rawNonProxyHosts);
+
+        /*
+         * This emulates loading a Java formatted proxy.
+         */
+        Configuration javaProxyConfiguration = new Configuration()
+            .put("java.net.useSystemProxies", "true")
+            .put("http.proxyHost", "localhost")
+            .put("http.proxyPort", "7777")
+            .put("http.nonProxyHosts", javaNonProxyHosts);
+
+        Pattern javaProxyConfigurationPattern = compile(fromConfiguration(javaProxyConfiguration)
+            .getNonProxyHosts(), Pattern.CASE_INSENSITIVE);
+
+        /*
+         * This emulates loading an environment formatted proxy.
+         */
+        Configuration environmentProxyConfiguration = new Configuration()
+            .put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:7777")
+            .put(Configuration.PROPERTY_NO_PROXY, noProxyNonProxyHosts);
+
+        Pattern environmentProxyConfigurationPattern = compile(fromConfiguration(environmentProxyConfiguration)
+            .getNonProxyHosts(), Pattern.CASE_INSENSITIVE);
+
+        /*
+         * This emulates configuring a proxy in code using the expected Java formatted proxy.
+         */
+        ProxyOptions proxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 7777))
+            .setNonProxyHosts(javaNonProxyHosts);
+
+        Pattern codeProxyPattern = compile(proxyOptions.getNonProxyHosts(), Pattern.CASE_INSENSITIVE);
+
+        Pattern[] patterns = new Pattern[] {
+            javaProxyConfigurationPattern, environmentProxyConfigurationPattern, codeProxyPattern
+        };
+
+        String[] expectedMatchHosts = new String[] {
+            "localhost", "127.0.0.1", "azp.prod.linkedin.com", "azp.azure.linkedin.com", "azp.blob.core.windows.net"
+        };
+
+        String[] expectedNonMatchHosts = new String[] {
+            "google.com", "portal.azure.com", "linkedin.com", "127a0b0c1", "azpaprodblinkedinccom",
+            "azpaazureblinkedinccom", "azpablobbcorecwindowsdnet"
+        };
+
+        List<Arguments> argumentsList = new ArrayList<>();
+        for (Pattern pattern : patterns) {
+            for (String expectedMatchHost : expectedMatchHosts) {
+                argumentsList.add(Arguments.arguments(pattern, expectedMatchHost, true));
+            }
+
+            for (String expectedNonMatchHost : expectedNonMatchHosts) {
+                argumentsList.add(Arguments.arguments(pattern, expectedNonMatchHost, false));
+            }
+        }
+
+        return argumentsList.stream();
     }
 }

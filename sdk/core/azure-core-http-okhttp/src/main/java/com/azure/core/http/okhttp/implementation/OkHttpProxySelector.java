@@ -34,7 +34,7 @@ public final class OkHttpProxySelector extends ProxySelector {
          * If the host of the URI matches the nonProxyHostsPattern return no options for proxying, otherwise return the
          * proxy.
          */
-        return (nonProxyHostsPattern == null || !nonProxyHostsPattern.matcher(uri.getHost()).matches())
+        return (nonProxyHostsPattern == null || !nonProxyHostsPattern.matcher(uri.getHost()).find())
             ? Collections.singletonList(new Proxy(proxyType, proxyAddress))
             : null;
     }
