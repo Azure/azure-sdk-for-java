@@ -3,8 +3,6 @@
 
 package com.azure.messaging.eventhubs;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-
 import com.azure.core.util.IterableStream;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
@@ -13,18 +11,21 @@ import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 import org.reactivestreams.Subscription;
 import reactor.core.Disposable;
 import reactor.core.Exceptions;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * This class contains all code snippets that are used in Event Hubs JavaDocs.
@@ -342,13 +343,12 @@ public class EventHubsJavaDocCodeSamples {
         secondEvent.getProperties().put("telemetry", "cpu-temperature");
 
         // BEGIN: com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch#CreateBatchOptions-int
-        final Flux<EventData> telemetryEvents = Flux.just(firstEvent, secondEvent);
+        Flux<EventData> telemetryEvents = Flux.just(firstEvent, secondEvent);
 
         // Setting `setMaximumSizeInBytes` when creating a batch, limits the size of that batch.
         // In this case, all the batches created with these options are limited to 256 bytes.
-        final CreateBatchOptions options = new CreateBatchOptions()
-            .setMaximumSizeInBytes(256);
-        final AtomicReference<EventDataBatch> currentBatch = new AtomicReference<>(
+        CreateBatchOptions options = new CreateBatchOptions().setMaximumSizeInBytes(256);
+        AtomicReference<EventDataBatch> currentBatch = new AtomicReference<>(
             producer.createBatch(options).block());
 
         // The sample Flux contains two events, but it could be an infinite stream of telemetry events.
@@ -518,14 +518,11 @@ public class EventHubsJavaDocCodeSamples {
         thirdEvent.getProperties().put("telemetry", "fps");
 
         // BEGIN: com.azure.messaging.eventhubs.eventhubproducerclient.createBatch#CreateBatchOptions-int
-
-
-        final List<EventData> telemetryEvents = Arrays.asList(firstEvent, secondEvent, thirdEvent);
+        List<EventData> telemetryEvents = Arrays.asList(firstEvent, secondEvent, thirdEvent);
 
         // Setting `setMaximumSizeInBytes` when creating a batch, limits the size of that batch.
         // In this case, all the batches created with these options are limited to 256 bytes.
-        final CreateBatchOptions options = new CreateBatchOptions()
-            .setMaximumSizeInBytes(256);
+        CreateBatchOptions options = new CreateBatchOptions().setMaximumSizeInBytes(256);
 
         EventDataBatch currentBatch = producer.createBatch(options);
 
