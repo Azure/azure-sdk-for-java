@@ -88,8 +88,8 @@ public class CommunicationTokenCredentialTests {
             throws InterruptedException, ExecutionException, IOException {
         String tokenStr = tokenMocker.generateRawToken("resourceId", "userIdentity", 15 * 60);
         immediateFresher.resetCallCount();
-        TokenRefreshOptions tokenRefreshOptions = new TokenRefreshOptions(immediateFresher, true);
-        CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(tokenRefreshOptions, tokenStr);
+        CommunicationTokenRefreshOptions tokenRefreshOptions = new CommunicationTokenRefreshOptions(immediateFresher, true, tokenStr);
+        CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(tokenRefreshOptions);
         StepVerifier.create(tokenCredential.getToken()).assertNext(token -> {
             assertFalse(token.isExpired(),
                     "Refreshable AccessToken should not expire when expiry is set to 5 minutes later");
@@ -106,8 +106,8 @@ public class CommunicationTokenCredentialTests {
         immediateFresher.resetCallCount();
         CountDownLatch countDownLatch = new CountDownLatch(1);
         immediateFresher.setOnCallReturn(countDownLatch::countDown);
-        TokenRefreshOptions tokenRefreshOptions = new TokenRefreshOptions(immediateFresher, true);
-        CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(tokenRefreshOptions, tokenStr);
+        CommunicationTokenRefreshOptions tokenRefreshOptions = new CommunicationTokenRefreshOptions(immediateFresher, true, tokenStr);
+        CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(tokenRefreshOptions);
         countDownLatch.await();
         assertEquals(1, immediateFresher.numCalls());
         StepVerifier.create(tokenCredential.getToken())
@@ -125,8 +125,8 @@ public class CommunicationTokenCredentialTests {
         immediateFresher.resetCallCount();
         CountDownLatch countDownLatch = new CountDownLatch(1);
         immediateFresher.setOnCallReturn(countDownLatch::countDown);
-        TokenRefreshOptions tokenRefreshOptions = new TokenRefreshOptions(immediateFresher, true);
-        CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(tokenRefreshOptions, tokenStr);
+        CommunicationTokenRefreshOptions tokenRefreshOptions = new CommunicationTokenRefreshOptions(immediateFresher, true, tokenStr);
+        CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(tokenRefreshOptions);
 
         countDownLatch.await();
         assertEquals(1, immediateFresher.numCalls());
@@ -144,8 +144,8 @@ public class CommunicationTokenCredentialTests {
         immediateFresher.resetCallCount();
         CountDownLatch firstCountDownLatch = new CountDownLatch(1);
         immediateFresher.setOnCallReturn(firstCountDownLatch::countDown);
-        TokenRefreshOptions tokenRefreshOptions = new TokenRefreshOptions(immediateFresher, true);
-        CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(tokenRefreshOptions, tokenStr);
+        CommunicationTokenRefreshOptions tokenRefreshOptions = new CommunicationTokenRefreshOptions(immediateFresher, true, tokenStr);
+        CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(tokenRefreshOptions);
 
         firstCountDownLatch.await();
         assertEquals(1, immediateFresher.numCalls());
@@ -172,8 +172,8 @@ public class CommunicationTokenCredentialTests {
             throws InterruptedException, ExecutionException, IOException {
         String tokenStr = tokenMocker.generateRawToken("resourceId", "userIdentity", 15 * 60);
         immediateFresher.resetCallCount();
-        TokenRefreshOptions tokenRefreshOptions = new TokenRefreshOptions(immediateFresher, false);
-        CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(tokenRefreshOptions, tokenStr);
+        CommunicationTokenRefreshOptions tokenRefreshOptions = new CommunicationTokenRefreshOptions(immediateFresher, false, tokenStr);
+        CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(tokenRefreshOptions);
 
         StepVerifier.create(tokenCredential.getToken())
             .assertNext(token -> {
@@ -195,8 +195,8 @@ public class CommunicationTokenCredentialTests {
             throws InterruptedException, ExecutionException, IOException {
         String tokenStr = tokenMocker.generateRawToken("resourceId", "userIdentity", -5 * 60);
         immediateFresher.resetCallCount();
-        TokenRefreshOptions tokenRefreshOptions = new TokenRefreshOptions(immediateFresher, false);
-        CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(tokenRefreshOptions, tokenStr);
+        CommunicationTokenRefreshOptions tokenRefreshOptions = new CommunicationTokenRefreshOptions(immediateFresher, false, tokenStr);
+        CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(tokenRefreshOptions);
         assertEquals(0, immediateFresher.numCalls());
         StepVerifier.create(tokenCredential.getToken())
             .assertNext(token -> {
@@ -216,7 +216,7 @@ public class CommunicationTokenCredentialTests {
     @Test
     public void shouldCallbackOnDemandWithoutRefresher() throws InterruptedException, ExecutionException, IOException {
         immediateFresher.resetCallCount();
-        TokenRefreshOptions tokenRefreshOptions = new TokenRefreshOptions(immediateFresher, true);
+        CommunicationTokenRefreshOptions tokenRefreshOptions = new CommunicationTokenRefreshOptions(immediateFresher, true);
         CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(tokenRefreshOptions);
         StepVerifier.create(tokenCredential.getToken())
             .assertNext(token -> {
@@ -230,8 +230,8 @@ public class CommunicationTokenCredentialTests {
     @Test
     public void shouldStopRefreshTimerWhenClosed() throws InterruptedException, ExecutionException, IOException {
         String tokenStr = tokenMocker.generateRawToken("resourceId", "userIdentity", 12 * 60);
-        TokenRefreshOptions tokenRefreshOptions = new TokenRefreshOptions(immediateFresher, true);
-        CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(tokenRefreshOptions, tokenStr);
+        CommunicationTokenRefreshOptions tokenRefreshOptions = new CommunicationTokenRefreshOptions(immediateFresher, true, tokenStr);
+        CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(tokenRefreshOptions);
         assertTrue(tokenCredential.hasProactiveFetcher());
         tokenCredential.close();
         assertFalse(tokenCredential.hasProactiveFetcher());
@@ -269,8 +269,8 @@ public class CommunicationTokenCredentialTests {
     @Test
     public void shouldNotModifyTokenWhenRefresherThrows() throws InterruptedException, ExecutionException, IOException {
         String tokenStr = tokenMocker.generateRawToken("resourceId", "userIdentity", 601);
-        TokenRefreshOptions tokenRefreshOptions = new TokenRefreshOptions(exceptionRefresher, true);
-        CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(tokenRefreshOptions, tokenStr);
+        CommunicationTokenRefreshOptions tokenRefreshOptions = new CommunicationTokenRefreshOptions(exceptionRefresher, true, tokenStr);
+        CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(tokenRefreshOptions);
         CountDownLatch countDownLatch = new CountDownLatch(1);
         exceptionRefresher.setOnCallReturn(countDownLatch::countDown);
 
@@ -289,8 +289,8 @@ public class CommunicationTokenCredentialTests {
             throws InterruptedException, ExecutionException, IOException {
         String tokenStr = tokenMocker.generateRawToken("resourceId", "userIdentity", -5 * 60);
         exceptionRefresher.resetCallCount();
-        TokenRefreshOptions tokenRefreshOptions = new TokenRefreshOptions(exceptionRefresher, false);
-        CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(tokenRefreshOptions, tokenStr);
+        CommunicationTokenRefreshOptions tokenRefreshOptions = new CommunicationTokenRefreshOptions(exceptionRefresher, false, tokenStr);
+        CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(tokenRefreshOptions);
         StepVerifier.create(tokenCredential.getToken())
             .verifyError(RuntimeException.class);
         assertEquals(1, exceptionRefresher.numCalls());
@@ -300,7 +300,7 @@ public class CommunicationTokenCredentialTests {
     @Test
     public void shouldThrowWhenGetTokenCalledOnClosedObject() throws IOException, InterruptedException,
             ExecutionException {
-        TokenRefreshOptions tokenRefreshOptions = new TokenRefreshOptions(exceptionRefresher, true);
+        CommunicationTokenRefreshOptions tokenRefreshOptions = new CommunicationTokenRefreshOptions(exceptionRefresher, true);
         CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(tokenRefreshOptions);
         tokenCredential.close();
 

@@ -33,7 +33,7 @@ public class HomeController {
     public String index(
         Model model,
         OAuth2AuthenticationToken authentication,
-        @RegisteredOAuth2AuthorizedClient OAuth2AuthorizedClient authorizedClient
+        @RegisteredOAuth2AuthorizedClient("azure") OAuth2AuthorizedClient authorizedClient
     ) {
         model.addAttribute("userName", authentication.getName());
         model.addAttribute("clientName", authorizedClient.getClientRegistration().getClientName());
