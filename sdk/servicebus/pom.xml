@@ -8,9 +8,10 @@
   <packaging>pom</packaging>
   <version>1.0.0</version>  <!-- Need not change for every release-->
   <modules>
-    <module>microsoft-azure-servicebus</module>
     <module>azure-messaging-servicebus</module>
     <module>azure-messaging-servicebus-track1-perf</module>
     <module>azure-messaging-servicebus-track2-perf</module>
+    <module>azure-resourcemanager-servicebus-generated</module>
+    <module>microsoft-azure-servicebus</module>
   </modules>
 </project>
