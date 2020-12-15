@@ -3,7 +3,6 @@
 
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
-import com.azure.spring.cloud.autoconfigure.context.AzureContextAutoConfiguration;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
 import com.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
 import com.azure.spring.cloud.context.core.impl.ServiceBusQueueManager;
@@ -36,7 +35,7 @@ import static com.azure.spring.cloud.autoconfigure.servicebus.ServiceBusUtils.ge
  * @author Warren Zhu
  */
 @Configuration
-@AutoConfigureAfter(AzureContextAutoConfiguration.class)
+@AutoConfigureAfter(AzureServiceBusAutoConfiguration.class)
 @ConditionalOnClass(value = { QueueClient.class, ServiceBusQueueClientFactory.class })
 @ConditionalOnProperty(value = "spring.cloud.azure.servicebus.enabled", matchIfMissing = true)
 public class AzureServiceBusQueueAutoConfiguration {
@@ -60,7 +59,6 @@ public class AzureServiceBusQueueAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnBean(ServiceBusConnectionStringProvider.class)
     public ServiceBusQueueClientFactory queueClientFactory(
         ServiceBusConnectionStringProvider connectionStringProvider,
         @Autowired(required = false) ServiceBusNamespaceManager namespaceManager,

@@ -44,13 +44,11 @@ is completed before the run.
           bindings:
             input:
               destination: [servicebus-queue-1-name]
-              group: [consumer-group]
             output:
               destination: [servicebus-queue-1-name-same-as-above]
             input1:
               binder: servicebus-2
               destination: [servicebus-queue-2-name]
-              group: [consumer-group]
             output1:
               binder: servicebus-2
               destination: [servicebus-queue-2-name-same-as-above]
