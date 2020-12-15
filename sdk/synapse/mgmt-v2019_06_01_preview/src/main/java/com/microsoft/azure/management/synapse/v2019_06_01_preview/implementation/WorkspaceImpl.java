@@ -175,12 +175,6 @@ class WorkspaceImpl extends GroupableResourceCoreImpl<Workspace, WorkspaceInner,
     }
 
     @Override
-    public WorkspaceImpl withEncryption(EncryptionDetails encryption) {
-        this.inner().withEncryption(encryption);
-        return this;
-    }
-
-    @Override
     public WorkspaceImpl withManagedResourceGroupName(String managedResourceGroupName) {
         this.inner().withManagedResourceGroupName(managedResourceGroupName);
         return this;
@@ -207,6 +201,16 @@ class WorkspaceImpl extends GroupableResourceCoreImpl<Workspace, WorkspaceInner,
     @Override
     public WorkspaceImpl withVirtualNetworkProfile(VirtualNetworkProfile virtualNetworkProfile) {
         this.inner().withVirtualNetworkProfile(virtualNetworkProfile);
+        return this;
+    }
+
+    @Override
+    public WorkspaceImpl withEncryption(EncryptionDetails encryption) {
+        if (isInCreateMode()) {
+            this.inner().withEncryption(encryption);
+        } else {
+            this.updateParameter.withEncryption(encryption);
+        }
         return this;
     }
 
