@@ -531,7 +531,7 @@ public class CosmosAsyncContainer {
      * Use {@link TransactionalBatchResponse#isSuccessStatusCode} on the response returned to ensure that the
      * transactional batch succeeded.
      */
-    @Beta(Beta.SinceVersion.V4_7_0)
+    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Mono<TransactionalBatchResponse> executeTransactionalBatch(TransactionalBatch transactionalBatch) {
         return executeTransactionalBatch(transactionalBatch, new TransactionalBatchRequestOptions());
     }
@@ -566,7 +566,7 @@ public class CosmosAsyncContainer {
      * Use {@link TransactionalBatchResponse#isSuccessStatusCode} on the response returned to ensure that the
      * transactional batch succeeded.
      */
-    @Beta(Beta.SinceVersion.V4_7_0)
+    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Mono<TransactionalBatchResponse> executeTransactionalBatch(
         TransactionalBatch transactionalBatch,
         TransactionalBatchRequestOptions requestOptions) {
@@ -611,7 +611,7 @@ public class CosmosAsyncContainer {
      * To check if the operation had any exception, use {@link CosmosBulkOperationResponse#getException()} to
      * get the exception.
      */
-    @Beta(Beta.SinceVersion.V4_9_0)
+    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <TContext> Flux<CosmosBulkOperationResponse<TContext>> processBulkOperations(
         Flux<CosmosItemOperation> operations) {
 
@@ -641,7 +641,7 @@ public class CosmosAsyncContainer {
      * To check if the operation had any exception, use {@link CosmosBulkOperationResponse#getException()} to
      * get the exception.
      */
-    @Beta(Beta.SinceVersion.V4_9_0)
+    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <TContext> Flux<CosmosBulkOperationResponse<TContext>> processBulkOperations(
         Flux<CosmosItemOperation> operations,
         BulkProcessingOptions<TContext> bulkOptions) {
@@ -708,7 +708,7 @@ public class CosmosAsyncContainer {
      * @param classType   class type
      * @return a Mono with feed response of cosmos items
      */
-    @Beta(Beta.SinceVersion.V4_4_0)
+    @Beta(value = Beta.SinceVersion.V4_4_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <T> Mono<FeedResponse<T>> readMany(
         List<CosmosItemIdentity> itemIdentityList,
         Class<T> classType) {
@@ -725,7 +725,7 @@ public class CosmosAsyncContainer {
      * @param classType   class type
      * @return a Mono with feed response of cosmos items
      */
-    @Beta(Beta.SinceVersion.V4_4_0)
+    @Beta(value = Beta.SinceVersion.V4_4_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <T> Mono<FeedResponse<T>> readMany(
         List<CosmosItemIdentity> itemIdentityList,
         String sessionToken,
@@ -1224,7 +1224,7 @@ public class CosmosAsyncContainer {
      *
      * @return An unmodifiable list of {@link FeedRange}
      */
-    @Beta(Beta.SinceVersion.V4_9_0)
+    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Mono<List<FeedRange>> getFeedRanges() {
         return this.getDatabase().getDocClientWrapper().getFeedRanges(getLink());
     }

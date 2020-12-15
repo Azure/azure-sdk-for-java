@@ -3,7 +3,7 @@
 
 package com.azure.communication.sms;
 
-import com.azure.communication.common.PhoneNumber;
+import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.communication.sms.models.SendSmsOptions;
 import com.azure.communication.sms.models.SendSmsResponse;
 import com.azure.core.annotation.ReturnType;
@@ -40,7 +40,8 @@ public final class SmsClient {
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SendSmsResponse> sendMessageWithResponse(PhoneNumber from, List<PhoneNumber> to, String message, 
+    public Response<SendSmsResponse> sendMessageWithResponse(PhoneNumberIdentifier from, 
+        List<PhoneNumberIdentifier> to, String message, 
         SendSmsOptions smsOptions, Context context) {
         return this.smsAsyncClient.sendMessageWithResponse(from, to, message, smsOptions, context).block();
     }
@@ -55,7 +56,7 @@ public final class SmsClient {
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)    
-    public SendSmsResponse sendMessage(PhoneNumber from, List<PhoneNumber> to, String message) {
+    public SendSmsResponse sendMessage(PhoneNumberIdentifier from, List<PhoneNumberIdentifier> to, String message) {
         return this.smsAsyncClient.sendMessage(from, to, message).block();
     }
 
@@ -68,12 +69,12 @@ public final class SmsClient {
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)    
-    public SendSmsResponse sendMessage(PhoneNumber from, PhoneNumber to, String message) {
+    public SendSmsResponse sendMessage(PhoneNumberIdentifier from, PhoneNumberIdentifier to, String message) {
         if (to == null) {
             logger.logThrowableAsError(new NullPointerException("Argument 'to' cannot be null."));
         }
 
-        List<PhoneNumber> toList = new ArrayList<PhoneNumber>();
+        List<PhoneNumberIdentifier> toList = new ArrayList<PhoneNumberIdentifier>();
         toList.add(to);
 
         return this.smsAsyncClient.sendMessage(from, toList, message).block();
@@ -91,7 +92,7 @@ public final class SmsClient {
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SendSmsResponse sendMessage(PhoneNumber from, List<PhoneNumber> to, String message, 
+    public SendSmsResponse sendMessage(PhoneNumberIdentifier from, List<PhoneNumberIdentifier> to, String message, 
         SendSmsOptions smsOptions) {
         return this.smsAsyncClient.sendMessage(from, to, message, smsOptions).block();
     }

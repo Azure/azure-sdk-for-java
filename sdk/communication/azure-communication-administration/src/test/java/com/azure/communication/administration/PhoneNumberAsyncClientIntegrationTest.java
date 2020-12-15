@@ -21,7 +21,7 @@ import com.azure.communication.administration.models.PstnConfiguration;
 import com.azure.communication.administration.models.ReleaseStatus;
 import com.azure.communication.administration.models.UpdateNumberCapabilitiesResponse;
 import com.azure.communication.administration.models.UpdatePhoneNumberCapabilitiesResponse;
-import com.azure.communication.common.PhoneNumber;
+import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
@@ -299,8 +299,8 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
                                 NumberUpdateCapabilities update = new NumberUpdateCapabilities();
                                 update.setAdd(capabilitiesToAdd);
 
-                                Map<PhoneNumber, NumberUpdateCapabilities> updateMap = new HashMap<>();
-                                updateMap.put(new PhoneNumber(purchasedNumber), update);
+                                Map<PhoneNumberIdentifier, NumberUpdateCapabilities> updateMap = new HashMap<>();
+                                updateMap.put(new PhoneNumberIdentifier(purchasedNumber), update);
                                 return this.getClient(httpClient).updateCapabilitiesWithResponse(updateMap)
                                 .flatMap((Response<UpdateNumberCapabilitiesResponse> updateResponse) -> {
                                     assertEquals(200, updateResponse.getStatusCode());
@@ -347,7 +347,7 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
                             .flatMap((AsyncPollResponse<Void, Void> response) -> {
                                 assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED.toString(), response.getStatus().toString());
                                 // Configuring purchased number
-                                PhoneNumber number = new PhoneNumber(purchasedNumber);
+                                PhoneNumberIdentifier number = new PhoneNumberIdentifier(purchasedNumber);
                                 PstnConfiguration pstnConfiguration = new PstnConfiguration();
                                 pstnConfiguration.setApplicationId("ApplicationId");
                                 pstnConfiguration.setCallbackUrl("https://callbackurl");
@@ -383,7 +383,7 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void configureNumberGetNumberConfigurationUnconfigureNumberWithResponse(HttpClient httpClient) {          
         // Configuring purchased number
-        PhoneNumber number = new PhoneNumber(PHONE_NUMBER);
+        PhoneNumberIdentifier number = new PhoneNumberIdentifier(PHONE_NUMBER);
         PstnConfiguration pstnConfiguration = new PstnConfiguration();
         pstnConfiguration.setApplicationId("ApplicationId");
         pstnConfiguration.setCallbackUrl("https://callbackurl");
@@ -411,7 +411,7 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void configureNumberGetNumberConfigurationUnconfigureNumber(HttpClient httpClient) {          
         // Configuring purchased number
-        PhoneNumber number = new PhoneNumber(PHONE_NUMBER);
+        PhoneNumberIdentifier number = new PhoneNumberIdentifier(PHONE_NUMBER);
         PstnConfiguration pstnConfiguration = new PstnConfiguration();
         pstnConfiguration.setApplicationId("ApplicationId");
         pstnConfiguration.setCallbackUrl("https://callbackurl");
@@ -437,8 +437,8 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
         capabilitiesToAdd.add(Capability.INBOUND_CALLING);
         NumberUpdateCapabilities update = new NumberUpdateCapabilities();
         update.setAdd(capabilitiesToAdd);
-        Map<PhoneNumber, NumberUpdateCapabilities> updateMap = new HashMap<>();
-        updateMap.put(new PhoneNumber(PHONE_NUMBER), update);
+        Map<PhoneNumberIdentifier, NumberUpdateCapabilities> updateMap = new HashMap<>();
+        updateMap.put(new PhoneNumberIdentifier(PHONE_NUMBER), update);
 
         StepVerifier.create(
             this.getClient(httpClient).updateCapabilitiesWithResponse(updateMap)
@@ -463,8 +463,8 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
         capabilitiesToAdd.add(Capability.INBOUND_CALLING);
         NumberUpdateCapabilities update = new NumberUpdateCapabilities();
         update.setAdd(capabilitiesToAdd);
-        Map<PhoneNumber, NumberUpdateCapabilities> updateMap = new HashMap<>();
-        updateMap.put(new PhoneNumber(PHONE_NUMBER), update);
+        Map<PhoneNumberIdentifier, NumberUpdateCapabilities> updateMap = new HashMap<>();
+        updateMap.put(new PhoneNumberIdentifier(PHONE_NUMBER), update);
 
         StepVerifier.create(
             this.getClient(httpClient).updateCapabilities(updateMap)
@@ -607,7 +607,7 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void configureNumberWithResponseNullPstnConfig(HttpClient httpClient) {
-        PhoneNumber number = new PhoneNumber("PHONENUMBER_TO_CONFIGURE");
+        PhoneNumberIdentifier number = new PhoneNumberIdentifier("PHONENUMBER_TO_CONFIGURE");
         Mono<Response<Void>> mono = this.getClient(httpClient).configureNumberWithResponse(number, null, Context.NONE);
 
         StepVerifier.create(mono)
@@ -666,8 +666,8 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
 
 
     private PollerFlux<PhoneNumberRelease, PhoneNumberRelease> beginReleasePhoneNumbers(HttpClient httpClient, String phoneNumber) {
-        PhoneNumber releasedPhoneNumber = new PhoneNumber(phoneNumber);
-        List<PhoneNumber> phoneNumbers = new ArrayList<>();
+        PhoneNumberIdentifier releasedPhoneNumber = new PhoneNumberIdentifier(phoneNumber);
+        List<PhoneNumberIdentifier> phoneNumbers = new ArrayList<>();
         phoneNumbers.add(releasedPhoneNumber);
         Duration pollInterval = Duration.ofSeconds(1);
         return this.getClient(httpClient).beginReleasePhoneNumbers(phoneNumbers, pollInterval);

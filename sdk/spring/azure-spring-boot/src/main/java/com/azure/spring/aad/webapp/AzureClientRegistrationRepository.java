@@ -9,7 +9,6 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -51,7 +50,7 @@ public class AzureClientRegistrationRepository implements ClientRegistrationRepo
     @NotNull
     @Override
     public Iterator<ClientRegistration> iterator() {
-        return Collections.singleton(azureClient.getClient()).iterator();
+        return allClients.values().iterator();
     }
 
     public AzureClientRegistration getAzureClient() {
