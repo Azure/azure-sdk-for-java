@@ -10,11 +10,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.PostConstruct;
-import javax.validation.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -30,7 +28,6 @@ import org.springframework.validation.annotation.Validated;
 public class AADAuthenticationProperties {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AADAuthenticationProperties.class);
-    private static final String DEFAULT_SERVICE_ENVIRONMENT = "global";
     private static final long DEFAULT_JWK_SET_CACHE_LIFESPAN = TimeUnit.MINUTES.toMillis(5);
     private static final long DEFAULT_JWK_SET_CACHE_REFRESH_TIME = DEFAULT_JWK_SET_CACHE_LIFESPAN;
 
@@ -38,11 +35,6 @@ public class AADAuthenticationProperties {
      * Default UserGroup configuration.
      */
     private UserGroupProperties userGroup = new UserGroupProperties();
-
-    /**
-     * Azure service environment/region name, e.g., cn, global
-     */
-    private String environment = DEFAULT_SERVICE_ENVIRONMENT;
 
     /**
      * Registered application ID in Azure AD. Must be configured when OAuth2 authentication is done in front end
@@ -131,26 +123,6 @@ public class AADAuthenticationProperties {
          */
         private List<String> allowedGroups = new ArrayList<>();
 
-        /**
-         * Key of the JSON Node to get from the Azure AD response object that will be checked to contain the {@code
-         * azure.activedirectory.user-group.value}  to signify that this node is a valid {@code UserGroup}.
-         */
-        @NotEmpty
-        private String key = "objectType";
-
-        /**
-         * Value of the JSON Node identified by the {@code azure.activedirectory.user-group.key} to validate the JSON
-         * Node is a UserGroup.
-         */
-        @NotEmpty
-        private String value = Membership.OBJECT_TYPE_GROUP;
-
-        /**
-         * Key of the JSON Node containing the Azure Object ID for the {@code UserGroup}.
-         */
-        @NotEmpty
-        private String objectIDKey = "objectId";
-
         public List<String> getAllowedGroups() {
             return allowedGroups;
         }
@@ -159,59 +131,6 @@ public class AADAuthenticationProperties {
             this.allowedGroups = allowedGroups;
         }
 
-        public String getKey() {
-            return key;
-        }
-
-        public void setKey(String key) {
-            this.key = key;
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        public void setValue(String value) {
-            this.value = value;
-        }
-
-        public String getObjectIDKey() {
-            return objectIDKey;
-        }
-
-        public void setObjectIDKey(String objectIDKey) {
-            this.objectIDKey = objectIDKey;
-        }
-
-        @Override
-        public String toString() {
-            return "UserGroupProperties{"
-                + "allowedGroups=" + allowedGroups
-                + ", key='" + key + '\''
-                + ", value='" + value + '\''
-                + ", objectIDKey='" + objectIDKey + '\''
-                + '}';
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) {
-                return true;
-            }
-            if (o == null || getClass() != o.getClass()) {
-                return false;
-            }
-            UserGroupProperties that = (UserGroupProperties) o;
-            return Objects.equals(allowedGroups, that.allowedGroups)
-                && Objects.equals(key, that.key)
-                && Objects.equals(value, that.value)
-                && Objects.equals(objectIDKey, that.objectIDKey);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(allowedGroups, key, value, objectIDKey);
-        }
     }
 
     public boolean allowedGroupsConfigured() {
@@ -262,14 +181,6 @@ public class AADAuthenticationProperties {
 
     public void setUserGroup(UserGroupProperties userGroup) {
         this.userGroup = userGroup;
-    }
-
-    public String getEnvironment() {
-        return environment;
-    }
-
-    public void setEnvironment(String environment) {
-        this.environment = environment;
     }
 
     public String getClientId() {

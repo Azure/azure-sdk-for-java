@@ -36,15 +36,10 @@ The authorization flow is composed of 3 phrases:
 
 ### Group membership
 The way to get group relationship depends on the graph api used, the default to get membership is the direct group of the user. 
-If you want to get all transitive relationships, you should confirm first which environment or region name you are using, default region is *global*, then override the uri configuration. For details, see [list transitive membership][graph-api-list-transitive-member-of] api.
-
-The following are configuration items for all regions:
+If you want to get all transitive relationships, the following are configuration item:
 
 ```properties
-azure.service.endpoints.cn.aadMembershipRestUri=https://graph.chinacloudapi.cn/me/transitiveMemberOf?api-version=1.6
-azure.service.endpoints.cn-v2-graph.aadMembershipRestUri=https://microsoftgraph.chinacloudapi.cn/v1.0/me/transitiveMemberOf
-azure.service.endpoints.global.aadMembershipRestUri=https://graph.windows.net/me/transitiveMemberOf?api-version=1.6
-azure.service.endpoints.global-v2-graph.aadMembershipRestUri=https://graph.microsoft.com/v1.0/me/transitiveMemberOf
+azure.activedirectory.graph-membership-uri=https://graph.microsoft.com/v1.0/me/transitiveMemberOf
 ``` 
 
 ### Web application
@@ -105,24 +100,16 @@ spring.security.oauth2.client.registration.azure.client-secret=xxxxxx-your-clien
 azure.activedirectory.user-group.allowed-groups=group1, group2
 ```
 
-#### Autowire `OAuth2UserService` bean in `WebSecurityConfigurerAdapter`:
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/aad/AADOAuth2LoginConfigSample.java#L22-L38 -->
+#### If you want to create your own configuration class:
+<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/aad/AADOAuth2LoginConfigSample.java#L18-L26 -->
 ```java
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class AADOAuth2LoginConfigSample extends WebSecurityConfigurerAdapter {
-
-    @Autowired
-    private OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService;
+public class AADOAuth2LoginConfigSample extends AzureOAuth2Configuration {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-            .anyRequest().authenticated()
-            .and()
-            .oauth2Login()
-            .userInfoEndpoint()
-            .oidcUserService(oidcUserService);
+        super.configure(http);
     }
 }
 ```
@@ -136,11 +123,6 @@ Please refer to [azure-active-directory-spring-boot-sample](https://github.com/A
 azure.activedirectory.client-id=xxxxxx-your-client-id-xxxxxx
 azure.activedirectory.client-secret=xxxxxx-your-client-secret-xxxxxx
 azure.activedirectory.user-group.allowed-groups=Aad-groups e.g. group1,group2,group3
-```
-
-If you're using [Azure China](https://docs.microsoft.com/azure/china/china-welcome), please append an extra line to the `application.properties` file:
-```properties
-azure.activedirectory.environment=cn
 ```
 
 #### Autowire `AADAuthenticationFilter` in `WebSecurityConfig.java` file
@@ -244,7 +226,7 @@ Please refer to [azure-spring-boot-sample-active-directory-backend-v2](https://g
 
 By default, `azure-spring-boot-starter-active-directory` configures scopes of `openid`, `profile` and `https://graph.microsoft.com/user.read` to implement OpenID Connect protocol and access of Microsoft Graph API. For customization of scope, developers need to configure in the `application.properties`:
 ```yaml
-spring.security.oauth2.client.registration.azure.scope = openid, profile, https://graph.microsoft.com/user.read, {your-customized-scope}
+azure.activedirectory.authorization.azure.scopes = openid, profile, https://graph.microsoft.com/user.read, {your-customized-scope}
 ``` 
 Note, if you don't configure the 3 mentioned permissions, this starter will add them automatically.
 
@@ -327,4 +309,4 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 
 [graph-api-list-member-of]: https://docs.microsoft.com/graph/api/user-list-memberof?view=graph-rest-1.0
 [graph-api-list-transitive-member-of]: https://docs.microsoft.com/graph/api/user-list-transitivememberof?view=graph-rest-1.0
-[resource-server]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-spring-security-resource-server/README.md
+[resource-server]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server/README.md
