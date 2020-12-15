@@ -10,14 +10,9 @@ import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import com.puppycrawl.tools.checkstyle.checks.naming.AccessModifierOption;
 import com.puppycrawl.tools.checkstyle.utils.CheckUtil;
 import com.puppycrawl.tools.checkstyle.utils.TokenUtil;
-
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * Verify the classes with annotation @ServiceClient should have following rules:
@@ -29,8 +24,6 @@ import java.util.Set;
  *
  * All methods that has a @ServiceMethod annotation in a class annotated with @ServiceClient should follow below rules:
  * <ol>
- * <li>Follows method naming pattern. Refer to
- * <a href="https://azure.github.io/azure-sdk/java_introduction.html">Java Spec:</a></li>
  * <li>Methods should not have "Async" added to the method name</li>
  * <li>Return type of async and sync clients should be as per guidelines:
  * <ol>
@@ -62,7 +55,6 @@ public class ServiceClientCheck extends AbstractCheck {
     private static final String COLLECTION_RETURN_TYPE = "ReturnType.COLLECTION";
     private static final String SINGLE_RETURN_TYPE = "ReturnType.SINGLE";
 
-    private static final String JAVA_SPEC_LINK = "https://azure.github.io/azure-sdk/java_introduction.html";
     private static final String PAGED_FLUX = "PagedFlux";
     private static final String MONO = "Mono";
     private static final String RESPONSE = "Response";
@@ -79,10 +71,6 @@ public class ServiceClientCheck extends AbstractCheck {
         "Asynchronous method with annotation @ServiceMethod must not has ''%s'' as a method parameter.";
     private static final String SYNC_CONTEXT_ERROR =
         "Synchronous method with annotation @ServiceMethod must has ''%s'' as a method parameter.";
-
-    private static final Set<String> COMMON_NAMING_PREFIX_SET = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
-        "upsert", "set", "create", "update", "replace", "delete", "add", "get", "list", "begin"
-    )));
 
     // Add all imported classes into a map, key is the name of class and value is the full package path of class.
     private final Map<String, String> simpleClassNameToQualifiedNameMap = new HashMap<>();
@@ -270,28 +258,20 @@ public class ServiceClientCheck extends AbstractCheck {
         final DetailAST serviceMethodAnnotation = serviceMethodAnnotationOption.get();
         final String methodName = methodDefToken.findFirstToken(TokenTypes.IDENT).getText();
 
-        // 1) Follows method naming pattern. Refer to Java Spec.
-        // prefix of method name that contains all lower letters
-        final String prefix = methodName.split("[A-Z]", 2)[0];
-        if (!methodName.endsWith("Exists") && !COMMON_NAMING_PREFIX_SET.contains(prefix)) {
-            log(methodDefToken, String.format(
-                "Method name ''%s'' should follow a common vocabulary. Refer to Java Spec: %s.",
-                methodName, JAVA_SPEC_LINK));
-        }
 
-        // 2) Methods should not have "Async" added to the method name
+        // 1) Methods should not have "Async" added to the method name
         if (methodName.contains(ASYNC)) {
             log(methodDefToken, String.format("Method name ''%s'' should not contain ''%s'' in the method name.",
                 methodName, ASYNC));
         }
 
-        // 3) The return type of async and sync clients should be as per guidelines
+        // 2) The return type of async and sync clients should be as per guidelines
         checkServiceClientMethodReturnType(methodDefToken, serviceMethodAnnotation, methodName);
 
-        // 4) Check 'withResponse' naming pattern
+        // 3) Check 'withResponse' naming pattern
         checkReturnTypeNamingPattern(methodDefToken, methodName);
 
-        // 5) Synchronous method with annotation @ServiceMethod has to have {@code Context} as a parameter.
+        // 4) Synchronous method with annotation @ServiceMethod has to have {@code Context} as a parameter.
         // Asynchronous method with annotation @ServiceMethod must not has {@code Context} as a parameter.
         checkContextInRightPlace(methodDefToken);
     }
@@ -306,7 +286,7 @@ public class ServiceClientCheck extends AbstractCheck {
      * @param methodDefToken METHOD_DEF AST node
      * @param serviceMethodAnnotation ANNOTATION AST node which used to find the if the annotation has 'return' key,
      * @param methodName method name
-     * if found. return the value of member'return'.
+     * if found. return the value of member 'return'.
      */
     private void checkServiceClientMethodReturnType(DetailAST methodDefToken, DetailAST serviceMethodAnnotation,
                                                     String methodName) {

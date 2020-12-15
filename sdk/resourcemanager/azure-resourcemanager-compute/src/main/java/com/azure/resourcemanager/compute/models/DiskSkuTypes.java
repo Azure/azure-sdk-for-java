@@ -29,12 +29,6 @@ public final class DiskSkuTypes {
     /** The actual serialized value for a DiskSkuTypes instance. */
     private final DiskStorageAccountTypes value;
 
-    /** @return predefined disk SKU types */
-    public static DiskSkuTypes[] values() {
-        Collection<DiskSkuTypes> valuesCollection = VALUES_BY_NAME.values();
-        return valuesCollection.toArray(new DiskSkuTypes[valuesCollection.size()]);
-    }
-
     /**
      * Creates a custom value for DiskSkuTypes.
      *
@@ -46,6 +40,12 @@ public final class DiskSkuTypes {
         if (value != null) {
             VALUES_BY_NAME.put(value.toString().toLowerCase(Locale.ROOT), this);
         }
+    }
+
+    /** @return predefined disk SKU types */
+    public static DiskSkuTypes[] values() {
+        Collection<DiskSkuTypes> valuesCollection = VALUES_BY_NAME.values();
+        return valuesCollection.toArray(new DiskSkuTypes[valuesCollection.size()]);
     }
 
     /**

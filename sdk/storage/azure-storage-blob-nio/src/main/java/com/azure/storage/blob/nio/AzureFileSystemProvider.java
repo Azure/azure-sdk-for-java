@@ -124,7 +124,6 @@ import java.util.function.Supplier;
  * @see FileSystemProvider
  */
 public final class AzureFileSystemProvider extends FileSystemProvider {
-    private final ClientLogger logger = new ClientLogger(AzureFileSystemProvider.class);
 
     /**
      * A helper for setting the HTTP properties when creating a directory.
@@ -161,6 +160,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
 
     private final ConcurrentMap<String, FileSystem> openFileSystems;
 
+    private final ClientLogger logger = new ClientLogger(AzureFileSystemProvider.class);
 
     // Specs require a public zero argument constructor.
     /**

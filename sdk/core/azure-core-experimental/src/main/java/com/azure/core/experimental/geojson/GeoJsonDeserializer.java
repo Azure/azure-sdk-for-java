@@ -21,8 +21,6 @@ import java.util.Map;
  * Deserializes a JSON object into a {@link GeoObject}.
  */
 final class GeoJsonDeserializer extends JsonDeserializer<GeoObject> {
-    private static final ClientLogger LOGGER = new ClientLogger(GeoJsonDeserializer.class);
-
     /*
      * GeoJSON types.
      */
@@ -59,6 +57,7 @@ final class GeoJsonDeserializer extends JsonDeserializer<GeoObject> {
             .addDeserializer(GeoPolygonCollection.class, geoSubclassDeserializer(GeoPolygonCollection.class))
             .addDeserializer(GeoCollection.class, geoSubclassDeserializer(GeoCollection.class));
     }
+    private static final ClientLogger LOGGER = new ClientLogger(GeoJsonDeserializer.class);
 
     @Override
     public GeoObject deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {

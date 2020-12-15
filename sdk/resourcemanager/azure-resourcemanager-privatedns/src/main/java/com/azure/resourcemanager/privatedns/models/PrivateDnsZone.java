@@ -66,9 +66,6 @@ public interface PrivateDnsZone
     /** @return the record sets in this zone. */
     PagedIterable<PrivateDnsRecordSet> listRecordSets();
 
-    /** @return the record sets in this zone asynchronously. */
-    PagedFlux<PrivateDnsRecordSet> listRecordSetsAsync();
-
     /**
      * Lists all the record sets in this zone with the given suffix.
      *
@@ -76,14 +73,6 @@ public interface PrivateDnsZone
      * @return the record sets
      */
     PagedIterable<PrivateDnsRecordSet> listRecordSets(String recordSetNameSuffix);
-
-    /**
-     * Lists all the record sets in this zone with the given suffix asynchronously.
-     *
-     * @param recordSetNameSuffix the record set name suffix
-     * @return the record sets
-     */
-    PagedFlux<PrivateDnsRecordSet> listRecordSetsAsync(String recordSetNameSuffix);
 
     /**
      * Lists all the record sets in this zone with each entries in each page limited to the given size.
@@ -94,14 +83,6 @@ public interface PrivateDnsZone
     PagedIterable<PrivateDnsRecordSet> listRecordSets(int pageSize);
 
     /**
-     * Lists all the record sets in this zone with each entries in each page limited to the given size asynchronously.
-     *
-     * @param pageSize the maximum number of record sets in a page
-     * @return the record sets
-     */
-    PagedFlux<PrivateDnsRecordSet> listRecordSetsAsync(int pageSize);
-
-    /**
      * Lists all the record sets in this zone with the given suffix, also limits the number of entries per page to the
      * given page size.
      *
@@ -110,6 +91,25 @@ public interface PrivateDnsZone
      * @return the record sets
      */
     PagedIterable<PrivateDnsRecordSet> listRecordSets(String recordSetNameSuffix, int pageSize);
+
+    /** @return the record sets in this zone asynchronously. */
+    PagedFlux<PrivateDnsRecordSet> listRecordSetsAsync();
+
+    /**
+     * Lists all the record sets in this zone with the given suffix asynchronously.
+     *
+     * @param recordSetNameSuffix the record set name suffix
+     * @return the record sets
+     */
+    PagedFlux<PrivateDnsRecordSet> listRecordSetsAsync(String recordSetNameSuffix);
+
+    /**
+     * Lists all the record sets in this zone with each entries in each page limited to the given size asynchronously.
+     *
+     * @param pageSize the maximum number of record sets in a page
+     * @return the record sets
+     */
+    PagedFlux<PrivateDnsRecordSet> listRecordSetsAsync(int pageSize);
 
     /**
      * Lists all the record sets in this zone with the given suffix, also limits the number of entries per page to the

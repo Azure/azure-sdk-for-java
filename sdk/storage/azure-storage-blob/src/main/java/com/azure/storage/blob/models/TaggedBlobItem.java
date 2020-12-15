@@ -12,6 +12,18 @@ import java.util.Map;
  */
 public final class TaggedBlobItem {
 
+    /*
+     * The name property.
+     */
+    private final String name;
+
+    /*
+     * The containerName property.
+     */
+    private final String containerName;
+
+    private final Map<String, String> tags;
+
     /**
      * Constructor to create a new TaggedBlobItem
      * @param containerName The container name
@@ -32,18 +44,6 @@ public final class TaggedBlobItem {
         this.containerName = containerName;
         this.tags = tags;
     }
-
-    /*
-     * The name property.
-     */
-    private final String name;
-
-    /*
-     * The containerName property.
-     */
-    private final String containerName;
-
-    private final Map<String, String> tags;
 
     /**
      * Get the name property: The name property.

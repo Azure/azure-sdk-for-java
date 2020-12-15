@@ -475,6 +475,20 @@ public final class FormTrainingAsyncClient {
         }
     }
 
+    Mono<Response<CopyAuthorization>> getCopyAuthorizationWithResponse(String resourceId, String resourceRegion,
+        Context context) {
+        Objects.requireNonNull(resourceId, "'resourceId' cannot be null");
+        Objects.requireNonNull(resourceRegion, "'resourceRegion' cannot be null");
+        return service.generateModelCopyAuthorizationWithResponseAsync(context)
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
+            .map(response -> {
+                CopyAuthorizationResult copyAuthorizationResult = response.getValue();
+                return new SimpleResponse<>(response, new CopyAuthorization(copyAuthorizationResult.getModelId(),
+                    copyAuthorizationResult.getAccessToken(), resourceId, resourceRegion,
+                    copyAuthorizationResult.getExpirationDateTimeTicks()));
+            });
+    }
+
     /**
      * Create a composed model from the provided list of existing models in the account.
      *
@@ -558,20 +572,6 @@ public final class FormTrainingAsyncClient {
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
-    }
-
-    Mono<Response<CopyAuthorization>> getCopyAuthorizationWithResponse(String resourceId, String resourceRegion,
-        Context context) {
-        Objects.requireNonNull(resourceId, "'resourceId' cannot be null");
-        Objects.requireNonNull(resourceRegion, "'resourceRegion' cannot be null");
-        return service.generateModelCopyAuthorizationWithResponseAsync(context)
-            .onErrorMap(Utility::mapToHttpResponseExceptionIfExist)
-            .map(response -> {
-                CopyAuthorizationResult copyAuthorizationResult = response.getValue();
-                return new SimpleResponse<>(response, new CopyAuthorization(copyAuthorizationResult.getModelId(),
-                    copyAuthorizationResult.getAccessToken(), resourceId, resourceRegion,
-                    copyAuthorizationResult.getExpirationDateTimeTicks()));
-            });
     }
 
     private Mono<PagedResponse<CustomFormModelInfo>> listFirstPageModelInfo(Context context) {

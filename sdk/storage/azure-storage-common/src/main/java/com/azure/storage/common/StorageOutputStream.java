@@ -16,6 +16,11 @@ import java.io.OutputStream;
  * StorageOutputStream allows for uploading data to an Azure Storage service using stream concepts.
  */
 public abstract class StorageOutputStream extends OutputStream {
+    /*
+     * Holds the last exception this stream encountered.
+     */
+    protected volatile IOException lastError;
+
     final ClientLogger logger = new ClientLogger(StorageOutputStream.class);
 
     /*
@@ -24,16 +29,11 @@ public abstract class StorageOutputStream extends OutputStream {
      */
     private final int writeThreshold;
 
-    /*
-     * Holds the last exception this stream encountered.
-     */
-    protected volatile IOException lastError;
-
-    protected abstract Mono<Void> dispatchWrite(byte[] data, int writeLength, long offset);
-
     protected StorageOutputStream(final int writeThreshold) {
         this.writeThreshold = writeThreshold;
     }
+
+    protected abstract Mono<Void> dispatchWrite(byte[] data, int writeLength, long offset);
 
     /**
      * Writes the data to the buffer and triggers writes to the service as needed.

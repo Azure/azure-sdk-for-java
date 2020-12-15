@@ -30,9 +30,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <!-- Checks that there are no tab characters in the file. -->
   </module>
 
-  <module name="NewlineAtEndOfFile">
-    <property name="lineSeparator" value="lf"/>
-  </module>
+  <module name="NewlineAtEndOfFile"/>
 
   <module name="RegexpSingleline">
     <!-- Checks that FIXME is not used in comments.  TODO is preferred. -->
@@ -286,21 +284,12 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <module name="MissingJavadocType"/>
     <module name="MissingJavadocPackage"/>
 
-    <module name="EmptyCatchBlock">
-      <property name="exceptionVariableName" value="expected"/>
-    </module>
+    <module name="EmptyCatchBlock" />
 
-    <module name="CommentsIndentation">
-      <property name="tokens" value="SINGLE_LINE_COMMENT, BLOCK_COMMENT_BEGIN"/>
-    </module>
+  <!-- Bug in comments indentation - https://github.com/checkstyle/checkstyle/issues/9105 -->
+  <!-- <module name="CommentsIndentation" />-->
 
     <module name="SimplifyBooleanReturn"/>
-
-    <module name="CustomImportOrder">
-      <property name="sortImportsInGroupAlphabetically" value="true"/>
-      <property name="customImportOrderRules" value="THIRD_PARTY_PACKAGE###STATIC"/>
-      <property name="tokens" value="IMPORT, STATIC_IMPORT, PACKAGE_DEF"/>
-    </module>
 
     <!--  The parts of a class or interface declaration should appear in the following order:
       1. Class (static) variables. First the public class variables, then protected, then package level (no access modifier), and then private.
@@ -333,13 +322,12 @@ page at http://checkstyle.sourceforge.net/config.html -->
 
     Also, verify all methods that have a @ServiceMethod annotation in a class annotated with @ServiceClient should
     follow below rules:
-    1) Follows method naming pattern. Refer to Java Spec.
-    2) Methods should not have "Async" added to the method name
-    3) The return type of async and sync clients should be as per guidelines:
-      3.1) The return type for async collection should be of type? extends PagedFlux
-      3.2) The return type for async single value should be of type? extends Mono
-      3.3) The return type for sync collection should be of type? extends PagedIterable
-      3.4) The return type for sync single value should be of type? extends Response -->
+    1) Methods should not have "Async" added to the method name
+    2) The return type of async and sync clients should be as per guidelines:
+      2.1) The return type for async collection should be of type? extends PagedFlux
+      2.2) The return type for async single value should be of type? extends Mono
+      2.3) The return type for sync collection should be of type? extends PagedIterable
+      2.4) The return type for sync single value should be of type? extends Response -->
     <module name="com.azure.tools.checkstyle.checks.ServiceClientCheck"/>
 
     <!-- CUSTOM CHECKS -->
@@ -368,8 +356,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
 
     <!-- CUSTOM CHECKS -->
     <!-- Verify the whenever a field is assigned just once in constructor to be final -->
-    <!-- error in this custom check when using with the plugin   -->
-    <!-- <module name="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"/>-->
+    <module name="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck"/>
 
     <!-- CUSTOM CHECKS -->
     <!-- Javadoc format: 'param / return / throws' descriptions text should only have one space character after the

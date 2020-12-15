@@ -115,17 +115,17 @@ import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
  */
 public class BlobAsyncClientBase {
 
-    private final ClientLogger logger = new ClientLogger(BlobAsyncClientBase.class);
-
     protected final AzureBlobStorageImpl azureBlobStorage;
-    private final String snapshot;
-    private final String versionId;
-    private final CpkInfo customerProvidedKey;
     protected final EncryptionScope encryptionScope;
     protected final String accountName;
     protected final String containerName;
     protected final String blobName;
     protected final BlobServiceVersion serviceVersion;
+
+    private final ClientLogger logger = new ClientLogger(BlobAsyncClientBase.class);
+    private final String snapshot;
+    private final String versionId;
+    private final CpkInfo customerProvidedKey;
 
     /**
      * Protected constructor for use by {@link SpecializedBlobClientBuilder}.

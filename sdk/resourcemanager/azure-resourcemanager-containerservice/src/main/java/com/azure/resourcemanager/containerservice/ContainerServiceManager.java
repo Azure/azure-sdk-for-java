@@ -21,6 +21,17 @@ public final class ContainerServiceManager
     // The service managers
     private KubernetesClustersImpl kubernetesClusters;
 
+    private ContainerServiceManager(HttpPipeline httpPipeline, AzureProfile profile) {
+        super(
+            httpPipeline,
+            profile,
+            new ContainerServiceManagementClientBuilder()
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+                .pipeline(httpPipeline)
+                .subscriptionId(profile.getSubscriptionId())
+                .buildClient());
+    }
+
     /**
      * Get a Configurable instance that can be used to create ContainerServiceManager with optional configuration.
      *
@@ -71,17 +82,6 @@ public final class ContainerServiceManager
         public ContainerServiceManager authenticate(TokenCredential credential, AzureProfile profile) {
             return ContainerServiceManager.authenticate(buildHttpPipeline(credential, profile), profile);
         }
-    }
-
-    private ContainerServiceManager(HttpPipeline httpPipeline, AzureProfile profile) {
-        super(
-            httpPipeline,
-            profile,
-            new ContainerServiceManagementClientBuilder()
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .pipeline(httpPipeline)
-                .subscriptionId(profile.getSubscriptionId())
-                .buildClient());
     }
 
     /** @return the Azure Kubernetes cluster resource management API entry point */

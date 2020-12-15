@@ -140,16 +140,15 @@ public class CryptographyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Gets the configured key in the client. Subscribes to the call asynchronously and prints out the returned key
      * details when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.getKeyWithResponse}
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.cryptographyclient.getKey}
      *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the requested
-     *     {@link KeyVaultKey key}.
+     * @return A {@link Mono} containing the requested {@link KeyVaultKey key}.
      * @throws ResourceNotFoundException when the configured key doesn't exist in the key vault.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<KeyVaultKey>> getKeyWithResponse() {
+    Mono<KeyVaultKey> getKey() {
         try {
-            return withContext(context -> getKeyWithResponse(context));
+            return getKeyWithResponse().flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -162,15 +161,16 @@ public class CryptographyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Gets the configured key in the client. Subscribes to the call asynchronously and prints out the returned key
      * details when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.cryptographyclient.getKey}
+     * {@codesnippet com.azure.security.keyvault.keys.cryptography.async.cryptographyclient.getKeyWithResponse}
      *
-     * @return A {@link Mono} containing the requested {@link KeyVaultKey key}.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the requested
+     *     {@link KeyVaultKey key}.
      * @throws ResourceNotFoundException when the configured key doesn't exist in the key vault.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<KeyVaultKey> getKey() {
+    Mono<Response<KeyVaultKey>> getKeyWithResponse() {
         try {
-            return getKeyWithResponse().flatMap(FluxUtil::toMono);
+            return withContext(context -> getKeyWithResponse(context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

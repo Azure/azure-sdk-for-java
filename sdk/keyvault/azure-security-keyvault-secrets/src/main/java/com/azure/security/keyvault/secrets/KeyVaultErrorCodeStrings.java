@@ -9,7 +9,6 @@ import java.util.Properties;
 
 class KeyVaultErrorCodeStrings {
     static final String ERROR_STRINGS_FILE_NAME = "kvErrorStrings.properties";
-    private static Properties errorStrings;
 
     /**
      * The property name of Azure Key Vault Credentials required error string.
@@ -20,6 +19,8 @@ class KeyVaultErrorCodeStrings {
      * The property name of Azure Key Vault Endpoint required error string.
      */
     static final String VAULT_END_POINT_REQUIRED = "vault_endpoint_required";
+
+    private static Properties errorStrings;
 
     /**
      *  Gets the error String for the specified property.

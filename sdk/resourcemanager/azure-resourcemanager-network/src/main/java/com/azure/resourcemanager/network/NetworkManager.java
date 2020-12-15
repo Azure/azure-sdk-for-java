@@ -68,6 +68,17 @@ public final class NetworkManager extends Manager<NetworkManagementClient> {
     private DdosProtectionPlans ddosProtectionPlans;
     private ExpressRouteCrossConnections expressRouteCrossConnections;
 
+    private NetworkManager(HttpPipeline httpPipeline, AzureProfile profile) {
+        super(
+            httpPipeline,
+            profile,
+            new NetworkManagementClientBuilder()
+                .pipeline(httpPipeline)
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+                .subscriptionId(profile.getSubscriptionId())
+                .buildClient());
+    }
+
     /**
      * Get a Configurable instance that can be used to create {@link NetworkManager} with optional configuration.
      *
@@ -117,17 +128,6 @@ public final class NetworkManager extends Manager<NetworkManagementClient> {
         public NetworkManager authenticate(TokenCredential credential, AzureProfile profile) {
             return NetworkManager.authenticate(buildHttpPipeline(credential, profile), profile);
         }
-    }
-
-    private NetworkManager(HttpPipeline httpPipeline, AzureProfile profile) {
-        super(
-            httpPipeline,
-            profile,
-            new NetworkManagementClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .buildClient());
     }
 
     /** @return entry point to route table management */

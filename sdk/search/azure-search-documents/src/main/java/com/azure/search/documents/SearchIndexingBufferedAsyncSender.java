@@ -22,12 +22,12 @@ import static com.azure.core.util.FluxUtil.withContext;
  * index.
  */
 public final class SearchIndexingBufferedAsyncSender<T> {
+    final SearchIndexingPublisher<T> publisher;
+
     private final ClientLogger logger = new ClientLogger(SearchIndexingBufferedAsyncSender.class);
 
     private final boolean autoFlush;
     private final long flushWindowMillis;
-
-    final SearchIndexingPublisher<T> publisher;
 
     private Timer autoFlushTimer;
     private final AtomicReference<TimerTask> flushTask = new AtomicReference<>();
@@ -127,14 +127,14 @@ public final class SearchIndexingBufferedAsyncSender<T> {
         return withContext(context -> addActions(actions, context));
     }
 
-    Mono<Void> createAndAddActions(Collection<T> documents, IndexActionType actionType, Context context) {
-        return addActions(createDocumentActions(documents, actionType), context);
-    }
-
     Mono<Void> addActions(Collection<IndexAction<T>> actions, Context context) {
         ensureOpen();
 
         return publisher.addActions(actions, context, this::rescheduleFlushTask);
+    }
+
+    Mono<Void> createAndAddActions(Collection<T> documents, IndexActionType actionType, Context context) {
+        return addActions(createDocumentActions(documents, actionType), context);
     }
 
     /**

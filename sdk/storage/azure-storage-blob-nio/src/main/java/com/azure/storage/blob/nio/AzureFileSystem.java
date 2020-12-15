@@ -53,7 +53,6 @@ import java.util.stream.Collectors;
  * and configuring a FileSystem in the docs of {@link FileSystemProvider}.
  */
 public final class AzureFileSystem extends FileSystem {
-    private final ClientLogger logger = new ClientLogger(AzureFileSystem.class);
 
     // Configuration constants for blob clients.
     /**
@@ -126,19 +125,19 @@ public final class AzureFileSystem extends FileSystem {
      */
     public static final String AZURE_STORAGE_USE_HTTPS = "AzureStorageUseHttps";
 
-    static final String AZURE_STORAGE_HTTP_CLIENT = "AzureStorageHttpClient"; // undocumented; for test.
-    static final String AZURE_STORAGE_HTTP_POLICIES = "AzureStorageHttpPolicies"; // undocumented; for test.
-
     /**
      * Expected type: String
      */
     public static final String AZURE_STORAGE_FILE_STORES = "AzureStorageFileStores";
 
+    static final String AZURE_STORAGE_HTTP_CLIENT = "AzureStorageHttpClient"; // undocumented; for test.
+    static final String AZURE_STORAGE_HTTP_POLICIES = "AzureStorageHttpPolicies"; // undocumented; for test.
+
     static final String PATH_SEPARATOR = "/";
+    static final Map<Class<? extends FileAttributeView>, String> SUPPORTED_ATTRIBUTE_VIEWS;
 
     private static final String AZURE_STORAGE_BLOB_ENDPOINT_TEMPLATE = "%s://%s.blob.core.windows.net";
 
-    static final Map<Class<? extends FileAttributeView>, String> SUPPORTED_ATTRIBUTE_VIEWS;
     static {
         Map<Class<? extends FileAttributeView>, String> map = new HashMap<>();
         map.put(BasicFileAttributeView.class, "basic");
@@ -156,6 +155,8 @@ public final class AzureFileSystem extends FileSystem {
     private final Map<String, FileStore> fileStores;
     private FileStore defaultFileStore;
     private boolean closed;
+
+    private final ClientLogger logger = new ClientLogger(AzureFileSystem.class);
 
     AzureFileSystem(AzureFileSystemProvider parentFileSystemProvider, String accountName, Map<String, ?> config)
             throws IOException {

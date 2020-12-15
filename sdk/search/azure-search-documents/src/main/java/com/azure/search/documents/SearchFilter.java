@@ -45,6 +45,9 @@ public final class SearchFilter {
         SAFE_CLASSES.add(Double.class);
     }
 
+    private SearchFilter() {
+    }
+
     /**
      * Create an OData filter expression from a formattable string.
      * <p>
@@ -116,8 +119,5 @@ public final class SearchFilter {
         }
 
         return builder.append("'").toString();
-    }
-
-    private SearchFilter() {
     }
 }

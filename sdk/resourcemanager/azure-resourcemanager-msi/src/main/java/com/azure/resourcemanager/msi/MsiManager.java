@@ -24,6 +24,17 @@ public final class MsiManager extends Manager<ManagedServiceIdentityClient> {
 
     private Identities identities;
 
+    private MsiManager(HttpPipeline httpPipeline, AzureProfile profile) {
+        super(httpPipeline, profile, new ManagedServiceIdentityClientBuilder()
+            .pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .buildClient());
+        authorizationManager = AzureConfigurableImpl
+            .configureHttpPipeline(httpPipeline, AuthorizationManager.configure())
+            .authenticate(null, profile);
+    }
+
     /**
      * Get a Configurable instance that can be used to create MsiManager with optional configuration.
      *
@@ -79,17 +90,6 @@ public final class MsiManager extends Manager<ManagedServiceIdentityClient> {
         public MsiManager authenticate(TokenCredential credential, AzureProfile profile) {
             return MsiManager.authenticate(buildHttpPipeline(credential, profile), profile);
         }
-    }
-
-    private MsiManager(HttpPipeline httpPipeline, AzureProfile profile) {
-        super(httpPipeline, profile, new ManagedServiceIdentityClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .buildClient());
-        authorizationManager = AzureConfigurableImpl
-            .configureHttpPipeline(httpPipeline, AuthorizationManager.configure())
-            .authenticate(null, profile);
     }
 
     /**

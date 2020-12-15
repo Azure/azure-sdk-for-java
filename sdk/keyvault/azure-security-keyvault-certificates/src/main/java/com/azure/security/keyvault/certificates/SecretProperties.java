@@ -10,15 +10,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 class SecretProperties {
 
-    SecretProperties(String contentType) {
-        this.contentType = contentType;
-    }
-
     /**
      * The media type (MIME type).
      */
     @JsonProperty(value = "contentType")
     private String contentType;
+
+    SecretProperties(String contentType) {
+        this.contentType = contentType;
+    }
 
     /**
      * Get the contentType value.

@@ -31,27 +31,27 @@ import java.util.stream.StreamSupport;
  * Base class for running live and playback tests using {@link InterceptorManager}.
  */
 public abstract class TestBase implements BeforeEachCallback {
-    // Environment variable name used to determine the TestMode.
-    private static final String AZURE_TEST_MODE = "AZURE_TEST_MODE";
-    private static final String AZURE_TEST_HTTP_CLIENTS = "AZURE_TEST_HTTP_CLIENTS";
     public static final String AZURE_TEST_HTTP_CLIENTS_VALUE_ALL = "ALL";
     public static final String AZURE_TEST_HTTP_CLIENTS_VALUE_NETTY = "NettyAsyncHttpClient";
     public static final String AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL = "ALL";
 
     private static final Pattern TEST_ITERATION_PATTERN = Pattern.compile("test-template-invocation:#(\\d+)");
+    // Environment variable name used to determine the TestMode.
+    private static final String AZURE_TEST_MODE = "AZURE_TEST_MODE";
+    private static final String AZURE_TEST_HTTP_CLIENTS = "AZURE_TEST_HTTP_CLIENTS";
 
     private static TestMode testMode;
-
-    private final ClientLogger logger = new ClientLogger(TestBase.class);
 
     protected InterceptorManager interceptorManager;
     protected TestResourceNamer testResourceNamer;
     protected TestContextManager testContextManager;
 
-    private ExtensionContext extensionContext;
-
     @RegisterExtension
     final TestIterationContext testIterationContext = new TestIterationContext();
+
+    private final ClientLogger logger = new ClientLogger(TestBase.class);
+
+    private ExtensionContext extensionContext;
 
     /**
      * Before tests are executed, determines the test mode by reading the {@link TestBase#AZURE_TEST_MODE} environment

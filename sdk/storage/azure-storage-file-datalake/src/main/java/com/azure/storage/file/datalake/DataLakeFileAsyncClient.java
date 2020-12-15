@@ -331,6 +331,13 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         }
     }
 
+    private Mono<Response<PathInfo>> uploadWithResponse(Flux<ByteBuffer> data, long fileOffset, long length,
+        PathHttpHeaders httpHeaders, DataLakeRequestConditions requestConditions) {
+        return appendWithResponse(data, fileOffset, length, null, requestConditions.getLeaseId())
+            .flatMap(resp -> flushWithResponse(fileOffset + length, false, false, httpHeaders,
+                requestConditions));
+    }
+
     private Mono<Response<PathInfo>> uploadInChunks(Flux<ByteBuffer> data, long fileOffset,
         ParallelTransferOptions parallelTransferOptions, PathHttpHeaders httpHeaders,
         DataLakeRequestConditions requestConditions) {
@@ -386,13 +393,6 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
             }, parallelTransferOptions.getMaxConcurrency())
             .last()
             .flatMap(length -> flushWithResponse(length, false, false, httpHeaders, requestConditions));
-    }
-
-    private Mono<Response<PathInfo>> uploadWithResponse(Flux<ByteBuffer> data, long fileOffset, long length,
-        PathHttpHeaders httpHeaders, DataLakeRequestConditions requestConditions) {
-        return appendWithResponse(data, fileOffset, length, null, requestConditions.getLeaseId())
-            .flatMap(resp -> flushWithResponse(fileOffset + length, false, false, httpHeaders,
-                requestConditions));
     }
 
     /**

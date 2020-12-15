@@ -53,6 +53,7 @@ import javax.crypto.spec.SecretKeySpec;
 @JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.PUBLIC_ONLY, setterVisibility =
     JsonAutoDetect.Visibility.PUBLIC_ONLY)
 public class JsonWebKey {
+    private static final Map<KeyCurveName, String> CURVE_TO_SPEC_NAME = setupCurveToSpecMap();
     private final ClientLogger logger = new ClientLogger(JsonWebKey.class);
 
     /**
@@ -1181,8 +1182,6 @@ public class JsonWebKey {
         }
         return hashCode;
     }
-
-    private static final Map<KeyCurveName, String> CURVE_TO_SPEC_NAME = setupCurveToSpecMap();
 
     private static Map<KeyCurveName, String> setupCurveToSpecMap() {
         Map<KeyCurveName, String>  curveToSpecMap = new HashMap<>();

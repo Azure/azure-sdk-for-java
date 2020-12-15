@@ -38,9 +38,9 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.KEYVAULT_TRACING_NAMESPACE_VALUE;
 
 class CryptographyServiceClient {
-    final String apiVersion;
     static final String ACCEPT_LANGUAGE = "en-US";
     static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
+    final String apiVersion;
 
     private final ClientLogger logger = new ClientLogger(CryptographyServiceClient.class);
     private final CryptographyService service;

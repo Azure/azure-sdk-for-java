@@ -27,6 +27,16 @@ public interface SqlChildrenOperations<T> {
     T getBySqlServer(String resourceGroupName, String sqlServerName, String name);
 
     /**
+     * Gets the information about a child resource from Azure SQL server, identifying it by its name and its resource
+     * group.
+     *
+     * @param sqlServer the SQL server parent resource
+     * @param name the name of the child resource
+     * @return an immutable representation of the resource
+     */
+    T getBySqlServer(SqlServer sqlServer, String name);
+
+    /**
      * Asynchronously gets the information about a child resource from Azure SQL server, identifying it by its name and
      * its resource group.
      *
@@ -36,16 +46,6 @@ public interface SqlChildrenOperations<T> {
      * @return a representation of the deferred computation of this call returning the found resource
      */
     Mono<T> getBySqlServerAsync(String resourceGroupName, String sqlServerName, String name);
-
-    /**
-     * Gets the information about a child resource from Azure SQL server, identifying it by its name and its resource
-     * group.
-     *
-     * @param sqlServer the SQL server parent resource
-     * @param name the name of the child resource
-     * @return an immutable representation of the resource
-     */
-    T getBySqlServer(SqlServer sqlServer, String name);
 
     /**
      * Asynchronously gets the information about a child resource from Azure SQL server, identifying it by its name and
@@ -117,6 +117,14 @@ public interface SqlChildrenOperations<T> {
     List<T> listBySqlServer(String resourceGroupName, String sqlServerName);
 
     /**
+     * Lists Azure SQL child resources of the specified Azure SQL server in the specified resource group.
+     *
+     * @param sqlServer the parent Azure SQL server.
+     * @return the list of resources
+     */
+    List<T> listBySqlServer(SqlServer sqlServer);
+
+    /**
      * Asynchronously lists Azure SQL child resources of the specified Azure SQL server in the specified resource group.
      *
      * @param resourceGroupName the name of the resource group to list the resources from
@@ -124,14 +132,6 @@ public interface SqlChildrenOperations<T> {
      * @return a representation of the deferred computation of this call
      */
     PagedFlux<T> listBySqlServerAsync(String resourceGroupName, String sqlServerName);
-
-    /**
-     * Lists Azure SQL child resources of the specified Azure SQL server in the specified resource group.
-     *
-     * @param sqlServer the parent Azure SQL server.
-     * @return the list of resources
-     */
-    List<T> listBySqlServer(SqlServer sqlServer);
 
     /**
      * Asynchronously lists Azure SQL child resources of the specified Azure SQL server in the specified resource group.

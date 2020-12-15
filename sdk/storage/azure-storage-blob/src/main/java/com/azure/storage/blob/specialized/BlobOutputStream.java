@@ -196,13 +196,12 @@ public abstract class BlobOutputStream extends StorageOutputStream {
     }
 
     private static final class BlockBlobOutputStream extends BlobOutputStream {
+        boolean complete;
 
         private FluxSink<ByteBuffer> sink;
 
         private final Lock lock;
         private final Condition transferComplete;
-
-        boolean complete;
 
         private BlockBlobOutputStream(final BlobAsyncClient client,
             final ParallelTransferOptions parallelTransferOptions, final BlobHttpHeaders headers,

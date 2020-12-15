@@ -29,13 +29,13 @@ import java.util.Optional;
  * requests.
  */
 public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
-    private static final Tracer TRACER = OpenTelemetry.getTracerProvider().get("Azure-OpenTelemetry");
 
     // standard attributes with AMQP request
     static final String AZ_NAMESPACE_KEY = "az.namespace";
     static final String MESSAGE_BUS_DESTINATION = "message_bus.destination";
     static final String PEER_ENDPOINT = "peer.address";
 
+    private static final Tracer TRACER = OpenTelemetry.getTracerProvider().get("Azure-OpenTelemetry");
     private final ClientLogger logger = new ClientLogger(OpenTelemetryTracer.class);
 
     /**
@@ -103,6 +103,24 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      * {@inheritDoc}
      */
     @Override
+    public void end(String statusMessage, Throwable throwable, Context context) {
+        final Span span = getOrDefault(context, PARENT_SPAN_KEY, null, Span.class);
+        if (span == null) {
+            logger.warning("Failed to find span to end it.");
+            return;
+        }
+
+        if (span.isRecording()) {
+            span.setStatus(AmqpTraceUtil.parseStatusMessage(statusMessage, throwable));
+        }
+
+        span.end();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void end(int responseCode, Throwable throwable, Context context) {
         Objects.requireNonNull(context, "'context' cannot be null.");
         final Span span = getOrDefault(context, PARENT_SPAN_KEY, null, Span.class);
@@ -142,24 +160,6 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     @Override
     public Context setSpanName(String spanName, Context context) {
         return context.addData(USER_SPAN_NAME_KEY, spanName);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void end(String statusMessage, Throwable throwable, Context context) {
-        final Span span = getOrDefault(context, PARENT_SPAN_KEY, null, Span.class);
-        if (span == null) {
-            logger.warning("Failed to find span to end it.");
-            return;
-        }
-
-        if (span.isRecording()) {
-            span.setStatus(AmqpTraceUtil.parseStatusMessage(statusMessage, throwable));
-        }
-
-        span.end();
     }
 
     @Override

@@ -54,9 +54,6 @@ import static com.azure.storage.common.implementation.StorageImplUtils.blockWith
  */
 @ServiceClient(builder = SpecializedBlobClientBuilder.class)
 public final class BlockBlobClient extends BlobClientBase {
-    private final ClientLogger logger = new ClientLogger(BlockBlobClient.class);
-
-    private final BlockBlobAsyncClient client;
 
     /**
      * Indicates the maximum number of bytes that can be sent in a call to upload.
@@ -82,6 +79,10 @@ public final class BlockBlobClient extends BlobClientBase {
      * Indicates the maximum number of blocks allowed in a block blob.
      */
     public static final int MAX_BLOCKS = BlockBlobAsyncClient.MAX_BLOCKS;
+
+    private final ClientLogger logger = new ClientLogger(BlockBlobClient.class);
+
+    private final BlockBlobAsyncClient client;
 
     /**
      * Package-private constructor for use by {@link SpecializedBlobClientBuilder}.

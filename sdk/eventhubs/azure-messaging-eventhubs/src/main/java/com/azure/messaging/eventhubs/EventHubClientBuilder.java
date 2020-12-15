@@ -98,6 +98,11 @@ import java.util.regex.Pattern;
     EventHubConsumerAsyncClient.class, EventHubConsumerClient.class}, protocol = ServiceClientProtocol.AMQP)
 public class EventHubClientBuilder {
 
+    /**
+     * The name of the default consumer group in the Event Hubs service.
+     */
+    public static final String DEFAULT_CONSUMER_GROUP_NAME = "$Default";
+
     // Default number of events to fetch when creating the consumer.
     static final int DEFAULT_PREFETCH_COUNT = 500;
 
@@ -105,10 +110,6 @@ public class EventHubClientBuilder {
     // So, limit the prefetch to just 1 by default.
     static final int DEFAULT_PREFETCH_COUNT_FOR_SYNC_CLIENT = 1;
 
-    /**
-     * The name of the default consumer group in the Event Hubs service.
-     */
-    public static final String DEFAULT_CONSUMER_GROUP_NAME = "$Default";
     /**
      * The minimum value allowed for the prefetch count of the consumer.
      */
@@ -188,28 +189,6 @@ public class EventHubClientBuilder {
         return credential(properties.getEndpoint().getHost(), properties.getEntityPath(), tokenCredential);
     }
 
-    private TokenCredential getTokenCredential(ConnectionStringProperties properties) {
-        TokenCredential tokenCredential;
-        if (properties.getSharedAccessSignature() == null) {
-            tokenCredential = new EventHubSharedKeyCredential(properties.getSharedAccessKeyName(),
-                properties.getSharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
-        } else {
-            tokenCredential = new EventHubSharedKeyCredential(properties.getSharedAccessSignature());
-        }
-        return tokenCredential;
-    }
-
-    /**
-     * Sets the client options.
-     *
-     * @param clientOptions The client options.
-     * @return The updated {@link EventHubClientBuilder} object.
-     */
-    public EventHubClientBuilder clientOptions(ClientOptions clientOptions) {
-        this.clientOptions = clientOptions;
-        return this;
-    }
-
     /**
      * Sets the credential information given a connection string to the Event Hubs namespace and name to a specific
      * Event Hub instance.
@@ -250,6 +229,28 @@ public class EventHubClientBuilder {
         }
 
         return credential(properties.getEndpoint().getHost(), eventHubName, tokenCredential);
+    }
+
+    private TokenCredential getTokenCredential(ConnectionStringProperties properties) {
+        TokenCredential tokenCredential;
+        if (properties.getSharedAccessSignature() == null) {
+            tokenCredential = new EventHubSharedKeyCredential(properties.getSharedAccessKeyName(),
+                properties.getSharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
+        } else {
+            tokenCredential = new EventHubSharedKeyCredential(properties.getSharedAccessSignature());
+        }
+        return tokenCredential;
+    }
+
+    /**
+     * Sets the client options.
+     *
+     * @param clientOptions The client options.
+     * @return The updated {@link EventHubClientBuilder} object.
+     */
+    public EventHubClientBuilder clientOptions(ClientOptions clientOptions) {
+        this.clientOptions = clientOptions;
+        return this;
     }
 
     /**

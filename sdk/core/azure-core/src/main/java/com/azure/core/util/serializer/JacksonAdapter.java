@@ -45,6 +45,10 @@ import java.util.regex.Pattern;
  */
 public class JacksonAdapter implements SerializerAdapter {
     private static final Pattern PATTERN = Pattern.compile("^\"*|\"*$");
+    /*
+     * The lazily-created serializer for this ServiceClient.
+     */
+    private static SerializerAdapter serializerAdapter;
 
     private final ClientLogger logger = new ClientLogger(JacksonAdapter.class);
 
@@ -61,11 +65,6 @@ public class JacksonAdapter implements SerializerAdapter {
     private final ObjectMapper xmlMapper;
 
     private final ObjectMapper headerMapper;
-
-    /*
-     * The lazily-created serializer for this ServiceClient.
-     */
-    private static SerializerAdapter serializerAdapter;
 
     /**
      * Creates a new JacksonAdapter instance with default mapper settings.

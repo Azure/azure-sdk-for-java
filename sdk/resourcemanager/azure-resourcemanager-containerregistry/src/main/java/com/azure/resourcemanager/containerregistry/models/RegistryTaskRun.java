@@ -145,27 +145,12 @@ public interface RegistryTaskRun extends HasInnerModel<RunInner>, Refreshable<Re
             RunRequestType withLinux();
 
             /**
-             * The function that specifies the platform will have a Windows OS.
-             *
-             * @return the next stage of the container registry task run definition.
-             */
-            RunRequestType withWindows();
-
-            /**
              * The function that specifies the platform will have a Linux OS with Architecture architecture.
              *
              * @param architecture the architecture the platform will have.
              * @return the next stage of the container registry task run definition.
              */
             RunRequestType withLinux(Architecture architecture);
-
-            /**
-             * The function that specifies the platform will have a Windows OS with Architecture architecture.
-             *
-             * @param architecture the architecture the platform will have.
-             * @return the next stage of the container registry task run definition.
-             */
-            RunRequestType withWindows(Architecture architecture);
 
             /**
              * The function that specifies the platform will have a Linux OS with Architecture architecture and Variant
@@ -176,6 +161,21 @@ public interface RegistryTaskRun extends HasInnerModel<RunInner>, Refreshable<Re
              * @return the next stage of the container registry task run definition.
              */
             RunRequestType withLinux(Architecture architecture, Variant variant);
+
+            /**
+             * The function that specifies the platform will have a Windows OS.
+             *
+             * @return the next stage of the container registry task run definition.
+             */
+            RunRequestType withWindows();
+
+            /**
+             * The function that specifies the platform will have a Windows OS with Architecture architecture.
+             *
+             * @param architecture the architecture the platform will have.
+             * @return the next stage of the container registry task run definition.
+             */
+            RunRequestType withWindows(Architecture architecture);
 
             /**
              * The function that specifies the platform will have a Windows OS with Architecture architecture and

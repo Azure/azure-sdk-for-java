@@ -32,6 +32,10 @@ import com.azure.core.util.CoreUtils;
 @ServiceClientBuilder(serviceClients = {ChatAsyncClient.class, ChatClient.class})
 public final class ChatClientBuilder {
 
+    private static final String APP_CONFIG_PROPERTIES = "azure-communication-chat.properties";
+    private static final String SDK_NAME = "name";
+    private static final String SDK_VERSION = "version";
+
     private String endpoint;
     private HttpClient httpClient;
     private CommunicationTokenCredential communicationTokenCredential;
@@ -39,10 +43,6 @@ public final class ChatClientBuilder {
     private HttpLogOptions logOptions = new HttpLogOptions();
     private HttpPipeline httpPipeline;
     private Configuration configuration;
-
-    private static final String APP_CONFIG_PROPERTIES = "azure-communication-chat.properties";
-    private static final String SDK_NAME = "name";
-    private static final String SDK_VERSION = "version";
 
     /**
      * Set endpoint of the service
@@ -169,7 +169,7 @@ public final class ChatClientBuilder {
         } else {
             Objects.requireNonNull(communicationTokenCredential);
             Objects.requireNonNull(httpClient);
-            CommunicationBearerTokenCredential tokenCredential = 
+            CommunicationBearerTokenCredential tokenCredential =
                 new CommunicationBearerTokenCredential(communicationTokenCredential);
 
             pipeline = createHttpPipeline(httpClient,

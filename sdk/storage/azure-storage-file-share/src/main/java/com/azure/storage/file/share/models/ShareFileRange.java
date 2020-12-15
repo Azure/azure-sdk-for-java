@@ -12,9 +12,11 @@ import java.util.Locale;
  */
 @Immutable
 public final class ShareFileRange {
-    final ClientLogger logger = new ClientLogger(ShareFileRange.class);
     private static final String RANGE_HEADER_FORMAT = "bytes=%d-%d";
     private static final String BEGIN_RANGE_HEADER_FORMAT = "bytes=%d-";
+
+    final ClientLogger logger = new ClientLogger(ShareFileRange.class);
+
     private final long start;
     private final Long end;
 

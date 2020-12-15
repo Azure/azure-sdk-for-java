@@ -83,7 +83,6 @@ import static com.azure.storage.blob.specialized.cryptography.CryptographyConsta
  */
 @ServiceClientBuilder(serviceClients = {EncryptedBlobAsyncClient.class, EncryptedBlobClient.class})
 public final class EncryptedBlobClientBuilder {
-    private final ClientLogger logger = new ClientLogger(EncryptedBlobClientBuilder.class);
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
 
@@ -114,6 +113,8 @@ public final class EncryptedBlobClientBuilder {
     private String keyWrapAlgorithm;
     private BlobServiceVersion version;
     private CpkInfo customerProvidedKey;
+
+    private final ClientLogger logger = new ClientLogger(EncryptedBlobClientBuilder.class);
 
     /**
      * Creates a new instance of the EncryptedBlobClientBuilder

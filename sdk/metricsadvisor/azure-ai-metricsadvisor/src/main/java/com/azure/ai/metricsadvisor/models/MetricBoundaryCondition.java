@@ -134,19 +134,6 @@ public final class MetricBoundaryCondition {
     }
 
     /**
-     * True if alert will be triggered when the companion-metric data-points are out
-     * of boundary but the corresponding data-point is missing for the original metric.
-     *
-     * @return True if alert is triggered for missing data-points, false otherwise.
-     */
-    public boolean shouldAlertIfDataPointMissing() {
-        if (this.alertIfMissing == null) {
-            return false;
-        }
-        return this.alertIfMissing;
-    }
-
-    /**
      * Sets the companion metric id.
      *
      * When the companion-metric is set for a metric, an anomaly detected in the original
@@ -161,10 +148,22 @@ public final class MetricBoundaryCondition {
      * @return The MetricBoundaryCondition object itself.
      */
     public MetricBoundaryCondition setCompanionMetricId(String companionMetricId,
-                                                        boolean alertIfMissing) {
+        boolean alertIfMissing) {
         this.companionMetricId = companionMetricId;
         this.alertIfMissing = alertIfMissing;
         return this;
+    }
+    /**
+     * True if alert will be triggered when the companion-metric data-points are out
+     * of boundary but the corresponding data-point is missing for the original metric.
+     *
+     * @return True if alert is triggered for missing data-points, false otherwise.
+     */
+    public boolean shouldAlertIfDataPointMissing() {
+        if (this.alertIfMissing == null) {
+            return false;
+        }
+        return this.alertIfMissing;
     }
 
     void setLowerBoundary(Double lowerBoundary) {

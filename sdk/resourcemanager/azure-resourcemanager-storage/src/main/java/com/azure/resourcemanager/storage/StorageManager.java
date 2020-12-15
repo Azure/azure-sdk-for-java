@@ -35,6 +35,17 @@ public final class StorageManager extends Manager<StorageManagementClient> {
     private BlobServices blobServices;
     private ManagementPolicies managementPolicies;
 
+    private StorageManager(HttpPipeline httpPipeline, AzureProfile profile) {
+        super(
+            httpPipeline,
+            profile,
+            new StorageManagementClientBuilder()
+                .pipeline(httpPipeline)
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+                .subscriptionId(profile.getSubscriptionId())
+                .buildClient());
+    }
+
     /**
      * Get a Configurable instance that can be used to create StorageManager with optional configuration.
      *
@@ -83,17 +94,6 @@ public final class StorageManager extends Manager<StorageManagementClient> {
         public StorageManager authenticate(TokenCredential credential, AzureProfile profile) {
             return StorageManager.authenticate(buildHttpPipeline(credential, profile), profile);
         }
-    }
-
-    private StorageManager(HttpPipeline httpPipeline, AzureProfile profile) {
-        super(
-            httpPipeline,
-            profile,
-            new StorageManagementClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .buildClient());
     }
 
     /** @return the storage account management API entry point */

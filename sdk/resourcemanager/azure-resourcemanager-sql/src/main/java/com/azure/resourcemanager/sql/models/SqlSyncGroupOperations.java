@@ -51,18 +51,18 @@ public interface SqlSyncGroupOperations
     /**
      * Gets a collection of sync database ids.
      *
-     * @param locationName The name of the region where the resource is located.
-     * @return a paged list of database IDs if successful.
-     */
-    PagedFlux<String> listSyncDatabaseIdsAsync(String locationName);
-
-    /**
-     * Gets a collection of sync database ids.
-     *
      * @param region the region where the resource is located.
      * @return a paged list of database IDs if successful.
      */
     PagedIterable<String> listSyncDatabaseIds(Region region);
+
+    /**
+     * Gets a collection of sync database ids.
+     *
+     * @param locationName The name of the region where the resource is located.
+     * @return a paged list of database IDs if successful.
+     */
+    PagedFlux<String> listSyncDatabaseIdsAsync(String locationName);
 
     /**
      * Gets a collection of sync database ids.

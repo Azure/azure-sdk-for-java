@@ -63,7 +63,6 @@ import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
  */
 @ServiceClient(builder = SpecializedBlobClientBuilder.class, isAsync = true)
 public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
-    private final ClientLogger logger = new ClientLogger(AppendBlobAsyncClient.class);
 
     /**
      * Indicates the maximum number of bytes that can be sent in a call to appendBlock.
@@ -74,6 +73,8 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      * Indicates the maximum number of blocks allowed in an append blob.
      */
     public static final int MAX_BLOCKS = 50000;
+
+    private final ClientLogger logger = new ClientLogger(AppendBlobAsyncClient.class);
 
     /**
      * Package-private constructor for use by {@link SpecializedBlobClientBuilder}.

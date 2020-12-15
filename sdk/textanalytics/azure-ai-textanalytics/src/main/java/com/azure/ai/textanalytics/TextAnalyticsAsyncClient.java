@@ -63,11 +63,6 @@ import static com.azure.core.util.FluxUtil.monoError;
  */
 @ServiceClient(builder = TextAnalyticsClientBuilder.class, isAsync = true)
 public final class TextAnalyticsAsyncClient {
-    private final ClientLogger logger = new ClientLogger(TextAnalyticsAsyncClient.class);
-    private final TextAnalyticsClientImpl service;
-    private final TextAnalyticsServiceVersion serviceVersion;
-    private final String defaultCountryHint;
-    private final String defaultLanguage;
 
     // Please see <a href=https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
     // for more information on Azure resource provider namespaces.
@@ -80,6 +75,12 @@ public final class TextAnalyticsAsyncClient {
     final RecognizeLinkedEntityAsyncClient recognizeLinkedEntityAsyncClient;
     final AnalyzeHealthcareAsyncClient analyzeHealthcareAsyncClient;
     final AnalyzeTasksAsyncClient analyzeTasksAsyncClient;
+
+    private final ClientLogger logger = new ClientLogger(TextAnalyticsAsyncClient.class);
+    private final TextAnalyticsClientImpl service;
+    private final TextAnalyticsServiceVersion serviceVersion;
+    private final String defaultCountryHint;
+    private final String defaultLanguage;
 
     /**
      * Create a {@link TextAnalyticsAsyncClient} that sends requests to the Text Analytics services's endpoint. Each

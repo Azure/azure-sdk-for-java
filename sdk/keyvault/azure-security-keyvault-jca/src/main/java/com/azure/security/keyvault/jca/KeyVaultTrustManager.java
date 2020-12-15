@@ -65,6 +65,16 @@ public class KeyVaultTrustManager extends X509ExtendedTrustManager {
     }
 
     @Override
+    public void checkClientTrusted(X509Certificate[] chain, String authType, Socket socket) throws CertificateException {
+        checkClientTrusted(chain, authType);
+    }
+
+    @Override
+    public void checkClientTrusted(X509Certificate[] chain, String authType, SSLEngine engine) throws CertificateException {
+        checkClientTrusted(chain, authType);
+    }
+
+    @Override
     public void checkClientTrusted(X509Certificate[] chain, String authType)
         throws CertificateException {
 
@@ -127,27 +137,17 @@ public class KeyVaultTrustManager extends X509ExtendedTrustManager {
     }
 
     @Override
-    public X509Certificate[] getAcceptedIssuers() {
-        return new X509Certificate[0];
-    }
-
-    @Override
-    public void checkClientTrusted(X509Certificate[] chain, String authType, Socket socket) throws CertificateException {
-        checkClientTrusted(chain, authType);
-    }
-
-    @Override
     public void checkServerTrusted(X509Certificate[] chain, String authType, Socket socket) throws CertificateException {
         checkServerTrusted(chain, authType);
     }
 
     @Override
-    public void checkClientTrusted(X509Certificate[] chain, String authType, SSLEngine engine) throws CertificateException {
-        checkClientTrusted(chain, authType);
+    public void checkServerTrusted(X509Certificate[] chain, String authType, SSLEngine engine) throws CertificateException {
+        checkServerTrusted(chain, authType);
     }
 
     @Override
-    public void checkServerTrusted(X509Certificate[] chain, String authType, SSLEngine engine) throws CertificateException {
-        checkServerTrusted(chain, authType);
+    public X509Certificate[] getAcceptedIssuers() {
+        return new X509Certificate[0];
     }
 }

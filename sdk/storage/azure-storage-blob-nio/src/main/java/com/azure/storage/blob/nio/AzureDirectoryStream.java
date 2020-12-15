@@ -27,13 +27,14 @@ import java.util.Set;
  * {@inheritDoc}
  */
 public final class AzureDirectoryStream implements DirectoryStream<Path> {
+    boolean closed = false;
+
     private final ClientLogger logger = new ClientLogger(AzureDirectoryStream.class);
 
     private final AzurePath path;
     private final DirectoryStream.Filter<? super Path> filter;
     private boolean iteratorRequested = false;
     private final AzureDirectoryIterator iterator;
-    boolean closed = false;
 
     AzureDirectoryStream(AzurePath path, DirectoryStream.Filter<? super Path> filter) throws IOException {
         this.path = path;

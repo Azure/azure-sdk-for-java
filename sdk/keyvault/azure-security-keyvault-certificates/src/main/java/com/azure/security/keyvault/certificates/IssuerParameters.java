@@ -11,15 +11,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 class IssuerParameters {
 
-    IssuerParameters() {
-
-    }
-
-    IssuerParameters(CertificatePolicy certificatePolicy) {
-        this.name = certificatePolicy.getIssuerName();
-        this.certificateType = certificatePolicy.getCertificateType();
-        this.certificateTransparency = certificatePolicy.isCertificateTransparent();
-    }
     /**
      * Name of the referenced issuer object or reserved names; for example,
      * 'Self' or 'Unknown'.
@@ -39,6 +30,16 @@ class IssuerParameters {
      */
     @JsonProperty(value = "cert_transparency")
     private Boolean certificateTransparency;
+
+    IssuerParameters() {
+
+    }
+
+    IssuerParameters(CertificatePolicy certificatePolicy) {
+        this.name = certificatePolicy.getIssuerName();
+        this.certificateType = certificatePolicy.getCertificateType();
+        this.certificateTransparency = certificatePolicy.isCertificateTransparent();
+    }
 
     /**
      * Get the name value.

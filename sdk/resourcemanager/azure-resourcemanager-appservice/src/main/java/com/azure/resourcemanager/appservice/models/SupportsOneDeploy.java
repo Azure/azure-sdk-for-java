@@ -26,18 +26,37 @@ public interface SupportsOneDeploy {
      *
      * @param type the deploy type
      * @param file the file to upload
-     * @return the completable of the operation
+     * @param deployOptions the deploy options
      */
-    Mono<Void> deployAsync(DeployType type, File file);
+    void deploy(DeployType type, File file, DeployOptions deployOptions);
 
     /**
      * Deploy a file to Azure site.
      *
      * @param type the deploy type
      * @param file the file to upload
+     * @param length the length of the file
+     */
+    void deploy(DeployType type, InputStream file, long length);
+
+    /**
+     * Deploy a file to Azure site.
+     *
+     * @param type the deploy type
+     * @param file the file to upload
+     * @param length the length of the file
      * @param deployOptions the deploy options
      */
-    void deploy(DeployType type, File file, DeployOptions deployOptions);
+    void deploy(DeployType type, InputStream file, long length, DeployOptions deployOptions);
+
+    /**
+     * Deploy a file to Azure site.
+     *
+     * @param type the deploy type
+     * @param file the file to upload
+     * @return the completable of the operation
+     */
+    Mono<Void> deployAsync(DeployType type, File file);
 
     /**
      * Deploy a file to Azure site.
@@ -55,28 +74,9 @@ public interface SupportsOneDeploy {
      * @param type the deploy type
      * @param file the file to upload
      * @param length the length of the file
-     */
-    void deploy(DeployType type, InputStream file, long length);
-
-    /**
-     * Deploy a file to Azure site.
-     *
-     * @param type the deploy type
-     * @param file the file to upload
-     * @param length the length of the file
      * @return the completable of the operation
      */
     Mono<Void> deployAsync(DeployType type, InputStream file, long length);
-
-    /**
-     * Deploy a file to Azure site.
-     *
-     * @param type the deploy type
-     * @param file the file to upload
-     * @param length the length of the file
-     * @param deployOptions the deploy options
-     */
-    void deploy(DeployType type, InputStream file, long length, DeployOptions deployOptions);
 
     /**
      * Deploy a file to Azure site.

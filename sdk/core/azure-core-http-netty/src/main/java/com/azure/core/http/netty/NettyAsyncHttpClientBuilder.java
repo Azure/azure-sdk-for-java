@@ -37,10 +37,11 @@ import java.util.concurrent.atomic.AtomicReference;
  * @see HttpClient
  */
 public class NettyAsyncHttpClientBuilder {
-    private final ClientLogger logger = new ClientLogger(NettyAsyncHttpClientBuilder.class);
 
     private static final long MINIMUM_TIMEOUT = TimeUnit.MILLISECONDS.toMillis(1);
     private static final long DEFAULT_TIMEOUT = TimeUnit.SECONDS.toMillis(60);
+
+    private final ClientLogger logger = new ClientLogger(NettyAsyncHttpClientBuilder.class);
 
     private final HttpClient baseHttpClient;
     private ProxyOptions proxyOptions;

@@ -20,6 +20,17 @@ public final class TrafficManager extends Manager<TrafficManagerManagementClient
     // Collections
     private TrafficManagerProfiles profiles;
 
+    private TrafficManager(HttpPipeline httpPipeline, AzureProfile profile) {
+        super(
+            httpPipeline,
+            profile,
+            new TrafficManagerManagementClientBuilder()
+                .pipeline(httpPipeline)
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+                .subscriptionId(profile.getSubscriptionId())
+                .buildClient());
+    }
+    
     /**
      * Get a Configurable instance that can be used to create {@link TrafficManager} with optional configuration.
      *
@@ -68,17 +79,6 @@ public final class TrafficManager extends Manager<TrafficManagerManagementClient
         public TrafficManager authenticate(TokenCredential credential, AzureProfile profile) {
             return TrafficManager.authenticate(buildHttpPipeline(credential, profile), profile);
         }
-    }
-
-    private TrafficManager(HttpPipeline httpPipeline, AzureProfile profile) {
-        super(
-            httpPipeline,
-            profile,
-            new TrafficManagerManagementClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .buildClient());
     }
 
     /** @return entry point to traffic manager profile management */

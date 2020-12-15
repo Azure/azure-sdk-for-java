@@ -10,6 +10,7 @@ import java.util.Locale;
  * Enum which represent logging levels used in Azure SDKs.
  */
 public enum LogLevel {
+
     /**
      * Indicates that log level is at verbose level.
      */
@@ -35,9 +36,9 @@ public enum LogLevel {
      */
     NOT_SET(5, "5");
 
+    private static final HashMap<String, LogLevel> LOG_LEVEL_STRING_MAPPER = new HashMap<>();
     private final int numericValue;
     private final String[] allowedLogLevelVariables;
-    private static final HashMap<String, LogLevel> LOG_LEVEL_STRING_MAPPER = new HashMap<>();
 
     static {
         for (LogLevel logLevel: LogLevel.values()) {

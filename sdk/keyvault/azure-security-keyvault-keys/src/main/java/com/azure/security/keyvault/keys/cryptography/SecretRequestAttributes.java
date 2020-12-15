@@ -15,21 +15,6 @@ import java.time.ZoneOffset;
 class SecretRequestAttributes {
 
     /*
-     * Creates an instance of SecretRequestAttributes. Reads secretProperties.notBefore, secretProperties.expires and
-     * secretProperties.enabled fields from {@code secretProperties}
-     * @param secretProperties the {@link SecretProperties} object with populated attributes
-     */
-    SecretRequestAttributes(SecretProperties secretProperties) {
-        if (secretProperties.getNotBefore() != null) {
-            this.notBefore = secretProperties.getNotBefore().toEpochSecond();
-        }
-        if (secretProperties.getExpiresOn() != null) {
-            this.expires = secretProperties.getExpiresOn().toEpochSecond();
-        }
-        this.enabled = secretProperties.isEnabled();
-    }
-
-    /*
      * The secret value.
      */
     @JsonProperty(value = "value")
@@ -70,6 +55,21 @@ class SecretRequestAttributes {
      */
     @JsonProperty(value = "updated", access = JsonProperty.Access.WRITE_ONLY)
     private Long updated;
+
+    /*
+     * Creates an instance of SecretRequestAttributes. Reads secretProperties.notBefore, secretProperties.expires and
+     * secretProperties.enabled fields from {@code secretProperties}
+     * @param secretProperties the {@link SecretProperties} object with populated attributes
+     */
+    SecretRequestAttributes(SecretProperties secretProperties) {
+        if (secretProperties.getNotBefore() != null) {
+            this.notBefore = secretProperties.getNotBefore().toEpochSecond();
+        }
+        if (secretProperties.getExpiresOn() != null) {
+            this.expires = secretProperties.getExpiresOn().toEpochSecond();
+        }
+        this.enabled = secretProperties.isEnabled();
+    }
 
     /*
      * Get the enabled value.

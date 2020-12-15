@@ -13,6 +13,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
 
 class RsaOaep extends RsaEncryption {
+    public static final String ALGORITHM_NAME = "RSA-OAEP";
 
     static class RsaOaepDecryptor implements ICryptoTransform {
 
@@ -67,8 +68,6 @@ class RsaOaep extends RsaEncryption {
     }
 
     static final String RSAOAEP = "RSA/ECB/OAEPWithSHA1AndMGF1Padding";
-
-    public static final String ALGORITHM_NAME = "RSA-OAEP";
 
     RsaOaep() {
         super(ALGORITHM_NAME);

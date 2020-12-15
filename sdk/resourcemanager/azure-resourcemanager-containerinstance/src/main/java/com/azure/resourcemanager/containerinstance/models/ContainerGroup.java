@@ -933,16 +933,6 @@ public interface ContainerGroup
                 String resourceId, BuiltInRole role);
 
             /**
-             * Specifies a system assigned managed service identity with access to the current resource group and with
-             * the specified role.
-             *
-             * @param role access role to be assigned to the identity
-             * @return the next stage of the definition
-             */
-            WithSystemAssignedIdentityBasedAccessOrCreate withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(
-                BuiltInRole role);
-
-            /**
              * Specifies a system assigned managed service identity with access to a specific resource with a specified
              * role from the id.
              *
@@ -952,6 +942,16 @@ public interface ContainerGroup
              */
             WithSystemAssignedIdentityBasedAccessOrCreate withSystemAssignedIdentityBasedAccessTo(
                 String resourceId, String roleDefinitionId);
+            
+            /**
+             * Specifies a system assigned managed service identity with access to the current resource group and with
+             * the specified role.
+             *
+             * @param role access role to be assigned to the identity
+             * @return the next stage of the definition
+             */
+            WithSystemAssignedIdentityBasedAccessOrCreate withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(
+                BuiltInRole role);
 
             /**
              * Specifies a system assigned managed service identity with access to the current resource group and with

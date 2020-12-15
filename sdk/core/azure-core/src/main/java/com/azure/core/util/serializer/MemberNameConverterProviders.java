@@ -10,11 +10,16 @@ import java.util.ServiceLoader;
  * This class is a proxy for using a {@link MemberNameConverterProvider} loaded from the classpath.
  */
 public final class MemberNameConverterProviders {
+
     private static final String CANNOT_FIND_MEMBER_NAME_CONVERTER_PROVIDER =
         "Cannot find any member name converter provider on the classpath.";
 
     private static MemberNameConverterProvider defaultProvider;
     private static boolean attemptedLoad;
+
+    private MemberNameConverterProviders() {
+        // no-op
+    }
 
     /**
      * Creates an instance of {@link MemberNameConverter} using the first {@link MemberNameConverterProvider} found in
@@ -45,9 +50,5 @@ public final class MemberNameConverterProviders {
         } else {
             throw new IllegalStateException(CANNOT_FIND_MEMBER_NAME_CONVERTER_PROVIDER);
         }
-    }
-
-    private MemberNameConverterProviders() {
-        // no-op
     }
 }

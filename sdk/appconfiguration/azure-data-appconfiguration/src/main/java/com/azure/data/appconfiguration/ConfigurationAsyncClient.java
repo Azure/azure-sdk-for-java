@@ -52,12 +52,12 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 @ServiceClient(builder = ConfigurationClientBuilder.class, isAsync = true,
     serviceInterfaces = ConfigurationService.class)
 public final class ConfigurationAsyncClient {
-    private final ClientLogger logger = new ClientLogger(ConfigurationAsyncClient.class);
     // Please see <a href=https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
     // for more information on Azure resource provider namespaces.
     private static final String APP_CONFIG_TRACING_NAMESPACE_VALUE = "Microsoft.AppConfiguration";
 
     private static final String ETAG_ANY = "*";
+    private final ClientLogger logger = new ClientLogger(ConfigurationAsyncClient.class);
     private final String serviceEndpoint;
     private final ConfigurationService service;
     private final String apiVersion;
@@ -104,33 +104,6 @@ public final class ConfigurationAsyncClient {
         }
     }
 
-    /**
-     * Adds a configuration value in the service if that key and label does not exist. The label value of the
-     * ConfigurationSetting is optional.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <p>Add a setting with the key "prodDBConnection", label "westUS", and value "db_connection".</p>
-     *
-     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.addConfigurationSettingWithResponse#ConfigurationSetting}
-     *
-     * @param setting The setting to add based on its key and optional label combination.
-     * @return A REST response containing the {@link ConfigurationSetting} that was created, if a key collision occurs
-     * or the key is an invalid value (which will also throw HttpResponseException described below).
-     * @throws NullPointerException If {@code setting} is {@code null}.
-     * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
-     * @throws ResourceModifiedException If a ConfigurationSetting with the same key and label exists.
-     * @throws HttpResponseException If {@link ConfigurationSetting#getKey() key} is an empty string.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ConfigurationSetting>> addConfigurationSettingWithResponse(ConfigurationSetting setting) {
-        try {
-            return withContext(context -> addConfigurationSetting(setting, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
     Mono<Response<ConfigurationSetting>> addConfigurationSetting(ConfigurationSetting setting, Context context) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
@@ -156,6 +129,33 @@ public final class ConfigurationAsyncClient {
             .doOnSuccess(response -> logger.info("Added ConfigurationSetting - {}", response.getValue()))
             .onErrorMap(ConfigurationAsyncClient::addConfigurationSettingExceptionMapper)
             .doOnError(error -> logger.warning("Failed to add ConfigurationSetting - {}", setting, error));
+    }
+
+    /**
+     * Adds a configuration value in the service if that key and label does not exist. The label value of the
+     * ConfigurationSetting is optional.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Add a setting with the key "prodDBConnection", label "westUS", and value "db_connection".</p>
+     *
+     * {@codesnippet com.azure.data.appconfiguration.configurationasyncclient.addConfigurationSettingWithResponse#ConfigurationSetting}
+     *
+     * @param setting The setting to add based on its key and optional label combination.
+     * @return A REST response containing the {@link ConfigurationSetting} that was created, if a key collision occurs
+     * or the key is an invalid value (which will also throw HttpResponseException described below).
+     * @throws NullPointerException If {@code setting} is {@code null}.
+     * @throws IllegalArgumentException If {@link ConfigurationSetting#getKey() key} is {@code null}.
+     * @throws ResourceModifiedException If a ConfigurationSetting with the same key and label exists.
+     * @throws HttpResponseException If {@link ConfigurationSetting#getKey() key} is an empty string.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ConfigurationSetting>> addConfigurationSettingWithResponse(ConfigurationSetting setting) {
+        try {
+            return withContext(context -> addConfigurationSetting(setting, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -186,6 +186,27 @@ public final class ConfigurationAsyncClient {
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
+    }
+
+    Mono<Response<ConfigurationSetting>> setConfigurationSetting(ConfigurationSetting setting, boolean ifUnchanged,
+        Context context) {
+        // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
+        validateSetting(setting);
+        context = context == null ? Context.NONE : context;
+
+        final String ifMatchETag = ifUnchanged ? getETagValue(setting.getETag()) : null;
+        // This service method call is similar to addConfigurationSetting except it will create or update a
+        // configuration setting.
+        // If the user provides an ETag value, it is passed in as If-Match = "{ETag value}". If the current value in the
+        // service has a matching ETag then it matches, then its value is updated with what the user passed in.
+        // Otherwise, the service throws an exception because the current configuration value was updated and we have an
+        // old value locally.
+        // If no ETag value was passed in, then the value is always added or updated.
+        return service.setKey(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion, setting, ifMatchETag,
+            null, context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
+            .doOnSubscribe(ignoredValue -> logger.info("Setting ConfigurationSetting - {}", setting))
+            .doOnSuccess(response -> logger.info("Set ConfigurationSetting - {}", response.getValue()))
+            .doOnError(error -> logger.warning("Failed to set ConfigurationSetting - {}", setting, error));
     }
 
     /**
@@ -224,27 +245,6 @@ public final class ConfigurationAsyncClient {
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<ConfigurationSetting>> setConfigurationSetting(ConfigurationSetting setting, boolean ifUnchanged,
-        Context context) {
-        // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
-        validateSetting(setting);
-        context = context == null ? Context.NONE : context;
-
-        final String ifMatchETag = ifUnchanged ? getETagValue(setting.getETag()) : null;
-        // This service method call is similar to addConfigurationSetting except it will create or update a
-        // configuration setting.
-        // If the user provides an ETag value, it is passed in as If-Match = "{ETag value}". If the current value in the
-        // service has a matching ETag then it matches, then its value is updated with what the user passed in.
-        // Otherwise, the service throws an exception because the current configuration value was updated and we have an
-        // old value locally.
-        // If no ETag value was passed in, then the value is always added or updated.
-        return service.setKey(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion, setting, ifMatchETag,
-            null, context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
-            .doOnSubscribe(ignoredValue -> logger.info("Setting ConfigurationSetting - {}", setting))
-            .doOnSuccess(response -> logger.info("Set ConfigurationSetting - {}", response.getValue()))
-            .doOnError(error -> logger.warning("Failed to set ConfigurationSetting - {}", setting, error));
     }
 
     /**
@@ -304,6 +304,34 @@ public final class ConfigurationAsyncClient {
         }
     }
 
+    Mono<Response<ConfigurationSetting>> getConfigurationSetting(ConfigurationSetting setting,
+        OffsetDateTime acceptDateTime, boolean onlyIfChanged, Context context) {
+        // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
+        validateSetting(setting);
+        context = context == null ? Context.NONE : context;
+
+        final String ifNoneMatchETag = onlyIfChanged ? getETagValue(setting.getETag()) : null;
+        return service.getKeyValue(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion, null,
+            acceptDateTime == null ? null : acceptDateTime.toString(), null, ifNoneMatchETag,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
+            .onErrorResume(HttpResponseException.class,
+                (Function<Throwable, Mono<Response<ConfigurationSetting>>>) throwable -> {
+                    final HttpResponseException e = (HttpResponseException) throwable;
+                    final HttpResponse httpResponse = e.getResponse();
+                    if (httpResponse.getStatusCode() == 304) {
+                        return Mono.just(new ResponseBase<Void, ConfigurationSetting>(httpResponse.getRequest(),
+                            httpResponse.getStatusCode(), httpResponse.getHeaders(), null, null));
+                    } else if (httpResponse.getStatusCode() == 404) {
+                        return Mono.error(new ResourceNotFoundException("Setting not found.", httpResponse, throwable));
+                    }
+
+                    return Mono.error(throwable);
+                })
+            .doOnSubscribe(ignoredValue -> logger.info("Retrieving ConfigurationSetting - {}", setting))
+            .doOnSuccess(response -> logger.info("Retrieved ConfigurationSetting - {}", response.getValue()))
+            .doOnError(error -> logger.warning("Failed to get ConfigurationSetting - {}", setting, error));
+    }
+
     /**
      * Attempts to get the ConfigurationSetting with a matching {@link ConfigurationSetting#getKey() key}, and optional
      * {@link ConfigurationSetting#getLabel() label}, optional {@code acceptDateTime} and optional ETag combination.
@@ -337,34 +365,6 @@ public final class ConfigurationAsyncClient {
         }
     }
 
-    Mono<Response<ConfigurationSetting>> getConfigurationSetting(ConfigurationSetting setting,
-        OffsetDateTime acceptDateTime, boolean onlyIfChanged, Context context) {
-        // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
-        validateSetting(setting);
-        context = context == null ? Context.NONE : context;
-
-        final String ifNoneMatchETag = onlyIfChanged ? getETagValue(setting.getETag()) : null;
-        return service.getKeyValue(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion, null,
-            acceptDateTime == null ? null : acceptDateTime.toString(), null, ifNoneMatchETag,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
-            .onErrorResume(HttpResponseException.class,
-                (Function<Throwable, Mono<Response<ConfigurationSetting>>>) throwable -> {
-                    final HttpResponseException e = (HttpResponseException) throwable;
-                    final HttpResponse httpResponse = e.getResponse();
-                    if (httpResponse.getStatusCode() == 304) {
-                        return Mono.just(new ResponseBase<Void, ConfigurationSetting>(httpResponse.getRequest(),
-                            httpResponse.getStatusCode(), httpResponse.getHeaders(), null, null));
-                    } else if (httpResponse.getStatusCode() == 404) {
-                        return Mono.error(new ResourceNotFoundException("Setting not found.", httpResponse, throwable));
-                    }
-
-                    return Mono.error(throwable);
-                })
-            .doOnSubscribe(ignoredValue -> logger.info("Retrieving ConfigurationSetting - {}", setting))
-            .doOnSuccess(response -> logger.info("Retrieved ConfigurationSetting - {}", response.getValue()))
-            .doOnError(error -> logger.warning("Failed to get ConfigurationSetting - {}", setting, error));
-    }
-
     /**
      * Deletes the ConfigurationSetting with a matching {@code key} and optional {@code label} combination.
      *
@@ -391,6 +391,20 @@ public final class ConfigurationAsyncClient {
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
+    }
+
+    Mono<Response<ConfigurationSetting>> deleteConfigurationSetting(ConfigurationSetting setting, boolean ifUnchanged,
+        Context context) {
+        // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
+        validateSetting(setting);
+        context = context == null ? Context.NONE : context;
+
+        final String ifMatchETag = ifUnchanged ? getETagValue(setting.getETag()) : null;
+        return service.delete(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion, ifMatchETag,
+            null, context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
+            .doOnSubscribe(ignoredValue -> logger.info("Deleting ConfigurationSetting - {}", setting))
+            .doOnSuccess(response -> logger.info("Deleted ConfigurationSetting - {}", response.getValue()))
+            .doOnError(error -> logger.warning("Failed to delete ConfigurationSetting - {}", setting, error));
     }
 
     /**
@@ -431,20 +445,6 @@ public final class ConfigurationAsyncClient {
         }
     }
 
-    Mono<Response<ConfigurationSetting>> deleteConfigurationSetting(ConfigurationSetting setting, boolean ifUnchanged,
-        Context context) {
-        // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
-        validateSetting(setting);
-        context = context == null ? Context.NONE : context;
-
-        final String ifMatchETag = ifUnchanged ? getETagValue(setting.getETag()) : null;
-        return service.delete(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion, ifMatchETag,
-            null, context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
-            .doOnSubscribe(ignoredValue -> logger.info("Deleting ConfigurationSetting - {}", setting))
-            .doOnSuccess(response -> logger.info("Deleted ConfigurationSetting - {}", response.getValue()))
-            .doOnError(error -> logger.warning("Failed to delete ConfigurationSetting - {}", setting, error));
-    }
-
     /**
      * Sets the read-only status for the {@link ConfigurationSetting} that matches the {@code key}, the optional
      * {@code label}.
@@ -476,6 +476,30 @@ public final class ConfigurationAsyncClient {
                 .flatMap(response -> Mono.justOrEmpty(response.getValue()));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<ConfigurationSetting>> setReadOnly(ConfigurationSetting setting, boolean isReadOnly,
+        Context context) {
+        // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
+        validateSetting(setting);
+        context = context == null ? Context.NONE : context;
+
+        if (isReadOnly) {
+            return service.lockKeyValue(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion, null,
+                null, context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
+                .doOnSubscribe(ignoredValue -> logger.verbose("Setting read only ConfigurationSetting - {}", setting))
+                .doOnSuccess(response -> logger.info("Set read only ConfigurationSetting - {}", response.getValue()))
+                .doOnError(error -> logger.warning("Failed to set read only ConfigurationSetting - {}", setting,
+                    error));
+        } else {
+            return service.unlockKeyValue(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion,
+                null, null, context)
+                .doOnSubscribe(ignoredValue -> logger.verbose("Clearing read only ConfigurationSetting - {}", setting))
+                .doOnSuccess(
+                    response -> logger.info("Cleared read only ConfigurationSetting - {}", response.getValue()))
+                .doOnError(
+                    error -> logger.warning("Failed to clear read only ConfigurationSetting - {}", setting, error));
         }
     }
 
@@ -512,30 +536,6 @@ public final class ConfigurationAsyncClient {
         }
     }
 
-    Mono<Response<ConfigurationSetting>> setReadOnly(ConfigurationSetting setting, boolean isReadOnly,
-        Context context) {
-        // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
-        validateSetting(setting);
-        context = context == null ? Context.NONE : context;
-
-        if (isReadOnly) {
-            return service.lockKeyValue(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion, null,
-                null, context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
-                .doOnSubscribe(ignoredValue -> logger.verbose("Setting read only ConfigurationSetting - {}", setting))
-                .doOnSuccess(response -> logger.info("Set read only ConfigurationSetting - {}", response.getValue()))
-                .doOnError(error -> logger.warning("Failed to set read only ConfigurationSetting - {}", setting,
-                    error));
-        } else {
-            return service.unlockKeyValue(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion,
-                null, null, context)
-                .doOnSubscribe(ignoredValue -> logger.verbose("Clearing read only ConfigurationSetting - {}", setting))
-                .doOnSuccess(
-                    response -> logger.info("Cleared read only ConfigurationSetting - {}", response.getValue()))
-                .doOnError(
-                    error -> logger.warning("Failed to clear read only ConfigurationSetting - {}", setting, error));
-        }
-    }
-
     /**
      * Fetches the configuration settings that match the {@code selector}. If {@code selector} is {@code null}, then all
      * the {@link ConfigurationSetting configuration settings} are fetched with their current values.
@@ -563,6 +563,17 @@ public final class ConfigurationAsyncClient {
     PagedFlux<ConfigurationSetting> listConfigurationSettings(SettingSelector selector, Context context) {
         return new PagedFlux<>(() -> listFirstPageSettings(selector, context),
             continuationToken -> listNextPageSettings(context, continuationToken));
+    }
+
+    private Flux<ConfigurationSetting> listConfigurationSettings(String nextPageLink, Context context) {
+        Mono<PagedResponse<ConfigurationSetting>> result = service.listKeyValues(serviceEndpoint, nextPageLink,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
+            .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
+            .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
+            .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
+                error));
+
+        return result.flatMapMany(r -> extractAndFetchConfigurationSettings(r, context));
     }
 
     private Mono<PagedResponse<ConfigurationSetting>> listNextPageSettings(Context context, String continuationToken) {
@@ -608,6 +619,12 @@ public final class ConfigurationAsyncClient {
             return monoError(logger, ex);
         }
 
+    }
+
+    PagedFlux<ConfigurationSetting> listRevisions(SettingSelector selector, Context context) {
+        return new PagedFlux<>(() ->
+            listRevisionsFirstPage(selector, context),
+            continuationToken -> listRevisionsNextPage(continuationToken, context));
     }
 
     /**
@@ -684,23 +701,6 @@ public final class ConfigurationAsyncClient {
             return monoError(logger, ex);
         }
 
-    }
-
-    PagedFlux<ConfigurationSetting> listRevisions(SettingSelector selector, Context context) {
-        return new PagedFlux<>(() ->
-            listRevisionsFirstPage(selector, context),
-            continuationToken -> listRevisionsNextPage(continuationToken, context));
-    }
-
-    private Flux<ConfigurationSetting> listConfigurationSettings(String nextPageLink, Context context) {
-        Mono<PagedResponse<ConfigurationSetting>> result = service.listKeyValues(serviceEndpoint, nextPageLink,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
-            .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
-            .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
-            .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
-                error));
-
-        return result.flatMapMany(r -> extractAndFetchConfigurationSettings(r, context));
     }
 
     private Publisher<ConfigurationSetting> extractAndFetchConfigurationSettings(

@@ -22,6 +22,11 @@ import java.util.Map;
 public class KeyVaultKey {
 
     /**
+     * The key properties
+     */
+    final KeyProperties properties;
+    
+    /**
      * The Json Web Key
      */
     @JsonProperty(value = "key")
@@ -49,11 +54,6 @@ public class KeyVaultKey {
     public JsonWebKey getKey() {
         return this.key;
     }
-
-    /**
-     * The key properties
-     */
-    final KeyProperties properties;
 
     /**
      * Get the key identifier.

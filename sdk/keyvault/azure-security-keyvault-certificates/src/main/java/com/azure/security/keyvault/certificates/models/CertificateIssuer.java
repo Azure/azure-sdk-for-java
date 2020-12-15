@@ -20,6 +20,13 @@ import java.util.Map;
 public final class CertificateIssuer {
 
     /**
+     * Name of the referenced issuer object or reserved names; for example,
+     * 'Self' or 'Unknown'.
+     */
+    @JsonProperty(value = "name")
+    String name;
+
+    /**
      * The user name/account name/account id.
      */
     private String accountId;
@@ -50,13 +57,6 @@ public final class CertificateIssuer {
      */
     @JsonProperty(value = "provider")
     private String provider;
-
-    /**
-     * Name of the referenced issuer object or reserved names; for example,
-     * 'Self' or 'Unknown'.
-     */
-    @JsonProperty(value = "name")
-    String name;
 
     /**
      * Determines whether the issuer is enabled.

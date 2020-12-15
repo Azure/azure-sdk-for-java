@@ -132,8 +132,7 @@ public class AnalyzeTasksAsync {
         // .subscribe() will turn this into a synchronous call.
         try {
             TimeUnit.MINUTES.sleep(20);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        } catch (InterruptedException ignored) {
         }
     }
 }

@@ -67,13 +67,14 @@ import java.util.Objects;
  */
 @ServiceClientBuilder(serviceClients = CryptographyClient.class)
 public final class CryptographyClientBuilder {
-    final List<HttpPipelinePolicy> policies;
-    final Map<String, String> properties;
-    private final ClientLogger logger = new ClientLogger(CryptographyClientBuilder.class);
     // This is properties file's name.
     private static final String AZURE_KEY_VAULT_KEYS = "azure-key-vault-keys.properties";
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
+
+    final List<HttpPipelinePolicy> policies;
+    final Map<String, String> properties;
+
     private TokenCredential credential;
     private HttpPipeline pipeline;
     private String keyId;
@@ -83,6 +84,7 @@ public final class CryptographyClientBuilder {
     private Configuration configuration;
     private CryptographyServiceVersion version;
     private ClientOptions clientOptions;
+    private final ClientLogger logger = new ClientLogger(CryptographyClientBuilder.class);
 
     /**
      * The constructor with defaults.

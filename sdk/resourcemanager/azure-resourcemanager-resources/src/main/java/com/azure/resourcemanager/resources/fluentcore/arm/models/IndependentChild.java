@@ -43,18 +43,18 @@ public interface IndependentChild<ManagerT> extends
             /**
              * Creates a new child resource under parent resource.
              *
-             * @param parentResourceCreatable a creatable definition for the parent resource
-             * @return the creatable for the child resource
-             */
-            Creatable<T> withNewParentResource(Creatable<ParentT> parentResourceCreatable);
-
-            /**
-             * Creates a new child resource under parent resource.
-             *
              * @param existingParentResource the parent resource under which this resource to be created.
              * @return the creatable for the child resource
              */
             Creatable<T> withExistingParentResource(ParentT existingParentResource);
+
+            /**
+             * Creates a new child resource under parent resource.
+             *
+             * @param parentResourceCreatable a creatable definition for the parent resource
+             * @return the creatable for the child resource
+             */
+            Creatable<T> withNewParentResource(Creatable<ParentT> parentResourceCreatable);
         }
     }
 

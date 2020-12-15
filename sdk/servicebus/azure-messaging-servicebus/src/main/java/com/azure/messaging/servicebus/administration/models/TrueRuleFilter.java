@@ -10,19 +10,19 @@ public final class TrueRuleFilter extends SqlRuleFilter {
     private static final TrueRuleFilter INSTANCE = new TrueRuleFilter();
 
     /**
+     * Initializes a new instance.
+     */
+    public TrueRuleFilter() {
+        super("1=1");
+    }
+
+    /**
      * Gets an instance of the {@link TrueRuleFilter}.
      *
      * @return an instance of the {@link TrueRuleFilter}.
      */
     static TrueRuleFilter getInstance() {
         return INSTANCE;
-    }
-
-    /**
-     * Initializes a new instance.
-     */
-    public TrueRuleFilter() {
-        super("1=1");
     }
 
     /**

@@ -34,26 +34,6 @@ final class EncryptedBlobRange {
      */
     private Long adjustedDownloadCount;
 
-    static EncryptedBlobRange getEncryptedBlobRangeFromHeader(String stringRange) {
-        // Null case
-        if (CoreUtils.isNullOrEmpty(stringRange)) {
-            return new EncryptedBlobRange(null);
-        }
-        // Non-null case
-        String trimmed = stringRange.substring(stringRange.indexOf("=") + 1); // Trim off the "bytes=" part
-        String[] pieces = trimmed.split("-"); // Split on the "-"
-        BlobRange range;
-        long offset = Long.parseLong(pieces[0]);
-        if (pieces.length == 1) {
-            range = new BlobRange(offset);
-        } else {
-            long rangeEnd = Long.parseLong(pieces[1]);
-            long count = rangeEnd - offset + 1;
-            range = new BlobRange(offset, count);
-        }
-        return new EncryptedBlobRange(range);
-    }
-
     EncryptedBlobRange(BlobRange originalRange) {
         if (originalRange == null) {
             this.originalRange = new BlobRange(0);
@@ -98,6 +78,26 @@ final class EncryptedBlobRange {
                 - (int) (this.adjustedDownloadCount % ENCRYPTION_BLOCK_SIZE);
         }
 
+    }
+
+    static EncryptedBlobRange getEncryptedBlobRangeFromHeader(String stringRange) {
+        // Null case
+        if (CoreUtils.isNullOrEmpty(stringRange)) {
+            return new EncryptedBlobRange(null);
+        }
+        // Non-null case
+        String trimmed = stringRange.substring(stringRange.indexOf("=") + 1); // Trim off the "bytes=" part
+        String[] pieces = trimmed.split("-"); // Split on the "-"
+        BlobRange range;
+        long offset = Long.parseLong(pieces[0]);
+        if (pieces.length == 1) {
+            range = new BlobRange(offset);
+        } else {
+            long rangeEnd = Long.parseLong(pieces[1]);
+            long count = rangeEnd - offset + 1;
+            range = new BlobRange(offset, count);
+        }
+        return new EncryptedBlobRange(range);
     }
 
     /**

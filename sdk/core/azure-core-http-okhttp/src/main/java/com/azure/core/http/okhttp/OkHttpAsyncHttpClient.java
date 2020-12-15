@@ -33,9 +33,8 @@ import java.util.function.Function;
  * HttpClient implementation for OkHttp.
  */
 class OkHttpAsyncHttpClient implements HttpClient {
-    private final OkHttpClient httpClient;
-    //
     private static final Mono<okio.ByteString> EMPTY_BYTE_STRING_MONO = Mono.just(okio.ByteString.EMPTY);
+    private final OkHttpClient httpClient;
 
     OkHttpAsyncHttpClient(OkHttpClient httpClient) {
         this.httpClient = httpClient;

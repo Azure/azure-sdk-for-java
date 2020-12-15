@@ -92,16 +92,6 @@ public interface Identity
             WithCreate withAccessTo(String resourceId, BuiltInRole role);
 
             /**
-             * Specifies that the identity should have the given access (described by the role)
-             * on the resource group that identity resides. An applications running on an Azure
-             * service with this identity can use this permission to access the resource group.
-             *
-             * @param role access role to assigned to the identity
-             * @return the next stage of the definition
-             */
-            WithCreate withAccessToCurrentResourceGroup(BuiltInRole role);
-
-            /**
              * Specifies that the identity should have the given access (described by the role
              * definition) on an ARM resource. An applications running on an Azure service with
              * this identity can use this permission to access the resource.
@@ -134,6 +124,16 @@ public interface Identity
              * @return the next stage of the definition
              */
             WithCreate withAccessToCurrentResourceGroup(String roleDefinitionId);
+
+            /**
+             * Specifies that the identity should have the given access (described by the role)
+             * on the resource group that identity resides. An applications running on an Azure
+             * service with this identity can use this permission to access the resource group.
+             *
+             * @param role access role to assigned to the identity
+             * @return the next stage of the definition
+             */
+            WithCreate withAccessToCurrentResourceGroup(BuiltInRole role);
         }
 
         /**
@@ -179,16 +179,6 @@ public interface Identity
             Update withAccessTo(String resourceId, BuiltInRole role);
 
             /**
-             * Specifies that the identity should have the given access (described by the role)
-             * on the resource group that identity resides. An applications running on an Azure
-             * service with this identity can use this permission to access the resource group.
-             *
-             * @param role access role to assigned to the identity
-             * @return the next stage of the update
-             */
-            Update withAccessToCurrentResourceGroup(BuiltInRole role);
-
-            /**
              * Specifies that the identity should have the given access (described by the role
              * definition) on an ARM resource. An applications running on an Azure service with
              * this identity can use this permission to access the resource.
@@ -212,6 +202,14 @@ public interface Identity
             Update withAccessTo(String resourceId, String roleDefinitionId);
 
             /**
+             * Specifies that an access role assigned to the identity should be removed.
+             *
+             * @param roleAssignment describes an existing role assigned to the identity
+             * @return the next stage of the update
+             */
+            Update withoutAccess(RoleAssignment roleAssignment);
+
+            /**
              * Specifies that the identity should have the given access (described by the role
              * definition) on the resource group that identity resides. An applications running
              * on an Azure service with this identity can use this permission to access the
@@ -223,12 +221,14 @@ public interface Identity
             Update withAccessToCurrentResourceGroup(String roleDefinitionId);
 
             /**
-             * Specifies that an access role assigned to the identity should be removed.
+             * Specifies that the identity should have the given access (described by the role)
+             * on the resource group that identity resides. An applications running on an Azure
+             * service with this identity can use this permission to access the resource group.
              *
-             * @param roleAssignment describes an existing role assigned to the identity
+             * @param role access role to assigned to the identity
              * @return the next stage of the update
              */
-            Update withoutAccess(RoleAssignment roleAssignment);
+            Update withAccessToCurrentResourceGroup(BuiltInRole role);
 
             /**
              * Specifies that an access role assigned to the identity should be removed.

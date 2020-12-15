@@ -8,8 +8,6 @@ package com.azure.identity;
  */
 public final class AzureAuthorityHosts {
 
-    private AzureAuthorityHosts() { }
-
     /**
      * The host of the Azure Active Directory authority for tenants in the Azure Public Cloud.
      */
@@ -30,6 +28,7 @@ public final class AzureAuthorityHosts {
      */
     public static final String AZURE_GOVERNMENT = "https://login.microsoftonline.us/";
 
+    private AzureAuthorityHosts() { }
 
     static String getDefaultScope(String authorityHost) {
         switch (authorityHost) {

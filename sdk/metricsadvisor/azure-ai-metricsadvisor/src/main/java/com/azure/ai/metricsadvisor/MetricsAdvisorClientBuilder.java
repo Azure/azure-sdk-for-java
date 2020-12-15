@@ -68,6 +68,9 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {MetricsAdvisorAsyncClient.class, MetricsAdvisorClient.class})
 public final class MetricsAdvisorClientBuilder {
 
+    static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
+    static final String API_KEY = "x-api-key";
+
     private static final String ECHO_REQUEST_ID_HEADER = "x-ms-return-client-request-id";
     private static final String CONTENT_TYPE_HEADER_VALUE = ContentType.APPLICATION_JSON;
     private static final String ACCEPT_HEADER = "Accept";
@@ -92,9 +95,6 @@ public final class MetricsAdvisorClientBuilder {
     private Configuration configuration;
     private RetryPolicy retryPolicy;
     private MetricsAdvisorServiceVersion version;
-
-    static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
-    static final String API_KEY = "x-api-key";
 
     /**
      * The constructor with defaults.

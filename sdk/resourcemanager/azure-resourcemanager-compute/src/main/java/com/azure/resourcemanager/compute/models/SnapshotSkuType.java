@@ -25,12 +25,6 @@ public final class SnapshotSkuType {
     /** The actual serialized value for a SnapshotSkuType instance. */
     private final SnapshotStorageAccountTypes value;
 
-    /** @return predefined snapshot SKU types */
-    public static SnapshotSkuType[] values() {
-        Collection<SnapshotSkuType> valuesCollection = VALUES_BY_NAME.values();
-        return valuesCollection.toArray(new SnapshotSkuType[valuesCollection.size()]);
-    }
-
     /**
      * Creates a custom value for SnapshotSkuType.
      *
@@ -41,6 +35,12 @@ public final class SnapshotSkuType {
         if (value != null) {
             VALUES_BY_NAME.put(value.toString().toLowerCase(Locale.ROOT), this);
         }
+    }
+
+    /** @return predefined snapshot SKU types */
+    public static SnapshotSkuType[] values() {
+        Collection<SnapshotSkuType> valuesCollection = VALUES_BY_NAME.values();
+        return valuesCollection.toArray(new SnapshotSkuType[valuesCollection.size()]);
     }
 
     /**

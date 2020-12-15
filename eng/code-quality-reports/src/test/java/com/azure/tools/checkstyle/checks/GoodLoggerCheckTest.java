@@ -13,13 +13,10 @@ import org.junit.Test;
  * Tests for good logging practices, GoodLoggerCheck.
  */
 public class GoodLoggerCheckTest extends AbstractModuleTestSupport {
-    private static final String INCONSISTENCY_NAMING_MESSAGE = "ClientLogger instance naming: use 'logger'"
-        + " instead of 'wrongLoggerName' for consistency.";
     private static final String EXTERNAL_LOGGER_USED_MESSAGE = "Do not use external logger class. "
         + "Use 'com.azure.core.util.logging.ClientLogger' as a logging mechanism instead of '%s'.";
     private static final String NOT_NEWING_MATCH_CLASS_NAME = "Not newing a ClientLogger with matching class name. "
         + "Use 'WrongClassInLoggerConstructorTestData.class' instead of 'XXXXXX.class'.";
-    private static final String STATIC_LOGGER_MESSAGE = "ClientLogger should not be static. Remove static modifier.";
 
     private Checker checker;
 
@@ -47,22 +44,6 @@ public class GoodLoggerCheckTest extends AbstractModuleTestSupport {
             expectedErrorMessage(5,1, String.format(EXTERNAL_LOGGER_USED_MESSAGE, "java.util.logging"))
         };
         verify(checker, getPath("ExternalLoggerLibraryTestData.java"), expected);
-    }
-
-    @Test
-    public void invalidLoggerNameTestData() throws Exception {
-        String[] expected = {
-            expectedErrorMessage(5,5, INCONSISTENCY_NAMING_MESSAGE),
-        };
-        verify(checker, getPath("InvalidLoggerNameTestData.java"), expected);
-    }
-
-    @Test
-    public void nonStaticLoggerTestData() throws Exception {
-        String[] expected = {
-            expectedErrorMessage(5,5, STATIC_LOGGER_MESSAGE)
-        };
-        verify(checker, getPath("NonStaticLoggerTestData.java"), expected);
     }
 
     @Test

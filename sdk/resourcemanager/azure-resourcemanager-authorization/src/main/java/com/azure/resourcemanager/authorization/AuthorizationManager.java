@@ -43,6 +43,22 @@ public final class AuthorizationManager implements HasServiceClient<GraphRbacMan
     private RoleAssignments roleAssignments;
     private RoleDefinitions roleDefinitions;
 
+    private AuthorizationManager(HttpPipeline httpPipeline, AzureProfile profile) {
+        this.graphRbacManagementClient =
+            new GraphRbacManagementClientBuilder()
+                .pipeline(httpPipeline)
+                .endpoint(profile.getEnvironment().getGraphEndpoint())
+                .tenantId(profile.getTenantId())
+                .buildClient();
+        this.authorizationManagementClient =
+            new AuthorizationManagementClientBuilder()
+                .pipeline(httpPipeline)
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+                .subscriptionId(profile.getSubscriptionId())
+                .buildClient();
+        this.tenantId = profile.getTenantId();
+    }
+
     /**
      * Creates an instance of AuthorizationManager that exposes Authorization
      * and Graph RBAC management API entry points.
@@ -100,22 +116,6 @@ public final class AuthorizationManager implements HasServiceClient<GraphRbacMan
             return AuthorizationManager
                 .authenticate(buildHttpPipeline(credential, profile), profile);
         }
-    }
-
-    private AuthorizationManager(HttpPipeline httpPipeline, AzureProfile profile) {
-        this.graphRbacManagementClient =
-            new GraphRbacManagementClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getGraphEndpoint())
-                .tenantId(profile.getTenantId())
-                .buildClient();
-        this.authorizationManagementClient =
-            new AuthorizationManagementClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .buildClient();
-        this.tenantId = profile.getTenantId();
     }
 
     /**

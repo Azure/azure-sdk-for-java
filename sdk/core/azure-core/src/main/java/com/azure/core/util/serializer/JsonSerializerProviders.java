@@ -10,6 +10,7 @@ import java.util.ServiceLoader;
  * This class is a proxy for using a {@link JsonSerializerProvider} loaded from the classpath.
  */
 public final class JsonSerializerProviders {
+
     private static final String CANNOT_FIND_JSON_SERIALIZER_PROVIDER = "A request was made to load the default JSON "
         + "serializer provider but one could not be found on the classpath. If you are using a dependency manager, "
         + "consider including a dependency on azure-core-serializer-json-jackson or azure-core-serializer-json-gson. "
@@ -19,6 +20,10 @@ public final class JsonSerializerProviders {
 
     private static JsonSerializerProvider defaultProvider;
     private static boolean attemptedLoad;
+
+    private JsonSerializerProviders() {
+        // no-op
+    }
 
     /**
      * Creates an instance of {@link JsonSerializer} using the first {@link JsonSerializerProvider} found in the
@@ -48,9 +53,5 @@ public final class JsonSerializerProviders {
         } else {
             throw new IllegalStateException(CANNOT_FIND_JSON_SERIALIZER_PROVIDER);
         }
-    }
-
-    private JsonSerializerProviders() {
-        // no-op
     }
 }

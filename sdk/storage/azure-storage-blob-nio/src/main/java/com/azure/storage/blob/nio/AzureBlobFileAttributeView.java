@@ -26,12 +26,13 @@ import java.util.function.Consumer;
  * {@link #setTimes(FileTime, FileTime, FileTime)} is not supported.
  */
 public final class AzureBlobFileAttributeView implements BasicFileAttributeView {
-    private final ClientLogger logger = new ClientLogger(AzureBlobFileAttributeView.class);
 
     static final String ATTR_CONSUMER_ERROR = "Exception thrown by attribute consumer";
     static final String NAME = "azureBlob";
 
     private final Path path;
+
+    private final ClientLogger logger = new ClientLogger(AzureBlobFileAttributeView.class);
 
     AzureBlobFileAttributeView(Path path) {
         this.path = path;

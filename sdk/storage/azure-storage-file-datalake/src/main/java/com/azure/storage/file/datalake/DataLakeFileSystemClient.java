@@ -52,14 +52,14 @@ import java.util.Objects;
  */
 @ServiceClient(builder = DataLakeFileSystemClientBuilder.class)
 public class DataLakeFileSystemClient {
-    private final ClientLogger logger = new ClientLogger(DataLakeFileSystemClient.class);
+    public static final String ROOT_FILESYSTEM_NAME = DataLakeFileSystemAsyncClient.ROOT_FILESYSTEM_NAME;
+
+    private static final String ROOT_DIRECTORY_NAME = "";
 
     private final DataLakeFileSystemAsyncClient dataLakeFileSystemAsyncClient;
     private final BlobContainerClient blobContainerClient;
 
-    public static final String ROOT_FILESYSTEM_NAME = DataLakeFileSystemAsyncClient.ROOT_FILESYSTEM_NAME;
-
-    private static final String ROOT_DIRECTORY_NAME = "";
+    private final ClientLogger logger = new ClientLogger(DataLakeFileSystemClient.class);
 
     /**
      * Package-private constructor for use by {@link DataLakeFileSystemClientBuilder}.

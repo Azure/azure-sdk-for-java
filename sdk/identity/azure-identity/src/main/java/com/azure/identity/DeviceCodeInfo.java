@@ -13,6 +13,16 @@ import java.time.OffsetDateTime;
  */
 @Immutable
 public class DeviceCodeInfo {
+    private final String userCode;
+
+    private final String deviceCode;
+
+    private final String verificationUrl;
+
+    private final OffsetDateTime expiresOn;
+
+    private final String message;
+
     /**
      * Creates an instance of a device code info.
      *
@@ -23,23 +33,13 @@ public class DeviceCodeInfo {
      * @param message message which should be displayed to the user
      */
     public DeviceCodeInfo(String userCode, String deviceCode, String verificationUrl, OffsetDateTime expiresOn,
-                          String message) {
+        String message) {
         this.userCode = userCode;
         this.deviceCode = deviceCode;
         this.verificationUrl = verificationUrl;
         this.expiresOn = expiresOn;
         this.message = message;
     }
-
-    private final String userCode;
-
-    private final String deviceCode;
-
-    private final String verificationUrl;
-
-    private final OffsetDateTime expiresOn;
-
-    private final String message;
 
     /**
      * Gets the code which user needs to provide when authenticating at the verification URL.

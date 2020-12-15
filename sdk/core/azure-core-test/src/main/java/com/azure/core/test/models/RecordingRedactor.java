@@ -30,9 +30,6 @@ public class RecordingRedactor {
     private static final Pattern USER_ID_KEY_PATTERN = Pattern.compile("(?:User ID=)(.*?)(?:;)");
 
     private static final List<Function<String, String>> DEFAULT_RECORDING_REDACTORS = loadRedactor();
-
-    private final List<Function<String, String>> recordingRedactors = new ArrayList<>();
-
     private static final StringJoiner JSON_PROPERTIES_TO_REDACT
         = new StringJoiner("\":\"|\"", "\"", "\":\"")
         .add("authHeader")
@@ -50,6 +47,8 @@ public class RecordingRedactor {
     private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
         = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()),
         Pattern.CASE_INSENSITIVE);
+
+    private final List<Function<String, String>> recordingRedactors = new ArrayList<>();
 
     /**
      * Creates an instance of {@link RecordingRedactor} with a default set of redactors.

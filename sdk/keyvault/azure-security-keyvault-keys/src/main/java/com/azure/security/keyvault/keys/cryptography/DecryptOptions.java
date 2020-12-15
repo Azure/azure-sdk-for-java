@@ -38,6 +38,33 @@ public class DecryptOptions {
     private final byte[] authenticationTag;
 
     /**
+     * Creates an instance of {@link DecryptOptions} with the given parameters.
+     *
+     * @param algorithm The algorithm to be used for decryption.
+     * @param cipherText The content to be decrypted.
+     * @param iv Initialization vector for the decryption operation.
+     * @param authenticationTag The tag to authenticate when performing decryption.
+     * @param additionalAuthenticatedData Additional data to authenticate when using authenticated crypto algorithms.
+     */
+    DecryptOptions(EncryptionAlgorithm algorithm, byte[] cipherText, byte[] iv, byte[] authenticationTag,
+        byte[] additionalAuthenticatedData) {
+        Objects.requireNonNull(algorithm, "Encryption algorithm cannot be null.");
+        Objects.requireNonNull(cipherText, "Cipher text content to be decrypted cannot be null.");
+
+        if (algorithm == EncryptionAlgorithm.A128GCM || algorithm == EncryptionAlgorithm.A192GCM
+            || algorithm == EncryptionAlgorithm.A256GCM) {
+
+            Objects.requireNonNull(authenticationTag, "Authentication tag cannot be null for GCM encryption.");
+        }
+
+        this.algorithm = algorithm;
+        this.cipherText = CoreUtils.clone(cipherText);
+        this.iv = CoreUtils.clone(iv);
+        this.additionalAuthenticatedData = CoreUtils.clone(additionalAuthenticatedData);
+        this.authenticationTag = CoreUtils.clone(authenticationTag);
+    }
+
+    /**
      * Factory method to create an instance of {@link DecryptOptions} with the given parameters for
      * {@link EncryptionAlgorithm#A128CBC}.
      *
@@ -191,33 +218,6 @@ public class DecryptOptions {
                                                         byte[] additionalAuthenticatedData) {
         return new DecryptOptions(EncryptionAlgorithm.A256GCM, cipherText, iv, authenticationTag,
             additionalAuthenticatedData);
-    }
-
-    /**
-     * Creates an instance of {@link DecryptOptions} with the given parameters.
-     *
-     * @param algorithm The algorithm to be used for decryption.
-     * @param cipherText The content to be decrypted.
-     * @param iv Initialization vector for the decryption operation.
-     * @param authenticationTag The tag to authenticate when performing decryption.
-     * @param additionalAuthenticatedData Additional data to authenticate when using authenticated crypto algorithms.
-     */
-    DecryptOptions(EncryptionAlgorithm algorithm, byte[] cipherText, byte[] iv, byte[] authenticationTag,
-                   byte[] additionalAuthenticatedData) {
-        Objects.requireNonNull(algorithm, "Encryption algorithm cannot be null.");
-        Objects.requireNonNull(cipherText, "Cipher text content to be decrypted cannot be null.");
-
-        if (algorithm == EncryptionAlgorithm.A128GCM || algorithm == EncryptionAlgorithm.A192GCM
-            || algorithm == EncryptionAlgorithm.A256GCM) {
-
-            Objects.requireNonNull(authenticationTag, "Authentication tag cannot be null for GCM encryption.");
-        }
-
-        this.algorithm = algorithm;
-        this.cipherText = CoreUtils.clone(cipherText);
-        this.iv = CoreUtils.clone(iv);
-        this.additionalAuthenticatedData = CoreUtils.clone(additionalAuthenticatedData);
-        this.authenticationTag = CoreUtils.clone(authenticationTag);
     }
 
     /**

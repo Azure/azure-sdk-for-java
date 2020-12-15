@@ -20,12 +20,12 @@ import reactor.core.publisher.Mono;
  */
 @Immutable
 public final class ManagedIdentityCredential implements TokenCredential {
-    private final ManagedIdentityServiceCredential managedIdentityServiceCredential;
-    private final ClientLogger logger = new ClientLogger(ManagedIdentityCredential.class);
 
     static final String PROPERTY_IMDS_ENDPOINT = "IMDS_ENDPOINT";
     static final String PROPERTY_IDENTITY_SERVER_THUMBPRINT = "IDENTITY_SERVER_THUMBPRINT";
 
+    private final ManagedIdentityServiceCredential managedIdentityServiceCredential;
+    private final ClientLogger logger = new ClientLogger(ManagedIdentityCredential.class);
 
     /**
      * Creates an instance of the ManagedIdentityCredential.

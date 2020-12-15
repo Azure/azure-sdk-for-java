@@ -13,14 +13,6 @@ import java.util.List;
  */
 class X509CertificateProperties {
 
-    X509CertificateProperties(CertificatePolicy certificatePolicy) {
-        this.subject = certificatePolicy.getSubject();
-        this.ekus = certificatePolicy.getEnhancedKeyUsage();
-        this.keyUsage = certificatePolicy.getKeyUsage();
-        this.subjectAlternativeNamesRequest = new SubjectAlternativeNamesRequest(certificatePolicy.getSubjectAlternativeNames());
-        this.validityInMonths = certificatePolicy.getValidityInMonths();
-    }
-
     /**
      * The subject name. Should be a valid X509 distinguished Name.
      */
@@ -50,6 +42,14 @@ class X509CertificateProperties {
      */
     @JsonProperty(value = "validity_months")
     private Integer validityInMonths;
+
+    X509CertificateProperties(CertificatePolicy certificatePolicy) {
+        this.subject = certificatePolicy.getSubject();
+        this.ekus = certificatePolicy.getEnhancedKeyUsage();
+        this.keyUsage = certificatePolicy.getKeyUsage();
+        this.subjectAlternativeNamesRequest = new SubjectAlternativeNamesRequest(certificatePolicy.getSubjectAlternativeNames());
+        this.validityInMonths = certificatePolicy.getValidityInMonths();
+    }
 
     /**
      * Get the subject value.

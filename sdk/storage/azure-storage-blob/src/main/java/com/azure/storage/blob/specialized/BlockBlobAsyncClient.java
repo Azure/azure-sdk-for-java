@@ -64,7 +64,6 @@ import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
  */
 @ServiceClient(builder = SpecializedBlobClientBuilder.class, isAsync = true)
 public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
-    private final ClientLogger logger = new ClientLogger(BlockBlobAsyncClient.class);
 
     /**
      * Indicates the maximum number of bytes that can be sent in a call to upload.
@@ -94,6 +93,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * Indicates the maximum number of blocks allowed in a block blob.
      */
     public static final int MAX_BLOCKS = 50000;
+
+    private final ClientLogger logger = new ClientLogger(BlockBlobAsyncClient.class);
 
     /**
      * Package-private constructor for use by {@link SpecializedBlobClientBuilder}.

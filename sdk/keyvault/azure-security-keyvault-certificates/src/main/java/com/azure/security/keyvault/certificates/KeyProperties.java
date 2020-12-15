@@ -13,15 +13,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 class KeyProperties {
 
-    KeyProperties(CertificatePolicy certificatePolicy) {
-        this.curve = certificatePolicy.getKeyCurveName();
-        this.exportable = certificatePolicy.isExportable();
-        this.keySize = certificatePolicy.getKeySize();
-        this.keyType = certificatePolicy.getKeyType();
-        this.reuseKey = certificatePolicy.isKeyReusable();
-    }
-
-
     /**
      * Indicates if the private key can be exported.
      */
@@ -53,6 +44,14 @@ class KeyProperties {
      */
     @JsonProperty(value = "crv")
     private CertificateKeyCurveName curve;
+
+    KeyProperties(CertificatePolicy certificatePolicy) {
+        this.curve = certificatePolicy.getKeyCurveName();
+        this.exportable = certificatePolicy.isExportable();
+        this.keySize = certificatePolicy.getKeySize();
+        this.keyType = certificatePolicy.getKeyType();
+        this.reuseKey = certificatePolicy.isKeyReusable();
+    }
 
     /**
      * Get the exportable value.

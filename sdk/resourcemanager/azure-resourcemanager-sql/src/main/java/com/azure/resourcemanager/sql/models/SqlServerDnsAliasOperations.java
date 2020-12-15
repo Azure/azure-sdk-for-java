@@ -24,6 +24,15 @@ public interface SqlServerDnsAliasOperations
     void acquire(String resourceGroupName, String serverName, String dnsAliasName, String sqlServerId);
 
     /**
+     * Acquires server DNS alias from another server.
+     *
+     * @param dnsAliasName the name of the Server DNS alias
+     * @param oldSqlServerId the id of the other SQL server that the DNS alias was pointing to
+     * @param newSqlServerId the id of the server that the alias is pointing to
+     */
+    void acquire(String dnsAliasName, String oldSqlServerId, String newSqlServerId);
+
+    /**
      * Acquires server DNS alias from another server asynchronously.
      *
      * @param resourceGroupName the name of the resource group that contains the resource
@@ -33,15 +42,6 @@ public interface SqlServerDnsAliasOperations
      * @return a representation of the deferred computation of this call
      */
     Mono<Void> acquireAsync(String resourceGroupName, String serverName, String dnsAliasName, String sqlServerId);
-
-    /**
-     * Acquires server DNS alias from another server.
-     *
-     * @param dnsAliasName the name of the Server DNS alias
-     * @param oldSqlServerId the id of the other SQL server that the DNS alias was pointing to
-     * @param newSqlServerId the id of the server that the alias is pointing to
-     */
-    void acquire(String dnsAliasName, String oldSqlServerId, String newSqlServerId);
 
     /**
      * Acquires server DNS alias from another server asynchronously.
@@ -76,18 +76,18 @@ public interface SqlServerDnsAliasOperations
             /**
              * Sets the parent SQL server for the new Server DNS alias.
              *
-             * @param sqlServerId the parent SQL server ID
-             * @return The next stage of the definition.
-             */
-            SqlServerDnsAliasOperations.DefinitionStages.WithCreate withExistingSqlServerId(String sqlServerId);
-
-            /**
-             * Sets the parent SQL server for the new Server DNS alias.
-             *
              * @param sqlServer the parent SQL server
              * @return The next stage of the definition.
              */
             SqlServerDnsAliasOperations.DefinitionStages.WithCreate withExistingSqlServer(SqlServer sqlServer);
+
+            /**
+             * Sets the parent SQL server for the new Server DNS alias.
+             *
+             * @param sqlServerId the parent SQL server ID
+             * @return The next stage of the definition.
+             */
+            SqlServerDnsAliasOperations.DefinitionStages.WithCreate withExistingSqlServerId(String sqlServerId);
         }
 
         /** The final stage of the SQL Server DNS alias definition. */

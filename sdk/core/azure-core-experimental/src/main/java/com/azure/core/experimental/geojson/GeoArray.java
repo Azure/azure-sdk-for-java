@@ -127,10 +127,34 @@ public class GeoArray<T> extends AbstractList<T> {
     /**
      * Throws {@link UnsupportedOperationException} as GeoArray doesn't support mutation.
      *
+     * @param o The object that would be removed.
+     * @return Throws an exception.
+     * @throws UnsupportedOperationException GeoArray doesn't support mutation.
+     */
+    @Override
+    public boolean remove(Object o) {
+        throw logger.logExceptionAsError(new UnsupportedOperationException("GeoArray cannot be mutated."));
+    }
+
+    /**
+     * Throws {@link UnsupportedOperationException} as GeoArray doesn't support mutation.
+     *
      * @throws UnsupportedOperationException GeoArray doesn't support mutation.
      */
     @Override
     public void clear() {
+        throw logger.logExceptionAsError(new UnsupportedOperationException("GeoArray cannot be mutated."));
+    }
+
+    /**
+     * Throws {@link UnsupportedOperationException} as GeoArray doesn't support mutation.
+     *
+     * @param c The collection of elements that would be added.
+     * @return Throws an exception.
+     * @throws UnsupportedOperationException GeoArray doesn't support mutation.
+     */
+    @Override
+    public boolean addAll(Collection<? extends T> c) {
         throw logger.logExceptionAsError(new UnsupportedOperationException("GeoArray cannot be mutated."));
     }
 
@@ -144,30 +168,6 @@ public class GeoArray<T> extends AbstractList<T> {
      */
     @Override
     public boolean addAll(int index, Collection<? extends T> c) {
-        throw logger.logExceptionAsError(new UnsupportedOperationException("GeoArray cannot be mutated."));
-    }
-
-    /**
-     * Throws {@link UnsupportedOperationException} as GeoArray doesn't support mutation.
-     *
-     * @param o The object that would be removed.
-     * @return Throws an exception.
-     * @throws UnsupportedOperationException GeoArray doesn't support mutation.
-     */
-    @Override
-    public boolean remove(Object o) {
-        throw logger.logExceptionAsError(new UnsupportedOperationException("GeoArray cannot be mutated."));
-    }
-
-    /**
-     * Throws {@link UnsupportedOperationException} as GeoArray doesn't support mutation.
-     *
-     * @param c The collection of elements that would be added.
-     * @return Throws an exception.
-     * @throws UnsupportedOperationException GeoArray doesn't support mutation.
-     */
-    @Override
-    public boolean addAll(Collection<? extends T> c) {
         throw logger.logExceptionAsError(new UnsupportedOperationException("GeoArray cannot be mutated."));
     }
 

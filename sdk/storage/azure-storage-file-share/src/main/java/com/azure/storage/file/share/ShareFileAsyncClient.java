@@ -114,9 +114,10 @@ import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
  */
 @ServiceClient(builder = ShareFileClientBuilder.class, isAsync = true)
 public class ShareFileAsyncClient {
-    private final ClientLogger logger = new ClientLogger(ShareFileAsyncClient.class);
     static final long FILE_DEFAULT_BLOCK_SIZE = 4 * 1024 * 1024L;
     private static final long DOWNLOAD_UPLOAD_CHUNK_TIMEOUT = 300;
+
+    private final ClientLogger logger = new ClientLogger(ShareFileAsyncClient.class);
 
     private final AzureFileStorageImpl azureFileStorageClient;
     private final String shareName;

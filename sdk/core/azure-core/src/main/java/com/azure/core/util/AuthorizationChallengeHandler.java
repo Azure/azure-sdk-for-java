@@ -27,6 +27,36 @@ import java.util.stream.Stream;
  * This class handles Basic and Digest authorization challenges, complying to RFC 2617 and RFC 7616.
  */
 public class AuthorizationChallengeHandler {
+    /**
+     * Header representing a server requesting authentication.
+     */
+    public static final String WWW_AUTHENTICATE = "WWW-Authenticate";
+
+    /**
+     * Header representing a proxy server requesting authentication.
+     */
+    public static final String PROXY_AUTHENTICATE = "Proxy-Authenticate";
+
+    /**
+     * Header representing the authorization the client is presenting to a server.
+     */
+    public static final String AUTHORIZATION = "Authorization";
+
+    /**
+     * Header representing the authorization the client is presenting to a proxy server.
+     */
+    public static final String PROXY_AUTHORIZATION = "Proxy-Authorization";
+
+    /**
+     * Header representing additional information a server is expecting during future authentication requests.
+     */
+    public static final String AUTHENTICATION_INFO = "Authentication-Info";
+
+    /**
+     * Header representing additional information a proxy server is expecting during future authentication requests.
+     */
+    public static final String PROXY_AUTHENTICATION_INFO = "Proxy-Authentication-Info";
+
     /*
      * RFC 2617 and 7616 specifies these characters to use when creating a hex string.
      */
@@ -70,36 +100,6 @@ public class AuthorizationChallengeHandler {
         MD5,
         MD5_SESS
     };
-
-    /**
-     * Header representing a server requesting authentication.
-     */
-    public static final String WWW_AUTHENTICATE = "WWW-Authenticate";
-
-    /**
-     * Header representing a proxy server requesting authentication.
-     */
-    public static final String PROXY_AUTHENTICATE = "Proxy-Authenticate";
-
-    /**
-     * Header representing the authorization the client is presenting to a server.
-     */
-    public static final String AUTHORIZATION = "Authorization";
-
-    /**
-     * Header representing the authorization the client is presenting to a proxy server.
-     */
-    public static final String PROXY_AUTHORIZATION = "Proxy-Authorization";
-
-    /**
-     * Header representing additional information a server is expecting during future authentication requests.
-     */
-    public static final String AUTHENTICATION_INFO = "Authentication-Info";
-
-    /**
-     * Header representing additional information a proxy server is expecting during future authentication requests.
-     */
-    public static final String PROXY_AUTHENTICATION_INFO = "Proxy-Authentication-Info";
 
     private final String username;
     private final String password;

@@ -65,6 +65,23 @@ public final class ComputeManager extends Manager<ComputeManagementClient> {
     private GalleryImages galleryImages;
     private GalleryImageVersions galleryImageVersions;
 
+    private ComputeManager(HttpPipeline httpPipeline, AzureProfile profile) {
+        super(
+            httpPipeline,
+            profile,
+            new ComputeManagementClientBuilder()
+                .pipeline(httpPipeline)
+                .subscriptionId(profile.getSubscriptionId())
+                .buildClient());
+        storageManager = AzureConfigurableImpl.configureHttpPipeline(httpPipeline, StorageManager.configure())
+            .authenticate(null, profile);
+        networkManager = AzureConfigurableImpl.configureHttpPipeline(httpPipeline, NetworkManager.configure())
+            .authenticate(null, profile);
+        authorizationManager = AzureConfigurableImpl
+            .configureHttpPipeline(httpPipeline, AuthorizationManager.configure())
+            .authenticate(null, profile);
+    }
+
     /** @return the storage manager */
     public StorageManager storageManager() {
         return storageManager;
@@ -129,23 +146,6 @@ public final class ComputeManager extends Manager<ComputeManagementClient> {
         public ComputeManager authenticate(TokenCredential credential, AzureProfile profile) {
             return ComputeManager.authenticate(buildHttpPipeline(credential, profile), profile);
         }
-    }
-
-    private ComputeManager(HttpPipeline httpPipeline, AzureProfile profile) {
-        super(
-            httpPipeline,
-            profile,
-            new ComputeManagementClientBuilder()
-                .pipeline(httpPipeline)
-                .subscriptionId(profile.getSubscriptionId())
-                .buildClient());
-        storageManager = AzureConfigurableImpl.configureHttpPipeline(httpPipeline, StorageManager.configure())
-            .authenticate(null, profile);
-        networkManager = AzureConfigurableImpl.configureHttpPipeline(httpPipeline, NetworkManager.configure())
-            .authenticate(null, profile);
-        authorizationManager = AzureConfigurableImpl
-            .configureHttpPipeline(httpPipeline, AuthorizationManager.configure())
-            .authenticate(null, profile);
     }
 
     /** @return the availability set resource management API entry point */

@@ -13,8 +13,8 @@ import reactor.core.publisher.Mono;
  * Function app authentication via x-functions-key
  */
 public final class FunctionAuthenticationPolicy implements HttpPipelinePolicy {
-    private final FunctionApp functionApp;
     private static final String HEADER_NAME = "x-functions-key";
+    private final FunctionApp functionApp;
     private String masterKey;
 
     /**

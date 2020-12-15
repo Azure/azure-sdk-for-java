@@ -26,7 +26,6 @@ import java.util.Set;
  * Some attributes are not supported. Refer to the javadocs on each method for more information.
  */
 public final class AzureBasicFileAttributes implements BasicFileAttributes {
-    private final ClientLogger logger = new ClientLogger(AzureBasicFileAttributes.class);
 
     // For verifying parameters on FileSystemProvider.readAttributes
     static final Set<String> ATTRIBUTE_STRINGS;
@@ -44,6 +43,8 @@ public final class AzureBasicFileAttributes implements BasicFileAttributes {
 
     private final BlobProperties properties;
     private final AzureResource resource;
+
+    private final ClientLogger logger = new ClientLogger(AzureBasicFileAttributes.class);
 
     /*
     There are some work-arounds we could do to try to accommodate virtual directories such as making a checkDirStatus

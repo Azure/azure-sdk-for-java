@@ -63,14 +63,13 @@ import java.util.Objects;
  */
 @ServiceClientBuilder(serviceClients = SecretClient.class)
 public final class SecretClientBuilder {
-    private final ClientLogger logger = new ClientLogger(SecretClientBuilder.class);
     // This is properties file's name.
     private static final String AZURE_KEY_VAULT_SECRETS = "azure-key-vault-secrets.properties";
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
 
-    private final List<HttpPipelinePolicy> policies;
     final Map<String, String> properties;
+    private final List<HttpPipelinePolicy> policies;
     private TokenCredential credential;
     private HttpPipeline pipeline;
     private URL vaultUrl;
@@ -81,6 +80,7 @@ public final class SecretClientBuilder {
     private SecretServiceVersion version;
     private ClientOptions clientOptions;
 
+    private final ClientLogger logger = new ClientLogger(SecretClientBuilder.class);
     /**
      * The constructor with defaults.
      */

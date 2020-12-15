@@ -27,6 +27,15 @@ public interface SqlServerSecurityAlertPolicyOperations {
     SqlServerSecurityAlertPolicy getBySqlServer(String resourceGroupName, String sqlServerName);
 
     /**
+     * Gets the information about a SQL Server Security Alert Policy resource from Azure SQL server, identifying it by
+     * its parent SQL Server.
+     *
+     * @param sqlServer the SQL server parent resource
+     * @return an immutable representation of the resource
+     */
+    SqlServerSecurityAlertPolicy getBySqlServer(SqlServer sqlServer);
+
+    /**
      * Asynchronously gets the information about a SQL Server Security Alert Policy resource from Azure SQL server,
      * identifying it by its resource group.
      *
@@ -35,15 +44,6 @@ public interface SqlServerSecurityAlertPolicyOperations {
      * @return a representation of the deferred computation of this call returning the found resource
      */
     Mono<SqlServerSecurityAlertPolicy> getBySqlServerAsync(String resourceGroupName, String sqlServerName);
-
-    /**
-     * Gets the information about a SQL Server Security Alert Policy resource from Azure SQL server, identifying it by
-     * its parent SQL Server.
-     *
-     * @param sqlServer the SQL server parent resource
-     * @return an immutable representation of the resource
-     */
-    SqlServerSecurityAlertPolicy getBySqlServer(SqlServer sqlServer);
 
     /**
      * Asynchronously gets the information about a SQL Server Security Alert Policy resource from Azure SQL server,
@@ -101,20 +101,21 @@ public interface SqlServerSecurityAlertPolicyOperations {
             /**
              * Sets the parent SQL server for the new Server Security Alert Policy.
              *
+             * @param sqlServer the parent SQL server
+             * @return The next stage of the definition.
+             */
+            SqlServerSecurityAlertPolicyOperations.DefinitionStages.WithState withExistingSqlServer(
+                SqlServer sqlServer);
+
+            /**
+             * Sets the parent SQL server for the new Server Security Alert Policy.
+             *
              * @param sqlServerId the parent SQL server ID
              * @return The next stage of the definition.
              */
             SqlServerSecurityAlertPolicyOperations.DefinitionStages.WithState withExistingSqlServerId(
                 String sqlServerId);
 
-            /**
-             * Sets the parent SQL server for the new Server Security Alert Policy.
-             *
-             * @param sqlServer the parent SQL server
-             * @return The next stage of the definition.
-             */
-            SqlServerSecurityAlertPolicyOperations.DefinitionStages.WithState withExistingSqlServer(
-                SqlServer sqlServer);
         }
 
         /** The SQL Server Security Alert Policy definition to set the state. */

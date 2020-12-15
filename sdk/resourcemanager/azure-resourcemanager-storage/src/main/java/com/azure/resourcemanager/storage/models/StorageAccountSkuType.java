@@ -22,6 +22,15 @@ public final class StorageAccountSkuType {
 
     private final SkuName name;
 
+    /**
+     * Creates StorageAccountSkuType.
+     *
+     * @param name the sku name
+     */
+    private StorageAccountSkuType(SkuName name) {
+        this.name = name;
+    }
+
     /** @return the storage account sku name */
     public SkuName name() {
         return this.name;
@@ -35,14 +44,5 @@ public final class StorageAccountSkuType {
      */
     public static StorageAccountSkuType fromSkuName(SkuName name) {
         return new StorageAccountSkuType(name);
-    }
-
-    /**
-     * Creates StorageAccountSkuType.
-     *
-     * @param name the sku name
-     */
-    private StorageAccountSkuType(SkuName name) {
-        this.name = name;
     }
 }

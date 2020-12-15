@@ -16,8 +16,6 @@ import java.util.Map;
  */
 public final class LongRunningOperationStatus extends ExpandableStringEnum<LongRunningOperationStatus> {
 
-    private boolean completed;
-
     /** Represents that polling has not yet started for this long-running operation. */
     public static final LongRunningOperationStatus NOT_STARTED = fromString("NOT_STARTED", false);
 
@@ -51,6 +49,7 @@ public final class LongRunningOperationStatus extends ExpandableStringEnum<LongR
         opStatusMap.put(USER_CANCELLED.toString(), USER_CANCELLED);
         operationStatusMap = Collections.unmodifiableMap(opStatusMap);
     }
+    private boolean completed;
 
     /**
      * Creates or finds a {@link LongRunningOperationStatus} from its string representation.

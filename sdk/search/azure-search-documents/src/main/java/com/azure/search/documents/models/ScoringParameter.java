@@ -19,13 +19,14 @@ import java.util.stream.Collectors;
  * Represents a parameter value to be used in scoring functions (for example, referencePointParameter).
  */
 public final class ScoringParameter {
-    private final ClientLogger logger = new ClientLogger(ScoringParameter.class);
-    private final String name;
-    private final List<String> values;
 
     private static final String DASH = "-";
     private static final String COMMA = ",";
     private static final String SINGLE_QUOTE = "'";
+
+    private final ClientLogger logger = new ClientLogger(ScoringParameter.class);
+    private final String name;
+    private final List<String> values;
 
     /**
      * Constructor to take name value pair string of ScoringParameter. Name and values are separated by dash, and

@@ -299,14 +299,6 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
 
     /**
      * Deploys a ZIP file onto the Azure specialized Java SE image on this web app.
-     *
-     * @param zipFile the ZIP file to upload
-     * @return a completable of the operation
-     */
-    Mono<Void> zipDeployAsync(File zipFile);
-
-    /**
-     * Deploys a ZIP file onto the Azure specialized Java SE image on this web app.
      * <p>
      * Retry by client is required if error happens, due to nature of the stream.
      *
@@ -314,6 +306,14 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
      * @param length the length of the file
      */
     void zipDeploy(InputStream zipFile, long length);
+
+    /**
+     * Deploys a ZIP file onto the Azure specialized Java SE image on this web app.
+     *
+     * @param zipFile the ZIP file to upload
+     * @return a completable of the operation
+     */
+    Mono<Void> zipDeployAsync(File zipFile);
 
     /**
      * Deploys a ZIP file onto the Azure specialized Java SE image on this web app.
@@ -819,17 +819,6 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
                 String resourceId, BuiltInRole role);
 
             /**
-             * Specifies that web app's system assigned (local) identity should have the given access (described by the
-             * role) on the resource group that web app resides. Applications running on the web app will have the same
-             * permission (role) on the resource group.
-             *
-             * @param role access role to assigned to the web app's local identity
-             * @return the next stage of the definition
-             */
-            WithSystemAssignedIdentityBasedAccessOrCreate<FluentT>
-                withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(BuiltInRole role);
-
-            /**
              * Specifies that web app's system assigned (local) identity should have the access (described by the role
              * definition) on an ARM resource identified by the resource ID. Applications running on the web app will
              * have the same permission (role) on the ARM resource.
@@ -840,6 +829,17 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
              */
             WithSystemAssignedIdentityBasedAccessOrCreate<FluentT> withSystemAssignedIdentityBasedAccessTo(
                 String resourceId, String roleDefinitionId);
+
+            /**
+             * Specifies that web app's system assigned (local) identity should have the given access (described by the
+             * role) on the resource group that web app resides. Applications running on the web app will have the same
+             * permission (role) on the resource group.
+             *
+             * @param role access role to assigned to the web app's local identity
+             * @return the next stage of the definition
+             */
+            WithSystemAssignedIdentityBasedAccessOrCreate<FluentT>
+                withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(BuiltInRole role);
 
             /**
              * Specifies that web app's system assigned (local) identity should have the access (described by the role
@@ -1458,16 +1458,6 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
             Update<FluentT> withSystemAssignedIdentityBasedAccessTo(String resourceId, BuiltInRole role);
 
             /**
-             * Specifies that web app's system assigned (local) identity should have the given access (described by the
-             * role) on the resource group that web app resides. Applications running on the web app will have the same
-             * permission (role) on the resource group.
-             *
-             * @param role access role to assigned to the web app's local identity
-             * @return the next stage of the update
-             */
-            Update<FluentT> withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(BuiltInRole role);
-
-            /**
              * Specifies that web app's system assigned (local) identity should have the access (described by the role
              * definition) on an ARM resource identified by the resource ID. Applications running on the web app will
              * have the same permission (role) on the ARM resource.
@@ -1477,6 +1467,16 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
              * @return the next stage of the update
              */
             Update<FluentT> withSystemAssignedIdentityBasedAccessTo(String resourceId, String roleDefinitionId);
+
+            /**
+             * Specifies that web app's system assigned (local) identity should have the given access (described by the
+             * role) on the resource group that web app resides. Applications running on the web app will have the same
+             * permission (role) on the resource group.
+             *
+             * @param role access role to assigned to the web app's local identity
+             * @return the next stage of the update
+             */
+            Update<FluentT> withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(BuiltInRole role);
 
             /**
              * Specifies that web app's system assigned (local) identity should have the access (described by the role

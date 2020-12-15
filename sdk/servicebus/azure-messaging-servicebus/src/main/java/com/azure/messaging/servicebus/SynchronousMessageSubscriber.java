@@ -22,6 +22,11 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
  * Subscriber that listens to events and publishes them downstream and publishes events to them in the order received.
  */
 class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMessage> {
+
+    private static final AtomicReferenceFieldUpdater<SynchronousMessageSubscriber, Subscription> UPSTREAM =
+        AtomicReferenceFieldUpdater.newUpdater(SynchronousMessageSubscriber.class, Subscription.class,
+            "subscription");
+
     private final ClientLogger logger = new ClientLogger(SynchronousMessageSubscriber.class);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final AtomicInteger wip = new AtomicInteger();
@@ -37,11 +42,6 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
     private boolean subscriberInitialized;
 
     private volatile Subscription subscription;
-
-    private static final AtomicReferenceFieldUpdater<SynchronousMessageSubscriber, Subscription> UPSTREAM =
-        AtomicReferenceFieldUpdater.newUpdater(SynchronousMessageSubscriber.class, Subscription.class,
-            "subscription");
-
 
     SynchronousMessageSubscriber(long prefetch, SynchronousReceiveWork initialWork) {
         this.workQueue.add(initialWork);

@@ -18,8 +18,6 @@ public abstract class StorageInputStream extends InputStream {
     private static final String UNEXPECTED_STREAM_READ_ERROR =
         "Unexpected error. Stream returned unexpected number of bytes.";
 
-    private final ClientLogger logger = new ClientLogger(StorageInputStream.class);
-
     /**
      * A flag to determine if the stream is faulted, if so the last error will be thrown on next operation.
      */
@@ -30,6 +28,15 @@ public abstract class StorageInputStream extends InputStream {
      */
     protected IOException lastError;
 
+    /**
+     * Holds the absolute byte position of the start of the current buffer.
+     */
+    protected long bufferStartOffset;
+
+    /**
+     * Holds the length of the current buffer in bytes.
+     */
+    protected int bufferSize;
 
     /**
      * Holds the reference to the current buffered data.
@@ -52,16 +59,6 @@ public abstract class StorageInputStream extends InputStream {
     private long currentAbsoluteReadPosition;
 
     /**
-     * Holds the absolute byte position of the start of the current buffer.
-     */
-    protected long bufferStartOffset;
-
-    /**
-     * Holds the length of the current buffer in bytes.
-     */
-    protected int bufferSize;
-
-    /**
      * Offset of the source blob this class is configured to stream from.
      */
     private final long rangeOffset;
@@ -75,6 +72,8 @@ public abstract class StorageInputStream extends InputStream {
      * Holds the stream length.
      */
     private final long streamLength;
+
+    private final ClientLogger logger = new ClientLogger(StorageInputStream.class);
 
     /**
      * Initializes a new instance of the StorageInputStream class.

@@ -26,13 +26,13 @@ import java.util.Locale;
  * Utility methods for storage client libraries.
  */
 public final class Utility {
-    private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
-    private static final String UTF8_CHARSET = "UTF-8";
-    private static final String INVALID_DATE_STRING = "Invalid Date String: %s.";
-
     // Please see <a href=https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
     // for more information on Azure resource provider namespaces.
     public static final String STORAGE_TRACING_NAMESPACE_VALUE = "Microsoft.Storage";
+
+    private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
+    private static final String UTF8_CHARSET = "UTF-8";
+    private static final String INVALID_DATE_STRING = "Invalid Date String: %s.";
 
     /**
      * Stores a reference to the date/time pattern with the greatest precision Java.util.Date is capable of expressing.

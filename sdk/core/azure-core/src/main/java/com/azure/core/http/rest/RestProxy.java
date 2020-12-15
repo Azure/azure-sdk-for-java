@@ -314,39 +314,6 @@ public final class RestProxy implements InvocationHandler {
             .flatMap(decodedHttpResponse -> ensureExpectedStatus(decodedHttpResponse, methodParser));
     }
 
-    private static Exception instantiateUnexpectedException(final UnexpectedExceptionInformation exception,
-        final HttpResponse httpResponse,
-        final byte[] responseContent,
-        final Object responseDecodedContent) {
-        final int responseStatusCode = httpResponse.getStatusCode();
-        final String contentType = httpResponse.getHeaderValue("Content-Type");
-        final String bodyRepresentation;
-        if ("application/octet-stream".equalsIgnoreCase(contentType)) {
-            bodyRepresentation = "(" + httpResponse.getHeaderValue("Content-Length") + "-byte body)";
-        } else {
-            bodyRepresentation = responseContent == null || responseContent.length == 0
-                ? "(empty body)"
-                : "\"" + new String(responseContent, StandardCharsets.UTF_8) + "\"";
-        }
-
-        Exception result;
-        try {
-            final Constructor<? extends HttpResponseException> exceptionConstructor =
-                exception.getExceptionType().getConstructor(String.class, HttpResponse.class,
-                    exception.getExceptionBodyType());
-            result = exceptionConstructor.newInstance("Status code " + responseStatusCode + ", " + bodyRepresentation,
-                httpResponse,
-                responseDecodedContent);
-        } catch (ReflectiveOperationException e) {
-            String message = "Status code " + responseStatusCode + ", but an instance of "
-                + exception.getExceptionType().getCanonicalName() + " cannot be created."
-                + " Response body: " + bodyRepresentation;
-
-            result = new IOException(message, e);
-        }
-        return result;
-    }
-
     /**
      * Create a publisher that (1) emits error if the provided response {@code decodedResponse} has 'disallowed status
      * code' OR (2) emits provided response if it's status code ia allowed.
@@ -405,6 +372,39 @@ public final class RestProxy implements InvocationHandler {
             asyncResult = Mono.just(decodedResponse);
         }
         return asyncResult;
+    }
+
+    private static Exception instantiateUnexpectedException(final UnexpectedExceptionInformation exception,
+        final HttpResponse httpResponse,
+        final byte[] responseContent,
+        final Object responseDecodedContent) {
+        final int responseStatusCode = httpResponse.getStatusCode();
+        final String contentType = httpResponse.getHeaderValue("Content-Type");
+        final String bodyRepresentation;
+        if ("application/octet-stream".equalsIgnoreCase(contentType)) {
+            bodyRepresentation = "(" + httpResponse.getHeaderValue("Content-Length") + "-byte body)";
+        } else {
+            bodyRepresentation = responseContent == null || responseContent.length == 0
+                ? "(empty body)"
+                : "\"" + new String(responseContent, StandardCharsets.UTF_8) + "\"";
+        }
+
+        Exception result;
+        try {
+            final Constructor<? extends HttpResponseException> exceptionConstructor =
+                exception.getExceptionType().getConstructor(String.class, HttpResponse.class,
+                    exception.getExceptionBodyType());
+            result = exceptionConstructor.newInstance("Status code " + responseStatusCode + ", " + bodyRepresentation,
+                httpResponse,
+                responseDecodedContent);
+        } catch (ReflectiveOperationException e) {
+            String message = "Status code " + responseStatusCode + ", but an instance of "
+                + exception.getExceptionType().getCanonicalName() + " cannot be created."
+                + " Response body: " + bodyRepresentation;
+
+            result = new IOException(message, e);
+        }
+        return result;
     }
 
     private Mono<?> handleRestResponseReturnType(final HttpDecodedResponse response,

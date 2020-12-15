@@ -3,10 +3,6 @@
 
 package com.azure.perf.test.core;
 
-import com.beust.jcommander.JCommander;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.time.Duration;
@@ -17,6 +13,12 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
+
+import com.beust.jcommander.JCommander;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -75,6 +77,11 @@ public class PerfStressProgram {
             int index = Arrays.asList(commands).indexOf(parsedCommand);
             run(classList.get(index), options[index]);
         }
+    }
+
+    private static String getCommandName(String testName) {
+        String lower = testName.toLowerCase();
+        return lower.endsWith("test") ? lower.substring(0, lower.length() - 4) : lower;
     }
 
     /**
@@ -150,11 +157,6 @@ public class PerfStressProgram {
         if (cleanupStatus != null) {
             cleanupStatus.dispose();
         }
-    }
-    
-    private static String getCommandName(String testName) {
-        String lower = testName.toLowerCase();
-        return lower.endsWith("test") ? lower.substring(0, lower.length() - 4) : lower;
     }
 
     /**

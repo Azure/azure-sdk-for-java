@@ -42,7 +42,8 @@ public class RecognizePiiEntitiesAsync {
         // .subscribe() will turn this into a synchronous call.
         try {
             TimeUnit.SECONDS.sleep(5);
-        } catch (InterruptedException ignored) {
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 }

@@ -31,13 +31,14 @@ import java.util.function.Function;
  * </p>
  */
 final class ReliableDownload {
-    private final ClientLogger logger = new ClientLogger(ReliableDownload.class);
 
     private static final Duration TIMEOUT_VALUE = Duration.ofSeconds(60);
     private final BlobsDownloadResponse rawResponse;
     private final DownloadRetryOptions options;
     private final HttpGetterInfo info;
     private final Function<HttpGetterInfo, Mono<ReliableDownload>> getter;
+
+    private final ClientLogger logger = new ClientLogger(ReliableDownload.class);
 
     ReliableDownload(BlobsDownloadResponse rawResponse, DownloadRetryOptions options, HttpGetterInfo info,
                      Function<HttpGetterInfo, Mono<ReliableDownload>> getter) {

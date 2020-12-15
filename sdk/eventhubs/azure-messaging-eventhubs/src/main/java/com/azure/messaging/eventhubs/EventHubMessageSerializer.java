@@ -38,13 +38,13 @@ import static com.azure.messaging.eventhubs.implementation.ManagementChannel.MAN
  * Utility class for converting {@link EventData} to {@link Message}.
  */
 class EventHubMessageSerializer implements MessageSerializer {
-    private final ClientLogger logger = new ClientLogger(EventHubMessageSerializer.class);
     private static final Symbol LAST_ENQUEUED_SEQUENCE_NUMBER =
         Symbol.getSymbol(MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER);
     private static final Symbol LAST_ENQUEUED_OFFSET = Symbol.getSymbol(MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET);
     private static final Symbol LAST_ENQUEUED_TIME_UTC = Symbol.getSymbol(MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC);
     private static final Symbol RETRIEVAL_TIME_UTC =
         Symbol.getSymbol(MANAGEMENT_RESULT_RUNTIME_INFO_RETRIEVAL_TIME_UTC);
+    private final ClientLogger logger = new ClientLogger(EventHubMessageSerializer.class);
 
     /**
      * Gets the serialized size of the AMQP message.

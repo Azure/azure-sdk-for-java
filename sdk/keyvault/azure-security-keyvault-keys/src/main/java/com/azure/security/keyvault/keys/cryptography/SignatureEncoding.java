@@ -10,11 +10,11 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 final class SignatureEncoding {
-    // SignatureEncoding is intended to be a static class
-    private SignatureEncoding() { }
 
     private static final char[] HEX_LOWER = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 
+    // SignatureEncoding is intended to be a static class
+    private SignatureEncoding() { }
 
     /*
      * Converts an ASN.1 DER encoded ECDSA signature to a raw signature in the form R|S

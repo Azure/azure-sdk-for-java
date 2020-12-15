@@ -17,10 +17,6 @@ public final class ResourceId {
     private final String id;
     private final String parentId;
 
-    private static String badIdErrorText(String id) {
-        return String.format("The specified ID `%s` is not a valid Azure resource ID.", id);
-    }
-
     private ResourceId(final String id) {
         if (id == null) {
             // Protect against NPEs from null IDs, preserving legacy behavior for null IDs
@@ -85,6 +81,10 @@ public final class ResourceId {
             // Extract provider namespace
             this.providerNamespace = splits.length > 5 ? splits[5] : null;
         }
+    }
+
+    private static String badIdErrorText(String id) {
+        return String.format("The specified ID `%s` is not a valid Azure resource ID.", id);
     }
 
     /**

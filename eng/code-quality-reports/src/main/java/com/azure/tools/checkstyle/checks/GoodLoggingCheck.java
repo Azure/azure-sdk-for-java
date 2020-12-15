@@ -99,9 +99,6 @@ public class GoodLoggingCheck extends AbstractCheck {
             case TokenTypes.LITERAL_NEW:
                 checkLoggerInstantiation(ast);
                 break;
-            case TokenTypes.VARIABLE_DEF:
-                checkLoggerNameMatch(ast);
-                break;
             case TokenTypes.METHOD_CALL:
                 final DetailAST dotToken = ast.findFirstToken(TokenTypes.DOT);
                 if (dotToken == null) {
@@ -161,27 +158,5 @@ public class GoodLoggingCheck extends AbstractCheck {
             }
             return true;
         });
-    }
-
-    /**
-     * Check if the given ClientLogger named 'logger'
-     *
-     * @param varToken VARIABLE_DEF node
-     */
-    private void checkLoggerNameMatch(DetailAST varToken) {
-        if (!hasClientLoggerImported || !isTypeClientLogger(varToken)) {
-            return;
-        }
-        // Check if the Logger instance named as 'logger'.
-        final DetailAST identAST = varToken.findFirstToken(TokenTypes.IDENT);
-        if (identAST != null && !identAST.getText().equals(LOGGER)) {
-            log(varToken, String.format(LOGGER_NAME_ERROR, LOGGER, identAST.getText()));
-        }
-        // Check if the Logger is static instance, log as error if it is static instance logger.
-        if (TokenUtil.findFirstTokenByPredicate(varToken,
-            node -> node.getType() == TokenTypes.MODIFIERS
-                && node.branchContains(TokenTypes.LITERAL_STATIC)).isPresent()) {
-            log(varToken, STATIC_LOGGER_ERROR);
-        }
     }
 }

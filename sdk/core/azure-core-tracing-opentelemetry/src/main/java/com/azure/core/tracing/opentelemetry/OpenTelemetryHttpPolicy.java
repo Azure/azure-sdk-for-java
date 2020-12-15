@@ -33,14 +33,6 @@ import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
  */
 public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPipelinePolicy {
 
-    /**
-     * @return a OpenTelemetry HTTP policy.
-     */
-    @Override
-    public HttpPipelinePolicy create() {
-        return this;
-    }
-
     // Singleton OpenTelemetry tracer capable of starting and exporting spans.
     private static final Tracer TRACER = OpenTelemetry.getTracerProvider().get("Azure-OpenTelemetry");
 
@@ -54,6 +46,18 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
     // This helper class implements W3C distributed tracing protocol and injects SpanContext into the outgoing http
     // request
     private final TextMapPropagator traceContextFormat = OpenTelemetry.getPropagators().getTextMapPropagator();
+
+    // lambda that actually injects arbitrary header into the request
+    private final TextMapPropagator.Setter<HttpRequest> contextSetter =
+        (request, key, value) -> request.getHeaders().put(key, value);
+
+    /**
+     * @return a OpenTelemetry HTTP policy.
+     */
+    @Override
+    public HttpPipelinePolicy create() {
+        return this;
+    }
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
@@ -164,8 +168,4 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
         // Ending the span schedules it for export if sampled in or just ignores it if sampled out.
         span.end();
     }
-
-    // lambda that actually injects arbitrary header into the request
-    private final TextMapPropagator.Setter<HttpRequest> contextSetter =
-        (request, key, value) -> request.getHeaders().put(key, value);
 }

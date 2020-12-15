@@ -23,6 +23,33 @@ public final class PollingContext<T> {
     private volatile PollResponse<T> latestResponse;
 
     /**
+     * Creates PollingContext.
+     *
+     * Package internal default constructor.
+     */
+    PollingContext() {
+        this.map = new HashMap<>();
+    }
+
+    /**
+     * Creates PollingContext.
+     *
+     * @param activationResponse activation poll response holding result of activation operation call.
+     * @param latestResponse latest poll response from pollOperation.
+     * @param map the map to store context
+     */
+    private PollingContext(PollResponse<T> activationResponse,
+        PollResponse<T> latestResponse,
+        Map<String, String> map) {
+        this.activationResponse = Objects.requireNonNull(activationResponse,
+            "'activationResponse' cannot be null.");
+        this.latestResponse = Objects.requireNonNull(latestResponse,
+            "'latestResponse' cannot be null.");
+        this.map = Objects.requireNonNull(map,
+            "'map' cannot be null.");
+    }
+
+    /**
      * Get a value from the context with the provided key.
      *
      * @param name the key to look for
@@ -92,32 +119,5 @@ public final class PollingContext<T> {
         return new PollingContext<>(this.activationResponse,
                 this.latestResponse,
                 new HashMap<>(this.map));
-    }
-
-    /**
-     * Creates PollingContext.
-     *
-     * Package internal default constructor.
-     */
-    PollingContext() {
-        this.map = new HashMap<>();
-    }
-
-    /**
-     * Creates PollingContext.
-     *
-     * @param activationResponse activation poll response holding result of activation operation call.
-     * @param latestResponse latest poll response from pollOperation.
-     * @param map the map to store context
-     */
-    private PollingContext(PollResponse<T> activationResponse,
-                           PollResponse<T> latestResponse,
-                           Map<String, String> map) {
-        this.activationResponse = Objects.requireNonNull(activationResponse,
-                "'activationResponse' cannot be null.");
-        this.latestResponse = Objects.requireNonNull(latestResponse,
-                "'latestResponse' cannot be null.");
-        this.map = Objects.requireNonNull(map,
-                "'map' cannot be null.");
     }
 }

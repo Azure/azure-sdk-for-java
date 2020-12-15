@@ -4,8 +4,9 @@
 package com.azure.security.keyvault.keys.cryptography;
 
 class Aes256Gcm extends AesGcm {
-    private static final int KEY_SIZE = 256;
+
     public static final String ALGORITHM_NAME = "A256GCM";
+    private static final int KEY_SIZE = 256;
 
     Aes256Gcm() {
         super(ALGORITHM_NAME, KEY_SIZE);

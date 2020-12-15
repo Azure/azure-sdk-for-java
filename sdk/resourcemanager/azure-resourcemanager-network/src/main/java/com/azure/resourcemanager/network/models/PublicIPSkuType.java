@@ -22,12 +22,6 @@ public final class PublicIPSkuType {
     /** The actual serialized value for a PublicIPSkuType instance. */
     private final PublicIpAddressSkuName skuName;
 
-    /** @return predefined publicIP SKU types */
-    public static PublicIPSkuType[] values() {
-        Collection<PublicIPSkuType> valuesCollection = VALUES_BY_NAME.values();
-        return valuesCollection.toArray(new PublicIPSkuType[valuesCollection.size()]);
-    }
-
     /**
      * Creates a PublicIPSkuType from sku name.
      *
@@ -38,6 +32,12 @@ public final class PublicIPSkuType {
         if (skuName != null) {
             VALUES_BY_NAME.put(skuName.toString().toLowerCase(Locale.ROOT), this);
         }
+    }
+
+    /** @return predefined publicIP SKU types */
+    public static PublicIPSkuType[] values() {
+        Collection<PublicIPSkuType> valuesCollection = VALUES_BY_NAME.values();
+        return valuesCollection.toArray(new PublicIPSkuType[valuesCollection.size()]);
     }
 
     /**

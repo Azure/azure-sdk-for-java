@@ -185,6 +185,16 @@ interface SecretService {
                                                      @HeaderParam("Content-Type") String type,
                                                      Context context);
 
+    @Get("{nextUrl}")
+    @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(HttpResponseException.class)
+    @ReturnValueWireType(SecretPropertiesPage.class)
+    Mono<PagedResponse<SecretProperties>> getSecrets(@HostParam("url") String url,
+                                                     @PathParam(value = "nextUrl", encoded = true) String nextUrl,
+                                                     @HeaderParam("accept-language") String acceptLanguage,
+                                                     @HeaderParam("Content-Type") String type,
+                                                     Context context);
+
 
     @Get("secrets/{secret-name}/versions")
     @ExpectedResponses({200})
@@ -197,18 +207,6 @@ interface SecretService {
                                                             @HeaderParam("accept-language") String acceptLanguage,
                                                             @HeaderParam("Content-Type") String type,
                                                             Context context);
-
-
-    @Get("{nextUrl}")
-    @ExpectedResponses({200})
-    @UnexpectedResponseExceptionType(HttpResponseException.class)
-    @ReturnValueWireType(SecretPropertiesPage.class)
-    Mono<PagedResponse<SecretProperties>> getSecrets(@HostParam("url") String url,
-                                                     @PathParam(value = "nextUrl", encoded = true) String nextUrl,
-                                                     @HeaderParam("accept-language") String acceptLanguage,
-                                                     @HeaderParam("Content-Type") String type,
-                                                     Context context);
-
 
     @Get("deletedsecrets")
     @ExpectedResponses({200})

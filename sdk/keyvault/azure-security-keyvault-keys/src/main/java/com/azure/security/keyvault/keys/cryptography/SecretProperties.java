@@ -16,7 +16,6 @@ import java.util.Objects;
 
 
 class SecretProperties {
-    private final ClientLogger logger = new ClientLogger(SecretProperties.class);
 
     /*
      * The secret id.
@@ -94,14 +93,22 @@ class SecretProperties {
     @JsonProperty(value = "managed", access = JsonProperty.Access.WRITE_ONLY)
     Boolean managed;
 
-    SecretProperties(String secretName) {
-        this.name = secretName;
-    }
+    /**
+     * The number of days a secret is retained before being deleted for a soft delete-enabled Key Vault.
+     */
+    @JsonProperty(value = "recoverableDays", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer recoverableDays;
+
+    private final ClientLogger logger = new ClientLogger(SecretProperties.class);
 
     /*
      * Creates empty instance of SecretProperties.
      */
     SecretProperties() { }
+
+    SecretProperties(String secretName) {
+        this.name = secretName;
+    }
 
     /*
      * Get the secret name.
@@ -129,12 +136,6 @@ class SecretProperties {
     Boolean isEnabled() {
         return this.enabled;
     }
-
-    /**
-     * The number of days a secret is retained before being deleted for a soft delete-enabled Key Vault.
-     */
-    @JsonProperty(value = "recoverableDays", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer recoverableDays;
 
     /*
      * Set the enabled value.

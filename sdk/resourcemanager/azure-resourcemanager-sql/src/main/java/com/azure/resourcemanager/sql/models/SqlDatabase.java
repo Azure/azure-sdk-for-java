@@ -332,18 +332,18 @@ public interface SqlDatabase
             /**
              * Sets the existing elastic pool for the SQLDatabase.
              *
-             * @param elasticPoolId for the SQL Database
-             * @return The next stage of the definition.
-             */
-            WithExistingDatabaseAfterElasticPool<ParentT> withExistingElasticPoolId(String elasticPoolId);
-
-            /**
-             * Sets the existing elastic pool for the SQLDatabase.
-             *
              * @param sqlElasticPool for the SQL Database
              * @return The next stage of the definition.
              */
             WithExistingDatabaseAfterElasticPool<ParentT> withExistingElasticPool(SqlElasticPool sqlElasticPool);
+
+            /**
+             * Sets the existing elastic pool for the SQLDatabase.
+             *
+             * @param elasticPoolId for the SQL Database
+             * @return The next stage of the definition.
+             */
+            WithExistingDatabaseAfterElasticPool<ParentT> withExistingElasticPoolId(String elasticPoolId);
 
             /**
              * Sets the new elastic pool for the SQLDatabase, this will create a new elastic pool while creating
@@ -952,18 +952,18 @@ public interface SqlDatabase
             /**
              * Sets the existing elastic pool for the SQLDatabase.
              *
-             * @param elasticPoolId for the SQL Database
-             * @return The next stage of the definition.
-             */
-            Update withExistingElasticPoolId(String elasticPoolId);
-
-            /**
-             * Sets the existing elastic pool for the SQLDatabase.
-             *
              * @param sqlElasticPool for the SQL Database
              * @return The next stage of the update.
              */
             Update withExistingElasticPool(SqlElasticPool sqlElasticPool);
+
+            /**
+             * Sets the existing elastic pool for the SQLDatabase.
+             *
+             * @param elasticPoolId for the SQL Database
+             * @return The next stage of the definition.
+             */
+            Update withExistingElasticPoolId(String elasticPoolId);
 
             /**
              * Sets the new elastic pool for the SQLDatabase, this will create a new elastic pool while creating

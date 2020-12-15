@@ -51,13 +51,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTimeout;
 
 public class ReactorNettyClientTests {
+    static final String TEST_HEADER = "testHeader";
+
     private static final String SHORT_BODY_PATH = "/short";
     private static final String LONG_BODY_PATH = "/long";
 
     private static final String SHORT_BODY = "hi there";
     private static final String LONG_BODY = createLongBody();
-
-    static final String TEST_HEADER = "testHeader";
 
     private static WireMockServer server;
 

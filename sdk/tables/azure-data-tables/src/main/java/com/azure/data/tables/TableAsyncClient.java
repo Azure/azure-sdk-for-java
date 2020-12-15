@@ -575,39 +575,9 @@ public final class TableAsyncClient {
             token -> withContext(context -> listEntitiesNextPage(token, context, options, resultType)));
     }
 
-    private <T extends TableEntity> Mono<PagedResponse<T>> listEntitiesFirstPage(Context context,
-                                                                                 ListEntitiesOptions options,
-                                                                                 Class<T> resultType) {
-        try {
-            return listEntities(null, null, context, options, resultType);
-        } catch (RuntimeException e) {
-            return monoError(logger, e);
-        }
-    }
-
-    private <T extends TableEntity> Mono<PagedResponse<T>> listEntitiesNextPage(String token, Context context,
-                                                                                ListEntitiesOptions options,
-                                                                                Class<T> resultType) {
-        if (token == null) {
-            return Mono.empty();
-        }
-        try {
-            String[] split = token.split(DELIMITER_CONTINUATION_TOKEN, 2);
-            if (split.length != 2) {
-                return monoError(logger, new RuntimeException(
-                    "Split done incorrectly, must have partition and row key: " + token));
-            }
-            String nextPartitionKey = split[0];
-            String nextRowKey = split[1];
-            return listEntities(nextPartitionKey, nextRowKey, context, options, resultType);
-        } catch (RuntimeException e) {
-            return monoError(logger, e);
-        }
-    }
-
     private <T extends TableEntity> Mono<PagedResponse<T>> listEntities(String nextPartitionKey, String nextRowKey,
-                                                                        Context context, ListEntitiesOptions options,
-                                                                        Class<T> resultType) {
+        Context context, ListEntitiesOptions options,
+        Class<T> resultType) {
         context = context == null ? Context.NONE : context;
         QueryOptions queryOptions = new QueryOptions()
             .setFilter(options.getFilter())
@@ -637,6 +607,36 @@ public final class TableAsyncClient {
                     response.getDeserializedHeaders().getXMsContinuationNextRowKey()));
 
             });
+    }
+
+    private <T extends TableEntity> Mono<PagedResponse<T>> listEntitiesFirstPage(Context context,
+                                                                                 ListEntitiesOptions options,
+                                                                                 Class<T> resultType) {
+        try {
+            return listEntities(null, null, context, options, resultType);
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
+    }
+
+    private <T extends TableEntity> Mono<PagedResponse<T>> listEntitiesNextPage(String token, Context context,
+                                                                                ListEntitiesOptions options,
+                                                                                Class<T> resultType) {
+        if (token == null) {
+            return Mono.empty();
+        }
+        try {
+            String[] split = token.split(DELIMITER_CONTINUATION_TOKEN, 2);
+            if (split.length != 2) {
+                return monoError(logger, new RuntimeException(
+                    "Split done incorrectly, must have partition and row key: " + token));
+            }
+            String nextPartitionKey = split[0];
+            String nextRowKey = split[1];
+            return listEntities(nextPartitionKey, nextRowKey, context, options, resultType);
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
     }
 
     private static class EntityPaged<T extends TableEntity> implements PagedResponse<T> {

@@ -47,10 +47,11 @@ import java.util.Map;
  * This class provides a client that contains all operations that apply to any path object.
  */
 public class DataLakePathClient {
-    private final ClientLogger logger = new ClientLogger(DataLakePathClient.class);
 
     final DataLakePathAsyncClient dataLakePathAsyncClient;
     final BlockBlobClient blockBlobClient;
+
+    private final ClientLogger logger = new ClientLogger(DataLakePathClient.class);
 
     DataLakePathClient(DataLakePathAsyncClient dataLakePathAsyncClient, BlockBlobClient blockBlobClient) {
         this.dataLakePathAsyncClient = dataLakePathAsyncClient;

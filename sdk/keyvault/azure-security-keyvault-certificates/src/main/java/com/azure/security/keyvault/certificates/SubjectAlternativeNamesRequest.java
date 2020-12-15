@@ -30,6 +30,14 @@ class SubjectAlternativeNamesRequest {
     @JsonProperty(value = "upns")
     private List<String> upns;
 
+    SubjectAlternativeNamesRequest(SubjectAlternativeNames subjectAlternativeNames) {
+        if (subjectAlternativeNames != null) {
+            this.dnsNames = subjectAlternativeNames.getDnsNames();
+            this.emails = subjectAlternativeNames.getEmails();
+            this.upns = subjectAlternativeNames.getUserPrincipalNames();
+        }
+    }
+
     /**
      * Get the emails value.
      *
@@ -37,14 +45,6 @@ class SubjectAlternativeNamesRequest {
      */
     public List<String> emails() {
         return this.emails;
-    }
-
-    SubjectAlternativeNamesRequest(SubjectAlternativeNames subjectAlternativeNames) {
-        if (subjectAlternativeNames != null) {
-            this.dnsNames = subjectAlternativeNames.getDnsNames();
-            this.emails = subjectAlternativeNames.getEmails();
-            this.upns = subjectAlternativeNames.getUserPrincipalNames();
-        }
     }
 
     /**

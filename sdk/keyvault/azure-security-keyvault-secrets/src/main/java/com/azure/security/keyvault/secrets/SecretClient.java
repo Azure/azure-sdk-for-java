@@ -34,20 +34,20 @@ public final class SecretClient {
     private final SecretAsyncClient client;
 
     /**
-     * Gets the vault endpoint url to which service requests are sent to.
-     * @return the vault endpoint url.
-     */
-    public String getVaultUrl() {
-        return client.getVaultUrl();
-    }
-
-    /**
      * Creates a SecretClient that uses {@code pipeline} to service requests
      *
      * @param client The {@link SecretAsyncClient} that the client routes its request through.
      */
     SecretClient(SecretAsyncClient client) {
         this.client = client;
+    }
+
+    /**
+     * Gets the vault endpoint url to which service requests are sent to.
+     * @return the vault endpoint url.
+     */
+    public String getVaultUrl() {
+        return client.getVaultUrl();
     }
 
     /**

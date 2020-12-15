@@ -40,7 +40,6 @@ import java.util.function.Function;
  */
 @ServiceClientBuilder(serviceClients = SchemaRegistryAsyncClient.class)
 public class SchemaRegistryClientBuilder {
-    private final ClientLogger logger = new ClientLogger(SchemaRegistryClientBuilder.class);
 
     private static final String DEFAULT_SCOPE = "https://eventhubs.azure.net/.default";
     private static final String CLIENT_PROPERTIES = "azure-data-schemaregistry-client.properties";
@@ -48,6 +47,8 @@ public class SchemaRegistryClientBuilder {
     private static final String VERSION = "version";
     private static final RetryPolicy DEFAULT_RETRY_POLICY =
         new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
+
+    private final ClientLogger logger = new ClientLogger(SchemaRegistryClientBuilder.class);
 
     private final ConcurrentSkipListMap<String, Function<String, Object>> typeParserMap;
     private final List<HttpPipelinePolicy> policies;

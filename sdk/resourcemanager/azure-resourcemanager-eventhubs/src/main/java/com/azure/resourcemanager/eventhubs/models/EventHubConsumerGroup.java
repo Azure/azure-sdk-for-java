@@ -90,20 +90,20 @@ public interface EventHubConsumerGroup extends
             /**
              * Specifies the event hub for which consumer group needs to be created.
              *
-             * @param eventHubId ARM resource id of event hub
-             * @return next stage of the consumer group definition
-             */
-            WithCreate withExistingEventHubId(String eventHubId);
-
-            /**
-             * Specifies the event hub for which consumer group needs to be created.
-             *
              * @param resourceGroupName event hub namespace resource group name
              * @param namespaceName event hub namespace name
              * @param eventHubName event hub name
              * @return next stage of the consumer group definition
              */
             WithCreate withExistingEventHub(String resourceGroupName, String namespaceName, String eventHubName);
+
+            /**
+             * Specifies the event hub for which consumer group needs to be created.
+             *
+             * @param eventHubId ARM resource id of event hub
+             * @return next stage of the consumer group definition
+             */
+            WithCreate withExistingEventHubId(String eventHubId);
         }
 
         /**

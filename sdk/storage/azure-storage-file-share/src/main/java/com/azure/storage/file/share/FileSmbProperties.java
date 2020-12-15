@@ -24,6 +24,26 @@ public class FileSmbProperties {
     private final String parentId;
 
     /**
+     * Creates a new FileSmbProperties object from HttpHeaders
+     *
+     * @param httpHeaders The headers to construct FileSmbProperties from
+     */
+    FileSmbProperties(HttpHeaders httpHeaders) {
+        this.filePermissionKey = httpHeaders.getValue(FileConstants.HeaderConstants.FILE_PERMISSION_KEY);
+        String attributes = httpHeaders.getValue(FileConstants.HeaderConstants.FILE_ATTRIBUTES);
+        this.ntfsFileAttributes = attributes == null ? null : NtfsFileAttributes.toAttributes(attributes);
+        String fileCreation = httpHeaders
+            .getValue(FileConstants.HeaderConstants.FILE_CREATION_TIME);
+        this.fileCreationTime = fileCreation == null ? null : OffsetDateTime.parse(fileCreation);
+        String fileLastWrite = httpHeaders.getValue(FileConstants.HeaderConstants.FILE_LAST_WRITE_TIME);
+        this.fileLastWriteTime = fileLastWrite == null ? null : OffsetDateTime.parse(fileLastWrite);
+        String fileChange = httpHeaders.getValue(FileConstants.HeaderConstants.FILE_CHANGE_TIME);
+        this.fileChangeTime = fileChange == null ? null : OffsetDateTime.parse(fileChange);
+        this.fileId = httpHeaders.getValue(FileConstants.HeaderConstants.FILE_ID);
+        this.parentId = httpHeaders.getValue(FileConstants.HeaderConstants.FILE_PARENT_ID);
+    }
+
+    /**
      * Default constructor
      */
     public FileSmbProperties() {
@@ -186,25 +206,5 @@ public class FileSmbProperties {
      */
     static String parseFileSMBDate(OffsetDateTime time) {
         return time == null ? null : time.format(DateTimeFormatter.ofPattern(FileConstants.SMB_DATE_STRING));
-    }
-
-    /**
-     * Creates a new FileSmbProperties object from HttpHeaders
-     *
-     * @param httpHeaders The headers to construct FileSmbProperties from
-     */
-    FileSmbProperties(HttpHeaders httpHeaders) {
-        this.filePermissionKey = httpHeaders.getValue(FileConstants.HeaderConstants.FILE_PERMISSION_KEY);
-        String attributes = httpHeaders.getValue(FileConstants.HeaderConstants.FILE_ATTRIBUTES);
-        this.ntfsFileAttributes = attributes == null ? null : NtfsFileAttributes.toAttributes(attributes);
-        String fileCreation = httpHeaders
-            .getValue(FileConstants.HeaderConstants.FILE_CREATION_TIME);
-        this.fileCreationTime = fileCreation == null ? null : OffsetDateTime.parse(fileCreation);
-        String fileLastWrite = httpHeaders.getValue(FileConstants.HeaderConstants.FILE_LAST_WRITE_TIME);
-        this.fileLastWriteTime = fileLastWrite == null ? null : OffsetDateTime.parse(fileLastWrite);
-        String fileChange = httpHeaders.getValue(FileConstants.HeaderConstants.FILE_CHANGE_TIME);
-        this.fileChangeTime = fileChange == null ? null : OffsetDateTime.parse(fileChange);
-        this.fileId = httpHeaders.getValue(FileConstants.HeaderConstants.FILE_ID);
-        this.parentId = httpHeaders.getValue(FileConstants.HeaderConstants.FILE_PARENT_ID);
     }
 }

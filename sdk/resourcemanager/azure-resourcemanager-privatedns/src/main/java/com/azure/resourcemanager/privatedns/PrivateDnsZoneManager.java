@@ -19,6 +19,17 @@ public final class PrivateDnsZoneManager extends Manager<PrivateDnsManagementCli
 
     private PrivateDnsZones privateZones;
 
+    private PrivateDnsZoneManager(HttpPipeline httpPipeline, AzureProfile profile) {
+        super(
+            httpPipeline,
+            profile,
+            new PrivateDnsManagementClientBuilder()
+                .pipeline(httpPipeline)
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+                .subscriptionId(profile.getSubscriptionId())
+                .buildClient());
+    }
+
     /**
      * Get a Configurable instance that can be used to create {@link PrivateDnsZoneManager} with optional configuration.
      *
@@ -67,17 +78,6 @@ public final class PrivateDnsZoneManager extends Manager<PrivateDnsManagementCli
         public PrivateDnsZoneManager authenticate(TokenCredential credential, AzureProfile profile) {
             return PrivateDnsZoneManager.authenticate(buildHttpPipeline(credential, profile), profile);
         }
-    }
-
-    private PrivateDnsZoneManager(HttpPipeline httpPipeline, AzureProfile profile) {
-        super(
-            httpPipeline,
-            profile,
-            new PrivateDnsManagementClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .buildClient());
     }
 
     /**

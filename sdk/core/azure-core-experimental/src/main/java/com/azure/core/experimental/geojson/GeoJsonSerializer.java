@@ -18,7 +18,6 @@ import java.util.Map;
  * Serializes a {@link GeoObject} into JSON.
  */
 final class GeoJsonSerializer extends JsonSerializer<GeoObject> {
-    private static final ClientLogger LOGGER = new ClientLogger(GeoJsonSerializer.class);
 
     static final SimpleModule MODULE;
 
@@ -26,6 +25,7 @@ final class GeoJsonSerializer extends JsonSerializer<GeoObject> {
         MODULE = new SimpleModule();
         MODULE.addSerializer(GeoObject.class, new GeoJsonSerializer());
     }
+    private static final ClientLogger LOGGER = new ClientLogger(GeoJsonSerializer.class);
 
     @Override
     public void serialize(GeoObject value, JsonGenerator gen, SerializerProvider serializers) throws IOException {

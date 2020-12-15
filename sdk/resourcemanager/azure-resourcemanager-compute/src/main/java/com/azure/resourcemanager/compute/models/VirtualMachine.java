@@ -1540,17 +1540,6 @@ public interface VirtualMachine
                 String resourceId, BuiltInRole role);
 
             /**
-             * Specifies that virtual machine's system assigned (local) identity should have the given access (described
-             * by the role) on the resource group that virtual machine resides. Applications running on the virtual
-             * machine will have the same permission (role) on the resource group.
-             *
-             * @param role access role to assigned to the virtual machine's local identity
-             * @return the next stage of the definition
-             */
-            WithSystemAssignedIdentityBasedAccessOrCreate withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(
-                BuiltInRole role);
-
-            /**
              * Specifies that virtual machine's system assigned (local) identity should have the access (described by
              * the role definition) on an ARM resource identified by the resource ID. Applications running on the
              * virtual machine will have the same permission (role) on the ARM resource.
@@ -1561,6 +1550,17 @@ public interface VirtualMachine
              */
             WithSystemAssignedIdentityBasedAccessOrCreate withSystemAssignedIdentityBasedAccessTo(
                 String resourceId, String roleDefinitionId);
+
+            /**
+             * Specifies that virtual machine's system assigned (local) identity should have the given access (described
+             * by the role) on the resource group that virtual machine resides. Applications running on the virtual
+             * machine will have the same permission (role) on the resource group.
+             *
+             * @param role access role to assigned to the virtual machine's local identity
+             * @return the next stage of the definition
+             */
+            WithSystemAssignedIdentityBasedAccessOrCreate withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(
+                BuiltInRole role);
 
             /**
              * Specifies that virtual machine's system assigned (local) identity should have the access (described by
@@ -2051,17 +2051,6 @@ public interface VirtualMachine
                 String resourceId, BuiltInRole role);
 
             /**
-             * Specifies that virtual machine's system assigned (local) identity should have the given access (described
-             * by the role) on the resource group that virtual machine resides. Applications running on the virtual
-             * machine will have the same permission (role) on the resource group.
-             *
-             * @param role access role to assigned to the virtual machine's local identity
-             * @return the next stage of the update
-             */
-            WithSystemAssignedIdentityBasedAccessOrUpdate withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(
-                BuiltInRole role);
-
-            /**
              * Specifies that virtual machine's system assigned (local) identity should have the access (described by
              * the role definition) on an ARM resource identified by the resource ID. Applications running on the
              * virtual machine will have the same permission (role) on the ARM resource.
@@ -2072,6 +2061,17 @@ public interface VirtualMachine
              */
             WithSystemAssignedIdentityBasedAccessOrUpdate withSystemAssignedIdentityBasedAccessTo(
                 String resourceId, String roleDefinitionId);
+
+            /**
+             * Specifies that virtual machine's system assigned (local) identity should have the given access (described
+             * by the role) on the resource group that virtual machine resides. Applications running on the virtual
+             * machine will have the same permission (role) on the resource group.
+             *
+             * @param role access role to assigned to the virtual machine's local identity
+             * @return the next stage of the update
+             */
+            WithSystemAssignedIdentityBasedAccessOrUpdate withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(
+                BuiltInRole role);
 
             /**
              * Specifies that virtual machine's system assigned (local) identity should have the access (described by

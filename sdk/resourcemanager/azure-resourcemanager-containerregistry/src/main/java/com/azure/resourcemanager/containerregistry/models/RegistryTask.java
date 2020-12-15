@@ -117,11 +117,13 @@ public interface RegistryTask
             TaskStepType withLinux();
 
             /**
-             * The function that specifies a Windows OS system for the platform.
+             * The function that specifies a Linux OS system, architecture, and CPU variant.
              *
+             * @param architecture the CPU architecture.
+             * @param variant the CPU variant.
              * @return the next stage of the container registry task definition.
              */
-            TaskStepType withWindows();
+            TaskStepType withLinux(Architecture architecture, Variant variant);
 
             /**
              * The function that specifies a Linux OS system and architecture for the platform.
@@ -132,21 +134,19 @@ public interface RegistryTask
             TaskStepType withLinux(Architecture architecture);
 
             /**
+             * The function that specifies a Windows OS system for the platform.
+             *
+             * @return the next stage of the container registry task definition.
+             */
+            TaskStepType withWindows();
+
+            /**
              * The function that specifies a Windows OS system and architecture for the platform.
              *
              * @param architecture the CPU architecture
              * @return the next stage of the container registry task definition.
              */
             TaskStepType withWindows(Architecture architecture);
-
-            /**
-             * The function that specifies a Linux OS system, architecture, and CPU variant.
-             *
-             * @param architecture the CPU architecture.
-             * @param variant the CPU variant.
-             * @return the next stage of the container registry task definition.
-             */
-            TaskStepType withLinux(Architecture architecture, Variant variant);
 
             /**
              * The function that specifies a Windows OS system, architecture, and CPU variant.
@@ -314,27 +314,12 @@ public interface RegistryTask
             Update withLinux();
 
             /**
-             * The function that specifies a Windows OS system for the platform.
-             *
-             * @return the next stage of the container registry task update.
-             */
-            Update withWindows();
-
-            /**
              * The function that specifies a Linux OS system and architecture for the platform.
              *
              * @param architecture the CPU architecture.
              * @return the next stage of the container registry task update.
              */
             Update withLinux(Architecture architecture);
-
-            /**
-             * The function that specifies a Windows OS system and architecture for the platform.
-             *
-             * @param architecture the CPU architecture
-             * @return the next stage of the container registry task update.
-             */
-            Update withWindows(Architecture architecture);
 
             /**
              * The function that specifies a Linux OS system, architecture, and CPU variant.
@@ -346,6 +331,13 @@ public interface RegistryTask
             Update withLinux(Architecture architecture, Variant variant);
 
             /**
+             * The function that specifies a Windows OS system for the platform.
+             *
+             * @return the next stage of the container registry task update.
+             */
+            Update withWindows();
+
+            /**
              * The function that specifies a Windows OS system, architecture, and CPU variant.
              *
              * @param architecture the CPU architecture.
@@ -353,6 +345,14 @@ public interface RegistryTask
              * @return the next stage of the container registry task update.
              */
             Update withWindows(Architecture architecture, Variant variant);
+
+            /**
+             * The function that specifies a Windows OS system and architecture for the platform.
+             *
+             * @param architecture the CPU architecture
+             * @return the next stage of the container registry task update.
+             */
+            Update withWindows(Architecture architecture);
 
             /**
              * The function that specifies a platform.

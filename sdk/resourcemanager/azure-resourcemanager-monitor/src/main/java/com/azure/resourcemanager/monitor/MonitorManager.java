@@ -35,6 +35,17 @@ public final class MonitorManager extends Manager<MonitorClient> {
     private AlertRules alerts;
     private AutoscaleSettings autoscaleSettings;
 
+    private MonitorManager(HttpPipeline httpPipeline, AzureProfile profile) {
+        super(
+            httpPipeline,
+            profile,
+            new MonitorClientBuilder()
+                .pipeline(httpPipeline)
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+                .subscriptionId(profile.getSubscriptionId())
+                .buildClient());
+    }
+
     /**
      * Get a Configurable instance that can be used to create MonitorManager with optional configuration.
      *
@@ -130,16 +141,5 @@ public final class MonitorManager extends Manager<MonitorClient> {
         public MonitorManager authenticate(TokenCredential credential, AzureProfile profile) {
             return MonitorManager.authenticate(buildHttpPipeline(credential, profile), profile);
         }
-    }
-
-    private MonitorManager(HttpPipeline httpPipeline, AzureProfile profile) {
-        super(
-            httpPipeline,
-            profile,
-            new MonitorClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .buildClient());
     }
 }

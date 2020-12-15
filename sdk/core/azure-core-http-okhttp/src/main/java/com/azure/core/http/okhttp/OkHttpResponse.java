@@ -118,13 +118,13 @@ final class OkHttpResponse extends OkHttpResponseBase {
             return this.byteBuffer;
         }
 
-        int readBytes() {
-            return this.readBytes;
-        }
-
         Pair buffer(ByteBuffer byteBuffer) {
             this.byteBuffer = byteBuffer;
             return this;
+        }
+
+        int readBytes() {
+            return this.readBytes;
         }
 
         Pair readBytes(int cnt) {

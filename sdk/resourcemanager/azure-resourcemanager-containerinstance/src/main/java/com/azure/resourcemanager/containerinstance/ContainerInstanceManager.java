@@ -28,6 +28,25 @@ public final class ContainerInstanceManager
     private final AuthorizationManager authorizationManager;
     private final NetworkManager networkManager;
 
+    private ContainerInstanceManager(HttpPipeline httpPipeline, AzureProfile profile) {
+        super(
+            httpPipeline,
+            profile,
+            new ContainerInstanceManagementClientBuilder()
+                .pipeline(httpPipeline)
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+                .subscriptionId(profile.getSubscriptionId())
+                .buildClient());
+
+        this.storageManager = AzureConfigurableImpl.configureHttpPipeline(httpPipeline, StorageManager.configure())
+            .authenticate(null, profile);
+        this.authorizationManager = AzureConfigurableImpl
+            .configureHttpPipeline(httpPipeline, AuthorizationManager.configure())
+            .authenticate(null, profile);
+        this.networkManager = AzureConfigurableImpl.configureHttpPipeline(httpPipeline, NetworkManager.configure())
+            .authenticate(null, profile);
+    }
+
     /**
      * Get a Configurable instance that can be used to create ContainerInstanceManager with optional configuration.
      *
@@ -77,25 +96,6 @@ public final class ContainerInstanceManager
         public ContainerInstanceManager authenticate(TokenCredential credential, AzureProfile profile) {
             return ContainerInstanceManager.authenticate(buildHttpPipeline(credential, profile), profile);
         }
-    }
-
-    private ContainerInstanceManager(HttpPipeline httpPipeline, AzureProfile profile) {
-        super(
-            httpPipeline,
-            profile,
-            new ContainerInstanceManagementClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .buildClient());
-
-        this.storageManager = AzureConfigurableImpl.configureHttpPipeline(httpPipeline, StorageManager.configure())
-            .authenticate(null, profile);
-        this.authorizationManager = AzureConfigurableImpl
-            .configureHttpPipeline(httpPipeline, AuthorizationManager.configure())
-            .authenticate(null, profile);
-        this.networkManager = AzureConfigurableImpl.configureHttpPipeline(httpPipeline, NetworkManager.configure())
-            .authenticate(null, profile);
     }
 
     /** @return the storage manager in container instance manager */

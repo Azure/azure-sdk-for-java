@@ -19,6 +19,20 @@ import java.util.List;
 @Immutable
 public final class SuggestPagedResponse extends PagedResponseBase<Void, SuggestResult> {
 
+    private final Double coverage;
+
+    /**
+     * Constructor
+     *
+     * @param response The responsepom containing information such as the request, status code, headers, and values.
+     * @param coverage Percent of the index used in the suggest operation.
+     */
+    public SuggestPagedResponse(Response<List<SuggestResult>> response, Double coverage) {
+        super(response.getRequest(), response.getStatusCode(), response.getHeaders(), response.getValue(), null, null);
+
+        this.coverage = coverage;
+    }
+
     /**
      * The percentage of the index covered in the suggest request.
      * <p>
@@ -29,19 +43,5 @@ public final class SuggestPagedResponse extends PagedResponseBase<Void, SuggestR
      */
     public Double getCoverage() {
         return coverage;
-    }
-
-    private final Double coverage;
-
-    /**
-     * Constructor
-     *
-     * @param response The response containing information such as the request, status code, headers, and values.
-     * @param coverage Percent of the index used in the suggest operation.
-     */
-    public SuggestPagedResponse(Response<List<SuggestResult>> response, Double coverage) {
-        super(response.getRequest(), response.getStatusCode(), response.getHeaders(), response.getValue(), null, null);
-
-        this.coverage = coverage;
     }
 }

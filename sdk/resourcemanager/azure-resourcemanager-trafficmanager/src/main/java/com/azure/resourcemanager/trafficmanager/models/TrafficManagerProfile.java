@@ -188,14 +188,6 @@ public interface TrafficManagerProfile
             WithCreate withHttpMonitoring();
 
             /**
-             * Specify to use HTTPS monitoring for the endpoints that checks for HTTPS 200 response from the path '/' at
-             * regular intervals, using port 443.
-             *
-             * @return the next stage of the definition
-             */
-            WithCreate withHttpsMonitoring();
-
-            /**
              * Specify the HTTP monitoring for the endpoints that checks for HTTP 200 response from the specified path
              * at regular intervals, using the specified port.
              *
@@ -204,6 +196,14 @@ public interface TrafficManagerProfile
              * @return the next stage of the definition
              */
             WithCreate withHttpMonitoring(int port, String path);
+
+            /**
+             * Specify to use HTTPS monitoring for the endpoints that checks for HTTPS 200 response from the path '/' at
+             * regular intervals, using port 443.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate withHttpsMonitoring();
 
             /**
              * Specify the HTTPS monitoring for the endpoints that checks for HTTPS 200 response from the specified path
@@ -330,14 +330,6 @@ public interface TrafficManagerProfile
             Update withHttpMonitoring();
 
             /**
-             * Specify to use HTTPS monitoring for the endpoints that checks for HTTPS 200 response from the path '/' at
-             * regular intervals, using port 443.
-             *
-             * @return the next stage of the traffic manager profile update
-             */
-            Update withHttpsMonitoring();
-
-            /**
              * Specify the HTTP monitoring for the endpoints that checks for HTTP 200 response from the specified path
              * at regular intervals, using the specified port.
              *
@@ -356,6 +348,14 @@ public interface TrafficManagerProfile
              * @return the next stage of the traffic manager profile update
              */
             Update withHttpsMonitoring(int port, String path);
+
+            /**
+             * Specify to use HTTPS monitoring for the endpoints that checks for HTTPS 200 response from the path '/' at
+             * regular intervals, using port 443.
+             *
+             * @return the next stage of the traffic manager profile update
+             */
+            Update withHttpsMonitoring();
         }
 
         /** The stage of the traffic manager profile update allowing to specify endpoints. */

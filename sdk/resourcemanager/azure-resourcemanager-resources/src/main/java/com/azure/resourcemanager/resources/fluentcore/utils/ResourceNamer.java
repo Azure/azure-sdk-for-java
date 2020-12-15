@@ -13,8 +13,8 @@ import java.util.UUID;
  */
 public class ResourceNamer implements IdentifierProvider {
 
-    private final String randName;
     private static final Random RANDOM = new Random();
+    private final String randName;
 
     /**
      * Constructs a ResourceNamer

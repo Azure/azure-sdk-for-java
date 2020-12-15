@@ -49,6 +49,28 @@ public class KeyProperties {
     OffsetDateTime expiresOn;
 
     /**
+     * The key name.
+     */
+    String name;
+
+    /**
+     * Key identifier.
+     */
+    @JsonProperty(value = "kid")
+    String id;
+
+    /**
+     * The policy rules under which the key can be exported.
+     */
+    KeyReleasePolicy releasePolicy;
+
+    /**
+     * Indicates if the private key can be exported.
+     */
+    @JsonProperty(value = "exportable")
+    Boolean exportable;
+
+    /**
      * Creation time in UTC.
      */
     private OffsetDateTime createdOn;
@@ -69,17 +91,6 @@ public class KeyProperties {
     private String recoveryLevel;
 
     /**
-     * The key name.
-     */
-    String name;
-
-    /**
-     * Key identifier.
-     */
-    @JsonProperty(value = "kid")
-    String id;
-
-    /**
      * Application specific metadata in the form of key-value pairs.
      */
     @JsonProperty(value = "tags")
@@ -97,17 +108,6 @@ public class KeyProperties {
      */
     @JsonProperty(value = "recoverableDays", access = JsonProperty.Access.WRITE_ONLY)
     private Integer recoverableDays;
-
-    /**
-     * Indicates if the private key can be exported.
-     */
-    @JsonProperty(value = "exportable")
-    Boolean exportable;
-
-    /**
-     * The policy rules under which the key can be exported.
-     */
-    KeyReleasePolicy releasePolicy;
 
     /**
      * Gets the number of days a key is retained before being deleted for a soft delete-enabled Key Vault.

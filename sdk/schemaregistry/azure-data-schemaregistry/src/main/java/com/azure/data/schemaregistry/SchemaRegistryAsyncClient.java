@@ -32,8 +32,6 @@ import reactor.core.publisher.Mono;
 @ServiceClient(builder = SchemaRegistryClientBuilder.class, isAsync = true)
 public final class SchemaRegistryAsyncClient {
 
-    private final ClientLogger logger = new ClientLogger(SchemaRegistryAsyncClient.class);
-
     static final Charset SCHEMA_REGISTRY_SERVICE_ENCODING = StandardCharsets.UTF_8;
     static final int MAX_SCHEMA_MAP_SIZE_DEFAULT = 1000;
     static final int MAX_SCHEMA_MAP_SIZE_MINIMUM = 10;
@@ -43,6 +41,7 @@ public final class SchemaRegistryAsyncClient {
     private final ConcurrentSkipListMap<String, Function<String, Object>> typeParserMap;
     private final Map<String, SchemaProperties> idCache;
     private final Map<String, SchemaProperties> schemaStringCache;
+    private final ClientLogger logger = new ClientLogger(SchemaRegistryAsyncClient.class);
 
     SchemaRegistryAsyncClient(
         AzureSchemaRegistry restService,

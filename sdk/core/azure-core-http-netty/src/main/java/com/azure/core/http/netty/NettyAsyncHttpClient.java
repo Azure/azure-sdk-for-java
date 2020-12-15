@@ -37,9 +37,9 @@ import java.util.function.BiFunction;
  * @see NettyAsyncHttpClientBuilder
  */
 class NettyAsyncHttpClient implements HttpClient {
-    private final boolean disableBufferCopy;
 
     final reactor.netty.http.client.HttpClient nettyClient;
+    private final boolean disableBufferCopy;
 
     /**
      * Creates default NettyAsyncHttpClient.

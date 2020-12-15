@@ -25,6 +25,22 @@ public final class KeyVaultManager extends Manager<KeyVaultManagementClient> {
     // Variables
     private final String tenantId;
 
+    private KeyVaultManager(
+        final HttpPipeline httpPipeline, AzureProfile profile) {
+        super(
+            httpPipeline,
+            profile,
+            new KeyVaultManagementClientBuilder()
+                .pipeline(httpPipeline)
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+                .subscriptionId(profile.getSubscriptionId())
+                .buildClient());
+        authorizationManager = AzureConfigurableImpl
+            .configureHttpPipeline(httpPipeline, AuthorizationManager.configure())
+            .authenticate(null, profile);
+        this.tenantId = profile.getTenantId();
+    }
+
     /**
      * Get a Configurable instance that can be used to create KeyVaultManager with optional configuration.
      *
@@ -76,22 +92,6 @@ public final class KeyVaultManager extends Manager<KeyVaultManagementClient> {
                 .authenticate(
                     buildHttpPipeline(credential, profile), profile);
         }
-    }
-
-    private KeyVaultManager(
-        final HttpPipeline httpPipeline, AzureProfile profile) {
-        super(
-            httpPipeline,
-            profile,
-            new KeyVaultManagementClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .buildClient());
-        authorizationManager = AzureConfigurableImpl
-            .configureHttpPipeline(httpPipeline, AuthorizationManager.configure())
-            .authenticate(null, profile);
-        this.tenantId = profile.getTenantId();
     }
 
     /** @return the KeyVault account management API entry point */

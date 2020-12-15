@@ -43,6 +43,11 @@ public class TaskGroup
         extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>>
         implements Indexable {
     /**
+     * The helper to operate on proxy TaskGroup of this TaskGroup for supporting dependents marked
+     * for post run.
+     */
+    protected ProxyTaskGroupWrapper proxyTaskGroupWrapper;
+    /**
      * The root task in this task group.
      */
     private final TaskGroupEntry<TaskItem> rootTaskEntry;
@@ -63,11 +68,6 @@ public class TaskGroup
      * is marked as cancelled i.e. {@link this#isGroupCancelled} is set.
      */
     private final TaskCancelledException taskCancelledException = new TaskCancelledException();
-    /**
-     * The helper to operate on proxy TaskGroup of this TaskGroup for supporting dependents marked
-     * for post run.
-     */
-    protected ProxyTaskGroupWrapper proxyTaskGroupWrapper;
 
     private final ClientLogger logger = new ClientLogger(this.getClass());
 

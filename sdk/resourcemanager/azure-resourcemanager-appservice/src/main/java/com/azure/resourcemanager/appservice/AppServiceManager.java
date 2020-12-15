@@ -44,6 +44,26 @@ public final class AppServiceManager extends Manager<WebSiteManagementClient> {
     private AppServiceDomains appServiceDomains;
     private FunctionApps functionApps;
 
+    private AppServiceManager(HttpPipeline httpPipeline, AzureProfile profile) {
+        super(
+            httpPipeline,
+            profile,
+            new WebSiteManagementClientBuilder()
+                .pipeline(httpPipeline)
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+                .subscriptionId(profile.getSubscriptionId())
+                .buildClient());
+        keyVaultManager = AzureConfigurableImpl.configureHttpPipeline(httpPipeline, KeyVaultManager.configure())
+            .authenticate(null, profile);
+        storageManager = AzureConfigurableImpl.configureHttpPipeline(httpPipeline, StorageManager.configure())
+            .authenticate(null, profile);
+        authorizationManager = AzureConfigurableImpl
+            .configureHttpPipeline(httpPipeline, AuthorizationManager.configure())
+            .authenticate(null, profile);
+        dnsZoneManager = AzureConfigurableImpl.configureHttpPipeline(httpPipeline, DnsZoneManager.configure())
+            .authenticate(null, profile);
+    }
+
     /**
      * Get a Configurable instance that can be used to create StorageManager with optional configuration.
      *
@@ -92,26 +112,6 @@ public final class AppServiceManager extends Manager<WebSiteManagementClient> {
         public AppServiceManager authenticate(TokenCredential credential, AzureProfile profile) {
             return AppServiceManager.authenticate(buildHttpPipeline(credential, profile), profile);
         }
-    }
-
-    private AppServiceManager(HttpPipeline httpPipeline, AzureProfile profile) {
-        super(
-            httpPipeline,
-            profile,
-            new WebSiteManagementClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .buildClient());
-        keyVaultManager = AzureConfigurableImpl.configureHttpPipeline(httpPipeline, KeyVaultManager.configure())
-            .authenticate(null, profile);
-        storageManager = AzureConfigurableImpl.configureHttpPipeline(httpPipeline, StorageManager.configure())
-            .authenticate(null, profile);
-        authorizationManager = AzureConfigurableImpl
-            .configureHttpPipeline(httpPipeline, AuthorizationManager.configure())
-            .authenticate(null, profile);
-        dnsZoneManager = AzureConfigurableImpl.configureHttpPipeline(httpPipeline, DnsZoneManager.configure())
-            .authenticate(null, profile);
     }
 
     /** @return the authorization manager instance. */

@@ -33,6 +33,24 @@ public class EncryptOptions {
     private final byte[] additionalAuthenticatedData;
 
     /**
+     * Creates an instance of {@link EncryptOptions} with the given parameters.
+     *
+     * @param algorithm The algorithm to be used for encryption.
+     * @param plainText The content to be encrypted.
+     * @param iv Initialization vector for the encryption operation.
+     * @param additionalAuthenticatedData Additional data to authenticate when using authenticated crypto algorithms.
+     */
+    EncryptOptions(EncryptionAlgorithm algorithm, byte[] plainText, byte[] iv, byte[] additionalAuthenticatedData) {
+        Objects.requireNonNull(algorithm, "Encryption algorithm cannot be null.");
+        Objects.requireNonNull(plainText, "Plain text content to be encrypted cannot be null.");
+
+        this.algorithm = algorithm;
+        this.plainText = CoreUtils.clone(plainText);
+        this.iv = CoreUtils.clone(iv);
+        this.additionalAuthenticatedData = CoreUtils.clone(additionalAuthenticatedData);
+    }
+
+    /**
      * Factory method to create an instance of {@link EncryptOptions} with the given parameters for
      * {@link EncryptionAlgorithm#A128CBC}.
      *
@@ -246,24 +264,6 @@ public class EncryptOptions {
     public static EncryptOptions createAes256GcmOptions(byte[] plainText, byte[] iv,
                                                         byte[] additionalAuthenticatedData) {
         return new EncryptOptions(EncryptionAlgorithm.A256GCM, plainText, iv, additionalAuthenticatedData);
-    }
-
-    /**
-     * Creates an instance of {@link EncryptOptions} with the given parameters.
-     *
-     * @param algorithm The algorithm to be used for encryption.
-     * @param plainText The content to be encrypted.
-     * @param iv Initialization vector for the encryption operation.
-     * @param additionalAuthenticatedData Additional data to authenticate when using authenticated crypto algorithms.
-     */
-    EncryptOptions(EncryptionAlgorithm algorithm, byte[] plainText, byte[] iv, byte[] additionalAuthenticatedData) {
-        Objects.requireNonNull(algorithm, "Encryption algorithm cannot be null.");
-        Objects.requireNonNull(plainText, "Plain text content to be encrypted cannot be null.");
-
-        this.algorithm = algorithm;
-        this.plainText = CoreUtils.clone(plainText);
-        this.iv = CoreUtils.clone(iv);
-        this.additionalAuthenticatedData = CoreUtils.clone(additionalAuthenticatedData);
     }
 
     /**

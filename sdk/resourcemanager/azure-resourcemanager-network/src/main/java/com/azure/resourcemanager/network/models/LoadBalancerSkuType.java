@@ -22,12 +22,6 @@ public final class LoadBalancerSkuType {
     /** The actual serialized value for a LoadBalancerSkuType instance. */
     private final LoadBalancerSkuName skuName;
 
-    /** @return predefined LoadBalancer SKU types */
-    public static LoadBalancerSkuType[] values() {
-        Collection<LoadBalancerSkuType> valuesCollection = VALUES_BY_NAME.values();
-        return valuesCollection.toArray(new LoadBalancerSkuType[valuesCollection.size()]);
-    }
-
     /**
      * Creates a LoadBalancerSkuType from sku name.
      *
@@ -38,6 +32,12 @@ public final class LoadBalancerSkuType {
         if (skuName != null) {
             VALUES_BY_NAME.put(skuName.toString().toLowerCase(Locale.ROOT), this);
         }
+    }
+
+    /** @return predefined LoadBalancer SKU types */
+    public static LoadBalancerSkuType[] values() {
+        Collection<LoadBalancerSkuType> valuesCollection = VALUES_BY_NAME.values();
+        return valuesCollection.toArray(new LoadBalancerSkuType[valuesCollection.size()]);
     }
 
     /**

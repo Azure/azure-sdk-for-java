@@ -20,7 +20,6 @@ import reactor.core.publisher.Mono;
  * <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">Azure Core: Telemetry policy</a>.
  */
 public class UserAgentPolicy implements HttpPipelinePolicy {
-    private static final String USER_AGENT = "User-Agent";
 
     /**
      * Key for {@link Context} to add a value which will override the User-Agent supplied in this policy in an ad-hoc
@@ -33,6 +32,8 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
      * ad-hoc manner.
      */
     public static final String APPEND_USER_AGENT_CONTEXT_KEY = "Append-User-Agent";
+
+    private static final String USER_AGENT = "User-Agent";
 
     private final String userAgent;
 

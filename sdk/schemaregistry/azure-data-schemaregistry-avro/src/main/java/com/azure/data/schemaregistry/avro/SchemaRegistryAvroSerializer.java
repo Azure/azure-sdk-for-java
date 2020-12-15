@@ -26,7 +26,6 @@ import static com.azure.core.util.FluxUtil.monoError;
  * Schema Registry-based serializer implementation for Avro data format.
  */
 public final class SchemaRegistryAvroSerializer implements ObjectSerializer {
-    private final ClientLogger logger = new ClientLogger(SchemaRegistryAvroSerializer.class);
 
     static final int SCHEMA_ID_SIZE = 32;
     static final int RECORD_FORMAT_INDICATOR_SIZE = 4;
@@ -34,6 +33,7 @@ public final class SchemaRegistryAvroSerializer implements ObjectSerializer {
     private final AvroSchemaRegistryUtils avroSchemaRegistryUtils;
     private final String schemaGroup;
     private final Boolean autoRegisterSchemas;
+    private final ClientLogger logger = new ClientLogger(SchemaRegistryAvroSerializer.class);
 
     SchemaRegistryAvroSerializer(SchemaRegistryAsyncClient schemaRegistryClient,
                      AvroSchemaRegistryUtils avroSchemaRegistryUtils, String schemaGroup, Boolean autoRegisterSchemas) {

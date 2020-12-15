@@ -42,6 +42,19 @@ public final class EventHubsManager extends Manager<EventHubManagementClient> {
 
     private final StorageManager storageManager;
 
+    private EventHubsManager(HttpPipeline httpPipeline, AzureProfile profile) {
+        super(
+            httpPipeline,
+            profile,
+            new EventHubManagementClientBuilder()
+                .pipeline(httpPipeline)
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+                .subscriptionId(profile.getSubscriptionId())
+                .buildClient());
+        storageManager = AzureConfigurableImpl.configureHttpPipeline(httpPipeline, StorageManager.configure())
+            .authenticate(null, profile);
+    }
+
     /**
      * Get a Configurable instance that can be used to create EventHubsManager with optional configuration.
      *
@@ -93,18 +106,6 @@ public final class EventHubsManager extends Manager<EventHubManagementClient> {
         public EventHubsManager authenticate(TokenCredential credential, AzureProfile profile) {
             return EventHubsManager.authenticate(buildHttpPipeline(credential, profile), profile);
         }
-    }
-    private EventHubsManager(HttpPipeline httpPipeline, AzureProfile profile) {
-        super(
-            httpPipeline,
-            profile,
-            new EventHubManagementClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .buildClient());
-        storageManager = AzureConfigurableImpl.configureHttpPipeline(httpPipeline, StorageManager.configure())
-            .authenticate(null, profile);
     }
 
     /**

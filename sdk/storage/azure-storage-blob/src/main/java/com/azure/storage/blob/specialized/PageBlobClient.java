@@ -47,7 +47,6 @@ import java.util.Objects;
  */
 @ServiceClient(builder = SpecializedBlobClientBuilder.class)
 public final class PageBlobClient extends BlobClientBase {
-    private final PageBlobAsyncClient pageBlobAsyncClient;
 
     /**
      * Indicates the number of bytes in a page.
@@ -58,6 +57,8 @@ public final class PageBlobClient extends BlobClientBase {
      * Indicates the maximum number of bytes that may be sent in a call to putPage.
      */
     public static final int MAX_PUT_PAGES_BYTES = PageBlobAsyncClient.MAX_PUT_PAGES_BYTES;
+
+    private final PageBlobAsyncClient pageBlobAsyncClient;
 
     /**
      * Package-private constructor for use by {@link SpecializedBlobClientBuilder}.

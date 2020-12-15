@@ -28,7 +28,6 @@ import java.util.stream.Collectors;
  * SharedKey credential policy that is put into a header to authorize requests.
  */
 public final class StorageSharedKeyCredential {
-    private final ClientLogger logger = new ClientLogger(StorageSharedKeyCredential.class);
 
     private static final String AUTHORIZATION_HEADER_FORMAT = "SharedKey %s:%s";
     private static final Context LOG_STRING_TO_SIGN_CONTEXT = new Context(Constants.STORAGE_LOG_STRING_TO_SIGN, true);
@@ -39,6 +38,8 @@ public final class StorageSharedKeyCredential {
 
     private final String accountName;
     private final String accountKey;
+
+    private final ClientLogger logger = new ClientLogger(StorageSharedKeyCredential.class);
 
     /**
      * Initializes a new instance of StorageSharedKeyCredential contains an account's name and its primary or secondary

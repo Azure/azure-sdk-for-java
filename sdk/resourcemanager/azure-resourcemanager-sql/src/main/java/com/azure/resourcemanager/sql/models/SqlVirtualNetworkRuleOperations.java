@@ -37,18 +37,18 @@ public interface SqlVirtualNetworkRuleOperations
             /**
              * Sets the parent SQL server for the new Virtual Network Rule.
              *
-             * @param sqlServerId the parent SQL server ID
-             * @return The next stage of the definition.
-             */
-            SqlVirtualNetworkRuleOperations.DefinitionStages.WithSubnet withExistingSqlServerId(String sqlServerId);
-
-            /**
-             * Sets the parent SQL server for the new Virtual Network Rule.
-             *
              * @param sqlServer the parent SQL server
              * @return The next stage of the definition.
              */
             SqlVirtualNetworkRuleOperations.DefinitionStages.WithSubnet withExistingSqlServer(SqlServer sqlServer);
+
+            /**
+             * Sets the parent SQL server for the new Virtual Network Rule.
+             *
+             * @param sqlServerId the parent SQL server ID
+             * @return The next stage of the definition.
+             */
+            SqlVirtualNetworkRuleOperations.DefinitionStages.WithSubnet withExistingSqlServerId(String sqlServerId);
         }
 
         /** The SQL Virtual Network Rule definition to set the virtual network ID and the subnet name. */

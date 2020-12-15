@@ -9,6 +9,11 @@ import java.util.Base64;
  * Utility type exposing Base64 encoding and decoding methods.
  */
 public final class Base64Util {
+
+    // Private Ctr
+    private Base64Util() {
+    }
+
     /**
      * Encodes a byte array to base64.
      * @param src the byte array to encode
@@ -61,9 +66,5 @@ public final class Base64Util {
      */
     public static byte[] decodeString(String encoded) {
         return encoded == null ? null : Base64.getDecoder().decode(encoded);
-    }
-
-    // Private Ctr
-    private Base64Util() {
     }
 }

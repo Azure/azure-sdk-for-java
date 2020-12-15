@@ -151,6 +151,62 @@ public final class AzureResourceManager {
     private final String subscriptionId;
     private final String tenantId;
 
+    private AzureResourceManager(HttpPipeline httpPipeline, AzureProfile profile) {
+        this(httpPipeline, profile, AzureResourceManager.authenticate(httpPipeline, profile));
+    }
+
+    private AzureResourceManager(HttpPipeline httpPipeline, AzureProfile profile, Authenticated authenticated) {
+        this.resourceManager = withHttpPipeline(httpPipeline, ResourceManager.configure())
+            .authenticate(null, profile)
+            .withDefaultSubscription();
+        this.storageManager = withHttpPipeline(httpPipeline, StorageManager.configure())
+            .authenticate(null, profile);
+        this.computeManager = withHttpPipeline(httpPipeline, ComputeManager.configure())
+            .authenticate(null, profile);
+        this.networkManager = withHttpPipeline(httpPipeline, NetworkManager.configure())
+            .authenticate(null, profile);
+        this.keyVaultManager = withHttpPipeline(httpPipeline, KeyVaultManager.configure())
+            .authenticate(null, profile);
+        //        this.batchManager = BatchManager.authenticate(restClient, subscriptionId, internalContext);
+        this.trafficManager = withHttpPipeline(httpPipeline, TrafficManager.configure())
+            .authenticate(null, profile);
+        this.redisManager = withHttpPipeline(httpPipeline, RedisManager.configure())
+            .authenticate(null, profile);
+        this.cdnManager = withHttpPipeline(httpPipeline, CdnManager.configure())
+            .authenticate(null, profile);
+        this.dnsZoneManager = withHttpPipeline(httpPipeline, DnsZoneManager.configure())
+            .authenticate(null, profile);
+        this.appServiceManager = withHttpPipeline(httpPipeline, AppServiceManager.configure())
+            .authenticate(null, profile);
+        this.sqlServerManager = withHttpPipeline(httpPipeline, SqlServerManager.configure())
+            .authenticate(null, profile);
+        this.serviceBusManager = withHttpPipeline(httpPipeline, ServiceBusManager.configure())
+            .authenticate(null, profile);
+        this.containerInstanceManager = withHttpPipeline(httpPipeline, ContainerInstanceManager.configure())
+            .authenticate(null, profile);
+        this.containerRegistryManager = withHttpPipeline(httpPipeline, ContainerRegistryManager.configure())
+            .authenticate(null, profile);
+        this.containerServiceManager = withHttpPipeline(httpPipeline, ContainerServiceManager.configure())
+            .authenticate(null, profile);
+        this.cosmosManager = withHttpPipeline(httpPipeline, CosmosManager.configure())
+            .authenticate(null, profile);
+        this.searchServiceManager = withHttpPipeline(httpPipeline, SearchServiceManager.configure())
+            .authenticate(null, profile);
+        this.msiManager = withHttpPipeline(httpPipeline, MsiManager.configure())
+            .authenticate(null, profile);
+        this.monitorManager = withHttpPipeline(httpPipeline, MonitorManager.configure())
+            .authenticate(null, profile);
+        this.eventHubsManager = withHttpPipeline(httpPipeline, EventHubsManager.configure())
+            .authenticate(null, profile);
+        this.appPlatformManager = withHttpPipeline(httpPipeline, AppPlatformManager.configure())
+            .authenticate(null, profile);
+        this.privateDnsZoneManager = withHttpPipeline(httpPipeline, PrivateDnsZoneManager.configure())
+            .authenticate(null, profile);
+        this.authenticated = authenticated;
+        this.subscriptionId = profile.getSubscriptionId();
+        this.tenantId = profile.getTenantId();
+    }
+
     /**
      * Authenticate to Azure using an Azure credential object.
      *
@@ -344,62 +400,6 @@ public final class AzureResourceManager {
             return new AzureResourceManager(
                 httpPipeline, new AzureProfile(tenantId, subscriptionId, environment), this);
         }
-    }
-
-    private AzureResourceManager(HttpPipeline httpPipeline, AzureProfile profile) {
-        this(httpPipeline, profile, AzureResourceManager.authenticate(httpPipeline, profile));
-    }
-
-    private AzureResourceManager(HttpPipeline httpPipeline, AzureProfile profile, Authenticated authenticated) {
-        this.resourceManager = withHttpPipeline(httpPipeline, ResourceManager.configure())
-            .authenticate(null, profile)
-            .withDefaultSubscription();
-        this.storageManager = withHttpPipeline(httpPipeline, StorageManager.configure())
-            .authenticate(null, profile);
-        this.computeManager = withHttpPipeline(httpPipeline, ComputeManager.configure())
-            .authenticate(null, profile);
-        this.networkManager = withHttpPipeline(httpPipeline, NetworkManager.configure())
-            .authenticate(null, profile);
-        this.keyVaultManager = withHttpPipeline(httpPipeline, KeyVaultManager.configure())
-            .authenticate(null, profile);
-        //        this.batchManager = BatchManager.authenticate(restClient, subscriptionId, internalContext);
-        this.trafficManager = withHttpPipeline(httpPipeline, TrafficManager.configure())
-            .authenticate(null, profile);
-        this.redisManager = withHttpPipeline(httpPipeline, RedisManager.configure())
-            .authenticate(null, profile);
-        this.cdnManager = withHttpPipeline(httpPipeline, CdnManager.configure())
-            .authenticate(null, profile);
-        this.dnsZoneManager = withHttpPipeline(httpPipeline, DnsZoneManager.configure())
-            .authenticate(null, profile);
-        this.appServiceManager = withHttpPipeline(httpPipeline, AppServiceManager.configure())
-            .authenticate(null, profile);
-        this.sqlServerManager = withHttpPipeline(httpPipeline, SqlServerManager.configure())
-            .authenticate(null, profile);
-        this.serviceBusManager = withHttpPipeline(httpPipeline, ServiceBusManager.configure())
-            .authenticate(null, profile);
-        this.containerInstanceManager = withHttpPipeline(httpPipeline, ContainerInstanceManager.configure())
-            .authenticate(null, profile);
-        this.containerRegistryManager = withHttpPipeline(httpPipeline, ContainerRegistryManager.configure())
-            .authenticate(null, profile);
-        this.containerServiceManager = withHttpPipeline(httpPipeline, ContainerServiceManager.configure())
-            .authenticate(null, profile);
-        this.cosmosManager = withHttpPipeline(httpPipeline, CosmosManager.configure())
-            .authenticate(null, profile);
-        this.searchServiceManager = withHttpPipeline(httpPipeline, SearchServiceManager.configure())
-            .authenticate(null, profile);
-        this.msiManager = withHttpPipeline(httpPipeline, MsiManager.configure())
-            .authenticate(null, profile);
-        this.monitorManager = withHttpPipeline(httpPipeline, MonitorManager.configure())
-            .authenticate(null, profile);
-        this.eventHubsManager = withHttpPipeline(httpPipeline, EventHubsManager.configure())
-            .authenticate(null, profile);
-        this.appPlatformManager = withHttpPipeline(httpPipeline, AppPlatformManager.configure())
-            .authenticate(null, profile);
-        this.privateDnsZoneManager = withHttpPipeline(httpPipeline, PrivateDnsZoneManager.configure())
-            .authenticate(null, profile);
-        this.authenticated = authenticated;
-        this.subscriptionId = profile.getSubscriptionId();
-        this.tenantId = profile.getTenantId();
     }
 
     private static <T extends AzureConfigurable<?>> T withHttpPipeline(HttpPipeline httpPipeline, T azureConfigurable) {

@@ -77,10 +77,6 @@ public final class KeyVaultBackupAsyncClient {
      */
     private final String serviceVersion;
 
-    static Duration getDefaultPollingInterval() {
-        return DEFAULT_POLLING_INTERVAL;
-    }
-
     /**
      * Package private constructor to be used by {@link KeyVaultBackupClientBuilder}.
      */
@@ -94,6 +90,10 @@ public final class KeyVaultBackupAsyncClient {
         clientImpl = new KeyVaultBackupClientImplBuilder()
             .pipeline(httpPipeline)
             .buildClient();
+    }
+
+    static Duration getDefaultPollingInterval() {
+        return DEFAULT_POLLING_INTERVAL;
     }
 
     /**

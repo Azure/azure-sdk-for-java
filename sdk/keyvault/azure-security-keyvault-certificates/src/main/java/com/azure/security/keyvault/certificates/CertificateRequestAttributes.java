@@ -17,29 +17,6 @@ import java.time.ZoneOffset;
 class CertificateRequestAttributes {
 
     /**
-     * Creates an instance of SecretRequestAttributes. Reads certificateProperties.notBefore, certificateProperties.expires and certificateProperties.enabled fields
-     * from {@code certificateProperties}
-     * @param certificateProperties the {@link CertificateProperties} object with populated attributes
-     */
-    CertificateRequestAttributes(CertificateProperties certificateProperties) {
-        if (certificateProperties.getNotBefore() != null) {
-            this.notBefore = certificateProperties.getNotBefore().toEpochSecond();
-        }
-        if (certificateProperties.getExpiresOn() != null) {
-            this.expires = certificateProperties.getExpiresOn().toEpochSecond();
-        }
-        this.enabled = certificateProperties.isEnabled();
-    }
-
-    CertificateRequestAttributes(ImportCertificateOptions importCertificateOptions) {
-        this.enabled = importCertificateOptions.isEnabled();
-    }
-
-    CertificateRequestAttributes() {
-
-    }
-
-    /**
      * The secret value.
      */
     @JsonProperty(value = "value")
@@ -80,6 +57,29 @@ class CertificateRequestAttributes {
      */
     @JsonProperty(value = "updated", access = JsonProperty.Access.WRITE_ONLY)
     private Long updated;
+
+    /**
+     * Creates an instance of SecretRequestAttributes. Reads certificateProperties.notBefore, certificateProperties.expires and certificateProperties.enabled fields
+     * from {@code certificateProperties}
+     * @param certificateProperties the {@link CertificateProperties} object with populated attributes
+     */
+    CertificateRequestAttributes(CertificateProperties certificateProperties) {
+        if (certificateProperties.getNotBefore() != null) {
+            this.notBefore = certificateProperties.getNotBefore().toEpochSecond();
+        }
+        if (certificateProperties.getExpiresOn() != null) {
+            this.expires = certificateProperties.getExpiresOn().toEpochSecond();
+        }
+        this.enabled = certificateProperties.isEnabled();
+    }
+
+    CertificateRequestAttributes(ImportCertificateOptions importCertificateOptions) {
+        this.enabled = importCertificateOptions.isEnabled();
+    }
+
+    CertificateRequestAttributes() {
+
+    }
 
     /**
      * Get the enabled value.

@@ -16,8 +16,8 @@ import java.util.Base64;
  * Kudu web app authentication via basic auth
  */
 public final class KuduAuthenticationPolicy implements HttpPipelinePolicy {
-    private final WebAppBase webApp;
     private static final String HEADER_NAME = "Authorization";
+    private final WebAppBase webApp;
     private String basicToken;
 
     /**

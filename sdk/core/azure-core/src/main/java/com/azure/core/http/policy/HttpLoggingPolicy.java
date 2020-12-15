@@ -37,6 +37,11 @@ import java.util.stream.Collectors;
  * The pipeline policy that handles logging of HTTP requests and responses.
  */
 public class HttpLoggingPolicy implements HttpPipelinePolicy {
+    /**
+     * Key for {@link Context} to pass request retry count metadata for logging.
+     */
+    public static final String RETRY_COUNT_CONTEXT = "requestRetryCount";
+
     private static final ObjectMapper PRETTY_PRINTER = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
     private static final int MAX_BODY_LOG_SIZE = 1024 * 16;
     private static final String REDACTED_PLACEHOLDER = "REDACTED";
@@ -45,11 +50,6 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private final Set<String> allowedHeaderNames;
     private final Set<String> allowedQueryParameterNames;
     private final boolean prettyPrintBody;
-
-    /**
-     * Key for {@link Context} to pass request retry count metadata for logging.
-     */
-    public static final String RETRY_COUNT_CONTEXT = "requestRetryCount";
 
     /**
      * Creates an HttpLoggingPolicy with the given log configurations.

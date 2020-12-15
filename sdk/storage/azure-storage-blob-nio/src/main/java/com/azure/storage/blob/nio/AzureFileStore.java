@@ -16,9 +16,9 @@ import java.util.Objects;
  * An {@code AzureFileStore} is a {@link FileStore} backed by an Azure Blob Storage container.
  */
 public final class AzureFileStore extends FileStore {
-    private final ClientLogger logger = new ClientLogger(AzureFileStore.class);
-
     private static final String AZURE_FILE_STORE_TYPE = "AzureBlobContainer";
+
+    private final ClientLogger logger = new ClientLogger(AzureFileStore.class);
 
     private final AzureFileSystem parentFileSystem;
     private final BlobContainerClient containerClient;

@@ -20,11 +20,12 @@ import java.nio.file.attribute.FileTime;
  * {@link #setTimes(FileTime, FileTime, FileTime)} is not supported.
  */
 public final class AzureBasicFileAttributeView implements BasicFileAttributeView {
-    private final ClientLogger logger = new ClientLogger(AzureBasicFileAttributeView.class);
 
     static final String NAME = "azureBasic";
 
     private final Path path;
+
+    private final ClientLogger logger = new ClientLogger(AzureBasicFileAttributeView.class);
 
     AzureBasicFileAttributeView(Path path) {
         this.path = path;

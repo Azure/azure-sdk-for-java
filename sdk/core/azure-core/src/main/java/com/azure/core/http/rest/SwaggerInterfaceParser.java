@@ -17,10 +17,10 @@ import java.util.concurrent.ConcurrentHashMap;
  * interface.
  */
 class SwaggerInterfaceParser {
+    private static final Map<Method, SwaggerMethodParser> METHOD_PARSERS = new ConcurrentHashMap<>();
     private final String host;
     private final String serviceName;
     private final SerializerAdapter serializer;
-    private static final Map<Method, SwaggerMethodParser> METHOD_PARSERS = new ConcurrentHashMap<>();
 
     /**
      * Create a SwaggerInterfaceParser object with the provided fully qualified interface

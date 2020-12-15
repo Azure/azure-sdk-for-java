@@ -17,6 +17,10 @@ import java.util.concurrent.locks.ReentrantLock;
  * @param <NodeT> the type of the node
  */
 public class DAGNode<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Node<DataT, NodeT> {
+
+    private static final String ERROR_MESSAGE_FORMAT =
+        "invalid state - %s: The dependency '%s' is already reported or there is no such dependencyKey";
+
     /**
      * keys of other nodes those dependents on this node.
      */
@@ -35,8 +39,6 @@ public class DAGNode<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Node<Da
     private final ReentrantLock lock;
 
     private final ClientLogger logger = new ClientLogger(this.getClass());
-    private static final String ERROR_MESSAGE_FORMAT =
-        "invalid state - %s: The dependency '%s' is already reported or there is no such dependencyKey";
 
     /**
      * Creates a DAG node.

@@ -21,15 +21,14 @@ import java.util.Optional;
  */
 @Immutable
 public class Context {
-    private final ClientLogger logger = new ClientLogger(Context.class);
-
-    // All fields must be immutable.
-    //
     /**
      * Signifies that no data needs to be passed to the pipeline.
      */
     public static final Context NONE = new Context(null, null, null);
 
+    private final ClientLogger logger = new ClientLogger(Context.class);
+
+    // All fields must be immutable.
     private final Context parent;
     private final Object key;
     private final Object value;

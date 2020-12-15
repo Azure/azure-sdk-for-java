@@ -10,19 +10,19 @@ public final class FalseRuleFilter extends SqlRuleFilter {
     private static final FalseRuleFilter INSTANCE = new FalseRuleFilter();
 
     /**
+     * Initializes a new instance.
+     */
+    public FalseRuleFilter() {
+        super("1=0");
+    }
+
+    /**
      * Gets an instance of the {@link FalseRuleFilter}.
      *
      * @return an instance of the {@link FalseRuleFilter}.
      */
     static FalseRuleFilter getInstance() {
         return INSTANCE;
-    }
-
-    /**
-     * Initializes a new instance.
-     */
-    public FalseRuleFilter() {
-        super("1=0");
     }
 
     /**

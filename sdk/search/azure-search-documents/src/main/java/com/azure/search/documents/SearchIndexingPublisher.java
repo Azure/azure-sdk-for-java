@@ -38,6 +38,9 @@ import java.util.stream.Collectors;
 final class SearchIndexingPublisher<T> {
     private static final double JITTER_FACTOR = 0.05;
 
+    volatile AtomicInteger backoffCount = new AtomicInteger();
+    volatile Duration currentRetryDelay = Duration.ZERO;
+
     private final ClientLogger logger = new ClientLogger(SearchIndexingPublisher.class);
 
     private final SearchAsyncClient client;
@@ -58,10 +61,6 @@ final class SearchIndexingPublisher<T> {
     private final Deque<TryTrackingIndexAction<T>> actions = new LinkedList<>();
 
     private final Semaphore processingSemaphore = new Semaphore(1);
-
-    volatile AtomicInteger backoffCount = new AtomicInteger();
-    volatile Duration currentRetryDelay = Duration.ZERO;
-
     SearchIndexingPublisher(SearchAsyncClient client, SearchIndexingBufferedSenderOptions<T> options) {
         Objects.requireNonNull(options, "'options' cannot be null.");
         this.documentKeyRetriever = Objects.requireNonNull(options.getDocumentKeyRetriever(),

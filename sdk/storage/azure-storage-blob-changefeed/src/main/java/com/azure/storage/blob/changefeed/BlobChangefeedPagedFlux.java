@@ -26,11 +26,11 @@ import java.util.List;
 public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, BlobChangefeedEvent,
     BlobChangefeedPagedResponse> {
 
+    private static final Integer DEFAULT_PAGE_SIZE = 5000;
+
     private final ClientLogger logger = new ClientLogger(BlobChangefeedPagedFlux.class);
 
     private final Changefeed changefeed;
-
-    private static final Integer DEFAULT_PAGE_SIZE = 5000;
 
     private Context context;
 

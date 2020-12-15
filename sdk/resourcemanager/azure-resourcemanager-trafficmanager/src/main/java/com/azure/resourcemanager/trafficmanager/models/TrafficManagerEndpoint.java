@@ -239,14 +239,6 @@ public interface TrafficManagerEndpoint
             WithAttach<ParentT> withGeographicLocation(GeographicLocation geographicLocation);
 
             /**
-             * Specifies the list of geographic location for the endpoint that will be used when the parent profile is
-             * configured with geographic based routing method {@link TrafficRoutingMethod#GEOGRAPHIC}.
-             *
-             * @param geographicLocations the geographic locations
-             * @return the next stage of the definition
-             */
-            WithAttach<ParentT> withGeographicLocations(List<GeographicLocation> geographicLocations);
-            /**
              * Specifies the geographic location for the endpoint that will be used when the parent profile is
              * configured with geographic based routing method {@link TrafficRoutingMethod#GEOGRAPHIC}.
              *
@@ -254,6 +246,16 @@ public interface TrafficManagerEndpoint
              * @return the next stage of the definition
              */
             WithAttach<ParentT> withGeographicLocation(String geographicLocationCode);
+
+            /**
+             * Specifies the list of geographic location for the endpoint that will be used when the parent profile is
+             * configured with geographic based routing method {@link TrafficRoutingMethod#GEOGRAPHIC}.
+             *
+             * @param geographicLocations the geographic locations
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withGeographicLocations(List<GeographicLocation> geographicLocations);
+
             /**
              * Specifies the list of geographic location for the endpoint that will be used when the parent profile is
              * configured with geographic based routing method {@link TrafficRoutingMethod#GEOGRAPHIC}.
@@ -546,14 +548,6 @@ public interface TrafficManagerEndpoint
              */
             WithAttach<ParentT> withGeographicLocation(GeographicLocation geographicLocation);
             /**
-             * Specifies the list of geographic location for the endpoint that will be used when the parent profile is
-             * configured with geographic based routing method.
-             *
-             * @param geographicLocations the geographic locations
-             * @return the next stage of the definition
-             */
-            WithAttach<ParentT> withGeographicLocations(List<GeographicLocation> geographicLocations);
-            /**
              * Specifies the geographic location for the endpoint that will be used when the parent profile is
              * configured with geographic based routing method.
              *
@@ -561,6 +555,14 @@ public interface TrafficManagerEndpoint
              * @return the next stage of the definition
              */
             WithAttach<ParentT> withGeographicLocation(String geographicLocationCode);
+            /**
+             * Specifies the list of geographic location for the endpoint that will be used when the parent profile is
+             * configured with geographic based routing method.
+             *
+             * @param geographicLocations the geographic locations
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withGeographicLocations(List<GeographicLocation> geographicLocations);
             /**
              * Specifies the list of geographic location for the endpoint that will be used when the parent profile is
              * configured with geographic based routing method.
@@ -785,21 +787,6 @@ public interface TrafficManagerEndpoint
              */
             Update withGeographicLocation(GeographicLocation geographicLocation);
             /**
-             * Specifies the list of geographic location for the endpoint that will be used when the parent profile is
-             * configured with geographic based routing method.
-             *
-             * @param geographicLocations the geographic locations
-             * @return the next stage of the update
-             */
-            Update withGeographicLocations(List<GeographicLocation> geographicLocations);
-            /**
-             * Specifies the geographic location to be removed from the endpoint's geographic location entries.
-             *
-             * @param geographicLocation the geographic location
-             * @return the next stage of the update
-             */
-            Update withoutGeographicLocation(GeographicLocation geographicLocation);
-            /**
              * Specifies the geographic location for the endpoint that will be used when the parent profile is
              * configured with geographic based routing method.
              *
@@ -807,6 +794,30 @@ public interface TrafficManagerEndpoint
              * @return the next stage of the update
              */
             Update withGeographicLocation(String geographicLocationCode);
+            /**
+             * Specifies the geographic location to be removed from the endpoint's geographic location entries.
+             *
+             * @param geographicLocation the geographic location
+             * @return the next stage of the update
+             */
+            Update withoutGeographicLocation(GeographicLocation geographicLocation);
+
+            /**
+             * Specifies the geographic location to be removed from the endpoint's geographic location entries.
+             *
+             * @param geographicLocationCode the geographic location code
+             * @return the next stage of the update
+             */
+            Update withoutGeographicLocation(String geographicLocationCode);
+
+            /**
+             * Specifies the list of geographic location for the endpoint that will be used when the parent profile is
+             * configured with geographic based routing method.
+             *
+             * @param geographicLocations the geographic locations
+             * @return the next stage of the update
+             */
+            Update withGeographicLocations(List<GeographicLocation> geographicLocations);
 
             /**
              * Specifies the list of geographic location for the endpoint that will be used when the parent profile is
@@ -816,13 +827,6 @@ public interface TrafficManagerEndpoint
              * @return the next stage of the update
              */
             Update withGeographicLocations(Collection<String> geographicLocationCodes);
-            /**
-             * Specifies the geographic location to be removed from the endpoint's geographic location entries.
-             *
-             * @param geographicLocationCode the geographic location code
-             * @return the next stage of the update
-             */
-            Update withoutGeographicLocation(String geographicLocationCode);
         }
 
         /** The stage of the traffic manager profile endpoint update allowing to enable or disable it. */

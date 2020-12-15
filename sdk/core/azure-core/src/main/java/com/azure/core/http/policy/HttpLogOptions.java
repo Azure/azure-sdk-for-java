@@ -17,13 +17,6 @@ import java.util.Set;
  * The log configurations for HTTP messages.
  */
 public class HttpLogOptions {
-    private String applicationId;
-    private HttpLogDetailLevel logLevel;
-    private Set<String> allowedHeaderNames;
-    private Set<String> allowedQueryParamNames;
-    private boolean prettyPrintBody;
-    private final ClientLogger logger = new ClientLogger(HttpLogOptions.class);
-
     private static final int MAX_APPLICATION_ID_LENGTH = 24;
     private static final List<String> DEFAULT_HEADERS_WHITELIST = Arrays.asList(
         "x-ms-client-request-id",
@@ -49,6 +42,12 @@ public class HttpLogOptions {
         "Transfer-Encoding",
         "User-Agent"
     );
+    private String applicationId;
+    private HttpLogDetailLevel logLevel;
+    private Set<String> allowedHeaderNames;
+    private Set<String> allowedQueryParamNames;
+    private boolean prettyPrintBody;
+    private final ClientLogger logger = new ClientLogger(HttpLogOptions.class);
 
     /**
      * Creates a new instance that does not log any information about HTTP requests or responses.

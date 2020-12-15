@@ -26,7 +26,6 @@ import java.util.Objects;
  */
 @Fluent
 public class SecretProperties {
-    private final ClientLogger logger = new ClientLogger(SecretProperties.class);
 
     /**
      * The secret id.
@@ -109,6 +108,8 @@ public class SecretProperties {
      */
     @JsonProperty(value = "recoverableDays", access = JsonProperty.Access.WRITE_ONLY)
     private Integer recoverableDays;
+
+    private final ClientLogger logger = new ClientLogger(SecretProperties.class);
 
     SecretProperties(String secretName) {
         this.name = secretName;

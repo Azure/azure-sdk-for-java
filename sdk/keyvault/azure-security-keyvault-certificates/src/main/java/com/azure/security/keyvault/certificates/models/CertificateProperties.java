@@ -18,6 +18,28 @@ import java.util.Map;
  */
 public class CertificateProperties {
 
+    /**
+     * The certificate version.
+     */
+    String version;
+
+    /**
+     * The Certificate name.
+     */
+    String name;
+
+    /**
+     * Application specific metadata in the form of key-value pairs.
+     */
+    @JsonProperty(value = "tags")
+    Map<String, String> tags;
+
+    /**
+     * Thumbprint of the certificate. Read Only
+     */
+    @JsonProperty(value = "x5t", access = JsonProperty.Access.WRITE_ONLY)
+    Base64Url x509Thumbprint;
+
     private final ClientLogger logger = new ClientLogger(CertificateProperties.class);
 
     /**
@@ -34,11 +56,6 @@ public class CertificateProperties {
      * Not before date in UTC.
      */
     private OffsetDateTime notBefore;
-
-    /**
-     * The certificate version.
-     */
-    String version;
 
     /**
      * Expiry date in UTC.
@@ -66,27 +83,10 @@ public class CertificateProperties {
     private String recoveryLevel;
 
     /**
-     * The Certificate name.
-     */
-    String name;
-
-    /**
      * The certificate id.
      */
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
-
-    /**
-     * Application specific metadata in the form of key-value pairs.
-     */
-    @JsonProperty(value = "tags")
-    Map<String, String> tags;
-
-    /**
-     * Thumbprint of the certificate. Read Only
-     */
-    @JsonProperty(value = "x5t", access = JsonProperty.Access.WRITE_ONLY)
-    Base64Url x509Thumbprint;
 
     /**
      * The number of days a certificate is retained before being deleted for a soft delete-enabled Key Vault.

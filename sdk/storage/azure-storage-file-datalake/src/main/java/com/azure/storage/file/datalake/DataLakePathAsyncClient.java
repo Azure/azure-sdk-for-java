@@ -78,8 +78,6 @@ import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
  */
 public class DataLakePathAsyncClient {
 
-    private final ClientLogger logger = new ClientLogger(DataLakePathAsyncClient.class);
-
     final DataLakeStorageClientImpl dataLakeStorage;
     final DataLakeStorageClientImpl fileSystemDataLakeStorage;
     /**
@@ -87,14 +85,14 @@ public class DataLakePathAsyncClient {
      * in order to expose APIs that are on blob endpoint but are only functional for HNS enabled accounts.
      */
     final DataLakeStorageClientImpl blobDataLakeStorage;
+    final String pathName;
+    final PathResourceType pathResourceType;
+    final BlockBlobAsyncClient blockBlobAsyncClient;
+
+    private final ClientLogger logger = new ClientLogger(DataLakePathAsyncClient.class);
     private final String accountName;
     private final String fileSystemName;
-    final String pathName;
     private final DataLakeServiceVersion serviceVersion;
-
-    final PathResourceType pathResourceType;
-
-    final BlockBlobAsyncClient blockBlobAsyncClient;
 
     /**
      * Package-private constructor for use by {@link DataLakePathClientBuilder}.
@@ -731,6 +729,36 @@ public class DataLakePathAsyncClient {
         }
     }
 
+    Mono<Response<AccessControlChangeResult>> setAccessControlRecursiveWithResponse(
+        String accessControlList, Consumer<Response<AccessControlChanges>> progressHandler,
+        PathSetAccessControlRecursiveMode mode, Integer batchSize, Integer maxBatches, Boolean continueOnFailure,
+        String continuationToken, Context context) {
+        StorageImplUtils.assertNotNull("accessControlList", accessControlList);
+
+        context = context == null ? Context.NONE : context;
+        Context contextFinal = context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE);
+
+        AtomicInteger directoriesSuccessfulCount = new AtomicInteger(0);
+        AtomicInteger filesSuccessfulCount = new AtomicInteger(0);
+        AtomicInteger failureCount = new AtomicInteger(0);
+        AtomicInteger batchesCount = new AtomicInteger(0);
+
+        return this.dataLakeStorage.paths().setAccessControlRecursiveWithRestResponseAsync(mode, null,
+            continuationToken, continueOnFailure, batchSize, accessControlList, null, contextFinal)
+            .onErrorMap(e -> {
+                if (e instanceof DataLakeStorageException) {
+                    return logger.logExceptionAsError(ModelHelper.changeAclRequestFailed((DataLakeStorageException) e,
+                        continuationToken));
+                } else if (e instanceof Exception) {
+                    return logger.logExceptionAsError(ModelHelper.changeAclFailed((Exception) e, continuationToken));
+                }
+                return e;
+            })
+            .flatMap(response -> setAccessControlRecursiveWithResponseHelper(response, maxBatches,
+                directoriesSuccessfulCount, filesSuccessfulCount, failureCount, batchesCount, progressHandler,
+                accessControlList, mode, batchSize, continueOnFailure, continuationToken, null, contextFinal));
+    }
+
     /**
      * Recursively updates the access control on a path and all subpaths.
      *
@@ -841,36 +869,6 @@ public class DataLakePathAsyncClient {
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<AccessControlChangeResult>> setAccessControlRecursiveWithResponse(
-        String accessControlList, Consumer<Response<AccessControlChanges>> progressHandler,
-        PathSetAccessControlRecursiveMode mode, Integer batchSize, Integer maxBatches, Boolean continueOnFailure,
-        String continuationToken, Context context) {
-        StorageImplUtils.assertNotNull("accessControlList", accessControlList);
-
-        context = context == null ? Context.NONE : context;
-        Context contextFinal = context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE);
-
-        AtomicInteger directoriesSuccessfulCount = new AtomicInteger(0);
-        AtomicInteger filesSuccessfulCount = new AtomicInteger(0);
-        AtomicInteger failureCount = new AtomicInteger(0);
-        AtomicInteger batchesCount = new AtomicInteger(0);
-
-        return this.dataLakeStorage.paths().setAccessControlRecursiveWithRestResponseAsync(mode, null,
-            continuationToken, continueOnFailure, batchSize, accessControlList, null, contextFinal)
-            .onErrorMap(e -> {
-                if (e instanceof DataLakeStorageException) {
-                    return logger.logExceptionAsError(ModelHelper.changeAclRequestFailed((DataLakeStorageException) e,
-                        continuationToken));
-                } else if (e instanceof Exception) {
-                    return logger.logExceptionAsError(ModelHelper.changeAclFailed((Exception) e, continuationToken));
-                }
-                return e;
-            })
-            .flatMap(response -> setAccessControlRecursiveWithResponseHelper(response, maxBatches,
-                directoriesSuccessfulCount, filesSuccessfulCount, failureCount, batchesCount, progressHandler,
-                accessControlList, mode, batchSize, continueOnFailure, continuationToken, null, contextFinal));
     }
 
     Mono<Response<AccessControlChangeResult>> setAccessControlRecursiveWithResponseHelper(

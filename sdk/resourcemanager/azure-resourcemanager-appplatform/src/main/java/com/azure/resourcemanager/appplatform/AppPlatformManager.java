@@ -19,6 +19,18 @@ import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider
 public final class AppPlatformManager extends Manager<AppPlatformManagementClient> {
     // Collections
     private SpringServices springServices;
+
+    private AppPlatformManager(HttpPipeline httpPipeline, AzureProfile profile) {
+        super(
+            httpPipeline,
+            profile,
+            new AppPlatformManagementClientBuilder()
+                .pipeline(httpPipeline)
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+                .subscriptionId(profile.getSubscriptionId())
+                .buildClient());
+    }
+
     /**
      * Get a Configurable instance that can be used to create AppPlatformManager with optional configuration.
      *
@@ -67,17 +79,6 @@ public final class AppPlatformManager extends Manager<AppPlatformManagementClien
         public AppPlatformManager authenticate(TokenCredential credential, AzureProfile profile) {
             return AppPlatformManager.authenticate(buildHttpPipeline(credential, profile), profile);
         }
-    }
-
-    private AppPlatformManager(HttpPipeline httpPipeline, AzureProfile profile) {
-        super(
-            httpPipeline,
-            profile,
-            new AppPlatformManagementClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .buildClient());
     }
 
     /** @return Entry point for Spring Service management API. */

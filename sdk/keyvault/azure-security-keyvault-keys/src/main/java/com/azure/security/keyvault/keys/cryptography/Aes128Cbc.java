@@ -5,8 +5,8 @@ package com.azure.security.keyvault.keys.cryptography;
 
 class Aes128Cbc extends AesCbc {
 
-    private static final int KEY_SIZE = 128;
     public static final String ALGORITHM_NAME = "A128CBC";
+    private static final int KEY_SIZE = 128;
 
     Aes128Cbc() {
         super(ALGORITHM_NAME, KEY_SIZE);

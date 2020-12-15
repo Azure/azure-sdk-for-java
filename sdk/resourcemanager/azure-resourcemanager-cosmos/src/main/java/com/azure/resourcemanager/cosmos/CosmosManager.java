@@ -18,6 +18,18 @@ import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider
 /** Entry point to Azure compute resource management. */
 public final class CosmosManager extends Manager<CosmosDBManagementClient> {
     private CosmosDBAccountsImpl databaseAccounts;
+
+    private CosmosManager(HttpPipeline httpPipeline, AzureProfile profile) {
+        super(
+            httpPipeline,
+            profile,
+            new CosmosDBManagementClientBuilder()
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+                .pipeline(httpPipeline)
+                .subscriptionId(profile.getSubscriptionId())
+                .buildClient());
+    }
+
     /**
      * Get a Configurable instance that can be used to create ComputeManager with optional configuration.
      *
@@ -67,17 +79,6 @@ public final class CosmosManager extends Manager<CosmosDBManagementClient> {
         public CosmosManager authenticate(TokenCredential credential, AzureProfile profile) {
             return CosmosManager.authenticate(buildHttpPipeline(credential, profile), profile);
         }
-    }
-
-    private CosmosManager(HttpPipeline httpPipeline, AzureProfile profile) {
-        super(
-            httpPipeline,
-            profile,
-            new CosmosDBManagementClientBuilder()
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .pipeline(httpPipeline)
-                .subscriptionId(profile.getSubscriptionId())
-                .buildClient());
     }
 
     /** @return the cosmos db database account resource management API entry point */

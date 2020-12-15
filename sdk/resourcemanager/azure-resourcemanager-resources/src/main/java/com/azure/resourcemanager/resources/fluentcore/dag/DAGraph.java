@@ -20,21 +20,24 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * @param <NodeT> the type of the nodes in the graph
  */
 public class DAGraph<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Graph<DataT, NodeT> {
-    /**
-     * the root node in the graph.
-     * {@link this#nodeTable} contains all the nodes in this graph with this as the root.
-     */
-    private final NodeT rootNode;
+
     /**
      * the immediate parent graphs of this graph. A parent graph is the one with it's root
      * depends on this graph's root.
      */
     protected List<DAGraph<DataT, NodeT>> parentDAGs;
+
     /**
      * to perform topological sort on the graph. During sorting queue contains the nodes which
      * are ready to invoke.
      */
     protected ConcurrentLinkedQueue<String> queue;
+
+    /**
+     * the root node in the graph.
+     * {@link this#nodeTable} contains all the nodes in this graph with this as the root.
+     */
+    private final NodeT rootNode;
 
     private final ClientLogger logger = new ClientLogger(this.getClass());
 

@@ -103,16 +103,6 @@ public interface VirtualMachineCustomImage
                 Snapshot sourceSnapshot, OperatingSystemStateTypes osState);
 
             /**
-             * Specifies the Linux source snapshot for the OS disk image.
-             *
-             * @param sourceSnapshot source snapshot resource
-             * @param osState operating system state
-             * @return the next stage of the definition
-             */
-            WithCreateAndDataDiskImageOSDiskSettings withLinuxFromSnapshot(
-                Snapshot sourceSnapshot, OperatingSystemStateTypes osState);
-
-            /**
              * Specifies the Windows source snapshot for the OS disk image.
              *
              * @param sourceSnapshotId source snapshot resource ID
@@ -125,6 +115,16 @@ public interface VirtualMachineCustomImage
             /**
              * Specifies the Linux source snapshot for the OS disk image.
              *
+             * @param sourceSnapshot source snapshot resource
+             * @param osState operating system state
+             * @return the next stage of the definition
+             */
+            WithCreateAndDataDiskImageOSDiskSettings withLinuxFromSnapshot(
+                Snapshot sourceSnapshot, OperatingSystemStateTypes osState);
+
+            /**
+             * Specifies the Linux source snapshot for the OS disk image.
+             *
              * @param sourceSnapshotId source snapshot resource ID
              * @param osState operating system state
              * @return the next stage of the definition
@@ -143,16 +143,6 @@ public interface VirtualMachineCustomImage
                 String sourceManagedDiskId, OperatingSystemStateTypes osState);
 
             /**
-             * Specifies the Linux source managed disk for the OS disk image.
-             *
-             * @param sourceManagedDiskId source managed disk resource ID
-             * @param osState operating system state
-             * @return the next stage of the definition
-             */
-            WithCreateAndDataDiskImageOSDiskSettings withLinuxFromDisk(
-                String sourceManagedDiskId, OperatingSystemStateTypes osState);
-
-            /**
              * Specifies the Windows source managed disk for the OS disk image.
              *
              * @param sourceManagedDisk source managed disk
@@ -161,6 +151,16 @@ public interface VirtualMachineCustomImage
              */
             WithCreateAndDataDiskImageOSDiskSettings withWindowsFromDisk(
                 Disk sourceManagedDisk, OperatingSystemStateTypes osState);
+
+            /**
+             * Specifies the Linux source managed disk for the OS disk image.
+             *
+             * @param sourceManagedDiskId source managed disk resource ID
+             * @param osState operating system state
+             * @return the next stage of the definition
+             */
+            WithCreateAndDataDiskImageOSDiskSettings withLinuxFromDisk(
+                String sourceManagedDiskId, OperatingSystemStateTypes osState);
 
             /**
              * Specifies the Linux source managed disk for the OS disk image.

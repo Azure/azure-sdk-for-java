@@ -21,6 +21,18 @@ import com.azure.resourcemanager.servicebus.models.ServiceBusNamespaces;
 public final class ServiceBusManager extends Manager<ServiceBusManagementClient> {
     // Collections
     private ServiceBusNamespaces namespaces;
+
+    private ServiceBusManager(HttpPipeline httpPipeline, AzureProfile profile) {
+        super(
+            httpPipeline,
+            profile,
+            new ServiceBusManagementClientBuilder()
+                .pipeline(httpPipeline)
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+                .subscriptionId(profile.getSubscriptionId())
+                .buildClient());
+    }
+
     /**
      * Get a Configurable instance that can be used to create {@link ServiceBusManager}
      * with optional configuration.
@@ -77,17 +89,6 @@ public final class ServiceBusManager extends Manager<ServiceBusManagementClient>
         public ServiceBusManager authenticate(TokenCredential credential, AzureProfile profile) {
             return ServiceBusManager.authenticate(buildHttpPipeline(credential, profile), profile);
         }
-    }
-
-    private ServiceBusManager(HttpPipeline httpPipeline, AzureProfile profile) {
-        super(
-            httpPipeline,
-            profile,
-            new ServiceBusManagementClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .buildClient());
     }
 
     /**

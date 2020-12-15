@@ -87,18 +87,18 @@ public interface SqlDatabaseOperations
             /**
              * Sets the existing elastic pool for the SQLDatabase.
              *
-             * @param elasticPoolId for the SQL Database
-             * @return The next stage of the definition.
-             */
-            WithExistingDatabaseAfterElasticPool withExistingElasticPoolId(String elasticPoolId);
-
-            /**
-             * Sets the existing elastic pool for the SQLDatabase.
-             *
              * @param sqlElasticPool for the SQL Database
              * @return The next stage of the definition.
              */
             WithExistingDatabaseAfterElasticPool withExistingElasticPool(SqlElasticPool sqlElasticPool);
+
+            /**
+             * Sets the existing elastic pool for the SQLDatabase.
+             *
+             * @param elasticPoolId for the SQL Database
+             * @return The next stage of the definition.
+             */
+            WithExistingDatabaseAfterElasticPool withExistingElasticPoolId(String elasticPoolId);
 
             /**
              * Sets the new elastic pool for the SQLDatabase, this will create a new elastic pool while creating

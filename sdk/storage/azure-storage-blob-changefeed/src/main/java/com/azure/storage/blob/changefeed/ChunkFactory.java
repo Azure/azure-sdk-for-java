@@ -18,13 +18,14 @@ import java.nio.ByteBuffer;
  */
 class ChunkFactory {
 
-    private final ClientLogger logger = new ClientLogger(ChunkFactory.class);
     private static final long DEFAULT_HEADER_SIZE = 4 * Constants.KB;
     /* TODO (gapra): This should probably be configurable by a user. */
     private static final long DEFAULT_BODY_SIZE = Constants.MB;
 
     private final AvroReaderFactory avroReaderFactory;
     private final BlobChunkedDownloaderFactory blobChunkedDownloaderFactory;
+
+    private final ClientLogger logger = new ClientLogger(ChunkFactory.class);
 
     /**
      * Creates a ChunkFactory with the designated factories.

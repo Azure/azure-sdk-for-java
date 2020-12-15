@@ -14,7 +14,6 @@ import java.io.Serializable;
  */
 @Immutable
 public final class TextAnalyticsErrorCode extends ExpandableStringEnum<TextAnalyticsErrorCode> implements Serializable {
-    private static final long serialVersionUID = 21436310107606058L;
 
     /**
      * Enum value InvalidRequest.
@@ -80,6 +79,8 @@ public final class TextAnalyticsErrorCode extends ExpandableStringEnum<TextAnaly
      * Enum value InvalidCountryHint.
      */
     public static final TextAnalyticsErrorCode INVALID_COUNTRY_HINT = fromString("InvalidCountryHint");
+
+    private static final long serialVersionUID = 21436310107606058L;
 
     /**
      * Creates or finds a TextAnalyticsErrorCode from its string representation.

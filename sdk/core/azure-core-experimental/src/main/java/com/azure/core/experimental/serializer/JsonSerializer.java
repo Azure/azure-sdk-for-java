@@ -59,20 +59,20 @@ public interface JsonSerializer extends com.azure.core.util.serializer.JsonSeria
     JsonNode toTree(InputStream stream);
 
     /**
-     * Reads a JSON stream into its JSON tree representation.
-     *
-     * @param stream JSON stream.
-     * @return The JSON tree representing the deserialized JSON byte array.
-     */
-    Mono<JsonNode> toTreeAsync(InputStream stream);
-
-    /**
      * Writes an object into its JSON tree representation.
      *
      * @param value The object.
      * @return The JSON tree representing the object.
      */
     JsonNode toTree(Object value);
+
+    /**
+     * Reads a JSON stream into its JSON tree representation.
+     *
+     * @param stream JSON stream.
+     * @return The JSON tree representing the deserialized JSON byte array.
+     */
+    Mono<JsonNode> toTreeAsync(InputStream stream);
 
     /**
      * Writes an object into its JSON tree representation.

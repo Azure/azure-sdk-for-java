@@ -12,6 +12,14 @@ import java.net.URL;
  * Represents base properties of an {@link CertificateIssuer}.
  */
 public class IssuerProperties {
+
+    /**
+     * Name of the referenced issuer object or reserved names; for example,
+     * 'Self' or 'Unknown'.
+     */
+    @JsonProperty(value = "name")
+    String name;
+
     /**
      * The issuer id.
      */
@@ -23,13 +31,6 @@ public class IssuerProperties {
      */
     @JsonProperty(value = "provider")
     private String provider;
-
-    /**
-     * Name of the referenced issuer object or reserved names; for example,
-     * 'Self' or 'Unknown'.
-     */
-    @JsonProperty(value = "name")
-    String name;
 
     /**
      * Get the id of the issuer.

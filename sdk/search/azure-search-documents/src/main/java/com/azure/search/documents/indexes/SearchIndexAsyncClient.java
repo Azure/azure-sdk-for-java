@@ -735,6 +735,18 @@ public final class SearchIndexAsyncClient {
         return withContext(context -> deleteSynonymMapWithResponse(synonymMap.getName(), etag, context));
     }
 
+    Mono<Response<Void>> deleteSynonymMapWithResponse(String synonymMapName, String etag,
+        Context context) {
+        try {
+            return restClient.getSynonymMaps()
+                .deleteWithResponseAsync(synonymMapName, etag, null, null, context)
+                .onErrorMap(MappingUtils::exceptionMapper)
+                .map(Function.identity());
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
     /**
      * Convenience method to convert a {@link Class Class's} {@link Field Fields} and {@link Method Methods} into {@link
      * SearchField SearchFields} to help aid the creation of a {@link SearchField} which represents the {@link Class}.
@@ -746,18 +758,6 @@ public final class SearchIndexAsyncClient {
      */
     public static List<SearchField> buildSearchFields(Class<?> model, FieldBuilderOptions options) {
         return FieldBuilder.build(model, options);
-    }
-
-    Mono<Response<Void>> deleteSynonymMapWithResponse(String synonymMapName, String etag,
-        Context context) {
-        try {
-            return restClient.getSynonymMaps()
-                .deleteWithResponseAsync(synonymMapName, etag, null, null, context)
-                .onErrorMap(MappingUtils::exceptionMapper)
-                .map(Function.identity());
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
     }
 
     /**

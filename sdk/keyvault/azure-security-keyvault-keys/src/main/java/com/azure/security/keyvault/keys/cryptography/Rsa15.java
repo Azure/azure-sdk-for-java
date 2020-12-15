@@ -14,6 +14,8 @@ import java.security.Provider;
 
 class Rsa15 extends RsaEncryption {
 
+    public static final String ALGORITHM_NAME = "RSA1_5";
+
     static class Rsa15Decryptor implements ICryptoTransform {
 
         private final Cipher cipher;
@@ -67,8 +69,6 @@ class Rsa15 extends RsaEncryption {
     }
 
     static final String RSA15 = "RSA/ECB/PKCS1Padding";
-
-    public static final String ALGORITHM_NAME = "RSA1_5";
 
     Rsa15() {
         super(ALGORITHM_NAME);

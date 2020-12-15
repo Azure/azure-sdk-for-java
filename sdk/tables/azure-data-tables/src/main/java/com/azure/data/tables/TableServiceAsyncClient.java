@@ -250,25 +250,8 @@ public class TableServiceAsyncClient {
             token -> withContext(context -> listTablesNextPage(token, context, options)));
     }
 
-    private Mono<PagedResponse<TableItem>> listTablesFirstPage(Context context, ListTablesOptions options) {
-        try {
-            return listTables(null, context, options);
-        } catch (RuntimeException e) {
-            return monoError(logger, e);
-        }
-    }
-
-    private Mono<PagedResponse<TableItem>> listTablesNextPage(String token, Context context,
-                                                              ListTablesOptions options) {
-        try {
-            return listTables(token, context, options);
-        } catch (RuntimeException e) {
-            return monoError(logger, e);
-        }
-    }
-
     private Mono<PagedResponse<TableItem>> listTables(String nextTableName, Context context,
-                                                      ListTablesOptions options) {
+        ListTablesOptions options) {
         context = context == null ? Context.NONE : context;
         QueryOptions queryOptions = new QueryOptions()
             .setFilter(options.getFilter())
@@ -291,6 +274,23 @@ public class TableServiceAsyncClient {
                     response.getDeserializedHeaders().getXMsContinuationNextTableName()));
 
             });
+    }
+
+    private Mono<PagedResponse<TableItem>> listTablesFirstPage(Context context, ListTablesOptions options) {
+        try {
+            return listTables(null, context, options);
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
+    }
+
+    private Mono<PagedResponse<TableItem>> listTablesNextPage(String token, Context context,
+                                                              ListTablesOptions options) {
+        try {
+            return listTables(token, context, options);
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
     }
 
     private static class TablePaged implements PagedResponse<TableItem> {

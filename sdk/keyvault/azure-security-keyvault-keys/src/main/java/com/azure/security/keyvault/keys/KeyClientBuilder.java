@@ -64,7 +64,6 @@ import java.util.Objects;
  */
 @ServiceClientBuilder(serviceClients = KeyClient.class)
 public final class KeyClientBuilder {
-    private final ClientLogger logger = new ClientLogger(KeyClientBuilder.class);
     // This is properties file's name.
     private static final String AZURE_KEY_VAULT_KEYS = "azure-key-vault-keys.properties";
     private static final String SDK_NAME = "name";
@@ -80,6 +79,7 @@ public final class KeyClientBuilder {
     private Configuration configuration;
     private KeyServiceVersion version;
     private ClientOptions clientOptions;
+    private final ClientLogger logger = new ClientLogger(KeyClientBuilder.class);
 
     /**
      * The constructor with defaults.

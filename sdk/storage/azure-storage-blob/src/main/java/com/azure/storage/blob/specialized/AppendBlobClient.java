@@ -49,7 +49,6 @@ import static com.azure.storage.common.implementation.StorageImplUtils.blockWith
  */
 @ServiceClient(builder = SpecializedBlobClientBuilder.class)
 public final class AppendBlobClient extends BlobClientBase {
-    private final AppendBlobAsyncClient appendBlobAsyncClient;
 
     /**
      * Indicates the maximum number of bytes that can be sent in a call to appendBlock.
@@ -60,6 +59,8 @@ public final class AppendBlobClient extends BlobClientBase {
      * Indicates the maximum number of blocks allowed in an append blob.
      */
     public static final int MAX_BLOCKS = AppendBlobAsyncClient.MAX_BLOCKS;
+
+    private final AppendBlobAsyncClient appendBlobAsyncClient;
 
     /**
      * Package-private constructor for use by {@link BlobClientBuilder}.

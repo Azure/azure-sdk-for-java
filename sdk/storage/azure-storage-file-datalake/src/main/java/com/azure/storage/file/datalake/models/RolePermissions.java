@@ -13,9 +13,8 @@ import com.azure.storage.common.implementation.StorageImplUtils;
  */
 public class RolePermissions {
 
-    private final ClientLogger logger = new ClientLogger(RolePermissions.class);
-
     private static final String ROLE_PERMISSIONS_FORMAT_ERROR = "Invalid format for role permissions";
+    private final ClientLogger logger = new ClientLogger(RolePermissions.class);
 
     /**
      * Grants read permissions for the role.

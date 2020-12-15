@@ -11,6 +11,9 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollingContext;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -18,8 +21,6 @@ import java.time.Duration;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import static com.azure.core.util.FluxUtil.monoError;
 
@@ -27,12 +28,11 @@ import static com.azure.core.util.FluxUtil.monoError;
  * Utility method class.
  */
 public final class Utility {
-    public static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(5);
-
     private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
     // using 4K as default buffer size: https://stackoverflow.com/a/237495/1473510
     private static final int BYTE_BUFFER_CHUNK_SIZE = 4096;
     // default time interval for polling
+    public static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(5);
 
     private Utility() {
     }
@@ -48,7 +48,7 @@ public final class Utility {
      */
     public static Mono<ContentType> detectContentType(Flux<ByteBuffer> buffer) {
         byte[] header = new byte[4];
-        int[] written = new int[] {0};
+        int[] written = new int[]{0};
         ContentType[] contentType = {ContentType.fromString("none")};
         return buffer.map(chunk -> {
             final int len = chunk.remaining();
@@ -82,8 +82,7 @@ public final class Utility {
                     return Mono.just(contentType[0]);
                 } else {
                     return Mono.error(new RuntimeException("Content type could not be detected. "
-                        +
-                        "Should use other overload API that takes content type."));
+                        + "Should use other overload API that takes content type."));
                 }
             }));
     }
@@ -123,7 +122,8 @@ public final class Utility {
     }
 
     /**
-     * Creates a Flux of ByteBuffer, with each ByteBuffer wrapping bytes read from the given InputStream.
+     * Creates a Flux of ByteBuffer, with each ByteBuffer wrapping bytes read from the given
+     * InputStream.
      *
      * @param inputStream InputStream to back the Flux
      *
@@ -155,8 +155,8 @@ public final class Utility {
     /**
      * Extracts the result ID from the URL.
      *
-     * @param operationLocation The URL specified in the 'Operation-Location' response header containing the resultId
-     * used to track the progress and obtain the result of the analyze operation.
+     * @param operationLocation The URL specified in the 'Operation-Location' response header containing the
+     * resultId used to track the progress and obtain the result of the analyze operation.
      *
      * @return The resultId used to track the progress.
      */
@@ -179,7 +179,7 @@ public final class Utility {
      * @param <T> the type of items being returned.
      */
     public static <T> void forEachWithIndex(Iterable<T> iterable, BiConsumer<Integer, T> biConsumer) {
-        int[] index = new int[] {0};
+        int[] index = new int[]{0};
         iterable.forEach(element -> biConsumer.accept(index[0]++, element));
     }
 
@@ -207,11 +207,10 @@ public final class Utility {
     }
 
     /**
-     * Mapping a {@link ErrorResponseException} to {@link HttpResponseException} if exist. Otherwise, return original
-     * {@link Throwable}.
+     * Mapping a {@link ErrorResponseException} to {@link HttpResponseException} if exist. Otherwise, return
+     * original {@link Throwable}.
      *
      * @param throwable A {@link Throwable}.
-     *
      * @return A {@link HttpResponseException} or the original throwable type.
      */
     public static Throwable mapToHttpResponseExceptionIfExist(Throwable throwable) {
@@ -227,7 +226,8 @@ public final class Utility {
     /*
      * Poller's ACTIVATION operation that takes URL as input.
      */
-    public static Function<PollingContext<FormRecognizerOperationResult>, Mono<FormRecognizerOperationResult>> urlActivationOperation(
+    public static Function<PollingContext<FormRecognizerOperationResult>, Mono<FormRecognizerOperationResult>>
+        urlActivationOperation(
         Supplier<Mono<FormRecognizerOperationResult>> activationOperation, ClientLogger logger) {
         return pollingContext -> {
             try {

@@ -11,6 +11,7 @@ import java.util.Map;
 /** Scale set virtual machine SKU types. */
 // TODO: This should be called VirtualMachineScaleSetSkuType in the future (compat break from 1.0)
 public class VirtualMachineScaleSetSkuTypes {
+
     // This needs to be at the beginning for the initialization to happen correctly
     private static final Map<String, VirtualMachineScaleSetSkuTypes> VALUES_BY_NAME = new HashMap<>();
 
@@ -252,12 +253,6 @@ public class VirtualMachineScaleSetSkuTypes {
     /** The string value of the SKU. */
     private final String value;
 
-    /** @return predefined virtual machine scale set SKU types */
-    public static VirtualMachineScaleSetSkuTypes[] values() {
-        Collection<VirtualMachineScaleSetSkuTypes> valuesCollection = VALUES_BY_NAME.values();
-        return valuesCollection.toArray(new VirtualMachineScaleSetSkuTypes[valuesCollection.size()]);
-    }
-
     /**
      * Creates a custom value for VirtualMachineSizeTypes.
      *
@@ -286,6 +281,12 @@ public class VirtualMachineScaleSetSkuTypes {
             this.value = this.sku.name() + '_' + this.sku.tier();
         }
         VALUES_BY_NAME.put(this.value.toLowerCase(Locale.ROOT), this);
+    }
+
+    /** @return predefined virtual machine scale set SKU types */
+    public static VirtualMachineScaleSetSkuTypes[] values() {
+        Collection<VirtualMachineScaleSetSkuTypes> valuesCollection = VALUES_BY_NAME.values();
+        return valuesCollection.toArray(new VirtualMachineScaleSetSkuTypes[valuesCollection.size()]);
     }
 
     /**

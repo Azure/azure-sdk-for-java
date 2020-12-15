@@ -42,20 +42,20 @@ public interface VirtualNetworkLinks
     void deleteById(String id);
 
     /**
-     * Asynchronously delete the private zone from Azure, identifying it by its resource ID.
-     *
-     * @param id the resource ID of the resource to delete
-     * @return a representation of the deferred computation this delete call
-     */
-    Mono<Void> deleteByIdAsync(String id);
-
-    /**
      * Deletes a resource from Azure, identifying it by its resource ID.
      *
      * @param id the resource ID of the resource to delete
      * @param etagValue the ETag value to set on IfMatch header for concurrency protection
      */
     void deleteById(String id, String etagValue);
+
+    /**
+     * Asynchronously delete the private zone from Azure, identifying it by its resource ID.
+     *
+     * @param id the resource ID of the resource to delete
+     * @return a representation of the deferred computation this delete call
+     */
+    Mono<Void> deleteByIdAsync(String id);
 
     /**
      * Asynchronously delete the private zone from Azure, identifying it by its resource ID.
@@ -75,15 +75,6 @@ public interface VirtualNetworkLinks
     void deleteByResourceGroupName(String resourceGroupName, String name);
 
     /**
-     * Asynchronously deletes the private zone from Azure, identifying it by its name and its resource group.
-     *
-     * @param resourceGroupName the resource group the resource is part of
-     * @param name the name of the zone
-     * @return a representation of the deferred computation this delete call
-     */
-    Mono<Void> deleteByResourceGroupNameAsync(String resourceGroupName, String name);
-
-    /**
      * Deletes the private zone from Azure, identifying it by its name and its resource group.
      *
      * @param resourceGroupName the resource group the resource is part of
@@ -91,6 +82,15 @@ public interface VirtualNetworkLinks
      * @param etagValue the ETag value to set on IfMatch header for concurrency protection
      */
     void deleteByResourceGroupName(String resourceGroupName, String name, String etagValue);
+
+    /**
+     * Asynchronously deletes the private zone from Azure, identifying it by its name and its resource group.
+     *
+     * @param resourceGroupName the resource group the resource is part of
+     * @param name the name of the zone
+     * @return a representation of the deferred computation this delete call
+     */
+    Mono<Void> deleteByResourceGroupNameAsync(String resourceGroupName, String name);
 
     /**
      * Asynchronously deletes the private zone from Azure, identifying it by its name and its resource group.

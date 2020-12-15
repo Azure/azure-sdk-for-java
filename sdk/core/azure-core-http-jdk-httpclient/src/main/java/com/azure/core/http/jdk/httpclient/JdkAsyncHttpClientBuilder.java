@@ -32,10 +32,6 @@ import java.util.stream.Collectors;
  */
 public class JdkAsyncHttpClientBuilder {
 
-    private static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(60);
-    private static final String JAVA_HOME = System.getProperty("java.home");
-    private static final String JDK_HTTPCLIENT_ALLOW_RESTRICTED_HEADERS = "jdk.httpclient.allowRestrictedHeaders";
-
     // These headers are restricted by default in native JDK12 HttpClient.
     // These headers can be whitelisted by setting jdk.httpclient.allowRestrictedHeaders
     // property in the network properties file: 'JAVA_HOME/conf/net.properties'
@@ -44,6 +40,10 @@ public class JdkAsyncHttpClientBuilder {
     // jdk.httpclient.allowRestrictedHeaders=host
     // Also see - https://bugs.openjdk.java.net/browse/JDK-8213189
     static final Set<String> DEFAULT_RESTRICTED_HEADERS;
+
+    private static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(60);
+    private static final String JAVA_HOME = System.getProperty("java.home");
+    private static final String JDK_HTTPCLIENT_ALLOW_RESTRICTED_HEADERS = "jdk.httpclient.allowRestrictedHeaders";
 
     static {
         TreeSet<String> treeSet = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);

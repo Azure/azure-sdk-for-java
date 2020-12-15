@@ -72,7 +72,6 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  */
 @ServiceClient(builder = CertificateClientBuilder.class, isAsync = true, serviceInterfaces = CertificateService.class)
 public final class CertificateAsyncClient {
-    private final String apiVersion;
     static final String ACCEPT_LANGUAGE = "en-US";
     static final int DEFAULT_MAX_PAGE_RESULTS = 25;
     static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
@@ -83,6 +82,7 @@ public final class CertificateAsyncClient {
 
     private static final Duration DEFAULT_POLLING_INTERVAL = Duration.ofSeconds(1);
 
+    private final String apiVersion;
     private final String vaultUrl;
     private final CertificateService service;
     private final ClientLogger logger = new ClientLogger(CertificateAsyncClient.class);
@@ -160,6 +160,25 @@ public final class CertificateAsyncClient {
             fetchResultOperation(certificateName));
     }
 
+    /**
+     * Creates a new certificate. If this is the first version, the certificate resource is created. This operation requires
+     * the certificates/create permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Create certificate is a long running operation. The {@link PollerFlux poller} allows users to automatically poll on the create certificate
+     * operation status. It is possible to monitor each intermediate poll response during the poll operation.</p>
+     *
+     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.beginCreateCertificate#String-CertificatePolicy}
+     *
+     * @param certificateName The name of the certificate to be created.
+     * @param policy The policy of the certificate to be created.
+     * @throws ResourceModifiedException when invalid certificate policy configuration is provided.
+     * @return A {@link PollerFlux} polling on the create certificate operation status.
+     */
+    public PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(String certificateName, CertificatePolicy policy) {
+        return beginCreateCertificate(certificateName, policy, true, null);
+    }
+
     private BiFunction<PollingContext<CertificateOperation>,
             PollResponse<CertificateOperation>,
             Mono<CertificateOperation>> cancelOperation(String certificateName) {
@@ -180,30 +199,17 @@ public final class CertificateAsyncClient {
             .flatMap(certificateOperationResponse -> Mono.just(certificateOperationResponse.getValue()));
     }
 
+    private Function<PollingContext<DeletedCertificate>, Mono<DeletedCertificate>> activationOperation(String certificateName) {
+        return (pollingContext) -> withContext(context -> deleteCertificateWithResponse(certificateName,
+            context))
+            .flatMap(deletedCertificateResponse -> Mono.just(deletedCertificateResponse.getValue()));
+    }
+
     private Function<PollingContext<CertificateOperation>,
             Mono<KeyVaultCertificateWithPolicy>> fetchResultOperation(String certificateName) {
         return (pollingContext) -> withContext(context
             -> getCertificateWithResponse(certificateName, "", context))
                         .flatMap(certificateResponse -> Mono.just(certificateResponse.getValue()));
-    }
-
-    /**
-     * Creates a new certificate. If this is the first version, the certificate resource is created. This operation requires
-     * the certificates/create permission.
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Create certificate is a long running operation. The {@link PollerFlux poller} allows users to automatically poll on the create certificate
-     * operation status. It is possible to monitor each intermediate poll response during the poll operation.</p>
-     *
-     * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.beginCreateCertificate#String-CertificatePolicy}
-     *
-     * @param certificateName The name of the certificate to be created.
-     * @param policy The policy of the certificate to be created.
-     * @throws ResourceModifiedException when invalid certificate policy configuration is provided.
-     * @return A {@link PollerFlux} polling on the create certificate operation status.
-     */
-    public PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(String certificateName, CertificatePolicy policy) {
-        return beginCreateCertificate(certificateName, policy, true, null);
     }
 
     /*
@@ -519,12 +525,6 @@ public final class CertificateAsyncClient {
             createDeletePollOperation(certificateName),
             (context, firstResponse) -> Mono.empty(),
             (context) -> Mono.empty());
-    }
-
-    private Function<PollingContext<DeletedCertificate>, Mono<DeletedCertificate>> activationOperation(String certificateName) {
-        return (pollingContext) -> withContext(context -> deleteCertificateWithResponse(certificateName,
-            context))
-            .flatMap(deletedCertificateResponse -> Mono.just(deletedCertificateResponse.getValue()));
     }
 
     /*
@@ -1395,6 +1395,15 @@ public final class CertificateAsyncClient {
         }
     }
 
+    Mono<Response<CertificateIssuer>> getIssuerWithResponse(String issuerName, Context context) {
+        context = context == null ? Context.NONE : context;
+        return service.getCertificateIssuer(vaultUrl, apiVersion, ACCEPT_LANGUAGE, issuerName, CONTENT_TYPE_HEADER_VALUE,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+            .doOnRequest(ignored -> logger.info("Retrieving certificate issuer - {}",  issuerName))
+            .doOnSuccess(response -> logger.info("Retrieved the certificate issuer - {}", response.getValue().getName()))
+            .doOnError(error -> logger.warning("Failed to retreive the certificate issuer - {}", issuerName, error));
+    }
+
     /**
      * Retrieves the specified certificate issuer from the key vault. This operation requires the certificates/manageissuers/getissuers permission.
      *
@@ -1417,15 +1426,6 @@ public final class CertificateAsyncClient {
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    Mono<Response<CertificateIssuer>> getIssuerWithResponse(String issuerName, Context context) {
-        context = context == null ? Context.NONE : context;
-        return service.getCertificateIssuer(vaultUrl, apiVersion, ACCEPT_LANGUAGE, issuerName, CONTENT_TYPE_HEADER_VALUE,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.info("Retrieving certificate issuer - {}",  issuerName))
-            .doOnSuccess(response -> logger.info("Retrieved the certificate issuer - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to retreive the certificate issuer - {}", issuerName, error));
     }
 
     /**
@@ -1452,6 +1452,15 @@ public final class CertificateAsyncClient {
         }
     }
 
+    Mono<Response<CertificateIssuer>> deleteIssuerWithResponse(String issuerName, Context context) {
+        context = context == null ? Context.NONE : context;
+        return service.deleteCertificateIssuer(vaultUrl, issuerName, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+            .doOnRequest(ignored -> logger.info("Deleting certificate issuer - {}",  issuerName))
+            .doOnSuccess(response -> logger.info("Deleted the certificate issuer - {}", response.getValue().getName()))
+            .doOnError(error -> logger.warning("Failed to delete the certificate issuer - {}", issuerName, error));
+    }
+
     /**
      * Deletes the specified certificate issuer. The DeleteCertificateIssuer operation permanently removes the specified certificate
      * issuer from the key vault. This operation requires the {@code certificates/manageissuers/deleteissuers permission}.
@@ -1476,16 +1485,6 @@ public final class CertificateAsyncClient {
             return monoError(logger, ex);
         }
     }
-
-    Mono<Response<CertificateIssuer>> deleteIssuerWithResponse(String issuerName, Context context) {
-        context = context == null ? Context.NONE : context;
-        return service.deleteCertificateIssuer(vaultUrl, issuerName, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.info("Deleting certificate issuer - {}",  issuerName))
-            .doOnSuccess(response -> logger.info("Deleted the certificate issuer - {}", response.getValue().getName()))
-            .doOnError(error -> logger.warning("Failed to delete the certificate issuer - {}", issuerName, error));
-    }
-
 
     /**
      * List all the certificate issuers resources in the key vault. The individual certificate issuer response in the flux is represented by {@link IssuerProperties}
@@ -1779,16 +1778,6 @@ public final class CertificateAsyncClient {
             .doOnError(error -> logger.warning("Failed to delete the certificate operation - {}", certificateName, error));
     }
 
-    Mono<Response<CertificateOperation>> cancelCertificateOperationWithResponse(String certificateName, Context context) {
-        context = context == null ? Context.NONE : context;
-        CertificateOperationUpdateParameter parameter = new CertificateOperationUpdateParameter().cancellationRequested(true);
-        return service.updateCertificateOperation(vaultUrl, certificateName, apiVersion, ACCEPT_LANGUAGE, parameter, CONTENT_TYPE_HEADER_VALUE,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
-            .doOnRequest(ignored -> logger.info("Cancelling certificate operation - {}",  certificateName))
-            .doOnSuccess(response -> logger.info("Cancelled the certificate operation - {}", response.getValue().getStatus()))
-            .doOnError(error -> logger.warning("Failed to cancel the certificate operation - {}", certificateName, error));
-    }
-
     /**
      * Cancels a certificate creation operation that is already in progress. This operation requires the {@code certificates/update} permission.
      *
@@ -1833,6 +1822,16 @@ public final class CertificateAsyncClient {
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
+    }
+
+    Mono<Response<CertificateOperation>> cancelCertificateOperationWithResponse(String certificateName, Context context) {
+        context = context == null ? Context.NONE : context;
+        CertificateOperationUpdateParameter parameter = new CertificateOperationUpdateParameter().cancellationRequested(true);
+        return service.updateCertificateOperation(vaultUrl, certificateName, apiVersion, ACCEPT_LANGUAGE, parameter, CONTENT_TYPE_HEADER_VALUE,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+            .doOnRequest(ignored -> logger.info("Cancelling certificate operation - {}",  certificateName))
+            .doOnSuccess(response -> logger.info("Cancelled the certificate operation - {}", response.getValue().getStatus()))
+            .doOnError(error -> logger.warning("Failed to cancel the certificate operation - {}", certificateName, error));
     }
 
     /**

@@ -35,17 +35,34 @@ public interface DeploymentSlot
      * Deploys a WAR file onto the Azure specialized Tomcat on this web app.
      *
      * @param warFile the WAR file to upload
-     * @return a completable of the operation
+     * @param length the length of the file
      */
-    Mono<Void> warDeployAsync(File warFile);
+    void warDeploy(InputStream warFile, long length);
+
+    /**
+     * Deploys a WAR file onto the Azure specialized Tomcat on this web app.
+     *
+     * @param warFile the WAR file to upload
+     * @param appName the name of the app, default to "ROOT" when not provided
+     */
+    void warDeploy(File warFile, String appName);
 
     /**
      * Deploys a WAR file onto the Azure specialized Tomcat on this web app.
      *
      * @param warFile the WAR file to upload
      * @param length the length of the file
+     * @param appName the name of the app, default to "ROOT" when not provided
      */
-    void warDeploy(InputStream warFile, long length);
+    void warDeploy(InputStream warFile, long length, String appName);
+
+    /**
+     * Deploys a WAR file onto the Azure specialized Tomcat on this web app.
+     *
+     * @param warFile the WAR file to upload
+     * @return a completable of the operation
+     */
+    Mono<Void> warDeployAsync(File warFile);
 
     /**
      * Deploys a WAR file onto the Azure specialized Tomcat on this web app.
@@ -61,26 +78,9 @@ public interface DeploymentSlot
      *
      * @param warFile the WAR file to upload
      * @param appName the name of the app, default to "ROOT" when not provided
-     */
-    void warDeploy(File warFile, String appName);
-
-    /**
-     * Deploys a WAR file onto the Azure specialized Tomcat on this web app.
-     *
-     * @param warFile the WAR file to upload
-     * @param appName the name of the app, default to "ROOT" when not provided
      * @return a completable of the operation
      */
     Mono<Void> warDeployAsync(File warFile, String appName);
-
-    /**
-     * Deploys a WAR file onto the Azure specialized Tomcat on this web app.
-     *
-     * @param warFile the WAR file to upload
-     * @param length the length of the file
-     * @param appName the name of the app, default to "ROOT" when not provided
-     */
-    void warDeploy(InputStream warFile, long length, String appName);
 
     /**
      * Deploys a WAR file onto the Azure specialized Tomcat on this web app.

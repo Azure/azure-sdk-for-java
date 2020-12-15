@@ -22,6 +22,18 @@ public final class SearchServiceManager extends Manager<SearchManagementClient> 
     // Collections
     private SearchServices searchServices;
 
+    private SearchServiceManager(HttpPipeline httpPipeline, AzureProfile profile) {
+        super(
+            httpPipeline,
+            profile,
+            new SearchManagementClientBuilder()
+                .pipeline(httpPipeline)
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+                .subscriptionId(profile.getSubscriptionId())
+                .buildClient()
+        );
+    }
+
     /**
      * Get a Configurable instance that can be used to create SearchServiceManager with optional configuration.
      *
@@ -77,19 +89,6 @@ public final class SearchServiceManager extends Manager<SearchManagementClient> 
             return SearchServiceManager.authenticate(buildHttpPipeline(credential, profile), profile);
         }
     }
-
-    private SearchServiceManager(HttpPipeline httpPipeline, AzureProfile profile) {
-        super(
-            httpPipeline,
-            profile,
-            new SearchManagementClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .buildClient()
-        );
-    }
-
 
     /**
      * @return the availability set resource management API entry point

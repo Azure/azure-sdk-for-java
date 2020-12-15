@@ -22,13 +22,11 @@ import java.util.Objects;
  * Builder class responsible for creating instances of {@link com.azure.core.http.HttpClient} backed by OkHttp.
  */
 public class OkHttpAsyncHttpClientBuilder {
-
-    private final okhttp3.OkHttpClient okHttpClient;
-
     private static final Duration MINIMUM_TIMEOUT = Duration.ofMillis(1);
     private static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(10);
     private static final Duration DEFAULT_IO_TIMEOUT = Duration.ofSeconds(60);
 
+    private final okhttp3.OkHttpClient okHttpClient;
     private List<Interceptor> networkInterceptors = new ArrayList<>();
     private Duration readTimeout;
     private Duration writeTimeout;

@@ -43,18 +43,18 @@ public interface SqlServerKeyOperations extends SqlChildrenOperations<SqlServerK
             /**
              * Sets the parent SQL server for the new Server Key.
              *
-             * @param sqlServerId the parent SQL server ID
-             * @return The next stage of the definition.
-             */
-            SqlServerKeyOperations.DefinitionStages.WithServerKeyType withExistingSqlServerId(String sqlServerId);
-
-            /**
-             * Sets the parent SQL server for the new Server Key.
-             *
              * @param sqlServer the parent SQL server
              * @return The next stage of the definition.
              */
             SqlServerKeyOperations.DefinitionStages.WithServerKeyType withExistingSqlServer(SqlServer sqlServer);
+
+            /**
+             * Sets the parent SQL server for the new Server Key.
+             *
+             * @param sqlServerId the parent SQL server ID
+             * @return The next stage of the definition.
+             */
+            SqlServerKeyOperations.DefinitionStages.WithServerKeyType withExistingSqlServerId(String sqlServerId);
         }
 
         /** The SQL Server Key definition to set the server key type. */

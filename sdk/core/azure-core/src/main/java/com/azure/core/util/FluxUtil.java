@@ -34,6 +34,13 @@ import java.util.stream.Collectors;
  * Utility type exposing methods to deal with {@link Flux}.
  */
 public final class FluxUtil {
+
+    private static final int DEFAULT_CHUNK_SIZE = 1024 * 64;
+
+    // Private Ctr
+    private FluxUtil() {
+    }
+
     /**
      * Checks if a type is Flux&lt;ByteBuffer&gt;.
      *
@@ -340,19 +347,6 @@ public final class FluxUtil {
             volatile Subscription subscription;
             volatile long pos = position;
 
-            @Override
-            public void onSubscribe(Subscription s) {
-                subscription = s;
-                s.request(1);
-            }
-
-            @Override
-            public void onNext(ByteBuffer bytes) {
-                isWriting = true;
-                outFile.write(bytes, pos, null, onWriteCompleted);
-            }
-
-
             final CompletionHandler<Integer, Object> onWriteCompleted = new CompletionHandler<Integer, Object>() {
                 @Override
                 public void completed(Integer bytesWritten, Object attachment) {
@@ -372,6 +366,17 @@ public final class FluxUtil {
                 }
             };
 
+            @Override
+            public void onSubscribe(Subscription s) {
+                subscription = s;
+                s.request(1);
+            }
+
+            @Override
+            public void onNext(ByteBuffer bytes) {
+                isWriting = true;
+                outFile.write(bytes, pos, null, onWriteCompleted);
+            }
             @Override
             public void onError(Throwable throwable) {
                 subscription.cancel();
@@ -430,7 +435,6 @@ public final class FluxUtil {
         }
     }
 
-    private static final int DEFAULT_CHUNK_SIZE = 1024 * 64;
 
     private static final class FileReadFlux extends Flux<ByteBuffer> {
         private final AsynchronousFileChannel fileChannel;
@@ -453,8 +457,19 @@ public final class FluxUtil {
         }
 
         static final class FileReadSubscription implements Subscription, CompletionHandler<Integer, ByteBuffer> {
+            @SuppressWarnings("rawtypes")
+            static final AtomicIntegerFieldUpdater<FileReadSubscription> WIP =
+                AtomicIntegerFieldUpdater.newUpdater(FileReadSubscription.class, "wip");
+            @SuppressWarnings("rawtypes")
+            static final AtomicLongFieldUpdater<FileReadSubscription> REQUESTED =
+                AtomicLongFieldUpdater.newUpdater(FileReadSubscription.class, "requested");
+
             private static final int NOT_SET = -1;
             private static final long serialVersionUID = -6831808726875304256L;
+
+            volatile int wip;
+
+            volatile long requested;
             //
             private final Subscriber<? super ByteBuffer> subscriber;
             private volatile long position;
@@ -468,15 +483,6 @@ public final class FluxUtil {
             private Throwable error;
             private volatile ByteBuffer next;
             private volatile boolean cancelled;
-            //
-            volatile int wip;
-            @SuppressWarnings("rawtypes")
-            static final AtomicIntegerFieldUpdater<FileReadSubscription> WIP =
-                AtomicIntegerFieldUpdater.newUpdater(FileReadSubscription.class, "wip");
-            volatile long requested;
-            @SuppressWarnings("rawtypes")
-            static final AtomicLongFieldUpdater<FileReadSubscription> REQUESTED =
-                AtomicLongFieldUpdater.newUpdater(FileReadSubscription.class, "requested");
             //
 
             FileReadSubscription(Subscriber<? super ByteBuffer> subscriber, AsynchronousFileChannel fileChannel,
@@ -617,10 +623,5 @@ public final class FluxUtil {
                 }
             }
         }
-    }
-
-
-    // Private Ctr
-    private FluxUtil() {
     }
 }

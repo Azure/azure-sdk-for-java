@@ -98,6 +98,23 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
         return byPage(this.pageRetrieverProvider, null, preferredPageSize);
     }
 
+    /**
+     * Get a Flux of {@link ContinuablePage} created by concat-ing Flux instances returned Page Retriever Function
+     * calls.
+     *
+     * @param provider the provider that when called returns Page Retriever Function
+     * @param continuationToken the token to identify the pages to be retrieved
+     * @param pageSize the preferred page size
+     * @return a Flux of {@link ContinuablePage} identified by the given continuation token
+     */
+    private Flux<P> byPage(Supplier<PageRetriever<C, P>> provider, C continuationToken, Integer pageSize) {
+        return Flux.defer(() -> {
+            final PageRetriever<C, P> pageRetriever = provider.get();
+            final ContinuationState<C> state = new ContinuationState<>(continuationToken);
+            return retrievePages(state, pageRetriever, pageSize);
+        });
+    }
+
     @Override
     public Flux<P> byPage(C continuationToken, int preferredPageSize) {
         if (preferredPageSize <= 0) {
@@ -126,23 +143,6 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
                     : Flux.fromIterable(page.getElements());
             })
             .subscribe(coreSubscriber);
-    }
-
-    /**
-     * Get a Flux of {@link ContinuablePage} created by concat-ing Flux instances returned Page Retriever Function
-     * calls.
-     *
-     * @param provider the provider that when called returns Page Retriever Function
-     * @param continuationToken the token to identify the pages to be retrieved
-     * @param pageSize the preferred page size
-     * @return a Flux of {@link ContinuablePage} identified by the given continuation token
-     */
-    private Flux<P> byPage(Supplier<PageRetriever<C, P>> provider, C continuationToken, Integer pageSize) {
-        return Flux.defer(() -> {
-            final PageRetriever<C, P> pageRetriever = provider.get();
-            final ContinuationState<C> state = new ContinuationState<>(continuationToken);
-            return retrievePages(state, pageRetriever, pageSize);
-        });
     }
 
     /**

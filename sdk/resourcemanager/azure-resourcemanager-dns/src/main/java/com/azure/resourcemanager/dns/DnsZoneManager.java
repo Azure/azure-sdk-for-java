@@ -20,6 +20,17 @@ public final class DnsZoneManager extends Manager<DnsManagementClient> {
     // Collections
     private DnsZones zones;
 
+    private DnsZoneManager(HttpPipeline httpPipeline, AzureProfile profile) {
+        super(
+            httpPipeline,
+            profile,
+            new DnsManagementClientBuilder()
+                .pipeline(httpPipeline)
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+                .subscriptionId(profile.getSubscriptionId())
+                .buildClient());
+    }
+    
     /**
      * Get a Configurable instance that can be used to create {@link DnsZoneManager} with optional configuration.
      *
@@ -69,17 +80,6 @@ public final class DnsZoneManager extends Manager<DnsManagementClient> {
         public DnsZoneManager authenticate(TokenCredential credential, AzureProfile profile) {
             return DnsZoneManager.authenticate(buildHttpPipeline(credential, profile), profile);
         }
-    }
-
-    private DnsZoneManager(HttpPipeline httpPipeline, AzureProfile profile) {
-        super(
-            httpPipeline,
-            profile,
-            new DnsManagementClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .buildClient());
     }
 
     /** @return entry point to DNS zone manager zone management */

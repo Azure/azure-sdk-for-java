@@ -22,6 +22,17 @@ public final class CdnManager extends Manager<CdnManagementClient> {
     // Collections
     private CdnProfiles profiles;
 
+    private CdnManager(HttpPipeline httpPipeline, AzureProfile profile) {
+        super(
+            httpPipeline,
+            profile,
+            new CdnManagementClientBuilder()
+                .pipeline(httpPipeline)
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+                .subscriptionId(profile.getSubscriptionId())
+                .buildClient());
+    }
+
     /**
      * Get a Configurable instance that can be used to create {@link CdnManager}
      * with optional configuration.
@@ -78,17 +89,6 @@ public final class CdnManager extends Manager<CdnManagementClient> {
         public CdnManager authenticate(TokenCredential credential, AzureProfile profile) {
             return CdnManager.authenticate(buildHttpPipeline(credential, profile), profile);
         }
-    }
-
-    private CdnManager(HttpPipeline httpPipeline, AzureProfile profile) {
-        super(
-            httpPipeline,
-            profile,
-            new CdnManagementClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .buildClient());
     }
 
     /**

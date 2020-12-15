@@ -51,7 +51,6 @@ import java.util.Objects;
  */
 @ServiceClient(builder = BlobClientBuilder.class)
 public class BlobClient extends BlobClientBase {
-    private final ClientLogger logger = new ClientLogger(BlobClient.class);
 
     /**
      * The block size to use if none is specified in parallel operations.
@@ -68,6 +67,8 @@ public class BlobClient extends BlobClientBase {
      * value will be used.
      */
     public static final int BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE = BlobAsyncClient.BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE;
+
+    private final ClientLogger logger = new ClientLogger(BlobClient.class);
 
     private final BlobAsyncClient client;
 

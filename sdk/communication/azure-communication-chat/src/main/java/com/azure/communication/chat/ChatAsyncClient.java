@@ -33,11 +33,10 @@ import static com.azure.core.util.FluxUtil.withContext;
  */
 @ServiceClient(builder = ChatClientBuilder.class, isAsync = true)
 public final class ChatAsyncClient {
+    private static final String THREAD_RESOURCE_STATUS_TYPE = "thread";
     private final ClientLogger logger = new ClientLogger(ChatAsyncClient.class);
 
     private final AzureCommunicationChatServiceImpl chatServiceClient;
-
-    private static final String THREAD_RESOURCE_STATUS_TYPE = "thread";
 
     ChatAsyncClient(AzureCommunicationChatServiceImpl chatServiceClient) {
         this.chatServiceClient = chatServiceClient;
@@ -83,6 +82,21 @@ public final class ChatAsyncClient {
      * Creates a chat thread.
      *
      * @param options Options for creating a chat thread.
+     * @param context The context to associate with this operation.
+     * @return the response.
+     */
+    Mono<Response<ChatThreadAsyncClient>> createChatThread(CreateChatThreadOptions options, Context context) {
+        context = context == null ? Context.NONE : context;
+        return this.chatServiceClient.createChatThreadWithResponseAsync(
+            CreateChatThreadOptionsConverter.convert(options), context)
+            .map(result -> new SimpleResponse<ChatThreadAsyncClient>(
+                result, getChatThreadClient(getThreadIdFromMultiStatusResponse(result.getValue()))));
+    }
+
+    /**
+     * Creates a chat thread.
+     *
+     * @param options Options for creating a chat thread.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -93,21 +107,6 @@ public final class ChatAsyncClient {
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    /**
-     * Creates a chat thread.
-     *
-     * @param options Options for creating a chat thread.
-     * @param context The context to associate with this operation.
-     * @return the response.
-     */
-    Mono<Response<ChatThreadAsyncClient>> createChatThread(CreateChatThreadOptions options, Context context) {
-        context = context == null ? Context.NONE : context;
-        return this.chatServiceClient.createChatThreadWithResponseAsync(
-            CreateChatThreadOptionsConverter.convert(options), context).map(
-                result -> new SimpleResponse<ChatThreadAsyncClient>(
-                    result, getChatThreadClient(getThreadIdFromMultiStatusResponse(result.getValue()))));
     }
 
     /**
@@ -138,22 +137,6 @@ public final class ChatAsyncClient {
      * Gets a chat thread.
      *
      * @param chatThreadId Chat thread id to get.
-     * @return a chat thread.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ChatThread>> getChatThreadWithResponse(String chatThreadId) {
-        try {
-            Objects.requireNonNull(chatThreadId, "'chatThreadId' cannot be null.");
-            return withContext(context -> getChatThread(chatThreadId, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Gets a chat thread.
-     *
-     * @param chatThreadId Chat thread id to get.
      * @param context The context to associate with this operation.
      * @return a chat thread.
      */
@@ -165,6 +148,22 @@ public final class ChatAsyncClient {
                     return Mono.just(new SimpleResponse<ChatThread>(
                         res, ChatThreadConverter.convert(res.getValue())));
                 });
+    }
+
+    /**
+     * Gets a chat thread.
+     *
+     * @param chatThreadId Chat thread id to get.
+     * @return a chat thread.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ChatThread>> getChatThreadWithResponse(String chatThreadId) {
+        try {
+            Objects.requireNonNull(chatThreadId, "'chatThreadId' cannot be null.");
+            return withContext(context -> getChatThread(chatThreadId, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -245,6 +244,18 @@ public final class ChatAsyncClient {
      * Deletes a chat thread.
      *
      * @param chatThreadId Chat thread id to delete.
+     * @param context The context to associate with this operation.
+     * @return the completion.
+     */
+    Mono<Response<Void>> deleteChatThread(String chatThreadId, Context context) {
+        context = context == null ? Context.NONE : context;
+        return this.chatServiceClient.deleteChatThreadWithResponseAsync(chatThreadId, context);
+    }
+
+    /**
+     * Deletes a chat thread.
+     *
+     * @param chatThreadId Chat thread id to delete.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -255,18 +266,6 @@ public final class ChatAsyncClient {
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    /**
-     * Deletes a chat thread.
-     *
-     * @param chatThreadId Chat thread id to delete.
-     * @param context The context to associate with this operation.
-     * @return the completion.
-     */
-    Mono<Response<Void>> deleteChatThread(String chatThreadId, Context context) {
-        context = context == null ? Context.NONE : context;
-        return this.chatServiceClient.deleteChatThreadWithResponseAsync(chatThreadId, context);
     }
 
     private String getThreadIdFromMultiStatusResponse(MultiStatusResponse multiStatusResponse) {

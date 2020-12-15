@@ -48,11 +48,12 @@ import java.util.stream.Stream;
  * "foo".
  */
 public final class AzurePath implements Path {
-    private final ClientLogger logger = new ClientLogger(AzurePath.class);
     static final String ROOT_DIR_SUFFIX = ":";
 
     private final AzureFileSystem parentFileSystem;
     private final String pathString;
+
+    private final ClientLogger logger = new ClientLogger(AzurePath.class);
 
     AzurePath(AzureFileSystem parentFileSystem, String first, String... more) {
         this.parentFileSystem = parentFileSystem;

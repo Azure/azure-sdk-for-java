@@ -3,12 +3,13 @@
 
 package com.azure.perf.test.core;
 
+import reactor.core.publisher.Flux;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.util.Random;
-import reactor.core.publisher.Flux;
 
 /**
  * Utility class to help with data creation for perf testing.

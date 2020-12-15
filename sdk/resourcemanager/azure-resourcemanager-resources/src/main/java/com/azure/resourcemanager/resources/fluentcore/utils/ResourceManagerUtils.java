@@ -217,9 +217,9 @@ public final class ResourceManagerUtils {
      * RESERVED FOR INTERNAL USE.
      */
     public static class InternalRuntimeContext {
-        private Function<String, IdentifierProvider> identifierFunction = ResourceNamer::new;
         private static DelayProvider delayProvider = new ResourceDelayProvider();
         private static Scheduler reactorScheduler = Schedulers.parallel();
+        private Function<String, IdentifierProvider> identifierFunction = ResourceNamer::new;
 
         /**
          * Sets the resource namer

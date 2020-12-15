@@ -95,6 +95,30 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
             cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationOperation.apply(cxt).block());
     }
 
+    private PollerFlux(Duration pollInterval,
+        Function<PollingContext<T>, Mono<PollResponse<T>>> activationOperation,
+        Function<PollingContext<T>, Mono<PollResponse<T>>> pollOperation,
+        BiFunction<PollingContext<T>, PollResponse<T>, Mono<T>> cancelOperation,
+        Function<PollingContext<T>, Mono<U>> fetchResultOperation,
+        boolean ignored) {
+        Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
+        if (pollInterval.compareTo(Duration.ZERO) <= 0) {
+            throw logger.logExceptionAsWarning(new IllegalArgumentException(
+                "Negative or zero value for 'pollInterval' is not allowed."));
+        }
+        this.defaultPollInterval = pollInterval;
+        Objects.requireNonNull(activationOperation, "'activationOperation' cannot be null.");
+        this.pollOperation = Objects.requireNonNull(pollOperation, "'pollOperation' cannot be null.");
+        this.cancelOperation = Objects.requireNonNull(cancelOperation, "'cancelOperation' cannot be null.");
+        this.fetchResultOperation = Objects.requireNonNull(fetchResultOperation,
+            "'fetchResultOperation' cannot be null.");
+        this.oneTimeActivationMono = new OneTimeActivation<>(this.rootContext,
+            activationOperation,
+            // mapper
+            Function.identity()).getMono();
+        this.syncActivationOperation = cxt -> activationOperation.apply(cxt).block();
+    }
+
     /**
      * Creates PollerFlux.
      *
@@ -137,30 +161,6 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
             cancelOperation,
             fetchResultOperation,
             true);
-    }
-
-    private PollerFlux(Duration pollInterval,
-                       Function<PollingContext<T>, Mono<PollResponse<T>>> activationOperation,
-                       Function<PollingContext<T>, Mono<PollResponse<T>>> pollOperation,
-                       BiFunction<PollingContext<T>, PollResponse<T>, Mono<T>> cancelOperation,
-                       Function<PollingContext<T>, Mono<U>> fetchResultOperation,
-                       boolean ignored) {
-        Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
-        if (pollInterval.compareTo(Duration.ZERO) <= 0) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException(
-                "Negative or zero value for 'pollInterval' is not allowed."));
-        }
-        this.defaultPollInterval = pollInterval;
-        Objects.requireNonNull(activationOperation, "'activationOperation' cannot be null.");
-        this.pollOperation = Objects.requireNonNull(pollOperation, "'pollOperation' cannot be null.");
-        this.cancelOperation = Objects.requireNonNull(cancelOperation, "'cancelOperation' cannot be null.");
-        this.fetchResultOperation = Objects.requireNonNull(fetchResultOperation,
-            "'fetchResultOperation' cannot be null.");
-        this.oneTimeActivationMono = new OneTimeActivation<>(this.rootContext,
-            activationOperation,
-            // mapper
-            Function.identity()).getMono();
-        this.syncActivationOperation = cxt -> activationOperation.apply(cxt).block();
     }
 
     /**

@@ -21,6 +21,15 @@ public interface SqlEncryptionProtectorOperations {
     SqlEncryptionProtector getBySqlServer(String resourceGroupName, String sqlServerName);
 
     /**
+     * Gets the information about an Encryption Protector resource from Azure SQL server, identifying it by its resource
+     * group and parent.
+     *
+     * @param sqlServer the SQL server parent resource
+     * @return an immutable representation of the resource
+     */
+    SqlEncryptionProtector getBySqlServer(SqlServer sqlServer);
+
+    /**
      * Asynchronously gets the information about an Encryption Protector resource from Azure SQL server, identifying it
      * by its resource group and parent.
      *
@@ -29,15 +38,6 @@ public interface SqlEncryptionProtectorOperations {
      * @return a representation of the deferred computation of this call returning the found resource
      */
     Mono<SqlEncryptionProtector> getBySqlServerAsync(String resourceGroupName, String sqlServerName);
-
-    /**
-     * Gets the information about an Encryption Protector resource from Azure SQL server, identifying it by its resource
-     * group and parent.
-     *
-     * @param sqlServer the SQL server parent resource
-     * @return an immutable representation of the resource
-     */
-    SqlEncryptionProtector getBySqlServer(SqlServer sqlServer);
 
     /**
      * Asynchronously gets the information about an Encryption Protector resource from Azure SQL server, identifying it
@@ -76,6 +76,15 @@ public interface SqlEncryptionProtectorOperations {
     List<SqlEncryptionProtector> listBySqlServer(String resourceGroupName, String sqlServerName);
 
     /**
+     * Lists Azure SQL the Encryption Protector resources of the specified Azure SQL server in the specified resource
+     * group.
+     *
+     * @param sqlServer the parent Azure SQL server.
+     * @return the list of resources
+     */
+    List<SqlEncryptionProtector> listBySqlServer(SqlServer sqlServer);
+
+    /**
      * Asynchronously lists Azure SQL the Encryption Protector resources of the specified Azure SQL server in the
      * specified resource group.
      *
@@ -84,15 +93,6 @@ public interface SqlEncryptionProtectorOperations {
      * @return a representation of the deferred computation of this call
      */
     PagedFlux<SqlEncryptionProtector> listBySqlServerAsync(String resourceGroupName, String sqlServerName);
-
-    /**
-     * Lists Azure SQL the Encryption Protector resources of the specified Azure SQL server in the specified resource
-     * group.
-     *
-     * @param sqlServer the parent Azure SQL server.
-     * @return the list of resources
-     */
-    List<SqlEncryptionProtector> listBySqlServer(SqlServer sqlServer);
 
     /**
      * Asynchronously lists Azure SQL the Encryption Protector resources of the specified Azure SQL server in the

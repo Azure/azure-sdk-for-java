@@ -14,39 +14,6 @@ import java.time.ZoneOffset;
 class KeyRequestAttributes {
 
     /**
-     * Creates an instance of KeyRequestAttributes. Reads keyProperties.getNotBefore, keyProperties.getExpires and keyProperties.setEnabled fields
-     * from {@code keyProperties}
-     * @param keyProperties the {@link KeyProperties} object with populated attributes
-     */
-    KeyRequestAttributes(KeyProperties keyProperties) {
-        if (keyProperties.getNotBefore() != null) {
-            this.notBefore = keyProperties.getNotBefore().toEpochSecond();
-        }
-        if (keyProperties.getExpiresOn() != null) {
-            this.expires = keyProperties.getExpiresOn().toEpochSecond();
-        }
-        this.enabled = keyProperties.isEnabled();
-        this.exportable = keyProperties.isExportable();
-    }
-
-    /**
-     * Creates an instance of KeyRequestAttributes. Reads KeyCreateOptions.getNotBefore, KeyCreateOptions.getExpires and
-     * KeyCreateOptions.isEnabled fields
-     * from {@code keyOptions}
-     * @param keyOptions the {@link CreateKeyOptions} object with populated attributes
-     */
-    KeyRequestAttributes(CreateKeyOptions keyOptions) {
-        if (keyOptions.getNotBefore() != null) {
-            this.notBefore = keyOptions.getNotBefore().toEpochSecond();
-        }
-        if (keyOptions.getExpiresOn() != null) {
-            this.expires = keyOptions.getExpiresOn().toEpochSecond();
-        }
-        this.enabled = keyOptions.isEnabled();
-        this.exportable = keyOptions.isExportable();
-    }
-
-    /**
      * Determines whether the object is enabled.
      */
     @JsonProperty(value = "enabled")
@@ -81,6 +48,39 @@ class KeyRequestAttributes {
      */
     @JsonProperty(value = "exportable")
     private Boolean exportable;
+
+    /**
+     * Creates an instance of KeyRequestAttributes. Reads keyProperties.getNotBefore, keyProperties.getExpires and keyProperties.setEnabled fields
+     * from {@code keyProperties}
+     * @param keyProperties the {@link KeyProperties} object with populated attributes
+     */
+    KeyRequestAttributes(KeyProperties keyProperties) {
+        if (keyProperties.getNotBefore() != null) {
+            this.notBefore = keyProperties.getNotBefore().toEpochSecond();
+        }
+        if (keyProperties.getExpiresOn() != null) {
+            this.expires = keyProperties.getExpiresOn().toEpochSecond();
+        }
+        this.enabled = keyProperties.isEnabled();
+        this.exportable = keyProperties.isExportable();
+    }
+
+    /**
+     * Creates an instance of KeyRequestAttributes. Reads KeyCreateOptions.getNotBefore, KeyCreateOptions.getExpires and
+     * KeyCreateOptions.isEnabled fields
+     * from {@code keyOptions}
+     * @param keyOptions the {@link CreateKeyOptions} object with populated attributes
+     */
+    KeyRequestAttributes(CreateKeyOptions keyOptions) {
+        if (keyOptions.getNotBefore() != null) {
+            this.notBefore = keyOptions.getNotBefore().toEpochSecond();
+        }
+        if (keyOptions.getExpiresOn() != null) {
+            this.expires = keyOptions.getExpiresOn().toEpochSecond();
+        }
+        this.enabled = keyOptions.isEnabled();
+        this.exportable = keyOptions.isExportable();
+    }
 
     /**
      * Get the enabled value.

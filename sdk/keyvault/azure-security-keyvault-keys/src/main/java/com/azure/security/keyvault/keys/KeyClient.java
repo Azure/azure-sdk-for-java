@@ -404,6 +404,23 @@ public final class KeyClient {
     }
 
     /**
+     * Get the public part of the latest version of the specified key from the key vault. The get key operation is
+     * applicable to all key types and it requires the {@code keys/get} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Gets the latest version of the key in the key vault. Prints out the details of the returned key.</p>
+     * {@codesnippet com.azure.keyvault.keys.keyclient.getKey#string}
+     *
+     * @param name The name of the key.
+     * @return The requested {@link KeyVaultKey key}. The content of the key is null if {@code name} is null or empty.
+     * @throws ResourceNotFoundException when a key with non null/empty {@code name} doesn't exist in the key vault.
+     * @throws HttpResponseException if a non null/empty and an invalid {@code name} is specified.
+     */
+    public KeyVaultKey getKey(String name) {
+        return getKeyWithResponse(name, "", Context.NONE).getValue();
+    }
+
+    /**
      * Gets the public part of the specified key and key version. The get key operation is applicable to all key types
      * and it requires the {@code keys/get} permission.
      *
@@ -423,23 +440,6 @@ public final class KeyClient {
      */
     public Response<KeyVaultKey> getKeyWithResponse(String name, String version, Context context) {
         return client.getKeyWithResponse(name, version, context).block();
-    }
-
-    /**
-     * Get the public part of the latest version of the specified key from the key vault. The get key operation is
-     * applicable to all key types and it requires the {@code keys/get} permission.
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Gets the latest version of the key in the key vault. Prints out the details of the returned key.</p>
-     * {@codesnippet com.azure.keyvault.keys.keyclient.getKey#string}
-     *
-     * @param name The name of the key.
-     * @return The requested {@link KeyVaultKey key}. The content of the key is null if {@code name} is null or empty.
-     * @throws ResourceNotFoundException when a key with non null/empty {@code name} doesn't exist in the key vault.
-     * @throws HttpResponseException if a non null/empty and an invalid {@code name} is specified.
-     */
-    public KeyVaultKey getKey(String name) {
-        return getKeyWithResponse(name, "", Context.NONE).getValue();
     }
 
     /**

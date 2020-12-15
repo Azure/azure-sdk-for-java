@@ -34,8 +34,6 @@ import java.util.Objects;
  */
 class Changefeed {
 
-    private final ClientLogger logger = new ClientLogger(Changefeed.class);
-
     private static final String SEGMENT_PREFIX = "idx/segments/";
     private static final String METADATA_SEGMENT_PATH = "meta/segments.json";
 
@@ -45,6 +43,8 @@ class Changefeed {
     private final ChangefeedCursor changefeedCursor; /* Cursor associated with changefeed. */
     private final ChangefeedCursor userCursor; /* User provided cursor. */
     private final SegmentFactory segmentFactory; /* Segment factory. */
+
+    private final ClientLogger logger = new ClientLogger(Changefeed.class);
 
     /**
      * Creates a new Changefeed.

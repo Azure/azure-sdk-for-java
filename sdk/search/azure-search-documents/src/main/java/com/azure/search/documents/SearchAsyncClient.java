@@ -80,6 +80,10 @@ public final class SearchAsyncClient {
      */
     private static final int MULTI_STATUS_CODE = 207;
 
+    private static final SerializerAdapter ADAPTER = initializeSerializerAdapter();
+
+    final JsonSerializer serializer;
+
     /**
      * Search REST API Version
      */
@@ -109,10 +113,6 @@ public final class SearchAsyncClient {
      * The pipeline that powers this client.
      */
     private final HttpPipeline httpPipeline;
-
-    final JsonSerializer serializer;
-
-    private static final SerializerAdapter ADAPTER = initializeSerializerAdapter();
 
     /**
      * Package private constructor to be used by {@link SearchClientBuilder}

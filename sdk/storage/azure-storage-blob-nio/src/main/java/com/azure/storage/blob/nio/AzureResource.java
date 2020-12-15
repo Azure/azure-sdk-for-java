@@ -36,7 +36,6 @@ import java.util.Objects;
  * AzureResource using a path and then use the getter to access the client.
  */
 final class AzureResource {
-    private final ClientLogger logger = new ClientLogger(AzureResource.class);
 
     static final String DIR_METADATA_MARKER = Constants.HeaderConstants.DIRECTORY_METADATA_KEY;
 
@@ -46,6 +45,8 @@ final class AzureResource {
     // The following are not kept consistent with the service. They are only held here between parsing and putting.
     private BlobHttpHeaders blobHeaders;
     private Map<String, String> blobMetadata;
+
+    private final ClientLogger logger = new ClientLogger(AzureResource.class);
 
     AzureResource(Path path) throws IOException {
         Objects.requireNonNull(path, "path");

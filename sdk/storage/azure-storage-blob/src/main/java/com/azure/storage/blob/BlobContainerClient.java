@@ -45,13 +45,14 @@ import static com.azure.storage.common.implementation.StorageImplUtils.blockWith
  */
 @ServiceClient(builder = BlobContainerClientBuilder.class)
 public final class BlobContainerClient {
-    private final BlobContainerAsyncClient client;
 
     public static final String ROOT_CONTAINER_NAME = BlobContainerAsyncClient.ROOT_CONTAINER_NAME;
 
     public static final String STATIC_WEBSITE_CONTAINER_NAME = BlobContainerAsyncClient.STATIC_WEBSITE_CONTAINER_NAME;
 
     public static final String LOG_CONTAINER_NAME = BlobContainerAsyncClient.LOG_CONTAINER_NAME;
+
+    private final BlobContainerAsyncClient client;
 
     /**
      * Package-private constructor for use by {@link BlobContainerClientBuilder}.
@@ -61,7 +62,6 @@ public final class BlobContainerClient {
     BlobContainerClient(BlobContainerAsyncClient client) {
         this.client = client;
     }
-
 
     /**
      * Initializes a new BlobClient object by concatenating blobName to the end of ContainerAsyncClient's URL. The new

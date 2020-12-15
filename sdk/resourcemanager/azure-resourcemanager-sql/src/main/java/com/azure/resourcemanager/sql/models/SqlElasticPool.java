@@ -483,52 +483,12 @@ public interface SqlElasticPool
             Update withReservedDtu(SqlElasticPoolBasicEDTUs eDTU);
 
             /**
-             * Sets the maximum number of eDTU a database in the pool can consume.
-             *
-             * @param eDTU maximum eDTU a database in the pool can consume
-             * @return The next stage of the update definition.
-             */
-            Update withDatabaseDtuMax(SqlElasticPoolBasicMaxEDTUs eDTU);
-
-            /**
-             * Sets the minimum number of eDTU for each database in the pool are regardless of its activity.
-             *
-             * @param eDTU minimum eDTU for all SQL Azure databases
-             * @return The next stage of the update definition.
-             */
-            Update withDatabaseDtuMin(SqlElasticPoolBasicMinEDTUs eDTU);
-
-            /**
              * Sets the total shared eDTU for the SQL Azure Database Elastic Pool.
              *
              * @param eDTU total shared eDTU for the SQL Azure Database Elastic Pool
              * @return The next stage of the update definition.
              */
             Update withReservedDtu(SqlElasticPoolStandardEDTUs eDTU);
-
-            /**
-             * Sets the maximum number of eDTU a database in the pool can consume.
-             *
-             * @param eDTU maximum eDTU a database in the pool can consume
-             * @return The next stage of the update definition.
-             */
-            Update withDatabaseDtuMax(SqlElasticPoolStandardMaxEDTUs eDTU);
-
-            /**
-             * Sets the minimum number of eDTU for each database in the pool are regardless of its activity.
-             *
-             * @param eDTU minimum eDTU for all SQL Azure databases
-             * @return The next stage of the update definition.
-             */
-            Update withDatabaseDtuMin(SqlElasticPoolStandardMinEDTUs eDTU);
-
-            /**
-             * Sets the storage capacity for the SQL Azure Database Elastic Pool.
-             *
-             * @param storageCapacity storage capacity for the SQL Azure Database Elastic Pool
-             * @return The next stage of the update definition.
-             */
-            Update withStorageCapacity(SqlElasticPoolStandardStorage storageCapacity);
 
             /**
              * Sets the total shared eDTU for the SQL Azure Database Elastic Pool.
@@ -547,12 +507,52 @@ public interface SqlElasticPool
             Update withDatabaseDtuMax(SqlElasticPoolPremiumMaxEDTUs eDTU);
 
             /**
+             * Sets the maximum number of eDTU a database in the pool can consume.
+             *
+             * @param eDTU maximum eDTU a database in the pool can consume
+             * @return The next stage of the update definition.
+             */
+            Update withDatabaseDtuMax(SqlElasticPoolBasicMaxEDTUs eDTU);
+
+            /**
+             * Sets the maximum number of eDTU a database in the pool can consume.
+             *
+             * @param eDTU maximum eDTU a database in the pool can consume
+             * @return The next stage of the update definition.
+             */
+            Update withDatabaseDtuMax(SqlElasticPoolStandardMaxEDTUs eDTU);
+
+            /**
+             * Sets the minimum number of eDTU for each database in the pool are regardless of its activity.
+             *
+             * @param eDTU minimum eDTU for all SQL Azure databases
+             * @return The next stage of the update definition.
+             */
+            Update withDatabaseDtuMin(SqlElasticPoolBasicMinEDTUs eDTU);
+
+            /**
              * Sets the minimum number of eDTU for each database in the pool are regardless of its activity.
              *
              * @param eDTU minimum eDTU for all SQL Azure databases
              * @return The next stage of the update definition.
              */
             Update withDatabaseDtuMin(SqlElasticPoolPremiumMinEDTUs eDTU);
+
+            /**
+             * Sets the minimum number of eDTU for each database in the pool are regardless of its activity.
+             *
+             * @param eDTU minimum eDTU for all SQL Azure databases
+             * @return The next stage of the update definition.
+             */
+            Update withDatabaseDtuMin(SqlElasticPoolStandardMinEDTUs eDTU);
+
+            /**
+             * Sets the storage capacity for the SQL Azure Database Elastic Pool.
+             *
+             * @param storageCapacity storage capacity for the SQL Azure Database Elastic Pool
+             * @return The next stage of the update definition.
+             */
+            Update withStorageCapacity(SqlElasticPoolStandardStorage storageCapacity);
 
             /**
              * Sets the storage capacity for the SQL Azure Database Elastic Pool.

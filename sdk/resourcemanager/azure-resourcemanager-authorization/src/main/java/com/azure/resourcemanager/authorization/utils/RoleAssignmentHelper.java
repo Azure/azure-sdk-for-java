@@ -56,17 +56,6 @@ public class RoleAssignmentHelper {
 
     /**
      * Specifies that applications running on an Azure service with this identity requires the given access role with
-     * scope of access limited to the current resource group that the identity resides.
-     *
-     * @param asRole access role to assigned to the identity
-     * @return RoleAssignmentHelper
-     */
-    public RoleAssignmentHelper withAccessToCurrentResourceGroup(BuiltInRole asRole) {
-        return this.withAccessTo(CURRENT_RESOURCE_GROUP_SCOPE, asRole);
-    }
-
-    /**
-     * Specifies that applications running on an Azure service with this identity requires the given access role with
      * scope of access limited to the ARM resource identified by the resource ID specified in the scope parameter.
      *
      * @param scope scope of the access represented in ARM resource ID format
@@ -105,17 +94,6 @@ public class RoleAssignmentHelper {
             };
         this.preRunTaskGroup.addPostRunDependent(creator, authorizationManager.internalContext());
         return this;
-    }
-
-    /**
-     * Specifies that applications running on an Azure service with this identity requires the given access role with
-     * scope of access limited to the current resource group that the identity resides.
-     *
-     * @param roleDefinitionId access role definition to assigned to the identity
-     * @return RoleAssignmentHelper
-     */
-    public RoleAssignmentHelper withAccessToCurrentResourceGroup(String roleDefinitionId) {
-        return this.withAccessTo(CURRENT_RESOURCE_GROUP_SCOPE, roleDefinitionId);
     }
 
     /**
@@ -158,6 +136,28 @@ public class RoleAssignmentHelper {
             };
         this.preRunTaskGroup.addPostRunDependent(creator, authorizationManager.internalContext());
         return this;
+    }
+
+    /**
+     * Specifies that applications running on an Azure service with this identity requires the given access role with
+     * scope of access limited to the current resource group that the identity resides.
+     *
+     * @param roleDefinitionId access role definition to assigned to the identity
+     * @return RoleAssignmentHelper
+     */
+    public RoleAssignmentHelper withAccessToCurrentResourceGroup(String roleDefinitionId) {
+        return this.withAccessTo(CURRENT_RESOURCE_GROUP_SCOPE, roleDefinitionId);
+    }
+
+    /**
+     * Specifies that applications running on an Azure service with this identity requires the given access role with
+     * scope of access limited to the current resource group that the identity resides.
+     *
+     * @param asRole access role to assigned to the identity
+     * @return RoleAssignmentHelper
+     */
+    public RoleAssignmentHelper withAccessToCurrentResourceGroup(BuiltInRole asRole) {
+        return this.withAccessTo(CURRENT_RESOURCE_GROUP_SCOPE, asRole);
     }
 
     /**

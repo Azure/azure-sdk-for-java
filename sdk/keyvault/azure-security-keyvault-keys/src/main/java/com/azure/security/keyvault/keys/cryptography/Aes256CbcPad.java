@@ -4,8 +4,9 @@
 package com.azure.security.keyvault.keys.cryptography;
 
 class Aes256CbcPad extends AesCbcPad {
-    private static final int KEY_SIZE = 256;
+
     public static final String ALGORITHM_NAME = "A256CBCPAD";
+    private static final int KEY_SIZE = 256;
 
     Aes256CbcPad() {
         super(ALGORITHM_NAME, KEY_SIZE);
