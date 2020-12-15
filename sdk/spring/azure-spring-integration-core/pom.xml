@@ -31,12 +31,12 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-messaging</artifactId>
-      <version>5.2.10.RELEASE</version> <!-- {x-version-update;org.springframework:spring-messaging;external_dependency} -->
+      <version>5.2.12.RELEASE</version> <!-- {x-version-update;org.springframework:spring-messaging;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.integration</groupId>
       <artifactId>spring-integration-core</artifactId>
-      <version>5.3.3.RELEASE</version> <!-- {x-version-update;org.springframework.integration:spring-integration-core;external_dependency} -->
+      <version>5.3.4.RELEASE</version> <!-- {x-version-update;org.springframework.integration:spring-integration-core;external_dependency} -->
     </dependency>
     <!-- Added this dependency to include necessary annotations used by reactor core.
         Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
@@ -59,8 +59,8 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework.integration:spring-integration-core:[5.3.3.RELEASE]</include> <!-- {x-include-update;org.springframework.integration:spring-integration-core;external_dependency} -->
-                <include>org.springframework:spring-messaging:[5.2.10.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-messaging;external_dependency} -->
+                <include>org.springframework.integration:spring-integration-core:[5.3.4.RELEASE]</include> <!-- {x-include-update;org.springframework.integration:spring-integration-core;external_dependency} -->
+                <include>org.springframework:spring-messaging:[5.2.12.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-messaging;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
