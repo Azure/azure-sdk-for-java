@@ -177,9 +177,15 @@ public class AzureActiveDirectoryConfiguration {
         }
     }
 
+    /**
+     * Sample configuration to make RefreshTokenGrantRequestEntityConverter take effect.
+     * TODO: spring-security can't inject OAuth2AuthorizedClientManager to OAuth2AuthorizedClientArgumentResolver
+     *  Future versions may support this , this may be a better solution
+     *  issues : https://github.com/spring-projects/spring-security/issues/8700
+     */
     @Order(HIGHEST_PRECEDENCE)
     @Configuration
-    public class DefaultAzureWebMvcContext extends AzureWebMvcConfigurer {
+    public static class DefaultAzureWebMvcContext extends AzureWebMvcConfigurer {
 
         @Override
         public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {

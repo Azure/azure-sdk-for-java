@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.spring.aad.webapp;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +18,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
 
-public class AzureWebMvcConfigurer implements WebMvcConfigurer {
-
+/**
+ * Abstract configuration class, used to make RefreshTokenGrantRequestEntityConverter take effect.
+ */
+public abstract class AzureWebMvcConfigurer implements WebMvcConfigurer {
 
     @Autowired
     private AzureClientRegistrationRepository clientRegistrations;
@@ -46,14 +51,16 @@ public class AzureWebMvcConfigurer implements WebMvcConfigurer {
         return authorizedClientManager;
     }
 
-    public OAuth2AccessTokenResponseClient<OAuth2RefreshTokenGrantRequest> oAuth2AccessTokenResponseClient(){
+    public OAuth2AccessTokenResponseClient<OAuth2RefreshTokenGrantRequest> oAuth2AccessTokenResponseClient() {
         DefaultRefreshTokenTokenResponseClient result = new DefaultRefreshTokenTokenResponseClient();
-        result.setRequestEntityConverter(new RefreshTokenGrantRequestEntityConverter(clientRegistrations.getOtherClients()));
+        result.setRequestEntityConverter(
+            new RefreshTokenGrantRequestEntityConverter(clientRegistrations.getOtherClients()));
         return result;
     }
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-        argumentResolvers.add(new AzureHandlerMethodArgumentResolver(authorizedClientManager(clientRegistrationRepository , authorizedClientRepository)));
+        argumentResolvers.add(new AzureHandlerMethodArgumentResolver(
+            authorizedClientManager(clientRegistrationRepository, authorizedClientRepository)));
     }
 }
