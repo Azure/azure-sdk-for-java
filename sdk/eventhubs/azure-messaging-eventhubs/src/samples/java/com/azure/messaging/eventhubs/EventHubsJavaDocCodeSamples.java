@@ -66,8 +66,10 @@ public class EventHubsJavaDocCodeSamples {
             .consumerGroup("my-consumer-group")
             .buildAsyncConsumerClient();
         // END: com.azure.messaging.eventhubs.eventhubclientbuilder.instantiation
-    }
 
+        producer.close();
+        consumer.close();
+    }
 
     public void instantiateConsumerAsyncClient() {
         // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.instantiation
@@ -191,7 +193,6 @@ public class EventHubsJavaDocCodeSamples {
         // END: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receiveFromPartition#string-eventposition-receiveoptions
     }
 
-
     /**
      * Code snippet for creating an EventHubConsumer
      */
@@ -199,8 +200,8 @@ public class EventHubsJavaDocCodeSamples {
         // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerclient.instantiation
         // The required parameters are `consumerGroup`, and a way to authenticate with Event Hubs using credentials.
         EventHubConsumerClient consumer = new EventHubClientBuilder()
-            .connectionString(
-                "Endpoint={eh-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key};Entity-Path={hub-name}")
+            .connectionString("Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};"
+                + "SharedAccessKey={key};Entity-Path={hub-name}")
             .consumerGroup("$DEFAULT")
             .buildConsumerClient();
         // END: com.azure.messaging.eventhubs.eventhubconsumerclient.instantiation
@@ -245,7 +246,6 @@ public class EventHubsJavaDocCodeSamples {
         }
         // END: com.azure.messaging.eventhubs.eventhubconsumerclient.receive#string-int-eventposition-duration
     }
-
 
     /**
      * Code snippet demonstrating how to create an {@link EventHubProducerAsyncClient}.
@@ -585,11 +585,12 @@ public class EventHubsJavaDocCodeSamples {
             .consumerGroup("consumer-group")
             .checkpointStore(new SampleCheckpointStore())
             .processEvent(eventContext -> {
-                System.out.println("Partition id = " + eventContext.getPartitionContext().getPartitionId()
-                    + "and sequence number of event = " + eventContext.getEventData().getSequenceNumber());
+                System.out.printf("Partition id = %s and sequence number of event = %s%n",
+                    eventContext.getPartitionContext().getPartitionId(),
+                    eventContext.getEventData().getSequenceNumber());
             })
             .processError(errorContext -> {
-                System.out.printf("Error occurred in partition processor for partition {}, {}",
+                System.out.printf("Error occurred in partition processor for partition %s, %s%n",
                     errorContext.getPartitionContext().getPartitionId(),
                     errorContext.getThrowable());
             })
@@ -612,12 +613,13 @@ public class EventHubsJavaDocCodeSamples {
             .checkpointStore(new SampleCheckpointStore())
             .processEventBatch(eventBatchContext -> {
                 eventBatchContext.getEvents().forEach(eventData -> {
-                    System.out.println("Partition id = " + eventBatchContext.getPartitionContext().getPartitionId()
-                        + "and sequence number of event = " + eventData.getSequenceNumber());
+                    System.out.printf("Partition id = %s and sequence number of event = %s%n",
+                        eventBatchContext.getPartitionContext().getPartitionId(),
+                        eventData.getSequenceNumber());
                 });
             }, 50, Duration.ofSeconds(30))
             .processError(errorContext -> {
-                System.out.printf("Error occurred in partition processor for partition {}, {}",
+                System.out.printf("Error occurred in partition processor for partition %s, %s%n",
                     errorContext.getPartitionContext().getPartitionId(),
                     errorContext.getThrowable());
             })
@@ -635,11 +637,12 @@ public class EventHubsJavaDocCodeSamples {
         EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
             .connectionString(connectionString)
             .processEvent(eventContext -> {
-                System.out.println("Partition id = " + eventContext.getPartitionContext().getPartitionId() + " and "
-                    + "sequence number of event = " + eventContext.getEventData().getSequenceNumber());
+                System.out.printf("Partition id = %s and sequence number of event = %s%n",
+                    eventContext.getPartitionContext().getPartitionId(),
+                    eventContext.getEventData().getSequenceNumber());
             })
             .processError(errorContext -> {
-                System.out.printf("Error occurred in partition processor for partition {}, {}",
+                System.out.printf("Error occurred in partition processor for partition %s, %s%n",
                     errorContext.getPartitionContext().getPartitionId(),
                     errorContext.getThrowable());
             })
