@@ -273,7 +273,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-webmvc</artifactId>
-      <version>5.2.10.RELEASE</version> <!-- {x-include-update;org.springframework:spring-webmvc;external_dependency} -->
+      <version>5.2.10.RELEASE</version> <!-- {x-version-update;org.springframework:spring-webmvc;external_dependency} -->
       <optional>true</optional>
     </dependency>
   </dependencies>
