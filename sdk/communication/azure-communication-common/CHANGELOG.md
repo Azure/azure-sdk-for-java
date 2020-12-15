@@ -3,8 +3,7 @@
 ## 1.0.0-beta.4 (Unreleased)
 ### Breaking Changes
 - Renamed `CommunicationUserCredential` to `CommunicationTokenCredential`
-- Replaced constructor `CommunicationTokenCredential(TokenRefresher tokenRefresher, String initialToken,	boolean refreshProactively)` with `CommunicationTokenCredential(CommunicationTokenRefreshOptions tokenRefreshOptions, String initialToken)`
-- Replaced constructor `CommunicationTokenCredential(TokenRefresher tokenRefresher)` with `CommunicationTokenCredential(CommunicationTokenRefreshOptions tokenRefreshOptions)`
+- Replaced constructor `CommunicationTokenCredential(TokenRefresher tokenRefresher, String initialToken, boolean refreshProactively)` and  `CommunicationTokenCredential(TokenRefresher tokenRefresher)` with `CommunicationTokenCredential(CommunicationTokenRefreshOptions tokenRefreshOptions)`
 - Renamed `PhoneNumber` to `PhoneNumberIdentifier`
 - Renamed `CommunicationUser` to `CommunicationUserIdentifier `
 - Renamed `CallingApplication` to `CallingApplicationIdentifier`
