@@ -804,8 +804,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     @Override
     public void checkAccess(Path path, AccessMode... accessModes) throws IOException {
         if (accessModes != null && accessModes.length != 0) {
-            throw LoggingUtility.logError(logger,
-                new AccessDeniedException("The access cannot be determined."));
+            throw LoggingUtility.logError(logger, new AccessDeniedException("The access cannot be determined."));
         }
         AzurePath.ensureFileSystemOpen(path);
 
@@ -817,7 +816,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
                 && BlobErrorCode.BLOB_NOT_FOUND.equals(((BlobStorageException) e.getCause()).getErrorCode())) {
                 throw LoggingUtility.logError(logger, new NoSuchFileException(path.toString()));
             } else {
-                throw e;
+                throw LoggingUtility.logError(logger, e);
             }
         }
     }
