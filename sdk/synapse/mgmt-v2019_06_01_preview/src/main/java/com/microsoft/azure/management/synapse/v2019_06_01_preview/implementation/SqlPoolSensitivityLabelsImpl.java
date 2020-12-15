@@ -10,7 +10,6 @@
 package com.microsoft.azure.management.synapse.v2019_06_01_preview.implementation;
 
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
-import com.microsoft.azure.management.synapse.v2019_06_01_preview.SensitivityLabelSource;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.SqlPoolSensitivityLabels;
 import rx.Completable;
 import rx.Observable;
