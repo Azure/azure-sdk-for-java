@@ -43,7 +43,7 @@ public abstract class AzureOAuth2Configuration extends WebSecurityConfigurerAdap
         DefaultAuthorizationCodeTokenResponseClient result = new DefaultAuthorizationCodeTokenResponseClient();
         RestTemplate restTemplate = new RestTemplate(Arrays.asList(
             new FormHttpMessageConverter(), new OAuth2AccessTokenResponseHttpMessageConverter()));
-        restTemplate.setErrorHandler(new AzureOAuth2ResponseErrorHandler());
+        restTemplate.setErrorHandler(new AADConditionalAccessResponseErrorHandler());
         result.setRestOperations(restTemplate);
         result.setRequestEntityConverter(new AuthzCodeGrantRequestEntityConverter(repo.getAzureClient()));
         return result;
