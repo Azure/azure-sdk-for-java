@@ -10,6 +10,13 @@ import com.azure.cosmos.implementation.RequestOptions;
 public final class CosmosConflictRequestOptions {
     private String ifMatchETag;
     private String ifNoneMatchETag;
+    private PartitionKey partitionKey;
+
+    public CosmosConflictRequestOptions() {}
+
+    public CosmosConflictRequestOptions(PartitionKey partitionKey) {
+        this.partitionKey = partitionKey;
+    }
 
     /**
      * Gets the If-Match (ETag) associated with the request in the Azure Cosmos DB service.
@@ -51,10 +58,31 @@ public final class CosmosConflictRequestOptions {
         return this;
     }
 
+    /**
+     * Sets the partition key associated with the request in the Azure Cosmos DB service.
+     *
+     * @param partitionKey the partition key associated with the request.
+     * @return the CosmosItemRequestOptions.
+     */
+    public CosmosConflictRequestOptions setPartitionKey(PartitionKey partitionKey) {
+        this.partitionKey = partitionKey;
+        return this;
+    }
+
+    /**
+     * Gets the partition key associated with the request in the Azure Cosmos DB service.
+     *
+     * @return the partitionKey associated with the request.
+     */
+    public PartitionKey getPartitionKey() {
+        return this.partitionKey;
+    }
+
     RequestOptions toRequestOptions() {
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.setIfMatchETag(getIfMatchETag());
         requestOptions.setIfNoneMatchETag(getIfNoneMatchETag());
+        requestOptions.setPartitionKey(getPartitionKey());
         return requestOptions;
     }
 }
