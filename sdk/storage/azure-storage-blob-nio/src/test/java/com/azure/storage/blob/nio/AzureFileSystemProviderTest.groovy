@@ -1085,6 +1085,18 @@ class AzureFileSystemProviderTest extends APISpec {
         notThrown(Exception)
     }
 
+    def "CheckAccess root"() {
+        setup:
+        def fs = createFS(config)
+        def path = fs.getPath(getDefaultDir(fs))
+
+        when:
+        fs.provider().checkAccess(path)
+
+        then:
+        notThrown(Exception)
+    }
+
     @Unroll
     def "CheckAccess AccessDenied"() {
         setup:

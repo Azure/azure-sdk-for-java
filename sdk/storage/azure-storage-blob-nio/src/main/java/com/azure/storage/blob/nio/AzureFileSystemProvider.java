@@ -808,6 +808,15 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         }
         AzurePath.ensureFileSystemOpen(path);
 
+        /*
+        Some static utility methods in the jdk require checking access on a root. ReadAttributes is not supported on
+        roots as they are containers. Furthermore, we always assume that roots exist as they are verified at creation
+        and cannot be deleted by the file system. Thus, we prefer a short circuit for roots.
+         */
+        if (path instanceof AzurePath && ((AzurePath) path).isRoot()) {
+            return;
+        }
+
         // Read attributes already wraps BlobStorageException in an IOException.
         try {
             readAttributes(path, BasicFileAttributes.class);
