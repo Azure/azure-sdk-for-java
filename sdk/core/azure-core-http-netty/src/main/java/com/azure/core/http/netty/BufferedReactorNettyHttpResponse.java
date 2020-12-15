@@ -15,10 +15,10 @@ import java.nio.charset.Charset;
 /**
  * A Reactor Netty response where the response body has been buffered into memory.
  */
-final class BufferedReactorNettyResponse extends ReactorNettyHttpResponseBase {
+final class BufferedReactorNettyHttpResponse extends ReactorNettyHttpResponseBase {
     private final byte[] body;
 
-    BufferedReactorNettyResponse(HttpClientResponse httpClientResponse, HttpRequest httpRequest, byte[] body) {
+    BufferedReactorNettyHttpResponse(HttpClientResponse httpClientResponse, HttpRequest httpRequest, byte[] body) {
         super(httpClientResponse, httpRequest);
         this.body = body;
     }

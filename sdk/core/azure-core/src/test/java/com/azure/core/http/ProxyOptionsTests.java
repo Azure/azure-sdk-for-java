@@ -270,7 +270,7 @@ public class ProxyOptionsTests {
         };
 
         String[] expectedNonMatchHosts = new String[] {
-            "google.com", "portal.azure.com", "linkedin.com", "127a0b0c1", "azpaprodblinkedinccom",
+            "example.com", "portal.azure.com", "linkedin.com", "127a0b0c1", "azpaprodblinkedinccom",
             "azpaazureblinkedinccom", "azpablobbcorecwindowsdnet"
         };
 
