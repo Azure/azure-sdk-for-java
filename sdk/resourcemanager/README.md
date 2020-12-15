@@ -23,7 +23,7 @@ If you are an existing user of the older version of Azure management library for
 
 ### Include the package
 
-For your convenience, we have provided a wrapper package that includes some of the most highly used Azure services. We recommend using this package when you are dealing with mutiple services.
+For your convenience, we have provided a multi-service package that includes some of the most highly used Azure services. We recommend using this package when you are dealing with mutiple services.
 
 [//]: # ({x-version-update-start;com.azure.resourcemanager:azure-resourcemanager;current})
 ```xml
@@ -38,7 +38,7 @@ For your convenience, we have provided a wrapper package that includes some of t
 The services available via `azure-resourcemanager` are listed as below:
 
 <details>
-<summary> Services list </summary>
+<summary> List of services </summary>
 
 - App Services
 - Authorization
@@ -65,7 +65,7 @@ The services available via `azure-resourcemanager` are listed as below:
 </details>
 
 <br/>
-In the case where you are interested in certain service above or the service not included in the wrapper package, you can choose to use the standalone package for each service. Those packages follow the same naming patterns and design principals. For example, the package for Media Services has the following artifact information.
+In the case where you are interested in certain service above or the service not included in the multi-service package, you can choose to use the single-service package for each service. Those packages follow the same naming patterns and design principals. For example, the package for Media Services has the following artifact information.
 
 <!-- TODO: package update start -->
 ```xml
@@ -77,28 +77,7 @@ In the case where you are interested in certain service above or the service not
 ```
 <!-- TODO: package package end -->
 
-After above configuration, the manager can be authenticated by following code:
-
-<!-- TODO: embedme -->
-```java
-// share the same http client and credential
-HttpClient httpClient = HttpClient.createDefault();
-TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
-AzureProfile azureProfile = new AzureProfile(AzureEnvironment.AZURE);
-
-// init AzureResourceManager using azure-resourcemanager
-AzureResourceManager azureResourceManager = AzureResourceManager.configure()
-    .withHttpClient(httpClient)
-    .authenticate(tokenCredential, azureProfile)
-    .withDefaultSubscription();
-
-// init MediaservicesManager using azure-resourcemanager-mediaservices
-MediaservicesManager mediaservicesManager = MediaservicesManager.configure()
-    .withHttpClient(httpClient)
-    .authenticate(tokenCredential, azureProfile);
-```
-
-Please note that some of those standalone packages might have different release cycles compared to `azure-resourcemanager`. This is mostly because of various demands of different Azure services. See [Standalone Packages][standalone_packages] for a complete list of standalone packages with the API versions they are consuming.
+See [Single-Service Packages][single_service_packages] for a complete list of single-services packages with the API versions they are consuming.
 
 ### Include the recommended packages
 
@@ -142,17 +121,27 @@ By default, Azure Active Directory token authentication depends on correct confi
 
 In addition, Azure subscription ID can be configured via environment variable `AZURE_SUBSCRIPTION_ID`.
 
-With above configuration, `azure` client can be authenticated by following code:
+With above configuration, the manager class can be authenticated by following code:
 
-<!-- embedme ./azure-resourcemanager/src/samples/java/com/azure/resourcemanager/ReadmeSamples.java#L62-L68 -->
+<!-- TODO: embedme -->
 ```java
+// share the same http client and credential
+HttpClient httpClient = HttpClient.createDefault();
 AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 TokenCredential credential = new DefaultAzureCredentialBuilder()
     .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
     .build();
-AzureResourceManager azure = AzureResourceManager
+
+// init AzureResourceManager using azure-resourcemanager
+AzureResourceManager azureResourceManager = AzureResourceManager.configure()
+    .withHttpClient(httpClient)
     .authenticate(credential, profile)
     .withDefaultSubscription();
+
+// init MediaservicesManager using azure-resourcemanager-mediaservices
+MediaservicesManager mediaservicesManager = MediaservicesManager.configure()
+    .withHttpClient(httpClient)
+    .authenticate(credential, profile);
 ```
 
 The sample code assumes global Azure. Please change `AzureEnvironment.AZURE` variable if otherwise.
@@ -422,7 +411,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 [azure_core_http_okhttp]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core-http-okhttp
 [azure_core]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
-[standalone_packages]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/STANDALONE_PACKAGES.md
+[single_service_packages]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/SINGLE_SERVICE_PACKAGES.md
 [authenticate]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/AUTH.md
 [sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/SAMPLE.md
 [design]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/DESIGN.md
