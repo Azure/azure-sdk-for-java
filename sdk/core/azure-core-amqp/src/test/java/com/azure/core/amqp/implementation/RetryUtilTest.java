@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+import reactor.test.publisher.TestPublisher;
 
 import java.time.Duration;
 import java.util.concurrent.TimeoutException;
@@ -23,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class RetryUtilTest {
     @Test
-    public void getCorrectModeFixed() {
+    void getCorrectModeFixed() {
         // Act
         final AmqpRetryOptions retryOptions = new AmqpRetryOptions()
             .setMode(AmqpRetryMode.FIXED);
@@ -35,7 +36,7 @@ public class RetryUtilTest {
     }
 
     @Test
-    public void getCorrectModeExponential() {
+    void getCorrectModeExponential() {
         // Act
         final AmqpRetryOptions retryOptions = new AmqpRetryOptions()
             .setMode(AmqpRetryMode.EXPONENTIAL);
@@ -47,7 +48,7 @@ public class RetryUtilTest {
     }
 
     @Test
-    public void withRetryFlux() {
+    void withRetryFlux() {
         // Arrange
         final String timeoutMessage = "Operation timed out.";
         final Duration timeout = Duration.ofMillis(500);
@@ -58,7 +59,7 @@ public class RetryUtilTest {
         final Duration totalWaitTime = Duration.ofSeconds(options.getMaxRetries() * options.getDelay().getSeconds());
 
         final AtomicInteger resubscribe = new AtomicInteger();
-        final Flux<AmqpTransportType> neverFlux = Flux.<AmqpTransportType>never()
+        final Flux<AmqpTransportType> neverFlux = TestPublisher.<AmqpTransportType>create().flux()
             .doOnSubscribe(s -> resubscribe.incrementAndGet());
 
         // Act & Assert
@@ -72,7 +73,7 @@ public class RetryUtilTest {
     }
 
     @Test
-    public void withRetryMono() {
+    void withRetryMono() {
         // Arrange
         final String timeoutMessage = "Operation timed out.";
         final Duration timeout = Duration.ofMillis(500);
@@ -83,7 +84,7 @@ public class RetryUtilTest {
         final Duration totalWaitTime = Duration.ofSeconds(options.getMaxRetries() * options.getDelay().getSeconds());
 
         final AtomicInteger resubscribe = new AtomicInteger();
-        final Mono<AmqpTransportType> neverFlux = Mono.<AmqpTransportType>never()
+        final Mono<AmqpTransportType> neverFlux = TestPublisher.<AmqpTransportType>create().mono()
             .doOnSubscribe(s -> resubscribe.incrementAndGet());
 
         // Act & Assert
