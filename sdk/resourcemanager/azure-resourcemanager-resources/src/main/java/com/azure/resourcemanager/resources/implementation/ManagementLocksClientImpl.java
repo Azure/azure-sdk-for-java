@@ -31,6 +31,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluent.ManagementLocksClient;
 import com.azure.resourcemanager.resources.fluent.models.ManagementLockObjectInner;
+import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import com.azure.resourcemanager.resources.models.ManagementLockListResult;
@@ -40,6 +41,7 @@ import reactor.core.publisher.Mono;
 public final class ManagementLocksClientImpl
     implements InnerSupportsGet<ManagementLockObjectInner>,
         InnerSupportsListing<ManagementLockObjectInner>,
+        InnerSupportsDelete<Void>,
         ManagementLocksClient {
     private final ClientLogger logger = new ClientLogger(ManagementLocksClientImpl.class);
 
@@ -89,7 +91,7 @@ public final class ManagementLocksClientImpl
                 + "/{lockName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> deleteAtResourceGroupLevel(
+        Mono<Response<Void>> delete(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("lockName") String lockName,
@@ -351,7 +353,7 @@ public final class ManagementLocksClientImpl
      * @param resourceGroupName The name of the resource group to lock.
      * @param lockName The lock name. The lock name can be a maximum of 260 characters. It cannot contain &lt;, &gt; %,
      *     &amp;, :, \, ?, /, or any control characters.
-     * @param parameters The lock information.
+     * @param parameters The management lock parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -409,7 +411,7 @@ public final class ManagementLocksClientImpl
      * @param resourceGroupName The name of the resource group to lock.
      * @param lockName The lock name. The lock name can be a maximum of 260 characters. It cannot contain &lt;, &gt; %,
      *     &amp;, :, \, ?, /, or any control characters.
-     * @param parameters The lock information.
+     * @param parameters The management lock parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -465,7 +467,7 @@ public final class ManagementLocksClientImpl
      * @param resourceGroupName The name of the resource group to lock.
      * @param lockName The lock name. The lock name can be a maximum of 260 characters. It cannot contain &lt;, &gt; %,
      *     &amp;, :, \, ?, /, or any control characters.
-     * @param parameters The lock information.
+     * @param parameters The management lock parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -493,7 +495,7 @@ public final class ManagementLocksClientImpl
      * @param resourceGroupName The name of the resource group to lock.
      * @param lockName The lock name. The lock name can be a maximum of 260 characters. It cannot contain &lt;, &gt; %,
      *     &amp;, :, \, ?, /, or any control characters.
-     * @param parameters The lock information.
+     * @param parameters The management lock parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -513,7 +515,7 @@ public final class ManagementLocksClientImpl
      * @param resourceGroupName The name of the resource group to lock.
      * @param lockName The lock name. The lock name can be a maximum of 260 characters. It cannot contain &lt;, &gt; %,
      *     &amp;, :, \, ?, /, or any control characters.
-     * @param parameters The lock information.
+     * @param parameters The management lock parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -539,7 +541,7 @@ public final class ManagementLocksClientImpl
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteAtResourceGroupLevelWithResponseAsync(String resourceGroupName, String lockName) {
+    public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String lockName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -563,7 +565,7 @@ public final class ManagementLocksClientImpl
             .withContext(
                 context ->
                     service
-                        .deleteAtResourceGroupLevel(
+                        .delete(
                             this.client.getEndpoint(),
                             resourceGroupName,
                             lockName,
@@ -586,8 +588,7 @@ public final class ManagementLocksClientImpl
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteAtResourceGroupLevelWithResponseAsync(
-        String resourceGroupName, String lockName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String lockName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -609,7 +610,7 @@ public final class ManagementLocksClientImpl
         }
         context = this.client.mergeContext(context);
         return service
-            .deleteAtResourceGroupLevel(
+            .delete(
                 this.client.getEndpoint(),
                 resourceGroupName,
                 lockName,
@@ -630,9 +631,8 @@ public final class ManagementLocksClientImpl
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAtResourceGroupLevelAsync(String resourceGroupName, String lockName) {
-        return deleteAtResourceGroupLevelWithResponseAsync(resourceGroupName, lockName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+    public Mono<Void> deleteAsync(String resourceGroupName, String lockName) {
+        return deleteWithResponseAsync(resourceGroupName, lockName).flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -646,8 +646,8 @@ public final class ManagementLocksClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteAtResourceGroupLevel(String resourceGroupName, String lockName) {
-        deleteAtResourceGroupLevelAsync(resourceGroupName, lockName).block();
+    public void delete(String resourceGroupName, String lockName) {
+        deleteAsync(resourceGroupName, lockName).block();
     }
 
     /**
@@ -663,9 +663,8 @@ public final class ManagementLocksClientImpl
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteAtResourceGroupLevelWithResponse(
-        String resourceGroupName, String lockName, Context context) {
-        return deleteAtResourceGroupLevelWithResponseAsync(resourceGroupName, lockName, context).block();
+    public Response<Void> deleteWithResponse(String resourceGroupName, String lockName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, lockName, context).block();
     }
 
     /**
@@ -826,7 +825,7 @@ public final class ManagementLocksClientImpl
      *     '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePathIfPresent}/{resourceType}/{resourceName}'
      *     for resources.
      * @param lockName The name of lock.
-     * @param parameters The lock information.
+     * @param parameters Create or update management lock parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -877,7 +876,7 @@ public final class ManagementLocksClientImpl
      *     '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePathIfPresent}/{resourceType}/{resourceName}'
      *     for resources.
      * @param lockName The name of lock.
-     * @param parameters The lock information.
+     * @param parameters Create or update management lock parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -920,7 +919,7 @@ public final class ManagementLocksClientImpl
      *     '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePathIfPresent}/{resourceType}/{resourceName}'
      *     for resources.
      * @param lockName The name of lock.
-     * @param parameters The lock information.
+     * @param parameters Create or update management lock parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -949,7 +948,7 @@ public final class ManagementLocksClientImpl
      *     '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePathIfPresent}/{resourceType}/{resourceName}'
      *     for resources.
      * @param lockName The name of lock.
-     * @param parameters The lock information.
+     * @param parameters Create or update management lock parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -970,7 +969,7 @@ public final class ManagementLocksClientImpl
      *     '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePathIfPresent}/{resourceType}/{resourceName}'
      *     for resources.
      * @param lockName The name of lock.
-     * @param parameters The lock information.
+     * @param parameters Create or update management lock parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1222,7 +1221,7 @@ public final class ManagementLocksClientImpl
      * @param resourceName The name of the resource to lock.
      * @param lockName The name of lock. The lock name can be a maximum of 260 characters. It cannot contain &lt;, &gt;
      *     %, &amp;, :, \, ?, /, or any control characters.
-     * @param parameters The lock information.
+     * @param parameters Parameters for creating or updating a management lock.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1310,7 +1309,7 @@ public final class ManagementLocksClientImpl
      * @param resourceName The name of the resource to lock.
      * @param lockName The name of lock. The lock name can be a maximum of 260 characters. It cannot contain &lt;, &gt;
      *     %, &amp;, :, \, ?, /, or any control characters.
-     * @param parameters The lock information.
+     * @param parameters Parameters for creating or updating a management lock.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1397,7 +1396,7 @@ public final class ManagementLocksClientImpl
      * @param resourceName The name of the resource to lock.
      * @param lockName The name of lock. The lock name can be a maximum of 260 characters. It cannot contain &lt;, &gt;
      *     %, &amp;, :, \, ?, /, or any control characters.
-     * @param parameters The lock information.
+     * @param parameters Parameters for creating or updating a management lock.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1442,7 +1441,7 @@ public final class ManagementLocksClientImpl
      * @param resourceName The name of the resource to lock.
      * @param lockName The name of lock. The lock name can be a maximum of 260 characters. It cannot contain &lt;, &gt;
      *     %, &amp;, :, \, ?, /, or any control characters.
-     * @param parameters The lock information.
+     * @param parameters Parameters for creating or updating a management lock.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1480,7 +1479,7 @@ public final class ManagementLocksClientImpl
      * @param resourceName The name of the resource to lock.
      * @param lockName The name of lock. The lock name can be a maximum of 260 characters. It cannot contain &lt;, &gt;
      *     %, &amp;, :, \, ?, /, or any control characters.
-     * @param parameters The lock information.
+     * @param parameters Parameters for creating or updating a management lock.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2007,7 +2006,7 @@ public final class ManagementLocksClientImpl
      *
      * @param lockName The name of lock. The lock name can be a maximum of 260 characters. It cannot contain &lt;, &gt;
      *     %, &amp;, :, \, ?, /, or any control characters.
-     * @param parameters The lock information.
+     * @param parameters The management lock parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2059,7 +2058,7 @@ public final class ManagementLocksClientImpl
      *
      * @param lockName The name of lock. The lock name can be a maximum of 260 characters. It cannot contain &lt;, &gt;
      *     %, &amp;, :, \, ?, /, or any control characters.
-     * @param parameters The lock information.
+     * @param parameters The management lock parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2109,7 +2108,7 @@ public final class ManagementLocksClientImpl
      *
      * @param lockName The name of lock. The lock name can be a maximum of 260 characters. It cannot contain &lt;, &gt;
      *     %, &amp;, :, \, ?, /, or any control characters.
-     * @param parameters The lock information.
+     * @param parameters The management lock parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2136,7 +2135,7 @@ public final class ManagementLocksClientImpl
      *
      * @param lockName The name of lock. The lock name can be a maximum of 260 characters. It cannot contain &lt;, &gt;
      *     %, &amp;, :, \, ?, /, or any control characters.
-     * @param parameters The lock information.
+     * @param parameters The management lock parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2155,7 +2154,7 @@ public final class ManagementLocksClientImpl
      *
      * @param lockName The name of lock. The lock name can be a maximum of 260 characters. It cannot contain &lt;, &gt;
      *     %, &amp;, :, \, ?, /, or any control characters.
-     * @param parameters The lock information.
+     * @param parameters The management lock parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

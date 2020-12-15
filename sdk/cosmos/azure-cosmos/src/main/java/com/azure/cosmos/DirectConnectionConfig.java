@@ -53,7 +53,7 @@ public final class DirectConnectionConfig {
      *
      * @return {@code true} if Direct TCP connection endpoint rediscovery is enabled; {@code false} otherwise.
      */
-    @Beta(Beta.SinceVersion.V4_8_0)
+    @Beta(value = Beta.SinceVersion.V4_8_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public boolean isConnectionEndpointRediscoveryEnabled() {
         return this.connectionEndpointRediscoveryEnabled;
     }
@@ -70,7 +70,7 @@ public final class DirectConnectionConfig {
      *
      * @return the {@linkplain DirectConnectionConfig}.
      */
-    @Beta(Beta.SinceVersion.V4_8_0)
+    @Beta(value = Beta.SinceVersion.V4_8_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public DirectConnectionConfig setConnectionEndpointRediscoveryEnabled(boolean connectionEndpointRediscoveryEnabled) {
         this.connectionEndpointRediscoveryEnabled = connectionEndpointRediscoveryEnabled;
         return this;
@@ -180,7 +180,7 @@ public final class DirectConnectionConfig {
      * Gets the max connections per endpoint
      * This represents the size of connection pool for a specific endpoint
      *
-     * Default value is 30
+     * Default value is 130
      *
      * @return the max connections per endpoint
      */
@@ -192,7 +192,7 @@ public final class DirectConnectionConfig {
      * Sets the max connections per endpoint
      * This represents the size of connection pool for a specific endpoint
      *
-     * Default value is 30
+     * Default value is 130
      *
      * @param maxConnectionsPerEndpoint the max connections per endpoint
      * @return the {@link DirectConnectionConfig}
@@ -207,7 +207,7 @@ public final class DirectConnectionConfig {
      * This represents the number of requests that will be queued
      * on a single connection for a specific endpoint
      *
-     * Default value is 10
+     * Default value is 30
      *
      * @return the max requests per endpoint
      */
@@ -220,7 +220,7 @@ public final class DirectConnectionConfig {
      * This represents the number of requests that will be queued
      * on a single connection for a specific endpoint
      *
-     * Default value is 10
+     * Default value is 30
      *
      * @param maxRequestsPerConnection the max requests per endpoint
      * @return the {@link DirectConnectionConfig}

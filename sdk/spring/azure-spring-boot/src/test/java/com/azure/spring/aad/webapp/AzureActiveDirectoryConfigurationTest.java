@@ -4,10 +4,11 @@
 package com.azure.spring.aad.webapp;
 
 import org.junit.Test;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.boot.test.context.FilteredClassLoader;
+import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.test.context.support.TestPropertySourceUtils;
+import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,180 +20,208 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AzureActiveDirectoryConfigurationTest {
 
-    private AnnotationConfigApplicationContext getContext() {
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-        TestPropertySourceUtils.addInlinedPropertiesToEnvironment(
-            context,
-            "azure.activedirectory.client-id = fake-client-id",
-            "azure.activedirectory.client-secret = fake-client-secret",
-            "azure.activedirectory.tenant-id = fake-tenant-id",
-            "azure.activedirectory.user-group.allowed-groups = group1, group2"
-        );
-        context.register(AzureActiveDirectoryConfiguration.class);
-        return context;
-    }
+    private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
+        .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
+        .withUserConfiguration(AzureActiveDirectoryConfiguration.class);
 
     @Test
     public void clientRegistered() {
-        AnnotationConfigApplicationContext context = getContext();
-        context.refresh();
+        contextRunner
+            .withPropertyValues(
+                "azure.activedirectory.client-id = fake-client-id",
+                "azure.activedirectory.client-secret = fake-client-secret",
+                "azure.activedirectory.tenant-id = fake-tenant-id",
+                "azure.activedirectory.user-group.allowed-groups = group1, group2")
+            .run(context -> {
+                ClientRegistrationRepository clientRepo = context.getBean(AzureClientRegistrationRepository.class);
+                ClientRegistration azure = clientRepo.findByRegistrationId("azure");
 
-        ClientRegistrationRepository clientRepo = context.getBean(AzureClientRegistrationRepository.class);
-        ClientRegistration azure = clientRepo.findByRegistrationId("azure");
+                assertNotNull(azure);
+                assertEquals("fake-client-id", azure.getClientId());
+                assertEquals("fake-client-secret", azure.getClientSecret());
 
-        assertNotNull(azure);
-        assertEquals("fake-client-id", azure.getClientId());
-        assertEquals("fake-client-secret", azure.getClientSecret());
-
-        AuthorizationServerEndpoints endpoints = new AuthorizationServerEndpoints();
-        assertEquals(endpoints.authorizationEndpoint("fake-tenant-id"),
-            azure.getProviderDetails().getAuthorizationUri());
-        assertEquals(endpoints.tokenEndpoint("fake-tenant-id"), azure.getProviderDetails().getTokenUri());
-        assertEquals(endpoints.jwkSetEndpoint("fake-tenant-id"), azure.getProviderDetails().getJwkSetUri());
-        assertEquals("{baseUrl}/login/oauth2/code/{registrationId}", azure.getRedirectUriTemplate());
-        assertDefaultScopes(azure, "openid", "profile", "https://graph.microsoft.com/User.Read");
+                AuthorizationServerEndpoints endpoints = new AuthorizationServerEndpoints();
+                assertEquals(endpoints.authorizationEndpoint("fake-tenant-id"),
+                    azure.getProviderDetails().getAuthorizationUri());
+                assertEquals(endpoints.tokenEndpoint("fake-tenant-id"), azure.getProviderDetails().getTokenUri());
+                assertEquals(endpoints.jwkSetEndpoint("fake-tenant-id"), azure.getProviderDetails().getJwkSetUri());
+                assertEquals("{baseUrl}/login/oauth2/code/{registrationId}", azure.getRedirectUriTemplate());
+                assertDefaultScopes(azure, "openid", "profile", "https://graph.microsoft.com/User.Read");
+            });
     }
 
     @Test
     public void clientRequiresPermissionRegistered() {
-        AnnotationConfigApplicationContext context = getContext();
-        TestPropertySourceUtils.addInlinedPropertiesToEnvironment(context,
-            "azure.activedirectory.authorization.graph.scopes = Calendars.Read");
-        context.refresh();
+        contextRunner
+            .withPropertyValues(
+                "azure.activedirectory.client-id = fake-client-id",
+                "azure.activedirectory.client-secret = fake-client-secret",
+                "azure.activedirectory.tenant-id = fake-tenant-id",
+                "azure.activedirectory.user-group.allowed-groups = group1, group2",
+                "azure.activedirectory.authorization.graph.scopes = Calendars.Read"
+            )
+            .run(context -> {
+                ClientRegistrationRepository clientRepo = context.getBean(AzureClientRegistrationRepository.class);
+                ClientRegistration azure = clientRepo.findByRegistrationId("azure");
+                ClientRegistration graph = clientRepo.findByRegistrationId("graph");
 
-        ClientRegistrationRepository clientRepo = context.getBean(AzureClientRegistrationRepository.class);
-        ClientRegistration azure = clientRepo.findByRegistrationId("azure");
-        ClientRegistration graph = clientRepo.findByRegistrationId("graph");
-
-        assertNotNull(azure);
-        assertNotNull(graph);
-        assertDefaultScopes(azure,
-            "openid", "profile", "offline_access", "https://graph.microsoft.com/User.Read", "Calendars.Read");
-        assertDefaultScopes(graph, "Calendars.Read");
+                assertNotNull(azure);
+                assertNotNull(graph);
+                assertDefaultScopes(azure,
+                    "openid", "profile", "offline_access", "https://graph.microsoft.com/User.Read", "Calendars.Read");
+                assertDefaultScopes(graph, "Calendars.Read");
+            });
     }
 
     @Test
     public void clientRequiresMultiPermissions() {
-        AnnotationConfigApplicationContext context = getContext();
-        TestPropertySourceUtils.addInlinedPropertiesToEnvironment(context,
-            "azure.activedirectory.authorization.graph.scopes = Calendars.Read",
-            "azure.activedirectory.authorization.arm.scopes = https://management.core.windows.net/user_impersonation"
-        );
-        context.refresh();
-
-        ClientRegistrationRepository clientRepo = context.getBean(AzureClientRegistrationRepository.class);
-        ClientRegistration azure = clientRepo.findByRegistrationId("azure");
-        ClientRegistration graph = clientRepo.findByRegistrationId("graph");
-        assertDefaultScopes(
-            azure,
-            "openid",
-            "profile",
-            "offline_access",
-            "Calendars.Read",
-            "https://graph.microsoft.com/User.Read",
-            "https://management.core.windows.net/user_impersonation");
-        assertDefaultScopes(graph, "Calendars.Read");
+        contextRunner
+            .withPropertyValues(
+                "azure.activedirectory.client-id = fake-client-id",
+                "azure.activedirectory.client-secret = fake-client-secret",
+                "azure.activedirectory.tenant-id = fake-tenant-id",
+                "azure.activedirectory.user-group.allowed-groups = group1, group2",
+                "azure.activedirectory.authorization.graph.scopes = Calendars.Read",
+                "azure.activedirectory.authorization.arm.scopes = https://management.core.windows.net/user_impersonation"
+            )
+            .run(context -> {
+                ClientRegistrationRepository clientRepo = context.getBean(AzureClientRegistrationRepository.class);
+                ClientRegistration azure = clientRepo.findByRegistrationId("azure");
+                ClientRegistration graph = clientRepo.findByRegistrationId("graph");
+                assertDefaultScopes(
+                    azure,
+                    "openid",
+                    "profile",
+                    "offline_access",
+                    "Calendars.Read",
+                    "https://graph.microsoft.com/User.Read",
+                    "https://management.core.windows.net/user_impersonation");
+                assertDefaultScopes(graph, "Calendars.Read");
+            });
     }
 
     @Test
     public void clientRequiresPermissionInDefaultClient() {
-        AnnotationConfigApplicationContext context = getContext();
-        TestPropertySourceUtils.addInlinedPropertiesToEnvironment(context,
-            "azure.activedirectory.authorization.graph.scopes = Calendars.Read");
-        context.refresh();
-
-        ClientRegistrationRepository clientRepo = context.getBean(AzureClientRegistrationRepository.class);
-        ClientRegistration azure = clientRepo.findByRegistrationId("azure");
-        assertDefaultScopes(azure,
-            "openid", "profile", "offline_access", "https://graph.microsoft.com/User.Read", "Calendars.Read");
+        contextRunner
+            .withPropertyValues(
+                "azure.activedirectory.client-id = fake-client-id",
+                "azure.activedirectory.client-secret = fake-client-secret",
+                "azure.activedirectory.tenant-id = fake-tenant-id",
+                "azure.activedirectory.user-group.allowed-groups = group1, group2",
+                "azure.activedirectory.authorization.graph.scopes = Calendars.Read"
+            )
+            .run(context -> {
+                ClientRegistrationRepository clientRepo = context.getBean(AzureClientRegistrationRepository.class);
+                ClientRegistration azure = clientRepo.findByRegistrationId("azure");
+                assertDefaultScopes(azure,
+                    "openid", "profile", "offline_access", "https://graph.microsoft.com/User.Read", "Calendars.Read");
+            });
     }
 
     @Test
     public void aadAwareClientRepository() {
-        AnnotationConfigApplicationContext context = getContext();
-        TestPropertySourceUtils.addInlinedPropertiesToEnvironment(context,
-            "azure.activedirectory.authorization.graph.scopes = Calendars.Read");
-        context.refresh();
+        contextRunner
+            .withPropertyValues(
+                "azure.activedirectory.client-id = fake-client-id",
+                "azure.activedirectory.client-secret = fake-client-secret",
+                "azure.activedirectory.tenant-id = fake-tenant-id",
+                "azure.activedirectory.user-group.allowed-groups = group1, group2",
+                "azure.activedirectory.authorization.graph.scopes = Calendars.Read"
+            )
+            .run(context -> {
+                AzureClientRegistrationRepository clientRepo = context.getBean(AzureClientRegistrationRepository.class);
+                ClientRegistration azure = clientRepo.findByRegistrationId("azure");
+                ClientRegistration graph = clientRepo.findByRegistrationId("graph");
+                assertDefaultScopes(
+                    clientRepo.getAzureClient(),
+                    "openid", "profile", "offline_access", "https://graph.microsoft.com/User.Read"
+                );
+                assertEquals(clientRepo.getAzureClient().getClient(), azure);
 
-        AzureClientRegistrationRepository clientRepo = context.getBean(AzureClientRegistrationRepository.class);
-        ClientRegistration azure = clientRepo.findByRegistrationId("azure");
-        ClientRegistration graph = clientRepo.findByRegistrationId("graph");
-        assertDefaultScopes(
-            clientRepo.getAzureClient(),
-            "openid", "profile", "offline_access", "https://graph.microsoft.com/User.Read"
-        );
-        assertEquals(clientRepo.getAzureClient().getClient(), azure);
+                assertFalse(clientRepo.isAuthzClient(azure));
+                assertTrue(clientRepo.isAuthzClient(graph));
+                assertFalse(clientRepo.isAuthzClient("azure"));
+                assertTrue(clientRepo.isAuthzClient("graph"));
 
-        assertFalse(clientRepo.isAuthzClient(azure));
-        assertTrue(clientRepo.isAuthzClient(graph));
-        assertFalse(clientRepo.isAuthzClient("azure"));
-        assertTrue(clientRepo.isAuthzClient("graph"));
-
-        List<ClientRegistration> clients = collectClients(clientRepo);
-        assertEquals(1, clients.size());
-        assertEquals("azure", clients.get(0).getRegistrationId());
+                List<ClientRegistration> clients = collectClients(clientRepo);
+                assertEquals(2, clients.size());
+                assertEquals("graph", clients.get(0).getRegistrationId());
+                assertEquals("azure", clients.get(1).getRegistrationId());
+            });
     }
 
     @Test
     public void defaultClientWithAuthzScope() {
-        AnnotationConfigApplicationContext context = getContext();
-        TestPropertySourceUtils.addInlinedPropertiesToEnvironment(context,
-            "azure.activedirectory.authorization.azure.scopes = Calendars.Read");
-        context.refresh();
-
-        AzureClientRegistrationRepository clientRepo = context.getBean(AzureClientRegistrationRepository.class);
-        assertDefaultScopes(
-            clientRepo.getAzureClient(),
-            "openid", "profile", "offline_access", "https://graph.microsoft.com/User.Read", "Calendars.Read"
-        );
+        contextRunner
+            .withPropertyValues(
+                "azure.activedirectory.client-id = fake-client-id",
+                "azure.activedirectory.client-secret = fake-client-secret",
+                "azure.activedirectory.tenant-id = fake-tenant-id",
+                "azure.activedirectory.user-group.allowed-groups = group1, group2",
+                "azure.activedirectory.authorization.azure.scopes = Calendars.Read"
+            )
+            .run(context -> {
+                AzureClientRegistrationRepository clientRepo = context.getBean(AzureClientRegistrationRepository.class);
+                assertDefaultScopes(
+                    clientRepo.getAzureClient(),
+                    "openid", "profile", "offline_access", "https://graph.microsoft.com/User.Read", "Calendars.Read"
+                );
+            });
     }
 
     @Test
     public void customizeUri() {
-        AnnotationConfigApplicationContext context = getContext();
-        TestPropertySourceUtils.addInlinedPropertiesToEnvironment(context,
-            "azure.activedirectory.authorization-server-uri = http://localhost/");
-        context.refresh();
-
-        AzureClientRegistrationRepository clientRepo = context.getBean(AzureClientRegistrationRepository.class);
-        ClientRegistration azure = clientRepo.findByRegistrationId("azure");
-        AuthorizationServerEndpoints endpoints = new AuthorizationServerEndpoints("http://localhost/");
-        assertEquals(endpoints.authorizationEndpoint("fake-tenant-id"),
-            azure.getProviderDetails().getAuthorizationUri());
-        assertEquals(endpoints.tokenEndpoint("fake-tenant-id"), azure.getProviderDetails().getTokenUri());
-        assertEquals(endpoints.jwkSetEndpoint("fake-tenant-id"), azure.getProviderDetails().getJwkSetUri());
+        contextRunner
+            .withPropertyValues(
+                "azure.activedirectory.client-id = fake-client-id",
+                "azure.activedirectory.client-secret = fake-client-secret",
+                "azure.activedirectory.tenant-id = fake-tenant-id",
+                "azure.activedirectory.user-group.allowed-groups = group1, group2",
+                "azure.activedirectory.authorization-server-uri = http://localhost/"
+            )
+            .run(context -> {
+                AzureClientRegistrationRepository clientRepo = context.getBean(AzureClientRegistrationRepository.class);
+                ClientRegistration azure = clientRepo.findByRegistrationId("azure");
+                AuthorizationServerEndpoints endpoints = new AuthorizationServerEndpoints("http://localhost/");
+                assertEquals(endpoints.authorizationEndpoint("fake-tenant-id"),
+                    azure.getProviderDetails().getAuthorizationUri());
+                assertEquals(endpoints.tokenEndpoint("fake-tenant-id"), azure.getProviderDetails().getTokenUri());
+                assertEquals(endpoints.jwkSetEndpoint("fake-tenant-id"), azure.getProviderDetails().getJwkSetUri());
+            });
     }
 
     @Test
     public void clientRequiresOnDemandPermissions() {
-        AnnotationConfigApplicationContext context = getContext();
-        TestPropertySourceUtils.addInlinedPropertiesToEnvironment(context,
-            "azure.activedirectory.authorization.graph.scopes = Calendars.Read",
-            "azure.activedirectory.authorization.graph.on-demand = true",
-            "azure.activedirectory.authorization.arm.scopes = https://management.core.windows.net/user_impersonation"
-        );
-        context.refresh();
+        contextRunner
+            .withPropertyValues(
+                "azure.activedirectory.client-id = fake-client-id",
+                "azure.activedirectory.client-secret = fake-client-secret",
+                "azure.activedirectory.tenant-id = fake-tenant-id",
+                "azure.activedirectory.user-group.allowed-groups = group1, group2",
+                "azure.activedirectory.authorization.graph.scopes = Calendars.Read",
+                "azure.activedirectory.authorization.graph.on-demand = true",
+                "azure.activedirectory.authorization.arm.scopes = https://management.core.windows.net/user_impersonation"
+            )
+            .run(context -> {
+                AzureClientRegistrationRepository repo = context.getBean(AzureClientRegistrationRepository.class);
+                ClientRegistration azure = repo.findByRegistrationId("azure");
+                ClientRegistration graph = repo.findByRegistrationId("graph");
+                ClientRegistration arm = repo.findByRegistrationId("arm");
 
-        AzureClientRegistrationRepository repo = context.getBean(AzureClientRegistrationRepository.class);
-        ClientRegistration azure = repo.findByRegistrationId("azure");
-        ClientRegistration graph = repo.findByRegistrationId("graph");
-        ClientRegistration arm = repo.findByRegistrationId("arm");
+                assertNotNull(azure);
+                assertDefaultScopes(
+                    azure,
+                    "openid",
+                    "profile",
+                    "https://graph.microsoft.com/User.Read",
+                    "offline_access",
+                    "https://management.core.windows.net/user_impersonation");
 
-        assertNotNull(azure);
-        assertDefaultScopes(
-            azure,
-            "openid",
-            "profile",
-            "https://graph.microsoft.com/User.Read",
-            "offline_access",
-            "https://management.core.windows.net/user_impersonation");
-
-        assertFalse(repo.isAuthzClient(graph));
-        assertTrue(repo.isAuthzClient(arm));
-        assertFalse(repo.isAuthzClient("graph"));
-        assertTrue(repo.isAuthzClient("arm"));
-
-
+                assertFalse(repo.isAuthzClient(graph));
+                assertTrue(repo.isAuthzClient(arm));
+                assertFalse(repo.isAuthzClient("graph"));
+                assertTrue(repo.isAuthzClient("arm"));
+            });
     }
 
     private void assertDefaultScopes(ClientRegistration client, String... scopes) {

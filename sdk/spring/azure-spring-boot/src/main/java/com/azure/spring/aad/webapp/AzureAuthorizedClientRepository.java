@@ -5,8 +5,6 @@ package com.azure.spring.aad.webapp;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
-import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.security.oauth2.client.web.HttpSessionOAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 
@@ -23,12 +21,8 @@ public class AzureAuthorizedClientRepository implements OAuth2AuthorizedClientRe
     private final AzureClientRegistrationRepository repo;
     private final OAuth2AuthorizedClientRepository delegate;
 
-    private static OAuth2AuthorizedClientRepository createDefaultDelegate(ClientRegistrationRepository repo) {
-        return new HttpSessionOAuth2AuthorizedClientRepository();
-    }
-
     public AzureAuthorizedClientRepository(AzureClientRegistrationRepository repo) {
-        this(repo, createDefaultDelegate(repo));
+        this(repo, new JacksonHttpSessionOAuth2AuthorizedClientRepository());
     }
 
     public AzureAuthorizedClientRepository(AzureClientRegistrationRepository repo,

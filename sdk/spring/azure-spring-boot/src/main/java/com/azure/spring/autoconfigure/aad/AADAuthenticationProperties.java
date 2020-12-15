@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
+import org.springframework.util.ClassUtils;
 import org.springframework.validation.annotation.Validated;
 
 /**
@@ -92,7 +93,7 @@ public class AADAuthenticationProperties {
     /**
      * Azure Tenant ID.
      */
-    private String tenantId;
+    private String tenantId = "common";
 
     /**
      * If Telemetry events should be published to Azure AD.
@@ -228,6 +229,11 @@ public class AADAuthenticationProperties {
      */
     @PostConstruct
     public void validateUserGroupProperties() {
+        // current implementation is not required, this is only used for compatibility with the previous usage
+        if (authorization.size() > 0 || isResourceServer()) {
+            return;
+        }
+
         if (this.sessionStateless) {
             if (allowedGroupsConfigured()) {
                 LOGGER.warn("Group names are not supported if you set 'sessionSateless' to 'true'.");
@@ -236,6 +242,18 @@ public class AADAuthenticationProperties {
             throw new IllegalArgumentException("One of the User Group Properties must be populated. "
                 + "Please populate azure.activedirectory.user-group.allowed-groups");
         }
+    }
+
+    public boolean isResourceServer() {
+        return ClassUtils.isPresent(
+            "org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken",
+            this.getClass().getClassLoader());
+    }
+
+    public boolean isWebApplication() {
+        return ClassUtils.isPresent(
+            "org.springframework.security.oauth2.client.registration.ClientRegistrationRepository",
+            this.getClass().getClassLoader());
     }
 
     public UserGroupProperties getUserGroup() {

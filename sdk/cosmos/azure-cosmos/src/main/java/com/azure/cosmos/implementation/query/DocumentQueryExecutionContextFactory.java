@@ -140,7 +140,7 @@ public class DocumentQueryExecutionContextFactory {
             correlatedActivityId,
             isContinuationExpected);
 
-        if (ResourceType.Document != resourceTypeEnum) {
+        if ((ResourceType.Document != resourceTypeEnum && (ResourceType.Conflict != resourceTypeEnum))) {
             return Flux.just(queryExecutionContext);
         }
 

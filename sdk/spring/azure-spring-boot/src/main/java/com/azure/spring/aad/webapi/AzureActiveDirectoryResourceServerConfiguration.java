@@ -12,6 +12,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,11 +31,12 @@ import org.springframework.util.StringUtils;
 /**
  * <p>
  * The configuration will not be activated if no {@link BearerTokenAuthenticationToken} class provided.
- * <p>
+ * </p>
  * By default, creating a JwtDecoder through JwkKeySetUri will be auto-configured.
  */
 @Configuration(proxyBeanMethods = false)
-@EnableConfigurationProperties({AADAuthenticationProperties.class})
+@ConditionalOnResource(resources = "classpath:aad.enable.config")
+@EnableConfigurationProperties({ AADAuthenticationProperties.class })
 @ConditionalOnClass(BearerTokenAuthenticationToken.class)
 public class AzureActiveDirectoryResourceServerConfiguration {
 
@@ -48,10 +50,7 @@ public class AzureActiveDirectoryResourceServerConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean(JwtDecoder.class)
-    public JwtDecoder jwtDecoderByJwkKeySetUri() {
-        if (StringUtils.isEmpty(aadAuthenticationProperties.getTenantId())) {
-            aadAuthenticationProperties.setTenantId("common");
-        }
+    public JwtDecoder jwtDecoder() {
         AuthorizationServerEndpoints identityEndpoints = new AuthorizationServerEndpoints(
             aadAuthenticationProperties.getAuthorizationServerUri());
         NimbusJwtDecoder nimbusJwtDecoder = NimbusJwtDecoder
