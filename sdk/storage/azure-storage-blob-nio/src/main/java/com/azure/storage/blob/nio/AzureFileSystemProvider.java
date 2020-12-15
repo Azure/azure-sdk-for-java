@@ -812,11 +812,12 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         try {
             readAttributes(path, BasicFileAttributes.class);
         } catch (IOException e) {
-            if (e.getCause() != null && e.getCause() instanceof BlobStorageException
-                && BlobErrorCode.BLOB_NOT_FOUND.equals(((BlobStorageException) e.getCause()).getErrorCode())) {
+            Throwable cause = e.getCause();
+            if (cause instanceof BlobStorageException
+                && BlobErrorCode.BLOB_NOT_FOUND.equals(((BlobStorageException) cause).getErrorCode())) {
                 throw LoggingUtility.logError(logger, new NoSuchFileException(path.toString()));
             } else {
-                throw LoggingUtility.logError(logger, e);
+                throw e;
             }
         }
     }
