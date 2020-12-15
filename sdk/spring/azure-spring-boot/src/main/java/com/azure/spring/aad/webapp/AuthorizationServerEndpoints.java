@@ -30,7 +30,7 @@ public class AuthorizationServerEndpoints {
         this.baseUri = addSlash(baseUri);
     }
 
-    public String getBaseUri(){
+    public String getBaseUri() {
         return this.baseUri;
     }
 
