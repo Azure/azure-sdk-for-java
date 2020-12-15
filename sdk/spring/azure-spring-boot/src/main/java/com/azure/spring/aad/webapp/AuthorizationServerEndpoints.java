@@ -30,6 +30,10 @@ public class AuthorizationServerEndpoints {
         this.baseUri = addSlash(baseUri);
     }
 
+    public String getBaseUri() {
+        return this.baseUri;
+    }
+
     private String addSlash(String uri) {
         return uri.endsWith("/") ? uri : uri + "/";
     }
