@@ -269,7 +269,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     @Override
     public SeekableByteChannel newByteChannel(Path path, Set<? extends OpenOption> set,
             FileAttribute<?>... fileAttributes) throws IOException {
-        throw new UnsupportedOperationException();
+        throw LoggingUtility.logError(logger, new UnsupportedOperationException());
     }
 
     /**
@@ -367,7 +367,8 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
             StandardOpenOption.TRUNCATE_EXISTING);
         for (OpenOption option : optionsList) {
             if (!supportedOptions.contains(option)) {
-                throw new UnsupportedOperationException("Unsupported option: " + option.toString());
+                throw LoggingUtility.logError(logger, new UnsupportedOperationException("Unsupported option: "
+                    + option.toString()));
             }
         }
 
@@ -744,7 +745,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      */
     @Override
     public void move(Path path, Path path1, CopyOption... copyOptions) throws IOException {
-        throw new UnsupportedOperationException();
+        throw LoggingUtility.logError(logger, new UnsupportedOperationException());
     }
 
     /**
@@ -756,7 +757,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      */
     @Override
     public boolean isSameFile(Path path, Path path1) throws IOException {
-        throw new UnsupportedOperationException();
+        throw LoggingUtility.logError(logger, new UnsupportedOperationException());
     }
 
     /**
@@ -783,7 +784,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      */
     @Override
     public FileStore getFileStore(Path path) throws IOException {
-        throw new UnsupportedOperationException();
+        throw LoggingUtility.logError(logger, new UnsupportedOperationException());
     }
 
     /**
@@ -826,7 +827,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
                 && BlobErrorCode.BLOB_NOT_FOUND.equals(((BlobStorageException) cause).getErrorCode())) {
                 throw LoggingUtility.logError(logger, new NoSuchFileException(path.toString()));
             } else {
-                throw e;
+                throw LoggingUtility.logError(logger, e);
             }
         }
     }
@@ -888,7 +889,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         } else if (type == AzureBlobFileAttributes.class) {
             view = AzureBlobFileAttributeView.class;
         } else {
-            throw new UnsupportedOperationException();
+            throw LoggingUtility.logError(logger, new UnsupportedOperationException());
         }
 
         /*
