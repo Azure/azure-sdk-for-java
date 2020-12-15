@@ -10,6 +10,7 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.AzureException;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
@@ -209,6 +210,17 @@ public class EventProcessorClientBuilder {
      */
     public EventProcessorClientBuilder retry(AmqpRetryOptions retryOptions) {
         eventHubClientBuilder.retry(retryOptions);
+        return this;
+    }
+
+    /**
+     * Sets the client options for the processor client.
+     *
+     * @param clientOptions The client options.
+     * @return The updated {@link EventProcessorClientBuilder} object.
+     */
+    public EventProcessorClientBuilder clientOptions(ClientOptions clientOptions) {
+        eventHubClientBuilder.clientOptions(clientOptions);
         return this;
     }
 
