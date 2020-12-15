@@ -20,6 +20,8 @@ import com.azure.storage.file.datalake.models.FileSystemItem;
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
+import com.azure.storage.file.datalake.options.FileSystemRenameOptions;
+import com.azure.storage.file.datalake.options.FileSystemUndeleteOptions;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -269,5 +271,91 @@ public class DataLakeServiceClient {
      */
     public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues) {
         return dataLakeServiceAsyncClient.generateAccountSas(accountSasSignatureValues);
+    }
+
+    /**
+     * Restores a previously deleted file system.
+     * If the file system associated with provided <code>deletedFileSystemName</code>
+     * already exists, this call will result in a 409 (conflict).
+     * This API is only functional if Container Soft Delete is enabled
+     * for the storage account associated with the file system.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.undeleteFileSystem#String-String}
+     *
+     * @param deletedFileSystemName The name of the previously deleted file system.
+     * @param deletedFileSystemVersion The version of the previously deleted file system.
+     * @return The {@link DataLakeFileSystemClient} used to interact with the restored file system.
+     */
+    public DataLakeFileSystemClient undeleteFileSystem(String deletedFileSystemName, String deletedFileSystemVersion) {
+        return this.undeleteFileSystemWithResponse(
+            new FileSystemUndeleteOptions(deletedFileSystemName, deletedFileSystemVersion), null,
+            Context.NONE).getValue();
+    }
+
+    /**
+     * Restores a previously deleted file system. The restored file system
+     * will be renamed to the <code>destinationFileSystemName</code> if provided in <code>options</code>.
+     * Otherwise <code>deletedFileSystemName</code> is used as destination file system name.
+     * If the file system associated with provided <code>destinationFileSYstemName</code>
+     * already exists, this call will result in a 409 (conflict).
+     * This API is only functional if Container Soft Delete is enabled
+     * for the storage account associated with the file system.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.undeleteFileSystemWithResponse#FileSystemUndeleteOptions-Duration-Context}
+     *
+     * @param options {@link FileSystemUndeleteOptions}.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link DataLakeFileSystemClient} used
+     * to interact with the restored file system.
+     */
+    public Response<DataLakeFileSystemClient> undeleteFileSystemWithResponse(
+        FileSystemUndeleteOptions options, Duration timeout, Context context) {
+        return DataLakeImplUtils.returnOrConvertException(() -> {
+            Response<com.azure.storage.blob.BlobContainerClient> response = blobServiceClient
+                .undeleteBlobContainerWithResponse(Transforms.toBlobContainerUndeleteOptions(options), timeout,
+                    context);
+            return new SimpleResponse<>(response, getFileSystemClient(response.getValue().getBlobContainerName()));
+        }, logger);
+    }
+
+    /**
+     * Renames an existing file system.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.renameFileSystem#String-String}
+     *
+     * @param destinationFileSystemName The new name of the file system.
+     * @param sourceFileSystemName The current name of the file system.
+     * @return A {@link DataLakeFileSystemClient} used to interact with the renamed file system.
+     */
+    public DataLakeFileSystemClient renameFileSystem(String destinationFileSystemName, String sourceFileSystemName) {
+        return this.renameFileSystemWithResponse(new FileSystemRenameOptions(destinationFileSystemName,
+            sourceFileSystemName), null, Context.NONE).getValue();
+    }
+
+    /**
+     * Renames an existing file system.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.renameFileSystemWithResponse#FileSystemRenameOptions-Duration-Context}
+     *
+     * @param options {@link FileSystemRenameOptions}
+     * @return A {@link Response} whose {@link Response#getValue() value} contains a
+     * {@link DataLakeFileSystemClient} used to interact with the renamed file system.
+     */
+    public Response<DataLakeFileSystemClient> renameFileSystemWithResponse(FileSystemRenameOptions options,
+        Duration timeout, Context context) {
+        return DataLakeImplUtils.returnOrConvertException(() -> {
+            Response<com.azure.storage.blob.BlobContainerClient> response = blobServiceClient
+                .renameBlobContainerWithResponse(Transforms.toBlobContainerRenameOptions(options), timeout, context);
+            return new SimpleResponse<>(response, getFileSystemClient(options.getDestinationFileSystemName()));
+        }, logger);
     }
 }

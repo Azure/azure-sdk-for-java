@@ -12,6 +12,7 @@ import com.azure.storage.blob.models.BlobContainerItem
 import com.azure.storage.blob.models.BlobContainerListDetails
 import com.azure.storage.blob.models.BlobCorsRule
 import com.azure.storage.blob.models.BlobMetrics
+import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobRetentionPolicy
 import com.azure.storage.blob.models.BlobServiceProperties
 import com.azure.storage.blob.models.BlobStorageException
@@ -20,6 +21,7 @@ import com.azure.storage.blob.models.ListBlobContainersOptions
 import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.models.StaticWebsite
 import com.azure.storage.blob.options.BlobParallelUploadOptions
+import com.azure.storage.blob.options.ContainerRenameOptions
 import com.azure.storage.blob.options.FindBlobsOptions
 import com.azure.storage.blob.options.UndeleteBlobContainerOptions
 import com.azure.storage.common.policy.RequestRetryOptions
@@ -969,5 +971,110 @@ class ServiceAPITest extends APISpec {
         then:
         notThrown(BlobStorageException)
         response.getHeaders().getValue("x-ms-version") == "2017-11-09"
+    }
+
+    def "Rename blob container"() {
+        setup:
+        def oldName = generateContainerName()
+        def newName = generateContainerName()
+        primaryBlobServiceClient.createBlobContainer(oldName)
+
+        when:
+        def renamedContainer = primaryBlobServiceClient.renameBlobContainer(newName, oldName)
+
+        then:
+        renamedContainer.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
+
+        cleanup:
+        renamedContainer.delete()
+    }
+
+    def "Rename blob container sas"() {
+        setup:
+        def oldName = generateContainerName()
+        def newName = generateContainerName()
+        primaryBlobServiceClient.createBlobContainer(oldName)
+        def sas = primaryBlobServiceClient.generateAccountSas(new AccountSasSignatureValues(getUTCNow().plusHours(1), AccountSasPermission.parse("rwdxlacuptf"), AccountSasService.parse("b"), AccountSasResourceType.parse("c")))
+        def serviceClient = new BlobServiceClientBuilder().endpoint(primaryBlobServiceClient.getAccountUrl() + "?" + sas).buildClient()
+
+        when:
+        def renamedContainer = serviceClient.renameBlobContainer(newName, oldName)
+
+        then:
+        renamedContainer.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
+
+        cleanup:
+        renamedContainer.delete()
+    }
+
+    @Unroll
+    def "Rename blob container AC"() {
+        setup:
+        leaseID = setupContainerLeaseCondition(cc, leaseID)
+        def cac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+
+        expect:
+        primaryBlobServiceClient.renameBlobContainerWithResponse(
+            new ContainerRenameOptions(generateContainerName(), cc.getBlobContainerName()).setRequestConditions(cac),
+            null, null).getStatusCode() == 200
+
+        where:
+        leaseID         || _
+        null            || _
+        receivedLeaseID || _
+    }
+
+    @Unroll
+    def "Rename blob container AC fail"() {
+        setup:
+        def cac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+
+        when:
+        primaryBlobServiceClient.renameBlobContainerWithResponse(
+            new ContainerRenameOptions(generateContainerName(), cc.getBlobContainerName()).setRequestConditions(cac),
+            null, null)
+
+        then:
+        thrown(BlobStorageException)
+
+        where:
+        leaseID         || _
+        garbageLeaseID  || _
+    }
+
+    @Unroll
+    def "Rename blob container AC illegal"() {
+        setup:
+        def ac = new BlobRequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch).setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified).setTagsConditions(tags)
+
+        when:
+        primaryBlobServiceClient.renameBlobContainerWithResponse(
+            new ContainerRenameOptions(generateContainerName(), cc.getBlobContainerName()).setRequestConditions(ac),
+            null, null)
+
+        then:
+        thrown(UnsupportedOperationException)
+
+        where:
+        modified | unmodified | match        | noneMatch    | tags
+        oldDate  | null       | null         | null         | null
+        null     | newDate    | null         | null         | null
+        null     | null       | receivedEtag | null         | null
+        null     | null       | null         | garbageEtag  | null
+        null     | null       | null         | null         | "tags"
+    }
+
+    def "Rename blob container error"() {
+        setup:
+        def oldName = generateContainerName()
+        def newName = generateContainerName()
+
+        when:
+        primaryBlobServiceClient.renameBlobContainer(newName, oldName)
+
+        then:
+        thrown(BlobStorageException)
     }
 }

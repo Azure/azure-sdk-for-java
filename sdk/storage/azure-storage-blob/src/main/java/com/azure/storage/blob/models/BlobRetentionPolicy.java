@@ -28,6 +28,12 @@ public final class BlobRetentionPolicy {
     @JsonProperty(value = "Days")
     private Integer days;
 
+    /*
+     * Indicates whether permanent delete is allowed on this storage account.
+     */
+    @JsonProperty(value = "AllowPermanentDelete")
+    private Boolean allowPermanentDelete;
+
     /**
      * Get the enabled property: Indicates whether a retention policy is
      * enabled for the storage service.
@@ -71,6 +77,28 @@ public final class BlobRetentionPolicy {
      */
     public BlobRetentionPolicy setDays(Integer days) {
         this.days = days;
+        return this;
+    }
+
+    /**
+     * Get the allowPermanentDelete property: Indicates whether permanent
+     * delete is allowed on this storage account.
+     *
+     * @return the allowPermanentDelete value.
+     */
+    public Boolean isAllowPermanentDelete() {
+        return this.allowPermanentDelete;
+    }
+
+    /**
+     * Set the allowPermanentDelete property: Indicates whether permanent
+     * delete is allowed on this storage account.
+     *
+     * @param allowPermanentDelete the allowPermanentDelete value to set.
+     * @return the BlobRetentionPolicy object itself.
+     */
+    public BlobRetentionPolicy setAllowPermanentDelete(Boolean allowPermanentDelete) {
+        this.allowPermanentDelete = allowPermanentDelete;
         return this;
     }
 }

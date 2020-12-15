@@ -28,6 +28,8 @@ import com.azure.storage.file.datalake.models.FileSystemItem;
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
+import com.azure.storage.file.datalake.options.FileSystemRenameOptions;
+import com.azure.storage.file.datalake.options.FileSystemUndeleteOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -38,6 +40,7 @@ import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
+import static com.azure.core.util.FluxUtil.withContext;
 
 /**
  * Client to a storage account. It may only be instantiated through a {@link DataLakeServiceClientBuilder}. This class
@@ -373,4 +376,97 @@ public class DataLakeServiceAsyncClient {
         return blobServiceAsyncClient.generateAccountSas(accountSasSignatureValues);
     }
 
+    /**
+     * Restores a previously deleted file system.
+     * If the file system associated with provided <code>deletedFileSystemName</code>
+     * already exists, this call will result in a 409 (conflict).
+     * This API is only functional if Container Soft Delete is enabled
+     * for the storage account associated with the file system.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceAsyncClient.undeleteFileSystem#String-String}
+     *
+     * @param deletedFileSystemName The name of the previously deleted file system.
+     * @param deletedFileSystemVersion The version of the previously deleted file system.
+     * @return A {@link Mono} containing a {@link DataLakeFileSystemAsyncClient} used
+     * to interact with the restored file system.
+     */
+    public Mono<DataLakeFileSystemAsyncClient> undeleteFileSystem(
+        String deletedFileSystemName, String deletedFileSystemVersion) {
+        return this.undeleteFileSystemWithResponse(new FileSystemUndeleteOptions(deletedFileSystemName,
+            deletedFileSystemVersion)
+        ).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Restores a previously deleted file system. The restored file system
+     * will be renamed to the <code>destinationFileSystemName</code> if provided in <code>options</code>.
+     * Otherwise <code>deletedFileSystemName</code> is used as he destination file system name.
+     * If the file system associated with provided <code>destinationFileSystemName</code>
+     * already exists, this call will result in a 409 (conflict).
+     * This API is only functional if Container Soft Delete is enabled  for the storage account associated with the
+     * file system.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceAsyncClient.undeleteFileSystemWithResponse#FileSystemUndeleteOptions}
+     *
+     * @param options {@link FileSystemUndeleteOptions}.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
+     * DataLakeFileSystemAsyncClient} used to interact with the restored file system.
+     */
+    public Mono<Response<DataLakeFileSystemAsyncClient>> undeleteFileSystemWithResponse(
+        FileSystemUndeleteOptions options) {
+        try {
+            return blobServiceAsyncClient.undeleteBlobContainerWithResponse(
+                Transforms.toBlobContainerUndeleteOptions(options))
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
+                .map(response -> new SimpleResponse<>(response, getFileSystemAsyncClient(response.getValue()
+                    .getBlobContainerName())));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Renames an existing file system.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceAsyncClient.renameFileSystem#String-String}
+     *
+     * @param destinationFileSystemName The new name of the file system.
+     * @param sourceFileSystemName The current name of the file system.
+     * @return A {@link Mono} containing a {@link DataLakeFileSystemAsyncClient} used to interact with the renamed file
+     * system.
+     */
+    public Mono<DataLakeFileSystemAsyncClient> renameFileSystem(String destinationFileSystemName,
+        String sourceFileSystemName) {
+        return this.renameFileSystemWithResponse(new FileSystemRenameOptions(destinationFileSystemName,
+            sourceFileSystemName)).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Renames an existing file system.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceAsyncClient.renameFileSystemWithResponse#FileSystemRenameOptions}
+     *
+     * @param options {@link FileSystemRenameOptions}
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a
+     * {@link DataLakeFileSystemAsyncClient} used to interact with the renamed file system.
+     */
+    public Mono<Response<DataLakeFileSystemAsyncClient>> renameFileSystemWithResponse(FileSystemRenameOptions options) {
+        try {
+            return blobServiceAsyncClient.renameBlobContainerWithResponse(
+                Transforms.toBlobContainerRenameOptions(options))
+                .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
+                .map(response -> new SimpleResponse<>(response,
+                        this.getFileSystemAsyncClient(options.getDestinationFileSystemName())));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
 }

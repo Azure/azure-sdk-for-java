@@ -37,6 +37,7 @@ import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.options.ContainerRenameOptions;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
@@ -1084,5 +1085,31 @@ public final class BlobContainerAsyncClient {
             return true;
         }
         return modifiedRequestConditions.getIfMatch() == null && modifiedRequestConditions.getIfNoneMatch() == null;
+    }
+
+    private boolean validateNoTime(BlobRequestConditions modifiedRequestConditions) {
+        if (modifiedRequestConditions == null) {
+            return true;
+        }
+        return modifiedRequestConditions.getIfModifiedSince() == null
+            && modifiedRequestConditions.getIfUnmodifiedSince() == null;
+    }
+
+    Mono<Response<BlobContainerAsyncClient>> renameWithResponse(ContainerRenameOptions options, Context context) {
+        StorageImplUtils.assertNotNull("options", options);
+        BlobRequestConditions requestConditions = options.getRequestConditions() == null ? new BlobRequestConditions()
+            : options.getRequestConditions();
+        context = context == null ? Context.NONE : context;
+
+        if (!validateNoETag(requestConditions) || !validateNoTime(requestConditions)
+            || requestConditions.getTagsConditions() != null) {
+            throw logger.logExceptionAsError(new UnsupportedOperationException(
+                "Lease-Id is the only HTTP access condition supported for this API"));
+        }
+
+        return this.azureBlobStorage.containers().renameWithRestResponseAsync(null,
+            options.getSourceContainerName(), null, null, requestConditions.getLeaseId(),
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            .map(response -> new SimpleResponse<>(response, this));
     }
 }

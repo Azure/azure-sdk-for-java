@@ -1,0 +1,270 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsrestorefilesystem0serviceapitestrestorefilesystemfcb644359?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-04-08",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.10.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "99e75743-a15e-47e7-b0e6-8dc3400537dd"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-04-08",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D8A1542FBDC41B",
+      "Last-Modified" : "Tue, 15 Dec 2020 23:50:22 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "1e564bb4-b01e-0049-063d-d39fff000000",
+      "Date" : "Tue, 15 Dec 2020 23:50:21 GMT",
+      "x-ms-client-request-id" : "99e75743-a15e-47e7-b0e6-8dc3400537dd"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsrestorefilesystem1serviceapitestrestorefilesystemfcb15207d?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-04-08",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.10.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "889d3a33-994f-4da2-8a90-20263ecebac1"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-04-08",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D8A1542FF95164",
+      "Last-Modified" : "Tue, 15 Dec 2020 23:50:22 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "1e564bc8-b01e-0049-143d-d39fff000000",
+      "Date" : "Tue, 15 Dec 2020 23:50:21 GMT",
+      "x-ms-client-request-id" : "889d3a33-994f-4da2-8a90-20263ecebac1"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsrestorefilesystem1serviceapitestrestorefilesystemfcb15207d/javapathrestorefilesystem20260998ea2efc5458459e?resource=file",
+    "Headers" : {
+      "x-ms-version" : "2020-04-08",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.4.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "da03f8b1-1644-4935-b3dd-410616f41cb1"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-04-08",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D8A1543056D37D",
+      "Last-Modified" : "Tue, 15 Dec 2020 23:50:23 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "fdfe4ccc-b01f-0049-413d-d39fff000000",
+      "Date" : "Tue, 15 Dec 2020 23:50:22 GMT",
+      "x-ms-client-request-id" : "da03f8b1-1644-4935-b3dd-410616f41cb1"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsrestorefilesystem1serviceapitestrestorefilesystemfcb15207d/javapathrestorefilesystem20260998ea2efc5458459e?position=0&action=append",
+    "Headers" : {
+      "x-ms-version" : "2020-04-08",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.4.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8c7ffd6d-5784-457d-9c84-a0e292b41624",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-04-08",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-server-encrypted" : "true",
+      "x-ms-request-id" : "fdfe4ccd-b01f-0049-423d-d39fff000000",
+      "Date" : "Tue, 15 Dec 2020 23:50:22 GMT",
+      "x-ms-client-request-id" : "8c7ffd6d-5784-457d-9c84-a0e292b41624"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsrestorefilesystem1serviceapitestrestorefilesystemfcb15207d/javapathrestorefilesystem20260998ea2efc5458459e?position=7&retainUncommittedData=false&close=false&action=flush",
+    "Headers" : {
+      "x-ms-version" : "2020-04-08",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.4.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ae86aa8c-24e7-4399-b6ea-cbc576b38796"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-04-08",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D8A15430843741",
+      "Last-Modified" : "Tue, 15 Dec 2020 23:50:23 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-server-encrypted" : "false",
+      "x-ms-request-id" : "fdfe4cce-b01f-0049-433d-d39fff000000",
+      "Date" : "Tue, 15 Dec 2020 23:50:22 GMT",
+      "x-ms-client-request-id" : "ae86aa8c-24e7-4399-b6ea-cbc576b38796"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsrestorefilesystem1serviceapitestrestorefilesystemfcb15207d?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-04-08",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.10.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9c39192d-e905-4e95-8162-bb023985fa2e"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-04-08",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "1e564c21-b01e-0049-603d-d39fff000000",
+      "Date" : "Tue, 15 Dec 2020 23:50:22 GMT",
+      "x-ms-client-request-id" : "9c39192d-e905-4e95-8162-bb023985fa2e"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.blob.core.windows.net?prefix=jtfsrestorefilesystem1serviceapitestrestorefilesystemfcb15207d&include=deleted&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2020-04-08",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.10.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c5ce36c4-101c-40ba-b652-c5d44130e8bc"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-04-08",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "1e564c31-b01e-0049-6e3d-d39fff000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://gapracontainerrestorehns.blob.core.windows.net/\"><Prefix>jtfsrestorefilesystem1serviceapitestrestorefilesystemfcb15207d</Prefix><Containers><Container><Name>jtfsrestorefilesystem1serviceapitestrestorefilesystemfcb15207d</Name><Deleted>true</Deleted><Version>01D6D33D0D82F500</Version><Properties><Last-Modified>Tue, 15 Dec 2020 23:50:22 GMT</Last-Modified><Etag>\"0x8D8A1542FF95164\"</Etag><LeaseStatus>locked</LeaseStatus><LeaseState>leased</LeaseState><LeaseDuration>fixed</LeaseDuration><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold><DeletedTime>Tue, 15 Dec 2020 23:50:23 GMT</DeletedTime><RemainingRetentionDays>7</RemainingRetentionDays></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Tue, 15 Dec 2020 23:50:22 GMT",
+      "x-ms-client-request-id" : "c5ce36c4-101c-40ba-b652-c5d44130e8bc",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsrestorefilesystem1serviceapitestrestorefilesystemfcb15207d?restype=container&comp=undelete",
+    "Headers" : {
+      "x-ms-version" : "2020-04-08",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.10.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "823188e6-e5d6-4ee3-a705-ef9499238afe"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-04-08",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "1e565da2-b01e-0049-763d-d39fff000000",
+      "Date" : "Tue, 15 Dec 2020 23:50:54 GMT",
+      "x-ms-client-request-id" : "823188e6-e5d6-4ee3-a705-ef9499238afe"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsrestorefilesystem1serviceapitestrestorefilesystemfcb15207d?recursive=false&upn=false&resource=filesystem",
+    "Headers" : {
+      "x-ms-version" : "2020-04-08",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.4.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "bb7b7a06-ecae-4afd-9f65-cc593ad750b0"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-04-08",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "cc5ba840-a01f-0055-6a3d-d3cd9f000000",
+      "Body" : "{\"paths\":[{\"contentLength\":\"7\",\"creationTime\":\"132525498233246589\",\"etag\":\"0x8D8A15430843741\",\"group\":\"$superuser\",\"lastModified\":\"Tue, 15 Dec 2020 23:50:23 GMT\",\"name\":\"javapathrestorefilesystem20260998ea2efc5458459e\",\"owner\":\"$superuser\",\"permissions\":\"rw-r-----\"}]}\n",
+      "Date" : "Tue, 15 Dec 2020 23:50:54 GMT",
+      "x-ms-client-request-id" : "bb7b7a06-ecae-4afd-9f65-cc593ad750b0",
+      "Content-Type" : "application/json;charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsrestorefilesystem1serviceapitestrestorefilesystemfcb15207d?recursive=false&upn=false&resource=filesystem",
+    "Headers" : {
+      "x-ms-version" : "2020-04-08",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.4.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f0677bc8-2671-4264-ac08-66656868d3ad"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-04-08",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "cc5ba850-a01f-0055-7a3d-d3cd9f000000",
+      "Body" : "{\"paths\":[{\"contentLength\":\"7\",\"creationTime\":\"132525498233246589\",\"etag\":\"0x8D8A15430843741\",\"group\":\"$superuser\",\"lastModified\":\"Tue, 15 Dec 2020 23:50:23 GMT\",\"name\":\"javapathrestorefilesystem20260998ea2efc5458459e\",\"owner\":\"$superuser\",\"permissions\":\"rw-r-----\"}]}\n",
+      "Date" : "Tue, 15 Dec 2020 23:50:54 GMT",
+      "x-ms-client-request-id" : "f0677bc8-2671-4264-ac08-66656868d3ad",
+      "Content-Type" : "application/json;charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.blob.core.windows.net?prefix=jtfsrestorefilesystem&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2020-04-08",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.10.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7936f105-165d-4a20-9605-e9933de7fe81"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-04-08",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "1e565df9-b01e-0049-4a3d-d39fff000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://gapracontainerrestorehns.blob.core.windows.net/\"><Prefix>jtfsrestorefilesystem</Prefix><Containers><Container><Name>jtfsrestorefilesystem0serviceapitestrestorefilesystemfcb644359</Name><Properties><Last-Modified>Tue, 15 Dec 2020 23:50:22 GMT</Last-Modified><Etag>\"0x8D8A1542FBDC41B\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container><Container><Name>jtfsrestorefilesystem1serviceapitestrestorefilesystemfcb15207d</Name><Properties><Last-Modified>Tue, 15 Dec 2020 23:50:54 GMT</Last-Modified><Etag>\"0x8D8A15442CDC7DA\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Tue, 15 Dec 2020 23:50:54 GMT",
+      "x-ms-client-request-id" : "7936f105-165d-4a20-9605-e9933de7fe81",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsrestorefilesystem0serviceapitestrestorefilesystemfcb644359?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-04-08",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.10.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "caa10fbe-6197-439c-96b5-7c7648630c44"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-04-08",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "1e565e05-b01e-0049-553d-d39fff000000",
+      "Date" : "Tue, 15 Dec 2020 23:50:54 GMT",
+      "x-ms-client-request-id" : "caa10fbe-6197-439c-96b5-7c7648630c44"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsrestorefilesystem1serviceapitestrestorefilesystemfcb15207d?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-04-08",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.10.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f5f8f8bc-d718-4c7c-b71e-df1be0291483"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-04-08",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "1e565e26-b01e-0049-6e3d-d39fff000000",
+      "Date" : "Tue, 15 Dec 2020 23:50:54 GMT",
+      "x-ms-client-request-id" : "f5f8f8bc-d718-4c7c-b71e-df1be0291483"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "jtfsrestorefilesystem0serviceapitestrestorefilesystemfcb644359", "jtfsrestorefilesystem1serviceapitestrestorefilesystemfcb15207d", "javapathrestorefilesystem20260998ea2efc5458459e" ]
+}

@@ -19,6 +19,7 @@ import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.util.ModelHelper;
+import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.TaggedBlobItem;
 import com.azure.storage.blob.implementation.models.ServiceGetAccountInfoHeaders;
 import com.azure.storage.blob.implementation.models.ServicesListBlobContainersSegmentResponse;
@@ -30,6 +31,7 @@ import com.azure.storage.blob.models.BlobRetentionPolicy;
 import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.BlobServiceStatistics;
 import com.azure.storage.blob.models.CpkInfo;
+import com.azure.storage.blob.options.ContainerRenameOptions;
 import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.models.KeyInfo;
 import com.azure.storage.blob.models.ListBlobContainersIncludeType;
@@ -830,7 +832,6 @@ public final class BlobServiceAsyncClient {
         }
     }
 
-    /* TODO (gapra-msft) : REST Docs */
     /**
      * Restores a previously deleted container.
      * If the container associated with provided <code>deletedContainerName</code>
@@ -893,5 +894,48 @@ public final class BlobServiceAsyncClient {
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response,
                 getBlobContainerAsyncClient(finalDestinationContainerName)));
+    }
+
+    /**
+     * Renames an existing blob container.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.renameBlobContainer#String-String}
+     *
+     * @param destinationContainerName The new name of the container.
+     * @param sourceContainerName The current name of the container.
+     * @return A {@link Mono} containing a {@link BlobContainerAsyncClient} used to interact with the renamed container.
+     */
+    public Mono<BlobContainerAsyncClient> renameBlobContainer(String destinationContainerName,
+        String sourceContainerName) {
+        return renameBlobContainerWithResponse(new ContainerRenameOptions(destinationContainerName,
+            sourceContainerName)).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Renames an existing blob container.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.renameBlobContainerWithResponse#ContainerRenameOptions}
+     *
+     * @param options {@link ContainerRenameOptions}
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a
+     * {@link BlobContainerAsyncClient} used to interact with the renamed container.
+     */
+    public Mono<Response<BlobContainerAsyncClient>> renameBlobContainerWithResponse(ContainerRenameOptions options) {
+        try {
+            return withContext(context -> renameBlobContainerWithResponse(options, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<BlobContainerAsyncClient>> renameBlobContainerWithResponse(ContainerRenameOptions options,
+        Context context) {
+        BlobContainerAsyncClient destinationContainerClient = getBlobContainerAsyncClient(
+            options.getDestinationContainerName());
+        return destinationContainerClient.renameWithResponse(options, context);
     }
 }

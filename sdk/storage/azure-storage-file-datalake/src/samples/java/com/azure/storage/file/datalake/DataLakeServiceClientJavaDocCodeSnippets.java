@@ -12,6 +12,8 @@ import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.FileSystemListDetails;
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
 import com.azure.storage.file.datalake.models.PublicAccessType;
+import com.azure.storage.file.datalake.options.FileSystemRenameOptions;
+import com.azure.storage.file.datalake.options.FileSystemUndeleteOptions;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -145,5 +147,63 @@ public class DataLakeServiceClientJavaDocCodeSnippets {
         String sas = client.generateAccountSas(sasValues);
         // END: com.azure.storage.file.datalake.DataLakeServiceClient.generateAccountSas#AccountSasSignatureValues
     }
+    /**
+     * Code snippet for {@link DataLakeServiceClient#undeleteFileSystem(String, String)}
+     */
+    public void undeleteFileSystem() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeServiceClient.undeleteFileSystem#String-String
+        ListFileSystemsOptions listFileSystemsOptions = new ListFileSystemsOptions();
+        listFileSystemsOptions.getDetails().setRetrieveDeleted(true);
+        client.listFileSystems(listFileSystemsOptions, null).forEach(
+            deletedFileSystem -> {
+                DataLakeFileSystemClient fileSystemClient = client.undeleteFileSystem(
+                    deletedFileSystem.getName(), deletedFileSystem.getVersion());
+            }
+        );
+        // END: com.azure.storage.file.datalake.DataLakeServiceClient.undeleteFileSystem#String-String
+    }
+
+    /**
+     * Code snippet for {@link DataLakeServiceClient#undeleteFileSystemWithResponse(FileSystemUndeleteOptions, Duration, Context)}
+     */
+    public void undeleteFileSystemWithResponse() {
+        Context context = new Context("Key", "Value");
+        // BEGIN: com.azure.storage.file.datalake.DataLakeServiceClient.undeleteFileSystemWithResponse#FileSystemUndeleteOptions-Duration-Context
+        ListFileSystemsOptions listFileSystemsOptions = new ListFileSystemsOptions();
+        listFileSystemsOptions.getDetails().setRetrieveDeleted(true);
+        client.listFileSystems(listFileSystemsOptions, null).forEach(
+            deletedFileSystem -> {
+                DataLakeFileSystemClient fileSystemClient = client.undeleteFileSystemWithResponse(
+                    new FileSystemUndeleteOptions(deletedFileSystem.getName(), deletedFileSystem.getVersion())
+                        .setDestinationFileSystemName(deletedFileSystem.getName() + "V2"), timeout,
+                    context).getValue();
+            }
+        );
+        // END: com.azure.storage.file.datalake.DataLakeServiceClient.undeleteFileSystemWithResponse#FileSystemUndeleteOptions-Duration-Context
+    }
+
+    /**
+     * Code snippet for {@link DataLakeServiceClient#renameFileSystem(String, String)}
+     */
+    public void renameFileSystem() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeServiceClient.renameFileSystem#String-String
+        DataLakeFileSystemClient fileSystemClient = client.renameFileSystem("newFileSystemName", "oldFileSystemName");
+        // END: com.azure.storage.file.datalake.DataLakeServiceClient.renameFileSystem#String-String
+    }
+
+    /**
+     * Code snippet for {@link DataLakeServiceClient#renameFileSystemWithResponse(FileSystemRenameOptions, Duration, Context)}
+     */
+    public void renameContainerWithResponse() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeServiceClient.renameFileSystemWithResponse#FileSystemRenameOptions-Duration-Context
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions().setLeaseId("lease-id");
+        Context context = new Context("Key", "Value");
+
+        DataLakeFileSystemClient fileSystemClient = client.renameFileSystemWithResponse(
+            new FileSystemRenameOptions("newFileSystemName", "oldFileSystemName")
+                .setRequestConditions(requestConditions), Duration.ofSeconds(1), context).getValue();
+        // END: com.azure.storage.file.datalake.DataLakeServiceClient.renameFileSystemWithResponse#FileSystemRenameOptions-Duration-Context
+    }
+
 
 }

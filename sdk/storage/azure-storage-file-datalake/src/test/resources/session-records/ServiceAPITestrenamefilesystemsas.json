@@ -1,0 +1,86 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.preprod.core.windows.net/jtfsrenamefilesystemsas0493192b94c15dea28423f9?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.10.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7f47b381-3ba1-4d7c-a493-8979c3e7c789"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D8A14DB822A7CF",
+      "Last-Modified" : "Tue, 15 Dec 2020 23:04:04 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "d1b035d6-801e-0016-5836-d320d7000000",
+      "Date" : "Tue, 15 Dec 2020 23:04:04 GMT",
+      "x-ms-client-request-id" : "7f47b381-3ba1-4d7c-a493-8979c3e7c789"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.preprod.core.windows.net/jtfsrenamefilesystemsas122218d95c2023c33342879?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.10.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "3cff226d-1b0f-45ff-a77b-01521b5d733d"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D8A14DB84B1EB8",
+      "Last-Modified" : "Tue, 15 Dec 2020 23:04:04 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "d1b035da-801e-0016-5936-d320d7000000",
+      "Date" : "Tue, 15 Dec 2020 23:04:04 GMT",
+      "x-ms-client-request-id" : "3cff226d-1b0f-45ff-a77b-01521b5d733d"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.blob.preprod.core.windows.net?prefix=jtfsrenamefilesystemsas&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.10.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0970a538-8939-444e-87bc-30250211ccf5"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "d1b035dc-801e-0016-5a36-d320d7000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://1emxscnapsn4prde17h.blob.preprod.core.windows.net/\"><Prefix>jtfsrenamefilesystemsas</Prefix><Containers><Container><Name>jtfsrenamefilesystemsas0493192b94c15dea28423f9</Name><Properties><Last-Modified>Tue, 15 Dec 2020 23:04:04 GMT</Last-Modified><Etag>\"0x8D8A14DB822A7CF\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Tue, 15 Dec 2020 23:04:05 GMT",
+      "x-ms-client-request-id" : "0970a538-8939-444e-87bc-30250211ccf5",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.blob.preprod.core.windows.net/jtfsrenamefilesystemsas0493192b94c15dea28423f9?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.10.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "faf1c7cf-ee36-4363-a4b4-f9fada774cd1"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "d1b035de-801e-0016-5b36-d320d7000000",
+      "Date" : "Tue, 15 Dec 2020 23:04:05 GMT",
+      "x-ms-client-request-id" : "faf1c7cf-ee36-4363-a4b4-f9fada774cd1"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "jtfsrenamefilesystemsas0493192b94c15dea28423f9", "jtfsrenamefilesystemsas122218d95c2023c33342879", "jtfsrenamefilesystemsas257641f7864ba64ebd4a31b", "2020-12-15T23:04:05.064767400Z" ]
+}

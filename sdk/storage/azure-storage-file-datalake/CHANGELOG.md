@@ -2,6 +2,8 @@
 
 ## 12.4.0-beta.2 (Unreleased)
 - Added support for the 2020-06-12 service version. 
+- Added support to rename a file system.
+- Added support to undelete a file system. 
 
 ## 12.4.0-beta.1 (2020-12-07)
 - Added support to list paths on a directory.

@@ -8,8 +8,10 @@ import com.azure.core.util.Context;
 import com.azure.storage.blob.models.BlobAnalyticsLogging;
 import com.azure.storage.blob.models.BlobContainerListDetails;
 import com.azure.storage.blob.models.BlobMetrics;
+import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobRetentionPolicy;
 import com.azure.storage.blob.models.BlobServiceProperties;
+import com.azure.storage.blob.options.ContainerRenameOptions;
 import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
@@ -315,5 +317,28 @@ public class BlobServiceAsyncClientJavaDocCodeSnippets {
             }
         ).then().block();
         // END: com.azure.storage.blob.BlobServiceAsyncClient.undeleteBlobContainerWithResponse#UndeleteBlobContainerOptions
+    }
+
+    /**
+     * Code snippet for {@link BlobServiceAsyncClient#renameBlobContainer(String, String)}
+     */
+    public void renameContainer() {
+        // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.renameBlobContainer#String-String
+        BlobContainerAsyncClient blobContainerAsyncClient =
+            client.renameBlobContainer("newContainerName", "oldContainerName")
+                .block();
+        // END: com.azure.storage.blob.BlobServiceAsyncClient.renameBlobContainer#String-String
+    }
+
+    /**
+     * Code snippet for {@link BlobServiceAsyncClient#renameBlobContainerWithResponse(ContainerRenameOptions)}
+     */
+    public void renameContainerWithResponse() {
+        // BEGIN: com.azure.storage.blob.BlobServiceAsyncClient.renameBlobContainerWithResponse#ContainerRenameOptions
+        BlobRequestConditions requestConditions = new BlobRequestConditions().setLeaseId("lease-id");
+        BlobContainerAsyncClient containerClient = client
+            .renameBlobContainerWithResponse(new ContainerRenameOptions("newContainerName",
+                "oldContainerName").setRequestConditions(requestConditions)).block().getValue();
+        // END: com.azure.storage.blob.BlobServiceAsyncClient.renameBlobContainerWithResponse#ContainerRenameOptions
     }
 }
