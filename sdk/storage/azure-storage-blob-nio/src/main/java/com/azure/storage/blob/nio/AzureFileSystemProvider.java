@@ -374,7 +374,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         // Write and truncate must be specified
         if (!optionsList.contains(StandardOpenOption.WRITE)
             || !optionsList.contains(StandardOpenOption.TRUNCATE_EXISTING)) {
-            throw logger.logThrowableAsError(
+            throw LoggingUtility.logError(logger,
                 new IllegalArgumentException("Write and TruncateExisting must be specified to open an OutputStream"));
         }
 
@@ -804,7 +804,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     @Override
     public void checkAccess(Path path, AccessMode... accessModes) throws IOException {
         if (accessModes != null && accessModes.length != 0) {
-            throw logger.logThrowableAsError(
+            throw LoggingUtility.logError(logger,
                 new AccessDeniedException("The access cannot be determined."));
         }
         AzurePath.ensureFileSystemOpen(path);
@@ -815,7 +815,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         } catch (IOException e) {
             if (e.getCause() != null && e.getCause() instanceof BlobStorageException
                 && BlobErrorCode.BLOB_NOT_FOUND.equals(((BlobStorageException) e.getCause()).getErrorCode())) {
-                throw logger.logThrowableAsError(new NoSuchFileException(path.toString()));
+                throw LoggingUtility.logError(logger, new NoSuchFileException(path.toString()));
             } else {
                 throw e;
             }
