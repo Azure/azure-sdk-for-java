@@ -126,6 +126,13 @@ public class AzureActiveDirectoryConfiguration {
 
     private ClientRegistration createClientBuilder(String id, AuthorizationProperties authz) {
         ClientRegistration.Builder result = createClientBuilder(id);
+        List<String> scopes = authz.getScopes();
+        if(authz.isOnDemand() && !scopes.contains("openid")){
+            scopes.add("openid");
+        }
+        if(authz.isOnDemand() && !scopes.contains("profile")){
+            scopes.add("profile");
+        }
         result.scope(authz.getScopes());
         return result.build();
     }
