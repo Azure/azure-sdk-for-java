@@ -13,6 +13,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
@@ -76,17 +78,28 @@ public class AADOAuth2OboAuthorizedClientRepositoryTest {
         when(confidentialClientApplication.acquireToken(any(OnBehalfOfParameters.class)))
             .thenReturn(acquireTokenFuture);
 
+        AzureClientRegistrationRepository clientRegistrationsRepo = mock(AzureClientRegistrationRepository.class);
+
+        when(clientRegistrationsRepo.findByRegistrationId(any())).thenReturn(ClientRegistration
+            .withRegistrationId("fake-graph")
+            .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+            .redirectUriTemplate("{baseUrl}/login/oauth2/code/{registrationId}")
+            .tokenUri("https://login.microsoftonline.com/308df08a-1332-4a15-bb06-2ad7e8b71bcf/oauth2/v2.0/token")
+            .jwkSetUri("https://login.microsoftonline.com/308df08a-1332-4a15-bb06-2ad7e8b71bcf/discovery/v2.0/keys")
+            .authorizationUri("https://login.microsoftonline.com/308df08a-1332-4a15-bb06-2ad7e8b71bcf/oauth2/v2"
+                + ".0/authorize")
+            .scope("User.read")
+            .clientId("2c47b831-d838-464f-a684-fa79cbd64f20").build());
         authorizedRepo = new AADOAuth2OboAuthorizedClientRepository(
             clientRegistrationsRepo) {
 
             @Override
-            ConfidentialClientApplication getClientApplication(String registrationId) {
-                if ("fake-graph".equals(registrationId)) {
+            ConfidentialClientApplication createApp(ClientRegistration clientRegistration) {
+                if ("fake-graph".equals(clientRegistration.getRegistrationId())) {
                     return confidentialClientApplication;
                 } else {
                     return null;
                 }
-
             }
         };
 
@@ -159,17 +172,14 @@ public class AADOAuth2OboAuthorizedClientRepositoryTest {
     @Test
     @SuppressWarnings("unchecked")
     public void testNotExistClientApplication() {
+        ConfidentialClientApplication confidentialClientApplication = mock(ConfidentialClientApplication.class);
 
         AADOAuth2OboAuthorizedClientRepository authorizedRepo = new AADOAuth2OboAuthorizedClientRepository(
             clientRegistrationsRepo) {
-            @Override
-            ConfidentialClientApplication getClientApplication(String registrationId) {
-                if ("fake-graph".equals(registrationId)) {
-                    return null;
-                } else {
-                    return null;
-                }
 
+            @Override
+            ConfidentialClientApplication createApp(ClientRegistration clientRegistration) {
+               return null;
             }
         };
 

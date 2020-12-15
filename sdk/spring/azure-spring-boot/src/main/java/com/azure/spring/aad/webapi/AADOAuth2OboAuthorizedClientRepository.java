@@ -25,9 +25,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.net.MalformedURLException;
 import java.time.Instant;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 /**
  * <p>
@@ -42,15 +39,9 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
 
     private final AzureClientRegistrationRepository azureClientRegistrationRepository;
 
-    private final Map<String, ConfidentialClientApplication> confidentialClientApplicationMap = new HashMap<>();
 
     public AADOAuth2OboAuthorizedClientRepository(AzureClientRegistrationRepository azureClientRegistrationRepository) {
         this.azureClientRegistrationRepository = azureClientRegistrationRepository;
-        Iterator<ClientRegistration> iterator = azureClientRegistrationRepository.iterator();
-        while (iterator.hasNext()) {
-            ClientRegistration next = iterator.next();
-            this.confidentialClientApplicationMap.put(next.getRegistrationId(), createApp(next));
-        }
     }
 
     @Override
@@ -81,8 +72,7 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
             OnBehalfOfParameters parameters = OnBehalfOfParameters
                 .builder(clientRegistration.getScopes(), new UserAssertion(accessToken))
                 .build();
-            ConfidentialClientApplication clientApplication =
-                getClientApplication(clientRegistration.getRegistrationId());
+            ConfidentialClientApplication clientApplication = createApp(clientRegistration);
             if (null == clientApplication) {
                 LOGGER.warn("Not found the " + clientRegistration.getRegistrationId()
                     + " ConfidentialClientApplication.");
@@ -117,11 +107,7 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
                                        HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
     }
 
-    ConfidentialClientApplication getClientApplication(String registrationId) {
-        return confidentialClientApplicationMap.get(registrationId);
-    }
-
-    private ConfidentialClientApplication createApp(ClientRegistration clientRegistration) {
+    ConfidentialClientApplication createApp(ClientRegistration clientRegistration) {
         String authorizationUri = clientRegistration.getProviderDetails().getAuthorizationUri();
         String authority = interceptAuthorizationUri(authorizationUri);
         IClientSecret clientCredential = ClientCredentialFactory
