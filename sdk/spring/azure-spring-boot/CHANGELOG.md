@@ -2,7 +2,7 @@
 
 ## 3.0.0-beta.2 (Unreleased)
 ### Breaking Changes
-- Deprecated `AADAppRoleStatelessAuthenticationFilter` and `AADAuthenticationFilter`.
+- Deprecate `AADAppRoleStatelessAuthenticationFilter` and `AADAuthenticationFilter`.
 
 ### New Features
 - Support consent multiple client-registration when login.
