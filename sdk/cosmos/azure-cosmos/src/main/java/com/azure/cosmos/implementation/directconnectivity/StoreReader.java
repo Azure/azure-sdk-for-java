@@ -670,7 +670,7 @@ public class StoreReader {
         }
 
         if (responseException !=null) {
-            this.verifyCanContinueOnException(storeResult.getException());
+            verifyCanContinueOnException(storeResult.getException());
         }
 
         return storeResult;
