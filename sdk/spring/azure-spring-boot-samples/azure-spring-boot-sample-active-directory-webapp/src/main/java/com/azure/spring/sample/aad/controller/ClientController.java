@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +26,6 @@ public class ClientController {
     ) {
         logAuthorizedClient(oAuth2AuthorizedClient);
         return "graph";
-
     }
 
     @GetMapping("/office")
@@ -35,10 +35,25 @@ public class ClientController {
     ) {
         logAuthorizedClient(oAuth2AuthorizedClient);
         return "office";
+    }
 
+    @GetMapping("/azure")
+    @ResponseBody
+    public String azure(
+        @RegisteredOAuth2AuthorizedClient("azure") OAuth2AuthorizedClient oAuth2AuthorizedClient
+    ) {
+        logAuthorizedClient(oAuth2AuthorizedClient);
+        return "azure";
     }
 
     static void logAuthorizedClient(OAuth2AuthorizedClient authorizedClient) {
+        LOGGER.info(
+            "clientName = {}",
+            Optional.of(authorizedClient)
+                    .map(OAuth2AuthorizedClient::getClientRegistration)
+                    .map(ClientRegistration::getClientName)
+                    .orElse(null)
+        );
         LOGGER.info(
             "scopesFromAccessToken = {}",
             Optional.of(authorizedClient)

@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import static com.azure.spring.sample.aad.controller.ClientController.logAuthorizedClient;
+
 @Controller
 public class OnDemandController {
     @GetMapping("/arm")
@@ -16,6 +18,7 @@ public class OnDemandController {
     public String arm(
         @RegisteredOAuth2AuthorizedClient("arm") OAuth2AuthorizedClient oAuth2AuthorizedClient
     ) {
+        logAuthorizedClient(oAuth2AuthorizedClient);
         return "arm";
     }
 }

@@ -16,20 +16,12 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class AADOAuth2LoginSecurityConfig extends AzureOAuth2Configuration {
-    @Autowired
-    private OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService;
 
-    @Autowired
-    ApplicationContext applicationContext;
-
+    /**
+    * Add configuration logic as needed.
+    */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         super.configure(http);
-        http.authorizeRequests()
-            .anyRequest().authenticated()
-            .and()
-            .oauth2Login()
-            .userInfoEndpoint()
-            .oidcUserService(oidcUserService);
     }
 }
