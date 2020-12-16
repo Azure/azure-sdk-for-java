@@ -21,6 +21,7 @@ import java.io.UncheckedIOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.nio.channels.SeekableByteChannel;
+import java.nio.file.AccessDeniedException;
 import java.nio.file.AccessMode;
 import java.nio.file.CopyOption;
 import java.nio.file.DirectoryNotEmptyException;
@@ -268,7 +269,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     @Override
     public SeekableByteChannel newByteChannel(Path path, Set<? extends OpenOption> set,
             FileAttribute<?>... fileAttributes) throws IOException {
-        throw new UnsupportedOperationException();
+        throw LoggingUtility.logError(logger, new UnsupportedOperationException());
     }
 
     /**
@@ -366,14 +367,16 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
             StandardOpenOption.TRUNCATE_EXISTING);
         for (OpenOption option : optionsList) {
             if (!supportedOptions.contains(option)) {
-                throw new UnsupportedOperationException("Unsupported option: " + option.toString());
+                throw LoggingUtility.logError(logger, new UnsupportedOperationException("Unsupported option: "
+                    + option.toString()));
             }
         }
 
         // Write and truncate must be specified
         if (!optionsList.contains(StandardOpenOption.WRITE)
             || !optionsList.contains(StandardOpenOption.TRUNCATE_EXISTING)) {
-            throw new IllegalArgumentException("Write and TruncateExisting must be specified to open an OutputStream");
+            throw LoggingUtility.logError(logger,
+                new IllegalArgumentException("Write and TruncateExisting must be specified to open an OutputStream"));
         }
 
         AzureResource resource = new AzureResource(path);
@@ -742,7 +745,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      */
     @Override
     public void move(Path path, Path path1, CopyOption... copyOptions) throws IOException {
-        throw new UnsupportedOperationException();
+        throw LoggingUtility.logError(logger, new UnsupportedOperationException());
     }
 
     /**
@@ -754,7 +757,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      */
     @Override
     public boolean isSameFile(Path path, Path path1) throws IOException {
-        throw new UnsupportedOperationException();
+        throw LoggingUtility.logError(logger, new UnsupportedOperationException());
     }
 
     /**
@@ -781,15 +784,18 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      */
     @Override
     public FileStore getFileStore(Path path) throws IOException {
-        throw new UnsupportedOperationException();
+        throw LoggingUtility.logError(logger, new UnsupportedOperationException());
     }
 
     /**
-     * Unsupported.
+     * Checks the existence, and optionally the accessibility, of a file.
+     * <p>
+     * This method may only be used to check the existence of a file. It is not possible to determine the permissions
+     * granted to a given client, so if any mode argument is specified, an {@link UnsupportedOperationException} will be
+     * thrown.
      *
-     * @param path path
-     * @param accessModes accessMode
-     * @throws UnsupportedOperationException Operation is not supported.
+     * @param path the path to the file to check
+     * @param accessModes The access modes to check; may have zero elements
      * @throws NoSuchFileException if a file does not exist
      * @throws java.nio.file.AccessDeniedException the requested access would be denied or the access cannot be
      * determined because the Java virtual machine has insufficient privileges or other reasons
@@ -798,7 +804,32 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      */
     @Override
     public void checkAccess(Path path, AccessMode... accessModes) throws IOException {
-        throw new UnsupportedOperationException();
+        if (accessModes != null && accessModes.length != 0) {
+            throw LoggingUtility.logError(logger, new AccessDeniedException("The access cannot be determined."));
+        }
+        AzurePath.ensureFileSystemOpen(path);
+
+        /*
+        Some static utility methods in the jdk require checking access on a root. ReadAttributes is not supported on
+        roots as they are containers. Furthermore, we always assume that roots exist as they are verified at creation
+        and cannot be deleted by the file system. Thus, we prefer a short circuit for roots.
+         */
+        if (path instanceof AzurePath && ((AzurePath) path).isRoot()) {
+            return;
+        }
+
+        // Read attributes already wraps BlobStorageException in an IOException.
+        try {
+            readAttributes(path, BasicFileAttributes.class);
+        } catch (IOException e) {
+            Throwable cause = e.getCause();
+            if (cause instanceof BlobStorageException
+                && BlobErrorCode.BLOB_NOT_FOUND.equals(((BlobStorageException) cause).getErrorCode())) {
+                throw LoggingUtility.logError(logger, new NoSuchFileException(path.toString()));
+            } else {
+                throw LoggingUtility.logError(logger, e);
+            }
+        }
     }
 
     /**
@@ -858,7 +889,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         } else if (type == AzureBlobFileAttributes.class) {
             view = AzureBlobFileAttributeView.class;
         } else {
-            throw new UnsupportedOperationException();
+            throw LoggingUtility.logError(logger, new UnsupportedOperationException());
         }
 
         /*
