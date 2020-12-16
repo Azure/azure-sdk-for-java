@@ -28,14 +28,38 @@ Acquired phone numbers can come with many capabilities, depending on the country
 
 ## Key concepts
 
-To use the Admnistration SDK, a resource access key is required for authentication. 
+There are two forms of authentication to use the Admnistration SDK.
 
+### Using your AAD Credentials
+Currently, AAD authentication is just possible for CommunicationIdentityClient.
+The DefaultAzureCredential object must be passed to the CommunicationIdentityClientBuilder via
+the credential() funtion. Endpoint and httpClient must also be set
+via the endpoint() and httpClient() functions respectively.
+
+Client secret, client id and tenant id will be needed to create a DefaultAzureCredential object.
+
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L377-L389 -->
+```java
+    String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
+
+    // Create an HttpClient builder of your choice and customize it
+    HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
+
+    CommunicationIdentityClient communicationIdentityClient = new CommunicationIdentityClientBuilder()
+        .endpoint(endpoint)
+        .credential(new DefaultAzureCredentialBuilder().build())
+        .httpClient(httpClient)
+        .buildClient();
+
+    return communicationIdentityClient;
+}
+```
+
+### Access Key Authentication
 Administration uses HMAC authentication with the resource access key.
 The access key must be provided to the CommunicationIdentityClientBuilder 
 or the PhoneNumberClientBuilder via the accessKey() function. Endpoint and httpClient must also be set
 via the endpoint() and httpClient() functions respectively.
-
-### Initializing Identity Client
 
 <!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L37-L48 -->
 ```java
