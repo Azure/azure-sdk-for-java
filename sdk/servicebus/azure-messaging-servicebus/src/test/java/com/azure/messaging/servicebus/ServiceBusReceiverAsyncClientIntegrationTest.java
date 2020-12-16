@@ -371,7 +371,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final int fromSequenceNumber = 1;
 
         // Assert & Act
-        StepVerifier.create(receiver.peekMessageAt(fromSequenceNumber))
+        StepVerifier.create(receiver.peekMessage(fromSequenceNumber))
             .verifyComplete();
     }
 
@@ -459,7 +459,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // Assert & Act
         try {
-            StepVerifier.create(receiver.peekMessageAt(sequenceNumber))
+            StepVerifier.create(receiver.peekMessage(sequenceNumber))
                 .assertNext(m -> {
                     assertEquals(sequenceNumber, m.getSequenceNumber());
                     assertMessageEquals(m, messageId, isSessionEnabled);
@@ -558,7 +558,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         Mono.when(sendMessage(message), sendMessage(message)).block(TIMEOUT);
 
         // Assert & Act
-        StepVerifier.create(receiver.peekMessagesAt(maxMessages, fromSequenceNumber))
+        StepVerifier.create(receiver.peekMessages(maxMessages, fromSequenceNumber))
             .expectNextCount(maxMessages)
             .verifyComplete();
 
@@ -587,7 +587,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final int fromSequenceNumber = 1;
 
         // Assert & Act
-        StepVerifier.create(receiver.peekMessagesAt(maxMessages, fromSequenceNumber))
+        StepVerifier.create(receiver.peekMessages(maxMessages, fromSequenceNumber))
             .verifyComplete();
     }
 

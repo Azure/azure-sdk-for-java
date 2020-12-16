@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.azure.communication.common.CommunicationUser;
+import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -28,13 +28,26 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void createIdentityClientUsingManagedIdentity(HttpClient httpClient) {
+        // Arrange
+        client = getCommunicationIdentityClientBuilderUsingManagedIdentity(httpClient).buildClient();
+        assertNotNull(client);
+
+        // Action & Assert
+        CommunicationUserIdentifier communicationUser = client.createUser();
+        assertNotNull(communicationUser.getId());
+        assertFalse(communicationUser.getId().isEmpty());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createIdentityClientUsingConnectionString(HttpClient httpClient) {
         // Arrange
         client = getCommunicationIdentityClientUsingConnectionString(httpClient).buildClient();
         assertNotNull(client);
 
         // Action & Assert
-        CommunicationUser communicationUser = client.createUser();
+        CommunicationUserIdentifier communicationUser = client.createUser();
         assertNotNull(communicationUser.getId());
         assertFalse(communicationUser.getId().isEmpty());
     }
@@ -47,7 +60,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         client = getCommunicationIdentityClient(httpClient).buildClient();
 
         // Action & Assert
-        CommunicationUser communicationUser = client.createUser();
+        CommunicationUserIdentifier communicationUser = client.createUser();
         assertNotNull(communicationUser.getId());
         assertFalse(communicationUser.getId().isEmpty());
     }
@@ -59,7 +72,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         client = getCommunicationIdentityClient(httpClient).buildClient();
 
         // Action & Assert
-        Response<CommunicationUser> response = client.createUserWithResponse(Context.NONE);
+        Response<CommunicationUserIdentifier> response = client.createUserWithResponse(Context.NONE);
         assertNotNull(response.getValue().getId());
         assertFalse(response.getValue().getId().isEmpty());
         assertEquals(200, response.getStatusCode(), "Expect status code to be 200");
@@ -72,7 +85,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         client = getCommunicationIdentityClient(httpClient).buildClient();
 
         // Action & Assert
-        CommunicationUser communicationUser = client.createUser();
+        CommunicationUserIdentifier communicationUser = client.createUser();
         assertNotNull(communicationUser.getId());
         client.deleteUser(communicationUser);    
     }
@@ -84,7 +97,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         client = getCommunicationIdentityClient(httpClient).buildClient();
 
         // Action & Assert
-        CommunicationUser communicationUser = client.createUser();
+        CommunicationUserIdentifier communicationUser = client.createUser();
         Response<Void> response = client.deleteUserWithResponse(communicationUser, Context.NONE);
         assertEquals(204, response.getStatusCode(), "Expect status code to be 204");
     }
@@ -96,7 +109,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         client = getCommunicationIdentityClient(httpClient).buildClient();
 
         // Action & Assert
-        CommunicationUser communicationUser = client.createUser();
+        CommunicationUserIdentifier communicationUser = client.createUser();
         assertNotNull(communicationUser.getId());
         List<String> scopes = new ArrayList<>(Arrays.asList("chat"));
         CommunicationUserToken token = client.issueToken(communicationUser, scopes);
@@ -110,7 +123,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         client = getCommunicationIdentityClient(httpClient).buildClient();
 
         // Action & Assert
-        CommunicationUser communicationUser = client.createUser();
+        CommunicationUserIdentifier communicationUser = client.createUser();
         assertNotNull(communicationUser.getId());
         List<String> scopes = new ArrayList<>(Arrays.asList("chat"));
         CommunicationUserToken token = client.issueToken(communicationUser, scopes);
@@ -125,7 +138,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         client = getCommunicationIdentityClient(httpClient).buildClient();
 
         // Action & Assert
-        CommunicationUser communicationUser = client.createUser();
+        CommunicationUserIdentifier communicationUser = client.createUser();
         assertNotNull(communicationUser.getId());
         List<String> scopes = new ArrayList<>(Arrays.asList("chat"));
         CommunicationUserToken issuedToken = client.issueToken(communicationUser, scopes);
@@ -143,7 +156,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         client = getCommunicationIdentityClient(httpClient).buildClient();
 
         // Action & Assert
-        CommunicationUser communicationUser = client.createUser();
+        CommunicationUserIdentifier communicationUser = client.createUser();
         assertNotNull(communicationUser.getId());
         List<String> scopes = new ArrayList<>(Arrays.asList("chat"));
         Response<CommunicationUserToken> issuedTokenResponse = client.issueTokenWithResponse(communicationUser, scopes, Context.NONE);

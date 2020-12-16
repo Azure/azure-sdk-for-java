@@ -1,3 +1,0 @@
-# TODO: Delete this file after "com.azure.spring.aad.implementation.AzureActiveDirectoryConfiguration" added in "sdk/spring/azure-spring-boot/src/main/resources/META-INF/spring.factories"
-org.springframework.boot.env.EnvironmentPostProcessor=\
-com.azure.spring.aad.implementation.AzureActiveDirectoryConfiguration

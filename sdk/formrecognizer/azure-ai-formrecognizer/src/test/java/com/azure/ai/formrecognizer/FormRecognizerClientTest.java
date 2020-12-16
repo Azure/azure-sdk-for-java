@@ -1836,7 +1836,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     public void recognizeInvoiceDataWithBlankPdf(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
-        // confirm if pageResults should be returned for prebuilt model recognition
         dataRunner((data, dataLength) -> {
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
                 client.beginRecognizeInvoices(data,
@@ -1905,7 +1904,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         urlRunner((sourceUrl) -> {
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeInvoicesFromUrl(INVOICE_TEST_URL,
+                client.beginRecognizeInvoicesFromUrl(sourceUrl,
                     new RecognizeInvoicesOptions()
                         .setPollInterval(durationTestMode),
                     Context.NONE);
@@ -1959,7 +1958,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         urlRunner(sourceUrl -> {
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeInvoicesFromUrl(INVOICE_TEST_URL,
+                client.beginRecognizeInvoicesFromUrl(sourceUrl,
                     new RecognizeInvoicesOptions()
                         .setFieldElementsIncluded(true)
                         .setPollInterval(durationTestMode),

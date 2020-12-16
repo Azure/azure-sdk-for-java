@@ -7,6 +7,8 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.ProcessKind;
+import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusProcessorClientBuilder;
+import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder;
 import com.azure.messaging.servicebus.implementation.models.ServiceBusProcessorClientOptions;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
@@ -36,11 +38,10 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_SERVICE_NAME;
 
 /**
- *  The processor client for processing Service Bus messages. {@link ServiceBusProcessorClient
- *  ServiceBusProcessorClients} provides a push-based mechanism that invokes the message processing callback when a
- *  message is received or the error handler when an error occurs when receiving messages. A
- *  {@link ServiceBusProcessorClient} can be created to process messages for a session-enabled Service Bus entity or
- *  a non session-enabled Service Bus entity.
+ * The processor client for processing Service Bus messages. {@link ServiceBusProcessorClient} provides a push-based
+ * mechanism that invokes the message processing callback when a message is received or the error handler when an error
+ * occurs when receiving messages. A {@link ServiceBusProcessorClient} can be created to process messages for a
+ * session-enabled or non session-enabled Service Bus entity. It supports auto-settlement of messages by default.
  *
  * <p><strong>Create and run a processor</strong></p>
  * {@codesnippet com.azure.messaging.servicebus.servicebusprocessorclient#instantiation}
@@ -48,7 +49,8 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  * <p><strong>Create and run a session-enabled processor</strong></p>
  * {@codesnippet com.azure.messaging.servicebus.servicebusprocessorclient#session-instantiation}
  *
- * @see ServiceBusClientBuilder
+ * @see ServiceBusProcessorClientBuilder
+ * @see ServiceBusSessionProcessorClientBuilder
  */
 public final class ServiceBusProcessorClient implements AutoCloseable {
 
@@ -109,11 +111,15 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
 
     /**
      * Starts the processor in the background. When this method is called, the processor will initiate a message
-     * receiver that will invoke the message handler when new messages are available. This method is idempotent i.e
-     * calling {@link #start()} again after the processor is already running is a no-op. Calling {@link #start()}
-     * after calling {@link #stop()} will resume processing messages using the same underlying links or active
-     * sessions. Calling {@link #start()} after calling {@link #close()} will start the processor with new links and
-     * a new set of sessions will be processed.
+     * receiver that will invoke the message handler when new messages are available. This method is idempotent (ie.
+     * calling {@code start()} again after the processor is already running is a no-op).
+     * <p>
+     * Calling {@code start()} after calling {@link #stop() stop()} will resume processing messages using the same
+     * underlying connection.
+     * </p>
+     * <p>
+     * Calling {@code start()} after calling {@link #close() close()} will start the processor with a new connection.
+     * </p>
      */
     public synchronized void start() {
         if (isRunning.getAndSet(true)) {
@@ -174,7 +180,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
      * Returns {@code true} if the processor is running. If the processor is stopped or closed, this method returns
      * {@code false}.
      *
-     * @return {@code true} if the processor is running.
+     * @return {@code true} if the processor is running; {@code false} otherwise.
      */
     public synchronized boolean isRunning() {
         return isRunning.get();
@@ -208,7 +214,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
 
                             processSpanContext =
                                 startProcessTracingSpan(serviceBusMessageContext.getMessage(),
-                                receiverClient.getEntityPath(), receiverClient.getFullyQualifiedNamespace());
+                                    receiverClient.getEntityPath(), receiverClient.getFullyQualifiedNamespace());
                             if (processSpanContext.getData(SPAN_CONTEXT_KEY).isPresent()) {
                                 serviceBusMessageContext.getMessage().addContext(SPAN_CONTEXT_KEY, processSpanContext);
                             }
@@ -275,7 +281,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     }
 
     private Context startProcessTracingSpan(ServiceBusReceivedMessage receivedMessage, String entityPath,
-                                            String fullyQualifiedNamespace) {
+        String fullyQualifiedNamespace) {
 
         Object diagnosticId = receivedMessage.getApplicationProperties().get(DIAGNOSTIC_ID_KEY);
         if (diagnosticId == null || !tracerProvider.isEnabled()) {
@@ -297,7 +303,7 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     }
 
     private void abandonMessage(ServiceBusMessageContext serviceBusMessageContext,
-                                ServiceBusReceiverAsyncClient receiverClient) {
+        ServiceBusReceiverAsyncClient receiverClient) {
         try {
             receiverClient.abandon(serviceBusMessageContext.getMessage()).block();
         } catch (Exception exception) {

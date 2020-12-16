@@ -87,7 +87,7 @@ public class ServiceBusReceivedMessageTest {
 
         // Assert
         assertNotNull(serviceBusMessageData.getBody());
-        assertArrayEquals(PAYLOAD_BYTES, serviceBusMessageData.getBodyAsBytes());
+        assertArrayEquals(PAYLOAD_BYTES, serviceBusMessageData.getBody().toBytes());
     }
 
     @Test
@@ -132,7 +132,7 @@ public class ServiceBusReceivedMessageTest {
         assertEquals(originalMessage.getCorrelationId(), actual.getCorrelationId());
         assertEquals(originalMessage.getReplyTo(), actual.getReplyTo());
         assertEquals(originalMessage.getTimeToLive().toMillis(), actual.getTimeToLive().toMillis());
-        assertEquals(originalMessage.getLabel(), actual.getSubject());
+        assertEquals(originalMessage.getSubject(), actual.getSubject());
         assertEquals(originalMessage.getReplyToSessionId(), actual.getReplyToSessionId());
         assertEquals(originalMessage.getTo(), actual.getTo());
 

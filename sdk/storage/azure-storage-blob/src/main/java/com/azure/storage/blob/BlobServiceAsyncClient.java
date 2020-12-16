@@ -18,6 +18,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
+import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.TaggedBlobItem;
 import com.azure.storage.blob.implementation.models.ServiceGetAccountInfoHeaders;
 import com.azure.storage.blob.implementation.models.ServicesListBlobContainersSegmentResponse;
@@ -203,7 +204,8 @@ public final class BlobServiceAsyncClient {
      * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.createBlobContainerWithResponse#String-Map-PublicAccessType}
      *
      * @param containerName Name of the container to create
-     * @param metadata Metadata to associate with the container
+     * @param metadata Metadata to associate with the container. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param accessType Specifies how the data in this container is available to the public. See the
      * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
@@ -406,8 +408,7 @@ public final class BlobServiceAsyncClient {
                 List<TaggedBlobItem> value = response.getValue().getBlobs() == null
                     ? Collections.emptyList()
                     : response.getValue().getBlobs().stream()
-                    .map(filterBlobItem -> new TaggedBlobItem(filterBlobItem.getContainerName(),
-                        filterBlobItem.getName()))
+                    .map(ModelHelper::populateTaggedBlobItem)
                     .collect(Collectors.toList());
 
                 return new PagedResponseBase<>(

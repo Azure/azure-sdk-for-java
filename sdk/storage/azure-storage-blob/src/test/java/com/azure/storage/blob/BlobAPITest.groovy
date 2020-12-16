@@ -1092,7 +1092,8 @@ class BlobAPITest extends APISpec {
         bc.getProperties()
 
         then:
-        thrown(BlobStorageException)
+        def ex = thrown(BlobStorageException)
+        ex.getMessage().contains("BlobNotFound")
     }
 
     def "Set HTTP headers null"() {
@@ -1254,10 +1255,11 @@ class BlobAPITest extends APISpec {
         bc.getProperties().getMetadata() == metadata
 
         where:
-        key1  | value1 | key2   | value2 || statusCode
-        null  | null   | null   | null   || 200
-        "foo" | "bar"  | "fizz" | "buzz" || 200
-        "i0"  | "a"    | "i_"   | "a"    || 200 /* Test culture sensitive word sort */
+        key1  | value1        | key2   | value2 || statusCode
+        null  | null          | null   | null   || 200
+        "foo" | "bar"         | "fizz" | "buzz" || 200
+        "i0"  | "a"           | "i_"   | "a"    || 200 /* Test culture sensitive word sort */
+        "foo" | "bar0, bar1"  | null   | null   || 200 /* Test comma separated values */
     }
 
     @Unroll
@@ -1317,6 +1319,29 @@ class BlobAPITest extends APISpec {
         null     | null       | null        | receivedEtag | null           | null
         null     | null       | null        | null         | garbageLeaseID | null
         null     | null       | null         | null        | null           | "\"notfoo\" = 'notbar'"
+    }
+
+    @Unroll
+    def "Set metadata whitespace error"() {
+        setup:
+        def metadata = new HashMap<String, String>()
+        metadata.put(key, value)
+
+        when:
+        bc.setMetadata(metadata)
+
+        then:
+        def e = thrown(Exception)
+        e instanceof IllegalArgumentException || e instanceof Exceptions.ReactiveException
+        // Need this second error type since for the first case, Netty throws IllegalArgumentException, and that is recorded in the playback file.
+        // On Playback, the framework will throw Exceptions.ReactiveException.
+
+        where:
+        key     | value  || _
+        " foo"  | "bar"  || _ // Leading whitespace key
+        "foo "  | "bar"  || _ // Trailing whitespace key
+        "foo"   | " bar" || _ // Leading whitespace value
+        "foo"   | "bar " || _ // Trailing whitespace value
     }
 
     def "Set metadata error"() {
@@ -1450,6 +1475,66 @@ class BlobAPITest extends APISpec {
 
         then:
         thrown(BlobStorageException)
+    }
+
+    def "Set tags lease"() {
+        setup:
+        def tags = new HashMap<String, String>()
+        tags.put("foo", "bar")
+        def leaseID = setupBlobLeaseCondition(bc, receivedLeaseID)
+        def bac = new BlobRequestConditions().setLeaseId(leaseID)
+
+        when:
+        def response = bc.setTagsWithResponse(new BlobSetTagsOptions(tags).setRequestConditions(bac), null, null)
+
+        then:
+        response.getStatusCode() == 204
+        bc.getTags() == tags
+    }
+
+    def "Get tags lease"() {
+        setup:
+        def tags = new HashMap<String, String>()
+        tags.put("foo", "bar")
+        def leaseID = setupBlobLeaseCondition(bc, receivedLeaseID)
+        def bac = new BlobRequestConditions().setLeaseId(leaseID)
+        bc.setTagsWithResponse(new BlobSetTagsOptions(tags).setRequestConditions(bac), null, null)
+
+        when:
+        def response = bc.getTagsWithResponse(new BlobGetTagsOptions().setRequestConditions(bac), null, null)
+
+        then:
+        response.getStatusCode() == 200
+        response.getValue() == tags
+    }
+
+    def "Set tags lease fail"() {
+        setup:
+        def tags = new HashMap<String, String>()
+        tags.put("foo", "bar")
+        def bac = new BlobRequestConditions().setLeaseId(garbageLeaseID)
+
+        when:
+        bc.setTagsWithResponse(new BlobSetTagsOptions(tags).setRequestConditions(bac), null, null)
+
+        then:
+        def e = thrown(BlobStorageException)
+        e.getStatusCode() == 412
+    }
+
+    def "Get tags lease fail"() {
+        setup:
+        def tags = new HashMap<String, String>()
+        tags.put("foo", "bar")
+        bc.setTags(tags)
+        def bac = new BlobRequestConditions().setLeaseId(garbageLeaseID)
+
+        when:
+        bc.getTagsWithResponse(new BlobGetTagsOptions().setRequestConditions(bac), null, null)
+
+        then:
+        def e = thrown(BlobStorageException)
+        e.getStatusCode() == 412
     }
 
     def "Snapshot"() {

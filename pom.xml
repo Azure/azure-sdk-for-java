@@ -35,6 +35,7 @@
     <module>sdk/search</module>
     <module>sdk/servicebus</module>
     <module>sdk/storage</module>
+    <module>sdk/synapse</module>
     <module>sdk/tables</module>
     <module>sdk/template</module>
     <module>sdk/textanalytics</module>

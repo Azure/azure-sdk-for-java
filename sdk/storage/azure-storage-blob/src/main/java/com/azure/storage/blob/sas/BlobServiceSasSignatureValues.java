@@ -45,7 +45,7 @@ public final class BlobServiceSasSignatureValues {
 
     private final ClientLogger logger = new ClientLogger(BlobServiceSasSignatureValues.class);
 
-    private final String version = BlobSasServiceVersion.V2019_12_12.getVersion();
+    private final String version = BlobSasServiceVersion.getLatest().getVersion();
 
     private SasProtocol protocol;
 

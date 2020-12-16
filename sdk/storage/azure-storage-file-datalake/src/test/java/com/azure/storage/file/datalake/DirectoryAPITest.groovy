@@ -2026,7 +2026,8 @@ class DirectoryAPITest extends APISpec {
         dc.getProperties()
 
         then:
-        thrown(DataLakeStorageException)
+        def ex = thrown(DataLakeStorageException)
+        ex.getMessage().contains("BlobNotFound")
     }
 
     def "Set HTTP headers null"() {

@@ -6,6 +6,8 @@ package com.azure.messaging.servicebus.models;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusReceiverAsyncClient;
 import com.azure.messaging.servicebus.ServiceBusReceiverClient;
+import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
+import com.azure.messaging.servicebus.ServiceBusSenderClient;
 import com.azure.messaging.servicebus.ServiceBusTransactionContext;
 
 import java.util.Map;
@@ -90,6 +92,11 @@ public final class DeadLetterOptions extends SettlementOptions {
      * @param transactionContext The {@link ServiceBusTransactionContext} that will be used to dead letter a message.
      *
      * @return The updated {@link DeadLetterOptions} object.
+     *
+     * @see ServiceBusSenderClient#createTransaction()
+     * @see ServiceBusSenderAsyncClient#createTransaction()
+     * @see ServiceBusReceiverClient#createTransaction()
+     * @see ServiceBusReceiverAsyncClient#createTransaction()
      */
     @Override
     public DeadLetterOptions setTransactionContext(ServiceBusTransactionContext transactionContext) {

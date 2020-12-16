@@ -38,7 +38,7 @@ def main():
                     artifact_id,
                     artifact,
                 )  # 1.0.0-beta.0 will not be conflict with any existing one
-                output = {'full': command}
+                output = {'full': '```sh\n{0}\n```'.format(command)}
                 logging.debug('output: {0}'.format(json.dumps(output)))
                 json.dump(output, fout)
             sys.exit(0)

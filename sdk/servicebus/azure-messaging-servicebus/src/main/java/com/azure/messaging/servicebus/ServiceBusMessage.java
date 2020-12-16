@@ -15,6 +15,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -36,10 +37,12 @@ import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION
  * in the <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads">product
  * documentation</a>.
  *
+ * @see ServiceBusReceivedMessage
  * @see ServiceBusMessageBatch
  * @see ServiceBusSenderAsyncClient#sendMessage(ServiceBusMessage)
  * @see ServiceBusSenderClient#sendMessage(ServiceBusMessage)
- * @see BinaryData
+ * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads">Service Bus
+ *      message payloads</a>
  * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-complete-v1.0-os.pdf">AMQP 1.0 specification
  *     </a>
  */
@@ -65,9 +68,9 @@ public class ServiceBusMessage {
     }
 
     /**
-     * Creates a {@link ServiceBusMessage} with a {@link java.nio.charset.StandardCharsets#UTF_8 UTF_8} encoded body.
+     * Creates a {@link ServiceBusMessage} with a {@link StandardCharsets#UTF_8 UTF-8} encoded body.
      *
-     * @param body The content of the Service bus message.
+     * @param body The content of the Service Bus message.
      *
      * @throws NullPointerException if {@code body} is null.
      */
@@ -201,15 +204,6 @@ public class ServiceBusMessage {
     }
 
     /**
-     * Gets the {@link AmqpAnnotatedMessage}.
-     *
-     * @return The raw AMQP message.
-     */
-    public AmqpAnnotatedMessage getRawAmqpMessage() {
-        return amqpAnnotatedMessage;
-    }
-
-    /**
      * Gets the set of free-form {@link ServiceBusMessage} properties which may be used for passing metadata associated
      * with the {@link ServiceBusMessage} during Service Bus operations. A common use-case for {@code
      * getApplicationProperties()} is to associate serialization hints for the {@link #getBody()} as an aid to consumers
@@ -222,17 +216,16 @@ public class ServiceBusMessage {
     }
 
     /**
-     * Gets the actual payload/data wrapped by the {@link ServiceBusMessage}.
+     * Gets the actual payload wrapped by the {@link ServiceBusMessage}.
      *
      * <p>The {@link BinaryData} wraps byte array and is an abstraction over many different ways it can be represented.
-     * It provides many convenience API including APIs to serialize/deserialize object.
-     * <p>
-     * If the means for deserializing the raw data is not apparent to consumers, a common technique is to make use of
-     * {@link #getApplicationProperties()} when creating the event, to associate serialization hints as an aid to
-     * consumers who wish to deserialize the binary data.
-     * </p>
+     * It provides convenience APIs to serialize/deserialize the object.</p>
      *
-     * @return A byte array representing the data.
+     * <p>If the means for deserializing the raw data is not apparent to consumers, a common technique is to make use
+     * of {@link #getApplicationProperties()} when creating the event, to associate serialization hints as an aid to
+     * consumers who wish to deserialize the binary data.</p>
+     *
+     * @return Binary data representing the payload.
      */
     public BinaryData getBody() {
         final AmqpMessageBodyType type = amqpAnnotatedMessage.getBody().getBodyType();
@@ -252,6 +245,10 @@ public class ServiceBusMessage {
     /**
      * Gets the content type of the message.
      *
+     * <p>
+     * Optionally describes the payload of the message, with a descriptor following the format of RFC2045, Section 5,
+     * for example "application/json".
+     * </p>
      * @return The content type of the {@link ServiceBusMessage}.
      */
     public String getContentType() {
@@ -282,7 +279,7 @@ public class ServiceBusMessage {
      * reflecting the MessageId of a message that is being replied to.
      * </p>
      *
-     * @return correlation id of this message
+     * @return The correlation id of this message.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads?#message-routing-and-correlation">Message
      *     Routing and Correlation</a>
      */
@@ -346,8 +343,7 @@ public class ServiceBusMessage {
      * identifier is a free-form string and can reflect a GUID or an identifier derived from the application context. If
      * enabled, the
      * <a href="https://docs.microsoft.com/azure/service-bus-messaging/duplicate-detection">duplicate detection</a>
-     * feature identifies and removes second and further submissions of messages with the same {@link #getMessageId()
-     * message id}.
+     * feature identifies and removes second and further submissions of messages with the same {@code messageId}.
      * </p>
      *
      * @return Id of the {@link ServiceBusMessage}.
@@ -413,6 +409,15 @@ public class ServiceBusMessage {
 
         amqpAnnotatedMessage.getMessageAnnotations().put(PARTITION_KEY_ANNOTATION_NAME.getValue(), partitionKey);
         return this;
+    }
+
+    /**
+     * Gets the {@link AmqpAnnotatedMessage}.
+     *
+     * @return The raw AMQP message.
+     */
+    public AmqpAnnotatedMessage getRawAmqpMessage() {
+        return amqpAnnotatedMessage;
     }
 
     /**

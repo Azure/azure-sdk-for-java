@@ -3,6 +3,8 @@
 
 package com.azure.spring.autoconfigure.aad;
 
+import com.azure.spring.aad.webapp.AuthorizationServerEndpoints;
+import com.azure.spring.aad.webapp.AzureActiveDirectoryConfiguration;
 import com.azure.spring.telemetry.TelemetrySender;
 import com.nimbusds.jose.jwk.source.DefaultJWKSetCache;
 import com.nimbusds.jose.jwk.source.JWKSetCache;
@@ -13,13 +15,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.util.ClassUtils;
 
 import javax.annotation.PostConstruct;
@@ -40,21 +42,21 @@ import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName
  */
 @Configuration
 @ConditionalOnWebApplication
+@ConditionalOnMissingBean(AzureActiveDirectoryConfiguration.class)
 @ConditionalOnResource(resources = "classpath:aad.enable.config")
+@ConditionalOnMissingClass({ "org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken" })
 @ConditionalOnProperty(prefix = AADAuthenticationFilterAutoConfiguration.PROPERTY_PREFIX, value = { "client-id" })
-@EnableConfigurationProperties({ AADAuthenticationProperties.class, ServiceEndpointsProperties.class })
-@PropertySource(value = "classpath:service-endpoints.properties")
+@EnableConfigurationProperties({ AADAuthenticationProperties.class })
 public class AADAuthenticationFilterAutoConfiguration {
     public static final String PROPERTY_PREFIX = "azure.activedirectory";
     private static final Logger LOG = LoggerFactory.getLogger(AADAuthenticationProperties.class);
 
     private final AADAuthenticationProperties aadAuthenticationProperties;
-    private final ServiceEndpointsProperties serviceEndpointsProperties;
+    private final AuthorizationServerEndpoints authorizationServerEndpoints;
 
-    public AADAuthenticationFilterAutoConfiguration(AADAuthenticationProperties aadAuthenticationProperties,
-                                                    ServiceEndpointsProperties serviceEndpointsProperties) {
+    public AADAuthenticationFilterAutoConfiguration(AADAuthenticationProperties aadAuthenticationProperties) {
         this.aadAuthenticationProperties = aadAuthenticationProperties;
-        this.serviceEndpointsProperties = serviceEndpointsProperties;
+        this.authorizationServerEndpoints = new AuthorizationServerEndpoints();
     }
 
     /**
@@ -71,7 +73,7 @@ public class AADAuthenticationFilterAutoConfiguration {
         LOG.info("AzureADJwtTokenFilter Constructor.");
         return new AADAuthenticationFilter(
             aadAuthenticationProperties,
-            serviceEndpointsProperties,
+            authorizationServerEndpoints,
             getJWTResourceRetriever(),
             getJWKSetCache()
         );
@@ -86,7 +88,7 @@ public class AADAuthenticationFilterAutoConfiguration {
         LOG.info("Creating AzureADStatelessAuthFilter bean.");
         return new AADAppRoleStatelessAuthenticationFilter(
             new UserPrincipalManager(
-                serviceEndpointsProperties,
+                authorizationServerEndpoints,
                 aadAuthenticationProperties,
                 resourceRetriever,
                 true

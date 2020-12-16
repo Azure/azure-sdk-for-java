@@ -1,8 +1,17 @@
 # Release History
 
-## 12.8.0-beta.1 (Unreleased)
+## 12.8.0-beta.2 (Unreleased)
+
+
+## 12.8.0-beta.1 (2020-12-07)
+- Exposed ClientOptions on all client builders, allowing users to set a custom application id and custom headers.
 - Fixed a bug where snapshot would be appended to a share snapshot instead of sharesnapshot.
 - Fixed a bug where the sharesnapshot query parameter would be ignored in share and share file client builders.
+- Fixed a bug where the error message would not be displayed the exception message of a HEAD request.
+- Added a MetadataValidationPolicy to check for leading and trailing whitespace in metadata that would cause Auth failures.
+- Added support for the 2020-04-08 service version. 
+- Added support for specifying enabled protocols on share creation
+- Added support for setting root squash on share creation and through set properties.
 
 ## 12.7.0 (2020-11-11)
 - Added support to specify whether or not a pipeline policy should be added per call or per retry.

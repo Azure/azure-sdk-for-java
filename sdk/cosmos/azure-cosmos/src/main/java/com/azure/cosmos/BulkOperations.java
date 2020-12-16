@@ -19,7 +19,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  *
  * See also {@link BulkProcessingOptions}.
  */
-@Beta(Beta.SinceVersion.V4_9_0)
+@Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class BulkOperations {
 
     /**
@@ -32,7 +32,7 @@ public final class BulkOperations {
      *
      * @return the bulk operation.
      */
-    @Beta(Beta.SinceVersion.V4_9_0)
+    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public static <T> CosmosItemOperation getCreateItemOperation(T item, PartitionKey partitionKey) {
         checkNotNull(item, "expected non-null item");
         checkNotNull(partitionKey, "expected non-null partitionKey");
@@ -50,7 +50,7 @@ public final class BulkOperations {
      *
      * @return the bulk operation.
      */
-    @Beta(Beta.SinceVersion.V4_9_0)
+    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public static <T> CosmosItemOperation getCreateItemOperation(
         T item,
         PartitionKey partitionKey,
@@ -80,7 +80,7 @@ public final class BulkOperations {
      *
      * @return the bulk operation.
      */
-    @Beta(Beta.SinceVersion.V4_9_0)
+    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public static CosmosItemOperation getDeleteItemOperation(String id, PartitionKey partitionKey) {
         checkNotNull(id, "expected non-null id");
         checkNotNull(partitionKey, "expected non-null partitionKey");
@@ -97,7 +97,7 @@ public final class BulkOperations {
      *
      * @return the bulk operation.
      */
-    @Beta(Beta.SinceVersion.V4_9_0)
+    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public static CosmosItemOperation getDeleteItemOperation(
         String id,
         PartitionKey partitionKey,
@@ -127,7 +127,7 @@ public final class BulkOperations {
      *
      * @return the bulk operation.
      */
-    @Beta(Beta.SinceVersion.V4_9_0)
+    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public static CosmosItemOperation getReadItemOperation(String id, PartitionKey partitionKey) {
         checkNotNull(id, "expected non-null id");
         checkNotNull(partitionKey, "expected non-null partitionKey");
@@ -144,7 +144,7 @@ public final class BulkOperations {
      *
      * @return the bulk operation.
      */
-    @Beta(Beta.SinceVersion.V4_9_0)
+    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public static CosmosItemOperation getReadItemOperation(
         String id,
         PartitionKey partitionKey,
@@ -177,7 +177,7 @@ public final class BulkOperations {
      *
      * @return the bulk operation.
      */
-    @Beta(Beta.SinceVersion.V4_9_0)
+    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public static <T> CosmosItemOperation getReplaceItemOperation(String id, T item, PartitionKey partitionKey) {
         checkNotNull(item, "expected non-null item");
         checkNotNull(id, "expected non-null id");
@@ -198,7 +198,7 @@ public final class BulkOperations {
      *
      * @return the bulk operation.
      */
-    @Beta(Beta.SinceVersion.V4_9_0)
+    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public static <T> CosmosItemOperation getReplaceItemOperation(
         String id,
         T item,
@@ -232,7 +232,7 @@ public final class BulkOperations {
      *
      * @return the bulk operation.
      */
-    @Beta(Beta.SinceVersion.V4_9_0)
+    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public static <T> CosmosItemOperation getUpsertItemOperation(T item, PartitionKey partitionKey) {
         checkNotNull(item, "expected non-null item");
         checkNotNull(partitionKey, "expected non-null partitionKey");
@@ -251,7 +251,7 @@ public final class BulkOperations {
      *
      * @return the bulk operation.
      */
-    @Beta(Beta.SinceVersion.V4_9_0)
+    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public static <T> CosmosItemOperation getUpsertItemOperation(
         T item,
         PartitionKey partitionKey,

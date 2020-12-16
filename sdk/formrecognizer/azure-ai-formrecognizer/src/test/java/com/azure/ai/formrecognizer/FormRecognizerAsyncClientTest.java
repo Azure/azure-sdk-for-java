@@ -1718,7 +1718,6 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void recognizeMultipageInvoice(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
-        // confirm if pageResults should be returned for prebuilt model recognition
         dataRunner((data, dataLength) -> {
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
                 client.beginRecognizeInvoices(toFluxByteBuffer(data),
@@ -1743,7 +1742,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         urlRunner((sourceUrl) -> {
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeInvoicesFromUrl(INVOICE_TEST_URL,
+                client.beginRecognizeInvoicesFromUrl(sourceUrl,
                     new RecognizeInvoicesOptions()
                         .setPollInterval(durationTestMode)).getSyncPoller();
             syncPoller.waitForCompletion();
@@ -1795,7 +1794,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         urlRunner(sourceUrl -> {
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
-                = client.beginRecognizeInvoicesFromUrl(INVOICE_TEST_URL,
+                = client.beginRecognizeInvoicesFromUrl(sourceUrl,
                 new RecognizeInvoicesOptions()
                     .setFieldElementsIncluded(true)
                     .setPollInterval(durationTestMode)).getSyncPoller();
@@ -1813,7 +1812,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         urlRunner(sourceUrl -> {
             final SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller =
-                client.beginRecognizeInvoicesFromUrl(INVOICE_TEST_URL,
+                client.beginRecognizeInvoicesFromUrl(sourceUrl,
                 new RecognizeInvoicesOptions().setPollInterval(durationTestMode).setLocale("en-US"))
                 .getSyncPoller();
             syncPoller.getFinalResult();
