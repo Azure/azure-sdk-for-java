@@ -42,9 +42,23 @@ public class JacksonHttpSessionOAuth2AuthorizedClientRepository implements OAuth
 
     public JacksonHttpSessionOAuth2AuthorizedClientRepository() {
         objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new OAuth2ClientJackson2Module());
+        if (springModuleContainsJackson2Module()) {
+            // TODO: Delete this after the min version of spring-security we need to support >=5.3.0
+            objectMapper.registerModule(new OAuth2ClientJackson2Module());
+        } else {
+            objectMapper.registerModule(new com.azure.spring.aad.webapp.jackson.OAuth2ClientJackson2Module());
+        }
         objectMapper.registerModule(new CoreJackson2Module());
         objectMapper.registerModule(new JavaTimeModule());
+    }
+
+    private boolean springModuleContainsJackson2Module() {
+        try {
+            Class.forName("org.springframework.security.oauth2.client.jackson2.OAuth2ClientJackson2Module");
+            return true;
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
     }
 
     @SuppressWarnings("unchecked")
