@@ -10,7 +10,7 @@
   </parent>
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-boot-sample-active-directory-resource-server-obo</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>1.0.0</version>
   <name>Azure Spring Boot Azure AD Starter Sample - Resource Server OBO</name>
   <description>Azure AD Spring Security Integration Spring Boot Resource Server OBO</description>
 
@@ -35,11 +35,6 @@
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-oauth2-client</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>msal4j</artifactId>
-      <version>1.8.0</version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
