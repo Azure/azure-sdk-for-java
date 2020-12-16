@@ -3,6 +3,9 @@
 
 package com.azure.messaging.servicebus;
 
+import jdk.jfr.Category;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.TimeUnit;
@@ -12,6 +15,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Sample example showing how peek would work.
  */
+@Nested
+@DisplayName("samples")
+@Category("sample")
 public class PeekMessageAsyncSample {
 
     private boolean sampleWorks = false;
