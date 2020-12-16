@@ -51,7 +51,8 @@ public class AzureActiveDirectoryConfiguration {
         return new AzureClientRegistrationRepository(
             createDefaultClient(),
             createAuthzClients(),
-            properties);
+            properties,
+            true);
     }
 
     @Bean
