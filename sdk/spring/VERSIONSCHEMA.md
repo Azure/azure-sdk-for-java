@@ -2,12 +2,12 @@
 
 Version for Spring Cloud|Version for Spring Boot  
 :---:|:---:|
-2020.0.0-SNAPSHOT | Spring Boot >=2.4.1-SNAPSHOT
-2020.0.0-M6 | Spring Boot >=2.4.0.M4 and <2.4.1-SNAPSHOT
+2020.0.0-SNAPSHOT | Spring Boot >=2.4.2-SNAPSHOT
+2020.0.0-M6 | Spring Boot >=2.4.0.M4 and <2.4.2-SNAPSHOT
 2020.0.0-M4 | Spring Boot >=2.4.0.M2 and <=2.4.0-M3
 2020.0.0-M3 | Spring Boot >=2.4.0.M1 and <=2.4.0.M1
-Hoxton.BUILD-SNAPSHOT |Spring Boot >=2.3.7.BUILD-SNAPSHOT and <2.4.0.M1
-Hoxton.SR9 |Spring Boot >=2.2.0.M4 and <2.3.7.BUILD-SNAPSHOT
+Hoxton.BUILD-SNAPSHOT |Spring Boot >=2.3.8.BUILD-SNAPSHOT and <2.4.0.M1
+Hoxton.SR9 |Spring Boot >=2.2.0.M4 and <2.3.8.BUILD-SNAPSHOT
 Greenwich.BUILD-SNAPSHOT | Spring Boot >=2.1.999.BUILD-SNAPSHOT and <2.2.0.M4
 Greenwich.SR6 | Spring Boot >=2.1.0.RELEASE and <2.1.999.BUILD-SNAPSHOT
 Greenwich.M1 | Spring Boot >=2.1.0.M3 and <2.1.0.RELEASE
@@ -22,13 +22,5 @@ Finchley.M5| Spring Boot >=2.0.0.M7 and <=2.0.0.M7
 Finchley.M4| Spring Boot >=2.0.0.M6 and <=2.0.0.M6
 Finchley.M3 | Spring Boot >=2.0.0.M5 and <=2.0.0.M5
 Finchley.M2 | Spring Boot >=2.0.0.M3 and <2.0.0.M5
-
-
-
-
-
-
-
-
-
+Refs: https://start.spring.io/actuator/info
 

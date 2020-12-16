@@ -17,7 +17,6 @@
   <name>Azure Spring Cloud Stream Binder Test</name>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
-
   <dependencies>
     <dependency>
       <groupId>org.springframework.cloud</groupId>
