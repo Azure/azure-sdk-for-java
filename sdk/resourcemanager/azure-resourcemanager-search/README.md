@@ -43,6 +43,12 @@ With above configuration, `azure` client can be authenticated by following code:
 
 <!-- embedme ./src/samples/java/com/azure/resourcemanager/search/ReadmeSamples.java#L21-L26 -->
 ```java
+AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+TokenCredential credential = new DefaultAzureCredentialBuilder()
+    .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
+    .build();
+SearchServiceManager manager = SearchServiceManager
+    .authenticate(credential, profile);
 ```
 
 The sample code assumes global Azure. Please change `AzureEnvironment.AZURE` variable if otherwise.
