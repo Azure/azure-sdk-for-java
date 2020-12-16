@@ -10,5 +10,6 @@
   <version>1.0.0</version><!-- Need not change for every release-->
   <modules>
     <module>azure-digitaltwins-core</module>
+    <module>azure-resourcemanager-digitaltwins</module>
   </modules>
 </project>
