@@ -212,7 +212,8 @@ public class AzureActiveDirectoryConfiguration {
 
     /**
      * Temp solution to make RefreshTokenGrantRequestEntityConverter take effect.
-     * TODO: remove this logic after spring-security can inject OAuth2AuthorizedClientManager to OAuth2AuthorizedClientArgumentResolver
+     * TODO: remove this logic after spring-security can inject OAuth2AuthorizedClientManager
+     * to OAuth2AuthorizedClientArgumentResolver
      * issue: https://github.com/spring-projects/spring-security/issues/8700
      */
     @Order(HIGHEST_PRECEDENCE)
