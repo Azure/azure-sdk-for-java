@@ -204,7 +204,8 @@ public class DataLakeFileSystemClient {
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.createWithResponse#Map-PublicAccessType-Duration-Context}
      *
-     * @param metadata Metadata to associate with the file system.
+     * @param metadata Metadata to associate with the file system. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param accessType Specifies how the data in this file system is available to the public. See the
      * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -295,7 +296,8 @@ public class DataLakeFileSystemClient {
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.setMetadata#Map}
      *
-     * @param metadata Metadata to associate with the file system.
+     * @param metadata Metadata to associate with the file system. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      */
     public void setMetadata(Map<String, String> metadata) {
         setMetadataWithResponse(metadata, null, null, Context.NONE);
@@ -308,7 +310,8 @@ public class DataLakeFileSystemClient {
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.setMetadataWithResponse#Map-DataLakeRequestConditions-Duration-Context}
-     * @param metadata Metadata to associate with the file system.
+     * @param metadata Metadata to associate with the file system. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -404,7 +407,8 @@ public class DataLakeFileSystemClient {
      * @param permissions POSIX access permissions for the file owner, the file owning group, and others.
      * @param umask Restricts permissions of the file to be created.
      * @param headers {@link PathHttpHeaders}
-     * @param metadata Metadata to associate with the file.
+     * @param metadata Metadata to associate with the file. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -511,7 +515,8 @@ public class DataLakeFileSystemClient {
      * @param permissions POSIX access permissions for the directory owner, the directory owning group, and others.
      * @param umask Restricts permissions of the directory to be created.
      * @param headers {@link PathHttpHeaders}
-     * @param metadata Metadata to associate with the directory.
+     * @param metadata Metadata to associate with the resource. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.

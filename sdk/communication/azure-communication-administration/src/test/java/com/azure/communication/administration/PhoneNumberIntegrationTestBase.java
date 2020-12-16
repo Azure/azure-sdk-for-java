@@ -22,15 +22,19 @@ public class PhoneNumberIntegrationTestBase extends TestBase {
         Configuration.getGlobalConfiguration().get("COMMUNICATION_SERVICE_ENDPOINT", "https://REDACTED.communication.azure.com");
     private static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_LIVETEST_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
-
+    
+    protected static final String PHONE_NUMBER = 
+        Configuration.getGlobalConfiguration().get("COMMUNICATION_PHONE_NUMBER", "+11234567891");
     protected static final String COUNTRY_CODE =
-        Configuration.getGlobalConfiguration().get("COUNTRY_CODE", "US");
+        Configuration.getGlobalConfiguration().get("COUNTRY_CODE", "US");   
+    protected static final String AREA_CODE =
+        Configuration.getGlobalConfiguration().get("AREA_CODE", "619");
     protected static final String LOCALE =
         Configuration.getGlobalConfiguration().get("LOCALE", "en-us");
     protected static final String LOCATION_OPTION_STATE =
         Configuration.getGlobalConfiguration().get("LOCATION_OPTION_STATE", "CA");
     protected static final String LOCATION_OPTION_CITY =
-        Configuration.getGlobalConfiguration().get("LOCATION_OPTION_CITY", "NOAM-US-CA-LA");
+        Configuration.getGlobalConfiguration().get("LOCATION_OPTION_CITY", "NOAM-US-CA-SD");
     protected static final String RESERVATION_OPTIONS_DESCRIPTION =
         Configuration.getGlobalConfiguration().get("RESERVATION_OPTIONS_DESCRIPTION", "testReservation20200014");
     protected static final String RESERVATION_OPTIONS_NAME =
@@ -58,7 +62,7 @@ public class PhoneNumberIntegrationTestBase extends TestBase {
 
         if (getTestMode() == TestMode.RECORD) {
             List<Function<String, String>> redactors = new ArrayList<>();
-            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "\"REDACTED\""));
+            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
             builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
         }
 
@@ -78,7 +82,7 @@ public class PhoneNumberIntegrationTestBase extends TestBase {
 
         if (getTestMode() == TestMode.RECORD) {
             List<Function<String, String>> redactors = new ArrayList<>();
-            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "\"REDACTED\""));
+            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
             builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
         }
         

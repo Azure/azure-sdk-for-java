@@ -3,7 +3,7 @@
 
 package com.azure.communication.sms;
 
-import com.azure.communication.common.PhoneNumber;
+import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.communication.sms.implementation.AzureCommunicationSMSServiceImpl;
 import com.azure.communication.sms.models.SendMessageRequest;
 import com.azure.communication.sms.models.SendSmsOptions;
@@ -47,7 +47,8 @@ public final class SmsAsyncClient {
      * @param context the context of the request. Can also be null or Context.NONE.
      * @return response for a successful send Sms request.
      */
-    Mono<Response<SendSmsResponse>> sendMessageWithResponse(PhoneNumber from, List<PhoneNumber> to, String message, 
+    Mono<Response<SendSmsResponse>> sendMessageWithResponse(PhoneNumberIdentifier from, 
+        List<PhoneNumberIdentifier> to, String message, 
         SendSmsOptions smsOptions, Context context) {
         if (from == null) {
             return monoError(logger, new NullPointerException("Argument 'from' cannot be null."));
@@ -70,7 +71,8 @@ public final class SmsAsyncClient {
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SendSmsResponse> sendMessage(PhoneNumber from, List<PhoneNumber> to, String message) {
+    public Mono<SendSmsResponse> sendMessage(PhoneNumberIdentifier from, 
+        List<PhoneNumberIdentifier> to, String message) {
         if (from == null) {
             return monoError(logger, new NullPointerException("Argument 'from' cannot be null."));
         } else if (to == null) {
@@ -92,7 +94,7 @@ public final class SmsAsyncClient {
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SendSmsResponse> sendMessage(PhoneNumber from, PhoneNumber to, String message) {
+    public Mono<SendSmsResponse> sendMessage(PhoneNumberIdentifier from, PhoneNumberIdentifier to, String message) {
         if (from == null) {
             return monoError(logger, new NullPointerException("Argument 'from' cannot be null."));
         } else if (to == null) {
@@ -102,7 +104,7 @@ public final class SmsAsyncClient {
         SendSmsOptions smsOptions = new SendSmsOptions();
         smsOptions.setEnableDeliveryReport(false);
 
-        List<PhoneNumber> toList = new ArrayList<PhoneNumber>();
+        List<PhoneNumberIdentifier> toList = new ArrayList<PhoneNumberIdentifier>();
         toList.add(to);
 
         return sendMessage(from, toList, message, smsOptions);
@@ -120,7 +122,8 @@ public final class SmsAsyncClient {
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SendSmsResponse> sendMessage(PhoneNumber from, List<PhoneNumber> to, String message, 
+    public Mono<SendSmsResponse> sendMessage(PhoneNumberIdentifier from, 
+        List<PhoneNumberIdentifier> to, String message, 
         SendSmsOptions smsOptions) {
         if (from == null) {
             return monoError(logger, new NullPointerException("Argument 'from' cannot be null."));
@@ -136,7 +139,8 @@ public final class SmsAsyncClient {
         }        
     }
 
-    private SendMessageRequest createSmsMessageRequest(PhoneNumber from, List<PhoneNumber> to, String message, 
+    private SendMessageRequest createSmsMessageRequest(PhoneNumberIdentifier from, 
+        List<PhoneNumberIdentifier> to, String message, 
         SendSmsOptions smsOptions) {
         Stream<String> s = to.stream().map(n -> n.getValue());
         SendMessageRequest sendMessageRequest = new SendMessageRequest();

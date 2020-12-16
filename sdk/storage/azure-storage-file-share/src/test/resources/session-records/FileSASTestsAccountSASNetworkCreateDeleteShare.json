@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.file.core.windows.net/filesastestsaccountsasnetworkcreatedeleteshare1959481ae?restype=share&sv=2020-02-10&ss=f&srt=sco&se=2020-08-14T19%3A26%3A09Z&sp=rdc&sig=REDACTED",
+    "Uri" : "https://REDACTED.file.core.windows.net/filesastestsaccountsasnetworkcreatedeleteshare1959481ae?restype=share&sv=2020-04-08&ss=f&srt=sco&se=2020-08-14T19%3A26%3A09Z&sp=rdc&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2020-02-10",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.6.0-beta.2 (11.0.7; Windows 10; 10.0)",
@@ -22,7 +22,7 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.file.core.windows.net/filesastestsaccountsasnetworkcreatedeleteshare1959481ae?restype=share&sv=2020-02-10&ss=f&srt=sco&se=2020-08-14T19%3A26%3A09Z&sp=rdc&sig=REDACTED",
+    "Uri" : "https://REDACTED.file.core.windows.net/filesastestsaccountsasnetworkcreatedeleteshare1959481ae?restype=share&sv=2020-04-08&ss=f&srt=sco&se=2020-08-14T19%3A26%3A09Z&sp=rdc&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2020-02-10",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.6.0-beta.2 (11.0.7; Windows 10; 10.0)",

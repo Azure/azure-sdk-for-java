@@ -14,8 +14,8 @@ import com.azure.communication.chat.models.SendChatMessageOptions;
 import com.azure.communication.chat.models.SendChatMessageResult;
 import com.azure.communication.chat.models.UpdateChatMessageOptions;
 import com.azure.communication.chat.models.UpdateChatThreadOptions;
-import com.azure.communication.common.CommunicationUser;
-import com.azure.communication.common.CommunicationUserCredential;
+import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.communication.common.CommunicationTokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.rest.PagedIterable;
@@ -47,7 +47,7 @@ public class ReadmeSamples {
 
         // Your user access token retrieved from your trusted service
         String token = "SECRET";
-        CommunicationUserCredential credential = new CommunicationUserCredential(token);
+        CommunicationTokenCredential credential = new CommunicationTokenCredential(token);
 
         // Initialize the chat client
         final ChatClientBuilder builder = new ChatClientBuilder();
@@ -65,8 +65,8 @@ public class ReadmeSamples {
     public void createChatThread() {
         ChatClient chatClient = createChatClient();
 
-        CommunicationUser user1 = new CommunicationUser("Id 1");
-        CommunicationUser user2 = new CommunicationUser("Id 2");
+        CommunicationUserIdentifier user1 = new CommunicationUserIdentifier("Id 1");
+        CommunicationUserIdentifier user2 = new CommunicationUserIdentifier("Id 2");
 
         List<ChatThreadMember> members = new ArrayList<ChatThreadMember>();
 
@@ -219,8 +219,8 @@ public class ReadmeSamples {
     public void addChatThreadMembers() {
         ChatThreadClient chatThreadClient = getChatThreadClient();
 
-        CommunicationUser user1 = new CommunicationUser("Id 1");
-        CommunicationUser user2 = new CommunicationUser("Id 2");
+        CommunicationUserIdentifier user1 = new CommunicationUserIdentifier("Id 1");
+        CommunicationUserIdentifier user2 = new CommunicationUserIdentifier("Id 2");
 
         List<ChatThreadMember> members = new ArrayList<ChatThreadMember>();
 
@@ -246,7 +246,7 @@ public class ReadmeSamples {
     public void removeChatThreadMember() {
         ChatThreadClient chatThreadClient = getChatThreadClient();
 
-        CommunicationUser user = new CommunicationUser("Id");
+        CommunicationUserIdentifier user = new CommunicationUserIdentifier("Id");
 
         chatThreadClient.removeMember(user);
     }

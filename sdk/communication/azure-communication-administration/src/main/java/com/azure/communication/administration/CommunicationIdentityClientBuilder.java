@@ -9,9 +9,11 @@ import com.azure.communication.common.HmacAuthenticationPolicy;
 import com.azure.communication.administration.implementation.CommunicationIdentityClientImpl;
 import com.azure.communication.administration.implementation.CommunicationIdentityClientImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -20,6 +22,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,8 +39,10 @@ public final class CommunicationIdentityClientBuilder {
     private static final String COMMUNICATION_ADMINISTRATION_PROPERTIES = 
         "azure-communication-administration.properties";
 
+    private final ClientLogger logger = new ClientLogger(CommunicationIdentityClientBuilder.class);
     private String endpoint;
-    private CommunicationClientCredential credential;
+    private CommunicationClientCredential accessKeyCredential;
+    private TokenCredential tokenCredential;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions = new HttpLogOptions();
     private HttpPipeline pipeline;
@@ -69,6 +74,18 @@ public final class CommunicationIdentityClientBuilder {
     }
 
     /**
+     * Sets the {@link TokenCredential} used to authenticate HTTP requests.
+     *
+     * @param tokenCredential {@link TokenCredential} used to authenticate HTTP requests.
+     * @return The updated {@link CommunicationIdentityClientBuilder} object.
+     * @throws NullPointerException If {@code tokenCredential} is null.
+     */
+    public CommunicationIdentityClientBuilder credential(TokenCredential tokenCredential) {
+        this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
+        return this;
+    }
+
+    /**
      * Set credential to use
      *
      * @param accessKey access key for initalizing CommunicationClientCredential
@@ -76,7 +93,7 @@ public final class CommunicationIdentityClientBuilder {
      */
     public CommunicationIdentityClientBuilder accessKey(String accessKey) {
         Objects.requireNonNull(accessKey, "'accessKey' cannot be null.");
-        this.credential = new CommunicationClientCredential(accessKey);
+        this.accessKeyCredential = new CommunicationClientCredential(accessKey);
         return this;
     }
 
@@ -184,15 +201,10 @@ public final class CommunicationIdentityClientBuilder {
     private CommunicationIdentityClientImpl createServiceImpl() {
         Objects.requireNonNull(endpoint);
 
-        if (this.pipeline == null) {
-            Objects.requireNonNull(credential);
-        }
-
         HttpPipeline builderPipeline = this.pipeline;
         if (this.pipeline == null) {
-            HmacAuthenticationPolicy hmacAuthenticationPolicy = new HmacAuthenticationPolicy(credential);            
-            builderPipeline = createHttpPipeline(httpClient,
-                hmacAuthenticationPolicy,
+            builderPipeline = createHttpPipeline(httpClient, 
+                createHttpPipelineAuthPolicy(), 
                 customPolicies);
         }
 
@@ -201,6 +213,22 @@ public final class CommunicationIdentityClientBuilder {
             .pipeline(builderPipeline);
         
         return clientBuilder.buildClient();
+    }
+
+    private HttpPipelinePolicy createHttpPipelineAuthPolicy() {
+        if (this.tokenCredential != null && this.accessKeyCredential != null) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Both 'credential' and 'accessKey' are set. Just one may be used."));
+        }
+        if (this.tokenCredential != null) { 
+            return new BearerTokenAuthenticationPolicy(
+                this.tokenCredential, "https://communication.azure.com//.default");          
+        } else if (this.accessKeyCredential != null) {
+            return new HmacAuthenticationPolicy(this.accessKeyCredential);            
+        } else {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing credential information while building a client."));
+        }
     }
 
     private HttpPipeline createHttpPipeline(HttpClient httpClient,

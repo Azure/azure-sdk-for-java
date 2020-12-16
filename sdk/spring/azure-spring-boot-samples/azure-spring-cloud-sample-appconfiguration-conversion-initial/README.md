@@ -4,6 +4,10 @@ This sample shows how to convert a Spring Cloud Application with Cosmos DB to be
 
 ## Key concepts
 ## Getting started
+
+### Environment checklist
+We need to ensure that this [environment checklist][ready-to-run-checklist] is completed before the run.
+
 ### Prerequisite
 
 * An Azure subscription; if you don't already have an Azure subscription, you can activate your [MSDN subscriber benefits](https://azure.microsoft.com/pricing/member-offers/msdn-benefits-details/) or sign up for a [free Azure account](https://azure.microsoft.com/free/).
@@ -93,12 +97,6 @@ In this section, you clone a containerized Spring Boot application and test it l
    ```
 
 #### Run the sample
-
-1. Build the JAR file using Maven; for example:
-
-   ```shell
-   mvn clean package
-   ```
 
 1. When the web app has been created, start the web app using Maven; for example:
 
@@ -271,12 +269,6 @@ In this section, you clone a containerized Spring Boot application and test it l
 
 #### Run the updated sample
 
-1. Build the JAR file using Maven; for example:
-
-   ```shell
-   mvn clean package
-   ```
-
 1. When the web app has been created, start the web app using Maven; for example:
 
    ```shell
@@ -294,3 +286,4 @@ In this section, you clone a containerized Spring Boot application and test it l
 
 <!-- LINKS -->
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist

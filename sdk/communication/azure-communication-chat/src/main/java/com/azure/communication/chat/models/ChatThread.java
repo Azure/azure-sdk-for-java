@@ -4,7 +4,7 @@
 
 package com.azure.communication.chat.models;
 
-import com.azure.communication.common.CommunicationUser;
+import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -36,7 +36,7 @@ public final class ChatThread {
      * Id of the chat thread owner.
      */
     @JsonProperty(value = "createdBy", access = JsonProperty.Access.WRITE_ONLY)
-    private CommunicationUser createdBy;
+    private CommunicationUserIdentifier createdBy;
 
     /*
      * Chat thread members.
@@ -111,7 +111,7 @@ public final class ChatThread {
      *
      * @return the createdBy value.
      */
-    public CommunicationUser getCreatedBy() {
+    public CommunicationUserIdentifier getCreatedBy() {
         return this.createdBy;
     }
 
@@ -121,7 +121,7 @@ public final class ChatThread {
      * @param createdBy the createdBy value to set.
      * @return the ChatThread object itself.
      */
-    public ChatThread setCreatedBy(CommunicationUser createdBy) {
+    public ChatThread setCreatedBy(CommunicationUserIdentifier createdBy) {
         this.createdBy = createdBy;
         return this;
     }

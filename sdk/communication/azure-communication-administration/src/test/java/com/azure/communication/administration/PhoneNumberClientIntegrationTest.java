@@ -20,13 +20,14 @@ import com.azure.communication.administration.models.PstnConfiguration;
 import com.azure.communication.administration.models.ReleaseStatus;
 import com.azure.communication.administration.models.UpdateNumberCapabilitiesResponse;
 import com.azure.communication.administration.models.UpdatePhoneNumberCapabilitiesResponse;
-import com.azure.communication.common.PhoneNumber;
+import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -50,9 +51,25 @@ public class PhoneNumberClientIntegrationTest extends PhoneNumberIntegrationTest
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void listAllPhoneNumbersWithContext(HttpClient httpClient) {
+        PagedIterable<AcquiredPhoneNumber> pagedIterable = this.getClient(httpClient).listAllPhoneNumbers(LOCALE, Context.NONE);
+        assertNotNull(pagedIterable.iterator().next().getPhoneNumber());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void listPhonePlanGroups(HttpClient httpClient) {
         PagedIterable<PhonePlanGroup> pagedIterable =
             this.getClient(httpClient).listPhonePlanGroups(COUNTRY_CODE, LOCALE, true);
+
+        assertNotNull(pagedIterable.iterator().next().getPhonePlanGroupId());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void listPhonePlanGroupsWithContext(HttpClient httpClient) {
+        PagedIterable<PhonePlanGroup> pagedIterable =
+            this.getClient(httpClient).listPhonePlanGroups(COUNTRY_CODE, LOCALE, true, Context.NONE);
 
         assertNotNull(pagedIterable.iterator().next().getPhonePlanGroupId());
     }
@@ -70,15 +87,33 @@ public class PhoneNumberClientIntegrationTest extends PhoneNumberIntegrationTest
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void listAllReleases(HttpClient httpClient) {
-        PagedIterable<PhoneNumberEntity> pagedIterable = this.getClient(httpClient).listAllReleases();
-        assertNotNull(pagedIterable.iterator().next().getId());
+    public void listPhonePlansWithContext(HttpClient httpClient) {
+        PagedIterable<PhonePlanGroup> phonePlanGroupsPagedIterable =
+            this.getClient(httpClient).listPhonePlanGroups(COUNTRY_CODE, LOCALE, true);
+        PagedIterable<PhonePlan> phonePlanPagedIterable =
+            this.getClient(httpClient).listPhonePlans(COUNTRY_CODE, phonePlanGroupsPagedIterable.iterator().next().getPhonePlanGroupId(), LOCALE, Context.NONE);
+
+        assertNotNull(phonePlanPagedIterable.iterator().next().getPhonePlanId());
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void listAllReservations(HttpClient httpClient) {
-        PagedIterable<PhoneNumberEntity> pagedIterable = this.getClient(httpClient).listAllReservations();
+    public void getPhonePlanLocationOptionsWithResponse(HttpClient httpClient) {
+        PagedIterable<PhonePlanGroup> phonePlanGroupsPagedIterable =
+            this.getClient(httpClient).listPhonePlanGroups(COUNTRY_CODE, LOCALE, true);
+        String planGroupId =  phonePlanGroupsPagedIterable.iterator().next().getPhonePlanGroupId();
+        PagedIterable<PhonePlan> phonePlanPagedIterable =
+            this.getClient(httpClient).listPhonePlans(COUNTRY_CODE, planGroupId, LOCALE, Context.NONE);
+        String planId =  phonePlanPagedIterable.iterator().next().getPhonePlanId();
+        Response<LocationOptionsResponse> locationOptionsResponse = this.getClient(httpClient).getPhonePlanLocationOptionsWithResponse(COUNTRY_CODE, planGroupId, planId, LOCALE, Context.NONE);
+        assertEquals(locationOptionsResponse.getStatusCode(), 200);
+        assertNotNull(locationOptionsResponse.getValue().getLocationOptions().getLabelId());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void listAllReleases(HttpClient httpClient) {
+        PagedIterable<PhoneNumberEntity> pagedIterable = this.getClient(httpClient).listAllReleases();
         assertNotNull(pagedIterable.iterator().next().getId());
     }
 
@@ -87,6 +122,20 @@ public class PhoneNumberClientIntegrationTest extends PhoneNumberIntegrationTest
     public void listAllSupportedCountries(HttpClient httpClient) {
         PagedIterable<PhoneNumberCountry> pagedIterable = this.getClient(httpClient).listAllSupportedCountries(LOCALE);
         assertNotNull(pagedIterable.iterator().next().getCountryCode());
+    }
+    
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void listAllSupportedCountriesWithContext(HttpClient httpClient) {
+        PagedIterable<PhoneNumberCountry> pagedIterable = this.getClient(httpClient).listAllSupportedCountries(LOCALE, Context.NONE);
+        assertNotNull(pagedIterable.iterator().next().getCountryCode());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void listAllReservations(HttpClient httpClient) {
+        PagedIterable<PhoneNumberEntity> pagedIterable = this.getClient(httpClient).listAllReservations(Context.NONE);
+        assertNotNull(pagedIterable.iterator().next());
     }
 
     @ParameterizedTest
@@ -209,6 +258,9 @@ public class PhoneNumberClientIntegrationTest extends PhoneNumberIntegrationTest
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)")
     public void beginCreateReservationBeginPurchaseReservationTestCapabilitiesWithResponseBeginReleasePhoneNumberSync(HttpClient httpClient) {
          // Setting up for phone number reservation creation
         PhoneNumberClient client = this.getClient(httpClient);
@@ -237,8 +289,8 @@ public class PhoneNumberClientIntegrationTest extends PhoneNumberIntegrationTest
         NumberUpdateCapabilities update = new NumberUpdateCapabilities();
         update.setAdd(capabilitiesToAdd);
 
-        Map<PhoneNumber, NumberUpdateCapabilities> updateMap = new HashMap<>();
-        updateMap.put(new PhoneNumber(phoneNumber), update);
+        Map<PhoneNumberIdentifier, NumberUpdateCapabilities> updateMap = new HashMap<>();
+        updateMap.put(new PhoneNumberIdentifier(phoneNumber), update);
 
         Response<UpdateNumberCapabilitiesResponse> updateResponse =
             this.getClient(httpClient).updateCapabilitiesWithResponse(updateMap, Context.NONE);
@@ -255,10 +307,18 @@ public class PhoneNumberClientIntegrationTest extends PhoneNumberIntegrationTest
         // Release phone number
         PhoneNumberRelease phoneNumberRelease = beginReleasePhoneNumbers(httpClient, phoneNumber).getFinalResult();
         assertEquals(ReleaseStatus.COMPLETE, phoneNumberRelease.getStatus());
+
+        // Get release by id
+        PhoneNumberRelease getPhoneNumberRelease = client.getReleaseById(phoneNumberRelease.getReleaseId());
+        assertNotNull(getPhoneNumberRelease);
+
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)")
     public void beginCreateReservationBeginPurchaseReservationTestConfigurationWithResponseBeginReleasePhoneNumberSync(HttpClient httpClient) {
          // Setting up for phone number reservation creation
         PhoneNumberClient client = this.getClient(httpClient);
@@ -281,7 +341,7 @@ public class PhoneNumberClientIntegrationTest extends PhoneNumberIntegrationTest
         beginPurchaseReservation(httpClient, reservationId).getFinalResult();
 
         // Configure number with response
-        PhoneNumber number = new PhoneNumber(purchasedPhoneNumber);
+        PhoneNumberIdentifier number = new PhoneNumberIdentifier(purchasedPhoneNumber);
         PstnConfiguration pstnConfiguration = new PstnConfiguration();
         pstnConfiguration.setApplicationId("ApplicationId");
         pstnConfiguration.setCallbackUrl("https://callbackurl");
@@ -305,6 +365,109 @@ public class PhoneNumberClientIntegrationTest extends PhoneNumberIntegrationTest
         // Release phone number
         PhoneNumberRelease phoneNumberRelease = beginReleasePhoneNumbers(httpClient, purchasedPhoneNumber).getFinalResult();
         assertEquals(ReleaseStatus.COMPLETE, phoneNumberRelease.getStatus());
+
+        // Get release by id with Response
+        Response<PhoneNumberRelease> phoneNumberReleaseResponse = client.getReleaseByIdWithResponse(phoneNumberRelease.getReleaseId(), Context.NONE);
+        assertEquals(phoneNumberReleaseResponse.getStatusCode(), 200);
+        assertNotNull(phoneNumberReleaseResponse.getValue());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void configureNumberGetNumberConfigurationUnconfigureNumberWithResponse(HttpClient httpClient) {
+        // Configure number with response
+        PhoneNumberIdentifier number = new PhoneNumberIdentifier(PHONE_NUMBER);
+        PstnConfiguration pstnConfiguration = new PstnConfiguration();
+        pstnConfiguration.setApplicationId("ApplicationId");
+        pstnConfiguration.setCallbackUrl("https://callbackurl");
+        Response<Void> configResponse = this.getClient(httpClient).configureNumberWithResponse(number, pstnConfiguration, Context.NONE);
+
+        assertEquals(200, configResponse.getStatusCode());
+
+        // Get number configuration with response
+        Response<NumberConfigurationResponse> getResponse =
+            this.getClient(httpClient).getNumberConfigurationWithResponse(number, Context.NONE);
+
+        assertEquals(200, getResponse.getStatusCode());
+        assertNotNull(getResponse.getValue().getPstnConfiguration().getApplicationId());
+        assertNotNull(getResponse.getValue().getPstnConfiguration().getCallbackUrl());
+
+
+        // Unconfigure number with response
+        Response<Void> unconfigureResponse = this.getClient(httpClient).unconfigureNumberWithResponse(number, Context.NONE);
+        assertEquals(200, unconfigureResponse.getStatusCode());
+    }
+
+    
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void configureNumberGetNumberConfigurationUnconfigureNumber(HttpClient httpClient) {
+        // Configure number with response
+        PhoneNumberIdentifier number = new PhoneNumberIdentifier(PHONE_NUMBER);
+        PstnConfiguration pstnConfiguration = new PstnConfiguration();
+        pstnConfiguration.setApplicationId("ApplicationId");
+        pstnConfiguration.setCallbackUrl("https://callbackurl");
+        this.getClient(httpClient).configureNumber(number, pstnConfiguration);
+
+        // Get number configuration with response
+        NumberConfigurationResponse configResponse =
+            this.getClient(httpClient).getNumberConfiguration(number);
+
+        assertNotNull(configResponse.getPstnConfiguration().getApplicationId());
+        assertNotNull(configResponse.getPstnConfiguration().getCallbackUrl());
+
+        // Unconfigure number with response
+        this.getClient(httpClient).unconfigureNumber(number);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void updateCapabilitiesGetCapabilitiesUpdateWithResponse(HttpClient httpClient) {
+        // Update capabilities with response
+        List<Capability> capabilitiesToAdd = new ArrayList<>();
+        capabilitiesToAdd.add(Capability.INBOUND_CALLING);
+
+        NumberUpdateCapabilities update = new NumberUpdateCapabilities();
+        update.setAdd(capabilitiesToAdd);
+
+        Map<PhoneNumberIdentifier, NumberUpdateCapabilities> updateMap = new HashMap<>();
+        updateMap.put(new PhoneNumberIdentifier(PHONE_NUMBER), update);
+
+        Response<UpdateNumberCapabilitiesResponse> updateResponse =
+            this.getClient(httpClient).updateCapabilitiesWithResponse(updateMap, Context.NONE);
+        String capabilitiesUpdateId = updateResponse.getValue().getCapabilitiesUpdateId();
+        assertEquals(200, updateResponse.getStatusCode());
+        assertNotNull(capabilitiesUpdateId);
+
+        // Get capabilities update
+        Response<UpdatePhoneNumberCapabilitiesResponse> getResponse =
+            this.getClient(httpClient).getCapabilitiesUpdateWithResponse(capabilitiesUpdateId, Context.NONE);
+        assertEquals(200, getResponse.getStatusCode());
+        assertEquals(capabilitiesUpdateId, getResponse.getValue().getCapabilitiesUpdateId());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void updateCapabilitiesGetCapabilitiesUpdate(HttpClient httpClient) {
+        // Update capabilities with response
+        List<Capability> capabilitiesToAdd = new ArrayList<>();
+        capabilitiesToAdd.add(Capability.INBOUND_CALLING);
+
+        NumberUpdateCapabilities update = new NumberUpdateCapabilities();
+        update.setAdd(capabilitiesToAdd);
+
+        Map<PhoneNumberIdentifier, NumberUpdateCapabilities> updateMap = new HashMap<>();
+        updateMap.put(new PhoneNumberIdentifier(PHONE_NUMBER), update);
+
+        UpdateNumberCapabilitiesResponse updateResponse =
+            this.getClient(httpClient).updateCapabilities(updateMap);
+        String capabilitiesUpdateId = updateResponse.getCapabilitiesUpdateId();
+        assertNotNull(capabilitiesUpdateId);
+
+        // Get capabilities update
+        UpdatePhoneNumberCapabilitiesResponse getResponse =
+            this.getClient(httpClient).getCapabilitiesUpdate(capabilitiesUpdateId);
+        assertEquals(capabilitiesUpdateId, getResponse.getCapabilitiesUpdateId());
     }
 
     private SyncPoller<PhoneNumberReservation, PhoneNumberReservation> beginCreateReservation(HttpClient httpClient, PhonePlan phonePlan) {
@@ -313,7 +476,7 @@ public class PhoneNumberClientIntegrationTest extends PhoneNumberIntegrationTest
 
         CreateReservationOptions createReservationOptions = new CreateReservationOptions();
         createReservationOptions
-            .setAreaCode("213")
+            .setAreaCode(AREA_CODE)
             .setDescription(RESERVATION_OPTIONS_DESCRIPTION)
             .setDisplayName(RESERVATION_OPTIONS_NAME)
             .setPhonePlanIds(phonePlanIds)
@@ -329,8 +492,8 @@ public class PhoneNumberClientIntegrationTest extends PhoneNumberIntegrationTest
     }
 
     private SyncPoller<PhoneNumberRelease, PhoneNumberRelease> beginReleasePhoneNumbers(HttpClient httpClient, String phoneNumber) {
-        PhoneNumber releasedPhoneNumber = new PhoneNumber(phoneNumber);
-        List<PhoneNumber> phoneNumbers = new ArrayList<>();
+        PhoneNumberIdentifier releasedPhoneNumber = new PhoneNumberIdentifier(phoneNumber);
+        List<PhoneNumberIdentifier> phoneNumbers = new ArrayList<>();
         phoneNumbers.add(releasedPhoneNumber);
         Duration pollInterval = Duration.ofSeconds(1);
         return this.getClient(httpClient).beginReleasePhoneNumbers(phoneNumbers, pollInterval);

@@ -1,14 +1,25 @@
 # Release History
 
-## 12.10.0-beta.1 (Unreleased)
+## 12.10.0-beta.2 (Unreleased)
+
+
+
+## 12.10.0-beta.1 (2020-12-07)
+- Exposed ClientOptions on all client builders, allowing users to set a custom application id and custom headers.
 - Added ability to get container client from blob clients and service client from container clients
+- Added a MetadataValidationPolicy to check for leading and trailing whitespace in metadata that would cause Auth failures.
+- Fixed a bug where the error message would not be displayed the exception message of a HEAD request.
+- Added support for the 2020-04-08 service version. 
+- Added support to upload block blob from URL.
+- Added lease ID parameter to Get and Set Blob Tags.
+- Added blob tags to BlobServiceClient.findBlobsByTags() result.
 
 ## 12.9.0 (2020-11-11)
 - Fixed a bug where interspersed element types returned by page listing would deserialize incorrectly.
 - Fixed a bug where BlobInputStream would not eTag lock on the blob, resulting in undesirable behavior if the blob was modified in the middle of reading. 
+- Renamed BlobDownloadToFileOptions.rangeGetContentMd5 to BlobDownloadToFileOptions.retrieveContentRangeMd5.
 - Added support for move and execute permissions on blob SAS and container SAS, and list permissions on blob SAS.
 - Added support to specify a preauthorized user id and correlation id for user delegation SAS.
-- Renamed BlobDownloadToFileOptions.rangeGetContentMd5 to BlobDownloadToFileOptions.retrieveContentRangeMd5
 
 ## 12.9.0-beta.2 (2020-10-08)
 - Added support to specify whether or not a pipeline policy should be added per call or per retry.

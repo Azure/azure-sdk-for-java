@@ -25,7 +25,7 @@ public final class SqlTriggerGetPropertiesResource extends SqlTriggerResource {
      * the resource.
      */
     @JsonProperty(value = "_ts", access = JsonProperty.Access.WRITE_ONLY)
-    private Object ts;
+    private Float ts;
 
     /*
      * A system generated property representing the resource etag required for
@@ -48,7 +48,7 @@ public final class SqlTriggerGetPropertiesResource extends SqlTriggerResource {
      *
      * @return the ts value.
      */
-    public Object ts() {
+    public Float ts() {
         return this.ts;
     }
 
@@ -60,6 +60,34 @@ public final class SqlTriggerGetPropertiesResource extends SqlTriggerResource {
      */
     public String etag() {
         return this.etag;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlTriggerGetPropertiesResource withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlTriggerGetPropertiesResource withBody(String body) {
+        super.withBody(body);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlTriggerGetPropertiesResource withTriggerType(TriggerType triggerType) {
+        super.withTriggerType(triggerType);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlTriggerGetPropertiesResource withTriggerOperation(TriggerOperation triggerOperation) {
+        super.withTriggerOperation(triggerOperation);
+        return this;
     }
 
     /**

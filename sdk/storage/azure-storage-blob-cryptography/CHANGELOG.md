@@ -1,7 +1,11 @@
 # Release History
 
-## 12.10.0-beta.1 (Unreleased)
+## 12.10.0-beta.2 (Unreleased)
 
+
+## 12.10.0-beta.1 (2020-12-07)
+- Exposed ClientOptions on all client builders, allowing users to set a custom application id and custom headers.
+- Added a MetadataValidationPolicy to check for leading and trailing whitespace in metadata that would cause Auth failures.
 
 ## 12.9.0 (2020-11-11)
 - Added support to specify whether or not a pipeline policy should be added per call or per retry.

@@ -13,7 +13,7 @@ import reactor.test.StepVerifier;
 
 import com.azure.communication.administration.CommunicationIdentityClient;
 import com.azure.communication.administration.CommunicationUserToken;
-import com.azure.communication.common.CommunicationUser;
+import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.chat.implementation.ChatOptionsProvider;
 import com.azure.communication.chat.models.*;
 import com.azure.core.exception.HttpResponseException;
@@ -37,8 +37,8 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
     private CommunicationIdentityClient communicationClient;
     private ChatAsyncClient client;
 
-    private CommunicationUser firstThreadMember;
-    private CommunicationUser secondThreadMember;
+    private CommunicationUserIdentifier firstThreadMember;
+    private CommunicationUserIdentifier secondThreadMember;
 
     @Override
     protected void beforeTest() {
@@ -96,6 +96,28 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
                 assertNotNull(chatThreadClient.getChatThreadId()); 
             })
             .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void cannotCreateThreadWithNullOptions(HttpClient httpClient) {
+        // Arrange
+        setupTest(httpClient);
+
+        // Act & Assert
+        StepVerifier.create(client.createChatThread(null))
+            .verifyError(NullPointerException.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void cannotCreateThreadWithResponseWithNullOptions(HttpClient httpClient) {
+        // Arrange
+        setupTest(httpClient);
+        
+        // Act & Assert
+        StepVerifier.create(client.createChatThread(null))
+            .verifyError(NullPointerException.class);
     }
 
     @ParameterizedTest
@@ -177,9 +199,26 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
         setupTest(httpClient);
         StepVerifier.create(client.getChatThreadWithResponse("19:020082a8df7b44dd8c722bea8fe7167f@thread.v2"))
             .expectErrorMatches(exception ->
-                ((HttpResponseException) exception).getResponse().getStatusCode() == 404
-            )
+                ((HttpResponseException) exception).getResponse().getStatusCode() == 404)
             .verify();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void cannotGetChatThreadWithNullId(HttpClient httpClient) {
+        // Act & Assert
+        setupTest(httpClient);
+        StepVerifier.create(client.getChatThread(null))
+            .verifyError(NullPointerException.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void cannotGetChatThreadWithResponseWithNullId(HttpClient httpClient) {
+        // Act & Assert
+        setupTest(httpClient);
+        StepVerifier.create(client.getChatThreadWithResponse(null))
+            .verifyError(NullPointerException.class);
     }
 
     @ParameterizedTest
@@ -223,6 +262,24 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
                 assertEquals(deleteResponse.getStatusCode(), 204);
             })
             .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void cannotDeleteChatThreadWithNullId(HttpClient httpClient) {
+        // Act & Assert
+        setupTest(httpClient);
+        StepVerifier.create(client.deleteChatThread(null))
+            .verifyError(NullPointerException.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void cannotDeleteChatThreadWithResponseWithNullId(HttpClient httpClient) {
+        // Act & Assert
+        setupTest(httpClient);
+        StepVerifier.create(client.deleteChatThreadWithResponse(null))
+            .verifyError(NullPointerException.class);
     }
 
     @ParameterizedTest
