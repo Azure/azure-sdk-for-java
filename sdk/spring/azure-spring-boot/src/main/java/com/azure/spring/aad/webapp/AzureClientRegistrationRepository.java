@@ -57,15 +57,15 @@ public class AzureClientRegistrationRepository implements ClientRegistrationRepo
         return azureClient;
     }
 
-    public boolean isAuthzClient(ClientRegistration client) {
+    public boolean isClientNeedConsentWhenLogin(ClientRegistration client) {
         return otherClients.contains(client)
             && properties.getAuthorization().get(client.getClientName()) != null
             && !properties.getAuthorization().get(client.getClientName()).isOnDemand();
     }
 
-    public boolean isAuthzClient(String id) {
+    public boolean isClientNeedConsentWhenLogin(String id) {
         ClientRegistration client = findByRegistrationId(id);
-        return client != null && isAuthzClient(client);
+        return client != null && isClientNeedConsentWhenLogin(client);
     }
 
 }
