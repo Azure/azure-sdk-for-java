@@ -53,6 +53,11 @@ public interface DataMaskingPolicy extends HasInner<DataMaskingPolicyInner>, Ind
     String location();
 
     /**
+     * @return the managedBy value.
+     */
+    String managedBy();
+
+    /**
      * @return the maskingLevel value.
      */
     String maskingLevel();

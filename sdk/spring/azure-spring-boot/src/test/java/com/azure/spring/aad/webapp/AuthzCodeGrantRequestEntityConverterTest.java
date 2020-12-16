@@ -3,9 +3,10 @@
 
 package com.azure.spring.aad.webapp;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.boot.test.context.FilteredClassLoader;
+import org.springframework.boot.test.context.assertj.AssertableWebApplicationContext;
+import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.RequestEntity;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
@@ -13,7 +14,7 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationExchange;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationResponse;
-import org.springframework.test.context.support.TestPropertySourceUtils;
+import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
 import org.springframework.util.MultiValueMap;
 
 import java.util.Optional;
@@ -27,21 +28,17 @@ public class AuthzCodeGrantRequestEntityConverterTest {
     private ClientRegistration azure;
     private ClientRegistration graph;
 
-    @BeforeEach
-    public void setupApp() {
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-        TestPropertySourceUtils.addInlinedPropertiesToEnvironment(
-            context,
-            "azure.activedirectory.authorization-server-uri = fake-uri",
+    private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
+        .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
+        .withUserConfiguration(AzureActiveDirectoryConfiguration.class)
+        .withPropertyValues("azure.activedirectory.authorization-server-uri = fake-uri",
             "azure.activedirectory.authorization.graph.scopes = Calendars.Read",
             "azure.activedirectory.client-id = fake-client-id",
             "azure.activedirectory.client-secret = fake-client-secret",
             "azure.activedirectory.tenant-id = fake-tenant-id",
-            "azure.activedirectory.user-group.allowed-groups = group1, group2"
-        );
-        context.register(AzureActiveDirectoryConfiguration.class);
-        context.refresh();
+            "azure.activedirectory.user-group.allowed-groups = group1, group2");
 
+    private void getBeans(AssertableWebApplicationContext context) {
         clientRepo = context.getBean(AzureClientRegistrationRepository.class);
         azure = clientRepo.findByRegistrationId("azure");
         graph = clientRepo.findByRegistrationId("graph");
@@ -49,17 +46,23 @@ public class AuthzCodeGrantRequestEntityConverterTest {
 
     @Test
     public void addScopeForDefaultClient() {
-        MultiValueMap<String, String> body = convertedBodyOf(createCodeGrantRequest(azure));
-        assertEquals(
-            "openid profile offline_access https://graph.microsoft.com/User.Read",
-            body.getFirst("scope")
-        );
+        contextRunner.run(context -> {
+            getBeans(context);
+            MultiValueMap<String, String> body = convertedBodyOf(createCodeGrantRequest(azure));
+            assertEquals(
+                "openid profile offline_access https://graph.microsoft.com/User.Read",
+                body.getFirst("scope")
+            );
+        });
     }
 
     @Test
     public void noScopeParamForOtherClient() {
-        MultiValueMap<String, String> body = convertedBodyOf(createCodeGrantRequest(graph));
-        assertNull(body.get("scope"));
+        contextRunner.run(context -> {
+            getBeans(context);
+            MultiValueMap<String, String> body = convertedBodyOf(createCodeGrantRequest(graph));
+            assertNull(body.get("scope"));
+        });
     }
 
     @SuppressWarnings("unchecked")

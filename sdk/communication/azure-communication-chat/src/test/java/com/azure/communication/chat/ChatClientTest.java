@@ -11,7 +11,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import com.azure.communication.administration.CommunicationIdentityClient;
 import com.azure.communication.administration.CommunicationUserToken;
-import com.azure.communication.common.CommunicationUser;
+import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.chat.implementation.ChatOptionsProvider;
 import com.azure.communication.chat.models.*;
 import com.azure.core.http.HttpClient;
@@ -34,8 +34,8 @@ public class ChatClientTest extends ChatClientTestBase {
     private CommunicationIdentityClient communicationClient;
     private ChatClient client;
 
-    private CommunicationUser firstThreadMember;
-    private CommunicationUser secondThreadMember;
+    private CommunicationUserIdentifier firstThreadMember;
+    private CommunicationUserIdentifier secondThreadMember;
 
     @Override
     protected void beforeTest() {

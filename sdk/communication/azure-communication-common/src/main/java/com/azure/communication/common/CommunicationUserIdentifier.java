@@ -7,17 +7,17 @@ import com.azure.core.util.CoreUtils;
 /**
  * Communication identifier for Communication Services Users
  */
-public class CommunicationUser extends CommunicationIdentifier {
+public class CommunicationUserIdentifier extends CommunicationIdentifier {
 
     private final String id;
 
     /**
-     * Creates a CommunicationUser object
+     * Creates a CommunicationUserIdentifier object
      * 
      * @param id the string identifier representing the identity
      * @throws IllegalArgumentException thrown if id parameter fail the validation.
      */
-    public CommunicationUser(String id) {
+    public CommunicationUserIdentifier(String id) {
         if (CoreUtils.isNullOrEmpty(id)) {
             throw new IllegalArgumentException("The initialization parameter [id] cannot be null or empty.");
         }
