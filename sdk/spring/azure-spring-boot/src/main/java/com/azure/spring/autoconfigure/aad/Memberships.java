@@ -24,7 +24,7 @@ public class Memberships {
     @JsonCreator
     public Memberships(
         @JsonAlias("odata.nextLink")
-        @JsonProperty("odata.nextLink") String odataNextLink,
+        @JsonProperty("@odata.nextLink") String odataNextLink,
         @JsonProperty("value") List<Membership> value) {
         this.odataNextLink = odataNextLink;
         this.value = value;
