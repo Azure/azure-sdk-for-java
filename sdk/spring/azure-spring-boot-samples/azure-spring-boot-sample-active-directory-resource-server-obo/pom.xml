@@ -49,7 +49,7 @@
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-oauth2-jose</artifactId>
-      <version>5.3.5.RELEASE</version> <!-- {x-version-update;org.springframework.security:spring-security-oauth2-jose;external_dependency} -->
+      <version>5.3.6.RELEASE</version> <!-- {x-version-update;org.springframework.security:spring-security-oauth2-jose;external_dependency} -->
     </dependency>
   </dependencies>
 
