@@ -3,6 +3,7 @@
 
 package com.azure.spring.aad.webapp;
 
+import com.azure.spring.aad.webapp.jackson.OAuth2ClientJackson2Module;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,7 +11,6 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.jackson2.CoreJackson2Module;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
-import org.springframework.security.oauth2.client.jackson2.OAuth2ClientJackson2Module;
 import org.springframework.security.oauth2.client.web.HttpSessionOAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.util.Assert;
@@ -42,23 +42,11 @@ public class JacksonHttpSessionOAuth2AuthorizedClientRepository implements OAuth
 
     public JacksonHttpSessionOAuth2AuthorizedClientRepository() {
         objectMapper = new ObjectMapper();
-        if (springModuleContainsJackson2Module()) {
-            // TODO: Delete this after the min version of spring-security we need to support >=5.3.0
-            objectMapper.registerModule(new OAuth2ClientJackson2Module());
-        } else {
-            objectMapper.registerModule(new com.azure.spring.aad.webapp.jackson.OAuth2ClientJackson2Module());
-        }
+        // TODO: Use OAuth2ClientJackson2Module in spring-security
+        // after min spring-security version we need to support >=5.3.0
+        objectMapper.registerModule(new OAuth2ClientJackson2Module());
         objectMapper.registerModule(new CoreJackson2Module());
         objectMapper.registerModule(new JavaTimeModule());
-    }
-
-    private boolean springModuleContainsJackson2Module() {
-        try {
-            Class.forName("org.springframework.security.oauth2.client.jackson2.OAuth2ClientJackson2Module");
-            return true;
-        } catch (ClassNotFoundException e) {
-            return false;
-        }
     }
 
     @SuppressWarnings("unchecked")
