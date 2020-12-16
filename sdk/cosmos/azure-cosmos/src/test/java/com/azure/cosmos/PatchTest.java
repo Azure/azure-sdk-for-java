@@ -46,7 +46,7 @@ public class PatchTest extends TestSuiteBase {
     }
 
     @Test(groups = {  "emulator"  }, timeOut = TIMEOUT * 100)
-    public void itemPatchSuccessTest() {
+    public void itemPatchSuccess() {
         ToDoActivity testItem = ToDoActivity.createRandomItem(this.container);
 
         int originalTaskNum = testItem.taskNum;
@@ -54,17 +54,17 @@ public class PatchTest extends TestSuiteBase {
 
         assertThat(testItem.children[1].status).isNull();
 
-        CosmosPatch cosmosPatch = CosmosPatch.create();
-        cosmosPatch.add("/children/1/CamelCase", "patched");
-        cosmosPatch.remove("/description");
-        cosmosPatch.replace("/taskNum", newTaskNum);
-        cosmosPatch.set("/valid", false);
+        CosmosPatchOperations cosmosPatchOperations = CosmosPatchOperations.create();
+        cosmosPatchOperations.add("/children/1/CamelCase", "patched");
+        cosmosPatchOperations.remove("/description");
+        cosmosPatchOperations.replace("/taskNum", newTaskNum);
+        cosmosPatchOperations.set("/valid", false);
 
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         CosmosItemResponse<ToDoActivity> response = this.container.patchItem(
             testItem.id,
             new PartitionKey(testItem.status),
-            cosmosPatch,
+            cosmosPatchOperations,
             options,
             ToDoActivity.class);
 
@@ -89,7 +89,7 @@ public class PatchTest extends TestSuiteBase {
     }
 
     @Test(groups = {  "emulator"  }, timeOut = TIMEOUT * 100)
-    public void itemPatchContentResponseOnWriteEnabledTest() {
+    public void itemPatchContentResponseOnWriteEnabled() {
         ToDoActivity testItem = ToDoActivity.createRandomItem(this.container);
 
         int originalTaskNum = testItem.taskNum;
@@ -97,11 +97,11 @@ public class PatchTest extends TestSuiteBase {
 
         assertThat(testItem.children[1].status).isNull();
 
-        CosmosPatch cosmosPatch = CosmosPatch.create();
-        cosmosPatch.add("/children/1/CamelCase", "alpha");
-        cosmosPatch.remove("/description");
-        cosmosPatch.replace("/taskNum", newTaskNum);
-        cosmosPatch.set("/cost", 100);
+        CosmosPatchOperations cosmosPatchOperations = CosmosPatchOperations.create();
+        cosmosPatchOperations.add("/children/1/CamelCase", "alpha");
+        cosmosPatchOperations.remove("/description");
+        cosmosPatchOperations.replace("/taskNum", newTaskNum);
+        cosmosPatchOperations.set("/cost", 100);
 
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         options.setContentResponseOnWriteEnabled(false);
@@ -109,7 +109,7 @@ public class PatchTest extends TestSuiteBase {
         CosmosItemResponse<ToDoActivity> response = this.container.patchItem(
             testItem.id,
             new PartitionKey(testItem.status),
-            cosmosPatch,
+            cosmosPatchOperations,
             options,
             ToDoActivity.class);
 
@@ -117,13 +117,13 @@ public class PatchTest extends TestSuiteBase {
         assertThat(response.getItem()).isNull(); // skip content is true
 
         // Right now
-        CosmosPatch cosmosPatch2 = CosmosPatch.create();
-        cosmosPatch2.set("/valid", false);
+        CosmosPatchOperations cosmosPatchOperations2 = CosmosPatchOperations.create();
+        cosmosPatchOperations2.set("/valid", false);
 
         CosmosItemResponse<ToDoActivity> response2 = this.container.patchItem(
             testItem.id,
             new PartitionKey(testItem.status),
-            cosmosPatch2,
+            cosmosPatchOperations2,
             ToDoActivity.class);
 
         assertThat(response2.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
@@ -148,19 +148,19 @@ public class PatchTest extends TestSuiteBase {
     }
 
     @Test(groups = {  "emulator"  }, timeOut = TIMEOUT)
-    public void itemPatchFailureTest() {
+    public void itemPatchFailure() {
         // Create an item
         ToDoActivity testItem = ToDoActivity.createRandomItem(this.container);
-        CosmosPatch cosmosPatch = CosmosPatch.create();
-        cosmosPatch.add("/nonExistentParent/child", "bar");
-        cosmosPatch.remove("/cost");
+        CosmosPatchOperations cosmosPatchOperations = CosmosPatchOperations.create();
+        cosmosPatchOperations.add("/nonExistentParent/child", "bar");
+        cosmosPatchOperations.remove("/cost");
 
         // item does not exist - 404 Resource Not Found error
         try {
             CosmosItemResponse<ToDoActivity> patchItemResponse = this.container.patchItem(
                 UUID.randomUUID().toString(),
                 new PartitionKey(testItem.status),
-                cosmosPatch,
+                cosmosPatchOperations,
                 ToDoActivity.class);
             fail("Update operation should fail if the item doesn't exist.");
         } catch (CosmosException ex) {
@@ -173,7 +173,7 @@ public class PatchTest extends TestSuiteBase {
             CosmosItemResponse<ToDoActivity> patchItemResponse = this.container.patchItem(
                 testItem.id,
                 new PartitionKey(testItem.status),
-                cosmosPatch,
+                cosmosPatchOperations,
                 ToDoActivity.class);
 
             fail("Update operation should fail for malformed PatchSpecification.");
@@ -191,7 +191,7 @@ public class PatchTest extends TestSuiteBase {
             CosmosItemResponse<ToDoActivity> patchItemResponse = this.container.patchItem(
                 testItem.id,
                 new PartitionKey(testItem.status),
-                cosmosPatch,
+                cosmosPatchOperations,
                 requestOptions,
                 ToDoActivity.class);
 

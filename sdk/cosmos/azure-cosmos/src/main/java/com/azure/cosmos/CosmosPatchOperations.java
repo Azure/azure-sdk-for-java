@@ -16,38 +16,51 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkAr
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
- * Grammar based on RFC: https://tools.ietf.org/html/rfc6902#section-4.1
+ * Grammar is a super set of this RFC: https://tools.ietf.org/html/rfc6902#section-4.1
  *
- * Contains a list of Patch operations to be applied on an item. It is applied in an atomic manner and the operations
- * grammar follows above RFC.
+ * Contains a list of Patch operations to be applied on an item. It is applied in an atomic manner and we support all
+ * the operation in above RFC and more.
  *
  * This can be executed in 3 ways:
  *  1. Passing this to container in container.patchItem() which requires the id of the item to be patched, partition
- *      key, the CosmosPatch instance, any CosmosItemRequestOptions and the class type for which response will be parsed.
- *  2. Add CosmosPatch instance in TransactionalBatch using batch.patchItemOperation() which requires the id of the item
+ *      key, the CosmosPatchOperations instance, any CosmosItemRequestOptions and the class type for which response will be parsed.
+ *  2. Add CosmosPatchOperations instance in TransactionalBatch using batch.patchItemOperation() which requires the id of the item
  *      to be patched, cosmos patch instance and TransactionalBatchItemRequestOptions(if-any) and follow remaining
  *      steps for batch for it's execution.
  *  3. Create a bulk item using BulkOperations.getPatchItemOperation which requires the id of the item to be patched,
  *      cosmos patch instance, partition key and BulkItemRequestOptions(if-any) and follow remaining steps to
  *      execute bulk operations.
+ *
+ *  Let's assume this is the JSON for which we want to run patch operation.
+ *  <code>
+ *      {
+ *          a : "xyz"
+ *          b : {
+ *              c : "efg:
+ *              d : 4
+ *              e : [0, 1, 2 , 3]
+ *          }
+ *      }
+ *  </code>
+ *
  */
 @Beta(Beta.SinceVersion.V4_9_0)
-public final class CosmosPatch {
+public final class CosmosPatchOperations {
 
     private final List<PatchOperation> patchOperations;
 
-    private CosmosPatch() {
+    private CosmosPatchOperations() {
         this.patchOperations = new ArrayList<>();
     }
 
     /**
-     * Initializes a new instance of {@link CosmosPatch} that will contain operations to be performed on a item atomically.
+     * Initializes a new instance of {@link CosmosPatchOperations} that will contain operations to be performed on a item atomically.
      *
-     * @return A new instance of {@link CosmosPatch}.
+     * @return A new instance of {@link CosmosPatchOperations}.
      */
     @Beta(Beta.SinceVersion.V4_9_0)
-    public static CosmosPatch create() {
-        return new CosmosPatch();
+    public static CosmosPatchOperations create() {
+        return new CosmosPatchOperations();
     }
 
     /**
@@ -56,15 +69,23 @@ public final class CosmosPatch {
      *  2. Target location specifies an object member that does not already exist, a new member is added to the object.
      *  3. Target location specifies an object member that does exist, that member's value is replaced.
      *
+     * For the above JSON, we can have something like this:
+     * <code>
+     *     CosmosPatchOperations cosmosPatch = CosmosPatchOperations.create();
+     *     cosmosPatch.add("/b/e", 15); // will add a value to the array, so /b/e array will become [0, 1, 2, 3, 15]
+     *     cosmosPatch.add("/a", "new value"); // will replace the value
+     *     cosmosPatch.add("/b/e/1", 10); // will change value of the /b/e array to [0, 10, 2, 3]
+     * </code>
+     *
      * @param <T> The type of item to be added.
      *
      * @param path the operation path.
      * @param value the value which will be added.
      *
-     * @return same instance of {@link CosmosPatch}
+     * @return same instance of {@link CosmosPatchOperations}
      */
     @Beta(Beta.SinceVersion.V4_9_0)
-    public <T> CosmosPatch add(String path, T value) {
+    public <T> CosmosPatchOperations add(String path, T value) {
 
         checkNotNull(value, "expected non-null value");
         checkArgument(StringUtils.isNotEmpty(path), "path empty %s", path);
@@ -81,12 +102,19 @@ public final class CosmosPatch {
     /**
      * This removes the value at the target location.
      *
+     * For the above JSON, we can have something like this:
+     * <code>
+     *     CosmosPatchOperations cosmosPatch = CosmosPatchOperations.create();
+     *     cosmosPatch.remove("/a");
+     *     cosmosPatch.remove("/b/e/3"); // will remove 4th element of /b/e array
+     * </code>
+     *
      * @param path the operation path.
      *
-     * @return same instance of {@link CosmosPatch}
+     * @return same instance of {@link CosmosPatchOperations}
      */
     @Beta(Beta.SinceVersion.V4_9_0)
-    public CosmosPatch remove(String path) {
+    public CosmosPatchOperations remove(String path) {
 
         checkArgument(StringUtils.isNotEmpty(path), "path empty %s", path);
 
@@ -102,15 +130,22 @@ public final class CosmosPatch {
     /**
      * This replaces the value at the target location with a new value.
      *
+     * For the above JSON, we can have something like this:
+     * <code>
+     *     CosmosPatchOperations cosmosPatch = CosmosPatchOperations.create();
+     *     cosmosPatch.replace("/a", "new value"); // will replace "xyz" to "new value"
+     *     cosmosPatch.replace("/b/e/1", 2); // will remove 2nd element of /b/e array to 2
+     * </code>
+     *
      * @param <T> The type of item to be replaced.
      *
      * @param path the operation path.
      * @param value the value which will be replaced.
      *
-     * @return same instance of {@link CosmosPatch}
+     * @return same instance of {@link CosmosPatchOperations}
      */
     @Beta(Beta.SinceVersion.V4_9_0)
-    public <T> CosmosPatch replace(String path, T value) {
+    public <T> CosmosPatchOperations replace(String path, T value) {
 
         checkArgument(StringUtils.isNotEmpty(path), "path empty %s", path);
 
@@ -126,15 +161,22 @@ public final class CosmosPatch {
     /**
      * This sets the value at the target location with a new value.
      *
+     * For the above JSON, we can have something like this:
+     * <code>
+     *     CosmosPatchOperations cosmosPatch = CosmosPatchOperations.create();
+     *     cosmosPatch.set("/f", "new value"); // will add a new path "/f" and set it's value as "new value".
+     *     cosmosPatch.set("/b/e", "bar"); // will set "/b/e" path to be "bar".
+     * </code>
+     *
      * @param <T> The type of item to be set.
      *
      * @param path the operation path.
      * @param value the value which will be set.
      *
-     * @return same instance of {@link CosmosPatch}
+     * @return same instance of {@link CosmosPatchOperations}
      */
     @Beta(Beta.SinceVersion.V4_9_0)
-    public <T> CosmosPatch set(String path, T value) {
+    public <T> CosmosPatchOperations set(String path, T value) {
 
         checkNotNull(value, "expected non-null value");
         checkArgument(StringUtils.isNotEmpty(path), "path empty %s", path);
@@ -149,15 +191,21 @@ public final class CosmosPatch {
     }
 
     /**
-     * This increment the value at the target location.
+     * This increment the value at the target location. It's a CRDT operator and won't cause any conflict.
+     *
+     * For the above JSON, we can have something like this:
+     * <code>
+     *     CosmosPatchOperations cosmosPatch = CosmosPatchOperations.create();
+     *     cosmosPatch.increment("/b/d", 1); // will add 1 to "/b/d" resulting in 5.
+     * </code>
      *
      * @param path the operation path.
      * @param value the value which will be incremented.
      *
-     * @return same instance of {@link CosmosPatch}
+     * @return same instance of {@link CosmosPatchOperations}
      */
     @Beta(Beta.SinceVersion.V4_9_0)
-    public CosmosPatch increment(String path, long value) {
+    public CosmosPatchOperations increment(String path, long value) {
 
         checkArgument(StringUtils.isNotEmpty(path), "path empty %s", path);
 
@@ -171,15 +219,21 @@ public final class CosmosPatch {
     }
 
     /**
-     * This increment the value at the target location.
+     * This increment the value at the target location. It's a CRDT operator and won't cause any conflict.
+     *
+     * For the above JSON, we can have something like this:
+     * <code>
+     *     CosmosPatchOperations cosmosPatch = CosmosPatchOperations.create();
+     *     cosmosPatch.increment("/b/d", 3.5); // will add 1 to "/b/d" resulting in 7.5.
+     * </code>
      *
      * @param path the operation path.
      * @param value the value which will be incremented.
      *
-     * @return same instance of {@link CosmosPatch}
+     * @return same instance of {@link CosmosPatchOperations}
      */
     @Beta(Beta.SinceVersion.V4_9_0)
-    public CosmosPatch increment(String path, double value) {
+    public CosmosPatchOperations increment(String path, double value) {
 
         checkArgument(StringUtils.isNotEmpty(path), "path empty %s", path);
 

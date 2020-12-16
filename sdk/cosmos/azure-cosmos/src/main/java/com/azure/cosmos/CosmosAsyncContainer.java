@@ -848,7 +848,7 @@ public class CosmosAsyncContainer {
      * @param <T> the type parameter.
      * @param itemId the item id.
      * @param partitionKey the partition key.
-     * @param cosmosPatch Represents a container having list of operations to be sequentially applied to the referred Cosmos item.
+     * @param cosmosPatchOperations Represents a container having list of operations to be sequentially applied to the referred Cosmos item.
      * @param itemType the item type.
      *
      * @return an {@link Mono} containing the Cosmos item resource response with the patched item or an error.
@@ -857,10 +857,10 @@ public class CosmosAsyncContainer {
     public <T> Mono<CosmosItemResponse<T>> patchItem(
         String itemId,
         PartitionKey partitionKey,
-        CosmosPatch cosmosPatch,
+        CosmosPatchOperations cosmosPatchOperations,
         Class<T> itemType) {
 
-        return patchItem(itemId, partitionKey, cosmosPatch, new CosmosItemRequestOptions(), itemType);
+        return patchItem(itemId, partitionKey, cosmosPatchOperations, new CosmosItemRequestOptions(), itemType);
     }
 
     /**
@@ -872,7 +872,7 @@ public class CosmosAsyncContainer {
      * @param <T> the type parameter.
      * @param itemId the item id.
      * @param partitionKey the partition key.
-     * @param cosmosPatch Represents a container having list of operations to be sequentially applied to the referred Cosmos item.
+     * @param cosmosPatchOperations Represents a container having list of operations to be sequentially applied to the referred Cosmos item.
      * @param options the request options.
      * @param itemType the item type.
      *
@@ -882,13 +882,13 @@ public class CosmosAsyncContainer {
     public <T> Mono<CosmosItemResponse<T>> patchItem(
         String itemId,
         PartitionKey partitionKey,
-        CosmosPatch cosmosPatch,
+        CosmosPatchOperations cosmosPatchOperations,
         CosmosItemRequestOptions options,
         Class<T> itemType) {
 
         checkNotNull(itemId, "expected non-null itemId");
         checkNotNull(partitionKey, "expected non-null partitionKey for patchItem");
-        checkNotNull(cosmosPatch, "expected non-null cosmosPatch");
+        checkNotNull(cosmosPatchOperations, "expected non-null cosmosPatchOperations");
 
         if (options == null) {
             options = new CosmosItemRequestOptions();
@@ -896,7 +896,7 @@ public class CosmosAsyncContainer {
         ModelBridgeInternal.setPartitionKey(options, partitionKey);
 
         final CosmosItemRequestOptions requestOptions = options;
-        return withContext(context -> patchItemInternal(itemId, cosmosPatch, requestOptions, context, itemType));
+        return withContext(context -> patchItemInternal(itemId, cosmosPatchOperations, requestOptions, context, itemType));
     }
 
     /**
@@ -1129,14 +1129,14 @@ public class CosmosAsyncContainer {
 
     private <T> Mono<CosmosItemResponse<T>> patchItemInternal(
         String itemId,
-        CosmosPatch cosmosPatch,
+        CosmosPatchOperations cosmosPatchOperations,
         CosmosItemRequestOptions options,
         Context context,
         Class<T> itemType) {
 
         Mono<CosmosItemResponse<T>> responseMono = this.getDatabase()
             .getDocClientWrapper()
-            .patchDocument(getItemLink(itemId), cosmosPatch, ModelBridgeInternal.toRequestOptions(options))
+            .patchDocument(getItemLink(itemId), cosmosPatchOperations, ModelBridgeInternal.toRequestOptions(options))
             .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType, getItemDeserializer()));
 
         return database.getClient().getTracerProvider().traceEnabledCosmosItemResponsePublisher(

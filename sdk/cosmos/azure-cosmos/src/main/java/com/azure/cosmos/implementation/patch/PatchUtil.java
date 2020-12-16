@@ -4,9 +4,8 @@
 package com.azure.cosmos.implementation.patch;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosPatch;
+import com.azure.cosmos.CosmosPatchOperations;
 import com.azure.cosmos.implementation.JsonSerializable;
-import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.Utils;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
@@ -15,15 +14,15 @@ import java.util.List;
 public final class PatchUtil {
 
     public static <T> JsonSerializable serializableBatchPatchOperation(T item) {
-        if (item instanceof CosmosPatch) {
-            return cosmosPatchToJsonSerializable((CosmosPatch) item);
+        if (item instanceof CosmosPatchOperations) {
+            return cosmosPatchToJsonSerializable((CosmosPatchOperations) item);
         } else {
             throw new UnsupportedOperationException("Unknown Patch operations.");
         }
     }
 
-    public static byte[] serializeCosmosPatchToByteArray(CosmosPatch cosmosPatch) {
-        JsonSerializable jsonSerializable = cosmosPatchToJsonSerializable(cosmosPatch);
+    public static byte[] serializeCosmosPatchToByteArray(CosmosPatchOperations cosmosPatchOperations) {
+        JsonSerializable jsonSerializable = cosmosPatchToJsonSerializable(cosmosPatchOperations);
 
         byte[] serializedBody;
         try {
@@ -36,10 +35,10 @@ public final class PatchUtil {
         return serializedBody;
     }
 
-    private static JsonSerializable cosmosPatchToJsonSerializable(CosmosPatch cosmosPatch) {
+    private static JsonSerializable cosmosPatchToJsonSerializable(CosmosPatchOperations cosmosPatchOperations) {
         JsonSerializable jsonSerializable = new JsonSerializable();
         ArrayNode operations = Utils.getSimpleObjectMapper().createArrayNode();
-        List<PatchOperation> patchOperations = BridgeInternal.getPatchOperationsFromCosmosPatch(cosmosPatch);
+        List<PatchOperation> patchOperations = BridgeInternal.getPatchOperationsFromCosmosPatch(cosmosPatchOperations);
 
         for (PatchOperation patchOperation : patchOperations) {
 

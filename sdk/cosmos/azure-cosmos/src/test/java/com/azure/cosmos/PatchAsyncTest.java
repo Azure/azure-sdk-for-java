@@ -40,14 +40,14 @@ public class PatchAsyncTest extends BatchTestBase {
     }
 
     @Test(groups = {  "emulator"  }, timeOut = TIMEOUT)
-    public void patchInBatchTest() {
+    public void patchInBatch() {
         BatchTestBase.TestDoc testDoc = this.populateTestDoc(this.partitionKey1);
-        CosmosPatch cosmosPatch = CosmosPatch.create();
-        cosmosPatch.set("/cost", testDoc.getCost() + 12);
+        CosmosPatchOperations cosmosPatchOperations = CosmosPatchOperations.create();
+        cosmosPatchOperations.set("/cost", testDoc.getCost() + 12);
 
         TransactionalBatch batch = TransactionalBatch.createTransactionalBatch(this.getPartitionKey(this.partitionKey1));
         batch.createItemOperation(testDoc);
-        batch.patchItemOperation(testDoc.getId(), cosmosPatch);
+        batch.patchItemOperation(testDoc.getId(), cosmosPatchOperations);
 
         TransactionalBatchResponse batchResponse = container.executeTransactionalBatch(batch).block();
 
@@ -67,7 +67,7 @@ public class PatchAsyncTest extends BatchTestBase {
     }
 
     @Test(groups = {  "emulator"  }, timeOut = TIMEOUT)
-    public void patchInBulkTest() {
+    public void patchInBulk() {
         List<CosmosItemOperation> operations = new ArrayList<>();
 
         this.createJsonTestDocs(container);
@@ -80,11 +80,11 @@ public class PatchAsyncTest extends BatchTestBase {
             container.createItem(testDocForPatch, new PartitionKey(this.partitionKey1), null).block();
         assertThat(createItemResponse.getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
 
-        CosmosPatch cosmosPatch1 = CosmosPatch.create();
-        cosmosPatch1.replace("/cost", 100);
+        CosmosPatchOperations cosmosPatchOperations1 = CosmosPatchOperations.create();
+        cosmosPatchOperations1.replace("/cost", 100);
 
-        CosmosPatch cosmosPatch2 = CosmosPatch.create();
-        cosmosPatch2.replace("/description", "xx");
+        CosmosPatchOperations cosmosPatchOperations2 = CosmosPatchOperations.create();
+        cosmosPatchOperations2.replace("/description", "xx");
 
         BulkItemRequestOptions contentResponseDisableRequestOption = new BulkItemRequestOptions()
             .setContentResponseOnWriteEnabled(false);
@@ -102,14 +102,14 @@ public class PatchAsyncTest extends BatchTestBase {
         operations.add(
             BulkOperations.getPatchItemOperation(
                 testDocForPatch.id,
-                cosmosPatch1,
+                cosmosPatchOperations1,
                 new PartitionKey(this.partitionKey1),
                 contentResponseDisableRequestOption));
 
         operations.add(
             BulkOperations.getPatchItemOperation(
                 testDocForPatch.id,
-                cosmosPatch2,
+                cosmosPatchOperations2,
                 new PartitionKey(this.partitionKey1)));
 
         List<CosmosBulkOperationResponse<Object>> bulkResponses =

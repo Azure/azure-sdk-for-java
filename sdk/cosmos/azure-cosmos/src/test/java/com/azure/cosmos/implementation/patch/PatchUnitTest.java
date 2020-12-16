@@ -4,7 +4,7 @@
 package com.azure.cosmos.implementation.patch;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosPatch;
+import com.azure.cosmos.CosmosPatchOperations;
 import org.testng.annotations.Test;
 
 import java.time.Instant;
@@ -23,7 +23,7 @@ public class PatchUnitTest {
     public void throwsOnNullArgument() {
 
         try {
-            CosmosPatch.create().add(null, "1");
+            CosmosPatchOperations.create().add(null, "1");
             fail("Should throw IllegalArgumentException");
 
         } catch(IllegalArgumentException ex) {
@@ -31,7 +31,7 @@ public class PatchUnitTest {
         }
 
         try {
-            CosmosPatch.create().remove(null);
+            CosmosPatchOperations.create().remove(null);
             fail("Should throw IllegalArgumentException");
         } catch (IllegalArgumentException ex) {
             assertThat(ex.getMessage()).contains("path empty");
@@ -39,40 +39,40 @@ public class PatchUnitTest {
     }
 
     @Test(groups = { "unit" })
-    public void constructPatchOperationTest() {
-        CosmosPatch cosmosPatch = CosmosPatch.create().add(path, "string");
-        PatchUnitTest.validateOperations(cosmosPatch, PatchOperationType.ADD, "string");
+    public void constructPatchOperation() {
+        CosmosPatchOperations cosmosPatchOperations = CosmosPatchOperations.create().add(path, "string");
+        PatchUnitTest.validateOperations(cosmosPatchOperations, PatchOperationType.ADD, "string");
 
         Instant current = Instant.now();
-        cosmosPatch = CosmosPatch.create().add(path, current);
-        PatchUnitTest.validateOperations(cosmosPatch, PatchOperationType.ADD, current);
+        cosmosPatchOperations = CosmosPatchOperations.create().add(path, current);
+        PatchUnitTest.validateOperations(cosmosPatchOperations, PatchOperationType.ADD, current);
 
         Object object = new  Object();
-        cosmosPatch = CosmosPatch.create().add(path, object);
-        PatchUnitTest.validateOperations(cosmosPatch, PatchOperationType.ADD, object);
+        cosmosPatchOperations = CosmosPatchOperations.create().add(path, object);
+        PatchUnitTest.validateOperations(cosmosPatchOperations, PatchOperationType.ADD, object);
 
-        cosmosPatch = CosmosPatch.create().remove(path);
-        PatchUnitTest.validateOperations(cosmosPatch, PatchOperationType.REMOVE, "value not required");
+        cosmosPatchOperations = CosmosPatchOperations.create().remove(path);
+        PatchUnitTest.validateOperations(cosmosPatchOperations, PatchOperationType.REMOVE, "value not required");
 
         int[] arrayObject = { 1, 2, 3 };
-        cosmosPatch = CosmosPatch.create().replace(path, arrayObject);
-        PatchUnitTest.validateOperations(cosmosPatch, PatchOperationType.REPLACE, arrayObject);
+        cosmosPatchOperations = CosmosPatchOperations.create().replace(path, arrayObject);
+        PatchUnitTest.validateOperations(cosmosPatchOperations, PatchOperationType.REPLACE, arrayObject);
 
         UUID uuid = UUID.randomUUID();
-        cosmosPatch = CosmosPatch.create().set(path, uuid);
-        PatchUnitTest.validateOperations(cosmosPatch, PatchOperationType.SET, uuid);
+        cosmosPatchOperations = CosmosPatchOperations.create().set(path, uuid);
+        PatchUnitTest.validateOperations(cosmosPatchOperations, PatchOperationType.SET, uuid);
 
         long incr = new Random().nextLong();
-        cosmosPatch = CosmosPatch.create().increment(path, incr);
-        PatchUnitTest.validateOperations(cosmosPatch, PatchOperationType.INCREMENT, incr);
+        cosmosPatchOperations = CosmosPatchOperations.create().increment(path, incr);
+        PatchUnitTest.validateOperations(cosmosPatchOperations, PatchOperationType.INCREMENT, incr);
 
         double value = new Random().nextDouble();
-        cosmosPatch = CosmosPatch.create().increment(path, value);
-        PatchUnitTest.validateOperations(cosmosPatch, PatchOperationType.INCREMENT, value);
+        cosmosPatchOperations = CosmosPatchOperations.create().increment(path, value);
+        PatchUnitTest.validateOperations(cosmosPatchOperations, PatchOperationType.INCREMENT, value);
     }
 
-    private static <T> void validateOperations(CosmosPatch cosmosPatch, PatchOperationType operationType, T value) {
-        List<PatchOperation> patchOperations = BridgeInternal.getPatchOperationsFromCosmosPatch(cosmosPatch);
+    private static <T> void validateOperations(CosmosPatchOperations cosmosPatchOperations, PatchOperationType operationType, T value) {
+        List<PatchOperation> patchOperations = BridgeInternal.getPatchOperationsFromCosmosPatch(cosmosPatchOperations);
         assertThat(patchOperations.size()).isEqualTo(1);
 
         PatchOperation patchOperation = patchOperations.get(0);
