@@ -105,7 +105,7 @@ unique ID of the user that was created.
 
 <!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L80-L81 -->
 ```java
-CommunicationUser user = communicationIdentityClient.createUser();
+CommunicationUserIdentifier user = communicationIdentityClient.createUser();
 System.out.println("User id: " + user.getId());
 ```
 
@@ -298,8 +298,8 @@ res.waitForCompletion();
 <!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L357-L367 -->
 ```java
 Duration duration = Duration.ofSeconds(1);
-PhoneNumber phoneNumber = new PhoneNumber("PHONE_NUMBER_TO_RELEASE");
-List<PhoneNumber> phoneNumbers = new ArrayList<>();
+PhoneNumberIdentifier phoneNumber = new PhoneNumberIdentifier("PHONE_NUMBER_TO_RELEASE");
+List<PhoneNumberIdentifier> phoneNumbers = new ArrayList<>();
 phoneNumbers.add(phoneNumber);
 PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
 

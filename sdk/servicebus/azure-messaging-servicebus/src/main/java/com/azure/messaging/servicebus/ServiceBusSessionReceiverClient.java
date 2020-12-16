@@ -13,7 +13,7 @@ import java.time.Duration;
 import java.util.Objects;
 
 /**
- * This session receiver client is used to acquire session locks from a queue or topic and create
+ * This <b>synchronous</b> session receiver client is used to acquire session locks from a queue or topic and create
  * {@link ServiceBusReceiverClient} instances that are tied to the locked sessions.
  *
  * <p><strong>Receive messages from a specific session</strong></p>

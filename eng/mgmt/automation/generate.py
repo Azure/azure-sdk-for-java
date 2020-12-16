@@ -539,7 +539,7 @@ def main():
         pwd = os.getcwd()
         try:
             os.chdir(sdk_root)
-            os.system('git add eng/versioning pom.xml {0} {1}'.format(
+            os.system('git add eng/versioning eng/mgmt pom.xml {0} {1}'.format(
                 CI_FILE_FORMAT.format(service),
                 POM_FILE_FORMAT.format(service)))
             os.system(
