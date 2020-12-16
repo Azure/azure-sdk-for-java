@@ -18,7 +18,7 @@ import com.azure.communication.administration.models.PstnConfiguration;
 import com.azure.communication.administration.models.UpdateNumberCapabilitiesResponse;
 import com.azure.communication.administration.models.PhoneNumberReservation;
 import com.azure.communication.administration.models.UpdatePhoneNumberCapabilitiesResponse;
-import com.azure.communication.common.PhoneNumber;
+import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -134,7 +134,7 @@ public final class PhoneNumberClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateNumberCapabilitiesResponse updateCapabilities(
-        Map<PhoneNumber, NumberUpdateCapabilities> phoneNumberCapabilitiesUpdate) {
+        Map<PhoneNumberIdentifier, NumberUpdateCapabilities> phoneNumberCapabilitiesUpdate) {
         return phoneNumberAsyncClient.updateCapabilities(phoneNumberCapabilitiesUpdate).block();
     }
 
@@ -148,7 +148,7 @@ public final class PhoneNumberClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UpdateNumberCapabilitiesResponse> updateCapabilitiesWithResponse(
-        Map<PhoneNumber, NumberUpdateCapabilities> phoneNumberCapabilitiesUpdate, Context context) {
+        Map<PhoneNumberIdentifier, NumberUpdateCapabilities> phoneNumberCapabilitiesUpdate, Context context) {
         return phoneNumberAsyncClient.updateCapabilitiesWithResponse(phoneNumberCapabilitiesUpdate, context).block();
     }
 
@@ -178,72 +178,72 @@ public final class PhoneNumberClient {
     /**
      * Gets the configuration of a given phone number.
      *
-     * @param phoneNumber A {@link PhoneNumber} representing the phone number.
+     * @param phoneNumber A {@link PhoneNumberIdentifier} representing the phone number.
      * @return A {@link NumberConfigurationResponse} representing the configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NumberConfigurationResponse getNumberConfiguration(PhoneNumber phoneNumber) {
+    public NumberConfigurationResponse getNumberConfiguration(PhoneNumberIdentifier phoneNumber) {
         return phoneNumberAsyncClient.getNumberConfiguration(phoneNumber).block();
     }
 
     /**
      * Gets the configuration of a given phone number.
      *
-     * @param phoneNumber A {@link PhoneNumber} representing the phone number.
+     * @param phoneNumber A {@link PhoneNumberIdentifier} representing the phone number.
      * @param context A {@link Context} representing the request context.
      * @return A {@link Response} whose {@link Response#getValue()} value returns
      * a {@link NumberConfigurationResponse} representing the configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NumberConfigurationResponse> getNumberConfigurationWithResponse(
-        PhoneNumber phoneNumber, Context context) {
+        PhoneNumberIdentifier phoneNumber, Context context) {
         return phoneNumberAsyncClient.getNumberConfigurationWithResponse(phoneNumber, context).block();
     }
 
     /**
      * Associates a phone number with a PSTN Configuration.
      *
-     * @param phoneNumber A {@link PhoneNumber} representing the phone number.
+     * @param phoneNumber A {@link PhoneNumberIdentifier} representing the phone number.
      * @param pstnConfiguration A {@link PstnConfiguration} containing the pstn number configuration options.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void configureNumber(PhoneNumber phoneNumber, PstnConfiguration pstnConfiguration) {
+    public void configureNumber(PhoneNumberIdentifier phoneNumber, PstnConfiguration pstnConfiguration) {
         phoneNumberAsyncClient.configureNumber(phoneNumber, pstnConfiguration).block();
     }
 
     /**
      * Associates a phone number with a PSTN Configuration.
      *
-     * @param phoneNumber A {@link PhoneNumber} representing the phone number.
+     * @param phoneNumber A {@link PhoneNumberIdentifier} representing the phone number.
      * @param pstnConfiguration A {@link PstnConfiguration} containing the pstn number configuration options.
      * @param context A {@link Context} representing the request context.
      * @return A {@link Response} for the operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> configureNumberWithResponse(
-        PhoneNumber phoneNumber, PstnConfiguration pstnConfiguration, Context context) {
+        PhoneNumberIdentifier phoneNumber, PstnConfiguration pstnConfiguration, Context context) {
         return phoneNumberAsyncClient.configureNumberWithResponse(phoneNumber, pstnConfiguration, context).block();
     }
 
     /**
      * Removes the PSTN Configuration from a phone number.
      *
-     * @param phoneNumber A {@link PhoneNumber} representing the phone number.
+     * @param phoneNumber A {@link PhoneNumberIdentifier} representing the phone number.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void unconfigureNumber(PhoneNumber phoneNumber) {
+    public void unconfigureNumber(PhoneNumberIdentifier phoneNumber) {
         phoneNumberAsyncClient.unconfigureNumber(phoneNumber).block();
     }
 
     /**
      * Removes the PSTN Configuration from a phone number.
      *
-     * @param phoneNumber A {@link PhoneNumber} representing the phone number.
+     * @param phoneNumber A {@link PhoneNumberIdentifier} representing the phone number.
      * @param context A {@link Context} representing the request context.
      * @return A {@link Response} for the operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> unconfigureNumberWithResponse(PhoneNumber phoneNumber, Context context) {
+    public Response<Void> unconfigureNumberWithResponse(PhoneNumberIdentifier phoneNumber, Context context) {
         return phoneNumberAsyncClient.unconfigureNumberWithResponse(phoneNumber, context).block();
     }
 
@@ -487,14 +487,14 @@ public final class PhoneNumberClient {
      * Releases the given phone numbers.
      * This function returns a Long Running Operation poller
      *
-     * @param phoneNumbers A list of {@link PhoneNumber} with the desired numbers to release
+     * @param phoneNumbers A list of {@link PhoneNumberIdentifier} with the desired numbers to release
      * @param pollInterval The time our long running operation will keep on polling
      * until it gets a result from the server
      * @return A {@link SyncPoller} object with the reservation result
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<PhoneNumberRelease, PhoneNumberRelease> beginReleasePhoneNumbers(
-        List<PhoneNumber> phoneNumbers, Duration pollInterval) {
+        List<PhoneNumberIdentifier> phoneNumbers, Duration pollInterval) {
         return phoneNumberAsyncClient.beginReleasePhoneNumbers(phoneNumbers, pollInterval).getSyncPoller();
     }
 }

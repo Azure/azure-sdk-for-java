@@ -15,7 +15,7 @@ import reactor.core.publisher.Mono;
 
 import com.azure.communication.administration.CommunicationIdentityClient;
 import com.azure.communication.administration.CommunicationUserToken;
-import com.azure.communication.common.CommunicationUser;
+import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.chat.implementation.ChatOptionsProvider;
 import com.azure.communication.chat.models.*;
 import com.azure.core.http.HttpClient;
@@ -45,10 +45,10 @@ public class ChatThreadClientTest extends ChatClientTestBase {
     private ChatThreadClient chatThreadClient;
     private String threadId;
 
-    private CommunicationUser firstThreadMember;
-    private CommunicationUser secondThreadMember;
-    private CommunicationUser firstAddedThreadMember;
-    private CommunicationUser secondAddedThreadMember;
+    private CommunicationUserIdentifier firstThreadMember;
+    private CommunicationUserIdentifier secondThreadMember;
+    private CommunicationUserIdentifier firstAddedThreadMember;
+    private CommunicationUserIdentifier secondAddedThreadMember;
 
     @Override
     protected void beforeTest() {

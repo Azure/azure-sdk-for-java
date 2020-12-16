@@ -78,8 +78,8 @@ properties such as the message id with the `response.getMessageId()` function.
 <!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L41-L57 -->
 ```java
 // Currently Sms services only supports one phone number
-List<PhoneNumber> to = new ArrayList<PhoneNumber>();
-to.add(new PhoneNumber("<to-phone-number>"));
+List<PhoneNumberIdentifier> to = new ArrayList<PhoneNumberIdentifier>();
+to.add(new PhoneNumberIdentifier("<to-phone-number>"));
 
 // SendSmsOptions is an optional field. It can be used
 // to enable a delivery report to the Azure Event Grid
@@ -88,7 +88,7 @@ options.setEnableDeliveryReport(true);
 
 // Send the message and check the response for a message id
 SendSmsResponse response = smsClient.sendMessage(
-    new PhoneNumber("<leased-phone-number>"), 
+    new PhoneNumberIdentifier("<leased-phone-number>"), 
     to, 
     "your message",
     options /* Optional */);

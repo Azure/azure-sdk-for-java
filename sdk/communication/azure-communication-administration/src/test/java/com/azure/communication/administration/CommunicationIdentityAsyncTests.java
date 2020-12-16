@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.azure.communication.common.CommunicationUser;
+import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -39,7 +39,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         assertNotNull(asyncClient);
 
         // Action & Assert
-        Mono<CommunicationUser> response = asyncClient.createUser();
+        Mono<CommunicationUserIdentifier> response = asyncClient.createUser();
         StepVerifier.create(response)
             .assertNext(item -> {
                 assertNotNull(item.getId());
@@ -56,7 +56,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         assertNotNull(asyncClient);
 
         // Action & Assert
-        Mono<CommunicationUser> response = asyncClient.createUser();
+        Mono<CommunicationUserIdentifier> response = asyncClient.createUser();
         StepVerifier.create(response)
             .assertNext(item -> {
                 assertNotNull(item.getId());
@@ -72,7 +72,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         asyncClient = getCommunicationIdentityClient(httpClient).buildAsyncClient();
 
         // Action & Assert
-        Mono<CommunicationUser> response = asyncClient.createUser();
+        Mono<CommunicationUserIdentifier> response = asyncClient.createUser();
         StepVerifier.create(response)
             .assertNext(item -> {
                 assertNotNull(item.getId());
@@ -87,7 +87,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         asyncClient = getCommunicationIdentityClient(httpClient).buildAsyncClient();
 
         // Action & Assert
-        Mono<Response<CommunicationUser>> response = asyncClient.createUserWithResponse();
+        Mono<Response<CommunicationUserIdentifier>> response = asyncClient.createUserWithResponse();
         StepVerifier.create(response)
             .assertNext(item -> {
                 assertNotNull(item.getValue().getId());
@@ -104,7 +104,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         asyncClient = getCommunicationIdentityClient(httpClient).buildAsyncClient();
 
         // Action & Assert
-        Mono<Response<CommunicationUser>> response = asyncClient.createUser(Context.NONE);
+        Mono<Response<CommunicationUserIdentifier>> response = asyncClient.createUser(Context.NONE);
         StepVerifier.create(response)
             .assertNext(item -> {
                 assertNotNull(item.getValue().getId());
@@ -303,7 +303,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         asyncClient = getCommunicationIdentityClient(httpClient).buildAsyncClient();
 
         // Action & Assert
-        StepVerifier.create(asyncClient.issueToken(new CommunicationUser("testUser"), null))
+        StepVerifier.create(asyncClient.issueToken(new CommunicationUserIdentifier("testUser"), null))
             .verifyError(NullPointerException.class);
     }
 
