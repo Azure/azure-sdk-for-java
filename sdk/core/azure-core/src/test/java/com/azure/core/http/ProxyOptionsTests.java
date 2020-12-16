@@ -94,7 +94,7 @@ public class ProxyOptionsTests {
 
             // Azure HTTPS proxy with non-proxying hosts.
             Arguments.of(new Configuration().put(Configuration.PROPERTY_HTTPS_PROXY, AZURE_HTTPS_PROXY_HOST_ONLY)
-                .put(Configuration.PROPERTY_NO_PROXY, NON_PROXY_HOSTS), PROXY_HOST, 443, null, null,
+                    .put(Configuration.PROPERTY_NO_PROXY, NON_PROXY_HOSTS), PROXY_HOST, 443, null, null,
                 Pattern.quote(NON_PROXY_HOSTS)),
 
             // Basic Azure HTTP proxy.
@@ -111,7 +111,7 @@ public class ProxyOptionsTests {
 
             // Azure HTTP proxy with non-proxying hosts.
             Arguments.of(new Configuration().put(Configuration.PROPERTY_HTTP_PROXY, AZURE_HTTP_PROXY_HOST_ONLY)
-                .put(Configuration.PROPERTY_NO_PROXY, NON_PROXY_HOSTS), PROXY_HOST, 80, null, null,
+                    .put(Configuration.PROPERTY_NO_PROXY, NON_PROXY_HOSTS), PROXY_HOST, 80, null, null,
                 Pattern.quote(NON_PROXY_HOSTS)),
 
             /*
@@ -123,15 +123,15 @@ public class ProxyOptionsTests {
 
             // Basic Java HTTPS proxy.
             Arguments.of(createJavaConfiguration(443, null, null, null, true, true),
-                PROXY_HOST, 443, null, null, getJavaNonProxyHosts()),
+                PROXY_HOST, 443, null, null, null),
 
             // Username only Java HTTPS proxy.
             Arguments.of(createJavaConfiguration(443, PROXY_USER, null, null, true, true),
-                PROXY_HOST, 443, null, null, getJavaNonProxyHosts()),
+                PROXY_HOST, 443, null, null, null),
 
             // Complete Java HTTPS proxy.
             Arguments.of(createJavaConfiguration(443, PROXY_USER, PROXY_PASSWORD, null, true, true),
-                PROXY_HOST, 443, PROXY_USER, PROXY_PASSWORD, getJavaNonProxyHosts()),
+                PROXY_HOST, 443, PROXY_USER, PROXY_PASSWORD, null),
 
             // Java HTTPS proxy with non-proxying hosts.
             Arguments.of(createJavaConfiguration(443, null, null, NON_PROXY_HOSTS, true, true),
@@ -139,15 +139,15 @@ public class ProxyOptionsTests {
 
             // Basic Java HTTP proxy.
             Arguments.of(createJavaConfiguration(80, null, null, null, false, true),
-                PROXY_HOST, 80, null, null, getJavaNonProxyHosts()),
+                PROXY_HOST, 80, null, null, null),
 
             // Username only Java HTTP proxy.
             Arguments.of(createJavaConfiguration(80, PROXY_USER, null, null, false, true),
-                PROXY_HOST, 80, null, null, getJavaNonProxyHosts()),
+                PROXY_HOST, 80, null, null, null),
 
             // Complete Java HTTP proxy.
             Arguments.of(createJavaConfiguration(80, PROXY_USER, PROXY_PASSWORD, null, false, true),
-                PROXY_HOST, 80, PROXY_USER, PROXY_PASSWORD, getJavaNonProxyHosts()),
+                PROXY_HOST, 80, PROXY_USER, PROXY_PASSWORD, null),
 
             // Java HTTP proxy with non-proxying hosts.
             Arguments.of(createJavaConfiguration(80, null, null, NON_PROXY_HOSTS, false, true),
@@ -156,8 +156,8 @@ public class ProxyOptionsTests {
     }
 
     /**
-     * Tests that passing {@link Configuration#NONE} into {@link ProxyOptions#fromConfiguration(Configuration)}
-     * will throw an {@link IllegalArgumentException}.
+     * Tests that passing {@link Configuration#NONE} into {@link ProxyOptions#fromConfiguration(Configuration)} will
+     * throw an {@link IllegalArgumentException}.
      */
     @Test
     public void loadFromEnvironmentThrowsWhenPassedConfigurationNone() {
@@ -186,7 +186,8 @@ public class ProxyOptionsTests {
     private static Configuration createJavaConfiguration(int port, String username, String password,
         String nonProxyHosts, boolean isHttps, boolean enabled) {
         Configuration configuration = new Configuration().put(JAVA_PROXY_PREREQUISITE, String.valueOf(enabled));
-        putIfNotNull(configuration, JAVA_NON_PROXY_HOSTS, nonProxyHosts);
+        configuration.put(JAVA_NON_PROXY_HOSTS, CoreUtils.isNullOrEmpty(nonProxyHosts) ? "" : nonProxyHosts);
+
 
         if (isHttps) {
             configuration.put(JAVA_HTTPS_PROXY_HOST, PROXY_HOST).put(JAVA_HTTPS_PROXY_PORT, String.valueOf(port));
@@ -215,10 +216,6 @@ public class ProxyOptionsTests {
             : configuration.put(name, value);
     }
 
-    private static String getJavaNonProxyHosts() {
-        return Configuration.getGlobalConfiguration().get(JAVA_NON_PROXY_HOSTS);
-    }
-
     @ParameterizedTest
     @MethodSource("nonProxyHostsSupplier")
     public void nonProxyHosts(Pattern pattern, String host, boolean expected) {
@@ -226,12 +223,10 @@ public class ProxyOptionsTests {
     }
 
     private static Stream<Arguments> nonProxyHostsSupplier() {
-        String[] rawNonProxyHosts = new String[] {
-            "localhost", "127.0.0.1", "*.prod.linkedin.com", "*.azure.linkedin.com", "*.blob.core.windows.net"
-        };
-
-        String javaNonProxyHosts = String.join("|", rawNonProxyHosts);
-        String noProxyNonProxyHosts = String.join(",", rawNonProxyHosts);
+        String javaNonProxyHosts = String.join("|", "localhost", "127.0.0.1", "*.prod.linkedin.com",
+            "*.azure.linkedin.com", "*.blob.core.windows.net");
+        String noProxyNonProxyHosts = String.join(",", "localhost", "127.0.0.1", ".*.prod.linkedin.com",
+            ".azure.linkedin.com", "*.blob.core.windows.net");
 
         /*
          * This emulates loading a Java formatted proxy.
@@ -263,15 +258,15 @@ public class ProxyOptionsTests {
 
         Pattern codeProxyPattern = compile(proxyOptions.getNonProxyHosts(), Pattern.CASE_INSENSITIVE);
 
-        Pattern[] patterns = new Pattern[] {
+        Pattern[] patterns = new Pattern[]{
             javaProxyConfigurationPattern, environmentProxyConfigurationPattern, codeProxyPattern
         };
 
-        String[] expectedMatchHosts = new String[] {
+        String[] expectedMatchHosts = new String[]{
             "localhost", "127.0.0.1", "azp.prod.linkedin.com", "azp.azure.linkedin.com", "azp.blob.core.windows.net"
         };
 
-        String[] expectedNonMatchHosts = new String[] {
+        String[] expectedNonMatchHosts = new String[]{
             "example.com", "portal.azure.com", "linkedin.com", "127a0b0c1", "azpaprodblinkedinccom",
             "azpaazureblinkedinccom", "azpablobbcorecwindowsdnet"
         };

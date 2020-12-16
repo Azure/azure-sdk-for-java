@@ -68,7 +68,7 @@ public class DeferredHttpProxyProvider implements Function<Bootstrap, BiConsumer
 
         InetSocketAddress inetSocketAddress = (InetSocketAddress) socketAddress;
 
-        return !nonProxyHostsPattern.matcher(inetSocketAddress.getHostString()).find();
+        return !nonProxyHostsPattern.matcher(inetSocketAddress.getHostString()).matches();
     }
 
     @Override

@@ -189,7 +189,7 @@ public class NettyAsyncHttpClientBuilderTests {
         };
 
         String[] requestUrlsWithProxying = new String[] {
-            "http://exmaple.com", "http://portal.azure.com", "http://linkedin.com", "http://8.8.8.8"
+            "http://example.com", "http://portal.azure.com", "http://linkedin.com", "http://8.8.8.8"
         };
 
         /*
@@ -291,7 +291,7 @@ public class NettyAsyncHttpClientBuilderTests {
         };
 
         String[] requestUrlsWithProxying = new String[] {
-            "http://exmaple.com", "http://portal.azure.com", "http://linkedin.com", "http://8.8.8.8"
+            "http://example.com", "http://portal.azure.com", "http://linkedin.com", "http://8.8.8.8"
         };
 
         /*

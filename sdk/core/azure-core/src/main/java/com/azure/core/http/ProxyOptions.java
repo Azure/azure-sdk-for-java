@@ -228,7 +228,55 @@ public class ProxyOptions {
         /*
          * The 'NO_PROXY' environment variable is expected to be delimited by ','.
          */
-        return sanitizeNonProxyHosts(noProxyString.split(","));
+        String[] nonProxyHosts = noProxyString.split(",");
+
+        // Do an in-place replacement with the sanitized value.
+        for (int i = 0; i < nonProxyHosts.length; i++) {
+            /*
+             * 'NO_PROXY' doesn't have a strongly standardized format, for now we are going to support values beginning
+             * and ending with '*' or '.' to exclude an entire domain and will quote the value between the prefix and
+             * suffix. In the future this may need to be updated to support more complex scenarios required by
+             * 'NO_PROXY' users such as wild cards within the domain exclusion.
+             */
+            String prefixWildcard = "";
+            String suffixWildcard = "";
+            String body = nonProxyHosts[i];
+
+            /*
+             * First check if the non-proxy host begins with a qualified quantifier and extract it from being quoted,
+             * then check if it is a non-qualified quantifier and qualifier and extract it from being quoted.
+             */
+            if (body.startsWith(".*")) {
+                prefixWildcard = ".*";
+                body = body.substring(2);
+            } else if (body.startsWith("*") || body.startsWith(".")) {
+                prefixWildcard = ".*";
+                body = body.substring(1);
+            }
+
+            /*
+             * First check if the non-proxy host ends with a qualified quantifier and extract it from being quoted,
+             * then check if it is a non-qualified quantifier and qualifier and extract it from being quoted.
+             */
+            if (body.endsWith(".*")) {
+                suffixWildcard = ".*";
+                body = body.substring(0, body.length() - 2);
+            } else if (body.endsWith("*") || body.endsWith(".")) {
+                suffixWildcard = ".*";
+                body = body.substring(0, body.length() - 1);
+            }
+
+            /*
+             * Replace the non-proxy host with the sanitized value.
+             *
+             * The body of the non-proxy host is quoted to handle scenarios such a '127.0.0.1' or '*.azure.com' where
+             * without quoting the '.' in the string would be treated as the match any character instead of the literal
+             * '.' character.
+             */
+            nonProxyHosts[i] = prefixWildcard + Pattern.quote(body) + suffixWildcard;
+        }
+
+        return String.join("|", nonProxyHosts);
     }
 
     private static ProxyOptions attemptToLoadJavaProxy(Configuration configuration, String type) {
@@ -275,18 +323,13 @@ public class ProxyOptions {
         /*
          * The 'http.nonProxyHosts' system property is expected to be delimited by '|'.
          */
-        return sanitizeNonProxyHosts(nonProxyHostsString.split("\\|"));
-    }
+        String[] nonProxyHosts = nonProxyHostsString.split("\\|");
 
-    /*
-     * Helper function that sanitizes non-proxy hosts into a Pattern safe string.
-     */
-    private static String sanitizeNonProxyHosts(String[] nonProxyHosts) {
         // Do an in-place replacement with the sanitized value.
         for (int i = 0; i < nonProxyHosts.length; i++) {
             /*
-             * Non-proxy hosts are allowed to begin and end with '*' but this is an invalid value for a pattern, so we
-             * need to qualify the quantifier with the match all '.' character.
+             * 'http.nonProxyHosts' values are allowed to begin and end with '*' but this is an invalid value for a
+             * pattern, so we need to qualify the quantifier with the match all '.' character.
              */
             String prefixWildcard = "";
             String suffixWildcard = "";
