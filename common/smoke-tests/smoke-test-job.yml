@@ -76,7 +76,7 @@ jobs:
 
       - template: /eng/common/TestResources/deploy-test-resources.yml
         parameters:
-          ServiceDirectory: '$(Build.SourcesDirectory)/common/smoke-tests/'
+          ServiceDirectory: $(ServiceDirectory)
           ArmTemplateParameters: $(ArmTemplateParameters)
           SubscriptionConfiguration: $(SubscriptionConfiguration)
 

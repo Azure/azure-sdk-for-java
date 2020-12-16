@@ -22,24 +22,28 @@ jobs:
           SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
           ArmTemplateParameters: $(azureCloudArmParameters)
           PomFile: common/smoke-tests/pom.xml
+          ServiceDirectory: '$(Build.SourcesDirectory)/common/smoke-tests/'
         Java LTS Windows (AzureCloud):
           JavaTestVersion: '1.11'
           OSVmImage: windows-2019
           SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
           ArmTemplateParameters: $(azureCloudArmParameters)
           PomFile: common/smoke-tests/pom.xml
+          ServiceDirectory: '$(Build.SourcesDirectory)/common/smoke-tests/'
         Java 8 Linux (AzureCloud):
           JavaTestVersion: '1.8'
           OSVmImage: ubuntu-18.04
           SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
           ArmTemplateParameters: $(azureCloudArmParameters)
           PomFile: common/smoke-tests/pom.xml
+          ServiceDirectory: '$(Build.SourcesDirectory)/common/smoke-tests/'
         Java LTS Linux (AzureCloud):
           JavaTestVersion: '1.11'
           OSVmImage: ubuntu-18.04
           SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
           ArmTemplateParameters: $(azureCloudArmParameters)
           PomFile: common/smoke-tests/pom.xml
+          ServiceDirectory: '$(Build.SourcesDirectory)/common/smoke-tests/'
         Java LTS Linux (AzureCloud Canary):
           JavaTestVersion: '1.11'
           OSVmImage: ubuntu-18.04
@@ -47,39 +51,46 @@ jobs:
           ArmTemplateParameters: $(azureCloudArmParameters)
           Location: 'eastus2euap'
           PomFile: common/smoke-tests/pom.xml
+          ServiceDirectory: '$(Build.SourcesDirectory)/common/smoke-tests/'
         Java 8 MacOS (AzureCloud):
           JavaTestVersion: '1.8'
           OSVmImage: macOS-10.15
           SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
           ArmTemplateParameters: $(azureCloudArmParameters)
           PomFile: common/smoke-tests/pom.xml
+          ServiceDirectory: '$(Build.SourcesDirectory)/common/smoke-tests/'
         Java LTS MacOS (AzureCloud):
           JavaTestVersion: '1.11'
           OSVmImage: macOS-10.15
           SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
           ArmTemplateParameters: $(azureCloudArmParameters)
           PomFile: common/smoke-tests/pom.xml
+          ServiceDirectory: '$(Build.SourcesDirectory)/common/smoke-tests/'
         Java 8 Windows (AzureUSGovernment):
           JavaTestVersion: '1.8'
           OSVmImage: windows-2019
           SubscriptionConfiguration: $(sub-config-gov-test-resources)
           ArmTemplateParameters: $(azureUSGovernmentArmParameters)
           PomFile: common/smoke-tests/pom.xml
+          ServiceDirectory: '$(Build.SourcesDirectory)/common/smoke-tests/'
         Java LTS Windows (AzureUSGovernment):
           JavaTestVersion: '1.11'
           OSVmImage: windows-2019
           SubscriptionConfiguration: $(sub-config-gov-test-resources)
           ArmTemplateParameters: $(azureUSGovernmentArmParameters)
           PomFile: common/smoke-tests/pom.xml
+          ServiceDirectory: '$(Build.SourcesDirectory)/common/smoke-tests/'
         Java 8 Windows (AzureChinaCloud):
           JavaTestVersion: '1.8'
           OSVmImage: windows-2019
           SubscriptionConfiguration: $(sub-config-cn-test-resources)
           ArmTemplateParameters: $(azureChinaCloudArmParameters)
           PomFile: common/smoke-tests/pom.xml
+          ServiceDirectory: '$(Build.SourcesDirectory)/common/smoke-tests/'
         Java LTS Windows (AzureChinaCloud):
           JavaTestVersion: '1.11'
           OSVmImage: windows-2019
           SubscriptionConfiguration: $(sub-config-cn-test-resources)
           ArmTemplateParameters: $(azureChinaCloudArmParameters)
           PomFile: common/smoke-tests/pom.xml
+          ServiceDirectory: '$(Build.SourcesDirectory)/common/smoke-tests/'

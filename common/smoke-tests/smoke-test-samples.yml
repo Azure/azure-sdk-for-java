@@ -9,7 +9,7 @@ jobs:
         inputs:
           mavenPomFile: $(PomFile)
           goals: 'verify'
-          options: '$(DefaultOptions) -Dtest=**/*Sample.java'
+          options: '$(DefaultOptions) -Dtest=**/*Example.java,**/*Sample.java'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaTestVersion)
           jdkArchitectureOption: 'x64'
@@ -24,3 +24,4 @@ jobs:
           SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
           ArmTemplateParameters: $(azureCloudArmParameters)
           PomFile: sdk/servicebus/azure-messaging-servicebus/pom.xml
+          ServiceDirectory: '$(Build.SourcesDirectory)/sdk/servicebus/'
