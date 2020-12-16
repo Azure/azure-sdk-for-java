@@ -32,6 +32,7 @@ import reactor.netty.http.client.HttpClient;
 import reactor.netty.resources.ConnectionProvider;
 import reactor.test.StepVerifier;
 
+import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.time.Duration;
@@ -351,7 +352,7 @@ public class NettyAsyncHttpClientBuilderTests {
     }
 
     private static final class TestProxyValidator extends ChannelDuplexHandler {
-        private static final Throwable EXPECTED_EXCEPTION = new IllegalStateException("This is a local test so we "
+        private static final Throwable EXPECTED_EXCEPTION = new IOException("This is a local test so we "
             + "cannot connect to remote hosts eagerly. This is exception is expected.");
 
         private final boolean shouldHaveProxy;
