@@ -7,7 +7,7 @@
     <artifactId>azure-client-sdk-parent</artifactId>
     <version>1.7.0</version>
     <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
-    <relativePath>../../../sdk/parents/azure-client-sdk-parent</relativePath>
+    <relativePath>../../sdk/parents/azure-client-sdk-parent</relativePath>
   </parent>
   <groupId>com.azure</groupId>
   <artifactId>azure-smoketest-samples</artifactId>
@@ -30,32 +30,13 @@
   <properties>
     <jacoco.min.linecoverage>0.18</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.09</jacoco.min.branchcoverage>
+    <samplelist>servicebus\azure-messaging-servicebus, storage\azure-storage-blob, search\azure-search-documents</samplelist>
   </properties>
   <dependencies>
     <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
-      <version>5.6.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
-    </dependency>
-
-
-    <dependency>
-      <groupId>org.reflections</groupId>
-      <artifactId>reflections</artifactId>
-      <version>0.9.12</version>
-    </dependency>
-
-    <dependency>
-      <!-- must be on the classpath -->
-      <groupId>org.jacoco</groupId>
-      <artifactId>org.jacoco.agent</artifactId>
-      <classifier>runtime</classifier>
-      <version>0.8.5</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
-    </dependency>
-    <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-servicebus</artifactId>
-      <version>7.1.0-beta.1</version>
+      <version>7.0.0</version>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -65,6 +46,22 @@
   </dependencies>
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <configuration>
+          <rules>
+            <bannedDependencies>
+              <includes>
+                <include>io.projectreactor:reactor-test:[3.3.11.RELEASE]</include> <!-- {x-include-update;io.projectreactor:reactor-test;external_dependency} -->
+                <!-- special allowance for azure-core-test as it is not a shipping library: -->
+                <include>org.junit.jupiter:junit-jupiter-api:[5.6.3]</include> <!-- {x-include-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+              </includes>
+            </bannedDependencies>
+          </rules>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
@@ -89,15 +86,6 @@
         <jdk>[11,)</jdk>
       </activation>
       <build>
-        <resources>
-          <resource>
-            <directory>${project.basedir}/../../sdk/servicebus/azure-messaging-servicebus/src/samples/java</directory>
-            <targetPath>${project.basedir}/src/main/java</targetPath>
-            <includes>
-              <include>**/*.java</include>
-            </includes>
-          </resource>
-        </resources>
         <plugins>
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
@@ -117,6 +105,12 @@
             </executions>
           </plugin>
         </plugins>
+        <resources>
+          <resource>
+            <directory>${project.basedir}/../../sdk/servicebus\azure-messaging-servicebus/src/samples/java</directory>
+            <targetPath>${project.basedir}/src/main/java</targetPath>
+          </resource>
+        </resources>
       </build>
     </profile>
   </profiles>
