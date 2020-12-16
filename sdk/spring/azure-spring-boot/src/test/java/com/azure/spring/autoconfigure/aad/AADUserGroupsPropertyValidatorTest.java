@@ -9,6 +9,8 @@ import org.junit.Test;
 import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 public class AADUserGroupsPropertyValidatorTest {
 
@@ -21,7 +23,10 @@ public class AADUserGroupsPropertyValidatorTest {
 
     @Test
     public void isValidNoGroupsDefined() {
-        assertThatCode(() -> aadAuthenticationProperties.validateUserGroupProperties())
+        AADAuthenticationProperties aadProperties = spy(new AADAuthenticationProperties());
+        when(aadProperties.isWebApplication()).thenReturn(false);
+        when(aadProperties.isResourceServer()).thenReturn(false);
+        assertThatCode(() -> aadProperties.validateUserGroupProperties())
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("One of the User Group Properties must be populated. "
                 + "Please populate azure.activedirectory.user-group.allowed-groups"

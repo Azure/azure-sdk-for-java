@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.communication.sms;
 
-import com.azure.communication.common.PhoneNumber;
+import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.communication.sms.models.SendSmsOptions;
 import com.azure.core.http.HttpClient;
 
@@ -19,16 +19,16 @@ import reactor.test.StepVerifier;
 
 public class SmsLiveAsyncClientTests extends SmsLiveTestBase {
 
-    private List<PhoneNumber> to;
-    private PhoneNumber from;
+    private List<PhoneNumberIdentifier> to;
+    private PhoneNumberIdentifier from;
     private String body;
 
     @BeforeEach
     public void beforeEach() {
-        to = new ArrayList<PhoneNumber>();
+        to = new ArrayList<PhoneNumberIdentifier>();
         body = "Hello";
-        from = new PhoneNumber(PHONENUMBER);
-        to.add(new PhoneNumber(PHONENUMBER));
+        from = new PhoneNumberIdentifier(PHONENUMBER);
+        to.add(new PhoneNumberIdentifier(PHONENUMBER));
     }
     
     @ParameterizedTest
