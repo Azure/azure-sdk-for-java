@@ -3,7 +3,7 @@
 
 package com.azure.communication.chat.implementation.converters;
 
-import com.azure.communication.common.CommunicationUser;
+import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.chat.models.ChatThreadMember;
 
 /**
@@ -20,7 +20,7 @@ public final class ChatThreadMemberConverter {
         }
 
         ChatThreadMember chatThreadMember = new ChatThreadMember()
-            .setUser(new CommunicationUser(obj.getId()))
+            .setUser(new CommunicationUserIdentifier(obj.getId()))
             .setDisplayName(obj.getDisplayName())
             .setShareHistoryTime(obj.getShareHistoryTime());
 

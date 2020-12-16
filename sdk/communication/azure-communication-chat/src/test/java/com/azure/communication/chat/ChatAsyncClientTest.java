@@ -13,7 +13,7 @@ import reactor.test.StepVerifier;
 
 import com.azure.communication.administration.CommunicationIdentityClient;
 import com.azure.communication.administration.CommunicationUserToken;
-import com.azure.communication.common.CommunicationUser;
+import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.chat.implementation.ChatOptionsProvider;
 import com.azure.communication.chat.models.*;
 import com.azure.core.exception.HttpResponseException;
@@ -37,8 +37,8 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
     private CommunicationIdentityClient communicationClient;
     private ChatAsyncClient client;
 
-    private CommunicationUser firstThreadMember;
-    private CommunicationUser secondThreadMember;
+    private CommunicationUserIdentifier firstThreadMember;
+    private CommunicationUserIdentifier secondThreadMember;
 
     @Override
     protected void beforeTest() {
