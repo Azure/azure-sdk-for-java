@@ -62,7 +62,7 @@ public class ReflectionUtils {
 
     @SuppressWarnings("unchecked")
     // Note: @moderakh @kushagraThapar - klass is not used but still casting to T
-    private static <T> T get(Class<T> klass, Object object, String fieldName) {
+    public static <T> T get(Class<T> klass, Object object, String fieldName) {
         try {
             return (T) FieldUtils.readField(object, fieldName, true);
         } catch (IllegalAccessException e) {
@@ -178,7 +178,6 @@ public class ReflectionUtils {
         return get(RxStoreModel.class, rxDocumentClient, "storeModel");
     }
 
-
     public static void setGatewayProxy(RxDocumentClientImpl client, RxStoreModel storeModel) {
         set(client, storeModel, "gatewayProxy");
     }
@@ -186,5 +185,4 @@ public class ReflectionUtils {
     public static void setServerStoreModel (RxDocumentClientImpl client, RxStoreModel storeModel) {
         set(client, storeModel, "storeModel");
     }
-
 }

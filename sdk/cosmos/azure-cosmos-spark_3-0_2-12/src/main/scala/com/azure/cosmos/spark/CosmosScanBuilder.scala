@@ -3,17 +3,18 @@
 
 package com.azure.cosmos.spark
 
-import org.apache.spark.sql.connector.read.{Batch, InputPartition, PartitionReaderFactory,
-  Scan, ScanBuilder, SupportsPushDownFilters, SupportsPushDownRequiredColumns}
-import org.apache.spark.sql.sources.{EqualTo, Filter}
-import org.apache.spark.sql.types.{IntegerType, StringType, StructField, StructType}
+import com.azure.cosmos.implementation.CosmosClientState
+import org.apache.spark.broadcast.Broadcast
+import org.apache.spark.sql.connector.read.{Scan, ScanBuilder, SupportsPushDownFilters, SupportsPushDownRequiredColumns}
+import org.apache.spark.sql.sources.Filter
+import org.apache.spark.sql.types.StructType
 import org.apache.spark.sql.util.CaseInsensitiveStringMap
 
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
-case class CosmosScanBuilder(config: CaseInsensitiveStringMap, inputSchema: StructType)
+case class CosmosScanBuilder(config: CaseInsensitiveStringMap, inputSchema: StructType, cosmosClientStateHandle: Broadcast[CosmosClientState])
   extends ScanBuilder
     with SupportsPushDownFilters
     with SupportsPushDownRequiredColumns
@@ -50,7 +51,7 @@ case class CosmosScanBuilder(config: CaseInsensitiveStringMap, inputSchema: Stru
     assert(this.processedPredicates.isDefined)
 
     // TODO moderakh when inferring schema we should consolidate the schema from pruneColumns
-    CosmosScan(inputSchema, config.asScala.toMap, this.processedPredicates.get.cosmosParametrizedQuery)
+    CosmosScan(inputSchema, config.asScala.toMap, this.processedPredicates.get.cosmosParametrizedQuery, cosmosClientStateHandle)
   }
 
   /**

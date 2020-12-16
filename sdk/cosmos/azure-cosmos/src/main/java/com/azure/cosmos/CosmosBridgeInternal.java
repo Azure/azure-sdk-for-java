@@ -5,6 +5,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ConnectionPolicy;
+import com.azure.cosmos.implementation.CosmosClientState;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Warning;
@@ -128,6 +129,12 @@ public final class CosmosBridgeInternal {
             .readRequestsFallbackEnabled(builder.isReadRequestsFallbackEnabled());
 
         return copy;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static CosmosClientBuilder setUsingState(CosmosClientBuilder cosmosClientBuilder, CosmosClientState state) {
+        cosmosClientBuilder.usingState(state);
+        return cosmosClientBuilder;
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

@@ -3,7 +3,8 @@
 package com.azure.cosmos.implementation.caches;
 
 import java.io.Serializable;
+import java.util.function.Function;
 
-interface IEqualityComparer<TValue> extends Serializable {
-    boolean areEqual(TValue v1, TValue v2);
+public interface SerializableWrapper<T> extends Serializable {
+    T getWrappedItem();
 }

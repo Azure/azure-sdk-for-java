@@ -4,14 +4,18 @@ package com.azure.cosmos.spark
 
 import java.util.UUID
 
-import com.azure.cosmos.implementation.TestConfigurations
+import com.azure.cosmos.implementation.{CosmosClientState, TestConfigurations}
 import com.azure.cosmos.{ConsistencyLevel, CosmosClientBuilder}
+import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.catalyst.InternalRow
 import org.apache.spark.sql.connector.write.{DataWriter, DataWriterFactory, WriterCommitMessage}
 import org.apache.spark.sql.types.{IntegerType, StringType, StructField, StructType}
 
 class CosmosDataWriteFactory(userConfig: Map[String, String],
-                             inputSchema: StructType) extends DataWriterFactory with CosmosLoggingTrait {
+                             inputSchema: StructType,
+                             cosmosClientStateHandle: Broadcast[CosmosClientState])
+  extends DataWriterFactory
+    with CosmosLoggingTrait {
   logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
   override def createWriter(i: Int, l: Long): DataWriter[InternalRow] = new CosmosWriter(inputSchema)
@@ -26,6 +30,7 @@ class CosmosDataWriteFactory(userConfig: Map[String, String],
     val client = new CosmosClientBuilder()
       .key(cosmosAccountConfig.key)
       .endpoint(cosmosAccountConfig.endpoint)
+      .usingState(cosmosClientStateHandle.value)
       .consistencyLevel(ConsistencyLevel.EVENTUAL)
       .buildAsyncClient();
 
