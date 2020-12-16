@@ -55,7 +55,7 @@ public class AzureClientRegistrationRepository implements ClientRegistrationRepo
     @NotNull
     @Override
     public Iterator<ClientRegistration> iterator() {
-        if(isWebappRepository) {
+        if (isWebappRepository) {
             return Collections.singleton(azureClient.getClient()).iterator();
         }
         return allClients.values().iterator();
