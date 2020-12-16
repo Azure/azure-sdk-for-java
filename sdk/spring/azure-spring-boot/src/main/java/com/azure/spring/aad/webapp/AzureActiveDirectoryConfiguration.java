@@ -27,9 +27,11 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
+import org.springframework.security.oauth2.client.web.method.annotation.OAuth2AuthorizedClientArgumentResolver;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -47,6 +49,7 @@ import static org.springframework.core.Ordered.HIGHEST_PRECEDENCE;
 @ConditionalOnMissingClass({ "org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken" })
 @ConditionalOnClass(ClientRegistrationRepository.class)
 @EnableConfigurationProperties(AADAuthenticationProperties.class)
+@ConditionalOnProperty(prefix = "azure.activedirectory.user-group", value = "allowed-groups")
 public class AzureActiveDirectoryConfiguration {
 
     private static final String AZURE_CLIENT_REGISTRATION_ID = "azure";
@@ -70,14 +73,13 @@ public class AzureActiveDirectoryConfiguration {
     }
 
     @Bean
-    @ConditionalOnProperty(prefix = "azure.activedirectory.user-group", value = "allowed-groups")
     public OAuth2AuthorizedClientManager authorizedClientManager(
         ClientRegistrationRepository clientRegistrationRepository,
         OAuth2AuthorizedClientRepository authorizedClientRepository) {
 
         DefaultRefreshTokenTokenResponseClient responseClient = new DefaultRefreshTokenTokenResponseClient();
         responseClient.setRequestEntityConverter(
-            new RefreshTokenGrantRequestEntityConverter());
+            new AzureOauth2RefreshTokenGrantRequestEntityConverter());
 
         OAuth2AuthorizedClientProvider authorizedClientProvider =
             OAuth2AuthorizedClientProviderBuilder.builder()
@@ -95,7 +97,6 @@ public class AzureActiveDirectoryConfiguration {
     }
 
     @Bean
-    @ConditionalOnProperty(prefix = "azure.activedirectory.user-group", value = "allowed-groups")
     public OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService(AADAuthenticationProperties properties) {
         return new AzureActiveDirectoryOAuth2UserService(properties);
     }
@@ -210,18 +211,20 @@ public class AzureActiveDirectoryConfiguration {
     }
 
     /**
-     * Sample configuration to make RefreshTokenGrantRequestEntityConverter take effect.
-     * TODO: spring-security can't inject OAuth2AuthorizedClientManager to OAuth2AuthorizedClientArgumentResolver
-     *  Future versions may support this , this may be a better solution
-     *  issues : https://github.com/spring-projects/spring-security/issues/8700
+     * Temp solution to make RefreshTokenGrantRequestEntityConverter take effect.
+     * TODO: remove this logic after spring-security can inject OAuth2AuthorizedClientManager to OAuth2AuthorizedClientArgumentResolver
+     * issue: https://github.com/spring-projects/spring-security/issues/8700
      */
     @Order(HIGHEST_PRECEDENCE)
     @Configuration
-    public static class DefaultAzureWebMvcContext extends AzureWebMvcConfigurer {
+    public static class AzureWebMvcContext implements WebMvcConfigurer {
+
+        @Autowired
+        OAuth2AuthorizedClientManager clientManager;
 
         @Override
         public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-            super.addArgumentResolvers(argumentResolvers);
+            argumentResolvers.add(new OAuth2AuthorizedClientArgumentResolver(clientManager));
         }
     }
 

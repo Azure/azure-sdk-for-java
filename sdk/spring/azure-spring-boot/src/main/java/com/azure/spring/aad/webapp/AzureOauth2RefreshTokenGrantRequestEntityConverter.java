@@ -14,7 +14,7 @@ import java.util.Optional;
 /**
  * Used to set "scope" parameter when use "refresh_token" to get "access_token".
  */
-public class RefreshTokenGrantRequestEntityConverter extends OAuth2RefreshTokenGrantRequestEntityConverter {
+public class AzureOauth2RefreshTokenGrantRequestEntityConverter extends OAuth2RefreshTokenGrantRequestEntityConverter {
 
     @SuppressWarnings("unchecked")
     public RequestEntity<?> convert(OAuth2RefreshTokenGrantRequest refreshTokenGrantRequest) {
