@@ -35,11 +35,6 @@
       <artifactId>azure-spring-boot</artifactId>
       <version>3.0.0-beta.2</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot;current} -->
     </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-webmvc</artifactId>
-      <version>5.2.10.RELEASE</version> <!-- {x-version-update;org.springframework:spring-webmvc;external_dependency} -->
-    </dependency>
   </dependencies>
 
   <build>
