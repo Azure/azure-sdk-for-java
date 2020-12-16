@@ -664,8 +664,7 @@ public class StoreReader {
             if (request.requestContext.requestChargeTracker != null) {
                 request.requestContext.requestChargeTracker.addCharge(storeResult.requestCharge);
             }
-        }
-        catch (Exception e){
+        } catch (Exception e){
             logger.error("Unexpected failure while recording response", e);
         }
 
