@@ -305,6 +305,9 @@ class ServiceBusSessionManager implements AutoCloseable {
             .flatMapMany(sessionReceiver -> sessionReceiver.receive().doFinally(signalType -> {
                 logger.verbose("Adding scheduler back to pool.");
                 availableSchedulers.push(scheduler);
+                sessionReceivers.remove("1");
+                sessionReceiver.close();
+
                 if (receiverOptions.isRollingSessionReceiver()) {
                     onSessionRequest(1L);
                 }
