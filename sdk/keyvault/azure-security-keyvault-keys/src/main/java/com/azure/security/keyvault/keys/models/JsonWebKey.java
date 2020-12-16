@@ -1027,7 +1027,7 @@ public class JsonWebKey {
             }
         }
 
-        if (KeyType.OCT.equals(keyType)) {
+        if (KeyType.OCT.equals(keyType) || KeyType.OCT_HSM.equals(keyType)) {
             return isValidOctet();
         } else if (KeyType.RSA.equals(keyType)) {
             return isValidRsa();
@@ -1043,10 +1043,7 @@ public class JsonWebKey {
     }
 
     private boolean isValidOctet() {
-        if (k != null) {
-            return true;
-        }
-        return false;
+        return k != null;
     }
 
     private boolean isValidRsa() {
