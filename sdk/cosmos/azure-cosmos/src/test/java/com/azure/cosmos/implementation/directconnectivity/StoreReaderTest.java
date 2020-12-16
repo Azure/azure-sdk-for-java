@@ -5,7 +5,26 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.*;
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
+import com.azure.cosmos.implementation.DocumentServiceRequestContext;
+import com.azure.cosmos.implementation.FailureValidator;
+import com.azure.cosmos.implementation.GoneException;
+import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ISessionContainer;
+import com.azure.cosmos.implementation.ISessionToken;
+import com.azure.cosmos.implementation.NotFoundException;
+import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.PartitionIsMigratingException;
+import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
+import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
+import com.azure.cosmos.implementation.RequestChargeTracker;
+import com.azure.cosmos.implementation.RequestRateTooLargeException;
+import com.azure.cosmos.implementation.ResourceType;
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.StoreResponseBuilder;
+import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.VectorSessionToken;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import io.reactivex.subscribers.TestSubscriber;
 import org.assertj.core.api.AssertionsForClassTypes;
@@ -23,7 +42,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.azure.cosmos.implementation.HttpConstants.StatusCodes.GONE;
-import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes.*;
+import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes.COMPLETING_PARTITION_MIGRATION;
+import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes.COMPLETING_SPLIT;
+import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE;
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static com.azure.cosmos.implementation.TestUtils.mockDocumentServiceRequest;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -117,7 +138,6 @@ public class StoreReaderTest {
     @DataProvider(name = "storeResponseArgProvider")
     public Object[][] storeResponseArgProvider() {
         return new Object[][]{
-            // exception to be thrown from transportClient, expected (exception type, status, subStatus)
             { new PartitionKeyRangeGoneException(), null, },
             { new PartitionKeyRangeIsSplittingException() , null, },
             { new PartitionIsMigratingException(), null, },
