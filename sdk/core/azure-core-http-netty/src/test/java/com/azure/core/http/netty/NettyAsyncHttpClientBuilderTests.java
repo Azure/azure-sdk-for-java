@@ -379,8 +379,8 @@ public class NettyAsyncHttpClientBuilderTests {
                     switch (proxyType) {
                         case HTTP:
                             if (usesAzureHttpProxyHandler) {
-                                assertTrue(proxyHandler instanceof
-                                    com.azure.core.http.netty.implementation.HttpProxyHandler);
+                                assertTrue(
+                                    proxyHandler instanceof com.azure.core.http.netty.implementation.HttpProxyHandler);
                             } else {
                                 assertTrue(proxyHandler instanceof HttpProxyHandler);
                             }

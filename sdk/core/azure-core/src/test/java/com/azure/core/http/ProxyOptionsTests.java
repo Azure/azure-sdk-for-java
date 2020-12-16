@@ -94,7 +94,8 @@ public class ProxyOptionsTests {
 
             // Azure HTTPS proxy with non-proxying hosts.
             Arguments.of(new Configuration().put(Configuration.PROPERTY_HTTPS_PROXY, AZURE_HTTPS_PROXY_HOST_ONLY)
-                .put(Configuration.PROPERTY_NO_PROXY, NON_PROXY_HOSTS), PROXY_HOST, 443, null, null, NON_PROXY_HOSTS),
+                .put(Configuration.PROPERTY_NO_PROXY, NON_PROXY_HOSTS), PROXY_HOST, 443, null, null,
+                Pattern.quote(NON_PROXY_HOSTS)),
 
             // Basic Azure HTTP proxy.
             Arguments.of(new Configuration().put(Configuration.PROPERTY_HTTP_PROXY, AZURE_HTTP_PROXY_HOST_ONLY),
@@ -110,7 +111,8 @@ public class ProxyOptionsTests {
 
             // Azure HTTP proxy with non-proxying hosts.
             Arguments.of(new Configuration().put(Configuration.PROPERTY_HTTP_PROXY, AZURE_HTTP_PROXY_HOST_ONLY)
-                .put(Configuration.PROPERTY_NO_PROXY, NON_PROXY_HOSTS), PROXY_HOST, 80, null, null, NON_PROXY_HOSTS),
+                .put(Configuration.PROPERTY_NO_PROXY, NON_PROXY_HOSTS), PROXY_HOST, 80, null, null,
+                Pattern.quote(NON_PROXY_HOSTS)),
 
             /*
              * Setting up tests for loading the Java environment proxy configurations takes additional work as each
@@ -133,7 +135,7 @@ public class ProxyOptionsTests {
 
             // Java HTTPS proxy with non-proxying hosts.
             Arguments.of(createJavaConfiguration(443, null, null, NON_PROXY_HOSTS, true, true),
-                PROXY_HOST, 443, null, null, NON_PROXY_HOSTS),
+                PROXY_HOST, 443, null, null, Pattern.quote(NON_PROXY_HOSTS)),
 
             // Basic Java HTTP proxy.
             Arguments.of(createJavaConfiguration(80, null, null, null, false, true),
@@ -149,7 +151,7 @@ public class ProxyOptionsTests {
 
             // Java HTTP proxy with non-proxying hosts.
             Arguments.of(createJavaConfiguration(80, null, null, NON_PROXY_HOSTS, false, true),
-                PROXY_HOST, 80, null, null, NON_PROXY_HOSTS)
+                PROXY_HOST, 80, null, null, Pattern.quote(NON_PROXY_HOSTS))
         );
     }
 

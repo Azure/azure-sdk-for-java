@@ -98,7 +98,7 @@ public class ProxyOptions {
      * @return the updated ProxyOptions object
      */
     public ProxyOptions setNonProxyHosts(String nonProxyHosts) {
-        this.nonProxyHosts = cleanseHttpNonProxyHosts(nonProxyHosts);
+        this.nonProxyHosts = sanitizeJavaHttpNonProxyHosts(nonProxyHosts);
         return this;
     }
 
@@ -155,9 +155,9 @@ public class ProxyOptions {
      * <p>
      * {@code null} will be returned if no proxy was found in the environment.
      *
-     * @param configuration The {@link Configuration} that is used to load proxy configurations from the environment.
-     * If {@code null} is passed then {@link Configuration#getGlobalConfiguration()} will be used. If
-     * {@link Configuration#NONE} is passed {@link IllegalArgumentException} will be thrown.
+     * @param configuration The {@link Configuration} that is used to load proxy configurations from the environment. If
+     * {@code null} is passed then {@link Configuration#getGlobalConfiguration()} will be used. If {@link
+     * Configuration#NONE} is passed {@link IllegalArgumentException} will be thrown.
      * @return A {@link ProxyOptions} reflecting a proxy loaded from the environment, if no proxy is found {@code null}
      * will be returned.
      * @throws IllegalArgumentException If {@code configuration} is {@link Configuration#NONE}.
@@ -196,7 +196,7 @@ public class ProxyOptions {
 
             String nonProxyHostsString = configuration.get(Configuration.PROPERTY_NO_PROXY);
             if (!CoreUtils.isNullOrEmpty(nonProxyHostsString)) {
-                proxyOptions.nonProxyHosts = cleanseNoProxy(nonProxyHostsString);
+                proxyOptions.nonProxyHosts = sanitizeNoProxy(nonProxyHostsString);
             }
 
             String userInfo = proxyUrl.getUserInfo();
@@ -222,14 +222,13 @@ public class ProxyOptions {
     }
 
     /*
-     * Helper function that will cleanse the NO_PROXY environment variable into a String that is safe to use with the
-     * Pattern class.
+     * Helper function that sanitizes 'NO_PROXY' into a Pattern safe string.
      */
-    private static String cleanseNoProxy(String noProxyString) {
+    private static String sanitizeNoProxy(String noProxyString) {
         /*
-         * The NO_PROXY environment variable is expected to be delimited by ','.
+         * The 'NO_PROXY' environment variable is expected to be delimited by ','.
          */
-        return cleanseNonProxyHosts(noProxyString.split(","));
+        return sanitizeNonProxyHosts(noProxyString.split(","));
     }
 
     private static ProxyOptions attemptToLoadJavaProxy(Configuration configuration, String type) {
@@ -256,7 +255,7 @@ public class ProxyOptions {
 
         String nonProxyHostsString = configuration.get(JAVA_NON_PROXY_HOSTS);
         if (!CoreUtils.isNullOrEmpty(nonProxyHostsString)) {
-            proxyOptions.nonProxyHosts = cleanseHttpNonProxyHosts(nonProxyHostsString);
+            proxyOptions.nonProxyHosts = sanitizeJavaHttpNonProxyHosts(nonProxyHostsString);
         }
 
         String username = configuration.get(type + "." + JAVA_PROXY_USER);
@@ -270,26 +269,24 @@ public class ProxyOptions {
     }
 
     /*
-     * Helper function that will cleanse the Java http.nonProxyHosts configuration into a String that is safe to use
-     * with the Pattern class.
+     * Helper function that sanitizes 'http.nonProxyHosts' into a Pattern safe string.
      */
-    private static String cleanseHttpNonProxyHosts(String nonProxyHostsString) {
+    private static String sanitizeJavaHttpNonProxyHosts(String nonProxyHostsString) {
         /*
-         * The http.nonProxyHosts system property is expected to be delimited by '|'.
+         * The 'http.nonProxyHosts' system property is expected to be delimited by '|'.
          */
-        return cleanseNonProxyHosts(nonProxyHostsString.split("\\|"));
+        return sanitizeNonProxyHosts(nonProxyHostsString.split("\\|"));
     }
 
     /*
-     * Helper function that will cleanse the Java http.nonProxyHosts configuration into a String that is safe to use
-     * with the Pattern class.
+     * Helper function that sanitizes non-proxy hosts into a Pattern safe string.
      */
-    private static String cleanseNonProxyHosts(String[] nonProxyHosts) {
-        // Do an in-place replacement with the cleansed value.
+    private static String sanitizeNonProxyHosts(String[] nonProxyHosts) {
+        // Do an in-place replacement with the sanitized value.
         for (int i = 0; i < nonProxyHosts.length; i++) {
             /*
-             * http.nonProxyHosts values are allowed to begin and end with '*' but this is an invalid value for a
-             * pattern, so we need to qualify the quantifier with the match all '.' character.
+             * Non-proxy hosts are allowed to begin and end with '*' but this is an invalid value for a pattern, so we
+             * need to qualify the quantifier with the match all '.' character.
              */
             String prefixWildcard = "";
             String suffixWildcard = "";
@@ -306,9 +303,11 @@ public class ProxyOptions {
             }
 
             /*
-             * Replace the nonProxyHost value with the cleansed value. The body of the pattern needs to be quoted to
-             * handle scenarios such a '127.0.0.1' or '*.azure.com' where without quoting the '.' in the string would
-             * be treated as the match any character instead of the literal '.' character.
+             * Replace the non-proxy host with the sanitized value.
+             *
+             * The body of the non-proxy host is quoted to handle scenarios such a '127.0.0.1' or '*.azure.com' where
+             * without quoting the '.' in the string would be treated as the match any character instead of the literal
+             * '.' character.
              */
             nonProxyHosts[i] = prefixWildcard + Pattern.quote(body) + suffixWildcard;
         }
