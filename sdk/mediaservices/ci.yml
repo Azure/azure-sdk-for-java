@@ -15,6 +15,7 @@ trigger:
       - sdk/mediaservices/mgmt-v2018_06_01_preview
       - sdk/mediaservices/mgmt-v2018_07_01
       - sdk/mediaservices/mgmt-v2019_05_01_preview
+
 pr:
   branches:
     include:
@@ -41,3 +42,6 @@ extends:
       - name: azure-media
         groupId: com.microsoft.azure
         safeName: azuremedia
+      - name: azure-resourcemanager-mediaservices
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagermediaservices
