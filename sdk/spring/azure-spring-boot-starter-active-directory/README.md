@@ -36,7 +36,7 @@ The authorization flow is composed of 3 phrases:
 
 ### Group membership
 The way to get group relationship depends on the graph api used, the default to get membership is the direct group of the user. 
-If you want to get all transitive relationships, the following are configuration item:
+To get all transitive relationships, the following configuration is required:
 
 ```properties
 azure.activedirectory.graph-membership-uri=https://graph.microsoft.com/v1.0/me/transitiveMemberOf
@@ -92,7 +92,7 @@ Refer to different samples for different authentication ways.
 
 Please refer to [azure-spring-boot-sample-active-directory-webapp](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/README.md) for authenticate in backend.
 
-####  Configure application.properties:
+####  Configure application.properties:`
 ```properties
 azure.activedirectory.tenant-id=xxxxxx-your-tenant-id-xxxxxx
 spring.security.oauth2.client.registration.azure.client-id=xxxxxx-your-client-id-xxxxxx

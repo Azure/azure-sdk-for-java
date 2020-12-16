@@ -24,6 +24,7 @@ public class ClientController {
     public String graph(
         @RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient oAuth2AuthorizedClient
     ) {
+
         logAuthorizedClient(oAuth2AuthorizedClient);
         return "graph";
     }

@@ -26,9 +26,9 @@ public class AuthzCodeGrantRequestEntityConverter extends OAuth2AuthorizationCod
     @SuppressWarnings("unchecked")
     public RequestEntity<?> convert(OAuth2AuthorizationCodeGrantRequest request) {
         RequestEntity<?> result = super.convert(request);
-        String scopes = String.join(" ", isRequestForDefaultClient(request) ?
-            azureClient.getAccessTokenScopes() :
-            request.getClientRegistration().getScopes());
+        String scopes = String.join(" ", isRequestForDefaultClient(request)
+            ? azureClient.getAccessTokenScopes()
+            : request.getClientRegistration().getScopes());
         Optional.ofNullable(result)
                 .map(HttpEntity::getBody)
                 .map(b -> (MultiValueMap<String, String>) b)
