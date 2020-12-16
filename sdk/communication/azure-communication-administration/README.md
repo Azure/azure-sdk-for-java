@@ -28,15 +28,16 @@ Acquired phone numbers can come with many capabilities, depending on the country
 
 ## Key concepts
 
-There are two forms of authentication to use the Admnistration SDK.
+There are two forms of authentication to use the Administration SDK:
 
-### Using your AAD Credentials
-Currently, AAD authentication is just possible for CommunicationIdentityClient.
+### Azure Active Directory Token Authentication
+Currently, Azure Active Directory (AAD) authentication is only possible for CommunicationIdentityClient.
 The DefaultAzureCredential object must be passed to the CommunicationIdentityClientBuilder via
 the credential() funtion. Endpoint and httpClient must also be set
 via the endpoint() and httpClient() functions respectively.
 
-Client secret, client id and tenant id will be needed to create a DefaultAzureCredential object.
+CLIENT_SECRET, CLIENT_ID and TENANT_ID environment variables 
+needed to create a DefaultAzureCredential object.
 
 <!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L377-L389 -->
 ```java
