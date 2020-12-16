@@ -326,9 +326,9 @@ public class BlobServiceClientJavaDocCodeSnippets {
      * Code snippet for {@link BlobServiceClient#renameBlobContainer(String, String)}
      */
     public void renameContainer() {
-        // BEGIN: com.azure.storage.blob.BlobServiceClient.renameContainer#String-String
+        // BEGIN: com.azure.storage.blob.BlobServiceClient.renameBlobContainer#String-String
         BlobContainerClient blobContainerClient = client.renameBlobContainer("newContainerName", "oldContainerName");
-        // END: com.azure.storage.blob.BlobServiceClient.renameContainer#String-String
+        // END: com.azure.storage.blob.BlobServiceClient.renameBlobContainer#String-String
     }
 
     /**
