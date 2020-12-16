@@ -1,17 +1,19 @@
-# Spring Cloud Azure Event Hub Operation Sample shared library for Java
+# Spring Cloud Azure Event Hub Integration Code Sample shared library for Java
 
 ## Key concepts
 
-This code sample demonstrates how to use [EventHubOperation.java][eventhub-operation].
+This code sample demonstrates how to use Spring Integration for Azure
+Event Hub.
+
 
 ## Getting started
 
-Running this sample will be charged by Azure. You can check the usage and bill at 
+Running this sample will be charged by Azure. You can check the usage and bill at
 [this link][azure-account].
 
 ### Environment checklist
 
-We need to ensure that this [environment checklist][ready-to-run-checklist] is 
+We need to ensure that this [environment checklist][ready-to-run-checklist] is
 completed before the run.
 
 ### Create Azure resources
@@ -36,6 +38,9 @@ completed before the run.
             checkpoint-container: [checkpoint-container]
     ```
 
+1.  Update event hub name and consumer group in
+    [ReceiveController][receive-controller] and [SendController][send-controller].
+    
 1.  Run the `mvn spring-boot:run` in the root of the code sample to get the app running.
 
 1.  Send a POST request
@@ -49,19 +54,21 @@ completed before the run.
 
 1.  Delete the resources on [Azure Portal][azure-portal] to avoid unexpected charges.
 
+
 ## Troubleshooting
 
 ## Next steps
 
 ## Contributing
 
-
-<!-- LINKS -->
-
 [azure-account]: https://azure.microsoft.com/account/
 [azure-portal]: http://ms.portal.azure.com/
-[create-event-hubs]: https://docs.microsoft.com/azure/event-hubs/ 
-[create-azure-storage]: https://docs.microsoft.com/azure/storage/ 
+[create-event-hubs]: https://docs.microsoft.com/azure/event-hubs/
+[create-azure-storage]: https://docs.microsoft.com/azure/storage/
 [eventhub-operation]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-integration-eventhubs/src/main/java/com/azure/spring/integration/eventhub/api/EventHubOperation.java
 [ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
+[receive-controller]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-eventhubs/src/main/java/com/azure/spring/sample/eventhubs/ReceiveController.java
+[send-controller]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-eventhubs/src/main/java/com/azure/spring/sample/eventhubs/SendController.java
+
+
 
