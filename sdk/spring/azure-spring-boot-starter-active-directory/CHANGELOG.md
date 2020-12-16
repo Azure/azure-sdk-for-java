@@ -4,6 +4,7 @@
 ### Breaking Changes
 - Change group id from `com.microsoft.azure` to `com.azure.spring`.
 - Change artifact id from `azure-active-directory-spring-boot-starter` to `azure-spring-boot-starter-active-directory`.
+- Deprecate `AADAppRoleStatelessAuthenticationFilter` and `AADAuthenticationFilter`.
 
 ### New Features
 - Support consent multiple client-registration when login.
