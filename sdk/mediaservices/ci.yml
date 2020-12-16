@@ -3,34 +3,35 @@
 trigger:
   branches:
     include:
-      - master
-      - hotfix/*
-      - release/*
+    - master
+    - hotfix/*
+    - release/*
   paths:
     include:
-      - sdk/mediaservices/
+    - sdk/mediaservices/
     exclude:
-      - sdk/mediaservices/mgmt-v2015_10_01
-      - sdk/mediaservices/mgmt-v2018_03_30_preview
-      - sdk/mediaservices/mgmt-v2018_06_01_preview
-      - sdk/mediaservices/mgmt-v2018_07_01
-      - sdk/mediaservices/mgmt-v2019_05_01_preview
+    - sdk/mediaservices/mgmt-v2015_10_01
+    - sdk/mediaservices/mgmt-v2018_03_30_preview
+    - sdk/mediaservices/mgmt-v2018_06_01_preview
+    - sdk/mediaservices/mgmt-v2018_07_01
+    - sdk/mediaservices/mgmt-v2019_05_01_preview
+
 pr:
   branches:
     include:
-      - master
-      - feature/*
-      - hotfix/*
-      - release/*
+    - master
+    - feature/*
+    - hotfix/*
+    - release/*
   paths:
     include:
-      - sdk/mediaservices/
+    - sdk/mediaservices/
     exclude:
-      - sdk/mediaservices/mgmt-v2015_10_01
-      - sdk/mediaservices/mgmt-v2018_03_30_preview
-      - sdk/mediaservices/mgmt-v2018_06_01_preview
-      - sdk/mediaservices/mgmt-v2018_07_01
-      - sdk/mediaservices/mgmt-v2019_05_01_preview
+    - sdk/mediaservices/mgmt-v2015_10_01
+    - sdk/mediaservices/mgmt-v2018_03_30_preview
+    - sdk/mediaservices/mgmt-v2018_06_01_preview
+    - sdk/mediaservices/mgmt-v2018_07_01
+    - sdk/mediaservices/mgmt-v2019_05_01_preview
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -38,6 +39,9 @@ extends:
     SDKType: data
     ServiceDirectory: mediaservices
     Artifacts:
-      - name: azure-media
-        groupId: com.microsoft.azure
-        safeName: azuremedia
+    - name: azure-media
+      groupId: com.microsoft.azure
+      safeName: azuremedia
+    - name: azure-resourcemanager-mediaservices
+      groupId: com.azure.resourcemanager
+      safeName: azureresourcemanagermediaservices
