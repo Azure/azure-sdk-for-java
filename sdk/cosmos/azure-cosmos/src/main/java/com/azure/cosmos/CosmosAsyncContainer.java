@@ -853,7 +853,7 @@ public class CosmosAsyncContainer {
      *
      * @return an {@link Mono} containing the Cosmos item resource response with the patched item or an error.
      */
-    @Beta(Beta.SinceVersion.V4_9_0)
+    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <T> Mono<CosmosItemResponse<T>> patchItem(
         String itemId,
         PartitionKey partitionKey,
@@ -878,7 +878,7 @@ public class CosmosAsyncContainer {
      *
      * @return an {@link Mono} containing the Cosmos item resource response with the patched item or an error.
      */
-    @Beta(Beta.SinceVersion.V4_9_0)
+    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <T> Mono<CosmosItemResponse<T>> patchItem(
         String itemId,
         PartitionKey partitionKey,

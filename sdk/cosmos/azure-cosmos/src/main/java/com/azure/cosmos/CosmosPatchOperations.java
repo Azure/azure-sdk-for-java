@@ -44,7 +44,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  *  </code>
  *
  */
-@Beta(Beta.SinceVersion.V4_9_0)
+@Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class CosmosPatchOperations {
 
     private final List<PatchOperation> patchOperations;
@@ -58,7 +58,7 @@ public final class CosmosPatchOperations {
      *
      * @return A new instance of {@link CosmosPatchOperations}.
      */
-    @Beta(Beta.SinceVersion.V4_9_0)
+    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public static CosmosPatchOperations create() {
         return new CosmosPatchOperations();
     }
@@ -84,7 +84,7 @@ public final class CosmosPatchOperations {
      *
      * @return same instance of {@link CosmosPatchOperations}
      */
-    @Beta(Beta.SinceVersion.V4_9_0)
+    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <T> CosmosPatchOperations add(String path, T value) {
 
         checkNotNull(value, "expected non-null value");
@@ -113,7 +113,7 @@ public final class CosmosPatchOperations {
      *
      * @return same instance of {@link CosmosPatchOperations}
      */
-    @Beta(Beta.SinceVersion.V4_9_0)
+    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosPatchOperations remove(String path) {
 
         checkArgument(StringUtils.isNotEmpty(path), "path empty %s", path);
@@ -144,7 +144,7 @@ public final class CosmosPatchOperations {
      *
      * @return same instance of {@link CosmosPatchOperations}
      */
-    @Beta(Beta.SinceVersion.V4_9_0)
+    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <T> CosmosPatchOperations replace(String path, T value) {
 
         checkArgument(StringUtils.isNotEmpty(path), "path empty %s", path);
@@ -175,7 +175,7 @@ public final class CosmosPatchOperations {
      *
      * @return same instance of {@link CosmosPatchOperations}
      */
-    @Beta(Beta.SinceVersion.V4_9_0)
+    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <T> CosmosPatchOperations set(String path, T value) {
 
         checkNotNull(value, "expected non-null value");
@@ -204,7 +204,7 @@ public final class CosmosPatchOperations {
      *
      * @return same instance of {@link CosmosPatchOperations}
      */
-    @Beta(Beta.SinceVersion.V4_9_0)
+    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosPatchOperations increment(String path, long value) {
 
         checkArgument(StringUtils.isNotEmpty(path), "path empty %s", path);
@@ -232,7 +232,7 @@ public final class CosmosPatchOperations {
      *
      * @return same instance of {@link CosmosPatchOperations}
      */
-    @Beta(Beta.SinceVersion.V4_9_0)
+    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosPatchOperations increment(String path, double value) {
 
         checkArgument(StringUtils.isNotEmpty(path), "path empty %s", path);

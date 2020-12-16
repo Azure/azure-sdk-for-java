@@ -102,15 +102,15 @@ public class PatchAsyncTest extends BatchTestBase {
         operations.add(
             BulkOperations.getPatchItemOperation(
                 testDocForPatch.id,
-                cosmosPatchOperations1,
                 new PartitionKey(this.partitionKey1),
+                cosmosPatchOperations1,
                 contentResponseDisableRequestOption));
 
         operations.add(
             BulkOperations.getPatchItemOperation(
                 testDocForPatch.id,
-                cosmosPatchOperations2,
-                new PartitionKey(this.partitionKey1)));
+                new PartitionKey(this.partitionKey1),
+                cosmosPatchOperations2));
 
         List<CosmosBulkOperationResponse<Object>> bulkResponses =
             container.processBulkOperations(Flux.fromIterable(operations)).collectList().block();

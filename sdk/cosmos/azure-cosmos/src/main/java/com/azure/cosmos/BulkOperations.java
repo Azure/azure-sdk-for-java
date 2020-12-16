@@ -282,7 +282,7 @@ public final class BulkOperations {
      *
      * @return the bulk operation.
      */
-    @Beta(Beta.SinceVersion.V4_9_0)
+    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public static CosmosItemOperation getPatchItemOperation(
         String id,
         PartitionKey partitionKey,
@@ -305,7 +305,7 @@ public final class BulkOperations {
      *
      * @return the bulk operation.
      */
-    @Beta(Beta.SinceVersion.V4_9_0)
+    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public static CosmosItemOperation getPatchItemOperation(
         String id,
         PartitionKey partitionKey,
