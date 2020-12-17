@@ -1050,10 +1050,10 @@ public final class BlobContainerAsyncClient {
      *
      * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
      * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
-     * @see BlobServiceAsyncClient#getUserDelegationKey(OffsetDateTime, OffsetDateTime) for more information on how to
-     * get a user delegation key.
+     * See {@link BlobServiceAsyncClient#getUserDelegationKey(OffsetDateTime, OffsetDateTime)} for more information on
+     * how to get a user delegation key.
      *
-     * @return A {@code String} representing all SAS query parameters.
+     * @return A {@code String} representing the SAS query parameters.
      */
     public String generateUserDelegationSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues,
         UserDelegationKey userDelegationKey) {
@@ -1071,12 +1071,12 @@ public final class BlobContainerAsyncClient {
      *
      * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
      * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
-     * @see BlobServiceAsyncClient#getUserDelegationKey(OffsetDateTime, OffsetDateTime) for more information on how to
-     * get a user delegation key.
+     * See {@link BlobServiceAsyncClient#getUserDelegationKey(OffsetDateTime, OffsetDateTime)} for more information on
+     * how to get a user delegation key.
      * @param accountName The account name.
      * @param context Additional context that is passed through the code when generating a SAS.
      *
-     * @return A {@code String} representing all SAS query parameters.
+     * @return A {@code String} representing the SAS query parameters.
      */
     public String generateUserDelegationSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues,
         UserDelegationKey userDelegationKey, String accountName, Context context) {
@@ -1095,7 +1095,7 @@ public final class BlobContainerAsyncClient {
      *
      * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
      *
-     * @return A {@code String} representing all SAS query parameters.
+     * @return A {@code String} representing the SAS query parameters.
      */
     public String generateSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues) {
         return generateSas(blobServiceSasSignatureValues, Context.NONE);
@@ -1113,7 +1113,7 @@ public final class BlobContainerAsyncClient {
      * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
      * @param context Additional context that is passed through the code when generating a SAS.
      *
-     * @return A {@code String} representing all SAS query parameters.
+     * @return A {@code String} representing the SAS query parameters.
      */
     public String generateSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues, Context context) {
         return new BlobSasImplUtil(blobServiceSasSignatureValues, getBlobContainerName())

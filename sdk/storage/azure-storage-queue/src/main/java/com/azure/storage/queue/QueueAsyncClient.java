@@ -935,7 +935,7 @@ public final class QueueAsyncClient {
      *
      * @param queueServiceSasSignatureValues {@link QueueServiceSasSignatureValues}
      *
-     * @return A {@code String} representing all SAS query parameters.
+     * @return A {@code String} representing the SAS query parameters.
      */
     public String generateSas(QueueServiceSasSignatureValues queueServiceSasSignatureValues) {
         return generateSas(queueServiceSasSignatureValues, Context.NONE);
@@ -953,7 +953,7 @@ public final class QueueAsyncClient {
      * @param queueServiceSasSignatureValues {@link QueueServiceSasSignatureValues}
      * @param context Additional context that is passed through the code when generating a SAS.
      *
-     * @return A {@code String} representing all SAS query parameters.
+     * @return A {@code String} representing the SAS query parameters.
      */
     public String generateSas(QueueServiceSasSignatureValues queueServiceSasSignatureValues, Context context) {
         return new QueueSasImplUtil(queueServiceSasSignatureValues, getQueueName())

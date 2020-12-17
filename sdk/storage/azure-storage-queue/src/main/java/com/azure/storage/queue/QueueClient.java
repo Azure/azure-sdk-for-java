@@ -714,7 +714,7 @@ public final class QueueClient {
      *
      * @param queueServiceSasSignatureValues {@link QueueServiceSasSignatureValues}
      *
-     * @return A {@code String} representing all SAS query parameters.
+     * @return A {@code String} representing the SAS query parameters.
      */
     public String generateSas(QueueServiceSasSignatureValues queueServiceSasSignatureValues) {
         return this.client.generateSas(queueServiceSasSignatureValues);
@@ -732,7 +732,7 @@ public final class QueueClient {
      * @param queueServiceSasSignatureValues {@link QueueServiceSasSignatureValues}
      * @param context Additional context that is passed through the code when generating a SAS.
      *
-     * @return A {@code String} representing all SAS query parameters.
+     * @return A {@code String} representing the SAS query parameters.
      */
     public String generateSas(QueueServiceSasSignatureValues queueServiceSasSignatureValues, Context context) {
         return this.client.generateSas(queueServiceSasSignatureValues, context);

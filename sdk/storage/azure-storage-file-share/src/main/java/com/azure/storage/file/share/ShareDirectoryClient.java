@@ -868,7 +868,7 @@ public class ShareDirectoryClient {
      *
      * @param shareServiceSasSignatureValues {@link ShareServiceSasSignatureValues}
      *
-     * @return A {@code String} representing all SAS query parameters.
+     * @return A {@code String} representing the SAS query parameters.
      */
     public String generateSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues) {
         return this.shareDirectoryAsyncClient.generateSas(shareServiceSasSignatureValues);
@@ -886,7 +886,7 @@ public class ShareDirectoryClient {
      * @param shareServiceSasSignatureValues {@link ShareServiceSasSignatureValues}
      * @param context Additional context that is passed through the code when generating a SAS.
      *
-     * @return A {@code String} representing all SAS query parameters.
+     * @return A {@code String} representing the SAS query parameters.
      */
     public String generateSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues, Context context) {
         return this.shareDirectoryAsyncClient.generateSas(shareServiceSasSignatureValues, context);
