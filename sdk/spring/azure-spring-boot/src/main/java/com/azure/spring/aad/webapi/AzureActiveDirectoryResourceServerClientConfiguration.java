@@ -40,7 +40,8 @@ public class AzureActiveDirectoryResourceServerClientConfiguration {
         return new AzureClientRegistrationRepository(
             clientRegistrationInitialization.createDefaultClient(),
             clientRegistrationInitialization.createAuthzClients(),
-            aadAuthenticationProperties);
+            aadAuthenticationProperties,
+            false);
     }
 
     /**
