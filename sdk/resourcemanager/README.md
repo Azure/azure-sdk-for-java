@@ -123,25 +123,15 @@ In addition, Azure subscription ID can be configured via environment variable `A
 
 With above configuration, the manager class can be authenticated by following code:
 
-<!-- TODO: embedme -->
+<!-- embedme ./azure-resourcemanager/src/samples/java/com/azure/resourcemanager/ReadmeSamples.java#L62-L68 -->
 ```java
-// share the same http client and credential
-HttpClient httpClient = HttpClient.createDefault();
 AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 TokenCredential credential = new DefaultAzureCredentialBuilder()
     .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
     .build();
-
-// init AzureResourceManager using azure-resourcemanager
-AzureResourceManager azureResourceManager = AzureResourceManager.configure()
-    .withHttpClient(httpClient)
+AzureResourceManager azure = AzureResourceManager
     .authenticate(credential, profile)
     .withDefaultSubscription();
-
-// init MediaservicesManager using azure-resourcemanager-mediaservices
-MediaservicesManager mediaservicesManager = MediaservicesManager.configure()
-    .withHttpClient(httpClient)
-    .authenticate(credential, profile);
 ```
 
 The sample code assumes global Azure. Please change `AzureEnvironment.AZURE` variable if otherwise.
