@@ -312,7 +312,7 @@ public class StorageImplUtils {
     public static void logStringToSign(ClientLogger logger, String stringToSign, Context context) {
         if (context != null && Boolean.TRUE.equals(context.getData(Constants.STORAGE_LOG_STRING_TO_SIGN).orElse(false))) {
             logger.info("The string to sign computed by the SDK is: {}{}", stringToSign,
-                System.getProperty("line.separator"));
+                System.lineSeparator());
             logger.warning("Please remember to disable '{}' before going to production as this "
                 + "string can potentially contain PII.", Constants.STORAGE_LOG_STRING_TO_SIGN);
         }

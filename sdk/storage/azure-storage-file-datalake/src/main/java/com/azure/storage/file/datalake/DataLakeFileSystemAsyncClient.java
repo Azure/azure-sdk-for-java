@@ -848,7 +848,7 @@ public class DataLakeFileSystemAsyncClient {
 
     /**
      * Generates a service SAS for the file system using the specified {@link DataLakeServiceSasSignatureValues}
-     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
      * <p>See {@link DataLakeServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
      *
      * <p><strong>Code Samples</strong></p>
@@ -865,7 +865,7 @@ public class DataLakeFileSystemAsyncClient {
 
     /**
      * Generates a service SAS for the file system using the specified {@link DataLakeServiceSasSignatureValues}
-     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
      * <p>See {@link DataLakeServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
      *
      * <p><strong>Code Samples</strong></p>

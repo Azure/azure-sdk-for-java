@@ -1194,7 +1194,7 @@ public class DataLakePathAsyncClient {
 
     /**
      * Generates a service SAS for the path using the specified {@link DataLakeServiceSasSignatureValues}
-     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
      * <p>See {@link DataLakeServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
      *
      * <p><strong>Code Samples</strong></p>
@@ -1211,7 +1211,7 @@ public class DataLakePathAsyncClient {
 
     /**
      * Generates a service SAS for the path using the specified {@link DataLakeServiceSasSignatureValues}
-     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
      * <p>See {@link DataLakeServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
      *
      * <p><strong>Code Samples</strong></p>

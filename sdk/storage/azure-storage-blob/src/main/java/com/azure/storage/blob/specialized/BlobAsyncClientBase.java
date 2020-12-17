@@ -1809,7 +1809,7 @@ public class BlobAsyncClientBase {
 
     /**
      * Generates a service SAS for the blob using the specified {@link BlobServiceSasSignatureValues}
-     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
      * <p>See {@link BlobServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
      *
      * <p><strong>Code Samples</strong></p>
@@ -1826,7 +1826,7 @@ public class BlobAsyncClientBase {
 
     /**
      * Generates a service SAS for the blob using the specified {@link BlobServiceSasSignatureValues}
-     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
      * <p>See {@link BlobServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
      *
      * <p><strong>Code Samples</strong></p>

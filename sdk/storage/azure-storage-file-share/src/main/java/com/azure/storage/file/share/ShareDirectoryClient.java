@@ -859,7 +859,7 @@ public class ShareDirectoryClient {
 
     /**
      * Generates a service SAS for the directory using the specified {@link ShareServiceSasSignatureValues}
-     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
      * <p>See {@link ShareServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
      *
      * <p><strong>Code Samples</strong></p>
@@ -876,7 +876,7 @@ public class ShareDirectoryClient {
 
     /**
      * Generates a service SAS for the directory using the specified {@link ShareServiceSasSignatureValues}
-     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
      * <p>See {@link ShareServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
      *
      * <p><strong>Code Samples</strong></p>
