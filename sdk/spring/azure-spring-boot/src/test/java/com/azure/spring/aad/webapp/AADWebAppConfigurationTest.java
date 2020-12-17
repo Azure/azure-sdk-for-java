@@ -18,11 +18,11 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class AzureActiveDirectoryConfigurationTest {
+public class AADWebAppConfigurationTest {
 
     private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
         .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
-        .withUserConfiguration(AzureActiveDirectoryConfiguration.class);
+        .withUserConfiguration(AADWebAppConfiguration.class);
 
     @Test
     public void clientRegistered() {

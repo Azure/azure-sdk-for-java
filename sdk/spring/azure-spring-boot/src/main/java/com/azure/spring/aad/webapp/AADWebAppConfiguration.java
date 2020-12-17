@@ -50,7 +50,7 @@ import static org.springframework.core.Ordered.HIGHEST_PRECEDENCE;
 @ConditionalOnClass(ClientRegistrationRepository.class)
 @EnableConfigurationProperties(AADAuthenticationProperties.class)
 @ConditionalOnProperty(prefix = "azure.activedirectory.user-group", value = "allowed-groups")
-public class AzureActiveDirectoryConfiguration {
+public class AADWebAppConfiguration {
 
     private static final String AZURE_CLIENT_REGISTRATION_ID = "azure";
 
@@ -63,8 +63,7 @@ public class AzureActiveDirectoryConfiguration {
         return new AzureClientRegistrationRepository(
             createDefaultClient(),
             createAuthzClients(),
-            properties,
-            true);
+            properties);
     }
 
     @Bean
@@ -163,11 +162,13 @@ public class AzureActiveDirectoryConfiguration {
     private ClientRegistration createClientBuilder(String id, AuthorizationProperties authz) {
         ClientRegistration.Builder result = createClientBuilder(id);
         List<String> scopes = authz.getScopes();
-        if (authz.isOnDemand() && !scopes.contains("openid")) {
-            scopes.add("openid");
-        }
-        if (authz.isOnDemand() && !scopes.contains("profile")) {
-            scopes.add("profile");
+        if (authz.isOnDemand()) {
+            if (!scopes.contains("openid")) {
+                scopes.add("openid");
+            }
+            if (!scopes.contains("profile")){
+                scopes.add("profile");
+            }
         }
         result.scope(authz.getScopes());
         return result.build();

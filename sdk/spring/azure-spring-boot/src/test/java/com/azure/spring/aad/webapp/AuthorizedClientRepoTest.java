@@ -37,7 +37,7 @@ public class AuthorizedClientRepoTest {
 
     private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
         .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
-        .withUserConfiguration(AzureActiveDirectoryConfiguration.class)
+        .withUserConfiguration(AADWebAppConfiguration.class)
         .withPropertyValues("azure.activedirectory.user-group.allowed-groups = group1, group2",
             "azure.activedirectory.authorization-server-uri = fake-uri",
             "azure.activedirectory.tenant-id = fake-tenant-id",

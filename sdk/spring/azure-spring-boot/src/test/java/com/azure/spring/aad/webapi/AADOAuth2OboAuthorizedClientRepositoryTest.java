@@ -37,7 +37,7 @@ public class AADOAuth2OboAuthorizedClientRepositoryTest {
 
     private static final String AAD_PROPERTY_PREFIX = "azure.activedirectory.";
 
-    private AzureClientRegistrationRepository clientRegistrationsRepo;
+    private AADWebApiClientRegistrationRepository clientRegistrationsRepo;
 
     private OAuth2AuthorizedClient client;
     private IAuthenticationResult authenticationResult;
@@ -57,10 +57,10 @@ public class AADOAuth2OboAuthorizedClientRepositoryTest {
             AAD_PROPERTY_PREFIX + "client-secret = fake-client-secret",
             AAD_PROPERTY_PREFIX + "authorization.fake-graph.scopes = https://graph.microsoft.com/.default"
         );
-        context.register(AzureActiveDirectoryResourceServerClientConfiguration.class);
+        context.register(AADWebApiConfiguration.class);
         context.refresh();
 
-        clientRegistrationsRepo = context.getBean(AzureClientRegistrationRepository.class);
+        clientRegistrationsRepo = context.getBean(AADWebApiClientRegistrationRepository.class);
     }
 
     @SuppressWarnings("unchecked")

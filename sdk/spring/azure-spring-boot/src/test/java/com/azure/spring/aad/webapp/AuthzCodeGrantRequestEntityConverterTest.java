@@ -30,7 +30,7 @@ public class AuthzCodeGrantRequestEntityConverterTest {
 
     private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
         .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
-        .withUserConfiguration(AzureActiveDirectoryConfiguration.class)
+        .withUserConfiguration(AADWebAppConfiguration.class)
         .withPropertyValues("azure.activedirectory.authorization-server-uri = fake-uri",
             "azure.activedirectory.authorization.graph.scopes = Calendars.Read",
             "azure.activedirectory.client-id = fake-client-id",
