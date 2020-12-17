@@ -53,8 +53,7 @@ public class PhoneNumberIntegrationTestBase extends TestBase {
         builder.httpClient(httpClient).endpoint(ENV_ENDPOINT).accessKey(ENV_ACCESS_KEY);
 
         if (getTestMode() == TestMode.RECORD) {
-            List<Function<String, String>> redactors = new ArrayList<>();
-            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
+            interceptorManager.addTextReplacementRule(String.valueOf(JSON_PROPERTY_VALUE_REDACTION_PATTERN), "REDACTED");
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
@@ -71,22 +70,11 @@ public class PhoneNumberIntegrationTestBase extends TestBase {
         builder.httpClient(httpClient).connectionString(CONNECTION_STRING);
 
         if (getTestMode() == TestMode.RECORD) {
-            List<Function<String, String>> redactors = new ArrayList<>();
-            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
+            interceptorManager.addTextReplacementRule(String.valueOf(JSON_PROPERTY_VALUE_REDACTION_PATTERN), "REDACTED");
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
         return builder;
     }
 
-    private String redact(String content, Matcher matcher, String replacement) {
-        while (matcher.find()) {
-            String captureGroup = matcher.group(1);
-            if (!CoreUtils.isNullOrEmpty(captureGroup)) {
-                content = content.replace(matcher.group(1), replacement);
-            }
-        }
-
-        return content;
-    }
 }
