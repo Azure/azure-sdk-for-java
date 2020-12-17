@@ -166,7 +166,7 @@ public class AADWebAppConfiguration {
             if (!scopes.contains("openid")) {
                 scopes.add("openid");
             }
-            if (!scopes.contains("profile")){
+            if (!scopes.contains("profile")) {
                 scopes.add("profile");
             }
         }

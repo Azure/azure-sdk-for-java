@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * Manage all AAD oauth2 clients configured by property "azure.activedirectory.xxx"
  */
-    public abstract class AADClientRegistrationRepository implements ClientRegistrationRepository {
+public abstract class AADClientRegistrationRepository implements ClientRegistrationRepository {
 
     protected final AzureClientRegistration azureClient;
     protected final List<ClientRegistration> otherClients;
