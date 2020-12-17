@@ -26,7 +26,7 @@ import java.util.Arrays;
 public abstract class AzureOAuth2Configuration extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private AzureClientRegistrationRepository repo;
+    private AADWebAppClientRegistrationRepository repo;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

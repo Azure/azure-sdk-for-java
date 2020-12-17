@@ -58,9 +58,9 @@ public class AADWebAppConfiguration {
     private AADAuthenticationProperties properties;
 
     @Bean
-    @ConditionalOnMissingBean({ ClientRegistrationRepository.class, AzureClientRegistrationRepository.class })
-    public AzureClientRegistrationRepository clientRegistrationRepository() {
-        return new AzureClientRegistrationRepository(
+    @ConditionalOnMissingBean({ ClientRegistrationRepository.class, AADWebAppClientRegistrationRepository.class })
+    public AADWebAppClientRegistrationRepository clientRegistrationRepository() {
+        return new AADWebAppClientRegistrationRepository(
             createDefaultClient(),
             createAuthzClients(),
             properties);
@@ -68,7 +68,7 @@ public class AADWebAppConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public OAuth2AuthorizedClientRepository authorizedClientRepository(AzureClientRegistrationRepository repo) {
+    public OAuth2AuthorizedClientRepository authorizedClientRepository(AADWebAppClientRegistrationRepository repo) {
         return new AzureAuthorizedClientRepository(repo);
     }
 

@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class AuthzCodeGrantRequestEntityConverterTest {
 
-    private AzureClientRegistrationRepository clientRepo;
+    private AADWebAppClientRegistrationRepository clientRepo;
     private ClientRegistration azure;
     private ClientRegistration graph;
 
@@ -39,7 +39,7 @@ public class AuthzCodeGrantRequestEntityConverterTest {
             "azure.activedirectory.user-group.allowed-groups = group1, group2");
 
     private void getBeans(AssertableWebApplicationContext context) {
-        clientRepo = context.getBean(AzureClientRegistrationRepository.class);
+        clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
         azure = clientRepo.findByRegistrationId("azure");
         graph = clientRepo.findByRegistrationId("graph");
     }

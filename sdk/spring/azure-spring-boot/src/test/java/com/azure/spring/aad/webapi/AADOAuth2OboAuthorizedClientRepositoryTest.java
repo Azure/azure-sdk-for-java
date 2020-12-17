@@ -3,7 +3,6 @@
 
 package com.azure.spring.aad.webapi;
 
-import com.azure.spring.aad.webapp.AzureClientRegistrationRepository;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
 import com.microsoft.aad.msal4j.IAuthenticationResult;
 import com.microsoft.aad.msal4j.OnBehalfOfParameters;

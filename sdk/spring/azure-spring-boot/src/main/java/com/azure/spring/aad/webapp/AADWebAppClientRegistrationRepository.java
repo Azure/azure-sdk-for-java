@@ -15,12 +15,12 @@ import java.util.Collections;
 /**
  * Manage all AAD oauth2 clients configured by property "azure.activedirectory.xxx" for webapp
  */
-public class AzureClientRegistrationRepository extends AADClientRegistrationRepository
+public class AADWebAppClientRegistrationRepository extends AADClientRegistrationRepository
     implements Iterable<ClientRegistration> {
 
-    public AzureClientRegistrationRepository(AzureClientRegistration azureClient,
-                                             List<ClientRegistration> otherClients,
-                                             AADAuthenticationProperties properties) {
+    public AADWebAppClientRegistrationRepository(AzureClientRegistration azureClient,
+                                                 List<ClientRegistration> otherClients,
+                                                 AADAuthenticationProperties properties) {
         super(azureClient, otherClients, properties);
     }
 

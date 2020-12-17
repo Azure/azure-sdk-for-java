@@ -96,7 +96,7 @@ public class AuthorizedClientRepoTest {
     }
 
     private void getBeans(AssertableWebApplicationContext context) {
-        AzureClientRegistrationRepository clientRepo = context.getBean(AzureClientRegistrationRepository.class);
+        AADWebAppClientRegistrationRepository clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
         azure = clientRepo.findByRegistrationId("azure");
         graph = clientRepo.findByRegistrationId("graph");
 
