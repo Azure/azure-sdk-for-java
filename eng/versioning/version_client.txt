@@ -178,6 +178,7 @@ com.azure.resourcemanager:azure-resourcemanager-mediaservices;1.0.0-beta.1;1.0.0
 com.azure.resourcemanager:azure-resourcemanager-mysql;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-postgresql;1.0.0-beta.1;1.0.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-hdinsight;1.0.0-beta.1;1.0.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-netapp;1.0.0-beta.1;1.0.0-beta.1
 com.microsoft:microsoft-opentelemetry-exporter-azuremonitor;1.0.0-beta.1;1.0.0-beta.2
 
 
