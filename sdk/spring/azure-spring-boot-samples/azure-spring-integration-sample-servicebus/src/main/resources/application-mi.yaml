@@ -1,10 +1,11 @@
 spring:
   cloud:
     azure:
-      client-id: [service-principal-id]
-      client-secret: [service-principal-secret]
-      tenant-id: [tenant-id]
+      msi-enabled: true
+      managed-identity:
+        client-id: [the-id-of-managed-identity]
       resource-group: [resource-group]
+      subscription-id: [subscription-id]
 
 #     Uncomment below configurations if you want to enable auto creating resources.
 #

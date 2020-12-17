@@ -20,10 +20,18 @@ completed before the run.
 1. Create Azure Service Bus namespace, queue and topic. Please see 
    [how to create][create-service-bus].
 
+1.  **[Optional]** if you want to use service principal, please follow
+    [create service principal from Azure CLI][create-sp-using-azure-cli] to create one.
+
+1.  **[Optional]** if you want to use managed identity, please follow
+    [create managed identity][create-managed-identity] to set up managed identity.
+
 
 ## Examples
 
-1. Update [application.yaml](src/main/resources/application.yaml).
+1. Update [application.yaml](src/main/resources/application.yaml). If you choose to use
+   service principal or managed identity, update the `application-sp.yaml` or
+   `application-mi.yaml` respectively.
     ```yaml
     spring:
       cloud:
@@ -44,7 +52,7 @@ completed before the run.
 
 1. Send a POST request to service bus queue
 
-        $ curl -X POST http://localhost:8080/messages?message=hello
+        $ curl -X POST http://localhost:8080/queues?message=hello
 
 1.  Verify in your app’s logs that a similar message was posted:
 
@@ -72,6 +80,8 @@ completed before the run.
 [azure-account]: https://azure.microsoft.com/account/
 [azure-portal]: http://ms.portal.azure.com/
 [create-service-bus]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-create-namespace-portal
+[create-managed-identity]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/create-managed-identity.md
+[create-sp-using-azure-cli]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/create-sp-using-azure-cli.md
 [ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
 [queue-receive-controller]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-servicebus/src/main/java/com/azure/spring/sample/servicebus/QueueReceiveController.java
 [queue-send-controller]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-servicebus/src/main/java/com/azure/spring/sample/servicebus/QueueSendController.java
