@@ -995,7 +995,7 @@ class ServiceAPITest extends APISpec {
         def newName = generateContainerName()
         primaryBlobServiceClient.createBlobContainer(oldName)
         def sas = primaryBlobServiceClient.generateAccountSas(new AccountSasSignatureValues(getUTCNow().plusHours(1), AccountSasPermission.parse("rwdxlacuptf"), AccountSasService.parse("b"), AccountSasResourceType.parse("c")))
-        def serviceClient = new BlobServiceClientBuilder().endpoint(primaryBlobServiceClient.getAccountUrl() + "?" + sas).buildClient()
+        def serviceClient = getServiceClient(sas, primaryBlobServiceClient.getAccountUrl())
 
         when:
         def renamedContainer = serviceClient.renameBlobContainer(newName, oldName)
