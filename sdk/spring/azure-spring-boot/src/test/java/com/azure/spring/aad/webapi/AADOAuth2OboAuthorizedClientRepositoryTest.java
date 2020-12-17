@@ -179,7 +179,7 @@ public class AADOAuth2OboAuthorizedClientRepositoryTest {
 
             @Override
             ConfidentialClientApplication createApp(ClientRegistration clientRegistration) {
-               return null;
+                return null;
             }
         };
 
