@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.datalake
 
+import com.azure.core.util.Context
 import com.azure.storage.file.datalake.implementation.util.DataLakeSasImplUtil
 import com.azure.storage.file.datalake.models.UserDelegationKey
 import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues
@@ -195,21 +196,21 @@ class DataLakeServiceSasModelsTest extends Specification {
         def implUtil = new DataLakeSasImplUtil(v, "containerName", "blobName", false)
 
         when:
-        implUtil.generateSas(null)
+        implUtil.generateSas(null, Context.NONE)
 
         then:
         def ex = thrown(NullPointerException)
         ex.getMessage().contains("storageSharedKeyCredential")
 
         when:
-        implUtil.generateUserDelegationSas(null, "accountName")
+        implUtil.generateUserDelegationSas(null, "accountName", Context.NONE)
 
         then:
         ex = thrown(NullPointerException)
         ex.getMessage().contains("delegationKey")
 
         when:
-        implUtil.generateUserDelegationSas(new UserDelegationKey(), null)
+        implUtil.generateUserDelegationSas(new UserDelegationKey(), null, Context.NONE)
 
         then:
         ex = thrown(NullPointerException)

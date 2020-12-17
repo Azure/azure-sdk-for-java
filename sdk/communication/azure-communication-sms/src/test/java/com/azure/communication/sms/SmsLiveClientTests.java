@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.communication.sms;
 
-import com.azure.communication.common.PhoneNumber;
+import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.communication.sms.models.SendSmsOptions;
 import com.azure.communication.sms.models.SendSmsResponse;
 import com.azure.core.exception.HttpResponseException;
@@ -23,17 +23,17 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 public class SmsLiveClientTests extends SmsLiveTestBase {
 
-    private List<PhoneNumber> to;
-    private PhoneNumber from;
+    private List<PhoneNumberIdentifier> to;
+    private PhoneNumberIdentifier from;
     private String body;
     private SendSmsOptions smsOptions; 
 
     @BeforeEach
     public void beforeEach() {
-        to = new ArrayList<PhoneNumber>();
+        to = new ArrayList<PhoneNumberIdentifier>();
         body = "Hello";
-        from = new PhoneNumber(PHONENUMBER);
-        to.add(new PhoneNumber(PHONENUMBER));
+        from = new PhoneNumberIdentifier(PHONENUMBER);
+        to.add(new PhoneNumberIdentifier(PHONENUMBER));
         smsOptions = new SendSmsOptions();
         smsOptions.setEnableDeliveryReport(true);        
     }
@@ -93,7 +93,7 @@ public class SmsLiveClientTests extends SmsLiveTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void sendSmsRequestUnownedNumber(HttpClient httpClient) throws NoSuchAlgorithmException {
-        from = new PhoneNumber("+18885555555");        
+        from = new PhoneNumberIdentifier("+18885555555");        
         smsOptions.setEnableDeliveryReport(false); 
         boolean http404ExceptionThrown = false;
 
@@ -110,7 +110,7 @@ public class SmsLiveClientTests extends SmsLiveTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void sendSmsRequestMalformedNumber(HttpClient httpClient) throws NoSuchAlgorithmException {
-        from = new PhoneNumber("+1888");        
+        from = new PhoneNumberIdentifier("+1888");        
         smsOptions.setEnableDeliveryReport(false); 
         boolean http400ExceptionThrown = false;
 

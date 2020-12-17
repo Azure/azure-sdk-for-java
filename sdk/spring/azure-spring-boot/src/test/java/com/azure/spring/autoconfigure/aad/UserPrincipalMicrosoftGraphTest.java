@@ -3,6 +3,7 @@
 
 package com.azure.spring.autoconfigure.aad;
 
+import com.azure.spring.aad.webapp.AuthorizationServerEndpoints;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
@@ -45,11 +46,10 @@ public class UserPrincipalMicrosoftGraphTest {
     @Rule
     public WireMockRule wireMockRule = new WireMockRule(9519);
 
-    private AzureADGraphClient graphClientMock;
     private String clientId;
     private String clientSecret;
     private AADAuthenticationProperties aadAuthenticationProperties;
-    private ServiceEndpointsProperties serviceEndpointsProperties;
+    private AuthorizationServerEndpoints authorizationServerEndpoints;
     private String accessToken;
     private static String userGroupsJson;
 
@@ -72,15 +72,8 @@ public class UserPrincipalMicrosoftGraphTest {
     public void setup() {
         accessToken = MicrosoftGraphConstants.BEARER_TOKEN;
         aadAuthenticationProperties = new AADAuthenticationProperties();
-        aadAuthenticationProperties.setEnvironment("global-v2-graph");
-        aadAuthenticationProperties.getUserGroup().setKey("@odata.type");
-        aadAuthenticationProperties.getUserGroup().setValue("#microsoft.graph.group");
-        aadAuthenticationProperties.getUserGroup().setObjectIDKey("id");
-        serviceEndpointsProperties = new ServiceEndpointsProperties();
-        final ServiceEndpoints serviceEndpoints = new ServiceEndpoints();
-        serviceEndpoints.setAadMembershipRestUri("http://localhost:9519/memberOf");
-        serviceEndpointsProperties.getEndpoints().put("global-v2-graph", serviceEndpoints);
-
+        aadAuthenticationProperties.setGraphMembershipUri("http://localhost:9519/memberOf");
+        authorizationServerEndpoints = new AuthorizationServerEndpoints();
         clientId = "client";
         clientSecret = "pass";
     }
@@ -88,8 +81,8 @@ public class UserPrincipalMicrosoftGraphTest {
     @Test
     public void getGroups() throws Exception {
         aadAuthenticationProperties.getUserGroup().setAllowedGroups(Arrays.asList("group1", "group2", "group3"));
-        this.graphClientMock = new AzureADGraphClient(clientId, clientSecret, aadAuthenticationProperties,
-            serviceEndpointsProperties);
+        AzureADGraphClient graphClientMock = new AzureADGraphClient(clientId, clientSecret, aadAuthenticationProperties,
+            authorizationServerEndpoints);
 
         stubFor(get(urlEqualTo("/memberOf"))
             .withHeader(ACCEPT, equalTo(APPLICATION_JSON_VALUE))
