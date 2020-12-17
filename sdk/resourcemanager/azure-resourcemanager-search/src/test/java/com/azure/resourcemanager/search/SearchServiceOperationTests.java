@@ -57,15 +57,17 @@ public class SearchServiceOperationTests extends SearchManagementTest {
             }
         }
         Assertions.assertTrue(foundSearchService);
+        
+        if (!isPlaybackMode()) {
+            searchService.update()
+                .withTag("key1", "value1")
+                .apply();
 
-        searchService.update()
-            .withTag("key1", "value1")
-            .apply();
-
-        SearchService updatedSearchService = searchManager.searchServices().getByResourceGroup(rgName, searchServiceName);
-        Assertions.assertNotNull(updatedSearchService);
-        Assertions.assertEquals(SkuName.FREE, updatedSearchService.sku().name());
-        Assertions.assertEquals(1, updatedSearchService.tags().size());
-        Assertions.assertEquals("value1", updatedSearchService.tags().get("key1"));
+            SearchService updatedSearchService = searchManager.searchServices().getByResourceGroup(rgName, searchServiceName);
+            Assertions.assertNotNull(updatedSearchService);
+            Assertions.assertEquals(SkuName.FREE, updatedSearchService.sku().name());
+            Assertions.assertEquals(1, updatedSearchService.tags().size());
+            Assertions.assertEquals("value1", updatedSearchService.tags().get("key1"));
+        }
     }
 }
