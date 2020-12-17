@@ -31,6 +31,7 @@ public final class StorageSharedKeyCredential {
     private final ClientLogger logger = new ClientLogger(StorageSharedKeyCredential.class);
 
     private static final String AUTHORIZATION_HEADER_FORMAT = "SharedKey %s:%s";
+    private static final Context LOG_STRING_TO_SIGN_CONTEXT = new Context(Constants.STORAGE_LOG_STRING_TO_SIGN, true);
 
     // Pieces of the connection string that are needed.
     private static final String ACCOUNT_NAME = "accountname";
@@ -155,8 +156,7 @@ public final class StorageSharedKeyCredential {
             getCanonicalizedResource(requestURL));
 
         if (logStringToSign) {
-            StorageImplUtils.logStringToSign(logger, stringToSign,
-                new Context(Constants.STORAGE_LOG_STRING_TO_SIGN, true));
+            StorageImplUtils.logStringToSign(logger, stringToSign, LOG_STRING_TO_SIGN_CONTEXT);
         }
 
         return stringToSign;
