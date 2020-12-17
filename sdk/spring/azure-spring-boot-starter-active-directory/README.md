@@ -92,7 +92,7 @@ Refer to different samples for different authentication ways.
 
 Please refer to [azure-spring-boot-sample-active-directory-webapp](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/README.md) for authenticate in backend.
 
-####  Configure application.properties:`
+####  Configure application.properties:
 ```properties
 azure.activedirectory.tenant-id=xxxxxx-your-tenant-id-xxxxxx
 spring.security.oauth2.client.registration.azure.client-id=xxxxxx-your-client-id-xxxxxx
