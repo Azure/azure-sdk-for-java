@@ -8,7 +8,7 @@ jobs:
         displayName: 'Run Smoke Test Samples'
         inputs:
           mavenPomFile: $(PomFile)
-          goals: 'verify'
+          goals: 'test'
           options: '$(DefaultOptions) -Dtest=**/*Example.java,**/*Sample.java'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaTestVersion)

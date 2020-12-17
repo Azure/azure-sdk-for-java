@@ -264,7 +264,7 @@
       "type": "string",
       "value": "[concat(variables('queueSessionName'), '-0')]"
     },
-    "AZURE_SERVICEBUS_SAMPLE_TOPIC_NAME_SAMPLE": {
+    "AZURE_SERVICEBUS_SAMPLE_TOPIC_NAME": {
       "type": "string",
       "value": "[concat(variables('topicName'), '-0')]"
     },
