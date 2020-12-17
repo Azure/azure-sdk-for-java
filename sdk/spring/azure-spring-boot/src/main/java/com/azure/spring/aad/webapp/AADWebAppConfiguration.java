@@ -161,13 +161,12 @@ public class AADWebAppConfiguration {
 
     private ClientRegistration createClientBuilder(String id, AuthorizationProperties authz) {
         ClientRegistration.Builder result = createClientBuilder(id);
-        List<String> scopes = authz.getScopes();
         if (authz.isOnDemand()) {
-            if (!scopes.contains("openid")) {
-                scopes.add("openid");
+            if (!authz.getScopes().contains("openid")) {
+                authz.getScopes().add("openid");
             }
-            if (!scopes.contains("profile")) {
-                scopes.add("profile");
+            if (!authz.getScopes().contains("profile")) {
+                authz.getScopes().add("profile");
             }
         }
         result.scope(authz.getScopes());
