@@ -13,11 +13,3 @@ azure:
     tenant-id: <tenant-id>
     user-group:
       allowed-groups: group1, group2
-      value: '#microsoft.graph.group'
-logging:
-  level:
-    com:
-      azure:
-        spring:
-          aad:
-            webapp: debug
