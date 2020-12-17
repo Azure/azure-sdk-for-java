@@ -11,6 +11,8 @@ import com.microsoft.azure.eventhubs.perf.core.EventHubsPerfStressOptions;
 import com.microsoft.azure.eventhubs.perf.core.ServiceTest;
 import reactor.core.publisher.Mono;
 
+import java.nio.charset.StandardCharsets;
+
 /**
  * Runs the Send Events Batch Performance Test for EventHubs.
  */
@@ -40,7 +42,7 @@ public class SendEventBatchPartitionTest extends ServiceTest<EventHubsPerfStress
         eventDataBatch = partitionSender.createBatch(batchOptions);
 
         for (int i = 0; i < options.getEvents(); i++) {
-            if (!eventDataBatch.tryAdd(EventData.create("Static Event".getBytes()))) {
+            if (!eventDataBatch.tryAdd(EventData.create("Static Event".getBytes(StandardCharsets.UTF_8)))) {
                 throw new Exception(String.format("Batch can only fit %d number of messages with batch size of %d ",
                     options.getCount(), options.getSize()));
             }

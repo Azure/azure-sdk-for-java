@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.eventhubs.perf.core;
 
 import com.azure.perf.test.core.PerfStressOptions;
@@ -16,8 +19,6 @@ public class EventHubsPerfStressOptions extends PerfStressOptions {
 
     @Parameter(names = { "-pi", "--partitionId" }, description = "Target Partition Id")
     private int paritionId = 0;
-
-
 
     /**
      * Get the configured events for performance test.

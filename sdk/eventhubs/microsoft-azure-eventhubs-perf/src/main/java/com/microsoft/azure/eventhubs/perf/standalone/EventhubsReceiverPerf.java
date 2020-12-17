@@ -1,22 +1,45 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.eventhubs.perf.standalone;
 
-import com.microsoft.azure.eventhubs.*;
-import org.apache.commons.cli.*;
+import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
+import com.microsoft.azure.eventhubs.EventHubClient;
+import com.microsoft.azure.eventhubs.EventHubException;
+import com.microsoft.azure.eventhubs.EventHubRuntimeInformation;
+import com.microsoft.azure.eventhubs.PartitionRuntimeInformation;
+import com.microsoft.azure.eventhubs.PartitionReceiver;
+import com.microsoft.azure.eventhubs.EventData;
+import com.microsoft.azure.eventhubs.EventPosition;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.ParseException;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.*;
+
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.Executor;
+import java.util.concurrent.CountDownLatch;
+
 import java.util.stream.Collectors;
 
 public class EventhubsReceiverPerf {
-    private static final String _eventHubName = System.getenv("EVENTHUB_NAME");;
+    private static final String EVENTHUB_NAME = System.getenv("EVENTHUB_NAME");;
 
     // Settings copied from
     // https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-faq#how-much-does-a-single-capacity-unit-let-me-achieve
-    private static final int _messagesPerBatch = 100;
-    private static final int _bytesPerMessage = 1024;
+    private static final int MESSAGES_PER_BATCH = 100;
+    private static final int BYTES_PER_MESSAGE = 1024;
 
     public static void main(String[] args)
         throws InterruptedException, IOException, EventHubException, ExecutionException {
@@ -53,10 +76,10 @@ public class EventhubsReceiverPerf {
             System.exit(1);
         }
 
-        ReceiveMessages(connectionString, partitions, clients, verbose);
+        receiveMessages(connectionString, partitions, clients, verbose);
     }
 
-    static void ReceiveMessages(String connectionString, int numPartitions, int numClients, boolean verbose)
+    static void receiveMessages(String connectionString, int numPartitions, int numClients, boolean verbose)
         throws InterruptedException, EventHubException, IOException, ExecutionException {
         System.out.println(String.format("Receiving messages from %d partitions using %d client instances",
             numPartitions, numClients));
@@ -66,7 +89,7 @@ public class EventhubsReceiverPerf {
         EventHubClient[] clients = new EventHubClient[numClients];
         for (int i = 0; i < numClients; i++) {
             clients[i] = EventHubClient.createSync(
-                new ConnectionStringBuilder(connectionString).setEventHubName(_eventHubName).toString(), executor);
+                new ConnectionStringBuilder(connectionString).setEventHubName(EVENTHUB_NAME).toString(), executor);
         }
 
         try {
@@ -113,7 +136,7 @@ public class EventhubsReceiverPerf {
 
                 long start = System.nanoTime();
                 for (int i = 0; i < numPartitions; i++) {
-                    ReceiveAllMessages(receivers.get(i), partitions.get(i), executor, countDownLatch);
+                    receiveAllMessages(receivers.get(i), partitions.get(i), executor, countDownLatch);
                 }
                 countDownLatch.await();
                 long end = System.nanoTime();
@@ -121,10 +144,10 @@ public class EventhubsReceiverPerf {
                 double elapsed = 1.0 * (end - start) / 1000000000;
                 long messagesReceived = totalCount;
                 double messagesPerSecond = messagesReceived / elapsed;
-                double megabytesPerSecond = (messagesPerSecond * _bytesPerMessage) / (1024 * 1024);
+                double megabytesPerSecond = (messagesPerSecond * BYTES_PER_MESSAGE) / (1024 * 1024);
 
                 System.out.println(String.format("Received %d messages of size %d in %.2fs (%.2f msg/s, %.2f MB/s))",
-                    messagesReceived, _bytesPerMessage, elapsed, messagesPerSecond, megabytesPerSecond));
+                    messagesReceived, BYTES_PER_MESSAGE, elapsed, messagesPerSecond, megabytesPerSecond));
             } finally {
                 receivers.stream().map(PartitionReceiver::close).map(CompletableFuture::join);
             }
@@ -134,9 +157,9 @@ public class EventhubsReceiverPerf {
         }
     }
 
-    static void ReceiveAllMessages(PartitionReceiver receiver, PartitionRuntimeInformation partition, Executor executor,
+    static void receiveAllMessages(PartitionReceiver receiver, PartitionRuntimeInformation partition, Executor executor,
                                    CountDownLatch countDownLatch) {
-        receiver.receive(_messagesPerBatch).thenAcceptAsync(receivedEvents -> {
+        receiver.receive(MESSAGES_PER_BATCH).thenAcceptAsync(receivedEvents -> {
             long lastSequenceNumber = -1;
             if (receivedEvents != null) {
                 for (EventData receivedEvent : receivedEvents) {
@@ -147,7 +170,7 @@ public class EventhubsReceiverPerf {
                 }
             }
             if (lastSequenceNumber < partition.getLastEnqueuedSequenceNumber()) {
-                ReceiveAllMessages(receiver, partition, executor, countDownLatch);
+                receiveAllMessages(receiver, partition, executor, countDownLatch);
             }
         }, executor);
     }

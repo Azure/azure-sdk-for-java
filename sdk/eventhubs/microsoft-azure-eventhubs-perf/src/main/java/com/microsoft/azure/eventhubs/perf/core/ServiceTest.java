@@ -24,8 +24,7 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
         String eventHubName = System.getenv("EVENTHUB_NAME");
 
         if (CoreUtils.isNullOrEmpty(connectionString)) {
-            System.out.println("Environment variable EVENTHUBS_CONNECTION_STRING must be set");
-            System.exit(1);
+            throw new IllegalStateException("Environment variable EVENTHUBS_CONNECTION_STRING must be set");
         }
 
         if (CoreUtils.isNullOrEmpty(eventHubName)) {
@@ -37,8 +36,5 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
 
         eventHubClient = EventHubClient.createSync(
             new ConnectionStringBuilder(connectionString).setEventHubName(eventHubName).toString(), executor);
-
-        // Setup the service client
-
     }
 }
