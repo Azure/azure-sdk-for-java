@@ -18,8 +18,8 @@ from pom import Pom
 
 EXTERNAL_DEPENDENCIES_FILE = 'eng/versioning/external_dependencies.txt'
 ROOT_POM_IDS = [
-    'org.springframework.boot:spring-boot-dependencies',
-    'org.springframework.cloud:spring-cloud-dependencies'
+    'org.springframework.boot:spring-boot-dependencies;2.3.5.RELEASE',
+    'org.springframework.cloud:spring-cloud-dependencies;Hoxton.SR8'
 ]
 SKIP_IDS = [
     'org.eclipse.jgit:org.eclipse.jgit'  # Refs: https://github.com/Azure/azure-sdk-for-java/pull/13956/files#r468368271
@@ -45,20 +45,13 @@ def change_to_root_dir():
     os.chdir('../../..')
 
 
-def get_version_from_external_dependencies(key):
-    file1 = open(EXTERNAL_DEPENDENCIES_FILE, 'r')
-    lines = file1.readlines()
-    for line in lines:
-        if line.startswith('{};'.format(key)):
-            return line.split(';', 1)[1].strip()
-    raise Exception('Can not get version from external_dependencies, key = {}.'.format(key))
-
 
 def update_dependency_dict(dependency_dict, root_pom_id):
     root_pom_info = root_pom_id.split(':')
     root_pom_group_id = root_pom_info[0]
-    root_pom_artifact_id = root_pom_info[1]
-    root_pom_version = get_version_from_external_dependencies(root_pom_id)
+    root_pom_group_version_info = root_pom_info[1].split(';')
+    root_pom_artifact_id = root_pom_group_version_info[0]
+    root_pom_version = root_pom_group_version_info[1]
     root_pom = Pom(
         root_pom_group_id,
         root_pom_artifact_id,
@@ -149,7 +142,7 @@ def update_property_dict(project_element, property_dict):
 
 
 def output_version_dict_to_file(dependency_dict):
-    output_file = open('sdk/spring/scripts/managed_external_dependencies.txt', 'w''')
+    output_file = open('sdk/spring/scripts/spring_managed_external_dependencies.txt', 'w''')
     for key, value in sorted(dependency_dict.items()):
         output_file.write('{}:{}\n'.format(key, value))
     output_file.close()
