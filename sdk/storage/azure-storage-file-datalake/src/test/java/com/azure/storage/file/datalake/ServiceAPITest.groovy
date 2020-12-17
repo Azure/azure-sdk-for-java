@@ -413,7 +413,7 @@ class ServiceAPITest extends APISpec {
         def newName = generateFileSystemName()
         primaryDataLakeServiceClient.createFileSystem(oldName)
         def sas = primaryDataLakeServiceClient.generateAccountSas(new AccountSasSignatureValues(getUTCNow().plusHours(1), AccountSasPermission.parse("rwdxlacuptf"), AccountSasService.parse("b"), AccountSasResourceType.parse("c")))
-        def serviceClient = new DataLakeServiceClientBuilder().endpoint(primaryDataLakeServiceClient.getAccountUrl() + "?" + sas).buildClient()
+        def serviceClient = getServiceClient(sas, primaryDataLakeServiceClient.getAccountUrl())
 
         when:
         def renamedContainer = serviceClient.renameFileSystem(newName, oldName)
