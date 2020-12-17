@@ -110,6 +110,7 @@ org.springframework.kafka:spring-kafka;2.5.7.RELEASE
 org.springframework.security:spring-security-config;5.3.5.RELEASE
 org.springframework.security:spring-security-core;5.3.5.RELEASE
 org.springframework.security:spring-security-oauth2-client;5.3.5.RELEASE
+org.springframework.security:spring-security-oauth2-resource-server;5.3.5.RELEASE
 org.springframework.security:spring-security-oauth2-core;5.3.5.RELEASE
 org.springframework.security:spring-security-oauth2-jose;5.3.5.RELEASE
 org.springframework.security:spring-security-web;5.3.5.RELEASE
@@ -126,7 +127,7 @@ org.springframework:spring-web;5.2.10.RELEASE
 org.springframework:spring-webmvc;5.2.10.RELEASE
 
 # spring-boot-starter-parent is not managed by spring-boot-dependencies or spring-cloud-dependencies.
-org.springframework.boot:spring-boot-starter-parent;2.3.3.RELEASE
+org.springframework.boot:spring-boot-starter-parent;2.3.5.RELEASE
 
 ## Spring cloud dependency versions
 # After you update spring-cloud-dependencies' version, please run this script: /sdk/spring/scripts/sync_version_from_spring-boot-dependencies.py
