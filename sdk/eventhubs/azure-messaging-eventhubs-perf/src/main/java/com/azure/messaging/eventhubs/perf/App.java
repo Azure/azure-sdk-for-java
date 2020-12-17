@@ -16,6 +16,11 @@ import com.azure.perf.test.core.PerfStressProgram;
  * Then run the App's main method via IDE.</p>
  */
 public class App {
+
+    /**
+     * Runs the Performance Test.
+     * @param args the arguments to be used for performance testing
+     */
     public static void main(String[] args) {
         PerfStressProgram.run(new Class<?>[]{
             SendEventBatchTest.class

@@ -17,11 +17,12 @@ public class SendEventBatchTest extends ServiceTest<EventHubsPerfStressOptions> 
     private final EventDataBatch eventDataBatch;
 
     /**
+     * Runs the Send Events in Batch peformance test.
      *
-     * @param options
-     * @throws Exception
+     * @param options The options bag to use for testing.
+     * @throws IllegalStateException when the specified number of messages cannot fit in the specified batch size.
      */
-    public SendEventBatchTest(EventHubsPerfStressOptions options) throws Exception {
+    public SendEventBatchTest(EventHubsPerfStressOptions options) throws IllegalStateException {
         super(options);
         CreateBatchOptions createBatchOptions = getBatchOptions(options);
         if (createBatchOptions != null) {
@@ -32,7 +33,8 @@ public class SendEventBatchTest extends ServiceTest<EventHubsPerfStressOptions> 
 
         for (int i = 0; i < options.getEvents(); i++) {
             if (!eventDataBatch.tryAdd(new EventData("static event"))) {
-                throw new Exception(String.format("Batch can only fit %d number of messages with batch size of %d ",
+                throw new IllegalStateException(String.format(
+                    "Batch can only fit %d number of messages with batch size of %d ",
                     options.getCount(), options.getSize()));
             }
         }

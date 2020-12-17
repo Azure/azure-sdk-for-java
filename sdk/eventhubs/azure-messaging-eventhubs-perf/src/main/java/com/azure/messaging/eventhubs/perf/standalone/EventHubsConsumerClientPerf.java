@@ -1,12 +1,20 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.eventhubs.perf.standalone;
 
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
 import com.azure.messaging.eventhubs.models.EventPosition;
-import org.apache.commons.cli.*;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.ParseException;
 import org.apache.qpid.proton.InterruptException;
 
-import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 
 /**
@@ -14,11 +22,18 @@ import java.util.concurrent.CountDownLatch;
  * TODO: Port to framework test once it supports event based perf testing.
  */
 public class EventHubsConsumerClientPerf {
-    private static final String _eventHubName = System.getenv("EVENTHUB_NAME");;
-    // Settings copied from
-    // https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-faq#how-much-does-a-single-capacity-unit-let-me-achieve
-    private static final int _bytesPerMessage = 1024;
-    public static void main(String[] args) throws InterruptedException, IOException {
+    private static final String EVENTHUB_NAME = System.getenv("EVENTHUB_NAME");;
+// Settings copied from
+// https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-faq#how-much-does-a-single-capacity-unit-let-me-achieve
+    private static final int BYTES_PER_MESSAGE = 1024;
+
+    /**
+     * Runs the EventHub consumer client performance test
+     *
+     * @param args The arguments used to run the performance test.
+     * @throws InterruptedException when thread is interrupted during execution.
+     */
+    public static void main(String[] args) throws InterruptedException {
         Options options = new Options();
         Option clientsOption = new Option("c", "clients", true, "Number of client instances");
         options.addOption(clientsOption);
@@ -42,20 +57,21 @@ public class EventHubsConsumerClientPerf {
         int partitions = Integer.parseInt(cmd.getOptionValue("partitions", "5"));
         boolean verbose = cmd.hasOption("verbose");
         boolean debug = cmd.hasOption("debug");
+
         String connectionString = System.getenv("EVENTHUBS_CONNECTION_STRING");
+
         if (connectionString == null || connectionString.isEmpty()) {
-            System.out.println("Environment variable EVENT_HUBS_CONNECTION_STRING must be set");
-            System.exit(1);
+            throw new IllegalStateException("Environment variable EVENT_HUBS_CONNECTION_STRING must be set");
         }
-        ReceiveMessages(connectionString, partitions, clients, verbose, debug);
+        receiveMessages(connectionString, partitions, clients, verbose, debug);
     }
-    static void ReceiveMessages(String connectionString, int numPartitions, int numClients, boolean verbose,
-        boolean debug) throws InterruptedException, InterruptException {
+    static void receiveMessages(String connectionString, int numPartitions, int numClients, boolean verbose,
+                                boolean debug) throws InterruptedException, InterruptException {
         System.out.println(String.format("Receiving messages from %d partitions using %d client instances",
             numPartitions, numClients));
         EventHubConsumerAsyncClient[] clients = new EventHubConsumerAsyncClient[numClients];
         for (int i = 0; i < numClients; i++) {
-            clients[i] = new EventHubClientBuilder().connectionString(connectionString, _eventHubName)
+            clients[i] = new EventHubClientBuilder().connectionString(connectionString, EVENTHUB_NAME)
                 .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
                 .buildAsyncConsumerClient();
         }
@@ -65,17 +81,17 @@ public class EventHubsConsumerClientPerf {
             client.getPartitionIds()
                 .concatMap(client::getPartitionProperties)
                 .map(partitionProperties -> {
-                    long begin = partitionProperties.getBeginningSequenceNumber();
-                    long end = partitionProperties.getLastEnqueuedSequenceNumber();
-                    long count = end - begin + 1;
-                    if (verbose) {
-                        System.out.println(String.format("Partition: %s, Begin: %d, End: %d, Count: %d",
-                            partitionProperties.getId(), begin, end, count));
-                    }
-                    totalCount[0] += count;
-                    return partitionProperties;
-                }).collectList()
-                .block();
+                        long begin = partitionProperties.getBeginningSequenceNumber();
+                        long end = partitionProperties.getLastEnqueuedSequenceNumber();
+                        long count = end - begin + 1;
+                        if (verbose) {
+                            System.out.println(String.format("Partition: %s, Begin: %d, End: %d, Count: %d",
+                                partitionProperties.getId(), begin, end, count));
+                        }
+                        totalCount[0] += count;
+                        return partitionProperties;
+                    }).collectList().block();
+
             if (verbose) {
                 System.out.println(String.format("Total Count: %d", totalCount[0]));
             }
@@ -99,9 +115,9 @@ public class EventHubsConsumerClientPerf {
                 double elapsed = 1.0 * (end - start) / 1000000000;
                 long messagesReceived = totalCount[0];
                 double messagesPerSecond = messagesReceived / elapsed;
-                double megabytesPerSecond = (messagesPerSecond * _bytesPerMessage) / (1024 * 1024);
+                double megabytesPerSecond = (messagesPerSecond * BYTES_PER_MESSAGE) / (1024 * 1024);
                 System.out.println(String.format("Received %d messages of size %d in %.2fs (%.2f msg/s, %.2f MB/s))",
-                    messagesReceived, _bytesPerMessage, elapsed, messagesPerSecond, megabytesPerSecond));
+                    messagesReceived, BYTES_PER_MESSAGE, elapsed, messagesPerSecond, megabytesPerSecond));
             } finally {
                 for (EventHubConsumerAsyncClient consumerClient : clients) {
                     consumerClient.close();

@@ -1,8 +1,14 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.eventhubs.perf.core;
 
 import com.azure.perf.test.core.PerfStressOptions;
 import com.beust.jcommander.Parameter;
 
+/**
+ * Represents options for EventHubs Tests.
+ */
 public class EventHubsPerfStressOptions extends PerfStressOptions {
 
     @Parameter(names = { "-bs", "--batchsize" }, description = "Size of the batch (in bytes)")
@@ -16,8 +22,6 @@ public class EventHubsPerfStressOptions extends PerfStressOptions {
 
     @Parameter(names = { "-pi", "--partitionId" }, description = "Target Partition Id")
     private Integer paritionId = null;
-
-
 
     /**
      * Get the configured events for performance test.
@@ -50,6 +54,4 @@ public class EventHubsPerfStressOptions extends PerfStressOptions {
     public Integer getPartitionId() {
         return paritionId;
     }
-
-
 }
