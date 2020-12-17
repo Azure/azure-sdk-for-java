@@ -13,7 +13,6 @@ import java.security.Security;
  * The ServerSSL sample.
  */
 public class ServerSSLSample {
-
     public void serverSSLSample() throws Exception {
         KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
         Security.addProvider(provider);

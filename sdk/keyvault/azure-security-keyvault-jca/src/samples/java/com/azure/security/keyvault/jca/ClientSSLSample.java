@@ -23,37 +23,34 @@ import java.security.Security;
  * The ClientSSL sample.
  */
 public class ClientSSLSample {
-
     public void clientSSLSample() throws Exception {
         KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
         Security.addProvider(provider);
 
         KeyStore ks = KeyStore.getInstance("AzureKeyVault");
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-                System.getProperty("azure.keyvault.uri"),
+            System.getProperty("azure.keyvault.uri"),
             System.getProperty("azure.keyvault.aadAuthenticationUrl"),
-                System.getProperty("azure.tenant.id"),
-                System.getProperty("azure.client.id"),
-                System.getProperty("azure.client.secret"));
+            System.getProperty("azure.tenant.id"),
+            System.getProperty("azure.client.id"),
+            System.getProperty("azure.client.secret"));
         ks.load(parameter);
 
         SSLContext sslContext = SSLContexts
-                .custom()
-                .loadTrustMaterial(ks, new TrustSelfSignedStrategy())
-                .build();
+            .custom()
+            .loadTrustMaterial(ks, new TrustSelfSignedStrategy())
+            .build();
 
         SSLConnectionSocketFactory sslSocketFactory = SSLConnectionSocketFactoryBuilder
-                .create()
-                .setSslContext(sslContext)
-                .setHostnameVerifier((hostname, session) -> {
-                    return true;
-                })
-                .build();
+            .create()
+            .setSslContext(sslContext)
+            .setHostnameVerifier((hostname, session) -> true)
+            .build();
 
         PoolingHttpClientConnectionManager cm = PoolingHttpClientConnectionManagerBuilder
-                .create()
-                .setSSLSocketFactory(sslSocketFactory)
-                .build();
+            .create()
+            .setSSLSocketFactory(sslSocketFactory)
+            .build();
 
         String result = null;
 
