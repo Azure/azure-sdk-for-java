@@ -5,6 +5,9 @@ This sample illustrates how to use `azure-spring-boot-starter-active-directory` 
 
 ## Getting started
 
+### Environment checklist
+We need to ensure that this [environment checklist][ready-to-run-checklist] is completed before the run.
+
 ### Register your application with your Azure Active Directory Tenant
 
 Follow the guide [here](https://docs.microsoft.com/azure/active-directory/develop/active-directory-protocols-oauth-code#register-your-application-with-your-ad-tenant).
@@ -15,7 +18,16 @@ Follow the guide [here](https://docs.microsoft.com/azure/active-directory/develo
 
 - Set redirect URIs with `http://localhost:8080/login/oauth2/code/azure`.
 - Ensure **Access tokens** and **ID tokens** are selected.
+### Configure necessary API permissions
+The sample retrieves user's group memberships using Microsoft graph API which requires the registered app to have `Directory.AccessAsUser.All` "Access the directory as the signed-in user" under `Delegated Permissions`. You need AAD admin privilege to be able to grant the permission in API ACCESS -> Required permission. You can follow the below steps:	
 
+* In the list of pages for the app, select **API permissions**	
+   - Click the **Add a permission** button and then,	
+   - Ensure that the **Microsoft APIs** tab is selected	
+   - In the *Commonly used Microsoft APIs* section, click on **Microsoft Graph**	
+   - In the **Delegated permissions** section, ensure that the right permissions are checked: **Directory.AccessAsUser.All**	
+   - Select the **Add permissions** button
+   - Click **Grant Permissions...** and Yes when prompted.
 ### Configure groups for sign in user
 
 In order to try the authorization action with this sample with minimum effort, [configure the user and groups in Azure Active Directory](https://docs.microsoft.com/azure/active-directory/active-directory-groups-create-azure-portal), configure the user with `group1`. 
@@ -37,10 +49,7 @@ If `azure.activedirectory.tenant-id` is **NOT** configured, `NoLoginSecurityConf
 
 
 ### Run with Maven
-First, we need to ensure that this [instruction] is completed before run.
 ```shell
-# Under sdk/spring project root directory
-mvn clean install -DskipTests
 cd azure-spring-boot-samples/azure-spring-boot-sample-active-directory-backend
 mvn spring-boot:run
 ```
@@ -71,5 +80,5 @@ See [this issue][issuecomment-387090099] for details on this workaround.
 ## Contributing
 <!-- LINKS -->
 
-[instruction]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/CONTRIBUTING.md#building-from-source
+[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
 [issuecomment-387090099]: https://github.com/MicrosoftDocs/azure-docs/issues/8121#issuecomment-387090099

@@ -16,6 +16,12 @@ os.chdir(os.path.abspath(os.path.dirname(sys.argv[0])))
 from parameters import *
 os.chdir(pwd)
 
+# Add two more indent for list in yaml dump
+class ListIndentDumper(yaml.SafeDumper):
+
+    def increase_indent(self, flow=False, indentless=False):
+        return super(ListIndentDumper, self).increase_indent(flow, False)
+
 
 def generate(
     sdk_root: str,
@@ -64,8 +70,9 @@ def generate(
     update_version(sdk_root, service)
 
     if compile:
-        if os.system('mvn clean verify package -q -f {0}/pom.xml -pl {1}:{2} -am'.
-                     format(sdk_root, GROUP_ID, module)) != 0:
+        if os.system(
+                'mvn clean verify package -q -f {0}/pom.xml -pl {1}:{2} -am'.
+                format(sdk_root, GROUP_ID, module)) != 0:
             logging.error('[GENERATE] Maven build fail')
             return False
 
@@ -147,7 +154,7 @@ def update_service_ci_and_pom(sdk_root: str, service: str):
                 'groupId': GROUP_ID,
                 'safeName': module.replace('-', '')
             })
-            ci_yml_str = yaml.safe_dump(ci_yml, sort_keys = False)
+            ci_yml_str = yaml.dump(ci_yml, sort_keys = False, Dumper = ListIndentDumper)
             ci_yml_str = re.sub('(\n\S)', r'\n\1', ci_yml_str)
 
             with open(ci_yml_file, 'w') as fout:
@@ -359,16 +366,8 @@ def valid_service(service: str):
     return re.sub('[^a-z0-9_]', '', service.lower())
 
 
-def get_and_update_api_specs(
-    api_specs_file: str,
-    spec: str,
-    service: str = None,
-):
-    SPECIAL_SPEC = {'resources'}
-    if spec in SPECIAL_SPEC:
-        if not service:
-            service = spec
-        return valid_service(service)
+def read_api_specs(api_specs_file: str) -> (str, dict):
+    # return comment and api_specs
 
     with open(api_specs_file) as fin:
         lines = fin.readlines()
@@ -380,6 +379,30 @@ def get_and_update_api_specs(
             comment = ''.join(lines[:i])
             api_specs = yaml.safe_load(''.join(lines[i:]))
             break
+    else:
+        raise Exception('api-specs.yml should has non comment line')
+
+    return comment, api_specs
+
+
+def write_api_specs(api_specs_file: str, comment: str, api_specs: dict):
+    with open(api_specs_file, 'w') as fout:
+        fout.write(comment)
+        fout.write(yaml.dump(api_specs, Dumper = ListIndentDumper))
+
+
+def get_and_update_service_from_api_specs(
+    api_specs_file: str,
+    spec: str,
+    service: str = None,
+):
+    SPECIAL_SPEC = {'resources'}
+    if spec in SPECIAL_SPEC:
+        if not service:
+            service = spec
+        return valid_service(service)
+
+    comment, api_specs = read_api_specs(api_specs_file)
 
     api_spec = api_specs.get(spec)
     if not service:
@@ -393,11 +416,19 @@ def get_and_update_api_specs(
         api_specs[spec] = dict() if not api_spec else api_spec
         api_specs[spec]['service'] = service
 
-    with open(api_specs_file, 'w') as fout:
-        fout.write(comment)
-        fout.write(yaml.safe_dump(api_specs, sort_keys = False))
+    write_api_specs(api_specs_file, comment, api_specs)
 
     return service
+
+
+def get_suffic_from_api_specs(api_specs_file: str, spec: str):
+    comment, api_specs = read_api_specs(api_specs_file)
+
+    api_spec = api_specs.get(spec)
+    if api_spec and api_spec.get('suffix'):
+        return api_spec.get('suffix')
+
+    return SUFFIX
 
 
 def sdk_automation(input_file: str, output_file: str):
@@ -420,7 +451,12 @@ def sdk_automation(input_file: str, output_file: str):
             )
         else:
             spec = match.group(1)
-            service = get_and_update_api_specs(api_specs_file, spec)
+            service = get_and_update_service_from_api_specs(
+                api_specs_file, spec)
+
+            pre_suffix = SUFFIX
+            suffix = get_suffic_from_api_specs(api_specs_file, spec)
+            update_parameters(suffix)
 
             # TODO: use specific function to detect tag in "resources"
             tag = None
@@ -464,6 +500,8 @@ def sdk_automation(input_file: str, output_file: str):
                     'succeeded',
             })
 
+            update_parameters(pre_suffix)
+
     with open(output_file, 'w') as fout:
         output = {
             'packages': packages,
@@ -497,7 +535,8 @@ def main():
     args['readme'] = readme
     args['spec'] = spec
 
-    service = get_and_update_api_specs(api_specs_file, spec, args['service'])
+    service = get_and_update_service_from_api_specs(api_specs_file, spec,
+                                                    args['service'])
     args['service'] = service
     set_or_increase_version_and_generate(sdk_root, **args)
 
@@ -506,7 +545,7 @@ def main():
         pwd = os.getcwd()
         try:
             os.chdir(sdk_root)
-            os.system('git add eng/versioning pom.xml {0} {1}'.format(
+            os.system('git add eng/versioning eng/mgmt pom.xml {0} {1}'.format(
                 CI_FILE_FORMAT.format(service),
                 POM_FILE_FORMAT.format(service)))
             os.system(

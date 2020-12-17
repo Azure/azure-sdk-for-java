@@ -356,7 +356,7 @@ public class NettyAsyncHttpClientBuilder {
 
         InetSocketAddress inetSocketAddress = (InetSocketAddress) socketAddress;
 
-        return !nonProxyHostsPattern.matcher(inetSocketAddress.getHostName()).matches();
+        return !nonProxyHostsPattern.matcher(inetSocketAddress.getHostString()).matches();
     }
 
     /*

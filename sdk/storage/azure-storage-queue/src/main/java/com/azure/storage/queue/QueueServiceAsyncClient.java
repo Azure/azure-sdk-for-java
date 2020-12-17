@@ -136,7 +136,8 @@ public final class QueueServiceAsyncClient {
      * {@codesnippet com.azure.storage.queue.queueServiceAsyncClient.createQueueWithResponse#string-map}
      *
      * @param queueName Name of the queue
-     * @param metadata Metadata to associate with the queue
+     * @param metadata Metadata to associate with the queue. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @return A response containing the {@link QueueAsyncClient QueueAsyncClient} and the status of creating the queue
      * @throws QueueStorageException If a queue with the same name and different metadata already exists
      */

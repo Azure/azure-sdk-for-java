@@ -106,7 +106,8 @@ public final class QueueServiceClient {
      * {@codesnippet com.azure.storage.queue.queueServiceClient.createQueueWithResponse#string-map-duration-context}
      *
      * @param queueName Name of the queue
-     * @param metadata Metadata to associate with the queue
+     * @param metadata Metadata to associate with the queue. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.

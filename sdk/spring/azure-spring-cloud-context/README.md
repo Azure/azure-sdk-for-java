@@ -53,7 +53,7 @@ Please follow [instructions here][contributing_md] to build from source or contr
 <!-- Link -->
 [src]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-context/src
 [package]: https://mvnrepository.com/artifact/com.microsoft.azure/spring-cloud-azure-context
-[refdocs]: https://azure.github.io/azure-sdk-for-java/spring.html#spring-cloud-azure-context
+[refdocs]: https://azure.github.io/azure-sdk-for-java/springcloud.html#azure-spring-cloud-context
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [azure_subscription]: https://azure.microsoft.com/free
 [logging_doc]: https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging

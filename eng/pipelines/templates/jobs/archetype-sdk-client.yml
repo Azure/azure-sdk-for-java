@@ -135,6 +135,10 @@ jobs:
 
       - template: ../steps/upload-repository-on-failure.yml
 
+      - template: /eng/pipelines/templates/steps/create-apireview.yml
+        parameters:
+          Artifacts: ${{parameters.Artifacts}}
+
   - job: 'Analyze'
     condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'))
 

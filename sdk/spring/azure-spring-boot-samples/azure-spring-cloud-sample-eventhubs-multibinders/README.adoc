@@ -1,4 +1,4 @@
-:instruction: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/CONTRIBUTING.md#building-from-source
+:ready-to-run-checklist: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
 
 = Spring Cloud Azure Stream Binder for Multiple Event Hub Namespace Code Sample shared library for Java
 
@@ -12,6 +12,9 @@ Then message is sent through Azure Event Hub to a `sink` which simply logs the m
 
 Running this sample will be charged by Azure.
 You can check the usage and bill at https://azure.microsoft.com/en-us/account/[this link].
+
+=== Environment checklist
+We need to ensure that this {ready-to-run-checklist}[environment checklist] is completed before the run.
 
 === Connection string based usage
 
@@ -57,8 +60,6 @@ This allows adding binder configurations without interfering with the default pr
 ====
 
 === How to run
-First, we need to ensure that this {instruction}[instruction] is completed before run.
-
 1. Update stream binding related properties in link:src/main/resources/application.properties[application.properties]
 
 +
@@ -74,7 +75,7 @@ spring.cloud.stream.bindings.input1.group=[consumer-group]
 spring.cloud.stream.bindings.output1.destination=[eventhub-2-name]
 ....
 
-2. Run the `mvn clean spring-boot:run` in the root of the code sample to get the app running.
+2. Run the `mvn spring-boot:run` in the root of the code sample to get the app running.
 
 3. Send a POST request to test the default binder
 +

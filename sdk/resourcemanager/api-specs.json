@@ -185,9 +185,9 @@
     "args": "--payload-flattening-threshold=1 --tag=package-2018-02"
   },
   "locks": {
-    "dir": "azure-resourcemanager-locks",
+    "dir": "azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
-    "package": "com.microsoft.azure.resourcemanager.locks",
+    "package": "com.azure.resourcemanager.resources",
     "args": "--payload-flattening-threshold=1 --tag=package-locks-2016-09"
   },
   "logic": {
