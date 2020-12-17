@@ -4,7 +4,6 @@
 package com.azure.storage.file.datalake.options;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 
 import java.util.Objects;

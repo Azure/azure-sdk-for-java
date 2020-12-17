@@ -310,8 +310,8 @@ public class DataLakeServiceClient {
      * @param options {@link FileSystemUndeleteOptions}.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link DataLakeFileSystemClient} used
-     * to interact with the restored file system.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link DataLakeFileSystemClient}
+     * used to interact with the restored file system.
      */
     public Response<DataLakeFileSystemClient> undeleteFileSystemWithResponse(
         FileSystemUndeleteOptions options, Duration timeout, Context context) {
