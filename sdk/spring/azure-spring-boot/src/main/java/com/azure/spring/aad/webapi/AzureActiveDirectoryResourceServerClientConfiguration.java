@@ -3,8 +3,6 @@
 
 package com.azure.spring.aad.webapi;
 
-import com.azure.spring.aad.ClientRegistrationInitialization;
-import com.azure.spring.aad.webapp.AzureClientRegistrationRepository;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -26,31 +24,30 @@ import org.springframework.security.oauth2.server.resource.BearerTokenAuthentica
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnResource(resources = "classpath:aad.enable.config")
 @EnableConfigurationProperties({ AADAuthenticationProperties.class })
-@ConditionalOnClass({BearerTokenAuthenticationToken.class, OAuth2LoginAuthenticationFilter.class})
+@ConditionalOnClass({ BearerTokenAuthenticationToken.class, OAuth2LoginAuthenticationFilter.class })
 public class AzureActiveDirectoryResourceServerClientConfiguration {
 
     @Autowired
-    private AADAuthenticationProperties aadAuthenticationProperties;
+    private AADAuthenticationProperties properties;
 
     @Bean
-    @ConditionalOnMissingBean({ ClientRegistrationRepository.class, AzureClientRegistrationRepository.class })
-    public AzureClientRegistrationRepository azureClientRegistrationRepository() {
-        ClientRegistrationInitialization clientRegistrationInitialization =
-            new ClientRegistrationInitialization(aadAuthenticationProperties);
-        return new AzureClientRegistrationRepository(
-            clientRegistrationInitialization.createDefaultClient(),
-            clientRegistrationInitialization.createAuthzClients(),
-            aadAuthenticationProperties);
+    @ConditionalOnMissingBean({ ClientRegistrationRepository.class, OboClientRegistrationRepository.class })
+    public OboClientRegistrationRepository oboClientRegistrationRepository() {
+
+        ClientRegistrationInitialization clientInitialization = new ClientRegistrationInitialization(properties);
+
+        return new OboClientRegistrationRepository(clientInitialization.createAuthzClients(), properties);
     }
 
     /**
-     * Use AzureClientRegistrationRepository to create AADOAuth2OboAuthorizedClientRepository
+     * Use OboClientRegistrationRepository to create AADOAuth2OboAuthorizedClientRepository
+     *
      * @param repo client registration
      * @return AADOAuth2OboAuthorizedClientRepository Bean
      */
     @Bean
     @ConditionalOnMissingBean
-    public OAuth2AuthorizedClientRepository oAuth2AuthorizedClientRepository(AzureClientRegistrationRepository repo) {
+    public OAuth2AuthorizedClientRepository oAuth2AuthorizedClientRepository(OboClientRegistrationRepository repo) {
         return new AADOAuth2OboAuthorizedClientRepository(repo);
     }
 }
