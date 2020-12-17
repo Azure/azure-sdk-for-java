@@ -59,23 +59,19 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
         }
 
         try {
-            String accessToken =
-                ((AbstractOAuth2TokenAuthenticationToken<?>) authentication).getToken().getTokenValue();
-            ClientRegistration clientRegistration =
-                azureClientRegistrationRepository.findByRegistrationId(registrationId);
+            String accessToken = ((AbstractOAuth2TokenAuthenticationToken<?>) authentication).getToken().getTokenValue();
+            ClientRegistration clientRegistration = azureClientRegistrationRepository.findByRegistrationId(registrationId);
 
             if (clientRegistration == null) {
-                LOGGER.warn("Not found the ClientRegistration.");
+                LOGGER.warn("Not found the ClientRegistration, registrationId={}", registrationId);
                 return null;
             }
 
             OnBehalfOfParameters parameters = OnBehalfOfParameters
-                .builder(clientRegistration.getScopes(), new UserAssertion(accessToken))
-                .build();
+                                                .builder(clientRegistration.getScopes(), new UserAssertion(accessToken))
+                                                .build();
             ConfidentialClientApplication clientApplication = createApp(clientRegistration);
             if (null == clientApplication) {
-                LOGGER.warn("Not found the " + clientRegistration.getRegistrationId()
-                    + " ConfidentialClientApplication.");
                 return null;
             }
 
@@ -84,11 +80,12 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
             Date iat = (Date) parser.getJWTClaimsSet().getClaim("iat");
             Date exp = (Date) parser.getJWTClaimsSet().getClaim("exp");
             OAuth2AccessToken oAuth2AccessToken = new OAuth2AccessToken(OAuth2AccessToken.TokenType.BEARER,
-                oboAccessToken,
-                Instant.ofEpochMilli(iat.getTime()),
-                Instant.ofEpochMilli(exp.getTime()));
+                                                                        oboAccessToken,
+                                                                        Instant.ofEpochMilli(iat.getTime()),
+                                                                        Instant.ofEpochMilli(exp.getTime()));
             OAuth2AuthorizedClient oAuth2AuthorizedClient = new OAuth2AuthorizedClient(clientRegistration,
-                authentication.getName(), oAuth2AccessToken);
+                                                                                       authentication.getName(),
+                                                                                       oAuth2AccessToken);
             request.setAttribute(oboAuthorizedClientAttributeName, (T) oAuth2AuthorizedClient);
             return (T) oAuth2AuthorizedClient;
         } catch (Throwable throwable) {
