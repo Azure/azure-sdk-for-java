@@ -2,18 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.communication.administration;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.StringJoiner;
-import java.util.function.Function;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.CoreUtils;
 
 public class PhoneNumberIntegrationTestBase extends TestBase {
     private static final String ENV_ACCESS_KEY = Configuration.getGlobalConfiguration()
