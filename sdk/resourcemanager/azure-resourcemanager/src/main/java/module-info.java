@@ -15,6 +15,7 @@ module com.azure.resourcemanager {
     requires transitive com.azure.resourcemanager.monitor;
     requires transitive com.azure.resourcemanager.privatedns;
     requires transitive com.azure.resourcemanager.redis;
+    requires transitive com.azure.resourcemanager.search;
     requires transitive com.azure.resourcemanager.servicebus;
     requires transitive com.azure.resourcemanager.sql;
     requires transitive com.azure.resourcemanager.trafficmanager;

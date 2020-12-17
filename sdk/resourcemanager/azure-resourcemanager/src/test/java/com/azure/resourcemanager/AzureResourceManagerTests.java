@@ -1296,29 +1296,29 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
         new TestCosmosDB().runTest(azureResourceManager.cosmosDBAccounts(), azureResourceManager.resourceGroups());
     }
 
-    //    @Test
-    //    public void testSearchServiceFreeSku() throws Exception {
-    //        new TestSearchService.SearchServiceFreeSku()
-    //                .runTest(azure.searchServices(), azure.resourceGroups());
-    //    }
+    @Test
+    public void testSearchServiceFreeSku() throws Exception {
+        new TestSearchService.SearchServiceFreeSku()
+                .runTest(azureResourceManager.searchServices(), azureResourceManager.resourceGroups());
+    }
 
-    //    @Test
-    //    public void testSearchServiceBasicSku() throws Exception {
-    //        new TestSearchService.SearchServiceBasicSku()
-    //                .runTest(azure.searchServices(), azure.resourceGroups());
-    //    }
-    //
-    //    @Test
-    //    public void testSearchServiceStandardSku() throws Exception {
-    //        new TestSearchService.SearchServiceStandardSku()
-    //                .runTest(azure.searchServices(), azure.resourceGroups());
-    //    }
-    //
-    //    @Test
-    //    public void testSearchServiceAnySku() throws Exception {
-    //        new TestSearchService.SearchServiceAnySku()
-    //                .runTest(azure.searchServices(), azure.resourceGroups());
-    //    }
+    @Test
+    public void testSearchServiceBasicSku() throws Exception {
+        new TestSearchService.SearchServiceBasicSku()
+                .runTest(azureResourceManager.searchServices(), azureResourceManager.resourceGroups());
+    }
+
+    @Test
+    public void testSearchServiceStandardSku() throws Exception {
+        new TestSearchService.SearchServiceStandardSku()
+                .runTest(azureResourceManager.searchServices(), azureResourceManager.resourceGroups());
+    }
+
+    @Test
+    public void testSearchServiceAnySku() throws Exception {
+        new TestSearchService.SearchServiceAnySku()
+                .runTest(azureResourceManager.searchServices(), azureResourceManager.resourceGroups());
+    }
 
     @Test
     @Disabled("Util to generate missing regions")
