@@ -177,6 +177,7 @@ public class AsyncCache<TKey, TValue> {
             }
         }
 
+        @SuppressWarnings("unchecked")
         public static <TKey, TValue> SerializableAsyncCache<TKey, TValue> from(AsyncCache<TKey,
             TValue> cache, Class<TKey> keyClass, Class<TValue> valueClass) {
             if (keyClass == String.class && valueClass == DocumentCollection.class) {
@@ -234,6 +235,7 @@ public class AsyncCache<TKey, TValue> {
                 pairs.put(key, new AsyncLazy<>(value));
             }
 
+            @SuppressWarnings("unchecked")
             IEqualityComparer<TValue> equalityComparer = (IEqualityComparer<TValue>) ois.readObject();
             this.cache = new AsyncCache<>(equalityComparer, pairs);
         }

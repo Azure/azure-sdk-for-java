@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.CosmosClientBuilder
+import com.azure.cosmos.{ConsistencyLevel, CosmosBridgeInternal, CosmosClientBuilder}
 import com.azure.cosmos.implementation.CosmosClientState
 import com.azure.cosmos.models.{CosmosParametrizedQuery, CosmosQueryRequestOptions}
 import com.fasterxml.jackson.databind.node.ObjectNode
@@ -30,11 +30,14 @@ case class CosmosPartitionReader(config: Map[String, String],
 
   // TODO: moderakh cache the cosmos clients and manage the lifetime of the clients
   // we shouldn't recreate everytime, causing resource leak, inefficient behaviour
-  val cosmosAsyncContainer = new CosmosClientBuilder()
+  val builder = new CosmosClientBuilder()
     .endpoint(endpointConfig.endpoint)
     .key(endpointConfig.key)
-    .usingState(cosmosClientStateHandle.value)
-    .buildAsyncClient()
+
+  CosmosBridgeInternal.setUsingState(builder, cosmosClientStateHandle.value)
+  val client = builder.buildAsyncClient();
+
+  val cosmosAsyncContainer = client
     .getDatabase(containerTargetConfig.database)
     .getContainer(containerTargetConfig.container)
 

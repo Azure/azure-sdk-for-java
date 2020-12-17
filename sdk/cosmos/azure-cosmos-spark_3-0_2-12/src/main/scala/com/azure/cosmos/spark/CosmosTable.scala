@@ -47,7 +47,6 @@ class CosmosTable(val transforms: Array[Transform],
   val clientStateHandle : Broadcast[CosmosClientState] = CosmosTable.getClientState(this)
 
   def initializeAndBroadcastCosmosClientState() : Broadcast[CosmosClientState] = {
-    System.out.println("initializeAndBroadcastCosmosClientState")
     val cosmosContainerConfig = CosmosContainerConfig.parseCosmosContainerConfig(userConfig.asScala.toMap)
     try {
       client.getDatabase(cosmosContainerConfig.database).getContainer(cosmosContainerConfig.container).readItem(

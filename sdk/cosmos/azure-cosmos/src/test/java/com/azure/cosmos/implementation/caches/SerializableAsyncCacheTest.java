@@ -28,6 +28,7 @@ import static com.azure.cosmos.implementation.caches.AsyncCache.SerializableAsyn
 import static com.azure.cosmos.implementation.caches.AsyncCache.SerializableAsyncCache.SerializableAsyncCollectionCache;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@SuppressWarnings("unchecked")
 public class SerializableAsyncCacheTest {
 
     @Test(groups = { "unit" }, dataProvider = "numberOfCollections")
@@ -47,7 +48,7 @@ public class SerializableAsyncCacheTest {
             getInternalCache(collectionInfoByNameCache);
 
         // serialize
-        SerializableAsyncCache serializableAsyncCache =
+        SerializableAsyncCache<String, DocumentCollection> serializableAsyncCache =
             SerializableAsyncCollectionCache.from(collectionInfoByNameCache, String.class, DocumentCollection.class);
         byte[] bytes = serializeObject(serializableAsyncCache);
 
@@ -78,6 +79,7 @@ public class SerializableAsyncCacheTest {
             { 100 } };
     }
 
+    @SuppressWarnings("unchecked")
     private <T> T deserializeObject(byte[] objectSerializedAsBytes) throws IOException, ClassNotFoundException {
         ByteArrayInputStream bais = new ByteArrayInputStream(objectSerializedAsBytes);
         ObjectInputStream ois = new ObjectInputStream(bais);
@@ -93,6 +95,7 @@ public class SerializableAsyncCacheTest {
         return baos.toByteArray();
     }
 
+    @SuppressWarnings("unchecked")
     private <TKey, TValue> ConcurrentHashMap<TKey, AsyncLazy<TValue>> getInternalCache(AsyncCache<TKey, TValue> cache) {
         return ReflectionUtils.get(null, cache, "values");
     }
