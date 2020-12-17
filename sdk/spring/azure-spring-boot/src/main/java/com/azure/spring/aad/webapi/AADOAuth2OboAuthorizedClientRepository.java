@@ -59,8 +59,10 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
         }
 
         try {
-            String accessToken = ((AbstractOAuth2TokenAuthenticationToken<?>) authentication).getToken().getTokenValue();
-            ClientRegistration clientRegistration = azureClientRegistrationRepository.findByRegistrationId(registrationId);
+            String accessToken = ((AbstractOAuth2TokenAuthenticationToken<?>) authentication).getToken()
+                                                                                             .getTokenValue();
+            ClientRegistration clientRegistration =
+                azureClientRegistrationRepository.findByRegistrationId(registrationId);
 
             if (clientRegistration == null) {
                 LOGGER.warn("Not found the ClientRegistration, registrationId={}", registrationId);
