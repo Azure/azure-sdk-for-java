@@ -41,6 +41,8 @@ def generate_overview(readme_file, version):
         # markdown2.markdown will create html from the readme.md file. The fenced-code-blocks
         # extras being passed into the markdown call is necessary to deal with the embedded
         # code blocks within the readme so they'll displaye correctly in the html
+        # The target-blank-links will open new tab for new page, but leave the anchor link in the same page.
+        # The toc helps the anchor link to jump to the right place.
         html_readme_content = markdown2.markdown(re.sub(pattern='@', repl='{@literal @}', string=readme_content, flags=re.MULTILINE), extras=["fenced-code-blocks", "target-blank-links", "toc"])
 
     # The html_readme_content needs to be encapsulated inside of <body> tags in order
