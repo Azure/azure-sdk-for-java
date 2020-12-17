@@ -354,6 +354,7 @@ public final class DocumentCollection extends Resource {
     }
 
     public static class SerializableDocumentCollection implements SerializableWrapper<DocumentCollection> {
+        private static final long serialVersionUID = 1l;
         public static SerializableDocumentCollection from(DocumentCollection documentCollection) {
             SerializableDocumentCollection serializableDocumentCollection = new SerializableDocumentCollection();
             serializableDocumentCollection.documentCollection = documentCollection;

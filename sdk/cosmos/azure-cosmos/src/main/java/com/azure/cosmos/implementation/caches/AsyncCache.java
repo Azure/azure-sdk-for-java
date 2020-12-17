@@ -147,6 +147,7 @@ public class AsyncCache<TKey, TValue> {
     }
 
     public abstract static class SerializableAsyncCache<TKey, TValue> implements Serializable {
+        private static final long serialVersionUID = 1l;
         private static transient Logger logger = LoggerFactory.getLogger(SerializableAsyncCache.class);
         protected transient AsyncCache<TKey, TValue> cache;
 

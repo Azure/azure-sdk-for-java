@@ -206,6 +206,7 @@ public abstract class RxCollectionCache {
     }
 
     private static class CollectionRidComparer implements IEqualityComparer<DocumentCollection> {
+        private static final long serialVersionUID = 1l;
         public boolean areEqual(DocumentCollection left, DocumentCollection right) {
             if (left == null && right == null) {
                 return true;
