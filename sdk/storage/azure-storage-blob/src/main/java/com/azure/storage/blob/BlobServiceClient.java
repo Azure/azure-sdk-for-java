@@ -511,6 +511,8 @@ public final class BlobServiceClient {
      * {@codesnippet com.azure.storage.blob.BlobServiceClient.renameBlobContainerWithResponse#ContainerRenameOptions-Duration-Context}
      *
      * @param options {@link ContainerRenameOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} whose {@link Response#getValue() value} contains a
      * {@link BlobContainerClient} used to interact with the renamed container.
      */

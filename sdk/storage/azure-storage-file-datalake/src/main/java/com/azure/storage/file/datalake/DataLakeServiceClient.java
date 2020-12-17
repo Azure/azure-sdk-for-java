@@ -347,6 +347,8 @@ public class DataLakeServiceClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceClient.renameFileSystemWithResponse#FileSystemRenameOptions-Duration-Context}
      *
      * @param options {@link FileSystemRenameOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} whose {@link Response#getValue() value} contains a
      * {@link DataLakeFileSystemClient} used to interact with the renamed file system.
      */
