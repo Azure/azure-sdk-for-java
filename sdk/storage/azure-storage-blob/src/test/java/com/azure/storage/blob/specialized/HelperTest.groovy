@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.specialized
 
+import com.azure.core.util.Context
 import com.azure.core.util.serializer.JacksonAdapter
 import com.azure.core.util.serializer.SerializerEncoding
 import com.azure.storage.blob.APISpec
@@ -102,7 +103,7 @@ class HelperTest extends APISpec {
         def sasValues = new BlobServiceSasSignatureValues(e, p)
 
         def implUtil = new BlobSasImplUtil(sasValues, "containerName", "blobName", "snapshot", null)
-        def sas = implUtil.generateSas(primaryCredential)
+        def sas = implUtil.generateSas(primaryCredential, Context.NONE)
 
         parts.setCommonSasQueryParameters(new CommonSasQueryParameters(SasImplUtils.parseQueryString(sas), true))
 

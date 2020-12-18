@@ -3,6 +3,7 @@
 
 package com.azure.storage.common.implementation
 
+import com.azure.core.util.Context
 import com.azure.storage.common.sas.AccountSasPermission
 import com.azure.storage.common.sas.AccountSasResourceType
 import com.azure.storage.common.sas.AccountSasService
@@ -253,7 +254,7 @@ class SasModelsTest extends Specification {
         def implUtil = new AccountSasImplUtil(v)
 
         when:
-        implUtil.generateSas(null)
+        implUtil.generateSas(null, Context.NONE)
 
         then:
         def ex = thrown(NullPointerException)

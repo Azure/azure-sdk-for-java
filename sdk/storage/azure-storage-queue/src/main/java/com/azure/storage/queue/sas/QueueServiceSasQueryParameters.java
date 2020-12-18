@@ -82,7 +82,7 @@ public final class QueueServiceSasQueryParameters extends BaseSasQueryParameters
     /**
      * Encodes all SAS query parameters into a string that can be appended to a URL.
      *
-     * @return A {@code String} representing all SAS query parameters.
+     * @return A {@code String} representing the SAS query parameters.
      * @deprecated Please use the generateSas method on the desired queue client after initializing
      * {@link QueueServiceSasSignatureValues}.
      */
