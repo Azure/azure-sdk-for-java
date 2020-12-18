@@ -5,7 +5,6 @@ package com.azure.messaging.servicebus;
 
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationClient;
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationClientBuilder;
-import com.azure.messaging.servicebus.administration.models.EntityStatus;
 import com.azure.messaging.servicebus.administration.models.QueueProperties;
 
 import java.time.Duration;
