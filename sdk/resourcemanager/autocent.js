@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const request = require('request');
 
-// mapping for servicess with different spec folder names
+// mapping for services with different spec folder names
 const specs = {
   'avs': 'vmware',
   'cosmos': 'cosmos-db',
