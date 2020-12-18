@@ -3,7 +3,6 @@
 
 package com.azure.spring.aad.webapi;
 
-import com.azure.spring.aad.webapp.AzureClientRegistrationRepository;
 import org.junit.Test;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
@@ -16,7 +15,7 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class AzureActiveDirectoryResourceServerClientConfigurationTest {
+public class AADWebApiConfigurationTest {
 
     private static final String AAD_PROPERTY_PREFIX = "azure.activedirectory.";
 
@@ -29,7 +28,7 @@ public class AzureActiveDirectoryResourceServerClientConfigurationTest {
     @Test
     public void testNotExistBearerTokenAuthenticationToken() {
         this.contextRunner
-            .withUserConfiguration(AzureActiveDirectoryResourceServerClientConfiguration.class)
+            .withUserConfiguration(AADWebApiConfiguration.class)
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
             .run(context -> {
                 assertThat(context).doesNotHaveBean("AADOAuth2OboAuthorizedClientRepository");
@@ -39,7 +38,7 @@ public class AzureActiveDirectoryResourceServerClientConfigurationTest {
     @Test
     public void testNotExistOAuth2LoginAuthenticationFilter() {
         this.contextRunner
-            .withUserConfiguration(AzureActiveDirectoryResourceServerClientConfiguration.class)
+            .withUserConfiguration(AADWebApiConfiguration.class)
             .withClassLoader(new FilteredClassLoader(OAuth2LoginAuthenticationFilter.class))
             .run(context -> {
                 assertThat(context).doesNotHaveBean("AADOAuth2OboAuthorizedClientRepository");
@@ -49,7 +48,7 @@ public class AzureActiveDirectoryResourceServerClientConfigurationTest {
     @Test
     public void testOAuth2AuthorizedClientRepository() {
         this.contextRunner
-            .withUserConfiguration(AzureActiveDirectoryResourceServerClientConfiguration.class)
+            .withUserConfiguration(AADWebApiConfiguration.class)
             .run(context -> {
                 final OAuth2AuthorizedClientRepository aadOboRepo = context.getBean(
                     AADOAuth2OboAuthorizedClientRepository.class);
@@ -61,15 +60,15 @@ public class AzureActiveDirectoryResourceServerClientConfigurationTest {
     @Test
     public void testDefaultClientRegistrationRepository() {
         this.contextRunner
-            .withUserConfiguration(AzureActiveDirectoryResourceServerClientConfiguration.class)
+            .withUserConfiguration(AADWebApiConfiguration.class)
             .run(context -> {
-                AzureClientRegistrationRepository azureRepo = context.getBean(AzureClientRegistrationRepository
+                AADWebApiClientRegistrationRepository azureRepo = context.getBean(AADWebApiClientRegistrationRepository
                     .class);
                 ClientRegistration graph = azureRepo.findByRegistrationId("graph");
                 ClientRegistration azure = azureRepo.findByRegistrationId("azure");
 
                 assertThat(azureRepo).isNotNull();
-                assertThat(azureRepo).isExactlyInstanceOf(AzureClientRegistrationRepository.class);
+                assertThat(azureRepo).isExactlyInstanceOf(AADWebApiClientRegistrationRepository.class);
 
                 assertThat(graph).isNull();
 
@@ -82,17 +81,17 @@ public class AzureActiveDirectoryResourceServerClientConfigurationTest {
     @Test
     public void testExistGraphClient() {
         this.contextRunner
-            .withUserConfiguration(AzureActiveDirectoryResourceServerClientConfiguration.class)
+            .withUserConfiguration(AADWebApiConfiguration.class)
             .withPropertyValues(AAD_PROPERTY_PREFIX + "authorization.graph.scopes=User.read")
             .run(context -> {
-                AzureClientRegistrationRepository azureRepo = context.getBean(AzureClientRegistrationRepository
+                AADWebApiClientRegistrationRepository azureRepo = context.getBean(AADWebApiClientRegistrationRepository
                     .class);
                 ClientRegistration azure = azureRepo.findByRegistrationId("azure");
                 ClientRegistration graph = azureRepo.findByRegistrationId("graph");
                 Set<String> azureScopes = azure.getScopes();
                 Set<String> graphScopes = graph.getScopes();
 
-                assertThat(azureRepo).isExactlyInstanceOf(AzureClientRegistrationRepository.class);
+                assertThat(azureRepo).isExactlyInstanceOf(AADWebApiClientRegistrationRepository.class);
                 assertThat(azure).isNotNull();
                 assertThat(azureScopes).hasSize(5);
 
@@ -104,17 +103,17 @@ public class AzureActiveDirectoryResourceServerClientConfigurationTest {
     @Test
     public void testExistAzureClient() {
         this.contextRunner
-            .withUserConfiguration(AzureActiveDirectoryResourceServerClientConfiguration.class)
+            .withUserConfiguration(AADWebApiConfiguration.class)
             .withPropertyValues(AAD_PROPERTY_PREFIX + "authorization.azure.scopes=User.read")
             .run(context -> {
-                AzureClientRegistrationRepository azureRepo = context.getBean(AzureClientRegistrationRepository
+                AADWebApiClientRegistrationRepository azureRepo = context.getBean(AADWebApiClientRegistrationRepository
                     .class);
 
                 ClientRegistration azure = azureRepo.findByRegistrationId("azure");
                 ClientRegistration graph = azureRepo.findByRegistrationId("graph");
                 Set<String> azureScopes = azure.getScopes();
 
-                assertThat(azureRepo).isExactlyInstanceOf(AzureClientRegistrationRepository.class);
+                assertThat(azureRepo).isExactlyInstanceOf(AADWebApiClientRegistrationRepository.class);
                 assertThat(azure).isNotNull();
                 assertThat(azureScopes).hasSize(5);
 

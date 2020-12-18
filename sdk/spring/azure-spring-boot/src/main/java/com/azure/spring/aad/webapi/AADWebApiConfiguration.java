@@ -4,7 +4,6 @@
 package com.azure.spring.aad.webapi;
 
 import com.azure.spring.aad.ClientRegistrationInitialization;
-import com.azure.spring.aad.webapp.AzureClientRegistrationRepository;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -27,17 +26,17 @@ import org.springframework.security.oauth2.server.resource.BearerTokenAuthentica
 @ConditionalOnResource(resources = "classpath:aad.enable.config")
 @EnableConfigurationProperties({ AADAuthenticationProperties.class })
 @ConditionalOnClass({BearerTokenAuthenticationToken.class, OAuth2LoginAuthenticationFilter.class})
-public class AzureActiveDirectoryResourceServerClientConfiguration {
+public class AADWebApiConfiguration {
 
     @Autowired
     private AADAuthenticationProperties aadAuthenticationProperties;
 
     @Bean
-    @ConditionalOnMissingBean({ ClientRegistrationRepository.class, AzureClientRegistrationRepository.class })
-    public AzureClientRegistrationRepository azureClientRegistrationRepository() {
+    @ConditionalOnMissingBean({ ClientRegistrationRepository.class, AADWebApiClientRegistrationRepository.class })
+    public AADWebApiClientRegistrationRepository azureClientRegistrationRepository() {
         ClientRegistrationInitialization clientRegistrationInitialization =
             new ClientRegistrationInitialization(aadAuthenticationProperties);
-        return new AzureClientRegistrationRepository(
+        return new AADWebApiClientRegistrationRepository(
             clientRegistrationInitialization.createDefaultClient(),
             clientRegistrationInitialization.createAuthzClients(),
             aadAuthenticationProperties);
@@ -50,7 +49,8 @@ public class AzureActiveDirectoryResourceServerClientConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean
-    public OAuth2AuthorizedClientRepository oAuth2AuthorizedClientRepository(AzureClientRegistrationRepository repo) {
+    public OAuth2AuthorizedClientRepository oAuth2AuthorizedClientRepository(
+        AADWebApiClientRegistrationRepository repo) {
         return new AADOAuth2OboAuthorizedClientRepository(repo);
     }
 }

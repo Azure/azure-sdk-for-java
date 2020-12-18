@@ -29,7 +29,7 @@ import java.util.Arrays;
 public abstract class AzureOAuth2Configuration extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private AzureClientRegistrationRepository repo;
+    private AADWebAppClientRegistrationRepository repo;
     @Autowired
     private OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService;
 
@@ -41,8 +41,7 @@ public abstract class AzureOAuth2Configuration extends WebSecurityConfigurerAdap
             .tokenEndpoint()
             .accessTokenResponseClient(accessTokenResponseClient())
             .and().authorizationEndpoint().authorizationRequestResolver(requestResolver())
-            .and().failureHandler(failureHandler())
-            .and().oauth2Login().userInfoEndpoint().oidcUserService(oidcUserService);
+            .and().failureHandler(failureHandler());
     }
 
     protected OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient() {

@@ -23,13 +23,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AuthzCodeGrantRequestEntityConverterTest {
 
-    private AzureClientRegistrationRepository clientRepo;
+    private AADWebAppClientRegistrationRepository clientRepo;
     private ClientRegistration azure;
     private ClientRegistration arm;
 
     private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
         .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
-        .withUserConfiguration(AzureActiveDirectoryConfiguration.class)
+        .withUserConfiguration(AADWebAppConfiguration.class)
         .withPropertyValues("azure.activedirectory.authorization-server-uri = fake-uri",
             "azure.activedirectory.authorization.arm.scopes = Calendars.Read",
             "azure.activedirectory.authorization.arm.on-demand=true",
@@ -39,7 +39,7 @@ public class AuthzCodeGrantRequestEntityConverterTest {
             "azure.activedirectory.user-group.allowed-groups = group1, group2");
 
     private void getBeans(AssertableWebApplicationContext context) {
-        clientRepo = context.getBean(AzureClientRegistrationRepository.class);
+        clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
         azure = clientRepo.findByRegistrationId("azure");
         arm = clientRepo.findByRegistrationId("arm");
     }
@@ -61,7 +61,7 @@ public class AuthzCodeGrantRequestEntityConverterTest {
         contextRunner.run(context -> {
             getBeans(context);
             MultiValueMap<String, String> body = convertedBodyOf(createCodeGrantRequest(arm));
-            assertEquals("Calendars.Read", body.getFirst("scope"));
+            assertEquals("Calendars.Read openid profile", body.getFirst("scope"));
         });
     }
 
