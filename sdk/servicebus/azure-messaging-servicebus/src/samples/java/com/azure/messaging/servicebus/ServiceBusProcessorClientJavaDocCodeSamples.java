@@ -5,12 +5,16 @@ package com.azure.messaging.servicebus;
 
 import java.util.function.Consumer;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 /**
  * Class contains sample code snippets that will be used in javadocs.
  *
  * @see ServiceBusProcessorClient
  */
 public class ServiceBusProcessorClientJavaDocCodeSamples {
+    private boolean sampleWorks = false;
+
     /**
      * Creates a non session-enabled {@link ServiceBusProcessorClient}.
      */
@@ -46,6 +50,10 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
         // Start the processor in the background
         processor.start();
         // END: com.azure.messaging.servicebus.servicebusprocessorclient#instantiation
+
+        // Following assert is for making sure this sample run properly in our automated system.
+        // User do not need this assert, you can comment this line
+        assertTrue(sampleWorks);
     }
 
     /**

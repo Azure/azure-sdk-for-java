@@ -3,10 +3,6 @@
 
 package com.azure.messaging.servicebus;
 
-import jdk.jfr.Category;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import reactor.core.Disposable;
 
@@ -23,10 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  *
  * A message is abandoned if an exception occurs downstream while the message is processed.
  */
-@Nested
-@DisplayName("samples")
-@Category("sample")
-@Tag("sample")
 public class ReceiveMessageAsyncSample {
     private boolean sampleWorks = true;
 

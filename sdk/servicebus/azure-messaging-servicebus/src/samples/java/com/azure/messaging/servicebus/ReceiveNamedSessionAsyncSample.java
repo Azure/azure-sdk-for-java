@@ -4,16 +4,21 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
+import org.junit.jupiter.api.Test;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.concurrent.TimeUnit;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 /**
  * Demonstrates how to receive messages from a named session.
  */
 public class ReceiveNamedSessionAsyncSample {
+    private boolean sampleWorks = true;
+
     /**
      * Main method to invoke this demo on how to receive messages from a session with id "greetings" in an Azure Service
      * Bus Queue.
@@ -23,22 +28,40 @@ public class ReceiveNamedSessionAsyncSample {
      * @throws InterruptedException If the program is unable to sleep while waiting for the operations to complete.
      */
     public static void main(String[] args) throws InterruptedException {
+        ReceiveNamedSessionAsyncSample sample = new ReceiveNamedSessionAsyncSample();
+        sample.run();
+    }
+
+    /**
+     * Method to invoke this demo on how to receive messages from a session with id "greetings" in an Azure Service
+     * Bus Queue.
+     *
+     * @throws InterruptedException If the program is unable to sleep while waiting for the operations to complete.
+     */
+    @Test
+    public void run() throws InterruptedException {
 
         // The connection string value can be obtained by:
         // 1. Going to your Service Bus namespace in Azure Portal.
         // 2. Go to "Shared access policies"
         // 3. Copy the connection string for the "RootManageSharedAccessKey" policy.
-        String connectionString = "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};"
-            + "SharedAccessKey={key}";
+
+        // We are reading 'connectionString/queueName' from environment variable. Your application could read it from
+        // some other source. The 'connectionString' format is shown below.
+        // 1. "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
+        // 2. "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
+        // 3. "queueName" will be the name of the Service Bus queue instance you created
+        //    inside the Service Bus namespace.
+
+        String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
+        String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_SESSION_QUEUE_NAME");
 
         // Create a receiver.
-        // "<<queue-name>>" will be the name of the Service Bus session-enabled queue instance you created inside the
-        // Service Bus namespace.
         ServiceBusSessionReceiverAsyncClient sessionReceiver = new ServiceBusClientBuilder()
             .connectionString(connectionString)
             .sessionReceiver()
             .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
-            .queueName("<<queue-name>>")
+            .queueName(queueName)
             .buildAsyncClient();
 
         // Receiving messages that have the sessionId "greetings-id" set. This can be set via
@@ -62,7 +85,10 @@ public class ReceiveNamedSessionAsyncSample {
                 // thrown in here, the message is abandoned.
                 // To disable this behaviour, toggle ServiceBusSessionReceiverClientBuilder.disableAutoComplete()
                 // when building the session receiver.
-            }, error -> System.err.println("Error occurred: " + error));
+            }, error -> {
+                System.err.println("Error occurred: " + error);
+                sampleWorks = false;
+            });
 
         // Subscribe is not a blocking call so we sleep here so the program does not end.
         TimeUnit.SECONDS.sleep(10);
@@ -72,5 +98,9 @@ public class ReceiveNamedSessionAsyncSample {
 
         // Close the receiver.
         sessionReceiver.close();
+
+        // Following assert is for making sure this sample run properly in our automated system.
+        // User do not need this assert, you can comment this line
+        assertTrue(sampleWorks);
     }
 }

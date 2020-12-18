@@ -3,10 +3,6 @@
 
 package com.azure.messaging.servicebus;
 
-import jdk.jfr.Category;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import reactor.core.Disposable;
 
@@ -27,10 +23,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * </ul>
  *
  */
-@Nested
-@DisplayName("samples")
-@Category("sample")
-@Tag("sample")
 public class ReceiveMessageAndSettleAsyncSample {
 
     private boolean sampleWorks = true;

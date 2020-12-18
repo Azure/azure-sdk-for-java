@@ -9,11 +9,14 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 /**
  * Demonstrates how to receive messages from a named session using {@link ServiceBusReceiverClient}.
  * The sample below runs for 2 minutes. In those two minutes, it will poll Service Bus for batches of messages.
  */
 public class ReceiveNamedSessionSample {
+    private boolean sampleWorks = true;
 
     /**
      * Main method to invoke this demo on how to receive messages from a session with id "greetings" in an Azure Service
@@ -22,6 +25,16 @@ public class ReceiveNamedSessionSample {
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
+        ReceiveNamedSessionSample sample = new ReceiveNamedSessionSample();
+        sample.run();
+    }
+
+    /**
+     * Main method to invoke this demo on how to receive messages from a session with id "greetings" in an Azure Service
+     * Bus Queue.
+     */
+    //@Test
+    public void run() {
         final AtomicBoolean isRunning = new AtomicBoolean(true);
 
         Mono.delay(Duration.ofMinutes(2)).subscribe(index -> {
@@ -33,16 +46,22 @@ public class ReceiveNamedSessionSample {
         // 1. Going to your Service Bus namespace in Azure Portal.
         // 2. Go to "Shared access policies"
         // 3. Copy the connection string for the "RootManageSharedAccessKey" policy.
-        String connectionString = "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};"
-            + "SharedAccessKey={key}";
+
+        // We are reading 'connectionString/queueName' from environment variable. Your application could read it from
+        // some other source. The 'connectionString' format is shown below.
+        // 1. "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
+        // 2. "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
+        // 3. "queueName" will be the name of the Service Bus queue instance you created
+        //    inside the Service Bus namespace.
+
+        String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
+        String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_SESSION_QUEUE_NAME");
 
         // Create a receiver.
-        // "<<queue-name>>" will be the name of the Service Bus session-enabled queue instance you created inside the
-        // Service Bus namespace.
         ServiceBusSessionReceiverClient sessionReceiver = new ServiceBusClientBuilder()
             .connectionString(connectionString)
             .sessionReceiver()
-            .queueName("<<queue-name>>")
+            .queueName(queueName)
             .buildClient();
 
         // Receiving messages that have the sessionId "greetings-id" set. This can be set via
@@ -73,9 +92,12 @@ public class ReceiveNamedSessionSample {
             receiver.close();
         }
 
-
         // Close the receiver.
         sessionReceiver.close();
+
+        // Following assert is for making sure this sample run properly in our automated system.
+        // User do not need this assert, you can comment this line
+        assertTrue(sampleWorks);
     }
 
     private static boolean processMessage(ServiceBusReceivedMessage message) {

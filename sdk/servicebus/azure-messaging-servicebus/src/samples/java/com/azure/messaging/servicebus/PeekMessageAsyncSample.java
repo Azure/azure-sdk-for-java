@@ -3,26 +3,14 @@
 
 package com.azure.messaging.servicebus;
 
-import jdk.jfr.Category;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 /**
  * Sample example showing how peek would work.
  */
-@Nested
-@DisplayName("samples")
-@Category("sample")
-@Tag("sample")
 public class PeekMessageAsyncSample {
-
-    private boolean sampleWorks = false;
 
     /**
      * Main method to invoke this demo on how to peek at a message within a Service Bus Queue.
@@ -70,10 +58,7 @@ public class PeekMessageAsyncSample {
                 System.out.println("Received Message: " + message.getBody().toString());
             },
             error -> System.err.println("Error occurred while receiving message: " + error),
-            () -> {
-                System.out.println("Receiving complete.");
-                sampleWorks = true;
-            });
+            () -> System.out.println("Receiving complete."));
 
         // Subscribe is not a blocking call so we sleep here so the program does not end while finishing
         // the peek operation.
@@ -82,8 +67,5 @@ public class PeekMessageAsyncSample {
         // Close the receiver.
         receiver.close();
 
-        // Following assert is for making sure this sample run properly in our automated system.
-        // User do not need this assert, you can comment this line
-        assertTrue(sampleWorks);
     }
 }
