@@ -30,7 +30,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createIdentityClientUsingManagedIdentity(HttpClient httpClient) {
         // Arrange
-        client = getCommunicationIdentityClientBuilderUsingManagedIdentity(httpClient).buildClient();
+        client = getCommunicationIdentityClientBuilderUsingManagedIdentity(httpClient, "createIdentityClientUsingManagedIdentity").buildClient();
         assertNotNull(client);
 
         // Action & Assert
@@ -43,7 +43,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createIdentityClientUsingConnectionString(HttpClient httpClient) {
         // Arrange
-        client = getCommunicationIdentityClientUsingConnectionString(httpClient).buildClient();
+        client = getCommunicationIdentityClientUsingConnectionString(httpClient, "createIdentityClientUsingConnectionString").buildClient();
         assertNotNull(client);
 
         // Action & Assert
@@ -57,7 +57,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createUser(HttpClient httpClient) {
         // Arrange
-        client = getCommunicationIdentityClient(httpClient).buildClient();
+        client = getCommunicationIdentityClient(httpClient, "createUser").buildClient();
 
         // Action & Assert
         CommunicationUserIdentifier communicationUser = client.createUser();
@@ -69,7 +69,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createUserWithResponse(HttpClient httpClient) {
         // Arrange
-        client = getCommunicationIdentityClient(httpClient).buildClient();
+        client = getCommunicationIdentityClient(httpClient, "createUserWithResponse").buildClient();
 
         // Action & Assert
         Response<CommunicationUserIdentifier> response = client.createUserWithResponse(Context.NONE);
@@ -82,7 +82,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void deleteUser(HttpClient httpClient) {
         // Arrange
-        client = getCommunicationIdentityClient(httpClient).buildClient();
+        client = getCommunicationIdentityClient(httpClient, "deleteUser").buildClient();
 
         // Action & Assert
         CommunicationUserIdentifier communicationUser = client.createUser();
@@ -94,7 +94,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void deleteUserWithResponse(HttpClient httpClient) {
         // Arrange
-        client = getCommunicationIdentityClient(httpClient).buildClient();
+        client = getCommunicationIdentityClient(httpClient, "deleteUserWithResponse").buildClient();
 
         // Action & Assert
         CommunicationUserIdentifier communicationUser = client.createUser();
@@ -106,7 +106,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void revokeToken(HttpClient httpClient) {
         // Arrange
-        client = getCommunicationIdentityClient(httpClient).buildClient();
+        client = getCommunicationIdentityClient(httpClient, "revokeToken").buildClient();
 
         // Action & Assert
         CommunicationUserIdentifier communicationUser = client.createUser();
@@ -120,7 +120,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void revokeTokenWithResponse(HttpClient httpClient) {
         // Arrange
-        client = getCommunicationIdentityClient(httpClient).buildClient();
+        client = getCommunicationIdentityClient(httpClient, "revokeTokenWithResponse").buildClient();
 
         // Action & Assert
         CommunicationUserIdentifier communicationUser = client.createUser();
@@ -135,7 +135,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void issueToken(HttpClient httpClient) {
         // Arrange
-        client = getCommunicationIdentityClient(httpClient).buildClient();
+        client = getCommunicationIdentityClient(httpClient, "issueToken").buildClient();
 
         // Action & Assert
         CommunicationUserIdentifier communicationUser = client.createUser();
@@ -153,7 +153,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void issueTokenWithResponse(HttpClient httpClient) {
         // Arrange
-        client = getCommunicationIdentityClient(httpClient).buildClient();
+        client = getCommunicationIdentityClient(httpClient, "issueTokenWithResponse").buildClient();
 
         // Action & Assert
         CommunicationUserIdentifier communicationUser = client.createUser();

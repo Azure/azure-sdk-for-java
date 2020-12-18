@@ -17,10 +17,11 @@ import reactor.core.publisher.Mono;
 public class CommunicationLoggerPolicy implements HttpPipelinePolicy {
 
     final ClientLogger logger = new ClientLogger(CommunicationLoggerPolicy.class);
-    String testName;
+    final String testName;
 
     /**
      * Creates a policy that logs the Http Response
+     * @param testName Name of the test to log
      */
     public CommunicationLoggerPolicy(String testName) {
         this.testName = testName;
@@ -31,7 +32,7 @@ public class CommunicationLoggerPolicy implements HttpPipelinePolicy {
         return next.process()
         .flatMap(httpResponse -> {
             final HttpResponse bufferedResponse = httpResponse.buffer();
-            
+
             // Should sanitize printed reponse url
             System.out.println("Response Url for " + testName + ": " + bufferedResponse.getRequest().getUrl());
             System.out.println("MS-CV header for " + testName + ": " + bufferedResponse.getHeaderValue("MS-CV"));
