@@ -240,7 +240,7 @@ public class AADWebAppConfiguration {
         }
     }
 
-    public static String getAzureClientRegistrationId(){
+    public static String getAzureClientRegistrationId() {
         return AZURE_CLIENT_REGISTRATION_ID;
     }
 

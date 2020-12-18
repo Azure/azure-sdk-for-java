@@ -32,7 +32,7 @@ public class AzureOauth2RefreshTokenGrantRequestEntityConverter extends OAuth2Re
         return String.join(" ", refreshTokenGrantRequest.getClientRegistration().getScopes());
     }
 
-    private boolean isDefaultClient(OAuth2RefreshTokenGrantRequest request){
+    private boolean isDefaultClient(OAuth2RefreshTokenGrantRequest request) {
         return AADWebAppConfiguration.getAzureClientRegistrationId().equals(
             request.getClientRegistration().getClientName());
     }

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.spring.aad.webapp;
 
 import org.junit.jupiter.api.Test;
@@ -79,8 +82,8 @@ public class AzureOauth2RefreshTokenGrantRequestEntityConverterTest {
             OAuth2AccessToken.TokenType.BEARER,
             "non-access-token",
             Instant.MIN,
-            Instant.now().minus(100, ChronoUnit.DAYS)) ,
-            new OAuth2RefreshToken("fake-value" , Instant.MIN));
+            Instant.now().minus(100, ChronoUnit.DAYS)),
+            new OAuth2RefreshToken("fake-value", Instant.MIN));
     }
 
 }
