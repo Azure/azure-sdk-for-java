@@ -9,7 +9,6 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -51,22 +50,22 @@ public class AzureClientRegistrationRepository implements ClientRegistrationRepo
     @NotNull
     @Override
     public Iterator<ClientRegistration> iterator() {
-        return Collections.singleton(azureClient.getClient()).iterator();
+        return allClients.values().iterator();
     }
 
     public AzureClientRegistration getAzureClient() {
         return azureClient;
     }
 
-    public boolean isAuthzClient(ClientRegistration client) {
+    public boolean isClientNeedConsentWhenLogin(ClientRegistration client) {
         return otherClients.contains(client)
             && properties.getAuthorization().get(client.getClientName()) != null
             && !properties.getAuthorization().get(client.getClientName()).isOnDemand();
     }
 
-    public boolean isAuthzClient(String id) {
+    public boolean isClientNeedConsentWhenLogin(String id) {
         ClientRegistration client = findByRegistrationId(id);
-        return client != null && isAuthzClient(client);
+        return client != null && isClientNeedConsentWhenLogin(client);
     }
 
 }

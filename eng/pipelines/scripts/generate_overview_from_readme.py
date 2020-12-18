@@ -41,12 +41,9 @@ def generate_overview(readme_file, version):
         # markdown2.markdown will create html from the readme.md file. The fenced-code-blocks
         # extras being passed into the markdown call is necessary to deal with the embedded
         # code blocks within the readme so they'll displaye correctly in the html
-        html_readme_content = markdown2.markdown(re.sub(pattern='@', repl='{@literal @}', string=readme_content, flags=re.MULTILINE), extras=["fenced-code-blocks"])
-
-        # Due to javadoc's iFrames the links need to target new tabs otherwise hilarity ensues
-        soup = BeautifulSoup(html_readme_content, "html.parser")
-        for a in soup.findAll('a'):
-            a['target'] = '_blank'
+        # The target-blank-links will open new tab for new page, but leave the anchor link in the same page.
+        # The toc helps the anchor link to jump to the right place.
+        html_readme_content = markdown2.markdown(re.sub(pattern='@', repl='{@literal @}', string=readme_content, flags=re.MULTILINE), extras=["fenced-code-blocks", "target-blank-links", "toc"])
 
     # The html_readme_content needs to be encapsulated inside of <body> tags in order
     # for the content to correctly be added to the landing page
@@ -57,7 +54,7 @@ def generate_overview(readme_file, version):
         f.write('Current version is {}, click <a href="https://azure.github.io/azure-sdk-for-java" target="new">here</a> for the index'.format(version))
         f.write('<br/>')
         if (readme_exists):
-            f.write(str(soup))
+            f.write(str(html_readme_content))
         f.write('</body>')
 
 

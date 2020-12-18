@@ -4,7 +4,7 @@
 
 package com.azure.communication.chat.models;
 
-import com.azure.communication.common.CommunicationUser;
+import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -66,7 +66,7 @@ public final class ChatMessage {
      * The chat message sender.
      */
     @JsonProperty(value = "sender", access = JsonProperty.Access.WRITE_ONLY)
-    private CommunicationUser sender;
+    private CommunicationUserIdentifier sender;
 
     /*
      * The timestamp when the chat message was deleted. The timestamp is in
@@ -235,7 +235,7 @@ public final class ChatMessage {
      *
      * @return the sender value.
      */
-    public CommunicationUser getSender() {
+    public CommunicationUserIdentifier getSender() {
         return this.sender;
     }
 
@@ -245,7 +245,7 @@ public final class ChatMessage {
      * @param sender the sender value to set.
      * @return the ChatMessage object itself.
      */
-    public ChatMessage setSender(CommunicationUser sender) {
+    public ChatMessage setSender(CommunicationUserIdentifier sender) {
         this.sender = sender;
         return this;
     }
