@@ -128,7 +128,6 @@ class ReactorNettyClient implements HttpClient {
             })
             .keepAlive(this.httpClientConfig.isConnectionKeepAlive())
             .port(request.port())
-            .responseTimeout(responseTimeout)
             .request(HttpMethod.valueOf(request.httpMethod().toString()))
             .uri(request.uri().toString())
             .send(bodySendDelegate(request))

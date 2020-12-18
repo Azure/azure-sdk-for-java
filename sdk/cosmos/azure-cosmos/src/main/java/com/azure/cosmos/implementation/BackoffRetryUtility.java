@@ -38,7 +38,7 @@ public class BackoffRetryUtility {
             } catch (Exception e) {
                 return Mono.error(e);
             }
-        }).retryWhen(Retry.withThrowable(RetryUtils.toRetryWhenFunc(retryPolicy)));
+        }).retryWhen(RetryUtils.toRetryWhenFunc(retryPolicy));
     }
 
     static public <T> Flux<T> fluxExecuteRetry(Callable<Flux<T>> callbackMethod, IRetryPolicy retryPolicy) {
@@ -49,7 +49,7 @@ public class BackoffRetryUtility {
             } catch (Exception e) {
                 return Flux.error(e);
             }
-        }).retryWhen(Retry.withThrowable(RetryUtils.toRetryWhenFunc(retryPolicy)));
+        }).retryWhen(RetryUtils.toRetryWhenFunc(retryPolicy));
     }
 
     static public <T> Mono<T> executeAsync(
