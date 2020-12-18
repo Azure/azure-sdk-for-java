@@ -138,10 +138,10 @@ public class AzureActiveDirectoryConfigurationTest {
                 );
                 assertEquals(clientRepo.getAzureClient().getClient(), azure);
 
-                assertFalse(clientRepo.isAuthzClient(azure));
-                assertTrue(clientRepo.isAuthzClient(graph));
-                assertFalse(clientRepo.isAuthzClient("azure"));
-                assertTrue(clientRepo.isAuthzClient("graph"));
+                assertFalse(clientRepo.isClientNeedConsentWhenLogin(azure));
+                assertTrue(clientRepo.isClientNeedConsentWhenLogin(graph));
+                assertFalse(clientRepo.isClientNeedConsentWhenLogin("azure"));
+                assertTrue(clientRepo.isClientNeedConsentWhenLogin("graph"));
 
                 List<ClientRegistration> clients = collectClients(clientRepo);
                 assertEquals(2, clients.size());
@@ -217,10 +217,10 @@ public class AzureActiveDirectoryConfigurationTest {
                     "offline_access",
                     "https://management.core.windows.net/user_impersonation");
 
-                assertFalse(repo.isAuthzClient(graph));
-                assertTrue(repo.isAuthzClient(arm));
-                assertFalse(repo.isAuthzClient("graph"));
-                assertTrue(repo.isAuthzClient("arm"));
+                assertFalse(repo.isClientNeedConsentWhenLogin(graph));
+                assertTrue(repo.isClientNeedConsentWhenLogin(arm));
+                assertFalse(repo.isClientNeedConsentWhenLogin("graph"));
+                assertTrue(repo.isClientNeedConsentWhenLogin("arm"));
             });
     }
 
