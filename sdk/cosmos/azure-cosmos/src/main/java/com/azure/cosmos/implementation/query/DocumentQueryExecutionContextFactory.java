@@ -5,7 +5,6 @@ package com.azure.cosmos.implementation.query;
 import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
-import com.azure.cosmos.implementation.LRUCache;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
@@ -33,6 +32,7 @@ import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -42,7 +42,8 @@ public class DocumentQueryExecutionContextFactory {
 
     private final static int PageSizeFactorForTop = 5;
     private static final Logger logger = LoggerFactory.getLogger(DocumentQueryExecutionContextFactory.class);
-
+    // Limiting cache size to 1000 for now. Can be updated in future based on need
+    private static final int MAX_CACHE_SIZE = 1000;
     private static Mono<Utils.ValueHolder<DocumentCollection>> resolveCollection(DiagnosticsClientContext diagnosticsClientContext,
                                                                                  IDocumentQueryClient client,
                                                                                  ResourceType resourceTypeEnum,
@@ -67,7 +68,7 @@ public class DocumentQueryExecutionContextFactory {
         String resourceLink,
         DocumentCollection collection,
         DefaultDocumentQueryExecutionContext<T> queryExecutionContext, boolean queryPlanCachingEnabled,
-        LRUCache<String, PartitionedQueryExecutionInfo> queryPlanCache) {
+        ConcurrentMap<String, PartitionedQueryExecutionInfo> queryPlanCache) {
 
         // The partitionKeyRangeIdInternal is no more a public API on
         // FeedOptions, but have the below condition
@@ -90,13 +91,15 @@ public class DocumentQueryExecutionContextFactory {
                 queryPlanCache.containsKey(query.getQueryText())) {
             Instant endTime = Instant.now(); // endTime for query plan diagnostics
             PartitionedQueryExecutionInfo partitionedQueryExecutionInfo = queryPlanCache.get(query.getQueryText());
-            return getTargetRangesFromQueryPlan(cosmosQueryRequestOptions, collection, queryExecutionContext,
-                                                partitionedQueryExecutionInfo, startTime, endTime);
-        } else {
-            queryExecutionInfoMono = QueryPlanRetriever
-                                         .getQueryPlanThroughGatewayAsync(diagnosticsClientContext, client, query,
-                                                                          resourceLink);
+            if (partitionedQueryExecutionInfo != null) {
+                return getTargetRangesFromQueryPlan(cosmosQueryRequestOptions, collection, queryExecutionContext,
+                                                    partitionedQueryExecutionInfo, startTime, endTime);
+            }
         }
+
+        queryExecutionInfoMono = QueryPlanRetriever
+                                     .getQueryPlanThroughGatewayAsync(diagnosticsClientContext, client, query,
+                                                                      resourceLink);
 
         return queryExecutionInfoMono.flatMap(
             partitionedQueryExecutionInfo -> {
@@ -144,9 +147,14 @@ public class DocumentQueryExecutionContextFactory {
     private static void tryCacheQueryPlan(
         SqlQuerySpec query,
         PartitionedQueryExecutionInfo partitionedQueryExecutionInfo,
-        LRUCache<String, PartitionedQueryExecutionInfo> queryPlanCache) {
+        ConcurrentMap<String, PartitionedQueryExecutionInfo> queryPlanCache) {
         QueryInfo queryInfo = partitionedQueryExecutionInfo.getQueryInfo();
         if (canCacheQuery(queryInfo) && !queryPlanCache.containsKey(query.getQueryText())) {
+            if (queryPlanCache.size() > MAX_CACHE_SIZE) {
+                // Clearing query plan cache if size is above max size. This can be optimized in future by using
+                // a threadsafe LRU cache
+                queryPlanCache.clear();
+            }
             try {
                 queryPlanCache.put(query.getQueryText(), partitionedQueryExecutionInfo);
             } catch (ConcurrentModificationException exception) {
@@ -182,7 +190,7 @@ public class DocumentQueryExecutionContextFactory {
         boolean isContinuationExpected,
         UUID correlatedActivityId,
         boolean queryPlanCachingEnabled,
-        LRUCache<String, PartitionedQueryExecutionInfo> queryPlanCache) {
+        ConcurrentMap<String, PartitionedQueryExecutionInfo> queryPlanCache) {
 
         // return proxy
         Flux<Utils.ValueHolder<DocumentCollection>> collectionObs = Flux.just(new Utils.ValueHolder<>(null));

@@ -137,8 +137,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private Map<String, List<PartitionKeyAndResourceTokenPair>> resourceTokensMap;
     private final boolean contentResponseOnWriteEnabled;
     private boolean queryPlanCachingEnabled;
-    private static final int CACHE_SIZE = 30; // This value will be made configurable in future
-    private LRUCache<String, PartitionedQueryExecutionInfo> queryPlanCache;
+    private ConcurrentMap<String, PartitionedQueryExecutionInfo> queryPlanCache;
 
     private final AtomicBoolean closed = new AtomicBoolean(false);
     private final int clientId;
@@ -352,7 +351,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.retryPolicy = new RetryPolicy(this, this.globalEndpointManager, this.connectionPolicy);
             this.resetSessionTokenRetryPolicy = retryPolicy;
             CpuMemoryMonitor.register(this);
-            this.queryPlanCache = new LRUCache<>(CACHE_SIZE);
+            this.queryPlanCache = new ConcurrentHashMap<>();
         } catch (RuntimeException e) {
             logger.error("unexpected failure in initializing client.", e);
             close();
@@ -418,7 +417,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 connectionPolicy.getConnectionMode(), globalEndpointManager.getLatestDatabaseAccount().getId(),
                 null, null, httpClient(), connectionPolicy.isClientTelemetryEnabled());
             clientTelemetry.init();
-            this.queryPlanCache = new LRUCache<>(CACHE_SIZE);
+            this.queryPlanCache = new ConcurrentHashMap<>();
         } catch (Exception e) {
             logger.error("unexpected failure in initializing client.", e);
             close();
@@ -2223,7 +2222,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public LRUCache<String, PartitionedQueryExecutionInfo> getQueryPlanCache() {
+    public ConcurrentMap<String, PartitionedQueryExecutionInfo> getQueryPlanCache() {
         return queryPlanCache;
     }
 

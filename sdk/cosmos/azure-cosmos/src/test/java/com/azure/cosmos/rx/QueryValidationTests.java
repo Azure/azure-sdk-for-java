@@ -241,7 +241,9 @@ public class QueryValidationTests extends TestSuiteBase {
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setPartitionKey(new PartitionKey(pk2));
 
-        assertThat(contextClient.getQueryPlanCache().containsKey(query)).isFalse();
+        // As we are enabling caching on this client, the query might be cached on other tests using same client so
+        // diabling below check
+        // assertThat(contextClient.getQueryPlanCache().containsKey(query)).isFalse();
         List<TestObject> values1 = queryAndGetResults(new SqlQuerySpec(query), options, TestObject.class);
         List<String> ids1 = values1.stream().map(TestObject::getId).collect(Collectors.toList());
         // Second time the query plan has to be fetched from the query plan cache and complete the query.

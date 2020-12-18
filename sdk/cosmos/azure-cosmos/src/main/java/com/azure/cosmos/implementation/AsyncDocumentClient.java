@@ -24,6 +24,8 @@ import reactor.core.publisher.Mono;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.concurrent.ConcurrentMap;
+
 /**
  * Provides a client-side logical representation of the Azure Cosmos DB
  * database service. This async client is used to configure and execute requests
@@ -1484,7 +1486,7 @@ public interface AsyncDocumentClient {
         CosmosQueryRequestOptions options
     );
 
-    LRUCache<String, PartitionedQueryExecutionInfo> getQueryPlanCache();
+    ConcurrentMap<String, PartitionedQueryExecutionInfo> getQueryPlanCache();
 
     /**
      * Gets the collection cache.
