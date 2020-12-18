@@ -21,6 +21,7 @@ public class CosmosItemRequestOptions {
     private String ifMatchETag;
     private String ifNoneMatchETag;
     private Boolean contentResponseOnWriteEnabled;
+    private String throughputBudgetGroupName;
 
 
     /**
@@ -36,6 +37,7 @@ public class CosmosItemRequestOptions {
         ifMatchETag = options.ifMatchETag;
         ifNoneMatchETag = options.ifNoneMatchETag;
         contentResponseOnWriteEnabled = options.contentResponseOnWriteEnabled;
+        throughputBudgetGroupName = options.throughputBudgetGroupName;
     }
 
 
@@ -281,6 +283,15 @@ public class CosmosItemRequestOptions {
         requestOptions.setSessionToken(sessionToken);
         requestOptions.setPartitionKey(partitionKey);
         requestOptions.setContentResponseOnWriteEnabled(contentResponseOnWriteEnabled);
+        requestOptions.setThroughputBudgetGroup(throughputBudgetGroupName);
         return requestOptions;
+    }
+
+    public String getThroughputBudgetGroupName() {
+        return this.throughputBudgetGroupName;
+    }
+
+    public void setThroughputBudgetGroupName(String throughputBudgetGroupName) {
+        this.throughputBudgetGroupName = throughputBudgetGroupName;
     }
 }

@@ -7,22 +7,10 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Context;
 import com.azure.core.util.tracing.Tracer;
-import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.ConnectionPolicy;
-import com.azure.cosmos.implementation.CosmosAuthorizationTokenResolver;
-import com.azure.cosmos.implementation.Database;
-import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.TracerProvider;
+import com.azure.cosmos.implementation.*;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdMetrics;
-import com.azure.cosmos.models.CosmosDatabaseProperties;
-import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
-import com.azure.cosmos.models.CosmosDatabaseResponse;
-import com.azure.cosmos.models.CosmosPermissionProperties;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.cosmos.models.ThroughputProperties;
+import com.azure.cosmos.models.*;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -33,9 +21,14 @@ import java.io.Closeable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ServiceLoader;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * Provides a client-side logical representation of the Azure Cosmos DB service.
@@ -462,6 +455,32 @@ public final class CosmosAsyncClient implements Closeable {
 
     TracerProvider getTracerProvider(){
         return this.tracerProvider;
+    }
+
+    /**
+     * Enable throughput budget control by providing the configs. Each cosmos client can only enable one time.
+     *
+     * @param hostName The host name. Usually this should be different across machines.
+     * @param groupConfigs The throughput budget group configurations.
+     */
+    public void enableThroughputBudgetControl(String hostName, ThroughputBudgetGroupConfig... groupConfigs) {
+        checkArgument(StringUtils.isNotEmpty(hostName), "Host name can not be empty");
+
+        // Validate no duplicate group definition.
+        Set<ThroughputBudgetGroupConfig> groupConfigSet =
+            Stream.of(groupConfigs)
+                .map(groupConfig -> {
+                    checkNotNull(groupConfig, "Throughout budget group config cannot be null");
+                    groupConfig.validate();
+                    return groupConfig;
+                }).collect(Collectors.toSet());
+
+        // Validate there is only at most one default group defined.
+        if (groupConfigSet.stream().filter(groupConfig -> groupConfig.isUseByDefault()).count() > 1) {
+            throw new IllegalArgumentException("Only at most one group can be set as default");
+        }
+
+        this.asyncDocumentClient.enableThroughputBudgetControl(hostName, groupConfigSet);
     }
 
     private CosmosPagedFlux<CosmosDatabaseProperties> queryDatabasesInternal(SqlQuerySpec querySpec, CosmosQueryRequestOptions options){

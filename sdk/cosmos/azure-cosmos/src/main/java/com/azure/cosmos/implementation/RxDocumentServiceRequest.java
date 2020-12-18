@@ -67,6 +67,7 @@ public class RxDocumentServiceRequest implements Cloneable {
     public volatile boolean isFeed;
     public volatile AuthorizationTokenType authorizationTokenType;
     public volatile Map<String, Object> properties;
+    public String throughputGroup;
 
     public boolean isReadOnlyRequest() {
         return this.operationType == OperationType.Read
@@ -1074,4 +1075,6 @@ public class RxDocumentServiceRequest implements Cloneable {
     public void setAddressRefresh(final boolean addressRefresh) {
         isAddressRefresh = addressRefresh;
     }
+
+    public String getThroughputGroup() { return this.throughputGroup; }
 }

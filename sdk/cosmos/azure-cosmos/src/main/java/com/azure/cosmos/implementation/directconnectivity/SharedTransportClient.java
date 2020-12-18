@@ -43,7 +43,8 @@ public class SharedTransportClient extends TransportClient {
             if (sharedTransportClient == null) {
                 assert counter.get() == 0;
                 logger.info("creating a new shared RntbdTransportClient");
-                sharedTransportClient = new SharedTransportClient(protocol, configs, connectionPolicy, userAgent, addressResolver);
+                sharedTransportClient =
+                    new SharedTransportClient(protocol, configs, connectionPolicy, userAgent, addressResolver);
             } else {
                 logger.info("Reusing an instance of RntbdTransportClient");
             }
@@ -63,6 +64,7 @@ public class SharedTransportClient extends TransportClient {
         ConnectionPolicy connectionPolicy,
         UserAgentContainer userAgent,
         IAddressResolver addressResolver) {
+
         if (protocol == Protocol.TCP) {
             this.rntbdOptions =
                 new RntbdTransportClient.Options.Builder(connectionPolicy).userAgent(userAgent).build();
@@ -78,7 +80,7 @@ public class SharedTransportClient extends TransportClient {
 
     @Override
     protected Mono<StoreResponse> invokeStoreAsync(Uri physicalAddress, RxDocumentServiceRequest request) {
-        return transportClient.invokeStoreAsync(physicalAddress, request);
+        return this.transportClient.invokeResourceOperationAsync(physicalAddress, request);
     }
 
     public int getReferenceCounter() {

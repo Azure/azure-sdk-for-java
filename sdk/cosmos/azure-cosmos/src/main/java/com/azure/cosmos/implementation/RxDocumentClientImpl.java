@@ -6,61 +6,35 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.SimpleTokenCache;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.ConnectionMode;
-import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosDiagnostics;
-import com.azure.cosmos.DirectConnectionConfig;
-import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
+import com.azure.cosmos.*;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.BatchResponseParser;
 import com.azure.cosmos.implementation.batch.PartitionKeyRangeServerBatchRequest;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
 import com.azure.cosmos.implementation.batch.SinglePartitionKeyServerBatchRequest;
-import com.azure.cosmos.TransactionalBatchResponse;
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.clientTelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.cpu.CpuMemoryListener;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
-import com.azure.cosmos.implementation.directconnectivity.GatewayServiceConfigurationReader;
-import com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver;
-import com.azure.cosmos.implementation.directconnectivity.ServerStoreModel;
-import com.azure.cosmos.implementation.directconnectivity.StoreClient;
-import com.azure.cosmos.implementation.directconnectivity.StoreClientFactory;
+import com.azure.cosmos.implementation.directconnectivity.*;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.SharedGatewayHttpClient;
-import com.azure.cosmos.implementation.query.DocumentQueryExecutionContextFactory;
-import com.azure.cosmos.implementation.query.IDocumentQueryClient;
-import com.azure.cosmos.implementation.query.IDocumentQueryExecutionContext;
-import com.azure.cosmos.implementation.query.Paginator;
-import com.azure.cosmos.implementation.query.PipelinedDocumentQueryExecutionContext;
-import com.azure.cosmos.implementation.query.QueryInfo;
-import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
-import com.azure.cosmos.implementation.routing.PartitionKeyAndResourceTokenPair;
-import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
-import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
-import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
-import com.azure.cosmos.implementation.routing.Range;
-import com.azure.cosmos.models.CosmosItemIdentity;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.FeedRange;
-import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.PartitionKeyDefinition;
-import com.azure.cosmos.models.SqlParameter;
-import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.implementation.query.*;
+import com.azure.cosmos.implementation.routing.*;
+import com.azure.cosmos.implementation.throughputBudget.ThroughputBudgetControlStore;
+import com.azure.cosmos.models.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -69,14 +43,7 @@ import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -85,11 +52,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static com.azure.cosmos.BridgeInternal.documentFromObject;
-import static com.azure.cosmos.BridgeInternal.getAltLink;
-import static com.azure.cosmos.BridgeInternal.toFeedResponsePage;
-import static com.azure.cosmos.BridgeInternal.toResourceResponse;
-import static com.azure.cosmos.BridgeInternal.toStoredProcedureResponse;
+import static com.azure.cosmos.BridgeInternal.*;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 import static com.azure.cosmos.models.ModelBridgeInternal.serializeJsonToByteBuffer;
@@ -164,6 +127,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private GatewayServiceConfigurationReader gatewayConfigurationReader;
     private DiagnosticsClientConfig diagnosticsClientConfig;
+    private final AtomicBoolean throughputBudgetControlEnabled;
 
     public RxDocumentClientImpl(URI serviceEndpoint,
                                 String masterKeyOrResourceToken,
@@ -341,6 +305,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.retryPolicy = new RetryPolicy(this, this.globalEndpointManager, this.connectionPolicy);
             this.resetSessionTokenRetryPolicy = retryPolicy;
             CpuMemoryMonitor.register(this);
+            this.throughputBudgetControlEnabled = new AtomicBoolean(false);
+
         } catch (RuntimeException e) {
             logger.error("unexpected failure in initializing client.", e);
             close();
@@ -1758,6 +1724,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.Document, OperationType.Read);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this,
                 OperationType.Read, ResourceType.Document, path, requestHeaders, options);
+            request.throughputGroup = options.getThroughputGroup(); // TODO: move this into the request constructor
             if (retryPolicyInstance != null) {
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
@@ -3649,6 +3616,28 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public ItemDeserializer getItemDeserializer() {
         return this.itemDeserializer;
+    }
+
+    @Override
+    public void enableThroughputBudgetControl(String hostName, Set<ThroughputBudgetGroupConfig> groupConfigs) {
+        checkArgument(StringUtils.isNotEmpty(hostName), "Host name can not be null or empty");
+        checkNotNull(groupConfigs, "Throughput budget group configs can not be null");
+
+        if (this.throughputBudgetControlEnabled.compareAndSet(false, true)) {
+            ThroughputBudgetControlStore throughputBudgetControlStore =
+                new ThroughputBudgetControlStore(
+                    this.collectionCache,
+                    this.connectionPolicy.getConnectionMode(),
+                    groupConfigs,
+                    hostName,
+                    this.partitionKeyRangeCache);
+
+            this.storeModel.enableThroughputBudgetControl(throughputBudgetControlStore);
+            //Non-blocking
+            throughputBudgetControlStore.init().subscribeOn(Schedulers.elastic());
+        } else {
+            throw new IllegalArgumentException("Throughput budget control already enabled");
+        }
     }
 
     private static SqlQuerySpec createLogicalPartitionScanQuerySpec(

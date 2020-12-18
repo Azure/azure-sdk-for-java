@@ -5,24 +5,22 @@ package com.azure.cosmos.implementation;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.implementation.batch.ServerBatchRequest;
+import com.azure.cosmos.ThroughputBudgetGroupConfig;
 import com.azure.cosmos.TransactionalBatchResponse;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.batch.ServerBatchRequest;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.clientTelemetry.ClientTelemetry;
-import com.azure.cosmos.models.CosmosItemIdentity;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.FeedRange;
-import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.models.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Set;
+
 /**
  * Provides a client-side logical representation of the Azure Cosmos DB
  * database service. This async client is used to configure and execute requests
@@ -1479,4 +1477,12 @@ public interface AsyncDocumentClient {
     void close();
 
     ItemDeserializer getItemDeserializer();
+
+    /**
+     * Enable throughput budget control.
+     *
+     * @param hostName the host name of the client.
+     * @param groupConfigs the throughput budget group configurations.
+     */
+    void enableThroughputBudgetControl(String hostName, Set<ThroughputBudgetGroupConfig> groupConfigs);
 }
