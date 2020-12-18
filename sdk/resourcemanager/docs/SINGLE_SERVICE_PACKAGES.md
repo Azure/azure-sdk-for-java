@@ -57,6 +57,14 @@ service
 
 <br/>
 <details>
+<summary> mediaservices </summary>
+
+* [package-2020-05](https://github.com/Azure/azure-rest-api-specs/tree/master/specification/mediaservices/resource-manager#tag-package-2020-05)
+    * [1.0.0-beta.1](https://search.maven.org/artifact/com.azure.resourcemanager/azure-resourcemanager-mediaservices/1.0.0-beta.1/jar)
+</details>
+
+<br/>
+<details>
 <summary> mysql </summary>
 
 * [package-2020-01-01](https://github.com/Azure/azure-rest-api-specs/tree/master/specification/mysql/resource-manager#tag-package-2020-01-01)
@@ -77,6 +85,14 @@ service
 
 * [package-2016-06](https://github.com/Azure/azure-rest-api-specs/tree/master/specification/recoveryservices/resource-manager#tag-package-2016-06)
     * [1.0.0-beta.1](https://search.maven.org/artifact/com.azure.resourcemanager/azure-resourcemanager-recoveryservices/1.0.0-beta.1/jar)
+</details>
+
+<br/>
+<details>
+<summary> relay </summary>
+
+* [package-2017-04](https://github.com/Azure/azure-rest-api-specs/tree/master/specification/relay/resource-manager#tag-package-2017-04)
+    * [1.0.0-beta.1](https://search.maven.org/artifact/com.azure.resourcemanager/azure-resourcemanager-relay/1.0.0-beta.1/jar)
 </details>
 
 <br/>

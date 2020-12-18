@@ -20,7 +20,8 @@ const groupUrl = 'https://repo1.maven.org/maven2/com/azure/resourcemanager/';
 const artiRegEx = />(azure-resourcemanager-.+)\/</g;
 const verRegEx = /<version>(.+)<\/version>/g;
 const pkgRegEx = /Package\s+tag\s+(.+)\.\s+For/g;
-var cnt = 0;
+var startCnt = 0;
+var endCnt = 0;
 var data = {};
 
 function autocent() {
@@ -50,6 +51,7 @@ function readMetadata(artifact) {
     var versions = [];
     var match = verRegEx.exec(response);
     while (match !== null) {
+      ++startCnt;
       versions.push(match[1]);
       match = verRegEx.exec(response);
     }
@@ -63,6 +65,7 @@ function readMetadata(artifact) {
 function readPom(artifact, version) {
   sendRequest(groupUrl + artifact + '/' + version + '/' + artifact + '-' + version + '.pom', function(response) {
     var match = pkgRegEx.exec(response);
+    ++endCnt;
     if (match === null) {
       // console.log('[WARN] no package tag found in ' + artifact + '_' + version);
     } else {
@@ -76,7 +79,7 @@ function readPom(artifact, version) {
       }
       data[service][tag].push(version);
     }
-    if (cnt == 0) {
+    if (startCnt == endCnt) {
       // update file for listing all latest releases of the packages
       var content = '# Single-Service Packages Latest Releases\n\n' +
         'The single-service packages provide easy-to-use APIs for each Azure service following the design principals of [Azure Management Libraries for Java](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/resourcemanager). If you have specific requirement on certain service API version, you may find appropriate package below. If not, you could always choose the latest release.\n\n' +
@@ -141,7 +144,6 @@ function readPom(artifact, version) {
 
 // method to send GET request
 function sendRequest(url, callback) {
-  ++cnt;
   request({
     url: url,
     method: 'GET',
@@ -153,7 +155,6 @@ function sendRequest(url, callback) {
       console.log('[ERROR] Request URL: ' + url);
       process.exit(1);
     }
-    --cnt;
     callback(response.body);
   });
 }
