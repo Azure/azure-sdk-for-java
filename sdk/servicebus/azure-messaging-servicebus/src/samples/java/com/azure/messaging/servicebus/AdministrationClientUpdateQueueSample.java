@@ -38,7 +38,7 @@ public class AdministrationClientUpdateQueueSample {
         QueueProperties properties = client.getQueue("<<queue-name>>");
 
         System.out.printf("Before queue properties LockDuration: [%d seconds], Max Delivery count: [%d].%n",
-            properties.getLockDuration().toSeconds(), properties.getMaxDeliveryCount());
+            properties.getLockDuration().getSeconds(), properties.getMaxDeliveryCount());
 
         // You can update 'QueueProperties' object with properties you want to change.
         properties.setMaxDeliveryCount(10).setLockDuration(Duration.ofSeconds(60));
@@ -46,7 +46,7 @@ public class AdministrationClientUpdateQueueSample {
         QueueProperties updatedProperties = client.updateQueue(properties);
 
         System.out.printf("After queue properties LockDuration: [%d seconds], Max Delivery count: [%d].%n",
-            updatedProperties.getLockDuration().toSeconds(), updatedProperties.getMaxDeliveryCount());
+            updatedProperties.getLockDuration().getSeconds(), updatedProperties.getMaxDeliveryCount());
     }
 
 }
