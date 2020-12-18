@@ -44,14 +44,10 @@ public class SmsLiveTestBase extends TestBase {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
-        if (getTestMode() == TestMode.LIVE) {
-            builder.addPolicy(new CommunicationLoggerPolicy(testName));
-        }
-
         return builder;
     }
 
-    protected SmsClientBuilder getSmsClientBuilderWithConnectionString(HttpClient httpClient, String testName) {
+    protected SmsClientBuilder getSmsClientBuilderWithConnectionString(HttpClient httpClient) {
         SmsClientBuilder builder = new SmsClientBuilder();
 
         builder
@@ -60,10 +56,6 @@ public class SmsLiveTestBase extends TestBase {
 
         if (getTestMode() == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
-        }
-
-        if (getTestMode() == TestMode.LIVE) {
-            builder.addPolicy(new CommunicationLoggerPolicy(testName));
         }
 
         return builder;
@@ -95,5 +87,12 @@ public class SmsLiveTestBase extends TestBase {
             logger.info("Environment variable '{}' has not been set yet. Using 'Playback' mode.", "AZURE_TEST_MODE");
             return TestMode.PLAYBACK;
         }
-    }    
+    }
+    
+    protected SmsClientBuilder addLoggingPolicy(SmsClientBuilder builder, String testName) {
+        if (getTestMode() == TestMode.LIVE) {
+            builder.addPolicy(new CommunicationLoggerPolicy(testName));
+        }
+        return builder;
+    }
 }

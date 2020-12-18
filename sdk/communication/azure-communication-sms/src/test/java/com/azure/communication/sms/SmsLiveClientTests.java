@@ -81,6 +81,7 @@ public class SmsLiveClientTests extends SmsLiveTestBase {
         try {
             SmsClientBuilder builder = getSmsClientBuilder(httpClient, "sendSmsRequestBadSignature");
             builder.accessKey(DEFAULT_ACCESS_KEY);
+            builder = addLoggingPolicy(builder, "sendSmsRequestBadSignature");
             builder.buildClient().sendMessage(from, to, body);
         } catch (HttpResponseException ex) {
             assertEquals(401, ex.getResponse().getStatusCode());
@@ -125,8 +126,7 @@ public class SmsLiveClientTests extends SmsLiveTestBase {
     }
 
     private SmsClient getTestSmsClient(HttpClient httpClient, String testName) {
-  
-        return getSmsClientBuilderWithConnectionString(httpClient, testName)
-            .buildClient();
-    }    
+        SmsClientBuilder builder = getSmsClientBuilderWithConnectionString(httpClient);
+        return addLoggingPolicy(builder, testName).buildClient();
+    }  
 }

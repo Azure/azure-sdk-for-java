@@ -34,8 +34,7 @@ public class SmsLiveAsyncClientTests extends SmsLiveTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createAsyncClientUsingConnectionString(HttpClient httpClient) {
-        SmsAsyncClient smsClient = getSmsClientBuilderWithConnectionString(httpClient, "createAsyncClientUsingConnectionString")
-            .buildAsyncClient();
+        SmsAsyncClient smsClient = getTestSmsClient(httpClient, "createAsyncClientUsingConnectionString");
         assertNotNull(smsClient);
         // Smoke test sms client by sending message
         StepVerifier.create(smsClient.sendMessage(from, to, body, null))
@@ -77,7 +76,7 @@ public class SmsLiveAsyncClientTests extends SmsLiveTestBase {
     }    
 
     private SmsAsyncClient getTestSmsClient(HttpClient httpClient, String testName) {
-        return getSmsClientBuilderWithConnectionString(httpClient, testName)
-            .buildAsyncClient();
+        SmsClientBuilder builder = getSmsClientBuilderWithConnectionString(httpClient);
+        return addLoggingPolicy(builder, testName).buildAsyncClient();
     }  
 }

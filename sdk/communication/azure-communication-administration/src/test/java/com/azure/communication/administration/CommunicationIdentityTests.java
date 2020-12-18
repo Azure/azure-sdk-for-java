@@ -30,7 +30,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createIdentityClientUsingManagedIdentity(HttpClient httpClient) {
         // Arrange
-        client = getCommunicationIdentityClientBuilderUsingManagedIdentity(httpClient, "createIdentityClientUsingManagedIdentity").buildClient();
+        client = setupClientUsingManagedIdentity(httpClient, "createIdentityClientUsingManagedIdentity");
         assertNotNull(client);
 
         // Action & Assert
@@ -43,7 +43,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createIdentityClientUsingConnectionString(HttpClient httpClient) {
         // Arrange
-        client = getCommunicationIdentityClientUsingConnectionString(httpClient, "createIdentityClientUsingConnectionString").buildClient();
+        client = setupClientUsingConnectionString(httpClient, "createIdentityClientUsingConnectionString");
         assertNotNull(client);
 
         // Action & Assert
@@ -57,7 +57,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createUser(HttpClient httpClient) {
         // Arrange
-        client = getCommunicationIdentityClient(httpClient, "createUser").buildClient();
+        client = setupClient(httpClient, "createUser");
 
         // Action & Assert
         CommunicationUserIdentifier communicationUser = client.createUser();
@@ -69,7 +69,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createUserWithResponse(HttpClient httpClient) {
         // Arrange
-        client = getCommunicationIdentityClient(httpClient, "createUserWithResponse").buildClient();
+        client = setupClient(httpClient, "createUserWithResponse");
 
         // Action & Assert
         Response<CommunicationUserIdentifier> response = client.createUserWithResponse(Context.NONE);
@@ -82,7 +82,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void deleteUser(HttpClient httpClient) {
         // Arrange
-        client = getCommunicationIdentityClient(httpClient, "deleteUser").buildClient();
+        client = setupClient(httpClient, "deleteUser");
 
         // Action & Assert
         CommunicationUserIdentifier communicationUser = client.createUser();
@@ -94,7 +94,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void deleteUserWithResponse(HttpClient httpClient) {
         // Arrange
-        client = getCommunicationIdentityClient(httpClient, "deleteUserWithResponse").buildClient();
+        client = setupClient(httpClient, "deleteUserWithResponse");
 
         // Action & Assert
         CommunicationUserIdentifier communicationUser = client.createUser();
@@ -106,7 +106,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void revokeToken(HttpClient httpClient) {
         // Arrange
-        client = getCommunicationIdentityClient(httpClient, "revokeToken").buildClient();
+        client = setupClient(httpClient, "revokeToken");
 
         // Action & Assert
         CommunicationUserIdentifier communicationUser = client.createUser();
@@ -120,7 +120,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void revokeTokenWithResponse(HttpClient httpClient) {
         // Arrange
-        client = getCommunicationIdentityClient(httpClient, "revokeTokenWithResponse").buildClient();
+        client = setupClient(httpClient, "revokeTokenWithResponse");
 
         // Action & Assert
         CommunicationUserIdentifier communicationUser = client.createUser();
@@ -135,7 +135,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void issueToken(HttpClient httpClient) {
         // Arrange
-        client = getCommunicationIdentityClient(httpClient, "issueToken").buildClient();
+        client = setupClient(httpClient, "issueToken");
 
         // Action & Assert
         CommunicationUserIdentifier communicationUser = client.createUser();
@@ -153,7 +153,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void issueTokenWithResponse(HttpClient httpClient) {
         // Arrange
-        client = getCommunicationIdentityClient(httpClient, "issueTokenWithResponse").buildClient();
+        client = setupClient(httpClient, "issueTokenWithResponse");
 
         // Action & Assert
         CommunicationUserIdentifier communicationUser = client.createUser();
@@ -168,4 +168,123 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         assertFalse(issuedToken.getExpiresOn().toString().isEmpty());
         assertNotNull(issuedToken.getUser());
     }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void createUserWithResponseUsingManagedIdentity(HttpClient httpClient) {
+        // Arrange
+        client = setupClientUsingManagedIdentity(httpClient, "createUserWithResponseUsingManagedIdentity");
+
+        // Action & Assert
+        Response<CommunicationUserIdentifier> response = client.createUserWithResponse(Context.NONE);
+        assertNotNull(response.getValue().getId());
+        assertFalse(response.getValue().getId().isEmpty());
+        assertEquals(200, response.getStatusCode(), "Expect status code to be 200");
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void deleteUserUsingManagedIdentity(HttpClient httpClient) {
+        // Arrange
+        client = setupClientUsingManagedIdentity(httpClient, "deleteUserUsingManagedIdentity");
+
+        // Action & Assert
+        CommunicationUserIdentifier communicationUser = client.createUser();
+        assertNotNull(communicationUser.getId());
+        client.deleteUser(communicationUser);    
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void deleteUserWithResponseUsingManagedIdentity(HttpClient httpClient) {
+        // Arrange
+        client = setupClientUsingManagedIdentity(httpClient, "deleteUserWithResponseUsingManagedIdentity");
+
+        // Action & Assert
+        CommunicationUserIdentifier communicationUser = client.createUser();
+        Response<Void> response = client.deleteUserWithResponse(communicationUser, Context.NONE);
+        assertEquals(204, response.getStatusCode(), "Expect status code to be 204");
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void revokeTokenUsingManagedIdentity(HttpClient httpClient) {
+        // Arrange
+        client = setupClientUsingManagedIdentity(httpClient, "revokeTokenUsingManagedIdentity");
+
+        // Action & Assert
+        CommunicationUserIdentifier communicationUser = client.createUser();
+        assertNotNull(communicationUser.getId());
+        List<String> scopes = new ArrayList<>(Arrays.asList("chat"));
+        CommunicationUserToken token = client.issueToken(communicationUser, scopes);
+        client.revokeTokens(token.getUser(), null);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void revokeTokenWithResponseUsingManagedIdentity(HttpClient httpClient) {
+        // Arrange
+        client = setupClientUsingManagedIdentity(httpClient, "revokeTokenWithResponseUsingManagedIdentity");
+
+        // Action & Assert
+        CommunicationUserIdentifier communicationUser = client.createUser();
+        assertNotNull(communicationUser.getId());
+        List<String> scopes = new ArrayList<>(Arrays.asList("chat"));
+        CommunicationUserToken token = client.issueToken(communicationUser, scopes);
+        Response<Void> response = client.revokeTokensWithResponse(token.getUser(), null, Context.NONE);
+        assertEquals(204, response.getStatusCode(), "Expect status code to be 204");    
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void issueTokenUsingManagedIdentity(HttpClient httpClient) {
+        // Arrange
+        client = setupClientUsingManagedIdentity(httpClient, "issueTokenUsingManagedIdentity");
+
+        // Action & Assert
+        CommunicationUserIdentifier communicationUser = client.createUser();
+        assertNotNull(communicationUser.getId());
+        List<String> scopes = new ArrayList<>(Arrays.asList("chat"));
+        CommunicationUserToken issuedToken = client.issueToken(communicationUser, scopes);
+        assertNotNull(issuedToken.getToken());
+        assertFalse(issuedToken.getToken().isEmpty());
+        assertNotNull(issuedToken.getExpiresOn());
+        assertFalse(issuedToken.getExpiresOn().toString().isEmpty());
+        assertNotNull(issuedToken.getUser());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void issueTokenWithResponseUsingManagedIdentity(HttpClient httpClient) {
+        // Arrange
+        client = setupClientUsingManagedIdentity(httpClient, "issueTokenWithResponseUsingManagedIdentity");
+
+        // Action & Assert
+        CommunicationUserIdentifier communicationUser = client.createUser();
+        assertNotNull(communicationUser.getId());
+        List<String> scopes = new ArrayList<>(Arrays.asList("chat"));
+        Response<CommunicationUserToken> issuedTokenResponse = client.issueTokenWithResponse(communicationUser, scopes, Context.NONE);
+        CommunicationUserToken issuedToken = issuedTokenResponse.getValue();
+        assertEquals(200, issuedTokenResponse.getStatusCode(),  "Expect status code to be 200");
+        assertNotNull(issuedToken.getToken());
+        assertFalse(issuedToken.getToken().isEmpty());
+        assertNotNull(issuedToken.getExpiresOn());
+        assertFalse(issuedToken.getExpiresOn().toString().isEmpty());
+        assertNotNull(issuedToken.getUser());
+    }
+
+    private CommunicationIdentityClient setupClientUsingManagedIdentity(HttpClient httpClient, String testName) {
+        CommunicationIdentityClientBuilder builder = getCommunicationIdentityClientBuilderUsingManagedIdentity(httpClient);
+        return addLoggingPolicy(builder, "createAsyncIdentityClientUsingManagedIdentity").buildClient();
+    }
+
+    private CommunicationIdentityClient setupClientUsingConnectionString(HttpClient httpClient, String testName) {
+        CommunicationIdentityClientBuilder builder = getCommunicationIdentityClientUsingConnectionString(httpClient);
+        return addLoggingPolicy(builder, "createAsyncIdentityClientUsingManagedIdentity").buildClient();
+    }
+
+    private CommunicationIdentityClient setupClient(HttpClient httpClient, String testName) {
+        CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
+        return addLoggingPolicy(builder, "createAsyncIdentityClientUsingManagedIdentity").buildClient();
+    }    
 }
