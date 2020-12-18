@@ -9,6 +9,8 @@ trigger:
   paths:
     include:
       - sdk/loganalytics/
+    exclude:
+      - sdk/loganalytics/mgmt-v2015_03_20
 
 pr:
   branches:
@@ -20,12 +22,15 @@ pr:
   paths:
     include:
       - sdk/loganalytics/
+    exclude:
+      - sdk/loganalytics/mgmt-v2015_03_20
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
+    SDKType: data
     ServiceDirectory: loganalytics
     Artifacts:
-      - name: azure-resourcemanager-loganalytics
-        groupId: com.azure.resourcemanager
-        safeName: azureresourcemanagerloganalytics
+      - name: azure-loganalytics
+        groupId: com.microsoft.azure
+        safeName: azureloganalytics
