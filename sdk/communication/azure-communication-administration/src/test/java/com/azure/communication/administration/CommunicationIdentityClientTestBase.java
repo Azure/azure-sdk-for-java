@@ -3,6 +3,7 @@
 
 package com.azure.communication.administration;
 
+import com.azure.communication.common.CommunicationLoggerPolicy;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
@@ -41,6 +42,10 @@ public class CommunicationIdentityClientTestBase extends TestBase {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
+        if (getTestMode() == TestMode.LIVE) {
+            builder.addPolicy(new CommunicationLoggerPolicy());
+        }
+
         return builder;
     }
 
@@ -60,6 +65,10 @@ public class CommunicationIdentityClientTestBase extends TestBase {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
+        if (getTestMode() == TestMode.LIVE) {
+            builder.addPolicy(new CommunicationLoggerPolicy());
+        }
+
         return builder;
     }
 
@@ -71,6 +80,10 @@ public class CommunicationIdentityClientTestBase extends TestBase {
 
         if (getTestMode() == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+
+        if (getTestMode() == TestMode.LIVE) {
+            builder.addPolicy(new CommunicationLoggerPolicy());
         }
 
         return builder;
