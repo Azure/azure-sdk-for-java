@@ -8,14 +8,12 @@ import com.azure.messaging.servicebus.administration.ServiceBusAdministrationCli
 import com.azure.messaging.servicebus.administration.models.EntityStatus;
 import com.azure.messaging.servicebus.administration.models.QueueProperties;
 
-import java.util.concurrent.TimeUnit;
-
 /**
- * Sample example showing how disable queue in Service Bus Queue.
+ * Sample example showing how to update queue properties in Service Bus Queue.
  */
-public class AdministrationClientDisableQueueSample {
+public class AdministrationClientUpdateQueueSample {
     /**
-     * Main method to how disable queue in Service Bus Queue.
+     * Main method to how update queue properties in Service Bus Queue.
      *
      * @param args Unused arguments to the program.
      * @throws InterruptedException If the program is unable to sleep while waiting for the receive to complete.
@@ -36,18 +34,19 @@ public class AdministrationClientDisableQueueSample {
 
         // "<<queue-name>>" will be the name of the Service Bus queue instance you created
         // inside the Service Bus namespace.
-        QueueProperties queueProperties = administrationClient.getQueue("<< queue-name >>");
+        QueueProperties queueProperties = administrationClient.getQueue("<<queue-name>>");
 
-        System.out.println(" Queue status: " + queueProperties.getStatus());
+        System.out.printf("Before update queue properties status :[%s], Max Delivery count :[%d]. %n" ,
+            queueProperties.getStatus(), queueProperties.getMaxDeliveryCount());
 
-        QueueProperties updatedQueueProperties = administrationClient.updateQueue(queueProperties.setStatus(EntityStatus.DISABLED));
+        // You can update 'QueueProperties' object with properties you want to change.
+        queueProperties.setStatus(EntityStatus.DISABLED);
+        queueProperties.setMaxDeliveryCount(9);
 
-        System.out.println(" Queue status after update: " + updatedQueueProperties.getStatus());
+        QueueProperties updatedQueueProperties = administrationClient.updateQueue(queueProperties);
 
-        // Subscribe is not a blocking call so we sleep here so the program does not end while finishing
-        // the peek operation.
-        TimeUnit.SECONDS.sleep(10);
-
+        System.out.printf("After update queue properties status :[%s], Max Delivery count :[%d]. %n" ,
+            updatedQueueProperties.getStatus(), updatedQueueProperties.getMaxDeliveryCount());
     }
 
 }
