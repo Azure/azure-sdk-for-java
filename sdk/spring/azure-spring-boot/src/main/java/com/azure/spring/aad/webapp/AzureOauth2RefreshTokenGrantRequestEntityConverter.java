@@ -19,14 +19,21 @@ public class AzureOauth2RefreshTokenGrantRequestEntityConverter extends OAuth2Re
     @SuppressWarnings("unchecked")
     public RequestEntity<?> convert(OAuth2RefreshTokenGrantRequest refreshTokenGrantRequest) {
         RequestEntity<?> result = super.convert(refreshTokenGrantRequest);
-        Optional.ofNullable(result)
-            .map(HttpEntity::getBody)
-            .map(b -> (MultiValueMap<String, String>) b)
-            .ifPresent(body -> body.add("scope", scopeValue(refreshTokenGrantRequest)));
+        if (!isDefaultClient(refreshTokenGrantRequest)) {
+            Optional.ofNullable(result)
+                .map(HttpEntity::getBody)
+                .map(b -> (MultiValueMap<String, String>) b)
+                .ifPresent(body -> body.add("scope", scopeValue(refreshTokenGrantRequest)));
+        }
         return result;
     }
 
     private String scopeValue(OAuth2RefreshTokenGrantRequest refreshTokenGrantRequest) {
         return String.join(" ", refreshTokenGrantRequest.getClientRegistration().getScopes());
+    }
+
+    private boolean isDefaultClient(OAuth2RefreshTokenGrantRequest request){
+        return AzureActiveDirectoryConfiguration.getAzureClientRegistrationId().equals(
+            request.getClientRegistration().getClientName());
     }
 }

@@ -229,4 +229,8 @@ public class AzureActiveDirectoryConfiguration {
         }
     }
 
+    public static String getAzureClientRegistrationId(){
+        return AZURE_CLIENT_REGISTRATION_ID;
+    }
+
 }
