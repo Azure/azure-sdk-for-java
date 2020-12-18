@@ -3,7 +3,6 @@
 
 package com.azure.spring.aad.webapi;
 
-import com.azure.spring.aad.webapp.AzureClientRegistrationRepository;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
 import com.microsoft.aad.msal4j.IClientSecret;
@@ -37,10 +36,12 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
 
     private static final String OBO_AUTHORIZEDCLIENT_PREFIX = "obo_authorizedclient_";
 
-    private final AzureClientRegistrationRepository azureClientRegistrationRepository;
+    private final AADWebApiClientRegistrationRepository aadWebApiClientRegistrationRepository;
 
 
-    public AADOAuth2OboAuthorizedClientRepository(AzureClientRegistrationRepository azureClientRegistrationRepository) {
+    public AADOAuth2OboAuthorizedClientRepository(
+      AADWebApiClientRegistrationRepository azureClientRegistrationRepository) {
+      
         this.azureClientRegistrationRepository = azureClientRegistrationRepository;
     }
 
@@ -62,7 +63,7 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
             String accessToken = ((AbstractOAuth2TokenAuthenticationToken<?>) authentication).getToken()
                                                                                              .getTokenValue();
             ClientRegistration clientRegistration =
-                azureClientRegistrationRepository.findByRegistrationId(registrationId);
+                aadWebApiClientRegistrationRepository.findByRegistrationId(registrationId);
 
             if (clientRegistration == null) {
                 LOGGER.warn("Not found the ClientRegistration, registrationId={}", registrationId);

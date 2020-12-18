@@ -4,7 +4,6 @@
 package com.azure.spring.autoconfigure.aad;
 
 import com.azure.spring.aad.webapp.AuthorizationServerEndpoints;
-import com.azure.spring.aad.webapp.AzureActiveDirectoryConfiguration;
 import com.azure.spring.telemetry.TelemetrySender;
 import com.nimbusds.jose.jwk.source.DefaultJWKSetCache;
 import com.nimbusds.jose.jwk.source.JWKSetCache;
@@ -42,7 +41,6 @@ import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName
  */
 @Configuration
 @ConditionalOnWebApplication
-@ConditionalOnMissingBean(AzureActiveDirectoryConfiguration.class)
 @ConditionalOnResource(resources = "classpath:aad.enable.config")
 @ConditionalOnMissingClass({ "org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken" })
 @ConditionalOnProperty(prefix = AADAuthenticationFilterAutoConfiguration.PROPERTY_PREFIX, value = { "client-id" })
