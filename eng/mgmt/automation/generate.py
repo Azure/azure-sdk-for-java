@@ -71,7 +71,7 @@ def generate(
 
     if compile:
         if os.system(
-                'mvn clean verify package -q -f {0}/pom.xml -pl {1}:{2} -am'.
+                'mvn clean verify package -f {0}/pom.xml -pl {1}:{2} -am'.
                 format(sdk_root, GROUP_ID, module)) != 0:
             logging.error('[GENERATE] Maven build fail')
             return False

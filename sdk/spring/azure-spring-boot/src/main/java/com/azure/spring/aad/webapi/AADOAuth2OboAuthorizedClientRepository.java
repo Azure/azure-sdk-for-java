@@ -3,7 +3,6 @@
 
 package com.azure.spring.aad.webapi;
 
-import com.azure.spring.aad.webapp.AzureClientRegistrationRepository;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
 import com.microsoft.aad.msal4j.IClientSecret;
@@ -25,9 +24,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.net.MalformedURLException;
 import java.time.Instant;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 /**
  * <p>
@@ -40,17 +36,11 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
 
     private static final String OBO_AUTHORIZEDCLIENT_PREFIX = "obo_authorizedclient_";
 
-    private final AzureClientRegistrationRepository azureClientRegistrationRepository;
+    private final AADWebApiClientRegistrationRepository aadWebApiClientRegistrationRepository;
 
-    private final Map<String, ConfidentialClientApplication> confidentialClientApplicationMap = new HashMap<>();
-
-    public AADOAuth2OboAuthorizedClientRepository(AzureClientRegistrationRepository azureClientRegistrationRepository) {
-        this.azureClientRegistrationRepository = azureClientRegistrationRepository;
-        Iterator<ClientRegistration> iterator = azureClientRegistrationRepository.iterator();
-        while (iterator.hasNext()) {
-            ClientRegistration next = iterator.next();
-            this.confidentialClientApplicationMap.put(next.getRegistrationId(), createApp(next));
-        }
+    public AADOAuth2OboAuthorizedClientRepository(
+        AADWebApiClientRegistrationRepository azureClientRegistrationRepository) {
+        this.aadWebApiClientRegistrationRepository = azureClientRegistrationRepository;
     }
 
     @Override
@@ -68,24 +58,21 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
         }
 
         try {
-            String accessToken =
-                ((AbstractOAuth2TokenAuthenticationToken<?>) authentication).getToken().getTokenValue();
+            String accessToken = ((AbstractOAuth2TokenAuthenticationToken<?>) authentication).getToken()
+                                                                                             .getTokenValue();
             ClientRegistration clientRegistration =
-                azureClientRegistrationRepository.findByRegistrationId(registrationId);
+                aadWebApiClientRegistrationRepository.findByRegistrationId(registrationId);
 
             if (clientRegistration == null) {
-                LOGGER.warn("Not found the ClientRegistration.");
+                LOGGER.warn("Not found the ClientRegistration, registrationId={}", registrationId);
                 return null;
             }
 
             OnBehalfOfParameters parameters = OnBehalfOfParameters
                 .builder(clientRegistration.getScopes(), new UserAssertion(accessToken))
                 .build();
-            ConfidentialClientApplication clientApplication =
-                getClientApplication(clientRegistration.getRegistrationId());
+            ConfidentialClientApplication clientApplication = createApp(clientRegistration);
             if (null == clientApplication) {
-                LOGGER.warn("Not found the " + clientRegistration.getRegistrationId()
-                    + " ConfidentialClientApplication.");
                 return null;
             }
 
@@ -98,7 +85,8 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
                 Instant.ofEpochMilli(iat.getTime()),
                 Instant.ofEpochMilli(exp.getTime()));
             OAuth2AuthorizedClient oAuth2AuthorizedClient = new OAuth2AuthorizedClient(clientRegistration,
-                authentication.getName(), oAuth2AccessToken);
+                authentication.getName(),
+                oAuth2AccessToken);
             request.setAttribute(oboAuthorizedClientAttributeName, (T) oAuth2AuthorizedClient);
             return (T) oAuth2AuthorizedClient;
         } catch (Throwable throwable) {
@@ -117,11 +105,7 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
                                        HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
     }
 
-    ConfidentialClientApplication getClientApplication(String registrationId) {
-        return confidentialClientApplicationMap.get(registrationId);
-    }
-
-    private ConfidentialClientApplication createApp(ClientRegistration clientRegistration) {
+    ConfidentialClientApplication createApp(ClientRegistration clientRegistration) {
         String authorizationUri = clientRegistration.getProviderDetails().getAuthorizationUri();
         String authority = interceptAuthorizationUri(authorizationUri);
         IClientSecret clientCredential = ClientCredentialFactory
