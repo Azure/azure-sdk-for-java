@@ -36,11 +36,11 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
 
     private static final String OBO_AUTHORIZEDCLIENT_PREFIX = "obo_authorizedclient_";
 
-    private final OboClientRegistrationRepository oboClientRegistrationRepository;
+    private final AADOboClientRegistrationRepository oboClientRegistrationRepository;
 
     public AADOAuth2OboAuthorizedClientRepository(
-        AADWebApiClientRegistrationRepository azureClientRegistrationRepository) {
-        this.aadWebApiClientRegistrationRepository = azureClientRegistrationRepository;
+        AADOboClientRegistrationRepository aadOboClientRegistrationRepository) {
+        this.oboClientRegistrationRepository = aadOboClientRegistrationRepository;
     }
 
     @Override

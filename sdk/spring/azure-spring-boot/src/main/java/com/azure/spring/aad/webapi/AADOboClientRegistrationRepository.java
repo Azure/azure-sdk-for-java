@@ -3,7 +3,6 @@
 
 package com.azure.spring.aad.webapi;
 
-import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
@@ -16,20 +15,12 @@ import java.util.Map;
 /**
  * ClientRegistration Repository for obo flow
  */
-public class OboClientRegistrationRepository implements ClientRegistrationRepository, Iterable<ClientRegistration> {
-
-    private final List<ClientRegistration> resourceClients;
+public class AADOboClientRegistrationRepository implements ClientRegistrationRepository, Iterable<ClientRegistration> {
 
     private final Map<String, ClientRegistration> allClients;
 
-    private final AADAuthenticationProperties properties;
-
-    public OboClientRegistrationRepository(List<ClientRegistration> resourceClients, AADAuthenticationProperties
-        properties) {
-        this.resourceClients = resourceClients;
-        this.properties = properties;
+    public AADOboClientRegistrationRepository(List<ClientRegistration> resourceClients) {
         allClients = new HashMap<>();
-
         for (ClientRegistration c : resourceClients) {
             allClients.put(c.getRegistrationId(), c);
         }

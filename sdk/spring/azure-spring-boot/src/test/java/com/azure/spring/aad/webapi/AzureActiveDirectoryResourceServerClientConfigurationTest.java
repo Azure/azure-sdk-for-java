@@ -62,12 +62,12 @@ public class AzureActiveDirectoryResourceServerClientConfigurationTest {
         this.contextRunner
             .withUserConfiguration(AzureActiveDirectoryResourceServerClientConfiguration.class)
             .run(context -> {
-                OboClientRegistrationRepository graphRepo = context.getBean(OboClientRegistrationRepository
+                AADOboClientRegistrationRepository graphRepo = context.getBean(AADOboClientRegistrationRepository
                     .class);
                 ClientRegistration graph = graphRepo.findByRegistrationId("graph");
 
                 assertThat(graphRepo).isNotNull();
-                assertThat(graphRepo).isExactlyInstanceOf(OboClientRegistrationRepository.class);
+                assertThat(graphRepo).isExactlyInstanceOf(AADOboClientRegistrationRepository.class);
 
                 assertThat(graph).isNull();
 
@@ -80,13 +80,13 @@ public class AzureActiveDirectoryResourceServerClientConfigurationTest {
             .withUserConfiguration(AzureActiveDirectoryResourceServerClientConfiguration.class)
             .withPropertyValues(AAD_PROPERTY_PREFIX + "webApiClients.graph.scopes=User.read")
             .run(context -> {
-                OboClientRegistrationRepository oboRepo = context.getBean(OboClientRegistrationRepository
+                AADOboClientRegistrationRepository oboRepo = context.getBean(AADOboClientRegistrationRepository
                     .class);
 
                 ClientRegistration graph = oboRepo.findByRegistrationId("graph");
                 Set<String> graphScopes = graph.getScopes();
 
-                assertThat(oboRepo).isExactlyInstanceOf(OboClientRegistrationRepository.class);
+                assertThat(oboRepo).isExactlyInstanceOf(AADOboClientRegistrationRepository.class);
                 assertThat(graph).isNotNull();
                 assertThat(graphScopes).hasSize(1);
 

@@ -12,6 +12,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
@@ -35,7 +37,7 @@ public class AADOAuth2OboAuthorizedClientRepositoryTest {
 
     private static final String AAD_PROPERTY_PREFIX = "azure.activedirectory.";
 
-    private OboClientRegistrationRepository clientRegistrationsRepo;
+    private AADOboClientRegistrationRepository clientRegistrationsRepo;
     private OAuth2AuthorizedClient client;
     private IAuthenticationResult authenticationResult;
     private AADOAuth2OboAuthorizedClientRepository authorizedRepo;
@@ -57,7 +59,7 @@ public class AADOAuth2OboAuthorizedClientRepositoryTest {
         context.register(AzureActiveDirectoryResourceServerClientConfiguration.class);
         context.refresh();
 
-        clientRegistrationsRepo = context.getBean(OboClientRegistrationRepository.class);
+        clientRegistrationsRepo = context.getBean(AADOboClientRegistrationRepository.class);
     }
 
     @SuppressWarnings("unchecked")
@@ -73,7 +75,7 @@ public class AADOAuth2OboAuthorizedClientRepositoryTest {
         when(confidentialClientApplication.acquireToken(any(OnBehalfOfParameters.class)))
             .thenReturn(acquireTokenFuture);
 
-        AADWebApiClientRegistrationRepository clientRegistrationsRepo = mock(AADWebApiClientRegistrationRepository.class);
+        AADOboClientRegistrationRepository clientRegistrationsRepo = mock(AADOboClientRegistrationRepository.class);
 
         when(clientRegistrationsRepo.findByRegistrationId(any())).thenReturn(ClientRegistration
             .withRegistrationId("fake-graph")

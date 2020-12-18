@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Authorization Properties for an Web api.
  */
-public class WebApiAuthorizationProperties {
+public class AADOboAuthorizationProperties {
 
     private List<String> scopes;
 

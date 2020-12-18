@@ -3,7 +3,7 @@
 
 package com.azure.spring.autoconfigure.aad;
 
-import com.azure.spring.aad.webapi.WebApiAuthorizationProperties;
+import com.azure.spring.aad.webapi.AADOboAuthorizationProperties;
 import com.azure.spring.aad.webapp.AuthorizationProperties;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import java.util.ArrayList;
@@ -105,7 +105,7 @@ public class AADAuthenticationProperties {
 
     private Map<String, AuthorizationProperties> authorization = new HashMap<>();
 
-    private Map<String, WebApiAuthorizationProperties> webApiClients  = new HashMap<>();
+    private Map<String, AADOboAuthorizationProperties> webApiClients  = new HashMap<>();
 
     @DeprecatedConfigurationProperty(
         reason = "Configuration moved to UserGroup class to keep UserGroup properties together",
@@ -318,11 +318,11 @@ public class AADAuthenticationProperties {
                        .contains(group);
     }
 
-    public Map<String, WebApiAuthorizationProperties> getWebApiClients() {
+    public Map<String, AADOboAuthorizationProperties> getWebApiClients() {
         return webApiClients;
     }
 
-    public void setWebApiClients(Map<String, WebApiAuthorizationProperties> webApiClients) {
+    public void setWebApiClients(Map<String, AADOboAuthorizationProperties> webApiClients) {
         this.webApiClients = webApiClients;
     }
 }
