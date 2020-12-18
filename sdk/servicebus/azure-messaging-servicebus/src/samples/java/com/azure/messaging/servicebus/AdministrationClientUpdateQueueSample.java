@@ -8,6 +8,8 @@ import com.azure.messaging.servicebus.administration.ServiceBusAdministrationCli
 import com.azure.messaging.servicebus.administration.models.EntityStatus;
 import com.azure.messaging.servicebus.administration.models.QueueProperties;
 
+import java.time.Duration;
+
 /**
  * Sample example showing how to update queue properties in Service Bus Queue.
  */
@@ -18,7 +20,7 @@ public class AdministrationClientUpdateQueueSample {
      * @param args Unused arguments to the program.
      * @throws InterruptedException If the program is unable to sleep while waiting for the receive to complete.
      */
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         // The connection string value can be obtained by:
         // 1. Going to your Service Bus namespace in Azure Portal.
         // 2. Go to "Shared access policies"
@@ -36,16 +38,16 @@ public class AdministrationClientUpdateQueueSample {
         // inside the Service Bus namespace.
         QueueProperties properties = client.getQueue("<<queue-name>>");
 
-        System.out.printf("Before queue properties status: [%s], Max Delivery count: [%d].%n",
-            properties.getStatus(), properties.getMaxDeliveryCount());
+        System.out.printf("Before queue properties LockDuration: [%d seconds], Max Delivery count: [%d].%n",
+            properties.getLockDuration().toSeconds(), properties.getMaxDeliveryCount());
 
         // You can update 'QueueProperties' object with properties you want to change.
-        properties.setStatus(EntityStatus.DISABLED).setMaxDeliveryCount(9);
+        properties.setMaxDeliveryCount(10).setLockDuration(Duration.ofSeconds(60));
 
         QueueProperties updatedProperties = client.updateQueue(properties);
 
-        System.out.printf("After queue properties status: [%s], Max Delivery count: [%d].%n",
-            updatedProperties.getStatus(), updatedProperties.getMaxDeliveryCount());
+        System.out.printf("After queue properties LockDuration: [%d seconds], Max Delivery count: [%d].%n",
+            updatedProperties.getLockDuration().toSeconds(), updatedProperties.getMaxDeliveryCount());
     }
 
 }
