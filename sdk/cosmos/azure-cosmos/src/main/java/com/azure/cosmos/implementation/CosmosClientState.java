@@ -5,7 +5,6 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosBridgeInternal;
-import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 
 import java.io.ByteArrayInputStream;
@@ -21,7 +20,6 @@ public class CosmosClientState implements Serializable {
     public byte[] collectionInfoByIdCache;
 
     public CosmosClientState() {
-        System.out.println("initialized Cosmos Client State");
     }
 
     public void serialize(CosmosAsyncClient client) {

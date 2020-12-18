@@ -34,6 +34,8 @@ case class CosmosPartitionReader(config: Map[String, String],
     .endpoint(endpointConfig.endpoint)
     .key(endpointConfig.key)
 
+  val state = cosmosClientStateHandle.value;
+
   CosmosBridgeInternal.setUsingState(builder, cosmosClientStateHandle.value)
   val client = builder.buildAsyncClient();
 

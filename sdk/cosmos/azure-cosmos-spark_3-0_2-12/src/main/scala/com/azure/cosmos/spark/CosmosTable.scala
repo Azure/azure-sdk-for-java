@@ -39,21 +39,23 @@ class CosmosTable(val transforms: Array[Transform],
     with CosmosLoggingTrait {
   logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
-  val clientConfig = CosmosAccountConfig.parseCosmosAccountConfig(userConfig.asScala.toMap)
+  val clientConfig = CosmosAccountConfig.parseCosmosAccountConfig(CosmosConfig.getEffectiveConfig(userConfig.asScala.toMap))
   val client = new CosmosClientBuilder().endpoint(clientConfig.endpoint)
     .key(clientConfig.key)
     .buildAsyncClient()
 
-  val clientStateHandle : Broadcast[CosmosClientState] = CosmosTable.getClientState(this)
+  // This can only be used for data operation against a certain container.
+  lazy val containerStateHandle : Broadcast[CosmosClientState] = initializeAndBroadcastCosmosClientStateForContainer
 
-  def initializeAndBroadcastCosmosClientState() : Broadcast[CosmosClientState] = {
+  // This can be used only when databaseName and ContainerName are specified.
+  def initializeAndBroadcastCosmosClientStateForContainer() : Broadcast[CosmosClientState] = {
     val cosmosContainerConfig = CosmosContainerConfig.parseCosmosContainerConfig(userConfig.asScala.toMap)
     try {
       client.getDatabase(cosmosContainerConfig.database).getContainer(cosmosContainerConfig.container).readItem(
         UUID.randomUUID().toString, new PartitionKey(UUID.randomUUID().toString), classOf[ObjectNode])
         .block()
     } catch {
-      case e: CosmosException if e.getStatusCode == 404 => None
+      case e: CosmosException => None
     }
 
     val state = new CosmosClientState()
@@ -87,7 +89,7 @@ class CosmosTable(val transforms: Array[Transform],
     // TODO moderakh how options and userConfig should be merged? is there any difference?
     CosmosScanBuilder(new CaseInsensitiveStringMap(CosmosConfig.getEffectiveConfig(options.asCaseSensitiveMap().asScala.toMap).asJava),
       schema(),
-      clientStateHandle)
+      containerStateHandle)
   }
 
   override def newWriteBuilder(logicalWriteInfo: LogicalWriteInfo): WriteBuilder = {
@@ -95,21 +97,7 @@ class CosmosTable(val transforms: Array[Transform],
     new CosmosWriterBuilder(
       new CaseInsensitiveStringMap(CosmosConfig.getEffectiveConfig(userConfig.asScala.toMap).asJava),
       logicalWriteInfo.schema(),
-      clientStateHandle
+      containerStateHandle
     )
-  }
-}
-
-object CosmosTable {
-
-  private var handle : Broadcast[CosmosClientState] = _
-
-  def getClientState(table: CosmosTable) : Broadcast[CosmosClientState] = {
-    this.synchronized {
-      if (handle == null) {
-        handle = table.initializeAndBroadcastCosmosClientState()
-      }
-    }
-    handle
   }
 }
