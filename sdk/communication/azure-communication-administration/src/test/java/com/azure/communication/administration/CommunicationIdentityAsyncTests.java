@@ -35,8 +35,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createAsyncIdentityClientUsingManagedIdentity(HttpClient httpClient) {
         // Arrange
-        asyncClient = getCommunicationIdentityClientBuilderUsingManagedIdentity(httpClient, "createAsyncIdentityClientUsingManagedIdentity")
-            .buildAsyncClient();
+        asyncClient = setupAsyncClientUsingManagedIdentity(httpClient, "createAsyncIdentityClientUsingManagedIdentity");
         assertNotNull(asyncClient);
 
         // Action & Assert
@@ -53,7 +52,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createAsyncIdentityClientUsingConnectionString(HttpClient httpClient) {
         // Arrange
-        asyncClient = getCommunicationIdentityClientUsingConnectionString(httpClient, "createAsyncIdentityClientUsingConnectionString").buildAsyncClient();
+        asyncClient = setupAsyncClientUsingConnectionString(httpClient, "createAsyncIdentityClientUsingConnectionString");
         assertNotNull(asyncClient);
 
         // Action & Assert
@@ -70,7 +69,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createUser(HttpClient httpClient) {
         // Arrange
-        asyncClient = getCommunicationIdentityClient(httpClient, "createUser").buildAsyncClient();
+        asyncClient = setupAsyncClient(httpClient, "createUser");
 
         // Action & Assert
         Mono<CommunicationUserIdentifier> response = asyncClient.createUser();
@@ -85,7 +84,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createUserWithResponse(HttpClient httpClient) {
         // Arrange
-        asyncClient = getCommunicationIdentityClient(httpClient, "createUserWithResponse").buildAsyncClient();
+        asyncClient = setupAsyncClientUsingManagedIdentity(httpClient, "createUserWithResponse");
 
         // Action & Assert
         Mono<Response<CommunicationUserIdentifier>> response = asyncClient.createUserWithResponse();
@@ -102,7 +101,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createUserWithContext(HttpClient httpClient) {
         // Arrange
-        asyncClient = getCommunicationIdentityClient(httpClient, "createUserWithContext").buildAsyncClient();
+        asyncClient = setupAsyncClient(httpClient, "createUserWithContext");
 
         // Action & Assert
         Mono<Response<CommunicationUserIdentifier>> response = asyncClient.createUser(Context.NONE);
@@ -119,7 +118,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void deleteUser(HttpClient httpClient) {
         // Arrange
-        asyncClient = getCommunicationIdentityClient(httpClient, "deleteUser").buildAsyncClient();
+        asyncClient = setupAsyncClient(httpClient, "deleteUser");
 
         // Action & Assert
         StepVerifier.create(
@@ -134,7 +133,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void deleteUserWithResponse(HttpClient httpClient) {
         // Arrange
-        asyncClient = getCommunicationIdentityClient(httpClient, "deleteUserWithResponse").buildAsyncClient();
+        asyncClient = setupAsyncClient(httpClient, "deleteUserWithResponse");
 
         // Action & Assert
         StepVerifier.create(
@@ -152,7 +151,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void deleteUserWithNullUser(HttpClient httpClient) {
         // Arrange
-        asyncClient = getCommunicationIdentityClient(httpClient, "deleteUserWithNullUser").buildAsyncClient();
+        asyncClient = setupAsyncClient(httpClient, "deleteUserWithNullUser");
 
         // Action & Assert
         StepVerifier.create(
@@ -164,7 +163,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void deleteUserWithResponseWithNullUser(HttpClient httpClient) {
         // Arrange
-        asyncClient = getCommunicationIdentityClient(httpClient, "getCommunicationIdentityClient").buildAsyncClient();
+        asyncClient = setupAsyncClient(httpClient, "deleteUserWithResponseWithNullUser");
 
         // Action & Assert
         StepVerifier.create(
@@ -176,7 +175,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void revokeToken(HttpClient httpClient) {
         // Arrange
-        asyncClient = getCommunicationIdentityClient(httpClient, "revokeToken").buildAsyncClient();
+        asyncClient = setupAsyncClient(httpClient, "revokeToken");
 
         // Action & Assert
         StepVerifier.create(
@@ -195,7 +194,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void revokeTokenWithResponse(HttpClient httpClient) {
         // Arrange
-        asyncClient = getCommunicationIdentityClient(httpClient, "revokeTokenWithResponse").buildAsyncClient();
+        asyncClient = setupAsyncClient(httpClient, "revokeTokenWithResponse");
 
         // Action & Assert
         StepVerifier.create(
@@ -217,7 +216,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void revokeTokenWithNullUser(HttpClient httpClient) {
         // Arrange
-        asyncClient = getCommunicationIdentityClient(httpClient, "revokeTokenWithNullUser").buildAsyncClient();
+        asyncClient = setupAsyncClient(httpClient, "revokeTokenWithNullUser");
 
         // Action & Assert
         StepVerifier.create(
@@ -229,7 +228,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void revokeTokenWithResponseWithNullUser(HttpClient httpClient) {
         // Arrange
-        asyncClient = getCommunicationIdentityClient(httpClient, "revokeTokenWithResponseWithNullUser").buildAsyncClient();
+        asyncClient = setupAsyncClient(httpClient, "revokeTokenWithResponseWithNullUser");
 
         // Action & Assert
         StepVerifier.create(
@@ -242,7 +241,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void issueToken(HttpClient httpClient) {
         // Arrange
-        asyncClient = getCommunicationIdentityClient(httpClient, "issueToken").buildAsyncClient();
+        asyncClient = setupAsyncClient(httpClient, "issueToken");
 
         // Action & Assert
         StepVerifier.create(
@@ -265,7 +264,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void issueTokenWithResponse(HttpClient httpClient) {
         // Arrange
-        asyncClient = getCommunicationIdentityClient(httpClient, "issueTokenWithResponse").buildAsyncClient();
+        asyncClient = setupAsyncClient(httpClient, "issueTokenWithResponse");
 
         // Action & Assert
         StepVerifier.create(
@@ -288,7 +287,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void issueTokenWithNullUser(HttpClient httpClient) {
         // Arrange
-        asyncClient = getCommunicationIdentityClient(httpClient, "issueTokenWithNullUser").buildAsyncClient();
+        asyncClient = setupAsyncClient(httpClient, "issueTokenWithNullUser");
         List<String> scopes = new ArrayList<>(Arrays.asList("chat"));
 
         // Action & Assert
@@ -301,7 +300,8 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void issueTokenWithNullScope(HttpClient httpClient) {
         // Arrange
-        asyncClient = getCommunicationIdentityClient(httpClient, "issueTokenWithNullScope").buildAsyncClient();
+        asyncClient = getCommunicationIdentityClient(httpClient)
+        .buildAsyncClient();
 
         // Action & Assert
         StepVerifier.create(asyncClient.issueToken(new CommunicationUserIdentifier("testUser"), null))
@@ -312,12 +312,27 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void issueTokenWithResponseWithNullUser(HttpClient httpClient) {
         // Arrange
-        asyncClient = getCommunicationIdentityClient(httpClient, "getCommunicationIdentityClient").buildAsyncClient();
+        asyncClient = setupAsyncClient(httpClient, "issueTokenWithResponseWithNullUser");
         List<String> scopes = new ArrayList<>(Arrays.asList("chat"));
 
         // Action & Assert
         StepVerifier.create(
             asyncClient.issueTokenWithResponse(null, scopes))
             .verifyError(NullPointerException.class);
+    }
+
+    private CommunicationIdentityAsyncClient setupAsyncClientUsingManagedIdentity(HttpClient httpClient, String testName) {
+        CommunicationIdentityClientBuilder builder = getCommunicationIdentityClientBuilderUsingManagedIdentity(httpClient);
+        return addLoggingPolicy(builder, "createAsyncIdentityClientUsingManagedIdentity").buildAsyncClient();
+    }
+
+    private CommunicationIdentityAsyncClient setupAsyncClientUsingConnectionString(HttpClient httpClient, String testName) {
+        CommunicationIdentityClientBuilder builder = getCommunicationIdentityClientUsingConnectionString(httpClient);
+        return addLoggingPolicy(builder, "createAsyncIdentityClientUsingManagedIdentity").buildAsyncClient();
+    }
+
+    private CommunicationIdentityAsyncClient setupAsyncClient(HttpClient httpClient, String testName) {
+        CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
+        return addLoggingPolicy(builder, "createAsyncIdentityClientUsingManagedIdentity").buildAsyncClient();
     }
 }
