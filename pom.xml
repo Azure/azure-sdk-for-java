@@ -24,6 +24,7 @@
     <module>sdk/eventgrid</module>
     <module>sdk/eventhubs</module>
     <module>sdk/formrecognizer</module>
+    <module>sdk/hdinsight</module>
     <module>sdk/identity</module>
     <module>sdk/keyvault</module>
     <module>sdk/loganalytics</module>

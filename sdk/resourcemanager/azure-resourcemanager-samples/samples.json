@@ -681,6 +681,12 @@
     },
     {
       "owner": "yungezz",
+      "filePath": "azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/search/samples/ManageSearchService.java",
+      "githubPath": "Azure-Samples/search-java-manage-search-service",
+      "description": "Getting started on managing Azure search service using Java"
+    },
+    {
+      "owner": "yungezz",
       "filePath": "azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/servicebus/samples/ServiceBusPublishSubscribeAdvanceFeatures.java",
       "githubPath": "Azure-Samples/service-bus-java-manage-publish-subscribe-with-advanced-features",
       "description": "Getting started on managing Service Bus Publish-Subscribe with advanced features using Java - sessions, dead-lettering, de-duplication and auto-deletion of idle entries"

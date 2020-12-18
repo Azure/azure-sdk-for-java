@@ -26,20 +26,17 @@ public class AuthzCodeGrantRequestEntityConverter extends OAuth2AuthorizationCod
     @SuppressWarnings("unchecked")
     public RequestEntity<?> convert(OAuth2AuthorizationCodeGrantRequest request) {
         RequestEntity<?> result = super.convert(request);
-        if (isRequestForDefaultClient(request)) {
-            Optional.ofNullable(result)
-                    .map(HttpEntity::getBody)
-                    .map(b -> (MultiValueMap<String, String>) b)
-                    .ifPresent(body -> body.add("scope", scopeValue()));
-        }
+        String scopes = String.join(" ", isRequestForDefaultClient(request)
+            ? azureClient.getAccessTokenScopes()
+            : request.getClientRegistration().getScopes());
+        Optional.ofNullable(result)
+                .map(HttpEntity::getBody)
+                .map(b -> (MultiValueMap<String, String>) b)
+                .ifPresent(body -> body.add("scope", scopes));
         return result;
     }
 
     private boolean isRequestForDefaultClient(OAuth2AuthorizationCodeGrantRequest request) {
         return request.getClientRegistration().equals(azureClient.getClient());
-    }
-
-    private String scopeValue() {
-        return String.join(" ", azureClient.getAccessTokenScopes());
     }
 }
