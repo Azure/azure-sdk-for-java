@@ -1,8 +1,6 @@
 package com.azure.test.aad.converter;
 
 import com.azure.spring.aad.webapp.AzureOAuth2Configuration;
-import com.azure.test.oauth.OAuthResponse;
-import com.azure.test.oauth.OAuthUtils;
 import com.azure.test.utils.AppRunner;
 import org.junit.Assert;
 import org.junit.Test;
@@ -75,8 +73,8 @@ public class AADWebAppRefreshTokenConverterIT {
 
     @Test
     public void testRefreshTokenConverter() {
-        final String clientId = System.getenv(AAD_SINGLE_TENANT_CLIENT_ID);
-        final String clientSecret = System.getenv(AAD_SINGLE_TENANT_CLIENT_SECRET);
+        final String clientId = System.getenv(AAD_MULTI_TENANT_CLIENT_ID);
+        final String clientSecret = System.getenv(AAD_MULTI_TENANT_CLIENT_SECRET);
         try (AppRunner app = new AppRunner(DumbApp.class)) {
             ChromeOptions options = new ChromeOptions();
             options.addArguments("--incognito");
@@ -102,11 +100,8 @@ public class AADWebAppRefreshTokenConverterIT {
                 Thread.sleep(10000);
                 driver.findElement(By.cssSelector("input[type='submit']")).click();
                 Thread.sleep(10000);
-                if(driver.findElement(By.cssSelector("input[type='submit']")) != null){
-                    driver.findElement(By.cssSelector("input[type='submit']")).click();
-                    Thread.sleep(10000);
-                }
                 Assert.assertTrue(driver.findElement(By.tagName("body")).getText().indexOf("profile") < 0);
+                Assert.assertTrue(driver.findElement(By.tagName("body")).getText().indexOf("https://manage.office.com/ActivityFeed.Read") >= 0);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             } finally {
