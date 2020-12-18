@@ -32,12 +32,12 @@ There are two forms of authentication to use the Administration SDK:
 
 ### Azure Active Directory Token Authentication
 Currently, Azure Active Directory (AAD) authentication is only possible for CommunicationIdentityClient.
-The DefaultAzureCredential object must be passed to the CommunicationIdentityClientBuilder via
+The `DefaultAzureCredential` object must be passed to the `CommunicationIdentityClientBuilder` via
 the credential() funtion. Endpoint and httpClient must also be set
 via the endpoint() and httpClient() functions respectively.
 
-CLIENT_SECRET, CLIENT_ID and TENANT_ID environment variables 
-needed to create a DefaultAzureCredential object.
+`CLIENT_SECRET`, `CLIENT_ID` and `TENANT_ID` environment variables 
+are needed to create a DefaultAzureCredential object.
 
 <!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L377-L389 -->
 ```java
@@ -58,8 +58,8 @@ needed to create a DefaultAzureCredential object.
 
 ### Access Key Authentication
 Administration uses HMAC authentication with the resource access key.
-The access key must be provided to the CommunicationIdentityClientBuilder 
-or the PhoneNumberClientBuilder via the accessKey() function. Endpoint and httpClient must also be set
+The access key must be provided to the `CommunicationIdentityClientBuilder`
+or the `PhoneNumberClientBuilder` via the accessKey() function. Endpoint and httpClient must also be set
 via the endpoint() and httpClient() functions respectively.
 
 <!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L37-L48 -->
