@@ -31,8 +31,8 @@ public class CommunicationLoggerPolicy implements HttpPipelinePolicy {
         .flatMap(httpResponse -> {
             final HttpResponse bufferedResponse = httpResponse.buffer();
             
-            logger.info("Response Url " + bufferedResponse.getRequest().getUrl());
-            logger.info("MS-CV header: " + bufferedResponse.getHeaderValue("MS-CV"));
+            System.out.println("Response Url " + bufferedResponse.getRequest().getUrl());
+            System.out.println("MS-CV header: " + bufferedResponse.getHeaderValue("MS-CV"));
             return Mono.just(bufferedResponse);
         });
     }
