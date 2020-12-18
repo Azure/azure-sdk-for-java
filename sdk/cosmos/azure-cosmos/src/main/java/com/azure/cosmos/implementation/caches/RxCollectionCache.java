@@ -31,7 +31,7 @@ public abstract class RxCollectionCache {
     private final AsyncCache<String, DocumentCollection> collectionInfoByNameCache;
     private final AsyncCache<String, DocumentCollection> collectionInfoByIdCache;
 
-    public static void serialize(CosmosClientState state, RxCollectionCache cache) throws IOException {
+    public static void serialize(CosmosClientState state, RxCollectionCache cache) {
         state.serializeCollectionInfoByIdCache(cache.collectionInfoByIdCache);
         state.serializeCollectionInfoByNameCache(cache.collectionInfoByNameCache);
     }

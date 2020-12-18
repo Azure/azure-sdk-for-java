@@ -154,6 +154,7 @@ public class AsyncCache<TKey, TValue> {
         protected SerializableAsyncCache() {}
 
         public static class SerializableAsyncCollectionCache extends SerializableAsyncCache<String, DocumentCollection> {
+            private static final long serialVersionUID = 1l;
             private SerializableAsyncCollectionCache() {}
 
             @Override

@@ -417,11 +417,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         } catch (Exception e) {
             logger.error("unexpected failure in initializing client.", e);
             close();
-            throw Exceptions.propagate(e);
+            throw e;
         }
     }
 
-    public void serialize(CosmosClientState state) throws IOException {
+    public void serialize(CosmosClientState state) {
         RxCollectionCache.serialize(state, this.collectionCache);
     }
 
