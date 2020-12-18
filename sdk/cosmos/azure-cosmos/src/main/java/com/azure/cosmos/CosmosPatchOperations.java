@@ -77,6 +77,9 @@ public final class CosmosPatchOperations {
      *     cosmosPatch.add("/b/e/1", 10); // will change value of the /b/e array to [0, 10, 2, 3]
      * </code>
      *
+     * This operation is not idempotent for scenario 1 and 2. For 3rd it is as the final value will be the value
+     * provided here.
+     *
      * @param <T> The type of item to be added.
      *
      * @param path the operation path.
@@ -109,6 +112,8 @@ public final class CosmosPatchOperations {
      *     cosmosPatch.remove("/b/e/3"); // will remove 4th element of /b/e array
      * </code>
      *
+     * This operation is not idempotent. Since once applied, next time it will return bad request due to path not found.
+     *
      * @param path the operation path.
      *
      * @return same instance of {@link CosmosPatchOperations}
@@ -134,8 +139,10 @@ public final class CosmosPatchOperations {
      * <code>
      *     CosmosPatchOperations cosmosPatch = CosmosPatchOperations.create();
      *     cosmosPatch.replace("/a", "new value"); // will replace "xyz" to "new value"
-     *     cosmosPatch.replace("/b/e/1", 2); // will remove 2nd element of /b/e array to 2
+     *     cosmosPatch.replace("/b/e/1", 2); // will replace 2nd element of /b/e array to 2
      * </code>
+     *
+     * This operation is idempotent as multiple call execution replace to the same value.
      *
      * @param <T> The type of item to be replaced.
      *
@@ -168,6 +175,9 @@ public final class CosmosPatchOperations {
      *     cosmosPatch.set("/b/e", "bar"); // will set "/b/e" path to be "bar".
      * </code>
      *
+     * This operation is idempotent as multiple execution will set the same value. If a new path is added, next time
+     * same value will be set.
+     *
      * @param <T> The type of item to be set.
      *
      * @param path the operation path.
@@ -199,6 +209,11 @@ public final class CosmosPatchOperations {
      *     cosmosPatch.increment("/b/d", 1); // will add 1 to "/b/d" resulting in 5.
      * </code>
      *
+     * This is not idempotent as multiple execution will increase the value by the given increment. For multi-region
+     * we do support concurrent increment on different regions and the final value is a merged value combining
+     * all increments value.
+     * However if multiple increments are on the same region, it can lead to concurrency issue which can be retried.
+     *
      * @param path the operation path.
      * @param value the value which will be incremented.
      *
@@ -219,13 +234,18 @@ public final class CosmosPatchOperations {
     }
 
     /**
-     * This increment the value at the target location. It's a CRDT operator and won't cause any conflict.
+     * This increment the value at the target location.
      *
      * For the above JSON, we can have something like this:
      * <code>
      *     CosmosPatchOperations cosmosPatch = CosmosPatchOperations.create();
      *     cosmosPatch.increment("/b/d", 3.5); // will add 1 to "/b/d" resulting in 7.5.
      * </code>
+     *
+     * This is not idempotent as multiple execution will increase the value by the given increment. For multi-region
+     * we do support concurrent increment on different regions and the final value is a merged value combining
+     * all increments values.
+     * However if multiple increments are on the same region, it can lead to concurrency issue which can be retried.
      *
      * @param path the operation path.
      * @param value the value which will be incremented.
