@@ -45,7 +45,7 @@
     <dependency>
       <groupId>io.grpc</groupId>
       <artifactId>grpc-context</artifactId>
-      <version>1.30.2</version> <!-- {x-version-update;io.grpc:grpc-context;external_dependency} -->
+      <version>1.33.0</version> <!-- {x-version-update;io.grpc:grpc-context;external_dependency} -->
     </dependency>
 
     <!--test dependencies -->
@@ -64,13 +64,13 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
-      <version>5.6.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+      <version>5.7.0</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.6.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <version>5.7.0</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -86,7 +86,7 @@
             <bannedDependencies>
               <includes>
                 <include>io.opentelemetry:opentelemetry-api:[0.8.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
-                <include>io.grpc:grpc-context:[1.30.2]</include> <!-- {x-include-update;io.grpc:grpc-context;external_dependency} -->
+                <include>io.grpc:grpc-context:[1.33.0]</include> <!-- {x-include-update;io.grpc:grpc-context;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
