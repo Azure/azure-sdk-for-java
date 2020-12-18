@@ -14,12 +14,13 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
-public class CosmosClientState implements Serializable {
+public class CosmosClientMetadataCachesSnapshot implements Serializable {
     private static final long serialVersionUID = 1l;
+    private static final int ERROR_CODE = 0;
     public byte[] collectionInfoByNameCache;
     public byte[] collectionInfoByIdCache;
 
-    public CosmosClientState() {
+    public CosmosClientMetadataCachesSnapshot() {
     }
 
     public void serialize(CosmosAsyncClient client) {
@@ -45,9 +46,8 @@ public class CosmosClientState implements Serializable {
 
             objectOutputStream.close();
             return baos.toByteArray();
-
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw CosmosBridgeInternal.cosmosException(ERROR_CODE, e);
         }
     }
 
@@ -56,9 +56,8 @@ public class CosmosClientState implements Serializable {
             return ((AsyncCache.SerializableAsyncCache.SerializableAsyncCollectionCache)
                 new ObjectInputStream(new ByteArrayInputStream(collectionInfoByNameCache)).readObject())
                 .toAsyncCache();
-
         } catch (IOException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            throw CosmosBridgeInternal.cosmosException(ERROR_CODE, e);
         }
     }
 
@@ -68,7 +67,7 @@ public class CosmosClientState implements Serializable {
                 new ObjectInputStream(new ByteArrayInputStream(collectionInfoByIdCache)).readObject())
                 .toAsyncCache();
         } catch (IOException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            throw CosmosBridgeInternal.cosmosException(ERROR_CODE, e);
         }
     }
 }

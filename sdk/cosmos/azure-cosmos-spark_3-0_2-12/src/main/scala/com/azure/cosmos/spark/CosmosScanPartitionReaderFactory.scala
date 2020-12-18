@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.CosmosClientState
+import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
 import com.azure.cosmos.models.CosmosParametrizedQuery
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.catalyst.InternalRow
@@ -13,7 +13,7 @@ import org.apache.spark.sql.types.StructType
 case class CosmosScanPartitionReaderFactory(config: Map[String, String],
                                             readSchema: StructType,
                                             cosmosQuery: CosmosParametrizedQuery,
-                                            cosmosClientStateHandle: Broadcast[CosmosClientState])
+                                            cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot])
   extends PartitionReaderFactory with CosmosLoggingTrait {
   logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 

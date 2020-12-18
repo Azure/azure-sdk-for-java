@@ -8,7 +8,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.CosmosAuthorizationTokenResolver;
-import com.azure.cosmos.implementation.CosmosClientState;
+import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.azure.cosmos.implementation.routing.LocationHelper;
@@ -88,7 +88,7 @@ public class CosmosClientBuilder {
     private Configs configs = new Configs();
     private String serviceEndpoint;
     private String keyOrResourceToken;
-    private CosmosClientState state;
+    private CosmosClientMetadataCachesSnapshot state;
     private TokenCredential tokenCredential;
     private ConnectionPolicy connectionPolicy;
     private GatewayConnectionConfig gatewayConnectionConfig;
@@ -118,12 +118,12 @@ public class CosmosClientBuilder {
         this.throttlingRetryOptions = new ThrottlingRetryOptions();
     }
 
-    CosmosClientBuilder usingState(CosmosClientState state) {
-        this.state = state;
+    CosmosClientBuilder metadataCaches(CosmosClientMetadataCachesSnapshot metadataCachesSnapshot) {
+        this.state = metadataCachesSnapshot;
         return this;
     }
 
-    CosmosClientState state() {
+    CosmosClientMetadataCachesSnapshot metadataCaches() {
         return this.state;
     }
 

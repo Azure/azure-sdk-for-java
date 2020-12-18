@@ -2,8 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.CosmosClientState;
-import com.azure.cosmos.implementation.InternalObjectNode;
+import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
@@ -42,12 +41,12 @@ public class DistributedClientTest extends TestSuiteBase {
         RxDocumentClientImpl documentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(client);
         RxClientCollectionCache cache = ReflectionUtils.get(RxClientCollectionCache.class, documentClient, "collectionCache");
 
-        CosmosClientState state = new CosmosClientState();
+        CosmosClientMetadataCachesSnapshot state = new CosmosClientMetadataCachesSnapshot();
         RxClientCollectionCache.serialize(state, cache);
 
         CosmosAsyncClient newClient = new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
                                                                .key(TestConfigurations.MASTER_KEY)
-                                                               .usingState(state)
+                                                               .metadataCaches(state)
                                                                .buildAsyncClient();
 
         // TODO: moderakh we should somehow verify that to collection fetch request is made and the existing collection cache is used.

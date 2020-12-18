@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.CosmosClientState
+import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.connector.read.{Scan, ScanBuilder, SupportsPushDownFilters, SupportsPushDownRequiredColumns}
 import org.apache.spark.sql.sources.Filter
@@ -14,7 +14,7 @@ import org.apache.spark.sql.util.CaseInsensitiveStringMap
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
-case class CosmosScanBuilder(config: CaseInsensitiveStringMap, inputSchema: StructType, cosmosClientStateHandle: Broadcast[CosmosClientState])
+case class CosmosScanBuilder(config: CaseInsensitiveStringMap, inputSchema: StructType, cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot])
   extends ScanBuilder
     with SupportsPushDownFilters
     with SupportsPushDownRequiredColumns

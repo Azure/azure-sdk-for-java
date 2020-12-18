@@ -2,12 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.CosmosClientState
+import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.connector.write.{BatchWrite, DataWriterFactory, PhysicalWriteInfo, WriterCommitMessage}
 import org.apache.spark.sql.types.StructType
 
-class CosmosBatchWriter(userConfig: Map[String, String], inputSchema: StructType, cosmosClientStateHandle: Broadcast[CosmosClientState])
+class CosmosBatchWriter(userConfig: Map[String, String], inputSchema: StructType, cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot])
   extends BatchWrite
     with CosmosLoggingTrait {
   logInfo(s"Instantiated ${this.getClass.getSimpleName}")

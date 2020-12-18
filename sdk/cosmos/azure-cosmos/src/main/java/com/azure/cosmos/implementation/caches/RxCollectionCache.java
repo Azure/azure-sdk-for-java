@@ -3,7 +3,7 @@
 package com.azure.cosmos.implementation.caches;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.implementation.CosmosClientState;
+import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -19,7 +19,6 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -31,9 +30,9 @@ public abstract class RxCollectionCache {
     private final AsyncCache<String, DocumentCollection> collectionInfoByNameCache;
     private final AsyncCache<String, DocumentCollection> collectionInfoByIdCache;
 
-    public static void serialize(CosmosClientState state, RxCollectionCache cache) {
-        state.serializeCollectionInfoByIdCache(cache.collectionInfoByIdCache);
-        state.serializeCollectionInfoByNameCache(cache.collectionInfoByNameCache);
+    public static void serialize(CosmosClientMetadataCachesSnapshot clientMetadataCachesSnapshot, RxCollectionCache cache) {
+        clientMetadataCachesSnapshot.serializeCollectionInfoByIdCache(cache.collectionInfoByIdCache);
+        clientMetadataCachesSnapshot.serializeCollectionInfoByNameCache(cache.collectionInfoByNameCache);
     }
 
     protected RxCollectionCache(AsyncCache<String, DocumentCollection> collectionInfoByNameCache, AsyncCache<String, DocumentCollection> collectionInfoByIdCache) {

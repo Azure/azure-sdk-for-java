@@ -5,7 +5,7 @@ package com.azure.cosmos.spark
 import java.util
 import java.util.UUID
 
-import com.azure.cosmos.implementation.{CosmosClientState, RxDocumentClientImpl}
+import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, RxDocumentClientImpl}
 import com.azure.cosmos.models.PartitionKey
 import com.azure.cosmos.{CosmosBridgeInternal, CosmosClientBuilder, CosmosException}
 import org.apache.spark.broadcast.Broadcast
@@ -45,10 +45,10 @@ class CosmosTable(val transforms: Array[Transform],
     .buildAsyncClient()
 
   // This can only be used for data operation against a certain container.
-  lazy val containerStateHandle : Broadcast[CosmosClientState] = initializeAndBroadcastCosmosClientStateForContainer
+  lazy val containerStateHandle : Broadcast[CosmosClientMetadataCachesSnapshot] = initializeAndBroadcastCosmosClientStateForContainer
 
   // This can be used only when databaseName and ContainerName are specified.
-  def initializeAndBroadcastCosmosClientStateForContainer() : Broadcast[CosmosClientState] = {
+  def initializeAndBroadcastCosmosClientStateForContainer() : Broadcast[CosmosClientMetadataCachesSnapshot] = {
     val cosmosContainerConfig = CosmosContainerConfig.parseCosmosContainerConfig(userConfig.asScala.toMap)
     try {
       client.getDatabase(cosmosContainerConfig.database).getContainer(cosmosContainerConfig.container).readItem(
@@ -58,7 +58,7 @@ class CosmosTable(val transforms: Array[Transform],
       case e: CosmosException => None
     }
 
-    val state = new CosmosClientState()
+    val state = new CosmosClientMetadataCachesSnapshot()
     state.serialize(client)
 
     val sparkSession = SparkSession.active

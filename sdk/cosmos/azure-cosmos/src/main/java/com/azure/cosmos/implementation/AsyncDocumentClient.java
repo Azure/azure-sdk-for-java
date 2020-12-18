@@ -80,7 +80,7 @@ public interface AsyncDocumentClient {
         boolean sessionCapturingOverride;
         boolean transportClientSharing;
         boolean contentResponseOnWriteEnabled;
-        private CosmosClientState state;
+        private CosmosClientMetadataCachesSnapshot state;
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {
@@ -91,7 +91,7 @@ public interface AsyncDocumentClient {
             return this;
         }
 
-        public Builder withState(CosmosClientState state) {
+        public Builder withState(CosmosClientMetadataCachesSnapshot state) {
             this.state = state;
             return this;
         }

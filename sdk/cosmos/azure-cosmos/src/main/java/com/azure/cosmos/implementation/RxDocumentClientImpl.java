@@ -55,7 +55,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -170,9 +169,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 boolean sessionCapturingOverride,
                                 boolean connectionSharingAcrossClientsEnabled,
                                 boolean contentResponseOnWriteEnabled,
-                                CosmosClientState state) {
+                                CosmosClientMetadataCachesSnapshot metadataCachesSnapshot) {
         this(serviceEndpoint, masterKeyOrResourceToken, permissionFeed, connectionPolicy, consistencyLevel, configs,
-            credential, null, sessionCapturingOverride, connectionSharingAcrossClientsEnabled, contentResponseOnWriteEnabled, state);
+            credential, null, sessionCapturingOverride, connectionSharingAcrossClientsEnabled, contentResponseOnWriteEnabled, metadataCachesSnapshot);
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
     }
 
@@ -188,9 +187,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 boolean sessionCapturingOverride,
                                 boolean connectionSharingAcrossClientsEnabled,
                                 boolean contentResponseOnWriteEnabled,
-                                CosmosClientState state) {
+                                CosmosClientMetadataCachesSnapshot metadataCachesSnapshot) {
         this(serviceEndpoint, masterKeyOrResourceToken, permissionFeed, connectionPolicy, consistencyLevel, configs,
-            credential, tokenCredential, sessionCapturingOverride, connectionSharingAcrossClientsEnabled, contentResponseOnWriteEnabled, state);
+            credential, tokenCredential, sessionCapturingOverride, connectionSharingAcrossClientsEnabled, contentResponseOnWriteEnabled, metadataCachesSnapshot);
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
     }
 
@@ -205,9 +204,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 boolean sessionCapturingOverrideEnabled,
                                 boolean connectionSharingAcrossClientsEnabled,
                                 boolean contentResponseOnWriteEnabled,
-                                CosmosClientState state) {
+                                CosmosClientMetadataCachesSnapshot metadataCachesSnapshot) {
         this(serviceEndpoint, masterKeyOrResourceToken, connectionPolicy, consistencyLevel, configs,
-            credential, tokenCredential, sessionCapturingOverrideEnabled, connectionSharingAcrossClientsEnabled, contentResponseOnWriteEnabled, state);
+            credential, tokenCredential, sessionCapturingOverrideEnabled, connectionSharingAcrossClientsEnabled, contentResponseOnWriteEnabled, metadataCachesSnapshot);
         if (permissionFeed != null && permissionFeed.size() > 0) {
             this.resourceTokensMap = new HashMap<>();
             for (Permission permission : permissionFeed) {
@@ -260,7 +259,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                          boolean sessionCapturingOverrideEnabled,
                          boolean connectionSharingAcrossClientsEnabled,
                          boolean contentResponseOnWriteEnabled,
-                         CosmosClientState state) {
+                         CosmosClientMetadataCachesSnapshot metadataCachesSnapshot) {
 
         activeClientsCnt.incrementAndGet();
         this.clientId = clientIdGenerator.getAndDecrement();
@@ -375,7 +374,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/332589
     }
 
-    public void init(CosmosClientState state) {
+    public void init(CosmosClientMetadataCachesSnapshot metadataCachesSnapshot) {
         try {
             // TODO: add support for openAsync
             // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/332589
@@ -388,14 +387,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.globalEndpointManager.init();
             this.initializeGatewayConfigurationReader();
 
-            if (state != null) {
+            if (metadataCachesSnapshot != null) {
                 this.collectionCache = new RxClientCollectionCache(this,
                     this.sessionContainer,
                     this.gatewayProxy,
                     this,
                     this.retryPolicy,
-                    state.getCollectionInfoByNameCache(),
-                    state.getCollectionInfoByIdCache()
+                    metadataCachesSnapshot.getCollectionInfoByNameCache(),
+                    metadataCachesSnapshot.getCollectionInfoByIdCache()
                 );
             } else {
                 this.collectionCache = new RxClientCollectionCache(this,
@@ -421,7 +420,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
     }
 
-    public void serialize(CosmosClientState state) {
+    public void serialize(CosmosClientMetadataCachesSnapshot state) {
         RxCollectionCache.serialize(state, this.collectionCache);
     }
 

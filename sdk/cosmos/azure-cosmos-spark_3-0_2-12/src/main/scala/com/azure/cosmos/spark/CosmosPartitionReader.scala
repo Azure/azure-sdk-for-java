@@ -3,8 +3,8 @@
 
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
 import com.azure.cosmos.{ConsistencyLevel, CosmosBridgeInternal, CosmosClientBuilder}
-import com.azure.cosmos.implementation.CosmosClientState
 import com.azure.cosmos.models.{CosmosParametrizedQuery, CosmosQueryRequestOptions}
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.broadcast.Broadcast
@@ -18,7 +18,7 @@ import org.apache.spark.sql.types.StructType
 case class CosmosPartitionReader(config: Map[String, String],
                                  readSchema: StructType,
                                  cosmosQuery: CosmosParametrizedQuery,
-                                 cosmosClientStateHandle: Broadcast[CosmosClientState])
+                                 cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot])
 // TODO: moderakh query need to change to SqlSpecQuery
 // requires making a serializable wrapper on top of SqlQuerySpec
 
@@ -36,7 +36,7 @@ case class CosmosPartitionReader(config: Map[String, String],
 
   val state = cosmosClientStateHandle.value;
 
-  CosmosBridgeInternal.setUsingState(builder, cosmosClientStateHandle.value)
+  CosmosBridgeInternal.metadataCaches(builder, cosmosClientStateHandle.value)
   val client = builder.buildAsyncClient();
 
   val cosmosAsyncContainer = client
