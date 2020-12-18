@@ -11,7 +11,7 @@
 - Support on-demand client-registration.
 - Support the use of `@RegisteredOAuth2AuthorizedClient` to get `OAuth2AuthorizedClient`.
 - Support to obtain the claim in access token, such as `scp`, `roles` etc, to carry out permission control.
-- Support on-behave-of flow when the `azure-spring-boot-starter-active-directory` used in resource-server.
+- Support on-behalf-of flow when the `azure-spring-boot-starter-active-directory` used in resource-server.
 - Provide some AAD specific token validation, such as audience validation, issuer validation.
 - Expose a flag in the `AzureOAuth2AuthenticatedPrincipal` to tell which account type is being used, work account or personal account.
 
