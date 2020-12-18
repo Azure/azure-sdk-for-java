@@ -10,8 +10,9 @@ import java.io.InputStream;
  * The Null Input Stream class, applicable to JDK 8.
  */
 public class NullInputStream extends InputStream {
+
     @Override
     public int read() throws IOException {
-        return 0;
+        return -1;
     }
 }

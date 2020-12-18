@@ -89,51 +89,6 @@ public class TestDataCreationHelper {
         outputStream.write(RANDOM_BYTES, 0, remainder);
     }
 
-    private static final class RepeatingInputStream extends InputStream {
-        private final int size;
-
-        private final int mark = 0;
-        private int pos = 0;
-
-        private RepeatingInputStream(int size) {
-            this.size = size;
-        }
-
-        @Override
-        public synchronized int read() {
-            return (pos < size) ? (RANDOM_BYTES[pos++ % RANDOM_BYTES_LENGTH] & 0xFF) : -1;
-        }
-
-        @Override
-        public synchronized int read(byte[] b) {
-            return read(b, 0, b.length);
-        }
-
-        @Override
-        public synchronized int read(byte[] b, int off, int len) {
-            if (pos >= size) {
-                return -1;
-            }
-
-            int readCount = Math.min(len, RANDOM_BYTES_LENGTH);
-            System.arraycopy(RANDOM_BYTES, 0, b, off, len);
-            pos += readCount;
-
-            return readCount;
-        }
-
-        @Override
-        public synchronized void reset() {
-            this.pos = this.mark;
-        }
-
-
-        @Override
-        public boolean markSupported() {
-            return true;
-        }
-    }
-
     /**
      * Writes the data from InputStream into the OutputStream.
      *

@@ -4,25 +4,35 @@
 package com.azure.storage.file.share.perf;
 
 import com.azure.perf.test.core.PerfStressOptions;
+import com.azure.perf.test.core.RepeatingInputStream;
+import com.azure.perf.test.core.TestDataCreationHelper;
 import com.azure.storage.file.share.perf.core.FileTestBase;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.nio.ByteBuffer;
+
 import static com.azure.perf.test.core.TestDataCreationHelper.createRandomByteBufferFlux;
-import static com.azure.perf.test.core.TestDataCreationHelper.createRandomInputStream;
 
 public class UploadFileShareTest extends FileTestBase<PerfStressOptions> {
+    protected final RepeatingInputStream inputStream;
+    protected final Flux<ByteBuffer> byteBufferFlux;
+
     public UploadFileShareTest(PerfStressOptions options) {
         super(options);
+        inputStream = (RepeatingInputStream) TestDataCreationHelper.createRandomInputStream(options.getSize());
+        byteBufferFlux = createRandomByteBufferFlux(options.getSize());
     }
 
     @Override
     public void run() {
-        shareFileClient.upload(createRandomInputStream(options.getSize()), options.getSize());
+        inputStream.reset();
+        shareFileClient.upload(inputStream, options.getSize());
     }
 
     @Override
     public Mono<Void> runAsync() {
-        return shareFileAsyncClient.upload(createRandomByteBufferFlux(options.getSize()), options.getSize())
+        return shareFileAsyncClient.upload(byteBufferFlux, options.getSize())
             .then();
     }
 }

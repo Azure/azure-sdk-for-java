@@ -18,7 +18,6 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
     protected final DataLakeServiceClient dataLakeServiceClient;
     protected final DataLakeServiceAsyncClient dataLakeServiceAsyncClient;
 
-
     public ServiceTest(TOptions options) {
         super(options);
         String connectionString = System.getenv("STORAGE_CONNECTION_STRING");

@@ -29,9 +29,9 @@ public abstract class DirectoryTest<TOptions extends PerfStressOptions> extends 
         return super.globalSetupAsync().then(shareDirectoryAsyncClient.create().then());
     }
 
-    // NOTE: the pattern, cleanup yourself, then the parent.
-    @Override
-    public Mono<Void> globalCleanupAsync() {
-        return shareDirectoryAsyncClient.delete().then(super.globalCleanupAsync());
-    }
+//    // NOTE: the pattern, cleanup yourself, then the parent.
+//    @Override
+//    public Mono<Void> globalCleanupAsync() {
+//        return shareDirectoryAsyncClient.delete().then(super.globalCleanupAsync());
+//    }
 }

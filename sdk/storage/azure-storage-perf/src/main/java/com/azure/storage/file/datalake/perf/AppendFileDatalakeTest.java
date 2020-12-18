@@ -4,12 +4,15 @@
 package com.azure.storage.file.datalake.perf;
 
 import com.azure.perf.test.core.PerfStressOptions;
+import com.azure.perf.test.core.RepeatingInputStream;
 import com.azure.perf.test.core.TestDataCreationHelper;
 import com.azure.storage.file.datalake.DataLakeFileAsyncClient;
 import com.azure.storage.file.datalake.DataLakeFileClient;
 import com.azure.storage.file.datalake.perf.core.DirectoryTest;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.nio.ByteBuffer;
 import java.util.UUID;
 
 import static com.azure.perf.test.core.TestDataCreationHelper.createRandomByteBufferFlux;
@@ -19,11 +22,15 @@ public class AppendFileDatalakeTest extends DirectoryTest<PerfStressOptions> {
 
     protected final DataLakeFileClient dataLakeFileClient;
     protected final DataLakeFileAsyncClient dataLakeFileAsyncClient;
+    protected final RepeatingInputStream inputStream;
+    protected final Flux<ByteBuffer> byteBufferFlux;
 
     public AppendFileDatalakeTest(PerfStressOptions options) {
         super(options);
         dataLakeFileClient = dataLakeDirectoryClient.getFileClient(FILE_NAME);
         dataLakeFileAsyncClient = dataLakeDirectoryAsyncClient.getFileAsyncClient(FILE_NAME);
+        inputStream = (RepeatingInputStream) TestDataCreationHelper.createRandomInputStream(options.getSize());
+        byteBufferFlux = createRandomByteBufferFlux(options.getSize());
     }
 
     // Required resource setup goes here, upload the file to be downloaded during tests.
@@ -36,13 +43,14 @@ public class AppendFileDatalakeTest extends DirectoryTest<PerfStressOptions> {
     // Perform the API call to be tested here
     @Override
     public void run() {
+        inputStream.reset();
         dataLakeFileClient.append(TestDataCreationHelper.createRandomInputStream(options.getSize()),
             0, options.getSize());
     }
 
     @Override
     public Mono<Void> runAsync() {
-        return dataLakeFileAsyncClient.append(createRandomByteBufferFlux(options.getSize()), 0, options.getSize());
+        return dataLakeFileAsyncClient.append(byteBufferFlux, 0, options.getSize());
     }
 
     // Required resource setup goes here, upload the file to be downloaded during tests.

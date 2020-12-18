@@ -19,10 +19,13 @@ import static com.azure.perf.test.core.TestDataCreationHelper.createRandomInputS
 public class UploadFromFileShareTest extends FileTestBase<PerfStressOptions> {
 
     private static final Path TEMP_FILE;
+    private static final String TEMP_FILE_PATH;
+
 
     static {
         try {
             TEMP_FILE = Files.createTempFile(null, null);
+            TEMP_FILE_PATH = TEMP_FILE.toString();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -44,7 +47,7 @@ public class UploadFromFileShareTest extends FileTestBase<PerfStressOptions> {
 
     private Mono<Void> createTempFile() {
         try (InputStream inputStream = createRandomInputStream(options.getSize());
-             OutputStream outputStream = new FileOutputStream(TEMP_FILE.toString())) {
+             OutputStream outputStream = new FileOutputStream(TEMP_FILE_PATH)) {
             copyStream(inputStream, outputStream);
             return Mono.empty();
         } catch (IOException e) {
@@ -63,11 +66,11 @@ public class UploadFromFileShareTest extends FileTestBase<PerfStressOptions> {
 
     @Override
     public void run() {
-        shareFileClient.uploadFromFile(TEMP_FILE.toString());
+        shareFileClient.uploadFromFile(TEMP_FILE_PATH);
     }
 
     @Override
     public Mono<Void> runAsync() {
-        return shareFileAsyncClient.uploadFromFile(TEMP_FILE.toString());
+        return shareFileAsyncClient.uploadFromFile(TEMP_FILE_PATH);
     }
 }

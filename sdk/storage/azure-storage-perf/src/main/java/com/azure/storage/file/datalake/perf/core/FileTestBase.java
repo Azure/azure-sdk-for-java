@@ -44,8 +44,8 @@ public abstract class FileTestBase<TOptions extends PerfStressOptions> extends D
         return transferred;
     }
 
-    @Override
-    public Mono<Void> cleanupAsync() {
-        return dataLakeFileAsyncClient.delete().then(super.cleanupAsync());
-    }
+//    @Override
+//    public Mono<Void> cleanupAsync() {
+//        return dataLakeFileAsyncClient.delete().then(super.cleanupAsync());
+//    }
 }

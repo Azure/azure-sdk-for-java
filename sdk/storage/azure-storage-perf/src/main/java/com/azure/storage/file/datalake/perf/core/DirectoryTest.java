@@ -29,9 +29,9 @@ public abstract class DirectoryTest<TOptions extends PerfStressOptions> extends 
         return super.globalSetupAsync().then(dataLakeDirectoryAsyncClient.create()).then();
     }
 
-    // NOTE: the pattern, cleanup yourself, then the parent.
-    @Override
-    public Mono<Void> globalCleanupAsync() {
-        return dataLakeDirectoryAsyncClient.delete().then(super.globalCleanupAsync());
-    }
+//    // NOTE: the pattern, cleanup yourself, then the parent.
+//    @Override
+//    public Mono<Void> globalCleanupAsync() {
+//        return dataLakeDirectoryAsyncClient.delete().then(super.globalCleanupAsync());
+//    }
 }
