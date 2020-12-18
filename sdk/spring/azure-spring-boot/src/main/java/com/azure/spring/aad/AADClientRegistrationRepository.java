@@ -1,32 +1,31 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.aad.webapp;
+package com.azure.spring.aad;
 
+import com.azure.spring.aad.webapp.AzureClientRegistration;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Manage all AAD oauth2 clients configured by property "azure.activedirectory.xxx"
  */
-public class AzureClientRegistrationRepository implements ClientRegistrationRepository, Iterable<ClientRegistration> {
+public abstract class AADClientRegistrationRepository implements ClientRegistrationRepository {
 
-    private final AzureClientRegistration azureClient;
-    private final List<ClientRegistration> otherClients;
-    private final Map<String, ClientRegistration> allClients;
-    private final AADAuthenticationProperties properties;
+    protected final AzureClientRegistration azureClient;
+    protected final List<ClientRegistration> otherClients;
+    protected final Map<String, ClientRegistration> allClients;
+    protected final AADAuthenticationProperties properties;
 
-    public AzureClientRegistrationRepository(AzureClientRegistration azureClient,
-                                             List<ClientRegistration> otherClients,
-                                             AADAuthenticationProperties properties) {
+    public AADClientRegistrationRepository(AzureClientRegistration azureClient,
+                                           List<ClientRegistration> otherClients,
+                                           AADAuthenticationProperties properties) {
         this.azureClient = azureClient;
         this.otherClients = new ArrayList<>(otherClients);
         this.properties = properties;
@@ -47,12 +46,6 @@ public class AzureClientRegistrationRepository implements ClientRegistrationRepo
         return allClients.get(registrationId);
     }
 
-    @NotNull
-    @Override
-    public Iterator<ClientRegistration> iterator() {
-        return allClients.values().iterator();
-    }
-
     public AzureClientRegistration getAzureClient() {
         return azureClient;
     }
@@ -67,5 +60,4 @@ public class AzureClientRegistrationRepository implements ClientRegistrationRepo
         ClientRegistration client = findByRegistrationId(id);
         return client != null && isClientNeedConsentWhenLogin(client);
     }
-
 }

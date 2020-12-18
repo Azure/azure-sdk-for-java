@@ -50,7 +50,7 @@ import static org.springframework.core.Ordered.HIGHEST_PRECEDENCE;
 @ConditionalOnClass(ClientRegistrationRepository.class)
 @EnableConfigurationProperties(AADAuthenticationProperties.class)
 @ConditionalOnProperty(prefix = "azure.activedirectory.user-group", value = "allowed-groups")
-public class AzureActiveDirectoryConfiguration {
+public class AADWebAppConfiguration {
 
     private static final String AZURE_CLIENT_REGISTRATION_ID = "azure";
 
@@ -58,9 +58,9 @@ public class AzureActiveDirectoryConfiguration {
     private AADAuthenticationProperties properties;
 
     @Bean
-    @ConditionalOnMissingBean({ ClientRegistrationRepository.class, AzureClientRegistrationRepository.class })
-    public AzureClientRegistrationRepository clientRegistrationRepository() {
-        return new AzureClientRegistrationRepository(
+    @ConditionalOnMissingBean({ ClientRegistrationRepository.class, AADWebAppClientRegistrationRepository.class })
+    public AADWebAppClientRegistrationRepository clientRegistrationRepository() {
+        return new AADWebAppClientRegistrationRepository(
             createDefaultClient(),
             createAuthzClients(),
             properties);
@@ -68,7 +68,7 @@ public class AzureActiveDirectoryConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public OAuth2AuthorizedClientRepository authorizedClientRepository(AzureClientRegistrationRepository repo) {
+    public OAuth2AuthorizedClientRepository authorizedClientRepository(AADWebAppClientRegistrationRepository repo) {
         return new AzureAuthorizedClientRepository(repo);
     }
 
@@ -161,7 +161,16 @@ public class AzureActiveDirectoryConfiguration {
 
     private ClientRegistration createClientBuilder(String id, AuthorizationProperties authz) {
         ClientRegistration.Builder result = createClientBuilder(id);
-        result.scope(authz.getScopes());
+        List<String> scopes = authz.getScopes();
+        if (authz.isOnDemand()) {
+            if (!scopes.contains("openid")) {
+                scopes.add("openid");
+            }
+            if (!scopes.contains("profile")) {
+                scopes.add("profile");
+            }
+        }
+        result.scope(scopes);
         return result.build();
     }
 

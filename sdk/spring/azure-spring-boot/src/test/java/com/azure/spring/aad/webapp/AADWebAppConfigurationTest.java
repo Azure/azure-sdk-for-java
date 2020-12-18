@@ -18,11 +18,11 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class AzureActiveDirectoryConfigurationTest {
+public class AADWebAppConfigurationTest {
 
     private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
         .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
-        .withUserConfiguration(AzureActiveDirectoryConfiguration.class);
+        .withUserConfiguration(AADWebAppConfiguration.class);
 
     @Test
     public void clientRegistered() {
@@ -33,7 +33,7 @@ public class AzureActiveDirectoryConfigurationTest {
                 "azure.activedirectory.tenant-id = fake-tenant-id",
                 "azure.activedirectory.user-group.allowed-groups = group1, group2")
             .run(context -> {
-                ClientRegistrationRepository clientRepo = context.getBean(AzureClientRegistrationRepository.class);
+                ClientRegistrationRepository clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
                 ClientRegistration azure = clientRepo.findByRegistrationId("azure");
 
                 assertNotNull(azure);
@@ -61,7 +61,7 @@ public class AzureActiveDirectoryConfigurationTest {
                 "azure.activedirectory.authorization.graph.scopes = Calendars.Read"
             )
             .run(context -> {
-                ClientRegistrationRepository clientRepo = context.getBean(AzureClientRegistrationRepository.class);
+                ClientRegistrationRepository clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
                 ClientRegistration azure = clientRepo.findByRegistrationId("azure");
                 ClientRegistration graph = clientRepo.findByRegistrationId("graph");
 
@@ -85,7 +85,7 @@ public class AzureActiveDirectoryConfigurationTest {
                 "azure.activedirectory.authorization.arm.scopes = https://management.core.windows.net/user_impersonation"
             )
             .run(context -> {
-                ClientRegistrationRepository clientRepo = context.getBean(AzureClientRegistrationRepository.class);
+                ClientRegistrationRepository clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
                 ClientRegistration azure = clientRepo.findByRegistrationId("azure");
                 ClientRegistration graph = clientRepo.findByRegistrationId("graph");
                 assertDefaultScopes(
@@ -111,7 +111,7 @@ public class AzureActiveDirectoryConfigurationTest {
                 "azure.activedirectory.authorization.graph.scopes = Calendars.Read"
             )
             .run(context -> {
-                ClientRegistrationRepository clientRepo = context.getBean(AzureClientRegistrationRepository.class);
+                ClientRegistrationRepository clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
                 ClientRegistration azure = clientRepo.findByRegistrationId("azure");
                 assertDefaultScopes(azure,
                     "openid", "profile", "offline_access", "https://graph.microsoft.com/User.Read", "Calendars.Read");
@@ -129,7 +129,7 @@ public class AzureActiveDirectoryConfigurationTest {
                 "azure.activedirectory.authorization.graph.scopes = Calendars.Read"
             )
             .run(context -> {
-                AzureClientRegistrationRepository clientRepo = context.getBean(AzureClientRegistrationRepository.class);
+                AADWebAppClientRegistrationRepository clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
                 ClientRegistration azure = clientRepo.findByRegistrationId("azure");
                 ClientRegistration graph = clientRepo.findByRegistrationId("graph");
                 assertDefaultScopes(
@@ -144,9 +144,8 @@ public class AzureActiveDirectoryConfigurationTest {
                 assertTrue(clientRepo.isClientNeedConsentWhenLogin("graph"));
 
                 List<ClientRegistration> clients = collectClients(clientRepo);
-                assertEquals(2, clients.size());
-                assertEquals("graph", clients.get(0).getRegistrationId());
-                assertEquals("azure", clients.get(1).getRegistrationId());
+                assertEquals(1, clients.size());
+                assertEquals("azure", clients.get(0).getRegistrationId());
             });
     }
 
@@ -161,7 +160,7 @@ public class AzureActiveDirectoryConfigurationTest {
                 "azure.activedirectory.authorization.azure.scopes = Calendars.Read"
             )
             .run(context -> {
-                AzureClientRegistrationRepository clientRepo = context.getBean(AzureClientRegistrationRepository.class);
+                AADWebAppClientRegistrationRepository clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
                 assertDefaultScopes(
                     clientRepo.getAzureClient(),
                     "openid", "profile", "offline_access", "https://graph.microsoft.com/User.Read", "Calendars.Read"
@@ -180,7 +179,7 @@ public class AzureActiveDirectoryConfigurationTest {
                 "azure.activedirectory.authorization-server-uri = http://localhost/"
             )
             .run(context -> {
-                AzureClientRegistrationRepository clientRepo = context.getBean(AzureClientRegistrationRepository.class);
+                AADWebAppClientRegistrationRepository clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
                 ClientRegistration azure = clientRepo.findByRegistrationId("azure");
                 AuthorizationServerEndpoints endpoints = new AuthorizationServerEndpoints("http://localhost/");
                 assertEquals(endpoints.authorizationEndpoint("fake-tenant-id"),
@@ -203,7 +202,7 @@ public class AzureActiveDirectoryConfigurationTest {
                 "azure.activedirectory.authorization.arm.scopes = https://management.core.windows.net/user_impersonation"
             )
             .run(context -> {
-                AzureClientRegistrationRepository repo = context.getBean(AzureClientRegistrationRepository.class);
+                AADWebAppClientRegistrationRepository repo = context.getBean(AADWebAppClientRegistrationRepository.class);
                 ClientRegistration azure = repo.findByRegistrationId("azure");
                 ClientRegistration graph = repo.findByRegistrationId("graph");
                 ClientRegistration arm = repo.findByRegistrationId("arm");

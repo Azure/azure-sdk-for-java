@@ -29,7 +29,7 @@ import java.util.Arrays;
 public abstract class AzureOAuth2Configuration extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private AzureClientRegistrationRepository repo;
+    private AADWebAppClientRegistrationRepository repo;
     @Autowired
     private OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService;
 
