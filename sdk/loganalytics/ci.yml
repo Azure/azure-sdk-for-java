@@ -34,3 +34,6 @@ extends:
       - name: azure-loganalytics
         groupId: com.microsoft.azure
         safeName: azureloganalytics
+      - name: azure-resourcemanager-loganalytics
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerloganalytics
