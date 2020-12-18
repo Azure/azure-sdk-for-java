@@ -68,8 +68,6 @@ public class AADLoginIT {
             } else {
                 throw new IllegalStateException("Can not recognize osName. osName = " + System.getProperty("os.name"));
             }
-        } catch (IllegalStateException e) {
-            throw e;
         } catch (InterruptedException | IOException e) {
             throw new RuntimeException(e);
         } finally {
