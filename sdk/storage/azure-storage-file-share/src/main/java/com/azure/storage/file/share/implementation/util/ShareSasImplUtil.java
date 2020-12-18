@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.share.implementation.util;
 
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -108,16 +109,19 @@ public class ShareSasImplUtil {
      * Generates a Sas signed with a {@link StorageSharedKeyCredential}
      *
      * @param storageSharedKeyCredentials {@link StorageSharedKeyCredential}
+     * @param context Additional context that is passed through the code when generating a SAS.
      * @return A String representing the Sas
      */
-    public String generateSas(StorageSharedKeyCredential storageSharedKeyCredentials) {
+    public String generateSas(StorageSharedKeyCredential storageSharedKeyCredentials, Context context) {
         StorageImplUtils.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
 
         ensureState();
 
         // Signature is generated on the un-url-encoded values.
         final String canonicalName = getCanonicalName(storageSharedKeyCredentials.getAccountName());
-        final String signature = storageSharedKeyCredentials.computeHmac256(stringToSign(canonicalName));
+        final String stringToSign = stringToSign(canonicalName);
+        StorageImplUtils.logStringToSign(logger, stringToSign, context);
+        final String signature = storageSharedKeyCredentials.computeHmac256(stringToSign);
 
         return encode(signature);
     }
