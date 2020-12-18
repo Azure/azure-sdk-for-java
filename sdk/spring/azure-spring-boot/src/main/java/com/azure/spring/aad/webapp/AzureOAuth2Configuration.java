@@ -27,6 +27,8 @@ public abstract class AzureOAuth2Configuration extends WebSecurityConfigurerAdap
 
     @Autowired
     private AADWebAppClientRegistrationRepository repo;
+    @Autowired
+    private OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

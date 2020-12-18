@@ -20,19 +20,19 @@ import org.springframework.util.MultiValueMap;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class AuthzCodeGrantRequestEntityConverterTest {
 
     private AADWebAppClientRegistrationRepository clientRepo;
     private ClientRegistration azure;
-    private ClientRegistration graph;
+    private ClientRegistration arm;
 
     private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
         .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
         .withUserConfiguration(AADWebAppConfiguration.class)
         .withPropertyValues("azure.activedirectory.authorization-server-uri = fake-uri",
-            "azure.activedirectory.authorization.graph.scopes = Calendars.Read",
+            "azure.activedirectory.authorization.arm.scopes = Calendars.Read",
+            "azure.activedirectory.authorization.arm.on-demand=true",
             "azure.activedirectory.client-id = fake-client-id",
             "azure.activedirectory.client-secret = fake-client-secret",
             "azure.activedirectory.tenant-id = fake-tenant-id",
@@ -41,7 +41,7 @@ public class AuthzCodeGrantRequestEntityConverterTest {
     private void getBeans(AssertableWebApplicationContext context) {
         clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
         azure = clientRepo.findByRegistrationId("azure");
-        graph = clientRepo.findByRegistrationId("graph");
+        arm = clientRepo.findByRegistrationId("arm");
     }
 
     @Test
@@ -57,11 +57,11 @@ public class AuthzCodeGrantRequestEntityConverterTest {
     }
 
     @Test
-    public void noScopeParamForOtherClient() {
+    public void addScopeForOnDemandClient() {
         contextRunner.run(context -> {
             getBeans(context);
-            MultiValueMap<String, String> body = convertedBodyOf(createCodeGrantRequest(graph));
-            assertNull(body.get("scope"));
+            MultiValueMap<String, String> body = convertedBodyOf(createCodeGrantRequest(arm));
+            assertEquals("Calendars.Read", body.getFirst("scope"));
         });
     }
 
