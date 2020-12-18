@@ -61,7 +61,7 @@ public class AuthzCodeGrantRequestEntityConverterTest {
         contextRunner.run(context -> {
             getBeans(context);
             MultiValueMap<String, String> body = convertedBodyOf(createCodeGrantRequest(arm));
-            assertEquals("Calendars.Read", body.getFirst("scope"));
+            assertEquals("Calendars.Read openid profile", body.getFirst("scope"));
         });
     }
 
