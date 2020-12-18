@@ -28,25 +28,24 @@ public class AdministrationClientUpdateQueueSample {
             + "SharedAccessKey={key}";
 
         // Create a administrator client using connection string.
-        ServiceBusAdministrationClient administrationClient = new ServiceBusAdministrationClientBuilder()
+        ServiceBusAdministrationClient client = new ServiceBusAdministrationClientBuilder()
             .connectionString(connectionString)
             .buildClient();
 
         // "<<queue-name>>" will be the name of the Service Bus queue instance you created
         // inside the Service Bus namespace.
-        QueueProperties queueProperties = administrationClient.getQueue("<<queue-name>>");
+        QueueProperties properties = client.getQueue("<<queue-name>>");
 
-        System.out.printf("Before update queue properties status :[%s], Max Delivery count :[%d]. %n" ,
-            queueProperties.getStatus(), queueProperties.getMaxDeliveryCount());
+        System.out.printf("Before queue properties status: [%s], Max Delivery count: [%d].%n",
+            properties.getStatus(), properties.getMaxDeliveryCount());
 
         // You can update 'QueueProperties' object with properties you want to change.
-        queueProperties.setStatus(EntityStatus.DISABLED);
-        queueProperties.setMaxDeliveryCount(9);
+        properties.setStatus(EntityStatus.DISABLED).setMaxDeliveryCount(9);
 
-        QueueProperties updatedQueueProperties = administrationClient.updateQueue(queueProperties);
+        QueueProperties updatedProperties = client.updateQueue(properties);
 
-        System.out.printf("After update queue properties status :[%s], Max Delivery count :[%d]. %n" ,
-            updatedQueueProperties.getStatus(), updatedQueueProperties.getMaxDeliveryCount());
+        System.out.printf("After queue properties status: [%s], Max Delivery count: [%d].%n",
+            updatedProperties.getStatus(), updatedProperties.getMaxDeliveryCount());
     }
 
 }
