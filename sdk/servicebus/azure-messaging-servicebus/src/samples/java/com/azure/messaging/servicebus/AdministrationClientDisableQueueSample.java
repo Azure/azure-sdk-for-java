@@ -30,17 +30,17 @@ public class AdministrationClientDisableQueueSample {
             + "SharedAccessKey={key}";
 
         // Create a administrator client using connection string.
-        ServiceBusAdministrationClient administration = new ServiceBusAdministrationClientBuilder()
+        ServiceBusAdministrationClient administrationClient = new ServiceBusAdministrationClientBuilder()
             .connectionString(connectionString)
             .buildClient();
 
         // "<<queue-name>>" will be the name of the Service Bus queue instance you created
         // inside the Service Bus namespace.
-        QueueProperties queueProperties = administration.getQueue("<< queue-name >>");
+        QueueProperties queueProperties = administrationClient.getQueue("<< queue-name >>");
 
         System.out.println(" Queue status: " + queueProperties.getStatus());
 
-        QueueProperties updatedQueueProperties = administration.updateQueue(queueProperties.setStatus(EntityStatus.DISABLED));
+        QueueProperties updatedQueueProperties = administrationClient.updateQueue(queueProperties.setStatus(EntityStatus.DISABLED));
 
         System.out.println(" Queue status after update: " + updatedQueueProperties.getStatus());
 
