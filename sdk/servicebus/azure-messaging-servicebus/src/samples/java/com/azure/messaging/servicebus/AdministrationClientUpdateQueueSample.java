@@ -10,11 +10,11 @@ import com.azure.messaging.servicebus.administration.models.QueueProperties;
 import java.time.Duration;
 
 /**
- * Sample example showing how to update properties for Service Bus Queue.
+ * Sample example showing how to update properties of Service Bus Queue.
  */
 public class AdministrationClientUpdateQueueSample {
     /**
-     * Main method to show how update properties for Service Bus Queue.
+     * Main method to show how to update properties of Service Bus Queue.
      *
      * @param args Unused arguments to the program.
      */
