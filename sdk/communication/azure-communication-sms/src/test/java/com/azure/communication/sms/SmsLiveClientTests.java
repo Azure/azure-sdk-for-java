@@ -84,7 +84,6 @@ public class SmsLiveClientTests extends SmsLiveTestBase {
             builder = addLoggingPolicy(builder, "sendSmsRequestBadSignature");
             builder.buildClient().sendMessage(from, to, body);
         } catch (HttpResponseException ex) {
-            assertEquals(401, ex.getResponse().getStatusCode());
             http401ExceptionThrown = true;
         }
 
