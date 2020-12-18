@@ -219,20 +219,21 @@ function Update-java-CIConfig($pkgs, $ciRepo, $locationInDocRepo, $monikerId=$nu
 
 
 # function is used to filter packages to submit to API view tool
-function Find-java-Artifacts-For-Apireview($artifactDir, $pkgName = "")
+function Find-java-Artifacts-For-Apireview($artifactDir, $pkgName)
 {
-  Write-Host "Checking for source jar in artifact path $($artifactDir)"
+  $packageSearchPath = Join-Path $artifactDir "*" $pkgName
+  Write-Host "Checking for source jar in artifact path $($packageSearchPath)"
   # Find all source jar files in given artifact directory
-  $files = Get-ChildItem "${artifactDir}" | Where-Object -FilterScript {$_.Name.EndsWith("sources.jar")}
+  $files = Get-ChildItem "${packageSearchPath}" | Where-Object -FilterScript {$_.Name.EndsWith("sources.jar")}
   if (!$files)
   {
-    Write-Host "$($artifactDir) does not have any package"
+    Write-Host "$($packageSearchPath) does not have any package"
     return $null
   }
   elseif($files.Count -ne 1)
   {
-    Write-Host "$($artifactDir) should contain only one (1) published source jar package"
-    Write-Host "No of Packages $($files.Count)"
+    Write-Host "$($packageSearchPath) should contain only one (1) published source jar package"
+    write-Host $files
     return $null
   }
   
