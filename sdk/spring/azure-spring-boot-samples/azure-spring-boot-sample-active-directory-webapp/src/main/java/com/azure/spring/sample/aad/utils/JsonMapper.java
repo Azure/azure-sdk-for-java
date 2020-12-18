@@ -15,8 +15,16 @@ public class JsonMapper {
     private static final Logger LOGGER = LoggerFactory.getLogger(ClientController.class);
     private static final ObjectMapper MAPPER = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
 
-    public static final String toJsonString(OAuth2AuthorizedClient authorizedClient) throws JsonProcessingException {
-        String clientJsonString = MAPPER.writeValueAsString(authorizedClient);
+    public static final String toJsonString(OAuth2AuthorizedClient authorizedClient) {
+        String clientJsonString = "Json String for OAuth2AuthorizedClient";
+
+        try {
+            clientJsonString = MAPPER.writeValueAsString(authorizedClient);
+        } catch (JsonProcessingException e) {
+            LOGGER.warn("Error with transfer OAuth2AuthorizedClient to Json");
+            clientJsonString = "Fail to generate Json String of current OAuth2AuthorizedClient";
+        }
+
         LOGGER.info(clientJsonString);
         return clientJsonString;
     }
