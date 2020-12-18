@@ -36,27 +36,10 @@ public class PublishClassTime {
         String key = System.getenv("TOPIC_KEY");
         String endpoint = System.getenv("TOPIC_ENDPOINT");
 
-        JacksonAdapter customSerializer = new JacksonAdapter();
-
-        customSerializer.serializer().registerModule(new SimpleModule().addSerializer(ClassTime.class,
-            new JsonSerializer<ClassTime>() {
-
-                @Override
-                public void serialize(ClassTime classTime, JsonGenerator jsonGenerator,
-                                      SerializerProvider serializerProvider) throws IOException {
-                    jsonGenerator.writeStartObject();
-                    jsonGenerator.writeStringField("department", classTime.getDepartment());
-                    jsonGenerator.writeNumberField("courseNumber", classTime.getCourseNumber());
-                    jsonGenerator.writeStringField("startTime", classTime.getStartTime().toString());
-                    jsonGenerator.writeEndObject();
-                }
-            }));
-
         // EG client
         EventGridPublisherClient egClient = new EventGridPublisherClientBuilder()
             .credential(new AzureKeyCredential(key))
             .endpoint(endpoint)
-            .serializer(customSerializer)
             .buildClient();
 
         Random random = new Random();

@@ -20,8 +20,6 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.tracing.TracerProxy;
 import com.azure.messaging.eventgrid.implementation.CloudEventTracingPipelinePolicy;
 
@@ -75,8 +73,6 @@ public final class EventGridPublisherClientBuilder {
 
     private RetryPolicy retryPolicy;
 
-    private SerializerAdapter serializer;
-
     /**
      * Construct a new instance with default building settings. The endpoint and one credential method must be set
      * in order for the client to be built.
@@ -104,16 +100,12 @@ public final class EventGridPublisherClientBuilder {
             throw logger.logExceptionAsError(new IllegalArgumentException("Cannot parse endpoint"));
         }
 
-        SerializerAdapter buildSerializer = serializer == null ?
-            JacksonAdapter.createDefaultSerializerAdapter() :
-            serializer;
-
         EventGridServiceVersion buildServiceVersion = serviceVersion == null ?
             EventGridServiceVersion.getLatest() :
             serviceVersion;
 
         if (httpPipeline != null) {
-            return new EventGridPublisherAsyncClient(httpPipeline, hostname, buildSerializer, buildServiceVersion);
+            return new EventGridPublisherAsyncClient(httpPipeline, hostname, buildServiceVersion);
         }
 
         Configuration buildConfiguration = (configuration == null)
@@ -157,7 +149,7 @@ public final class EventGridPublisherClientBuilder {
             .build();
 
 
-        return new EventGridPublisherAsyncClient(buildPipeline, hostname, buildSerializer, buildServiceVersion);
+        return new EventGridPublisherAsyncClient(buildPipeline, hostname, buildServiceVersion);
     }
 
     /**
@@ -285,18 +277,6 @@ public final class EventGridPublisherClientBuilder {
      */
     public EventGridPublisherClientBuilder serviceVersion(EventGridServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
-        return this;
-    }
-
-    /**
-     * Set the serializer to use when serializing events to be sent. Default is
-     * {@link JacksonAdapter#createDefaultSerializerAdapter()}.
-     * @param serializer the serializer to set.
-     *
-     * @return the builder itself.
-     */
-    public EventGridPublisherClientBuilder serializer(SerializerAdapter serializer) {
-        this.serializer = serializer;
         return this;
     }
 }

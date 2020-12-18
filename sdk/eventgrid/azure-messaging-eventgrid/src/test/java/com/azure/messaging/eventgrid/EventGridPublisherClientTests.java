@@ -177,7 +177,6 @@ public class EventGridPublisherClientTests extends TestBase {
         EventGridPublisherAsyncClient egClient = builder
             .credential(getKey(CLOUD_KEY))
             .endpoint(getEndpoint(CLOUD_ENDPOINT))
-            .serializer(customSerializer)
             .buildAsyncClient();
 
         List<CloudEvent> events = new ArrayList<>();
