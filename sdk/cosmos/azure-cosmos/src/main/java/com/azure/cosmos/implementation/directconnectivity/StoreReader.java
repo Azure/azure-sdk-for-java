@@ -867,10 +867,6 @@ public class StoreReader {
     }
 
     static void verifyCanContinueOnException(CosmosException ex) {
-        if (ex == null) {
-            return;
-        }
-
         if (ex instanceof PartitionKeyRangeGoneException) {
             throw ex;
         }
