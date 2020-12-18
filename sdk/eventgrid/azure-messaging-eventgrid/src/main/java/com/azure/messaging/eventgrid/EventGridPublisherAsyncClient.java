@@ -10,7 +10,6 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.tracing.TracerProxy;
 import com.azure.messaging.eventgrid.implementation.Constants;
 import com.azure.messaging.eventgrid.implementation.EventGridPublisherClientImpl;
@@ -41,11 +40,9 @@ public final class EventGridPublisherAsyncClient {
     private final ClientLogger logger = new ClientLogger(EventGridPublisherAsyncClient.class);
 
 
-    EventGridPublisherAsyncClient(HttpPipeline pipeline, String hostname, SerializerAdapter serializerAdapter,
-                                  EventGridServiceVersion serviceVersion) {
+    EventGridPublisherAsyncClient(HttpPipeline pipeline, String hostname, EventGridServiceVersion serviceVersion) {
         this.impl = new EventGridPublisherClientImplBuilder()
             .pipeline(pipeline)
-            .serializerAdapter(serializerAdapter)
             .buildClient();
 
         // currently the service version is hardcoded into the Impl client, but once another service version gets
