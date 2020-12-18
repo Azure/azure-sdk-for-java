@@ -6,11 +6,14 @@ parameters:
   - name: MaxParallel
     type: number
     default: 0
+  - name: Timeout
+    type: number
+    default: 15
 
 
 jobs:
   - job: SmokeTest
-    timeoutInMinutes: 15
+    timeoutInMinutes: ${{ parameters.Timeout }}
 
     strategy:
       maxParallel: ${{ parameters.MaxParallel }}

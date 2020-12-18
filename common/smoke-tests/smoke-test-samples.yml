@@ -1,6 +1,7 @@
 jobs:
   - template: ./smoke-test-job.yml
     parameters:
+      Timeout: 30
       MaxParallel: 2
 
       TestTask:
