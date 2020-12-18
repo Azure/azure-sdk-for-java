@@ -18,7 +18,6 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
 
     public ServiceTest(TOptions options) {
         super(options);
-
         String connectionString = System.getenv("STORAGE_CONNECTION_STRING");
 
         if (connectionString == null || connectionString.isEmpty()) {

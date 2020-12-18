@@ -35,13 +35,4 @@ public abstract class DirectoryTest<TOptions extends PerfStressOptions> extends 
                 return 1; }))
             .then();
     }
-
-    // NOTE: the pattern, cleanup yourself, then the parent.
-    @Override
-    public Mono<Void> globalCleanupAsync() {
-        return Mono.fromCallable(() -> {
-            cloudFileDirectory.delete();
-            return 1;
-        }).then(super.globalCleanupAsync());
-    }
 }

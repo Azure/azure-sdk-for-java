@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import com.azure.perf.test.core.PerfStressOptions;
+import com.azure.perf.test.core.RepeatingInputStream;
 import com.azure.perf.test.core.TestDataCreationHelper;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.blob.BlobOutputStream;
@@ -23,9 +24,8 @@ public class UploadOutputStreamTest extends BlobTestBase<PerfStressOptions> {
     @Override
     public void run() {
         try {
-            InputStream inputStream = TestDataCreationHelper.createRandomInputStream(options.getSize());
             BlobOutputStream outputStream = cloudBlockBlob.openOutputStream();
-            TestDataCreationHelper.copyStream(inputStream, outputStream, DEFAULT_BUFFER_SIZE);
+            TestDataCreationHelper.writeBytesToOutputStream(outputStream, options.getSize());
             outputStream.close();
         } catch (StorageException | IOException e) {
             throw new RuntimeException(e);

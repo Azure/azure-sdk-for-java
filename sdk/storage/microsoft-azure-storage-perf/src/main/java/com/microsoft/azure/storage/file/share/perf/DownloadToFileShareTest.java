@@ -18,11 +18,15 @@ import java.util.UUID;
 public class DownloadToFileShareTest extends DirectoryTest<PerfStressOptions> {
     private static final String FILE_NAME = "perfstress-file-" + UUID.randomUUID().toString();
 
+    private final File targetFile;
+    private final String targetFilePath;
     private final CloudFile cloudFile;
 
     public DownloadToFileShareTest(PerfStressOptions options) {
         super(options);
         try {
+            targetFile = new File(UUID.randomUUID().toString());
+            targetFilePath = targetFile.getAbsolutePath();
             cloudFile = cloudFileDirectory.getFileReference(FILE_NAME);
         } catch (URISyntaxException | StorageException e) {
             throw new RuntimeException(e);
@@ -48,24 +52,22 @@ public class DownloadToFileShareTest extends DirectoryTest<PerfStressOptions> {
     @Override
     public void run() {
         try {
-            File tempFile = File.createTempFile("tempFile", "fileshare");
-            tempFile.deleteOnExit();
-            cloudFile.downloadToFile(tempFile.getAbsolutePath());
+            cloudFile.downloadToFile(targetFilePath);
         } catch (StorageException | IOException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public Mono<Void> runAsync() {
-        throw new UnsupportedOperationException();
+    public Mono<Void> cleanupAsync() {
+        return Mono.fromCallable(() -> {
+            targetFile.delete();
+            return 1;
+        }).then(super.cleanupAsync());
     }
 
     @Override
-    public Mono<Void> globalCleanupAsync() {
-        return Mono.fromCallable(() -> {
-            cloudFile.delete();
-            return 1;
-        }).then(super.globalCleanupAsync());
+    public Mono<Void> runAsync() {
+        throw new UnsupportedOperationException();
     }
 }

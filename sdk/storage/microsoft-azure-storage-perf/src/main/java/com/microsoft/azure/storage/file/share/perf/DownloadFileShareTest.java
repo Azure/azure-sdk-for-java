@@ -76,13 +76,4 @@ public class DownloadFileShareTest extends DirectoryTest<PerfStressOptions> {
     public Mono<Void> runAsync() {
         throw new UnsupportedOperationException();
     }
-
-    // NOTE: the pattern, cleanup yourself, then the parent.
-    @Override
-    public Mono<Void> globalCleanupAsync() {
-        return Mono.fromCallable(() -> {
-            cloudFile.delete();
-            return 1;
-        }).then(super.globalCleanupAsync());
-    }
 }

@@ -43,14 +43,10 @@ public abstract class FileTestBase<TOptions extends PerfStressOptions> extends D
     }
 
     @Override
-    public Mono<Void> cleanupAsync() {
-        return Mono.defer(() -> {
-            try {
-                cloudFile.delete();
-            } catch (StorageException | URISyntaxException e) {
-                return Mono.error(e);
-            }
-            return Mono.empty();
+    public Mono<Void> setupAsync() {
+        return Mono.fromCallable(() -> {
+            cloudFile.create(options.getSize() + DEFAULT_BUFFER_SIZE);
+            return 1;
         }).then(super.cleanupAsync());
     }
 }

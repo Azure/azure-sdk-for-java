@@ -4,6 +4,7 @@
 package com.microsoft.azure.storage.blob.perf;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URISyntaxException;
 
 import com.azure.perf.test.core.NullOutputStream;
@@ -17,6 +18,7 @@ import reactor.core.publisher.Mono;
 
 public class DownloadBlobTest extends ContainerTest<PerfStressOptions> {
     private final CloudBlockBlob cloudBlockBlob;
+    private static final OutputStream DEV_NULL = new NullOutputStream();
 
     public DownloadBlobTest(PerfStressOptions options) {
         super(options);
@@ -43,7 +45,7 @@ public class DownloadBlobTest extends ContainerTest<PerfStressOptions> {
     @Override
     public void run() {
         try {
-            cloudBlockBlob.download(new NullOutputStream());
+            cloudBlockBlob.download(DEV_NULL);
         } catch (StorageException e) {
             throw new RuntimeException(e);
         }

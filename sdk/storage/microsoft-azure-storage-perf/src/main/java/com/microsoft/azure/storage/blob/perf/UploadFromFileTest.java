@@ -18,7 +18,18 @@ import com.microsoft.azure.storage.blob.perf.core.BlobTestBase;
 import reactor.core.publisher.Mono;
 
 public class UploadFromFileTest extends BlobTestBase<PerfStressOptions> {
-    private static Path tempFile;
+
+    private static final Path TEMP_FILE;
+    private static final String TEMP_FILE_PATH;
+
+    static {
+        try {
+            TEMP_FILE = Files.createTempFile(null, null);
+            TEMP_FILE_PATH = TEMP_FILE.toString();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public UploadFromFileTest(PerfStressOptions options) {
         super(options);
@@ -39,9 +50,8 @@ public class UploadFromFileTest extends BlobTestBase<PerfStressOptions> {
             InputStream inputStream = null;
             OutputStream outputStream = null;
             try {
-                tempFile = Files.createTempFile(null, null);
                 inputStream = TestDataCreationHelper.createRandomInputStream(options.getSize());
-                outputStream = new FileOutputStream(tempFile.toString());
+                outputStream = new FileOutputStream(TEMP_FILE_PATH);
                 TestDataCreationHelper.copyStream(inputStream, outputStream, DEFAULT_BUFFER_SIZE);
                 return 1;
             } catch (IOException e) {
@@ -60,7 +70,7 @@ public class UploadFromFileTest extends BlobTestBase<PerfStressOptions> {
 
     private Mono<Void> deleteTempFile() {
         try {
-            Files.delete(tempFile);
+            Files.delete(TEMP_FILE);
             return Mono.empty();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -70,7 +80,7 @@ public class UploadFromFileTest extends BlobTestBase<PerfStressOptions> {
     @Override
     public void run() {
         try {
-            cloudBlockBlob.uploadFromFile(tempFile.toString());
+            cloudBlockBlob.uploadFromFile(TEMP_FILE_PATH);
         } catch (StorageException | IOException e) {
             throw new RuntimeException(e);
         }
