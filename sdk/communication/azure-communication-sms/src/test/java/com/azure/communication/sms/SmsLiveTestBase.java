@@ -3,6 +3,7 @@
 
 package com.azure.communication.sms;
 
+import com.azure.communication.common.CommunicationLoggerPolicy;
 import com.azure.communication.sms.models.SendSmsResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.HttpClient;
@@ -32,7 +33,7 @@ public class SmsLiveTestBase extends TestBase {
     static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_LIVETEST_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=VGhpcyBpcyBhIHRlc3Q=");
 
-    protected SmsClientBuilder getSmsClientBuilder(HttpClient httpClient) {
+    protected SmsClientBuilder getSmsClientBuilder(HttpClient httpClient, String testName) {
         SmsClientBuilder builder = new SmsClientBuilder();
 
         builder.endpoint(ENDPOINT)
@@ -43,10 +44,14 @@ public class SmsLiveTestBase extends TestBase {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
+        if (getTestMode() == TestMode.LIVE) {
+            builder.addPolicy(new CommunicationLoggerPolicy(testName));
+        }
+
         return builder;
     }
 
-    protected SmsClientBuilder getSmsClientBuilderWithConnectionString(HttpClient httpClient) {
+    protected SmsClientBuilder getSmsClientBuilderWithConnectionString(HttpClient httpClient, String testName) {
         SmsClientBuilder builder = new SmsClientBuilder();
 
         builder
@@ -55,6 +60,10 @@ public class SmsLiveTestBase extends TestBase {
 
         if (getTestMode() == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+
+        if (getTestMode() == TestMode.LIVE) {
+            builder.addPolicy(new CommunicationLoggerPolicy(testName));
         }
 
         return builder;

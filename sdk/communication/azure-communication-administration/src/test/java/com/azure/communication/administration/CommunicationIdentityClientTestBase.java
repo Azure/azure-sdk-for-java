@@ -32,7 +32,7 @@ public class CommunicationIdentityClientTestBase extends TestBase {
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=" + ACCESSKEYENCODED);
     
-    protected CommunicationIdentityClientBuilder getCommunicationIdentityClient(HttpClient httpClient) {
+    protected CommunicationIdentityClientBuilder getCommunicationIdentityClient(HttpClient httpClient, String testName) {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
         builder.endpoint(ENDPOINT)
             .accessKey(ACCESSKEY)
@@ -43,13 +43,13 @@ public class CommunicationIdentityClientTestBase extends TestBase {
         }
 
         if (getTestMode() == TestMode.LIVE) {
-            builder.addPolicy(new CommunicationLoggerPolicy());
+            builder.addPolicy(new CommunicationLoggerPolicy(testName));
         }
 
         return builder;
     }
 
-    protected CommunicationIdentityClientBuilder getCommunicationIdentityClientBuilderUsingManagedIdentity(HttpClient httpClient) {
+    protected CommunicationIdentityClientBuilder getCommunicationIdentityClientBuilderUsingManagedIdentity(HttpClient httpClient, String testName) {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
         builder
             .endpoint(ENDPOINT)
@@ -66,13 +66,13 @@ public class CommunicationIdentityClientTestBase extends TestBase {
         }
 
         if (getTestMode() == TestMode.LIVE) {
-            builder.addPolicy(new CommunicationLoggerPolicy());
+            builder.addPolicy(new CommunicationLoggerPolicy(testName));
         }
 
         return builder;
     }
 
-    protected CommunicationIdentityClientBuilder getCommunicationIdentityClientUsingConnectionString(HttpClient httpClient) {
+    protected CommunicationIdentityClientBuilder getCommunicationIdentityClientUsingConnectionString(HttpClient httpClient, String testName) {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
         builder
             .connectionString(CONNECTION_STRING)
@@ -83,7 +83,7 @@ public class CommunicationIdentityClientTestBase extends TestBase {
         }
 
         if (getTestMode() == TestMode.LIVE) {
-            builder.addPolicy(new CommunicationLoggerPolicy());
+            builder.addPolicy(new CommunicationLoggerPolicy(testName));
         }
 
         return builder;

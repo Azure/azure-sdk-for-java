@@ -41,14 +41,14 @@ public class SmsLiveClientTests extends SmsLiveTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void sendSmsRequest(HttpClient httpClient) throws NoSuchAlgorithmException {
-        SendSmsResponse response = getTestSmsClient(httpClient).sendMessage(from, to, body, smsOptions);
+        SendSmsResponse response = getTestSmsClient(httpClient, "sendSmsRequest").sendMessage(from, to, body, smsOptions);
         verifyResponse(response);
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void sendSmsMessageWithResponse(HttpClient httpClient) throws NoSuchAlgorithmException {
-        Response<SendSmsResponse> response = getTestSmsClient(httpClient)
+        Response<SendSmsResponse> response = getTestSmsClient(httpClient, "sendSmsMessageWithResponse")
             .sendMessageWithResponse(from, to, body, smsOptions, Context.NONE);
         
         verifyResponse(response);  
@@ -57,7 +57,7 @@ public class SmsLiveClientTests extends SmsLiveTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void sendSmsMessageWithResponseNullContext(HttpClient httpClient) throws NoSuchAlgorithmException {
-        Response<SendSmsResponse> response = getTestSmsClient(httpClient)
+        Response<SendSmsResponse> response = getTestSmsClient(httpClient, "sendSmsMessageWithResponseNullContext")
             .sendMessageWithResponse(from, to, body, smsOptions, null);
 
         verifyResponse(response);           
@@ -68,7 +68,7 @@ public class SmsLiveClientTests extends SmsLiveTestBase {
     public void sendSmsRequestNoDeliverReport(HttpClient httpClient) throws NoSuchAlgorithmException {
         smsOptions.setEnableDeliveryReport(false); 
 
-        SendSmsResponse response = getTestSmsClient(httpClient).sendMessage(from, to, body);
+        SendSmsResponse response = getTestSmsClient(httpClient, "sendSmsRequestNoDeliverReport").sendMessage(from, to, body);
         verifyResponse(response);
     }
 
@@ -79,7 +79,7 @@ public class SmsLiveClientTests extends SmsLiveTestBase {
         boolean http401ExceptionThrown = false;
 
         try {
-            SmsClientBuilder builder = getSmsClientBuilder(httpClient);
+            SmsClientBuilder builder = getSmsClientBuilder(httpClient, "sendSmsRequestBadSignature");
             builder.accessKey(DEFAULT_ACCESS_KEY);
             builder.buildClient().sendMessage(from, to, body);
         } catch (HttpResponseException ex) {
@@ -98,7 +98,7 @@ public class SmsLiveClientTests extends SmsLiveTestBase {
         boolean http404ExceptionThrown = false;
 
         try {
-            getTestSmsClient(httpClient).sendMessage(from, to, body);
+            getTestSmsClient(httpClient, "sendSmsRequestUnownedNumber").sendMessage(from, to, body);
         } catch (HttpResponseException ex) {
             assertEquals(404, ex.getResponse().getStatusCode());
             http404ExceptionThrown = true;
@@ -115,7 +115,7 @@ public class SmsLiveClientTests extends SmsLiveTestBase {
         boolean http400ExceptionThrown = false;
 
         try {
-            getTestSmsClient(httpClient).sendMessage(from, to, body);
+            getTestSmsClient(httpClient, "sendSmsRequestMalformedNumber").sendMessage(from, to, body);
         } catch (HttpResponseException ex) {
             assertEquals(400, ex.getResponse().getStatusCode());
             http400ExceptionThrown = true;
@@ -124,9 +124,9 @@ public class SmsLiveClientTests extends SmsLiveTestBase {
         assertTrue(http400ExceptionThrown);
     }
 
-    private SmsClient getTestSmsClient(HttpClient httpClient) {
+    private SmsClient getTestSmsClient(HttpClient httpClient, String testName) {
   
-        return getSmsClientBuilderWithConnectionString(httpClient)
+        return getSmsClientBuilderWithConnectionString(httpClient, testName)
             .buildClient();
     }    
 }

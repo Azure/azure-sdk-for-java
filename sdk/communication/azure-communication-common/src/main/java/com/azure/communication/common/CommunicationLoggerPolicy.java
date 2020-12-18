@@ -3,7 +3,6 @@
 
 package com.azure.communication.common;
 
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
@@ -18,11 +17,13 @@ import reactor.core.publisher.Mono;
 public class CommunicationLoggerPolicy implements HttpPipelinePolicy {
 
     final ClientLogger logger = new ClientLogger(CommunicationLoggerPolicy.class);
+    String testName;
+
     /**
      * Creates a policy that logs the Http Response
      */
-    public CommunicationLoggerPolicy() {
-        // construct logger
+    public CommunicationLoggerPolicy(String testName) {
+        this.testName = testName;
     }
 
     @Override
@@ -31,8 +32,9 @@ public class CommunicationLoggerPolicy implements HttpPipelinePolicy {
         .flatMap(httpResponse -> {
             final HttpResponse bufferedResponse = httpResponse.buffer();
             
-            System.out.println("Response Url " + bufferedResponse.getRequest().getUrl());
-            System.out.println("MS-CV header: " + bufferedResponse.getHeaderValue("MS-CV"));
+            // Should sanitize printed reponse url
+            System.out.println("Response Url for " + testName + ": " + bufferedResponse.getRequest().getUrl());
+            System.out.println("MS-CV header for " + testName + ": " + bufferedResponse.getHeaderValue("MS-CV"));
             return Mono.just(bufferedResponse);
         });
     }
