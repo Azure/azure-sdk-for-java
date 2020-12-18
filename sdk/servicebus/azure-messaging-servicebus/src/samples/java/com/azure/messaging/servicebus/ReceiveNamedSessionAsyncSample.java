@@ -54,7 +54,7 @@ public class ReceiveNamedSessionAsyncSample {
         //    inside the Service Bus namespace.
 
         String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
-        String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME");
+        String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_SESSION_QUEUE_NAME");
 
         // Create a receiver.
         ServiceBusSessionReceiverAsyncClient sessionReceiver = new ServiceBusClientBuilder()

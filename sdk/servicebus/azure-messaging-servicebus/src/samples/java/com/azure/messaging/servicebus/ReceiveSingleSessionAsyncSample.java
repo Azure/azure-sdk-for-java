@@ -54,7 +54,7 @@ public class ReceiveSingleSessionAsyncSample {
 
         String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
         String topicName = System.getenv("AZURE_SERVICEBUS_SAMPLE_TOPIC_NAME");
-        String subscriptionName = System.getenv("AZURE_SERVICEBUS_SAMPLE_SUBSCRIPTION_NAME");
+        String subscriptionName = System.getenv("AZURE_SERVICEBUS_SAMPLE_SESSION_SUBSCRIPTION_NAME");
 
         // Create a receiver.
         ServiceBusSessionReceiverAsyncClient sessionReceiver = new ServiceBusClientBuilder()
@@ -90,7 +90,7 @@ public class ReceiveSingleSessionAsyncSample {
             });
 
         // Subscribe is not a blocking call so we sleep here so the program does not end.
-        TimeUnit.SECONDS.sleep(60);
+        TimeUnit.SECONDS.sleep(30);
 
         // Disposing of the subscription will cancel the receive() operation.
         subscription.dispose();

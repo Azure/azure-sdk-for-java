@@ -74,7 +74,7 @@ public class ReceiveMessageAutoLockRenewal {
             });
 
         // Subscribe is not a blocking call so we sleep here so the program does not end.
-        TimeUnit.SECONDS.sleep(60);
+        TimeUnit.SECONDS.sleep(30);
 
         // Disposing of the subscription will cancel the receive() operation.
         subscription.dispose();

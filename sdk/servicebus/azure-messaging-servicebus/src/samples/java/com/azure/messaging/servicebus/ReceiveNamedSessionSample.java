@@ -34,7 +34,7 @@ public class ReceiveNamedSessionSample {
      * Main method to invoke this demo on how to receive messages from a session with id "greetings" in an Azure Service
      * Bus Queue.
      */
-    @Test
+    //@Test
     public void run() {
         final AtomicBoolean isRunning = new AtomicBoolean(true);
 
@@ -56,7 +56,7 @@ public class ReceiveNamedSessionSample {
         //    inside the Service Bus namespace.
 
         String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
-        String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME");
+        String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_SESSION_QUEUE_NAME");
 
         // Create a receiver.
         ServiceBusSessionReceiverClient sessionReceiver = new ServiceBusClientBuilder()

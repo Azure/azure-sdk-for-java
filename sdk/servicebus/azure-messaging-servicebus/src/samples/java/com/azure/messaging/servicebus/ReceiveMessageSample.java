@@ -33,7 +33,7 @@ public class ReceiveMessageSample {
      * Method to invoke this demo on how to receive a set of {@link ServiceBusMessage messages} from an Azure
      * Service Bus Queue.
      */
-    @Test
+    //@Test
     public void run() {
 
         // The connection string value can be obtained by:
