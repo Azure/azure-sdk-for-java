@@ -32,7 +32,7 @@ completed before the run.
 
 ## Examples
 
-1. Update [application.yaml](src/main/resources/application.yaml). If you choose to use
+1. Update [application.yaml][application.yaml]. If you choose to use
    service principal or managed identity, update the `application-sp.yaml` or
    `application-mi.yaml` respectively.
     ```yaml
@@ -70,7 +70,7 @@ completed before the run.
 ## Contributing
 
 [azure-account]: https://azure.microsoft.com/account/
-[azure-portal]: http://ms.portal.azure.com/
+[azure-portal]: https://ms.portal.azure.com/
 [create-event-hubs]: https://docs.microsoft.com/azure/event-hubs/
 [create-azure-storage]: https://docs.microsoft.com/azure/storage/
 [create-managed-identity]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/create-managed-identity.md
@@ -79,6 +79,6 @@ completed before the run.
 [ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
 [receive-controller]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-eventhubs/src/main/java/com/azure/spring/sample/eventhubs/ReceiveController.java
 [send-controller]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-eventhubs/src/main/java/com/azure/spring/sample/eventhubs/SendController.java
-
+[application.yaml]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-eventhubs/src/main/resources/application.yaml
 
 

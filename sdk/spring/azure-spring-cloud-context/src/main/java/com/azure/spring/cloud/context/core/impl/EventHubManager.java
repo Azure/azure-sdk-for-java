@@ -38,8 +38,7 @@ public class EventHubManager extends AzureManager<EventHub, Tuple<EventHubNamesp
             return azureResourceManager.eventHubs()
                                        .getByName(resourceGroup, namespaceAndName.getFirst().name(),
                                            namespaceAndName.getSecond());
-        } catch (
-            ManagementException e) {
+        } catch (ManagementException e) {
             if (e.getResponse().getStatusCode() == 404) {
                 return null;
             } else {

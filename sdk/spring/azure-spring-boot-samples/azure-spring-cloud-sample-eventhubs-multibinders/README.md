@@ -35,7 +35,7 @@ is completed before the run.
 ## Examples
 
 1.  Update stream binding related properties in
-    [application.yaml](src/main/resources/application.yaml). If you choose to use 
+    [application.yaml][application.yaml]. If you choose to use 
     service principal or managed identity, update the `application-sp.yaml` or 
     `application-mi.yaml` respectively.
 
@@ -119,7 +119,7 @@ processing.
         [2] New message received: 'hello'
         [2] Message 'hello' successfully checkpointed
 
-6.  Delete the resources on [Azure Portal](http://ms.portal.azure.com/)
+6.  Delete the resources on [Azure Portal][azure-portal]
     to avoid unexpected charges.
 
 ## Troubleshooting
@@ -131,7 +131,7 @@ processing.
 
 <!-- LINKS -->
 [azure-account]: https://azure.microsoft.com/account/
-[azure-portal]: http://ms.portal.azure.com/
+[azure-portal]: https://ms.portal.azure.com/
 [create-event-hubs]: https://docs.microsoft.com/azure/event-hubs/
 [create-azure-storage]: https://docs.microsoft.com/azure/storage/
 [create-sp-using-azure-cli]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/create-sp-using-azure-cli.md
@@ -141,4 +141,4 @@ processing.
 [managed-identities]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/
 [ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
 [role-assignment]: https://docs.microsoft.com/azure/role-based-access-control/role-assignments-portal
-
+[application.yaml]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-eventhubs-multibinders/src/main/resources/application.yaml

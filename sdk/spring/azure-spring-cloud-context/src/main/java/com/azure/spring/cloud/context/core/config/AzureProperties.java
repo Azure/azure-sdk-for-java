@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.context.core.config;
 
-import com.azure.core.management.AzureEnvironment;
+
 import com.azure.spring.cloud.context.core.api.CredentialSupplier;
 import com.azure.spring.cloud.context.core.enums.AzureEnvironments;
 import com.google.common.base.Strings;

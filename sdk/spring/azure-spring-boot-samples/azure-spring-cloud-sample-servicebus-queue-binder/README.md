@@ -27,7 +27,7 @@ Event Hub. You can choose anyone of them.
 1.  Create Azure Service Bus namespace and queue.
     Please see [how to create][create-service-bus].
 
-1.  Update [application.yaml](src/main/resources/application.yaml).
+1.  Update [application.yaml][application.yaml].
     ```yaml
     spring:
       cloud:
@@ -50,7 +50,7 @@ Event Hub. You can choose anyone of them.
 1.  Create Azure Service Bus namespace and queue.
         Please see [how to create][create-service-bus].
     
-1.  Update [application-sp.yaml](src/main/resources/application-sp.yaml).
+1.  Update [application-sp.yaml][application-sp.yaml].
     ```yaml
     spring:
       cloud:
@@ -87,7 +87,7 @@ Please follow [create managed identity][create-managed-identity] to set up manag
 
 ##### Update MSI related properties
 
-1.  Update [application-mi.yaml](src/main/resources/application-mi.yaml)
+1.  Update [application-mi.yaml][application-mi.yaml].
     ```yaml
     spring:
       cloud:
@@ -164,7 +164,7 @@ spring:
 <!-- LINKS -->
 
 [azure-account]: https://azure.microsoft.com/account/
-[azure-portal]: http://ms.portal.azure.com/
+[azure-portal]: https://ms.portal.azure.com/
 [create-service-bus]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-create-namespace-portal 
 [create-azure-storage]: https://docs.microsoft.com/azure/storage/ 
 [create-sp-using-azure-cli]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/create-sp-using-azure-cli.md
@@ -172,4 +172,6 @@ spring:
 [deploy-spring-boot-application-to-app-service]: https://docs.microsoft.com/java/azure/spring-framework/deploy-spring-boot-java-app-with-maven-plugin?toc=%2Fazure%2Fapp-service%2Fcontainers%2Ftoc.json&view=azure-java-stable
 [ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
 [role-assignment]: https://docs.microsoft.com/azure/role-based-access-control/role-assignments-portal
-
+[application-mi.yaml]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-servicebus-queue-binder/src/main/resources/application-mi.yaml
+[application-sp.yaml]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-servicebus-queue-binder/src/main/resources/application-sp.yaml
+[application.yaml]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-servicebus-queue-binder/src/main/resources/application.yaml

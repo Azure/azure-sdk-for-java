@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.identity.spring;
+package com.azure.spring.identity;
 
 import com.azure.identity.ClientSecretCredential;
 import org.junit.jupiter.api.Test;
@@ -24,20 +24,20 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class SpringEnvironmentTokenBuilderTest {
 
     /**
-	 * Test getDefaultCredential method.
-	 */
-	@Test
-	public void testGetDefaultCredential() {
-		SpringEnvironmentTokenBuilder builder = new SpringEnvironmentTokenBuilder();
-		assertNotNull(builder.build());
-		assertEquals(builder.build(), builder.defaultCredential().build());
-	}
+     * Test getDefaultCredential method.
+     */
+    @Test
+    public void testGetDefaultCredential() {
+        SpringEnvironmentTokenBuilder builder = new SpringEnvironmentTokenBuilder();
+        assertNotNull(builder.build());
+        assertEquals(builder.build(), builder.defaultCredential().build());
+    }
 
-	/**
-	 * Test populate method.
-	 */
-	@Test
-	public void testPopulate() {
+    /**
+     * Test populate method.
+     */
+    @Test
+    public void testPopulate() {
         Properties properties = new Properties();
         properties.put("azure.credential.names", "");
         properties.put("azure.credential.tenantId", "tenantId");
@@ -51,54 +51,54 @@ public class SpringEnvironmentTokenBuilderTest {
         assertTrue(builder.build() instanceof ClientSecretCredential);
         assertEquals(builder.build(), builder.defaultCredential().build());
 
-	}
+    }
 
-	/**
-	 * Test populate method.
-	 */
-	@Test
-	public void testPopulate2() {
+    /**
+     * Test populate method.
+     */
+    @Test
+    public void testPopulate2() {
         Properties properties = new Properties();
-		properties.put("azure.credential.names", "myname");
-		properties.put("azure.credential.myname.tenantId", "tenantId");
-		properties.put("azure.credential.myname.clientId", "clientId");
-		properties.put("azure.credential.myname.clientSecret", "clientSecret");
-
-		SpringEnvironmentTokenBuilder builder = new SpringEnvironmentTokenBuilder();
-		builder.fromEnvironment(buildEnvironment(properties));
-		assertNotNull(builder.namedCredential("myname").build());
-		assertTrue(builder.build() instanceof ClientSecretCredential);
-		assertNotEquals(builder.build(), builder.defaultCredential().build());
-
-	}
-
-	/**
-	 * Test populate method.
-	 */
-	@Test
-	public void testPopulate3() {
-        Properties properties = new Properties();
-        properties.put("azure.credential.names", "myname2");
-		properties.put("azure.credential.myname2.tenantId", "tenantId");
-		properties.put("azure.credential.myname2.clientSecret", "clientSecret");
+        properties.put("azure.credential.names", "myname");
+        properties.put("azure.credential.myname.tenantId", "tenantId");
+        properties.put("azure.credential.myname.clientId", "clientId");
+        properties.put("azure.credential.myname.clientSecret", "clientSecret");
 
         SpringEnvironmentTokenBuilder builder = new SpringEnvironmentTokenBuilder();
-		try {
-			builder.fromEnvironment(buildEnvironment(properties));
-			fail();
-		} catch (Throwable t) {
-			assertEquals(IllegalStateException.class, t.getClass(),
-					"Unexpected exception class on missing configuration field.");
-		}
+        builder.fromEnvironment(buildEnvironment(properties));
+        assertNotNull(builder.namedCredential("myname").build());
+        assertTrue(builder.build() instanceof ClientSecretCredential);
+        assertNotEquals(builder.build(), builder.defaultCredential().build());
 
-	}
-	
-	private StandardEnvironment buildEnvironment(Properties properties) {
+    }
+
+    /**
+     * Test populate method.
+     */
+    @Test
+    public void testPopulate3() {
+        Properties properties = new Properties();
+        properties.put("azure.credential.names", "myname2");
+        properties.put("azure.credential.myname2.tenantId", "tenantId");
+        properties.put("azure.credential.myname2.clientSecret", "clientSecret");
+
+        SpringEnvironmentTokenBuilder builder = new SpringEnvironmentTokenBuilder();
+        try {
+            builder.fromEnvironment(buildEnvironment(properties));
+            fail();
+        } catch (Throwable t) {
+            assertEquals(IllegalStateException.class, t.getClass(),
+                "Unexpected exception class on missing configuration field.");
+        }
+
+    }
+
+    private StandardEnvironment buildEnvironment(Properties properties) {
         StandardEnvironment environment = new StandardEnvironment();
         final MutablePropertySources propertySources = environment.getPropertySources();
         propertySources.addFirst(new PropertiesPropertySource("test", properties));
-        
+
         return environment;
     }
-	
+
 }

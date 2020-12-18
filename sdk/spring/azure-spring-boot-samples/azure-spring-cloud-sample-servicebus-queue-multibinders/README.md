@@ -33,7 +33,7 @@ is completed before the run.
 ## Examples
 
 1.  Update stream binding related properties in
-    [application.yaml](src/main/resources/application.yaml). If you choose to use 
+    [application.yaml][application.yaml]. If you choose to use 
     service principal or managed identity, update the `application-sp.yaml` or 
     `application-mi.yaml` respectively.
 
@@ -113,7 +113,7 @@ processing.
 
 <!-- LINKS -->
 [azure-account]: https://azure.microsoft.com/account/
-[azure-portal]: http://ms.portal.azure.com/
+[azure-portal]: https://ms.portal.azure.com/
 [create-service-bus]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-create-namespace-portal
 [create-sp-using-azure-cli]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/create-sp-using-azure-cli.md
 [create-managed-identity]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/create-managed-identity.md
@@ -122,4 +122,4 @@ processing.
 [managed-identities]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/
 [ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
 [role-assignment]: https://docs.microsoft.com/azure/role-based-access-control/role-assignments-portal
-
+[application.yaml]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-servicebus-queue-multibinders/src/main/resources/application.yaml

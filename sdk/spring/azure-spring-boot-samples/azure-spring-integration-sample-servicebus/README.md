@@ -29,7 +29,7 @@ completed before the run.
 
 ## Examples
 
-1. Update [application.yaml](src/main/resources/application.yaml). If you choose to use
+1. Update [application.yaml][application.yaml]. If you choose to use
    service principal or managed identity, update the `application-sp.yaml` or
    `application-mi.yaml` respectively.
     ```yaml
@@ -78,7 +78,7 @@ completed before the run.
 ## Contributing
 
 [azure-account]: https://azure.microsoft.com/account/
-[azure-portal]: http://ms.portal.azure.com/
+[azure-portal]: https://ms.portal.azure.com/
 [create-service-bus]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-create-namespace-portal
 [create-managed-identity]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/create-managed-identity.md
 [create-sp-using-azure-cli]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/create-sp-using-azure-cli.md
@@ -87,7 +87,7 @@ completed before the run.
 [queue-send-controller]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-servicebus/src/main/java/com/azure/spring/sample/servicebus/QueueSendController.java
 [topic-receive-controller]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-servicebus/src/main/java/com/azure/spring/sample/servicebus/TopicReceiveController.java
 [topic-send-controller]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-servicebus/src/main/java/com/azure/spring/sample/servicebus/TopicSendController.java
-
+[application.yaml]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-servicebus/src/main/resources/application.yaml
 
 
 

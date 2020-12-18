@@ -27,7 +27,7 @@ completed before the run.
 ## Examples
 
 1.  Update stream binding related properties in
-    [application.yaml](src/main/resources/application.yaml). If you choose to use
+    [application.yaml][application.yaml]. If you choose to use
     service principal or managed identity, update the `application-sp.yaml` or
     `application-mi.yaml` respectively.
 
@@ -70,11 +70,11 @@ completed before the run.
 <!-- LINKS -->
 
 [azure-account]: https://azure.microsoft.com/account/
-[azure-portal]: http://ms.portal.azure.com/
+[azure-portal]: https://ms.portal.azure.com/
 [create-azure-storage]: https://docs.microsoft.com/azure/storage/
 [create-managed-identity]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/create-managed-identity.md
 [create-sp-using-azure-cli]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/create-sp-using-azure-cli.md
 [ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
 [storage-queue-operation]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-integration-storage-queue/src/main/java/com/azure/spring/integration/storage/queue/StorageQueueOperation.java
 [web-controller]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-storage-queue-operation/src/main/java/com/azure/spring/sample/storage/queue/operation/WebController.java#L26
-
+[application.yaml]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-storage-queue-operation/src/main/resources/application.yaml

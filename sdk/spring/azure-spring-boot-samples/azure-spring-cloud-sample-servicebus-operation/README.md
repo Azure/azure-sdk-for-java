@@ -23,7 +23,7 @@ completed before the run.
 
 ## Examples
 
-1. Update [application.yaml](src/main/resources/application.yaml).
+1. Update [application.yaml][application.yaml].
     ```yaml
     spring:
       cloud:
@@ -67,11 +67,11 @@ completed before the run.
 <!-- LINKS -->
 
 [azure-account]: https://azure.microsoft.com/account/
-[azure-portal]: http://ms.portal.azure.com/
+[azure-portal]: https://ms.portal.azure.com/
 [create-service-bus]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-create-namespace-portal
-[queue-controller]: src/main/java/com/azure/spring/sample/servicebus/operation/QueueController.java 
-[topic-controller]: src/main/java/com/azure/spring/sample/servicebus/operation/TopicController.java 
+[queue-controller]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-servicebus-operation/src/main/java/com/azure/spring/sample/servicebus/operation/QueueController.java 
+[topic-controller]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-servicebus-operation/src/main/java/com/azure/spring/sample/servicebus/operation/TopicController.java 
 [ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
 [servicebus-queue-operation]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-integration-servicebus/src/main/java/com/azure/spring/integration/servicebus/queue/ServiceBusQueueOperation.java
 [servicebus-topic-operation]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-integration-servicebus/src/main/java/com/azure/spring/integration/servicebus/topic/ServiceBusTopicOperation.java
-
+[application.yaml]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-servicebus-operation/src/main/resources/application.yaml

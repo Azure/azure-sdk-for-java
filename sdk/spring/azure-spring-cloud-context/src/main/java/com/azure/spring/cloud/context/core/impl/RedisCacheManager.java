@@ -3,7 +3,6 @@
 
 package com.azure.spring.cloud.context.core.impl;
 
-import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.redis.models.RedisCache;
