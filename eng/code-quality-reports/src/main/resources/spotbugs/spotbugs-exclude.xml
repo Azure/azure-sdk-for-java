@@ -2313,11 +2313,6 @@
     <Bug pattern="NP_NULL_ON_SOME_PATH"/>
   </Match>
 
-  <Match>
-    <Class name="com.azure.spring.aad.webapi.OboClientRegistrationRepository" />
-    <Bug pattern="URF_UNREAD_FIELD"/>
-  </Match>
-
   <!-- The transient fields are not used if deserialization happens. -->
   <Match>
       <Class name="com.azure.identity.implementation.MsalAuthenticationAccount"/>
