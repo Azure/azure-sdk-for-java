@@ -6,21 +6,13 @@ import org.springframework.boot.test.context.assertj.AssertableWebApplicationCon
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.RequestEntity;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProvider;
-import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
 import org.springframework.security.oauth2.client.endpoint.OAuth2RefreshTokenGrantRequest;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
-import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2RefreshToken;
-import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationExchange;
-import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
-import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationResponse;
 import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
 import org.springframework.util.MultiValueMap;
 
-import java.lang.reflect.Field;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
@@ -30,14 +22,14 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class AzureOauth2RefreshTokenGrantRequestEntityConverterTest {
 
-    private AzureClientRegistrationRepository clientRepo;
+    private AADWebAppClientRegistrationRepository clientRepo;
     private AzureOauth2RefreshTokenGrantRequestEntityConverter converter;
     private ClientRegistration azure;
     private ClientRegistration graph;
 
     private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
         .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
-        .withUserConfiguration(AzureActiveDirectoryConfiguration.class)
+        .withUserConfiguration(AADWebAppConfiguration.class)
         .withPropertyValues("azure.activedirectory.authorization-server-uri = fake-uri",
             "azure.activedirectory.authorization.graph.scopes = Calendars.Read",
             "azure.activedirectory.client-id = fake-client-id",
@@ -46,7 +38,7 @@ public class AzureOauth2RefreshTokenGrantRequestEntityConverterTest {
             "azure.activedirectory.user-group.allowed-groups = group1, group2");
 
     private void getBeans(AssertableWebApplicationContext context) {
-        clientRepo = context.getBean(AzureClientRegistrationRepository.class);
+        clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
         azure = clientRepo.findByRegistrationId("azure");
         graph = clientRepo.findByRegistrationId("graph");
     }
