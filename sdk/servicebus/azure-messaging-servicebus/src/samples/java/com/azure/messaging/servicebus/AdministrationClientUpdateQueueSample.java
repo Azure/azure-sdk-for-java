@@ -10,14 +10,13 @@ import com.azure.messaging.servicebus.administration.models.QueueProperties;
 import java.time.Duration;
 
 /**
- * Sample example showing how to update queue properties in Service Bus Queue.
+ * Sample example showing how to update queue properties for Service Bus Queue.
  */
 public class AdministrationClientUpdateQueueSample {
     /**
-     * Main method to how update queue properties in Service Bus Queue.
+     * Main method to show how update queue properties for Service Bus Queue.
      *
      * @param args Unused arguments to the program.
-     * @throws InterruptedException If the program is unable to sleep while waiting for the receive to complete.
      */
     public static void main(String[] args) {
         // The connection string value can be obtained by:
