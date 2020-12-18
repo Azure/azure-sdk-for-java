@@ -118,18 +118,6 @@ public class AADLoginIT {
 
     private void runApp(Consumer<AppRunner> command) {
         try (AppRunner app = new AppRunner(AADLoginIT.DumbApp.class)) {
-            // TODO here, just remind us to delete old configuration item after new aad implementation start to work.
-            app.property("spring.security.oauth2.client.registration.azure.tenant-id",
-                System.getenv(AAD_TENANT_ID_1));
-            app.property("spring.security.oauth2.client.registration.azure.client-id",
-                System.getenv(AAD_MULTI_TENANT_CLIENT_ID));
-            app.property("spring.security.oauth2.client.registration.azure.client-secret",
-                System.getenv(AAD_MULTI_TENANT_CLIENT_SECRET));
-            app.property("azure.activedirectory.environment", "global-v2-graph");
-            app.property("azure.activedirectory.user-group.key", "@odata.type");
-            app.property("azure.activedirectory.user-group.value", "#microsoft.graph.group");
-            app.property("azure.activedirectory.user-group.object-id-key", "id");
-
             app.property("azure.activedirectory.tenant-id", System.getenv(AAD_TENANT_ID_1));
             app.property("azure.activedirectory.client-id", System.getenv(AAD_MULTI_TENANT_CLIENT_ID));
             app.property("azure.activedirectory.client-secret", System.getenv(AAD_MULTI_TENANT_CLIENT_SECRET));
