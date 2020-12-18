@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import static com.azure.spring.sample.aad.utils.JsonMapper.toJsonString;
 
 @Controller
-public class OnDemandController {
+public class OnDemandClientController {
 
     @GetMapping("/arm")
     @ResponseBody

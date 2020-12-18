@@ -13,10 +13,10 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 
 public class JsonMapper {
     private static final Logger LOGGER = LoggerFactory.getLogger(ClientController.class);
+    private static final ObjectMapper MAPPER = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
 
     public static final String toJsonString(OAuth2AuthorizedClient authorizedClient) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
-        String clientJsonString = mapper.writeValueAsString(authorizedClient);
+        String clientJsonString = MAPPER.writeValueAsString(authorizedClient);
         LOGGER.info(clientJsonString);
         return clientJsonString;
     }
