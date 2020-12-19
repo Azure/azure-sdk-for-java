@@ -105,7 +105,7 @@ KeyClient keyClient = new KeyClientBuilder()
 ```
 
 ### Async operations
-The modern `azure-security-keyvault-keys` library includes a complete set of async APIs that return [Project Reactor -based types](https://projectreactor.io/), as opposed to `azure-keyvault` async APIs that return either [Observable](reactivex.io/RxJava/javadoc/io/reactivex/Observable.html) or [ServiceFuture](http://azure.github.io/ref-docs/java/com/microsoft/rest/ServiceFuture.html).
+The modern `azure-security-keyvault-keys` library includes a complete set of async APIs that return [Project Reactor-based types](https://projectreactor.io/), as opposed to `azure-keyvault` async APIs that return either [Observable](reactivex.io/RxJava/javadoc/io/reactivex/Observable.html) or [ServiceFuture](http://azure.github.io/ref-docs/java/com/microsoft/rest/ServiceFuture.html).
 
 Another difference is that async operations are available on their own separate async clients, which include the word `Async` in their name, like `KeyAsyncClient`.
 
@@ -122,7 +122,7 @@ KeyClientBuilder keyClientBuilder = new KeyClientBuilder()
     .credential(tokenCredential);
 
 // To create an async client.
-KeyAsyncClient keyClient = keyClientBuilder.buildAsyncClient();
+KeyAsyncClient keyAsyncClient = keyClientBuilder.buildAsyncClient();
 
 // To create a sync client.
 KeyClient keyClient = keyClientBuilder.buildClient();
@@ -142,9 +142,9 @@ KeyBundle rsaKey = keyVaultClient.createKey(keyVaultUrl, "<rsa-key-name>", JsonW
 KeyBundle ecKey = keyVaultClient.createKey(keyVaultUrl, "<ec-key-name>", JsonWebKeyType.EC);
 ```
 
-Now in `azure-security-keyvault-keys` there are multiple ways to create keys. You can provide either a key name and type or creation options to the general `createKey` method, or provide creation options to `createRsaKey` or `createEcKey`. These methods all return the created key as a `KeyVaultKey`.
+Now in `azure-security-keyvault-keys` there are multiple ways to create keys: you can provide either a key name and type or creation options to the `createKey` method, or provide creation options to `createRsaKey` or `createEcKey`. These methods all return the created key as a `KeyVaultKey`.
 
-```Java
+```java
 // Create a key specifying the key type.
 KeyVaultKey octKey = keyClient.createKey("<oct-key-name>", KeyType.OCT);
 
@@ -187,7 +187,7 @@ KeyBundle keyWithId = keyVaultClient.getKey(keyIdentifier);
 PagedList<KeyItem> keyVersions = keyVaultClient.getKeyVersions(keyVaultUrl, "<key-name>");
 ```
 
-Now in `azure-security-keyvault-keys` you can retrieve (as a `KeyVaultKey`) by using `getKey` in one of the following ways:
+Now in `azure-security-keyvault-keys` you can retrieve a key (as a `KeyVaultKey`) by using `getKey` in one of the following ways:
 
 - Using the key name to get the latest version of the key.
 - Using the key name and key version to get a specific version of the key.
@@ -212,7 +212,7 @@ In `azure-keyvault` you could list the properties of keys in a specified vault w
 PagedList<KeyItem> keysProperties = keyVaultClient.getKeys(keyVaultUrl);
 ```
 
-Now in `azure-security-keyvault-keys` you can list the properties of keys in a vault with the `list_properties_of_keys` method. This returns an iterator-like object containing `KeyProperties` instances.
+Now in `azure-security-keyvault-keys` you can list the properties of keys in a vault with the `listPropertiesOfKeys` method. This returns an iterator-like object containing `KeyProperties` instances.
 
 ```java
 PagedIterable<KeyProperties> keysProperties = keyClient.listPropertiesOfKeys();
