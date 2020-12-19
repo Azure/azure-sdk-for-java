@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.models.AbandonOptions;
 import com.azure.messaging.servicebus.models.CompleteOptions;
@@ -42,19 +43,13 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
     public void initialization() {
         // BEGIN: com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation
         // The required parameters is connectionString, a way to authenticate with Service Bus using credentials.
-        // We are reading 'connectionString/queueName' from environment variable. You can configure them as it fits
-        // suitable for your application. The 'connectionString' format is shown below.
-        // 1. "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
-        // 2. "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
-        // 3. "queueName" will be the name of the Service Bus queue instance you created
-        //    inside the Service Bus namespace.
-        String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
-        String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME");
+        // The connectionString/queueName must be set by the application. The 'connectionString' format is shown below.
+        // "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
 
         ServiceBusReceiverAsyncClient consumer = new ServiceBusClientBuilder()
-            .connectionString(connectionString)
+            .connectionString(System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING"))
             .receiver()
-            .queueName(queueName)
+            .queueName(System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME"))
             .buildAsyncClient();
         // END: com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation
 
@@ -64,6 +59,7 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
     public void instantiateWithDefaultCredential() {
         // BEGIN: com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiateWithDefaultCredential
         // The required parameters is connectionString, a way to authenticate with Service Bus using credentials.
+
         ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
             .credential("<<fully-qualified-namespace>>",
                 new DefaultAzureCredentialBuilder().build())
@@ -78,12 +74,13 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
     /**
      * Receives message from a queue or topic using receive and delete mode.
      */
+    @Test
     public void receiveWithReceiveAndDeleteMode() {
         ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
-            .connectionString("<< connection-string-for-service-bus-namespace >>")
+            .connectionString(System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING"))
             .receiver()
             .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
-            .queueName("<< QUEUE NAME >>")
+            .queueName(System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME"))
             .buildAsyncClient();
         // BEGIN: com.azure.messaging.servicebus.servicebusreceiverasyncclient.receiveWithReceiveAndDeleteMode
 
@@ -104,6 +101,7 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
     /**
      * Receives message with back pressure.
      */
+    @Test
     public void receiveBackpressure() {
         // BEGIN: com.azure.messaging.servicebus.servicebusreceiverasyncclient.receive#basesubscriber
         receiver.receiveMessages().subscribe(new BaseSubscriber<ServiceBusReceivedMessage>() {
@@ -134,6 +132,7 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
     /**
      * Receives from all the messages.
      */
+    @Test
     public void receiveAll() {
         // BEGIN: com.azure.messaging.servicebus.servicebusreceiverasyncclient.receive#all
         Disposable subscription = receiver.receiveMessages()
@@ -153,13 +152,15 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
     /**
      * Demonstrates how to create a session receiver for a single, first available session.
      */
+    @Test
     public void sessionReceiverSingleInstantiation() {
         // BEGIN: com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#nextsession
+        // The connectionString/queueName must be set by the application. The 'connectionString' format is shown below.
+        // "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
         ServiceBusSessionReceiverAsyncClient sessionReceiver = new ServiceBusClientBuilder()
-            .connectionString("Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};"
-                + "SharedAccessKey={key}")
+            .connectionString(System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING"))
             .sessionReceiver()
-            .queueName("<< QUEUE NAME >>")
+            .queueName(System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME"))
             .buildAsyncClient();
 
         // acceptSession(String) completes successfully with a receiver when it acquires the next available session.
@@ -185,13 +186,15 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
     /**
      * Demonstrates how to create a session receiver for a single know session id.
      */
+    @Test
     public void sessionReceiverSessionIdInstantiation() {
         // BEGIN: com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#sessionId
+        // The connectionString/queueName must be set by the application. The 'connectionString' format is shown below.
+        // "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
         ServiceBusSessionReceiverAsyncClient sessionReceiver = new ServiceBusClientBuilder()
-            .connectionString("Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};"
-                + "SharedAccessKey={key}")
+            .connectionString(System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING"))
             .sessionReceiver()
-            .queueName("<< QUEUE NAME >>")
+            .queueName(System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME"))
             .buildAsyncClient();
 
         // acceptSession(String) completes successfully with a receiver when "<< my-session-id >>" session is
@@ -215,10 +218,11 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
         sessionReceiver.close();
     }
 
+    @Test
     public void transactionsSnippet() {
         // Some random sequenceNumber.
         long sequenceNumber = 1000L;
-        ServiceBusReceivedMessage receivedMessage = new ServiceBusReceivedMessage(null);
+        ServiceBusReceivedMessage receivedMessage = new ServiceBusReceivedMessage(BinaryData.fromString("Hello"));
 
         // BEGIN: com.azure.messaging.servicebus.servicebusreceiverasyncclient.committransaction#servicebustransactioncontext
         // This mono creates a transaction and caches the output value, so we can associate operations with the
