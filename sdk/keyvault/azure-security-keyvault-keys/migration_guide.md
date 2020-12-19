@@ -1,7 +1,7 @@
 # Guide for migrating to azure-security-keyvault-keys from azure-keyvault
 This guide is intended to assist in the migration to `azure-security-keyvault-keys` from `azure-keyvault`. It will focus on side-by-side comparisons for similar operations between the two packages.
 
-Familiarity with the `azure-keyvault` package is assumed. For those new to the Key Vault Key client library for Java, please refer to the [README for name of new package here](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-keys/README.md) rather than this guide.
+Familiarity with the `azure-keyvault` package is assumed. For those new to the Key Vault Key client library for Java, please refer to the [README](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-keys/README.md) rather than this guide.
 
 ## Table of contents
 - [Migration benefits](#migration-benefits)
@@ -9,7 +9,7 @@ Familiarity with the `azure-keyvault` package is assumed. For those new to the K
 - [Important changes](#important-changes)
     - [Separate packages and clients](#separate-packages-and-clients)
     - [Package names and namespaces](#package-names-and-namespaces)
-    - [Client constructors](#client-constructors)
+    - [Client instantiation](#client-instantiation)
     - [Authentication](#authentication)
     - [Common scenarios](#common-scenarios)
         - [Async operations](#async-operations)
@@ -35,19 +35,48 @@ The modern Key Vault Key client library also provides the ability to share in so
 
 ## Important changes
 ### Separate packages and clients
-In the interest of simplifying the API, `azure-keyvault` and `KeyVaultClient` were split into separate packages and clients:
+In the interest of simplifying the API for working with Key Vault keys, secrets and certificates, the `azure-keyvault` was split into separate packages:
 
-- [`azure-security-keyvault-certificates`](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-certificates/README.md) contains `CertificateClient` for working with certificates.
-- `azure-security-keyvault-keys` contains `KeyClient` for working with keys and `CryptographyClient` for performing cryptographic operations.
-- [`azure-security-keyvault-secrets`](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-secrets/README.md) contains `SecretClient` for working with secrets.
+- [`azure-security-keyvault-certificates`](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-certificates/README.md) contains `CertificateClient` for working with Key Vault certificates.
+- `azure-security-keyvault-keys` contains `KeyClient` for working with Key Vault keys and `CryptographyClient` for performing cryptographic operations.
+- [`azure-security-keyvault-secrets`](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-secrets/README.md) contains `SecretClient` for working with Key Vault secrets.
 
 ### Package names and namespaces
 Package names and the namespace root for the modern Azure client libraries for Java have changed. Each will follow the pattern `com.azure.<area>.<service>` where the legacy clients followed the pattern `com.microsoft.azure.<service>`. This provides a quick and accessible means to help understand, at a glance, whether you are using the modern or legacy clients.
 
 In the case of the Key Vault, the modern client libraries have packages and namespaces that begin with `com.azure.security.keyvault` and were released beginning with version `4.0.0`. The legacy client libraries have packages and namespaces that begin with `com.microsoft.azure.keyvault` and a version of `1.x.x` or below.
 
-### Client constructors
-Across all modern Azure client libraries, clients consistently take an endpoint or connection string along with token credentials. This differs from `KeyVaultClient`, which took an authentication delegate and could be used for multiple Key Vault endpoints.
+### Client instantiation
+Previously in `azure-keyvault` you could create a `KeyVaultClient`, via a public constructor that took an authentication delegate and could be used for multiple Key Vault endpoints.
+
+```java
+import com.microsoft.azure.keyvault.KeyVaultClient;
+import com.microsoft.azure.keyvault.authentication.KeyVaultCredentials;
+
+KeyVaultCredentials keyVaultCredentials = new MyKeyVaultCredentials("<client-id>", "<client-key>");
+KeyVaultClient keyVaultClient = new KeyVaultClient(keyVaultCredentials);
+```
+
+Now, across all modern Azure client libraries, client instances are created via builders, which consistently take an endpoint or connection string along with token credentials. This means that you can use a single client builder to instantiate multiple clients that share some configuration.
+
+```java
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.security.keyvault.keys.KeyClient;
+import com.azure.security.keyvault.keys.KeyClientBuilder;
+
+TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+KeyClientBuilder keyClientBuilder = new KeyClientBuilder()
+    .vaultUrl("<your-key-vault-url>")
+    .credential(tokenCredential);
+
+// Create a client.
+KeyClient someKeyClient = keyClientBuilder.buildClient();
+
+// Create a client with the same configuration, plus some more.
+KeyClient anotherKeyClient = keyClientBuilder
+    .addPolicy(new AddDatePolicy())
+    .buildClient();
+```
 
 ### Authentication
 Previously in `azure-keyvault` you could create a `KeyVaultClient` by passing either a `KeyVaultCredential` or `RestClient` from `client-runtime`:
@@ -67,11 +96,11 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.KeyClient;
 import com.azure.security.keyvault.keys.KeyClientBuilder;
 
-TokenCredentials tokenCredentials = new DefaultAzureCredentialBuilder().build();
+TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
 KeyClient keyClient = new KeyClientBuilder()
     .vaultUrl("<your-key-vault-url>")
-    .credential(tokenCredentials)
+    .credential(tokenCredential)
     .buildClient();
 ```
 
@@ -80,10 +109,26 @@ The modern `azure-security-keyvault-keys` library includes a complete set of asy
 
 Another difference is that async operations are available on their own separate async clients, which include the word `Async` in their name, like `KeyAsyncClient`.
 
-### Common scenarios
-Repeat this section for the common high level usage scenarios for this library.
-Show how you would accomplish these both in the old and new packages, pointing out the key differences, reasons and advantages.
+All modern Azure async clients can be created virtually the same way as sync clients, with the slight difference of calling `buildAsyncClient` on the client builder instead of `buildClient`:
 
+```java
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.security.keyvault.keys.KeyClient;
+import com.azure.security.keyvault.keys.KeyClientBuilder;
+
+TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+KeyClientBuilder keyClientBuilder = new KeyClientBuilder()
+    .vaultUrl("<your-key-vault-url>")
+    .credential(tokenCredential);
+
+// To create an async client.
+KeyAsyncClient keyClient = keyClientBuilder.buildAsyncClient();
+
+// To create a sync client.
+KeyClient keyClient = keyClientBuilder.buildClient();
+```
+
+### Common scenarios
 #### Create a key
 In `azure-keyvault` you could create a key by using `KeyVaultClient`'s `createKey` method, which required a vault endpoint, key name, and key type. This method returned a `KeyBundle` containing the key. 
 
