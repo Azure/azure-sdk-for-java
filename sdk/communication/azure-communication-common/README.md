@@ -32,11 +32,11 @@ Azure Communication Service supports HMAC authentication with resource access ke
 apply HMAC authentication, construct CommunicationClientCredential with the access key and instantiate
 a CommunicationIdentityClient to manage users and tokens.
 
-### CommunicationUserCredential
+### CommunicationTokenCredential
 
-It is up to you the developer to first create valid user tokens with the Communication Administration SDK. Then you use these tokens with the `CommunicationUserCredential`.
+It is up to you the developer to first create valid user tokens with the Communication Administration SDK. Then you use these tokens with the `CommunicationTokenCredential`.
 
-`CommunicationUserCredential` authenticates a user with Communication Services, such as Chat or Calling. It optionally provides an auto-refresh mechanism to ensure a continuously stable authentication state during communications.
+`CommunicationTokenCredential` authenticates a user with Communication Services, such as Chat or Calling. It optionally provides an auto-refresh mechanism to ensure a continuously stable authentication state during communications.
 
 ## Contributing
 

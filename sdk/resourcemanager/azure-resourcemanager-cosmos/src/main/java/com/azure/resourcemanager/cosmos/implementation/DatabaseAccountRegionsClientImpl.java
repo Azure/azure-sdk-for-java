@@ -6,6 +6,7 @@ package com.azure.resourcemanager.cosmos.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -59,7 +60,7 @@ public final class DatabaseAccountRegionsClientImpl implements DatabaseAccountRe
     @Host("{$host}")
     @ServiceInterface(name = "CosmosDBManagementCl")
     private interface DatabaseAccountRegionsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/region/{region}/metrics")
@@ -73,13 +74,14 @@ public final class DatabaseAccountRegionsClientImpl implements DatabaseAccountRe
             @PathParam("region") String region,
             @QueryParam("api-version") String apiVersion,
             @QueryParam("$filter") String filter,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
     /**
      * Retrieves the metrics determined by the given filter for the given database account and region.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param region Cosmos DB region, with spaces between words and each word capitalized.
      * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
@@ -118,7 +120,8 @@ public final class DatabaseAccountRegionsClientImpl implements DatabaseAccountRe
         if (filter == null) {
             return Mono.error(new IllegalArgumentException("Parameter filter is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -131,6 +134,7 @@ public final class DatabaseAccountRegionsClientImpl implements DatabaseAccountRe
                             region,
                             apiVersion,
                             filter,
+                            accept,
                             context))
             .<PagedResponse<MetricInner>>map(
                 res ->
@@ -142,7 +146,7 @@ public final class DatabaseAccountRegionsClientImpl implements DatabaseAccountRe
     /**
      * Retrieves the metrics determined by the given filter for the given database account and region.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param region Cosmos DB region, with spaces between words and each word capitalized.
      * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
@@ -182,7 +186,8 @@ public final class DatabaseAccountRegionsClientImpl implements DatabaseAccountRe
         if (filter == null) {
             return Mono.error(new IllegalArgumentException("Parameter filter is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listMetrics(
@@ -193,6 +198,7 @@ public final class DatabaseAccountRegionsClientImpl implements DatabaseAccountRe
                 region,
                 apiVersion,
                 filter,
+                accept,
                 context)
             .map(
                 res ->
@@ -203,7 +209,7 @@ public final class DatabaseAccountRegionsClientImpl implements DatabaseAccountRe
     /**
      * Retrieves the metrics determined by the given filter for the given database account and region.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param region Cosmos DB region, with spaces between words and each word capitalized.
      * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
@@ -223,7 +229,7 @@ public final class DatabaseAccountRegionsClientImpl implements DatabaseAccountRe
     /**
      * Retrieves the metrics determined by the given filter for the given database account and region.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param region Cosmos DB region, with spaces between words and each word capitalized.
      * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
@@ -245,7 +251,7 @@ public final class DatabaseAccountRegionsClientImpl implements DatabaseAccountRe
     /**
      * Retrieves the metrics determined by the given filter for the given database account and region.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param region Cosmos DB region, with spaces between words and each word capitalized.
      * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
@@ -265,7 +271,7 @@ public final class DatabaseAccountRegionsClientImpl implements DatabaseAccountRe
     /**
      * Retrieves the metrics determined by the given filter for the given database account and region.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param region Cosmos DB region, with spaces between words and each word capitalized.
      * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be

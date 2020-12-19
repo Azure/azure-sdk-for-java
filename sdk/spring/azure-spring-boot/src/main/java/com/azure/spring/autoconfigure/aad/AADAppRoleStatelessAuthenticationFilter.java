@@ -3,9 +3,22 @@
 
 package com.azure.spring.autoconfigure.aad;
 
+import static com.azure.spring.autoconfigure.aad.Constants.DEFAULT_AUTHORITY_SET;
+import static com.azure.spring.autoconfigure.aad.Constants.ROLE_PREFIX;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.proc.BadJOSEException;
 import com.nimbusds.jwt.proc.BadJWTException;
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.Collection;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -18,26 +31,18 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.text.ParseException;
-import java.util.Collection;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static com.azure.spring.autoconfigure.aad.Constants.DEFAULT_AUTHORITY_SET;
-import static com.azure.spring.autoconfigure.aad.Constants.ROLE_PREFIX;
-
 /**
  * A stateless authentication filter which uses app roles feature of Azure Active Directory. Since it's a stateless
  * implementation so the principal will not be stored in session. By using roles claim in the token it will not call
  * Microsoft Graph to retrieve users' groups.
+ * <p>
+ *
+ * @deprecated For AADAppRoleStatelessAuthenticationFilter, suggest use spring-security resource-server directly and
+ * include azure-spring-boot-starter-active-directory dependencies into your project. Automatic configuration of the
+ * associated AAD will be started, they will work well together.
+ * See the <a href="https://github.com/Azure/azure-sdk-for-java/issues/17860">Alternative method</a>.
  */
+@Deprecated
 public class AADAppRoleStatelessAuthenticationFilter extends OncePerRequestFilter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AADAppRoleStatelessAuthenticationFilter.class);

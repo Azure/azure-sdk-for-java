@@ -1,6 +1,9 @@
 # Release History
 
-## 12.8.0-beta.1 (Unreleased)
+## 12.8.0-beta.2 (Unreleased)
+
+
+## 12.8.0-beta.1 (2020-12-07)
 - Reuse the Http client configured in the provided HttpPipeline during BlobBatch construction.
 
 ## 12.7.0 (2020-11-11)

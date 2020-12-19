@@ -19,9 +19,9 @@ public class OAuthUtils {
     public static final String AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE = "AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE";
     public static final String AAD_SINGLE_TENANT_CLIENT_ID = "AAD_SINGLE_TENANT_CLIENT_ID";
     public static final String AAD_SINGLE_TENANT_CLIENT_SECRET = "AAD_SINGLE_TENANT_CLIENT_SECRET";
-    private static final String AAD_TENANT_ID_1 = "AAD_TENANT_ID_1";
-    private static final String AAD_USER_NAME_1 = "AAD_USER_NAME_1";
-    private static final String AAD_USER_PASSWORD_1 = "AAD_USER_PASSWORD_1";
+    public static final String AAD_TENANT_ID_1 = "AAD_TENANT_ID_1";
+    public static final String AAD_USER_NAME_1 = "AAD_USER_NAME_1";
+    public static final String AAD_USER_PASSWORD_1 = "AAD_USER_PASSWORD_1";
 
     private static final RestTemplate CLIENT = new RestTemplate();
 

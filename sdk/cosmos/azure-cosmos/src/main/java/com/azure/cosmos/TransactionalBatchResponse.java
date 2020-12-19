@@ -17,7 +17,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 /**
  * Response of a {@link TransactionalBatch} request.
  */
-@Beta(Beta.SinceVersion.V4_7_0)
+@Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public class TransactionalBatchResponse {
 
     private final Map<String, String> responseHeaders;
@@ -59,6 +59,7 @@ public class TransactionalBatchResponse {
      *
      * @return diagnostics information for the current request to Azure Cosmos DB service.
      */
+    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosDiagnostics getDiagnostics() {
         return cosmosDiagnostics;
     }
@@ -68,6 +69,7 @@ public class TransactionalBatchResponse {
      *
      * @return the number of operations results in this response.
      */
+    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public int size() {
         return this.results == null ? 0 : this.results.size();
     }
@@ -77,6 +79,7 @@ public class TransactionalBatchResponse {
      *
      * @return a value indicating whether the batch was successfully processed.
      */
+    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public boolean isSuccessStatusCode() {
         return this.statusCode >= 200 && this.statusCode <= 299;
     }
@@ -86,6 +89,7 @@ public class TransactionalBatchResponse {
      *
      * @return the activity ID that identifies the server request made to execute the batch.
      */
+    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getActivityId() {
         return BatchExecUtils.getActivityId(this.responseHeaders);
     }
@@ -95,6 +99,7 @@ public class TransactionalBatchResponse {
      *
      * @return the reason for the failure of the batch request, if any, or {@code null}.
      */
+    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getErrorMessage() {
         return this.errorMessage;
     }
@@ -107,6 +112,7 @@ public class TransactionalBatchResponse {
      *
      * @return the request charge.
      */
+    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public double getRequestCharge() {
        return BatchExecUtils.getRequestCharge(this.responseHeaders);
     }
@@ -116,6 +122,7 @@ public class TransactionalBatchResponse {
      *
      * @return the status code.
      */
+    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public int getStatusCode() {
         return this.statusCode;
     }
@@ -125,6 +132,7 @@ public class TransactionalBatchResponse {
      *
      * @return the session token.
      */
+    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getSessionToken() {
         return BatchExecUtils.getSessionToken(this.responseHeaders);
     }
@@ -134,6 +142,7 @@ public class TransactionalBatchResponse {
      *
      * @return the response headers.
      */
+    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Map<String, String> getResponseHeaders() {
         return this.responseHeaders;
     }
@@ -143,6 +152,7 @@ public class TransactionalBatchResponse {
      *
      * @return the amount of time to wait before retrying this or any other request due to throttling.
      */
+    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Duration getRetryAfterDuration() {
         return BatchExecUtils.getRetryAfterDuration(this.responseHeaders);
     }
@@ -152,6 +162,7 @@ public class TransactionalBatchResponse {
      *
      * @return the sub status code.
      */
+    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public int getSubStatusCode() {
         return this.subStatusCode;
     }
@@ -162,6 +173,7 @@ public class TransactionalBatchResponse {
      *
      * @return Results of operations in a batch.
      */
+    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public List<TransactionalBatchOperationResult> getResults() {
         return Collections.unmodifiableList(this.results);
     }
@@ -171,6 +183,7 @@ public class TransactionalBatchResponse {
      *
      * @return end-to-end request latency for the current request to Azure Cosmos DB service.
      */
+    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Duration getDuration() {
         if (cosmosDiagnostics == null) {
             return Duration.ZERO;

@@ -6,7 +6,7 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants;
 import com.azure.cosmos.util.Beta;
 
-@Beta(Beta.SinceVersion.V4_7_0)
+@Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public enum CosmosItemOperationType {
 
     CREATE(BatchRequestResponseConstants.OPERATION_CREATE),

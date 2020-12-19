@@ -48,7 +48,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtcaccountsastagsfiltertags0501679983144c199a4af/javablobaccountsastagsfiltertags120435c44b199d9c96?comp=tags&sv=2020-02-10&ss=b&srt=sco&se=2020-07-17T16%3A25%3A40Z&sp=rwdxlacuptf&sig=REDACTED",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtcaccountsastagsfiltertags0501679983144c199a4af/javablobaccountsastagsfiltertags120435c44b199d9c96?comp=tags&sv=2020-04-08&ss=b&srt=sco&se=2020-07-17T16%3A25%3A40Z&sp=rwdxlacuptf&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2019-12-12",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.8.0-beta.2 (11.0.7; Windows 10; 10.0)",
@@ -67,7 +67,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtcaccountsastagsfiltertags0501679983144c199a4af/javablobaccountsastagsfiltertags120435c44b199d9c96?comp=tags&sv=2020-02-10&ss=b&srt=sco&se=2020-07-17T16%3A25%3A40Z&sp=rwdxlacuptf&sig=REDACTED",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtcaccountsastagsfiltertags0501679983144c199a4af/javablobaccountsastagsfiltertags120435c44b199d9c96?comp=tags&sv=2020-04-08&ss=b&srt=sco&se=2020-07-17T16%3A25%3A40Z&sp=rwdxlacuptf&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2019-12-12",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.8.0-beta.2 (11.0.7; Windows 10; 10.0)",

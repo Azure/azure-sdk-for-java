@@ -28,7 +28,7 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -39,6 +39,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.InetSocketAddress;
 import java.time.Instant;
@@ -63,7 +64,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     private CosmosAsyncContainer cosmosAsyncContainer;
 
     @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() throws Exception {
+    public void beforeClass() {
         assertThat(this.gatewayClient).isNull();
         gatewayClient = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
@@ -150,7 +151,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             // TODO: (nakumars) - Uncomment the following line after your client telemetry fix
             // assertThat(createResponse.getDiagnostics().getRegionsContacted()).isNotEmpty();
             validateTransportRequestTimelineGateway(diagnostics);
-            validateJson(diagnostics);
+            isValidJSON(diagnostics);
         } finally {
             if (testGatewayClient != null) {
                 testGatewayClient.close();
@@ -172,6 +173,8 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                     InternalObjectNode.class);
             fail("request should fail as partition key is wrong");
         } catch (CosmosException exception) {
+            isValidJSON(exception.toString());
+            isValidJSON(exception.getMessage());
             String diagnostics = exception.getDiagnostics().toString();
             assertThat(exception.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
             assertThat(diagnostics).contains("\"connectionMode\":\"GATEWAY\"");
@@ -185,7 +188,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             // assertThat(createResponse.getDiagnostics().getRegionsContacted()).isNotEmpty();
             assertThat(exception.getDiagnostics().getDuration()).isNotNull();
             validateTransportRequestTimelineGateway(diagnostics);
-            validateJson(diagnostics);
+            isValidJSON(diagnostics);
         }
     }
 
@@ -229,7 +232,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(createResponse.getDiagnostics().getRegionsContacted()).isNotEmpty();
             assertThat(createResponse.getDiagnostics().getDuration()).isNotNull();
             validateTransportRequestTimelineDirect(diagnostics);
-            validateJson(diagnostics);
+            isValidJSON(diagnostics);
 
             // validate that on failed operation request timeline is populated
             try {
@@ -422,13 +425,15 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                     InternalObjectNode.class);
             fail("request should fail as partition key is wrong");
         } catch (CosmosException exception) {
+            isValidJSON(exception.toString());
+            isValidJSON(exception.getMessage());
             String diagnostics = exception.getDiagnostics().toString();
             assertThat(exception.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
             assertThat(diagnostics).contains("\"connectionMode\":\"DIRECT\"");
             assertThat(diagnostics).doesNotContain(("\"resourceAddress\":null"));
             assertThat(exception.getDiagnostics().getRegionsContacted()).isNotEmpty();
             assertThat(exception.getDiagnostics().getDuration()).isNotNull();
-            validateJson(diagnostics);
+            isValidJSON(diagnostics);
             // TODO https://github.com/Azure/azure-sdk-for-java/issues/8035
             // uncomment below if above issue is fixed
             //validateTransportRequestTimelineDirect(diagnostics);
@@ -817,13 +822,17 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(diagnostics).contains("\"eventName\":\"transitTime\"");
         assertThat(diagnostics).contains("\"eventName\":\"received\"");
         assertThat(diagnostics).contains("\"eventName\":\"completed\"");
+        assertThat(diagnostics).contains("\"startTimeUTC\"");
+        assertThat(diagnostics).contains("\"durationInMicroSec\"");
     }
 
-    private void validateJson(String jsonInString) {
+    public void isValidJSON(final String json) {
         try {
-            OBJECT_MAPPER.readTree(jsonInString);
-        } catch(JsonProcessingException ex) {
-            fail("Diagnostic string is not in json format");
+            final JsonParser parser = new ObjectMapper().createParser(json);
+            while (parser.nextToken() != null) {
+            }
+        } catch (IOException ex) {
+            fail("Diagnostic string is not in json format ", ex);
         }
     }
 

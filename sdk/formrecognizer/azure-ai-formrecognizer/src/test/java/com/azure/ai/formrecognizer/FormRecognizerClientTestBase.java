@@ -133,11 +133,6 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
 
     Duration durationTestMode;
 
-    // remove once merged with master
-    public static final String INVOICE_TEST_URL = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/"
-        + "feature/formrecognizer_v2.1-preview2/sdk/formrecognizer/azure-ai-formrecognizer/src/test/resources/"
-        + "sample_files/Test/Invoice_1.pdf";
-
     /**
      * Use duration of nearly zero value for PLAYBACK test mode, otherwise, use default duration value for LIVE mode.
      */

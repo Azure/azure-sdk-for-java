@@ -60,6 +60,12 @@ public class DataMaskingPolicyInner extends ProxyResource {
     private String kind;
 
     /**
+     * Fully qualified resource ID of the sql pool.
+     */
+    @JsonProperty(value = "managedBy", access = JsonProperty.Access.WRITE_ONLY)
+    private String managedBy;
+
+    /**
      * Get the state of the data masking policy. Possible values include: 'Disabled', 'Enabled'.
      *
      * @return the dataMaskingState value
@@ -133,6 +139,15 @@ public class DataMaskingPolicyInner extends ProxyResource {
      */
     public String kind() {
         return this.kind;
+    }
+
+    /**
+     * Get fully qualified resource ID of the sql pool.
+     *
+     * @return the managedBy value
+     */
+    public String managedBy() {
+        return this.managedBy;
     }
 
 }
