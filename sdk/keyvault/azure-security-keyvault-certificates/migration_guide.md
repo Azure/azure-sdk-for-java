@@ -89,7 +89,7 @@ KeyVaultCredentials keyVaultCredentials = new MyKeyVaultCredentials("<client-id>
 KeyVaultClient keyVaultClient = new KeyVaultClient(keyVaultCredentials);
 ```
 
-Now in `azure-security-keyvault-certificates` you can create a `CertificateClient` using any credential from [`azure-identity`](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/identity/azure-identity/README.md). Below is an example using [`DefaultAzureCredential`](https://docs.microsoft.com/en-us/java/api/overview/azure/identity-readme?view=azure-java-stable#defaultazurecredential):
+Now in `azure-security-keyvault-certificates` you can create a `CertificateClient` using any credential from [`azure-identity`](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/identity/azure-identity/README.md). Below is an example using [`DefaultAzureCredential`](https://docs.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable#defaultazurecredential):
 
 ```java
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -105,7 +105,7 @@ CertificateClient certificateClient = new CertificateClientBuilder()
 ```
 
 ### Async operations
-The modern `azure-security-keyvault-certificates` library includes a complete set of async APIs that return [Project Reactor-based types](https://projectreactor.io/), as opposed to `azure-keyvault` async APIs that return either [Observable](reactivex.io/RxJava/javadoc/io/reactivex/Observable.html) or [ServiceFuture](http://azure.github.io/ref-docs/java/com/microsoft/rest/ServiceFuture.html).
+The modern `azure-security-keyvault-certificates` library includes a complete set of async APIs that return [Project Reactor-based types](https://projectreactor.io/), as opposed to `azure-keyvault` async APIs that return either [Observable](http://reactivex.io/RxJava/javadoc/io/reactivex/Observable.html) or [ServiceFuture](https://azure.github.io/ref-docs/java/com/microsoft/rest/ServiceFuture.html).
 
 Another difference is that async operations are available on their own separate async clients, which include the word `Async` in their name, like `CertificateAsyncClient`.
 
