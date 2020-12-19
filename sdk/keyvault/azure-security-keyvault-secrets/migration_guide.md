@@ -97,7 +97,7 @@ import com.azure.security.keyvault.secrets.SecretClientBuilder;
 
 TokenCredential tokenCredentials = new DefaultAzureCredentialBuilder().build();
 
-SecretClientBuilder secretClientBuilder = new SecretClientBuilder()
+SecretClient secretClient = new SecretClientBuilder()
     .vaultUrl("<your-key-vault-url>")
     .credential(tokenCredential)
     .buildClient();
@@ -147,11 +147,11 @@ KeyVaultSecret secret = secretClient.setSecret("<secret-name>", "<secret-value>"
 KeyVaultSecret anotherSecret = secretClient.setSecret(new KeyVaultSecret("<other-secret-name>", "<secret-value>"));
 ```
 
-### Retrieve a secret
+#### Retrieve a secret
 In `azure-keyvault` you could retrieve a secret (in a `SecretBundle`) by using `getSecret` in one of the following ways:
 
-- Using the desired vault endpoint and secret name to get the latest version of a secret.
-- Using the desired vault endpoint, secret name and secret version to get a specific secret version.
+- Using the desired key vault endpoint and secret name to get the latest version of a secret.
+- Using the desired key vault endpoint, secret name and secret version to get a specific secret version.
 - Using the secret identifier to get a specific secret version.
 
 Additionally, you could list the properties of the versions of a secret with the `getSecretVersions` method, which returned a `PagedList` of `SecretItem`.
@@ -187,11 +187,11 @@ KeyVaultSecret secret = secretClient.getSecret("<secret-name>");
 // Get a secret's specific version.
 KeyVaultSecret secretVersion = secretClient.getSecret("<secret-name>", "<secret-version>");
 
-// Get a secret's versions.
+// Get a secret's versions' properties.
 PagedIterable<SecretProperties> secretVersionsProperties = secretClient.listPropertiesOfSecretVersions("<secret-name>");
 ```
 
-### List properties of secrets
+#### List properties of secrets
 In `azure-keyvault` you could list the properties of secrets in a specified vault with the `getSecrets` methods. This returned a `PagedList` containing `SecretItem` instances.
 
 ```java
@@ -204,7 +204,7 @@ Now in `azure-security-keyvault-secrets` you can list the properties of secrets 
 PagedIterable<SecretProperties> secretsProperties = secretClient.listPropertiesOfSecrets();
 ```
 
-### Delete a secret
+#### Delete a secret
 In `azure-keyvault` you could delete all versions of a secret with the `deleteSecret` method. This returned information about the deleted secret (as a `DeletedSecretBundle`), but you could not poll the deletion operation to know when it completed. This would be valuable information if you intended to permanently delete the deleted secret with `purgeDeletedSecret`.
 
 ```java

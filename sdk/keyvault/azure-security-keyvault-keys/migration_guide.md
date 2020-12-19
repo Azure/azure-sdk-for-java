@@ -14,6 +14,7 @@ Familiarity with the `azure-keyvault` package is assumed. For those new to the K
     - [Common scenarios](#common-scenarios)
         - [Async operations](#async-operations)
         - [Create a key](#create-a-key)
+        - [Import a key](#import-a-key)
         - [Retrieve a key](#retrieve-a-key)
         - [List properties of keys](#list-properties-of-keys)
         - [Delete a key](#delete-a-key)
@@ -35,7 +36,7 @@ The modern Key Vault Key client library also provides the ability to share in so
 
 ## Important changes
 ### Separate packages and clients
-In the interest of simplifying the API for working with Key Vault keys, secrets and certificates, the `azure-keyvault` was split into separate packages:
+In the interest of simplifying the API for working with Key Vault certificates, keys and secrets, the `azure-keyvault` was split into separate packages:
 
 - [`azure-security-keyvault-certificates`](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-certificates/README.md) contains `CertificateClient` for working with Key Vault certificates.
 - `azure-security-keyvault-keys` contains `KeyClient` for working with Key Vault keys and `CryptographyClient` for performing cryptographic operations.
@@ -161,11 +162,29 @@ KeyVaultKey ecKey = keyClient.createEcKey(new CreateEcKeyOptions("<ec-key-name>"
     .setCurveName(KeyCurveName.P_256K));
 ```
 
-### Retrieve a key
+#### Import a key
+In `azure-keyvault` you could import a key by using `KeyVaultClient`'s `importKey` method, which required a vault endpoint, key name, and key contents as a `JsonWebKey`. This method returned a `KeyBundle`.
+
+```java
+KeyBundle importedKey = keyVaultClient.importKey(keyVaultUrl, "<key-name>", jsonWebKey);
+```
+
+Now in `azure-security-keyvault-keys` you can still import a key by providing the key name and contents as a  `JsonWebKey` to `importKey`, but you can also do so by providing an options object. This method returns a `KeyVaultKey`.
+
+```java
+// Import key using name and contents.
+KeyVaultKey importedKey = keyClient.importKey(new ImportKeyOptions("<key-name>", jsonWebKey));
+
+// Import key using options.
+KeyVaultKey anotherImportedKey = keyClient.importKey(new ImportKeyOptions("<key-name>", keyContents)
+    .setExpiresOn(OffsetDateTime.now().plusYears(1)));
+```
+
+#### Retrieve a key
 In `azure-keyvault` you could retrieve a key (in a `KeyBundle`) by using `getKey` in one of the following ways:
 
-- Using the desired vault endpoint and key name to get the latest version of a key.
-- Using the desired vault endpoint, key name and key version to get a specific key version.
+- Using the desired key vault endpoint and key name to get the latest version of a key.
+- Using the desired key vault endpoint, key name and key version to get a specific key version.
 - Using the key identifier to get a specific key version.
 
 Additionally, you could list the properties of the versions of a key with the `getKeyVersions` method, which returned a `PagedList` of `KeyItem`.
@@ -201,11 +220,11 @@ KeyVaultKey key = keyClient.getKey("<key-name>");
 // Get a key's specific version.
 KeyVaultKey keyVersion = keyClient.getKey("<key-name>", "<key-version>");
 
-// Get a key's versions.
+// Get a key's versions' propeties.
 PagedIterable<KeyProperties> keyVersionsProperties = keyClient.listPropertiesOfKeyVersions("<key-name>");
 ```
 
-### List properties of keys
+#### List properties of keys
 In `azure-keyvault` you could list the properties of keys in a specified vault with the `getKeys` methods. This returned a `PagedList` containing `KeyItem` instances.
 
 ```java
@@ -218,7 +237,7 @@ Now in `azure-security-keyvault-keys` you can list the properties of keys in a v
 PagedIterable<KeyProperties> keysProperties = keyClient.listPropertiesOfKeys();
 ```
 
-### Delete a key
+#### Delete a key
 In `azure-keyvault` you could delete all versions of a key with the `deleteKey` method. This returned information about the deleted key (as a `DeletedKeyBundle`), but you could not poll the deletion operation to know when it completed. This would be valuable information if you intended to permanently delete the deleted key with `purgeDeletedKey`.
 
 ```java
@@ -240,7 +259,7 @@ deleteKeyPoller.waitForCompletion();
 keyClient.purgeDeletedKey("<key-name>");
 ```
 
-### Perform cryptographic operations
+#### Perform cryptographic operations
 In `azure-keyvault` you could perform cryptographic operations with keys by using the `encrypt`/`decrypt`, `wrapKey`/`unwrapKey`, and `sign`/`verify` methods. Each of these methods accepted a key vault endpoint, key name, key version, and algorithm along with other parameters.
 
 ```java
