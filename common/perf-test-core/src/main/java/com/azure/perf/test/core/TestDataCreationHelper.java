@@ -7,6 +7,7 @@ import reactor.core.publisher.Flux;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.util.Random;
@@ -107,5 +108,19 @@ public class TestDataCreationHelper {
             transferred += read;
         }
         return transferred;
+    }
+
+    /**
+     * Writes contents of the specified size to the specified file path.
+     *
+     * @param filePath the path of the file to write to contents to
+     * @param size the size of the contents to write to the file.
+     * @param bufferSize the size of the buffer to use to write to the file.
+     * @throws IOException when an error occurs when writing to the file.
+     */
+    public static void writeToFile(String filePath, long size, int bufferSize) throws IOException {
+        InputStream inputStream = createRandomInputStream(size);
+        OutputStream outputStream = new FileOutputStream(filePath);
+        copyStream(inputStream, outputStream, bufferSize);
     }
 }

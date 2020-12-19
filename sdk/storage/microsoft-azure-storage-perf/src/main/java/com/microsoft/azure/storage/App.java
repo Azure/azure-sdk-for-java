@@ -4,7 +4,11 @@
 package com.microsoft.azure.storage;
 
 import com.azure.perf.test.core.PerfStressProgram;
-import com.microsoft.azure.storage.blob.perf.*;
+import com.microsoft.azure.storage.blob.perf.DownloadBlobTest;
+import com.microsoft.azure.storage.blob.perf.ListBlobsTest;
+import com.microsoft.azure.storage.blob.perf.UploadBlobTest;
+import com.microsoft.azure.storage.blob.perf.UploadFromFileTest;
+import com.microsoft.azure.storage.blob.perf.UploadOutputStreamTest;
 import com.microsoft.azure.storage.file.share.perf.DownloadFileShareTest;
 import com.microsoft.azure.storage.file.share.perf.DownloadToFileShareTest;
 import com.microsoft.azure.storage.file.share.perf.UploadFileShareTest;

@@ -19,7 +19,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.UUID;
 
-import static com.azure.perf.test.core.TestDataCreationHelper.createRandomByteBufferFlux;
 import static com.azure.perf.test.core.TestDataCreationHelper.createRandomInputStream;
 
 public class DownloadFileShareTest extends DirectoryTest<PerfStressOptions> {
@@ -86,11 +85,4 @@ public class DownloadFileShareTest extends DirectoryTest<PerfStressOptions> {
                 return 1;
             }).then();
     }
-
-//    // Required resource setup goes here, upload the file to be downloaded during tests.
-//    public Mono<Void> globalCleanupAsync() {
-//        return shareFileAsyncClient.delete()
-//            .then(super.globalCleanupAsync())
-//            .then();
-//    }
 }

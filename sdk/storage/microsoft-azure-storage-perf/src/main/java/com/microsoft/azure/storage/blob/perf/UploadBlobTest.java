@@ -11,7 +11,6 @@ import com.azure.perf.test.core.TestDataCreationHelper;
 import com.microsoft.azure.storage.StorageException;
 
 import com.microsoft.azure.storage.blob.perf.core.BlobTestBase;
-import org.omg.CORBA.INTERNAL;
 import reactor.core.publisher.Mono;
 
 public class UploadBlobTest extends BlobTestBase<PerfStressOptions> {

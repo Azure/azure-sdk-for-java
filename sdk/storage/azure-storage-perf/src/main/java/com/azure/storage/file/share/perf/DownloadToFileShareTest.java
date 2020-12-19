@@ -48,11 +48,4 @@ public class DownloadToFileShareTest extends DirectoryTest<PerfStressOptions> {
         file.deleteOnExit();
         return shareFileAsyncClient.downloadToFile(file.getAbsolutePath()).then();
     }
-
-//    // Required resource setup goes here, upload the file to be downloaded during tests.
-//    public Mono<Void> globalCleanupAsync() {
-//        return shareFileAsyncClient.delete()
-//            .then(super.globalCleanupAsync())
-//            .then();
-//    }
 }

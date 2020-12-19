@@ -4,10 +4,8 @@
 package com.microsoft.azure.storage.blob.perf;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 import com.azure.perf.test.core.PerfStressOptions;
-import com.azure.perf.test.core.RepeatingInputStream;
 import com.azure.perf.test.core.TestDataCreationHelper;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.blob.BlobOutputStream;

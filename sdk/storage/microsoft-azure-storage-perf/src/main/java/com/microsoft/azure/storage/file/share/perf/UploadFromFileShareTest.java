@@ -4,19 +4,15 @@
 package com.microsoft.azure.storage.file.share.perf;
 
 import com.azure.perf.test.core.PerfStressOptions;
+import com.azure.perf.test.core.TestDataCreationHelper;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.file.share.perf.core.FileTestBase;
 import reactor.core.publisher.Mono;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-
-import static com.azure.perf.test.core.TestDataCreationHelper.createRandomInputStream;
 
 public class UploadFromFileShareTest extends FileTestBase<PerfStressOptions> {
 
@@ -63,13 +59,10 @@ public class UploadFromFileShareTest extends FileTestBase<PerfStressOptions> {
 
 
     private Mono<Void> createTempFile() {
-        try (InputStream inputStream = createRandomInputStream(options.getSize());
-             OutputStream outputStream = new FileOutputStream(TEMP_FILE_PATH)) {
-            copyStream(inputStream, outputStream);
-            return Mono.empty();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return Mono.fromCallable(() -> {
+            TestDataCreationHelper.writeToFile(TEMP_FILE_PATH, options.getSize(), DEFAULT_BUFFER_SIZE);
+            return 1;
+        }).then();
     }
 
     private Mono<Void> deleteTempFile() {

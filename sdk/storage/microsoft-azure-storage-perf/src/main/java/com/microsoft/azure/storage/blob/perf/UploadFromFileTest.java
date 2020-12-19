@@ -3,10 +3,7 @@
 
 package com.microsoft.azure.storage.blob.perf;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -47,24 +44,8 @@ public class UploadFromFileTest extends BlobTestBase<PerfStressOptions> {
 
     private Mono<Void> createTempFile() {
         return Mono.fromCallable(() -> {
-            InputStream inputStream = null;
-            OutputStream outputStream = null;
-            try {
-                inputStream = TestDataCreationHelper.createRandomInputStream(options.getSize());
-                outputStream = new FileOutputStream(TEMP_FILE_PATH);
-                TestDataCreationHelper.copyStream(inputStream, outputStream, DEFAULT_BUFFER_SIZE);
-                return 1;
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            } finally {
-                if (outputStream != null) {
-                    outputStream.close();
-                }
-
-                if (inputStream != null) {
-                    inputStream.close();
-                }
-            }
+            TestDataCreationHelper.writeToFile(TEMP_FILE_PATH, options.getSize(), DEFAULT_BUFFER_SIZE);
+            return 1;
         }).then();
     }
 

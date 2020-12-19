@@ -11,7 +11,7 @@ import reactor.core.publisher.Mono;
 import java.util.UUID;
 
 public abstract class FileSystemTest<TOptions extends PerfStressOptions> extends ServiceTest<TOptions> {
-    private static final String SHARE_NAME = "perfstress-dl-" + UUID.randomUUID().toString();
+    private static final String FILE_SYSTEM_NAME = "perfstress-dl-" + UUID.randomUUID().toString();
 
     protected final DataLakeFileSystemClient dataLakeFileSystemClient;
     protected final DataLakeFileSystemAsyncClient dataLakeFileSystemAsyncClient;
@@ -19,8 +19,8 @@ public abstract class FileSystemTest<TOptions extends PerfStressOptions> extends
     public FileSystemTest(TOptions options) {
         super(options);
         // Setup the container clients
-        dataLakeFileSystemClient = dataLakeServiceClient.getFileSystemClient(SHARE_NAME);
-        dataLakeFileSystemAsyncClient = dataLakeServiceAsyncClient.getFileSystemAsyncClient(SHARE_NAME);
+        dataLakeFileSystemClient = dataLakeServiceClient.getFileSystemClient(FILE_SYSTEM_NAME);
+        dataLakeFileSystemAsyncClient = dataLakeServiceAsyncClient.getFileSystemAsyncClient(FILE_SYSTEM_NAME);
     }
 
     // NOTE: the pattern setup the parent first, then yourself.
