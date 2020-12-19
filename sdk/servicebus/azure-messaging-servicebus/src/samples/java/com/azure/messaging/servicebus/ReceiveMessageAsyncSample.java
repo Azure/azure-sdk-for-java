@@ -8,8 +8,6 @@ import reactor.core.Disposable;
 
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 /**
  * Sample demonstrates how to receive {@link ServiceBusReceivedMessage messages} from an Azure Service Bus Queue using
  * connection string.
@@ -20,8 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * A message is abandoned if an exception occurs downstream while the message is processed.
  */
 public class ReceiveMessageAsyncSample {
-    private boolean sampleWorks = true;
-
     /**
      * Main method to invoke this demo on how to receive {@link ServiceBusReceivedMessage messages} from an Azure
      * Service Bus Queue.
@@ -73,10 +69,7 @@ public class ReceiveMessageAsyncSample {
             // client. Consequently, messages have to be manually settled.
             System.out.printf("Sequence #: %s. Contents: %s%n", message.getSequenceNumber(), message.getBody());
         },
-            error -> {
-            System.err.println("Error occurred while receiving message: " + error);
-            sampleWorks = false;
-            },
+            error -> System.err.println("Error occurred while receiving message: " + error),
             () -> System.out.println("Receiving complete."));
 
         // Receiving messages from the queue for a duration of 20 seconds.
@@ -88,9 +81,5 @@ public class ReceiveMessageAsyncSample {
 
         // Close the receiver.
         receiver.close();
-
-        // Following assert is for making sure this sample run properly in our automated system.
-        // User do not need this assert, you can comment this line.
-        assertTrue(sampleWorks);
     }
 }

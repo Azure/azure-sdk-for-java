@@ -11,7 +11,6 @@ import java.util.concurrent.TimeUnit;
  * Sample example showing how peek would work.
  */
 public class PeekMessageAsyncSample {
-
     /**
      * Main method to invoke this demo on how to peek at a message within a Service Bus Queue.
      *
@@ -66,6 +65,5 @@ public class PeekMessageAsyncSample {
 
         // Close the receiver.
         receiver.close();
-
     }
 }

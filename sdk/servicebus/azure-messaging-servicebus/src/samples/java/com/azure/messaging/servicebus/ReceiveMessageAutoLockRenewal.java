@@ -9,14 +9,10 @@ import reactor.core.Disposable;
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 /**
  * Demonstrates how to enable automatic lock renewal for a message when receiving from Service Bus.
  */
 public class ReceiveMessageAutoLockRenewal {
-    private boolean sampleWorks = true;
-
     /**
      * Main method to invoke this demo on how to receive an {@link ServiceBusReceivedMessage} from Service Bus and
      * automatically renew the message lock.
@@ -63,7 +59,6 @@ public class ReceiveMessageAutoLockRenewal {
             .buildAsyncClient();
 
         Disposable subscription = receiver.receiveMessages()
-            .doOnError(throwable -> sampleWorks = false)
             .subscribe(message -> {
                 // Process message. The message lock is renewed for up to 2 minutes.
                 // If an exception is thrown from this consumer, the message is abandoned. Otherwise, it is completed.
@@ -81,9 +76,5 @@ public class ReceiveMessageAutoLockRenewal {
 
         // Close the receiver.
         receiver.close();
-
-        // Following assert is for making sure this sample run properly in our automated system.
-        // User do not need this assert, you can comment this line
-        assertTrue(sampleWorks);
     }
 }

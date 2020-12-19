@@ -8,8 +8,6 @@ import reactor.core.Disposable;
 
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 /**
  * Sample demonstrates how to receive an {@link ServiceBusReceivedMessage} from an Azure Service Bus Queue and settle
  * it <b>manually</b>.
@@ -24,8 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  *
  */
 public class ReceiveMessageAndSettleAsyncSample {
-
-    private boolean sampleWorks = true;
 
     /**
      * Main method to invoke this demo on how to receive an {@link ServiceBusReceivedMessage} from an Azure Service Bus
@@ -86,9 +82,7 @@ public class ReceiveMessageAndSettleAsyncSample {
                 } else {
                     return receiver.abandon(message);
                 }
-            })
-            .doOnError((error) -> sampleWorks = false)
-            .subscribe();
+            }).subscribe();
 
         // Subscribe is not a blocking call so we sleep here so the program does not end.
         TimeUnit.SECONDS.sleep(20);
@@ -98,10 +92,6 @@ public class ReceiveMessageAndSettleAsyncSample {
 
         // Close the receiver.
         receiver.close();
-
-        // Following assert is for making sure this sample run properly in our automated system.
-        // User do not need this assert, you can comment this line.
-        assertTrue(sampleWorks);
     }
 
     private static boolean processMessage(ServiceBusReceivedMessage message) {

@@ -8,14 +8,11 @@ import org.junit.jupiter.api.Test;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 /**
  * Sample to demonstrate the creation of a {@link ServiceBusProcessorClient} and starting the processor to receive
  * messages.
  */
 public class ServiceBusProcessorSample {
-    private boolean sampleWorks = false;
 
     /**
      * Main method to start the sample application.
@@ -69,14 +66,9 @@ public class ServiceBusProcessorSample {
             System.out.println("Closing processor due to unretriable error");
         } else {
             System.out.println("Closing processor.");
-            sampleWorks = true;
         }
 
         processorClient.close();
-
-        // Following assert is for making sure this sample run properly in our automated system.
-        // User do not need this assert, you can comment this line
-        assertTrue(sampleWorks);
     }
 
     /**

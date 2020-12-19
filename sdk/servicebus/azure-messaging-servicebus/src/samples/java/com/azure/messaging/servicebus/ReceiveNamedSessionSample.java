@@ -4,19 +4,17 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.util.IterableStream;
+import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Demonstrates how to receive messages from a named session using {@link ServiceBusReceiverClient}.
  * The sample below runs for 2 minutes. In those two minutes, it will poll Service Bus for batches of messages.
  */
 public class ReceiveNamedSessionSample {
-    private boolean sampleWorks = true;
 
     /**
      * Main method to invoke this demo on how to receive messages from a session with id "greetings" in an Azure Service
@@ -33,12 +31,12 @@ public class ReceiveNamedSessionSample {
      * Main method to invoke this demo on how to receive messages from a session with id "greetings" in an Azure Service
      * Bus Queue.
      */
-    //@Test
+    @Test
     public void run() {
         final AtomicBoolean isRunning = new AtomicBoolean(true);
 
-        Mono.delay(Duration.ofMinutes(2)).subscribe(index -> {
-            System.out.println("2 minutes has elapsed, stopping receive loop.");
+        Mono.delay(Duration.ofMinutes(1)).subscribe(index -> {
+            System.out.println("1 minutes has elapsed, stopping receive loop.");
             isRunning.set(false);
         });
 
@@ -72,7 +70,7 @@ public class ReceiveNamedSessionSample {
 
         try {
             while (isRunning.get()) {
-                IterableStream<ServiceBusReceivedMessage> messages = receiver.receiveMessages(10, Duration.ofSeconds(30));
+                IterableStream<ServiceBusReceivedMessage> messages = receiver.receiveMessages(10, Duration.ofSeconds(20));
 
                 for (ServiceBusReceivedMessage message : messages) {
                     // Process message.
@@ -94,10 +92,6 @@ public class ReceiveNamedSessionSample {
 
         // Close the receiver.
         sessionReceiver.close();
-
-        // Following assert is for making sure this sample run properly in our automated system.
-        // User do not need this assert, you can comment this line
-        assertTrue(sampleWorks);
     }
 
     private static boolean processMessage(ServiceBusReceivedMessage message) {

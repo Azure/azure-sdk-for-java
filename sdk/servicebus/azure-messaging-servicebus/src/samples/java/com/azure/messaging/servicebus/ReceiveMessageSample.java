@@ -5,8 +5,6 @@ package com.azure.messaging.servicebus;
 
 import java.time.Duration;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 /**
  * Sample demonstrates how to receive a batch of {@link ServiceBusReceivedMessage} from an Azure Service Bus Queue using
  * sync client.
@@ -14,8 +12,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Messages <b>must</b> be manually settled.
  */
 public class ReceiveMessageSample {
-    private boolean sampleWorks = true;
-
     /**
      * Main method to invoke this demo on how to receive a set of {@link ServiceBusMessage messages} from an Azure
      * Service Bus Queue.
@@ -23,39 +19,24 @@ public class ReceiveMessageSample {
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
-        ReceiveMessageSample sample = new ReceiveMessageSample();
-        sample.run();
-    }
-
-    /**
-     * Method to invoke this demo on how to receive a set of {@link ServiceBusMessage messages} from an Azure
-     * Service Bus Queue.
-     */
-    //@Test
-    public void run() {
 
         // The connection string value can be obtained by:
         // 1. Going to your Service Bus namespace in Azure Portal.
         // 2. Go to "Shared access policies"
         // 3. Copy the connection string for the "RootManageSharedAccessKey" policy.
-
-        // We are reading 'connectionString/queueName' from environment variable. Your application could read it from
-        // some other source. The 'connectionString' format is shown below.
-        // 1. "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
-        // 2. "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
-        // 3. "queueName" will be the name of the Service Bus queue instance you created
-        //    inside the Service Bus namespace.
-
-        String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
-        String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME");
+        String connectionString = "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};"
+            + "SharedAccessKey={key}";
 
         // Create a receiver.
+        // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
+        // "<<queue-name>>" will be the name of the Service Bus queue instance you created
+        // inside the Service Bus namespace.
         // Each message's lock is renewed up to 1 minute.
         ServiceBusReceiverClient receiver = new ServiceBusClientBuilder()
             .connectionString(connectionString)
             .receiver()
             .maxAutoLockRenewDuration(Duration.ofMinutes(1))
-            .queueName(queueName)
+            .queueName("<<queue-name>>")
             .buildClient();
 
         // Try to receive a set of messages from Service Bus 10 times. A batch of messages are returned when 5 messages
@@ -73,9 +54,5 @@ public class ReceiveMessageSample {
 
         // Close the receiver.
         receiver.close();
-
-        // Following assert is for making sure this sample run properly in our automated system.
-        // User do not need this assert, you can comment this line
-        assertTrue(sampleWorks);
     }
 }

@@ -7,14 +7,11 @@ import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 /**
  * Sample to demonstrate the creation of a session-enabled {@link ServiceBusProcessorClient} and starting the processor
  * to receive messages.
  */
 public class ServiceBusSessionProcessorSample {
-    private boolean sampleWorks = true;
 
     /**
      * Main method to start the sample application.
@@ -72,10 +69,6 @@ public class ServiceBusSessionProcessorSample {
         TimeUnit.SECONDS.sleep(10);
         System.out.println("Closing the processor");
         processorClient.close();
-
-        // Following assert is for making sure this sample run properly in our automated system.
-        // User do not need this assert, you can comment this line
-        assertTrue(sampleWorks);
     }
 
     /**

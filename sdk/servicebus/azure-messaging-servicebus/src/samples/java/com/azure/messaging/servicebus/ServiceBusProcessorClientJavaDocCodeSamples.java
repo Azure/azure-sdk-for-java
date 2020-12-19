@@ -3,9 +3,9 @@
 
 package com.azure.messaging.servicebus;
 
-import java.util.function.Consumer;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.util.function.Consumer;
 
 /**
  * Class contains sample code snippets that will be used in javadocs.
@@ -13,11 +13,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @see ServiceBusProcessorClient
  */
 public class ServiceBusProcessorClientJavaDocCodeSamples {
-    private boolean sampleWorks = false;
-
     /**
      * Creates a non session-enabled {@link ServiceBusProcessorClient}.
      */
+    @Test
     public void createServiceBusProcessorClient() {
         // BEGIN: com.azure.messaging.servicebus.servicebusprocessorclient#instantiation
         Consumer<ServiceBusReceivedMessageContext> onMessage = context -> {
@@ -39,10 +38,15 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
             }
         };
 
+        // We are reading 'connectionString/queueName' from environment variable.
+        // You can configure them as it fits suitable for your application.
+        String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
+        String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME");
+
         ServiceBusProcessorClient processor = new ServiceBusClientBuilder()
-            .connectionString("<< connection-string >>")
+            .connectionString(connectionString)
             .processor()
-            .queueName("<< queue name >>")
+            .queueName(queueName)
             .processMessage(onMessage)
             .processError(onError)
             .buildProcessorClient();
@@ -50,15 +54,12 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
         // Start the processor in the background
         processor.start();
         // END: com.azure.messaging.servicebus.servicebusprocessorclient#instantiation
-
-        // Following assert is for making sure this sample run properly in our automated system.
-        // User do not need this assert, you can comment this line
-        assertTrue(sampleWorks);
     }
 
     /**
      * Creates a session-enabled {@link ServiceBusProcessorClient}.
      */
+    @Test
     public void createSessionEnabledServiceBusProcessorClient() {
         // BEGIN: com.azure.messaging.servicebus.servicebusprocessorclient#session-instantiation
         Consumer<ServiceBusReceivedMessageContext> onMessage = context -> {
@@ -80,10 +81,15 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
             }
         };
 
+        // We are reading 'connectionString/queueName' from environment variable.
+        // You can configure it as it fits suitable for your application.
+        String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
+        String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_SESSION_QUEUE_NAME");
+
         ServiceBusProcessorClient sessionProcessor = new ServiceBusClientBuilder()
-            .connectionString("<< connection-string >>")
+            .connectionString(connectionString)
             .sessionProcessor()
-            .queueName("<< session-enabled queue name >>")
+            .queueName(queueName)
             .maxConcurrentSessions(2)
             .processMessage(onMessage)
             .processError(onError)

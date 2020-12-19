@@ -11,15 +11,11 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 /**
  * Sample demonstrates how to schedule a {@link ServiceBusMessage} to an Azure Service Bus queue and cancel a scheduled
  * message.
  */
 public class SendScheduledMessageAndCancelAsyncSample {
-    private boolean sampleWorks = false;
-
     /**
      * Main method to invoke this demo on how to schedule and then cancel a message to an Azure Service Bus queue.
      *
@@ -93,10 +89,7 @@ public class SendScheduledMessageAndCancelAsyncSample {
             .subscribe(
                 unused -> System.out.println("Cancelled message."),
                 error -> System.err.println("Error occurred while cancelling message. " + error),
-                () -> {
-                    System.out.println("Completed cancelling message.");
-                    sampleWorks = true;
-                });
+                () -> System.out.println("Completed cancelling message."));
 
         // Subscribe is not a blocking call so we sleep here so the program does not end while finishing
         // the operation.
@@ -104,9 +97,5 @@ public class SendScheduledMessageAndCancelAsyncSample {
 
         // Dispose of the sender and any resources it holds.
         sender.close();
-
-        // Following assert is for making sure this sample run properly in our automated system.
-        // User do not need this assert, you can comment this line
-        assertTrue(sampleWorks);
     }
 }

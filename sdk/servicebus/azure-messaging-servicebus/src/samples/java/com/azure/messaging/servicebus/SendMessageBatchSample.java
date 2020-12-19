@@ -10,15 +10,11 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 /**
  * Sample demonstrates how to send {@link ServiceBusMessageBatch} to an Azure Service Bus Topic with the synchronous
  * sender.
  */
 public class SendMessageBatchSample {
-    private boolean sampleWorks = true;
-
     /**
      * Main method to invoke this demo on how to send a {@link ServiceBusMessageBatch} to an Azure Service Bus Topic.
      *
@@ -89,9 +85,5 @@ public class SendMessageBatchSample {
 
         //close the client
         sender.close();
-
-        // Following assert is for making sure this sample run properly in our automated system.
-        // User do not need this assert, you can comment this line
-        assertTrue(sampleWorks);
     }
 }

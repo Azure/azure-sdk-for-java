@@ -11,14 +11,10 @@ import reactor.core.publisher.Mono;
 
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 /**
  * Demonstrates how to receive messages from a named session.
  */
 public class ReceiveNamedSessionAsyncSample {
-    private boolean sampleWorks = true;
-
     /**
      * Main method to invoke this demo on how to receive messages from a session with id "greetings" in an Azure Service
      * Bus Queue.
@@ -85,10 +81,7 @@ public class ReceiveNamedSessionAsyncSample {
                 // thrown in here, the message is abandoned.
                 // To disable this behaviour, toggle ServiceBusSessionReceiverClientBuilder.disableAutoComplete()
                 // when building the session receiver.
-            }, error -> {
-                System.err.println("Error occurred: " + error);
-                sampleWorks = false;
-            });
+            }, error -> System.err.println("Error occurred: " + error));
 
         // Subscribe is not a blocking call so we sleep here so the program does not end.
         TimeUnit.SECONDS.sleep(10);
@@ -98,9 +91,5 @@ public class ReceiveNamedSessionAsyncSample {
 
         // Close the receiver.
         sessionReceiver.close();
-
-        // Following assert is for making sure this sample run properly in our automated system.
-        // User do not need this assert, you can comment this line
-        assertTrue(sampleWorks);
     }
 }

@@ -7,6 +7,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.models.AbandonOptions;
 import com.azure.messaging.servicebus.models.CompleteOptions;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
+import org.junit.jupiter.api.Test;
 import org.reactivestreams.Subscription;
 import reactor.core.Disposable;
 import reactor.core.publisher.BaseSubscriber;
@@ -21,21 +22,39 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
     // The required parameters is connectionString, a way to authenticate with Service Bus using credentials.
+    // We are reading 'connectionString/queueName' from environment variable.
+    // You can configure them as it fits suitable for your application.
+    // 1. "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
+    // 2. "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
+    // 3. "queueName" will be the name of the Service Bus queue instance you created
+    //    inside the Service Bus namespace.
+    String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
+    String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME");
+
     ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
-        .connectionString("Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};"
-            + "SharedAccessKey={key}")
+
+        .connectionString(connectionString)
         .receiver()
-        .queueName("<< QUEUE NAME >>")
+        .queueName(queueName)
         .buildAsyncClient();
 
+    @Test
     public void initialization() {
         // BEGIN: com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation
         // The required parameters is connectionString, a way to authenticate with Service Bus using credentials.
+        // We are reading 'connectionString/queueName' from environment variable. You can configure them as it fits
+        // suitable for your application. The 'connectionString' format is shown below.
+        // 1. "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
+        // 2. "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
+        // 3. "queueName" will be the name of the Service Bus queue instance you created
+        //    inside the Service Bus namespace.
+        String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
+        String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME");
+
         ServiceBusReceiverAsyncClient consumer = new ServiceBusClientBuilder()
-            .connectionString(
-                "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}")
+            .connectionString(connectionString)
             .receiver()
-            .queueName("<< QUEUE NAME >>")
+            .queueName(queueName)
             .buildAsyncClient();
         // END: com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation
 

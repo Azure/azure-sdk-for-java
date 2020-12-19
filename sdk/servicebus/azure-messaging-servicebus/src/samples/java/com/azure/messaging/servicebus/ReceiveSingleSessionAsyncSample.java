@@ -15,7 +15,6 @@ import java.util.concurrent.TimeUnit;
  * Demonstrates how to receive from the first available session.
  */
 public class ReceiveSingleSessionAsyncSample {
-
     /**
      * Main method to invoke this demo on how to receive messages from the first available session in a Service Bus
      * topic subscription.
@@ -91,6 +90,5 @@ public class ReceiveSingleSessionAsyncSample {
 
         // Close the receiver.
         sessionReceiver.close();
-
     }
 }

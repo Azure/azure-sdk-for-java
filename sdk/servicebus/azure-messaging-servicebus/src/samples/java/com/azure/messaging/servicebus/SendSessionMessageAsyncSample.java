@@ -11,15 +11,12 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Sample demonstrates how to send a {@link ServiceBusMessage} to a session-enabled Azure Service Bus queue.
  * Samples for receiving are {@link ReceiveNamedSessionAsyncSample} or {@link ReceiveNamedSessionSample}.
  */
 public class SendSessionMessageAsyncSample {
-    private boolean sampleWorks = false;
-
     /**
      * Main method to invoke this demo on how to send and receive a {@link ServiceBusMessage} to and from a
      * session-enabled Azure Service Bus queue.
@@ -82,19 +79,12 @@ public class SendSessionMessageAsyncSample {
         // while sending the message.
         sender.sendMessages(messages).subscribe(unused -> System.out.println("Batch sent."),
             error -> System.err.println("Error occurred while publishing message batch: " + error),
-            () -> {
-            System.out.println("Batch send complete.");
-            sampleWorks = true;
-            });
+            () -> System.out.println("Batch send complete."));
 
         // subscribe() is not a blocking call. We sleep here so the program does not end before the send is complete.
         TimeUnit.SECONDS.sleep(10);
 
         // Close the sender.
         sender.close();
-
-        // Following assert is for making sure this sample run properly in our automated system.
-        // User do not need this assert, you can comment this line
-        assertTrue(sampleWorks);
     }
 }

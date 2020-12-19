@@ -8,14 +8,10 @@ import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 /**
  * Sample demonstrates how to send an {@link ServiceBusMessage} to an Azure Service Bus queue.
  */
 public class SendMessageAsyncSample {
-    private boolean sampleWorks = false;
-
     /**
      * Main method to invoke this demo on how to send an {@link ServiceBusMessageBatch} to an Azure Service Bus.
      *
@@ -65,19 +61,12 @@ public class SendMessageAsyncSample {
         sender.sendMessage(message).subscribe(
             unused -> System.out.println("Sent."),
             error -> System.err.println("Error occurred while publishing message: " + error),
-            () -> {
-                System.out.println("Send complete.");
-                sampleWorks = true;
-            });
+            () -> System.out.println("Send complete."));
 
         // subscribe() is not a blocking call. We sleep here so the program does not end before the send is complete.
         TimeUnit.SECONDS.sleep(5);
 
         // Close the sender.
         sender.close();
-
-        // Following assert is for making sure this sample run properly in our automated system.
-        // User do not need this assert, you can comment this line
-        assertTrue(sampleWorks);
     }
 }
