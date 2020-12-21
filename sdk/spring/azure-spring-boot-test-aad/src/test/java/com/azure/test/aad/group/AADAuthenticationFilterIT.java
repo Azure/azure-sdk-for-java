@@ -3,6 +3,7 @@
 
 package com.azure.test.aad.group;
 
+import com.azure.spring.aad.webapp.AzureOAuth2Configuration;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationFilter;
 import com.azure.test.utils.AppRunner;
 import com.azure.test.oauth.OAuthResponse;
@@ -20,7 +21,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -121,14 +121,14 @@ public class AADAuthenticationFilterIT {
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
     @SpringBootApplication
     @RestController
-    public static class DumbApp extends WebSecurityConfigurerAdapter {
+    public static class DumbApp extends AzureOAuth2Configuration {
 
         @Autowired
         private AADAuthenticationFilter aadAuthFilter;
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-
+            super.configure(http);
             http.authorizeRequests().antMatchers("/home").permitAll();
             http.authorizeRequests().antMatchers("/api/**").authenticated();
 

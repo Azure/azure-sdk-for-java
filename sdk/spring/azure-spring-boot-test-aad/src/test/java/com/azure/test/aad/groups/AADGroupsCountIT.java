@@ -3,6 +3,7 @@
 
 package com.azure.test.aad.groups;
 
+import com.azure.spring.aad.webapp.AzureOAuth2Configuration;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationFilter;
 import com.azure.spring.autoconfigure.aad.UserPrincipal;
 import com.azure.test.oauth.OAuthResponse;
@@ -18,7 +19,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -68,13 +68,14 @@ public class AADGroupsCountIT {
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
     @SpringBootApplication
     @RestController
-    public static class DumbApp extends WebSecurityConfigurerAdapter {
+    public static class DumbApp extends AzureOAuth2Configuration {
 
         @Autowired
         private AADAuthenticationFilter aadAuthenticationFilter;
 
         @Override
-        protected void configure(HttpSecurity http) {
+        protected void configure(HttpSecurity http) throws Exception {
+            super.configure(http);
             http.addFilterBefore(aadAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         }
 
