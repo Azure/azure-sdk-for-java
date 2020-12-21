@@ -3,7 +3,6 @@
 
 package com.azure.test.aad.approle;
 
-import com.azure.spring.aad.webapp.AzureOAuth2Configuration;
 import com.azure.spring.autoconfigure.aad.AADAppRoleStatelessAuthenticationFilter;
 import com.azure.test.utils.AppRunner;
 import com.azure.test.oauth.OAuthResponse;
@@ -21,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -88,7 +88,7 @@ public class AADAppRoleStatelessAuthenticationFilterIT {
     @EnableGlobalMethodSecurity(prePostEnabled = true)
     @SpringBootApplication
     @RestController
-    public static class DumbApp extends AzureOAuth2Configuration {
+    public static class DumbApp extends WebSecurityConfigurerAdapter {
 
         @Autowired
         private AADAppRoleStatelessAuthenticationFilter aadAuthFilter;
