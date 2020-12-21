@@ -92,5 +92,18 @@ public class AADResourceServerOboConfigurationTest {
 
             });
     }
+    @Test
+    public void testPropertyNotCorrect() {
+        this.contextRunner
+            .withUserConfiguration(AADResourceServerOboConfiguration.class)
+            .withPropertyValues(AAD_PROPERTY_PREFIX + "authorization-fake.graph.scopes=User.read")
+            .run(context -> {
+                AADOboClientRegistrationRepository oboRepo = context.getBean(AADOboClientRegistrationRepository
+                    .class);
+
+                ClientRegistration graph = oboRepo.findByRegistrationId("graph");
+                assertThat(graph).isNull();
+            });
+    }
 
 }
