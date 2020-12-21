@@ -54,7 +54,7 @@ public class AADOAuth2OboAuthorizedClientRepositoryTest {
             AAD_PROPERTY_PREFIX + "tenant-id = fake-tenant-id",
             AAD_PROPERTY_PREFIX + "client-id = fake-client-id",
             AAD_PROPERTY_PREFIX + "client-secret = fake-client-secret",
-            AAD_PROPERTY_PREFIX + "authorization.fake-graph.scopes = https://graph.microsoft.com/.default"
+            AAD_PROPERTY_PREFIX + "authentication.fake-graph.scopes = https://graph.microsoft.com/.default"
         );
         context.register(AADResourceServerOboConfiguration.class);
         context.refresh();
@@ -184,6 +184,25 @@ public class AADOAuth2OboAuthorizedClientRepositoryTest {
             JwtAuthenticationToken(mockJwt), new MockHttpServletRequest());
 
         Assertions.assertNull(client);
+    }
+
+    @Test
+    public void testPropertyNotCorrect() {
+
+        AADOAuth2OboAuthorizedClientRepository authorizedRepo = new AADOAuth2OboAuthorizedClientRepository(
+            clientRegistrationsRepo);
+
+        final Jwt mockJwt = mock(Jwt.class);
+
+        when(mockJwt.getTokenValue()).thenReturn("fake-token-value");
+
+        OAuth2AuthorizedClient client = authorizedRepo.loadAuthorizedClient("fake-graph", new
+            JwtAuthenticationToken(mockJwt), new MockHttpServletRequest());
+
+
+        Assertions.assertNull(client);
+
+
     }
 
 }
