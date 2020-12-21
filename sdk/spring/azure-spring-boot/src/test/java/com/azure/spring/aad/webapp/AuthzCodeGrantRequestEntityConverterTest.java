@@ -3,11 +3,13 @@
 
 package com.azure.spring.aad.webapp;
 
+import org.hamcrest.Matcher;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.assertj.AssertableWebApplicationContext;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.RequestEntity;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
@@ -19,6 +21,8 @@ import org.springframework.util.MultiValueMap;
 
 import java.util.Optional;
 
+import static org.hamcrest.CoreMatchers.hasItems;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AuthzCodeGrantRequestEntityConverterTest {
@@ -63,6 +67,43 @@ public class AuthzCodeGrantRequestEntityConverterTest {
             MultiValueMap<String, String> body = convertedBodyOf(createCodeGrantRequest(arm));
             assertEquals("Calendars.Read openid profile", body.getFirst("scope"));
         });
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void addHeadersForDefaultClient() {
+        contextRunner.run(context -> {
+            getBeans(context);
+            HttpHeaders httpHeaders = convertedHeaderOf(createCodeGrantRequest(azure));
+            assertThat(httpHeaders.entrySet(), (Matcher) hasItems(expectedHeaders()));
+        });
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void addHeadersForOnDemandClient() {
+        contextRunner.run(context -> {
+            getBeans(context);
+            HttpHeaders httpHeaders = convertedHeaderOf(createCodeGrantRequest(arm));
+            assertThat(httpHeaders.entrySet(), (Matcher) hasItems(expectedHeaders()));
+        });
+    }
+
+    private HttpHeaders convertedHeaderOf(OAuth2AuthorizationCodeGrantRequest request) {
+        AuthzCodeGrantRequestEntityConverter converter =
+            new AuthzCodeGrantRequestEntityConverter(clientRepo.getAzureClient());
+        RequestEntity<?> entity = converter.convert(request);
+        return Optional.ofNullable(entity)
+                       .map(HttpEntity::getHeaders)
+                       .orElse(null);
+    }
+    private Object[] expectedHeaders() {
+        return AuthzCodeGrantRequestEntityConverter
+            .getHttpHeaders()
+            .entrySet()
+            .stream()
+            .filter(entry -> !entry.getKey().equals("client-request-id"))
+            .toArray();
     }
 
     @SuppressWarnings("unchecked")

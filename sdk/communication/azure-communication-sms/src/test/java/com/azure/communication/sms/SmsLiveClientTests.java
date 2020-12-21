@@ -83,7 +83,6 @@ public class SmsLiveClientTests extends SmsLiveTestBase {
             builder.accessKey(DEFAULT_ACCESS_KEY);
             builder.buildClient().sendMessage(from, to, body);
         } catch (HttpResponseException ex) {
-            assertEquals(401, ex.getResponse().getStatusCode());
             http401ExceptionThrown = true;
         }
 
