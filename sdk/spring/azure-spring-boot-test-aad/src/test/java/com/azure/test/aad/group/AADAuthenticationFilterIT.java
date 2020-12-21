@@ -128,7 +128,6 @@ public class AADAuthenticationFilterIT {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            super.configure(http);
             http.authorizeRequests().antMatchers("/home").permitAll();
             http.authorizeRequests().antMatchers("/api/**").authenticated();
 
