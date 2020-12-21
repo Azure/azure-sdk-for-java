@@ -19,7 +19,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
  * This helper class makes it possible to configure credentials to be used within a Spring context.
  * </p>
  *
- * <table summary="">
+ * <table>
  * <tr>
  * <th>Property Tuples</th>
  * <th>Description</th>
