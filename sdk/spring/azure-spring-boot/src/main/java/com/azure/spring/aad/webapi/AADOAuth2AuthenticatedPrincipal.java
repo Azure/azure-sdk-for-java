@@ -16,9 +16,9 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.util.Assert;
 
 /**
- * entity class of AzureOAuth2AuthenticatedPrincipal
+ * entity class of AADOAuth2AuthenticatedPrincipal
  */
-public class AzureOAuth2AuthenticatedPrincipal implements OAuth2AuthenticatedPrincipal, Serializable {
+public class AADOAuth2AuthenticatedPrincipal implements OAuth2AuthenticatedPrincipal, Serializable {
 
     private static final long serialVersionUID = -3625690847771476854L;
 
@@ -34,8 +34,8 @@ public class AzureOAuth2AuthenticatedPrincipal implements OAuth2AuthenticatedPri
 
     private JWTClaimsSet jwtClaimsSet;
 
-    public AzureOAuth2AuthenticatedPrincipal(Map<String, Object> headers, Map<String, Object> attributes,
-        Collection<GrantedAuthority> authorities, String tokenValue) {
+    public AADOAuth2AuthenticatedPrincipal(Map<String, Object> headers, Map<String, Object> attributes,
+                                           Collection<GrantedAuthority> authorities, String tokenValue) {
         Assert.notEmpty(attributes, "attributes cannot be empty");
         Assert.notEmpty(headers, "headers cannot be empty");
         this.headers = headers;

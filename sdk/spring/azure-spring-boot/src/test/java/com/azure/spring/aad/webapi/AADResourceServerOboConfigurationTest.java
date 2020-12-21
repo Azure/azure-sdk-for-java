@@ -15,7 +15,7 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class AzureActiveDirectoryResourceServerClientConfigurationTest {
+public class AADResourceServerOboConfigurationTest {
 
     private static final String AAD_PROPERTY_PREFIX = "azure.activedirectory.";
 
@@ -28,7 +28,7 @@ public class AzureActiveDirectoryResourceServerClientConfigurationTest {
     @Test
     public void testNotExistBearerTokenAuthenticationToken() {
         this.contextRunner
-            .withUserConfiguration(AzureActiveDirectoryResourceServerClientConfiguration.class)
+            .withUserConfiguration(AADResourceServerOboConfiguration.class)
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
             .run(context -> {
                 assertThat(context).doesNotHaveBean("AADOAuth2OboAuthorizedClientRepository");
@@ -38,7 +38,7 @@ public class AzureActiveDirectoryResourceServerClientConfigurationTest {
     @Test
     public void testNotExistOAuth2LoginAuthenticationFilter() {
         this.contextRunner
-            .withUserConfiguration(AzureActiveDirectoryResourceServerClientConfiguration.class)
+            .withUserConfiguration(AADResourceServerOboConfiguration.class)
             .withClassLoader(new FilteredClassLoader(OAuth2LoginAuthenticationFilter.class))
             .run(context -> {
                 assertThat(context).doesNotHaveBean("AADOAuth2OboAuthorizedClientRepository");
@@ -48,7 +48,7 @@ public class AzureActiveDirectoryResourceServerClientConfigurationTest {
     @Test
     public void testOAuth2AuthorizedClientRepository() {
         this.contextRunner
-            .withUserConfiguration(AzureActiveDirectoryResourceServerClientConfiguration.class)
+            .withUserConfiguration(AADResourceServerOboConfiguration.class)
             .run(context -> {
                 final OAuth2AuthorizedClientRepository aadOboRepo = context.getBean(
                     AADOAuth2OboAuthorizedClientRepository.class);
@@ -60,7 +60,7 @@ public class AzureActiveDirectoryResourceServerClientConfigurationTest {
     @Test
     public void testDefaultClientRegistrationRepository() {
         this.contextRunner
-            .withUserConfiguration(AzureActiveDirectoryResourceServerClientConfiguration.class)
+            .withUserConfiguration(AADResourceServerOboConfiguration.class)
             .run(context -> {
                 AADOboClientRegistrationRepository graphRepo = context.getBean(AADOboClientRegistrationRepository
                     .class);
@@ -77,8 +77,8 @@ public class AzureActiveDirectoryResourceServerClientConfigurationTest {
     @Test
     public void testExistGraphClient() {
         this.contextRunner
-            .withUserConfiguration(AzureActiveDirectoryResourceServerClientConfiguration.class)
-            .withPropertyValues(AAD_PROPERTY_PREFIX + "webApiClients.graph.scopes=User.read")
+            .withUserConfiguration(AADResourceServerOboConfiguration.class)
+            .withPropertyValues(AAD_PROPERTY_PREFIX + "authorization.graph.scopes=User.read")
             .run(context -> {
                 AADOboClientRegistrationRepository oboRepo = context.getBean(AADOboClientRegistrationRepository
                     .class);

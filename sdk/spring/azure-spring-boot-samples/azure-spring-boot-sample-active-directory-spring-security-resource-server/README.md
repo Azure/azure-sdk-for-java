@@ -81,7 +81,6 @@ If you still don't understand, you can look at this [register app or web api][Re
 ```properties
 azure.activedirectory.client-id=xxxxxx-your-client-id-xxxxxx
 azure.activedirectory.app-id-uri=xxxxxxxx-app-id-uri-xxxxxxxxxx
-azure.activedirectory.session-stateless=true
 ```
 
 ### Run with Maven 

@@ -56,7 +56,7 @@ public class AADOAuth2OboAuthorizedClientRepositoryTest {
             AAD_PROPERTY_PREFIX + "client-secret = fake-client-secret",
             AAD_PROPERTY_PREFIX + "webApiClients.fake-graph.scopes = https://graph.microsoft.com/.default"
         );
-        context.register(AzureActiveDirectoryResourceServerClientConfiguration.class);
+        context.register(AADResourceServerOboConfiguration.class);
         context.refresh();
 
         clientRegistrationsRepo = context.getBean(AADOboClientRegistrationRepository.class);
@@ -168,7 +168,6 @@ public class AADOAuth2OboAuthorizedClientRepositoryTest {
     @Test
     @SuppressWarnings("unchecked")
     public void testNotExistClientApplication() {
-        ConfidentialClientApplication confidentialClientApplication = mock(ConfidentialClientApplication.class);
 
         AADOAuth2OboAuthorizedClientRepository authorizedRepo = new AADOAuth2OboAuthorizedClientRepository(
             clientRegistrationsRepo) {

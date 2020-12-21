@@ -14,7 +14,7 @@ import org.junit.Test;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.oauth2.jwt.Jwt;
 
-public class AzureJwtBearerTokenAuthenticationConverterTest {
+public class AADJwtBearerTokenAuthenticationConverterTest {
 
     private Jwt jwt = mock(Jwt.class);
     private Map<String, Object> claims = new HashMap<>();
@@ -37,11 +37,11 @@ public class AzureJwtBearerTokenAuthenticationConverterTest {
 
     @Test
     public void testCreateUserPrincipal() {
-        AzureJwtBearerTokenAuthenticationConverter azureJwtBearerTokenAuthenticationConverter
-            = new AzureJwtBearerTokenAuthenticationConverter();
-        AbstractAuthenticationToken authenticationToken = azureJwtBearerTokenAuthenticationConverter.convert(jwt);
-        assertThat(authenticationToken.getPrincipal()).isExactlyInstanceOf(AzureOAuth2AuthenticatedPrincipal.class);
-        AzureOAuth2AuthenticatedPrincipal principal = (AzureOAuth2AuthenticatedPrincipal) authenticationToken
+        AADJwtBearerTokenAuthenticationConverter AADJwtBearerTokenAuthenticationConverter
+            = new AADJwtBearerTokenAuthenticationConverter();
+        AbstractAuthenticationToken authenticationToken = AADJwtBearerTokenAuthenticationConverter.convert(jwt);
+        assertThat(authenticationToken.getPrincipal()).isExactlyInstanceOf(AADOAuth2AuthenticatedPrincipal.class);
+        AADOAuth2AuthenticatedPrincipal principal = (AADOAuth2AuthenticatedPrincipal) authenticationToken
             .getPrincipal();
         assertThat(principal.getClaims()).isNotEmpty();
         assertThat(principal.getIssuer()).isEqualTo(claims.get("iss"));
@@ -50,11 +50,11 @@ public class AzureJwtBearerTokenAuthenticationConverterTest {
 
     @Test
     public void testExtractDefaultScopeAuthorities() {
-        AzureJwtBearerTokenAuthenticationConverter azureJwtBearerTokenAuthenticationConverter
-            = new AzureJwtBearerTokenAuthenticationConverter();
-        AbstractAuthenticationToken authenticationToken = azureJwtBearerTokenAuthenticationConverter.convert(jwt);
-        assertThat(authenticationToken.getPrincipal()).isExactlyInstanceOf(AzureOAuth2AuthenticatedPrincipal.class);
-        AzureOAuth2AuthenticatedPrincipal principal = (AzureOAuth2AuthenticatedPrincipal) authenticationToken
+        AADJwtBearerTokenAuthenticationConverter AADJwtBearerTokenAuthenticationConverter
+            = new AADJwtBearerTokenAuthenticationConverter();
+        AbstractAuthenticationToken authenticationToken = AADJwtBearerTokenAuthenticationConverter.convert(jwt);
+        assertThat(authenticationToken.getPrincipal()).isExactlyInstanceOf(AADOAuth2AuthenticatedPrincipal.class);
+        AADOAuth2AuthenticatedPrincipal principal = (AADOAuth2AuthenticatedPrincipal) authenticationToken
             .getPrincipal();
         assertThat(principal.getAttributes()).isNotEmpty();
         assertThat(principal.getAttributes()).hasSize(2);
@@ -63,11 +63,11 @@ public class AzureJwtBearerTokenAuthenticationConverterTest {
     @Test
     public void testExtractCustomScopeAuthorities() {
         when(jwt.containsClaim("roles")).thenReturn(true);
-        AzureJwtBearerTokenAuthenticationConverter azureJwtBearerTokenAuthenticationConverter
-            = new AzureJwtBearerTokenAuthenticationConverter("roles", "ROLE_");
-        AbstractAuthenticationToken authenticationToken = azureJwtBearerTokenAuthenticationConverter.convert(jwt);
-        assertThat(authenticationToken.getPrincipal()).isExactlyInstanceOf(AzureOAuth2AuthenticatedPrincipal.class);
-        AzureOAuth2AuthenticatedPrincipal principal = (AzureOAuth2AuthenticatedPrincipal) authenticationToken
+        AADJwtBearerTokenAuthenticationConverter AADJwtBearerTokenAuthenticationConverter
+            = new AADJwtBearerTokenAuthenticationConverter("roles", "ROLE_");
+        AbstractAuthenticationToken authenticationToken = AADJwtBearerTokenAuthenticationConverter.convert(jwt);
+        assertThat(authenticationToken.getPrincipal()).isExactlyInstanceOf(AADOAuth2AuthenticatedPrincipal.class);
+        AADOAuth2AuthenticatedPrincipal principal = (AADOAuth2AuthenticatedPrincipal) authenticationToken
             .getPrincipal();
         assertThat(principal.getAttributes()).isNotEmpty();
         assertThat(principal.getAttributes()).hasSize(2);

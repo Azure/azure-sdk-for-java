@@ -3,6 +3,7 @@
 
 package com.azure.spring.aad.webapi;
 
+import com.azure.spring.aad.webapp.AuthorizationProperties;
 import com.azure.spring.aad.webapp.AuthorizationServerEndpoints;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ import java.util.List;
 @ConditionalOnResource(resources = "classpath:aad.enable.config")
 @EnableConfigurationProperties({ AADAuthenticationProperties.class })
 @ConditionalOnClass({ BearerTokenAuthenticationToken.class, OAuth2LoginAuthenticationFilter.class })
-public class AzureActiveDirectoryResourceServerClientConfiguration {
+public class AADResourceServerOboConfiguration {
 
     @Autowired
     private AADAuthenticationProperties properties;
@@ -39,7 +40,7 @@ public class AzureActiveDirectoryResourceServerClientConfiguration {
     @Bean
     @ConditionalOnMissingBean({ ClientRegistrationRepository.class, AADOboClientRegistrationRepository.class })
     public AADOboClientRegistrationRepository oboClientRegistrationRepository() {
-        return new AADOboClientRegistrationRepository(createAuthzClients());
+        return new AADOboClientRegistrationRepository(createOboClients());
     }
 
     /**
@@ -53,18 +54,18 @@ public class AzureActiveDirectoryResourceServerClientConfiguration {
         return new AADOAuth2OboAuthorizedClientRepository(repo);
     }
 
-    public List<ClientRegistration> createAuthzClients() {
+    public List<ClientRegistration> createOboClients() {
         List<ClientRegistration> result = new ArrayList<>();
-        for (String name : properties.getWebApiClients().keySet()) {
-            AADOboAuthorizationProperties authz = properties.getWebApiClients().get(name);
-            result.add(createClientBuilder(name, authz));
+        for (String name : properties.getAuthorization().keySet()) {
+            AuthorizationProperties authorizationProperties = properties.getAuthorization().get(name);
+            result.add(createClientBuilder(name, authorizationProperties));
         }
         return result;
     }
 
-    private ClientRegistration createClientBuilder(String id, AADOboAuthorizationProperties authz) {
+    private ClientRegistration createClientBuilder(String id, AuthorizationProperties properties) {
         ClientRegistration.Builder result = createClientBuilder(id);
-        result.scope(authz.getScopes());
+        result.scope(properties.getScopes());
         return result.build();
     }
 
