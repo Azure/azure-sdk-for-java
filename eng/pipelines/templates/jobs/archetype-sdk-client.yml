@@ -348,7 +348,7 @@ jobs:
 
       - task: Maven@3
         displayName: 'Generate aggregate code coverage report'
-        condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'), eq('${{ parameters.SDKType }}', 'client'))
+        condition: and(eq(variables['OsName'], 'Windows'), eq(variables['JavaTestVersion'], '1.11'))
         inputs:
           mavenPomFile: sdk/${{ parameters.ServiceDirectory }}/pom.xml
           options: -Pcoverage
