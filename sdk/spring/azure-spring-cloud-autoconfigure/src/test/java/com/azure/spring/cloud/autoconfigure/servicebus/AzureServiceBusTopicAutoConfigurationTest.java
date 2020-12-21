@@ -45,30 +45,24 @@ public class AzureServiceBusTopicAutoConfigurationTest {
 
     @Test
     public void testWithoutServiceBusNamespaceManager() {
-        this.contextRunner.run(c -> assertThat(c).doesNotHaveBean(ServiceBusTopicManager.class)
+        this.contextRunner.withUserConfiguration(TestConfigWithConnectionStringProvider.class)
+                          .run(c -> assertThat(c).doesNotHaveBean(ServiceBusTopicManager.class)
                                                  .doesNotHaveBean(ServiceBusTopicSubscriptionManager.class));
     }
 
     @Test
     public void testWithServiceBusNamespaceManager() {
-        this.contextRunner.withUserConfiguration(TestConfigWithServiceBusNamespaceManager.class)
+        this.contextRunner.withUserConfiguration(TestConfigWithConnectionStringProvider.class,
+            TestConfigWithServiceBusNamespaceManager.class)
                           .run(context -> assertThat(context).hasSingleBean(ServiceBusTopicManager.class)
                                                              .hasSingleBean(ServiceBusTopicSubscriptionManager.class));
     }
 
     @Test
     public void testTopicClientFactoryCreated() {
-        this.contextRunner.withUserConfiguration(AzureServiceBusAutoConfiguration.class,
-            TestConfigWithServiceBusNamespaceManager.class)
-                          .withPropertyValues(SERVICE_BUS_PROPERTY_PREFIX + "connection-string=str1")
+        this.contextRunner.withUserConfiguration(TestConfigWithConnectionStringProvider.class, TestConfigWithServiceBusNamespaceManager.class)
                           .run(context -> assertThat(context).hasSingleBean(ServiceBusTopicClientFactory.class)
                                                              .hasSingleBean(ServiceBusTopicOperation.class));
-    }
-
-    @Test
-    public void testTopicClientFactoryNotCreated() {
-        this.contextRunner.run(context -> assertThat(context).doesNotHaveBean(ServiceBusTopicClientFactory.class)
-                                                             .doesNotHaveBean(ServiceBusTopicOperation.class));
     }
 
     @Test
@@ -87,9 +81,7 @@ public class AzureServiceBusTopicAutoConfigurationTest {
 
     @Test
     public void testResourceManagerProvided() {
-        this.contextRunner.withUserConfiguration(
-            TestConfigWithAzureResourceManagerAndConnectionProvider.class,
-            AzureServiceBusAutoConfiguration.class)
+        this.contextRunner.withUserConfiguration(TestConfigWithAzureResourceManager.class, TestConfigWithConnectionStringProvider.class, AzureServiceBusAutoConfiguration.class)
                           .withPropertyValues(
                               AZURE_PROPERTY_PREFIX + "resource-group=rg1",
                               SERVICE_BUS_PROPERTY_PREFIX + "namespace=ns1"
@@ -115,18 +107,25 @@ public class AzureServiceBusTopicAutoConfigurationTest {
     }
 
     @Configuration
+    @EnableConfigurationProperties(AzureServiceBusProperties.class)
+    public static class TestConfigWithConnectionStringProvider {
+
+        @Bean
+        public ServiceBusConnectionStringProvider serviceBusConnectionStringProvider() {
+            return new ServiceBusConnectionStringProvider("fake");
+        }
+
+    }
+
+    @Configuration
     @EnableConfigurationProperties(AzureProperties.class)
-    public static class TestConfigWithAzureResourceManagerAndConnectionProvider {
+    public static class TestConfigWithAzureResourceManager {
 
         @Bean
         public AzureResourceManager azureResourceManager() {
             return mock(AzureResourceManager.class);
         }
 
-        @Bean
-        public ServiceBusConnectionStringProvider connectionStringProvider() {
-            return new ServiceBusConnectionStringProvider("fake-string");
-        }
 
     }
 }

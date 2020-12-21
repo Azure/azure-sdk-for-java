@@ -44,12 +44,13 @@ public class AzureServiceBusQueueAutoConfigurationTest {
 
     @Test
     public void testWithoutServiceBusNamespaceManager() {
-        this.contextRunner.run(context -> assertThat(context).doesNotHaveBean(ServiceBusQueueManager.class));
+        this.contextRunner.withUserConfiguration(TestConfigWithConnectionStringProvider.class)
+                          .run(context -> assertThat(context).doesNotHaveBean(ServiceBusQueueManager.class));
     }
 
     @Test
     public void testWithServiceBusNamespaceManager() {
-        this.contextRunner.withUserConfiguration(TestConfigWithServiceBusNamespaceManager.class)
+        this.contextRunner.withUserConfiguration(TestConfigWithServiceBusNamespaceManager.class, TestConfigWithConnectionStringProvider.class)
                           .run(context -> assertThat(context).hasSingleBean(ServiceBusQueueManager.class));
     }
 
@@ -60,12 +61,6 @@ public class AzureServiceBusQueueAutoConfigurationTest {
                           .withPropertyValues(SERVICE_BUS_PROPERTY_PREFIX + "connection-string=str1")
                           .run(context -> assertThat(context).hasSingleBean(ServiceBusQueueClientFactory.class)
                                                              .hasSingleBean(ServiceBusQueueOperation.class));
-    }
-
-    @Test
-    public void testQueueClientFactoryNotCreated() {
-        this.contextRunner.run(context -> assertThat(context).doesNotHaveBean(ServiceBusQueueClientFactory.class)
-                                                             .doesNotHaveBean(ServiceBusQueueOperation.class));
     }
 
     @Test
@@ -84,7 +79,8 @@ public class AzureServiceBusQueueAutoConfigurationTest {
     @Test
     public void testResourceManagerProvided() {
         this.contextRunner.withUserConfiguration(
-            TestConfigWithAzureResourceManagerAndConnectionProvider.class,
+            TestConfigWithAzureResourceManager.class,
+            TestConfigWithConnectionStringProvider.class,
             AzureServiceBusAutoConfiguration.class)
                           .withPropertyValues(
                               AZURE_PROPERTY_PREFIX + "resource-group=rg1",
@@ -110,17 +106,23 @@ public class AzureServiceBusQueueAutoConfigurationTest {
     }
 
     @Configuration
+    @EnableConfigurationProperties(AzureServiceBusProperties.class)
+    public static class TestConfigWithConnectionStringProvider {
+
+        @Bean
+        public ServiceBusConnectionStringProvider serviceBusConnectionStringProvider() {
+            return new ServiceBusConnectionStringProvider("fake");
+        }
+
+    }
+
+    @Configuration
     @EnableConfigurationProperties(AzureProperties.class)
-    public static class TestConfigWithAzureResourceManagerAndConnectionProvider {
+    public static class TestConfigWithAzureResourceManager {
 
         @Bean
         public AzureResourceManager azureResourceManager() {
             return mock(AzureResourceManager.class);
-        }
-
-        @Bean
-        public ServiceBusConnectionStringProvider connectionStringProvider() {
-            return new ServiceBusConnectionStringProvider("fake-string");
         }
 
     }
