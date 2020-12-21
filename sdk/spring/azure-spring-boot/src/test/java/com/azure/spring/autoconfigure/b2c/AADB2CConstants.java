@@ -7,12 +7,9 @@ import static com.azure.spring.autoconfigure.b2c.AADB2CProperties.PREFIX;
 import static com.azure.spring.autoconfigure.b2c.AADB2CProperties.USER_FLOW_SIGN_UP_OR_SIGN_IN;
 
 public class AADB2CConstants {
+    public static final String AUTHENTICATE_ADDITIONAL_PARAMETERS_LOGIN_HINT = ".authenticate-additional-parameters.login-hint";
 
-    private static final String AUTHENTICATE_ADDITIONAL_PARAMETERS = ".authenticate-additional-parameters";
-
-    private static final String AUTHENTICATE_ADDITIONAL_PARAMETERS_LOGIN_HINT = AUTHENTICATE_ADDITIONAL_PARAMETERS + ".login-hint";
-
-    public static final String AUTHENTICATE_ADDITIONAL_PARAMETERS_PROMPT = AUTHENTICATE_ADDITIONAL_PARAMETERS + ".prompt";
+    public static final String AUTHENTICATE_ADDITIONAL_PARAMETERS_PROMPT = ".authenticate-additional-parameters.prompt";
 
     public static final String PROMPT = "prompt";
 
