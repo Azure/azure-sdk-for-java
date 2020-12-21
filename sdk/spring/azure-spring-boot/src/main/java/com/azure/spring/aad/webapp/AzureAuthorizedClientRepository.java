@@ -22,13 +22,8 @@ public class AzureAuthorizedClientRepository implements OAuth2AuthorizedClientRe
     private final OAuth2AuthorizedClientRepository delegate;
 
     public AzureAuthorizedClientRepository(AADWebAppClientRegistrationRepository repo) {
-        this(repo, new JacksonHttpSessionOAuth2AuthorizedClientRepository());
-    }
-
-    public AzureAuthorizedClientRepository(AADWebAppClientRegistrationRepository repo,
-                                           OAuth2AuthorizedClientRepository delegate) {
         this.repo = repo;
-        this.delegate = delegate;
+        this.delegate = new JacksonHttpSessionOAuth2AuthorizedClientRepository();
     }
 
     @Override
