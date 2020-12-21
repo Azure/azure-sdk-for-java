@@ -27,7 +27,7 @@ Event Hub. You can choose anyone of them.
 1.  Create Azure Service Bus namespace and topic.
     Please see [how to create][create-service-bus].
 
-1.  Update [application.yaml][application.yaml].
+1.  Update [application.yaml].
     ```yaml
     spring:
       cloud:
@@ -50,7 +50,7 @@ Event Hub. You can choose anyone of them.
 1.  Create Azure Service Bus namespace and queue.
         Please see [how to create][create-service-bus].
     
-1.  Update [application-sp.yaml][application-sp.yaml].
+1.  Update [application-sp.yaml].
     ```yaml
     spring:
       cloud:
@@ -87,7 +87,7 @@ Please follow [create managed identity][create-managed-identity] to set up manag
 
 ##### Update MSI related properties
 
-1.  Update [application-mi.yaml][application-mi.yaml]
+1.  Update [application-mi.yaml]
     ```yaml
     spring:
       cloud:

@@ -27,7 +27,7 @@ completed before the run.
 ## Examples
 
 1.  Update stream binding related properties in
-    [application.yaml](src/main/resources/application.yaml). If you choose to use
+    [application.yaml]. If you choose to use
     service principal or managed identity, update the `application-sp.yaml` or
     `application-mi.yaml` respectively.
 

@@ -32,7 +32,7 @@ completed before the run.
 
 ## Examples
 
-1. Update [application.yaml][application.yaml]. If you choose to use
+1. Update [application.yaml]. If you choose to use
    service principal or managed identity, update the `application-sp.yaml` or
    `application-mi.yaml` respectively.
     ```yaml

@@ -101,7 +101,7 @@ processing.
         [2] New message received: 'hello'
         [2] Message 'hello' successfully checkpointed
 
-6.  Delete the resources on [Azure Portal](http://ms.portal.azure.com/)
+6.  Delete the resources on [Azure Portal][azure-portal]
     to avoid unexpected charges.
 
 ## Troubleshooting
