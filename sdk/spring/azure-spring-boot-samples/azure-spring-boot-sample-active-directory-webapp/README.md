@@ -17,7 +17,7 @@ Follow the guide [here](https://docs.microsoft.com/azure/active-directory/develo
 
 - Set redirect URIs with `http://localhost:8080/login/oauth2/code/azure`.
 - Ensure **Access tokens** and **ID tokens** are selected.
-- To use on-demand authorization of certain resource, you need to add redirect URIs of `http://localhost:8080/login/oauth2/code/{resource-name}`. In this sample, set redirect URIs with `http://localhost:8080/login/oauth2/code/arm`.
+- To use on-demand authorization of certain resource, you need to add redirect URIs of `http://localhost:8080/login/oauth2/code/{registration-id}`. In this sample, set redirect URIs with `http://localhost:8080/login/oauth2/code/arm`.
 ### Configure necessary API permissions
 The sample retrieves user's group memberships using Microsoft graph API which requires the registered app to have `Directory.AccessAsUser.All` permission under `Delegated Permissions` of `Microsoft Graph`, which can allow an application to access the directory as the signed-in user. Also, to display the function of calling multiple resources, this sample will acquire `ActivityFeed.Read` permission under `Office 365 Management APIs` resource. You need AAD admin privilege to be able to grant the permission in API ACCESS -> Required permission. You can follow the below steps:	
 
@@ -39,7 +39,7 @@ In order to try the authorization action with this sample with minimum effort, [
 
 ## Examples
 
-### Configure application.properties
+### Configure application.yml
 
 ```yaml
 azure:

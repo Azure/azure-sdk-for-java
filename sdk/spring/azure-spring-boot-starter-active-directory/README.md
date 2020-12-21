@@ -46,8 +46,11 @@ azure:
 
 ### Web application
 Based on Azure AD as a Web application, it uses OAuth2 authorization code flow to authentication, and authorizes resources based on the groups or roles claim in the access token. 
-This starter provides a convenient way to quickly access resource servers, resources to be visited should be registered as `ClientRegistration` by `@RegisteredOAuth2AuthorizedClient` annotation to mark the client resource. Spring Security will help automatically obtain valid access tokens based on the root refresh token, business methods will use the corresponding access token to request client resources.
 
+This starter provides a convenient way to quickly access resource servers.
+1. Resource servers should be registered as `ClientRegistration`.
+2. In Controller, `@RegisteredOAuth2AuthorizedClient` can be used to  get `OAuth2AuthorizedClient`. 
+   `OAuth2AuthorizedClient` contains accessToken to access related client resource.
 #### On-demand authorization
 By default, the starter will launch the Oauth2 Authorization Code flow for a logging in user. During the authorization flow, `azure-spring-boot-starter-active-directory` adds all the configured scopes except **on-demand** ones into authorization code requests to ask for user's authorization consent. The authorization flow of `on-demand` resources will be launched at the first time the user wants to access them.
 
@@ -126,7 +129,7 @@ public class AADOAuth2LoginConfigSample extends AzureOAuth2Configuration {
 
 Please refer to [azure-active-directory-spring-boot-sample](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server/README.md) for how to integrate Spring Security and Azure AD for authentication and authorization in a Single Page Application (SPA) scenario.
 
-#### Configure application.properties:
+#### Configure application.yml:
 ```yaml
 azure:
   activedirectory:
@@ -159,7 +162,7 @@ The stateless processing can be activated with the `azure.activedirectory.sessio
 The authorization is using the [AAD AppRole feature](https://docs.microsoft.com/azure/architecture/multitenant-identity/app-roles#roles-using-azure-ad-app-roles),
 so instead of using the `groups` claim the token has a `roles` claim which contains roles [configured in your manifest](https://docs.microsoft.com/azure/active-directory/develop/howto-add-app-roles-in-azure-ad-apps#examples). 
 
-#### Configure your `application properties`:
+#### Configure your `application.yml`:
 
 ```yaml
 azure:
@@ -215,14 +218,14 @@ application registration](https://docs.microsoft.com/azure/active-directory/deve
 
 By default, `azure-spring-boot-starter-active-directory` configures scopes of `openid`, `profile` and `https://graph.microsoft.com/user.read` to implement OpenID Connect protocol and access of membership information of logging in users.
 
-To customize scope configurations of multiple resources, developers need to configure the resource name and scopes in the `application.yml` as needed. Here the {resource-name} is defined by developers themselves to generate correspondding `OAuth2AuthorizedClient` to acquire access tokens, and scope names should follow the specification of `resource-uri/permission`.
+To customize scope configurations of multiple resources, developers need to configure the registration id and scopes in the `application.yml` as needed. Here the {registration-id} is defined by developers themselves to generate correspondding `OAuth2AuthorizedClient` to acquire access tokens, and scope names should follow the specification of `resource-uri/permission`.
 ```yaml
 azure:
   activedirectory:
     authorization:
       graph:
         scopes: https://graph.microsoft.com/Analytics.Read, email
-      {resource-name}:
+      {registration-id}:
         scopes: {scope1}, {scope2}
 ``` 
 
@@ -232,7 +235,7 @@ To configure the authorization of certain resource as on-demand, developers need
 azure:
   activedirectory:
     authorization:
-      {resource-name}:
+      {registration-id}:
         on-demand: true
         scopes: {scope1}, {scope2}
 ``` 
