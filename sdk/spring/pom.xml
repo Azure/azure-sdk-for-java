@@ -22,6 +22,7 @@
     <module>azure-spring-boot-test-application</module>
     <module>azure-spring-boot-test-core</module>
     <module>azure-spring-boot-test-aad</module>
+    <module>azure-spring-boot-test-aad-obo</module>
     <module>azure-spring-boot-test-cosmos</module>
     <module>azure-spring-boot-test-keyvault</module>
     <module>azure-spring-boot-test-servicebus-jms</module>
