@@ -13,7 +13,6 @@ import com.azure.spring.cloud.context.core.config.AzureProperties;
 import com.azure.spring.cloud.context.core.impl.EventHubNamespaceManager;
 import com.azure.spring.cloud.telemetry.TelemetryCollector;
 import com.azure.spring.integration.eventhub.factory.EventHubConnectionStringProvider;
-import com.azure.spring.integration.eventhub.impl.EventHubRuntimeException;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
