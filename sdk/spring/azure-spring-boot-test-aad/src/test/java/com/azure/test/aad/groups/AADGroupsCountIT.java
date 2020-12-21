@@ -3,11 +3,13 @@
 
 package com.azure.test.aad.groups;
 
+import com.azure.spring.autoconfigure.aad.AADAuthenticationFilter;
 import com.azure.spring.autoconfigure.aad.UserPrincipal;
 import com.azure.test.oauth.OAuthResponse;
 import com.azure.test.oauth.OAuthUtils;
 import com.azure.test.utils.AppRunner;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -15,6 +17,9 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -63,7 +68,15 @@ public class AADGroupsCountIT {
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
     @SpringBootApplication
     @RestController
-    public static class DumbApp {
+    public static class DumbApp extends WebSecurityConfigurerAdapter {
+
+        @Autowired
+        private AADAuthenticationFilter aadAuthenticationFilter;
+
+        @Override
+        protected void configure(HttpSecurity http) {
+            http.addFilterBefore(aadAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        }
 
         @GetMapping(value = "api/groupsCount")
         public ResponseEntity<String> groupsCount(PreAuthenticatedAuthenticationToken authToken) {
