@@ -34,7 +34,7 @@ public class OAuthUtils {
         headers.setContentType(APPLICATION_FORM_URLENCODED);
 
         MultiValueMap<String, String> requestBody = new LinkedMultiValueMap<>();
-        requestBody.add("scope", "api://" + aadClientId + "/ResourceAccessGraph.read");
+        requestBody.add("scope", "api://" + aadClientId + "/ResourceAccessGraph.Read");
         requestBody.add("grant_type", "password");
         requestBody.add("client_id", aadClientId);
         requestBody.add("client_secret", aadClientSecret);

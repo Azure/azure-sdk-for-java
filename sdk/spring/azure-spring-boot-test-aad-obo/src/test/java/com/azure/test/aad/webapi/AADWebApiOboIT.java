@@ -135,7 +135,7 @@ public class AADWebApiOboIT {
          * @return Response with graph data
          */
         @GetMapping("call-graph")
-        @PreAuthorize("hasAuthority('SCOPE_ResourceAccessGraph.read')")
+        @PreAuthorize("hasAuthority('SCOPE_ResourceAccessGraph.Read')")
         public String callGraph(@RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient graph) {
             return callMicrosoftGraphMeEndpoint(graph);
         }
