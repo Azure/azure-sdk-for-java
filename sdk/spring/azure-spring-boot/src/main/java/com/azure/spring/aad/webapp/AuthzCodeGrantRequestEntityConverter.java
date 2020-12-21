@@ -3,13 +3,18 @@
 
 package com.azure.spring.aad.webapp;
 
+import com.azure.spring.utils.ApplicationId;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.RequestEntity;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequestEntityConverter;
+import org.springframework.util.Assert;
 import org.springframework.util.MultiValueMap;
 
+import java.util.Collections;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Used to set "scope" parameter when use "auth-code" to get "access_token".
@@ -25,21 +30,33 @@ public class AuthzCodeGrantRequestEntityConverter extends OAuth2AuthorizationCod
     @Override
     @SuppressWarnings("unchecked")
     public RequestEntity<?> convert(OAuth2AuthorizationCodeGrantRequest request) {
-        RequestEntity<?> result = super.convert(request);
-        if (isRequestForDefaultClient(request)) {
-            Optional.ofNullable(result)
-                    .map(HttpEntity::getBody)
-                    .map(b -> (MultiValueMap<String, String>) b)
-                    .ifPresent(body -> body.add("scope", scopeValue()));
-        }
-        return result;
+        RequestEntity<?> requestEntity = super.convert(request);
+        Assert.notNull(requestEntity, "requestEntity can not be null");
+
+        HttpHeaders httpHeaders = getHttpHeaders();
+        Optional.of(requestEntity)
+                .map(HttpEntity::getHeaders)
+                .ifPresent(headers -> headers.forEach(httpHeaders::put));
+
+        MultiValueMap<String, String> body = (MultiValueMap<String, String>) requestEntity.getBody();
+        Assert.notNull(body, "body can not be null");
+        String scopes = String.join(" ", isRequestForDefaultClient(request)
+            ? azureClient.getAccessTokenScopes()
+            : request.getClientRegistration().getScopes());
+        body.add("scope", scopes);
+
+        return new RequestEntity<>(body, httpHeaders, requestEntity.getMethod(), requestEntity.getUrl());
     }
 
     private boolean isRequestForDefaultClient(OAuth2AuthorizationCodeGrantRequest request) {
         return request.getClientRegistration().equals(azureClient.getClient());
     }
 
-    private String scopeValue() {
-        return String.join(" ", azureClient.getAccessTokenScopes());
+    static HttpHeaders getHttpHeaders() {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.put("x-client-SKU", Collections.singletonList(ApplicationId.AZURE_SPRING_AAD));
+        httpHeaders.put("x-client-VER", Collections.singletonList(ApplicationId.VERSION));
+        httpHeaders.put("client-request-id", Collections.singletonList(UUID.randomUUID().toString()));
+        return httpHeaders;
     }
 }

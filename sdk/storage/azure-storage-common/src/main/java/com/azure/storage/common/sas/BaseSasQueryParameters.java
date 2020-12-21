@@ -221,7 +221,7 @@ public abstract class BaseSasQueryParameters {
     /**
      * Encodes all SAS query parameters into a string that can be appended to a URL.
      *
-     * @return A {@code String} representing all SAS query parameters.
+     * @return A {@code String} representing the SAS query parameters.
      * @deprecated Please use the generateSas method on the desired client after initializing the appropriate
      * SasSignatureValues object.
      */
