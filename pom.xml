@@ -20,23 +20,29 @@
     <module>sdk/communication</module>
     <module>sdk/core</module>
     <module>sdk/cosmos</module>
+    <module>sdk/costmanagement</module>
     <module>sdk/digitaltwins</module>
     <module>sdk/eventgrid</module>
     <module>sdk/eventhubs</module>
     <module>sdk/formrecognizer</module>
+    <module>sdk/hdinsight</module>
     <module>sdk/identity</module>
     <module>sdk/keyvault</module>
+    <module>sdk/kusto</module>
     <module>sdk/loganalytics</module>
     <module>sdk/mediaservices</module>
     <module>sdk/metricsadvisor</module>
     <module>sdk/monitor</module>
     <module>sdk/mysql</module>
     <module>sdk/postgresql</module>
+    <module>sdk/recoveryservices</module>
+    <module>sdk/relay</module>
     <module>sdk/resourcemanager</module>
     <module>sdk/schemaregistry</module>
     <module>sdk/search</module>
     <module>sdk/servicebus</module>
     <module>sdk/spring</module>
+    <module>sdk/sqlvirtualmachine</module>
     <module>sdk/storage</module>
     <module>sdk/synapse</module>
     <module>sdk/tables</module>

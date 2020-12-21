@@ -18,14 +18,14 @@ import java.time.temporal.ChronoUnit;
  */
 public class AzureAuthorizedClientRepository implements OAuth2AuthorizedClientRepository {
 
-    private final AzureClientRegistrationRepository repo;
+    private final AADWebAppClientRegistrationRepository repo;
     private final OAuth2AuthorizedClientRepository delegate;
 
-    public AzureAuthorizedClientRepository(AzureClientRegistrationRepository repo) {
+    public AzureAuthorizedClientRepository(AADWebAppClientRegistrationRepository repo) {
         this(repo, new JacksonHttpSessionOAuth2AuthorizedClientRepository());
     }
 
-    public AzureAuthorizedClientRepository(AzureClientRegistrationRepository repo,
+    public AzureAuthorizedClientRepository(AADWebAppClientRegistrationRepository repo,
                                            OAuth2AuthorizedClientRepository delegate) {
         this.repo = repo;
         this.delegate = delegate;
