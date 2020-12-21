@@ -3,6 +3,7 @@
 
 package com.azure.spring.aad.webapp;
 
+import com.azure.spring.aad.AADClientRegistrationRepository;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.RequestEntity;
 import org.springframework.security.oauth2.client.endpoint.OAuth2RefreshTokenGrantRequest;
@@ -19,7 +20,7 @@ public class AzureOauth2RefreshTokenGrantRequestEntityConverter extends OAuth2Re
     @SuppressWarnings("unchecked")
     public RequestEntity<?> convert(OAuth2RefreshTokenGrantRequest refreshTokenGrantRequest) {
         RequestEntity<?> result = super.convert(refreshTokenGrantRequest);
-        if (!isDefaultClient(refreshTokenGrantRequest)) {
+        if (!AADClientRegistrationRepository.isDefaultClient(refreshTokenGrantRequest.getClientRegistration())) {
             Optional.ofNullable(result)
                 .map(HttpEntity::getBody)
                 .map(b -> (MultiValueMap<String, String>) b)
@@ -30,10 +31,5 @@ public class AzureOauth2RefreshTokenGrantRequestEntityConverter extends OAuth2Re
 
     private String scopeValue(OAuth2RefreshTokenGrantRequest refreshTokenGrantRequest) {
         return String.join(" ", refreshTokenGrantRequest.getClientRegistration().getScopes());
-    }
-
-    private boolean isDefaultClient(OAuth2RefreshTokenGrantRequest request) {
-        return AADWebAppConfiguration.getAzureClientRegistrationId().equals(
-            request.getClientRegistration().getClientName());
     }
 }

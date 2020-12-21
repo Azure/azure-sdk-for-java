@@ -54,7 +54,7 @@ import static org.springframework.core.Ordered.HIGHEST_PRECEDENCE;
 @ConditionalOnProperty(prefix = "azure.activedirectory.user-group", value = "allowed-groups")
 public class AADWebAppConfiguration {
 
-    private static final String AZURE_CLIENT_REGISTRATION_ID = "azure";
+    public static final String AZURE_CLIENT_REGISTRATION_ID = "azure";
 
     @Autowired
     private AADAuthenticationProperties properties;
@@ -239,9 +239,4 @@ public class AADWebAppConfiguration {
             argumentResolvers.add(new OAuth2AuthorizedClientArgumentResolver(clientManager));
         }
     }
-
-    public static String getAzureClientRegistrationId() {
-        return AZURE_CLIENT_REGISTRATION_ID;
-    }
-
 }

@@ -3,6 +3,7 @@
 
 package com.azure.spring.aad;
 
+import com.azure.spring.aad.webapp.AADWebAppConfiguration;
 import com.azure.spring.aad.webapp.AzureClientRegistration;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
@@ -59,5 +60,10 @@ public abstract class AADClientRegistrationRepository implements ClientRegistrat
     public boolean isClientNeedConsentWhenLogin(String id) {
         ClientRegistration client = findByRegistrationId(id);
         return client != null && isClientNeedConsentWhenLogin(client);
+    }
+
+    public static boolean isDefaultClient(ClientRegistration clientRegistration) {
+        return AADWebAppConfiguration.AZURE_CLIENT_REGISTRATION_ID.equals(
+            clientRegistration.getClientName());
     }
 }
