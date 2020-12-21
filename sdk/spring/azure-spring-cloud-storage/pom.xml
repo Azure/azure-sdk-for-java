@@ -16,8 +16,7 @@
   <name>Azure Spring Cloud Storage</name>
 
   <properties>
-    <jacoco.min.linecoverage>0.34</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.0</jacoco.min.branchcoverage>
+    <jacoco.min.linecoverage>0.3</jacoco.min.linecoverage>
   </properties>
 
   <dependencies>

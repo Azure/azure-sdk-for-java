@@ -50,12 +50,6 @@ public class AzureContextAutoConfiguration {
                                    .authenticate(credential, profile)
                                    .withDefaultSubscription();
     }
-//
-//    @VisibleForTesting
-//    protected Azure authenticateToAzure(RestClient restClient, String subscriptionId,
-//                                        AzureTokenCredentials credentials) {
-//        return Azure.authenticate(restClient, credentials.domain()).withSubscription(subscriptionId);
-//    }
 
     @Bean
     @ConditionalOnMissingBean
