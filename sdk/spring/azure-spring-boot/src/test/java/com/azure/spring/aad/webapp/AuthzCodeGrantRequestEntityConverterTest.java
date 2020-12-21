@@ -5,7 +5,6 @@ package com.azure.spring.aad.webapp;
 
 import org.hamcrest.Matcher;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.assertj.AssertableWebApplicationContext;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.http.HttpEntity;
@@ -16,7 +15,6 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationExchange;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationResponse;
-import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
 import org.springframework.util.MultiValueMap;
 
 import java.util.Optional;
@@ -31,16 +29,11 @@ public class AuthzCodeGrantRequestEntityConverterTest {
     private ClientRegistration azure;
     private ClientRegistration arm;
 
-    private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
-        .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
-        .withUserConfiguration(AADWebAppConfiguration.class)
-        .withPropertyValues("azure.activedirectory.authorization-server-uri = fake-uri",
+    private final WebApplicationContextRunner contextRunner = PropertiesUtils
+        .CONTEXT_RUNNER.withPropertyValues(
+            "azure.activedirectory.authorization-server-uri = fake-uri",
             "azure.activedirectory.authorization.arm.scopes = Calendars.Read",
-            "azure.activedirectory.authorization.arm.on-demand=true",
-            "azure.activedirectory.client-id = fake-client-id",
-            "azure.activedirectory.client-secret = fake-client-secret",
-            "azure.activedirectory.tenant-id = fake-tenant-id",
-            "azure.activedirectory.user-group.allowed-groups = group1, group2");
+            "azure.activedirectory.authorization.arm.on-demand=true");
 
     private void getBeans(AssertableWebApplicationContext context) {
         clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
@@ -94,9 +87,10 @@ public class AuthzCodeGrantRequestEntityConverterTest {
             new AuthzCodeGrantRequestEntityConverter(clientRepo.getAzureClient());
         RequestEntity<?> entity = converter.convert(request);
         return Optional.ofNullable(entity)
-                       .map(HttpEntity::getHeaders)
-                       .orElse(null);
+            .map(HttpEntity::getHeaders)
+            .orElse(null);
     }
+
     private Object[] expectedHeaders() {
         return AuthzCodeGrantRequestEntityConverter
             .getHttpHeaders()
@@ -106,14 +100,11 @@ public class AuthzCodeGrantRequestEntityConverterTest {
             .toArray();
     }
 
-    @SuppressWarnings("unchecked")
     private MultiValueMap<String, String> convertedBodyOf(OAuth2AuthorizationCodeGrantRequest request) {
         AuthzCodeGrantRequestEntityConverter converter =
             new AuthzCodeGrantRequestEntityConverter(clientRepo.getAzureClient());
         RequestEntity<?> entity = converter.convert(request);
-        return (MultiValueMap<String, String>) Optional.ofNullable(entity)
-                                                       .map(HttpEntity::getBody)
-                                                       .orElse(null);
+        return PropertiesUtils.requestEntityConverter(entity);
     }
 
     private OAuth2AuthorizationCodeGrantRequest createCodeGrantRequest(ClientRegistration client) {

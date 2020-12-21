@@ -3,6 +3,8 @@
 
 package com.azure.test.aad.login;
 
+import com.azure.test.aad.converter.AADWebAppRefreshTokenConverterIT;
+import com.azure.test.oauth.OAuthLoginUtils;
 import com.azure.test.utils.AppRunner;
 import org.junit.Assert;
 import org.junit.Test;
@@ -32,6 +34,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
@@ -79,51 +83,20 @@ public class AADLoginIT {
 
     @Test
     public void loginTest() {
-        this.runApp(app -> {
-            ChromeOptions options = new ChromeOptions();
-            options.addArguments("--incognito");
-            options.addArguments("--headless");
-            options.addArguments("--no-sandbox");
-            options.addArguments("--disable-dev-shm-usage");
-            WebDriver driver = new ChromeDriver(options);
-            WebDriverWait wait = new WebDriverWait(driver, 10);
-            try {
-                driver.get(app.root() + "api/home");
-                wait.until(presenceOfElementLocated(By.name("loginfmt")))
-                    .sendKeys(System.getenv(AAD_USER_NAME_1) + Keys.ENTER);
-                Thread.sleep(10000);
-                driver.findElement(By.name("passwd"))
-                      .sendKeys(System.getenv(AAD_USER_PASSWORD_1) + Keys.ENTER);
-                Thread.sleep(10000);
-                driver.findElement(By.cssSelector("input[type='submit']")).click();
-                Thread.sleep(10000);
-                Assert.assertEquals("home", driver.findElement(By.tagName("body")).getText());
 
-                driver.get(app.root() + "api/group1");
-                Thread.sleep(1000);
-                Assert.assertEquals("group1", driver.findElement(By.tagName("body")).getText());
-
-                driver.get(app.root() + "api/status403");
-                Thread.sleep(1000);
-                Assert.assertNotEquals("error", driver.findElement(By.tagName("body")).getText());
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            } finally {
-                driver.quit();
-            }
-        });
-    }
-
-    private void runApp(Consumer<AppRunner> command) {
-        try (AppRunner app = new AppRunner(AADLoginIT.DumbApp.class)) {
-            app.property("azure.activedirectory.tenant-id", System.getenv(AAD_TENANT_ID_1));
-            app.property("azure.activedirectory.client-id", System.getenv(AAD_MULTI_TENANT_CLIENT_ID));
-            app.property("azure.activedirectory.client-secret", System.getenv(AAD_MULTI_TENANT_CLIENT_SECRET));
-            app.property("azure.activedirectory.user-group.allowed-groups", "group1");
-
-            app.start();
-            command.accept(app);
+        try (AppRunner app = new AppRunner(DumbApp.class)) {
+            OAuthLoginUtils.addProperty(app);
+            List<String> endPoints = new ArrayList<>();
+            endPoints.add("api/home");
+            endPoints.add("api/group1");
+            endPoints.add("api/status403");
+            List<String> result = OAuthLoginUtils.get(app , endPoints);
+            Assert.assertEquals("home", result.get(0));
+            Assert.assertEquals("group1", result.get(1));
+            Assert.assertNotEquals("error", result.get(2));
         }
+
+
     }
 
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)

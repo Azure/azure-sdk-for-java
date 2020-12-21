@@ -4,9 +4,7 @@
 package com.azure.spring.aad.webapp;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.assertj.AssertableWebApplicationContext;
-import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.core.Authentication;
@@ -16,7 +14,6 @@ import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepo
 import org.springframework.security.oauth2.core.AbstractOAuth2Token;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2RefreshToken;
-import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 
 import java.time.Instant;
@@ -35,64 +32,63 @@ public class AuthorizedClientRepoTest {
     private MockHttpServletRequest request;
     private MockHttpServletResponse response;
 
-    private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
-        .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
-        .withUserConfiguration(AADWebAppConfiguration.class)
-        .withPropertyValues("azure.activedirectory.user-group.allowed-groups = group1, group2",
-            "azure.activedirectory.authorization-server-uri = fake-uri",
-            "azure.activedirectory.tenant-id = fake-tenant-id",
-            "azure.activedirectory.client-id = fake-client-id",
-            "azure.activedirectory.client-secret = fake-client-secret",
-            "azure.activedirectory.authorization.graph.scopes = Calendars.Read");
 
     @Test
     public void loadInitAzureAuthzClient() {
-        contextRunner.run(context -> {
-            getBeans(context);
+        PropertiesUtils.CONTEXT_RUNNER
+            .withPropertyValues(
+                "azure.activedirectory.authorization.graph.scopes = Calendars.Read",
+                "azure.activedirectory.authorization-server-uri = fake-uri")
+            .run(context -> {
+                getBeans(context);
 
-            authorizedRepo.saveAuthorizedClient(
-                createAuthorizedClient(azure),
-                createAuthentication(),
-                request,
-                response);
+                authorizedRepo.saveAuthorizedClient(
+                    createAuthorizedClient(azure),
+                    createAuthentication(),
+                    request,
+                    response);
 
-            OAuth2AuthorizedClient client = authorizedRepo.loadAuthorizedClient(
-                "graph",
-                createAuthentication(),
-                request);
+                OAuth2AuthorizedClient client = authorizedRepo.loadAuthorizedClient(
+                    "graph",
+                    createAuthentication(),
+                    request);
 
-            assertNotNull(client);
-            assertNotNull(client.getAccessToken());
-            assertNotNull(client.getRefreshToken());
+                assertNotNull(client);
+                assertNotNull(client.getAccessToken());
+                assertNotNull(client.getRefreshToken());
 
-            assertTrue(isTokenExpired(client.getAccessToken()));
-            assertEquals("fake-refresh-token", client.getRefreshToken().getTokenValue());
-        });
+                assertTrue(isTokenExpired(client.getAccessToken()));
+                assertEquals("fake-refresh-token", client.getRefreshToken().getTokenValue());
+            });
     }
 
     @Test
     public void saveAndLoadAzureAuthzClient() {
-        contextRunner.run(context -> {
-            getBeans(context);
+        PropertiesUtils.CONTEXT_RUNNER
+            .withPropertyValues(
+                "azure.activedirectory.authorization.graph.scopes = Calendars.Read",
+                "azure.activedirectory.authorization-server-uri = fake-uri")
+            .run(context -> {
+                getBeans(context);
 
-            authorizedRepo.saveAuthorizedClient(
-                createAuthorizedClient(graph),
-                createAuthentication(),
-                request,
-                response);
+                authorizedRepo.saveAuthorizedClient(
+                    createAuthorizedClient(graph),
+                    createAuthentication(),
+                    request,
+                    response);
 
-            OAuth2AuthorizedClient client = authorizedRepo.loadAuthorizedClient(
-                "graph",
-                createAuthentication(),
-                request);
+                OAuth2AuthorizedClient client = authorizedRepo.loadAuthorizedClient(
+                    "graph",
+                    createAuthentication(),
+                    request);
 
-            assertNotNull(client);
-            assertNotNull(client.getAccessToken());
-            assertNotNull(client.getRefreshToken());
+                assertNotNull(client);
+                assertNotNull(client.getAccessToken());
+                assertNotNull(client.getRefreshToken());
 
-            assertEquals("fake-access-token", client.getAccessToken().getTokenValue());
-            assertEquals("fake-refresh-token", client.getRefreshToken().getTokenValue());
-        });
+                assertEquals("fake-access-token", client.getAccessToken().getTokenValue());
+                assertEquals("fake-refresh-token", client.getRefreshToken().getTokenValue());
+            });
     }
 
     private void getBeans(AssertableWebApplicationContext context) {
@@ -132,8 +128,8 @@ public class AuthorizedClientRepoTest {
 
     private boolean isTokenExpired(OAuth2AccessToken token) {
         return Optional.ofNullable(token)
-                       .map(AbstractOAuth2Token::getExpiresAt)
-                       .map(expiresAt -> expiresAt.isBefore(Instant.now()))
-                       .orElse(false);
+            .map(AbstractOAuth2Token::getExpiresAt)
+            .map(expiresAt -> expiresAt.isBefore(Instant.now()))
+            .orElse(false);
     }
 }
