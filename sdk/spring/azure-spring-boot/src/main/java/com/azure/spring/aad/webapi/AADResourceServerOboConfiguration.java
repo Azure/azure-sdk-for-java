@@ -45,6 +45,7 @@ public class AADResourceServerOboConfiguration {
 
     /**
      * Use AADOboClientRegistrationRepository to create AADOAuth2OboAuthorizedClientRepository
+     *
      * @param repo client registration
      * @return AADOAuth2OboAuthorizedClientRepository Bean
      */
@@ -58,15 +59,11 @@ public class AADResourceServerOboConfiguration {
         List<ClientRegistration> result = new ArrayList<>();
         for (String name : properties.getAuthorization().keySet()) {
             AuthorizationProperties authorizationProperties = properties.getAuthorization().get(name);
-            result.add(createClientBuilder(name, authorizationProperties));
+            ClientRegistration.Builder builder = createClientBuilder(name);
+            builder.scope(authorizationProperties.getScopes());
+            result.add(builder.build());
         }
         return result;
-    }
-
-    private ClientRegistration createClientBuilder(String id, AuthorizationProperties properties) {
-        ClientRegistration.Builder result = createClientBuilder(id);
-        result.scope(properties.getScopes());
-        return result.build();
     }
 
     private ClientRegistration.Builder createClientBuilder(String id) {
