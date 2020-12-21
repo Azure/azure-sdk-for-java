@@ -12,7 +12,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
 import com.azure.communication.administration.CommunicationIdentityClient;
-import com.azure.communication.administration.CommunicationIdentityClientBuilder;
 import com.azure.communication.administration.CommunicationUserToken;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.chat.implementation.ChatOptionsProvider;
