@@ -80,7 +80,7 @@ public class AADLoginIT {
             options.addArguments("--no-sandbox");
             options.addArguments("--disable-dev-shm-usage");
             WebDriver driver = new ChromeDriver(options);
-            WebDriverWait wait = new WebDriverWait(driver, 10);
+            WebDriverWait wait = new WebDriverWait(driver, 60);
             try {
                 driver.get(app.root() + "api/home");
                 wait.until(presenceOfElementLocated(By.name("loginfmt")))
