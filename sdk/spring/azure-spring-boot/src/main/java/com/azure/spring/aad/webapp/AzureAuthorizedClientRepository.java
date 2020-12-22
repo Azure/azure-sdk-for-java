@@ -29,7 +29,7 @@ public class AzureAuthorizedClientRepository implements OAuth2AuthorizedClientRe
 
     public AzureAuthorizedClientRepository(AADWebAppClientRegistrationRepository repo) {
         this(repo,
-            new JacksonHttpSessionOAuth2AuthorizedClientRepository(),
+            new AADOAuth2AuthorizedClientRepository(),
             new RefreshTokenOAuth2AuthorizedClientProvider());
     }
 

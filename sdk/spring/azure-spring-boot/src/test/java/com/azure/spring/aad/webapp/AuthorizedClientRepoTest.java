@@ -103,7 +103,7 @@ public class AuthorizedClientRepoTest {
 
         authorizedRepo = new AzureAuthorizedClientRepository(
             clientRepo,
-            new JacksonHttpSessionOAuth2AuthorizedClientRepository(),
+            new AADOAuth2AuthorizedClientRepository(),
             OAuth2AuthorizationContext::getAuthorizedClient);
         request = new MockHttpServletRequest();
         response = new MockHttpServletResponse();
