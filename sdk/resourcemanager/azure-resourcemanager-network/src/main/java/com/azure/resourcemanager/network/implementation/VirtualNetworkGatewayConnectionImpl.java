@@ -226,12 +226,12 @@ public class VirtualNetworkGatewayConnectionImpl
                         this.resourceGroupName(),
                         this.name(),
                         new ConnectionSharedKeyInner().withValue(updateSharedKey))
-                    .doOnNext(inner -> {
-                        updateSharedKey = null;
-                    })
                     .then(myManager.serviceClient().getVirtualNetworkGatewayConnections()
                         .getByResourceGroupAsync(this.resourceGroupName(), this.name())
-                        .map(innerToFluentMap(this)));
+                        .map(innerToFluentMap(this)))
+                    .doOnSuccess(connection -> {
+                       updateSharedKey = null;
+                    });
             });
     }
 
