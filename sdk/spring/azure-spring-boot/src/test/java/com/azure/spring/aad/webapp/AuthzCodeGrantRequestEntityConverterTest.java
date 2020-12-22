@@ -30,7 +30,7 @@ public class AuthzCodeGrantRequestEntityConverterTest {
     private ClientRegistration arm;
 
     private final WebApplicationContextRunner contextRunner = PropertiesUtils
-        .CONTEXT_RUNNER.withPropertyValues(
+        .getContextRunner().withPropertyValues(
             "azure.activedirectory.authorization-server-uri = fake-uri",
             "azure.activedirectory.authorization.arm.scopes = Calendars.Read",
             "azure.activedirectory.authorization.arm.on-demand=true");

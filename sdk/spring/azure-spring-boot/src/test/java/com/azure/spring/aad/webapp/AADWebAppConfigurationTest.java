@@ -19,7 +19,7 @@ public class AADWebAppConfigurationTest {
 
     @Test
     public void clientRegistered() {
-        PropertiesUtils.CONTEXT_RUNNER
+        PropertiesUtils.getContextRunner()
             .run(context -> {
                 ClientRegistrationRepository clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
                 ClientRegistration azure = clientRepo.findByRegistrationId("azure");
@@ -40,7 +40,7 @@ public class AADWebAppConfigurationTest {
 
     @Test
     public void clientRequiresPermissionRegistered() {
-        PropertiesUtils.CONTEXT_RUNNER
+        PropertiesUtils.getContextRunner()
             .withPropertyValues(
                 "azure.activedirectory.authorization.graph.scopes = Calendars.Read"
             )
@@ -59,7 +59,7 @@ public class AADWebAppConfigurationTest {
 
     @Test
     public void clientRequiresMultiPermissions() {
-        PropertiesUtils.CONTEXT_RUNNER
+        PropertiesUtils.getContextRunner()
             .withPropertyValues(
                 "azure.activedirectory.authorization.graph.scopes = Calendars.Read",
                 "azure.activedirectory.authorization.arm.scopes = https://management.core.windows.net/user_impersonation"
@@ -82,7 +82,7 @@ public class AADWebAppConfigurationTest {
 
     @Test
     public void clientRequiresPermissionInDefaultClient() {
-        PropertiesUtils.CONTEXT_RUNNER
+        PropertiesUtils.getContextRunner()
             .withPropertyValues(
                 "azure.activedirectory.authorization.graph.scopes = Calendars.Read"
             )
@@ -96,7 +96,7 @@ public class AADWebAppConfigurationTest {
 
     @Test
     public void aadAwareClientRepository() {
-        PropertiesUtils.CONTEXT_RUNNER
+        PropertiesUtils.getContextRunner()
             .withPropertyValues(
                 "azure.activedirectory.authorization.graph.scopes = Calendars.Read"
             )
@@ -123,7 +123,7 @@ public class AADWebAppConfigurationTest {
 
     @Test
     public void defaultClientWithAuthzScope() {
-        PropertiesUtils.CONTEXT_RUNNER
+        PropertiesUtils.getContextRunner()
             .withPropertyValues(
                 "azure.activedirectory.authorization.azure.scopes = Calendars.Read"
             )
@@ -138,7 +138,7 @@ public class AADWebAppConfigurationTest {
 
     @Test
     public void customizeUri() {
-        PropertiesUtils.CONTEXT_RUNNER
+        PropertiesUtils.getContextRunner()
             .withPropertyValues(
                 "azure.activedirectory.authorization-server-uri = http://localhost/"
             )
@@ -155,7 +155,7 @@ public class AADWebAppConfigurationTest {
 
     @Test
     public void clientRequiresOnDemandPermissions() {
-        PropertiesUtils.CONTEXT_RUNNER
+        PropertiesUtils.getContextRunner()
             .withPropertyValues(
                 "azure.activedirectory.authorization.graph.scopes = Calendars.Read",
                 "azure.activedirectory.authorization.graph.on-demand = true",

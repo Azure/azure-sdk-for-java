@@ -14,14 +14,17 @@ import java.util.Optional;
 
 public class PropertiesUtils {
 
-    public static final WebApplicationContextRunner CONTEXT_RUNNER = new WebApplicationContextRunner()
-        .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
-        .withUserConfiguration(AADWebAppConfiguration.class)
-        .withPropertyValues(
-            "azure.activedirectory.client-id = fake-client-id",
-            "azure.activedirectory.client-secret = fake-client-secret",
-            "azure.activedirectory.tenant-id = fake-tenant-id",
-            "azure.activedirectory.user-group.allowed-groups = group1, group2");
+    public static WebApplicationContextRunner getContextRunner() {
+        return new WebApplicationContextRunner()
+            .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
+            .withUserConfiguration(AADWebAppConfiguration.class)
+            .withPropertyValues(
+                "azure.activedirectory.client-id = fake-client-id",
+                "azure.activedirectory.client-secret = fake-client-secret",
+                "azure.activedirectory.tenant-id = fake-tenant-id",
+                "azure.activedirectory.user-group.allowed-groups = group1, group2");
+    }
+
 
     @SuppressWarnings("unchecked")
     public static MultiValueMap<String, String> requestEntityConverter(RequestEntity<?> entity) {

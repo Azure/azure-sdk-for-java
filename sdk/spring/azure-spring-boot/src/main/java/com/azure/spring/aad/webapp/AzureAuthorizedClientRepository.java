@@ -64,7 +64,10 @@ public class AzureAuthorizedClientRepository implements OAuth2AuthorizedClientRe
             OAuth2AuthorizedClient fakeAuthzClient = createFakeAuthzClient(azureClient, id, principal);
             OAuth2AuthorizationContext.Builder contextBuilder =
                 OAuth2AuthorizationContext.withAuthorizedClient(fakeAuthzClient);
-            String[] scopes = repo.findByRegistrationId(id).getScopes().toArray(new String[0]);
+            String[] scopes = null;
+            if (!AADWebAppClientRegistrationRepository.AZURE_CLIENT_REGISTRATION_ID.equals(id)) {
+                scopes = repo.findByRegistrationId(id).getScopes().toArray(new String[0]);
+            }
             OAuth2AuthorizationContext context = contextBuilder
                 .principal(principal)
                 .attributes(getAttributesConsumer(scopes))

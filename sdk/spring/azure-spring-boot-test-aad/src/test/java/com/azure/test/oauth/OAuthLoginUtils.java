@@ -4,22 +4,57 @@
 package com.azure.test.oauth;
 
 import com.azure.test.utils.AppRunner;
-import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.regex.Pattern;
 
 import static com.azure.test.oauth.OAuthUtils.*;
 import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated;
 
 public class OAuthLoginUtils {
+
+    static {
+        final String directory = "src/test/resources/driver/";
+        final String chromedriverLinux = "chromedriver_linux64";
+        final String chromedriverWin32 = "chromedriver_win32.exe";
+        final String chromedriverMac = "chromedriver_mac64";
+        String osName = System.getProperty("os.name").toLowerCase();
+        Process process = null;
+        try {
+            File dir = new File(directory);
+            if (Pattern.matches("linux.*", osName)) {
+                process = Runtime.getRuntime().exec("chmod +x " + chromedriverLinux, null, dir);
+                process.waitFor();
+                System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, directory + chromedriverLinux);
+            } else if (Pattern.matches("windows.*", osName)) {
+                System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, directory + chromedriverWin32);
+            } else if (Pattern.matches("mac.*", osName)) {
+                process = Runtime.getRuntime().exec("chmod +x " + chromedriverMac, null, dir);
+                process.waitFor();
+                System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, directory + chromedriverMac);
+            } else {
+                throw new IllegalStateException("Can not recognize osName. osName = " + System.getProperty("os.name"));
+            }
+        } catch (IllegalStateException e) {
+            throw e;
+        } catch (InterruptedException | IOException e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (process != null) {
+                process.destroy();
+            }
+        }
+    }
 
     public static List<String> get(AppRunner app, List<String> endPoints) {
 

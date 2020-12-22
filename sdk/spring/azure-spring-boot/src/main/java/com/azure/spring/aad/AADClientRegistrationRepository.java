@@ -3,7 +3,6 @@
 
 package com.azure.spring.aad;
 
-import com.azure.spring.aad.webapp.AADWebAppConfiguration;
 import com.azure.spring.aad.webapp.AzureClientRegistration;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
@@ -18,6 +17,8 @@ import java.util.Map;
  * Manage all AAD oauth2 clients configured by property "azure.activedirectory.xxx"
  */
 public abstract class AADClientRegistrationRepository implements ClientRegistrationRepository {
+
+    public static final String AZURE_CLIENT_REGISTRATION_ID = "azure";
 
     protected final AzureClientRegistration azureClient;
     protected final List<ClientRegistration> otherClients;
@@ -63,7 +64,7 @@ public abstract class AADClientRegistrationRepository implements ClientRegistrat
     }
 
     public static boolean isDefaultClient(ClientRegistration clientRegistration) {
-        return AADWebAppConfiguration.AZURE_CLIENT_REGISTRATION_ID.equals(
+        return AZURE_CLIENT_REGISTRATION_ID.equals(
             clientRegistration.getClientName());
     }
 }
