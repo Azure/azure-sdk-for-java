@@ -3,7 +3,7 @@
 
 package com.azure.spring.aad.webapp;
 
-import com.azure.spring.aad.webapp.jackson.OAuth2ClientJackson2Module;
+import com.azure.spring.aad.webapp.jackson.AADDatabindModule;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -44,7 +44,7 @@ public class JacksonHttpSessionOAuth2AuthorizedClientRepository implements OAuth
         objectMapper = new ObjectMapper();
         // TODO: Use OAuth2ClientJackson2Module in spring-security
         // after min spring-security version we need to support >=5.3.0
-        objectMapper.registerModule(new OAuth2ClientJackson2Module());
+        objectMapper.registerModule(new AADDatabindModule());
         objectMapper.registerModule(new CoreJackson2Module());
         objectMapper.registerModule(new JavaTimeModule());
     }

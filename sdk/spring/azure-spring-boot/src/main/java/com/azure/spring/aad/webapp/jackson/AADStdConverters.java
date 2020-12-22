@@ -10,13 +10,12 @@ import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 
-import static com.azure.spring.aad.webapp.jackson.JsonNodeUtils.findStringValue;
+import static com.azure.spring.aad.webapp.jackson.AADJsonNodeUtil.findStringValue;
 
 /**
- * {@code StdConverter} implementations.
- *
+ * StdConverters used for AAD
  */
-abstract class StdConverters {
+class AADStdConverters {
 
     static final class AccessTokenTypeConverter extends StdConverter<JsonNode, OAuth2AccessToken.TokenType> {
         @Override

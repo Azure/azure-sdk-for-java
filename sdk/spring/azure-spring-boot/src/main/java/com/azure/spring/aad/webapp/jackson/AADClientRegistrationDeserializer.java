@@ -16,25 +16,23 @@ import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 
 import java.io.IOException;
 
-import static com.azure.spring.aad.webapp.jackson.JsonNodeUtils.MAP_TYPE_REFERENCE;
-import static com.azure.spring.aad.webapp.jackson.JsonNodeUtils.SET_TYPE_REFERENCE;
-import static com.azure.spring.aad.webapp.jackson.JsonNodeUtils.findObjectNode;
-import static com.azure.spring.aad.webapp.jackson.JsonNodeUtils.findStringValue;
-import static com.azure.spring.aad.webapp.jackson.JsonNodeUtils.findValue;
+import static com.azure.spring.aad.webapp.jackson.AADJsonNodeUtil.MAP_TYPE_REFERENCE;
+import static com.azure.spring.aad.webapp.jackson.AADJsonNodeUtil.SET_TYPE_REFERENCE;
+import static com.azure.spring.aad.webapp.jackson.AADJsonNodeUtil.findObjectNode;
+import static com.azure.spring.aad.webapp.jackson.AADJsonNodeUtil.findStringValue;
+import static com.azure.spring.aad.webapp.jackson.AADJsonNodeUtil.findValue;
+
 
 /**
- * A {@code JsonDeserializer} for {@link ClientRegistration}.
- *
- * @see ClientRegistration
- * @see ClientRegistrationMixin
+ * A {@code JsonDeserializer} for ClientRegistration.
  */
-final class ClientRegistrationDeserializer extends JsonDeserializer<ClientRegistration> {
+class AADClientRegistrationDeserializer extends JsonDeserializer<ClientRegistration> {
     private static final StdConverter<JsonNode, ClientAuthenticationMethod> CLIENT_AUTHENTICATION_METHOD_CONVERTER =
-        new StdConverters.ClientAuthenticationMethodConverter();
+        new AADStdConverters.ClientAuthenticationMethodConverter();
     private static final StdConverter<JsonNode, AuthorizationGrantType> AUTHORIZATION_GRANT_TYPE_CONVERTER =
-        new StdConverters.AuthorizationGrantTypeConverter();
+        new AADStdConverters.AuthorizationGrantTypeConverter();
     private static final StdConverter<JsonNode, AuthenticationMethod> AUTHENTICATION_METHOD_CONVERTER =
-        new StdConverters.AuthenticationMethodConverter();
+        new AADStdConverters.AuthenticationMethodConverter();
 
     @Override
     public ClientRegistration deserialize(JsonParser parser, DeserializationContext context) throws IOException {
