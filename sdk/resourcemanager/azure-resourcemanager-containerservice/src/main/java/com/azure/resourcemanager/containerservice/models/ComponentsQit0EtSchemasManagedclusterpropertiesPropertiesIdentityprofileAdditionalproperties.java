@@ -17,6 +17,30 @@ public final class ComponentsQit0EtSchemasManagedclusterpropertiesPropertiesIden
         new ClientLogger(
             ComponentsQit0EtSchemasManagedclusterpropertiesPropertiesIdentityprofileAdditionalproperties.class);
 
+    /** {@inheritDoc} */
+    @Override
+    public ComponentsQit0EtSchemasManagedclusterpropertiesPropertiesIdentityprofileAdditionalproperties withResourceId(
+        String resourceId) {
+        super.withResourceId(resourceId);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ComponentsQit0EtSchemasManagedclusterpropertiesPropertiesIdentityprofileAdditionalproperties withClientId(
+        String clientId) {
+        super.withClientId(clientId);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ComponentsQit0EtSchemasManagedclusterpropertiesPropertiesIdentityprofileAdditionalproperties withObjectId(
+        String objectId) {
+        super.withObjectId(objectId);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
