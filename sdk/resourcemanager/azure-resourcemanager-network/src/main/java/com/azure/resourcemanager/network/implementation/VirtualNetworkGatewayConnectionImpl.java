@@ -226,9 +226,8 @@ public class VirtualNetworkGatewayConnectionImpl
                         this.resourceGroupName(),
                         this.name(),
                         new ConnectionSharedKeyInner().withValue(updateSharedKey))
-                    .map(inner -> {
+                    .doOnNext(inner -> {
                         updateSharedKey = null;
-                        return inner;
                     })
                     .then(myManager.serviceClient().getVirtualNetworkGatewayConnections()
                         .getByResourceGroupAsync(this.resourceGroupName(), this.name())
