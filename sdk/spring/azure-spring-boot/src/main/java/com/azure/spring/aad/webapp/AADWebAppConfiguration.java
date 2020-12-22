@@ -9,30 +9,20 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProvider;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProviderBuilder;
-import org.springframework.security.oauth2.client.endpoint.DefaultRefreshTokenTokenResponseClient;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
-import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
-import org.springframework.security.oauth2.client.web.method.annotation.OAuth2AuthorizedClientArgumentResolver;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
-import org.springframework.web.method.support.HandlerMethodArgumentResolver;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -41,8 +31,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static org.springframework.core.Ordered.HIGHEST_PRECEDENCE;
-
 /**
  * Configure the necessary beans used for aad authentication and authorization.
  */
@@ -50,11 +38,10 @@ import static org.springframework.core.Ordered.HIGHEST_PRECEDENCE;
 @ConditionalOnMissingClass({ "org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken" })
 @ConditionalOnClass(ClientRegistrationRepository.class)
 @EnableConfigurationProperties(AADAuthenticationProperties.class)
-@ConditionalOnResource(resources = "classpath:aad.enable.config")
 @ConditionalOnProperty(prefix = "azure.activedirectory.user-group", value = "allowed-groups")
 public class AADWebAppConfiguration {
 
-    public static final String AZURE_CLIENT_REGISTRATION_ID = "azure";
+    private static final String AZURE_CLIENT_REGISTRATION_ID = "azure";
 
     @Autowired
     private AADAuthenticationProperties properties;
@@ -72,30 +59,6 @@ public class AADWebAppConfiguration {
     @ConditionalOnMissingBean
     public OAuth2AuthorizedClientRepository authorizedClientRepository(AADWebAppClientRegistrationRepository repo) {
         return new AzureAuthorizedClientRepository(repo);
-    }
-
-    @Bean
-    public OAuth2AuthorizedClientManager authorizedClientManager(
-        ClientRegistrationRepository clientRegistrationRepository,
-        OAuth2AuthorizedClientRepository authorizedClientRepository) {
-
-        DefaultRefreshTokenTokenResponseClient responseClient = new DefaultRefreshTokenTokenResponseClient();
-        responseClient.setRequestEntityConverter(
-            new AzureOauth2RefreshTokenGrantRequestEntityConverter());
-
-        OAuth2AuthorizedClientProvider authorizedClientProvider =
-            OAuth2AuthorizedClientProviderBuilder.builder()
-                .authorizationCode()
-                .refreshToken(configurer -> configurer.accessTokenResponseClient(responseClient))
-                .clientCredentials()
-                .password()
-                .build();
-
-        DefaultOAuth2AuthorizedClientManager authorizedClientManager =
-            new DefaultOAuth2AuthorizedClientManager(
-                clientRegistrationRepository, authorizedClientRepository);
-        authorizedClientManager.setAuthorizedClientProvider(authorizedClientProvider);
-        return authorizedClientManager;
     }
 
     @Bean
@@ -212,22 +175,4 @@ public class AADWebAppConfiguration {
         }
     }
 
-    /**
-     * Temp solution to make RefreshTokenGrantRequestEntityConverter take effect.
-     * TODO: remove this logic after spring-security can inject OAuth2AuthorizedClientManager
-     * to OAuth2AuthorizedClientArgumentResolver
-     * issue: https://github.com/spring-projects/spring-security/issues/8700
-     */
-    @Order(HIGHEST_PRECEDENCE)
-    @Configuration
-    public static class AzureWebMvcContext implements WebMvcConfigurer {
-
-        @Autowired
-        OAuth2AuthorizedClientManager clientManager;
-
-        @Override
-        public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-            argumentResolvers.add(new OAuth2AuthorizedClientArgumentResolver(clientManager));
-        }
-    }
 }

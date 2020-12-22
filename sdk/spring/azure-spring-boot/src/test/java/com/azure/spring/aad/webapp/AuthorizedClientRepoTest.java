@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.assertj.AssertableWebApplicationCon
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.client.OAuth2AuthorizationContext;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
@@ -96,7 +97,10 @@ public class AuthorizedClientRepoTest {
         azure = clientRepo.findByRegistrationId("azure");
         graph = clientRepo.findByRegistrationId("graph");
 
-        authorizedRepo = new AzureAuthorizedClientRepository(clientRepo);
+        authorizedRepo = new AzureAuthorizedClientRepository(
+            clientRepo,
+            new JacksonHttpSessionOAuth2AuthorizedClientRepository(),
+            OAuth2AuthorizationContext::getAuthorizedClient);
         request = new MockHttpServletRequest();
         response = new MockHttpServletResponse();
     }

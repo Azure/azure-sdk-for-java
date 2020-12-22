@@ -270,12 +270,6 @@
       <artifactId>spring-core</artifactId>
       <version>5.2.10.RELEASE</version> <!-- {x-version-update;org.springframework:spring-core;external_dependency} -->
     </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-webmvc</artifactId>
-      <version>5.2.10.RELEASE</version> <!-- {x-version-update;org.springframework:spring-webmvc;external_dependency} -->
-      <optional>true</optional>
-    </dependency>
   </dependencies>
 
   <build>
@@ -302,7 +296,6 @@
                 <include>org.springframework:spring-core:[5.2.10.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-core;external_dependency} -->
                 <include>org.springframework:spring-web:[5.2.10.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
                 <include>org.springframework:spring-jms:[5.2.10.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-jms;external_dependency} -->
-                <include>org.springframework:spring-webmvc:[5.2.10.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-webmvc;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-actuator-autoconfigure:[2.3.5.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-autoconfigure-processor:[2.3.5.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-autoconfigure-processor;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-autoconfigure:[2.3.5.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
