@@ -16,8 +16,9 @@ public class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier {
     /**
      * Creates a MicrosoftTeamsUserIdentifier object
      * 
-     * @param id the string identifier representing the identity
-     * @param isAnonymous set this to true if the user is anonymous, for example when joining a meeting with a share link
+     * @param userId the string identifier representing the identity
+     * @param isAnonymous set this to true if the user is anonymous, 
+     *                    for example when joining a meeting with a share link
      * @throws IllegalArgumentException thrown if id parameter fail the validation.
     */
     public MicrosoftTeamsUserIdentifier(String userId, boolean isAnonymous) {
@@ -31,7 +32,7 @@ public class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier {
     /**
      * Creates a MicrosoftTeamsUserIdentifier object
      * 
-     * @param id the string identifier representing the identity
+     * @param userId the string identifier representing the identity
      * @throws IllegalArgumentException thrown if id parameter fail the validation.
     */
     public MicrosoftTeamsUserIdentifier(String userId) {
