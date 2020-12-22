@@ -24,7 +24,9 @@ public class AADB2CAuthorizationRequestResolverTest {
                     String.format("%s=%s", AADB2CConstants.CLIENT_SECRET, AADB2CConstants.TEST_CLIENT_SECRET),
                     String.format("%s=%s", AADB2CConstants.REPLY_URL, AADB2CConstants.TEST_REPLY_URL),
                     String.format("%s=%s", AADB2CConstants.LOGOUT_SUCCESS_URL, AADB2CConstants.TEST_LOGOUT_SUCCESS_URL),
-                    String.format("%s=%s", AADB2CConstants.SIGN_UP_OR_SIGN_IN, AADB2CConstants.TEST_SIGN_UP_OR_IN_NAME)
+                    String.format("%s=%s", AADB2CConstants.SIGN_UP_OR_SIGN_IN, AADB2CConstants.TEST_SIGN_UP_OR_IN_NAME),
+                    String.format("%s=%s", AADB2CConstants.CONFIG_PROMPT, AADB2CConstants.TEST_PROMPT),
+                    String.format("%s=%s", AADB2CConstants.CONFIG_LOGIN_HINT, AADB2CConstants.TEST_LOGIN_HINT)
             );
 
     private HttpServletRequest getHttpServletRequest(String uri) {
@@ -56,6 +58,8 @@ public class AADB2CAuthorizationRequestResolverTest {
             assertThat(resolver.resolve(request, registrationId)).isNotNull();
 
             assertThat(resolver.resolve(request).getAdditionalParameters().get("p")).isEqualTo(AADB2CConstants.TEST_SIGN_UP_OR_IN_NAME);
+            assertThat(resolver.resolve(request).getAdditionalParameters().get(AADB2CConstants.PROMPT)).isEqualTo(AADB2CConstants.TEST_PROMPT);
+            assertThat(resolver.resolve(request).getAdditionalParameters().get(AADB2CConstants.LOGIN_HINT)).isEqualTo(AADB2CConstants.TEST_LOGIN_HINT);
             assertThat(resolver.resolve(request).getClientId()).isEqualTo(AADB2CConstants.TEST_CLIENT_ID);
             assertThat(resolver.resolve(request).getRedirectUri()).isEqualTo(AADB2CConstants.TEST_REPLY_URL);
             assertThat(resolver.resolve(request).getGrantType()).isEqualTo(AuthorizationGrantType.AUTHORIZATION_CODE);
