@@ -3,29 +3,16 @@
 
 package com.azure.test.aad.converter;
 
-import com.azure.spring.aad.webapp.AzureOAuth2Configuration;
 import com.azure.test.oauth.OAuthLoginUtils;
-import com.azure.test.oauth.OAuthUtils;
 import com.azure.test.utils.AppRunner;
 import org.junit.Assert;
 import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
-import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
-import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -89,21 +76,7 @@ public class AADWebAppRefreshTokenConverterIT {
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
     @SpringBootApplication
     @RestController
-    public static class DumbApp extends AzureOAuth2Configuration {
-
-        @Autowired
-        private OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService;
-
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            super.configure(http);
-            http.authorizeRequests()
-                .anyRequest().authenticated()
-                .and()
-                .oauth2Login()
-                .userInfoEndpoint()
-                .oidcUserService(oidcUserService);
-        }
+    public static class DumbApp {
 
         @GetMapping(value = "api/accessTokenScopes")
         public Set<String> accessTokenScopes(
