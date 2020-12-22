@@ -10,7 +10,7 @@ import com.azure.resourcemanager.resources.fluent.models.FeatureResultInner;
 /**
  * The implementation of {@link Feature}.
  */
-final  class FeatureImpl extends
+final class FeatureImpl extends
         IndexableWrapperImpl<FeatureResultInner>
         implements
         Feature {
