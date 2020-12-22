@@ -185,6 +185,7 @@ com.azure.resourcemanager:azure-resourcemanager-recoveryservices;1.0.0-beta.1;1.
 com.azure.resourcemanager:azure-resourcemanager-kusto;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-loganalytics;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-eventgrid;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-appplatform-generated;1.0.0-beta.1;1.0.0-beta.1
 com.microsoft:microsoft-opentelemetry-exporter-azuremonitor;1.0.0-beta.1;1.0.0-beta.2
 
 
