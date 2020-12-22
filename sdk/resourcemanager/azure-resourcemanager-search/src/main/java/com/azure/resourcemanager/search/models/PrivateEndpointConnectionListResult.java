@@ -6,41 +6,42 @@ package com.azure.resourcemanager.search.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.search.fluent.models.QueryKeyInner;
+import com.azure.resourcemanager.search.fluent.models.PrivateEndpointConnectionInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response containing the query API keys for a given Azure Cognitive Search service. */
+/** Response containing a list of Private Endpoint connections. */
 @Immutable
-public final class ListQueryKeysResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListQueryKeysResult.class);
+public final class PrivateEndpointConnectionListResult {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionListResult.class);
 
     /*
-     * The query keys for the Azure Cognitive Search service.
+     * The list of Private Endpoint connections.
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
-    private List<QueryKeyInner> value;
+    private List<PrivateEndpointConnectionInner> value;
 
     /*
-     * Request URL that can be used to query next page of query keys. Returned
-     * when the total number of requested query keys exceed maximum page size.
+     * Request URL that can be used to query next page of private endpoint
+     * connections. Returned when the total number of requested private
+     * endpoint connections exceed maximum page size.
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
-     * Get the value property: The query keys for the Azure Cognitive Search service.
+     * Get the value property: The list of Private Endpoint connections.
      *
      * @return the value value.
      */
-    public List<QueryKeyInner> value() {
+    public List<PrivateEndpointConnectionInner> value() {
         return this.value;
     }
 
     /**
-     * Get the nextLink property: Request URL that can be used to query next page of query keys. Returned when the total
-     * number of requested query keys exceed maximum page size.
+     * Get the nextLink property: Request URL that can be used to query next page of private endpoint connections.
+     * Returned when the total number of requested private endpoint connections exceed maximum page size.
      *
      * @return the nextLink value.
      */
