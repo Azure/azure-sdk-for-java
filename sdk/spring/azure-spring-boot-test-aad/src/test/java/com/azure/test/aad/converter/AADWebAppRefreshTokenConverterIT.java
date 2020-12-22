@@ -91,9 +91,18 @@ public class AADWebAppRefreshTokenConverterIT {
     @RestController
     public static class DumbApp extends AzureOAuth2Configuration {
 
+        @Autowired
+        private OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService;
+
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             super.configure(http);
+            http.authorizeRequests()
+                .anyRequest().authenticated()
+                .and()
+                .oauth2Login()
+                .userInfoEndpoint()
+                .oidcUserService(oidcUserService);
         }
 
         @GetMapping(value = "api/accessTokenScopes")
