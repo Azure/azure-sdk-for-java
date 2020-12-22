@@ -6,6 +6,7 @@ package com.azure.spring.aad.webapp;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.OAuth2AuthorizationContext;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProvider;
 import org.springframework.security.oauth2.client.RefreshTokenOAuth2AuthorizedClientProvider;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
@@ -22,12 +23,20 @@ public class AzureAuthorizedClientRepository implements OAuth2AuthorizedClientRe
 
     private final AADWebAppClientRegistrationRepository repo;
     private final OAuth2AuthorizedClientRepository delegate;
-    private final RefreshTokenOAuth2AuthorizedClientProvider provider;
+    private final OAuth2AuthorizedClientProvider provider;
 
     public AzureAuthorizedClientRepository(AADWebAppClientRegistrationRepository repo) {
+        this(repo,
+            new JacksonHttpSessionOAuth2AuthorizedClientRepository(),
+            new RefreshTokenOAuth2AuthorizedClientProvider());
+    }
+
+    public AzureAuthorizedClientRepository(AADWebAppClientRegistrationRepository repo,
+                                           OAuth2AuthorizedClientRepository delegate,
+                                           OAuth2AuthorizedClientProvider provider) {
         this.repo = repo;
-        delegate = new JacksonHttpSessionOAuth2AuthorizedClientRepository();
-        provider = new RefreshTokenOAuth2AuthorizedClientProvider();
+        this.delegate = delegate;
+        this.provider = provider;
     }
 
     @Override
