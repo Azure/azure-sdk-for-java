@@ -65,10 +65,9 @@ public class AzureContextAutoConfiguration {
         CredentialsProvider credentialsProvider = new DefaultCredentialsProvider(azureProperties);
         final TokenCredential credentialFromProperties = credentialsProvider.getCredential();
 
-        SpringEnvironmentTokenBuilder builder = new SpringEnvironmentTokenBuilder().fromEnvironment(environment);
-        builder.overrideNamedCredential("", credentialFromProperties);
-
-        return builder.build();
+        return new SpringEnvironmentTokenBuilder().fromEnvironment(environment)
+                                                  .overrideNamedCredential("", credentialFromProperties)
+                                                  .build();
     }
 
     @Bean
