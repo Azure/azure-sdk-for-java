@@ -1,3 +1,8 @@
+# To avoid dependency conflicts between SDK and Spring, if you want to modify or add dependencies
+# that are managed in sdk/spring/scripts/spring_managed_external_dependencies.txt, please discuss
+# with Spring Integration team. Thanks
+# alias: rujche, xiada, yiliu6, zhihaoguo
+
 # Format;
 # groupId:artifactId;dependency-version
 com.fasterxml.jackson.core:jackson-annotations;2.11.3

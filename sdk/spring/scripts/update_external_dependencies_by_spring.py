@@ -10,7 +10,7 @@ import unittest
 import urllib.request as request
 import xml.etree.ElementTree as elementTree
 from itertools import takewhile
-
+from urllib.error import HTTPError
 import in_place
 
 from log import log, Log
@@ -60,13 +60,19 @@ def update_dependency_dict(dependency_dict, root_pom_id):
     )
     q = queue.Queue()
     q.put(root_pom)
+    pom_backup_set = set()
+    pom_backup_set.add(root_pom_id)
     pom_count = 1
     log.info('Added root pom.depth = {}, url = {}.'.format(root_pom.depth, root_pom.to_url()))
     while not q.empty():
         pom = q.get()
         pom_url = pom.to_url()
         log.info('Get dependencies from pom. depth = {}, url = {}.'.format(pom.depth, pom_url))
-        tree = elementTree.ElementTree(file = request.urlopen(pom_url))
+        try:
+            tree = elementTree.ElementTree(file = request.urlopen(pom_url))
+        except HTTPError:
+            log.warn('Error in open {}'.format(pom_url))
+            continue
         project_element = tree.getroot()
         property_dict = {}
         parent_element = project_element.find('./maven:parent', MAVEN_NAME_SPACE)
@@ -102,9 +108,12 @@ def update_dependency_dict(dependency_dict, root_pom_id):
             artifact_type = dependency_element.find('./maven:type', MAVEN_NAME_SPACE)
             if artifact_type is not None and artifact_type.text.strip() == 'pom':
                 new_pom = Pom(group_id, artifact_id, version, pom.depth + 1)
-                q.put(new_pom)
-                pom_count = pom_count + 1
-                log.debug('Added new pom. depth = {}, url = {}.'.format(new_pom.to_url(), new_pom.depth))
+                new_pom_string = '{}:{};{}'.format(group_id, artifact_id, version)
+                if new_pom_string not in pom_backup_set:
+                    q.put(new_pom)
+                    pom_backup_set.add(new_pom_string)
+                    pom_count = pom_count + 1
+                    log.debug('Added new pom. depth = {}, url = {}.'.format(new_pom.to_url(), new_pom.depth))
     log.info('Root pom summary. pom_count = {}, root_pom_url = {}'.format(pom_count, root_pom.to_url()))
     return dependency_dict
 
