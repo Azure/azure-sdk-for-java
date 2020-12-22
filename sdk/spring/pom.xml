@@ -87,4 +87,141 @@
     <module>azure-spring-cloud-stream-binder-test</module>
   </modules>
 
+  <profiles>
+    <profile>
+      <id>coverage</id>
+      <modules>
+        <module>azure-spring-boot</module>
+        <module>azure-spring-cloud-autoconfigure</module>
+        <module>azure-spring-cloud-context</module>
+        <module>azure-spring-cloud-storage</module>
+        <module>azure-spring-cloud-telemetry</module>
+        <module>azure-spring-integration-core</module>
+        <module>azure-spring-integration-eventhubs</module>
+        <module>azure-spring-integration-servicebus</module>
+        <module>azure-spring-integration-storage-queue</module>
+        <module>azure-spring-cloud-messaging</module>
+        <module>azure-spring-cloud-stream-binder-eventhubs</module>
+        <module>azure-spring-cloud-stream-binder-servicebus-core</module>
+        <module>azure-spring-cloud-stream-binder-servicebus-queue</module>
+        <module>azure-spring-cloud-stream-binder-servicebus-topic</module>
+      </modules>
+      <dependencies>
+        <dependency>
+          <groupId>com.azure.spring</groupId>
+          <artifactId>azure-spring-boot</artifactId>
+          <version>3.0.0-beta.2</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot;current} -->
+        </dependency>
+        <dependency>
+          <groupId>com.azure.spring</groupId>
+          <artifactId>azure-spring-cloud-autoconfigure</artifactId>
+          <version>2.0.0-beta.2</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-autoconfigure;current} -->
+        </dependency>
+        <dependency>
+          <groupId>com.azure.spring</groupId>
+          <artifactId>azure-spring-cloud-context</artifactId>
+          <version>2.0.0-beta.2</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-context;current} -->
+        </dependency>
+        <dependency>
+          <groupId>com.azure.spring</groupId>
+          <artifactId>azure-spring-cloud-storage</artifactId>
+          <version>2.0.0-beta.2</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-storage;current} -->
+        </dependency>
+        <dependency>
+          <groupId>com.azure.spring</groupId>
+          <artifactId>azure-spring-cloud-telemetry</artifactId>
+          <version>2.0.0-beta.2</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-telemetry;current} -->
+        </dependency>
+        <dependency>
+          <groupId>com.azure.spring</groupId>
+          <artifactId>azure-spring-integration-core</artifactId>
+          <version>2.0.0-beta.2</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-core;current} -->
+       </dependency>
+        <dependency>
+          <groupId>com.azure.spring</groupId>
+          <artifactId>azure-spring-integration-eventhubs</artifactId>
+          <version>2.0.0-beta.2</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-eventhubs;current} -->
+        </dependency>
+        <dependency>
+          <groupId>com.azure.spring</groupId>
+          <artifactId>azure-spring-integration-servicebus</artifactId>
+          <version>2.0.0-beta.2</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-servicebus;current} -->
+        </dependency>
+        <dependency>
+          <groupId>com.azure.spring</groupId>
+          <artifactId>azure-spring-integration-storage-queue</artifactId>
+          <version>2.0.0-beta.2</version> <!-- {x-version-update;com.azure.spring:azure-spring-integration-storage-queue;current} -->
+        </dependency>
+        <dependency>
+          <groupId>com.azure.spring</groupId>
+          <artifactId>azure-spring-cloud-messaging</artifactId>
+          <version>2.0.0-beta.2</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-messaging;current} -->
+        </dependency>
+        <dependency>
+          <groupId>com.azure.spring</groupId>
+          <artifactId>azure-spring-cloud-stream-binder-eventhubs</artifactId>
+          <version>2.0.0-beta.2</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-eventhubs;current} -->
+        </dependency>
+        <dependency>
+          <groupId>com.azure.spring</groupId>
+          <artifactId>azure-spring-cloud-stream-binder-servicebus-core</artifactId>
+          <version>2.0.0-beta.2</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-servicebus-core;current} -->
+        </dependency>
+        <dependency>
+          <groupId>com.azure.spring</groupId>
+          <artifactId>azure-spring-cloud-stream-binder-servicebus-queue</artifactId>
+          <version>2.0.0-beta.2</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-servicebus-queue;current} -->
+        </dependency>
+        <dependency>
+          <groupId>com.azure.spring</groupId>
+          <artifactId>azure-spring-cloud-stream-binder-servicebus-topic</artifactId>
+          <version>2.0.0-beta.2</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-servicebus-topic;current} -->
+        </dependency>
+      </dependencies>
+
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>report-aggregate</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>report-aggregate</goal>
+                </goals>
+                <configuration>
+                  <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>default</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <modules>
+        <module>azure-spring-boot</module>
+        <module>azure-spring-cloud-autoconfigure</module>
+        <module>azure-spring-cloud-context</module>
+        <module>azure-spring-cloud-storage</module>
+        <module>azure-spring-cloud-telemetry</module>
+        <module>azure-spring-integration-core</module>
+        <module>azure-spring-integration-eventhubs</module>
+        <module>azure-spring-integration-servicebus</module>
+        <module>azure-spring-integration-storage-queue</module>
+        <module>azure-spring-cloud-messaging</module>
+        <module>azure-spring-cloud-stream-binder-eventhubs</module>
+        <module>azure-spring-cloud-stream-binder-servicebus-core</module>
+        <module>azure-spring-cloud-stream-binder-servicebus-queue</module>
+        <module>azure-spring-cloud-stream-binder-servicebus-topic</module>
+      </modules>
+    </profile>
+  </profiles>
 </project>
