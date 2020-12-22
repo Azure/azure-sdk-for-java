@@ -91,8 +91,6 @@ If property not set, the property will be filled with the latest value.
 
 ## Run with Maven
 ```
-# Under sdk/spring project root directory
-mvn clean install -DskipTests
 cd azure-spring-boot-samples/azure-spring-boot-sample-keyvault-secrets
 mvn spring-boot:run
 ```

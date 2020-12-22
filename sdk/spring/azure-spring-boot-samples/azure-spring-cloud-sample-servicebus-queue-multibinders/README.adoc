@@ -162,7 +162,7 @@ If you update the role assignment for services, then redeploy the app again.
 === How to run
 1. Update stream binding related properties in link:src/main/resources/application.properties[application.properties]
 
-2. For connection string usage, run the `mvn clean spring-boot:run` in the root of the code sample to get the app running; for MSI usage, deploy or redeploy web application.
+2. For connection string usage, run the `mvn spring-boot:run` in the root of the code sample to get the app running; for MSI usage, deploy or redeploy web application.
 
 3. Send a POST request to test the default binder
 +

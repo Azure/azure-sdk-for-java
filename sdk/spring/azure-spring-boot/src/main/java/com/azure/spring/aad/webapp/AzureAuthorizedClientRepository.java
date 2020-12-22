@@ -4,9 +4,10 @@
 package com.azure.spring.aad.webapp;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.client.OAuth2AuthorizationContext;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
-import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.security.oauth2.client.web.HttpSessionOAuth2AuthorizedClientRepository;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProvider;
+import org.springframework.security.oauth2.client.RefreshTokenOAuth2AuthorizedClientProvider;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 
@@ -14,27 +15,30 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * OAuth2AuthorizedClientRepository used for AAD oauth2 clients.
  */
 public class AzureAuthorizedClientRepository implements OAuth2AuthorizedClientRepository {
 
-    private final AzureClientRegistrationRepository repo;
+    private final AADWebAppClientRegistrationRepository repo;
     private final OAuth2AuthorizedClientRepository delegate;
+    private final OAuth2AuthorizedClientProvider provider;
 
-    private static OAuth2AuthorizedClientRepository createDefaultDelegate(ClientRegistrationRepository repo) {
-        return new HttpSessionOAuth2AuthorizedClientRepository();
+    public AzureAuthorizedClientRepository(AADWebAppClientRegistrationRepository repo) {
+        this(repo,
+            new JacksonHttpSessionOAuth2AuthorizedClientRepository(),
+            new RefreshTokenOAuth2AuthorizedClientProvider());
     }
 
-    public AzureAuthorizedClientRepository(AzureClientRegistrationRepository repo) {
-        this(repo, createDefaultDelegate(repo));
-    }
-
-    public AzureAuthorizedClientRepository(AzureClientRegistrationRepository repo,
-                                           OAuth2AuthorizedClientRepository delegate) {
+    public AzureAuthorizedClientRepository(AADWebAppClientRegistrationRepository repo,
+                                           OAuth2AuthorizedClientRepository delegate,
+                                           OAuth2AuthorizedClientProvider provider) {
         this.repo = repo;
         this.delegate = delegate;
+        this.provider = provider;
     }
 
     @Override
@@ -55,21 +59,36 @@ public class AzureAuthorizedClientRepository implements OAuth2AuthorizedClientRe
             return (T) result;
         }
 
-        if (repo.isAuthzClient(id)) {
-            OAuth2AuthorizedClient client = loadAuthorizedClient(defaultClientRegistrationId(), principal, request);
-            return (T) createInitAuthzClient(client, id, principal);
+        if (repo.isClientNeedConsentWhenLogin(id)) {
+            OAuth2AuthorizedClient azureClient = loadAuthorizedClient(getAzureClientId(), principal, request);
+            OAuth2AuthorizedClient fakeAuthzClient = createFakeAuthzClient(azureClient, id, principal);
+            OAuth2AuthorizationContext.Builder contextBuilder =
+                OAuth2AuthorizationContext.withAuthorizedClient(fakeAuthzClient);
+            String[] scopes = null;
+            if (!AADWebAppClientRegistrationRepository.AZURE_CLIENT_REGISTRATION_ID.equals(id)) {
+                scopes = repo.findByRegistrationId(id).getScopes().toArray(new String[0]);
+            }
+            OAuth2AuthorizationContext context = contextBuilder
+                .principal(principal)
+                .attributes(getAttributesConsumer(scopes))
+                .build();
+            return (T) provider.authorize(context);
         }
         return null;
     }
 
-    private String defaultClientRegistrationId() {
+    private Consumer<Map<String, Object>> getAttributesConsumer(String[] scopes) {
+        return attributes -> attributes.put(OAuth2AuthorizationContext.REQUEST_SCOPE_ATTRIBUTE_NAME, scopes);
+    }
+
+    private String getAzureClientId() {
         return repo.getAzureClient().getClient().getRegistrationId();
     }
 
-    private OAuth2AuthorizedClient createInitAuthzClient(OAuth2AuthorizedClient client,
+    private OAuth2AuthorizedClient createFakeAuthzClient(OAuth2AuthorizedClient azureClient,
                                                          String id,
                                                          Authentication principal) {
-        if (client == null || client.getRefreshToken() == null) {
+        if (azureClient == null || azureClient.getRefreshToken() == null) {
             return null;
         }
 
@@ -83,7 +102,7 @@ public class AzureAuthorizedClientRepository implements OAuth2AuthorizedClientRe
             repo.findByRegistrationId(id),
             principal.getName(),
             accessToken,
-            client.getRefreshToken()
+            azureClient.getRefreshToken()
         );
     }
 

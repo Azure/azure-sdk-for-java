@@ -72,7 +72,7 @@ spring.cloud.azure.servicebus.namespace=[servicebus-namespace]
 1. Update queue name in link:src/main/java/com/example/QueueController.java#L31[QueueController], topic name and subscription in
 link:src/main/java/com/example/TopicController.java#L29[TopicController].
 
-2. Run the `mvn clean spring-boot:run` in the root of the code sample to get the app running.
+2. Run the `mvn spring-boot:run` in the root of the code sample to get the app running.
 
 3. Send a POST request to service bus queue
 +

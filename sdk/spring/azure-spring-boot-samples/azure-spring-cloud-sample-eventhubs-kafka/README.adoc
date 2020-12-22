@@ -49,7 +49,7 @@ spring.cloud.stream.bindings.output.destination=[eventhub-name]
 ....
 +
 
-5. Run the `mvn clean spring-boot:run` in the root of the code sample to get the app running.
+5. Run the `mvn spring-boot:run` in the root of the code sample to get the app running.
 
 6. Send a POST request
 +

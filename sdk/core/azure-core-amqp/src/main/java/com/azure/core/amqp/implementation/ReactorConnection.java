@@ -27,6 +27,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.ReplayProcessor;
+import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
@@ -350,7 +351,11 @@ public class ReactorConnection implements AmqpConnection {
             connection = reactor.connectionToHost(handler.getHostname(), handler.getProtocolPort(), handler);
 
             reactorExceptionHandler = new ReactorExceptionHandler();
-            executor = new ReactorExecutor(reactor, Schedulers.single(), connectionId,
+            // Use a new single-threaded scheduler for this connection as QPID's Reactor is not thread-safe.
+            // Using Schedulers.single() will use the same thread for all connections in this process which
+            // limits the scalability of the no. of concurrent connections a single process can have.
+            Scheduler scheduler = Schedulers.newSingle("reactor-executor");
+            executor = new ReactorExecutor(reactor, scheduler, connectionId,
                 reactorExceptionHandler, connectionOptions.getRetry().getTryTimeout(),
                 connectionOptions.getFullyQualifiedNamespace());
 
@@ -421,7 +426,6 @@ public class ReactorConnection implements AmqpConnection {
             } else {
                 session.dispose();
             }
-
             subscription.dispose();
         }
     }

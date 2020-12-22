@@ -3,73 +3,108 @@
 
 package com.azure.spring.aad.webapp;
 
-import org.junit.jupiter.api.BeforeEach;
+import org.hamcrest.Matcher;
 import org.junit.jupiter.api.Test;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.boot.test.context.assertj.AssertableWebApplicationContext;
+import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.RequestEntity;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationExchange;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationResponse;
-import org.springframework.test.context.support.TestPropertySourceUtils;
 import org.springframework.util.MultiValueMap;
 
 import java.util.Optional;
 
+import static org.hamcrest.CoreMatchers.hasItems;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class AuthzCodeGrantRequestEntityConverterTest {
 
-    private AzureClientRegistrationRepository clientRepo;
+    private AADWebAppClientRegistrationRepository clientRepo;
     private ClientRegistration azure;
-    private ClientRegistration graph;
+    private ClientRegistration arm;
 
-    @BeforeEach
-    public void setupApp() {
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-        TestPropertySourceUtils.addInlinedPropertiesToEnvironment(
-            context,
+    private final WebApplicationContextRunner contextRunner = PropertiesUtils
+        .getContextRunner().withPropertyValues(
             "azure.activedirectory.authorization-server-uri = fake-uri",
-            "azure.activedirectory.authorization.graph.scopes = Calendars.Read",
-            "azure.activedirectory.client-id = fake-client-id",
-            "azure.activedirectory.client-secret = fake-client-secret",
-            "azure.activedirectory.tenant-id = fake-tenant-id",
-            "azure.activedirectory.user-group.allowed-groups = group1, group2"
-        );
-        context.register(AzureActiveDirectoryConfiguration.class);
-        context.refresh();
+            "azure.activedirectory.authorization.arm.scopes = Calendars.Read",
+            "azure.activedirectory.authorization.arm.on-demand=true");
 
-        clientRepo = context.getBean(AzureClientRegistrationRepository.class);
+    private void getBeans(AssertableWebApplicationContext context) {
+        clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
         azure = clientRepo.findByRegistrationId("azure");
-        graph = clientRepo.findByRegistrationId("graph");
+        arm = clientRepo.findByRegistrationId("arm");
     }
 
     @Test
     public void addScopeForDefaultClient() {
-        MultiValueMap<String, String> body = convertedBodyOf(createCodeGrantRequest(azure));
-        assertEquals(
-            "openid profile offline_access https://graph.microsoft.com/User.Read",
-            body.getFirst("scope")
-        );
+        contextRunner.run(context -> {
+            getBeans(context);
+            MultiValueMap<String, String> body = convertedBodyOf(createCodeGrantRequest(azure));
+            assertEquals(
+                "openid profile offline_access https://graph.microsoft.com/User.Read",
+                body.getFirst("scope")
+            );
+        });
     }
 
     @Test
-    public void noScopeParamForOtherClient() {
-        MultiValueMap<String, String> body = convertedBodyOf(createCodeGrantRequest(graph));
-        assertNull(body.get("scope"));
+    public void addScopeForOnDemandClient() {
+        contextRunner.run(context -> {
+            getBeans(context);
+            MultiValueMap<String, String> body = convertedBodyOf(createCodeGrantRequest(arm));
+            assertEquals("Calendars.Read openid profile", body.getFirst("scope"));
+        });
     }
 
+    @Test
     @SuppressWarnings("unchecked")
+    public void addHeadersForDefaultClient() {
+        contextRunner.run(context -> {
+            getBeans(context);
+            HttpHeaders httpHeaders = convertedHeaderOf(createCodeGrantRequest(azure));
+            assertThat(httpHeaders.entrySet(), (Matcher) hasItems(expectedHeaders()));
+        });
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void addHeadersForOnDemandClient() {
+        contextRunner.run(context -> {
+            getBeans(context);
+            HttpHeaders httpHeaders = convertedHeaderOf(createCodeGrantRequest(arm));
+            assertThat(httpHeaders.entrySet(), (Matcher) hasItems(expectedHeaders()));
+        });
+    }
+
+    private HttpHeaders convertedHeaderOf(OAuth2AuthorizationCodeGrantRequest request) {
+        AuthzCodeGrantRequestEntityConverter converter =
+            new AuthzCodeGrantRequestEntityConverter(clientRepo.getAzureClient());
+        RequestEntity<?> entity = converter.convert(request);
+        return Optional.ofNullable(entity)
+            .map(HttpEntity::getHeaders)
+            .orElse(null);
+    }
+
+    private Object[] expectedHeaders() {
+        return AuthzCodeGrantRequestEntityConverter
+            .getHttpHeaders()
+            .entrySet()
+            .stream()
+            .filter(entry -> !entry.getKey().equals("client-request-id"))
+            .toArray();
+    }
+
     private MultiValueMap<String, String> convertedBodyOf(OAuth2AuthorizationCodeGrantRequest request) {
         AuthzCodeGrantRequestEntityConverter converter =
             new AuthzCodeGrantRequestEntityConverter(clientRepo.getAzureClient());
         RequestEntity<?> entity = converter.convert(request);
-        return (MultiValueMap<String, String>) Optional.ofNullable(entity)
-                                                       .map(HttpEntity::getBody)
-                                                       .orElse(null);
+        return PropertiesUtils.requestEntityConverter(entity);
     }
 
     private OAuth2AuthorizationCodeGrantRequest createCodeGrantRequest(ClientRegistration client) {

@@ -9,7 +9,7 @@ import com.azure.cosmos.util.Beta;
 /**
  * Encapsulates options that can be specified for an operation within a {@link TransactionalBatch}.
  */
-@Beta(Beta.SinceVersion.V4_7_0)
+@Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class TransactionalBatchItemRequestOptions {
     private String ifMatchETag;
     private String ifNoneMatchETag;
@@ -19,6 +19,7 @@ public final class TransactionalBatchItemRequestOptions {
      *
      * @return ifMatchETag the ifMatchETag associated with the request.
      */
+    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getIfMatchETag() {
         return this.ifMatchETag;
     }
@@ -29,6 +30,7 @@ public final class TransactionalBatchItemRequestOptions {
      * @param ifMatchETag the ifMatchETag associated with the request.
      * @return the current request options
      */
+    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public TransactionalBatchItemRequestOptions setIfMatchETag(final String ifMatchETag) {
         this.ifMatchETag = ifMatchETag;
         return this;
@@ -39,6 +41,7 @@ public final class TransactionalBatchItemRequestOptions {
      *
      * @return the ifNoneMatchETag associated with the request.
      */
+    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getIfNoneMatchETag() {
         return this.ifNoneMatchETag;
     }
@@ -49,6 +52,7 @@ public final class TransactionalBatchItemRequestOptions {
      * @param ifNoneMatchEtag the ifNoneMatchETag associated with the request.
      * @return the current request options
      */
+    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public TransactionalBatchItemRequestOptions setIfNoneMatchETag(final String ifNoneMatchEtag) {
         this.ifNoneMatchETag = ifNoneMatchEtag;
         return this;

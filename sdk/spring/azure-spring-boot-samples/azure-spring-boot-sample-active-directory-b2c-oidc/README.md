@@ -58,10 +58,7 @@ azure:
 Please make sure that these two placeholders should be the same as `application.yml` respectively.
 
 ### Run with Maven
-First, we need to ensure that this [instruction] is completed before run.
 ```
-# Under sdk/spring project root directory
-mvn clean install -DskipTests
 cd azure-spring-boot-samples/azure-spring-boot-sample-active-directory-b2c-oidc
 mvn spring-boot:run
 ```

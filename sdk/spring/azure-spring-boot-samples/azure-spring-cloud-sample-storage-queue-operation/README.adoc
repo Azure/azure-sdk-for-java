@@ -77,7 +77,7 @@ spring.cloud.azure.storage.account=[account-name]
 
 2. Update queue name in link:src/main/java/com/example/WebController.java#L31[WebController]
 
-3. Run the `mvn clean spring-boot:run` in the root of the code sample to get the app running.
+3. Run the `mvn spring-boot:run` in the root of the code sample to get the app running.
 
 4. Send a POST request
 +

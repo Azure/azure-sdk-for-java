@@ -37,11 +37,8 @@ and `REST API ENDPOINT` respectively.
     ```
 
 ### Run with Maven
-First, we need to ensure that this [instruction] is completed before run.
 
 ```
-# Under sdk/spring project root directory
-mvn clean install -DskipTests
 cd azure-spring-boot-samples/azure-spring-boot-sample-mediaservices
 mvn spring-boot:run
 ```

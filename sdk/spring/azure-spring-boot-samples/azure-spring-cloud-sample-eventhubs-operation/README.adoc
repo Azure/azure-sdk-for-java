@@ -87,7 +87,7 @@ spring.cloud.azure.eventhub.checkpoint-container=[checkpoint-container]
 
 2. Update event hub name and consumer group in link:src/main/java/com/example/WebController.java#L29[WebController].
 
-3. Run the `mvn clean spring-boot:run` in the root of the code sample to get the app running.
+3. Run the `mvn spring-boot:run` in the root of the code sample to get the app running.
 
 4. Send a POST request
 +
