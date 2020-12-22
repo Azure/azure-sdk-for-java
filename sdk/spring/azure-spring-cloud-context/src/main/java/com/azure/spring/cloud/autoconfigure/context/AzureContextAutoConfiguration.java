@@ -10,6 +10,7 @@ import com.azure.spring.cloud.autoconfigure.telemetry.SubscriptionSupplier;
 import com.azure.spring.cloud.context.core.api.CredentialsProvider;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
 import com.azure.spring.cloud.context.core.impl.DefaultCredentialsProvider;
+import com.azure.spring.identity.SpringEnvironmentTokenBuilder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -17,6 +18,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 
 /**
  * Auto-config to provide default {@link CredentialsProvider} for all Azure services
@@ -44,9 +46,8 @@ public class AzureContextAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public AzureResourceManager azureResourceManager(TokenCredential credential, AzureProfile profile) {
-        // TODO (xiada) USER AGENT
+        // TODO (xiada) Do we need to pass our User-Agent to with the management sdk?
         return AzureResourceManager.configure()
-//                                   .withLogLevel(HttpLogDetailLevel.BASIC)
                                    .authenticate(credential, profile)
                                    .withDefaultSubscription();
     }
@@ -60,20 +61,14 @@ public class AzureContextAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public TokenCredential credential(AzureProperties azureProperties) {
+    public TokenCredential credential(Environment environment, AzureProperties azureProperties) {
         CredentialsProvider credentialsProvider = new DefaultCredentialsProvider(azureProperties);
-        return credentialsProvider.getCredential();
+        final TokenCredential credentialFromProperties = credentialsProvider.getCredential();
 
-        // TODO (xiada) combine two credential methods
-/*
         SpringEnvironmentTokenBuilder builder = new SpringEnvironmentTokenBuilder().fromEnvironment(environment);
-        if (!StringUtils.isBlank(azureProperties.getCredentialFilePath())) {
-            if (credentials == null) {
-                LOGGER.error("Legacy azure credentials not initialized though credential-file-path was provided");
-            }
-            builder.overrideNamedCredential("", new LegacyTokenCredentialAdapter(credentials));
-        }
-        return builder.build();*/
+        builder.overrideNamedCredential("", credentialFromProperties);
+
+        return builder.build();
     }
 
     @Bean
