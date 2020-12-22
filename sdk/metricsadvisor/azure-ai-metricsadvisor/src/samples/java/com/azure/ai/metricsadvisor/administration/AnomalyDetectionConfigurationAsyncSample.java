@@ -172,14 +172,12 @@ public class AnomalyDetectionConfigurationAsyncSample {
             wholeSeriesDetectionCondition.getHardThresholdCondition() == null ? null :
                 wholeSeriesDetectionCondition.getHardThresholdCondition().getLowerBound() == null ? null :
                     wholeSeriesDetectionCondition.getHardThresholdCondition().getLowerBound());
-            // wholeSeriesDetectionCondition.getHardThresholdCondition()
-            //     .getLowerBound());
+
         System.out.printf(" - Upper bound: %s%n",
             wholeSeriesDetectionCondition.getHardThresholdCondition() == null ? null :
             wholeSeriesDetectionCondition.getHardThresholdCondition().getUpperBound() == null ? null :
                 wholeSeriesDetectionCondition.getHardThresholdCondition().getUpperBound());
-            // wholeSeriesDetectionCondition.getHardThresholdCondition()
-            //     .getUpperBound());
+
         System.out.printf(" - Suppress conditions: minimum number: %s; minimum ratio: %s%n",
             wholeSeriesDetectionCondition.getHardThresholdCondition() == null ? null :
                 wholeSeriesDetectionCondition.getHardThresholdCondition().getSuppressCondition() == null ? null :
@@ -187,10 +185,6 @@ public class AnomalyDetectionConfigurationAsyncSample {
             wholeSeriesDetectionCondition.getHardThresholdCondition() == null ? null :
                 wholeSeriesDetectionCondition.getHardThresholdCondition().getSuppressCondition() == null ? null :
                     wholeSeriesDetectionCondition.getHardThresholdCondition().getSuppressCondition().getMinRatio());
-            // wholeSeriesDetectionCondition.getHardThresholdCondition()
-            //     .getSuppressCondition().getMinNumber(),
-            // wholeSeriesDetectionCondition.getHardThresholdCondition()
-            //     .getSuppressCondition().getMinRatio());
 
         System.out.printf("- Change Threshold Condition:%n");
         System.out.printf(" - Change percentage: %s%n",
