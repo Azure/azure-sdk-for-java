@@ -52,7 +52,8 @@ public class AADResourceServerOboConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean
-    public OAuth2AuthorizedClientRepository oAuth2AuthorizedClientRepository(InMemoryClientRegistrationRepository repo) {
+    public OAuth2AuthorizedClientRepository oAuth2AuthorizedClientRepository(InMemoryClientRegistrationRepository
+                                                                                 repo) {
         return new AADOAuth2OboAuthorizedClientRepository(repo);
     }
 

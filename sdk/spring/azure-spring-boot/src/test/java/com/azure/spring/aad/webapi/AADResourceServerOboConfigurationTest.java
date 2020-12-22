@@ -52,10 +52,8 @@ public class AADResourceServerOboConfigurationTest {
             .withUserConfiguration(AADResourceServerOboConfiguration.class)
             .withPropertyValues(AAD_PROPERTY_PREFIX + "authorization.graph.scopes=User.read")
             .run(context -> {
-                final InMemoryClientRegistrationRepository oboRepo = context.getBean
-                    (InMemoryClientRegistrationRepository
-                    .class);
-
+                final InMemoryClientRegistrationRepository oboRepo = context.getBean(
+                    InMemoryClientRegistrationRepository.class);
                 final OAuth2AuthorizedClientRepository aadOboRepo = context.getBean(
                     AADOAuth2OboAuthorizedClientRepository.class);
 
@@ -76,9 +74,8 @@ public class AADResourceServerOboConfigurationTest {
             .withPropertyValues(AAD_PROPERTY_PREFIX + "authorization.graph.scopes=User.read")
             .withPropertyValues(AAD_PROPERTY_PREFIX + "authorization.custom.scopes=User.read")
             .run(context -> {
-                final InMemoryClientRegistrationRepository oboRepo = context.getBean
-                    (InMemoryClientRegistrationRepository
-                    .class);
+                final InMemoryClientRegistrationRepository oboRepo = context.getBean(
+                    InMemoryClientRegistrationRepository.class);
                 final OAuth2AuthorizedClientRepository aadOboRepo = context.getBean(
                     AADOAuth2OboAuthorizedClientRepository.class);
 
