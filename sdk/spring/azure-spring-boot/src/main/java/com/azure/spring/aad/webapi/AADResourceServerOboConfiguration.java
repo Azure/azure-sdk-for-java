@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
@@ -38,20 +39,20 @@ public class AADResourceServerOboConfiguration {
     private AADAuthenticationProperties properties;
 
     @Bean
-    @ConditionalOnMissingBean({ ClientRegistrationRepository.class, AADOboClientRegistrationRepository.class })
-    public AADOboClientRegistrationRepository oboClientRegistrationRepository() {
-        return new AADOboClientRegistrationRepository(createOboClients());
+    @ConditionalOnMissingBean({ ClientRegistrationRepository.class, InMemoryClientRegistrationRepository.class })
+    public ClientRegistrationRepository oboClientRegistrationRepository() {
+        return new InMemoryClientRegistrationRepository(createOboClients());
     }
 
     /**
-     * Use AADOboClientRegistrationRepository to create AADOAuth2OboAuthorizedClientRepository
+     * Use InMemoryClientRegistrationRepository to create AADOAuth2OboAuthorizedClientRepository
      *
      * @param repo client registration
      * @return AADOAuth2OboAuthorizedClientRepository Bean
      */
     @Bean
     @ConditionalOnMissingBean
-    public OAuth2AuthorizedClientRepository oAuth2AuthorizedClientRepository(AADOboClientRegistrationRepository repo) {
+    public OAuth2AuthorizedClientRepository oAuth2AuthorizedClientRepository(InMemoryClientRegistrationRepository repo) {
         return new AADOAuth2OboAuthorizedClientRepository(repo);
     }
 

@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
@@ -20,7 +21,7 @@ public class AADResourceServerOboConfigurationTest {
     private static final String AAD_PROPERTY_PREFIX = "azure.activedirectory.";
 
     private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
-        .withPropertyValues(AAD_PROPERTY_PREFIX + "user-group.allowed-groups=group1",
+        .withPropertyValues(
             AAD_PROPERTY_PREFIX + "tenant-id=fake-tenant-id",
             AAD_PROPERTY_PREFIX + "client-id=fake-client-id",
             AAD_PROPERTY_PREFIX + "client-secret=fake-client-secret");
@@ -46,64 +47,52 @@ public class AADResourceServerOboConfigurationTest {
     }
 
     @Test
-    public void testOAuth2AuthorizedClientRepository() {
-        this.contextRunner
-            .withUserConfiguration(AADResourceServerOboConfiguration.class)
-            .run(context -> {
-                final OAuth2AuthorizedClientRepository aadOboRepo = context.getBean(
-                    AADOAuth2OboAuthorizedClientRepository.class);
-                assertThat(aadOboRepo).isNotNull();
-                assertThat(aadOboRepo).isExactlyInstanceOf(AADOAuth2OboAuthorizedClientRepository.class);
-            });
-    }
-
-    @Test
-    public void testDefaultClientRegistrationRepository() {
-        this.contextRunner
-            .withUserConfiguration(AADResourceServerOboConfiguration.class)
-            .run(context -> {
-                AADOboClientRegistrationRepository graphRepo = context.getBean(AADOboClientRegistrationRepository
-                    .class);
-                ClientRegistration graph = graphRepo.findByRegistrationId("graph");
-
-                assertThat(graphRepo).isNotNull();
-                assertThat(graphRepo).isExactlyInstanceOf(AADOboClientRegistrationRepository.class);
-
-                assertThat(graph).isNull();
-
-            });
-    }
-
-    @Test
-    public void testExistGraphClient() {
+    public void testOnlyGraphClient() {
         this.contextRunner
             .withUserConfiguration(AADResourceServerOboConfiguration.class)
             .withPropertyValues(AAD_PROPERTY_PREFIX + "authorization.graph.scopes=User.read")
             .run(context -> {
-                AADOboClientRegistrationRepository oboRepo = context.getBean(AADOboClientRegistrationRepository
+                final InMemoryClientRegistrationRepository oboRepo = context.getBean
+                    (InMemoryClientRegistrationRepository
                     .class);
+
+                final OAuth2AuthorizedClientRepository aadOboRepo = context.getBean(
+                    AADOAuth2OboAuthorizedClientRepository.class);
 
                 ClientRegistration graph = oboRepo.findByRegistrationId("graph");
                 Set<String> graphScopes = graph.getScopes();
 
-                assertThat(oboRepo).isExactlyInstanceOf(AADOboClientRegistrationRepository.class);
+                assertThat(aadOboRepo).isNotNull();
+                assertThat(oboRepo).isExactlyInstanceOf(InMemoryClientRegistrationRepository.class);
                 assertThat(graph).isNotNull();
                 assertThat(graphScopes).hasSize(1);
-
             });
     }
+
     @Test
-    public void testPropertyNotCorrect() {
+    public void testExistCustomAndGraphClient() {
         this.contextRunner
             .withUserConfiguration(AADResourceServerOboConfiguration.class)
-            .withPropertyValues(AAD_PROPERTY_PREFIX + "authorization-fake.graph.scopes=User.read")
+            .withPropertyValues(AAD_PROPERTY_PREFIX + "authorization.graph.scopes=User.read")
+            .withPropertyValues(AAD_PROPERTY_PREFIX + "authorization.custom.scopes=User.read")
             .run(context -> {
-                AADOboClientRegistrationRepository oboRepo = context.getBean(AADOboClientRegistrationRepository
+                final InMemoryClientRegistrationRepository oboRepo = context.getBean
+                    (InMemoryClientRegistrationRepository
                     .class);
+                final OAuth2AuthorizedClientRepository aadOboRepo = context.getBean(
+                    AADOAuth2OboAuthorizedClientRepository.class);
 
                 ClientRegistration graph = oboRepo.findByRegistrationId("graph");
-                assertThat(graph).isNull();
+                ClientRegistration custom = oboRepo.findByRegistrationId("custom");
+                Set<String> graphScopes = graph.getScopes();
+                Set<String> customScopes = custom.getScopes();
+
+                assertThat(aadOboRepo).isNotNull();
+                assertThat(oboRepo).isExactlyInstanceOf(InMemoryClientRegistrationRepository.class);
+                assertThat(graph).isNotNull();
+                assertThat(customScopes).isNotNull();
+                assertThat(graphScopes).hasSize(1);
+                assertThat(customScopes).hasSize(1);
             });
     }
-
 }
