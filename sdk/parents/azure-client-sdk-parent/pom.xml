@@ -866,6 +866,7 @@
                 -snippetpath ${project.basedir}/sdk/storage/azure-storage-queue/src/samples/java
                 -snippetpath ${project.basedir}/sdk/textanalytics/azure-ai-textanalytics/src/samples/java
               </additionalOptions>
+              <aggregate>true</aggregate>
               <doclint>all</doclint>
             </configuration>
           </reportSet>
