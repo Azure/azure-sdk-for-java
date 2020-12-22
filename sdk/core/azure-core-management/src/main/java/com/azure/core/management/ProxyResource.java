@@ -9,28 +9,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * The Proxy Resource model.
  */
 public class ProxyResource {
-    /**
-     * Resource Id.
-     */
+
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
-    /**
-     * Resource name.
-     */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
-    /**
-     * Resource type.
-     */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String type;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /**
      * Get the id value.
      *
-     * @return the id value
+     * @return the fully qualified resource ID for the resource.
      */
     public String id() {
         return this.id;
@@ -39,7 +34,7 @@ public class ProxyResource {
     /**
      * Get the name value.
      *
-     * @return the name value
+     * @return the name of the resource.
      */
     public String name() {
         return this.name;
@@ -48,9 +43,18 @@ public class ProxyResource {
     /**
      * Get the type value.
      *
-     * @return the type value
+     * @return the type of the resource.
      */
     public String type() {
         return this.type;
+    }
+
+    /**
+     * Get the systemData value.
+     *
+     * @return the metadata pertaining to creation and last modification of the resource.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 }
