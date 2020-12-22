@@ -80,11 +80,6 @@
       <artifactId>reactor-netty</artifactId>
       <version>0.9.13.RELEASE</version> <!-- {x-version-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
     </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-webmvc</artifactId>
-      <version>5.2.10.RELEASE</version> <!-- {x-version-update;org.springframework:spring-webmvc;external_dependency} -->
-    </dependency>
   </dependencies>
 
   <build>
@@ -107,7 +102,6 @@
                 <include>org.springframework.security:spring-security-config:[5.3.5.RELEASE]</include> <!-- {x-include-update;org.springframework.security:spring-security-config;external_dependency} -->
                 <include>org.springframework.security:spring-security-core:[5.3.5.RELEASE]</include> <!-- {x-include-update;org.springframework.security:spring-security-core;external_dependency} -->
                 <include>org.springframework.security:spring-security-web:[5.3.5.RELEASE]</include> <!-- {x-include-update;org.springframework.security:spring-security-web;external_dependency} -->
-                <include>org.springframework:spring-webmvc:[5.2.10.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-webmvc;external_dependency} -->
                 <include>org.springframework:spring-web:[5.2.10.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
               </includes>
             </bannedDependencies>
