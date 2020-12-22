@@ -10,7 +10,7 @@ import com.azure.resourcemanager.resources.fluent.models.FeatureResultInner;
 /**
  * The implementation of {@link Feature}.
  */
-final class FeatureImpl extends
+final  class FeatureImpl extends
         IndexableWrapperImpl<FeatureResultInner>
         implements
         Feature {
@@ -35,5 +35,10 @@ final class FeatureImpl extends
             return null;
         }
         return innerModel().properties().state();
+    }
+
+    @Override
+    public String id() {
+        return innerModel().id();
     }
 }
