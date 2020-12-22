@@ -87,6 +87,8 @@ public class AADAuthenticationProperties {
      */
     private String tenantId = "common";
 
+    private String postLogoutRedirectUri = "{baseUrl}";
+
     /**
      * If Telemetry events should be published to Azure AD.
      */
@@ -266,6 +268,14 @@ public class AADAuthenticationProperties {
 
     public void setTenantId(String tenantId) {
         this.tenantId = tenantId;
+    }
+
+    public String getPostLogoutRedirectUri() {
+        return postLogoutRedirectUri;
+    }
+
+    public void setPostLogoutRedirectUri(String postLogoutRedirectUri) {
+        this.postLogoutRedirectUri = postLogoutRedirectUri;
     }
 
     public boolean isAllowTelemetry() {
