@@ -31,6 +31,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static com.azure.spring.aad.AADClientRegistrationRepository.AZURE_CLIENT_REGISTRATION_ID;
+
 /**
  * Configure the necessary beans used for aad authentication and authorization.
  */
@@ -40,8 +42,6 @@ import java.util.Set;
 @EnableConfigurationProperties(AADAuthenticationProperties.class)
 @ConditionalOnProperty(prefix = "azure.activedirectory.user-group", value = "allowed-groups")
 public class AADWebAppConfiguration {
-
-    private static final String AZURE_CLIENT_REGISTRATION_ID = "azure";
 
     @Autowired
     private AADAuthenticationProperties properties;
