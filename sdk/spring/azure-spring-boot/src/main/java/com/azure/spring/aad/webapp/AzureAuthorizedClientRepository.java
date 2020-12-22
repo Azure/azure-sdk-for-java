@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * OAuth2AuthorizedClientRepository used for AAD oauth2 clients.
@@ -65,12 +67,15 @@ public class AzureAuthorizedClientRepository implements OAuth2AuthorizedClientRe
             String[] scopes = repo.findByRegistrationId(id).getScopes().toArray(new String[0]);
             OAuth2AuthorizationContext context = contextBuilder
                 .principal(principal)
-                .attributes(attributes ->
-                    attributes.put(OAuth2AuthorizationContext.REQUEST_SCOPE_ATTRIBUTE_NAME, scopes))
+                .attributes(getAttributesConsumer(scopes))
                 .build();
             return (T) provider.authorize(context);
         }
         return null;
+    }
+
+    private Consumer<Map<String, Object>> getAttributesConsumer(String[] scopes) {
+        return attributes -> attributes.put(OAuth2AuthorizationContext.REQUEST_SCOPE_ATTRIBUTE_NAME, scopes);
     }
 
     private String getAzureClientId() {
