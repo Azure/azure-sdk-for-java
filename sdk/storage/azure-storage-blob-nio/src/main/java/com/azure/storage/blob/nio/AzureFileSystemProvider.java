@@ -31,6 +31,7 @@ import java.nio.file.FileStore;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystemAlreadyExistsException;
 import java.nio.file.FileSystemNotFoundException;
+import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.NotDirectoryException;
@@ -252,7 +253,13 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     }
 
     /**
-     * Unsupported. Use {@link #newInputStream(Path, OpenOption...)} or {@link #newOutputStream(Path, OpenOption...)}
+     * Opens or creates a file, returning a seekable byte channel to access the file.
+     * <p>
+     * This method is primarily offered to support some jdk convenience methods such as
+     * {@link Files#createFile(Path, FileAttribute[])} which requires opening a channel and closing it. A very limited
+     * set of functionality is offered here. More specifically, only reads--no writes or seeks--are supported.
+     * <p>
+     * Use {@link #newInputStream(Path, OpenOption...)} or {@link #newOutputStream(Path, OpenOption...)}
      * instead.
      *
      * @param path the Path

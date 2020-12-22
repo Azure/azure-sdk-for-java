@@ -30,7 +30,10 @@ import java.nio.file.FileAlreadyExistsException
 import java.nio.file.FileSystem
 import java.nio.file.FileSystemAlreadyExistsException
 import java.nio.file.FileSystemNotFoundException
+import java.nio.file.FileSystems
 import java.nio.file.NoSuchFileException
+import java.nio.file.Path
+import java.nio.file.Paths
 import java.nio.file.StandardCopyOption
 import java.nio.file.StandardOpenOption
 import java.nio.file.attribute.BasicFileAttributeView
@@ -1591,5 +1594,10 @@ class AzureFileSystemProviderTest extends APISpec {
         // Generate clients to resources.
         sourceClient = sourcePath.toBlobClient()
         destinationClient = destPath.toBlobClient()
+    }
+
+    def "test"() {
+        setup:
+        Paths.get("Foo").getFileSystem().provider().newByteChannel(Paths.get("foo"), null)
     }
 }
