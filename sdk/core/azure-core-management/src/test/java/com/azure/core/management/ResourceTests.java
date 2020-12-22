@@ -20,7 +20,7 @@ public class ResourceTests {
         SerializerAdapter serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
         Resource cosmosAccountResource = serializerAdapter.deserialize(cosmosAccountJson, Resource.class, SerializerEncoding.JSON);
         Assertions.assertEquals("/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/rg-weidxu/providers/Microsoft.DocumentDB/databaseAccounts/c1weidxu", cosmosAccountResource.id());
-        Assertions.assertEquals("West US", cosmosAccountResource.location());
+        Assertions.assertEquals(Region.US_WEST, Region.fromName(cosmosAccountResource.location()));
         Assertions.assertEquals("Microsoft.DocumentDB/databaseAccounts", cosmosAccountResource.type());
         Assertions.assertEquals(3, cosmosAccountResource.tags().size());
         Assertions.assertNotNull(cosmosAccountResource.systemData());
@@ -39,5 +39,13 @@ public class ResourceTests {
         Assertions.assertNull(proxyResource.systemData().lastModifiedAt());
         Assertions.assertNull(proxyResource.systemData().lastModifiedBy());
         Assertions.assertNull(proxyResource.systemData().lastModifiedByType());
+
+        String vaultJson = "{\"id\":\"/subscriptions/###/resourceGroups/rg-weidxu/providers/Microsoft.KeyVault/vaults/v1weidxu\",\"name\":\"v1weidxu\",\"type\":\"Microsoft.KeyVault/vaults\",\"location\":\"centralus\",\"tags\":{},\"properties\":{\"sku\":{\"family\":\"A\",\"name\":\"standard\"},\"tenantId\":\"###\",\"accessPolicies\":[],\"enabledForDeployment\":false,\"vaultUri\":\"https://v1weidxu.vault.azure.net/\",\"provisioningState\":\"Succeeded\"}}";
+        Resource vaultResource = serializerAdapter.deserialize(vaultJson, Resource.class, SerializerEncoding.JSON);
+        Assertions.assertEquals("/subscriptions/###/resourceGroups/rg-weidxu/providers/Microsoft.KeyVault/vaults/v1weidxu", vaultResource.id());
+        Assertions.assertEquals(Region.US_CENTRAL, Region.fromName(vaultResource.location()));
+        Assertions.assertEquals("Microsoft.KeyVault/vaults", vaultResource.type());
+        Assertions.assertEquals(0, vaultResource.tags().size());
+        Assertions.assertNull(vaultResource.systemData());
     }
 }
