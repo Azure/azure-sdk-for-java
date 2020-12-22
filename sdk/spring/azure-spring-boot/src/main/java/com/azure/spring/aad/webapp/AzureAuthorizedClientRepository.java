@@ -65,7 +65,8 @@ public class AzureAuthorizedClientRepository implements OAuth2AuthorizedClientRe
             String[] scopes = repo.findByRegistrationId(id).getScopes().toArray(new String[0]);
             OAuth2AuthorizationContext context = contextBuilder
                 .principal(principal)
-                .attributes(attributes -> attributes.put(OAuth2AuthorizationContext.REQUEST_SCOPE_ATTRIBUTE_NAME, scopes))
+                .attributes(attributes ->
+                    attributes.put(OAuth2AuthorizationContext.REQUEST_SCOPE_ATTRIBUTE_NAME, scopes))
                 .build();
             return (T) provider.authorize(context);
         }
