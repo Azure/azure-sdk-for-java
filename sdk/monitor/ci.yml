@@ -51,3 +51,6 @@ extends:
       - name: microsoft-opentelemetry-exporter-azuremonitor
         groupId: com.microsoft
         safeName: microsoftopentelemetryexporterazuremonitor
+      - name: azure-resourcemanager-monitor-generated
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagermonitorgenerated
