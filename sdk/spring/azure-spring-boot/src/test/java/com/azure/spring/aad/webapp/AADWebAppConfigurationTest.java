@@ -4,11 +4,8 @@
 package com.azure.spring.aad.webapp;
 
 import org.junit.Test;
-import org.springframework.boot.test.context.FilteredClassLoader;
-import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,18 +17,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AADWebAppConfigurationTest {
 
-    private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
-        .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
-        .withUserConfiguration(AADWebAppConfiguration.class);
-
     @Test
     public void clientRegistered() {
-        contextRunner
-            .withPropertyValues(
-                "azure.activedirectory.client-id = fake-client-id",
-                "azure.activedirectory.client-secret = fake-client-secret",
-                "azure.activedirectory.tenant-id = fake-tenant-id",
-                "azure.activedirectory.user-group.allowed-groups = group1, group2")
+        PropertiesUtils.getContextRunner()
             .run(context -> {
                 ClientRegistrationRepository clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
                 ClientRegistration azure = clientRepo.findByRegistrationId("azure");
@@ -52,12 +40,8 @@ public class AADWebAppConfigurationTest {
 
     @Test
     public void clientRequiresPermissionRegistered() {
-        contextRunner
+        PropertiesUtils.getContextRunner()
             .withPropertyValues(
-                "azure.activedirectory.client-id = fake-client-id",
-                "azure.activedirectory.client-secret = fake-client-secret",
-                "azure.activedirectory.tenant-id = fake-tenant-id",
-                "azure.activedirectory.user-group.allowed-groups = group1, group2",
                 "azure.activedirectory.authorization.graph.scopes = Calendars.Read"
             )
             .run(context -> {
@@ -75,12 +59,8 @@ public class AADWebAppConfigurationTest {
 
     @Test
     public void clientRequiresMultiPermissions() {
-        contextRunner
+        PropertiesUtils.getContextRunner()
             .withPropertyValues(
-                "azure.activedirectory.client-id = fake-client-id",
-                "azure.activedirectory.client-secret = fake-client-secret",
-                "azure.activedirectory.tenant-id = fake-tenant-id",
-                "azure.activedirectory.user-group.allowed-groups = group1, group2",
                 "azure.activedirectory.authorization.graph.scopes = Calendars.Read",
                 "azure.activedirectory.authorization.arm.scopes = https://management.core.windows.net/user_impersonation"
             )
@@ -102,12 +82,8 @@ public class AADWebAppConfigurationTest {
 
     @Test
     public void clientRequiresPermissionInDefaultClient() {
-        contextRunner
+        PropertiesUtils.getContextRunner()
             .withPropertyValues(
-                "azure.activedirectory.client-id = fake-client-id",
-                "azure.activedirectory.client-secret = fake-client-secret",
-                "azure.activedirectory.tenant-id = fake-tenant-id",
-                "azure.activedirectory.user-group.allowed-groups = group1, group2",
                 "azure.activedirectory.authorization.graph.scopes = Calendars.Read"
             )
             .run(context -> {
@@ -120,12 +96,8 @@ public class AADWebAppConfigurationTest {
 
     @Test
     public void aadAwareClientRepository() {
-        contextRunner
+        PropertiesUtils.getContextRunner()
             .withPropertyValues(
-                "azure.activedirectory.client-id = fake-client-id",
-                "azure.activedirectory.client-secret = fake-client-secret",
-                "azure.activedirectory.tenant-id = fake-tenant-id",
-                "azure.activedirectory.user-group.allowed-groups = group1, group2",
                 "azure.activedirectory.authorization.graph.scopes = Calendars.Read"
             )
             .run(context -> {
@@ -151,12 +123,8 @@ public class AADWebAppConfigurationTest {
 
     @Test
     public void defaultClientWithAuthzScope() {
-        contextRunner
+        PropertiesUtils.getContextRunner()
             .withPropertyValues(
-                "azure.activedirectory.client-id = fake-client-id",
-                "azure.activedirectory.client-secret = fake-client-secret",
-                "azure.activedirectory.tenant-id = fake-tenant-id",
-                "azure.activedirectory.user-group.allowed-groups = group1, group2",
                 "azure.activedirectory.authorization.azure.scopes = Calendars.Read"
             )
             .run(context -> {
@@ -170,12 +138,8 @@ public class AADWebAppConfigurationTest {
 
     @Test
     public void customizeUri() {
-        contextRunner
+        PropertiesUtils.getContextRunner()
             .withPropertyValues(
-                "azure.activedirectory.client-id = fake-client-id",
-                "azure.activedirectory.client-secret = fake-client-secret",
-                "azure.activedirectory.tenant-id = fake-tenant-id",
-                "azure.activedirectory.user-group.allowed-groups = group1, group2",
                 "azure.activedirectory.authorization-server-uri = http://localhost/"
             )
             .run(context -> {
@@ -191,12 +155,8 @@ public class AADWebAppConfigurationTest {
 
     @Test
     public void clientRequiresOnDemandPermissions() {
-        contextRunner
+        PropertiesUtils.getContextRunner()
             .withPropertyValues(
-                "azure.activedirectory.client-id = fake-client-id",
-                "azure.activedirectory.client-secret = fake-client-secret",
-                "azure.activedirectory.tenant-id = fake-tenant-id",
-                "azure.activedirectory.user-group.allowed-groups = group1, group2",
                 "azure.activedirectory.authorization.graph.scopes = Calendars.Read",
                 "azure.activedirectory.authorization.graph.on-demand = true",
                 "azure.activedirectory.authorization.arm.scopes = https://management.core.windows.net/user_impersonation"
