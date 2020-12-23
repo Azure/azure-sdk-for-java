@@ -17,14 +17,18 @@ Follow the guide [here](https://docs.microsoft.com/azure/active-directory/develo
 
 - Set redirect URIs with `http://localhost:8080/login/oauth2/code/azure`.
 - Ensure **Access tokens** and **ID tokens** are selected.
+- To use on-demand authorization of certain resource, you need to add redirect URIs of `http://localhost:8080/login/oauth2/code/{registration-id}`. In this sample, set redirect URIs with `http://localhost:8080/login/oauth2/code/arm`.
 ### Configure necessary API permissions
-The sample retrieves user's group memberships using Microsoft graph API which requires the registered app to have `Directory.AccessAsUser.All` "Access the directory as the signed-in user" under `Delegated Permissions`. You need AAD admin privilege to be able to grant the permission in API ACCESS -> Required permission. You can follow the below steps:	
+The sample retrieves user's group memberships using Microsoft graph API which requires the registered app to have `Directory.AccessAsUser.All` permission under `Delegated Permissions` of `Microsoft Graph`, which can allow an application to access the directory as the signed-in user. Also, to display the function of calling multiple resources, this sample will acquire `ActivityFeed.Read` permission under `Office 365 Management APIs` resource. You need AAD admin privilege to be able to grant the permission in API ACCESS -> Required permission. You can follow the below steps:	
 
 * In the list of pages for the app, select **API permissions**	
-   - Click the **Add a permission** button and then,	
+   - Click the **Add a permission** button	
    - Ensure that the **Microsoft APIs** tab is selected	
    - In the *Commonly used Microsoft APIs* section, click on **Microsoft Graph**	
    - In the **Delegated permissions** section, ensure that the right permissions are checked: **Directory.AccessAsUser.All**	
+   - Select the **Add permissions** button
+   - Under **Office 365 Management APIs** tab
+   - Select **Delegated permissions**, and then click **ActivityFeed.Read**
    - Select the **Add permissions** button
    - Click **Grant Permissions...** and Yes when prompted.
 
@@ -35,17 +39,19 @@ In order to try the authorization action with this sample with minimum effort, [
 
 ## Examples
 
-### Configure application.properties
+### Configure application.yml
 
-```properties
-azure.activedirectory.tenant-id=xxxxxx-your-tenant-id-xxxxxx
-spring.security.oauth2.client.registration.azure.client-id=xxxxxx-your-client-id-xxxxxx
-spring.security.oauth2.client.registration.azure.client-secret=xxxxxx-your-client-secret-xxxxxx
-# It's suggested the logged in user should at least belong to one of the below groups
+```yaml
+azure:
+  activedirectory:
+    client-id: <client-id>
+    client-secret: <client-secret>
+    tenant-id: <tenant-id>
+    user-group:
+      allowed-groups: group1, group2
+# It's suggested the logged in user should at least belong to one of the above groups
 # If not, the logged in user will not be able to access any authorization controller rest APIs
-azure.activedirectory.user-group.allowed-groups=group1, group2
 ```
-
 ### Run with Maven
 ```shell
 cd azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp
@@ -56,15 +62,19 @@ mvn spring-boot:run
 	
 1. Access http://localhost:8080
 2. Login
-3. Access `group1 Message` link, should success
-4. Access `group2 Message` link, should fail with forbidden error message
-
+3. Access `Group1 Message` link: success
+4. Access `Group2 Message` link: fail with forbidden error message
+5. Access `Graph Client` link: access token for `Microsoft Graph` will be acquired, and the content of customized **OAuth2AuthorizedClient** instance for `Microsoft Graph` resource will be displayed.
+6. Access `Office Client` link: access token for `Office 365 Management APIs` will be acquired, the content of customized **OAuth2AuthorizedClient** instance for `Office 365 Management APIs` resource will be displayed.
+7. Access `Arm Client` link: page will be redirected to Consent page for on-demand authorization of `user_impersonation` permission in `Azure Service Management` resource. Clicking on `Consent`, access token for `Azure Service Management` will be acquired, the content of customized **OAuth2AuthorizedClient** instance for `Azure Service Management` resource will be displayed.
 ## Troubleshooting
 
 ### If registered application is multi-tenanted, how to run this sample?
 Set `azure.activedirectory.tenant-id=common` in your application.properties file:
-```properties
-azure.activedirectory.tenant-id=common
+```yaml
+azure:
+  activedirectory:
+    tenant-id: common
 ```
 ---
 ### Meet with `AADSTS240002: Input id_token cannot be used as 'urn:ietf:params:oauth:grant-type:jwt-bearer' grant` error.
