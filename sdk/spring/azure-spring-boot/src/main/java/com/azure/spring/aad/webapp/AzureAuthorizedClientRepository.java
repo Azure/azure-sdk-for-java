@@ -3,6 +3,7 @@
 
 package com.azure.spring.aad.webapp;
 
+import com.azure.spring.aad.AADClientRegistrationRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.OAuth2AuthorizationContext;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
@@ -65,7 +66,7 @@ public class AzureAuthorizedClientRepository implements OAuth2AuthorizedClientRe
             OAuth2AuthorizationContext.Builder contextBuilder =
                 OAuth2AuthorizationContext.withAuthorizedClient(fakeAuthzClient);
             String[] scopes = null;
-            if (!AADWebAppClientRegistrationRepository.AZURE_CLIENT_REGISTRATION_ID.equals(id)) {
+            if (!AADClientRegistrationRepository.isDefaultClient(id)) {
                 scopes = repo.findByRegistrationId(id).getScopes().toArray(new String[0]);
             }
             OAuth2AuthorizationContext context = contextBuilder

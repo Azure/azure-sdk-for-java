@@ -67,4 +67,8 @@ public abstract class AADClientRegistrationRepository implements ClientRegistrat
         return AZURE_CLIENT_REGISTRATION_ID.equals(
             clientRegistration.getClientName());
     }
+
+    public static boolean isDefaultClient(String clientId) {
+        return AZURE_CLIENT_REGISTRATION_ID.equals(clientId);
+    }
 }

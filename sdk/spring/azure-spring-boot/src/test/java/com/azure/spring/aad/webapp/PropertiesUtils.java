@@ -27,7 +27,7 @@ public class PropertiesUtils {
 
 
     @SuppressWarnings("unchecked")
-    public static MultiValueMap<String, String> requestEntityConverter(RequestEntity<?> entity) {
+    public static MultiValueMap<String, String> toMultiValueMap(RequestEntity<?> entity) {
         return (MultiValueMap<String, String>) Optional.ofNullable(entity)
             .map(HttpEntity::getBody)
             .orElse(null);

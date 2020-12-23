@@ -104,7 +104,7 @@ public class AuthzCodeGrantRequestEntityConverterTest {
         AuthzCodeGrantRequestEntityConverter converter =
             new AuthzCodeGrantRequestEntityConverter(clientRepo.getAzureClient());
         RequestEntity<?> entity = converter.convert(request);
-        return PropertiesUtils.requestEntityConverter(entity);
+        return PropertiesUtils.toMultiValueMap(entity);
     }
 
     private OAuth2AuthorizationCodeGrantRequest createCodeGrantRequest(ClientRegistration client) {

@@ -1,3 +1,4 @@
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -14,14 +15,15 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import static com.azure.test.oauth.OAuthUtils.*;
 import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated;
 
-public class OAuthLoginUtils {
+public class SeleniumTestUtils {
 
     static {
         final String directory = "src/test/resources/driver/";
@@ -56,9 +58,9 @@ public class OAuthLoginUtils {
         }
     }
 
-    public static List<String> get(AppRunner app, List<String> endPoints) {
+    public static Map<String, String> get(AppRunner app, List<String> endPoints) {
 
-        List<String> result = new ArrayList<>();
+        Map<String , String> result = new HashMap<>();
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--incognito");
         options.addArguments("--headless");
@@ -77,12 +79,12 @@ public class OAuthLoginUtils {
             Thread.sleep(10000);
             driver.findElement(By.cssSelector("input[type='submit']")).click();
             Thread.sleep(10000);
-            result.add(driver.findElement(By.tagName("body")).getText());
+            result.put(endPoints.get(0) , driver.findElement(By.tagName("body")).getText());
             endPoints.remove(0);
             for(String endPoint : endPoints) {
                 driver.get(app.root() + endPoint);
                 Thread.sleep(1000);
-                result.add(driver.findElement(By.tagName("body")).getText());
+                result.put(endPoint ,driver.findElement(By.tagName("body")).getText());
             }
             return result;
         } catch (InterruptedException e) {
