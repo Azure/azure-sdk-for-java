@@ -8,7 +8,7 @@
 
 package com.microsoft.azure.management.containerservice.v2020_12_01;
 
-import com.microsoft.rest.CloudError;
+import com.microsoft.azure.CloudError;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
