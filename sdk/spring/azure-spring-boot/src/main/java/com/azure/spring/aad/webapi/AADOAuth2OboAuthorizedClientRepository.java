@@ -37,11 +37,11 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
 
     private static final String OBO_AUTHORIZEDCLIENT_PREFIX = "obo_authorizedclient_";
 
-    private final InMemoryClientRegistrationRepository inMemoryClientRegistrationRepository;
+    private final InMemoryClientRegistrationRepository repository;
 
     public AADOAuth2OboAuthorizedClientRepository(
-        InMemoryClientRegistrationRepository inMemoryClientRegistrationRepository) {
-        this.inMemoryClientRegistrationRepository = inMemoryClientRegistrationRepository;
+        InMemoryClientRegistrationRepository repository) {
+        this.repository = repository;
     }
 
     @Override
@@ -61,9 +61,7 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
         try {
             String accessToken = ((AbstractOAuth2TokenAuthenticationToken<?>) authentication).getToken()
                                                                                              .getTokenValue();
-            ClientRegistration clientRegistration =
-                inMemoryClientRegistrationRepository.findByRegistrationId(registrationId);
-
+            ClientRegistration clientRegistration = repository.findByRegistrationId(registrationId);
             if (clientRegistration == null) {
                 LOGGER.warn("Not found the ClientRegistration, registrationId={}", registrationId);
                 return null;
@@ -76,7 +74,6 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
             if (null == clientApplication) {
                 return null;
             }
-
             String oboAccessToken = clientApplication.acquireToken(parameters).get().accessToken();
             JWT parser = JWTParser.parse(oboAccessToken);
             Date iat = (Date) parser.getJWTClaimsSet().getClaim("iat");

@@ -52,8 +52,8 @@ public class AADResourceServerOboConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean
-    public OAuth2AuthorizedClientRepository oAuth2AuthorizedClientRepository(InMemoryClientRegistrationRepository
-                                                                                 repo) {
+    public OAuth2AuthorizedClientRepository oAuth2AuthorizedClientRepository(
+        InMemoryClientRegistrationRepository repo) {
         return new AADOAuth2OboAuthorizedClientRepository(repo);
     }
 
@@ -76,8 +76,8 @@ public class AADResourceServerOboConfiguration {
         result.clientId(properties.getClientId());
         result.clientSecret(properties.getClientSecret());
 
-        AuthorizationServerEndpoints endpoints =
-            new AuthorizationServerEndpoints(properties.getAuthorizationServerUri());
+        AuthorizationServerEndpoints endpoints = new AuthorizationServerEndpoints(
+            properties.getAuthorizationServerUri());
         result.authorizationUri(endpoints.authorizationEndpoint(properties.getTenantId()));
         result.tokenUri(endpoints.tokenEndpoint(properties.getTenantId()));
         result.jwkSetUri(endpoints.jwkSetEndpoint(properties.getTenantId()));

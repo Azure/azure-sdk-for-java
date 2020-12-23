@@ -18,13 +18,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class AADResourceServerOboConfigurationTest {
 
-    private static final String AAD_PROPERTY_PREFIX = "azure.activedirectory.";
-
     private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
         .withPropertyValues(
-            AAD_PROPERTY_PREFIX + "tenant-id=fake-tenant-id",
-            AAD_PROPERTY_PREFIX + "client-id=fake-client-id",
-            AAD_PROPERTY_PREFIX + "client-secret=fake-client-secret");
+            "azure.activedirectory.tenant-id=fake-tenant-id",
+            "azure.activedirectory.client-id=fake-client-id",
+            "azure.activedirectory.client-secret=fake-client-secret");
 
     @Test
     public void testNotExistBearerTokenAuthenticationToken() {
@@ -50,7 +48,8 @@ public class AADResourceServerOboConfigurationTest {
     public void testOnlyGraphClient() {
         this.contextRunner
             .withUserConfiguration(AADResourceServerOboConfiguration.class)
-            .withPropertyValues(AAD_PROPERTY_PREFIX + "authorization.graph.scopes=User.read")
+            .withPropertyValues("azure.activedirectory.authorization.graph.scopes=https://graph.microsoft.com/User"
+                + ".Read")
             .run(context -> {
                 final InMemoryClientRegistrationRepository oboRepo = context.getBean(
                     InMemoryClientRegistrationRepository.class);
@@ -63,7 +62,7 @@ public class AADResourceServerOboConfigurationTest {
                 assertThat(aadOboRepo).isNotNull();
                 assertThat(oboRepo).isExactlyInstanceOf(InMemoryClientRegistrationRepository.class);
                 assertThat(graph).isNotNull();
-                assertThat(graphScopes).hasSize(1);
+                assertThat(graphScopes).containsOnly("https://graph.microsoft.com/User.Read");
             });
     }
 
@@ -71,8 +70,10 @@ public class AADResourceServerOboConfigurationTest {
     public void testExistCustomAndGraphClient() {
         this.contextRunner
             .withUserConfiguration(AADResourceServerOboConfiguration.class)
-            .withPropertyValues(AAD_PROPERTY_PREFIX + "authorization.graph.scopes=User.read")
-            .withPropertyValues(AAD_PROPERTY_PREFIX + "authorization.custom.scopes=User.read")
+            .withPropertyValues("azure.activedirectory.authorization.graph.scopes=https://graph.microsoft.com/User"
+                + ".Read")
+            .withPropertyValues("azure.activedirectory.authorization.custom"
+                + ".scopes=api://52261059-e515-488e-84fd-a09a3f372814/File.Read")
             .run(context -> {
                 final InMemoryClientRegistrationRepository oboRepo = context.getBean(
                     InMemoryClientRegistrationRepository.class);
@@ -88,8 +89,8 @@ public class AADResourceServerOboConfigurationTest {
                 assertThat(oboRepo).isExactlyInstanceOf(InMemoryClientRegistrationRepository.class);
                 assertThat(graph).isNotNull();
                 assertThat(customScopes).isNotNull();
-                assertThat(graphScopes).hasSize(1);
-                assertThat(customScopes).hasSize(1);
+                assertThat(graphScopes).containsOnly("https://graph.microsoft.com/User.Read");
+                assertThat(customScopes).containsOnly("api://52261059-e515-488e-84fd-a09a3f372814/File.Read");
             });
     }
 }

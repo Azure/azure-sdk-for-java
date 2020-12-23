@@ -37,9 +37,9 @@ public class AADJwtBearerTokenAuthenticationConverterTest {
 
     @Test
     public void testCreateUserPrincipal() {
-        AADJwtBearerTokenAuthenticationConverter aadJwtBearerTokenAuthenticationConverter
+        AADJwtBearerTokenAuthenticationConverter converter
             = new AADJwtBearerTokenAuthenticationConverter();
-        AbstractAuthenticationToken authenticationToken = aadJwtBearerTokenAuthenticationConverter.convert(jwt);
+        AbstractAuthenticationToken authenticationToken = converter.convert(jwt);
         assertThat(authenticationToken.getPrincipal()).isExactlyInstanceOf(AADOAuth2AuthenticatedPrincipal.class);
         AADOAuth2AuthenticatedPrincipal principal = (AADOAuth2AuthenticatedPrincipal) authenticationToken
             .getPrincipal();
@@ -50,9 +50,9 @@ public class AADJwtBearerTokenAuthenticationConverterTest {
 
     @Test
     public void testExtractDefaultScopeAuthorities() {
-        AADJwtBearerTokenAuthenticationConverter aadJwtBearerTokenAuthenticationConverter
+        AADJwtBearerTokenAuthenticationConverter converter
             = new AADJwtBearerTokenAuthenticationConverter();
-        AbstractAuthenticationToken authenticationToken = aadJwtBearerTokenAuthenticationConverter.convert(jwt);
+        AbstractAuthenticationToken authenticationToken = converter.convert(jwt);
         assertThat(authenticationToken.getPrincipal()).isExactlyInstanceOf(AADOAuth2AuthenticatedPrincipal.class);
         AADOAuth2AuthenticatedPrincipal principal = (AADOAuth2AuthenticatedPrincipal) authenticationToken
             .getPrincipal();
@@ -63,9 +63,9 @@ public class AADJwtBearerTokenAuthenticationConverterTest {
     @Test
     public void testExtractCustomScopeAuthorities() {
         when(jwt.containsClaim("roles")).thenReturn(true);
-        AADJwtBearerTokenAuthenticationConverter aadJwtBearerTokenAuthenticationConverter
+        AADJwtBearerTokenAuthenticationConverter converter
             = new AADJwtBearerTokenAuthenticationConverter("roles", "ROLE_");
-        AbstractAuthenticationToken authenticationToken = aadJwtBearerTokenAuthenticationConverter.convert(jwt);
+        AbstractAuthenticationToken authenticationToken = converter.convert(jwt);
         assertThat(authenticationToken.getPrincipal()).isExactlyInstanceOf(AADOAuth2AuthenticatedPrincipal.class);
         AADOAuth2AuthenticatedPrincipal principal = (AADOAuth2AuthenticatedPrincipal) authenticationToken
             .getPrincipal();
