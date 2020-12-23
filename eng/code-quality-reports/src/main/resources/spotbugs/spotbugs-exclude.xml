@@ -2254,7 +2254,6 @@
   </Match>
 
   <!-- Exclude NM_CLASS_NOT_EXCEPTION for all resource manager due to it is just naming -->
-
   <Match>
     <Class name="~com\.azure\.resourcemanager(\.[^.]+)*" />
     <Bug pattern="NM_CLASS_NOT_EXCEPTION" />
