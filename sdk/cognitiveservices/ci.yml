@@ -90,4 +90,6 @@ extends:
       - name: azure-cognitiveservices-qnamaker
         groupId: com.microsoft.azure.cognitiveservices
         safeName: azurecognitiveservicesqnamaker
-
+      - name: azure-resourcemanager-cognitiveservices
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagercognitiveservices
