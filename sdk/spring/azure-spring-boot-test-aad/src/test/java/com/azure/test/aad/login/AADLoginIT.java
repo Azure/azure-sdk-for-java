@@ -3,7 +3,7 @@
 
 package com.azure.test.aad.login;
 
-import com.azure.test.oauth.OAuthLoginUtils;
+import com.azure.test.oauth.SeleniumTestUtils;
 import com.azure.test.utils.AppRunner;
 import org.junit.Assert;
 import org.junit.Test;
@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class AADLoginIT {
 
@@ -29,15 +30,15 @@ public class AADLoginIT {
     public void loginTest() {
 
         try (AppRunner app = new AppRunner(DumbApp.class)) {
-            OAuthLoginUtils.addProperty(app);
+            SeleniumTestUtils.addProperty(app);
             List<String> endPoints = new ArrayList<>();
             endPoints.add("api/home");
             endPoints.add("api/group1");
             endPoints.add("api/status403");
-            List<String> result = OAuthLoginUtils.get(app , endPoints);
-            Assert.assertEquals("home", result.get(0));
-            Assert.assertEquals("group1", result.get(1));
-            Assert.assertNotEquals("error", result.get(2));
+            Map<String, String> result = SeleniumTestUtils.get(app , endPoints);
+            Assert.assertEquals("home", result.get("api/home"));
+            Assert.assertEquals("group1", result.get("api/group1"));
+            Assert.assertNotEquals("error", result.get("api/status403"));
         }
 
 
