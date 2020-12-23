@@ -5,7 +5,7 @@ package com.azure.test.aad.filter;
 
 import com.azure.spring.autoconfigure.aad.AADAuthenticationFilter;
 import com.azure.spring.autoconfigure.aad.UserPrincipal;
-import com.azure.test.oauth.AADTestUtils;
+import com.azure.test.aad.AADTestUtils;
 import com.azure.test.utils.AppRunner;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +28,8 @@ import java.util.HashMap;
 import java.util.Optional;
 import java.util.Set;
 
-import static com.azure.test.oauth.AADTestUtils.AAD_SINGLE_TENANT_CLIENT_ID;
-import static com.azure.test.oauth.AADTestUtils.AAD_SINGLE_TENANT_CLIENT_SECRET;
+import static com.azure.test.aad.AADTestUtils.AAD_SINGLE_TENANT_CLIENT_ID;
+import static com.azure.test.aad.AADTestUtils.AAD_SINGLE_TENANT_CLIENT_SECRET;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 

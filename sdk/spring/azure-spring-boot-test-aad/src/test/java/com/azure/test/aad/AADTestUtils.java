@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.test.oauth;
+package com.azure.test.aad;
 
 import com.azure.test.aad.filter.OAuthResponse;
 import org.springframework.http.HttpEntity;
