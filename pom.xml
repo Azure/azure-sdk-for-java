@@ -18,6 +18,7 @@
     <module>sdk/boms</module>
     <module>sdk/cognitiveservices</module>
     <module>sdk/communication</module>
+    <module>sdk/containerservice</module>
     <module>sdk/core</module>
     <module>sdk/cosmos</module>
     <module>sdk/costmanagement</module>
