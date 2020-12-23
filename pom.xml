@@ -32,6 +32,7 @@
     <module>sdk/loganalytics</module>
     <module>sdk/mediaservices</module>
     <module>sdk/metricsadvisor</module>
+    <module>sdk/mixedreality</module>
     <module>sdk/monitor</module>
     <module>sdk/mysql</module>
     <module>sdk/postgresql</module>
