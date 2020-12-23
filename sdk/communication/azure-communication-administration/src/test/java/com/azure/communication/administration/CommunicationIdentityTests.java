@@ -275,16 +275,16 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
 
     private CommunicationIdentityClient setupClientUsingManagedIdentity(HttpClient httpClient, String testName) {
         CommunicationIdentityClientBuilder builder = getCommunicationIdentityClientBuilderUsingManagedIdentity(httpClient);
-        return addLoggingPolicy(builder, "createAsyncIdentityClientUsingManagedIdentity").buildClient();
+        return addLoggingPolicy(builder, testName).buildClient();
     }
 
     private CommunicationIdentityClient setupClientUsingConnectionString(HttpClient httpClient, String testName) {
         CommunicationIdentityClientBuilder builder = getCommunicationIdentityClientUsingConnectionString(httpClient);
-        return addLoggingPolicy(builder, "createAsyncIdentityClientUsingManagedIdentity").buildClient();
+        return addLoggingPolicy(builder, testName).buildClient();
     }
 
     private CommunicationIdentityClient setupClient(HttpClient httpClient, String testName) {
         CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
-        return addLoggingPolicy(builder, "createAsyncIdentityClientUsingManagedIdentity").buildClient();
+        return addLoggingPolicy(builder, testName).buildClient();
     }    
 }

@@ -9,6 +9,7 @@ import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.azure.communication.common.CommunicationLoggerPolicy;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
@@ -98,5 +99,12 @@ public class PhoneNumberIntegrationTestBase extends TestBase {
         }
 
         return content;
+    }
+
+    protected PhoneNumberClientBuilder addLoggingPolicy(PhoneNumberClientBuilder builder, String testName) {
+        if (getTestMode() == TestMode.LIVE) {
+            builder.addPolicy(new CommunicationLoggerPolicy(testName));
+        }
+        return builder;
     }
 }
