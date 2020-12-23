@@ -149,16 +149,6 @@ jobs:
           ${{ insert }}: ${{ parameters.TestStepMavenInputs }}
         env: ${{ parameters.EnvVars }}
 
-      - ${{ parameters.PostRunSteps }}
-
-      - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
-        - template: /eng/common/TestResources/remove-test-resources.yml
-          parameters:
-            ServiceDirectory: '${{ parameters.ServiceDirectory }}'
-            SubscriptionConfiguration: $(SubscriptionConfiguration)
-
-      - template: ../steps/upload-repository-on-failure.yml
-
       - task: Maven@3
         displayName: 'Generate aggregate code coverage report'
         condition: and(eq(variables['OsName'], 'Windows'), eq(variables['JavaTestVersion'], '1.11'), eq('${{ parameters.ServiceDirectory }}', 'communication'))
@@ -173,6 +163,16 @@ jobs:
           # we want to run this when TestFromSource isn't true
           condition: and(succeeded(), ne(variables['TestFromSource'],'true'))
 
+      - ${{ parameters.PostRunSteps }}
+
+      - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
+        - template: /eng/common/TestResources/remove-test-resources.yml
+          parameters:
+            ServiceDirectory: '${{ parameters.ServiceDirectory }}'
+            SubscriptionConfiguration: $(SubscriptionConfiguration)
+
+      - template: ../steps/upload-repository-on-failure.yml
+
       - task: PublishTestResults@2
         condition: always()
         inputs:
@@ -184,7 +184,7 @@ jobs:
       # Azure DevOps only seems to respect the last code coverage result published, so only do this for Windows + Java LTS.
       # Code coverage reporting is setup only for Track 2 modules.
       - task: PublishCodeCoverageResults@1
-        condition: and(eq(variables['OsName'], 'Windows'), eq(variables['JavaTestVersion'], '1.11'))
+        condition: and(eq(variables['OsName'], 'Windows'), eq(variables['JavaTestVersion'], '1.11'), eq('${{ parameters.ServiceDirectory }}', 'communication'))
         inputs:
           codeCoverageTool: JaCoCo
           summaryFileLocation: sdk/${{ parameters.ServiceDirectory }}/target/site/jacoco-aggregate/jacoco.xml
