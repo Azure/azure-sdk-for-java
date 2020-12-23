@@ -39,9 +39,7 @@ import static com.azure.spring.autoconfigure.aad.Constants.BEARER_PREFIX;
  * could be accepted, e.g. access token issued for Microsoft Graph could not be processed by users' application.
  * <p>
  *
- * @deprecated For AADAuthenticationFilter, in normal case, resource-server not support session. So
- * AADAuthenticationFilter will not supported in the future.
- * See the <a href="https://github.com/Azure/azure-sdk-for-java/issues/17860">Alternative method</a>.
+ * @deprecated See the <a href="https://github.com/Azure/azure-sdk-for-java/issues/17860">Alternative method</a>.
  */
 @Deprecated
 public class AADAuthenticationFilter extends OncePerRequestFilter {
