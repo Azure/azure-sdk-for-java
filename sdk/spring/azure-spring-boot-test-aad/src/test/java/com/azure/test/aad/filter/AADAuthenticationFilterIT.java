@@ -4,7 +4,7 @@
 package com.azure.test.aad.filter;
 
 import com.azure.spring.autoconfigure.aad.AADAuthenticationFilter;
-import com.azure.test.oauth.OAuth2TestUtils;
+import com.azure.test.oauth.AADTestUtils;
 import com.azure.test.utils.AppRunner;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -33,10 +33,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
-import static com.azure.test.oauth.OAuth2TestUtils.AAD_MULTI_TENANT_CLIENT_ID;
-import static com.azure.test.oauth.OAuth2TestUtils.AAD_MULTI_TENANT_CLIENT_SECRET;
-import static com.azure.test.oauth.OAuth2TestUtils.AAD_SINGLE_TENANT_CLIENT_ID;
-import static com.azure.test.oauth.OAuth2TestUtils.AAD_SINGLE_TENANT_CLIENT_SECRET;
+import static com.azure.test.oauth.AADTestUtils.AAD_MULTI_TENANT_CLIENT_ID;
+import static com.azure.test.oauth.AADTestUtils.AAD_MULTI_TENANT_CLIENT_SECRET;
+import static com.azure.test.oauth.AADTestUtils.AAD_SINGLE_TENANT_CLIENT_ID;
+import static com.azure.test.oauth.AADTestUtils.AAD_SINGLE_TENANT_CLIENT_SECRET;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.springframework.http.HttpHeaders.COOKIE;
@@ -52,7 +52,7 @@ public class AADAuthenticationFilterIT {
         final String clientId = System.getenv(AAD_SINGLE_TENANT_CLIENT_ID);
         final String clientSecret = System.getenv(AAD_SINGLE_TENANT_CLIENT_SECRET);
 
-        final OAuthResponse authResponse = OAuth2TestUtils.executeOAuth2ROPCFlow(clientId, clientSecret);
+        final OAuthResponse authResponse = AADTestUtils.executeOAuth2ROPCFlow(clientId, clientSecret);
         assertNotNull(authResponse);
 
         testAADAuthenticationFilter(clientId, clientSecret, authResponse.getIdToken());
@@ -63,7 +63,7 @@ public class AADAuthenticationFilterIT {
         final String clientId = System.getenv(AAD_MULTI_TENANT_CLIENT_ID);
         final String clientSecret = System.getenv(AAD_MULTI_TENANT_CLIENT_SECRET);
 
-        final OAuthResponse authResponse = OAuth2TestUtils.executeOAuth2ROPCFlow(clientId, clientSecret);
+        final OAuthResponse authResponse = AADTestUtils.executeOAuth2ROPCFlow(clientId, clientSecret);
         assertNotNull(authResponse);
 
         testAADAuthenticationFilter(clientId, clientSecret, authResponse.getIdToken());

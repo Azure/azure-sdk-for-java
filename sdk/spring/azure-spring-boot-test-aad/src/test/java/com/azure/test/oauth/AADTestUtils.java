@@ -12,7 +12,7 @@ import org.springframework.web.client.RestTemplate;
 
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
 
-public class OAuth2TestUtils {
+public class AADTestUtils {
 
     public static final String AAD_MULTI_TENANT_CLIENT_ID = "AAD_MULTI_TENANT_CLIENT_ID";
     public static final String AAD_MULTI_TENANT_CLIENT_SECRET = "AAD_MULTI_TENANT_CLIENT_SECRET";

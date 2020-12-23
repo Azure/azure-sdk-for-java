@@ -4,7 +4,7 @@
 package com.azure.test.aad.filter;
 
 import com.azure.spring.autoconfigure.aad.AADAppRoleStatelessAuthenticationFilter;
-import com.azure.test.oauth.OAuth2TestUtils;
+import com.azure.test.oauth.AADTestUtils;
 import com.azure.test.utils.AppRunner;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -29,8 +29,8 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
 
-import static com.azure.test.oauth.OAuth2TestUtils.AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE;
-import static com.azure.test.oauth.OAuth2TestUtils.AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE;
+import static com.azure.test.oauth.AADTestUtils.AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE;
+import static com.azure.test.oauth.AADTestUtils.AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -42,7 +42,7 @@ public class AADAppRoleStatelessAuthenticationFilterIT {
     @Test
     public void testAADAppRoleStatelessAuthenticationFilter() {
         final OAuthResponse authResponse =
-            OAuth2TestUtils.executeOAuth2ROPCFlow(System.getenv(AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE),
+            AADTestUtils.executeOAuth2ROPCFlow(System.getenv(AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE),
             System.getenv(AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE));
         assertNotNull(authResponse);
 
