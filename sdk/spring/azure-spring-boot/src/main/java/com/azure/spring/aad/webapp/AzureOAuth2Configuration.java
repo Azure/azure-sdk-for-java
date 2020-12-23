@@ -3,6 +3,7 @@
 
 package com.azure.spring.aad.webapp;
 
+import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,6 +18,7 @@ import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequest
 import org.springframework.security.oauth2.core.http.converter.OAuth2AccessTokenResponseHttpMessageConverter;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
@@ -31,6 +33,8 @@ public abstract class AzureOAuth2Configuration extends WebSecurityConfigurerAdap
     private AADWebAppClientRegistrationRepository repo;
     @Autowired
     private OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService;
+    @Autowired
+    protected AADAuthenticationProperties properties;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -51,9 +55,16 @@ public abstract class AzureOAuth2Configuration extends WebSecurityConfigurerAdap
                 .failureHandler(failureHandler())
                 .and()
             .logout()
-                .logoutSuccessHandler(new OidcClientInitiatedLogoutSuccessHandler(this.repo))
+                .logoutSuccessHandler(oidcLogoutSuccessHandler())
                 .and();
         // @formatter:off
+    }
+
+    protected LogoutSuccessHandler oidcLogoutSuccessHandler() {
+        OidcClientInitiatedLogoutSuccessHandler oidcLogoutSuccessHandler =
+            new OidcClientInitiatedLogoutSuccessHandler(this.repo);
+        oidcLogoutSuccessHandler.setPostLogoutRedirectUri(this.properties.getPostLogoutRedirectUri());
+        return oidcLogoutSuccessHandler;
     }
 
     protected OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient() {
