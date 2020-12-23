@@ -260,13 +260,13 @@ public class PhoneNumberClientIntegrationTest extends PhoneNumberIntegrationTest
     @DisabledIfEnvironmentVariable(
         named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)")
-    public void beginCreateReservationBeginPurchaseReservationBeginReleasePhoneNumberSync(HttpClient httpClient) {
+    public void purchaseReservationBeginReleasePhoneNumberSync(HttpClient httpClient) {
          // Setting up for phone number reservation creation
         PagedIterable<PhonePlanGroup> phonePlanGroupsPagedIterable =
-            this.getClient(httpClient, "purchaseTestSync_listPlanGroups").listPhonePlanGroups(COUNTRY_CODE, LOCALE, true);
+            this.getClient(httpClient, "purchaseReleaseNumberTestsSync_listPlanGroups").listPhonePlanGroups(COUNTRY_CODE, LOCALE, true);
         String phonePlanGroupId = phonePlanGroupsPagedIterable.iterator().next().getPhonePlanGroupId();
         PagedIterable<PhonePlan> phonePlanPagedIterable =
-            this.getClient(httpClient, "purchaseTestSync_listPlans").listPhonePlans(COUNTRY_CODE, phonePlanGroupId, LOCALE);
+            this.getClient(httpClient, "purchaseReleaseNumberTestsSync_listPlans").listPhonePlans(COUNTRY_CODE, phonePlanGroupId, LOCALE);
         
         // Create reservation
         PhoneNumberReservation reservation = beginCreateReservation(httpClient, phonePlanPagedIterable.iterator().next()).getFinalResult();
@@ -285,7 +285,7 @@ public class PhoneNumberClientIntegrationTest extends PhoneNumberIntegrationTest
         assertEquals(ReleaseStatus.COMPLETE, phoneNumberRelease.getStatus());
 
         // Get release by id
-        PhoneNumberRelease getPhoneNumberRelease = this.getClient(httpClient, "purchaseTestSync_getReleaseById").getReleaseById(phoneNumberRelease.getReleaseId());
+        PhoneNumberRelease getPhoneNumberRelease = this.getClient(httpClient, "purchaseReleaseNumberTestsSync_getReleaseById").getReleaseById(phoneNumberRelease.getReleaseId());
         assertNotNull(getPhoneNumberRelease);
 
     }
