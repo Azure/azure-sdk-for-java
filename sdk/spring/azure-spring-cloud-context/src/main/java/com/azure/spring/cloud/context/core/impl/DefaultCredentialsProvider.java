@@ -43,7 +43,7 @@ public class DefaultCredentialsProvider implements CredentialsProvider {
         }
 
         if (azureProperties.isMsiEnabled()) {
-            final String managedIdentityClientId = azureProperties.getManagedIdentity().getClientId();
+            final String managedIdentityClientId = azureProperties.getClientId();
 
             if (managedIdentityClientId != null) {
                 LOGGER.debug("Will use MSI credentials with specified clientId");

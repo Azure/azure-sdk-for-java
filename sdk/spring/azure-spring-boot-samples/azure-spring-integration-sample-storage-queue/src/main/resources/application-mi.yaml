@@ -2,8 +2,7 @@ spring:
   cloud:
     azure:
       msi-enabled: true
-      managed-identity:
-        client-id: [the-id-of-managed-identity]
+      client-id: [the-id-of-managed-identity]
       resource-group: [resource-group]
       subscription-id: [subscription-id]
       storage:

@@ -9,8 +9,7 @@ import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.autoconfigure.telemetry.SubscriptionSupplier;
 import com.azure.spring.cloud.context.core.api.CredentialsProvider;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
-import com.azure.spring.cloud.context.core.impl.DefaultCredentialsProvider;
-import com.azure.spring.identity.SpringEnvironmentTokenBuilder;
+import com.azure.spring.identity.DefaultSpringCredentialBuilder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -61,13 +60,10 @@ public class AzureContextAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public TokenCredential credential(Environment environment, AzureProperties azureProperties) {
-        CredentialsProvider credentialsProvider = new DefaultCredentialsProvider(azureProperties);
-        final TokenCredential credentialFromProperties = credentialsProvider.getCredential();
-
-        return new SpringEnvironmentTokenBuilder().fromEnvironment(environment)
-                                                  .overrideNamedCredential("", credentialFromProperties)
-                                                  .build();
+    public TokenCredential credential(Environment environment) {
+        return new DefaultSpringCredentialBuilder().environment(environment)
+                                                   .alternativePrfix(AzureProperties.PREFIX)
+                                                   .build();
     }
 
     @Bean

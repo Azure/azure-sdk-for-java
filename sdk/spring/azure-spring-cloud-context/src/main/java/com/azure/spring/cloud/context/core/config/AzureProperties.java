@@ -10,6 +10,7 @@ import com.google.common.base.Strings;
 
 import javax.annotation.PostConstruct;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
@@ -18,8 +19,10 @@ import org.springframework.validation.annotation.Validated;
  * Azure related properties.
  */
 @Validated
-@ConfigurationProperties("spring.cloud.azure")
+@ConfigurationProperties(AzureProperties.PREFIX)
 public class AzureProperties implements CredentialSupplier {
+
+    public static final String PREFIX = "spring.cloud.azure";
 
     private String clientId;
 
@@ -36,9 +39,6 @@ public class AzureProperties implements CredentialSupplier {
     private boolean autoCreateResources = false;
 
     private boolean msiEnabled = false;
-
-    @NestedConfigurationProperty
-    private AzureManagedIdentityProperties managedIdentity;
 
     private String subscriptionId;
 
@@ -127,11 +127,4 @@ public class AzureProperties implements CredentialSupplier {
         this.subscriptionId = subscriptionId;
     }
 
-    public AzureManagedIdentityProperties getManagedIdentity() {
-        return managedIdentity;
-    }
-
-    public void setManagedIdentity(AzureManagedIdentityProperties managedIdentity) {
-        this.managedIdentity = managedIdentity;
-    }
 }

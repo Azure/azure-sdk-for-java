@@ -2387,7 +2387,6 @@
       <Or>
           <Class name="com.azure.identity.implementation.IdentityClientTests"/>
           <Class name="com.azure.identity.implementation.SynchronizedAccessorTests"/>
-          <Class name="com.azure.spring.identity.SpringEnvironmentTokenBuilder"/>
       </Or>
       <Or>
           <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/> <!-- false positive -->

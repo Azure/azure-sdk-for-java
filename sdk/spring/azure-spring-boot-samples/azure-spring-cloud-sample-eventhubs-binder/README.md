@@ -117,8 +117,7 @@ Please follow [create managed identity][create-managed-identity] to set up manag
       cloud:
         azure:
           msi-enabled: true
-          managed-identity:
-            client-id: [the-id-of-managed-identity]
+          client-id: [the-id-of-managed-identity]
           resource-group: [resource-group]
           # Fill subscription ID copied from portal
           subscription-id: [subscription-id]
