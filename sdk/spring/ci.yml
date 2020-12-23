@@ -135,6 +135,8 @@ extends:
         groupId: com.azure.spring
         safeName: azurespringcloudeventhubsstreambinder
     AdditionalModules:
+      - name: azure-spring-boot-sample-active-directory-resource-server
+        groupId: com.azure.spring
       - name: azure-spring-boot-sample-active-directory-resource-server-with-filter
         groupId: com.azure.spring
       - name: azure-spring-boot-sample-active-directory-b2c-oidc
