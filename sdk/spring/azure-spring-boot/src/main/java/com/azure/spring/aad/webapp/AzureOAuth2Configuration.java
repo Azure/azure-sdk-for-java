@@ -35,7 +35,10 @@ public abstract class AzureOAuth2Configuration extends WebSecurityConfigurerAdap
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // @formatter:off
-        http.oauth2Login()
+        http.authorizeRequests()
+                .anyRequest().authenticated()
+                .and()
+            .oauth2Login()
                 .authorizationEndpoint()
                     .authorizationRequestResolver(requestResolver())
                     .and()
