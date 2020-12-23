@@ -41,6 +41,7 @@
     <module>sdk/schemaregistry</module>
     <module>sdk/search</module>
     <module>sdk/servicebus</module>
+    <module>sdk/signalr</module>
     <module>sdk/spring</module>
     <module>sdk/sqlvirtualmachine</module>
     <module>sdk/storage</module>
