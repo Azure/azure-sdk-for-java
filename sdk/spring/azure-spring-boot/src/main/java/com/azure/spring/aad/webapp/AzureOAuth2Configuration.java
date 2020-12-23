@@ -5,7 +5,6 @@ package com.azure.spring.aad.webapp;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.FormHttpMessageConverter;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.oauth2.client.endpoint.DefaultAuthorizationCodeTokenResponseClient;
@@ -35,14 +34,26 @@ public abstract class AzureOAuth2Configuration extends WebSecurityConfigurerAdap
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.oauth2Login(Customizer.withDefaults())
-            .logout(logout -> logout.logoutSuccessHandler(new OidcClientInitiatedLogoutSuccessHandler(this.repo)))
+        // @formatter:off
+        http.authorizeRequests()
+                .anyRequest().authenticated()
+                .and()
             .oauth2Login()
-            .tokenEndpoint()
-            .accessTokenResponseClient(accessTokenResponseClient())
-            .and().authorizationEndpoint().authorizationRequestResolver(requestResolver())
-            .and().failureHandler(failureHandler())
-            .and().oauth2Login().userInfoEndpoint().oidcUserService(oidcUserService);
+                .authorizationEndpoint()
+                    .authorizationRequestResolver(requestResolver())
+                    .and()
+                .tokenEndpoint()
+                    .accessTokenResponseClient(accessTokenResponseClient())
+                    .and()
+                .userInfoEndpoint()
+                    .oidcUserService(oidcUserService)
+                    .and()
+                .failureHandler(failureHandler())
+                .and()
+            .logout()
+                .logoutSuccessHandler(new OidcClientInitiatedLogoutSuccessHandler(this.repo))
+                .and();
+        // @formatter:off
     }
 
     protected OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient() {

@@ -22,6 +22,13 @@ public final class ListQueryKeysResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<QueryKeyInner> value;
 
+    /*
+     * Request URL that can be used to query next page of query keys. Returned
+     * when the total number of requested query keys exceed maximum page size.
+     */
+    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
+    private String nextLink;
+
     /**
      * Get the value property: The query keys for the Azure Cognitive Search service.
      *
@@ -29,6 +36,16 @@ public final class ListQueryKeysResult {
      */
     public List<QueryKeyInner> value() {
         return this.value;
+    }
+
+    /**
+     * Get the nextLink property: Request URL that can be used to query next page of query keys. Returned when the total
+     * number of requested query keys exceed maximum page size.
+     *
+     * @return the nextLink value.
+     */
+    public String nextLink() {
+        return this.nextLink;
     }
 
     /**

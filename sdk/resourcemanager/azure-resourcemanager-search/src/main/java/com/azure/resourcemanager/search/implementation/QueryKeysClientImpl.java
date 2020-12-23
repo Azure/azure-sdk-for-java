@@ -80,22 +80,6 @@ public final class QueryKeysClientImpl implements QueryKeysClient {
             Context context);
 
         @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search"
-                + "/searchServices/{searchServiceName}/listQueryKeys")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListQueryKeysResult>> listBySearchServiceGet(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("searchServiceName") String searchServiceName,
-            @HeaderParam("x-ms-client-request-id") UUID clientRequestId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search"
                 + "/searchServices/{searchServiceName}/listQueryKeys")
@@ -127,10 +111,21 @@ public final class QueryKeysClientImpl implements QueryKeysClient {
             @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept,
             Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ListQueryKeysResult>> listBySearchServiceNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("x-ms-client-request-id") UUID clientRequestId,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
-     * Generates a new query key for the specified Search service. You can create up to 50 query keys per service.
+     * Generates a new query key for the specified search service. You can create up to 50 query keys per service.
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
@@ -190,7 +185,7 @@ public final class QueryKeysClientImpl implements QueryKeysClient {
     }
 
     /**
-     * Generates a new query key for the specified Search service. You can create up to 50 query keys per service.
+     * Generates a new query key for the specified search service. You can create up to 50 query keys per service.
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
@@ -248,7 +243,7 @@ public final class QueryKeysClientImpl implements QueryKeysClient {
     }
 
     /**
-     * Generates a new query key for the specified Search service. You can create up to 50 query keys per service.
+     * Generates a new query key for the specified search service. You can create up to 50 query keys per service.
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
@@ -278,7 +273,7 @@ public final class QueryKeysClientImpl implements QueryKeysClient {
     }
 
     /**
-     * Generates a new query key for the specified Search service. You can create up to 50 query keys per service.
+     * Generates a new query key for the specified search service. You can create up to 50 query keys per service.
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
@@ -306,7 +301,7 @@ public final class QueryKeysClientImpl implements QueryKeysClient {
     }
 
     /**
-     * Generates a new query key for the specified Search service. You can create up to 50 query keys per service.
+     * Generates a new query key for the specified search service. You can create up to 50 query keys per service.
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
@@ -326,7 +321,7 @@ public final class QueryKeysClientImpl implements QueryKeysClient {
     }
 
     /**
-     * Generates a new query key for the specified Search service. You can create up to 50 query keys per service.
+     * Generates a new query key for the specified search service. You can create up to 50 query keys per service.
      *
      * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
      *     value from the Azure Resource Manager API or the portal.
@@ -346,223 +341,6 @@ public final class QueryKeysClientImpl implements QueryKeysClient {
     public Response<QueryKeyInner> createWithResponse(
         String resourceGroupName, String searchServiceName, String name, UUID clientRequestId, Context context) {
         return createWithResponseAsync(resourceGroupName, searchServiceName, name, clientRequestId, context).block();
-    }
-
-    /**
-     * Returns the list of query API keys for the given Azure Cognitive Search service.
-     *
-     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
-     * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing the query API keys for a given Azure Cognitive Search service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<QueryKeyInner>> listBySearchServiceGetSinglePageAsync(
-        String resourceGroupName, String searchServiceName, UUID clientRequestId) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (searchServiceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter searchServiceName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listBySearchServiceGet(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            searchServiceName,
-                            clientRequestId,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<QueryKeyInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Returns the list of query API keys for the given Azure Cognitive Search service.
-     *
-     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
-     * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing the query API keys for a given Azure Cognitive Search service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<QueryKeyInner>> listBySearchServiceGetSinglePageAsync(
-        String resourceGroupName, String searchServiceName, UUID clientRequestId, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (searchServiceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter searchServiceName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listBySearchServiceGet(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                searchServiceName,
-                clientRequestId,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
-    }
-
-    /**
-     * Returns the list of query API keys for the given Azure Cognitive Search service.
-     *
-     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
-     * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing the query API keys for a given Azure Cognitive Search service.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<QueryKeyInner> listBySearchServiceGetAsync(
-        String resourceGroupName, String searchServiceName, UUID clientRequestId) {
-        return new PagedFlux<>(
-            () -> listBySearchServiceGetSinglePageAsync(resourceGroupName, searchServiceName, clientRequestId));
-    }
-
-    /**
-     * Returns the list of query API keys for the given Azure Cognitive Search service.
-     *
-     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing the query API keys for a given Azure Cognitive Search service.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<QueryKeyInner> listBySearchServiceGetAsync(String resourceGroupName, String searchServiceName) {
-        final UUID clientRequestId = null;
-        return new PagedFlux<>(
-            () -> listBySearchServiceGetSinglePageAsync(resourceGroupName, searchServiceName, clientRequestId));
-    }
-
-    /**
-     * Returns the list of query API keys for the given Azure Cognitive Search service.
-     *
-     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
-     * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing the query API keys for a given Azure Cognitive Search service.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<QueryKeyInner> listBySearchServiceGetAsync(
-        String resourceGroupName, String searchServiceName, UUID clientRequestId, Context context) {
-        return new PagedFlux<>(
-            () ->
-                listBySearchServiceGetSinglePageAsync(resourceGroupName, searchServiceName, clientRequestId, context));
-    }
-
-    /**
-     * Returns the list of query API keys for the given Azure Cognitive Search service.
-     *
-     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing the query API keys for a given Azure Cognitive Search service.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<QueryKeyInner> listBySearchServiceGet(String resourceGroupName, String searchServiceName) {
-        final UUID clientRequestId = null;
-        return new PagedIterable<>(listBySearchServiceGetAsync(resourceGroupName, searchServiceName, clientRequestId));
-    }
-
-    /**
-     * Returns the list of query API keys for the given Azure Cognitive Search service.
-     *
-     * @param resourceGroupName The name of the resource group within the current subscription. You can obtain this
-     *     value from the Azure Resource Manager API or the portal.
-     * @param searchServiceName The name of the Azure Cognitive Search service associated with the specified resource
-     *     group.
-     * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
-     *     included in response information as a way to track the request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing the query API keys for a given Azure Cognitive Search service.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<QueryKeyInner> listBySearchServiceGet(
-        String resourceGroupName, String searchServiceName, UUID clientRequestId, Context context) {
-        return new PagedIterable<>(
-            listBySearchServiceGetAsync(resourceGroupName, searchServiceName, clientRequestId, context));
     }
 
     /**
@@ -619,7 +397,12 @@ public final class QueryKeysClientImpl implements QueryKeysClient {
             .<PagedResponse<QueryKeyInner>>map(
                 res ->
                     new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
@@ -676,7 +459,12 @@ public final class QueryKeysClientImpl implements QueryKeysClient {
             .map(
                 res ->
                     new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 
     /**
@@ -697,7 +485,8 @@ public final class QueryKeysClientImpl implements QueryKeysClient {
     public PagedFlux<QueryKeyInner> listBySearchServiceAsync(
         String resourceGroupName, String searchServiceName, UUID clientRequestId) {
         return new PagedFlux<>(
-            () -> listBySearchServiceSinglePageAsync(resourceGroupName, searchServiceName, clientRequestId));
+            () -> listBySearchServiceSinglePageAsync(resourceGroupName, searchServiceName, clientRequestId),
+            nextLink -> listBySearchServiceNextSinglePageAsync(nextLink, clientRequestId));
     }
 
     /**
@@ -716,7 +505,8 @@ public final class QueryKeysClientImpl implements QueryKeysClient {
     public PagedFlux<QueryKeyInner> listBySearchServiceAsync(String resourceGroupName, String searchServiceName) {
         final UUID clientRequestId = null;
         return new PagedFlux<>(
-            () -> listBySearchServiceSinglePageAsync(resourceGroupName, searchServiceName, clientRequestId));
+            () -> listBySearchServiceSinglePageAsync(resourceGroupName, searchServiceName, clientRequestId),
+            nextLink -> listBySearchServiceNextSinglePageAsync(nextLink, clientRequestId));
     }
 
     /**
@@ -738,7 +528,8 @@ public final class QueryKeysClientImpl implements QueryKeysClient {
     private PagedFlux<QueryKeyInner> listBySearchServiceAsync(
         String resourceGroupName, String searchServiceName, UUID clientRequestId, Context context) {
         return new PagedFlux<>(
-            () -> listBySearchServiceSinglePageAsync(resourceGroupName, searchServiceName, clientRequestId, context));
+            () -> listBySearchServiceSinglePageAsync(resourceGroupName, searchServiceName, clientRequestId, context),
+            nextLink -> listBySearchServiceNextSinglePageAsync(nextLink, clientRequestId, context));
     }
 
     /**
@@ -983,5 +774,85 @@ public final class QueryKeysClientImpl implements QueryKeysClient {
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String searchServiceName, String key, UUID clientRequestId, Context context) {
         return deleteWithResponseAsync(resourceGroupName, searchServiceName, key, clientRequestId, context).block();
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
+     *     included in response information as a way to track the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing the query API keys for a given Azure Cognitive Search service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<QueryKeyInner>> listBySearchServiceNextSinglePageAsync(
+        String nextLink, UUID clientRequestId) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listBySearchServiceNext(nextLink, this.client.getEndpoint(), clientRequestId, accept, context))
+            .<PagedResponse<QueryKeyInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param clientRequestId A client-generated GUID value that identifies this request. If specified, this will be
+     *     included in response information as a way to track the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response containing the query API keys for a given Azure Cognitive Search service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<QueryKeyInner>> listBySearchServiceNextSinglePageAsync(
+        String nextLink, UUID clientRequestId, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listBySearchServiceNext(nextLink, this.client.getEndpoint(), clientRequestId, accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 }
