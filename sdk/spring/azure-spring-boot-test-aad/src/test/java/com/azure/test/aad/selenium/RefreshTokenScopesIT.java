@@ -1,10 +1,8 @@
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.test.aad.converter;
+package com.azure.test.aad.selenium;
 
-import com.azure.test.oauth.SeleniumTestUtils;
 import com.azure.test.utils.AppRunner;
 import org.junit.Assert;
 import org.junit.Test;
@@ -16,7 +14,11 @@ import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 public class RefreshTokenScopesIT {
 
@@ -24,7 +26,8 @@ public class RefreshTokenScopesIT {
     public void testRefreshTokenConverter() {
         try (AppRunner app = new AppRunner(DumbApp.class)) {
             SeleniumTestUtils.addProperty(app);
-            app.property("azure.activedirectory.authorization.office.scopes", "https://manage.office.com/ActivityFeed.Read");
+            app.property("azure.activedirectory.authorization.office.scopes",
+                "https://manage.office.com/ActivityFeed.Read");
             app.property("azure.activedirectory.authorization.graph.scopes", "https://graph.microsoft.com/User.Read");
             List<String> endPoints = new ArrayList<>();
             endPoints.add("api/office");
@@ -55,27 +58,27 @@ public class RefreshTokenScopesIT {
         public Set<String> office(
             @RegisteredOAuth2AuthorizedClient("office") OAuth2AuthorizedClient authorizedClient) {
             return Optional.of(authorizedClient)
-                .map(OAuth2AuthorizedClient::getAccessToken)
-                .map(OAuth2AccessToken::getScopes)
-                .orElse(null);
+                           .map(OAuth2AuthorizedClient::getAccessToken)
+                           .map(OAuth2AccessToken::getScopes)
+                           .orElse(null);
         }
 
         @GetMapping(value = "api/azure")
         public Set<String> azure(
             @RegisteredOAuth2AuthorizedClient("azure") OAuth2AuthorizedClient authorizedClient) {
             return Optional.of(authorizedClient)
-                .map(OAuth2AuthorizedClient::getAccessToken)
-                .map(OAuth2AccessToken::getScopes)
-                .orElse(null);
+                           .map(OAuth2AuthorizedClient::getAccessToken)
+                           .map(OAuth2AccessToken::getScopes)
+                           .orElse(null);
         }
 
         @GetMapping(value = "api/graph")
         public Set<String> graph(
             @RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient authorizedClient) {
             return Optional.of(authorizedClient)
-                .map(OAuth2AuthorizedClient::getAccessToken)
-                .map(OAuth2AccessToken::getScopes)
-                .orElse(null);
+                           .map(OAuth2AuthorizedClient::getAccessToken)
+                           .map(OAuth2AccessToken::getScopes)
+                           .orElse(null);
         }
 
         @GetMapping(value = "api/arm")

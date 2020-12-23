@@ -3,6 +3,7 @@
 
 package com.azure.test.oauth;
 
+import com.azure.test.aad.filter.OAuthResponse;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.util.LinkedMultiValueMap;
@@ -11,7 +12,7 @@ import org.springframework.web.client.RestTemplate;
 
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
 
-public class OAuthUtils {
+public class OAuth2TestUtils {
 
     public static final String AAD_MULTI_TENANT_CLIENT_ID = "AAD_MULTI_TENANT_CLIENT_ID";
     public static final String AAD_MULTI_TENANT_CLIENT_SECRET = "AAD_MULTI_TENANT_CLIENT_SECRET";
