@@ -33,6 +33,12 @@ public class Components1Q1Og48SchemasManagedclusterAllof1 {
     private String provisioningState;
 
     /*
+     * Represents the Power State of the cluster
+     */
+    @JsonProperty(value = "properties.powerState", access = JsonProperty.Access.WRITE_ONLY)
+    private PowerState powerState;
+
+    /*
      * The max number of agent pools for the managed cluster.
      */
     @JsonProperty(value = "properties.maxAgentPools", access = JsonProperty.Access.WRITE_ONLY)
@@ -94,6 +100,12 @@ public class Components1Q1Og48SchemasManagedclusterAllof1 {
     private Map<String, ManagedClusterAddonProfile> addonProfiles;
 
     /*
+     * Profile of managed cluster pod identity.
+     */
+    @JsonProperty(value = "properties.podIdentityProfile")
+    private ManagedClusterPodIdentityProfile podIdentityProfile;
+
+    /*
      * Name of the resource group containing agent pool nodes.
      */
     @JsonProperty(value = "properties.nodeResourceGroup")
@@ -124,6 +136,12 @@ public class Components1Q1Og48SchemasManagedclusterAllof1 {
      */
     @JsonProperty(value = "properties.aadProfile")
     private ManagedClusterAadProfile aadProfile;
+
+    /*
+     * Profile of auto upgrade configuration.
+     */
+    @JsonProperty(value = "properties.autoUpgradeProfile")
+    private ManagedClusterAutoUpgradeProfile autoUpgradeProfile;
 
     /*
      * Parameters to be applied to the cluster-autoscaler when enabled
@@ -178,6 +196,15 @@ public class Components1Q1Og48SchemasManagedclusterAllof1 {
      */
     public String provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the powerState property: Represents the Power State of the cluster.
+     *
+     * @return the powerState value.
+     */
+    public PowerState powerState() {
+        return this.powerState;
     }
 
     /**
@@ -354,6 +381,27 @@ public class Components1Q1Og48SchemasManagedclusterAllof1 {
     }
 
     /**
+     * Get the podIdentityProfile property: Profile of managed cluster pod identity.
+     *
+     * @return the podIdentityProfile value.
+     */
+    public ManagedClusterPodIdentityProfile podIdentityProfile() {
+        return this.podIdentityProfile;
+    }
+
+    /**
+     * Set the podIdentityProfile property: Profile of managed cluster pod identity.
+     *
+     * @param podIdentityProfile the podIdentityProfile value to set.
+     * @return the Components1Q1Og48SchemasManagedclusterAllof1 object itself.
+     */
+    public Components1Q1Og48SchemasManagedclusterAllof1 withPodIdentityProfile(
+        ManagedClusterPodIdentityProfile podIdentityProfile) {
+        this.podIdentityProfile = podIdentityProfile;
+        return this;
+    }
+
+    /**
      * Get the nodeResourceGroup property: Name of the resource group containing agent pool nodes.
      *
      * @return the nodeResourceGroup value.
@@ -457,6 +505,27 @@ public class Components1Q1Og48SchemasManagedclusterAllof1 {
     }
 
     /**
+     * Get the autoUpgradeProfile property: Profile of auto upgrade configuration.
+     *
+     * @return the autoUpgradeProfile value.
+     */
+    public ManagedClusterAutoUpgradeProfile autoUpgradeProfile() {
+        return this.autoUpgradeProfile;
+    }
+
+    /**
+     * Set the autoUpgradeProfile property: Profile of auto upgrade configuration.
+     *
+     * @param autoUpgradeProfile the autoUpgradeProfile value to set.
+     * @return the Components1Q1Og48SchemasManagedclusterAllof1 object itself.
+     */
+    public Components1Q1Og48SchemasManagedclusterAllof1 withAutoUpgradeProfile(
+        ManagedClusterAutoUpgradeProfile autoUpgradeProfile) {
+        this.autoUpgradeProfile = autoUpgradeProfile;
+        return this;
+    }
+
+    /**
      * Get the autoScalerProfile property: Parameters to be applied to the cluster-autoscaler when enabled.
      *
      * @return the autoScalerProfile value.
@@ -550,6 +619,9 @@ public class Components1Q1Og48SchemasManagedclusterAllof1 {
         if (identity() != null) {
             identity().validate();
         }
+        if (powerState() != null) {
+            powerState().validate();
+        }
         if (agentPoolProfiles() != null) {
             agentPoolProfiles().forEach(e -> e.validate());
         }
@@ -572,11 +644,17 @@ public class Components1Q1Og48SchemasManagedclusterAllof1 {
                         }
                     });
         }
+        if (podIdentityProfile() != null) {
+            podIdentityProfile().validate();
+        }
         if (networkProfile() != null) {
             networkProfile().validate();
         }
         if (aadProfile() != null) {
             aadProfile().validate();
+        }
+        if (autoUpgradeProfile() != null) {
+            autoUpgradeProfile().validate();
         }
         if (autoScalerProfile() != null) {
             autoScalerProfile().validate();
