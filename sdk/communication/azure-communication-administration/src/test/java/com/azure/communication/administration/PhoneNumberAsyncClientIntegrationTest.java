@@ -93,9 +93,9 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void listPhonePlans(HttpClient httpClient) {
         StepVerifier.create(
-            this.getClient(httpClient, "listPhonePlans_ListPlanGroups").listPhonePlanGroups(COUNTRY_CODE, LOCALE, true).next()
+            this.getClient(httpClient, "listPhonePlans_listPlanGroups").listPhonePlanGroups(COUNTRY_CODE, LOCALE, true).next()
                 .flatMap((PhonePlanGroup phonePlanGroup) -> {
-                    return this.getClient(httpClient, "listPhonePlans_ListPlans").listPhonePlans(COUNTRY_CODE, phonePlanGroup.getPhonePlanGroupId(), LOCALE).next();
+                    return this.getClient(httpClient, "listPhonePlans_listPlans").listPhonePlans(COUNTRY_CODE, phonePlanGroup.getPhonePlanGroupId(), LOCALE).next();
                 }))
             .assertNext((PhonePlan phonePlan) -> {
                 assertNotNull(phonePlan.getPhonePlanId());
@@ -143,9 +143,9 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getPhonePlanLocationOptions(HttpClient httpClient) {
         StepVerifier.create(
-            this.getClient(httpClient, "getPhonePlanLocationOptions_ListPlanGroups").listPhonePlanGroups(COUNTRY_CODE, LOCALE, true).next()
+            this.getClient(httpClient, "getPhonePlanLocationOptions_listPlanGroups").listPhonePlanGroups(COUNTRY_CODE, LOCALE, true).next()
                 .flatMap((PhonePlanGroup phonePlanGroup) -> {
-                    return this.getClient(httpClient, "getPhonePlanLocationOptions_ListPlans").listPhonePlans(COUNTRY_CODE, phonePlanGroup.getPhonePlanGroupId(), LOCALE).next()
+                    return this.getClient(httpClient, "getPhonePlanLocationOptions_listPlans").listPhonePlans(COUNTRY_CODE, phonePlanGroup.getPhonePlanGroupId(), LOCALE).next()
                     .flatMap((PhonePlan phonePlan) -> {
                         return this.getClient(httpClient, "getPhonePlanLocationOptions").getPhonePlanLocationOptions(COUNTRY_CODE, phonePlanGroup.getPhonePlanGroupId(), phonePlan.getPhonePlanId(), LOCALE);
                     });
@@ -171,9 +171,9 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
         locationOptions.add(query);
 
         StepVerifier.create(
-            this.getClient(httpClient, "getAllAreaCodes_ListPlanGroups").listPhonePlanGroups(COUNTRY_CODE, LOCALE, true).next()
+            this.getClient(httpClient, "getAllAreaCodes_listPlanGroups").listPhonePlanGroups(COUNTRY_CODE, LOCALE, true).next()
                 .flatMap(phonePlanGroups -> {
-                    return this.getClient(httpClient, "getAllAreaCodes_ListPlans").listPhonePlans(COUNTRY_CODE, phonePlanGroups.getPhonePlanGroupId(), LOCALE).next()
+                    return this.getClient(httpClient, "getAllAreaCodes_listPlans").listPhonePlans(COUNTRY_CODE, phonePlanGroups.getPhonePlanGroupId(), LOCALE).next()
                     .flatMap(phonePlans -> {
                         return this.getClient(httpClient, "getAllAreaCodes").getAllAreaCodes(LocationType.SELECTION.toString(), COUNTRY_CODE, phonePlans.getPhonePlanId(), locationOptions);
                     });
@@ -219,9 +219,9 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
     public void beginCreateReservationGetReservationByIdCancelReservation(HttpClient httpClient) {
         StepVerifier.create(
             // Setting up for phone number reservation creation
-            this.getClient(httpClient, "reservationTests_ListPlanGroups").listPhonePlanGroups(COUNTRY_CODE, LOCALE, true).next()
+            this.getClient(httpClient, "reservationTests_listPlanGroups").listPhonePlanGroups(COUNTRY_CODE, LOCALE, true).next()
                 .flatMap((PhonePlanGroup phonePlanGroup) -> {
-                    return this.getClient(httpClient, "reservationTests_ListPlans").listPhonePlans(COUNTRY_CODE, phonePlanGroup.getPhonePlanGroupId(), LOCALE).next()
+                    return this.getClient(httpClient, "reservationTests_listPlans").listPhonePlans(COUNTRY_CODE, phonePlanGroup.getPhonePlanGroupId(), LOCALE).next()
                     .flatMap((PhonePlan phonePlan) -> {
                         // Create Reservation
                         return beginCreateReservation(httpClient, phonePlan).last()
@@ -229,11 +229,11 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
                             assertEquals(createdRes.getValue().getPhoneNumbers().size(), 1);
                             assertNotNull(createdRes.getValue().getReservationId());
                             // Get Reservation by id
-                            return this.getClient(httpClient, "reservationTests_GetReservationById").getReservationById(createdRes.getValue().getReservationId()).
+                            return this.getClient(httpClient, "reservationTests_getReservationById").getReservationById(createdRes.getValue().getReservationId()).
                             flatMap(reservation -> {
                                 assertEquals(createdRes.getValue().getReservationId(), reservation.getReservationId());
                                 // Cancel Reservation
-                                return this.getClient(httpClient, "reservationTests_CancelReservation").cancelReservation(reservation.getReservationId());
+                                return this.getClient(httpClient, "reservationTests_cancelReservation").cancelReservation(reservation.getReservationId());
                             });
                         });
                     });
@@ -246,9 +246,9 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
     public void beginCreateReservationGetReservationByIdCancelReservationWithResponse(HttpClient httpClient) {
         StepVerifier.create(
             // Setting up for phone number reservation creation
-            this.getClient(httpClient, "reservationResponseTests_ListPlanGroups").listPhonePlanGroups(COUNTRY_CODE, LOCALE, true).next()
+            this.getClient(httpClient, "reservationResponseTests_listPlanGroups").listPhonePlanGroups(COUNTRY_CODE, LOCALE, true).next()
                 .flatMap((PhonePlanGroup phonePlanGroup) -> {
-                    return this.getClient(httpClient, "reservationResponseTests_ListPlans").listPhonePlans(COUNTRY_CODE, phonePlanGroup.getPhonePlanGroupId(), LOCALE).next()
+                    return this.getClient(httpClient, "reservationResponseTests_listPlans").listPhonePlans(COUNTRY_CODE, phonePlanGroup.getPhonePlanGroupId(), LOCALE).next()
                     .flatMap((PhonePlan phonePlan) -> {
                         // Create Reservation
                         return beginCreateReservation(httpClient, phonePlan).last()
@@ -256,12 +256,12 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
                             assertEquals(createdRes.getValue().getPhoneNumbers().size(), 1);
                             assertNotNull(createdRes.getValue().getReservationId());
                             // Get Reservation by id with response
-                            return this.getClient(httpClient, "reservationResponseTests_GetResponseById").getReservationByIdWithResponse(createdRes.getValue().getReservationId())
+                            return this.getClient(httpClient, "reservationResponseTests_getResponseById").getReservationByIdWithResponse(createdRes.getValue().getReservationId())
                             .flatMap((Response<PhoneNumberReservation> reservationResponse) -> {
                                 assertEquals(200, reservationResponse.getStatusCode());
                                 assertEquals(createdRes.getValue().getReservationId(), reservationResponse.getValue().getReservationId());
                                 // Cancel Reservation with response
-                                return this.getClient(httpClient, "reservationResponseTests_CancelReservation").cancelReservationWithResponse(reservationResponse.getValue().getReservationId());
+                                return this.getClient(httpClient, "reservationResponseTests_cancelReservation").cancelReservationWithResponse(reservationResponse.getValue().getReservationId());
                             });
                         });
                     });
