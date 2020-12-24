@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob
 
+import com.azure.core.util.Context
 import com.azure.storage.blob.implementation.util.BlobSasImplUtil
 import com.azure.storage.blob.models.UserDelegationKey
 import com.azure.storage.blob.sas.BlobContainerSasPermission
@@ -195,21 +196,21 @@ class BlobServiceSasModelsTest extends Specification {
         def implUtil = new BlobSasImplUtil(v, "containerName", "blobName", null, null)
 
         when:
-        implUtil.generateSas(null)
+        implUtil.generateSas(null, Context.NONE)
 
         then:
         def ex = thrown(NullPointerException)
         ex.getMessage().contains("storageSharedKeyCredential")
 
         when:
-        implUtil.generateUserDelegationSas(null, "accountName")
+        implUtil.generateUserDelegationSas(null, "accountName", Context.NONE)
 
         then:
         ex = thrown(NullPointerException)
         ex.getMessage().contains("delegationKey")
 
         when:
-        implUtil.generateUserDelegationSas(new UserDelegationKey(), null)
+        implUtil.generateUserDelegationSas(new UserDelegationKey(), null, Context.NONE)
 
         then:
         ex = thrown(NullPointerException)

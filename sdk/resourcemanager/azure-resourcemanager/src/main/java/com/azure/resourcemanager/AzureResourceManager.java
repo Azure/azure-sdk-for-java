@@ -95,6 +95,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils
 import com.azure.resourcemanager.resources.models.Deployments;
 import com.azure.resourcemanager.resources.models.Features;
 import com.azure.resourcemanager.resources.models.GenericResources;
+import com.azure.resourcemanager.resources.models.ManagementLocks;
 import com.azure.resourcemanager.resources.models.PolicyAssignments;
 import com.azure.resourcemanager.resources.models.PolicyDefinitions;
 import com.azure.resourcemanager.resources.models.Providers;
@@ -102,6 +103,8 @@ import com.azure.resourcemanager.resources.models.ResourceGroups;
 import com.azure.resourcemanager.resources.models.Subscription;
 import com.azure.resourcemanager.resources.models.Subscriptions;
 import com.azure.resourcemanager.resources.models.Tenants;
+import com.azure.resourcemanager.search.SearchServiceManager;
+import com.azure.resourcemanager.search.models.SearchServices;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
 import com.azure.resourcemanager.servicebus.models.ServiceBusNamespaces;
 import com.azure.resourcemanager.sql.SqlServerManager;
@@ -136,7 +139,7 @@ public final class AzureResourceManager {
     private final ContainerInstanceManager containerInstanceManager;
     private final ContainerRegistryManager containerRegistryManager;
     private final ContainerServiceManager containerServiceManager;
-    //    private final SearchServiceManager searchServiceManager;
+    private final SearchServiceManager searchServiceManager;
     private final CosmosManager cosmosManager;
     //    private final AuthorizationManager authorizationManager;
     private final MsiManager msiManager;
@@ -382,10 +385,8 @@ public final class AzureResourceManager {
             .authenticate(null, profile);
         this.cosmosManager = withHttpPipeline(httpPipeline, CosmosManager.configure())
             .authenticate(null, profile);
-        //        this.searchServiceManager = SearchServiceManager
-        //        .authenticate(restClient, subscriptionId, internalContext);
-        //        this.authorizationManager = AuthorizationManager
-        //        .authenticate(restClient, subscriptionId, internalContext);
+        this.searchServiceManager = withHttpPipeline(httpPipeline, SearchServiceManager.configure())
+            .authenticate(null, profile);
         this.msiManager = withHttpPipeline(httpPipeline, MsiManager.configure())
             .authenticate(null, profile);
         this.monitorManager = withHttpPipeline(httpPipeline, MonitorManager.configure())
@@ -446,13 +447,6 @@ public final class AzureResourceManager {
         return resourceManager.genericResources();
     }
 
-    //    /**
-    //     * @return entry point to managing management locks
-    //     */
-    //    public ManagementLocks managementLocks() {
-    //        return this.authorizationManager.managementLocks();
-    //    }
-
     /** @return entry point to managing features */
     public Features features() {
         return resourceManager.features();
@@ -471,6 +465,11 @@ public final class AzureResourceManager {
     /** @return entry point to managing policy assignments. */
     public PolicyAssignments policyAssignments() {
         return resourceManager.policyAssignments();
+    }
+
+    /** @return entry point to managing locks. */
+    public ManagementLocks managementLocks() {
+        return resourceManager.managementLocks();
     }
 
     /** @return entry point to managing storage accounts */
@@ -733,13 +732,12 @@ public final class AzureResourceManager {
         return cosmosManager.databaseAccounts();
     }
 
-    //    /**
-    //     * @return entry point to managing Search services.
-    //     */
-    //    @Beta(SinceVersion.V1_2_0)
-    //    public SearchServices searchServices() {
-    //        return searchServiceManager.searchServices();
-    //    }
+    /**
+     * @return entry point to managing Search services.
+     */
+    public SearchServices searchServices() {
+        return searchServiceManager.searchServices();
+    }
 
     /** @return entry point to managing Managed Service Identity (MSI) identities. */
     public Identities identities() {

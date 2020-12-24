@@ -2102,10 +2102,10 @@ class BlockBlobAPITest extends APISpec {
         e.getErrorCode() == errorCode
 
         where:
-        requestConditions | errorCode
-        new BlobRequestConditions().setIfMatch("dummy") | BlobErrorCode.SOURCE_CONDITION_NOT_MET
+        requestConditions                                                                    | errorCode
+        new BlobRequestConditions().setIfMatch("dummy")                                      | BlobErrorCode.SOURCE_CONDITION_NOT_MET
         new BlobRequestConditions().setIfModifiedSince(OffsetDateTime.now().plusSeconds(10)) | BlobErrorCode.CANNOT_VERIFY_COPY_SOURCE
-        new BlobRequestConditions().setIfUnmodifiedSince(OffsetDateTime.now().minusDays(1)) | BlobErrorCode.CANNOT_VERIFY_COPY_SOURCE
+        new BlobRequestConditions().setIfUnmodifiedSince(OffsetDateTime.now().minusDays(1))  | BlobErrorCode.CANNOT_VERIFY_COPY_SOURCE
     }
 
     @Unroll
@@ -2116,7 +2116,9 @@ class BlockBlobAPITest extends APISpec {
         def sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
             new BlobContainerSasPermission().setReadPermission(true)))
         blockBlobClient.upload(new ByteArrayInputStream(), 0, true)
-        createLeaseClient(blobClient).acquireLease(60)
+        if (requestConditions.getLeaseId() != null) {
+            createLeaseClient(blobClient).acquireLease(60)
+        }
 
         when:
         def options = new BlobUploadFromUrlOptions(sourceBlob.getBlobUrl() + "?" + sas).setDestinationRequestConditions(requestConditions)
@@ -2127,11 +2129,11 @@ class BlockBlobAPITest extends APISpec {
         e.getErrorCode() == errorCode
 
         where:
-        requestConditions | errorCode
-        new BlobRequestConditions().setIfMatch("dummy") | BlobErrorCode.TARGET_CONDITION_NOT_MET
-        new BlobRequestConditions().setIfNoneMatch("*") | BlobErrorCode.BLOB_ALREADY_EXISTS
-        new BlobRequestConditions().setIfModifiedSince(OffsetDateTime.now().plusSeconds(10)) | BlobErrorCode.CONDITION_NOT_MET
-        new BlobRequestConditions().setIfUnmodifiedSince(OffsetDateTime.now().minusDays(1)) | BlobErrorCode.CONDITION_NOT_MET
-        new BlobRequestConditions().setLeaseId("9260fd2d-34c1-42b5-9217-8fb7c6484bfb")| BlobErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION
+        requestConditions                                                                    | errorCode
+        new BlobRequestConditions().setIfMatch("dummy")                                      | BlobErrorCode.TARGET_CONDITION_NOT_MET
+        new BlobRequestConditions().setIfNoneMatch("*")                                      | BlobErrorCode.BLOB_ALREADY_EXISTS
+        new BlobRequestConditions().setIfModifiedSince(OffsetDateTime.now().plusDays(10))    | BlobErrorCode.CONDITION_NOT_MET
+        new BlobRequestConditions().setIfUnmodifiedSince(OffsetDateTime.now().minusDays(1))  | BlobErrorCode.CONDITION_NOT_MET
+        new BlobRequestConditions().setLeaseId("9260fd2d-34c1-42b5-9217-8fb7c6484bfb")       | BlobErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION
     }
 }

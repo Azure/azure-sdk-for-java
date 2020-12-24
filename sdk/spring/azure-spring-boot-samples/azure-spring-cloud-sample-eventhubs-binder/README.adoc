@@ -1,4 +1,4 @@
-:instruction: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/CONTRIBUTING.md#building-from-source
+:ready-to-run-checklist: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
 
 = Spring Cloud Azure Stream Binder for Event Hub Code Sample shared library for Java
 
@@ -13,6 +13,9 @@ You can check the usage and bill at https://azure.microsoft.com/en-us/account/[t
 
 We have several ways to config the Spring Cloud Stream Binder for Azure Event Hub.
 You can choose anyone of them.
+
+=== Environment checklist
+We need to ensure that this {ready-to-run-checklist}[environment checklist] is completed before the run.
 
 === Method 1: Connection string based usage
 
@@ -196,11 +199,8 @@ See https://docs.microsoft.com/azure/role-based-access-control/role-assignments-
 === Redeploy Application
 If you update the `spring.cloud.azure.managed-identity.client-id` property after deploying the app, or update the role assignment for services, then redeploy the app again.
 
-
 === How to run
-First, we need to ensure that this {instruction}[instruction] is completed before run.
-
-1. Run the `mvn clean spring-boot:run` in the root of the code sample to get the app running.
+1. Run the `mvn spring-boot:run` in the root of the code sample to get the app running.
 
 2. Send a POST request
 +

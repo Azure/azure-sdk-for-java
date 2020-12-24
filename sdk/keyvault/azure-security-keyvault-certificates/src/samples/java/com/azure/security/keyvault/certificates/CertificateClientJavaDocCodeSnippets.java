@@ -28,6 +28,7 @@ import com.azure.security.keyvault.certificates.models.CertificateProperties;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -577,16 +578,16 @@ public final class CertificateClientJavaDocCodeSnippets {
     public void contactsOperationsCodeSnippets() {
         CertificateClient certificateClient = getCertificateClient();
         // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.setContacts#contacts
-        CertificateContact contactToAdd = new CertificateContact().setName("user").setEmail("useremail@exmaple.com");
-        for (CertificateContact contact : certificateClient.setContacts(Arrays.asList(contactToAdd))) {
+        CertificateContact contactToAdd = new CertificateContact().setName("user").setEmail("useremail@example.com");
+        for (CertificateContact contact : certificateClient.setContacts(Collections.singletonList(contactToAdd))) {
             System.out.printf("Added contact with name %s and email %s to key vault", contact.getName(),
                 contact.getEmail());
         }
         // END: com.azure.security.keyvault.certificates.CertificateClient.setContacts#contacts
 
         // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.setContacts#contacts-context
-        CertificateContact sampleContact = new CertificateContact().setName("user").setEmail("useremail@exmaple.com");
-        for (CertificateContact contact : certificateClient.setContacts(Arrays.asList(sampleContact),
+        CertificateContact sampleContact = new CertificateContact().setName("user").setEmail("useremail@example.com");
+        for (CertificateContact contact : certificateClient.setContacts(Collections.singletonList(sampleContact),
             new Context(key1, value1))) {
             System.out.printf("Added contact with name %s and email %s to key vault", contact.getName(),
                 contact.getEmail());

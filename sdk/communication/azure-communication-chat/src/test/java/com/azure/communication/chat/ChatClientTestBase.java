@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import com.azure.communication.administration.CommunicationIdentityClientBuilder;
 import com.azure.communication.chat.models.ErrorException;
 import com.azure.communication.chat.models.*;
-import com.azure.communication.common.CommunicationUserCredential;
+import com.azure.communication.common.CommunicationTokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestBase;
@@ -48,10 +48,10 @@ public class ChatClientTestBase extends TestBase {
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (interceptorManager.isPlaybackMode()) {
-            builder.credential(new CommunicationUserCredential(generateRawToken()));
+            builder.credential(new CommunicationTokenCredential(generateRawToken()));
             return builder;
         } else {
-            builder.credential(new CommunicationUserCredential(token));
+            builder.credential(new CommunicationTokenCredential(token));
         }
 
         if (getTestMode() == TestMode.RECORD) {
