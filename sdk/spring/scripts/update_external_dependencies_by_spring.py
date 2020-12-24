@@ -17,11 +17,13 @@ from log import log, Log
 from pom import Pom
 
 EXTERNAL_DEPENDENCIES_FILE = 'eng/versioning/external_dependencies.txt'
-ROOT_POM = [
+ROOT_POMS = [
     'org.springframework.boot:spring-boot-dependencies;2.3.5.RELEASE',
     'org.springframework.cloud:spring-cloud-dependencies;Hoxton.SR8'
 ]
-
+SKIP_IDS = [
+    'org.eclipse.jgit:org.eclipse.jgit'  # Refs: https://github.com/Azure/azure-sdk-for-java/pull/13956/files#r468368271
+    ]
 MAVEN_NAME_SPACE = {'maven': 'http://maven.apache.org/POM/4.0.0'}
 
 
@@ -30,7 +32,7 @@ def main():
     change_to_root_dir()
     log.debug('Current working directory = {}.'.format(os.getcwd()))
     dependency_dict = {}
-    for root_pom in ROOT_POM:
+    for root_pom in ROOT_POMS:
         update_dependency_dict(dependency_dict, root_pom)
     output_version_dict_to_file(dependency_dict)
     update_version_for_external_dependencies(dependency_dict)
@@ -57,8 +59,8 @@ def update_dependency_dict(dependency_dict, root_pom_id):
     )
     q = queue.Queue()
     q.put(root_pom)
-    visited_poms_string = set()
-    visited_poms_string.add(root_pom_id)
+    visited_poms_strings = set()
+    visited_poms_strings.add(root_pom_id)
     pom_count = 1
     log.info('Added root pom.depth = {}, url = {}.'.format(root_pom.depth, root_pom.to_url()))
     while not q.empty():
@@ -106,13 +108,13 @@ def update_dependency_dict(dependency_dict, root_pom_id):
             if artifact_type is not None and artifact_type.text.strip() == 'pom':
                 new_pom = Pom(group_id, artifact_id, version, pom.depth + 1)
                 new_pom_string = '{}:{};{}'.format(group_id, artifact_id, version)
-                if new_pom_string not in visited_poms_string:
+                if new_pom_string not in visited_poms_strings:
                     q.put(new_pom)
-                    visited_poms_string.add(new_pom_string)
+                    visited_poms_strings.add(new_pom_string)
                     pom_count = pom_count + 1
                     log.debug('Added new pom. depth = {}, url = {}.'.format(new_pom.depth, new_pom.to_url()))
                 else:
-                    log.warn('Pom exist in visited_pom. depth = {}, url = {}.'.format(new_pom.depth, new_pom.to_url()))
+                    log.warn('Pom exist in visited_pom_strings. depth = {}, url = {}.'.format(new_pom.depth, new_pom.to_url()))
     log.info('Root pom summary. pom_count = {}, root_pom_url = {}'.format(pom_count, root_pom.to_url()))
     return dependency_dict
 
@@ -166,7 +168,7 @@ def update_version_for_external_dependencies(dependency_dict):
                 key_value = line.split(';', 1)
                 key = key_value[0]
                 value = key_value[1]
-                if key in dependency_dict:
+                if key not in SKIP_IDS and key in dependency_dict:
                     value_in_dict = dependency_dict[key]
                     if version_bigger_than(value, value_in_dict):
                         log.warn('Version update skipped. key = {}, value = {}, new_value = {}'.format(key, value, value_in_dict))
