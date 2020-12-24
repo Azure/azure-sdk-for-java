@@ -21,6 +21,7 @@
     <module>sdk/core</module>
     <module>sdk/cosmos</module>
     <module>sdk/costmanagement</module>
+    <module>sdk/devops</module>
     <module>sdk/digitaltwins</module>
     <module>sdk/eventgrid</module>
     <module>sdk/eventhubs</module>
