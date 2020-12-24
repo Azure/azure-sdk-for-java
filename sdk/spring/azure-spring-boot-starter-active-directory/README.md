@@ -109,6 +109,7 @@ azure:
     client-secret: xxxxxx-your-client-secret-xxxxxx
     user-group:
       allowed-groups: group1, group2
+    post-logout-redirect-uri: default:baseUrl # optional
 ```
 
 #### If you want to create your own configuration class:
