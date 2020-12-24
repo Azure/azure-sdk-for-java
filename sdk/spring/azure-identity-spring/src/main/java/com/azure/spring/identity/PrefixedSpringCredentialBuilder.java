@@ -6,7 +6,7 @@ import com.azure.core.credential.TokenCredential;
 import org.springframework.util.StringUtils;
 
 /**
- *
+ * Spring token credential built from the prefixed properties.
  */
 public class PrefixedSpringCredentialBuilder extends SpringCredentialBuilderBase<PrefixedSpringCredentialBuilder> {
 
@@ -17,6 +17,12 @@ public class PrefixedSpringCredentialBuilder extends SpringCredentialBuilderBase
         return this;
     }
 
+    /**
+     * Build a Spring token credential with a specific prefix.
+     *
+     * @return the token credential populated from the prefixed properties.
+     * @throws IllegalArgumentException if no environment or prefix is set.
+     */
     public TokenCredential build() {
         if (environment == null) {
             throw new IllegalArgumentException("To build a spring credential the environment must be set.");

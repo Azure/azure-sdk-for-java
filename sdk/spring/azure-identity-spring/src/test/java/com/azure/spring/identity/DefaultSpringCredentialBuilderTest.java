@@ -39,7 +39,7 @@ public class DefaultSpringCredentialBuilderTest extends SpringCredentialTestBase
     public void testWithAlternative() {
         final DefaultSpringCredentialBuilderExt builder = new DefaultSpringCredentialBuilderExt();
         final TokenCredential tokenCredential = builder.environment(buildEnvironment(new Properties()))
-                                                       .alternativePrfix("abc.")
+                                                       .alternativePrefix("abc.")
                                                        .build();
 
         assertTrue(tokenCredential instanceof ChainedTokenCredential);
@@ -51,7 +51,7 @@ public class DefaultSpringCredentialBuilderTest extends SpringCredentialTestBase
     public void testPrefixWithNoPeriod() {
         final DefaultSpringCredentialBuilderExt builder = new DefaultSpringCredentialBuilderExt();
         final TokenCredential tokenCredential = builder.environment(buildEnvironment(new Properties()))
-                                                       .alternativePrfix("abc")
+                                                       .alternativePrefix("abc")
                                                        .build();
 
         assertEquals("abc.", builder.prefixes.get(0));

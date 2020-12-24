@@ -39,7 +39,7 @@ public abstract class SpringCredentialBuilderBase<T extends SpringCredentialBuil
                 .build();
         }
 
-        String certPath = getPropertyValue(prefix,"client-certificate-path");
+        String certPath = getPropertyValue(prefix, "client-certificate-path");
 
         if (tenantId != null && clientId != null && certPath != null) {
             return new ClientCertificateCredentialBuilder()

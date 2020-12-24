@@ -9,7 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * The default implementation of Spring token credential. It will populate credentials from the default
+ * property prefix <i><b>azure.credential</b></i> and an alternative prefix if specified, for example
+ * <i><b>spring.cloud.azure</b></i>.
  */
 public class DefaultSpringCredentialBuilder extends SpringCredentialBuilderBase<DefaultSpringCredentialBuilder> {
 
@@ -20,7 +22,7 @@ public class DefaultSpringCredentialBuilder extends SpringCredentialBuilderBase<
 
     private String alternativePrefix;
 
-    public DefaultSpringCredentialBuilder alternativePrfix(String alternative) {
+    public DefaultSpringCredentialBuilder alternativePrefix(String alternative) {
         if (alternative != null) {
             this.alternativePrefix = alternative + (alternative.endsWith(".") ? "" : ".");
         }
@@ -28,9 +30,19 @@ public class DefaultSpringCredentialBuilder extends SpringCredentialBuilderBase<
         return this;
     }
 
+    /**
+     * Build a default Spring token credential, which will be a chained credential.
+     * If an alternative prefix is specified in the builder, the chain of credential
+     * will have two credentials, one with the specified prefix and the other with the
+     * default spring credential prefix. Otherwise, the chain will consist the credential
+     * with the default prefix.
+     *
+     * @return the default Spring token credential.
+     * @throws IllegalArgumentException if no environment is set.
+     */
     public TokenCredential build() {
         if (environment == null) {
-            throw new IllegalArgumentException("To build a spring credential the environment must be set");
+            throw new IllegalArgumentException("To build a spring credential the environment must be set.");
         }
 
         List<TokenCredential> tokenCredentials = new ArrayList<>();

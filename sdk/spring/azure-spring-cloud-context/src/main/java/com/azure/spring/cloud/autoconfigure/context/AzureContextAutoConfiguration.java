@@ -62,7 +62,7 @@ public class AzureContextAutoConfiguration {
     @ConditionalOnMissingBean
     public TokenCredential credential(Environment environment) {
         return new DefaultSpringCredentialBuilder().environment(environment)
-                                                   .alternativePrfix(AzureProperties.PREFIX)
+                                                   .alternativePrefix(AzureProperties.PREFIX)
                                                    .build();
     }
 
