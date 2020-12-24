@@ -10,8 +10,10 @@ import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.GalleryIdentifier;
 import com.azure.resourcemanager.compute.models.GalleryPropertiesProvisioningState;
+import com.azure.resourcemanager.compute.models.SharingProfile;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** Specifies information about the Shared Image Gallery that you want to create or update. */
 @JsonFlatten
@@ -37,6 +39,12 @@ public class GalleryInner extends Resource {
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private GalleryPropertiesProvisioningState provisioningState;
+
+    /*
+     * Profile for gallery sharing to subscription or tenant
+     */
+    @JsonProperty(value = "properties.sharingProfile")
+    private SharingProfile sharingProfile;
 
     /**
      * Get the description property: The description of this Shared Image Gallery resource. This property is updatable.
@@ -88,6 +96,40 @@ public class GalleryInner extends Resource {
     }
 
     /**
+     * Get the sharingProfile property: Profile for gallery sharing to subscription or tenant.
+     *
+     * @return the sharingProfile value.
+     */
+    public SharingProfile sharingProfile() {
+        return this.sharingProfile;
+    }
+
+    /**
+     * Set the sharingProfile property: Profile for gallery sharing to subscription or tenant.
+     *
+     * @param sharingProfile the sharingProfile value to set.
+     * @return the GalleryInner object itself.
+     */
+    public GalleryInner withSharingProfile(SharingProfile sharingProfile) {
+        this.sharingProfile = sharingProfile;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GalleryInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GalleryInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -95,6 +137,9 @@ public class GalleryInner extends Resource {
     public void validate() {
         if (identifier() != null) {
             identifier().validate();
+        }
+        if (sharingProfile() != null) {
+            sharingProfile().validate();
         }
     }
 }

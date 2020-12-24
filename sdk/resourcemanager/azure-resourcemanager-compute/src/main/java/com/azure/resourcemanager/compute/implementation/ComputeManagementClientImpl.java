@@ -14,6 +14,7 @@ import com.azure.resourcemanager.compute.fluent.ComputeManagementClient;
 import com.azure.resourcemanager.compute.fluent.ContainerServicesClient;
 import com.azure.resourcemanager.compute.fluent.DedicatedHostGroupsClient;
 import com.azure.resourcemanager.compute.fluent.DedicatedHostsClient;
+import com.azure.resourcemanager.compute.fluent.DiskAccessesClient;
 import com.azure.resourcemanager.compute.fluent.DiskEncryptionSetsClient;
 import com.azure.resourcemanager.compute.fluent.DisksClient;
 import com.azure.resourcemanager.compute.fluent.GalleriesClient;
@@ -21,11 +22,15 @@ import com.azure.resourcemanager.compute.fluent.GalleryApplicationVersionsClient
 import com.azure.resourcemanager.compute.fluent.GalleryApplicationsClient;
 import com.azure.resourcemanager.compute.fluent.GalleryImageVersionsClient;
 import com.azure.resourcemanager.compute.fluent.GalleryImagesClient;
+import com.azure.resourcemanager.compute.fluent.GallerySharingProfilesClient;
 import com.azure.resourcemanager.compute.fluent.ImagesClient;
 import com.azure.resourcemanager.compute.fluent.LogAnalyticsClient;
 import com.azure.resourcemanager.compute.fluent.OperationsClient;
 import com.azure.resourcemanager.compute.fluent.ProximityPlacementGroupsClient;
 import com.azure.resourcemanager.compute.fluent.ResourceSkusClient;
+import com.azure.resourcemanager.compute.fluent.SharedGalleriesClient;
+import com.azure.resourcemanager.compute.fluent.SharedGalleryImageVersionsClient;
+import com.azure.resourcemanager.compute.fluent.SharedGalleryImagesClient;
 import com.azure.resourcemanager.compute.fluent.SnapshotsClient;
 import com.azure.resourcemanager.compute.fluent.SshPublicKeysClient;
 import com.azure.resourcemanager.compute.fluent.UsagesClient;
@@ -36,6 +41,7 @@ import com.azure.resourcemanager.compute.fluent.VirtualMachineRunCommandsClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetExtensionsClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetRollingUpgradesClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetVMExtensionsClient;
+import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetVMRunCommandsClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetVMsClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetsClient;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineSizesClient;
@@ -352,6 +358,18 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
         return this.virtualMachineRunCommands;
     }
 
+    /** The VirtualMachineScaleSetVMRunCommandsClient object to access its operations. */
+    private final VirtualMachineScaleSetVMRunCommandsClient virtualMachineScaleSetVMRunCommands;
+
+    /**
+     * Gets the VirtualMachineScaleSetVMRunCommandsClient object to access its operations.
+     *
+     * @return the VirtualMachineScaleSetVMRunCommandsClient object.
+     */
+    public VirtualMachineScaleSetVMRunCommandsClient getVirtualMachineScaleSetVMRunCommands() {
+        return this.virtualMachineScaleSetVMRunCommands;
+    }
+
     /** The ResourceSkusClient object to access its operations. */
     private final ResourceSkusClient resourceSkus;
 
@@ -398,6 +416,18 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
      */
     public DiskEncryptionSetsClient getDiskEncryptionSets() {
         return this.diskEncryptionSets;
+    }
+
+    /** The DiskAccessesClient object to access its operations. */
+    private final DiskAccessesClient diskAccesses;
+
+    /**
+     * Gets the DiskAccessesClient object to access its operations.
+     *
+     * @return the DiskAccessesClient object.
+     */
+    public DiskAccessesClient getDiskAccesses() {
+        return this.diskAccesses;
     }
 
     /** The GalleriesClient object to access its operations. */
@@ -460,6 +490,54 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
         return this.galleryApplicationVersions;
     }
 
+    /** The GallerySharingProfilesClient object to access its operations. */
+    private final GallerySharingProfilesClient gallerySharingProfiles;
+
+    /**
+     * Gets the GallerySharingProfilesClient object to access its operations.
+     *
+     * @return the GallerySharingProfilesClient object.
+     */
+    public GallerySharingProfilesClient getGallerySharingProfiles() {
+        return this.gallerySharingProfiles;
+    }
+
+    /** The SharedGalleriesClient object to access its operations. */
+    private final SharedGalleriesClient sharedGalleries;
+
+    /**
+     * Gets the SharedGalleriesClient object to access its operations.
+     *
+     * @return the SharedGalleriesClient object.
+     */
+    public SharedGalleriesClient getSharedGalleries() {
+        return this.sharedGalleries;
+    }
+
+    /** The SharedGalleryImagesClient object to access its operations. */
+    private final SharedGalleryImagesClient sharedGalleryImages;
+
+    /**
+     * Gets the SharedGalleryImagesClient object to access its operations.
+     *
+     * @return the SharedGalleryImagesClient object.
+     */
+    public SharedGalleryImagesClient getSharedGalleryImages() {
+        return this.sharedGalleryImages;
+    }
+
+    /** The SharedGalleryImageVersionsClient object to access its operations. */
+    private final SharedGalleryImageVersionsClient sharedGalleryImageVersions;
+
+    /**
+     * Gets the SharedGalleryImageVersionsClient object to access its operations.
+     *
+     * @return the SharedGalleryImageVersionsClient object.
+     */
+    public SharedGalleryImageVersionsClient getSharedGalleryImageVersions() {
+        return this.sharedGalleryImageVersions;
+    }
+
     /** The ContainerServicesClient object to access its operations. */
     private final ContainerServicesClient containerServices;
 
@@ -516,15 +594,21 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
         this.virtualMachineScaleSetVMs = new VirtualMachineScaleSetVMsClientImpl(this);
         this.logAnalytics = new LogAnalyticsClientImpl(this);
         this.virtualMachineRunCommands = new VirtualMachineRunCommandsClientImpl(this);
+        this.virtualMachineScaleSetVMRunCommands = new VirtualMachineScaleSetVMRunCommandsClientImpl(this);
         this.resourceSkus = new ResourceSkusClientImpl(this);
         this.disks = new DisksClientImpl(this);
         this.snapshots = new SnapshotsClientImpl(this);
         this.diskEncryptionSets = new DiskEncryptionSetsClientImpl(this);
+        this.diskAccesses = new DiskAccessesClientImpl(this);
         this.galleries = new GalleriesClientImpl(this);
         this.galleryImages = new GalleryImagesClientImpl(this);
         this.galleryImageVersions = new GalleryImageVersionsClientImpl(this);
         this.galleryApplications = new GalleryApplicationsClientImpl(this);
         this.galleryApplicationVersions = new GalleryApplicationVersionsClientImpl(this);
+        this.gallerySharingProfiles = new GallerySharingProfilesClientImpl(this);
+        this.sharedGalleries = new SharedGalleriesClientImpl(this);
+        this.sharedGalleryImages = new SharedGalleryImagesClientImpl(this);
+        this.sharedGalleryImageVersions = new SharedGalleryImageVersionsClientImpl(this);
         this.containerServices = new ContainerServicesClientImpl(this);
     }
 }

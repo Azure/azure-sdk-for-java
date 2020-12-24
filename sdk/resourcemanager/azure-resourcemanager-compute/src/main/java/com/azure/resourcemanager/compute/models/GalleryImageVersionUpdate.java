@@ -9,8 +9,9 @@ import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
-/** Specifies information about the gallery Image Version that you want to update. */
+/** Specifies information about the gallery image version that you want to update. */
 @JsonFlatten
 @Fluent
 public class GalleryImageVersionUpdate extends UpdateResourceDefinition {
@@ -35,7 +36,7 @@ public class GalleryImageVersionUpdate extends UpdateResourceDefinition {
     private GalleryImageVersionStorageProfile storageProfile;
 
     /*
-     * This is the replication status of the gallery Image Version.
+     * This is the replication status of the gallery image version.
      */
     @JsonProperty(value = "properties.replicationStatus", access = JsonProperty.Access.WRITE_ONLY)
     private ReplicationStatus replicationStatus;
@@ -90,12 +91,19 @@ public class GalleryImageVersionUpdate extends UpdateResourceDefinition {
     }
 
     /**
-     * Get the replicationStatus property: This is the replication status of the gallery Image Version.
+     * Get the replicationStatus property: This is the replication status of the gallery image version.
      *
      * @return the replicationStatus value.
      */
     public ReplicationStatus replicationStatus() {
         return this.replicationStatus;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GalleryImageVersionUpdate withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
     }
 
     /**

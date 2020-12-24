@@ -8,8 +8,10 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
+import java.util.List;
 
-/** The publishing profile of a gallery Image Version. */
+/** The publishing profile of a gallery image version. */
 @Fluent
 public final class GalleryApplicationVersionPublishingProfile extends GalleryArtifactPublishingProfileBase {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryApplicationVersionPublishingProfile.class);
@@ -21,11 +23,10 @@ public final class GalleryApplicationVersionPublishingProfile extends GalleryArt
     private UserArtifactSource source;
 
     /*
-     * Optional. May be used to help process this file. The type of file
-     * contained in the source, e.g. zip, json, etc.
+     * The manageActions property.
      */
-    @JsonProperty(value = "contentType")
-    private String contentType;
+    @JsonProperty(value = "manageActions")
+    private UserArtifactManage manageActions;
 
     /*
      * Optional. Whether or not this application reports health.
@@ -54,24 +55,22 @@ public final class GalleryApplicationVersionPublishingProfile extends GalleryArt
     }
 
     /**
-     * Get the contentType property: Optional. May be used to help process this file. The type of file contained in the
-     * source, e.g. zip, json, etc.
+     * Get the manageActions property: The manageActions property.
      *
-     * @return the contentType value.
+     * @return the manageActions value.
      */
-    public String contentType() {
-        return this.contentType;
+    public UserArtifactManage manageActions() {
+        return this.manageActions;
     }
 
     /**
-     * Set the contentType property: Optional. May be used to help process this file. The type of file contained in the
-     * source, e.g. zip, json, etc.
+     * Set the manageActions property: The manageActions property.
      *
-     * @param contentType the contentType value to set.
+     * @param manageActions the manageActions value to set.
      * @return the GalleryApplicationVersionPublishingProfile object itself.
      */
-    public GalleryApplicationVersionPublishingProfile withContentType(String contentType) {
-        this.contentType = contentType;
+    public GalleryApplicationVersionPublishingProfile withManageActions(UserArtifactManage manageActions) {
+        this.manageActions = manageActions;
         return this;
     }
 
@@ -95,6 +94,41 @@ public final class GalleryApplicationVersionPublishingProfile extends GalleryArt
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public GalleryApplicationVersionPublishingProfile withTargetRegions(List<TargetRegion> targetRegions) {
+        super.withTargetRegions(targetRegions);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GalleryApplicationVersionPublishingProfile withReplicaCount(Integer replicaCount) {
+        super.withReplicaCount(replicaCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GalleryApplicationVersionPublishingProfile withExcludeFromLatest(Boolean excludeFromLatest) {
+        super.withExcludeFromLatest(excludeFromLatest);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GalleryApplicationVersionPublishingProfile withEndOfLifeDate(OffsetDateTime endOfLifeDate) {
+        super.withEndOfLifeDate(endOfLifeDate);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GalleryApplicationVersionPublishingProfile withStorageAccountType(StorageAccountType storageAccountType) {
+        super.withStorageAccountType(storageAccountType);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
@@ -110,6 +144,9 @@ public final class GalleryApplicationVersionPublishingProfile extends GalleryArt
                         "Missing required property source in model GalleryApplicationVersionPublishingProfile"));
         } else {
             source().validate();
+        }
+        if (manageActions() != null) {
+            manageActions().validate();
         }
     }
 }

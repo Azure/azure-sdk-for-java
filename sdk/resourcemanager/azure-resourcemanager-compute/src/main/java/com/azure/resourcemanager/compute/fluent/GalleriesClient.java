@@ -15,6 +15,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.fluent.models.GalleryInner;
 import com.azure.resourcemanager.compute.models.GalleryUpdate;
+import com.azure.resourcemanager.compute.models.SelectPermissions;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
@@ -252,13 +253,29 @@ public interface GalleriesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery.
+     * @param select The select expression to apply on the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the Shared Image Gallery that you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<GalleryInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String galleryName);
+    Mono<Response<GalleryInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName, String galleryName, SelectPermissions select);
+
+    /**
+     * Retrieves information about a Shared Image Gallery.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param galleryName The name of the Shared Image Gallery.
+     * @param select The select expression to apply on the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the Shared Image Gallery that you want to create or update.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<GalleryInner> getByResourceGroupAsync(String resourceGroupName, String galleryName, SelectPermissions select);
 
     /**
      * Retrieves information about a Shared Image Gallery.
@@ -291,6 +308,7 @@ public interface GalleriesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery.
+     * @param select The select expression to apply on the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -299,7 +317,7 @@ public interface GalleriesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<GalleryInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String galleryName, Context context);
+        String resourceGroupName, String galleryName, SelectPermissions select, Context context);
 
     /**
      * Delete a Shared Image Gallery.

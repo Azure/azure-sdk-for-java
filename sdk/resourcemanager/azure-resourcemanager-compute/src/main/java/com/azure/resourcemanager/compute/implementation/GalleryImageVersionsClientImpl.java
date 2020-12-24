@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -70,7 +71,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
     private interface GalleryImageVersionsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"
                 + "/{galleryName}/images/{galleryImageName}/versions/{galleryImageVersionName}")
@@ -85,9 +86,10 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
             @PathParam("galleryImageVersionName") String galleryImageVersionName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") GalleryImageVersionInner galleryImageVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"
                 + "/{galleryName}/images/{galleryImageName}/versions/{galleryImageVersionName}")
@@ -102,9 +104,10 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
             @PathParam("galleryImageVersionName") String galleryImageVersionName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") GalleryImageVersionUpdate galleryImageVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"
                 + "/{galleryName}/images/{galleryImageName}/versions/{galleryImageVersionName}")
@@ -119,9 +122,10 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
             @PathParam("galleryImageVersionName") String galleryImageVersionName,
             @QueryParam("$expand") ReplicationStatusTypes expand,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"
                 + "/{galleryName}/images/{galleryImageName}/versions/{galleryImageVersionName}")
@@ -135,9 +139,10 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
             @PathParam("galleryImageName") String galleryImageName,
             @PathParam("galleryImageVersionName") String galleryImageVersionName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"
                 + "/{galleryName}/images/{galleryImageName}/versions")
@@ -150,31 +155,35 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
             @PathParam("galleryName") String galleryName,
             @PathParam("galleryImageName") String galleryImageName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<GalleryImageVersionList>> listByGalleryImageNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
-     * Create or update a gallery Image Version.
+     * Create or update a gallery image version.
      *
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery in which the Image Definition resides.
-     * @param galleryImageName The name of the gallery Image Definition in which the Image Version is to be created.
-     * @param galleryImageVersionName The name of the gallery Image Version to be created. Needs to follow semantic
+     * @param galleryImageName The name of the gallery image definition in which the Image Version is to be created.
+     * @param galleryImageVersionName The name of the gallery image version to be created. Needs to follow semantic
      *     version name pattern: The allowed characters are digit and period. Digits must be within the range of a
      *     32-bit integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
-     * @param galleryImageVersion Specifies information about the gallery Image Version that you want to create or
+     * @param galleryImageVersion Specifies information about the gallery image version that you want to create or
      *     update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Image Version that you want to create or update.
+     * @return specifies information about the gallery image version that you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -217,7 +226,8 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
         } else {
             galleryImageVersion.validate();
         }
-        final String apiVersion = "2019-12-01";
+        final String apiVersion = "2020-09-30";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -231,26 +241,27 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
                             galleryImageVersionName,
                             apiVersion,
                             galleryImageVersion,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
-     * Create or update a gallery Image Version.
+     * Create or update a gallery image version.
      *
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery in which the Image Definition resides.
-     * @param galleryImageName The name of the gallery Image Definition in which the Image Version is to be created.
-     * @param galleryImageVersionName The name of the gallery Image Version to be created. Needs to follow semantic
+     * @param galleryImageName The name of the gallery image definition in which the Image Version is to be created.
+     * @param galleryImageVersionName The name of the gallery image version to be created. Needs to follow semantic
      *     version name pattern: The allowed characters are digit and period. Digits must be within the range of a
      *     32-bit integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
-     * @param galleryImageVersion Specifies information about the gallery Image Version that you want to create or
+     * @param galleryImageVersion Specifies information about the gallery image version that you want to create or
      *     update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Image Version that you want to create or update.
+     * @return specifies information about the gallery image version that you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -294,7 +305,8 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
         } else {
             galleryImageVersion.validate();
         }
-        final String apiVersion = "2019-12-01";
+        final String apiVersion = "2020-09-30";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -306,24 +318,25 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
                 galleryImageVersionName,
                 apiVersion,
                 galleryImageVersion,
+                accept,
                 context);
     }
 
     /**
-     * Create or update a gallery Image Version.
+     * Create or update a gallery image version.
      *
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery in which the Image Definition resides.
-     * @param galleryImageName The name of the gallery Image Definition in which the Image Version is to be created.
-     * @param galleryImageVersionName The name of the gallery Image Version to be created. Needs to follow semantic
+     * @param galleryImageName The name of the gallery image definition in which the Image Version is to be created.
+     * @param galleryImageVersionName The name of the gallery image version to be created. Needs to follow semantic
      *     version name pattern: The allowed characters are digit and period. Digits must be within the range of a
      *     32-bit integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
-     * @param galleryImageVersion Specifies information about the gallery Image Version that you want to create or
+     * @param galleryImageVersion Specifies information about the gallery image version that you want to create or
      *     update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Image Version that you want to create or update.
+     * @return specifies information about the gallery image version that you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<GalleryImageVersionInner>, GalleryImageVersionInner> beginCreateOrUpdateAsync(
@@ -346,21 +359,21 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
     }
 
     /**
-     * Create or update a gallery Image Version.
+     * Create or update a gallery image version.
      *
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery in which the Image Definition resides.
-     * @param galleryImageName The name of the gallery Image Definition in which the Image Version is to be created.
-     * @param galleryImageVersionName The name of the gallery Image Version to be created. Needs to follow semantic
+     * @param galleryImageName The name of the gallery image definition in which the Image Version is to be created.
+     * @param galleryImageVersionName The name of the gallery image version to be created. Needs to follow semantic
      *     version name pattern: The allowed characters are digit and period. Digits must be within the range of a
      *     32-bit integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
-     * @param galleryImageVersion Specifies information about the gallery Image Version that you want to create or
+     * @param galleryImageVersion Specifies information about the gallery image version that you want to create or
      *     update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Image Version that you want to create or update.
+     * @return specifies information about the gallery image version that you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PollerFlux<PollResult<GalleryImageVersionInner>, GalleryImageVersionInner> beginCreateOrUpdateAsync(
@@ -390,20 +403,20 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
     }
 
     /**
-     * Create or update a gallery Image Version.
+     * Create or update a gallery image version.
      *
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery in which the Image Definition resides.
-     * @param galleryImageName The name of the gallery Image Definition in which the Image Version is to be created.
-     * @param galleryImageVersionName The name of the gallery Image Version to be created. Needs to follow semantic
+     * @param galleryImageName The name of the gallery image definition in which the Image Version is to be created.
+     * @param galleryImageVersionName The name of the gallery image version to be created. Needs to follow semantic
      *     version name pattern: The allowed characters are digit and period. Digits must be within the range of a
      *     32-bit integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
-     * @param galleryImageVersion Specifies information about the gallery Image Version that you want to create or
+     * @param galleryImageVersion Specifies information about the gallery image version that you want to create or
      *     update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Image Version that you want to create or update.
+     * @return specifies information about the gallery image version that you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<GalleryImageVersionInner>, GalleryImageVersionInner> beginCreateOrUpdate(
@@ -418,21 +431,21 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
     }
 
     /**
-     * Create or update a gallery Image Version.
+     * Create or update a gallery image version.
      *
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery in which the Image Definition resides.
-     * @param galleryImageName The name of the gallery Image Definition in which the Image Version is to be created.
-     * @param galleryImageVersionName The name of the gallery Image Version to be created. Needs to follow semantic
+     * @param galleryImageName The name of the gallery image definition in which the Image Version is to be created.
+     * @param galleryImageVersionName The name of the gallery image version to be created. Needs to follow semantic
      *     version name pattern: The allowed characters are digit and period. Digits must be within the range of a
      *     32-bit integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
-     * @param galleryImageVersion Specifies information about the gallery Image Version that you want to create or
+     * @param galleryImageVersion Specifies information about the gallery image version that you want to create or
      *     update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Image Version that you want to create or update.
+     * @return specifies information about the gallery image version that you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<GalleryImageVersionInner>, GalleryImageVersionInner> beginCreateOrUpdate(
@@ -448,20 +461,20 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
     }
 
     /**
-     * Create or update a gallery Image Version.
+     * Create or update a gallery image version.
      *
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery in which the Image Definition resides.
-     * @param galleryImageName The name of the gallery Image Definition in which the Image Version is to be created.
-     * @param galleryImageVersionName The name of the gallery Image Version to be created. Needs to follow semantic
+     * @param galleryImageName The name of the gallery image definition in which the Image Version is to be created.
+     * @param galleryImageVersionName The name of the gallery image version to be created. Needs to follow semantic
      *     version name pattern: The allowed characters are digit and period. Digits must be within the range of a
      *     32-bit integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
-     * @param galleryImageVersion Specifies information about the gallery Image Version that you want to create or
+     * @param galleryImageVersion Specifies information about the gallery image version that you want to create or
      *     update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Image Version that you want to create or update.
+     * @return specifies information about the gallery image version that you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GalleryImageVersionInner> createOrUpdateAsync(
@@ -477,21 +490,21 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
     }
 
     /**
-     * Create or update a gallery Image Version.
+     * Create or update a gallery image version.
      *
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery in which the Image Definition resides.
-     * @param galleryImageName The name of the gallery Image Definition in which the Image Version is to be created.
-     * @param galleryImageVersionName The name of the gallery Image Version to be created. Needs to follow semantic
+     * @param galleryImageName The name of the gallery image definition in which the Image Version is to be created.
+     * @param galleryImageVersionName The name of the gallery image version to be created. Needs to follow semantic
      *     version name pattern: The allowed characters are digit and period. Digits must be within the range of a
      *     32-bit integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
-     * @param galleryImageVersion Specifies information about the gallery Image Version that you want to create or
+     * @param galleryImageVersion Specifies information about the gallery image version that you want to create or
      *     update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Image Version that you want to create or update.
+     * @return specifies information about the gallery image version that you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<GalleryImageVersionInner> createOrUpdateAsync(
@@ -508,20 +521,20 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
     }
 
     /**
-     * Create or update a gallery Image Version.
+     * Create or update a gallery image version.
      *
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery in which the Image Definition resides.
-     * @param galleryImageName The name of the gallery Image Definition in which the Image Version is to be created.
-     * @param galleryImageVersionName The name of the gallery Image Version to be created. Needs to follow semantic
+     * @param galleryImageName The name of the gallery image definition in which the Image Version is to be created.
+     * @param galleryImageVersionName The name of the gallery image version to be created. Needs to follow semantic
      *     version name pattern: The allowed characters are digit and period. Digits must be within the range of a
      *     32-bit integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
-     * @param galleryImageVersion Specifies information about the gallery Image Version that you want to create or
+     * @param galleryImageVersion Specifies information about the gallery image version that you want to create or
      *     update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Image Version that you want to create or update.
+     * @return specifies information about the gallery image version that you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GalleryImageVersionInner createOrUpdate(
@@ -536,21 +549,21 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
     }
 
     /**
-     * Create or update a gallery Image Version.
+     * Create or update a gallery image version.
      *
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery in which the Image Definition resides.
-     * @param galleryImageName The name of the gallery Image Definition in which the Image Version is to be created.
-     * @param galleryImageVersionName The name of the gallery Image Version to be created. Needs to follow semantic
+     * @param galleryImageName The name of the gallery image definition in which the Image Version is to be created.
+     * @param galleryImageVersionName The name of the gallery image version to be created. Needs to follow semantic
      *     version name pattern: The allowed characters are digit and period. Digits must be within the range of a
      *     32-bit integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
-     * @param galleryImageVersion Specifies information about the gallery Image Version that you want to create or
+     * @param galleryImageVersion Specifies information about the gallery image version that you want to create or
      *     update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Image Version that you want to create or update.
+     * @return specifies information about the gallery image version that you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GalleryImageVersionInner createOrUpdate(
@@ -566,19 +579,19 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
     }
 
     /**
-     * Update a gallery Image Version.
+     * Update a gallery image version.
      *
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery in which the Image Definition resides.
-     * @param galleryImageName The name of the gallery Image Definition in which the Image Version is to be updated.
-     * @param galleryImageVersionName The name of the gallery Image Version to be updated. Needs to follow semantic
+     * @param galleryImageName The name of the gallery image definition in which the Image Version is to be updated.
+     * @param galleryImageVersionName The name of the gallery image version to be updated. Needs to follow semantic
      *     version name pattern: The allowed characters are digit and period. Digits must be within the range of a
      *     32-bit integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
-     * @param galleryImageVersion Specifies information about the gallery Image Version that you want to update.
+     * @param galleryImageVersion Specifies information about the gallery image version that you want to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Image Version that you want to create or update.
+     * @return specifies information about the gallery image version that you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -621,7 +634,8 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
         } else {
             galleryImageVersion.validate();
         }
-        final String apiVersion = "2019-12-01";
+        final String apiVersion = "2020-09-30";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -635,25 +649,26 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
                             galleryImageVersionName,
                             apiVersion,
                             galleryImageVersion,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
-     * Update a gallery Image Version.
+     * Update a gallery image version.
      *
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery in which the Image Definition resides.
-     * @param galleryImageName The name of the gallery Image Definition in which the Image Version is to be updated.
-     * @param galleryImageVersionName The name of the gallery Image Version to be updated. Needs to follow semantic
+     * @param galleryImageName The name of the gallery image definition in which the Image Version is to be updated.
+     * @param galleryImageVersionName The name of the gallery image version to be updated. Needs to follow semantic
      *     version name pattern: The allowed characters are digit and period. Digits must be within the range of a
      *     32-bit integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
-     * @param galleryImageVersion Specifies information about the gallery Image Version that you want to update.
+     * @param galleryImageVersion Specifies information about the gallery image version that you want to update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Image Version that you want to create or update.
+     * @return specifies information about the gallery image version that you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -697,7 +712,8 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
         } else {
             galleryImageVersion.validate();
         }
-        final String apiVersion = "2019-12-01";
+        final String apiVersion = "2020-09-30";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .update(
@@ -709,23 +725,24 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
                 galleryImageVersionName,
                 apiVersion,
                 galleryImageVersion,
+                accept,
                 context);
     }
 
     /**
-     * Update a gallery Image Version.
+     * Update a gallery image version.
      *
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery in which the Image Definition resides.
-     * @param galleryImageName The name of the gallery Image Definition in which the Image Version is to be updated.
-     * @param galleryImageVersionName The name of the gallery Image Version to be updated. Needs to follow semantic
+     * @param galleryImageName The name of the gallery image definition in which the Image Version is to be updated.
+     * @param galleryImageVersionName The name of the gallery image version to be updated. Needs to follow semantic
      *     version name pattern: The allowed characters are digit and period. Digits must be within the range of a
      *     32-bit integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
-     * @param galleryImageVersion Specifies information about the gallery Image Version that you want to update.
+     * @param galleryImageVersion Specifies information about the gallery image version that you want to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Image Version that you want to create or update.
+     * @return specifies information about the gallery image version that you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<GalleryImageVersionInner>, GalleryImageVersionInner> beginUpdateAsync(
@@ -748,20 +765,20 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
     }
 
     /**
-     * Update a gallery Image Version.
+     * Update a gallery image version.
      *
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery in which the Image Definition resides.
-     * @param galleryImageName The name of the gallery Image Definition in which the Image Version is to be updated.
-     * @param galleryImageVersionName The name of the gallery Image Version to be updated. Needs to follow semantic
+     * @param galleryImageName The name of the gallery image definition in which the Image Version is to be updated.
+     * @param galleryImageVersionName The name of the gallery image version to be updated. Needs to follow semantic
      *     version name pattern: The allowed characters are digit and period. Digits must be within the range of a
      *     32-bit integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
-     * @param galleryImageVersion Specifies information about the gallery Image Version that you want to update.
+     * @param galleryImageVersion Specifies information about the gallery image version that you want to update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Image Version that you want to create or update.
+     * @return specifies information about the gallery image version that you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PollerFlux<PollResult<GalleryImageVersionInner>, GalleryImageVersionInner> beginUpdateAsync(
@@ -791,19 +808,19 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
     }
 
     /**
-     * Update a gallery Image Version.
+     * Update a gallery image version.
      *
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery in which the Image Definition resides.
-     * @param galleryImageName The name of the gallery Image Definition in which the Image Version is to be updated.
-     * @param galleryImageVersionName The name of the gallery Image Version to be updated. Needs to follow semantic
+     * @param galleryImageName The name of the gallery image definition in which the Image Version is to be updated.
+     * @param galleryImageVersionName The name of the gallery image version to be updated. Needs to follow semantic
      *     version name pattern: The allowed characters are digit and period. Digits must be within the range of a
      *     32-bit integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
-     * @param galleryImageVersion Specifies information about the gallery Image Version that you want to update.
+     * @param galleryImageVersion Specifies information about the gallery image version that you want to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Image Version that you want to create or update.
+     * @return specifies information about the gallery image version that you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<GalleryImageVersionInner>, GalleryImageVersionInner> beginUpdate(
@@ -818,20 +835,20 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
     }
 
     /**
-     * Update a gallery Image Version.
+     * Update a gallery image version.
      *
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery in which the Image Definition resides.
-     * @param galleryImageName The name of the gallery Image Definition in which the Image Version is to be updated.
-     * @param galleryImageVersionName The name of the gallery Image Version to be updated. Needs to follow semantic
+     * @param galleryImageName The name of the gallery image definition in which the Image Version is to be updated.
+     * @param galleryImageVersionName The name of the gallery image version to be updated. Needs to follow semantic
      *     version name pattern: The allowed characters are digit and period. Digits must be within the range of a
      *     32-bit integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
-     * @param galleryImageVersion Specifies information about the gallery Image Version that you want to update.
+     * @param galleryImageVersion Specifies information about the gallery image version that you want to update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Image Version that you want to create or update.
+     * @return specifies information about the gallery image version that you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<GalleryImageVersionInner>, GalleryImageVersionInner> beginUpdate(
@@ -847,19 +864,19 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
     }
 
     /**
-     * Update a gallery Image Version.
+     * Update a gallery image version.
      *
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery in which the Image Definition resides.
-     * @param galleryImageName The name of the gallery Image Definition in which the Image Version is to be updated.
-     * @param galleryImageVersionName The name of the gallery Image Version to be updated. Needs to follow semantic
+     * @param galleryImageName The name of the gallery image definition in which the Image Version is to be updated.
+     * @param galleryImageVersionName The name of the gallery image version to be updated. Needs to follow semantic
      *     version name pattern: The allowed characters are digit and period. Digits must be within the range of a
      *     32-bit integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
-     * @param galleryImageVersion Specifies information about the gallery Image Version that you want to update.
+     * @param galleryImageVersion Specifies information about the gallery image version that you want to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Image Version that you want to create or update.
+     * @return specifies information about the gallery image version that you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GalleryImageVersionInner> updateAsync(
@@ -875,20 +892,20 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
     }
 
     /**
-     * Update a gallery Image Version.
+     * Update a gallery image version.
      *
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery in which the Image Definition resides.
-     * @param galleryImageName The name of the gallery Image Definition in which the Image Version is to be updated.
-     * @param galleryImageVersionName The name of the gallery Image Version to be updated. Needs to follow semantic
+     * @param galleryImageName The name of the gallery image definition in which the Image Version is to be updated.
+     * @param galleryImageVersionName The name of the gallery image version to be updated. Needs to follow semantic
      *     version name pattern: The allowed characters are digit and period. Digits must be within the range of a
      *     32-bit integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
-     * @param galleryImageVersion Specifies information about the gallery Image Version that you want to update.
+     * @param galleryImageVersion Specifies information about the gallery image version that you want to update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Image Version that you want to create or update.
+     * @return specifies information about the gallery image version that you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<GalleryImageVersionInner> updateAsync(
@@ -905,19 +922,19 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
     }
 
     /**
-     * Update a gallery Image Version.
+     * Update a gallery image version.
      *
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery in which the Image Definition resides.
-     * @param galleryImageName The name of the gallery Image Definition in which the Image Version is to be updated.
-     * @param galleryImageVersionName The name of the gallery Image Version to be updated. Needs to follow semantic
+     * @param galleryImageName The name of the gallery image definition in which the Image Version is to be updated.
+     * @param galleryImageVersionName The name of the gallery image version to be updated. Needs to follow semantic
      *     version name pattern: The allowed characters are digit and period. Digits must be within the range of a
      *     32-bit integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
-     * @param galleryImageVersion Specifies information about the gallery Image Version that you want to update.
+     * @param galleryImageVersion Specifies information about the gallery image version that you want to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Image Version that you want to create or update.
+     * @return specifies information about the gallery image version that you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GalleryImageVersionInner update(
@@ -932,20 +949,20 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
     }
 
     /**
-     * Update a gallery Image Version.
+     * Update a gallery image version.
      *
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery in which the Image Definition resides.
-     * @param galleryImageName The name of the gallery Image Definition in which the Image Version is to be updated.
-     * @param galleryImageVersionName The name of the gallery Image Version to be updated. Needs to follow semantic
+     * @param galleryImageName The name of the gallery image definition in which the Image Version is to be updated.
+     * @param galleryImageVersionName The name of the gallery image version to be updated. Needs to follow semantic
      *     version name pattern: The allowed characters are digit and period. Digits must be within the range of a
      *     32-bit integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
-     * @param galleryImageVersion Specifies information about the gallery Image Version that you want to update.
+     * @param galleryImageVersion Specifies information about the gallery image version that you want to update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Image Version that you want to create or update.
+     * @return specifies information about the gallery image version that you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GalleryImageVersionInner update(
@@ -961,17 +978,17 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
     }
 
     /**
-     * Retrieves information about a gallery Image Version.
+     * Retrieves information about a gallery image version.
      *
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery in which the Image Definition resides.
-     * @param galleryImageName The name of the gallery Image Definition in which the Image Version resides.
-     * @param galleryImageVersionName The name of the gallery Image Version to be retrieved.
+     * @param galleryImageName The name of the gallery image definition in which the Image Version resides.
+     * @param galleryImageVersionName The name of the gallery image version to be retrieved.
      * @param expand The expand expression to apply on the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Image Version that you want to create or update.
+     * @return specifies information about the gallery image version that you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<GalleryImageVersionInner>> getWithResponseAsync(
@@ -1008,7 +1025,8 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
                 .error(
                     new IllegalArgumentException("Parameter galleryImageVersionName is required and cannot be null."));
         }
-        final String apiVersion = "2019-12-01";
+        final String apiVersion = "2020-09-30";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1022,23 +1040,24 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
                             galleryImageVersionName,
                             expand,
                             apiVersion,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
-     * Retrieves information about a gallery Image Version.
+     * Retrieves information about a gallery image version.
      *
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery in which the Image Definition resides.
-     * @param galleryImageName The name of the gallery Image Definition in which the Image Version resides.
-     * @param galleryImageVersionName The name of the gallery Image Version to be retrieved.
+     * @param galleryImageName The name of the gallery image definition in which the Image Version resides.
+     * @param galleryImageVersionName The name of the gallery image version to be retrieved.
      * @param expand The expand expression to apply on the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Image Version that you want to create or update.
+     * @return specifies information about the gallery image version that you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<GalleryImageVersionInner>> getWithResponseAsync(
@@ -1076,7 +1095,8 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
                 .error(
                     new IllegalArgumentException("Parameter galleryImageVersionName is required and cannot be null."));
         }
-        final String apiVersion = "2019-12-01";
+        final String apiVersion = "2020-09-30";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -1088,21 +1108,22 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
                 galleryImageVersionName,
                 expand,
                 apiVersion,
+                accept,
                 context);
     }
 
     /**
-     * Retrieves information about a gallery Image Version.
+     * Retrieves information about a gallery image version.
      *
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery in which the Image Definition resides.
-     * @param galleryImageName The name of the gallery Image Definition in which the Image Version resides.
-     * @param galleryImageVersionName The name of the gallery Image Version to be retrieved.
+     * @param galleryImageName The name of the gallery image definition in which the Image Version resides.
+     * @param galleryImageVersionName The name of the gallery image version to be retrieved.
      * @param expand The expand expression to apply on the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Image Version that you want to create or update.
+     * @return specifies information about the gallery image version that you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GalleryImageVersionInner> getAsync(
@@ -1123,16 +1144,16 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
     }
 
     /**
-     * Retrieves information about a gallery Image Version.
+     * Retrieves information about a gallery image version.
      *
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery in which the Image Definition resides.
-     * @param galleryImageName The name of the gallery Image Definition in which the Image Version resides.
-     * @param galleryImageVersionName The name of the gallery Image Version to be retrieved.
+     * @param galleryImageName The name of the gallery image definition in which the Image Version resides.
+     * @param galleryImageVersionName The name of the gallery image version to be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Image Version that you want to create or update.
+     * @return specifies information about the gallery image version that you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GalleryImageVersionInner> getAsync(
@@ -1150,16 +1171,16 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
     }
 
     /**
-     * Retrieves information about a gallery Image Version.
+     * Retrieves information about a gallery image version.
      *
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery in which the Image Definition resides.
-     * @param galleryImageName The name of the gallery Image Definition in which the Image Version resides.
-     * @param galleryImageVersionName The name of the gallery Image Version to be retrieved.
+     * @param galleryImageName The name of the gallery image definition in which the Image Version resides.
+     * @param galleryImageVersionName The name of the gallery image version to be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Image Version that you want to create or update.
+     * @return specifies information about the gallery image version that you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GalleryImageVersionInner get(
@@ -1169,18 +1190,18 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
     }
 
     /**
-     * Retrieves information about a gallery Image Version.
+     * Retrieves information about a gallery image version.
      *
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery in which the Image Definition resides.
-     * @param galleryImageName The name of the gallery Image Definition in which the Image Version resides.
-     * @param galleryImageVersionName The name of the gallery Image Version to be retrieved.
+     * @param galleryImageName The name of the gallery image definition in which the Image Version resides.
+     * @param galleryImageVersionName The name of the gallery image version to be retrieved.
      * @param expand The expand expression to apply on the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Image Version that you want to create or update.
+     * @return specifies information about the gallery image version that you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GalleryImageVersionInner> getWithResponse(
@@ -1196,12 +1217,12 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
     }
 
     /**
-     * Delete a gallery Image Version.
+     * Delete a gallery image version.
      *
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery in which the Image Definition resides.
-     * @param galleryImageName The name of the gallery Image Definition in which the Image Version resides.
-     * @param galleryImageVersionName The name of the gallery Image Version to be deleted.
+     * @param galleryImageName The name of the gallery image definition in which the Image Version resides.
+     * @param galleryImageVersionName The name of the gallery image version to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1238,7 +1259,8 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
                 .error(
                     new IllegalArgumentException("Parameter galleryImageVersionName is required and cannot be null."));
         }
-        final String apiVersion = "2019-12-01";
+        final String apiVersion = "2020-09-30";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1251,17 +1273,18 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
                             galleryImageName,
                             galleryImageVersionName,
                             apiVersion,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
-     * Delete a gallery Image Version.
+     * Delete a gallery image version.
      *
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery in which the Image Definition resides.
-     * @param galleryImageName The name of the gallery Image Definition in which the Image Version resides.
-     * @param galleryImageVersionName The name of the gallery Image Version to be deleted.
+     * @param galleryImageName The name of the gallery image definition in which the Image Version resides.
+     * @param galleryImageVersionName The name of the gallery image version to be deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1303,7 +1326,8 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
                 .error(
                     new IllegalArgumentException("Parameter galleryImageVersionName is required and cannot be null."));
         }
-        final String apiVersion = "2019-12-01";
+        final String apiVersion = "2020-09-30";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -1314,16 +1338,17 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
                 galleryImageName,
                 galleryImageVersionName,
                 apiVersion,
+                accept,
                 context);
     }
 
     /**
-     * Delete a gallery Image Version.
+     * Delete a gallery image version.
      *
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery in which the Image Definition resides.
-     * @param galleryImageName The name of the gallery Image Definition in which the Image Version resides.
-     * @param galleryImageVersionName The name of the gallery Image Version to be deleted.
+     * @param galleryImageName The name of the gallery image definition in which the Image Version resides.
+     * @param galleryImageVersionName The name of the gallery image version to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1340,12 +1365,12 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
     }
 
     /**
-     * Delete a gallery Image Version.
+     * Delete a gallery image version.
      *
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery in which the Image Definition resides.
-     * @param galleryImageName The name of the gallery Image Definition in which the Image Version resides.
-     * @param galleryImageVersionName The name of the gallery Image Version to be deleted.
+     * @param galleryImageName The name of the gallery image definition in which the Image Version resides.
+     * @param galleryImageVersionName The name of the gallery image version to be deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1368,12 +1393,12 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
     }
 
     /**
-     * Delete a gallery Image Version.
+     * Delete a gallery image version.
      *
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery in which the Image Definition resides.
-     * @param galleryImageName The name of the gallery Image Definition in which the Image Version resides.
-     * @param galleryImageVersionName The name of the gallery Image Version to be deleted.
+     * @param galleryImageName The name of the gallery image definition in which the Image Version resides.
+     * @param galleryImageVersionName The name of the gallery image version to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1387,12 +1412,12 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
     }
 
     /**
-     * Delete a gallery Image Version.
+     * Delete a gallery image version.
      *
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery in which the Image Definition resides.
-     * @param galleryImageName The name of the gallery Image Definition in which the Image Version resides.
-     * @param galleryImageVersionName The name of the gallery Image Version to be deleted.
+     * @param galleryImageName The name of the gallery image definition in which the Image Version resides.
+     * @param galleryImageVersionName The name of the gallery image version to be deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1411,12 +1436,12 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
     }
 
     /**
-     * Delete a gallery Image Version.
+     * Delete a gallery image version.
      *
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery in which the Image Definition resides.
-     * @param galleryImageName The name of the gallery Image Definition in which the Image Version resides.
-     * @param galleryImageVersionName The name of the gallery Image Version to be deleted.
+     * @param galleryImageName The name of the gallery image definition in which the Image Version resides.
+     * @param galleryImageVersionName The name of the gallery image version to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1431,12 +1456,12 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
     }
 
     /**
-     * Delete a gallery Image Version.
+     * Delete a gallery image version.
      *
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery in which the Image Definition resides.
-     * @param galleryImageName The name of the gallery Image Definition in which the Image Version resides.
-     * @param galleryImageVersionName The name of the gallery Image Version to be deleted.
+     * @param galleryImageName The name of the gallery image definition in which the Image Version resides.
+     * @param galleryImageVersionName The name of the gallery image version to be deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1456,12 +1481,12 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
     }
 
     /**
-     * Delete a gallery Image Version.
+     * Delete a gallery image version.
      *
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery in which the Image Definition resides.
-     * @param galleryImageName The name of the gallery Image Definition in which the Image Version resides.
-     * @param galleryImageVersionName The name of the gallery Image Version to be deleted.
+     * @param galleryImageName The name of the gallery image definition in which the Image Version resides.
+     * @param galleryImageVersionName The name of the gallery image version to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1473,12 +1498,12 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
     }
 
     /**
-     * Delete a gallery Image Version.
+     * Delete a gallery image version.
      *
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery in which the Image Definition resides.
-     * @param galleryImageName The name of the gallery Image Definition in which the Image Version resides.
-     * @param galleryImageVersionName The name of the gallery Image Version to be deleted.
+     * @param galleryImageName The name of the gallery image definition in which the Image Version resides.
+     * @param galleryImageVersionName The name of the gallery image version to be deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1495,7 +1520,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
     }
 
     /**
-     * List gallery Image Versions in a gallery Image Definition.
+     * List gallery image versions in a gallery image definition.
      *
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery in which the Image Definition resides.
@@ -1532,7 +1557,8 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
             return Mono
                 .error(new IllegalArgumentException("Parameter galleryImageName is required and cannot be null."));
         }
-        final String apiVersion = "2019-12-01";
+        final String apiVersion = "2020-09-30";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1544,6 +1570,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
                             galleryName,
                             galleryImageName,
                             apiVersion,
+                            accept,
                             context))
             .<PagedResponse<GalleryImageVersionInner>>map(
                 res ->
@@ -1558,7 +1585,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
     }
 
     /**
-     * List gallery Image Versions in a gallery Image Definition.
+     * List gallery image versions in a gallery image definition.
      *
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery in which the Image Definition resides.
@@ -1596,7 +1623,8 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
             return Mono
                 .error(new IllegalArgumentException("Parameter galleryImageName is required and cannot be null."));
         }
-        final String apiVersion = "2019-12-01";
+        final String apiVersion = "2020-09-30";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByGalleryImage(
@@ -1606,6 +1634,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
                 galleryName,
                 galleryImageName,
                 apiVersion,
+                accept,
                 context)
             .map(
                 res ->
@@ -1619,7 +1648,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
     }
 
     /**
-     * List gallery Image Versions in a gallery Image Definition.
+     * List gallery image versions in a gallery image definition.
      *
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery in which the Image Definition resides.
@@ -1639,7 +1668,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
     }
 
     /**
-     * List gallery Image Versions in a gallery Image Definition.
+     * List gallery image versions in a gallery image definition.
      *
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery in which the Image Definition resides.
@@ -1660,7 +1689,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
     }
 
     /**
-     * List gallery Image Versions in a gallery Image Definition.
+     * List gallery image versions in a gallery image definition.
      *
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery in which the Image Definition resides.
@@ -1678,7 +1707,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
     }
 
     /**
-     * List gallery Image Versions in a gallery Image Definition.
+     * List gallery image versions in a gallery image definition.
      *
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery in which the Image Definition resides.
@@ -1710,8 +1739,16 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByGalleryImageNext(nextLink, context))
+            .withContext(
+                context -> service.listByGalleryImageNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<GalleryImageVersionInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1740,9 +1777,16 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByGalleryImageNext(nextLink, context)
+            .listByGalleryImageNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

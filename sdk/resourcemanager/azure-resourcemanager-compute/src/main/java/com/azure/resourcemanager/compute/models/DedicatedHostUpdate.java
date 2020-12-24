@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Map;
 
 /** Specifies information about the dedicated host. Only tags, autoReplaceOnFailure and licenseType may be updated. */
 @JsonFlatten
@@ -183,6 +184,13 @@ public class DedicatedHostUpdate extends UpdateResource {
      */
     public DedicatedHostInstanceView instanceView() {
         return this.instanceView;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DedicatedHostUpdate withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
     }
 
     /**
