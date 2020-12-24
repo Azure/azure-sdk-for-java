@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The publishing profile of a gallery image version. */
+/** The publishing profile of a gallery Image Version. */
 @Fluent
 public final class GalleryApplicationVersionPublishingProfile extends GalleryArtifactPublishingProfileBase {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryApplicationVersionPublishingProfile.class);
@@ -23,10 +23,11 @@ public final class GalleryApplicationVersionPublishingProfile extends GalleryArt
     private UserArtifactSource source;
 
     /*
-     * The manageActions property.
+     * Optional. May be used to help process this file. The type of file
+     * contained in the source, e.g. zip, json, etc.
      */
-    @JsonProperty(value = "manageActions")
-    private UserArtifactManage manageActions;
+    @JsonProperty(value = "contentType")
+    private String contentType;
 
     /*
      * Optional. Whether or not this application reports health.
@@ -55,22 +56,24 @@ public final class GalleryApplicationVersionPublishingProfile extends GalleryArt
     }
 
     /**
-     * Get the manageActions property: The manageActions property.
+     * Get the contentType property: Optional. May be used to help process this file. The type of file contained in the
+     * source, e.g. zip, json, etc.
      *
-     * @return the manageActions value.
+     * @return the contentType value.
      */
-    public UserArtifactManage manageActions() {
-        return this.manageActions;
+    public String contentType() {
+        return this.contentType;
     }
 
     /**
-     * Set the manageActions property: The manageActions property.
+     * Set the contentType property: Optional. May be used to help process this file. The type of file contained in the
+     * source, e.g. zip, json, etc.
      *
-     * @param manageActions the manageActions value to set.
+     * @param contentType the contentType value to set.
      * @return the GalleryApplicationVersionPublishingProfile object itself.
      */
-    public GalleryApplicationVersionPublishingProfile withManageActions(UserArtifactManage manageActions) {
-        this.manageActions = manageActions;
+    public GalleryApplicationVersionPublishingProfile withContentType(String contentType) {
+        this.contentType = contentType;
         return this;
     }
 
@@ -144,9 +147,6 @@ public final class GalleryApplicationVersionPublishingProfile extends GalleryArt
                         "Missing required property source in model GalleryApplicationVersionPublishingProfile"));
         } else {
             source().validate();
-        }
-        if (manageActions() != null) {
-            manageActions().validate();
         }
     }
 }

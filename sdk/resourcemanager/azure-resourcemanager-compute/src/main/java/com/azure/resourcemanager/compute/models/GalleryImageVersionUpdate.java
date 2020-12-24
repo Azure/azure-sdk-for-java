@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Specifies information about the gallery image version that you want to update. */
+/** Specifies information about the gallery Image Version that you want to update. */
 @JsonFlatten
 @Fluent
 public class GalleryImageVersionUpdate extends UpdateResourceDefinition {
@@ -36,7 +36,7 @@ public class GalleryImageVersionUpdate extends UpdateResourceDefinition {
     private GalleryImageVersionStorageProfile storageProfile;
 
     /*
-     * This is the replication status of the gallery image version.
+     * This is the replication status of the gallery Image Version.
      */
     @JsonProperty(value = "properties.replicationStatus", access = JsonProperty.Access.WRITE_ONLY)
     private ReplicationStatus replicationStatus;
@@ -91,7 +91,7 @@ public class GalleryImageVersionUpdate extends UpdateResourceDefinition {
     }
 
     /**
-     * Get the replicationStatus property: This is the replication status of the gallery image version.
+     * Get the replicationStatus property: This is the replication status of the gallery Image Version.
      *
      * @return the replicationStatus value.
      */

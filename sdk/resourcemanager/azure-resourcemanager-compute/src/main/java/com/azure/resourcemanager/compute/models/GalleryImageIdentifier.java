@@ -9,31 +9,31 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** This is the gallery image definition identifier. */
+/** This is the gallery Image Definition identifier. */
 @Fluent
 public final class GalleryImageIdentifier {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryImageIdentifier.class);
 
     /*
-     * The name of the gallery image definition publisher.
+     * The name of the gallery Image Definition publisher.
      */
     @JsonProperty(value = "publisher", required = true)
     private String publisher;
 
     /*
-     * The name of the gallery image definition offer.
+     * The name of the gallery Image Definition offer.
      */
     @JsonProperty(value = "offer", required = true)
     private String offer;
 
     /*
-     * The name of the gallery image definition SKU.
+     * The name of the gallery Image Definition SKU.
      */
     @JsonProperty(value = "sku", required = true)
     private String sku;
 
     /**
-     * Get the publisher property: The name of the gallery image definition publisher.
+     * Get the publisher property: The name of the gallery Image Definition publisher.
      *
      * @return the publisher value.
      */
@@ -42,7 +42,7 @@ public final class GalleryImageIdentifier {
     }
 
     /**
-     * Set the publisher property: The name of the gallery image definition publisher.
+     * Set the publisher property: The name of the gallery Image Definition publisher.
      *
      * @param publisher the publisher value to set.
      * @return the GalleryImageIdentifier object itself.
@@ -53,7 +53,7 @@ public final class GalleryImageIdentifier {
     }
 
     /**
-     * Get the offer property: The name of the gallery image definition offer.
+     * Get the offer property: The name of the gallery Image Definition offer.
      *
      * @return the offer value.
      */
@@ -62,7 +62,7 @@ public final class GalleryImageIdentifier {
     }
 
     /**
-     * Set the offer property: The name of the gallery image definition offer.
+     * Set the offer property: The name of the gallery Image Definition offer.
      *
      * @param offer the offer value to set.
      * @return the GalleryImageIdentifier object itself.
@@ -73,7 +73,7 @@ public final class GalleryImageIdentifier {
     }
 
     /**
-     * Get the sku property: The name of the gallery image definition SKU.
+     * Get the sku property: The name of the gallery Image Definition SKU.
      *
      * @return the sku value.
      */
@@ -82,7 +82,7 @@ public final class GalleryImageIdentifier {
     }
 
     /**
-     * Set the sku property: The name of the gallery image definition SKU.
+     * Set the sku property: The name of the gallery Image Definition SKU.
      *
      * @param sku the sku value to set.
      * @return the GalleryImageIdentifier object itself.

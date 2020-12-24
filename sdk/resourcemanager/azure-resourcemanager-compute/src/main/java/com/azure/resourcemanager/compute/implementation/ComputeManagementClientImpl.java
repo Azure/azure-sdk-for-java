@@ -22,15 +22,11 @@ import com.azure.resourcemanager.compute.fluent.GalleryApplicationVersionsClient
 import com.azure.resourcemanager.compute.fluent.GalleryApplicationsClient;
 import com.azure.resourcemanager.compute.fluent.GalleryImageVersionsClient;
 import com.azure.resourcemanager.compute.fluent.GalleryImagesClient;
-import com.azure.resourcemanager.compute.fluent.GallerySharingProfilesClient;
 import com.azure.resourcemanager.compute.fluent.ImagesClient;
 import com.azure.resourcemanager.compute.fluent.LogAnalyticsClient;
 import com.azure.resourcemanager.compute.fluent.OperationsClient;
 import com.azure.resourcemanager.compute.fluent.ProximityPlacementGroupsClient;
 import com.azure.resourcemanager.compute.fluent.ResourceSkusClient;
-import com.azure.resourcemanager.compute.fluent.SharedGalleriesClient;
-import com.azure.resourcemanager.compute.fluent.SharedGalleryImageVersionsClient;
-import com.azure.resourcemanager.compute.fluent.SharedGalleryImagesClient;
 import com.azure.resourcemanager.compute.fluent.SnapshotsClient;
 import com.azure.resourcemanager.compute.fluent.SshPublicKeysClient;
 import com.azure.resourcemanager.compute.fluent.UsagesClient;
@@ -490,54 +486,6 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
         return this.galleryApplicationVersions;
     }
 
-    /** The GallerySharingProfilesClient object to access its operations. */
-    private final GallerySharingProfilesClient gallerySharingProfiles;
-
-    /**
-     * Gets the GallerySharingProfilesClient object to access its operations.
-     *
-     * @return the GallerySharingProfilesClient object.
-     */
-    public GallerySharingProfilesClient getGallerySharingProfiles() {
-        return this.gallerySharingProfiles;
-    }
-
-    /** The SharedGalleriesClient object to access its operations. */
-    private final SharedGalleriesClient sharedGalleries;
-
-    /**
-     * Gets the SharedGalleriesClient object to access its operations.
-     *
-     * @return the SharedGalleriesClient object.
-     */
-    public SharedGalleriesClient getSharedGalleries() {
-        return this.sharedGalleries;
-    }
-
-    /** The SharedGalleryImagesClient object to access its operations. */
-    private final SharedGalleryImagesClient sharedGalleryImages;
-
-    /**
-     * Gets the SharedGalleryImagesClient object to access its operations.
-     *
-     * @return the SharedGalleryImagesClient object.
-     */
-    public SharedGalleryImagesClient getSharedGalleryImages() {
-        return this.sharedGalleryImages;
-    }
-
-    /** The SharedGalleryImageVersionsClient object to access its operations. */
-    private final SharedGalleryImageVersionsClient sharedGalleryImageVersions;
-
-    /**
-     * Gets the SharedGalleryImageVersionsClient object to access its operations.
-     *
-     * @return the SharedGalleryImageVersionsClient object.
-     */
-    public SharedGalleryImageVersionsClient getSharedGalleryImageVersions() {
-        return this.sharedGalleryImageVersions;
-    }
-
     /** The ContainerServicesClient object to access its operations. */
     private final ContainerServicesClient containerServices;
 
@@ -605,10 +553,6 @@ public final class ComputeManagementClientImpl extends AzureServiceClient implem
         this.galleryImageVersions = new GalleryImageVersionsClientImpl(this);
         this.galleryApplications = new GalleryApplicationsClientImpl(this);
         this.galleryApplicationVersions = new GalleryApplicationVersionsClientImpl(this);
-        this.gallerySharingProfiles = new GallerySharingProfilesClientImpl(this);
-        this.sharedGalleries = new SharedGalleriesClientImpl(this);
-        this.sharedGalleryImages = new SharedGalleryImagesClientImpl(this);
-        this.sharedGalleryImageVersions = new SharedGalleryImageVersionsClientImpl(this);
         this.containerServices = new ContainerServicesClientImpl(this);
     }
 }
