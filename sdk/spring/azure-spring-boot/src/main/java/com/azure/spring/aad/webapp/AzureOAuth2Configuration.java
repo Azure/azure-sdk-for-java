@@ -66,8 +66,8 @@ public abstract class AzureOAuth2Configuration extends WebSecurityConfigurerAdap
         OidcClientInitiatedLogoutSuccessHandler oidcLogoutSuccessHandler =
             new OidcClientInitiatedLogoutSuccessHandler(this.repo);
         String uri = this.properties.getPostLogoutRedirectUri();
-        if(StringUtils.hasText(uri)){
-            // TODO remove deprecated method after we do not need to support spring-boot-2.2.x
+        if (StringUtils.hasText(uri)) {
+            // TODO (jack) Remove deprecated method after we do not need to support spring-boot-2.2.x
             oidcLogoutSuccessHandler.setPostLogoutRedirectUri(URI.create(uri));
         }
         return oidcLogoutSuccessHandler;
