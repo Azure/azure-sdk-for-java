@@ -3,7 +3,7 @@
 ## 2.2.0-beta.1 (Unreleased)
 
 - Updated `api-version` to `2020-11-01`
-- Removed `ManagedClusterAgentPoolProfileProperties::withNodeImageVersion`
+- Removed `withNodeImageVersion` method in `ManagedClusterAgentPoolProfileProperties`
 - Removed unused class `Components1Q1Og48SchemasManagedclusterAllof1`
 - Removed unused class `ComponentsQit0EtSchemasManagedclusterpropertiesPropertiesIdentityprofileAdditionalproperties`, it is same as its superclass `UserAssignedIdentity`
 
