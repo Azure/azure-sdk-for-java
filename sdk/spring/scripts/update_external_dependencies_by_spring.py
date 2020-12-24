@@ -30,8 +30,8 @@ def main():
     change_to_root_dir()
     log.debug('Current working directory = {}.'.format(os.getcwd()))
     dependency_dict = {}
-    for root_pom_id in ROOT_POM:
-        update_dependency_dict(dependency_dict, root_pom_id)
+    for root_pom in ROOT_POM:
+        update_dependency_dict(dependency_dict, root_pom)
     output_version_dict_to_file(dependency_dict)
     update_version_for_external_dependencies(dependency_dict)
     elapsed_time = time.time() - start_time
@@ -57,8 +57,8 @@ def update_dependency_dict(dependency_dict, root_pom_id):
     )
     q = queue.Queue()
     q.put(root_pom)
-    visited_poms = set()
-    visited_poms.add(root_pom_id)
+    visited_poms_string = set()
+    visited_poms_string.add(root_pom_id)
     pom_count = 1
     log.info('Added root pom.depth = {}, url = {}.'.format(root_pom.depth, root_pom.to_url()))
     while not q.empty():
@@ -106,9 +106,9 @@ def update_dependency_dict(dependency_dict, root_pom_id):
             if artifact_type is not None and artifact_type.text.strip() == 'pom':
                 new_pom = Pom(group_id, artifact_id, version, pom.depth + 1)
                 new_pom_string = '{}:{};{}'.format(group_id, artifact_id, version)
-                if new_pom_string not in visited_poms:
+                if new_pom_string not in visited_poms_string:
                     q.put(new_pom)
-                    visited_poms.add(new_pom_string)
+                    visited_poms_string.add(new_pom_string)
                     pom_count = pom_count + 1
                     log.debug('Added new pom. depth = {}, url = {}.'.format(new_pom.depth, new_pom.to_url()))
                 else:
