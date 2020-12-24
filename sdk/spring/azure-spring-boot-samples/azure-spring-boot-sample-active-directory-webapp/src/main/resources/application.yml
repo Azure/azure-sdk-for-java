@@ -3,13 +3,13 @@ azure:
     authorization:
       arm:
         on-demand: true
-        scopes: https://management.core.windows.net/user_impersonation
+        scopes: <your-arm-scope-url>
       graph:
         scopes: https://graph.microsoft.com/Calendars.Read
       office:
         scopes: https://manage.office.com/ActivityFeed.Read
-    client-id: <client-id>
-    client-secret: <client-secret>
+    client-id: <webapp-client-id>
+    client-secret: <webapp-client-secret>
     tenant-id: <tenant-id>
     user-group:
       allowed-groups: group1, group2
