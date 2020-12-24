@@ -48,7 +48,8 @@ public class SendEventBatchPartitionTest extends ServiceTest<EventHubsPerfStress
             .then(Mono.fromCallable(() -> {
                 partitionSender = eventHubClient.createPartitionSender(String.valueOf(options.getPartitionId())).get();
                 eventDataBatch = partitionSender.createBatch(batchOptions);
-                EventData eventData =  EventData.create("Static Event".getBytes(StandardCharsets.UTF_8));
+                EventData eventData =  EventData.create(generateString(options.getMessageSize())
+                    .getBytes(StandardCharsets.UTF_8));
 
                 for (int i = 0; i < options.getEvents(); i++) {
                     if (!eventDataBatch.tryAdd(eventData)) {

@@ -44,7 +44,8 @@ public class SendEventBatchTest extends ServiceTest<EventHubsPerfStressOptions> 
         return super.setupAsync()
             .then(Mono.fromCallable(() -> {
                 eventDataBatch = eventHubClient.createBatch(batchOptions);
-                EventData eventData =  EventData.create("Static Event".getBytes(StandardCharsets.UTF_8));
+                EventData eventData =  EventData.create(generateString(options.getMessageSize())
+                    .getBytes(StandardCharsets.UTF_8));
                 for (int i = 0; i < options.getEvents(); i++) {
                     if (!eventDataBatch.tryAdd(eventData)) {
                         throw new IllegalStateException(String.format("Batch can only fit %d number of messages with "

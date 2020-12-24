@@ -14,6 +14,9 @@ public class EventHubsPerfStressOptions extends PerfStressOptions {
     @Parameter(names = { "-bs", "--batchsize" }, description = "Size of the batch (in bytes)")
     private Integer batchSize = null;
 
+    @Parameter(names = { "-ms", "--messagesize" }, description = "Size of the individual message (in bytes)")
+    private int messageSize = 100;
+
     @Parameter(names = { "-e", "--events" }, description = "Number of events")
     private int events = 1;
 
@@ -37,6 +40,14 @@ public class EventHubsPerfStressOptions extends PerfStressOptions {
      */
     public Integer getBatchSize() {
         return batchSize;
+    }
+
+    /**
+     * Get the configured message size option for performance test.
+     * @return The batch size.
+     */
+    public int getMessageSize() {
+        return messageSize;
     }
 
     /**
