@@ -7,13 +7,11 @@ package com.azure.spring.cloud.context.core.config;
 import com.azure.spring.cloud.context.core.api.CredentialSupplier;
 import com.azure.spring.cloud.context.core.enums.AzureEnvironments;
 import com.google.common.base.Strings;
-
-import javax.annotation.PostConstruct;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
-import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
+
+import javax.annotation.PostConstruct;
 
 /**
  * Azure related properties.
