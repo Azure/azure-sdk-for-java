@@ -1,4 +1,3 @@
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -70,7 +69,7 @@ public class SeleniumTestUtils {
         WebDriverWait wait = new WebDriverWait(driver, 10);
         app.start();
         try {
-            driver.get(app.root() + endPoints.get(0));
+            driver.get(app.root());
             wait.until(presenceOfElementLocated(By.name("loginfmt")))
                 .sendKeys(System.getenv(AAD_USER_NAME_1) + Keys.ENTER);
             Thread.sleep(10000);
@@ -79,8 +78,6 @@ public class SeleniumTestUtils {
             Thread.sleep(10000);
             driver.findElement(By.cssSelector("input[type='submit']")).click();
             Thread.sleep(10000);
-            result.put(endPoints.get(0) , driver.findElement(By.tagName("body")).getText());
-            endPoints.remove(0);
             for(String endPoint : endPoints) {
                 driver.get(app.root() + endPoint);
                 Thread.sleep(1000);

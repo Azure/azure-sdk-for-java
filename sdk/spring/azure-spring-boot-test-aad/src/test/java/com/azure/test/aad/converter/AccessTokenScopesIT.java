@@ -18,29 +18,33 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
 
-public class RefreshTokenScopesIT {
+public class AccessTokenScopesIT {
 
     @Test
     public void testRefreshTokenConverter() {
         try (AppRunner app = new AppRunner(DumbApp.class)) {
             SeleniumTestUtils.addProperty(app);
-            app.property("azure.activedirectory.authorization.office.scopes", "https://manage.office.com/ActivityFeed.Read");
-            app.property("azure.activedirectory.authorization.graph.scopes", "https://graph.microsoft.com/User.Read");
+            app.property("azure.activedirectory.authorization.office.scopes", "https://manage.office.com/ActivityFeed.Read , https://manage.office.com/ActivityFeed.ReadDlp , https://manage.office.com/ServiceHealth.Read");
+            app.property("azure.activedirectory.authorization.graph.scopes", "https://graph.microsoft.com/User.Read , https://graph.microsoft.com/AccessReview.Read.All");
             List<String> endPoints = new ArrayList<>();
-            endPoints.add("api/office");
-            endPoints.add("api/azure");
-            endPoints.add("api/graph");
-            endPoints.add("api/arm");
+            endPoints.add("accessTokenScopes/office");
+            endPoints.add("accessTokenScopes/azure");
+            endPoints.add("accessTokenScopes/graph");
+            endPoints.add("accessTokenScopes/arm");
             Map<String, String> result = SeleniumTestUtils.get(app, endPoints);
 
-            Assert.assertFalse(result.get("api/office").contains("profile"));
-            Assert.assertTrue(result.get("api/office").contains("https://manage.office.com/ActivityFeed.Read"));
+            Assert.assertFalse(result.get("accessTokenScopes/office").contains("profile"));
+            Assert.assertTrue(result.get("accessTokenScopes/office").contains("https://manage.office.com/ActivityFeed.Read"));
+            Assert.assertTrue(result.get("accessTokenScopes/office").contains("https://manage.office.com/ActivityFeed.ReadDlp"));
+            Assert.assertTrue(result.get("accessTokenScopes/office").contains("https://manage.office.com/ServiceHealth.Read"));
 
-            Assert.assertTrue(result.get("api/azure").contains("profile"));
-            Assert.assertTrue(result.get("api/azure").contains("https://graph.microsoft.com/User.Read"));
+            Assert.assertTrue(result.get("accessTokenScopes/azure").contains("profile"));
+            Assert.assertTrue(result.get("accessTokenScopes/azure").contains("https://graph.microsoft.com/AccessReview.Read.All"));
+            Assert.assertTrue(result.get("accessTokenScopes/azure").contains("https://graph.microsoft.com/User.Read"));
 
-            Assert.assertTrue(result.get("api/graph").contains("profile"));
-            Assert.assertTrue(result.get("api/graph").contains("https://graph.microsoft.com/User.Read"));
+            Assert.assertTrue(result.get("accessTokenScopes/graph").contains("profile"));
+            Assert.assertTrue(result.get("accessTokenScopes/graph").contains("https://graph.microsoft.com/AccessReview.Read.All"));
+            Assert.assertTrue(result.get("accessTokenScopes/graph").contains("https://graph.microsoft.com/User.Read"));
 
             Assert.assertNotEquals("error", result.get("api/arm"));
         }
@@ -51,7 +55,7 @@ public class RefreshTokenScopesIT {
     @RestController
     public static class DumbApp {
 
-        @GetMapping(value = "api/office")
+        @GetMapping(value = "accessTokenScopes/office")
         public Set<String> office(
             @RegisteredOAuth2AuthorizedClient("office") OAuth2AuthorizedClient authorizedClient) {
             return Optional.of(authorizedClient)
@@ -60,7 +64,7 @@ public class RefreshTokenScopesIT {
                 .orElse(null);
         }
 
-        @GetMapping(value = "api/azure")
+        @GetMapping(value = "accessTokenScopes/azure")
         public Set<String> azure(
             @RegisteredOAuth2AuthorizedClient("azure") OAuth2AuthorizedClient authorizedClient) {
             return Optional.of(authorizedClient)
@@ -69,7 +73,7 @@ public class RefreshTokenScopesIT {
                 .orElse(null);
         }
 
-        @GetMapping(value = "api/graph")
+        @GetMapping(value = "accessTokenScopes/graph")
         public Set<String> graph(
             @RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient authorizedClient) {
             return Optional.of(authorizedClient)
@@ -78,7 +82,7 @@ public class RefreshTokenScopesIT {
                 .orElse(null);
         }
 
-        @GetMapping(value = "api/arm")
+        @GetMapping(value = "accessTokenScopes/arm")
         public String arm(
             @RegisteredOAuth2AuthorizedClient("arm") OAuth2AuthorizedClient authorizedClient) {
             return "error";
