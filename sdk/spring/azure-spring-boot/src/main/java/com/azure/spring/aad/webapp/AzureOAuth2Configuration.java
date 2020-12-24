@@ -19,8 +19,10 @@ import org.springframework.security.oauth2.core.http.converter.OAuth2AccessToken
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.URI;
 import java.util.Arrays;
 
 /**
@@ -63,7 +65,11 @@ public abstract class AzureOAuth2Configuration extends WebSecurityConfigurerAdap
     protected LogoutSuccessHandler oidcLogoutSuccessHandler() {
         OidcClientInitiatedLogoutSuccessHandler oidcLogoutSuccessHandler =
             new OidcClientInitiatedLogoutSuccessHandler(this.repo);
-        oidcLogoutSuccessHandler.setPostLogoutRedirectUri(this.properties.getPostLogoutRedirectUri());
+        String uri = this.properties.getPostLogoutRedirectUri();
+        if (StringUtils.hasText(uri)) {
+            // TODO (jack) Remove deprecated method after we do not need to support spring-boot-2.2.x
+            oidcLogoutSuccessHandler.setPostLogoutRedirectUri(URI.create(uri));
+        }
         return oidcLogoutSuccessHandler;
     }
 
