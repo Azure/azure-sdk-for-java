@@ -1,11 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.test.aad.filter;
+package com.azure.test.aad.filter.group.count;
 
 import com.azure.spring.autoconfigure.aad.AADAuthenticationFilter;
 import com.azure.spring.autoconfigure.aad.UserPrincipal;
 import com.azure.test.aad.AADTestUtils;
+import com.azure.test.aad.filter.OAuthResponse;
 import com.azure.test.utils.AppRunner;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
