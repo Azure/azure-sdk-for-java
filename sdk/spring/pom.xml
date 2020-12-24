@@ -148,8 +148,8 @@
         <module>azure-spring-boot-test-servicebus-jms</module>
         <module>azure-spring-boot-test-storage</module>
         <module>azure-spring-cloud-test-eventhubs</module>
+        <module>azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-with-filter</module>
         <module>azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server</module>
-        <module>azure-spring-boot-samples/azure-spring-boot-sample-active-directory-spring-security-resource-server</module>
         <module>azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp</module>
         <module>azure-spring-boot-samples/azure-spring-boot-sample-active-directory-b2c-oidc</module>
         <module>azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-obo</module>
