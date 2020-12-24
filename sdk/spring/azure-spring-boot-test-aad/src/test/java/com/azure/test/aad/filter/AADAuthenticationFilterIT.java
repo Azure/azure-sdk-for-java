@@ -1,12 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.test.aad.group;
+package com.azure.test.aad.filter;
 
 import com.azure.spring.autoconfigure.aad.AADAuthenticationFilter;
+import com.azure.test.aad.AADTestUtils;
 import com.azure.test.utils.AppRunner;
-import com.azure.test.oauth.OAuthResponse;
-import com.azure.test.oauth.OAuthUtils;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,10 +33,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
-import static com.azure.test.oauth.OAuthUtils.AAD_MULTI_TENANT_CLIENT_ID;
-import static com.azure.test.oauth.OAuthUtils.AAD_MULTI_TENANT_CLIENT_SECRET;
-import static com.azure.test.oauth.OAuthUtils.AAD_SINGLE_TENANT_CLIENT_ID;
-import static com.azure.test.oauth.OAuthUtils.AAD_SINGLE_TENANT_CLIENT_SECRET;
+import static com.azure.test.aad.AADTestUtils.AAD_MULTI_TENANT_CLIENT_ID;
+import static com.azure.test.aad.AADTestUtils.AAD_MULTI_TENANT_CLIENT_SECRET;
+import static com.azure.test.aad.AADTestUtils.AAD_SINGLE_TENANT_CLIENT_ID;
+import static com.azure.test.aad.AADTestUtils.AAD_SINGLE_TENANT_CLIENT_SECRET;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.springframework.http.HttpHeaders.COOKIE;
@@ -53,7 +52,7 @@ public class AADAuthenticationFilterIT {
         final String clientId = System.getenv(AAD_SINGLE_TENANT_CLIENT_ID);
         final String clientSecret = System.getenv(AAD_SINGLE_TENANT_CLIENT_SECRET);
 
-        final OAuthResponse authResponse = OAuthUtils.executeOAuth2ROPCFlow(clientId, clientSecret);
+        final OAuthResponse authResponse = AADTestUtils.executeOAuth2ROPCFlow(clientId, clientSecret);
         assertNotNull(authResponse);
 
         testAADAuthenticationFilter(clientId, clientSecret, authResponse.getIdToken());
@@ -64,7 +63,7 @@ public class AADAuthenticationFilterIT {
         final String clientId = System.getenv(AAD_MULTI_TENANT_CLIENT_ID);
         final String clientSecret = System.getenv(AAD_MULTI_TENANT_CLIENT_SECRET);
 
-        final OAuthResponse authResponse = OAuthUtils.executeOAuth2ROPCFlow(clientId, clientSecret);
+        final OAuthResponse authResponse = AADTestUtils.executeOAuth2ROPCFlow(clientId, clientSecret);
         assertNotNull(authResponse);
 
         testAADAuthenticationFilter(clientId, clientSecret, authResponse.getIdToken());
@@ -81,7 +80,7 @@ public class AADAuthenticationFilterIT {
             app.start();
 
             final ResponseEntity<String> response = restTemplate.exchange(app.root() + "home",
-                    HttpMethod.GET, new HttpEntity<>(new HttpHeaders()), String.class, new HashMap<>());
+                HttpMethod.GET, new HttpEntity<>(new HttpHeaders()), String.class, new HashMap<>());
             assertEquals(HttpStatus.OK, response.getStatusCode());
             assertEquals("home", response.getBody());
 
@@ -90,7 +89,7 @@ public class AADAuthenticationFilterIT {
             HttpEntity<Object> entity = new HttpEntity<>(headers);
 
             final ResponseEntity<String> response2 = restTemplate.exchange(app.root() + "api/all",
-                    HttpMethod.GET, entity, String.class, new HashMap<>());
+                HttpMethod.GET, entity, String.class, new HashMap<>());
             assertEquals(HttpStatus.OK, response2.getStatusCode());
             assertEquals("all", response2.getBody());
 
@@ -103,13 +102,13 @@ public class AADAuthenticationFilterIT {
             }
 
             final ResponseEntity<String> response3 = restTemplate.exchange(app.root() + "api/group1",
-                    HttpMethod.GET, entity, String.class, new HashMap<>());
+                HttpMethod.GET, entity, String.class, new HashMap<>());
             assertEquals(HttpStatus.OK, response3.getStatusCode());
             assertEquals("group1", response3.getBody());
 
             try {
                 restTemplate.exchange(app.root() + "api/group2",
-                        HttpMethod.GET, entity, String.class, new HashMap<>());
+                    HttpMethod.GET, entity, String.class, new HashMap<>());
             } catch (Exception e) {
                 assertEquals(HttpClientErrorException.Forbidden.class, e.getClass());
             }
@@ -133,7 +132,7 @@ public class AADAuthenticationFilterIT {
             http.authorizeRequests().antMatchers("/api/**").authenticated();
 
             http.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                    .logoutSuccessUrl("/").deleteCookies("JSESSIONID").invalidateHttpSession(true);
+                .logoutSuccessUrl("/").deleteCookies("JSESSIONID").invalidateHttpSession(true);
 
             http.authorizeRequests().anyRequest().permitAll();
 

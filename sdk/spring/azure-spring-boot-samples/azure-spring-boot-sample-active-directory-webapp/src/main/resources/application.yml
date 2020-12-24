@@ -18,4 +18,4 @@ azure:
     tenant-id: <tenant-id>
     user-group:
       allowed-groups: group1, group2
-    post-logout-redirect-uri: '{baseUrl}'
+    post-logout-redirect-uri: http://localhost:8080

@@ -2,9 +2,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.test.aad.converter;
+package com.azure.test.aad.selenium.accessTokenScopes;
 
-import com.azure.test.oauth.SeleniumTestUtils;
+import com.azure.test.aad.selenium.SeleniumTestUtils;
 import com.azure.test.utils.AppRunner;
 import org.junit.Assert;
 import org.junit.Test;
@@ -21,14 +21,14 @@ import java.util.*;
 public class AccessTokenScopesIT {
 
     @Test
-    public void testRefreshTokenConverter() {
+    public void testAccessTokenScopes() {
         try (AppRunner app = new AppRunner(DumbApp.class)) {
             SeleniumTestUtils.addProperty(app);
             app.property("azure.activedirectory.authorization.office.scopes", "https://manage.office.com/ActivityFeed.Read , https://manage.office.com/ActivityFeed.ReadDlp , https://manage.office.com/ServiceHealth.Read");
-            app.property("azure.activedirectory.authorization.graph.scopes", "https://graph.microsoft.com/User.Read , https://graph.microsoft.com/AccessReview.Read.All");
+            app.property("azure.activedirectory.authorization.graph.scopes", "https://graph.microsoft.com/User.Read , https://graph.microsoft.com/Directory.AccessAsUser.All");
             List<String> endPoints = new ArrayList<>();
-            endPoints.add("accessTokenScopes/office");
             endPoints.add("accessTokenScopes/azure");
+            endPoints.add("accessTokenScopes/office");
             endPoints.add("accessTokenScopes/graph");
             endPoints.add("accessTokenScopes/arm");
             Map<String, String> result = SeleniumTestUtils.get(app, endPoints);
@@ -39,11 +39,11 @@ public class AccessTokenScopesIT {
             Assert.assertTrue(result.get("accessTokenScopes/office").contains("https://manage.office.com/ServiceHealth.Read"));
 
             Assert.assertTrue(result.get("accessTokenScopes/azure").contains("profile"));
-            Assert.assertTrue(result.get("accessTokenScopes/azure").contains("https://graph.microsoft.com/AccessReview.Read.All"));
+            Assert.assertTrue(result.get("accessTokenScopes/azure").contains("https://graph.microsoft.com/Directory.AccessAsUser.All"));
             Assert.assertTrue(result.get("accessTokenScopes/azure").contains("https://graph.microsoft.com/User.Read"));
 
             Assert.assertTrue(result.get("accessTokenScopes/graph").contains("profile"));
-            Assert.assertTrue(result.get("accessTokenScopes/graph").contains("https://graph.microsoft.com/AccessReview.Read.All"));
+            Assert.assertTrue(result.get("accessTokenScopes/graph").contains("https://graph.microsoft.com/Directory.AccessAsUser.All"));
             Assert.assertTrue(result.get("accessTokenScopes/graph").contains("https://graph.microsoft.com/User.Read"));
 
             Assert.assertNotEquals("error", result.get("api/arm"));

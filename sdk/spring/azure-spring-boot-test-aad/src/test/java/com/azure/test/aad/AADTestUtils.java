@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.test.oauth;
+package com.azure.test.aad;
 
+import com.azure.test.aad.filter.OAuthResponse;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.util.LinkedMultiValueMap;
@@ -11,7 +12,7 @@ import org.springframework.web.client.RestTemplate;
 
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
 
-public class OAuthUtils {
+public class AADTestUtils {
 
     public static final String AAD_MULTI_TENANT_CLIENT_ID = "AAD_MULTI_TENANT_CLIENT_ID";
     public static final String AAD_MULTI_TENANT_CLIENT_SECRET = "AAD_MULTI_TENANT_CLIENT_SECRET";

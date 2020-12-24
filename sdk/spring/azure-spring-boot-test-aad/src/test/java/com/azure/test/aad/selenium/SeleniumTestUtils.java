@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.test.oauth;
+package com.azure.test.aad.selenium;
 
 import com.azure.test.utils.AppRunner;
 import org.openqa.selenium.By;
@@ -19,7 +19,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import static com.azure.test.oauth.OAuthUtils.*;
+import static com.azure.test.aad.AADTestUtils.AAD_MULTI_TENANT_CLIENT_ID;
+import static com.azure.test.aad.AADTestUtils.AAD_MULTI_TENANT_CLIENT_SECRET;
+import static com.azure.test.aad.AADTestUtils.AAD_TENANT_ID_1;
+import static com.azure.test.aad.AADTestUtils.AAD_USER_NAME_1;
+import static com.azure.test.aad.AADTestUtils.AAD_USER_PASSWORD_1;
 import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated;
 
 public class SeleniumTestUtils {
@@ -59,7 +63,7 @@ public class SeleniumTestUtils {
 
     public static Map<String, String> get(AppRunner app, List<String> endPoints) {
 
-        Map<String , String> result = new HashMap<>();
+        Map<String, String> result = new HashMap<>();
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--incognito");
         options.addArguments("--headless");
@@ -69,19 +73,21 @@ public class SeleniumTestUtils {
         WebDriverWait wait = new WebDriverWait(driver, 10);
         app.start();
         try {
-            driver.get(app.root());
+            driver.get(app.root() + endPoints.get(0));
             wait.until(presenceOfElementLocated(By.name("loginfmt")))
                 .sendKeys(System.getenv(AAD_USER_NAME_1) + Keys.ENTER);
             Thread.sleep(10000);
             driver.findElement(By.name("passwd"))
-                .sendKeys(System.getenv(AAD_USER_PASSWORD_1) + Keys.ENTER);
+                  .sendKeys(System.getenv(AAD_USER_PASSWORD_1) + Keys.ENTER);
             Thread.sleep(10000);
             driver.findElement(By.cssSelector("input[type='submit']")).click();
             Thread.sleep(10000);
-            for(String endPoint : endPoints) {
+            result.put(endPoints.get(0), driver.findElement(By.tagName("body")).getText());
+            endPoints.remove(0);
+            for (String endPoint : endPoints) {
                 driver.get(app.root() + endPoint);
                 Thread.sleep(1000);
-                result.put(endPoint ,driver.findElement(By.tagName("body")).getText());
+                result.put(endPoint, driver.findElement(By.tagName("body")).getText());
             }
             return result;
         } catch (InterruptedException e) {
