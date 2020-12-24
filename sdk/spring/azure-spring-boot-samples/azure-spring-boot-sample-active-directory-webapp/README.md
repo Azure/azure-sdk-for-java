@@ -25,10 +25,10 @@ The sample retrieves user's group memberships using Microsoft graph API which re
    - Click the **Add a permission** button	
    - Ensure that the **Microsoft APIs** tab is selected	
    - In the *Commonly used Microsoft APIs* section, click on **Microsoft Graph**	
-   - In the **Delegated permissions** section, ensure that the right permissions are checked: **Directory.AccessAsUser.All**, **ActivityFeed.ReadDlp**, **ServiceHealth.Read**
+   - In the **Delegated permissions** section, ensure that the right permissions are checked: **Directory.AccessAsUser.All**, **User.Read**
    - Select the **Add permissions** button
    - Under **Office 365 Management APIs** tab
-   - Select **Delegated permissions**, and then click **ActivityFeed.Read**,**ActivityFeed.Read**
+   - Select **Delegated permissions**, and then click **ActivityFeed.Read**, **ActivityFeed.ReadDlp**, **ServiceHealth.Read**
    - Select the **Add permissions** button
    - Click **Grant Permissions...** and Yes when prompted.
 
